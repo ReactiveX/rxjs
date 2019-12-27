@@ -227,19 +227,19 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         reason: getResultSelectorReason('fromEventPattern'),
         implication: getResultSelectorImplication('fromEventPattern'),
         exampleBefore: `
-                    import { fromEventPattern } from 'rxjs';
+          import { fromEventPattern } from 'rxjs';
 
-                    const resultSelector = (event) => event.matches;
+          const resultSelector = (event) => event.matches;
 
-                    const mediaQueryList = window.matchMedia('(max-width: 600px)');
-                    const source = fromEventPattern(
-                      (handler) => { mediaQueryList.addListener(handler)},
-                      (handler) => { mediaQueryList.removeListener(handler)},
-                      resultSelector
-                    )
+          const mediaQueryList = window.matchMedia('(max-width: 600px)');
+          const source = fromEventPattern(
+            (handler) => { mediaQueryList.addListener(handler)},
+            (handler) => { mediaQueryList.removeListener(handler)},
+            resultSelector
+          )
 
-                    // Resize the window to see results in the console
-                    source.subscribe({next: n => console.log(n)});
+          // Resize the window to see results in the console
+          source.subscribe((n) => console.log(n));
                   `,
         exampleAfter: `
                   import { fromEventPattern } from 'rxjs';
@@ -257,7 +257,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
                   );
 
                   // Resize the window to see results in the console
-                  source.subscribe({next: n => console.log(n)});
+                  source.subscribe((n) => console.log(n));
                 `
       },
       {
@@ -278,7 +278,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
                 const source = fromEvent(document, 'click', resultSelector);
 
                 // Click the window to see results in the console
-                source.subscribe({next: n => console.log(n)});
+                source.subscribe((n) => console.log(n));
                 `,
         exampleAfter: `
                 import { fromEvent } from 'rxjs';
@@ -291,7 +291,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
                 )
 
                 // Click the window to see results in the console
-                source.subscribe({next: n => console.log(n)});
+                source.subscribe((n) => console.log(n));
                 `
       },
       {
@@ -952,7 +952,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         reason: 'create your own class and implement SchedulerLike instead',
         implication: '@!TODO',
         exampleBefore: `
-        @TODO => review
+        @TODO => https://stackblitz.com/edit/rxjs-scheduler-example
         import { Scheduler, Subscription, of } from "rxjs";
         import { Zone } from "./Zone";
 
@@ -1284,13 +1284,32 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/operators/timeInterval.ts#L69',
         breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'removed',
-        deprecationMsgCode: '@TODO',
+        breakingChangeSubjectAction: 'to-private',
+        deprecationMsgCode: 'use the interface TimeInterval instead',
         reason: `Class TimeInterval gets deprecated in favour of
-         interface [TimeInterval](https://github.com/ReactiveX/rxjs/blob/6.5.3/src/internal/types.ts#L19-L22)`,
-        implication: '@TODO',
-        exampleBefore: `@TODO`,
-        exampleAfter: `@TODO`
+         interface [TimeInterval](https://github.com/ReactiveX/rxjs/blob/6.0.0/src/internal/types.ts#L19-L22).
+         because there's no reason users should be manually creating this type.`,
+        implication: 'To make the class TimeInterval private means for the caller to use the interface TimeInterval instead.',
+        exampleBefore: `
+        import { interval, Observable, TimeInterval } from 'rxjs';
+        import { timeInterval } from 'rxjs/operators';
+
+        const source: Observable<TimeInterval<number>> = interval(1000)
+          .pipe(
+            timeInterval()
+          );
+        source.subscribe((n) => console.log(n));
+        `,
+        exampleAfter: `
+        import { interval, Observable, TimeInterval } from 'rxjs';
+        import { timeInterval } from 'rxjs/operators';
+
+        const source: Observable<TimeInterval<number>> = interval(1000)
+          .pipe(
+            timeInterval()
+          );
+        source.subscribe((n) => console.log(n));
+        `
       }
     ],
     breakingChanges: []
@@ -1501,28 +1520,31 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'removed',
         deprecationMsgCode: 'use the static partition instead',
-        reason: 'As partition operator is not compose able and it can anyway only be used to create the array it is deprecated',
-        implication: '@!TODO',
+        reason: 'As partition operator is not compose able and it can anyway only be used to create the array it is deprecated.',
+        implication: 'The deprecation of the operator partition means for the caller to use creation method instead',
         exampleBefore: `
+        import { of, Observable } from 'rxjs';
         import { partition } from 'rxjs/operators';
-        const p = interval$
-        .pipe(
-          partition((num, index: number) => !!(num % 2))
-        );
 
-        // odd
-        p[0].subscribe(console.log);
-        // even
-        p[1].subscribe(console.log);
+        const predicate = (n: number, i: number) => n % 2 < 0
+        const a = of (1, 2, 3, 4);
+        const result: [Observable<number>, Observable<number>] = a
+        .pipe(
+        partition(predicate)
+        ) ;
+
+        result[0].subscribe((n) => console.log('odd', n));
+        result[1].subscribe((n) => console.log('even', n));
         `,
         exampleAfter: `
-        import { partition } from 'rxjs';
-        const p = partition(interval$, (num, index: number) => !!(num % 2))
+        import { of, Observable, partition } from 'rxjs';
 
-        // odd
-        p[0].subscribe(console.log);
-        // even
-        p[1].subscribe(console.log);
+        const predicate = (n: number, i: number) => n % 2 < 0
+        const a = of(1, 2, 3, 4);
+        const result: [Observable<number>, Observable<number>] = partition(a, predicate);
+
+        result[0].subscribe((n) => console.log('odd', n));
+        result[1].subscribe((n) => console.log('even', n));
         `
       }
     ],
@@ -1530,7 +1552,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   },
   {
     version: '6.5.1',
-    date: '2019-04-23T03:39:56.746Z',
+    date: '2019-04-23T03:40:26.583Z',
     deprecations: [
       {
         subject: 'NotificationKind',
@@ -1542,14 +1564,17 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeSubjectAction: 'removed',
         deprecationMsgCode: 'use a string literal instead of a const enum',
         reason: 'NotificationKind is deprecated as const enums are not compatible with isolated modules. Use a string literal instead.',
-        implication: '@!TODO',
+        implication: 'The deprecation of enum NotificationKind means for the caller to use string literals instead.',
         exampleBefore: `
-        import { NotificationKind } from 'rxjs';
-        const next = NotificationKind.NEXT;
+        import { Notification, NotificationKind } from 'rxjs';
+
+        const notification: Notification<any> = new Notification(NotificationKind.NEXT, undefined);;
+        console.log(notification.kind);
         `,
         exampleAfter: `
-        import { NotificationKind } from 'rxjs';
-        const next:NotificationKind = 'N';
+        import { Notification } from 'rxjs';
+        const notification: Notification<any> = new Notification('N', undefined);;
+        console.log(notification.kind);
         `
       }
     ],
@@ -1607,11 +1632,13 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
          them and let the type inference do the rest, or use 'as' to type it.`,
         exampleBefore: `
         import { of } from 'rxjs';
+
         const source = of<string>('1');
         source.subscribe((n) => console.log(n));
         `,
         exampleAfter: `
         import { of, Observable } from 'rxjs';
+
         const a = of('1');
         const b = of('1') as Observable<string>;
         a.subscribe((n) => console.log(n));
@@ -2124,6 +2151,24 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeMsg: getOperatorRemovedInFavourOfBreakingChangePhrase('empty', 'EMPTY')
       },
       {
+        subject: 'partition',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '7.0.0-alpha.0',
+        deprecationSubjectAction: 'deprecated',
+        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('partition')
+      },
+      {
+        subject: 'NotificationKind',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.5.1',
+        deprecationSubjectAction: 'deprecated',
+        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('NotificationKind')
+      },
+      {
         subject: 'ObservableLike',
         subjectSymbol: SubjectSymbols.interface,
         subjectAction: 'removed',
@@ -2131,6 +2176,15 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         deprecationVersion: '6.1.0',
         deprecationSubjectAction: 'deprecated',
         breakingChangeMsg: getInterfaceRemovedInFavourOfBreakingChangePhrase('ObservableLike', ' InteropObservable')
+      },
+      {
+        subject: 'TimeInterval',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'to-private',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.4.0',
+        deprecationSubjectAction: 'deprecated',
+        breakingChangeMsg: 'The access modifier of class TimeInterval is now private'
       },
       {
         subject: 'concat',
