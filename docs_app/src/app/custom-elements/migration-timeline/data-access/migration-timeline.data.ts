@@ -860,7 +860,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   },
   {
     version: '6.0.0-rc.1',
-    date: '2018-04-07T04:43:35.190Z',
+    date: '2018-04-07T04:52:25.078Z',
     deprecations: [
       {
         subject: 'Observable',
@@ -874,8 +874,21 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         reason: `As 'if' is seen by the compiler as reserved word, static method 'if' gets deprecated.
             It is now available under a creation operator named 'iif'`,
         implication: 'The deprecation of Observable.if means for the caller to use iif instead',
+        exampleBeforeDependencies: {
+          'rxjs' : '6.0.0-rc.0',
+          'rxjs-compat' : '6.0.0-rc.0'
+        },
         exampleBefore: `
-       @TODO
+        import { Observable } from 'rxjs/Observable';
+        import 'rxjs/add/observable/of';
+        import 'rxjs/add/observable/if';
+
+        const a = Observable.of('1');
+        const b = Observable.of('2');
+        const condition = (): boolean => Math.random() < 0.5;
+
+        const source = Observable.if(condition, a, b);
+        source.subscribe((n) => console.log(n));
         `,
         exampleAfter: `
         import { of, iif } from 'rxjs'
@@ -900,14 +913,24 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         reason: `As 'throw' is seen by the compiler as reserved word, static method 'throw' gets deprecated.
             It is now available under a creation operator named 'throwError'`,
         implication: 'The deprecation of Observable.if means for the caller to use iif operator instead',
+        exampleBeforeDependencies: {
+          'rxjs': '6.0.0-rc.0',
+          'rxjs-compat': '6.0.0-rc.0'
+        },
         exampleBefore: `
-        @TODO
+        import { Observable } from 'rxjs/Observable';
+        import 'rxjs/add/observable/throw';
+
+        const error = new Error('smooshMap does not exist');
+        const source = Observable.throw(error);
+        source.subscribe((n) => console.log(n));
         `,
         exampleAfter: `
-          import { of, throwError } from 'rxjs';
+        import { of, throwError } from 'rxjs';
 
-          const source = throwError(new Error('smooshMap does not exist'));
-          source.subscribe((n) => console.log(n));
+        const error = new Error('smooshMap does not exist');
+        const source = throwError(error);
+        source.subscribe((n) => console.log(n));
         `
       }
     ],
@@ -1404,24 +1427,35 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'combineLatest',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'multiple-arguments',
+        subjectAction: 'multiple-arguments-deprecated',
         itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/combineLatest.ts#L100',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/combineLatest.ts#L88',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'multiple-arguments-removed',
         deprecationMsgCode: 'pass arguments in a single array instead `combineLatest([a, b, c])`',
-        reason: `Static \`combineLatest\` method arguments in an array instead of single arguments.
+        reason: `Creation operator combineLatest method arguments in an array instead of single arguments.
         They are technically easier to type.`,
-        implication: '@!TODO',
+        implication: `Deprecating the option to passe multiple observables
+        to combineLatest means for the caller to use an array of observables instead.`,
         exampleBefore: `
+        import { of } from 'rxjs';
         import { combineLatest } from 'rxjs';
-        combineLatest(a$,b$)
-          .subscribe({next: n => console.log(n)});
+
+        const a = of('1');
+        const b = of('2');
+
+        const source = combineLatest(a,b);
+        source.subscribe((n) => console.log(n));
         `,
         exampleAfter: `
+        import { of } from 'rxjs';
         import { combineLatest } from 'rxjs';
-        combineLatest([a$,b$])
-          .subscribe({next: n => console.log(n)});
+
+        const a = of('1');
+        const b = of('2');
+
+        const source = combineLatest([a,b]);
+        source.subscribe((n) => console.log(n));
         `
       },
       {
@@ -1993,6 +2027,14 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         deprecationVersion: '6.5.0',
         deprecationSubjectAction: 'argument-scheduler-deprecated',
         breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('combineLatest')
+      }, {
+        subject: 'combineLatest',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'multiple-arguments-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.5.0',
+        deprecationSubjectAction: 'multiple-arguments-deprecated',
+        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('combineLatest')
       },
       {
         subject: 'from',
@@ -2154,7 +2196,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.1',
         deprecationSubjectAction: 'property-if-deprecated',
-        breakingChangeMsg: 'Class Observable removed throw property.'
+        breakingChangeMsg: 'Class Observable removed if property.'
       },
       {
         subject: 'Observable',

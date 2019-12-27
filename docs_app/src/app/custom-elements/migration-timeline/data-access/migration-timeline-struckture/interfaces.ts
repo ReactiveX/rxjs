@@ -48,6 +48,8 @@ export enum SubjectSymbols {
   const = 'enum',
   let = 'let',
   var = 'var',
+  // @TODO reconsider => breaking change for every import of every operator?
+  import = 'import',
   typeAlias = 'type-alias',
 }
 
@@ -232,9 +234,11 @@ export interface Deprecation extends MigrationItemSubjectUIDFields {
   deprecationMsgCode: string;
   reason: string;
   implication: string;
-  // @TODO How to handle dependencies to other libs in stackblitz?
+// @TODO Ensure this is the way to handle dependencies to other libs in stackblitz
+  exampleBeforeDependencies?: {[lib: string]: string},
   exampleBefore: string;
-  // @TODO How to handle dependencies to other libs in stackblitz?
+  // @TODO Ensure this is the way to handle dependencies to other libs in stackblitz
+  exampleAfterDependencies?: {[lib: string]: string},
   exampleAfter: string;
   notes?: string;
 }

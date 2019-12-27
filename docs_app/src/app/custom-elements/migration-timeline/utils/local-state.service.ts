@@ -36,9 +36,9 @@ export function select<T>(...ops: OperatorFunction<T, any>[]) {
 
 /*
 interface AbstractLocalState<T> {
-  setSlice(s: Partial<T>): void;
+  setState(s: Partial<T>): void;
 
-  connectSlice(o: Observable<Partial<T>>): void;
+  connectState(o: Observable<Partial<T>>): void;
 
   connectEffect(o: Observable<any>): void;
 
@@ -94,18 +94,18 @@ export class LocalState<T> implements OnDestroy {
   }
 
   /**
-   * setSlice(s: Partial<T>) => void
+   * setState(s: Partial<T>) => void
    *
    * @param s: Partial<T>
    *
    * @example
    * const ls = new LocalState<{test: string, bar: number}>();
    * // Error
-   * // ls.setSlice({test: 7});
-   * ls.setSlice({test: 'tau'});
+   * // ls.setState({test: 7});
+   * ls.setState({test: 'tau'});
    * // Error
-   * // ls.setSlice({bar: 'tau'});
-   * ls.setSlice({bar: 7});
+   * // ls.setState({bar: 'tau'});
+   * ls.setState({bar: 7});
    */
   setState(s: Partial<T>): void {
     this._stateSlices.next(s);
@@ -113,22 +113,22 @@ export class LocalState<T> implements OnDestroy {
 
 
   /**
-   * connectSlice(o: Observable<Partial<T>>) => void
+   * connectState(o: Observable<Partial<T>>) => void
    *
    * @param o: Observable<Partial<T>>
    *
    * @example
    * const ls = new LocalState<{test: string, bar: number}>();
    * // Error
-   * // ls.connectSlice(of(7));
-   * // ls.connectSlice(of('tau'));
-   * ls.connectSlice(of());
+   * // ls.connectState(of(7));
+   * // ls.connectState(of('tau'));
+   * ls.connectState(of());
    * // Error
-   * // ls.connectSlice(of({test: 7}));
-   * ls.connectSlice(of({test: 'tau'}));
+   * // ls.connectState(of({test: 7}));
+   * ls.connectState(of({test: 'tau'}));
    * // Error
-   * // ls.connectSlice(of({bar: 'tau'}));
-   * ls.connectSlice(of({bar: 7}));
+   * // ls.connectState(of({bar: 'tau'}));
+   * ls.connectState(of({bar: 7}));
    *
    * @TODO implement SliceConfig to end a stream automatically with undefined => cleanup of sate
    */
