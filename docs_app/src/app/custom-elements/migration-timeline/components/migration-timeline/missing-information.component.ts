@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {LocationService} from '../../../../shared/location.service';
-import {parseMigrationItemUIDObject, parseMigrationItemUIDURL} from '../../utils/formatter-parser';
+import {parseMigrationItemUIDURL} from '../../data-access/migration-item';
+import {parseMigrationItemUIDObject} from '../../data-access/migration-timeline-struckture/migration-uid';
 
 @Component({
   selector: `missing-information`,

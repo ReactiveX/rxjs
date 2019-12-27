@@ -1,6 +1,6 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
-import {ClientMigrationTimelineReleaseItem} from '../data-access/migration-timeline.interface';
+import {ClientMigrationTimelineReleaseItem} from '../data-access/migration-item';
 import {LocalState} from '../utils/local-state.service';
 
 export interface MigrationTimelineNavigationItem {

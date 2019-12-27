@@ -2,9 +2,8 @@ import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {environment} from '../../../../../environments/environment';
-import {ClientMigrationTimelineReleaseItem} from '../../data-access/migration-timeline.interface';
-import {parseMigrationReleaseUIDFromString} from '../../utils/formatter-parser';
-import {disposeEvent} from '../../utils/general';
+import {ClientMigrationTimelineReleaseItem} from '../../data-access/migration-item';
+import {parseMigrationReleaseUIDFromString} from '../../data-access/migration-timeline-struckture/migration-uid';
 
 import {LocalState} from '../../utils/local-state.service';
 
@@ -33,7 +32,6 @@ export interface MigrationTimelineComponentViewBaseModel {
             class="migration-timeline-item-header-title"
             [id]="release.version">
             <div class="shield"
-              (click)="disposeEvent($event)"
               (click)="selectedMigrationReleaseUIDChange.next(release.version)">
               <span class="label">github</span>
               <span class="version">{{release.version}}</span>
@@ -142,7 +140,6 @@ export interface MigrationTimelineComponentViewBaseModel {
 })
 export class MigrationTimelineComponent extends LocalState<MigrationTimelineComponentViewBaseModel> {
   env = environment;
-  disposeEvent = disposeEvent;
 
   @Input()
   set releaseList(releaseList: ClientMigrationTimelineReleaseItem[]) {

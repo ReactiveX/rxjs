@@ -2,13 +2,12 @@ import {Inject} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {distinctUntilChanged, filter, map} from 'rxjs/operators';
 import {LocationService} from '../../shared/location.service';
-import {ClientMigrationTimelineReleaseItem} from './data-access/migration-timeline.interface';
+import {findClosestRelease, parseMigrationItemSubjectUIDFromString, parseMigrationItemUIDURL} from './data-access/migration-item';
 import {MigrationTimelineService} from './data-access/migration-timeline.service';
 import {MigrationTimelineContainerModelFromRemoteSources} from './migration-timeline.container.component';
-import {getClosestRelease} from './utils/filter';
-import {parseMigrationItemSubjectUIDFromString, parseMigrationItemUIDURL} from './utils/formatter-parser';
+
 import {LocalState} from './utils/local-state.service';
-import {comparePropertyFactory} from './utils/sort';
+
 
 @Inject({})
 export class MigrationTimelineContainerAdapter extends LocalState<MigrationTimelineContainerModelFromRemoteSources> {
@@ -20,8 +19,6 @@ export class MigrationTimelineContainerAdapter extends LocalState<MigrationTimel
       distinctUntilChanged()
     );
 
-  compareByVersionNumberAsc = comparePropertyFactory(true, (i: ClientMigrationTimelineReleaseItem) => i.versionNumber);
-  compareByReleaseDateAsc = comparePropertyFactory(true, (i: ClientMigrationTimelineReleaseItem) => i.date, d => d.getTime());
   releaseList$ = this.select(map(s => s.releaseList));
 
   constructor(
@@ -30,15 +27,8 @@ export class MigrationTimelineContainerAdapter extends LocalState<MigrationTimel
   ) {
     super();
 
-    // Server state / Global state to component state
-    // (re)fetch data  over http request
-    this.migrationService.fetchMigrationTimeline();
     // Global state to view state
-    this.connectState('releaseList', this.migrationService.migrations$
-      .pipe(
-        // ensure base sorting by version number before putting it into client state
-        map(a => a.sort(this.compareByReleaseDateAsc))
-      ));
+    this.connectState('releaseList', this.migrationService.migrations$);
 
     // URL state to component state
     // Connect Router to selectedMigrationReleaseUID
@@ -47,28 +37,26 @@ export class MigrationTimelineContainerAdapter extends LocalState<MigrationTimel
         this.releaseList$,
         this._selectedMigrationTimelineItemUIDUrl$
       ).pipe(
-        map(([releaseList, selectedMigrationItemUID]) => {
-          // get the release object for selectedMigrationItemUID (or the closest one)
-          const release = getClosestRelease(releaseList, selectedMigrationItemUID);
-          const migrationItemSubjectUID = parseMigrationItemSubjectUIDFromString(selectedMigrationItemUID.split('_')[1]);
-
-          // If no subjectUID is specified forward only version
-          if (migrationItemSubjectUID === '') {
-            return release.version;
-          }
-          // If uid is ok search it
-          const item = ([] as any[])
-            .concat(release.deprecations)
-            .concat(release.breakingChanges)
-            .find(i => i.migrationItemUID === selectedMigrationItemUID);
-
-          // @TODO Specified migrationItemUID not in list. Suggest opening an issue.
-          if (!item) {
-            console.error('Specified migrationItemUID not in list. Suggest opening an issue.');
-          }
-          return item ? selectedMigrationItemUID : 'wrong-uid';
-        }))
+        map(([releaseList, selectedMigrationItemUID]) => this.findSelectedMigrationItemUID(releaseList, selectedMigrationItemUID)))
     );
+  }
+
+  findSelectedMigrationItemUID(releaseList, selectedMigrationItemUID) {
+    // get the release object for selectedMigrationItemUID (or the closest one)
+    const release = findClosestRelease(releaseList, selectedMigrationItemUID);
+    const migrationItemSubjectUID = parseMigrationItemSubjectUIDFromString(selectedMigrationItemUID.split('_')[1]);
+
+    // If no subjectUID is specified forward only version
+    if (migrationItemSubjectUID === '') {
+      return release.version;
+    }
+    // If uid is ok search it
+    const item = ([] as any[])
+      .concat(release.deprecations)
+      .concat(release.breakingChanges)
+      .find(i => i.migrationItemUID === selectedMigrationItemUID);
+
+    return item ? selectedMigrationItemUID : 'wrong-uid';
   }
 
 }

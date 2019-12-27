@@ -1,9 +1,8 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
-import {ClientDeprecation} from '../../data-access/migration-timeline.interface';
-import {LocalState} from '../../utils/local-state.service';
-import {disposeEvent} from '../../utils/operators';
+import {ClientDeprecation} from '../../data-access/migration-item';
 
+import {LocalState} from '../../utils/local-state.service';
 
 @Component({
   selector: `deprecation-description-table`,
@@ -61,7 +60,6 @@ export class DeprecationDescriptionTableComponent extends LocalState<{
 }> {
   vm$ = this.select();
 
-  disposeEvent = disposeEvent;
   @Input()
   set deprecation(deprecation: ClientDeprecation) {
     if (deprecation) {

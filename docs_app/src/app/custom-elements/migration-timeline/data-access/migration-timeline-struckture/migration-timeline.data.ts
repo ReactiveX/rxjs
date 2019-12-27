@@ -1,4 +1,6 @@
-import {MigrationReleaseItem, SubjectSymbols} from './migration-timeline-struckture/interfaces';
+
+import {MigrationReleaseItem} from './migration-item';
+import {SubjectSymbols} from './migration-uid';
 
 export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {

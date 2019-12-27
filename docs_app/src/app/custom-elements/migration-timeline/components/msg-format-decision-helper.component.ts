@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {filter, map, shareReplay} from 'rxjs/operators';
-import {SubjectSymbols} from '../data-access/migration-timeline-struckture/interfaces';
-import {ClientMigrationTimelineReleaseItem} from '../data-access/migration-timeline.interface';
+import {ClientMigrationTimelineReleaseItem} from '../data-access/migration-item';
+import {SubjectSymbols} from '../data-access/migration-timeline-struckture/migration-uid';
 import {LocalState} from '../utils/local-state.service';
 
 

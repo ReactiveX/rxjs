@@ -1,65 +1,4 @@
-/*
-@Interface SemVerObj
-description: semver as object
-  type: string
-*/
-export interface SemVerObj {
-  major: number,
-  minor: number,
-  patch: number,
-  subVersionName?: string,
-  subVersion?: number
-}
-
-/*
-@type semVerString
-description: Any valid semver string from only major [n] to very specific [n.n.n.s-n]. What version is effected?
-type: string
-Examples:
-     - 1
-     - 1.1
-     - 1.1.1
-     - 1.1.1-alpha.1
-*/
-export type semVerString = string;
-
-/*
-@Interface MigrationReleaseUIDFields
-
-@field version
-description: semver string of release version
-type: semVerString
-*/
-export interface MigrationReleaseUIDFields {
-  version: semVerString;
-}
-
-/*
-@enum subjectSymbols
-description: string specifying a specific piece of typescript code
-This information is a subset from the information from the [API explorer](https://rxjs.dev/api)
-*/
-export enum SubjectSymbols {
-  all = 'all',
-  class = 'class',
-  interface = 'interface',
-  function = 'function',
-  enum = 'enum',
-  const = 'enum',
-  let = 'let',
-  var = 'var',
-  // @TODO reconsider => breaking change for every import of every operator?
-  import = 'import',
-  typeAlias = 'type-alias',
-}
-
-export enum SubjectActionSymbol {
-  all = 'all',
-  argument = 'argument',
-  property = 'property',
-  // @TODO reconsider
-  genericArgument =  'generic-argument'
-}
+import {MigrationItemSubjectUIDFields, MigrationReleaseUIDFields} from './migration-uid';
 
 /*
 @type TimeLineTypeDeprecation
@@ -73,87 +12,6 @@ export type MigrationItemTypeBreakingChange = 'breakingChange';
 @type TimeLineTypes
 */
 export type MigrationItemTypes = MigrationItemTypeDeprecation | MigrationItemTypeBreakingChange;
-
-/*
-@Interface MigrationItemUIDFields
-
-@field itemType
-description: type of MigrationItem
-type: TimeLineTypes
-
-@field subject
-description: subject of migration. What piece is effected?
-@TODO consider this!
-Subjects are things that components and things that are leafs
-- class
-  - method
-    - argument
-    - constant
-    - var
-    - let
-  - property
-- functions
-  - argument
-  - constant
-  - var
-  - let
-- constant
-- var
-- let
-type: string
-Examples:
-- TestScheduler
-- of
-- NEVER
-- switchMap
-
-There are 2 possible systems I see here:
-- focusing on the subject e.g. last-function-resultSelector-deprecated
-- focusing on the subjectAction e.g. last-argument-resultSelector-deprecated
-
-APISymbol is what changes here. The thing to consider is we
-get a nice icon (same as in the API reference in the docs) that
-shows us the type of the subject i.e. class, function etc.
-
-
-
-@field subjectApiSymbol
-description: type of SubjectSymbols
-type: SubjectSymbols
-
-@field subjectAction
-description: action on subject.
-dash "-" separated string
-- What happened to the subject?
-- What attribute of the piece is effected?
-type: string
-Examples for deprecations:
-- deprecated
-- argument-resultSelector
-- property-frameTimeFactor
-- property-access-specifier-(private|public|readonly)-changed
-- multiple-arguments
-Examples for breakingChanges:
-- removed
-- moved
-- to-private
-- argument-resultSelector-removed
-- property-frameTimeFactor-moved
-- property-hotObservables-to-private
-*/
-export interface MigrationItemSubjectUIDFields {
-  itemType: MigrationItemTypes;
-  subject: string;
-  subjectSymbol: SubjectSymbols;
-  subjectAction: string;
-}
-
-/*
-MigrationItemUIDFields
-description: Summarizes all information needed to generate the UID for a `MigrationItem`
-*/
-export interface MigrationItemUIDFields extends MigrationReleaseUIDFields, MigrationItemSubjectUIDFields {
-}
 
 /*
 @type MigrationItem
@@ -231,7 +89,7 @@ Example:
 export interface Deprecation extends MigrationItemSubjectUIDFields {
   itemType: MigrationItemTypeDeprecation;
   sourceLink: string;
-  breakingChangeVersion: semVerString;
+  breakingChangeVersion: string;
   breakingChangeSubjectAction: string;
   deprecationMsgCode: string;
   reason: string;
@@ -269,7 +127,7 @@ Example: Class `TestScheduler` changed property `coldObservables` to private
  */
 export interface BreakingChange extends MigrationItemSubjectUIDFields {
   itemType: MigrationItemTypeBreakingChange;
-  deprecationVersion: semVerString;
+  deprecationVersion: string;
   deprecationSubjectAction: string;
   breakingChangeMsg: string;
   notes?: string;

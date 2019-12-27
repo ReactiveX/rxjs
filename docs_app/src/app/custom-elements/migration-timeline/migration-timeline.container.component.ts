@@ -2,9 +2,10 @@ import {Component} from '@angular/core';
 import {merge, Observable, Subject} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {LocationService} from '../../shared/location.service';
-import {ClientMigrationTimelineReleaseItem} from './data-access/migration-timeline.interface';
+import {ClientMigrationTimelineReleaseItem} from './data-access/migration-item';
+import {parseMigrationReleaseUIDFromString} from './data-access/migration-timeline-struckture/migration-uid';
 import {MigrationTimelineContainerAdapter} from './migration-timeline.container.adapter';
-import {parseMigrationReleaseUIDFromString} from './utils/formatter-parser';
+
 import {LocalState} from './utils/local-state.service';
 
 export interface MigrationTimelineContainerModelFromRemoteSources {
@@ -86,14 +87,15 @@ export interface MigrationTimelineContainerModelFromRemoteSources {
 })
 export class MigrationTimelineContainerComponent {
 
-  // # UI State
-  // ## Normalized Model
+  // UI State
+  // Normalized Model
   baseModel$: Observable<MigrationTimelineContainerModelFromRemoteSources> = this._baseModel.select();
   // Derivations from normalized model
   selectedMigrationReleaseUID$ = this._baseModel.select(
     map(s => parseMigrationReleaseUIDFromString(s.selectedMigrationItemUID)),
   );
-  // ## UI Interactions
+
+  // UI Interactions
   selectedMigrationItemUIDChange = new Subject<string>();
   selectedMigrationReleaseUIDChange = new Subject<string>();
 
@@ -116,13 +118,10 @@ export class MigrationTimelineContainerComponent {
 
   }
 
-
   private setMigrationTimelineSelection(uid: string) {
     const params = {uid: uid ? uid : undefined};
     this._locationService.setSearch('Migration Timeline', params);
   }
-
-
 
 }
 
