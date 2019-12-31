@@ -336,7 +336,7 @@ export function generate<T, S>(options: GenerateOptions<T, S>): Observable<T>;
 export function generate<T, S>(initialStateOrOptions: S | GenerateOptions<T, S>,
                                condition?: ConditionFunc<S>,
                                iterate?: IterateFunc<S>,
-                               resultSelectorOrObservable?: (ResultFunc<S, T>) | SchedulerLike,
+                               resultSelectorOrScheduler?: (ResultFunc<S, T>) | SchedulerLike,
                                scheduler?: SchedulerLike): Observable<T> {
 
   let resultSelector: ResultFunc<S, T>;
@@ -349,13 +349,13 @@ export function generate<T, S>(initialStateOrOptions: S | GenerateOptions<T, S>,
     iterate = options.iterate;
     resultSelector = options.resultSelector || identity as ResultFunc<S, T>;
     scheduler = options.scheduler;
-  } else if (resultSelectorOrObservable === undefined || isScheduler(resultSelectorOrObservable)) {
+  } else if (resultSelectorOrScheduler === undefined || isScheduler(resultSelectorOrScheduler)) {
     initialState = initialStateOrOptions as S;
     resultSelector = identity as ResultFunc<S, T>;
-    scheduler = resultSelectorOrObservable as SchedulerLike;
+    scheduler = resultSelectorOrScheduler as SchedulerLike;
   } else {
     initialState = initialStateOrOptions as S;
-    resultSelector = resultSelectorOrObservable as ResultFunc<S, T>;
+    resultSelector = resultSelectorOrScheduler as ResultFunc<S, T>;
   }
 
   return new Observable<T>(subscriber => {
