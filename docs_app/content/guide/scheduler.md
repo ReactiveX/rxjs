@@ -128,7 +128,6 @@ Because RxJS uses the least concurrency scheduler, you can pick a different sche
 - `concat`
 - `empty`
 - `from`
-- `fromPromise`
 - `interval`
 - `merge`
 - `of`
