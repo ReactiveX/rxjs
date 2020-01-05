@@ -1,3 +1,23 @@
+# [7.0.0-alpha.1](https://github.com/reactivex/rxjs/compare/7.0.0-alpha.0...7.0.0-alpha.1) (2019-12-27)
+
+
+### Bug Fixes
+
+* chain subscriptions from interop observables ([#5059](https://github.com/reactivex/rxjs/issues/5059)) ([d7f7078](https://github.com/reactivex/rxjs/commit/d7f7078))
+* clear subscription on shareReplay completion ([#5044](https://github.com/reactivex/rxjs/issues/5044)) ([35e600f](https://github.com/reactivex/rxjs/commit/35e600f)), closes [#5034](https://github.com/reactivex/rxjs/issues/5034)
+* **closure:** Annotate next() for ReplaySubject ([#5088](https://github.com/reactivex/rxjs/issues/5088)) ([8687fbd](https://github.com/reactivex/rxjs/commit/8687fbd))
+* **closure:** static prop frameTimeFactor being collapsed when compiled with closure. ([39872c9](https://github.com/reactivex/rxjs/commit/39872c9))
+* **docs:** remove repetitive op3() in example ([#5043](https://github.com/reactivex/rxjs/issues/5043)) ([e17df33](https://github.com/reactivex/rxjs/commit/e17df33))
+* **filter:** Fix overload order for filter to support inferring the generic type ([#5024](https://github.com/reactivex/rxjs/issues/5024)) ([8255365](https://github.com/reactivex/rxjs/commit/8255365))
+* **fromFetch:** passing already aborted signal to init aborts fetch ([0e4849a](https://github.com/reactivex/rxjs/commit/0e4849a))
+
+
+### Features
+
+* **concatWith:** adds concatWith ([#4988](https://github.com/reactivex/rxjs/issues/4988)) ([dc89736](https://github.com/reactivex/rxjs/commit/dc89736))
+
+
+
 # [7.0.0-alpha.0](https://github.com/reactivex/rxjs/compare/6.5.2...7.0.0-alpha.0) (2019-09-18)
 
 
