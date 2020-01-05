@@ -156,8 +156,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       toBe(marbles: string, values?: any, errorValue?: any) {
         flushTest.ready = true;
         flushTest.expected = TestScheduler.parseMarbles(marbles, values, errorValue, true, runMode);
-      }
-      , actual
+      }, actual
     };
   }
 
