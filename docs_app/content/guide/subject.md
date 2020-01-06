@@ -15,7 +15,7 @@ In the example below, we have two Observers attached to a Subject, and we feed s
 ```ts
 import { Subject } from 'rxjs';
 
-const subject = new Subject<number>();
+const subject = new Subject();
 
 subject.subscribe({
   next: (v) => console.log(`observerA: ${v}`)
@@ -39,7 +39,7 @@ Since a Subject is an Observer, this also means you may provide a Subject as the
 ```ts
 import { Subject, from } from 'rxjs';
 
-const subject = new Subject<number>();
+const subject = new Subject();
 
 subject.subscribe({
   next: (v) => console.log(`observerA: ${v}`)
@@ -95,7 +95,7 @@ multicasted.connect();
 
 `multicast` returns an Observable that looks like a normal Observable, but works like a Subject when it comes to subscribing. `multicast` returns a `ConnectableObservable`, which is simply an Observable with the `connect()` method.
 
-The `connect()` method is important to determine exactly when the shared Observable execution  will start. Because `connect()` does `source.subscribe(subject)` under the hood, `connect()` returns a Subscription, which you can unsubscribe from in order to cancel the shared Observable execution.
+The `connect()` method is important to determine exactly when the shared Observable execution will start. Because `connect()` does `source.subscribe(subject)` under the hood, `connect()` returns a Subscription, which you can unsubscribe from in order to cancel the shared Observable execution.
 
 ### Reference counting
 
