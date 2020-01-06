@@ -34,7 +34,7 @@ The unit tests have helper methods that have been added to make creating tests e
 ### Ergonomic defaults for `hot` and `cold`
 
 In both `hot` and `cold` methods, value characters specified in marble diagrams are emitted as strings unless a `values`
-argument is passed to the method. Therefore:
+argument is passed to the method. Therefor:
 
 `hot('--a--b')` will emit `"a"` and `"b"` whereas
 
@@ -49,14 +49,19 @@ Likewise, unspecified errors will just default to the string `"error"`, so:
 
 ## Marble Syntax
 
-Marble syntax is a string which represents events happening over "time". The first character of any marble string always represents the "zero frame". A "frame" is somewhat analogous to a virtual millisecond.
+Marble syntax is a string which represents events happening over "time". The first character of any marble string
+
+always represents the "zero frame". A "frame" is somewhat analogous to a virtual millisecond.
 
 - `"-"` time: 10 "frames" of time passage.
 - `"|"` complete: The successful completion of an observable. This is the observable producer signaling `complete()`
 - `"#"` error: An error terminating the observable. This is the observable producer signaling `error()`
 - `"a"` any character: All other characters represent a value being emitted by the producer signaling `next()`
-- `"()"` sync groupings: When multiple events need to be in the same frame synchronously, parentheses are used to group those events. You can group next values, a completion or an error in this manner. The position of the initial `(` determines the time at which its values are emitted.
-- `"^"` subscription point: (hot observables only) shows the point at which the tested observables will be subscribed to the hot observable. This is the "zero frame" for that observable, every frame before the `^` will be negative.
+- `"()"` sync groupings: When multiple events need to be in the same frame synchronously, parentheses are used
+  to group those events. You can group nexted values, a completion or an error in this manner. The position of the
+  initial `(` determines the time at which its values are emitted.
+- `"^"` subscription point: (hot observables only) shows the point at which the tested observables will be subscribed
+  to the hot observable. This is the "zero frame" for that observable, every frame before the `^` will be negative.
 
 ### Examples
 
@@ -106,11 +111,12 @@ const e1 = hot('----a--^--b-------c--|');
 const e2 = hot(  '---d-^--e---------f-----|');
 const expected =      '---(be)----c-f-----|';
 
-expectObservable(merge(e1,e2)).toBe(expected);
+expectObservable(e1.merge(e2)).toBe(expected);
 ```
 
 - The `^` characters of `hot` observables should **always** be aligned.
-- The **first character** of `cold` observables or expected observables should **always** be aligned with each other, and with the `^` of hot observables.
+- The **first character** of `cold` observables or expected observables should **always** be aligned
+  with each other, and with the `^` of hot observables.
 - Use default emission values when you can. Specify `values` when you have to.
 
 A test example with specified values:
@@ -126,14 +132,17 @@ const values = {
 }
 const e1 =    hot('---a---b---|', values);
 const e2 =    hot('-----c---d---|', values);
-const expected =  '-----x---y-|';
+const expected =  '-----x---y---|';
 
-expectObservable(zip(e1, e2).pipe(map(([x, y]) => x + y)))
+expectObservable(e1.zip(e2, function(x, y) { return x + y; }))
   .toBe(expected, values);
 ```
 
-- Use the same hash to look up all values, this ensures that multiple uses of the same character have the same value.
-- Make the result values as obvious as possible as to what they represent, these are *tests* afterall, we want clarity more than efficiency, so `x: 1 + 3, // a + c` is better than just `x: 4`. The former conveys *why* it's 4, the latter does not.
+- Use the same hash to look up all values, this ensures that multiple uses of the same character have the
+  same value.
+- Make the result values as obvious as possible as to what they represent, these are *tests* afterall, we want
+  clarity more than efficiency, so `x: 1 + 3, // a + c` is better than just `x: 4`. The former conveys *why* it's 4,
+  the latter does not.
 
 A test example with subscription assertions:
 
@@ -145,7 +154,7 @@ const ysubs =    '--------------^-------------!';
 const e1 = hot(  '------x-------y------|', { x: x, y: y });
 const expected = '--------a---b----d--e---f---|';
 
-expectObservable(e1.pipe(switchAll())).toBe(expected);
+expectObservable(e1.switch()).toBe(expected);
 expectSubscriptions(x.subscriptions).toBe(xsubs);
 expectSubscriptions(y.subscriptions).toBe(ysubs);
 ```
@@ -170,10 +179,10 @@ For instance, with `zip`, we would write
 it.asDiagram('zip')('should zip by concatenating', function () {
   const e1 =    hot('---a---b---|');
   const e2 =    hot('-----c---d---|');
-  const expected =  '-----x---y-|';
+  const expected =  '-----x---y---|';
   const values = { x: 'ac', y: 'bd' };
 
-  const result = zip(e1, e2).pipe(map(([x, y]) => String(x) + String(y)))
+  const result = e1.zip(e2, function(x, y) { return String(x) + String(y); });
 
   expectObservable(result).toBe(expected, values);
 });
