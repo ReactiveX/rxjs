@@ -35,8 +35,7 @@ fromEvent(document, 'click').subscribe(() => console.log('Clicked!'));
 
 What makes RxJS powerful is its ability to produce values using pure functions. That means your code is less prone to errors.
 
-Normally you would create an impure function, where other
-pieces of your code can mess up your state.
+Normally you would create an impure function, where other pieces of your code can mess up your state.
 
 ```ts
 let count = 0;
@@ -54,7 +53,7 @@ fromEvent(document, 'click')
   .subscribe(count => console.log(`Clicked ${count} times`));
 ```
 
-The **scan** operator works just like **reduce** for arrays. It takes a value which is exposed to a callback. The returned value of the callback will then become the next value exposed the next time the callback runs.
+The `scan` operator works just like `reduce` for arrays. It takes a value which is exposed to a callback. The returned value of the callback will then become the next value exposed the next time the callback runs.
 
 ### Flow
 
@@ -88,7 +87,7 @@ fromEvent(document, 'click')
   .subscribe(count => console.log(`Clicked ${count} times`));
 ```
 
-Other flow control operators are [**filter**](../api/operators/filter), [**delay**](../api/operators/delay), [**debounceTime**](../api/operators/debounceTime), [**take**](../api/operators/take), [**takeUntil**](../api/operators/takeUntil), [**distinct**](../api/operators/distinct), [**distinctUntilChanged**](../api/operators/distinctUntilChanged) etc.
+Other flow control operators are [`filter`](../api/operators/filter), [`delay`](../api/operators/delay), [`debounceTime`](../api/operators/debounceTime), [`take`](../api/operators/take), [`takeUntil`](../api/operators/takeUntil), [`distinct`](../api/operators/distinct), [`distinctUntilChanged`](../api/operators/distinctUntilChanged) etc.
 
 ### Values
 
@@ -124,4 +123,4 @@ fromEvent(document, 'click')
   .subscribe(count => console.log(count));
 ```
 
-Other value producing operators are [**pluck**](../api/operators/pluck), [**pairwise**](../api/operators/pairwise), [**sample**](../api/operators/sample) etc.
+Other value producing operators are [`pluck`](../api/operators/pluck), [`pairwise`](../api/operators/pairwise), [`sample`](../api/operators/sample) etc.
