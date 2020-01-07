@@ -63,17 +63,16 @@ done
 
 *Pull* and *Push* are two different protocols that describe how a data *Producer* can communicate with a data *Consumer*.
 
+| | Producer | Consumer |
+| --- | --- | --- |
+| **Pull** | **Passive:** produces data when requested. | **Active:** decides when data is requested. |
+| **Push** | **Active:** produces data at its own pace. | **Passive:** reacts to received data. |
+
 **What is Pull?** In Pull systems, the Consumer determines when it receives data from the data Producer. The Producer itself is unaware of when the data will be delivered to the Consumer.
 
 Every JavaScript Function is a Pull system. The function is a Producer of data, and the code that calls the function is consuming it by "pulling" out a *single* return value from its call.
 
 ES2015 introduced [generator functions and iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*) (`function*`), another type of Pull system. Code that calls `iterator.next()` is the Consumer, "pulling" out *multiple* values from the iterator (the Producer).
-
-
-| | Producer | Consumer |
-| --- | --- | --- |
-| **Pull** | **Passive:** produces data when requested. | **Active:** decides when data is requested. |
-| **Push** | **Active:** produces data at its own pace. | **Passive:** reacts to received data. |
 
 **What is Push?** In Push systems, the Producer determines when to send data to the Consumer. The Consumer is unaware of when it will receive that data.
 
@@ -400,7 +399,7 @@ subscription.unsubscribe();
 
 <span class="informal">When you subscribe, you get back a Subscription, which represents the ongoing execution. Just call `unsubscribe()` to cancel the execution.</span>
 
-Each Observable must define how to dispose resources of that execution when we create the Observable using `create()`. You can do that by returning a custom `unsubscribe` function from within `function subscribe()`.
+Each Observable must define how to dispose resources of that execution when we create the Observable using `new Observable()`. You can do that by returning a custom `unsubscribe` function from within `function subscribe()`.
 
 For instance, this is how we clear an interval execution set with `setInterval`:
 
@@ -418,7 +417,7 @@ const observable = new Observable(function subscribe(subscriber) {
 });
 ```
 
-Just like `observable.subscribe` resembles `new Observable(function subscribe() {...})`, the `unsubscribe` we return from `subscribe` is conceptually equal to `subscription.unsubscribe`. In fact, if we remove the ReactiveX types surrounding these concepts, we're left with rather straightforward JavaScript.
+Just like `observable.subscribe` resembles `new Observable(function subscribe() {...})`, the `unsubscribe` we return from `subscribe` is conceptually equal to `subscription.unsubscribe`. In fact, if we remove the Rx types surrounding these concepts, we're left with rather straightforward JavaScript.
 
 ```js
 function subscribe(subscriber) {
