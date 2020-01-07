@@ -121,7 +121,7 @@ export class TestScheduler extends VirtualTimeScheduler {
   }
 
   expectObservable(observable: Observable<any>,
-    subscriptionMarbles: string = null): ({ toBe: observableToBeFn, actual: TestMessage[] }) {
+    subscriptionMarbles: string = null): ({ toBe: observableToBeFn, actual: object[] }) {
     const actual: TestMessage[] = [];
     const flushTest: FlushableTest = { actual, ready: false };
     const subscriptionParsed = TestScheduler.parseMarblesAsSubscriptions(subscriptionMarbles, this.runMode);
