@@ -90,7 +90,7 @@ export class LocalState<T> implements OnDestroy {
 
   constructor() {
     this._subscription.add((this._state$ as ConnectableObservable<T>).connect());
-    this._subscription.add(this._effectSubject.subscribe());
+    this._subscription.add(this._effectSubject.pipe(mergeAll()).subscribe());
   }
 
   /**

@@ -1,8 +1,8 @@
 import {MigrationItem, MigrationItemTypes} from './migration-item';
-import {formatSemVerString, semVerString} from './semver';
+import {formatSemVerString} from './semver';
 
 export interface MigrationReleaseUIDFields {
-  version: semVerString;
+  version: string;
 }
 
 /*

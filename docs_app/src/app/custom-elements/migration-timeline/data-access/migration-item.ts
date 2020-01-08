@@ -143,7 +143,7 @@ export function parseToMigrationItemUIDAware<T>(version: string) {
 parseMigrationItemUIDFromString
 Examples:
 - (EMPTY STRING)
-- 0.0.0-alpha.0 (proper semVerString)
+- 0.0.0-alpha.0 (proper semver)
 - 0.0.0_subjectUID (proper migrationItemUID)
 */
 export function parseMigrationItemUIDURL(uid: string): string {

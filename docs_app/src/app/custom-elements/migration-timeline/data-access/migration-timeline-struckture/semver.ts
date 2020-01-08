@@ -1,5 +1,5 @@
 /*
-@type semVerString
+@type string
 description: Any valid semver string from only major [n] to very specific [n.n.n.s-n]. What version is effected?
 type: string
 Examples:
@@ -8,7 +8,7 @@ Examples:
      - 1.1.1
      - 1.1.1-alpha.1
 */
-export type semVerString = string;
+
 
 /*
 @Interface SemVerObj

@@ -28,16 +28,18 @@ Example:
 - deprecation
 
 @field sourceLink
-description: Link to line of code in GitHub in version it got introduced.
-The link should target the tag (.../blob/6.0.0-tactical-rc.1/src/...)
-where the deprecation got introduced and point to the exact line of code.
+description: Link to the lines of code in GitHub in the version it got introduced.
+Following things should be considered:
+- The link should target the tag e.g. '.../blob/6.0.0-tactical-rc.1/src/...'
+- The link should target the exact line of code e.g. '.../src/.ts#L42'
+  - If multiple lines are effected the link should include all of them e.g. '.../src/.ts#L21-L42'
 type: string
 Example:
 https://github.com/ReactiveX/rxjs/blob/6.0.0-tactical-rc.1/src/internal/Scheduler.ts#L20
 
 @field breakingVersion
 description: semver string of breaking version
-type: semVerString
+type: string
 
 @field breakingSubjectAction
 description: subjectAction of related `BreakingChange` item
@@ -114,7 +116,7 @@ Example:
 
 @field deprecationVersion
 description: semver string of release where deprecation got introduced
-type: semVerString
+type: string
 
 @field deprecationSubjectAction
 description: subjectAction of related `Deprecation` item

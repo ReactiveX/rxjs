@@ -21,7 +21,8 @@ export interface MigrationTimelineNavigationComponentModel {
     <div class="flex-center group-buttons migration-timeline-navigation"
       *ngIf="baseModel$ | async as vm">
       <mat-chip-list>
-        <a *ngFor="let option of vm.releaseNavigationList; trackBy:trackByVersion"
+        <a href="./migration-timeline"
+          *ngFor="let option of vm.releaseNavigationList; trackBy:trackByVersion"
           (click)="selectedMigrationReleaseUIDChange.next(option.version)"
           class="mat-chip mat-primary mat-standard-chip navigation-item"
           [ngClass]="{
