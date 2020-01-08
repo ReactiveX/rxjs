@@ -52,7 +52,7 @@ The Pattern for the text in the source code is: <HumanReadableShortMessage> - se
 type: string
 
 @field reason
-description: Reason of the deprecation
+description: Short explanation of why the deprecation got introduced
 type: string
 
 @field implication
@@ -98,10 +98,10 @@ export interface Deprecation extends MigrationItemSubjectUIDFields {
   implication: string;
 // @TODO Ensure this is the way to handle dependencies to other libs in stackblitz
   exampleBeforeDependencies?: {[lib: string]: string},
-  exampleBefore: string;
+  exampleBefore?: string;
   // @TODO Ensure this is the way to handle dependencies to other libs in stackblitz
   exampleAfterDependencies?: {[lib: string]: string},
-  exampleAfter: string;
+  exampleAfter?: string;
   notes?: string;
 }
 

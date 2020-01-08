@@ -100,6 +100,7 @@ export enum SubjectSymbols {
   const = 'enum',
   let = 'let',
   var = 'var',
+  symbol = 'symbol',
   // @TODO reconsider => breaking change for every import of every operator?
   import = 'import',
   typeAlias = 'type-alias',

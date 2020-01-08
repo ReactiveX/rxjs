@@ -1,8 +1,50 @@
-
 import {MigrationReleaseItem} from './migration-item';
 import {SubjectSymbols} from './migration-uid';
 
 export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
+  {
+    version: '5.3.0',
+    date: '2017-04-03T20:28:46.482Z',
+    deprecations: [
+      {
+        subject: '$$rxSubscriber',
+        subjectSymbol: SubjectSymbols.symbol,
+        subjectAction: 'deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/5.3.0/src/symbol/rxSubscriber.ts#L9',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'removed',
+        deprecationMsgCode: 'use rxSubscriber instead',
+        reason: '@TODO',
+        implication: '@TODO',
+        exampleBefore: `
+        '@TODO'
+        `,
+        exampleAfter: `
+        '@TODO'
+        `
+      },
+      {
+        subject: 'iterator',
+        subjectSymbol: SubjectSymbols.symbol,
+        subjectAction: 'deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/5.3.0/src/symbol/iterator.ts#L36',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'removed',
+        deprecationMsgCode: 'use iterator instead',
+        reason: '@TODO',
+        implication: '@TODO',
+        exampleBefore: `
+        '@TODO'
+        `,
+        exampleAfter: `
+        '@TODO'
+        `
+      }
+    ],
+    breakingChanges: []
+  },
   {
     version: '6.0.0-alpha.3',
     date: '2018-02-09T17:06:57.961Z',
@@ -10,7 +52,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'last',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'argument-resultSelector',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/last.ts#L12',
         breakingChangeVersion: '6.0.0-alpha.4',
@@ -43,7 +85,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'first',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'argument-resultSelector',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/first.ts#L18',
         breakingChangeVersion: '6.0.0-alpha.4',
@@ -87,7 +129,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-alpha.3',
-        deprecationSubjectAction: 'argument-resultSelector',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('last')
       },
       {
@@ -96,7 +138,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-alpha.3',
-        deprecationSubjectAction: 'argument-resultSelector',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('first')
       }
     ]
@@ -997,6 +1039,25 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     breakingChanges: []
   },
   {
+    version: '6.0.0-tenacious-rc.2',
+    date: '2018-04-11T04:44:27.465Z',
+    deprecations: [
+      {
+        subject: 'SubscribeOnObservable',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-subscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/observable/SubscribeOnObservable.ts#L42',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-subscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg(),
+        reason: `It was meant to be used only internally.`,
+        implication: `The deprecation means the caller uses internal parts.`
+      }
+    ],
+    breakingChanges: []
+  },
+  {
     version: '6.1.0',
     date: '2018-05-03T18:15:54.101Z',
     deprecations: [
@@ -1777,34 +1838,10 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'deprecation',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'property-hotObservables-to-private',
-        deprecationMsgCode: 'it is meant to be used only internally',
+        deprecationMsgCode: getInternalDeprecationMsg(),
         reason: `TestScheduler deprecates public hotObservables property and makes it protected as it is meant to be used only internally.`,
         implication: `The deprecation of the property hotObservables in TestScheduler means
-        the caller uses parts that should not be used outside.`,
-        exampleBefore: `
-        import { scheduled } from 'rxjs';
-        import { TestScheduler} from 'rxjs/testing';
-
-        const testScheduler = new TestScheduler((a, b) => a === b);
-        const a = scheduled([1], testScheduler);
-        const source = a
-        source.subscribe((n) => console.log(n));
-        console.log('Usage of internal hotObservables:', testScheduler.hotObservables);
-        console.log('logs only when flush');
-        testScheduler.flush();
-        `,
-        exampleAfter: `
-        import { scheduled } from 'rxjs';
-        import { TestScheduler} from 'rxjs/testing';
-
-        const testScheduler = new TestScheduler((a, b) => a === b);
-        const a = scheduled([1], testScheduler);
-        const source = a
-        source.subscribe((n) => console.log(n));
-
-        console.log('logs only when flush');
-        testScheduler.flush();
-        `
+        the caller uses parts that should not be used outside.`
       },
       {
         subject: 'TestScheduler',
@@ -1814,35 +1851,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'deprecation',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'property-coldObservables-to-private',
-        deprecationMsgCode: 'it is meant to be used only internally',
+        deprecationMsgCode: getInternalDeprecationMsg(),
         reason: `TestScheduler deprecates public coldObservables
         property and makes it protected as it is meant to be used only internally.`,
         implication: `The deprecation of the property coldObservables in TestScheduler means
-        the caller uses internal parts that should not be used outside.`,
-        exampleBefore: `
-        import { scheduled } from 'rxjs';
-        import { TestScheduler} from 'rxjs/testing';
-
-        const testScheduler = new TestScheduler((a, b) => a === b);
-        const a = scheduled([1], testScheduler);
-        const source = a
-        source.subscribe((n) => console.log(n));
-        console.log('Usage of internal coldObservables:', testScheduler.coldObservables);
-        console.log('logs only when flush');
-        testScheduler.flush();
-        `,
-        exampleAfter: `
-        import { scheduled } from 'rxjs';
-        import { TestScheduler} from 'rxjs/testing';
-
-        const testScheduler = new TestScheduler((a, b) => a === b);
-        const a = scheduled([1], testScheduler);
-        const source = a
-        source.subscribe((n) => console.log(n));
-
-        console.log('logs only when flush');
-        testScheduler.flush();
-        `
+        the caller uses internal parts that should not be used outside.`
       },
       {
         subject: 'VirtualTimeScheduler',
@@ -1875,7 +1888,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/scheduler/VirtualTimeScheduler.ts#L23',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'property-index-to-private',
-        deprecationMsgCode: 'it is meant to be used only internally',
+        deprecationMsgCode: getInternalDeprecationMsg(),
         reason: `index property of VirtualTimeScheduler is only used internally and should ot be used.`,
         implication: `The deprecation of the property index in VirtualTimeScheduler means the caller
         uses internal parts that should not be used outside.`,
@@ -2366,6 +2379,24 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         deprecationVersion: '6.4.0',
         deprecationSubjectAction: 'property-create-deprecated',
         breakingChangeMsg: 'Class Observable removed property create'
+      },
+      {
+        subject: '$$rxSubscriber',
+        subjectSymbol: SubjectSymbols.symbol,
+        subjectAction: 'removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '5.3.0',
+        deprecationSubjectAction: 'deprecated',
+        breakingChangeMsg: 'Symbol $$rxSubscriber removed in favour of rxSubscriber'
+      },
+      {
+        subject: 'SubscribeOnObservable',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-subscribe-to-private',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-tenacious-rc.2',
+        deprecationSubjectAction: 'method-subscribe-deprecated',
+        breakingChangeMsg: 'Made private because of internal use only'
       }
     ]
   }
@@ -2374,20 +2405,24 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
 
 // GENERAL
 
+function getInternalDeprecationMsg() {
+  return `it is meant to be used only internally`;
+}
+
 function getOperatorRemovedMultipleArgumentsBreakingChangeMsg(operatorName: string, arg?: string) {
-  return `${operatorName} removed the option to pass multiple arguments`
+  return `${operatorName} removed the option to pass multiple arguments`;
 }
 
 function getOperatorRemovedBreakingChangePhrase(operatorName: string, arg?: string) {
-  return `Operator ${operatorName} removed`
+  return `Operator ${operatorName} removed`;
 }
 
 function getOperatorRemovedInFavourOfBreakingChangePhrase(operatorName: string, arg?: string) {
-  return `Operator ${operatorName} is removed in favour of ${arg}`
+  return `Operator ${operatorName} is removed in favour of ${arg}`;
 }
 
 function getInterfaceRemovedInFavourOfBreakingChangePhrase(interfaceName: string, arg?: string) {
-  return `Interface ${interfaceName} is removed in favour of ${arg}`
+  return `Interface ${interfaceName} is removed in favour of ${arg}`;
 }
 
 // OBSERVE CALLBACKS
@@ -2450,6 +2485,7 @@ function getOperatorSchedulerGeneralImplication(opr: string): string {
 // -----------------------------
 
 // FUNCTION TO STATIC
+
 
 function getFunctionToStaticReason(operatorName: string): string {
   return `The function is deprecated as it returns a constant value. A constant is more efficient  than a function.`;
