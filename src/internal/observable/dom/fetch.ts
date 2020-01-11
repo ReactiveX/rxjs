@@ -28,7 +28,7 @@ import { Observable } from '../../Observable';
  *      return response.json();
  *    } else {
  *      // Server is returning a status requiring the client to try something else.
- *      return of({ error: true, message: `Error ${response.status}` });
+ *      return { error: true, message: `Error ${response.status}` };
  *    }
  *  }),
  *  catchError(err => {
