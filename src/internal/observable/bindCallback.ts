@@ -144,7 +144,7 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * }
  *
  * const boundSyncFn = bindCallback(iCallMyCallbackSynchronously);
- * const boundAsyncFn = bindCallback(iCallMyCallbackSynchronously, null, Rx.Scheduler.async);
+ * const boundAsyncFn = bindCallback(iCallMyCallbackSynchronously, null, Rx.asyncScheduler);
  *
  * boundSyncFn().subscribe(() => console.log('I was sync!'));
  * boundAsyncFn().subscribe(() => console.log('I was async!'));
