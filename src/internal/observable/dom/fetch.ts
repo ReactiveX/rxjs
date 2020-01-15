@@ -58,7 +58,7 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
     let abortable = true;
     let unsubscribed = false;
 
-    let perSubscriberInit;
+    let perSubscriberInit: RequestInit;
     if (init) {
       // If a signal is provided, just have it teardown. It's a cancellation token, basically.
       if (init.signal) {
