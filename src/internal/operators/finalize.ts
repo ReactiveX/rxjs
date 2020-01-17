@@ -69,7 +69,15 @@ class FinallyOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new FinallySubscriber(subscriber, this.callback));
+    // The returned subscription will usually be the FinallySubscriber.
+    // However, interop subscribers will be wrapped and for
+    // unsubscriptions to chain correctly, the wrapper needs to be added, too.
+    const finallySubscriber = new FinallySubscriber(subscriber, this.callback);
+    const subscription = source.subscribe(finallySubscriber);
+    if (subscription !== finallySubscriber) {
+      subscription.add(finallySubscriber);
+    }
+    return subscription;
   }
 }
 
