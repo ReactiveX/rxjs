@@ -31,6 +31,9 @@ export function race<T>(...observables: (Observable<T> | Observable<T>[])[]): Mo
       observables = observables[0] as Observable<T>[];
     }
 
-    return source.lift.call(raceStatic(source, ...(observables as Observable<T>[])));
+    return source.lift.call(
+      raceStatic(source, ...(observables as Observable<T>[])),
+      undefined
+    ) as Observable<T>;
   };
 }

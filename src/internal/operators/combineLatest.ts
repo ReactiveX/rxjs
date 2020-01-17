@@ -55,5 +55,8 @@ export function combineLatest<T, R>(...observables: Array<ObservableInput<any> |
     observables = (<any>observables[0]).slice();
   }
 
-  return (source: Observable<T>) => source.lift.call(from([source, ...observables]), new CombineLatestOperator(project));
+  return (source: Observable<T>) => source.lift.call(
+    from([source, ...observables]),
+    new CombineLatestOperator(project)
+  ) as Observable<R>;
 }

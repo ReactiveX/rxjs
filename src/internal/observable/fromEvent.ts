@@ -196,7 +196,7 @@ export function fromEvent<T>(
   return new Observable<T>(subscriber => {
     function handler(e: T) {
       if (arguments.length > 1) {
-        subscriber.next(Array.prototype.slice.call(arguments));
+        subscriber.next(Array.prototype.slice.call(arguments) as any);
       } else {
         subscriber.next(e);
       }
