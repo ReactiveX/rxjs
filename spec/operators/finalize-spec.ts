@@ -2,7 +2,8 @@ import { expect } from 'chai';
 import { finalize, map, share } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { of, timer, interval } from 'rxjs';
+import { of, timer, interval, NEVER } from 'rxjs';
+import { asInteropObservable } from '../helpers/interop-helper';
 
 declare const type: Function;
 
@@ -160,5 +161,15 @@ describe('finalize operator', () => {
     // manually flush so `finalize()` has chance to execute before the test is over.
     rxTestScheduler.flush();
     expect(executed).to.be.true;
+  });
+
+  it('should handle interop source observables', () => {
+    // https://github.com/ReactiveX/rxjs/issues/5237
+    let finalized = false;
+    const subscription = asInteropObservable(NEVER).pipe(
+      finalize(() => finalized = true)
+    ).subscribe();
+    subscription.unsubscribe();
+    expect(finalized).to.be.true;
   });
 });
