@@ -67,11 +67,11 @@ class SkipUntilOperator<T> implements Operator<T, T> {
 class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private hasValue: boolean = false;
-  private innerSubscription: Subscription;
+  private innerSubscription: Subscription | undefined;
 
   constructor(destination: Subscriber<R>, notifier: ObservableInput<any>) {
     super(destination);
-    const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
+    const innerSubscriber = new InnerSubscriber(this, undefined, undefined!);
     this.add(innerSubscriber);
     this.innerSubscription = innerSubscriber;
     const innerSubscription = subscribeToResult(this, notifier, undefined, undefined, innerSubscriber);
