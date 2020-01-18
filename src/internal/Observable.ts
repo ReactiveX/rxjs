@@ -22,10 +22,10 @@ export class Observable<T> implements Subscribable<T> {
   public _isScalar: boolean = false;
 
   /** @deprecated This is an internal implementation detail, do not use. */
-  source: Observable<any>;
+  source: Observable<any> | undefined;
 
   /** @deprecated This is an internal implementation detail, do not use. */
-  operator: Operator<any, T>;
+  operator: Operator<any, T> | undefined;
 
   /**
    * @constructor
@@ -63,7 +63,7 @@ export class Observable<T> implements Subscribable<T> {
    * @param {Operator} operator the operator defining the operation to take on the observable
    * @return {Observable} a new observable with the Operator applied
    */
-  lift<R>(operator: Operator<T, R>): Observable<R> {
+  lift<R>(operator?: Operator<T, R>): Observable<R> {
     const observable = new Observable<R>();
     observable.source = this;
     observable.operator = operator;
