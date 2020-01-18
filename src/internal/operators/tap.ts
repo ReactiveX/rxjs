@@ -64,18 +64,18 @@ export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T
  * specified Observer or callback(s) for each item.
  * @name tap
  */
-export function tap<T>(nextOrObserver?: PartialObserver<T> | ((x: T) => void),
-                       error?: (e: any) => void,
-                       complete?: () => void): MonoTypeOperatorFunction<T> {
+export function tap<T>(nextOrObserver?: PartialObserver<T> | ((x: T) => void) | null,
+                       error?: ((e: any) => void) | null,
+                       complete?: (() => void) | null): MonoTypeOperatorFunction<T> {
   return function tapOperatorFunction(source: Observable<T>): Observable<T> {
     return source.lift(new DoOperator(nextOrObserver, error, complete));
   };
 }
 
 class DoOperator<T> implements Operator<T, T> {
-  constructor(private nextOrObserver?: PartialObserver<T> | ((x: T) => void),
-              private error?: (e: any) => void,
-              private complete?: () => void) {
+  constructor(private nextOrObserver?: PartialObserver<T> | ((x: T) => void) | null,
+              private error?: ((e: any) => void) | null,
+              private complete?: (() => void) | null) {
   }
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new TapSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
@@ -98,9 +98,9 @@ class TapSubscriber<T> extends Subscriber<T> {
   private _tapComplete: (() => void) = noop;
 
   constructor(destination: Subscriber<T>,
-              observerOrNext?: PartialObserver<T> | ((value: T) => void),
-              error?: (e?: any) => void,
-              complete?: () => void) {
+              observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
+              error?: ((e?: any) => void) | null,
+              complete?: (() => void) | null) {
       super(destination);
       this._tapError = error || noop;
       this._tapComplete = complete || noop;
