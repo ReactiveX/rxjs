@@ -3,6 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { subscribeAndChainOperator } from '../util/subscribeAndChainOperator';
 
 /**
  * Returns an Observable that mirrors the source Observable, but will call a specified function when
@@ -69,15 +70,10 @@ class FinallyOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    // The returned subscription will usually be the FinallySubscriber.
-    // However, interop subscribers will be wrapped and for
-    // unsubscriptions to chain correctly, the wrapper needs to be added, too.
-    const finallySubscriber = new FinallySubscriber(subscriber, this.callback);
-    const subscription = source.subscribe(finallySubscriber);
-    if (subscription !== finallySubscriber) {
-      subscription.add(finallySubscriber);
-    }
-    return subscription;
+    return subscribeAndChainOperator(
+      new FinallySubscriber(subscriber, this.callback),
+      source
+    );
   }
 }
 
