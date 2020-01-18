@@ -56,8 +56,8 @@ export function timeInterval<T>(scheduler: SchedulerLike = async): OperatorFunct
       // TODO(benlesh): correct these typings.
       scan(
         ({ current }, value) => ({ value, current: scheduler.now(), last: current }),
-        { current: scheduler.now(), value: undefined,  last: undefined }
-      ) as any,
+        { current: scheduler.now(), value: undefined,  last: undefined } as any
+      ) as OperatorFunction<T, any>,
       map<any, TimeInterval<T>>(({ current, last, value }) => new TimeInterval(value, current - last)),
     );
   });

@@ -62,7 +62,7 @@ export function reduce<V, A, S = A>(accumulator: (acc: A|S, value: V, index: num
  * @method reduce
  * @owner Observable
  */
-export function reduce<V, A>(accumulator: (acc: V | A, value: V, index?: number) => A, seed?: any): OperatorFunction<V, V | A> {
+export function reduce<V, A>(accumulator: (acc: V | A, value: V, index: number) => A, seed?: any): OperatorFunction<V, V | A> {
   // providing a seed of `undefined` *should* be valid and trigger
   // hasSeed! so don't use `seed !== undefined` checks!
   // For this reason, we have to check it here at the original call site

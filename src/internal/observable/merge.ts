@@ -119,9 +119,9 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  * @name merge
  * @owner Observable
  */
-export function merge<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike | number>): Observable<R> {
+export function merge<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike | number | undefined>): Observable<R> {
  let concurrent = Number.POSITIVE_INFINITY;
- let scheduler: SchedulerLike = null;
+ let scheduler: SchedulerLike | undefined = undefined;
   let last: any = observables[observables.length - 1];
   if (isScheduler(last)) {
     scheduler = <SchedulerLike>observables.pop();

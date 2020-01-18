@@ -62,8 +62,8 @@ export class Scheduler implements SchedulerLike {
    * @return {Subscription} A subscription in order to be able to unsubscribe
    * the scheduled work.
    */
-  public schedule(work: (this: SchedulerAction<undefined>, state: undefined) => void, delay: number): Subscription;
-  public schedule<T>(work: (this: SchedulerAction<T>, state: T) => void, delay: number, state: T): Subscription;
+  public schedule(work: (this: SchedulerAction<undefined>, state: undefined) => void, delay?: number): Subscription;
+  public schedule<T>(work: (this: SchedulerAction<T>, state: T) => void, delay: number | undefined, state: T): Subscription;
   public schedule<T>(work: (this: SchedulerAction<T | undefined>, state: T | undefined) => void, delay: number = 0, state?: T): Subscription {
     return new this.SchedulerAction<T>(this, work).schedule(state, delay);
   }

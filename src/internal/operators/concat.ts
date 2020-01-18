@@ -24,7 +24,7 @@ export function concat<T, R>(...observables: Array<ObservableInput<any> | Schedu
 /**
  * @deprecated remove in v8. Use {@link concatWith}
  */
-export function concat<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike>): OperatorFunction<T, R> {
+export function concat<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike | undefined>): OperatorFunction<T, R> {
   return (source: Observable<T>) => source.lift.call(
     concatStatic(source, ...(observables as any[])),
     undefined

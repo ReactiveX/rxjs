@@ -73,5 +73,8 @@ export function concatMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
   resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
 ): OperatorFunction<T, ObservedValueOf<O>|R> {
-  return mergeMap(project, resultSelector, 1);
+  if (typeof resultSelector === 'function') {
+    return mergeMap(project, resultSelector, 1);
+  }
+  return mergeMap(project, 1);
 }
