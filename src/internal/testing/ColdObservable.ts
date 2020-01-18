@@ -15,7 +15,9 @@ import { Subscriber } from '../Subscriber';
 export class ColdObservable<T> extends Observable<T> implements SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
   scheduler: Scheduler;
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   logSubscribedFrame: () => number;
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   logUnsubscribedFrame: (index: number) => void;
 
   constructor(public messages: TestMessage[],

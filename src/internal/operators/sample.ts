@@ -69,7 +69,7 @@ class SampleOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private value: T;
+  private value: T | undefined;
   private hasValue: boolean = false;
 
   protected _next(value: T) {

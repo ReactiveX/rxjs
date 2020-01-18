@@ -193,6 +193,7 @@ export class AjaxObservable<T> extends Observable<T> {
  * @extends {Ignored}
  */
 export class AjaxSubscriber<T> extends Subscriber<Event> {
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   private xhr: XMLHttpRequest;
   private done: boolean = false;
 
@@ -444,6 +445,7 @@ export class AjaxResponse {
   response: any;
 
   /** @type {string} The raw responseText */
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   responseText: string;
 
   /** @type {string} The responseType (e.g. 'json', 'arraybuffer', or 'xml') */

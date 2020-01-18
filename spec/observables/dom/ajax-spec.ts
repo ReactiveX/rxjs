@@ -1135,6 +1135,7 @@ class MockXMLHttpRequest {
 
   private responseHeaders: any;
   protected status: any;
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   protected responseText: string;
   protected response: any;
 
@@ -1144,9 +1145,13 @@ class MockXMLHttpRequest {
   requestHeaders: any = {};
   withCredentials: boolean = false;
 
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   onreadystatechange: (e: ProgressEvent) => any;
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   onerror: (e: ErrorEvent) => any;
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   onprogress: (e: ProgressEvent) => any;
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   ontimeout: (e: ProgressEvent) => any;
   upload: XMLHttpRequestUpload = <any>{ };
 
@@ -1156,6 +1161,7 @@ class MockXMLHttpRequest {
     MockXMLHttpRequest.requests.push(this);
   }
 
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   timeout: number;
 
   send(data: any): void {

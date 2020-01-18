@@ -109,7 +109,7 @@ class BufferTimeOperator<T> implements Operator<T, T[]> {
 
 class Context<T> {
   buffer: T[] = [];
-  closeAction: Subscription;
+  closeAction: Subscription | undefined;
 }
 
 interface DispatchCreateArg<T> {
@@ -192,8 +192,8 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
   protected onBufferFull(context: Context<T>) {
     this.closeContext(context);
     const closeAction = context.closeAction;
-    closeAction.unsubscribe();
-    this.remove(closeAction);
+    closeAction!.unsubscribe();
+    this.remove(closeAction!);
 
     if (!this.closed && this.timespanOnly) {
       context = this.openContext();

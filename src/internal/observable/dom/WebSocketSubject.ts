@@ -150,12 +150,14 @@ export type WebSocketMessage = string | ArrayBuffer | Blob | ArrayBufferView;
 
 export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   private _config: WebSocketSubjectConfig<T>;
 
   /** @deprecated This is an internal implementation detail, do not use. */
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   _output: Subject<T>;
 
-  private _socket: WebSocket | null;
+  private _socket: WebSocket | null = null;
 
   constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T> | Observable<T>, destination?: Observer<T>) {
     super();

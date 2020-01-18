@@ -114,13 +114,13 @@ export function catchError<T, O extends ObservableInput<any>>(
 }
 
 class CatchOperator<T, R> implements Operator<T, T | R> {
-  caught: Observable<T>;
+  caught: Observable<T> | undefined;
 
   constructor(private selector: (err: any, caught: Observable<T>) => ObservableInput<T | R>) {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new CatchSubscriber(subscriber, this.selector, this.caught));
+    return source.subscribe(new CatchSubscriber(subscriber, this.selector, this.caught!));
   }
 }
 

@@ -12,6 +12,7 @@ export class AsyncAction<T> extends Action<T> {
 
   public id: any;
   public state?: T;
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   public delay: number;
   protected pending: boolean = false;
 

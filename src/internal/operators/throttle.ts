@@ -90,7 +90,7 @@ class ThrottleOperator<T> implements Operator<T, T> {
  */
 class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
   private _throttled: Subscription | null | undefined;
-  private _sendValue: T | null;
+  private _sendValue: T | null = null;
   private _hasValue = false;
 
   constructor(protected destination: Subscriber<T>,

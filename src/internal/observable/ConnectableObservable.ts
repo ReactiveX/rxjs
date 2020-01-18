@@ -11,7 +11,7 @@ import { refCount as higherOrderRefCount } from '../operators/refCount';
  */
 export class ConnectableObservable<T> extends Observable<T> {
 
-  protected _subject: Subject<T>;
+  protected _subject: Subject<T> | undefined;
   protected _refCount: number = 0;
   protected _connection: Subscription | null | undefined;
   /** @internal */
@@ -32,7 +32,7 @@ export class ConnectableObservable<T> extends Observable<T> {
     if (!subject || subject.isStopped) {
       this._subject = this.subjectFactory();
     }
-    return this._subject;
+    return this._subject!;
   }
 
   connect(): Subscription {

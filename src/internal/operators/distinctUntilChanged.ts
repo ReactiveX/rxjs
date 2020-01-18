@@ -83,7 +83,7 @@ class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class DistinctUntilChangedSubscriber<T, K> extends Subscriber<T> {
-  private key: K;
+  private key: K | undefined;
   private hasKey: boolean = false;
 
   constructor(destination: Subscriber<T>,

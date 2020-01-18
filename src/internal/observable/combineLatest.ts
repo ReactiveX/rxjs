@@ -254,7 +254,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
   private active: number = 0;
   private values: any[] = [];
   private observables: any[] = [];
-  private toRespond: number;
+  private toRespond: number | undefined;
 
   constructor(destination: Subscriber<R>, private resultSelector?: (...values: Array<any>) => R) {
     super(destination);

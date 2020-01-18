@@ -99,7 +99,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   private index: number = 0;
   private active: number = 0;
   private hasCompleted: boolean = false;
-  private buffer: any[];
+  private buffer: any[] | undefined;
 
   constructor(destination: Subscriber<R>,
               private project: (value: T, index: number) => ObservableInput<R>,
@@ -141,7 +141,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
         destination.error(e);
       }
     } else {
-      this.buffer.push(value);
+      this.buffer!.push(value);
     }
   }
 

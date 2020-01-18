@@ -85,7 +85,7 @@ class RefCountOperator<T> implements Operator<T, T> {
 
 class RefCountSubscriber<T> extends Subscriber<T> {
 
-  private connection: Subscription | null;
+  private connection: Subscription | null = null;
 
   constructor(destination: Subscriber<T>,
               private connectable: ConnectableObservable<T>) {

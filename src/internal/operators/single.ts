@@ -72,7 +72,7 @@ class SingleOperator<T> implements Operator<T, T> {
  */
 class SingleSubscriber<T> extends Subscriber<T> {
   private seenValue: boolean = false;
-  private singleValue: T;
+  private singleValue: T | undefined;
   private index: number = 0;
 
   constructor(destination: Observer<T>,
