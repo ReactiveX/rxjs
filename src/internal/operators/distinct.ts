@@ -80,7 +80,7 @@ export function distinct<T, K>(keySelector?: (value: T) => K,
 }
 
 class DistinctOperator<T, K> implements Operator<T, T> {
-  constructor(private keySelector: (value: T) => K, private flushes: Observable<any>) {
+  constructor(private keySelector?: (value: T) => K, private flushes?: Observable<any>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -96,7 +96,7 @@ class DistinctOperator<T, K> implements Operator<T, T> {
 export class DistinctSubscriber<T, K> extends OuterSubscriber<T, T> {
   private values = new Set<K>();
 
-  constructor(destination: Subscriber<T>, private keySelector: (value: T) => K, flushes: Observable<any>) {
+  constructor(destination: Subscriber<T>, private keySelector?: (value: T) => K, flushes?: Observable<any>) {
     super(destination);
 
     if (flushes) {
@@ -126,7 +126,7 @@ export class DistinctSubscriber<T, K> extends OuterSubscriber<T, T> {
     let key: K;
     const { destination } = this;
     try {
-      key = this.keySelector(value);
+      key = this.keySelector!(value);
     } catch (err) {
       destination.error(err);
       return;

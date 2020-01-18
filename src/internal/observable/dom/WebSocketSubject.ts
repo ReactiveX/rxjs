@@ -155,7 +155,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   /** @deprecated This is an internal implementation detail, do not use. */
   _output: Subject<T>;
 
-  private _socket: WebSocket;
+  private _socket: WebSocket | null;
 
   constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T> | Observable<T>, destination?: Observer<T>) {
     super();
@@ -253,11 +253,11 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     const { WebSocketCtor, protocol, url, binaryType } = this._config;
     const observer = this._output;
 
-    let socket: WebSocket = null;
+    let socket: WebSocket | null = null;
     try {
       socket = protocol ?
-        new WebSocketCtor(url, protocol) :
-        new WebSocketCtor(url);
+        new WebSocketCtor!(url, protocol) :
+        new WebSocketCtor!(url);
       this._socket = socket;
       if (binaryType) {
         this._socket.binaryType = binaryType;
@@ -277,7 +277,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     socket.onopen = (e: Event) => {
       const { _socket } = this;
       if (!_socket) {
-        socket.close();
+        socket!.close();
         this._resetState();
         return;
       }
@@ -290,12 +290,12 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
       this.destination = Subscriber.create<T>(
         (x) => {
-          if (socket.readyState === 1) {
+          if (socket!.readyState === 1) {
             try {
               const { serializer } = this._config;
-              socket.send(serializer(x));
+              socket!.send(serializer!(x!));
               } catch (e) {
-              this.destination.error(e);
+              this.destination!.error(e);
             }
           }
         },
@@ -305,7 +305,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
             closingObserver.next(undefined);
           }
           if (e && e.code) {
-            socket.close(e.code, e.reason);
+            socket!.close(e.code, e.reason);
           } else {
             observer.error(new TypeError(WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT));
           }
@@ -316,7 +316,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
           if (closingObserver) {
             closingObserver.next(undefined);
           }
-          socket.close();
+          socket!.close();
           this._resetState();
         }
       ) as Subscriber<any>;
@@ -347,7 +347,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     socket.onmessage = (e: MessageEvent) => {
       try {
         const { deserializer } = this._config;
-        observer.next(deserializer(e));
+        observer.next(deserializer!(e));
       } catch (err) {
         observer.error(err);
       }

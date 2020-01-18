@@ -60,9 +60,9 @@ class RepeatWhenOperator<T> implements Operator<T, T> {
  */
 class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
 
-  private notifications: Subject<any>;
-  private retries: Observable<any>;
-  private retriesSubscription: Subscription;
+  private notifications: Subject<any> | null = null;
+  private retries: Observable<any> | null = null;
+  private retriesSubscription: Subscription | null | undefined = null;
   private sourceIsBeingSubscribedTo: boolean = true;
 
   constructor(destination: Subscriber<R>,
@@ -96,7 +96,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
       }
 
       this._unsubscribeAndRecycle();
-      this.notifications.next();
+      this.notifications!.next();
     }
   }
 
@@ -118,7 +118,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   _unsubscribeAndRecycle(): Subscriber<T> {
     const { _unsubscribe } = this;
 
-    this._unsubscribe = null;
+    this._unsubscribe = null!;
     super._unsubscribeAndRecycle();
     this._unsubscribe = _unsubscribe;
 

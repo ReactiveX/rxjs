@@ -161,15 +161,15 @@ function shareReplayOperator<T>({
       hasError = false;
       subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler);
       subscription = source.subscribe({
-        next(value) { subject.next(value); },
+        next(value) { subject!.next(value); },
         error(err) {
           hasError = true;
-          subject.error(err);
+          subject!.error(err);
         },
         complete() {
           isComplete = true;
           subscription = undefined;
-          subject.complete();
+          subject!.complete();
         },
       });
     }

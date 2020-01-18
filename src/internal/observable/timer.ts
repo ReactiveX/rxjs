@@ -72,9 +72,9 @@ export function timer(dueTime: number | Date = 0,
   return new Observable(subscriber => {
     const due = isNumeric(dueTime)
       ? (dueTime as number)
-      : (+dueTime - scheduler.now());
+      : (+dueTime - scheduler!.now());
 
-    return scheduler.schedule(dispatch, due, {
+    return scheduler!.schedule(dispatch, due, {
       index: 0, period, subscriber
     });
   });

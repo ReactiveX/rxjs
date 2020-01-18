@@ -36,8 +36,8 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
 
 class EveryOperator<T> implements Operator<T, boolean> {
   constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
-              private thisArg?: any,
-              private source?: Observable<T>) {
+              private thisArg: any,
+              private source: Observable<T>) {
   }
 
   call(observer: Subscriber<boolean>, source: any): any {
@@ -56,7 +56,7 @@ class EverySubscriber<T> extends Subscriber<T> {
   constructor(destination: Observer<boolean>,
               private predicate: (value: T, index: number, source: Observable<T>) => boolean,
               private thisArg: any,
-              private source?: Observable<T>) {
+              private source: Observable<T>) {
     super(destination);
     this.thisArg = thisArg || this;
   }

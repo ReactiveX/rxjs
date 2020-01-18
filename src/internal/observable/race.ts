@@ -121,11 +121,11 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
         let subscription = subscribeToResult(this, observable, observable as any, i);
 
         if (this.subscriptions) {
-          this.subscriptions.push(subscription);
+          this.subscriptions.push(subscription!);
         }
         this.add(subscription);
       }
-      this.observables = null;
+      this.observables = null!;
     }
   }
 
@@ -144,7 +144,7 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
         }
       }
 
-      this.subscriptions = null;
+      this.subscriptions = null!;
     }
 
     this.destination.next(innerValue);

@@ -193,20 +193,20 @@ export function bindCallback<T>(
 
   return function (this: any, ...args: any[]): Observable<T> {
     const context = this;
-    let subject: AsyncSubject<T>;
+    let subject: AsyncSubject<T> | undefined;
     const params = {
       context,
-      subject,
+      subject: undefined,
       callbackFunc,
-      scheduler,
+      scheduler: scheduler!,
     };
     return new Observable<T>(subscriber => {
       if (!scheduler) {
         if (!subject) {
           subject = new AsyncSubject<T>();
           const handler = (...innerArgs: any[]) => {
-            subject.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
-            subject.complete();
+            subject!.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
+            subject!.complete();
           };
 
           try {
@@ -240,7 +240,7 @@ interface ParamsContext<T> {
   callbackFunc: Function;
   scheduler: SchedulerLike;
   context: any;
-  subject: AsyncSubject<T>;
+  subject?: AsyncSubject<T>;
 }
 
 function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchState<T>) {
@@ -253,7 +253,7 @@ function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchSta
 
     const handler = (...innerArgs: any[]) => {
       const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
-      this.add(scheduler.schedule<NextState<T>>(dispatchNext, 0, { value, subject }));
+      this.add(scheduler.schedule<NextState<T>>(dispatchNext, 0, { value, subject: subject! }));
     };
 
     try {

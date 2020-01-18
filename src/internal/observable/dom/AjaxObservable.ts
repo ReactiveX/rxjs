@@ -10,7 +10,7 @@ export interface AjaxRequest {
   user?: string;
   async?: boolean;
   method?: string;
-  headers?: Object;
+  headers?: object;
   timeout?: number;
   password?: string;
   hasContent?: boolean;
@@ -48,7 +48,7 @@ function getXMLHttpRequest(): XMLHttpRequest {
           //suppress exceptions
         }
       }
-      return new root.ActiveXObject(progId);
+      return new root.ActiveXObject(progId!);
     } catch (e) {
       throw new Error('XMLHttpRequest is not supported by your browser');
     }
@@ -65,7 +65,7 @@ export interface AjaxCreationMethod {
   getJSON<T>(url: string, headers?: Object): Observable<T>;
 }
 
-export function ajaxGet(url: string, headers: Object = null) {
+export function ajaxGet(url: string, headers?: object) {
   return new AjaxObservable<AjaxResponse>({ method: 'GET', url, headers });
 }
 
@@ -236,7 +236,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       request: { user, method, url, async, password, headers, body }
     } = this;
     try {
-      const xhr = this.xhr = request.createXHR();
+      const xhr = this.xhr = request.createXHR!();
 
       // set up the events before open XHR
       // https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
@@ -245,14 +245,14 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       this.setupEvents(xhr, request);
       // open XHR
       if (user) {
-        xhr.open(method, url, async, user, password);
+        xhr.open(method!, url!, async!, user, password);
       } else {
-        xhr.open(method, url, async);
+        xhr.open(method!, url!, async!);
       }
 
       // timeout, responseType and withCredentials can be set once the XHR is open
       if (async) {
-        xhr.timeout = request.timeout;
+        xhr.timeout = request.timeout!;
         xhr.responseType = request.responseType as any;
       }
 
@@ -261,7 +261,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       }
 
       // set headers
-      this.setHeaders(xhr, headers);
+      this.setHeaders(xhr, headers!);
 
       // finally send the request
       if (body) {
@@ -451,7 +451,7 @@ export class AjaxResponse {
 
   constructor(public originalEvent: Event, public xhr: XMLHttpRequest, public request: AjaxRequest) {
     this.status = xhr.status;
-    this.responseType = xhr.responseType || request.responseType;
+    this.responseType = xhr.responseType || request.responseType!;
     this.response = parseXhrResponse(this.responseType, xhr);
   }
 }
