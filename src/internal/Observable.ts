@@ -203,9 +203,9 @@ export class Observable<T> implements Subscribable<T> {
    * @return {ISubscription} a subscription reference to the registered handlers
    * @method subscribe
    */
-  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
-            error?: (error: any) => void,
-            complete?: () => void): Subscription {
+  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
+            error?: ((error: any) => void) | null,
+            complete?: (() => void) | null): Subscription {
 
     const { operator } = this;
     const sink = toSubscriber(observerOrNext, error, complete);

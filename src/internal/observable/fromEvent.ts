@@ -49,8 +49,8 @@ export interface AddEventListenerOptions extends EventListenerOptions {
 /* tslint:disable:max-line-length */
 export function fromEvent<T>(target: FromEventTarget<T>, eventName: string): Observable<T>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, resultSelector: (...args: any[]) => T): Observable<T>;
-export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, options: EventListenerOptions): Observable<T>;
+export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, resultSelector?: (...args: any[]) => T): Observable<T>;
+export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, options?: EventListenerOptions): Observable<T>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
 export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, options: EventListenerOptions, resultSelector: (...args: any[]) => T): Observable<T>;
 /* tslint:enable:max-line-length */
@@ -188,8 +188,8 @@ export function fromEvent<T>(
   }
   if (resultSelector) {
     // DEPRECATED PATH
-    return fromEvent<T>(target, eventName, <EventListenerOptions | undefined>options).pipe(
-      map(args => isArray(args) ? resultSelector(...args) : resultSelector(args))
+    return fromEvent<T>(target, eventName, options as EventListenerOptions | undefined).pipe(
+      map(args => isArray(args) ? resultSelector!(...args) : resultSelector!(args))
     );
   }
 
@@ -208,7 +208,7 @@ export function fromEvent<T>(
 function setupSubscription<T>(sourceObj: FromEventTarget<T>, eventName: string,
                               handler: (...args: any[]) => void, subscriber: Subscriber<T>,
                               options?: EventListenerOptions) {
-  let unsubscribe: () => void;
+  let unsubscribe: (() => void) | undefined;
   if (isEventTarget(sourceObj)) {
     const source = sourceObj;
     sourceObj.addEventListener(eventName, handler, options);

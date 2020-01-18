@@ -67,7 +67,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
       const len = observers.length;
       const copy = observers.slice();
       for (let i = 0; i < len; i++) {
-        copy[i].next(value);
+        copy[i].next(value!);
       }
     }
   }
@@ -105,7 +105,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   unsubscribe() {
     this.isStopped = true;
     this.closed = true;
-    this.observers = null;
+    this.observers = null!;
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
@@ -165,14 +165,14 @@ export class AnonymousSubject<T> extends Subject<T> {
   error(err: any) {
     const { destination } = this;
     if (destination && destination.error) {
-      this.destination.error(err);
+      this.destination!.error(err);
     }
   }
 
   complete() {
     const { destination } = this;
     if (destination && destination.complete) {
-      this.destination.complete();
+      this.destination!.complete();
     }
   }
 
@@ -180,7 +180,7 @@ export class AnonymousSubject<T> extends Subject<T> {
   _subscribe(subscriber: Subscriber<T>): Subscription {
     const { source } = this;
     if (source) {
-      return this.source.subscribe(subscriber);
+      return this.source!.subscribe(subscriber);
     } else {
       return Subscription.EMPTY;
     }

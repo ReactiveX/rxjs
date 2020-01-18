@@ -137,7 +137,7 @@ class GroupByOperator<T, K, R> implements Operator<T, GroupedObservable<K, R>> {
  * @extends {Ignored}
  */
 class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscription {
-  private groups: Map<K, Subject<T | R>> = null;
+  private groups: Map<K, Subject<T | R>> | null = null;
   public attemptedToUnsubscribe: boolean = false;
   public count: number = 0;
 
@@ -178,7 +178,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
         this.error(err);
       }
     } else {
-      element = <any>value;
+      element = value as any;
     }
 
     if (!group) {
@@ -199,7 +199,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
     }
 
     if (!group.closed) {
-      group.next(element);
+      group.next(element!);
     }
   }
 
@@ -228,7 +228,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
   }
 
   removeGroup(key: K): void {
-    this.groups.delete(key);
+    this.groups!.delete(key);
   }
 
   unsubscribe() {
@@ -260,7 +260,7 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
   /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribe() {
     const { parent, key } = this;
-    this.key = this.parent = null;
+    this.key = this.parent = null!;
     if (parent) {
       parent.removeGroup(key);
     }
