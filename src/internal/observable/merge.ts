@@ -132,7 +132,7 @@ export function merge<T, R>(...observables: Array<ObservableInput<any> | Schedul
     concurrent = <number>observables.pop();
   }
 
-  if (scheduler === null && observables.length === 1 && observables[0] instanceof Observable) {
+  if (!scheduler && observables.length === 1 && observables[0] instanceof Observable) {
     return <Observable<R>>observables[0];
   }
 

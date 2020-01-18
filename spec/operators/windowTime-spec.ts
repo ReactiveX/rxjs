@@ -40,7 +40,7 @@ describe('windowTime operator', () => {
     const z = cold(                                '-g-----|');
     const values = { x, y, z };
 
-    const result = source.pipe(windowTime(timeSpan, null, 2, rxTestScheduler));
+    const result = source.pipe(windowTime(timeSpan, null as any, 2, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);

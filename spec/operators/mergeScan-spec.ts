@@ -21,7 +21,7 @@ describe('mergeScan', () => {
       z: ['b', 'c', 'd', 'e', 'f', 'g']
     };
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), []));
+    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -38,7 +38,7 @@ describe('mergeScan', () => {
       w: ['b', 'c', 'd']
     };
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), []));
+    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -59,7 +59,7 @@ describe('mergeScan', () => {
     };
 
     const source = e1.pipe(mergeScan((acc, x) =>
-      of(acc.concat(x)).pipe(delay(20, rxTestScheduler)), []));
+      of(acc.concat(x)).pipe(delay(20, rxTestScheduler)), [] as string[]));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -80,7 +80,7 @@ describe('mergeScan', () => {
     };
 
     const source = e1.pipe(mergeScan((acc, x) =>
-      of(acc.concat(x)).pipe(delay(50, rxTestScheduler)), []));
+      of(acc.concat(x)).pipe(delay(50, rxTestScheduler)), [] as string[]));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -101,7 +101,7 @@ describe('mergeScan', () => {
     };
 
     const source = e1.pipe(mergeScan((acc, x) =>
-      of(acc.concat(x)).pipe(delay(50, rxTestScheduler)), []));
+      of(acc.concat(x)).pipe(delay(50, rxTestScheduler)), [] as string[]));
 
     expectObservable(source, e1subs).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -129,7 +129,7 @@ describe('mergeScan', () => {
           of([...acc, x]).pipe(
             delay(50, rxTestScheduler)
           )
-        , []),
+        , [] as string[]),
         mergeMap(function (x) { return of(x); })
       );
 
@@ -177,7 +177,7 @@ describe('mergeScan', () => {
         throw new Error('bad!');
       }
       return of(acc.concat(x));
-    }, []));
+    }, [] as string[]));
 
     expectObservable(source).toBe(expected, values, new Error('bad!'));
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -229,7 +229,7 @@ describe('mergeScan', () => {
       u: <string[]>[]
     };
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), []));
+    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -240,7 +240,7 @@ describe('mergeScan', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), []));
+    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -251,7 +251,7 @@ describe('mergeScan', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), []));
+    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -270,7 +270,7 @@ describe('mergeScan', () => {
       z: ['b', 'c', 'd', 'e', 'f', 'g']
     };
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), []));
+    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
 
     expectObservable(source, sub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(sub);
@@ -428,7 +428,7 @@ describe('mergeScan', () => {
 
     e1.pipe(mergeScan((acc, x, index) => {
       recorded.push(index);
-      return of(x);
+      return of(index);
     }, 0)).subscribe();
 
     expect(recorded).to.deep.equal([0, 1, 2, 3]);

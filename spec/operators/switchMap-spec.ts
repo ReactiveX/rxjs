@@ -360,7 +360,7 @@ describe('switchMap', () => {
 
   it('should switch inner never and throw', () => {
     const x = cold('-');
-    const y = cold('#', null, 'sad');
+    const y = cold('#', undefined, 'sad');
     const xsubs =    '         ^         !          ';
     const ysubs =    '                   (^!)       ';
     const e1 =   hot('---------x---------y---------|');
@@ -379,7 +379,7 @@ describe('switchMap', () => {
 
   it('should switch inner empty and throw', () => {
     const x = cold('|');
-    const y = cold('#', null, 'sad');
+    const y = cold('#', undefined, 'sad');
     const xsubs =    '         (^!)                 ';
     const ysubs =    '                   (^!)       ';
     const e1 =   hot('---------x---------y---------|');

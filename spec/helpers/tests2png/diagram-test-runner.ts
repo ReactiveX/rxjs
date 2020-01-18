@@ -67,7 +67,7 @@ function postProcessOutputMessage(msg: TestMessage) {
 }
 
 function makeFilename(operatorLabel: string) {
-  return /^(\w+)/.exec(operatorLabel)[1] + '.png';
+  return /^(\w+)/.exec(operatorLabel)![1] + '.png';
 }
 
 type glitFn = (description: string, fn: () => void ) => any;

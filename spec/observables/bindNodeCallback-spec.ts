@@ -281,7 +281,7 @@ describe('bindNodeCallback', () => {
 
   it('should not swallow post-callback errors', () => {
     function badFunction(callback: (error: Error, answer: number) => void): void {
-      callback(null, 42);
+      callback(null as any, 42);
       throw new Error('kaboom');
     }
     const consoleStub = sinon.stub(console, 'warn');

@@ -84,7 +84,7 @@ describe('Subscriber', () => {
   });
 
   it('should call complete observer without any arguments', () => {
-    let argument: Array<any> = null;
+    let argument: Array<any> | null = null;
 
     const observer = {
       complete: (...args: Array<any>) => {

@@ -212,7 +212,7 @@ describe('distinctUntilChanged operator', () => {
       return x;
     };
 
-    expectObservable(e1.pipe(distinctUntilChanged(null, keySelector))).toBe(expected);
+    expectObservable(e1.pipe(distinctUntilChanged(null as any, keySelector))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });

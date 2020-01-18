@@ -713,7 +713,7 @@ class MockWebSocket {
   static get lastSocket(): MockWebSocket {
     const socket = MockWebSocket.sockets;
     const length = socket.length;
-    return length > 0 ? socket[length - 1] : undefined;
+    return length > 0 ? socket[length - 1] : undefined!;
   }
 
   static clearSockets(): void {
@@ -738,8 +738,7 @@ class MockWebSocket {
   get lastMessageSent(): string {
     const sent = this.sent;
     const length = sent.length;
-
-    return length > 0 ? sent[length - 1] : undefined;
+    return length > 0 ? sent[length - 1] : undefined!;
   }
 
   triggerClose(e: any): void {

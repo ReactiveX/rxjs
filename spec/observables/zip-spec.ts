@@ -461,7 +461,7 @@ describe('static zip', () => {
   it('should work with empty and error', () => {
     const a = cold(  '|');
     const asubs =    '(^!)';
-    const b = hot(   '------#', null, 'too bad');
+    const b = hot(   '------#', undefined, 'too bad');
     const bsubs =    '(^!)';
     const expected = '|';
 
@@ -471,7 +471,7 @@ describe('static zip', () => {
   });
 
   it('should work with error and empty', () => {
-    const a = hot(   '------#', null, 'too bad');
+    const a = hot(   '------#', undefined, 'too bad');
     const asubs =    '(^!)';
     const b = cold(  '|');
     const bsubs =    '(^!)';
@@ -519,9 +519,9 @@ describe('static zip', () => {
   });
 
   it('should work with error and error', () => {
-    const a =    hot('------#', null, 'too bad');
+    const a =    hot('------#', undefined, 'too bad');
     const asubs =    '^     !';
-    const b =    hot('----------#', null, 'too bad 2');
+    const b =    hot('----------#', undefined, 'too bad 2');
     const bsubs =    '^     !';
     const expected = '------#';
 
@@ -582,7 +582,7 @@ describe('static zip', () => {
     let a: Observable<number>;
     let b: Observable<string>;
     let c: Observable<boolean>;
-    let o1: Observable<[number, string, boolean]> = zip(a, b, c);
+    let o1: Observable<[number, string, boolean]> = zip(a!, b!, c!);
     /* tslint:enable:no-unused-variable */
   });
 
@@ -592,37 +592,37 @@ describe('static zip', () => {
     let b: Observable<string>;
     let c: Promise<boolean>;
     let d: Observable<string[]>;
-    let o1: Observable<[number, string, boolean, string[]]> = zip(a, b, c, d);
+    let o1: Observable<[number, string, boolean, string[]]> = zip(a!, b!, c!, d!);
     /* tslint:enable:no-unused-variable */
   });
 
   type('should support arrays of promises', () => {
     /* tslint:disable:no-unused-variable */
     let a: Promise<number>[];
-    let o1: Observable<number[]> = zip(a);
-    let o2: Observable<number[]> = zip(...a);
+    let o1: Observable<number[]> = zip(a!);
+    let o2: Observable<number[]> = zip(...a!);
     /* tslint:enable:no-unused-variable */
   });
 
   type('should support arrays of observables', () => {
     /* tslint:disable:no-unused-variable */
     let a: Observable<number>[];
-    let o1: Observable<number[]> = zip(a);
-    let o2: Observable<number[]> = zip(...a);
+    let o1: Observable<number[]> = zip(a!);
+    let o2: Observable<number[]> = zip(...a!);
     /* tslint:enable:no-unused-variable */
   });
 
   type('should return Array<T> when given a single promise', () => {
     /* tslint:disable:no-unused-variable */
     let a: Promise<number>;
-    let o1: Observable<number[]> = zip(a);
+    let o1: Observable<number[]> = zip(a!);
     /* tslint:enable:no-unused-variable */
   });
 
   type('should return Array<T> when given a single observable', () => {
     /* tslint:disable:no-unused-variable */
     let a: Observable<number>;
-    let o1: Observable<number[]> = zip(a);
+    let o1: Observable<number[]> = zip(a!);
     /* tslint:enable:no-unused-variable */
   });
 });

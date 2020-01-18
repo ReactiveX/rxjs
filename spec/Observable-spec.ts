@@ -871,7 +871,7 @@ describe('Observable.lift', () => {
         next(value?: T): void {
           log.push('next ' + value);
           if (!this.isStopped) {
-            this._next(value);
+            this._next(value!);
           }
         }
       }

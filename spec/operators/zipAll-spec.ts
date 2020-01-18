@@ -571,7 +571,7 @@ describe('zipAll operator', () => {
   it('should work with empty and error', () => {
     const a = cold(  '|');
     const asubs =    '(^!)';
-    const b = hot(   '------#', null, 'too bad');
+    const b = hot(   '------#', undefined, 'too bad');
     const bsubs =    '(^!)';
     const expected = '|';
 
@@ -581,7 +581,7 @@ describe('zipAll operator', () => {
   });
 
   it('should work with error and empty', () => {
-    const a = hot(   '------#', null, 'too bad');
+    const a = hot(   '------#', undefined, 'too bad');
     const asubs =    '(^!)';
     const b = cold(  '|');
     const bsubs =    '(^!)';
@@ -629,9 +629,9 @@ describe('zipAll operator', () => {
   });
 
   it('should work with error and error', () => {
-    const a =    hot('------#', null, 'too bad');
+    const a =    hot('------#', undefined, 'too bad');
     const asubs =    '^     !';
-    const b =    hot('----------#', null, 'too bad 2');
+    const b =    hot('----------#', undefined, 'too bad 2');
     const bsubs =    '^     !';
     const expected = '------#';
 
