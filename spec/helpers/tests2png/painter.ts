@@ -1,7 +1,7 @@
 /*eslint-disable no-param-reassign, no-use-before-define*/
-// @ts-ignore
+// @ts-ignore: Could not find a declaration file for module
 import * as gm from 'gm';
-// @ts-ignore
+// @ts-ignore: Could not find a declaration file for module
 import * as Color from 'color';
 import { cloneDeep, isEqual} from 'lodash';
 import { TestMessage } from '../../../src/internal/testing/TestMessage';
