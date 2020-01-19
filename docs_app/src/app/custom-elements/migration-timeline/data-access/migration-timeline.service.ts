@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of, pipe} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
-import {LocalState} from '../utils/local-state.service';
+import {State} from '../utils/state.service';
 import {ClientMigrationTimelineReleaseItem, compareByReleaseDateAsc, parseClientMigrationTimelineReleaseItem} from './migration-item';
 import {deprecationAndBreakingChangeTimeline} from './migration-timeline-struckture/migration-timeline.data';
 
@@ -11,7 +11,7 @@ export interface MigrationTimelineState {
 }
 
 @Injectable()
-export class MigrationTimelineService extends LocalState<MigrationTimelineState> {
+export class MigrationTimelineService extends State<MigrationTimelineState> {
 
   private initialMigrations: ClientMigrationTimelineReleaseItem[] = [];
   private staticMigrations: ClientMigrationTimelineReleaseItem[] =

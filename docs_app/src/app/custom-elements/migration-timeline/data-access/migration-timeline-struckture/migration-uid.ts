@@ -21,7 +21,7 @@ type: TimeLineTypes
 
 @field subject
 description: subject of migration. What piece is effected?
-@TODO consider this!
+
 Subjects are things that components and things that are leafs
 - class
   - method
@@ -44,7 +44,7 @@ Examples:
 - of
 - NEVER
 - switchMap
-
+@TODO consider this!
 There are 2 possible systems I see here:
 - focusing on the subject e.g. last-function-resultSelector-deprecated
 - focusing on the subjectAction e.g. last-argument-resultSelector-deprecated

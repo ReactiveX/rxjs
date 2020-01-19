@@ -93,12 +93,16 @@ const deprecation = {
   - What attribute of the piece is effected? 
   By default 'deprecated'
 
+All data related to the UID has to be url encode able without modifying the string. 
+
 ```typescript
 const deprecation = {
   // ... previous information
   subject: 'generate',
   subjectType: 'function',
-  subjectAction: 'resultSelector-deprecated'
+  subjectAction: 'resultSelector-deprecated',
+  // this is needed to create the linking between a deprecation and a breaking change
+  breakingChangeSubjectAction: 'resultSelector-removed'
 }
 ```
 3. Collect information for breakingChange item. Here the only thing we need to know is what happens to the deprecated code.

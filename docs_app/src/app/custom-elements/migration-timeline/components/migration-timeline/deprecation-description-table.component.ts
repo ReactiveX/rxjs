@@ -2,7 +2,7 @@ import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {ClientDeprecation} from '../../data-access/migration-item';
 
-import {LocalState} from '../../utils/local-state.service';
+import {State} from '../../utils/state.service';
 
 @Component({
   selector: `deprecation-description-table`,
@@ -55,7 +55,7 @@ import {LocalState} from '../../utils/local-state.service';
     </table>
   `
 })
-export class DeprecationDescriptionTableComponent extends LocalState<{
+export class DeprecationDescriptionTableComponent extends State<{
   deprecation: ClientDeprecation;
 }> {
   vm$ = this.select();

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {startWith} from 'rxjs/operators';
-import {LocalState} from '../utils/local-state.service';
+import {State} from '../utils/state.service';
 import {MigrationTimelineNavigationItem} from './release-navigation.component';
 
 
@@ -39,7 +39,7 @@ export interface VmFilterForm {
   `,
   styles: []
 })
-export class FilterFormComponent extends LocalState<{
+export class FilterFormComponent extends State<{
   releaseList: MigrationTimelineNavigationItem[]
 }> implements OnInit {
 

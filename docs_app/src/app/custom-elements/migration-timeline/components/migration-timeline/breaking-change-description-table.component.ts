@@ -1,7 +1,7 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {ClientBreakingChange} from '../../data-access/migration-item';
-import {LocalState} from '../../utils/local-state.service';
+import {State} from '../../utils/state.service';
 
 interface VMBreakingChangeDescriptionTable {
   breakingChange: ClientBreakingChange;
@@ -43,7 +43,7 @@ interface VMBreakingChangeDescriptionTable {
     </table>
   `
 })
-export class BreakingChangeDescriptionTableComponent extends LocalState<VMBreakingChangeDescriptionTable> {
+export class BreakingChangeDescriptionTableComponent extends State<VMBreakingChangeDescriptionTable> {
   vm$ = this.select();
 
   @Output()

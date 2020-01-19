@@ -6,11 +6,11 @@ import {findClosestRelease, parseMigrationItemSubjectUIDFromString, parseMigrati
 import {MigrationTimelineService} from './data-access/migration-timeline.service';
 import {MigrationTimelineContainerModelFromRemoteSources} from './migration-timeline.container.component';
 
-import {LocalState} from './utils/local-state.service';
+import {State} from './utils/state.service';
 
 
 @Inject({})
-export class MigrationTimelineContainerAdapter extends LocalState<MigrationTimelineContainerModelFromRemoteSources> {
+export class MigrationTimelineContainerAdapter extends State<MigrationTimelineContainerModelFromRemoteSources> {
   private _selectedMigrationTimelineItemUIDUrl$: Observable<string> = this.locationService.currentSearchParams
     .pipe(
       map(s => s.uid),
@@ -27,7 +27,7 @@ export class MigrationTimelineContainerAdapter extends LocalState<MigrationTimel
   ) {
     super();
 
-    // Global state to view state
+    // Global state to local state
     this.connectState('releaseList', this.migrationService.migrations$);
 
     // URL state to component state

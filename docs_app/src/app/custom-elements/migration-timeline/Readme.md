@@ -1,7 +1,4 @@
 
-
-- 
-  - https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/observable/SubscribeOnObservable.ts#L42
 - 6.0.0-tenacious-rc.2_deprecation-class-AjaxObservable
   - https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/observable/dom/AjaxObservable.ts#L182
 - 6.0.0-tenacious-rc.2_deprecation-class-Subscriber
@@ -54,8 +51,6 @@
   - https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/types.ts#L45
 - 6.4.0_deprecation-interface-Subscribable
   - https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/types.ts#L48
-
-
 
 # MigrationTimeLine Container Component
 

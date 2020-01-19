@@ -1,12 +1,20 @@
 .migration-timeline-navigation {
+  .mat-chip-list:focus  {
+    outline: 0;
+  }
+
   .navigation-item:hover,
   .navigation-item:focus{
 
   }
-  .is-official {
-    margin: 2px;
+  .is-official{
     color: rgba(0, 0, 0, 0.57);
     background-color: #f1f1f1;
+  }
+  .selected {
+    margin: 2px;
+    color: $white !important;
+    background-color: mat-color($rxjs-primary) !important;
   }
 }
 
@@ -32,7 +40,7 @@
 }
 
 .suggestion-open-issue {
-  .mat-icon {
+  .mat-icon.img {
     position: absolute;
     right: 100px;
     top: 12px;

@@ -96,7 +96,7 @@ export interface Deprecation extends MigrationItemSubjectUIDFields {
   deprecationMsgCode: string;
   reason: string;
   implication: string;
-// @TODO Ensure this is the way to handle dependencies to other libs in stackblitz
+  // @TODO Ensure this is the way to handle dependencies to other libs in stackblitz
   exampleBeforeDependencies?: {[lib: string]: string},
   exampleBefore?: string;
   // @TODO Ensure this is the way to handle dependencies to other libs in stackblitz

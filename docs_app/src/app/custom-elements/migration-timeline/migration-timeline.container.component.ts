@@ -6,7 +6,7 @@ import {ClientMigrationTimelineReleaseItem} from './data-access/migration-item';
 import {parseMigrationReleaseUIDFromString} from './data-access/migration-timeline-struckture/migration-uid';
 import {MigrationTimelineContainerAdapter} from './migration-timeline.container.adapter';
 
-import {LocalState} from './utils/local-state.service';
+import {State} from './utils/state.service';
 
 export interface MigrationTimelineContainerModelFromRemoteSources {
   releaseList: ClientMigrationTimelineReleaseItem[];
@@ -52,16 +52,6 @@ export interface MigrationTimelineContainerModelFromRemoteSources {
     </ul>
     <h2>Supported Versions</h2>
     <ng-container *ngIf="baseModel$ | async as m">
-      <!--
-      <section>
-        {{m.filter}}<br>
-        {{m.releaseNavigation}}
-        <filter-form
-          [releaseList]="m.releaseNavigation"
-          (filterChange)="va.setSlice({filter: $event})">
-        </filter-form>
-      </section>
-      -->
       <section>
         <release-navigation
           [selectedMigrationReleaseUID]="(selectedMigrationReleaseUID$ | async)"
@@ -81,9 +71,8 @@ export interface MigrationTimelineContainerModelFromRemoteSources {
         </div>
       </section>
     </ng-container>
-    <msg-format-decision-helper></msg-format-decision-helper>
   `,
-  providers: [LocalState, MigrationTimelineContainerAdapter]
+  providers: [State, MigrationTimelineContainerAdapter]
 })
 export class MigrationTimelineContainerComponent {
 
@@ -100,7 +89,7 @@ export class MigrationTimelineContainerComponent {
   selectedMigrationReleaseUIDChange = new Subject<string>();
 
   constructor(
-    private _baseModel: LocalState<MigrationTimelineContainerModelFromRemoteSources>,
+    private _baseModel: State<MigrationTimelineContainerModelFromRemoteSources>,
     private _locationService: LocationService,
     private _va: MigrationTimelineContainerAdapter
   ) {
@@ -108,7 +97,7 @@ export class MigrationTimelineContainerComponent {
     this._baseModel.connectState(this._va.select());
 
     // Routing
-    this._baseModel.connectEffect(
+    this._baseModel.holdEffect(
       merge(
         this.selectedMigrationReleaseUIDChange,
         this.selectedMigrationItemUIDChange

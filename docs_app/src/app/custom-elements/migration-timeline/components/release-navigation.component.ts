@@ -1,7 +1,7 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {ClientMigrationTimelineReleaseItem} from '../data-access/migration-item';
-import {LocalState} from '../utils/local-state.service';
+import {State} from '../utils/state.service';
 
 export interface MigrationTimelineNavigationItem {
   date: Date;
@@ -21,21 +21,21 @@ export interface MigrationTimelineNavigationComponentModel {
     <div class="flex-center group-buttons migration-timeline-navigation"
       *ngIf="baseModel$ | async as vm">
       <mat-chip-list>
-        <a href="./migration-timeline"
+        <span
           *ngFor="let option of vm.releaseNavigationList; trackBy:trackByVersion"
-          (click)="selectedMigrationReleaseUIDChange.next(option.version)"
+          (click)="selectedMigrationReleaseUIDChange.next(option.version);"
           class="mat-chip mat-primary mat-standard-chip navigation-item"
           [ngClass]="{
           selected:vm.selectedMigrationReleaseUID === option.version,
           'is-official': !option.officialRelease
           }">
           {{option.version}}
-        </a>
+        </span>
       </mat-chip-list>
     </div>
   `,
   styles: [],
-  providers: [LocalState]
+  providers: [State]
 })
 export class ReleaseNavigationComponent {
 
@@ -60,7 +60,7 @@ export class ReleaseNavigationComponent {
   @Output()
   selectedMigrationReleaseUIDChange = new Subject<string>();
 
-  constructor(private _baseModel: LocalState<MigrationTimelineNavigationComponentModel>) {
+  constructor(private _baseModel: State<MigrationTimelineNavigationComponentModel>) {
 
   }
 
