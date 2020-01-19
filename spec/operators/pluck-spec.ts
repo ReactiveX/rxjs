@@ -82,7 +82,6 @@ describe('pluck operator', () => {
     const expected = '--r-x--y-z---w-|';
     const values: { [key: string]: number | undefined } = {r: 1, x: undefined, y: undefined, z: undefined, w: 5};
 
-    // @ts-ignore
     const r = a.pipe(pluck('a', 'b', 'c'));
     expectObservable(r).toBe(expected, values);
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -90,7 +89,6 @@ describe('pluck operator', () => {
 
   it('should throw an error if not property is passed', () => {
     expect(() => {
-      // @ts-ignore
       of({prop: 1}, {prop: 2}).pipe(pluck());
     }).to.throw(Error, 'list of properties cannot be empty.');
   });
@@ -100,7 +98,6 @@ describe('pluck operator', () => {
     const asubs =    '(^!)';
     const expected = '#';
 
-    // @ts-ignore
     const r = a.pipe(pluck('whatever'));
     expectObservable(r).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -123,7 +120,6 @@ describe('pluck operator', () => {
 
     const invoked = 0;
     const r = a.pipe(
-      // @ts-ignore
       pluck('whatever'),
       tap(null, null, () => {
         expect(invoked).to.equal(0);
