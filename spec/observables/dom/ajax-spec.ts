@@ -1082,6 +1082,27 @@ describe('ajax', () => {
       expect(request.headers).to.equal(headers);
     });
   });
+
+  describe('ajax error classes', () => {
+    describe('AjaxError', () => {
+      it('should extend Error class', () => {
+        const error = new AjaxError('Test error', new XMLHttpRequest(), {});
+        expect(error).to.be.an.instanceOf(Error);
+      });
+    });
+
+    describe('AjaxTimeoutError', () => {
+      it('should extend Error class', () => {
+        const error = new AjaxTimeoutError(new XMLHttpRequest(), {});
+        expect(error).to.be.an.instanceOf(Error);
+      });
+
+      it('should extend AjaxError class', () => {
+        const error = new AjaxTimeoutError(new XMLHttpRequest(), {});
+        expect(error).to.be.an.instanceOf(AjaxError);
+      });
+    });
+  });
 });
 
 class MockXMLHttpRequest {

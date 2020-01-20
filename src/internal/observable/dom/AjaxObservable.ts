@@ -536,11 +536,15 @@ export interface AjaxTimeoutErrorCtor {
   new(xhr: XMLHttpRequest, request: AjaxRequest): AjaxTimeoutError;
 }
 
-function AjaxTimeoutErrorImpl(this: any, xhr: XMLHttpRequest, request: AjaxRequest) {
-  AjaxError.call(this, 'ajax timeout', xhr, request);
-  this.name = 'AjaxTimeoutError';
-  return this;
-}
+const AjaxTimeoutErrorImpl = (() => {
+  function AjaxTimeoutErrorImpl(this: any, xhr: XMLHttpRequest, request: AjaxRequest) {
+    AjaxError.call(this, 'ajax timeout', xhr, request);
+    this.name = 'AjaxTimeoutError';
+    return this;
+  }
+  AjaxTimeoutErrorImpl.prototype = Object.create(AjaxError.prototype);
+  return AjaxTimeoutErrorImpl;
+})();
 
 /**
  * @see {@link ajax}
