@@ -24,9 +24,14 @@ export function endWith<T, A extends any[]>(...args: A): OperatorFunction<T, T |
 /* tslint:enable:max-line-length */
 
 /**
- * Returns an observable that will synchronously emit the provided value(s) after the
- * source completes. NOTE: Passing a last argument of a Scheduler is _deprecated_, and will
- * result in incorrect types in TypeScript.
+ * Returns an observable that will emit all values from the source, then synchronously emit
+ * he provided value(s) immediately after the source completes.
+ *
+ * NOTE: Passing a last argument of a Scheduler is _deprecated_, and may result in incorrect
+ * types in TypeScript.
+ *
+ * This is useful for knowing when an observable ends. Particularly when paired with an
+ * operator like {@link takeUntil}
  *
  * ![](endWith.png)
  *
@@ -34,21 +39,37 @@ export function endWith<T, A extends any[]>(...args: A): OperatorFunction<T, T |
  * ### After the source observable completes, appends an emission and then completes too.
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { endWith } from 'rxjs/operators';
+ * import { interval, fromEvent } from 'rxjs';
+ * import { map, takeUntil, endWith } from 'rxjs/operators';
  *
- * of('hi', 'how are you?', 'sorry, I have to go now').pipe(
- *   endWith('goodbye!'),
+ * const ticker$ = interval(5000).pipe(
+ *   map(() => 'tick'),
+ * );
+ *
+ * const documentClicks$ = fromEvent(document, 'click');
+ *
+ * ticker$.pipe(
+ *   startWith('interval started'),
+ *   takeUntil(documentClicks$),
+ *   endWith('interval ended by click'),
  * )
- * .subscribe(word => console.log(word));
- * // result:
- * // 'hi'
- * // 'how are you?'
- * // 'sorry, I have to go now'
- * // 'goodbye!'
+ * .subscribe(
+ *   x = console.log(x);
+ * )
+ *
+ * // Result (assuming a user clicks after 15 seconds)
+ * // "interval started"
+ * // "tick"
+ * // "tick"
+ * // "tick"
+ * // "interval ended by click"
  * ```
  *
  * @param values - Items you want the modified Observable to emit last.
+ *
+ * @see startWith
+ * @see concat
+ * @see takeUntil
  */
 export function endWith<T>(...values: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => concat(source, of(...values)) as Observable<T>;
