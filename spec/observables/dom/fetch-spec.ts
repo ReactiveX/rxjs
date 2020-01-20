@@ -176,6 +176,25 @@ describe('fromFetch', () => {
     expect(mockFetch.calls[0].init.signal.aborted).to.be.true;
   });
 
+  it('should not immediately abort repeat subscribers', () => {
+    const fetch$ = fromFetch('/foo');
+    expect(mockFetch.calls.length).to.equal(0);
+    expect(MockAbortController.created).to.equal(0);
+    let subscription = fetch$.subscribe();
+    expect(MockAbortController.created).to.equal(1);
+    expect(mockFetch.calls[0].init.signal.aborted).to.be.false;
+
+    subscription.unsubscribe();
+    expect(mockFetch.calls[0].init.signal.aborted).to.be.true;
+
+    subscription = fetch$.subscribe();
+    expect(MockAbortController.created).to.equal(2);
+    expect(mockFetch.calls[1].init.signal.aborted).to.be.false;
+
+    subscription.unsubscribe();
+    expect(mockFetch.calls[1].init.signal.aborted).to.be.true;
+  });
+
   it('should allow passing of init object', done => {
     const fetch$ = fromFetch('/foo', {method: 'HEAD'});
     fetch$.subscribe({
