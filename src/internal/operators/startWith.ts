@@ -39,7 +39,7 @@ export function startWith<T, A extends any[]>(...values: A): OperatorFunction<T,
  *
  * ```ts
  * import { timer } from 'rxjs';
- * import { startWith } from 'rxjs/operators';
+ * import { startWith, map } from 'rxjs/operators';
  *
  * timer(1000)
  *   .pipe(
