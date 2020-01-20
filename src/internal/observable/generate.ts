@@ -363,7 +363,7 @@ export function generate<T, S>(initialStateOrOptions: S | GenerateOptions<T, S>,
     if (scheduler) {
       return scheduler.schedule<SchedulerState<T, S>>(dispatch, 0, {
         subscriber,
-        iterate,
+        iterate: iterate!,
         condition,
         resultSelector,
         state
@@ -396,7 +396,7 @@ export function generate<T, S>(initialStateOrOptions: S | GenerateOptions<T, S>,
         break;
       }
       try {
-        state = iterate(state);
+        state = iterate!(state);
       } catch (err) {
         subscriber.error(err);
         return undefined;

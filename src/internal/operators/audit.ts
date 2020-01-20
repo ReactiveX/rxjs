@@ -75,9 +75,9 @@ class AuditOperator<T> implements Operator<T, T> {
  */
 class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
 
-  private value: T;
+  private value: T | null = null;
   private hasValue: boolean = false;
-  private throttled: Subscription;
+  private throttled: Subscription | null = null;
 
   constructor(destination: Subscriber<T>,
               private durationSelector: (value: T) => SubscribableOrPromise<any>) {

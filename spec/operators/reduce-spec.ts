@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { reduce, mergeMap } from 'rxjs/operators';
-import { range, of, Observable } from 'rxjs';
+import { range, of } from 'rxjs';
 
 declare const type: Function;
 declare const asDiagram: Function;

@@ -155,7 +155,7 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  */
 export function bindNodeCallback<T>(
   callbackFunc: Function,
-  resultSelector: Function|SchedulerLike,
+  resultSelector?: Function|SchedulerLike,
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<T> {
 
@@ -172,10 +172,10 @@ export function bindNodeCallback<T>(
 
   return function(this: any, ...args: any[]): Observable<T> {
     const params: ParamsState<T> = {
-      subject: undefined,
+      subject: undefined!,
       args,
       callbackFunc,
-      scheduler,
+      scheduler: scheduler!,
       context: this,
     };
     return new Observable<T>(subscriber => {

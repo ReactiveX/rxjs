@@ -121,7 +121,7 @@ export class TestScheduler extends VirtualTimeScheduler {
   }
 
   expectObservable(observable: Observable<any>,
-                   subscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
+                   subscriptionMarbles: string | null = null): ({ toBe: observableToBeFn }) {
     const actual: TestMessage[] = [];
     const flushTest: FlushableTest = { actual, ready: false };
     const subscriptionParsed = TestScheduler.parseMarblesAsSubscriptions(subscriptionMarbles, this.runMode);
@@ -178,7 +178,7 @@ export class TestScheduler extends VirtualTimeScheduler {
   flush() {
     const hotObservables = this.hotObservables;
     while (hotObservables.length > 0) {
-      hotObservables.shift().setup();
+      hotObservables.shift()!.setup();
     }
 
     super.flush();
@@ -193,7 +193,7 @@ export class TestScheduler extends VirtualTimeScheduler {
   }
 
   /** @nocollapse */
-  static parseMarblesAsSubscriptions(marbles: string, runMode = false): SubscriptionLog {
+  static parseMarblesAsSubscriptions(marbles: string | null, runMode = false): SubscriptionLog {
     if (typeof marbles !== 'string') {
       return new SubscriptionLog(Number.POSITIVE_INFINITY);
     }
@@ -270,7 +270,7 @@ export class TestScheduler extends VirtualTimeScheduler {
                     break;
                 }
 
-                advanceFrameBy(durationInMs / this.frameTimeFactor);
+                advanceFrameBy(durationInMs! / this.frameTimeFactor);
                 break;
               }
             }
@@ -321,7 +321,7 @@ export class TestScheduler extends VirtualTimeScheduler {
         nextFrame += count * this.frameTimeFactor;
       };
 
-      let notification: Notification<any>;
+      let notification: Notification<any> | undefined;
       const c = marbles[i];
       switch (c) {
         case ' ':
@@ -380,7 +380,7 @@ export class TestScheduler extends VirtualTimeScheduler {
                     break;
                 }
 
-                advanceFrameBy(durationInMs / this.frameTimeFactor);
+                advanceFrameBy(durationInMs! / this.frameTimeFactor);
                 break;
               }
             }

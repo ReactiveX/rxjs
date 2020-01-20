@@ -42,7 +42,7 @@ export class VirtualTimeScheduler extends AsyncScheduler {
   public flush(): void {
 
     const {actions, maxFrames} = this;
-    let error: any, action: AsyncAction<any>;
+    let error: any, action: AsyncAction<any> | undefined;
 
     while ((action = actions[0]) && action.delay <= maxFrames) {
       actions.shift();
@@ -67,7 +67,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
   protected active: boolean = true;
 
   constructor(protected scheduler: VirtualTimeScheduler,
-              protected work: (this: SchedulerAction<T>, state?: T) => void,
+              protected work: (this: SchedulerAction<T>, state: T) => void,
               protected index: number = scheduler.index += 1) {
     super(scheduler, work);
     this.index = scheduler.index = index;

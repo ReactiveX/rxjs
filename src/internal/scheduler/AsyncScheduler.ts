@@ -34,7 +34,7 @@ export class AsyncScheduler extends Scheduler {
     });
   }
 
-  public schedule<T>(work: (this: SchedulerAction<T>, state?: T) => void, delay: number = 0, state?: T): Subscription {
+  public schedule<T = undefined>(work: (this: SchedulerAction<T>, state: T) => void, delay: number = 0, state?: T): Subscription {
     if (AsyncScheduler.delegate && AsyncScheduler.delegate !== this) {
       return AsyncScheduler.delegate.schedule(work, delay, state);
     } else {
@@ -58,12 +58,12 @@ export class AsyncScheduler extends Scheduler {
       if (error = action.execute(action.state, action.delay)) {
         break;
       }
-    } while (action = actions.shift()); // exhaust the scheduler queue
+    } while (action = actions.shift()!); // exhaust the scheduler queue
 
     this.active = false;
 
     if (error) {
-      while (action = actions.shift()) {
+      while (action = actions.shift()!) {
         action.unsubscribe();
       }
       throw error;

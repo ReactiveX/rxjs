@@ -11,9 +11,9 @@ import { refCount as higherOrderRefCount } from '../operators/refCount';
  */
 export class ConnectableObservable<T> extends Observable<T> {
 
-  protected _subject: Subject<T>;
+  protected _subject: Subject<T> | undefined;
   protected _refCount: number = 0;
-  protected _connection: Subscription;
+  protected _connection: Subscription | null | undefined;
   /** @internal */
   _isComplete = false;
 
@@ -32,7 +32,7 @@ export class ConnectableObservable<T> extends Observable<T> {
     if (!subject || subject.isStopped) {
       this._subject = this.subjectFactory();
     }
-    return this._subject;
+    return this._subject!;
   }
 
   connect(): Subscription {
@@ -87,7 +87,7 @@ class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
   protected _unsubscribe() {
     const connectable = <any>this.connectable;
     if (connectable) {
-      this.connectable = null;
+      this.connectable = null!;
       const connection = connectable._connection;
       connectable._refCount = 0;
       connectable._subject = null;
@@ -120,7 +120,7 @@ class RefCountOperator<T> implements Operator<T, T> {
 
 class RefCountSubscriber<T> extends Subscriber<T> {
 
-  private connection: Subscription;
+  private connection: Subscription | null | undefined;
 
   constructor(destination: Subscriber<T>,
               private connectable: ConnectableObservable<T>) {
@@ -135,7 +135,7 @@ class RefCountSubscriber<T> extends Subscriber<T> {
       return;
     }
 
-    this.connectable = null;
+    this.connectable = null!;
     const refCount = (<any> connectable)._refCount;
     if (refCount <= 0) {
       this.connection = null;

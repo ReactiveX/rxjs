@@ -30,9 +30,9 @@ export class Subscription implements SubscriptionLike {
   public closed: boolean = false;
 
   /** @internal */
-  protected _parentOrParents: Subscription | Subscription[] = null;
+  protected _parentOrParents: Subscription | Subscription[] | null = null;
   /** @internal */
-  private _subscriptions: SubscriptionLike[] = null;
+  private _subscriptions: SubscriptionLike[] | null = null;
 
   /**
    * @param {function(): void} [unsubscribe] A function describing how to
@@ -51,7 +51,7 @@ export class Subscription implements SubscriptionLike {
    * @return {void}
    */
   unsubscribe(): void {
-    let errors: any[];
+    let errors: any[] | undefined;
 
     if (this.closed) {
       return;

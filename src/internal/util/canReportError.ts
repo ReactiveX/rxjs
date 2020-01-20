@@ -15,7 +15,7 @@ export function canReportError(observer: Subscriber<any> | Subject<any>): boolea
     } else if (destination && destination instanceof Subscriber) {
       observer = destination;
     } else {
-      observer = null;
+      observer = null!;
     }
   }
   return true;

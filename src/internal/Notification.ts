@@ -31,6 +31,9 @@ export enum NotificationKind {
 export class Notification<T> {
   hasValue: boolean;
 
+  constructor(kind: 'N', value?: T);
+  constructor(kind: 'E', value: undefined, error: any);
+  constructor(kind: 'C');
   constructor(public kind: 'N' | 'E' | 'C', public value?: T, public error?: any) {
     this.hasValue = kind === 'N';
   }
@@ -43,7 +46,7 @@ export class Notification<T> {
   observe(observer: PartialObserver<T>): any {
     switch (this.kind) {
       case 'N':
-        return observer.next && observer.next(this.value);
+        return observer.next && observer.next(this.value!);
       case 'E':
         return observer.error && observer.error(this.error);
       case 'C':
@@ -63,7 +66,7 @@ export class Notification<T> {
     const kind = this.kind;
     switch (kind) {
       case 'N':
-        return next && next(this.value);
+        return next && next(this.value!);
       case 'E':
         return error && error(this.error);
       case 'C':
@@ -97,7 +100,7 @@ export class Notification<T> {
     const kind = this.kind;
     switch (kind) {
       case 'N':
-        return of(this.value);
+        return of(this.value!);
       case 'E':
         return throwError(this.error);
       case 'C':

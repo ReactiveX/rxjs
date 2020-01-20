@@ -102,7 +102,7 @@ export function windowTime<T>(windowTimeSpan: number,
 
 export function windowTime<T>(windowTimeSpan: number): OperatorFunction<T, Observable<T>> {
   let scheduler: SchedulerLike = async;
-  let windowCreationInterval: number = null;
+  let windowCreationInterval: number | null = null;
   let maxWindowSize: number = Number.POSITIVE_INFINITY;
 
   if (isScheduler(arguments[3])) {
@@ -222,7 +222,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   protected _error(err: any): void {
     const windows = this.windows;
     while (windows.length > 0) {
-      windows.shift().error(err);
+      windows.shift()!.error(err);
     }
     this.destination.error(err);
   }
@@ -230,7 +230,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   protected _complete(): void {
     const windows = this.windows;
     while (windows.length > 0) {
-      const window = windows.shift();
+      const window = windows.shift()!;
       if (!window.closed) {
         window.complete();
       }
@@ -273,7 +273,7 @@ function dispatchWindowCreation<T>(this: SchedulerAction<CreationState<T>>, stat
   action.schedule(state, windowCreationInterval);
 }
 
-function dispatchWindowClose<T>(state: CloseState<T>): void {
+function dispatchWindowClose<T>(this: SchedulerAction<CloseState<T>>, state: CloseState<T>): void {
   const { subscriber, window, context } = state;
   if (context && context.action && context.subscription) {
     context.action.remove(context.subscription);

@@ -28,8 +28,8 @@ describe('SubscribeOnObservable', () => {
   });
 
   it('should create observable via staic create function', () => {
-    const s = new SubscribeOnObservable(null, null, rxTestScheduler);
-    const r = SubscribeOnObservable.create(null, null, rxTestScheduler);
+    const s = new SubscribeOnObservable(null as any, null as any, rxTestScheduler);
+    const r = SubscribeOnObservable.create(null as any, null as any, rxTestScheduler);
 
     expect(s).to.deep.equal(r);
   });

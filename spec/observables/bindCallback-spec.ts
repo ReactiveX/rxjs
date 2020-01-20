@@ -60,7 +60,7 @@ describe('bindCallback', () => {
 
       boundCallback(42)
         .subscribe({
-          next(value) { results.push(value); },
+          next(value: any) { results.push(value); },
           complete() { results.push('done'); },
         });
 

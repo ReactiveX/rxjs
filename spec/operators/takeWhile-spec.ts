@@ -50,7 +50,7 @@ describe('takeWhile operator', () => {
     const e1subs =     '^ !            ';
     const expected =   '--|            ';
 
-    expectObservable(e1.pipe(takeWhile(() => null))).toBe(expected);
+    expectObservable(e1.pipe(takeWhile(() => null as any))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 

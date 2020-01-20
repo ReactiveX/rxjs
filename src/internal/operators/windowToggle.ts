@@ -86,7 +86,7 @@ interface WindowContext<T> {
  */
 class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
   private contexts: WindowContext<T>[] = [];
-  private openSubscription: Subscription;
+  private openSubscription: Subscription | undefined;
 
   constructor(destination: Subscriber<Observable<T>>,
               private openings: Observable<O>,
@@ -108,7 +108,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
   protected _error(err: any) {
 
     const { contexts } = this;
-    this.contexts = null;
+    this.contexts = null!;
 
     if (contexts) {
       const len = contexts.length;
@@ -126,7 +126,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
 
   protected _complete() {
     const { contexts } = this;
-    this.contexts = null;
+    this.contexts = null!;
     if (contexts) {
       const len = contexts.length;
       let index = -1;
@@ -142,7 +142,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
   /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribe() {
     const { contexts } = this;
-    this.contexts = null;
+    this.contexts = null!;
     if (contexts) {
       const len = contexts.length;
       let index = -1;
@@ -173,7 +173,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
       this.contexts.push(context);
       const innerSubscription = subscribeToResult(this, closingNotifier, context as any);
 
-      if (innerSubscription.closed) {
+      if (innerSubscription!.closed) {
         this.closeWindow(this.contexts.length - 1);
       } else {
         (<any>innerSubscription).context = context;

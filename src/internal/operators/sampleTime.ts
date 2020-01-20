@@ -66,7 +66,7 @@ class SampleTimeOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class SampleTimeSubscriber<T> extends Subscriber<T> {
-  lastValue: T;
+  lastValue: T | undefined;
   hasValue: boolean = false;
 
   constructor(destination: Subscriber<T>,

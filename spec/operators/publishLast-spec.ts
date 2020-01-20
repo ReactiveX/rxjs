@@ -276,7 +276,7 @@ describe('publishLast operator', () => {
     /* tslint:disable:no-unused-variable */
     const source = of(1, 2, 3);
     // TODO: https://github.com/ReactiveX/rxjs/issues/2972
-    const result: ConnectableObservable<{}> = publishLast()(source);
+    const result: ConnectableObservable<unknown> = publishLast()(source);
     /* tslint:enable:no-unused-variable */
   });
 });

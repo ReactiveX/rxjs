@@ -21,5 +21,5 @@ export function publishReplay<T, R>(bufferSize?: number,
   const selector = typeof selectorOrScheduler === 'function' ? selectorOrScheduler : undefined;
   const subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler);
 
-  return (source: Observable<T>) => multicast(() => subject, selector)(source) as ConnectableObservable<R>;
+  return (source: Observable<T>) => multicast(() => subject, selector!)(source) as ConnectableObservable<R>;
 }

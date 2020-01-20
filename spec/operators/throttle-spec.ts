@@ -335,7 +335,7 @@ describe('throttle operator', () =>  {
     /* tslint:disable:no-unused-variable */
     let o: Observable<number>;
     let s: Observable<number>;
-    let r: Observable<number> = o.pipe(throttle((n) => s));
+    let r: Observable<number> = o!.pipe(throttle((n) => s));
     /* tslint:enable:no-unused-variable */
   });
 
@@ -343,7 +343,7 @@ describe('throttle operator', () =>  {
     /* tslint:disable:no-unused-variable */
     let o: Observable<number>;
     let s: Observable<string>;
-    let r: Observable<number> = o.pipe(throttle((n) => s));
+    let r: Observable<number> = o!.pipe(throttle((n) => s));
     /* tslint:enable:no-unused-variable */
   });
 

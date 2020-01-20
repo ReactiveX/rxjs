@@ -11,7 +11,7 @@ export class AnimationFrameScheduler extends AsyncScheduler {
     let error: any;
     let index: number = -1;
     let count: number = actions.length;
-    action = action || actions.shift();
+    action = action || actions.shift()!;
 
     do {
       if (error = action.execute(action.state, action.delay)) {

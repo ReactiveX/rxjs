@@ -101,7 +101,7 @@ describe('Observable.prototype.buffer', () => {
 
   it('should work with error', () => {
     testScheduler.run(({ hot, expectObservable }) => {
-      const a = hot('---^-------#', null, new Error('too bad'));
+      const a = hot('---^-------#', undefined, new Error('too bad'));
       const b = hot('---^--------');
       const expected = '--------#';
       expectObservable(a.pipe(buffer(b))).toBe(expected, null, new Error('too bad'));
@@ -110,7 +110,7 @@ describe('Observable.prototype.buffer', () => {
 
   it('should work with error and non-empty selector', () => {
     testScheduler.run(({ hot, expectObservable }) => {
-      const a = hot('---^-------#', null, new Error('too bad'));
+      const a = hot('---^-------#', undefined, new Error('too bad'));
       const b = hot('---^---a----');
       const expected = '----a---#';
       expectObservable(a.pipe(buffer(b))).toBe(expected, { a: [] }, new Error('too bad'));
@@ -211,7 +211,7 @@ describe('Observable.prototype.buffer', () => {
   it('should work with non-empty and empty selector error', () => {
     testScheduler.run(({ hot, expectObservable }) => {
       const a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
-      const b = hot('--------^----------------#', null, new Error('too bad'));
+      const b = hot('--------^----------------#', undefined, new Error('too bad'));
       const expected = '     -----------------#';
       expectObservable(a.pipe(buffer(b))).toBe(expected, null, new Error('too bad'));
     });

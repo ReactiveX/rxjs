@@ -74,8 +74,8 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
  * @extends {Ignored}
  */
 class WindowSubscriber<T> extends OuterSubscriber<T, any> {
-  private window: Subject<T>;
-  private closingNotification: Subscription;
+  private window: Subject<T> | undefined;
+  private closingNotification: Subscription | undefined;
 
   constructor(protected destination: Subscriber<Observable<T>>,
               private closingSelector: () => Observable<any>) {
@@ -98,17 +98,17 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
   }
 
   protected _next(value: T): void {
-    this.window.next(value);
+    this.window!.next(value);
   }
 
   protected _error(err: any): void {
-    this.window.error(err);
+    this.window!.error(err);
     this.destination.error(err);
     this.unsubscribeClosingNotification();
   }
 
   protected _complete(): void {
-    this.window.complete();
+    this.window!.complete();
     this.destination.complete();
     this.unsubscribeClosingNotification();
   }
@@ -119,7 +119,7 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
     }
   }
 
-  private openWindow(innerSub: InnerSubscriber<T, any> = null): void {
+  private openWindow(innerSub: InnerSubscriber<T, any> | null = null): void {
     if (innerSub) {
       this.remove(innerSub);
       innerSub.unsubscribe();

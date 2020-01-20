@@ -62,7 +62,7 @@ class PairwiseOperator<T> implements Operator<T, [T, T]> {
  * @extends {Ignored}
  */
 class PairwiseSubscriber<T> extends Subscriber<T> {
-  private prev: T;
+  private prev: T | undefined;
   private hasPrev: boolean = false;
 
   constructor(destination: Subscriber<[T, T]>) {
@@ -73,7 +73,7 @@ class PairwiseSubscriber<T> extends Subscriber<T> {
     let pair: [T, T] | undefined;
 
     if (this.hasPrev) {
-      pair = [this.prev, value];
+      pair = [this.prev!, value];
     } else {
       this.hasPrev = true;
     }

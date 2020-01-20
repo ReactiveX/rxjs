@@ -69,5 +69,8 @@ export function concatMapTo<T, R, O extends ObservableInput<any>>(
   innerObservable: O,
   resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
 ): OperatorFunction<T, ObservedValueOf<O>|R> {
-  return concatMap(() => innerObservable, resultSelector);
+  if (typeof resultSelector === 'function') {
+    return concatMap(() => innerObservable, resultSelector);
+  }
+  return concatMap(() => innerObservable);
 }

@@ -23,7 +23,7 @@ export function scheduleIterable<T>(input: Iterable<T>, scheduler: SchedulerLike
           return;
         }
         let value: T;
-        let done: boolean;
+        let done: boolean | undefined;
         try {
           const result = iterator.next();
           value = result.value;

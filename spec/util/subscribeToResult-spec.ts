@@ -13,8 +13,8 @@ describe('subscribeToResult', () => {
 
     const subscription = subscribeToResult(subscriber, result);
 
-    expect(expected).to.be.equal(42);
-    expect(subscription.closed).to.be.true;
+    expect(expected!).to.be.equal(42);
+    expect(subscription!.closed).to.be.true;
   });
 
   it('should subscribe to observables that are an instanceof Observable', (done) => {
@@ -116,7 +116,7 @@ describe('subscribeToResult', () => {
     const subscriber = new OuterSubscriber((x: number) => expected = x);
 
     subscribeToResult(subscriber, iterable);
-    expect(expected).to.be.equal(42);
+    expect(expected!).to.be.equal(42);
   });
 
   it('should subscribe to to an object that implements Symbol.observable', (done) => {

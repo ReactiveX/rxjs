@@ -68,8 +68,8 @@ export function distinctUntilChanged<T, K>(compare?: (x: K, y: K) => boolean, ke
 }
 
 class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {
-  constructor(private compare: (x: K, y: K) => boolean,
-              private keySelector: (x: T) => K) {
+  constructor(private compare?: (x: K, y: K) => boolean,
+              private keySelector?: (x: T) => K) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -83,12 +83,12 @@ class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class DistinctUntilChangedSubscriber<T, K> extends Subscriber<T> {
-  private key: K;
+  private key: K | undefined;
   private hasKey: boolean = false;
 
   constructor(destination: Subscriber<T>,
-              compare: (x: K, y: K) => boolean,
-              private keySelector: (x: T) => K) {
+              compare?: (x: K, y: K) => boolean,
+              private keySelector?: (x: T) => K) {
     super(destination);
     if (typeof compare === 'function') {
       this.compare = compare;

@@ -75,7 +75,7 @@ describe('timer', () => {
     const expected =    '----(a|)';
 
     const dueTime = new Date(rxTestScheduler.now() + offset);
-    const source = timer(dueTime, null, rxTestScheduler);
+    const source = timer(dueTime, null as any, rxTestScheduler);
     expectObservable(source).toBe(expected, {a: 0});
   });
 
@@ -98,7 +98,7 @@ describe('timer', () => {
       const expected =    '----(aa|)';
 
       const dueTime = new Date(rxTestScheduler.now() + offset);
-      const source = timer(dueTime, null, rxTestScheduler);
+      const source = timer(dueTime, null as any, rxTestScheduler);
 
       const testSource = merge(t1, t2).pipe(
         mergeMap(() => source)

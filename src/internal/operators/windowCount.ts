@@ -113,7 +113,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
     }
     const c = this.count - windowSize + 1;
     if (c >= 0 && c % startWindowEvery === 0 && !this.closed) {
-      windows.shift().complete();
+      windows.shift()!.complete();
     }
     if (++this.count % startWindowEvery === 0 && !this.closed) {
       const window = new Subject<T>();
@@ -126,7 +126,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
     const windows = this.windows;
     if (windows) {
       while (windows.length > 0 && !this.closed) {
-        windows.shift().error(err);
+        windows.shift()!.error(err);
       }
     }
     this.destination.error(err);
@@ -136,7 +136,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
     const windows = this.windows;
     if (windows) {
       while (windows.length > 0 && !this.closed) {
-        windows.shift().complete();
+        windows.shift()!.complete();
       }
     }
     this.destination.complete();
@@ -144,6 +144,6 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
 
   protected _unsubscribe() {
     this.count = 0;
-    this.windows = null;
+    this.windows = null!;
   }
 }

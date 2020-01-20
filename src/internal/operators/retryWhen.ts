@@ -84,9 +84,9 @@ class RetryWhenOperator<T> implements Operator<T, T> {
  */
 class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
 
-  private errors: Subject<any>;
-  private retries: Observable<any>;
-  private retriesSubscription: Subscription;
+  private errors: Subject<any> | null = null;
+  private retries: Observable<any> | null = null;
+  private retriesSubscription: Subscription | null | undefined = null;
 
   constructor(destination: Subscriber<R>,
               private notifier: (errors: Observable<any>) => Observable<any>,
@@ -98,7 +98,7 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     if (!this.isStopped) {
 
       let errors = this.errors;
-      let retries: any = this.retries;
+      let retries = this.retries;
       let retriesSubscription = this.retriesSubscription;
 
       if (!retries) {
@@ -121,7 +121,7 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
       this.retries = retries;
       this.retriesSubscription = retriesSubscription;
 
-      errors.next(err);
+      errors!.next(err);
     }
   }
 
@@ -144,7 +144,7 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
              innerSub: InnerSubscriber<T, R>): void {
     const { _unsubscribe } = this;
 
-    this._unsubscribe = null;
+    this._unsubscribe = null!;
     this._unsubscribeAndRecycle();
     this._unsubscribe = _unsubscribe;
 

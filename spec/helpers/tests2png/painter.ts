@@ -1,7 +1,7 @@
 /*eslint-disable no-param-reassign, no-use-before-define*/
-// @ts-ignore
+// @ts-ignore: Could not find a declaration file for module
 import * as gm from 'gm';
-// @ts-ignore
+// @ts-ignore: Could not find a declaration file for module
 import * as Color from 'color';
 import { cloneDeep, isEqual} from 'lodash';
 import { TestMessage } from '../../../src/internal/testing/TestMessage';
@@ -84,22 +84,22 @@ function areEqualStreamData(leftStreamData: TestStream, rightStreamData: TestStr
 
 function measureObservableArrow(maxFrame: number, streamData: TestStream): { startX: number, endX: number } {
   let startX = CANVAS_PADDING +
-    MESSAGES_WIDTH * (streamData.subscription.start / maxFrame);
+    MESSAGES_WIDTH * (streamData.subscription!.start / maxFrame);
   let MAX_MESSAGES_WIDTH = CANVAS_WIDTH - CANVAS_PADDING;
   let lastMessageFrame = streamData.messages
     .reduce(function (acc, msg) {
       let frame = msg.frame;
       return frame > acc ? frame : acc;
     }, 0);
-  let subscriptionEndX = typeof streamData.subscription.end === 'number' ? CANVAS_PADDING +
-      MESSAGES_WIDTH * (streamData.subscription.end / maxFrame) +
+  let subscriptionEndX = typeof streamData.subscription!.end === 'number' ? CANVAS_PADDING +
+      MESSAGES_WIDTH * (streamData.subscription!.end / maxFrame) +
       OBSERVABLE_END_PADDING : undefined;
   let streamEndX = startX +
     MESSAGES_WIDTH * (lastMessageFrame / maxFrame) +
     OBSERVABLE_END_PADDING;
-  let endX = (streamData.subscription.end === '100%') ?
+  let endX = (streamData.subscription!.end === '100%') ?
     MAX_MESSAGES_WIDTH :
-    Math.max(streamEndX, subscriptionEndX);
+    Math.max(streamEndX, subscriptionEndX!);
 
   return {startX: startX, endX: endX};
 }
@@ -205,7 +205,7 @@ function drawMarble(out: GMObject, x: number, y: number, inclination: number, co
   out = out.fill(outlineColor);
   out = out.font('helvetica', 28);
   out = out.draw(
-    'translate ' + (x - CANVAS_WIDTH * 0.5) + ',' + (y + inclination - canvasHeight * 0.5),
+    'translate ' + (x - CANVAS_WIDTH * 0.5) + ',' + (y + inclination - canvasHeight! * 0.5),
     'gravity Center',
     'text 0,0',
     stringifyContent(content));
@@ -238,7 +238,7 @@ function drawComplete(out: GMObject, x: number, y: number,
                       maxFrame: number, angle: number, streamData: TestStream,
                       isSpecial: boolean, isGhost: boolean) {
   let startX = CANVAS_PADDING +
-    MESSAGES_WIDTH * (streamData.subscription.start / maxFrame);
+    MESSAGES_WIDTH * (streamData.subscription!.start / maxFrame);
   let isOverlapping = streamData.messages.some(function (msg) {
     if (msg.notification.kind !== 'N') { return false; }
     let msgX = startX + MESSAGES_WIDTH * (msg.frame / maxFrame);
@@ -272,7 +272,7 @@ function drawNestedObservable(out: GMObject, maxFrame: number, y: number, stream
 
 function drawObservableMessages(out: GMObject, maxFrame: number, baseY: number, angle: number, streamData: TestStream, isSpecial: boolean): GMObject {
   let startX = CANVAS_PADDING +
-    MESSAGES_WIDTH * (streamData.subscription.start / maxFrame);
+    MESSAGES_WIDTH * (streamData.subscription!.start / maxFrame);
   let messages = streamData.messages;
 
   messages.slice().reverse().forEach(function (message: TestMessage, reversedIndex: number) {
@@ -291,11 +291,11 @@ function drawObservableMessages(out: GMObject, maxFrame: number, baseY: number, 
       if (isNestedStreamData(message)) {
         out = drawNestedObservable(out, maxFrame, y, message.notification.value);
       } else {
-        out = drawMarble(out, x, y, inclination, message.notification.value, isSpecial, streamData.isGhost);
+        out = drawMarble(out, x, y, inclination, message.notification.value, isSpecial, streamData.isGhost!);
       }
       break;
-    case 'E': out = drawError(out, x, y, startX, angle, isSpecial, streamData.isGhost); break;
-    case 'C': out = drawComplete(out, x, y, maxFrame, angle, streamData, isSpecial, streamData.isGhost); break;
+    case 'E': out = drawError(out, x, y, startX, angle, isSpecial, streamData.isGhost!); break;
+    case 'C': out = drawComplete(out, x, y, maxFrame, angle, streamData, isSpecial, streamData.isGhost!); break;
     default: break;
     }
   });
@@ -320,7 +320,7 @@ function drawOperator(out: GMObject, label: string, y: number): GMObject {
   out = out.fill(BLACK_COLOR);
   out = out.font('helvetica', 54);
   out = out.draw(
-    'translate 0,' + (y + OPERATOR_HEIGHT * 0.5 - canvasHeight * 0.5),
+    'translate 0,' + (y + OPERATOR_HEIGHT * 0.5 - canvasHeight! * 0.5),
     'gravity Center',
     'text 0,0',
     stringifyContent(label));
@@ -336,10 +336,10 @@ function removeDuplicateInputs(inputStreams: TestStream[], outputStreams: TestSt
           inputStream.cold &&
           isEqual(msg.notification.value.messages, inputStream.cold.messages);
         if (passes) {
-          if (inputStream.cold.subscriptions.length) {
+          if (inputStream.cold!.subscriptions.length) {
             msg.notification.value.subscription = {
-              start: inputStream.cold.subscriptions[0].subscribedFrame,
-              end: inputStream.cold.subscriptions[0].unsubscribedFrame
+              start: inputStream.cold!.subscriptions[0].subscribedFrame,
+              end: inputStream.cold!.subscriptions[0].unsubscribedFrame
             };
           }
         }

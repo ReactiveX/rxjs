@@ -25,7 +25,7 @@ export function subscribeToResult<T, R>(
   result: any,
   outerValue?: T,
   outerIndex?: number,
-  innerSubscriber: Subscriber<R> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex)
+  innerSubscriber: Subscriber<R> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex!)
 ): Subscription | undefined {
   if (innerSubscriber.closed) {
     return undefined;

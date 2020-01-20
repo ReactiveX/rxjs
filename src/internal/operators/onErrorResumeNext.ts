@@ -113,14 +113,14 @@ export function onErrorResumeNextStatic<R>(array: ObservableInput<any>[]): Obser
 export function onErrorResumeNextStatic<T, R>(...nextSources: Array<ObservableInput<any> |
   Array<ObservableInput<any>> |
   ((...values: Array<any>) => R)>): Observable<R> {
-  let source: ObservableInput<any> = null;
+  let source: ObservableInput<any> | null = null;
 
   if (nextSources.length === 1 && isArray(nextSources[0])) {
     nextSources = <Array<ObservableInput<any>>>nextSources[0];
   }
-  source = nextSources.shift();
+  source = nextSources.shift()!;
 
-  return from(source, null).lift(new OnErrorResumeNextOperator<T, R>(nextSources));
+  return from(source, null!).lift(new OnErrorResumeNextOperator<T, R>(nextSources));
 }
 
 class OnErrorResumeNextOperator<T, R> implements Operator<T, R> {
@@ -159,7 +159,7 @@ class OnErrorResumeNextSubscriber<T, R> extends OuterSubscriber<T, R> {
   private subscribeToNextSource(): void {
     const next = this.nextSources.shift();
     if (!!next) {
-      const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
+      const innerSubscriber = new InnerSubscriber(this, undefined, undefined!);
       const destination = this.destination as Subscription;
       destination.add(innerSubscriber);
       const innerSubscription = subscribeToResult(this, next, undefined, undefined, innerSubscriber);

@@ -97,7 +97,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
     const destination = state.destination;
 
     while (queue.length > 0 && (queue[0].time - scheduler.now()) <= 0) {
-      queue.shift().notification.observe(destination);
+      queue.shift()!.notification.observe(destination);
     }
 
     if (queue.length > 0) {

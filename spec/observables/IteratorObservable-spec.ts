@@ -11,10 +11,10 @@ declare const rxTestScheduler: TestScheduler;
 describe('fromIterable', () => {
   it('should not accept null (or truthy-equivalent to null) iterator', () => {
     expect(() => {
-      fromIterable(null, undefined);
+      fromIterable(null as any, undefined);
     }).to.throw(Error, 'Iterable cannot be null');
     expect(() => {
-      fromIterable(void 0, undefined);
+      fromIterable(void 0 as any, undefined);
     }).to.throw(Error, 'Iterable cannot be null');
   });
 
@@ -47,7 +47,7 @@ describe('fromIterable', () => {
 
     rxTestScheduler.flush();
     expect(v1).to.deep.equal(expected);
-    expect(v2).to.deep.equal(expected);
+    expect(v2!).to.deep.equal(expected);
   });
 
   it('should finalize generators if the subscription ends', () => {

@@ -10,7 +10,7 @@ import { SchedulerAction } from '../types';
 export class AsapAction<T> extends AsyncAction<T> {
 
   constructor(protected scheduler: AsapScheduler,
-              protected work: (this: SchedulerAction<T>, state?: T) => void) {
+              protected work: (this: SchedulerAction<T>, state: T) => void) {
     super(scheduler, work);
   }
 
@@ -25,7 +25,7 @@ export class AsapAction<T> extends AsyncAction<T> {
     // one. If a microtask hasn't been scheduled yet, schedule one now. Return
     // the current scheduled microtask id.
     return scheduler.scheduled || (scheduler.scheduled = Immediate.setImmediate(
-      scheduler.flush.bind(scheduler, null)
+      scheduler.flush.bind(scheduler, undefined)
     ));
   }
   protected recycleAsyncId(scheduler: AsapScheduler, id?: any, delay: number = 0): any {

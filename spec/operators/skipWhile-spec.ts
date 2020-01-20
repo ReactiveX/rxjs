@@ -52,7 +52,7 @@ describe('skipWhile operator', () => {
     const sourceSubs =    '^               !';
     const expected =      '-2--3--4--5--6--|';
 
-    expectObservable(source.pipe(skipWhile(() => undefined))).toBe(expected);
+    expectObservable(source.pipe(skipWhile(() => undefined as any))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 

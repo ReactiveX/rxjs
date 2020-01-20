@@ -4,9 +4,9 @@ import { empty as emptyObserver } from '../Observer';
 import { PartialObserver } from '../types';
 
 export function toSubscriber<T>(
-  nextOrObserver?: PartialObserver<T> | ((value: T) => void),
-  error?: (error: any) => void,
-  complete?: () => void): Subscriber<T> {
+  nextOrObserver?: PartialObserver<T> | ((value: T) => void) | null,
+  error?: ((error: any) => void) | null,
+  complete?: (() => void) | null): Subscriber<T> {
 
   if (nextOrObserver) {
     if (nextOrObserver instanceof Subscriber) {

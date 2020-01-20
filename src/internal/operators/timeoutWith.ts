@@ -95,7 +95,7 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
  */
 class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
 
-  private action: SchedulerAction<TimeoutWithSubscriber<T, R>> = null;
+  private action: SchedulerAction<TimeoutWithSubscriber<T, R>> | null = null;
 
   constructor(destination: Subscriber<T>,
               private absoluteTimeout: boolean,
@@ -138,7 +138,7 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
   /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribe() {
     this.action = null;
-    this.scheduler = null;
-    this.withObservable = null;
+    this.scheduler = null!;
+    this.withObservable = null!;
   }
 }

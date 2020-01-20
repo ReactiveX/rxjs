@@ -132,13 +132,13 @@ describe('TestScheduler', () => {
 
   describe('createTime()', () => {
     it('should parse a simple time marble string to a number', () => {
-      const scheduler = new TestScheduler(null);
+      const scheduler = new TestScheduler(null!);
       const time = scheduler.createTime('-----|');
       expect(time).to.equal(50);
     });
 
     it('should throw if not given good marble input', () => {
-      const scheduler = new TestScheduler(null);
+      const scheduler = new TestScheduler(null!);
       expect(() => {
         scheduler.createTime('-a-b-#');
       }).to.throw();
@@ -148,7 +148,7 @@ describe('TestScheduler', () => {
   describe('createColdObservable()', () => {
     it('should create a cold observable', () => {
       const expected = ['A', 'B'];
-      const scheduler = new TestScheduler(null);
+      const scheduler = new TestScheduler(null!);
       const source = scheduler.createColdObservable('--a---b--|', { a: 'A', b: 'B' });
       expect(source).to.be.an.instanceOf(Observable);
       source.subscribe(x => {
@@ -162,7 +162,7 @@ describe('TestScheduler', () => {
   describe('createHotObservable()', () => {
     it('should create a hot observable', () => {
       const expected = ['A', 'B'];
-      const scheduler = new TestScheduler(null);
+      const scheduler = new TestScheduler(null!);
       const source = scheduler.createHotObservable('--a---b--|', { a: 'A', b: 'B' });
       expect(source).to.be.an.instanceof(Subject);
       source.subscribe(x => {

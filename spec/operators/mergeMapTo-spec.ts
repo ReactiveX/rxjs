@@ -376,8 +376,8 @@ describe('mergeMapTo', () => {
     let m: Observable<string>;
 
     /* tslint:disable:no-unused-variable */
-    let a1: Observable<string> = o.pipe(mergeMapTo(m));
-    let a2: Observable<string> = o.pipe(mergeMapTo(m, 3));
+    let a1: Observable<string> = o!.pipe(mergeMapTo(m!));
+    let a2: Observable<string> = o!.pipe(mergeMapTo(m!, 3));
     /* tslint:enable:no-unused-variable */
   });
 });

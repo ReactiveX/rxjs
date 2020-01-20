@@ -388,7 +388,7 @@ describe('fromEvent', () => {
       on() { /*noop*/ }
       off() { /*noop*/ }
     }
-    NullProtoEventTarget.prototype.toString = null;
+    NullProtoEventTarget.prototype.toString = null!;
     const obj: NullProtoEventTarget = new NullProtoEventTarget();
 
     expect(() => {
@@ -400,14 +400,14 @@ describe('fromEvent', () => {
   type('should support node style event emitters interfaces', () => {
     /* tslint:disable:no-unused-variable */
     let a: NodeStyleEventEmitter;
-    let b: Observable<any> = fromEvent(a, 'mock');
+    let b: Observable<any> = fromEvent(a!, 'mock');
     /* tslint:enable:no-unused-variable */
   });
 
   type('should support node compatible event emitters interfaces', () => {
     /* tslint:disable:no-unused-variable */
     let a: NodeCompatibleEventEmitter;
-    let b: Observable<any> = fromEvent(a, 'mock');
+    let b: Observable<any> = fromEvent(a!, 'mock');
     /* tslint:enable:no-unused-variable */
   });
 
@@ -418,7 +418,7 @@ describe('fromEvent', () => {
       removeListener(eventType: string | symbol, handler: NodeEventHandler): this;
     }
     let a: NodeEventEmitter;
-    let b: Observable<any> = fromEvent(a, 'mock');
+    let b: Observable<any> = fromEvent(a!, 'mock');
     /* tslint:enable:no-unused-variable */
   });
 
@@ -434,7 +434,7 @@ describe('fromEvent', () => {
       removeListener(eventType: string, listener: (...args: any[]) => any): void;
     }
     let a: ReactNativeEventEmitter;
-    let b: Observable<any> = fromEvent(a, 'mock');
+    let b: Observable<any> = fromEvent(a!, 'mock');
     /* tslint:enable:no-unused-variable */
   });
 

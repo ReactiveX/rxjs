@@ -44,7 +44,7 @@ export function combineLatest<T, TOther, R>(array: ObservableInput<TOther>[], pr
 export function combineLatest<T, R>(...observables: Array<ObservableInput<any> |
                                                     Array<ObservableInput<any>> |
                                                     ((...values: Array<any>) => R)>): OperatorFunction<T, R> {
-  let project: (...values: Array<any>) => R = null;
+  let project: ((...values: Array<any>) => R) | undefined = undefined;
   if (typeof observables[observables.length - 1] === 'function') {
     project = <(...values: Array<any>) => R>observables.pop();
   }

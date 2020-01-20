@@ -22,10 +22,10 @@ export class Observable<T> implements Subscribable<T> {
   public _isScalar: boolean = false;
 
   /** @deprecated This is an internal implementation detail, do not use. */
-  source: Observable<any>;
+  source: Observable<any> | undefined;
 
   /** @deprecated This is an internal implementation detail, do not use. */
-  operator: Operator<any, T>;
+  operator: Operator<any, T> | undefined;
 
   /**
    * @constructor
@@ -63,7 +63,7 @@ export class Observable<T> implements Subscribable<T> {
    * @param {Operator} operator the operator defining the operation to take on the observable
    * @return {Observable} a new observable with the Operator applied
    */
-  lift<R>(operator: Operator<T, R>): Observable<R> {
+  lift<R>(operator?: Operator<T, R>): Observable<R> {
     const observable = new Observable<R>();
     observable.source = this;
     observable.operator = operator;
@@ -203,9 +203,9 @@ export class Observable<T> implements Subscribable<T> {
    * @return {ISubscription} a subscription reference to the registered handlers
    * @method subscribe
    */
-  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
-            error?: (error: any) => void,
-            complete?: () => void): Subscription {
+  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
+            error?: ((error: any) => void) | null,
+            complete?: (() => void) | null): Subscription {
 
     const { operator } = this;
     const sink = toSubscriber(observerOrNext, error, complete);

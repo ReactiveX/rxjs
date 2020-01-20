@@ -825,10 +825,10 @@ describe('mergeMap', () => {
     let o: Observable<number>;
 
     /* tslint:disable:no-unused-variable */
-    let a1: Observable<string> = o.pipe(mergeMap(x => x.toString()));
-    let a2: Observable<string> = o.pipe(mergeMap(x => x.toString(), 3));
-    let a3: Observable<{ o: number; i: string; }> = o.pipe(mergeMap(x => x.toString(), (o, i) => ({ o, i })));
-    let a4: Observable<{ o: number; i: string; }> = o.pipe(mergeMap(x => x.toString(), (o, i) => ({ o, i }), 3));
+    let a1: Observable<string> = o!.pipe(mergeMap(x => x.toString()));
+    let a2: Observable<string> = o!.pipe(mergeMap(x => x.toString(), 3));
+    let a3: Observable<{ o: number; i: string; }> = o!.pipe(mergeMap(x => x.toString(), (o, i) => ({ o, i })));
+    let a4: Observable<{ o: number; i: string; }> = o!.pipe(mergeMap(x => x.toString(), (o, i) => ({ o, i }), 3));
     /* tslint:enable:no-unused-variable */
   });
 });

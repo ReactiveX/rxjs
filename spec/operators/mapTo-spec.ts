@@ -36,7 +36,7 @@ describe('mapTo operator', () => {
   });
 
   it('should propagate errors from observable that emits only errors', () => {
-    const a =   cold('--#', null, 'too bad');
+    const a =   cold('--#', undefined, 'too bad');
     const asubs =    '^ !';
     const expected = '--#';
 

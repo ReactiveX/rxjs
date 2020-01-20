@@ -1,6 +1,6 @@
 import { isFunction } from './util/isFunction';
 import { empty as emptyObserver } from './Observer';
-import { Observer, PartialObserver, TeardownLogic } from './types';
+import { Observer, PartialObserver } from './types';
 import { Subscription } from './Subscription';
 import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
 import { config } from './config';
@@ -45,7 +45,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   /** @internal */ syncErrorThrowable: boolean = false;
 
   protected isStopped: boolean = false;
-  protected destination: PartialObserver<any> | Subscriber<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
+  protected destination: Observer<any> | Subscriber<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
 
   /**
    * @param {Observer|function(value: T): void} [destinationOrNext] A partially
@@ -55,9 +55,9 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @param {function(): void} [complete] The `complete` callback of an
    * Observer.
    */
-  constructor(destinationOrNext?: PartialObserver<any> | ((value: T) => void),
-              error?: (e?: any) => void,
-              complete?: () => void) {
+  constructor(destinationOrNext?: PartialObserver<any> | ((value: T) => void) | null,
+              error?: ((e?: any) => void) | null,
+              complete?: (() => void) | null) {
     super();
 
     switch (arguments.length) {
@@ -96,7 +96,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    */
   next(value?: T): void {
     if (!this.isStopped) {
-      this._next(value);
+      this._next(value!);
     }
   }
 
@@ -152,7 +152,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribeAndRecycle(): Subscriber<T> {
     const {  _parentOrParents } = this;
-    this._parentOrParents = null;
+    this._parentOrParents = null!;
     this.unsubscribe();
     this.closed = false;
     this.isStopped = false;
@@ -171,12 +171,12 @@ export class SafeSubscriber<T> extends Subscriber<T> {
   private _context: any;
 
   constructor(private _parentSubscriber: Subscriber<T>,
-              observerOrNext?: PartialObserver<T> | ((value: T) => void),
-              error?: (e?: any) => void,
-              complete?: () => void) {
+              observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
+              error?: ((e?: any) => void) | null,
+              complete?: (() => void) | null) {
     super();
 
-    let next: ((value: T) => void);
+    let next: ((value: T) => void) | undefined;
     let context: any = this;
 
     if (isFunction(observerOrNext)) {
@@ -195,9 +195,9 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     }
 
     this._context = context;
-    this._next = next;
-    this._error = error;
-    this._complete = complete;
+    this._next = next!;
+    this._error = error!;
+    this._complete = complete!;
   }
 
   next(value?: T): void {
@@ -296,7 +296,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
   _unsubscribe(): void {
     const { _parentSubscriber } = this;
     this._context = null;
-    this._parentSubscriber = null;
+    this._parentSubscriber = null!;
     _parentSubscriber.unsubscribe();
   }
 }

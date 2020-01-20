@@ -98,7 +98,7 @@ describe('skipLast operator', () => {
   });
 
   it('should propagate error from the source observable', () => {
-    const e1 = hot('---^---#', null, 'too bad');
+    const e1 = hot('---^---#', undefined, 'too bad');
     const e1subs =    '^   !';
     const expected =  '----#';
 

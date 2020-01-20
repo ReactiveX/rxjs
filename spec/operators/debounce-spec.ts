@@ -207,7 +207,7 @@ describe('debounce operator', () => {
                      '               ^    !        ',
                      '                    ^ !      '];
 
-    expectObservable(e1.pipe(debounce(() => selector.shift()))).toBe(expected);
+    expectObservable(e1.pipe(debounce(() => selector.shift()!))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     for (let i = 0; i < selectorSubs.length; i++) {
       expectSubscriptions(selector[i].subscriptions).toBe(selectorSubs[i]);
@@ -230,7 +230,7 @@ describe('debounce operator', () => {
                      '               ^    ! ',
                      '                    ^!'];
 
-    expectObservable(e1.pipe(debounce(() => selector.shift()))).toBe(expected);
+    expectObservable(e1.pipe(debounce(() => selector.shift()!))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     for (let i = 0; i < selectorSubs.length; i++) {
       expectSubscriptions(selector[i].subscriptions).toBe(selectorSubs[i]);
@@ -249,7 +249,7 @@ describe('debounce operator', () => {
                    '                 ^ !          ',
                    '                          ^  !'];
 
-    expectObservable(e1.pipe(debounce(() => selector.shift()))).toBe(expected);
+    expectObservable(e1.pipe(debounce(() => selector.shift()!))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     for (let i = 0; i < selectorSubs.length; i++) {
       expectSubscriptions(selector[i].subscriptions).toBe(selectorSubs[i]);
@@ -270,7 +270,7 @@ describe('debounce operator', () => {
                    '                          ^  !        ',
                    '                                    ^!'];
 
-    expectObservable(e1.pipe(debounce(() => selector.shift()))).toBe(expected);
+    expectObservable(e1.pipe(debounce(() => selector.shift()!))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     for (let i = 0; i < selectorSubs.length; i++) {
       expectSubscriptions(selector[i].subscriptions).toBe(selectorSubs[i]);
@@ -295,7 +295,7 @@ describe('debounce operator', () => {
       }
     }
 
-    expectObservable(e1.pipe(debounce(selectorFunction))).toBe(expected);
+    expectObservable(e1.pipe(debounce(selectorFunction as any))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     for (let i = 0; i < selectorSubs.length; i++) {
       expectSubscriptions(selector[i].subscriptions).toBe(selectorSubs[i]);
@@ -336,7 +336,7 @@ describe('debounce operator', () => {
                    '                 ^ !                 ',
                    '                          ^  !       '];
 
-    expectObservable(e1.pipe(debounce(() => selector.shift()))).toBe(expected);
+    expectObservable(e1.pipe(debounce(() => selector.shift()!))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     for (let i = 0; i < selectorSubs.length; i++) {
       expectSubscriptions(selector[i].subscriptions).toBe(selectorSubs[i]);
@@ -359,7 +359,7 @@ describe('debounce operator', () => {
                      '                   ^!              ',
                      '                    ^    !         '];
 
-    expectObservable(e1.pipe(debounce(() => selector.shift()))).toBe(expected);
+    expectObservable(e1.pipe(debounce(() => selector.shift()!))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     for (let i = 0; i < selectorSubs.length; i++) {
       expectSubscriptions(selector[i].subscriptions).toBe(selectorSubs[i]);
@@ -439,7 +439,7 @@ describe('debounce operator', () => {
     /* tslint:disable:no-unused-variable */
     let o: Observable<number>;
     let s: Observable<number>;
-    let r: Observable<number> = o.pipe(debounce((n) => s));
+    let r: Observable<number> = o!.pipe(debounce((n) => s));
     /* tslint:enable:no-unused-variable */
   });
 
@@ -447,7 +447,7 @@ describe('debounce operator', () => {
     /* tslint:disable:no-unused-variable */
     let o: Observable<number>;
     let s: Observable<string>;
-    let r: Observable<number> = o.pipe(debounce((n) => s));
+    let r: Observable<number> = o!.pipe(debounce((n) => s));
     /* tslint:enable:no-unused-variable */
   });
 });

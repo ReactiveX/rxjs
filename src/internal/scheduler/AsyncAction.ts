@@ -11,12 +11,13 @@ import { AsyncScheduler } from './AsyncScheduler';
 export class AsyncAction<T> extends Action<T> {
 
   public id: any;
-  public state: T;
+  public state?: T;
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   public delay: number;
   protected pending: boolean = false;
 
   constructor(protected scheduler: AsyncScheduler,
-              protected work: (this: SchedulerAction<T>, state?: T) => void) {
+              protected work: (this: SchedulerAction<T>, state: T) => void) {
     super(scheduler, work);
   }
 
@@ -72,7 +73,7 @@ export class AsyncAction<T> extends Action<T> {
     return setInterval(scheduler.flush.bind(scheduler, this), delay);
   }
 
-  protected recycleAsyncId(scheduler: AsyncScheduler, id: any, delay: number = 0): any {
+  protected recycleAsyncId(scheduler: AsyncScheduler, id: any, delay: number | null = 0): any {
     // If this action is rescheduled with the same delay time, don't clear the interval id.
     if (delay !== null && this.delay === delay && this.pending === false) {
       return id;
@@ -138,10 +139,10 @@ export class AsyncAction<T> extends Action<T> {
     const actions = scheduler.actions;
     const index = actions.indexOf(this);
 
-    this.work  = null;
-    this.state = null;
+    this.work  = null!;
+    this.state = null!;
     this.pending = false;
-    this.scheduler = null;
+    this.scheduler = null!;
 
     if (index !== -1) {
       actions.splice(index, 1);
@@ -151,6 +152,6 @@ export class AsyncAction<T> extends Action<T> {
       this.id = this.recycleAsyncId(scheduler, id, null);
     }
 
-    this.delay = null;
+    this.delay = null!;
   }
 }

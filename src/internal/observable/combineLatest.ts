@@ -216,8 +216,8 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
 export function combineLatest<O extends ObservableInput<any>, R>(
   ...observables: (O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike)[]
 ): Observable<R> {
-  let resultSelector: (...values: Array<any>) => R =  null;
-  let scheduler: SchedulerLike = null;
+  let resultSelector: ((...values: Array<any>) => R) | undefined =  undefined;
+  let scheduler: SchedulerLike | undefined = undefined;
 
   if (isScheduler(observables[observables.length - 1])) {
     scheduler = observables.pop() as SchedulerLike;
@@ -254,7 +254,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
   private active: number = 0;
   private values: any[] = [];
   private observables: any[] = [];
-  private toRespond: number;
+  private toRespond: number | undefined;
 
   constructor(destination: Subscriber<R>, private resultSelector?: (...values: Array<any>) => R) {
     super(destination);
@@ -308,7 +308,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
   private _tryResultSelector(values: any[]) {
     let result: any;
     try {
-      result = this.resultSelector.apply(this, values);
+      result = this.resultSelector!.apply(this, values);
     } catch (err) {
       this.destination.error(err);
       return;

@@ -1,11 +1,11 @@
 import { errorObject } from './errorObject';
 
-let tryCatchTarget: Function;
+let tryCatchTarget: Function | undefined;
 
 function tryCatcher(this: any): any {
   errorObject.e = undefined;
   try {
-    return tryCatchTarget.apply(this, arguments);
+    return tryCatchTarget!.apply(this, arguments);
   } catch (e) {
     errorObject.e = e;
     return errorObject;
@@ -16,5 +16,5 @@ function tryCatcher(this: any): any {
 
 export function tryCatch<T extends Function>(fn: T): T {
   tryCatchTarget = fn;
-  return <any>tryCatcher;
+  return tryCatcher as Function as T;
 }

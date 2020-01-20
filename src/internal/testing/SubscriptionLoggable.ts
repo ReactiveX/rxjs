@@ -3,6 +3,7 @@ import { SubscriptionLog } from './SubscriptionLog';
 
 export class SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   scheduler: Scheduler;
 
   logSubscribedFrame(): number {

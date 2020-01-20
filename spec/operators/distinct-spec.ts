@@ -171,7 +171,7 @@ describe('distinct operator', () => {
     const e2subs =   '^                   !';
     const expected = '--a--b--------a--b--|';
 
-    expectObservable((<any>e1).pipe(distinct(null, e2))).toBe(expected);
+    expectObservable((<any>e1).pipe(distinct(null as any, e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -183,7 +183,7 @@ describe('distinct operator', () => {
     const e2subs =   '^            !';
     const expected = '--a--b-------#';
 
-    expectObservable((<any>e1).pipe(distinct(null, e2))).toBe(expected);
+    expectObservable((<any>e1).pipe(distinct(null as any, e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -196,7 +196,7 @@ describe('distinct operator', () => {
     const unsub =    '           !         ';
     const expected = '--a--b------';
 
-    expectObservable((<any>e1).pipe(distinct(null, e2)), unsub).toBe(expected);
+    expectObservable((<any>e1).pipe(distinct(null as any, e2)), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -208,7 +208,7 @@ describe('distinct operator', () => {
     const e2subs =   '^                   !';
     const expected = '--a--b--------a--b--|';
 
-    expectObservable((<any>e1).pipe(distinct(null, e2))).toBe(expected);
+    expectObservable((<any>e1).pipe(distinct(null as any, e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });

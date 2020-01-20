@@ -456,7 +456,7 @@ describe('zip operator', () => {
   it('should work with empty and error', () => {
     const a = cold(  '|');
     const asubs =    '(^!)';
-    const b = hot(   '------#', null, 'too bad');
+    const b = hot(   '------#', undefined, 'too bad');
     const bsubs =    '(^!)';
     const expected = '|';
 
@@ -466,7 +466,7 @@ describe('zip operator', () => {
   });
 
   it('should work with error and empty', () => {
-    const a = hot(   '------#', null, 'too bad');
+    const a = hot(   '------#', undefined, 'too bad');
     const asubs =    '(^!)';
     const b = cold(  '|');
     const bsubs =    '(^!)';
@@ -514,9 +514,9 @@ describe('zip operator', () => {
   });
 
   it('should work with error and error', () => {
-    const a =    hot('------#', null, 'too bad');
+    const a =    hot('------#', undefined, 'too bad');
     const asubs =    '^     !';
-    const b =    hot('----------#', null, 'too bad 2');
+    const b =    hot('----------#', undefined, 'too bad 2');
     const bsubs =    '^     !';
     const expected = '------#';
 
@@ -595,7 +595,7 @@ describe('zip operator', () => {
     /* tslint:disable:no-unused-variable */
     let o: Observable<number>;
     let z: Observable<number>[];
-    let a: Observable<number[]> = o.pipe(zip(...z));
+    let a: Observable<number[]> = o!.pipe(zip(...z!));
     /* tslint:enable:no-unused-variable */
   });
 
@@ -603,7 +603,7 @@ describe('zip operator', () => {
     /* tslint:disable:no-unused-variable */
     let o: Observable<number>;
     let z: Observable<number>[];
-    let a: Observable<string[]> = o.pipe(zip(...z, (...r) => r.map(v => v.toString())));
+    let a: Observable<string[]> = o!.pipe(zip(...z!, (...r) => r.map(v => v.toString())));
     /* tslint:enable:no-unused-variable */
   });
 
@@ -611,7 +611,7 @@ describe('zip operator', () => {
     /* tslint:disable:no-unused-variable */
     let o: Observable<number>;
     let z: Observable<number>[];
-    let a: Observable<string[]> = o.pipe(zip(z, (...r: any[]) => r.map(v => v.toString())));
+    let a: Observable<string[]> = o!.pipe(zip(z!, (...r: any[]) => r.map(v => v.toString())));
     /* tslint:enable:no-unused-variable */
   });
 });

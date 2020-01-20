@@ -126,9 +126,9 @@ describe('find operator', () => {
     const unsub =      '      !     ';
 
     const result = source.pipe(
-      mergeMap((x: string) => of(x)),
-      find((value: string) => value === 'z'),
-      mergeMap((x: string) => of(x))
+      mergeMap(x => of(x)),
+      find(value => value === 'z'),
+      mergeMap(x => of(x))
     );
 
     expectObservable(result, unsub).toBe(expected);
@@ -189,21 +189,21 @@ describe('find operator', () => {
 
       const foo: Foo = new Foo();
       of(foo).pipe(find(foo => foo.baz === 42))
-        .subscribe(x => x.baz); // x is still Foo
+        .subscribe(x => x!.baz); // x is still Foo
       of(foo).pipe(find(isBar))
-        .subscribe(x => x.bar); // x is Bar!
+        .subscribe(x => x!.bar); // x is Bar!
 
       const foobar: Bar = new Foo(); // type is interface, not the class
       of(foobar).pipe(find(foobar => foobar.bar === 'name'))
-        .subscribe(x => x.bar); // <-- x is still Bar
+        .subscribe(x => x!.bar); // <-- x is still Bar
       of(foobar).pipe(find(isBar))
-        .subscribe(x => x.bar); // <--- x is Bar!
+        .subscribe(x => x!.bar); // <--- x is Bar!
 
       const barish = { bar: 'quack', baz: 42 }; // type can quack like a Bar
       of(barish).pipe(find(x => x.bar === 'quack'))
-        .subscribe(x => x.bar); // x is still { bar: string; baz: number; }
+        .subscribe(x => x!.bar); // x is still { bar: string; baz: number; }
       of(barish).pipe(find(isBar))
-        .subscribe(bar => bar.bar); // x is Bar!
+        .subscribe(bar => bar!.bar); // x is Bar!
     }
 
     // type guards with primitive types
@@ -214,7 +214,7 @@ describe('find operator', () => {
       const isString = (x: string | number): x is string => typeof x === 'string';
 
       xs.pipe(find(isString))
-        .subscribe(s => s.length); // s is string
+        .subscribe(s => s!.length); // s is string
 
       // In contrast, this type of regular boolean predicate still maintains the original type
       xs.pipe(find(x => typeof x === 'number'))

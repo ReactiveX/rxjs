@@ -186,7 +186,7 @@ describe('delay operator', () => {
       const result = e1.pipe(
         repeatWhen(notifications => {
           const delayed = notifications.pipe(delay(duration, testScheduler));
-          subscribeSpy = sinon.spy(delayed['source'], 'subscribe');
+          subscribeSpy = sinon.spy((delayed as any)['source'], 'subscribe');
           return delayed;
         }),
         skip(1),

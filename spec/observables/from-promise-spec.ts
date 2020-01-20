@@ -41,7 +41,7 @@ describe('from (fromPromise)', () => {
         (x) => { expect(x).to.equal(42); },
         (x) => {
           done(new Error('should not be called'));
-        }, null);
+        }, undefined);
     setTimeout(() => {
       observable
         .subscribe(
@@ -127,7 +127,7 @@ describe('from (fromPromise)', () => {
         (x) => {
           done(new Error('should not be called'));
         },
-        null);
+        undefined);
     setTimeout(() => {
       observable
         .subscribe(

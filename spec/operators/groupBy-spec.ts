@@ -45,7 +45,7 @@ describe('groupBy operator', () => {
     of(1, 2, 3).pipe(
       groupBy((x: number) => x % 2)
     ).subscribe((g: any) => {
-        const expectedGroup = expectedGroups.shift();
+        const expectedGroup = expectedGroups.shift()!;
         expect(g.key).to.equal(expectedGroup.key);
 
         g.subscribe((x: any) => {
@@ -63,7 +63,7 @@ describe('groupBy operator', () => {
     of(1, 2, 3).pipe(
       groupBy((x: number) => x % 2, (x: number) => x + '!')
     ).subscribe((g: any) => {
-        const expectedGroup = expectedGroups.shift();
+        const expectedGroup = expectedGroups.shift()!;
         expect(g.key).to.equal(expectedGroup.key);
 
         g.subscribe((x: any) => {
@@ -107,12 +107,12 @@ describe('groupBy operator', () => {
     ];
 
     of(1, 2, 3).pipe(
-      groupBy((x: number) => x % 2, null, null, () => new ReplaySubject(1)),
+      groupBy((x: number) => x % 2, null as any, null as any, () => new ReplaySubject(1)),
       // Ensure each inner group reaches the destination after the first event
       // has been next'd to the group
       delay(5)
     ).subscribe((g: any) => {
-        const expectedGroup = expectedGroups.shift();
+        const expectedGroup = expectedGroups.shift()!;
         expect(g.key).to.equal(expectedGroup.key);
 
         g.subscribe((x: any) => {
@@ -1477,7 +1477,7 @@ describe('groupBy operator', () => {
 
     result
       .subscribe((g: any) => {
-        const expectedGroup = expectedGroups.shift();
+        const expectedGroup = expectedGroups.shift()!;
         expect(g.key).to.equal(expectedGroup.key);
 
         g.subscribe((x: any) => {

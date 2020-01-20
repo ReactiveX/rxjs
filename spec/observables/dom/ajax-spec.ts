@@ -241,8 +241,8 @@ describe('ajax', () => {
       'responseText': JSON.stringify(expected)
     });
 
-    expect(result.xhr).exist;
-    expect(result.response).to.deep.equal(JSON.stringify({ foo: 'bar' }));
+    expect(result!.xhr).exist;
+    expect(result!.response).to.deep.equal(JSON.stringify({ foo: 'bar' }));
     expect(complete).to.be.true;
   });
 
@@ -335,8 +335,8 @@ describe('ajax', () => {
       'responseText': 'Wee! I am text!'
     });
 
-    expect(result.xhr).exist;
-    expect(result.response).to.deep.equal('Wee! I am text!');
+    expect(result!.xhr).exist;
+    expect(result!.response).to.deep.equal('Wee! I am text!');
     expect(complete).to.be.true;
   });
 
@@ -758,7 +758,7 @@ describe('ajax', () => {
       });
 
       expect(request.data).to.equal('foo=bar&hi=there%20you');
-      expect(result.response).to.deep.equal(expected);
+      expect(result!.response).to.deep.equal(expected);
       expect(complete).to.be.true;
     });
 
@@ -790,7 +790,7 @@ describe('ajax', () => {
 
       expect(request.data)
         .to.equal('test=https%3A%2F%2Fgoogle.com%2Fsearch%3Fq%3DencodeURI%2Bvs%2BencodeURIComponent');
-      expect(result.response).to.deep.equal(expected);
+      expect(result!.response).to.deep.equal(expected);
       expect(complete).to.be.true;
     });
 
@@ -821,7 +821,7 @@ describe('ajax', () => {
         'responseText': expected
       });
 
-      expect(result.response).to.equal(expected);
+      expect(result!.response).to.equal(expected);
       expect(complete).to.be.true;
     });
 
@@ -853,7 +853,7 @@ describe('ajax', () => {
           'contentType': 'application/json'
       });
 
-      expect(result.response).to.equal(expected);
+      expect(result!.response).to.equal(expected);
       expect(complete).to.be.true;
     });
 
@@ -1119,7 +1119,7 @@ class MockXMLHttpRequest {
 
   static clearRequest(): void {
     MockXMLHttpRequest.requests.length = 0;
-    MockXMLHttpRequest.recentRequest = null;
+    MockXMLHttpRequest.recentRequest = null!;
   }
 
   private previousRequest: MockXMLHttpRequest;
@@ -1135,6 +1135,7 @@ class MockXMLHttpRequest {
 
   private responseHeaders: any;
   protected status: any;
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   protected responseText: string;
   protected response: any;
 
@@ -1144,9 +1145,13 @@ class MockXMLHttpRequest {
   requestHeaders: any = {};
   withCredentials: boolean = false;
 
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   onreadystatechange: (e: ProgressEvent) => any;
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   onerror: (e: ErrorEvent) => any;
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   onprogress: (e: ProgressEvent) => any;
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   ontimeout: (e: ProgressEvent) => any;
   upload: XMLHttpRequestUpload = <any>{ };
 
@@ -1156,6 +1161,7 @@ class MockXMLHttpRequest {
     MockXMLHttpRequest.requests.push(this);
   }
 
+  // @ts-ignore: Property has no initializer and is not definitely assigned
   timeout: number;
 
   send(data: any): void {

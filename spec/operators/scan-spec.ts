@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { scan, mergeMap, finalize, reduce } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { scan, mergeMap, finalize } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 declare const type: Function;
 declare const asDiagram: Function;
@@ -39,7 +39,7 @@ describe('scan operator', () => {
       z: ['b', 'c', 'd', 'e', 'f', 'g']
     };
 
-    const source = e1.pipe(scan((acc: any, x: string) => [].concat(acc, x), []));
+    const source = e1.pipe(scan((acc, x) => acc.concat(x), [] as string[]));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -93,7 +93,7 @@ describe('scan operator', () => {
       w: ['b', 'c', 'd']
     };
 
-    const source = e1.pipe(scan((acc: any, x: string) => [].concat(acc, x), []));
+    const source = e1.pipe(scan((acc, x) => acc.concat(x), [] as string[]));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -113,12 +113,12 @@ describe('scan operator', () => {
       z: ['b', 'c', 'd', 'e', 'f', 'g']
     };
 
-    const source = e1.pipe(scan((acc: any, x: string) => {
+    const source = e1.pipe(scan((acc, x) => {
       if (x === 'd') {
         throw 'bad!';
       }
-      return [].concat(acc, x);
-    }, []));
+      return acc.concat(x);
+    }, [] as string[]));
 
     expectObservable(source).toBe(expected, values, 'bad!');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -129,7 +129,7 @@ describe('scan operator', () => {
     const e1subs =   '(^!)';
     const expected = '|';
 
-    const source = e1.pipe(scan((acc: any, x: string) => [].concat(acc, x), []));
+    const source = e1.pipe(scan((acc, x) => acc.concat(x), [] as string[]));
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -140,7 +140,7 @@ describe('scan operator', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    const source = e1.pipe(scan((acc: any, x: string) => [].concat(acc, x), []));
+    const source = e1.pipe(scan((acc, x) => acc.concat(x), [] as string[]));
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -151,7 +151,7 @@ describe('scan operator', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    const source = e1.pipe(scan((acc: any, x: string) => [].concat(acc, x), []));
+    const source = e1.pipe(scan((acc, x) => acc.concat(x), [] as string[]));
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -171,7 +171,7 @@ describe('scan operator', () => {
       z: ['b', 'c', 'd', 'e', 'f', 'g']
     };
 
-    const source = e1.pipe(scan((acc: any, x: string) => [].concat(acc, x), []));
+    const source = e1.pipe(scan((acc, x) => acc.concat(x), [] as string[]));
 
     expectObservable(source, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -193,7 +193,7 @@ describe('scan operator', () => {
 
     const source = e1.pipe(
       mergeMap((x: string) => of(x)),
-      scan((acc: any, x: string) => [].concat(acc, x), []),
+      scan((acc, x) => acc.concat(x), [] as string[]),
       mergeMap((x: string[]) => of(x))
     );
 
