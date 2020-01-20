@@ -78,17 +78,14 @@ import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
  * @see {@link windowWhen}
  * @see {@link bufferTime}
  *
- * @param {number} windowTimeSpan The amount of time to fill each window.
- * @param {number} [windowCreationInterval] The interval at which to start new
+ * @param windowTimeSpan The amount of time to fill each window.
+ * @param windowCreationInterval The interval at which to start new
  * windows.
- * @param {number} [maxWindowSize=Number.POSITIVE_INFINITY] Max number of
+ * @param maxWindowSize Max number of
  * values each window can emit before completion.
- * @param {SchedulerLike} [scheduler=async] The scheduler on which to schedule the
+ * @param scheduler The scheduler on which to schedule the
  * intervals that determine window boundaries.
- * @return {Observable<Observable<T>>} An observable of windows, which in turn
- * are Observables.
- * @method windowTime
- * @owner Observable
+ * @returnAn observable of windows, which in turn are Observables.
  */
 export function windowTime<T>(windowTimeSpan: number,
                               scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
