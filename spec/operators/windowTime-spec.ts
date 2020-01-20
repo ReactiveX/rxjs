@@ -1,4 +1,4 @@
-import { windowTime, mergeMap } from 'rxjs/operators';
+import { windowTime, mergeMap, mergeAll } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, Observable } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -256,6 +256,34 @@ describe('windowTime operator', () => {
 
       expectObservable(result, unsub).toBe(expected, values);
       expectSubscriptions(source.subscriptions).toBe(sourcesubs);
+    });
+  });
+
+  it('should not error if maxWindowSize is hit while nexting to other windows.', () => {
+    rxTestScheduler.run(({ cold, time, expectObservable }) => {
+      const source = cold('                ----a---b---c---d---e---f---g---h---i---j---');
+      const windowTimeSpan = time('        ------------|');
+      const windowCreationInterval = time('--------|');
+      const maxWindowSize = 4;
+      const a = cold('                     ----a---b---|');
+      //                                   ------------|
+      const b = cold('                             b---c---d---(e|)');
+      const c = cold('                                     ----e---f---(g|)');
+      const d = cold('                                             ----g---h---(i|)');
+      const e = cold('                                                     ----i---j--');
+      const f = cold('                                                             ---');
+      const expected = '                   a-------b-------c-------d-------e-------f---';
+      const killSub = '                    ------------------------------------------!';
+      const values = {a, b, c, d, e, f};
+      const result = source.pipe(
+        windowTime(
+          windowTimeSpan,
+          windowCreationInterval,
+          maxWindowSize,
+          rxTestScheduler
+        ),
+      );
+      expectObservable(result, killSub).toBe(expected, values);
     });
   });
 });

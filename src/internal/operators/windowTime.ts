@@ -203,13 +203,17 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   }
 
   protected _next(value: T): void {
-    const windows = this.windows;
+    // If we have a max window size, we might end up mutating the
+    // array while we're iterating over it. If that's the case, we'll
+    // copy it, otherwise, we don't just to save memory allocation.
+    const windows = this.maxWindowSize < Number.POSITIVE_INFINITY ? this.windows.slice() : this.windows;
     const len = windows.length;
     for (let i = 0; i < len; i++) {
       const window = windows[i];
       if (!window.closed) {
         window.next(value);
-        if (window.numberOfNextedValues >= this.maxWindowSize) {
+        if (this.maxWindowSize <= window.numberOfNextedValues) {
+          // mutation may occur here.
           this.closeWindow(window);
         }
       }
@@ -227,10 +231,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   protected _complete(): void {
     const windows = this.windows;
     while (windows.length > 0) {
-      const window = windows.shift()!;
-      if (!window.closed) {
-        window.complete();
-      }
+      windows.shift()!.complete();
     }
     this.destination.complete();
   }
@@ -244,9 +245,13 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   }
 
   public closeWindow(window: CountedSubject<T>): void {
-    window.complete();
-    const windows = this.windows;
-    windows.splice(windows.indexOf(window), 1);
+    const index = this.windows.indexOf(window);
+    // All closed windows should have been removed,
+    // we don't need to call complete unless they're found.
+    if (index >= 0) {
+      window.complete();
+      this.windows.splice(index, 1);
+    }
   }
 }
 
