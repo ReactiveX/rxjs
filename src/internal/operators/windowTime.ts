@@ -187,10 +187,10 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   private windows: CountedSubject<T>[] = [];
 
   constructor(protected destination: Subscriber<Observable<T>>,
-              private windowTimeSpan: number,
-              private windowCreationInterval: number | null,
+              windowTimeSpan: number,
+              windowCreationInterval: number | null,
               private maxWindowSize: number,
-              private scheduler: SchedulerLike) {
+              scheduler: SchedulerLike) {
     super(destination);
 
     const window = this.openWindow();
