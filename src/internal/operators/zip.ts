@@ -38,6 +38,9 @@ export function zip<T, TOther, R>(array: Array<ObservableInput<TOther>>, project
  */
 export function zip<T, R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): OperatorFunction<T, R> {
   return function zipOperatorFunction(source: Observable<T>) {
-    return source.lift.call(zipStatic<R>(source, ...observables));
+    return source.lift.call(
+      zipStatic<R>(source, ...observables),
+      undefined
+    ) as Observable<R>;
   };
 }

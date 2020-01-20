@@ -103,7 +103,7 @@ describe('RangeObservable', () => {
         count: 9
       };
 
-      dispatch.call({}, state);
+      dispatch.call({} as any, state);
 
       expect(state.subscriber.complete).have.been.called;
       expect(state.subscriber.next).not.have.been.called;
@@ -124,7 +124,7 @@ describe('RangeObservable', () => {
         schedule: sinon.spy()
       };
 
-      dispatch.call(thisArg, state);
+      dispatch.call(thisArg as any, state);
 
       expect(state.subscriber.complete).not.have.been.called;
       expect(state.subscriber.next).have.been.calledWith(5);

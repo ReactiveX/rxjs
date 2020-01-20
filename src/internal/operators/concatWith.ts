@@ -44,5 +44,8 @@ export function concatWith<T, A extends ObservableInput<any>[]>(...otherSources:
  * @param otherSources Other observable sources to subscribe to, in sequence, after the original source is complete.
  */
 export function concatWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, ObservedValuesFromArray<A> | T> {
-  return (source: Observable<T>) => source.lift.call(concatStatic(source, ...otherSources));
+  return (source: Observable<T>) => source.lift.call(
+    concatStatic(source, ...otherSources),
+    undefined
+  ) as Observable<ObservedValuesFromArray<A> | T>;
 }
