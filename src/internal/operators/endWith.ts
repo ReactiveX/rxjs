@@ -36,11 +36,13 @@ export function endWith<T, A extends any[]>(...args: A): OperatorFunction<T, T |
  * ![](endWith.png)
  *
  * ## Example
- * ### After the source observable completes, appends an emission and then completes too.
+ *
+ * Emit values to know when an interval starts and stops. The interval will
+ * stop when a user clicks anywhere on the document.
  *
  * ```ts
  * import { interval, fromEvent } from 'rxjs';
- * import { map, takeUntil, endWith } from 'rxjs/operators';
+ * import { map, startWith, takeUntil, endWith } from 'rxjs/operators';
  *
  * const ticker$ = interval(5000).pipe(
  *   map(() => 'tick'),
