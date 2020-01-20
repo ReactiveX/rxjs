@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { concat } from '../observable/concat';
 import { isScheduler } from '../util/isScheduler';
-import { MonoTypeOperatorFunction, OperatorFunction, SchedulerLike } from '../types';
+import { MonoTypeOperatorFunction, OperatorFunction, SchedulerLike, ValueFromArray } from '../types';
 
 /* tslint:disable:max-line-length */
 /** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([[a, b, c], source], scheduler).pipe(concatAll())`) */
@@ -19,20 +19,14 @@ export function startWith<T, D, E, F, G, H>(v1: D, v2: E, v3: F, v4: G, v5: H, s
 /** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([[a, b, c], source], scheduler).pipe(concatAll())`) */
 export function startWith<T, D, E, F, G, H, I>(v1: D, v2: E, v3: F, v4: G, v5: H, v6: I, scheduler: SchedulerLike): OperatorFunction<T, T | D | E | F | G | H | I>;
 
-export function startWith<T, D>(v1: D): OperatorFunction<T, T | D>;
-export function startWith<T, D, E>(v1: D, v2: E): OperatorFunction<T, T | D | E>;
-export function startWith<T, D, E, F>(v1: D, v2: E, v3: F): OperatorFunction<T, T | D | E | F>;
-export function startWith<T, D, E, F, G>(v1: D, v2:  E, v3: F, v4: G): OperatorFunction<T, T | D | E | F | G>;
-export function startWith<T, D, E, F, G, H>(v1: D, v2: E, v3: F, v4: G, v5: H): OperatorFunction<T, T | D | E | F | G | H>;
-export function startWith<T, D, E, F, G, H, I>(v1: D, v2: E, v3: F, v4: G, v5: H, v6: I): OperatorFunction<T, T | D | E | F | G | H | I>;
-export function startWith<T, D = T>(...array: D[]): OperatorFunction<T, T | D>;
-/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([[a, b, c], source], scheduler).pipe(concatAll())`) */
-export function startWith<T, D = T>(...array: Array<D | SchedulerLike>): OperatorFunction<T, T | D>;
-/* tslint:enable:max-line-length */
+export function startWith<T, A extends any[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
 /**
- * Returns an Observable that emits the items you specify as arguments before it begins to emit
- * items emitted by the source Observable.
+ * Returns an observable that, at the moment of subscription, will synchronously emit all
+ * values provided to this operator, then subscribe to the source and mirror all of its emissions
+ * to subscribers.
+ *
+ * This is a useful way to know when subscription has occurred on an existing observable.
  *
  * <span class="informal">First emits its arguments in order, and then any
  * emissions from the source.</span>
@@ -41,36 +35,37 @@ export function startWith<T, D = T>(...array: Array<D | SchedulerLike>): Operato
  *
  * ## Examples
  *
- * Start the chain of emissions with `"first"`, `"second"`
+ * Emit a value when a timer starts.
  *
  * ```ts
- * import { of } from 'rxjs';
+ * import { timer } from 'rxjs';
  * import { startWith } from 'rxjs/operators';
  *
- * of("from source")
- *   .pipe(startWith("first", "second"))
+ * timer(1000)
+ *   .pipe(
+ *     map(() => 'timer emit'),
+ *     startWith('timer start')
+ *   )
  *   .subscribe(x => console.log(x));
  *
  * // results:
- * //   "first"
- * //   "second"
- * //   "from source"
+ * // "timer start"
+ * // "timer emit"
  * ```
  *
- * @param {...T} values - Items you want the modified Observable to emit first.
- * @param {SchedulerLike} [scheduler] - A {@link SchedulerLike} to use for scheduling
- * the emissions of the `next` notifications.
- * @return {Observable} An Observable that emits the items in the specified Iterable and then emits the items
- * emitted by the source Observable.
- * @name startWith
+ * @param values Items you want the modified Observable to emit first.
+ *
+ * @see endWith
+ * @see finalize
+ * @see concat
  */
-export function startWith<T, D>(...array: Array<D | SchedulerLike>): OperatorFunction<T, T | D> {
-  const scheduler = array[array.length - 1] as SchedulerLike;
+export function startWith<T, D>(...values: D[]): OperatorFunction<T, T | D> {
+  const scheduler = values[values.length - 1];
   if (isScheduler(scheduler)) {
     // deprecated path
-    array.pop();
-    return (source: Observable<T>) => concat(array as D[], source, scheduler);
+    values.pop();
+    return (source: Observable<T>) => concat(values, source, scheduler);
   } else {
-    return (source: Observable<T>) => concat(array as D[], source);
+    return (source: Observable<T>) => concat(values, source);
   }
 }
