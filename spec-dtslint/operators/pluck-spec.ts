@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { pluck } from 'rxjs/operators';
 
 it('should infer correctly', () => {
@@ -39,6 +39,10 @@ it('should not accept empty parameter', () => {
 
 it('should accept string only', () => {
   const a = of({ name: 'abc' }).pipe(pluck(1)); // $ExpectError
+});
+
+it('should not infer type from the variable if key doesn\'t exist', () => {
+  const a: Observable<number> = of({ name: 'abc' }).pipe(pluck('xyz')); // $ExpectError
 });
 
 it('should accept a spread of arguments', () => {
