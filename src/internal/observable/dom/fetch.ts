@@ -58,6 +58,7 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
     let abortable = true;
     let unsubscribed = false;
 
+    let perSubscriberInit: RequestInit;
     if (init) {
       // If a signal is provided, just have it teardown. It's a cancellation token, basically.
       if (init.signal) {
@@ -72,12 +73,14 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
           init.signal.addEventListener('abort', outerSignalHandler);
         }
       }
-      init = { ...init, signal };
+      // init cannot be mutated or reassigned as it's closed over by the
+      // subscriber callback and is shared between subscribers.
+      perSubscriberInit = { ...init, signal };
     } else {
-      init = { signal };
+      perSubscriberInit = { signal };
     }
 
-    fetch(input, init).then(response => {
+    fetch(input, perSubscriberInit).then(response => {
       abortable = false;
       subscriber.next(response);
       subscriber.complete();
