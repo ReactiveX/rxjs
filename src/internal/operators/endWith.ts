@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { concat } from '../observable/concat';
 import { of } from '../observable/of';
-import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction } from '../types';
+import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ValueFromArray } from '../types';
 
 /* tslint:disable:max-line-length */
 /** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([source, [a, b, c]], scheduler).pipe(concatAll())`) */
@@ -19,20 +19,14 @@ export function endWith<T, A, B, C, D, E>(v1: A, v2: B, v3: C, v4: D, v5: E, sch
 /** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([source, [a, b, c]], scheduler).pipe(concatAll())`) */
 export function endWith<T, A, B, C, D, E, F>(v1: A, v2: B, v3: C, v4: D, v5: E, v6: F, scheduler: SchedulerLike): OperatorFunction<T, T | A | B | C | D | E | F>;
 
-export function endWith<T, A>(v1: A): OperatorFunction<T, T | A>;
-export function endWith<T, A, B>(v1: A, v2: B): OperatorFunction<T, T | A | B>;
-export function endWith<T, A, B, C>(v1: A, v2: B, v3: C): OperatorFunction<T, T | A | B | C>;
-export function endWith<T, A, B, C, D>(v1: A, v2: B, v3: C, v4: D): OperatorFunction<T, T | A | B | C | D>;
-export function endWith<T, A, B, C, D, E>(v1: A, v2: B, v3: C, v4: D, v5: E): OperatorFunction<T, T | A | B | C | D | E>;
-export function endWith<T, A, B, C, D, E, F>(v1: A, v2: B, v3: C, v4: D, v5: E, v6: F): OperatorFunction<T, T | A | B | C | D | E | F>;
-export function endWith<T, Z = T>(...array: Z[]): OperatorFunction<T, T | Z>;
-/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([source, [a, b, c]], scheduler).pipe(concatAll())`) */
-export function endWith<T, Z = T>(...array: Array<Z | SchedulerLike>): OperatorFunction<T, T | Z>;
+export function endWith<T, A extends any[]>(...args: A): OperatorFunction<T, T | ValueFromArray<A>>;
+
 /* tslint:enable:max-line-length */
 
 /**
- * Returns an Observable that emits the items you specify as arguments after it finishes emitting
- * items emitted by the source Observable.
+ * Returns an observable that will synchronously emit the provided value(s) after the
+ * source completes. NOTE: Passing a last argument of a Scheduler is _deprecated_, and will
+ * result in incorrect types in TypeScript.
  *
  * ![](endWith.png)
  *
@@ -54,14 +48,8 @@ export function endWith<T, Z = T>(...array: Array<Z | SchedulerLike>): OperatorF
  * // 'goodbye!'
  * ```
  *
- * @param {...T} values - Items you want the modified Observable to emit last.
- * @param {SchedulerLike} [scheduler] - A {@link SchedulerLike} to use for scheduling
- * the emissions of the `next` notifications.
- * @return {Observable} An Observable that emits the items emitted by the source Observable
- *  and then emits the items in the specified Iterable.
- * @method endWith
- * @owner Observable
+ * @param values - Items you want the modified Observable to emit last.
  */
-export function endWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => concat(source, of(...array)) as Observable<T>;
+export function endWith<T>(...values: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T> {
+  return (source: Observable<T>) => concat(source, of(...values)) as Observable<T>;
 }
