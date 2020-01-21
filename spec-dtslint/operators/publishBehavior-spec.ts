@@ -10,5 +10,5 @@ it('should infer correctly with parameter', () => {
 });
 
 it('should enforce type on parameter', () => {
-  const a = of(1, 2, 3).pipe(publishBehavior('a'); // $ExpectError
+  const a = of(1, 2, 3).pipe(publishBehavior('a')); // $ExpectError
 });
