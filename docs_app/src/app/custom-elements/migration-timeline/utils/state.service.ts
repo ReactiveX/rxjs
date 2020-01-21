@@ -1,6 +1,6 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {ConnectableObservable, merge, noop, Observable, OperatorFunction, Subject, Subscription, UnaryFunction} from 'rxjs';
-import {map, mergeAll, pluck, publishReplay, scan} from 'rxjs/operators';
+import {map, mergeAll, pluck, publishReplay, scan, tap} from 'rxjs/operators';
 import {stateful} from './operators';
 
 function pipeFromArray<T, R>(fns: Array<UnaryFunction<T, R>>): UnaryFunction<T, R> {
@@ -163,8 +163,22 @@ export class State<T> implements OnDestroy {
     throw new Error('Wrong params passed' + JSON.stringify(opOrMapFn));
   }
 
-  holdEffect(o: Observable<any>): void {
-    this.effectSubject.next(o);
+
+  /**
+   * holdEffect(o: Observable<any>) => void
+   *
+   * @example
+   * const ls = new LocalState<{test: string, bar: number}>();
+   * ls.holdEffect(of());
+   * ls.holdEffect(of().pipe(tap(n => console.log('side effect', n))));
+   * ls.holdEffect(of(), n => console.log('side effect', n));
+   */
+  holdEffect<S>(observableWithSideEffect: Observable<S>): void;
+  holdEffect<S>(obsOrObsWithSideEffect: Observable<S>, sideEffectFn?: (arg: S) => void): void {
+    if (sideEffectFn) {
+      this.effectSubject.next(obsOrObsWithSideEffect.pipe(tap(sideEffectFn)));
+    }
+    this.effectSubject.next(obsOrObsWithSideEffect);
   }
 
 
