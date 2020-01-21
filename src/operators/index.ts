@@ -103,5 +103,5 @@ export { windowTime } from '../internal/operators/windowTime';
 export { windowToggle } from '../internal/operators/windowToggle';
 export { windowWhen } from '../internal/operators/windowWhen';
 export { withLatestFrom } from '../internal/operators/withLatestFrom';
-export { zip } from '../internal/operators/zip';
+export { zip, zipWith } from '../internal/operators/zipWith';
 export { zipAll } from '../internal/operators/zipAll';
