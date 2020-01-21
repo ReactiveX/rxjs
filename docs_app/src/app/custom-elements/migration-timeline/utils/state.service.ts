@@ -18,15 +18,15 @@ function pipeFromArray<T, R>(fns: Array<UnaryFunction<T, R>>): UnaryFunction<T, 
 }
 
 @Injectable()
-export class State<T extends object> implements OnDestroy {
-  private _subscription = new Subscription();
-  private _stateObservables = new Subject<Observable<Partial<T>>>();
-  private _effectSubject = new Subject<any>();
-  private _stateSlices = new Subject<Partial<T>>();
+export class State<T> implements OnDestroy {
+  private subscription = new Subscription();
+  private stateObservables = new Subject<Observable<Partial<T>>>();
+  private effectSubject = new Subject<any>();
+  private stateSlices = new Subject<Partial<T>>();
 
-  private _state$ = merge(
-    this._stateObservables.pipe(mergeAll()),
-    this._stateSlices
+  private state$ = merge(
+    this.stateObservables.pipe(mergeAll()),
+    this.stateSlices
   ).pipe(
     scan(this.stateAccumulator, {} as T),
     publishReplay(1)
@@ -36,14 +36,16 @@ export class State<T extends object> implements OnDestroy {
     this.init();
   }
 
-  private stateAccumulator(acc: object, command: object): T {
-    return ({...acc, ...command} as T);
+  private stateAccumulator(acc: T, command: Partial<T>): T {
+    const a = (acc as any) as object;
+    const c = (command as any) as object;
+    return ({...a, ...c} as T);
   }
 
   init() {
-    this._subscription.add((this._state$ as ConnectableObservable<T>).connect());
-    this._subscription.add(
-      this._effectSubject.pipe(mergeAll())
+    this.subscription.add((this.state$ as ConnectableObservable<T>).connect());
+    this.subscription.add(
+      this.effectSubject.pipe(mergeAll())
         .subscribe()
     );
   }
@@ -55,85 +57,38 @@ export class State<T extends object> implements OnDestroy {
    *
    * @example
    * const ls = new LocalState<{test: string, bar: number}>();
-   * // Error
-   * // ls.setState({test: 7});
    * ls.setState({test: 'tau'});
-   * // Error
-   * // ls.setState({bar: 'tau'});
    * ls.setState({bar: 7});
    */
   setState(s: Partial<T>): void {
-    this._stateSlices.next(s);
+    this.stateSlices.next(s);
   }
 
   /**
-   * connectState(o: Observable<Partial<T>>) => void
-   *
-   * @param o: Observable<Partial<T>>
-   *
    * @example
    * const ls = new LocalState<{test: string, bar: number}>();
-   * // Error
-   * // ls.connectState(of(7));
-   * // ls.connectState(of('tau'));
-   * ls.connectState(of());
-   * // Error
-   * // ls.connectState(of({test: 7}));
    * ls.connectState(of({test: 'tau'}));
-   * // Error
-   * // ls.connectState(of({bar: 'tau'}));
-   * ls.connectState(of({bar: 7}));
+   * ls.connectState('bar', of(42));
    */
-  connectState<A extends keyof T>(strOrObs: A | Observable<Partial<T>>, obs?: Observable<T[A]>): void {
-    let _obs;
+  connectState<A extends keyof T>(str: A, obs: Observable<T[A]>): void;
+  connectState<A extends keyof T>(obs: Observable<Partial<T>>): void;
+  connectState<A extends keyof T>(strOrObs: any, obs?: any): void {
     if (typeof strOrObs === 'string') {
-      const str: A = strOrObs;
-      const o = obs as Observable<T[A]>;
-      _obs = o.pipe(
-        map(s => ({[str]: s}))
-      );
+      this.stateObservables.next(obs.pipe(map(s => ({[strOrObs as A]: s}))) as Observable<T[A]>);
     } else {
-      const ob = strOrObs as Observable<Partial<T>>;
-      _obs = ob;
+      this.stateObservables.next(strOrObs);
     }
-    this._stateObservables.next(_obs as Observable<Partial<T>> | Observable<T[A]>);
   }
 
   /**
-   * select<R>(operator?: OperatorFunction<T, R>): Observable<T | R>
-   *
-   * @param operator?: OperatorFunction<T, R>
-   *
    * @example
-   * const ls = new LocalState<{test: string, bar: number}>();
+   * const ls = new LocalState<{test: string, foo: {baz: 42}, bar: number}>();
    * ls.select();
-   * // Error
-   * // ls.select('foo');
    * ls.select('test');
-   * // Error
-   * // ls.select(of(7));
+   * ls.select('foo', 'baz');
    * ls.select(mapTo(7));
-   * // Error
-   * // ls.select(map(s => s.foo));
-   * ls.select(map(s => s.test));
-   * // Error
-   * // ls.select(pipe());
-   * // ls.select(pipe(map(s => s.test), startWith(7)));
+   * ls.select(map(s => s.test), startWith('unknown test value'));
    * ls.select(pipe(map(s => s.test), startWith('unknown test value')));
-   * @TODO consider state keys as string could be passed
-   * // For state keys as string i.e. 'bar'
-   select<R, K extends keyof T>(operator?: K): Observable<T>;
-   if (typeof operator === 'string') {
-      const key: string = operator;
-      operators = pipe(map(s => operator ? s[key] : s));
-    }
-   * @TODO consider ngrx selectors could be passed
-   * // For project functions i.e. (s) => s.slice, (s) => s.slice * 2 or (s) => 2
-   * select<R>(operator: (value: T, index?: number) => T | R, thisArg?: any): Observable<T | R>;
-   if (typeof operator === 'function') {
-      const mapFn: (value: T, index: number) => R = operator ? operator : (value: T, index: number): R => value;
-      operators = pipe(map(mapFn));
-    }
    */
   select(): Observable<T>;
   // ========================
@@ -187,19 +142,19 @@ export class State<T extends object> implements OnDestroy {
   // ===========================
   select(...opOrMapFn: any[]): Observable<any> {
     if (!opOrMapFn || opOrMapFn.length === 0) {
-      return this._state$
+      return this.state$
         .pipe(
           stateful()
         );
     } else if (!this.isStringArray(opOrMapFn)) {
       const path = (opOrMapFn as any) as string[];
-      return this._state$.pipe(
+      return this.state$.pipe(
         pluck(...path),
         stateful()
       );
     } else if (this.isOperateFnArray(opOrMapFn)) {
       const oprs = opOrMapFn as OperatorFunction<T, any>[];
-      return this._state$.pipe(
+      return this.state$.pipe(
         pipeFromArray(oprs),
         stateful()
       );
@@ -209,7 +164,7 @@ export class State<T extends object> implements OnDestroy {
   }
 
   holdEffect(o: Observable<any>): void {
-    this._effectSubject.next(o);
+    this.effectSubject.next(o);
   }
 
 
@@ -220,7 +175,7 @@ export class State<T extends object> implements OnDestroy {
    * used to connect to the `OnDestroy` life-cycle hook of services, components, directives, pipes
    */
   teardown(): void {
-    this._subscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   private isOperateFnArray(op: any[]): op is OperatorFunction<T, any>[] {
@@ -240,5 +195,12 @@ export class State<T extends object> implements OnDestroy {
   ngOnDestroy(): void {
     this.teardown();
   }
+
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class GlobalState<T> extends State<T> {
 
 }
