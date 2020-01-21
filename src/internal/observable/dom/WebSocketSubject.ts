@@ -172,7 +172,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       } else {
         for (let key in urlConfigOrSource) {
           if (urlConfigOrSource.hasOwnProperty(key)) {
-            config[key] = urlConfigOrSource[key];
+            (config as any)[key] = (urlConfigOrSource as any)[key];
           }
         }
       }

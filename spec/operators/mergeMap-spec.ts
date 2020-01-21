@@ -115,7 +115,7 @@ describe('mergeMap', () => {
     const e1subs =   '^                               !       ';
     const expected = '----a---(ab)(ab)(ab)c---c---(cd)c---(c|)';
 
-    const observableLookup = { a: a, b: b, c: c, d: d };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d };
     const source = e1.pipe(mergeMap((value) => observableLookup[value]));
 
     expectObservable(source).toBe(expected);
@@ -271,7 +271,7 @@ describe('mergeMap', () => {
     const expected = '-----------a--b--c--d-                ';
     const unsub =    '                     !                ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>>  = { x: x, y: y };
 
     // This test manipulates the observable to make it look like an interop
     // observable - an observable from a foreign library. Interop subscribers
@@ -390,7 +390,7 @@ describe('mergeMap', () => {
     const bsubs =      '                     ^                   !                    ';
     const csubs =      '                                         ^                   !';
     const expected =   '-----i---j---k---l-------i---j---k---l-------i---j---k---l---|';
-    const inners = { a: hotA, b: hotB, c: hotC };
+    const inners: Record<string, Observable<string>> = { a: hotA, b: hotB, c: hotC };
 
     function project(x: string) { return inners[x]; }
     const result = e1.pipe(mergeMap(project, 1));
@@ -413,7 +413,7 @@ describe('mergeMap', () => {
     const bsubs =      '         ^                   !            ';
     const csubs =      '                     ^                   !';
     const expected =   '-----i---j---(ki)(lj)k---(li)j---k---l---|';
-    const inners = { a: hotA, b: hotB, c: hotC };
+    const inners: Record<string, Observable<string>> = { a: hotA, b: hotB, c: hotC };
 
     function project(x: string) { return inners[x]; }
     const result = e1.pipe(mergeMap(project, 2));
@@ -472,7 +472,7 @@ describe('mergeMap', () => {
     const bsubs =      '                     ^                   !                    ';
     const csubs =      '                                         ^                   !';
     const expected =   '-----i---j---k---l-------i---j---k---l-------i---j---k---l---|';
-    const inners = { a: hotA, b: hotB, c: hotC };
+    const inners: Record<string, Observable<string>> = { a: hotA, b: hotB, c: hotC };
 
     function project(x: string) { return inners[x]; }
     const result = e1.pipe(mergeMap(project, 1));
@@ -495,7 +495,7 @@ describe('mergeMap', () => {
     const bsubs =      '         ^                   !            ';
     const csubs =      '                     ^                   !';
     const expected =   '-----i---j---(ki)(lj)k---(li)j---k---l---|';
-    const inners = { a: hotA, b: hotB, c: hotC };
+    const inners: Record<string, Observable<string>> = { a: hotA, b: hotB, c: hotC };
 
     function project(x: string) { return inners[x]; }
     const result = e1.pipe(mergeMap(project, 2));
@@ -519,7 +519,7 @@ describe('mergeMap', () => {
     const e1subs =         '^                                      !';
     const expected =       '---2--3--4--5---1--2--3--2--3--6--4--5---1-2--|';
 
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(mergeMap((value) => observableLookup[value]));
 
@@ -539,7 +539,7 @@ describe('mergeMap', () => {
     const e1subs =         '^                                      !';
     const expected =       '---2--3--4--5---1--2--3--2--3--6--4--5---1-2----';
 
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(mergeMap((value) => observableLookup[value]));
 
@@ -559,7 +559,7 @@ describe('mergeMap', () => {
     const e1subs =         '^                                               ';
     const expected =       '---2--3--4--5---1--2--3--2--3--6--4--5---1-2----';
 
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(mergeMap((value) => observableLookup[value]));
 
@@ -579,7 +579,7 @@ describe('mergeMap', () => {
     const e1subs =         '^                                      !       ';
     const expected =       '---2--3--4--5---1--2--3--2--3--6--4--5-#       ';
 
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(mergeMap((value) => observableLookup[value]));
 
@@ -599,7 +599,7 @@ describe('mergeMap', () => {
     const e1subs =         '^                                !             ';
     const expected =       '---2--3--4--5---1--2--3--2--3--6-#             ';
 
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(mergeMap((value) => observableLookup[value]));
 
@@ -620,7 +620,7 @@ describe('mergeMap', () => {
     const e1subs =         '^                             !                ';
     const expected =       '---2--3--4--5---1--2--3--2--3--                ';
 
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
     const source = e1.pipe(mergeMap((value) => observableLookup[value]));
 
     expectObservable(source, unsub).toBe(expected);
@@ -639,7 +639,7 @@ describe('mergeMap', () => {
     const e1subs =         '^              !                               ';
     const expected =       '---2--3--4--5--#                               ';
 
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
     let invoked = 0;
     const source = e1.pipe(mergeMap((value) => {
       invoked++;

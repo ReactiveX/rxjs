@@ -8,7 +8,7 @@ import * as sinon from 'sinon';
 import { expect } from 'chai';
 
 export function lowerCaseO<T>(...args: Array<any>): Observable<T> {
-  const o = {
+  const o: any = {
     subscribe(observer: any) {
       args.forEach(v => observer.next(v));
       observer.complete();

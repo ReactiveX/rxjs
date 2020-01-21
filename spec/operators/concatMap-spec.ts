@@ -94,7 +94,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1subs =   '^                               !       ';
     const expected = '--a-a-a-a---b--b--b-------c-c-c-----(d|)';
 
-    const observableLookup = { a: a, b: b, c: c, d: d };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d };
     const source = e1.pipe(concatMap((value) => observableLookup[value]));
 
     expectObservable(source).toBe(expected);
@@ -324,7 +324,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
     const e1subs =         '^                                      !               ';
     const expected =       '---2--3--4--5----6-----2--3-1------2--3-4-5--------1-2|';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(concatMap((value) => observableLookup[value]));
 
@@ -357,7 +357,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
     const e1subs =         '^                                      !               ' ;
     const expected =       '---2--3--4--5----6-----2--3----------------------------';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(concatMap((value) => observableLookup[value]));
 
@@ -390,7 +390,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1 =   hot('-a-b--^-c-----d------e----------------f-----g---             ');
     const e1subs =         '^                                                      ';
     const expected =       '---2--3--4--5----6-----2--3-1------2--3-4-5--------1-2-';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(concatMap((value) => observableLookup[value]));
 
@@ -423,7 +423,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1 =   hot('-a-b--^-c-----d------e----------------f-----g#               ');
     const e1subs =         '^                                      !               ';
     const expected =       '---2--3--4--5----6-----2--3-1------2--3#               ';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(concatMap((value) => observableLookup[value]));
 
@@ -456,7 +456,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
     const e1subs =         '^                  !                                   ';
     const expected =       '---2--3--4--5----6-#                                   ';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(concatMap((value) => observableLookup[value]));
 
@@ -490,7 +490,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1subs =         '^                             !                        ';
     const unsub =          '                              !                        ';
     const expected =       '---2--3--4--5----6-----2--3-1--                        ';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(concatMap((value) => observableLookup[value]));
 
@@ -524,7 +524,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1subs =         '^                             !                        ';
     const unsub =          '                              !                        ';
     const expected =       '---2--3--4--5----6-----2--3-1--                        ';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(
       mergeMap(x => of(x)),
@@ -561,7 +561,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
     const e1subs =         '^                          !                           ';
     const expected =       '---2--3--4--5----6-----2--3#                           ';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+    const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(
       concatMap((value) => {

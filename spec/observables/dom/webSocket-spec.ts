@@ -771,7 +771,7 @@ class MockWebSocket {
     }
   }
 
-  trigger(name: string, e: any) {
+  trigger(this: any, name: string, e: any) {
     if (this['on' + name]) {
       this['on' + name](e);
     }

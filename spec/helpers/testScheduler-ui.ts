@@ -264,7 +264,7 @@ if (global.Mocha) {
 //overrides JSON.toStringfy to serialize error object
 Object.defineProperty(Error.prototype, 'toJSON', {
   value: function (this: any) {
-    const alt = {};
+    const alt: Record<string, any> = {};
 
     Object.getOwnPropertyNames(this).forEach(function (this: any, key: string) {
       if (key !== 'stack') {

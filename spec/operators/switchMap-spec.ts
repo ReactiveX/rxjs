@@ -104,7 +104,7 @@ describe('switchMap', () => {
     const e1subs =   '^                            !        ';
     const expected = '-----------a--b--c----f---g---h---i--|';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x: x, y: y };
 
     const result = e1.pipe(switchMap(value => observableLookup[value]));
 
@@ -136,7 +136,7 @@ describe('switchMap', () => {
     const unsub =    '                     !                ';
     const expected = '-----------a--b--c----                ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x: x, y: y };
 
     const result = e1.pipe(switchMap(value => observableLookup[value]));
 
@@ -156,7 +156,7 @@ describe('switchMap', () => {
     const expected = '-----------a--b--c----                ';
     const unsub =    '                     !                ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x: x, y: y };
 
     const result = e1.pipe(
       mergeMap(x => of(x)),
@@ -180,7 +180,7 @@ describe('switchMap', () => {
     const expected = '-----------a--b--c----                ';
     const unsub =    '                     !                ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x: x, y: y };
 
     // This test is the same as the previous test, but the observable is
     // manipulated to make it look like an interop observable - an observable
@@ -234,7 +234,7 @@ describe('switchMap', () => {
     const e1subs =   '^                            !       ';
     const expected = '-----------a--b--c----f---g---h---i--';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x: x, y: y };
 
     const result = e1.pipe(switchMap(value => observableLookup[value]));
 
@@ -253,7 +253,7 @@ describe('switchMap', () => {
     const e1subs =   '^                            !';
     const expected = '------------f---g---h---i----|';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x: x, y: y };
 
     const result = e1.pipe(switchMap(value => observableLookup[value]));
 
@@ -272,7 +272,7 @@ describe('switchMap', () => {
     const e1subs =   '^                !                   ';
     const expected = '-----------a--b--#                   ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x: x, y: y };
 
     const result = e1.pipe(switchMap(value => observableLookup[value]));
 
@@ -291,7 +291,7 @@ describe('switchMap', () => {
     const e1subs =   '^                            !        ';
     const expected = '-----------c--d--e----f---g---h---i--|';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x: x, y: y };
 
     const result = e1.pipe(switchMap(value => observableLookup[value]));
 
@@ -310,7 +310,7 @@ describe('switchMap', () => {
     const e1subs =   '^                            !';
     const expected = '-----------------------------|';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x: x, y: y };
 
     const result = e1.pipe(switchMap(value => observableLookup[value]));
 
@@ -329,7 +329,7 @@ describe('switchMap', () => {
     const e1subs =   '^                            !';
     const expected = '------------------------------';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x: x, y: y };
 
     const result = e1.pipe(switchMap(value => observableLookup[value]));
 
@@ -348,7 +348,7 @@ describe('switchMap', () => {
     const e1subs =   '^                            !';
     const expected = '-----------------------------|';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x: x, y: y };
 
     const result = e1.pipe(switchMap(value => observableLookup[value]));
 
@@ -367,7 +367,7 @@ describe('switchMap', () => {
     const e1subs =   '^                  !          ';
     const expected = '-------------------#          ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x: x, y: y };
 
     const result = e1.pipe(switchMap(value => observableLookup[value]));
 
@@ -386,7 +386,7 @@ describe('switchMap', () => {
     const e1subs =   '^                  !          ';
     const expected = '-------------------#          ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x: x, y: y };
 
     const result = e1.pipe(switchMap(value => observableLookup[value]));
 
@@ -436,7 +436,7 @@ describe('switchMap', () => {
     const e1subs =   '^                  !       ';
     const expected = '-----------a--b--c-#       ';
 
-    const observableLookup = { x: x };
+    const observableLookup: Record<string, Observable<string>> = { x: x };
 
     const result = e1.pipe(switchMap(value => observableLookup[value]));
 

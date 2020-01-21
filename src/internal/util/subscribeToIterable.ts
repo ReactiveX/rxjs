@@ -2,7 +2,7 @@ import { Subscriber } from '../Subscriber';
 import { iterator as Symbol_iterator } from '../symbol/iterator';
 
 export const subscribeToIterable = <T>(iterable: Iterable<T>) => (subscriber: Subscriber<T>) => {
-  const iterator = iterable[Symbol_iterator]();
+  const iterator = (iterable as any)[Symbol_iterator]();
   do {
     const item = iterator.next();
     if (item.done) {

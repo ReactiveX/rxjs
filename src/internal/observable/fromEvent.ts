@@ -223,7 +223,7 @@ function setupSubscription<T>(sourceObj: FromEventTarget<T>, eventName: string,
     unsubscribe = () => source.removeListener(eventName, handler as NodeEventHandler);
   } else if (sourceObj && (sourceObj as any).length) {
     for (let i = 0, len = (sourceObj as any).length; i < len; i++) {
-      setupSubscription(sourceObj[i], eventName, handler, subscriber, options);
+      setupSubscription((sourceObj as any)[i], eventName, handler, subscriber, options);
     }
   } else {
     throw new TypeError('Invalid event target');
