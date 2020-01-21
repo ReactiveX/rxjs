@@ -40,7 +40,7 @@ export { map } from './map';
 export { mapTo } from './mapTo';
 export { materialize } from './materialize';
 export { max } from './max';
-export { merge } from './merge';
+export { mergeWith, merge } from './mergeWith';
 export { mergeAll } from './mergeAll';
 export { mergeMap } from './mergeMap';
 export { mergeMap as flatMap } from './mergeMap';
