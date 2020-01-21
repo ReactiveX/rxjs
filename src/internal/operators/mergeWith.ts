@@ -16,10 +16,6 @@ export function merge<T, T2, T3, T4>(v2: ObservableInput<T2>, v3: ObservableInpu
 export function merge<T, T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, ): OperatorFunction<T, T | T2 | T3 | T4 | T5>;
 /** @deprecated use {@link mergeWith} */
 export function merge<T, T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, ): OperatorFunction<T, T | T2 | T3 | T4 | T5 | T6>;
-/** @deprecated use {@link mergeWith} or static {@link merge} */
-export function merge<T>(...observables: Array<ObservableInput<T> | SchedulerLike | number>): MonoTypeOperatorFunction<T>;
-/** @deprecated use {@link mergeWith} or static {@link merge} */
-export function merge<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike | number>): OperatorFunction<T, R>;
 
 // Below are signatures we no longer wish to support in this format.
 // They include either a concurrency argument or a scheduler argument.
@@ -67,6 +63,9 @@ export function merge<T, R>(...observables: Array<ObservableInput<any> | Schedul
   ) as Observable<R>;
 }
 
+export function mergeWith<T>(): OperatorFunction<T, T>;
+export function mergeWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, (T | ObservedValuesFromArray<A>)>;
+
 /**
  * Merge the values from all observables to an single observable result.
  *
@@ -106,6 +105,6 @@ export function merge<T, R>(...observables: Array<ObservableInput<any> | Schedul
  * ```
  * @param otherSources the sources to combine the current source with.
  */
-export function mergeWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, (T | ObservedValuesFromArray<A>)[]> {
+export function mergeWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, (T | ObservedValuesFromArray<A>)> {
   return merge(...otherSources);
 }

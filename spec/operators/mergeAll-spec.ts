@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { mergeAll, mergeMap, take } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { throwError, from, of, Observable } from 'rxjs';
+import { throwError, from, of, Observable, queueScheduler } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 declare const type: Function;
@@ -443,49 +443,23 @@ describe('mergeAll oeprator', () => {
     expect(iterable.finalized).to.be.true;
   });
 
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
+  it('should merge two observables', (done) => {
+    const a = of(1, 2, 3);
+    const b = of(4, 5, 6, 7, 8);
+    const r = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    let result: Observable<number> = of(source1, source2, source3)
-      .pipe(mergeAll());
-    /* tslint:enable:no-unused-variable */
+    of(a, b).pipe(mergeAll()).subscribe((val) => {
+      expect(val).to.equal(r.shift());
+    }, null, done);
   });
 
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
+  it('should merge two immediately-scheduled observables', (done) => {
+    const a = of(1, 2, 3, queueScheduler);
+    const b = of(4, 5, 6, 7, 8, queueScheduler);
+    const r = [1, 2, 4, 3, 5, 6, 7, 8];
 
-    let result: Observable<number> = of(source1, source2, source3)
-      .pipe(mergeAll());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string> = of(<any>source1, <any>source2, <any>source3)
-      .pipe(mergeAll<string>());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string> = of(<any>source1, <any>source2, <any>source3)
-      .pipe(mergeAll<string>());
-    /* tslint:enable:no-unused-variable */
+    of(a, b, queueScheduler).pipe(mergeAll()).subscribe((val) => {
+      expect(val).to.equal(r.shift());
+    }, null, done);
   });
 });
