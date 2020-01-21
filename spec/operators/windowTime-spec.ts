@@ -15,10 +15,10 @@ describe('windowTime operator', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const source = hot('--1--2--^-a--b--c--d--e---f--g--h-|');
       const subs =               '^-------------------------!';
-      //  100 frames              0---------1---------2-----|
-      //  50                      -----|
-      //  50                                -----|
-      //  50                                          -----|
+      //  10 frames              0---------1---------2-----|
+      //  5                      -----|
+      //  5                                -----|
+      //  5                                          -----|
       const expected =           'x---------y---------z-----|';
       const x = cold(            '--a--(b|)                  ');
       const y = cold(                      '-d--e|           ');
@@ -37,7 +37,7 @@ describe('windowTime operator', () => {
       const source = hot('--1--2--^--a--b--c--d--e--f--g-----|');
       const subs =               '^--------------------------!';
       const timeSpan = time(     '----------|');
-      //  100 frames              0---------1---------2------|
+      //  10 frames              0---------1---------2------|
       const expected =           'x---------y---------z------|';
       const x = cold(            '---a--(b|)                  ');
       const y = cold(                      '--d--(e|)         ');
@@ -55,10 +55,10 @@ describe('windowTime operator', () => {
     rxTestScheduler.run(({ hot, cold, expectSubscriptions, expectObservable }) => {
       const source = hot('--1--2--^-a--b--c--de-f---g--h--i-|');
       const subs =               '^-------------------------!';
-      //  100 frames              0---------1---------2-----|
-      //  50                      -----|
-      //  50                                -----|');
-      //  50                                          -----|');
+      //  10 frames              0---------1---------2-----|
+      //  5                      -----|
+      //  5                                -----|');
+      //  5                                          -----|');
       const expected =           'x---------y---------z-----|';
       const x = cold('            --a--(b|)                 ');
       const y = cold('                      -de-(f|)         ');
@@ -77,7 +77,7 @@ describe('windowTime operator', () => {
       const source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
       const subs =               '^--------------------------!';
       const timeSpan = time(     '----------|');
-      //  100 frames            0---------1---------2------|
+      //  10 frames            0---------1---------2------|
       const expected =           'x---------y---------z------|';
       const x = cold(            '---a--b--c|                 ');
       const y = cold(                      '--d--e--f-|       ');
@@ -97,10 +97,10 @@ describe('windowTime operator', () => {
       const subs =               '^--------------------------!';
       const timeSpan = time(     '-----|');
       const interval = time(               '----------|');
-      //  100 frames            0---------1---------2------|
-      //  50                     ----|
-      //  50                               ----|
-      //  50                                         ----|
+      //  10 frames            0---------1---------2------|
+      //  5                     ----|
+      //  5                               ----|
+      //  5                                         ----|
       const expected =           'x---------y---------z------|';
       const x = cold(            '---a-|                      ');
       const y = cold(                      '--d--(e|)         ');
@@ -192,10 +192,10 @@ describe('windowTime operator', () => {
       const subs =               '^--------------------------!';
       const timeSpan = time(     '-----|');
       const interval = time(               '----------|');
-      //  100 frames            0---------1---------2------|
-      //  50                     ----|
-      //  50                               ----|
-      //  50                                         ----|
+      //  10 frames            0---------1---------2------|
+      //  5                     ----|
+      //  5                               ----|
+      //  5                                         ----|
       const expected =           'x---------y---------z------#';
       const x = cold(            '---a-|                      ');
       const y = cold(                      '--d--(e|)         ');
@@ -215,10 +215,10 @@ describe('windowTime operator', () => {
       const subs =               '^----------!                ';
       const timeSpan = time(     '-----|');
       const interval = time(               '----------|');
-      //  100 frames              0---------1---------2------|
-      //  50                      ----|
-      //  50                                ----|
-      //  50                                          ----|
+      //  10 frames              0---------1---------2------|
+      //  5                      ----|
+      //  5                                ----|
+      //  5                                          ----|
       const expected =           'x---------y-                ';
       const x = cold(            '---a-|                      ');
       const y = cold(                      '--                ');
@@ -238,10 +238,10 @@ describe('windowTime operator', () => {
       const sourcesubs =         '^-------------!             ';
       const timeSpan = time(     '-----|');
       const interval = time(               '----------|');
-      //  100 frames              0---------1---------2------|
-      //  50                      ----|
-      //  50                                ----|
-      //  50                                          ----|
+      //  10 frames              0---------1---------2------|
+      //  5                      ----|
+      //  5                                ----|
+      //  5                                          ----|
       const expected =           'x---------y----             ';
       const x = cold(            '---a-|                      ');
       const y = cold(                      '--d--             ');
