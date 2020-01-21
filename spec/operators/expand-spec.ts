@@ -368,7 +368,7 @@ describe('expand operator', () => {
         return <any>EMPTY;
       }
 
-      const ish = {
+      const ish: any = {
         subscribe: (observer: Observer<number>) => {
           observer.next(x + x);
           observer.complete();

@@ -57,7 +57,7 @@ export function pairs<T>(obj: Object, scheduler?: SchedulerLike): Observable<[st
       for (let i = 0; i < keys.length && !subscriber.closed; i++) {
         const key = keys[i];
         if (obj.hasOwnProperty(key)) {
-          subscriber.next([key, obj[key]]);
+          subscriber.next([key, (obj as any)[key]]);
         }
       }
       subscriber.complete();
@@ -81,7 +81,7 @@ export function dispatch<T>(this: SchedulerAction<any>,
   if (!subscriber.closed) {
     if (index < keys.length) {
       const key = keys[index];
-      subscriber.next([key, obj[key]]);
+      subscriber.next([key, (obj as any)[key]]);
       subscription.add(this.schedule({ keys, index: index + 1, subscriber, subscription, obj }));
     } else {
       subscriber.complete();

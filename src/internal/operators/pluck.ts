@@ -54,7 +54,7 @@ export function pluck<T, R>(...properties: string[]): OperatorFunction<T, R> {
 }
 
 function plucker(props: string[], length: number): (x: string) => any {
-  const mapper = (x: string) => {
+  const mapper = (x: any) => {
     let currentProp = x;
     for (let i = 0; i < length; i++) {
       const p = currentProp[props[i]];

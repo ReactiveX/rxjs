@@ -173,7 +173,7 @@ export class AjaxObservable<T> extends Observable<T> {
     } else {
       for (const prop in urlOrRequest) {
         if (urlOrRequest.hasOwnProperty(prop)) {
-          request[prop] = urlOrRequest[prop];
+          (request as any)[prop] = (urlOrRequest as any)[prop];
         }
       }
     }
@@ -204,13 +204,13 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
     // force CORS if requested
     if (!request.crossDomain && !this.getHeader(headers, 'X-Requested-With')) {
-      headers['X-Requested-With'] = 'XMLHttpRequest';
+      (headers as any)['X-Requested-With'] = 'XMLHttpRequest';
     }
 
     // ensure content type is set
     let contentTypeHeader = this.getHeader(headers, 'Content-Type');
     if (!contentTypeHeader && !(root.FormData && request.body instanceof root.FormData) && typeof request.body !== 'undefined') {
-      headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+      (headers as any)['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     }
 
     // properly serialize body
@@ -302,7 +302,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private setHeaders(xhr: XMLHttpRequest, headers: Object) {
     for (let key in headers) {
       if (headers.hasOwnProperty(key)) {
-        xhr.setRequestHeader(key, headers[key]);
+        xhr.setRequestHeader(key, (headers as any)[key]);
       }
     }
   }
@@ -310,7 +310,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private getHeader(headers: {}, headerName: string): any {
     for (let key in headers) {
       if (key.toLowerCase() === headerName.toLowerCase()) {
-        return headers[key];
+        return (headers as any)[key];
       }
     }
 

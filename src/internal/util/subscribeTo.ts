@@ -12,13 +12,13 @@ import { Subscription } from '../Subscription';
 import { Subscriber } from '../Subscriber';
 
 export const subscribeTo = <T>(result: ObservableInput<T>): (subscriber: Subscriber<T>) => Subscription | void => {
-  if (!!result && typeof result[Symbol_observable] === 'function') {
+  if (!!result && typeof (result as any)[Symbol_observable] === 'function') {
     return subscribeToObservable(result as any);
   } else if (isArrayLike(result)) {
     return subscribeToArray(result);
   } else if (isPromise(result)) {
     return subscribeToPromise(result);
-  } else if (!!result && typeof result[Symbol_iterator] === 'function') {
+  } else if (!!result && typeof (result as any)[Symbol_iterator] === 'function') {
     return subscribeToIterable(result as any);
   } else {
     const value = isObject(result) ? 'an invalid object' : `'${result}'`;

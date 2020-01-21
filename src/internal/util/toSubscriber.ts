@@ -13,8 +13,8 @@ export function toSubscriber<T>(
       return (<Subscriber<T>> nextOrObserver);
     }
 
-    if (nextOrObserver[rxSubscriberSymbol]) {
-      return nextOrObserver[rxSubscriberSymbol]();
+    if ((nextOrObserver as any)[rxSubscriberSymbol]) {
+      return (nextOrObserver as any)[rxSubscriberSymbol]();
     }
   }
 

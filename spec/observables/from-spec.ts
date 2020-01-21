@@ -63,7 +63,7 @@ describe('from', () => {
   });
 
   const fakeArrayObservable = <T>(...values: T[]) => {
-    let arr = ['bad array!'];
+    let arr: any = ['bad array!'];
     arr[observable] = () =>  {
       return {
         subscribe: (observer: Observer<T>) => {
@@ -140,7 +140,7 @@ describe('from', () => {
     });
     it(`should accept a function`, (done) => {
       const subject = new Subject();
-      const handler = (...args: any[]) => subject.next(...args);
+      const handler: any = (...args: any[]) => subject.next(...args);
       handler[observable] = () => subject;
       let nextInvoked = false;
 

@@ -184,17 +184,17 @@ describe('fromFetch', () => {
     expect(MockAbortController.created).to.equal(0);
     let subscription = fetch$.subscribe();
     expect(MockAbortController.created).to.equal(1);
-    expect(mockFetch.calls[0].init.signal.aborted).to.be.false;
+    expect(mockFetch.calls[0].init!.signal!.aborted).to.be.false;
 
     subscription.unsubscribe();
-    expect(mockFetch.calls[0].init.signal.aborted).to.be.true;
+    expect(mockFetch.calls[0].init!.signal!.aborted).to.be.true;
 
     subscription = fetch$.subscribe();
     expect(MockAbortController.created).to.equal(2);
-    expect(mockFetch.calls[1].init.signal.aborted).to.be.false;
+    expect(mockFetch.calls[1].init!.signal!.aborted).to.be.false;
 
     subscription.unsubscribe();
-    expect(mockFetch.calls[1].init.signal.aborted).to.be.true;
+    expect(mockFetch.calls[1].init!.signal!.aborted).to.be.true;
   });
 
   it('should allow passing of init object', done => {

@@ -190,7 +190,7 @@ function forkJoinInternal(sources: ObservableInput<any>[], keys: string[] | null
           if (completed === len || !hasValue) {
             if (emitted === len) {
               subscriber.next(keys ?
-                keys.reduce((result, key, i) => (result[key] = values[i], result), {}) :
+                keys.reduce((result, key, i) => ((result as any)[key] = values[i], result), {}) :
                 values);
             }
             subscriber.complete();

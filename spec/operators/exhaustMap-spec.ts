@@ -142,7 +142,7 @@ describe('exhaustMap', () => {
     const e1subs =   '^                                            !';
     const expected = '-----a--b--c---------------------g--h--i-----|';
 
-    const observableLookup = { x: x, y: y, z: z };
+    const observableLookup: Record<string, Observable<string>>  = { x: x, y: y, z: z };
 
     const result = e1.pipe(exhaustMap(value => observableLookup[value]));
 
@@ -165,7 +165,7 @@ describe('exhaustMap', () => {
     const e1subs =   '^                                 !           ';
     const expected = '-----a--b--c---------------------g-           ';
 
-    const observableLookup = { x: x, y: y, z: z };
+    const observableLookup: Record<string, Observable<string>>  = { x: x, y: y, z: z };
 
     const result = e1.pipe(exhaustMap(value => observableLookup[value]));
 
@@ -188,7 +188,7 @@ describe('exhaustMap', () => {
     const expected = '-----a--b--c---------------------g-           ';
     const unsub =    '                                  !           ';
 
-    const observableLookup = { x: x, y: y, z: z };
+    const observableLookup: Record<string, Observable<string>>  = { x: x, y: y, z: z };
 
     const result = e1.pipe(
       mergeMap(x => of(x)),
@@ -215,7 +215,7 @@ describe('exhaustMap', () => {
     const expected = '-----a--b--c---------------------g-           ';
     const unsub =    '                                  !           ';
 
-    const observableLookup = { x: x, y: y, z: z };
+    const observableLookup: Record<string, Observable<string>>  = { x: x, y: y, z: z };
 
     // This test is the same as the previous test, but the observable is
     // manipulated to make it look like an interop observable - an observable
@@ -272,7 +272,7 @@ describe('exhaustMap', () => {
     const e1subs =   '^                                        !   ';
     const expected = '-----a--b--c---------------------g--h--i-----';
 
-    const observableLookup = { x: x, y: y, z: z };
+    const observableLookup: Record<string, Observable<string>>  = { x: x, y: y, z: z };
 
     const result = e1.pipe(exhaustMap(value => observableLookup[value]));
 
@@ -292,7 +292,7 @@ describe('exhaustMap', () => {
     const e1subs =   '^                            !';
     const expected = '-----------a--b--c--d--e-----|';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>>  = { x: x, y: y };
 
     const result = e1.pipe(exhaustMap(value => observableLookup[value]));
 
@@ -311,7 +311,7 @@ describe('exhaustMap', () => {
     const e1subs =   '^                      !             ';
     const expected = '-----------a--b--c--d--#             ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>>  = { x: x, y: y };
 
     const result = e1.pipe(exhaustMap(value => observableLookup[value]));
 
@@ -332,7 +332,7 @@ describe('exhaustMap', () => {
     const e1subs =   '^                            !         ';
     const expected = '-----------c--d--e-----j---k---l---m--|';
 
-    const observableLookup = { x: x, y: y, z: z };
+    const observableLookup: Record<string, Observable<string>>  = { x: x, y: y, z: z };
 
     const result = e1.pipe(exhaustMap(value => observableLookup[value]));
 
@@ -352,7 +352,7 @@ describe('exhaustMap', () => {
     const e1subs =   '^                            !';
     const expected = '-----------------------------|';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>>  = { x: x, y: y };
 
     const result = e1.pipe(exhaustMap(value => observableLookup[value]));
 
@@ -371,7 +371,7 @@ describe('exhaustMap', () => {
     const e1subs =   '^                            !';
     const expected = '------------------------------';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>>  = { x: x, y: y };
 
     const result = e1.pipe(exhaustMap(value => observableLookup[value]));
 
@@ -390,7 +390,7 @@ describe('exhaustMap', () => {
     const e1subs =   '^                             !';
     const expected = '-------------------------------';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>>  = { x: x, y: y };
 
     const result = e1.pipe(exhaustMap(value => observableLookup[value]));
 
@@ -409,7 +409,7 @@ describe('exhaustMap', () => {
     const e1subs =   '^                  !          ';
     const expected = '-------------------#          ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>>  = { x: x, y: y };
 
     const result = e1.pipe(exhaustMap(value => observableLookup[value]));
 
@@ -426,7 +426,7 @@ describe('exhaustMap', () => {
     const e1subs =   '^                  !       ';
     const expected = '-----------a--b--c-#       ';
 
-    const observableLookup = { x: x };
+    const observableLookup: Record<string, Observable<string>>  = { x: x };
 
     const result = e1.pipe(exhaustMap(value => observableLookup[value]));
 

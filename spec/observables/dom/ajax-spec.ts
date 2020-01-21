@@ -1242,7 +1242,7 @@ class MockXMLHttpRequest {
     this.triggerEvent('readystatechange');
   }
 
-  triggerEvent(name: any, eventObj?: any): void {
+  triggerEvent(this: any, name: any, eventObj?: any): void {
     // TODO: create a better default event
     const e: any = eventObj || { type: name };
 
@@ -1251,7 +1251,7 @@ class MockXMLHttpRequest {
     }
   }
 
-  triggerUploadEvent(name: any, eventObj?: any): void {
+  triggerUploadEvent(this: any, name: any, eventObj?: any): void {
     // TODO: create a better default event
     const e: any = eventObj || {};
 
@@ -1285,7 +1285,7 @@ class MockXMLHttpRequestInternetExplorer extends MockXMLHttpRequest {
     return super.defaultResponseValue();
   }
 
-  triggerUploadEvent(name: any, eventObj?: any): void {
+  triggerUploadEvent(this: any, name: any, eventObj?: any): void {
     // TODO: create a better default event
     const e: any = eventObj || {};
     if (this['on' + name]) {
