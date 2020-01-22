@@ -50,12 +50,12 @@ describe('zipWith', () => {
     'should end once one observable nexts and zips value from completed other ' + 'observable whose buffer is empty',
     () => {
       rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-        const e1 = hot('---a--b--c--|             ');
-        const e1subs = '^-----------!             ';
-        const e2 = hot('------d----e----f|        ');
-        const e2subs = '^----------------!        ';
-        const e3 = hot('--------h----i----j-------'); // doesn't complete
-        const e3subs = '^-----------------!       ';
+        const e1 = hot('  ---a--b--c--|             ');
+        const e1subs = '  ^-----------!             ';
+        const e2 = hot('  ------d----e----f|        ');
+        const e2subs = '  ^----------------!        ';
+        const e3 = hot('  --------h----i----j-------'); // doesn't complete
+        const e3subs = '  ^-----------------!       ';
         const expected = '--------x----y----(z|)    '; // e2 buffer empty and signaled complete
         const values = {
           x: ['a', 'd', 'h'],
@@ -84,8 +84,8 @@ describe('zipWith', () => {
           return this;
         };
 
-        const e1 = hot('---a---b---c---d---|');
-        const e1subs = '^------------------!';
+        const e1 = hot('  ---a---b---c---d---|');
+        const e1subs = '  ^------------------!';
         const expected = '---w---x---y---z---|';
 
         const values = {
