@@ -56,7 +56,7 @@ it('should support mixed type of 9 params', () => {
 });
 
 it('should support mixed type of 13 params', () => {
-  const res = of(a, b, c, d, e, f, g, h, i, j, '', true, 123, [1, 2, 3]); // $ExpectType Observable<string | number | boolean | A | B | C | D | E | F | G | number[] | H | I | J>
+  const res = of(a, b, c, d, e, f, g, h, i, j, '', true, 123, 10n); // $ExpectType Observable<string | number | bigint | boolean | A | B | C | D | E | F | G | H | I | J>
 });
 
 it('should support a rest of params', () => {
