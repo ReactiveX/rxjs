@@ -1,16 +1,5 @@
 import { of, animationFrameScheduler, queueScheduler } from 'rxjs';
-import { A, B, C, D, E, F, G, H, I, J } from '../helpers';
-
-const a = new A();
-const b = new B();
-const c = new C();
-const d = new D();
-const e = new E();
-const f = new F();
-const g = new G();
-const h = new H();
-const i = new I();
-const j = new J();
+import { A, a, b, c, d, e, f, g, h, i, j } from '../helpers';
 
 it('should infer never with 0 params', () => {
   const res = of(); // $ExpectType Observable<never>
@@ -23,7 +12,7 @@ it('forced generic should not cause an issue', () => {
 });
 
 it('should infer correctly with 1 param', () => {
-  const res = of(new A()); // $ExpectType Observable<A>
+  const res = of(a); // $ExpectType Observable<A>
 });
 
 it('should infer correctly with mixed type of 2 params', () => {
@@ -67,7 +56,7 @@ it('should support mixed type of 9 params', () => {
 });
 
 it('should support mixed type of 13 params', () => {
-  const res = of(a, b, c, d, e, f, g, h, i, j, '', true, 123, [1, 2, 3]); // $ExpectType Observable<string | number | boolean | number[] | A | B | C | D | E | F | G | H | I | J>
+  const res = of(a, b, c, d, e, f, g, h, i, j, '', true, 123, [1, 2, 3]); // $ExpectType Observable<string | number | boolean | A | B | C | D | E | F | G | number[] | H | I | J>
 });
 
 it('should support a rest of params', () => {
@@ -95,7 +84,7 @@ it('should infer never with 0 params', () => {
 });
 
 it('should infer correctly with 1 param', () => {
-  const res = of(new A(), queueScheduler); // $ExpectType Observable<A>
+  const res = of(a, queueScheduler); // $ExpectType Observable<A>
 });
 
 it('should infer correctly with mixed type of 2 params', () => {
@@ -140,7 +129,7 @@ it('should deprecate correctly', () => {
   of(a, b, c, d, e, f, queueScheduler); // $ExpectDeprecation
   of(a, b, c, d, e, f, g, queueScheduler); // $ExpectDeprecation
   of(a, b, c, d, e, f, g, h, queueScheduler); // $ExpectDeprecation
-  of(a, b, c, d, e, f, g, h, i, queueScheduler); // $ExpectDeprecation  
+  of(a, b, c, d, e, f, g, h, i, queueScheduler); // $ExpectDeprecation
   of<A>(); // $ExpectDeprecation
   of(); // $ExpectNoDeprecation
   of(a); // $ExpectNoDeprecation

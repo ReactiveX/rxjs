@@ -1,11 +1,11 @@
 import { of } from 'rxjs';
 import { concatWith } from 'rxjs/operators';
-import { a, b$, c$, d$, e$ } from 'helpers';
+import { a$, b$, c$, d$, e$ } from 'helpers';
 
 it('should support rest params', () => {
   const arr = [b$, c$];
-  const o = of(a).pipe(concatWith(...arr)); // $ExpectType Observable<A | B | C>
-  const o2 = of(a).pipe(concatWith(d$, ...arr, e$)); // $ExpectType Observable<A | B | C | D | E>
+  const o = a$.pipe(concatWith(...arr)); // $ExpectType Observable<A | B | C>
+  const o2 = a$.pipe(concatWith(d$, ...arr, e$)); // $ExpectType Observable<A | B | C | D | E>
 });
 
 it('should infer correctly', () => {

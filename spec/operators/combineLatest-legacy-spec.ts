@@ -6,7 +6,7 @@ import { observableMatcher } from '../helpers/observableMatcher';
 declare function asDiagram(arg: string): Function;
 
 /** @test {combineLatest} */
-describe('combineLatest operator', () => {
+describe('combineLatest', () => {
   let testScheduler: TestScheduler;
 
   beforeEach(() => {
