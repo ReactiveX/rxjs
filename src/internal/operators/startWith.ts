@@ -65,13 +65,13 @@ export function startWith<T, D = T>(...array: Array<D | SchedulerLike>): Operato
  * @method startWith
  * @owner Observable
  */
-export function startWith<T, D>(...array: Array<T | SchedulerLike>): OperatorFunction<T, T | D> {
+export function startWith<T, D>(...array: Array<D | SchedulerLike>): OperatorFunction<T, T | D> {
   const scheduler = array[array.length - 1] as SchedulerLike;
   if (isScheduler(scheduler)) {
     // deprecated path
     array.pop();
-    return (source: Observable<T>) => concat(array as T[], source, scheduler);
+    return (source: Observable<T>) => concat(array as D[], source, scheduler);
   } else {
-    return (source: Observable<T>) => concat(array as T[], source);
+    return (source: Observable<T>) => concat(array as D[], source);
   }
 }
