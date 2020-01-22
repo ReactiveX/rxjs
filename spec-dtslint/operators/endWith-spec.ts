@@ -1,42 +1,18 @@
 import { of, asyncScheduler } from 'rxjs';
 import { endWith } from 'rxjs/operators';
+import { a, b, c, d, e, f, g, h } from '../helpers';
 
 it('should support a scheduler', () => {
-  const a = of(1, 2, 3).pipe(endWith(asyncScheduler)); // $ExpectType Observable<number>
+  const r = of(a).pipe(endWith(asyncScheduler)); // $ExpectType Observable<A>
 });
 
-it('should infer type for 1 parameter', () => {
-  const a = of(1, 2, 3).pipe(endWith(4)); // $ExpectType Observable<number>
-});
-
-it('should infer type for 2 parameter', () => {
-  const a = of(1, 2, 3).pipe(endWith(4, 5)); // $ExpectType Observable<number>
-});
-
-it('should infer type for 3 parameter', () => {
-  const a = of(1, 2, 3).pipe(endWith(4, 5, 6)); // $ExpectType Observable<number>
-});
-
-it('should infer type for 4 parameter', () => {
-  const a = of(1, 2, 3).pipe(endWith(4, 5, 6, 7)); // $ExpectType Observable<number>
-});
-
-it('should infer type for 5 parameter', () => {
-  const a = of(1, 2, 3).pipe(endWith(4, 5, 6, 7, 8)); // $ExpectType Observable<number>
-});
-
-it('should infer type for 6 parameter', () => {
-  const a = of(1, 2, 3).pipe(endWith(4, 5, 6, 7, 8, 9)); // $ExpectType Observable<number>
-});
-
-it('should infer type for rest parameters', () => {
-  const a = of(1, 2, 3).pipe(endWith(4, 5, 6, 7, 8, 9, 10)); // $ExpectType Observable<number>
-});
-
-it('should infer with different types', () => {
-  const a = of(1, 2, 3).pipe(endWith('4', true)); // $ExpectType Observable<string | number | boolean>
-});
-
-it('should accept empty parameter', () => {
-  const a = of(1, 2, 3).pipe(endWith()); // $ExpectType Observable<number>
+it('should infer type for N values', () => {
+  const r0 = of(a).pipe(endWith()); // $ExpectType Observable<A>
+  const r1 = of(a).pipe(endWith(b)); // $ExpectType Observable<A | B>
+  const r2 = of(a).pipe(endWith(b, c)); // $ExpectType Observable<A | B | C>
+  const r3 = of(a).pipe(endWith(b, c, d)); // $ExpectType Observable<A | B | C | D>
+  const r4 = of(a).pipe(endWith(b, c, d, e)); // $ExpectType Observable<A | B | C | D | E>
+  const r5 = of(a).pipe(endWith(b, c, d, e, f)); // $ExpectType Observable<A | B | C | D | E | F>
+  const r6 = of(a).pipe(endWith(b, c, d, e, f, g)); // $ExpectType Observable<A | B | C | D | E | F | G>
+  const r7 = of(a).pipe(endWith(b, c, d, e, f, g, h)); // $ExpectType Observable<A | B | C | D | E | F | G | H>
 });
