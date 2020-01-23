@@ -3,7 +3,7 @@ import { isArray } from '../util/isArray';
 import { CombineLatestOperator } from '../observable/combineLatest';
 import { from } from '../observable/from';
 import { Observable } from '../Observable';
-import { ObservableInput, OperatorFunction, ObservedValuesFromArray } from '../types';
+import { ObservableInput, OperatorFunction, ObservedValueUnionFromArray } from '../types';
 
 /* tslint:disable:max-line-length */
 /** @deprecated use {@link combineLatestWith} */
@@ -66,7 +66,7 @@ export function combineLatestWith<T, T2, T3, T4, T5>(v2: ObservableInput<T2>, v3
 export function combineLatestWith<T, T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): OperatorFunction<T, [T, T2, T3, T4, T5, T6]> ;
 export function combineLatestWith<T, A extends ObservableInput<any>[]>(
   ...otherSources: A
-): OperatorFunction<T, Array<T | ObservedValuesFromArray<A>>>;
+): OperatorFunction<T, Array<T | ObservedValueUnionFromArray<A>>>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -107,6 +107,6 @@ export function combineLatestWith<T, A extends ObservableInput<any>[]>(
  */
 export function combineLatestWith<T, A extends ObservableInput<any>[]>(
   ...otherSources: A
-): OperatorFunction<T, Array<T | ObservedValuesFromArray<A>>> {
+): OperatorFunction<T, Array<T | ObservedValueUnionFromArray<A>>> {
   return combineLatest(...otherSources);
 }
