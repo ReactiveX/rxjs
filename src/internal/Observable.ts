@@ -347,9 +347,9 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /* tslint:disable:max-line-length */
-  toPromise<T>(this: Observable<T>): Promise<T>;
-  toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T>;
-  toPromise<T>(this: Observable<T>, PromiseCtor: PromiseConstructorLike): Promise<T>;
+  toPromise<T>(this: Observable<T>): Promise<T | undefined>;
+  toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T | undefined>;
+  toPromise<T>(this: Observable<T>, PromiseCtor: PromiseConstructorLike): Promise<T | undefined>;
   /* tslint:enable:max-line-length */
 
   /**
@@ -362,13 +362,13 @@ export class Observable<T> implements Subscribable<T> {
    * @return A Promise that resolves with the last value emit, or
    * rejects on an error.
    */
-  toPromise(promiseCtor?: PromiseConstructorLike): Promise<T> {
+  toPromise(promiseCtor?: PromiseConstructorLike): Promise<T | undefined> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor((resolve, reject) => {
-      let value: any;
+      let value: T | undefined;
       this.subscribe((x: T) => value = x, (err: any) => reject(err), () => resolve(value));
-    }) as Promise<T>;
+    }) as Promise<T | undefined>;
   }
 }
 
