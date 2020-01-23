@@ -4,7 +4,7 @@ import { of, EMPTY, throwError, config } from 'rxjs';
 /** @test {toPromise} */
 describe('Observable.toPromise', () => {
   it('should convert an Observable to a promise of its last value', (done: MochaDone) => {
-    of(1, 2, 3).toPromise(Promise).then((x: number) => {
+    of(1, 2, 3).toPromise(Promise).then(x => {
       expect(x).to.equal(3);
       done();
     });
@@ -33,7 +33,7 @@ describe('Observable.toPromise', () => {
       return new Promise(callback as any);
     } as any;
 
-    of(42).toPromise().then((x: number) => {
+    of(42).toPromise().then(x => {
       expect(wasCalled).to.be.true;
       expect(x).to.equal(42);
       done();
