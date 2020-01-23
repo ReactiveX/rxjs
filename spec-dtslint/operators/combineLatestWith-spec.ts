@@ -51,7 +51,7 @@ describe('combineLatestWith', () => {
       const e = of('j', 'k', 'l');
       const f = of('m', 'n', 'o');
       const g = of('p', 'q', 'r');
-      const res = a.pipe(combineLatestWith(b, c, d, e, f, g)); // $ExpectType Observable<(string | number)[]>
+      const res = a.pipe(combineLatestWith(b, c, d, e, f, g)); // $ExpectType Observable<[number, string, string, string, string, string, string]>
     });
   });
 });
