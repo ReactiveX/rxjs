@@ -108,12 +108,40 @@ export interface SchedulerAction<T> extends Subscription {
 export type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;
 
 /**
- * Extracts the generic type from an `ObservableInput<any>[]`.
+ * Extracts a union of element types from an `ObservableInput<any>[]`.
  * If you have `O extends ObservableInput<any>[]` and you pass in
  * `Observable<string>[]` or `Promise<string>[]` you would get
- * back a type of `string`
+ * back a type of `string`.
+ * If you pass in `[Observable<string>, Observable<number>]` you would
+ * get back a type of `string | number`.
  */
-export type ObservedValuesFromArray<X> = X extends Array<ObservableInput<infer T>> ? T : never;
+export type ObservedValueUnionFromArray<X> =
+  X extends Array<ObservableInput<infer T>>
+    ? T
+    : never;
+
+/** @deprecated use {@link ObservedValueUnionFromArray} */
+export type ObservedValuesFromArray<X> = ObservedValueUnionFromArray<X>;
+
+/**
+ * Extracts a tuple of element types from an `ObservableInput<any>[]`.
+ * If you have `O extends ObservableInput<any>[]` and you pass in
+ * `[Observable<string>, Observable<number>]` you would get back a type
+ * of `[string, number]`.
+ */
+export type ObservedValueTupleFromArray<X> =
+  X extends Array<ObservableInput<any>>
+    ? { [K in keyof X]: ObservedValueOf<X[K]> }
+    : never;
+
+/**
+ * Adds a type to the beginning of a tuple.
+ * If you pass in `Unshift<[B, C], A>` you will get back `[A, B, C]`.
+ */
+export type Unshift<X extends any[], Y> =
+  ((arg: Y, ...rest: X) => any) extends ((...args: infer U) => any)
+    ? U
+    : never;
 
 /**
  * Extracts the generic value from an Array type.

@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { ObservableInput, ObservedValuesFromArray, ObservedValueOf, SubscribableOrPromise } from '../types';
+import { ObservableInput, ObservedValueUnionFromArray, ObservedValueOf, SubscribableOrPromise } from '../types';
 import { isArray } from '../util/isArray';
 import { map } from '../operators/map';
 import { isObject } from '../util/isObject';
@@ -30,7 +30,7 @@ export function forkJoin<A, B, C>(sources: [ObservableInput<A>, ObservableInput<
 export function forkJoin<A, B, C, D>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>]): Observable<[A, B, C, D]>;
 export function forkJoin<A, B, C, D, E>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>]): Observable<[A, B, C, D, E]>;
 export function forkJoin<A, B, C, D, E, F>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>, ObservableInput<F>]): Observable<[A, B, C, D, E, F]>;
-export function forkJoin<A extends ObservableInput<any>[]>(sources: A): Observable<ObservedValuesFromArray<A>[]>;
+export function forkJoin<A extends ObservableInput<any>[]>(sources: A): Observable<ObservedValueUnionFromArray<A>[]>;
 
 // forkJoin({})
 export function forkJoin(sourcesObject: {}): Observable<never>;
