@@ -19,7 +19,10 @@ import { empty } from './empty';
  * typically with an Observable factory function. It does this afresh for each
  * subscriber, so although each subscriber may think it is subscribing to the
  * same Observable, in fact each subscriber gets its own individual
- * Observable.
+ * Observable. This is not different to other creation operators -- i.e. 
+ * a `subscribe` call can be seen as a function call -- but plays an 
+ * important role when one wants to return a Subject (or a subtype of Subject)
+ * as they are then not shared amongst subscribers neither.
  *
  * ## Example
  * ### Subscribe to either an Observable of clicks or an Observable of interval, at random
