@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { ObservedValueOf, ObservableInput } from '../types';
 import { from } from './from'; // lol
-import { empty } from './empty';
+import { EMPTY } from './empty';
 
 /**
  * Creates an Observable that, on subscribe, calls an Observable factory to
@@ -13,13 +13,13 @@ import { empty } from './empty';
  *
  * ![](defer.png)
  *
- * `defer` allows you to create the Observable only when the Observer
- * subscribes, and create a fresh Observable for each Observer. It waits until
- * an Observer subscribes to it, and then it generates an Observable,
- * typically with an Observable factory function. It does this afresh for each
- * subscriber, so although each subscriber may think it is subscribing to the
- * same Observable, in fact each subscriber gets its own individual
- * Observable.
+ * `defer` allows you to create an Observable only when the Observer
+ * subscribes. It waits until an Observer subscribes to it, calls the given
+ * factory function to get an Observable -- where a factory function typically
+ * generates a new Observable -- and subscribes the Observer to this Observable.
+ * In case the factory function returns a falsy value, then EMPTY is used as
+ * Observable instead. Last but not least, an exception during the factory
+ * function call is transferred to the Observer by calling `error`.
  *
  * ## Example
  * ### Subscribe to either an Observable of clicks or an Observable of interval, at random
@@ -61,7 +61,7 @@ export function defer<R extends ObservableInput<any> | void>(observableFactory: 
       subscriber.error(err);
       return undefined;
     }
-    const source = input ? from(input as ObservableInput<ObservedValueOf<R>>) : empty();
+    const source = input ? from(input as ObservableInput<ObservedValueOf<R>>) : EMPTY;
     return source.subscribe(subscriber);
   });
 }
