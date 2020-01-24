@@ -109,39 +109,39 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  *
  * ![](generate.png)
  *
- * `generate` allows you to create stream of values generated with a loop very similar to
- * traditional for loop. First argument of `generate` is a beginning value. Second argument
+ * `generate` allows you to create a stream of values generated with a loop very similar to
+ * a traditional for loop. The first argument of `generate` is a beginning value. The second argument
  * is a function that accepts this value and tests if some condition still holds. If it does,
- * loop continues, if not, it stops. Third value is a function which takes previously defined
- * value and modifies it in some way on each iteration. Note how these three parameters
- * are direct equivalents of three expressions in regular for loop: first expression
- * initializes some state (for example numeric index), second tests if loop can make next
- * iteration (for example if index is lower than 10) and third states how defined value
- * will be modified on every step (index will be incremented by one).
+ * then the loop continues, if not, it stops. The third value is a function which takes the
+ * previously defined value and modifies it in some way on each iteration. Note how these three parameters
+ * are direct equivalents of three expressions in a traditional for loop: the first expression
+ * initializes some state (for example, a numeric index), the second tests if the loop can perform the next
+ * iteration (for example, if the index is lower than 10) and the third states how the defined value
+ * will be modified on every step (for example, the index will be incremented by one).
  *
  * Return value of a `generate` operator is an Observable that on each loop iteration
- * emits a value. First, condition function is ran. If it returned true, Observable
- * emits currently stored value (initial value at the first iteration) and then updates
- * that value with iterate function. If at some point condition returned false, Observable
+ * emits a value. First of all, the condition function is ran. If it returns true, then the Observable
+ * emits the currently stored value (initial value at the first iteration) and finally updates
+ * that value with iterate function. If at some point the condition returns false, then the Observable
  * completes at that moment.
  *
- * Optionally you can pass fourth parameter to `generate` - a result selector function which allows you
- * to immediately map value that would normally be emitted by an Observable.
+ * Optionally you can pass a fourth parameter to `generate` - a result selector function which allows you
+ * to immediately map the value that would normally be emitted by an Observable.
  *
  * If you find three anonymous functions in `generate` call hard to read, you can provide
- * single object to the operator instead. That object has properties: `initialState`,
+ * a single object to the operator instead where the object has the properties: `initialState`,
  * `condition`, `iterate` and `resultSelector`, which should have respective values that you
  * would normally pass to `generate`. `resultSelector` is still optional, but that form
  * of calling `generate` allows you to omit `condition` as well. If you omit it, that means
- * condition always holds, so output Observable will never complete.
+ * condition always holds, or in other words the resulting Observable will never complete.
  *
- * Both forms of `generate` can optionally accept a scheduler. In case of multi-parameter call,
- * scheduler simply comes as a last argument (no matter if there is resultSelector
- * function or not). In case of single-parameter call, you can provide it as a
- * `scheduler` property on object passed to the operator. In both cases scheduler decides when
- * next iteration of the loop will happen and therefore when next value will be emitted
- * by the Observable. For example to ensure that each value is pushed to the observer
- * on separate task in event loop, you could use `async` scheduler. Note that
+ * Both forms of `generate` can optionally accept a scheduler. In case of a multi-parameter call,
+ * scheduler simply comes as a last argument (no matter if there is a `resultSelector`
+ * function or not). In case of a single-parameter call, you can provide it as a
+ * `scheduler` property on the object passed to the operator. In both cases, a scheduler decides when
+ * the next iteration of the loop will happen and therefore when the next value will be emitted
+ * by the Observable. For example, to ensure that each value is pushed to the Observer
+ * on a separate task in the event loop, you could use the `async` scheduler. Note that
  * by default (when no scheduler is passed) values are simply emitted synchronously.
  *
  *
