@@ -112,7 +112,7 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * `generate` allows you to create a stream of values generated with a loop very similar to
  * a traditional for loop. The first argument of `generate` is a beginning value. The second argument
  * is a function that accepts this value and tests if some condition still holds. If it does,
- * then the loop continues, if not, it stops. The third value is a function which takes the 
+ * then the loop continues, if not, it stops. The third value is a function which takes the
  * previously defined value and modifies it in some way on each iteration. Note how these three parameters
  * are direct equivalents of three expressions in a traditional for loop: the first expression
  * initializes some state (for example, a numeric index), the second tests if the loop can perform the next
