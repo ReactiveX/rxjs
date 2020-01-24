@@ -21,7 +21,7 @@ export function concat<A extends ObservableInput<any>[]>(...observables: A): Obs
 
 /* tslint:enable:max-line-length */
 /**
- * Creates an output Observable which sequentially emits all values from given
+ * Creates an output Observable which sequentially emits all values from the first given
  * Observable and then moves on to the next.
  *
  * <span class="informal">Concatenates multiple Observables together by
