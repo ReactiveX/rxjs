@@ -12,7 +12,7 @@ describe('Scheduler.asap', () => {
 
   it('should act like the async scheduler if delay > 0', () => {
     let actionHappened = false;
-    const sandbox = sinon.sandbox.create();
+    const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     asap.schedule(() => {
       actionHappened = true;
@@ -27,7 +27,7 @@ describe('Scheduler.asap', () => {
 
   it('should cancel asap actions when delay > 0', () => {
     let actionHappened = false;
-    const sandbox = sinon.sandbox.create();
+    const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     asap.schedule(() => {
       actionHappened = true;
@@ -41,7 +41,7 @@ describe('Scheduler.asap', () => {
   });
 
   it('should reuse the interval for recursively scheduled actions with the same delay', () => {
-    const sandbox = sinon.sandbox.create();
+    const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     // callThrough is missing from the declarations installed by the typings tool in stable
     const stubSetInterval = (<any> sinon.stub(global, 'setInterval')).callThrough();
@@ -68,7 +68,7 @@ describe('Scheduler.asap', () => {
   });
 
   it('should not reuse the interval for recursively scheduled actions with a different delay', () => {
-    const sandbox = sinon.sandbox.create();
+    const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     // callThrough is missing from the declarations installed by the typings tool in stable
     const stubSetInterval = (<any> sinon.stub(global, 'setInterval')).callThrough();

@@ -12,7 +12,7 @@ describe('Scheduler.animationFrame', () => {
 
   it('should act like the async scheduler if delay > 0', () => {
     let actionHappened = false;
-    const sandbox = sinon.sandbox.create();
+    const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     animationFrame.schedule(() => {
       actionHappened = true;
@@ -27,7 +27,7 @@ describe('Scheduler.animationFrame', () => {
 
   it('should cancel animationFrame actions when unsubscribed', () => {
     let actionHappened = false;
-    const sandbox = sinon.sandbox.create();
+    const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     animationFrame.schedule(() => {
       actionHappened = true;
