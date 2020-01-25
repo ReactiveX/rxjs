@@ -193,7 +193,11 @@ describe('BehaviorSubject', () => {
     source.subscribe(subject);
   });
 
-  it('should be an Observer which can be given to an interop source', (done: MochaDone) => {
+  it.skip('should be an Observer which can be given to an interop source', (done: MochaDone) => {
+    // This test reproduces a bug reported in this issue:
+    // https://github.com/ReactiveX/rxjs/issues/5105
+    // However, it cannot easily be fixed. See this comment:
+    // https://github.com/ReactiveX/rxjs/issues/5105#issuecomment-578405446
     const source = of(1, 2, 3, 4, 5);
     const subject = new BehaviorSubject(0);
     const expected = [0, 1, 2, 3, 4, 5];
