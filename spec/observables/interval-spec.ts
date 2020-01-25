@@ -63,7 +63,7 @@ describe('interval', () => {
   });
 
   it('should create an observable emitting periodically with the AsapScheduler', (done: MochaDone) => {
-    const sandbox = sinon.sandbox.create();
+    const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     const period = 10;
     const events = [0, 1, 2, 3, 4, 5];
@@ -90,7 +90,7 @@ describe('interval', () => {
   });
 
   it('should create an observable emitting periodically with the QueueScheduler', (done: MochaDone) => {
-    const sandbox = sinon.sandbox.create();
+    const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     const period = 10;
     const events = [0, 1, 2, 3, 4, 5];
@@ -117,7 +117,7 @@ describe('interval', () => {
   });
 
   it('should create an observable emitting periodically with the AnimationFrameScheduler', (done: MochaDone) => {
-    const sandbox = sinon.sandbox.create();
+    const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     const period = 10;
     const events = [0, 1, 2, 3, 4, 5];
