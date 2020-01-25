@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { hot, expectObservable } from '../helpers/marble-testing';
 import { BehaviorSubject, Subject, ObjectUnsubscribedError, Observable, of } from 'rxjs';
 import { tap, mergeMapTo } from 'rxjs/operators';
+import { asInteropSubject } from '../helpers/interop-helper';
 
 /** @test {BehaviorSubject} */
 describe('BehaviorSubject', () => {
@@ -185,9 +186,28 @@ describe('BehaviorSubject', () => {
       }, (x) => {
         done(new Error('should not be called'));
       }, () => {
+        expect(subject.value).to.equal(5);
         done();
       });
 
     source.subscribe(subject);
+  });
+
+  it('should be an Observer which can be given to an interop source', (done: MochaDone) => {
+    const source = of(1, 2, 3, 4, 5);
+    const subject = new BehaviorSubject(0);
+    const expected = [0, 1, 2, 3, 4, 5];
+
+    subject.subscribe(
+      (x: number) => {
+        expect(x).to.equal(expected.shift());
+      }, (x) => {
+        done(new Error('should not be called'));
+      }, () => {
+        expect(subject.value).to.equal(5);
+        done();
+      });
+
+      source.subscribe(asInteropSubject(subject));
   });
 });
