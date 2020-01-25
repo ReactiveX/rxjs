@@ -9,15 +9,15 @@ import { SchedulerAction } from '../types';
  *
  * ```ts
  * class Action<T> extends Subscription {
- *   new (scheduler: Scheduler, work: (state: T) => void);
- *   schedule(state: T, delay: number = 0): Subscription;
+ *   new (scheduler: Scheduler, work: (state?: T) => void);
+ *   schedule(state?: T, delay: number = 0): Subscription;
  * }
  * ```
  *
  * @class Action<T>
  */
 export class Action<T> extends Subscription {
-  constructor(scheduler: Scheduler, work: (this: SchedulerAction<T>, state: T) => void) {
+  constructor(scheduler: Scheduler, work: (this: SchedulerAction<T>, state?: T) => void) {
     super();
   }
   /**
@@ -30,7 +30,7 @@ export class Action<T> extends Subscription {
    * time unit is implicit and defined by the Scheduler.
    * @return {void}
    */
-  public schedule(state: T, delay: number = 0): Subscription {
+  public schedule(state?: T, delay: number = 0): Subscription {
     return this;
   }
 }

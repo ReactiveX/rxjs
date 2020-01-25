@@ -147,8 +147,8 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     } else {
       const closeState = { subscriber: this, context };
       const creationState: DispatchCreateArg<T> = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
-      this.add(context.closeAction = scheduler.schedule<DispatchCloseArg<T>>(dispatchBufferClose, bufferTimeSpan, closeState));
-      this.add(scheduler.schedule<DispatchCreateArg<T>>(dispatchBufferCreation, bufferCreationInterval!, creationState));
+      this.add(context.closeAction = scheduler.schedule<DispatchCloseArg<T>>(dispatchBufferClose as any, bufferTimeSpan, closeState));
+      this.add(scheduler.schedule<DispatchCreateArg<T>>(dispatchBufferCreation as any, bufferCreationInterval!, creationState));
     }
   }
 
@@ -239,7 +239,11 @@ function dispatchBufferCreation<T>(this: SchedulerAction<DispatchCreateArg<T>>, 
   const context = subscriber.openContext();
   const action = <SchedulerAction<DispatchCreateArg<T>>>this;
   if (!subscriber.closed) {
-    subscriber.add(context.closeAction = scheduler.schedule<DispatchCloseArg<T>>(dispatchBufferClose, bufferTimeSpan, { subscriber, context }));
+    subscriber.add(context.closeAction = scheduler.schedule<DispatchCloseArg<T>>(
+      dispatchBufferClose as any,
+      bufferTimeSpan,
+      { subscriber, context }
+    ));
     action.schedule(state, bufferCreationInterval!);
   }
 }

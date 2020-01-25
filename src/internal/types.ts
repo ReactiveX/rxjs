@@ -92,8 +92,7 @@ export interface Observer<T> {
 
 export interface SchedulerLike {
   now(): number;
-  schedule(work: (this: SchedulerAction<undefined>) => void, delay?: number ): Subscription;
-  schedule<T>(work: (this: SchedulerAction<T>, state: T) => void, delay: number, state: T): Subscription;
+  schedule<T>(work: (this: SchedulerAction<T>, state?: T) => void, delay?: number, state?: T): Subscription;
 }
 
 export interface SchedulerAction<T> extends Subscription {

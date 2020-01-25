@@ -74,7 +74,7 @@ export function timer(dueTime: number | Date = 0,
       ? (dueTime as number)
       : (+dueTime - scheduler!.now());
 
-    return scheduler!.schedule(dispatch, due, {
+    return scheduler!.schedule(dispatch as any, due, {
       index: 0, period, subscriber
     });
   });

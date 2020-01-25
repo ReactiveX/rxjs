@@ -118,7 +118,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
   private _schedule(scheduler: SchedulerLike): void {
     this.active = true;
     const destination = this.destination as Subscription;
-    destination.add(scheduler.schedule<DelayState<T>>(DelaySubscriber.dispatch, this.delay, {
+    destination.add(scheduler.schedule<DelayState<T>>(DelaySubscriber.dispatch as any, this.delay, {
       source: this, destination: this.destination, scheduler: scheduler
     }));
   }

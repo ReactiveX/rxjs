@@ -97,7 +97,7 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
     this.clearDebounce();
     this.lastValue = value;
     this.hasValue = true;
-    this.add(this.debouncedSubscription = this.scheduler.schedule(dispatchNext, this.dueTime, this));
+    this.add(this.debouncedSubscription = this.scheduler.schedule(dispatchNext as any, this.dueTime, this));
   }
 
   protected _complete() {

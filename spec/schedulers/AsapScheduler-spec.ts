@@ -54,7 +54,7 @@ describe('Scheduler.asap', () => {
         this.schedule(state, state.period);
       }
     }
-    asap.schedule(dispatch, period, state);
+    asap.schedule(dispatch as any, period, state);
     expect(state).to.have.property('index', 0);
     expect(stubSetInterval).to.have.property('callCount', 1);
     fakeTimer.tick(period);
@@ -82,7 +82,7 @@ describe('Scheduler.asap', () => {
         this.schedule(state, state.period);
       }
     }
-    asap.schedule(dispatch, period, state);
+    asap.schedule(dispatch as any, period, state);
     expect(state).to.have.property('index', 0);
     expect(stubSetInterval).to.have.property('callCount', 1);
     fakeTimer.tick(period);

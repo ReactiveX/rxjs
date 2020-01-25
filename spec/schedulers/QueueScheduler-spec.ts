@@ -29,7 +29,7 @@ describe('Scheduler.queue', () => {
     let state: Array<number> = [];
 
     queue.schedule(function (index) {
-      state.push(index);
+      state.push(index!);
       if (index === 0) {
         this.schedule(1, 100);
       } else if (index === 1) {

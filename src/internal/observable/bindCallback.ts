@@ -224,7 +224,7 @@ export function bindCallback<T>(
         const state: DispatchState<T> = {
           args, subscriber, params,
         };
-        return scheduler.schedule<DispatchState<T>>(dispatch, 0, state);
+        return scheduler.schedule<DispatchState<T>>(dispatch as any, 0, state);
       }
     });
   };
@@ -253,7 +253,7 @@ function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchSta
 
     const handler = (...innerArgs: any[]) => {
       const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
-      this.add(scheduler.schedule<NextState<T>>(dispatchNext, 0, { value, subject: subject! }));
+      this.add(scheduler.schedule<NextState<T>>(dispatchNext as any, 0, { value, subject: subject! }));
     };
 
     try {

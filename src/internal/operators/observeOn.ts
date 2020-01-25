@@ -95,7 +95,7 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
   private scheduleMessage(notification: Notification<any>): void {
     const destination = this.destination as Subscription;
     destination.add(this.scheduler.schedule(
-      ObserveOnSubscriber.dispatch,
+      ObserveOnSubscriber.dispatch as any,
       this.delay,
       new ObserveOnMessage(notification, this.destination)
     ));

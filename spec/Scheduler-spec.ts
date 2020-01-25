@@ -23,8 +23,8 @@ describe('Scheduler.queue', () => {
     let call2 = false;
     (queue as QueueScheduler).active = false;
     queue.schedule(function (state) {
-      call1 = state.call1;
-      call2 = state.call2;
+      call1 = state!.call1;
+      call2 = state!.call2;
       if (!call2) {
         this.schedule({ call1: true, call2: true });
       }
