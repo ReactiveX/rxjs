@@ -63,7 +63,7 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * second value is the last one emitted by the second observable and so on.
  *
  * If you pass a dictionary of observables to the operator, then the resulting
- * objects will have the same keys as the dictionary passed, with their last values they hadve emitted
+ * objects will have the same keys as the dictionary passed, with their last values they have emitted
  * located at the corresponding key.
  *
  * That means `forkJoin` will not emit more than once and it will complete after that. If you need to emit combined
@@ -81,10 +81,10 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * If any given observable errors at some point, `forkJoin` will error as well and immediately unsubscribe
  * from the other observables.
  *
- * Optionally `forkJoin` accepts a resultSelector function, that will be called with values which normally
- * would land in the emitted array. Whatever is returned by the resultSelector, will appear in the output
- * observable instead. This means that the default resultSelector can be thought of as a function that takes
- * all its arguments and puts them into an array. Note that the resultSelector will be called only
+ * Optionally `forkJoin` accepts a `resultSelector` function, that will be called with values which normally
+ * would land in the emitted array. Whatever is returned by the `resultSelector`, will appear in the output
+ * observable instead. This means that the default `resultSelector` can be thought of as a function that takes
+ * all its arguments and puts them into an array. Note that the `resultSelector` will be called only
  * when `forkJoin` is supposed to emit a result.
  *
  * ## Examples
