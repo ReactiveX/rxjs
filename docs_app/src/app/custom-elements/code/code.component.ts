@@ -1,11 +1,11 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
-import { Logger } from 'app/shared/logger.service';
-import { PrettyPrinter } from './pretty-printer.service';
-import { CopierService } from 'app/shared/copier.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { tap } from 'rxjs/operators';
-import { StackblitzService } from 'app/shared/stackblitz.service';
+import {Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild} from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {CopierService} from 'app/shared/copier.service';
+import {Logger} from 'app/shared/logger.service';
+import {StackblitzService} from 'app/shared/stackblitz.service';
+import {tap} from 'rxjs/operators';
 import version from '../../../../tools/stackblitz/rxjs.version';
+import {PrettyPrinter} from './pretty-printer.service';
 
 /**
  * If linenums is not set, this is the default maximum number of lines that
@@ -52,7 +52,7 @@ const DEFAULT_LINE_NUMS_COUNT = 10;
       </button>
       <code class="animated fadeIn" #codeContainer></code>
     </pre>
-    `
+  `
 })
 export class CodeComponent implements OnChanges {
   _defaultDependencies = {rxjs: version};
@@ -72,7 +72,11 @@ export class CodeComponent implements OnChanges {
       this.formatDisplayedCode();
     }
   }
-  get code(): string { return this._code; }
+
+  get code(): string {
+    return this._code;
+  }
+
   _code: string;
 
   /** Whether the copy button should be shown. */
@@ -127,7 +131,9 @@ export class CodeComponent implements OnChanges {
     private pretty: PrettyPrinter,
     private copier: CopierService,
     private logger: Logger,
-    private stackblitz: StackblitzService) { }
+    private stackblitz: StackblitzService
+  ) {
+  }
 
   ngOnChanges() {
     // If some inputs have changed and there is code displayed, update the view with the latest
@@ -143,10 +149,11 @@ export class CodeComponent implements OnChanges {
     this.codeText = this.getCodeText(); // store the unformatted code as text (for copying)
 
     this.pretty
-        .formatCode(leftAlignedCode, this.language, this.getLinenums(leftAlignedCode))
-        .pipe(tap(() => this.codeFormatted.emit()))
-        .subscribe(c => this.setCodeHtml(c), err => { /* ignore failure to format */ }
-    );
+      .formatCode(leftAlignedCode, this.language, this.getLinenums(leftAlignedCode))
+      .pipe(tap(() => this.codeFormatted.emit()))
+      .subscribe(c => this.setCodeHtml(c), err => { /* ignore failure to format */
+        }
+      );
   }
 
   /** Sets the message showing that the code could not be found. */
@@ -188,10 +195,10 @@ export class CodeComponent implements OnChanges {
 
     if (successfullyCopied) {
       this.logger.log('Copied code to clipboard:', code);
-      this.snackbar.open('Code Copied', '', { duration: 800 });
+      this.snackbar.open('Code Copied', '', {duration: 800});
     } else {
       this.logger.error(new Error(`ERROR copying code to clipboard: "${code}"`));
-      this.snackbar.open('Copy failed. Please try again!', '', { duration: 800 });
+      this.snackbar.open('Copy failed. Please try again!', '', {duration: 800});
     }
   }
 
