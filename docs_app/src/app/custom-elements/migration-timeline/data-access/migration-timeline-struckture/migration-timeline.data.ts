@@ -2448,6 +2448,7 @@ function getOperatorGeneralObserverCallbackImplication(operatorName?: string, ar
 
 
 // SCHEDULER ARGUMENT
+
 function getOperatorGeneralSchedulerArgumentDeprecationPhrase(operatorName: string, arg: string) {
   return `use scheduled and ${arg} instead of passing a scheduler`;
 }
@@ -2476,6 +2477,7 @@ function getCreationSchedulerGeneralImplication(opr: string): string {
 
 
 // OPR
+
 function getOperatorSchedulerGeneralImplication(opr: string): string {
   return `For ${opr}, the removal of the scheduler parameter means that if callers
   want notifications to be scheduled, they will have to move the observables in the scheduled operator
@@ -2485,7 +2487,6 @@ function getOperatorSchedulerGeneralImplication(opr: string): string {
 // -----------------------------
 
 // FUNCTION TO STATIC
-
 
 function getFunctionToStaticReason(operatorName: string): string {
   return `The function is deprecated as it returns a constant value. A constant is more efficient  than a function.`;
@@ -2497,12 +2498,10 @@ function getFunctionToStaticImplication(operatorName: string, arg: string): stri
 
 // NAME DUPLICATE
 
-// Info from: https://github.com/ReactiveX/rxjs/issues/3927
 function getNameDupleOperatorDeprecationMsgCode(operatorName: string): string {
   return `use the static ${operatorName} instead`;
 }
 
-// Info from: https://github.com/ReactiveX/rxjs/issues/3927
 function getNameDupleOperatorReason(operatorName: string): string {
   return `As ${operatorName} operator is a name duplicate of the static
          function ${operatorName} it gets deprecated.
@@ -2514,7 +2513,6 @@ function getNameDupleOperatorImplication(opr: string, arg: string): string {
    "compose in" another observable the observable to compose and
    the other code need to get composed by the equivalent a creation method ${arg}.`;
 }
-
 
 // RESULT_SELECTOR
 
@@ -2534,11 +2532,13 @@ function getResultSelectorImplication(opr: string): string {
 }
 
 // Static
+
 function getCreationResultSelectorDeprecationMsgCode(operatorName?: string): string {
   return `use the map operator instead of a result selector`;
 }
 
 // Operator
+
 function getOperatorResultSelectorDeprecationMsgCode(operatorName?: string): string {
   return `use the map operator, on the inner observable, instead of a result selector`;
 }

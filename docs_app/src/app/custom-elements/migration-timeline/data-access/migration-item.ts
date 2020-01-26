@@ -26,7 +26,6 @@ export interface ClientBreakingChange extends BreakingChange, MigrationItemUIDAw
 
 export interface ClientMigrationTimelineReleaseItem {
   version: string;
-  // semverNumber 0 0 0 000 0,
   versionNumber: number;
   officialRelease: boolean;
   date: Date;
@@ -89,16 +88,12 @@ export const findLatestVersion = (date: Date) => (rL: ClientMigrationTimelineRel
 
 export function parseMigrationItemSubjectUIDFromString(migrationItemUID: string): string {
   const parts = migrationItemUID ? migrationItemUID.split('-') : [];
-  // Pattern: <itemType>-<subjectApiSymbol>-<subject>-<subjectAction>
   return parts.length >= 4 ? migrationItemUID : '';
 }
 
 export function parseClientMigrationTimelineReleaseItem(r: MigrationReleaseItem): ClientMigrationTimelineReleaseItem {
   return {
     ...r,
-    // @TODO create date obj for GMT+0 (or figure out in which timezone RxJS is released...)
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
-    // new Date(var + 'GMT+0')
     date: new Date(r.date),
     version: r.version,
     officialRelease: r.version.split('-').length < 2,
@@ -139,15 +134,7 @@ export function parseToMigrationItemUIDAware<T>(version: string) {
   };
 }
 
-/*
-parseMigrationItemUIDFromString
-Examples:
-- (EMPTY STRING)
-- 0.0.0-alpha.0 (proper semver)
-- 0.0.0_subjectUID (proper migrationItemUID)
-*/
 export function parseMigrationItemUIDURL(uid: string): string {
-  // parseMigrationItemUIDURL
   const [migrationReleaseUID, migrationItemSubjectUID] = uid.split('_');
   const parsedReleaseUID = parseMigrationReleaseUIDFromString(migrationReleaseUID);
   const parsedMigrationItemSubjectUID = parseMigrationItemSubjectUIDFromString(migrationItemSubjectUID);

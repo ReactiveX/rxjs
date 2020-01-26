@@ -162,8 +162,7 @@ export class MigrationTimelineComponent extends State<MigrationTimelineComponent
     this.setState({expandedRelease: {}});
 
     const _selectedMigrationItemUID$ = this.select('selectedMigrationItemUID');
-    // A) Version selection click (nav bar of versions)
-    // If the user select's a new version expand this panel
+
     this.connectState('expandedRelease', _selectedMigrationItemUID$
       .pipe(
         map((version: string) => ({[parseMigrationReleaseUIDFromString(version)]: true}))

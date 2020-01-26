@@ -2,7 +2,7 @@ import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {ClientDeprecation} from '../../data-access/migration-item';
 
-import {State} from '../../utils/state.service';
+import {State} from '../../utils';
 
 @Component({
   selector: `deprecation-description-table`,

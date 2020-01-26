@@ -1,7 +1,7 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {ClientMigrationTimelineReleaseItem} from '../data-access/migration-item';
-import {State} from '../utils/state.service';
+import {State} from '../utils';
 
 export interface MigrationTimelineNavigationItem {
   date: Date;
@@ -55,7 +55,6 @@ export class ReleaseNavigationComponent {
       this._baseModel.setState({releaseNavigationList});
     }
   }
-
 
   @Output()
   selectedMigrationReleaseUIDChange = new Subject<string>();

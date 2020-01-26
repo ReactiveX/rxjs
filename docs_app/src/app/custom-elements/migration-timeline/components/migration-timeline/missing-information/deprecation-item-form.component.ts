@@ -1,4 +1,4 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {Component, Output} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {filter, map, withLatestFrom} from 'rxjs/operators';
@@ -97,7 +97,7 @@ import {SubjectSymbols} from '../../../data-access/migration-timeline-struckture
     }
   `]
 })
-export class DeprecationItemFormComponent implements OnInit {
+export class DeprecationItemFormComponent {
 
   subjectSymbols = SubjectSymbols;
 
@@ -129,9 +129,6 @@ export class DeprecationItemFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
 
-  }
-
-  ngOnInit() {
   }
 
 }

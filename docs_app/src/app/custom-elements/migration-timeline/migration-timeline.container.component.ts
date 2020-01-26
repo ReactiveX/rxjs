@@ -76,15 +76,12 @@ export interface MigrationTimelineContainerModelFromRemoteSources {
 })
 export class MigrationTimelineContainerComponent {
 
-  // UI State
-  // Normalized Model
   baseModel$: Observable<MigrationTimelineContainerModelFromRemoteSources> = this._baseModel.select();
-  // Derivations from normalized model
+
   selectedMigrationReleaseUID$ = this._baseModel.select(
     map(s => parseMigrationReleaseUIDFromString(s.selectedMigrationItemUID)),
   );
 
-  // UI Interactions
   selectedMigrationItemUIDChange = new Subject<string>();
   selectedMigrationReleaseUIDChange = new Subject<string>();
 
@@ -93,16 +90,15 @@ export class MigrationTimelineContainerComponent {
     private _locationService: LocationService,
     private _va: MigrationTimelineContainerAdapter
   ) {
-    // connect data from remote sources to component state
+
     this._baseModel.connectState(this._va.select());
 
-    // Routing
     this._baseModel.holdEffect(
       merge(
         this.selectedMigrationReleaseUIDChange,
         this.selectedMigrationItemUIDChange
       )
-      .pipe(tap(uid => this.setMigrationTimelineSelection(uid)))
+        .pipe(tap(uid => this.setMigrationTimelineSelection(uid)))
     );
 
   }

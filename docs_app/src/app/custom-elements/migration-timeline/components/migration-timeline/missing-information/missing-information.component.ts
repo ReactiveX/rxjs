@@ -36,11 +36,13 @@ export class MissingInformationComponent extends State<{ deprecation: Deprecatio
 
   env = environment;
   formOutput$ = new Subject<Deprecation>();
-  contentToCopy$ = this.select(
-    map(s => s.deprecation),
-    withLatestFrom(this.lo.currentSearchParams
-      .pipe(map(p => parseMigrationItemUIDObject(p.uid)))
-    ),
+
+  private deprecation$ = this.select('deprecation');
+  private migrationItemUIDObject$ = this.lo.currentSearchParams
+    .pipe(map(p => parseMigrationItemUIDObject(p.uid)));
+
+  contentToCopy$ = this.deprecation$.pipe(
+    withLatestFrom(this.migrationItemUIDObject$),
     map(([deprecation, uidObj]) => {
       const snippet: MigrationReleaseItem[] = [
         {

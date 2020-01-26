@@ -27,11 +27,8 @@ export class MigrationTimelineContainerAdapter extends State<MigrationTimelineCo
   ) {
     super();
 
-    // Global state to local state
     this.connectState('releaseList', this.migrationService.migrations$);
 
-    // URL state to component state
-    // Connect Router to selectedMigrationReleaseUID
     this.connectState('selectedMigrationItemUID',
       combineLatest(
         this.releaseList$,
@@ -42,15 +39,13 @@ export class MigrationTimelineContainerAdapter extends State<MigrationTimelineCo
   }
 
   findSelectedMigrationItemUID(releaseList, selectedMigrationItemUID) {
-    // get the release object for selectedMigrationItemUID (or the closest one)
     const release = findClosestRelease(releaseList, selectedMigrationItemUID);
     const migrationItemSubjectUID = parseMigrationItemSubjectUIDFromString(selectedMigrationItemUID.split('_')[1]);
 
-    // If no subjectUID is specified forward only version
     if (migrationItemSubjectUID === '') {
       return release.version;
     }
-    // If uid is ok search it
+
     const item = ([] as any[])
       .concat(release.deprecations)
       .concat(release.breakingChanges)
