@@ -70,8 +70,7 @@ export class ReleaseNavigationComponent {
   private parseVmReleaseNavigation(releases: ClientMigrationTimelineReleaseItem[]): MigrationTimelineNavigationItem[] {
     return releases.reduce((res, release): MigrationTimelineNavigationItem[] => {
       const {deprecations, breakingChanges, ...navigationItem} = release;
-      res.push(navigationItem);
-      return res;
+      return res.concat([navigationItem]);
     }, [] as MigrationTimelineNavigationItem[]);
   }
 
