@@ -135,7 +135,11 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
         } else {
           const state: DispatchArg<T, R> = { subscriber: this, result, value, index };
           const destination = this.destination as Subscription;
-          destination.add(this.scheduler.schedule<DispatchArg<T, R>>(ExpandSubscriber.dispatch, 0, state));
+          destination.add(this.scheduler.schedule<DispatchArg<T, R>>(
+            ExpandSubscriber.dispatch as any,
+            0,
+            state
+          ));
         }
       } catch (e) {
         destination.error(e);

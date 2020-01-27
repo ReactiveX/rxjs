@@ -34,7 +34,7 @@ export class AsyncScheduler extends Scheduler {
     });
   }
 
-  public schedule<T = undefined>(work: (this: SchedulerAction<T>, state: T) => void, delay: number = 0, state?: T): Subscription {
+  public schedule<T>(work: (this: SchedulerAction<T>, state?: T) => void, delay: number = 0, state?: T): Subscription {
     if (AsyncScheduler.delegate && AsyncScheduler.delegate !== this) {
       return AsyncScheduler.delegate.schedule(work, delay, state);
     } else {

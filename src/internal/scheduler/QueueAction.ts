@@ -11,11 +11,11 @@ import { SchedulerAction } from '../types';
 export class QueueAction<T> extends AsyncAction<T> {
 
   constructor(protected scheduler: QueueScheduler,
-              protected work: (this: SchedulerAction<T>, state: T) => void) {
+              protected work: (this: SchedulerAction<T>, state?: T) => void) {
     super(scheduler, work);
   }
 
-  public schedule(state: T, delay: number = 0): Subscription {
+  public schedule(state?: T, delay: number = 0): Subscription {
     if (delay > 0) {
       return super.schedule(state, delay);
     }

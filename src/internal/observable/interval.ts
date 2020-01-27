@@ -64,7 +64,7 @@ export function interval(period = 0,
 
   return new Observable<number>(subscriber => {
     subscriber.add(
-      scheduler.schedule(dispatch, period, { subscriber, counter: 0, period })
+      scheduler.schedule(dispatch as any, period, { subscriber, counter: 0, period })
     );
     return subscriber;
   });

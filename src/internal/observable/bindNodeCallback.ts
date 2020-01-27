@@ -208,7 +208,7 @@ export function bindNodeCallback<T>(
         }
         return subject.subscribe(subscriber);
       } else {
-        return scheduler.schedule<DispatchState<T>>(dispatch, 0, { params, subscriber, context });
+        return scheduler.schedule<DispatchState<T>>(dispatch as any, 0, { params, subscriber, context });
       }
     });
   };
@@ -239,17 +239,17 @@ function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchSta
     const handler = (...innerArgs: any[]) => {
       const err = innerArgs.shift();
       if (err) {
-        this.add(scheduler.schedule<DispatchErrorArg<T>>(dispatchError, 0, { err, subject }));
+        this.add(scheduler.schedule<DispatchErrorArg<T>>(dispatchError as any, 0, { err, subject }));
       } else {
         const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
-        this.add(scheduler.schedule<DispatchNextArg<T>>(dispatchNext, 0, { value, subject }));
+        this.add(scheduler.schedule<DispatchNextArg<T>>(dispatchNext as any, 0, { value, subject }));
       }
     };
 
     try {
       callbackFunc.apply(context, [...args, handler]);
     } catch (err) {
-      this.add(scheduler.schedule<DispatchErrorArg<T>>(dispatchError, 0, { err, subject }));
+      this.add(scheduler.schedule<DispatchErrorArg<T>>(dispatchError as any, 0, { err, subject }));
     }
   }
 

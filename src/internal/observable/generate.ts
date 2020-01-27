@@ -361,7 +361,7 @@ export function generate<T, S>(initialStateOrOptions: S | GenerateOptions<T, S>,
   return new Observable<T>(subscriber => {
     let state = initialState;
     if (scheduler) {
-      return scheduler.schedule<SchedulerState<T, S>>(dispatch, 0, {
+      return scheduler.schedule<SchedulerState<T, S>>(dispatch as any, 0, {
         subscriber,
         iterate: iterate!,
         condition,

@@ -192,13 +192,13 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
 
     const window = this.openWindow();
     if (windowCreationInterval !== null && windowCreationInterval >= 0) {
-      const closeState: CloseState<T> = { subscriber: this, window, context: <any>null };
+      const closeState: CloseState<T> = { subscriber: this, window, context: null! };
       const creationState: CreationState<T> = { windowTimeSpan, windowCreationInterval, subscriber: this, scheduler };
-      this.add(scheduler.schedule<CloseState<T>>(dispatchWindowClose, windowTimeSpan, closeState));
-      this.add(scheduler.schedule<CreationState<T>>(dispatchWindowCreation, windowCreationInterval, creationState));
+      this.add(scheduler.schedule<CloseState<T>>(dispatchWindowClose as any, windowTimeSpan, closeState));
+      this.add(scheduler.schedule<CreationState<T>>(dispatchWindowCreation as any, windowCreationInterval, creationState));
     } else {
       const timeSpanOnlyState: TimeSpanOnlyState<T> = { subscriber: this, window, windowTimeSpan };
-      this.add(scheduler.schedule<TimeSpanOnlyState<T>>(dispatchWindowTimeSpanOnly, windowTimeSpan, timeSpanOnlyState));
+      this.add(scheduler.schedule<TimeSpanOnlyState<T>>(dispatchWindowTimeSpanOnly as any, windowTimeSpan, timeSpanOnlyState));
     }
   }
 
@@ -268,9 +268,9 @@ function dispatchWindowCreation<T>(this: SchedulerAction<CreationState<T>>, stat
   const { windowTimeSpan, subscriber, scheduler, windowCreationInterval } = state;
   const window = subscriber.openWindow();
   const action = this;
-  let context: CloseWindowContext<T> = { action, subscription: <any>null };
+  let context: CloseWindowContext<T> = { action, subscription: null! };
   const timeSpanState: CloseState<T> = { subscriber, window, context };
-  context.subscription = scheduler.schedule<CloseState<T>>(dispatchWindowClose, windowTimeSpan, timeSpanState);
+  context.subscription = scheduler.schedule<CloseState<T>>(dispatchWindowClose as any, windowTimeSpan, timeSpanState);
   action.add(context.subscription);
   action.schedule(state, windowCreationInterval);
 }

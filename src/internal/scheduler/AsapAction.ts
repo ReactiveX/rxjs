@@ -10,7 +10,7 @@ import { SchedulerAction } from '../types';
 export class AsapAction<T> extends AsyncAction<T> {
 
   constructor(protected scheduler: AsapScheduler,
-              protected work: (this: SchedulerAction<T>, state: T) => void) {
+              protected work: (this: SchedulerAction<T>, state?: T) => void) {
     super(scheduler, work);
   }
 
