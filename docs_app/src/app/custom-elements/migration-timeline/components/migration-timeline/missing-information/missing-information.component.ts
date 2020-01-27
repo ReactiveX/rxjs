@@ -5,11 +5,13 @@ import {environment} from '../../../../../../environments/environment';
 import {LocationService} from '../../../../../shared/location.service';
 import {State} from '../../../../../shared/state.service';
 import {
-  parseMigrationItemUIDURL,
   BreakingChange,
   Deprecation,
+  MigrationItemSubjectUIDFields,
   MigrationReleaseItem,
-  parseMigrationItemUIDObject
+  MigrationReleaseUIDFields,
+  parseMigrationItemUIDObject,
+  parseMigrationItemUIDURL
 } from '../../../data-access';
 
 
@@ -48,42 +50,49 @@ export class MissingInformationComponent extends State<{ deprecation: Deprecatio
 
   contentToCopy$ = this.deprecation$.pipe(
     withLatestFrom(this.migrationItemUIDObject$),
-    map(([deprecation, uidObj]) => {
-      const snippet: MigrationReleaseItem[] = [
-        {
-          version: uidObj.version,
-          date: '',
-          deprecations: [deprecation],
-          breakingChanges: []
-        },
-        {
-          version: deprecation.breakingChangeVersion,
-          date: '',
-          deprecations: [],
-          breakingChanges: [getBreakingChangeFromDeprecation(deprecation,
-            {deprecationVersion: uidObj.version, breakingChangeMsg: 'removed'}
-          )]
-        }
-      ];
-      return JSON.stringify(snippet);
-    })
+    map(([deprecation, uidObj]) => this.generateSnipped(deprecation, uidObj))
   );
 
   link$ = this.lo.currentSearchParams
     .pipe(
       map(p => {
-        const o = parseMigrationItemUIDObject(p.uid);
-        const s = parseMigrationItemUIDURL(p.uid);
-        return `https://github.com/ReactiveX/rxjs/issues/new?
-title=[docs] Missing ${o.itemType} information for ${o.subject} in version ${o.version}&
-body=The ID ${s} is not linked to any item of the migration timeline.\n Please insert the information.&
-template=documentation.md`;
+        const uidObj = parseMigrationItemUIDObject(p.uid);
+        const itemUIDURL = parseMigrationItemUIDURL(p.uid);
+        return this.getIssuePreFill(uidObj, itemUIDURL);
       })
     );
 
   constructor(private lo: LocationService) {
     super();
     this.connectState('deprecation', this.formOutput$);
+  }
+
+  generateSnipped(deprecation: Deprecation, uidObj: MigrationItemSubjectUIDFields & MigrationReleaseUIDFields): string {
+    const snippet: MigrationReleaseItem[] = [
+      {
+        version: uidObj.version,
+        date: '',
+        deprecations: [deprecation],
+        breakingChanges: []
+      },
+      {
+        version: deprecation.breakingChangeVersion,
+        date: '',
+        deprecations: [],
+        breakingChanges: [getBreakingChangeFromDeprecation(deprecation,
+          {deprecationVersion: uidObj.version, breakingChangeMsg: 'removed'}
+        )]
+      }
+    ];
+    return JSON.stringify(snippet);
+  }
+
+  getIssuePreFill(uidObj: MigrationItemSubjectUIDFields & MigrationReleaseUIDFields, itemUIDURL: string): string {
+    return `https://github.com/ReactiveX/rxjs/issues/new?
+      title=[docs] Missing ${uidObj.itemType} information for ${uidObj.subject} in version ${uidObj.version}&
+      body=The ID ${itemUIDURL} is not linked to any item of the migration timeline.\n Please insert the information.&
+      template=documentation.md
+      `;
   }
 
 }
