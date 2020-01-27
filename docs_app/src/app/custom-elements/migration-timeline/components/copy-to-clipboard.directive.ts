@@ -3,7 +3,7 @@ import {MatSnackBar} from '@angular/material';
 import {Subject} from 'rxjs';
 import {filter, map, tap, withLatestFrom} from 'rxjs/operators';
 import {CopierService} from '../../../shared/copier.service';
-import {State} from '../utils/state.service';
+import {State} from '../utils';
 
 @Directive({
   selector: '[copy-to-clipboard]'
@@ -11,19 +11,14 @@ import {State} from '../utils/state.service';
 export class CopyToClipboardDirective extends State<{ title: string, content: string }> {
   hostClick$ = new Subject<Event>();
 
-  copyToClipBoardEffect$ = this.hostClick$
+  private truthyContent$ = this.select('content')
+    .pipe(filter(v => v !== null && v !== undefined));
+
+  private copyToClipBoardEffect$ = this.hostClick$
     .pipe(
-      withLatestFrom(this.select('content')),
-      map(([_, content]) => content),
-      filter(v => v !== null && v !== undefined),
-      tap((content) => {
-        const successfullyCopied = this.copier.copyText(content);
-        if (successfullyCopied) {
-          this.snackbar.open('Copied to clipboard', '', {duration: 800});
-        } else {
-          this.snackbar.open('Copy failed. Please try again!', '', {duration: 800});
-        }
-      })
+      withLatestFrom(this.truthyContent$),
+      map(([_, c]) => c),
+      tap((content) => this.saveContent(content))
     );
 
   @Input()
@@ -45,6 +40,15 @@ export class CopyToClipboardDirective extends State<{ title: string, content: st
     super();
     this.setState({title: 'Copy to clipboard'});
     this.holdEffect(this.copyToClipBoardEffect$);
+  }
+
+  saveContent(content: string): void {
+    const successfullyCopied = this.copier.copyText(content);
+    if (successfullyCopied) {
+      this.snackbar.open('Copied to clipboard', '', {duration: 800});
+    } else {
+      this.snackbar.open('Copy failed. Please try again!', '', {duration: 800});
+    }
   }
 
 }

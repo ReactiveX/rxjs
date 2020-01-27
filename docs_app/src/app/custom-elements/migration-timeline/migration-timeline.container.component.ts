@@ -6,7 +6,7 @@ import {ClientMigrationTimelineReleaseItem} from './data-access/migration-item';
 import {parseMigrationReleaseUIDFromString} from './data-access/migration-timeline-struckture/migration-uid';
 import {MigrationTimelineContainerAdapter} from './migration-timeline.container.adapter';
 
-import {State} from './utils/state.service';
+import {State} from './utils';
 
 export interface MigrationTimelineContainerModelFromRemoteSources {
   releaseList: ClientMigrationTimelineReleaseItem[];

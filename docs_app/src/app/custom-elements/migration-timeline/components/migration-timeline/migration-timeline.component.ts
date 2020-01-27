@@ -5,7 +5,7 @@ import {environment} from '../../../../../environments/environment';
 import {ClientMigrationTimelineReleaseItem} from '../../data-access/migration-item';
 import {parseMigrationReleaseUIDFromString} from '../../data-access/migration-timeline-struckture/migration-uid';
 
-import {State} from '../../utils/state.service';
+import {State} from '../../utils';
 
 export interface MigrationTimelineComponentViewBaseModel {
   releaseList: ClientMigrationTimelineReleaseItem[];

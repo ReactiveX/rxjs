@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of, pipe} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
-import {GlobalState} from '../utils/state.service';
+import {GlobalState} from '../utils';
 import {ClientMigrationTimelineReleaseItem, compareByReleaseDateAsc, parseClientMigrationTimelineReleaseItem} from './migration-item';
 import {deprecationAndBreakingChangeTimeline} from './migration-timeline-struckture/migration-timeline.data';
 

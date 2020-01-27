@@ -1,5 +1,5 @@
 
-import {comparePropertyFactory} from '../utils/general';
+import {comparePropertyFactory} from '../utils';
 import {Deprecation, BreakingChange, MigrationReleaseItem} from './migration-timeline-struckture/migration-item';
 import {parseMigrationItemSubjectUID, parseMigrationItemUID,
   parseMigrationReleaseUIDFromString} from './migration-timeline-struckture/migration-uid';

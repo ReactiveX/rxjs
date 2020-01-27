@@ -1,7 +1,7 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {ClientBreakingChange} from '../../data-access/migration-item';
-import {State} from '../../utils/state.service';
+import {State} from '../../utils';
 
 interface VMBreakingChangeDescriptionTable {
   breakingChange: ClientBreakingChange;
