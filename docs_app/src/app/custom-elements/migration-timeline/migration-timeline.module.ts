@@ -14,7 +14,6 @@ import {
 import {CodeExampleModule} from '../code/code-example.module';
 import {WithCustomElementComponent} from '../element-registry';
 import {CopyToClipboardDirective} from './components/copy-to-clipboard.directive';
-import {FilterFormComponent} from './components/filter-form.component';
 import {BreakingChangeDescriptionTableComponent} from './components/migration-timeline/breaking-change-description-table.component';
 import {DeprecationDescriptionTableComponent} from './components/migration-timeline/deprecation-description-table.component';
 import {MigrationTimelineComponent} from './components/migration-timeline/migration-timeline.component';
@@ -39,7 +38,7 @@ import {MigrationTimelineContainerComponent} from './migration-timeline.containe
     MigrationTimelineContainerComponent,
     MigrationTimelineComponent, DeprecationDescriptionTableComponent,
     BreakingChangeDescriptionTableComponent, MissingInformationComponent, DeprecationItemFormComponent,
-    CopyToClipboardDirective, FilterFormComponent,
+    CopyToClipboardDirective,
     ReleaseNavigationComponent
   ],
   entryComponents: [MigrationTimelineContainerComponent],
