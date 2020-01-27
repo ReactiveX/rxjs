@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {startWith} from 'rxjs/operators';
-import {State} from '../utils';
+import {State} from '../../../shared/state.service';
 import {MigrationTimelineNavigationItem} from './release-navigation.component';
 
 

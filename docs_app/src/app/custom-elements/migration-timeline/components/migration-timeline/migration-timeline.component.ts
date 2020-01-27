@@ -3,8 +3,7 @@ import {Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {environment} from '../../../../../environments/environment';
 import {ClientMigrationTimelineReleaseItem, parseMigrationReleaseUIDFromString} from '../../data-access';
-
-import {State} from '../../utils';
+import {State} from '../../../../shared/state.service';
 
 export interface MigrationTimelineComponentViewBaseModel {
   releaseList: ClientMigrationTimelineReleaseItem[];

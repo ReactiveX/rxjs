@@ -3,7 +3,7 @@ import {MatSnackBar} from '@angular/material';
 import {Subject} from 'rxjs';
 import {filter, map, tap, withLatestFrom} from 'rxjs/operators';
 import {CopierService} from '../../../shared/copier.service';
-import {State} from '../utils';
+import {State} from '../../../shared/state.service';
 
 @Directive({
   selector: '[copy-to-clipboard]'

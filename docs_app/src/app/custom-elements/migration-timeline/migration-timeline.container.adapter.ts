@@ -7,8 +7,7 @@ import {findClosestRelease,
   parseMigrationItemSubjectUIDFromString,
   parseMigrationItemUIDURL} from './data-access';
 import {MigrationTimelineContainerModelFromRemoteSources} from './migration-timeline.container.component';
-
-import {State} from './utils';
+import {State} from '../../shared/state.service';
 
 
 @Inject({})

@@ -50,26 +50,10 @@ export class State<T> implements OnDestroy {
     );
   }
 
-  /**
-   * setState(s: Partial<T>) => void
-   *
-   * @param s: Partial<T>
-   *
-   * @example
-   * const ls = new LocalState<{test: string, bar: number}>();
-   * ls.setState({test: 'tau'});
-   * ls.setState({bar: 7});
-   */
   setState(s: Partial<T>): void {
     this.stateSlices.next(s);
   }
 
-  /**
-   * @example
-   * const ls = new LocalState<{test: string, bar: number}>();
-   * ls.connectState(of({test: 'tau'}));
-   * ls.connectState('bar', of(42));
-   */
   connectState<A extends keyof T>(str: A, obs: Observable<T[A]>): void;
   connectState<A extends keyof T>(obs: Observable<Partial<T>>): void;
   connectState<A extends keyof T>(strOrObs: any, obs?: any): void {
@@ -80,16 +64,6 @@ export class State<T> implements OnDestroy {
     }
   }
 
-  /**
-   * @example
-   * const ls = new LocalState<{test: string, foo: {baz: 42}, bar: number}>();
-   * ls.select();
-   * ls.select('test');
-   * ls.select('foo', 'baz');
-   * ls.select(mapTo(7));
-   * ls.select(map(s => s.test), startWith('unknown test value'));
-   * ls.select(pipe(map(s => s.test), startWith('unknown test value')));
-   */
   select(): Observable<T>;
   // ========================
   select<A = T>(
@@ -163,16 +137,6 @@ export class State<T> implements OnDestroy {
     throw new Error('Wrong params passed' + JSON.stringify(opOrMapFn));
   }
 
-
-  /**
-   * holdEffect(o: Observable<any>) => void
-   *
-   * @example
-   * const ls = new LocalState<{test: string, bar: number}>();
-   * ls.holdEffect(of());
-   * ls.holdEffect(of().pipe(tap(n => console.log('side effect', n))));
-   * ls.holdEffect(of(), n => console.log('side effect', n));
-   */
   holdEffect<S>(observableWithSideEffect: Observable<S>): void;
   holdEffect<S>(obsOrObsWithSideEffect: Observable<S>, sideEffectFn?: (arg: S) => void): void {
     if (sideEffectFn) {
@@ -181,13 +145,6 @@ export class State<T> implements OnDestroy {
     this.effectSubject.next(obsOrObsWithSideEffect);
   }
 
-
-  /**
-   * teardown(): void
-   *
-   * When called it teardown all internal logic
-   * used to connect to the `OnDestroy` life-cycle hook of services, components, directives, pipes
-   */
   teardown(): void {
     this.subscription.unsubscribe();
   }
@@ -200,12 +157,6 @@ export class State<T> implements OnDestroy {
     return op.every((i: any) => typeof i !== 'string');
   }
 
-  /**
-   * ngOnDestroy(): void
-   *
-   * When called it teardown all internal logic
-   * used to connect to the `OnDestroy` life-cycle hook of services, components, directives, pipes
-   */
   ngOnDestroy(): void {
     this.teardown();
   }

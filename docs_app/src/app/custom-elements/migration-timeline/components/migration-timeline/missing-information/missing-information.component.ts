@@ -3,6 +3,7 @@ import {Subject} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
 import {environment} from '../../../../../../environments/environment';
 import {LocationService} from '../../../../../shared/location.service';
+import {State} from '../../../../../shared/state.service';
 import {
   parseMigrationItemUIDURL,
   BreakingChange,
@@ -10,7 +11,7 @@ import {
   MigrationReleaseItem,
   parseMigrationItemUIDObject
 } from '../../../data-access';
-import {State} from '../../../utils';
+
 
 @Component({
   selector: `missing-information`,

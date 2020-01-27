@@ -2,10 +2,9 @@ import {Component} from '@angular/core';
 import {merge, Observable, Subject} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {LocationService} from '../../shared/location.service';
+import {State} from '../../shared/state.service';
 import {ClientMigrationTimelineReleaseItem, parseMigrationReleaseUIDFromString} from './data-access';
 import {MigrationTimelineContainerAdapter} from './migration-timeline.container.adapter';
-
-import {State} from './utils';
 
 export interface MigrationTimelineContainerModelFromRemoteSources {
   releaseList: ClientMigrationTimelineReleaseItem[];
