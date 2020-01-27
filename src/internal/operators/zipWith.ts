@@ -1,6 +1,6 @@
 import { zip as zipStatic } from '../observable/zip';
 import { Observable } from '../Observable';
-import { ObservableInput, OperatorFunction, ObservedValuesFromArray } from '../types';
+import { ObservableInput, OperatorFunction, ObservedValueTupleFromArray, Unshift } from '../types';
 
 /* tslint:disable:max-line-length */
 /** @deprecated Deprecated use {@link zipWith} */
@@ -45,14 +45,6 @@ export function zip<T, R>(...observables: Array<ObservableInput<any> | ((...valu
   };
 }
 
-/* tslint:disable:max-line-length */
-export function zipWith<T, T2>(v2: ObservableInput<T2>): OperatorFunction<T, [T, T2]>;
-export function zipWith<T, T2, T3>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): OperatorFunction<T, [T, T2, T3]>;
-export function zipWith<T, T2, T3, T4>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): OperatorFunction<T, [T, T2, T3, T4]>;
-export function zipWith<T, T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): OperatorFunction<T, [T, T2, T3, T4, T5]>;
-export function zipWith<T, T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): OperatorFunction<T, [T, T2, T3, T4, T5, T6]> ;
-export function zipWith<T, A extends ObservableInput<any>[]>(...otherInputs: A): OperatorFunction<T, Array<T | ObservedValuesFromArray<A>>>;
-/* tslint:enable:max-line-length */
 /**
  * Subscribes to the source, and the observable inputs provided as arguments, and combines their values, by index, into arrays.
  *
@@ -73,6 +65,8 @@ export function zipWith<T, A extends ObservableInput<any>[]>(...otherInputs: A):
  *
  * @param otherInputs other observable inputs to collate values from.
  */
-export function zipWith<T, A extends ObservableInput<any>[]>(...otherInputs: A): OperatorFunction<T, Array<T | ObservedValuesFromArray<A>>> {
+export function zipWith<T, A extends ObservableInput<any>[]>(
+  ...otherInputs: A
+): OperatorFunction<T, Unshift<ObservedValueTupleFromArray<A>, T>> {
   return zip(...otherInputs);
 }

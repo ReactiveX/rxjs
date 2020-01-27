@@ -3,7 +3,7 @@ import { isArray } from '../util/isArray';
 import { CombineLatestOperator } from '../observable/combineLatest';
 import { from } from '../observable/from';
 import { Observable } from '../Observable';
-import { ObservableInput, OperatorFunction, ObservedValuesFromArray } from '../types';
+import { ObservableInput, OperatorFunction, ObservedValueUnionFromArray, ObservedValueTupleFromArray, Unshift } from '../types';
 
 /* tslint:disable:max-line-length */
 /** @deprecated use {@link combineLatestWith} */
@@ -58,16 +58,6 @@ export function combineLatest<T, R>(...observables: Array<ObservableInput<any> |
     new CombineLatestOperator(project)
   ) as Observable<R>;
 }
-/* tslint:disable:max-line-length */
-export function combineLatestWith<T, T2>(v2: ObservableInput<T2>): OperatorFunction<T, [T, T2]>;
-export function combineLatestWith<T, T2, T3>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): OperatorFunction<T, [T, T2, T3]>;
-export function combineLatestWith<T, T2, T3, T4>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): OperatorFunction<T, [T, T2, T3, T4]>;
-export function combineLatestWith<T, T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): OperatorFunction<T, [T, T2, T3, T4, T5]>;
-export function combineLatestWith<T, T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): OperatorFunction<T, [T, T2, T3, T4, T5, T6]> ;
-export function combineLatestWith<T, A extends ObservableInput<any>[]>(
-  ...otherSources: A
-): OperatorFunction<T, Array<T | ObservedValuesFromArray<A>>>;
-/* tslint:enable:max-line-length */
 
 /**
  * Create an observable that combines the latest values from all passed observables and the source
@@ -107,6 +97,6 @@ export function combineLatestWith<T, A extends ObservableInput<any>[]>(
  */
 export function combineLatestWith<T, A extends ObservableInput<any>[]>(
   ...otherSources: A
-): OperatorFunction<T, Array<T | ObservedValuesFromArray<A>>> {
+): OperatorFunction<T, Unshift<ObservedValueTupleFromArray<A>, T>> {
   return combineLatest(...otherSources);
 }

@@ -1,6 +1,6 @@
 import { merge as mergeStatic } from '../observable/merge';
 import { Observable } from '../Observable';
-import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, SchedulerLike, ObservedValuesFromArray } from '../types';
+import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, SchedulerLike, ObservedValueUnionFromArray } from '../types';
 
 /* tslint:disable:max-line-length */
 
@@ -64,7 +64,7 @@ export function merge<T, R>(...observables: Array<ObservableInput<any> | Schedul
 }
 
 export function mergeWith<T>(): OperatorFunction<T, T>;
-export function mergeWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, (T | ObservedValuesFromArray<A>)>;
+export function mergeWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, (T | ObservedValueUnionFromArray<A>)>;
 
 /**
  * Merge the values from all observables to an single observable result.
@@ -105,6 +105,6 @@ export function mergeWith<T, A extends ObservableInput<any>[]>(...otherSources: 
  * ```
  * @param otherSources the sources to combine the current source with.
  */
-export function mergeWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, (T | ObservedValuesFromArray<A>)> {
+export function mergeWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, (T | ObservedValueUnionFromArray<A>)> {
   return merge(...otherSources);
 }

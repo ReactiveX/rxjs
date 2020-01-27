@@ -1,19 +1,19 @@
 import { of } from 'rxjs';
-import { combineLatestWith } from 'rxjs/operators';
+import { zipWith } from 'rxjs/operators';
 
-describe('combineLatestWith', () => {
+describe('zipWith', () => {
   describe('without project parameter', () => {
     it('should infer correctly with 1 param', () => {
       const a = of(1, 2, 3);
       const b = of('a', 'b', 'c');
-      const res = a.pipe(combineLatestWith(b)); // $ExpectType Observable<[number, string]>
+      const res = a.pipe(zipWith(b)); // $ExpectType Observable<[number, string]>
     });
 
     it('should infer correctly with 2 params', () => {
       const a = of(1, 2, 3);
       const b = of('a', 'b', 'c');
       const c = of('d', 'e', 'f');
-      const res = a.pipe(combineLatestWith(b, c)); // $ExpectType Observable<[number, string, string]>
+      const res = a.pipe(zipWith(b, c)); // $ExpectType Observable<[number, string, string]>
     });
 
     it('should infer correctly with 3 params', () => {
@@ -21,7 +21,7 @@ describe('combineLatestWith', () => {
       const b = of('a', 'b', 'c');
       const c = of('d', 'e', 'f');
       const d = of('g', 'h', 'i');
-      const res = a.pipe(combineLatestWith(b, c, d)); // $ExpectType Observable<[number, string, string, string]>
+      const res = a.pipe(zipWith(b, c, d)); // $ExpectType Observable<[number, string, string, string]>
     });
 
     it('should infer correctly with 4 params', () => {
@@ -30,7 +30,7 @@ describe('combineLatestWith', () => {
       const c = of('d', 'e', 'f');
       const d = of('g', 'h', 'i');
       const e = of('j', 'k', 'l');
-      const res = a.pipe(combineLatestWith(b, c, d, e)); // $ExpectType Observable<[number, string, string, string, string]>
+      const res = a.pipe(zipWith(b, c, d, e)); // $ExpectType Observable<[number, string, string, string, string]>
     });
 
     it('should infer correctly with 5 params', () => {
@@ -40,7 +40,7 @@ describe('combineLatestWith', () => {
       const d = of('g', 'h', 'i');
       const e = of('j', 'k', 'l');
       const f = of('m', 'n', 'o');
-      const res = a.pipe(combineLatestWith(b, c, d, e, f)); // $ExpectType Observable<[number, string, string, string, string, string]>
+      const res = a.pipe(zipWith(b, c, d, e, f)); // $ExpectType Observable<[number, string, string, string, string, string]>
     });
 
     it('should accept N params', () => {
@@ -51,7 +51,7 @@ describe('combineLatestWith', () => {
       const e = of('j', 'k', 'l');
       const f = of('m', 'n', 'o');
       const g = of('p', 'q', 'r');
-      const res = a.pipe(combineLatestWith(b, c, d, e, f, g)); // $ExpectType Observable<[number, string, string, string, string, string, string]>
+      const res = a.pipe(zipWith(b, c, d, e, f, g)); // $ExpectType Observable<[number, string, string, string, string, string, string]>
     });
   });
 });
