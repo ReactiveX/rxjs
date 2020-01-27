@@ -23,14 +23,14 @@ export interface MigrationTimelineComponentViewBaseModel {
         class="release"
         *ngFor="let release of vm.releaseList"
         [ngClass]="{'selected': vm.selectedMigrationReleaseUID === release.version}"
-        [expanded]="vm.expandedRelease[release.version]">
+        [expanded]="(expandedRelease$ | async)[release.version]">
         <mat-expansion-panel-header class="header">
           <mat-panel-title
             class="migration-timeline-item-header-title"
             [id]="release.version">
             <release-title
               (shieldClick)="selectedMigrationReleaseUIDChange.next(release.version)"
-              [expandedRelease]="vm.expandedRelease"
+              [expandedRelease]="expandedRelease$"
               [release]="release">
             </release-title>
           </mat-panel-title>
