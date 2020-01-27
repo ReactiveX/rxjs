@@ -3,9 +3,13 @@ import {Subject} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
 import {environment} from '../../../../../../environments/environment';
 import {LocationService} from '../../../../../shared/location.service';
-import {parseMigrationItemUIDURL} from '../../../data-access/migration-item';
-import {BreakingChange, Deprecation, MigrationReleaseItem} from '../../../data-access/migration-timeline-struckture/migration-item';
-import {parseMigrationItemUIDObject} from '../../../data-access/migration-timeline-struckture/migration-uid';
+import {
+  parseMigrationItemUIDURL,
+  BreakingChange,
+  Deprecation,
+  MigrationReleaseItem,
+  parseMigrationItemUIDObject
+} from '../../../data-access';
 import {State} from '../../../utils';
 
 @Component({

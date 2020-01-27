@@ -2,8 +2,7 @@ import {Component} from '@angular/core';
 import {merge, Observable, Subject} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {LocationService} from '../../shared/location.service';
-import {ClientMigrationTimelineReleaseItem} from './data-access/migration-item';
-import {parseMigrationReleaseUIDFromString} from './data-access/migration-timeline-struckture/migration-uid';
+import {ClientMigrationTimelineReleaseItem, parseMigrationReleaseUIDFromString} from './data-access';
 import {MigrationTimelineContainerAdapter} from './migration-timeline.container.adapter';
 
 import {State} from './utils';

@@ -2,8 +2,7 @@ import {Component, Output} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {filter, map, withLatestFrom} from 'rxjs/operators';
-import {Deprecation} from '../../../data-access/migration-timeline-struckture/migration-item';
-import {SubjectSymbols} from '../../../data-access/migration-timeline-struckture/migration-uid';
+import {Deprecation, SubjectSymbols} from '../../../data-access';
 
 
 @Component({

@@ -21,10 +21,8 @@ import {MigrationTimelineComponent} from './components/migration-timeline/migrat
 import {DeprecationItemFormComponent} from './components/migration-timeline/missing-information/deprecation-item-form.component';
 import {MissingInformationComponent} from './components/migration-timeline/missing-information/missing-information.component';
 import {ReleaseNavigationComponent} from './components/release-navigation.component';
-import {MigrationTimelineService} from './data-access/migration-timeline.service';
+import {MigrationTimelineService} from './data-access';
 import {MigrationTimelineContainerComponent} from './migration-timeline.container.component';
-
-export const baseURL = 'migration-timeline';
 
 @NgModule({
   imports: [

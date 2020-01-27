@@ -2,8 +2,7 @@ import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {environment} from '../../../../../environments/environment';
-import {ClientMigrationTimelineReleaseItem} from '../../data-access/migration-item';
-import {parseMigrationReleaseUIDFromString} from '../../data-access/migration-timeline-struckture/migration-uid';
+import {ClientMigrationTimelineReleaseItem, parseMigrationReleaseUIDFromString} from '../../data-access';
 
 import {State} from '../../utils';
 

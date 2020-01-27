@@ -2,8 +2,10 @@ import {Inject} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {distinctUntilChanged, filter, map} from 'rxjs/operators';
 import {LocationService} from '../../shared/location.service';
-import {findClosestRelease, parseMigrationItemSubjectUIDFromString, parseMigrationItemUIDURL} from './data-access/migration-item';
-import {MigrationTimelineService} from './data-access/migration-timeline.service';
+import {findClosestRelease,
+  MigrationTimelineService,
+  parseMigrationItemSubjectUIDFromString,
+  parseMigrationItemUIDURL} from './data-access';
 import {MigrationTimelineContainerModelFromRemoteSources} from './migration-timeline.container.component';
 
 import {State} from './utils';

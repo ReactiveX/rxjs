@@ -1,9 +1,13 @@
-
 import {comparePropertyFactory} from '../utils';
-import {Deprecation, BreakingChange, MigrationReleaseItem} from './migration-timeline-struckture/migration-item';
-import {parseMigrationItemSubjectUID, parseMigrationItemUID,
-  parseMigrationReleaseUIDFromString} from './migration-timeline-struckture/migration-uid';
-import {formatSemVerNumber} from './migration-timeline-struckture/semver';
+import {
+  BreakingChange,
+  Deprecation,
+  formatSemVerNumber,
+  MigrationReleaseItem,
+  parseMigrationItemSubjectUID,
+  parseMigrationItemUID,
+  parseMigrationReleaseUIDFromString
+} from './migration-timeline-structure';
 
 export const compareByVersionNumberAsc = comparePropertyFactory(true, (i: ClientMigrationTimelineReleaseItem) => i.versionNumber);
 

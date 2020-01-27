@@ -4,7 +4,7 @@ import {map, startWith} from 'rxjs/operators';
 
 import {GlobalState} from '../utils';
 import {ClientMigrationTimelineReleaseItem, compareByReleaseDateAsc, parseClientMigrationTimelineReleaseItem} from './migration-item';
-import {deprecationAndBreakingChangeTimeline} from './migration-timeline-struckture/migration-timeline.data';
+import {deprecationAndBreakingChangeTimeline} from './migration-timeline-structure';
 
 export interface MigrationTimelineState {
   migrations: ClientMigrationTimelineReleaseItem[]
