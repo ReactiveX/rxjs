@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Subject} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
 import {environment} from '../../../../../../environments/environment';
@@ -37,7 +37,8 @@ import {
         <mat-icon class="img" aria-hidden="false" aria-label="Missing Documentation">error_outline</mat-icon>
       </mat-card-content>
     </mat-card>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MissingInformationComponent extends State<{ deprecation: Deprecation }> {
 

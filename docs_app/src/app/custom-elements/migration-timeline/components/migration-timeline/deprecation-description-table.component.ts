@@ -1,4 +1,4 @@
-import {Component, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {ClientDeprecation} from '../../data-access';
 
@@ -51,7 +51,8 @@ import {ClientDeprecation} from '../../data-access';
       </tr>
       </tbody>
     </table>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeprecationDescriptionTableComponent {
   deprecationVal: ClientDeprecation;

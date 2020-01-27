@@ -1,4 +1,4 @@
-import {Component, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Output} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {filter, map, withLatestFrom} from 'rxjs/operators';
@@ -94,7 +94,8 @@ import {Deprecation, SubjectSymbols} from '../../../data-access';
     .full {
       width: 100%;
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeprecationItemFormComponent {
 

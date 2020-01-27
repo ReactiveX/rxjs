@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {merge, Observable, Subject} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {LocationService} from '../../shared/location.service';
@@ -39,7 +39,8 @@ export interface MigrationTimelineContainerModelFromRemoteSources {
       </section>
     </ng-container>
   `,
-  providers: [State, MigrationTimelineContainerAdapter]
+  providers: [State, MigrationTimelineContainerAdapter],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MigrationTimelineContainerComponent {
 

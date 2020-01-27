@@ -1,9 +1,9 @@
-import {Component, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {environment} from '../../../../../environments/environment';
-import {ClientMigrationTimelineReleaseItem, parseMigrationReleaseUIDFromString} from '../../data-access';
 import {State} from '../../../../shared/state.service';
+import {ClientMigrationTimelineReleaseItem, parseMigrationReleaseUIDFromString} from '../../data-access';
 
 export interface MigrationTimelineComponentViewBaseModel {
   releaseList: ClientMigrationTimelineReleaseItem[];
@@ -127,7 +127,8 @@ export interface MigrationTimelineComponentViewBaseModel {
           </mat-card>
         </ng-template>
       </mat-expansion-panel>
-    </mat-accordion>`
+    </mat-accordion>`,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MigrationTimelineComponent extends State<MigrationTimelineComponentViewBaseModel> {
   env = environment;

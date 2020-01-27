@@ -1,4 +1,4 @@
-import {Component, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {ClientMigrationTimelineReleaseItem} from '../data-access';
 import {State} from '../../../shared/state.service';
@@ -35,7 +35,8 @@ export interface MigrationTimelineNavigationComponentModel {
     </div>
   `,
   styles: [],
-  providers: [State]
+  providers: [State],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReleaseNavigationComponent {
 

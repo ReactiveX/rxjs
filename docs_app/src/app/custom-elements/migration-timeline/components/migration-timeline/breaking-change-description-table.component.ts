@@ -1,4 +1,4 @@
-import {Component, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {ClientBreakingChange} from '../../data-access';
 
@@ -36,7 +36,8 @@ import {ClientBreakingChange} from '../../data-access';
       </tr>
       </tbody>
     </table>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BreakingChangeDescriptionTableComponent {
 
