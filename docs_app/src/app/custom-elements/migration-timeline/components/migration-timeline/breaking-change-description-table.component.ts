@@ -1,28 +1,22 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
-import {State} from '../../../../shared/state.service';
 import {ClientBreakingChange} from '../../data-access';
-
-
-interface VMBreakingChangeDescriptionTable {
-  breakingChange: ClientBreakingChange;
-}
 
 @Component({
   selector: `breaking-change-description-table`,
   template: `
-    <table *ngIf="vm$ | async as vm">
+    <table>
       <thead>
       <tr>
         <th class="subject">
-          <span class="symbol" [ngClass]="vm.breakingChange.subjectSymbol"></span>
-          <code>{{vm.breakingChange.subject}}</code>
+          <span class="symbol" [ngClass]="breakingChangeVal.subjectSymbol"></span>
+          <code>{{breakingChangeVal.subject}}</code>
         </th>
         <th>
           Deprecated in version
           <a class="release-link"
-            (click)="selectedMigrationItemUIDChange.next(vm.breakingChange.opponentMigrationItemUID)">
-            v{{vm.breakingChange.deprecationVersion}}
+            (click)="selectedMigrationItemUIDChange.next(breakingChangeVal.opponentMigrationItemUID)">
+            v{{breakingChangeVal.deprecationVersion}}
           </a>
         </th>
       </tr>
@@ -35,8 +29,8 @@ interface VMBreakingChangeDescriptionTable {
         <td>
           <p>
             For refactoring suggestions please visit the version of deprecation:
-            (click)="migrationItemUidSelectRequest.next(vm.breakingChange.opponentMigrationItemUID)
-            <a class="release-link">v{{vm.breakingChange.deprecationVersion}}</a>
+            (click)="migrationItemUidSelectRequest.next(vm.breakingChangeVal.opponentMigrationItemUID)
+            <a class="release-link">v{{breakingChangeVal.deprecationVersion}}</a>
           </p>
         </td>
       </tr>
@@ -44,16 +38,16 @@ interface VMBreakingChangeDescriptionTable {
     </table>
   `
 })
-export class BreakingChangeDescriptionTableComponent extends State<VMBreakingChangeDescriptionTable> {
-  vm$ = this.select();
+export class BreakingChangeDescriptionTableComponent {
 
   @Output()
   selectedMigrationItemUIDChange = new Subject<string>();
 
+  breakingChangeVal: ClientBreakingChange;
   @Input()
   set breakingChange(breakingChange: ClientBreakingChange) {
     if (breakingChange) {
-      this.setState({breakingChange});
+      this.breakingChangeVal = breakingChange;
     }
   }
 

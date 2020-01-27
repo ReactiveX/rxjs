@@ -1,26 +1,25 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {ClientDeprecation} from '../../data-access';
-import {State} from '../../../../shared/state.service';
 
 @Component({
   selector: `deprecation-description-table`,
   template: `
-    <table *ngIf="vm$ | async as vm">
+    <table>
       <thead>
       <tr>
         <th class="subject">
-          <span class="symbol" [ngClass]="vm.deprecation.subjectSymbol"></span>
-          <code>{{vm.deprecation.subject}}</code>
+          <span class="symbol" [ngClass]="deprecationVal.subjectSymbol"></span>
+          <code>{{deprecationVal.subject}}</code>
         </th>
         <th>
           Breaking change in version&nbsp;
           <a class="release-link"
-            (click)="selectedMigrationItemUIDChange.next(vm.deprecation.opponentMigrationItemUID)">
-            v{{vm.deprecation.breakingChangeVersion}}
+            (click)="selectedMigrationItemUIDChange.next(deprecationVal.opponentMigrationItemUID)">
+            v{{deprecationVal.breakingChangeVersion}}
           </a>
           <div class="page-actions">
-            <a [href]="vm.deprecation.sourceLink"
+            <a [href]="deprecationVal.sourceLink"
               aria-label="View Source"
               title="View Source">
               <i class="material-icons" aria-hidden="true" role="img">code</i>
@@ -36,7 +35,7 @@ import {State} from '../../../../shared/state.service';
         </td>
         <td>
           <p>
-            {{vm.deprecation.reason}}
+            {{deprecationVal.reason}}
           </p>
         </td>
       </tr>
@@ -46,7 +45,7 @@ import {State} from '../../../../shared/state.service';
         </td>
         <td>
           <p>
-            {{vm.deprecation.implication}}
+            {{deprecationVal.implication}}
           </p>
         </td>
       </tr>
@@ -54,21 +53,16 @@ import {State} from '../../../../shared/state.service';
     </table>
   `
 })
-export class DeprecationDescriptionTableComponent extends State<{
-  deprecation: ClientDeprecation;
-}> {
-  vm$ = this.select();
-
+export class DeprecationDescriptionTableComponent {
+  deprecationVal: ClientDeprecation;
   @Input()
   set deprecation(deprecation: ClientDeprecation) {
     if (deprecation) {
-      this.setState({deprecation});
+      this.deprecationVal = deprecation;
     }
   }
-
   @Output()
   selectedMigrationItemUIDChange = new Subject<string>();
-
 }
 
 
