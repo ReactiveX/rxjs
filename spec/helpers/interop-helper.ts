@@ -1,4 +1,4 @@
-import { Observable, Subscriber, Subscription } from 'rxjs';
+import { Observable, Subject, Subscriber, Subscription } from 'rxjs';
 import { rxSubscriber as symbolSubscriber } from 'rxjs/internal/symbol/rxSubscriber';
 
 /**
@@ -24,6 +24,15 @@ export function asInteropObservable<T>(observable: Observable<T>): Observable<T>
       };
     }
   });
+}
+
+/**
+ * Returns a subject that will be deemed by this package's implementation to
+ * be untrusted. The returned subject will not include the symbol that
+ * identifies trusted subjects.
+ */
+export function asInteropSubject<T>(subject: Subject<T>): Subject<T> {
+  return asInteropSubscriber(subject as any) as any;
 }
 
 /**
