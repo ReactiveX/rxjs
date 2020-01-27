@@ -15,10 +15,14 @@ import {CodeExampleModule} from '../code/code-example.module';
 import {WithCustomElementComponent} from '../element-registry';
 import {CopyToClipboardDirective} from './components/copy-to-clipboard.directive';
 import {BreakingChangeDescriptionTableComponent} from './components/migration-timeline/breaking-change-description-table.component';
+import {CodeExamplesComponent} from './components/migration-timeline/code-examples.component';
 import {DeprecationDescriptionTableComponent} from './components/migration-timeline/deprecation-description-table.component';
+import {EmptyMigrationSectionComponent} from './components/migration-timeline/empty-migration-section.component';
 import {MigrationTimelineComponent} from './components/migration-timeline/migration-timeline.component';
 import {DeprecationItemFormComponent} from './components/migration-timeline/missing-information/deprecation-item-form.component';
 import {MissingInformationComponent} from './components/migration-timeline/missing-information/missing-information.component';
+import {ReleaseTitleComponent} from './components/migration-timeline/release-title.component';
+import {ShieldComponent} from './components/migration-timeline/sield.component';
 import {ReleaseNavigationComponent} from './components/release-navigation.component';
 import {MigrationTimelineService} from './data-access';
 import {MigrationTimelineContainerComponent} from './migration-timeline.container.component';
@@ -38,7 +42,8 @@ import {MigrationTimelineContainerComponent} from './migration-timeline.containe
     MigrationTimelineContainerComponent,
     MigrationTimelineComponent, DeprecationDescriptionTableComponent,
     BreakingChangeDescriptionTableComponent, MissingInformationComponent, DeprecationItemFormComponent,
-    CopyToClipboardDirective,
+    CopyToClipboardDirective, ShieldComponent, ReleaseTitleComponent, CodeExamplesComponent,
+    EmptyMigrationSectionComponent,
     ReleaseNavigationComponent
   ],
   entryComponents: [MigrationTimelineContainerComponent],

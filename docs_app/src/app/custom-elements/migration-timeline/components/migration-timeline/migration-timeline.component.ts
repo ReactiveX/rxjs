@@ -29,26 +29,11 @@ export interface MigrationTimelineComponentViewBaseModel {
           <mat-panel-title
             class="migration-timeline-item-header-title"
             [id]="release.version">
-            <div class="shield"
-              (click)="selectedMigrationReleaseUIDChange.next(release.version)">
-              <span class="label">github</span>
-              <span class="version">{{release.version}}</span>
-            </div>&nbsp;-&nbsp;{{release.date | date:'dd.MM.yyyy'}}&nbsp;-
-            <ng-container *ngIf="(vm.expandedRelease)[release.version]">&nbsp;
-              <mat-icon aria-hidden="false" aria-label="Deprecations">warning
-              </mat-icon>&nbsp;Deprecations:&nbsp;{{release.deprecations.length}}&nbsp;
-              <mat-icon aria-hidden="false" aria-label="Deprecations">error
-              </mat-icon>&nbsp;BreakingChanges:&nbsp;{{release.breakingChanges.length}}
-            </ng-container>
-            <ng-container *ngIf="!(vm.expandedRelease)[release.version]">
-              <mat-icon *ngIf="release.deprecations.length" aria-hidden="false" aria-label="Deprecations">warning
-              </mat-icon>&nbsp;
-              <span *ngIf="release.deprecations.length">{{release.deprecations.length}}</span>
-              <mat-icon *ngIf="release.breakingChanges.length" aria-hidden="false" aria-label="BreakingChange">error
-              </mat-icon>
-              &nbsp;
-              <span *ngIf="release.breakingChanges.length">{{release.breakingChanges.length}}</span>&nbsp;
-            </ng-container>
+            <release-title
+              (shieldClick)="selectedMigrationReleaseUIDChange.next(release.version)"
+              [expandedRelease]="vm.expandedRelease"
+              [release]="release">
+            </release-title>
           </mat-panel-title>
         </mat-expansion-panel-header>
 
@@ -73,29 +58,16 @@ export interface MigrationTimelineComponentViewBaseModel {
                 [deprecation]="deprecation"
                 (selectedMigrationItemUIDChange)="selectedMigrationReleaseUIDChange.next($event)">
               </deprecation-description-table>
-              <code-example
-                [dependencies]="{rxjs: '<' + release.version}"
-                [language]="'typescript'"
-                [title]="'Before Deprecation (< v' + release.version + ')'">
-                {{deprecation.exampleBefore}}
-              </code-example>
-              <code-example
-                [dependencies]="{rxjs: '>=' + release.version + ' <=' + deprecation.breakingChangeVersion}"
-                [language]="'typescript'"
-                [title]="'After Deprecation (>= v' + release.version + ')'">
-                {{deprecation.exampleAfter}}
-              </code-example>
+              <code-examples
+                [release]="release" [deprecation]="deprecation">
+              </code-examples>
             </mat-card-content>
           </mat-card>
         </ng-container>
         <ng-template #emptyDeprecationList>
-          <mat-card class="migration-section empty">
-            <mat-card-header [id]="release.version" class="migration-headline">
-              <mat-card-title>
-                No Deprecations made in version {{release.version}}
-              </mat-card-title>
-            </mat-card-header>
-          </mat-card>
+          <empty-migration-section>
+            No Deprecations made in version {{release.version}}
+          </empty-migration-section>
         </ng-template>
 
         <h3 class="migration-section-headline">
@@ -118,13 +90,9 @@ export interface MigrationTimelineComponentViewBaseModel {
           </mat-card>
         </ng-container>
         <ng-template #emptyBreakingChangesList>
-          <mat-card class="migration-section empty">
-            <mat-card-header [id]="release.version" class="migration-headline">
-              <mat-card-title>
-                No BreakingChanges made in version {{release.version}}
-              </mat-card-title>
-            </mat-card-header>
-          </mat-card>
+          <empty-migration-section>
+            No BreakingChanges made in version {{release.version}}
+          </empty-migration-section>
         </ng-template>
       </mat-expansion-panel>
     </mat-accordion>`,
@@ -159,9 +127,7 @@ export class MigrationTimelineComponent extends State<MigrationTimelineComponent
   constructor() {
     super();
     this.setState({expandedRelease: {}});
-
     const _selectedMigrationItemUID$ = this.select('selectedMigrationItemUID');
-
     this.connectState('expandedRelease', _selectedMigrationItemUID$
       .pipe(
         map((version: string) => ({[parseMigrationReleaseUIDFromString(version)]: true}))
