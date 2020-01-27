@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, Output} from '@angular/core';
-import {Subject} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Observable, Subject} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 import {environment} from '../../../../../environments/environment';
 import {State} from '../../../../shared/state.service';
 import {ClientMigrationTimelineReleaseItem, parseMigrationReleaseUIDFromString} from '../../data-access';
@@ -9,7 +9,6 @@ export interface MigrationTimelineComponentViewBaseModel {
   releaseList: ClientMigrationTimelineReleaseItem[];
   selectedMigrationReleaseUID: string;
   selectedMigrationItemUID: string;
-  expandedRelease: { [version: string]: boolean };
 }
 
 @Component({
@@ -123,15 +122,13 @@ export class MigrationTimelineComponent extends State<MigrationTimelineComponent
   selectedMigrationItemUIDChange = new Subject<string>();
 
   vm$ = this.select();
+  expandedRelease$: Observable<{ [version: string]: boolean }> = this.select('selectedMigrationItemUID')
+    .pipe(
+      map((version: string) => ({[parseMigrationReleaseUIDFromString(version)]: true})),
+      startWith({})
+    );
 
   constructor() {
     super();
-    this.setState({expandedRelease: {}});
-    const _selectedMigrationItemUID$ = this.select('selectedMigrationItemUID');
-    this.connectState('expandedRelease', _selectedMigrationItemUID$
-      .pipe(
-        map((version: string) => ({[parseMigrationReleaseUIDFromString(version)]: true}))
-      )
-    );
   }
 }
