@@ -144,4 +144,3 @@ export function parseMigrationItemUIDURL(uid: string): string {
   const parsedMigrationItemSubjectUID = parseMigrationItemSubjectUIDFromString(migrationItemSubjectUID);
   return parsedMigrationItemSubjectUID !== '' ? parsedReleaseUID + '_' + parsedMigrationItemSubjectUID : parsedReleaseUID;
 }
-

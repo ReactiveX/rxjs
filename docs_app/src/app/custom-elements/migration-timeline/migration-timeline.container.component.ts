@@ -15,39 +15,8 @@ export interface MigrationTimelineContainerModelFromRemoteSources {
   selector: `rxjs-migration-timeline-container`,
   template: `
     <h1>RxJS Migration Timeline</h1>
-    <p>
-      The migration timeline is here to support you in the following things:
-    </p>
-    <ul>
-      <li>
-        <input type="checkbox" checked disabled>
-        Getting detailed explanation on why a deprecation happened. <br/>
-        Elaborating the different between the deprecated version and the new version
-      </li>
-      <li>
-        <input type="checkbox" checked disabled>
-        Explaining the implications of a deprecation
-      </li>
-      <li>
-        <input type="checkbox" checked disabled>
-        Code examples of the deprecated and the new version
-      </li>
-      <li>
-        <input type="checkbox" checked disabled>
-        It provides a way to navigate trough all listed items
-      </li>
-      <li>
-        <input type="checkbox" disabled>
-        Manual Migration suggestions (optional)
-      </li>
-      <li>
-        <input type="checkbox" disabled>
-        Migration over tooling (optional)
-      </li>
-      <li>
-        <input type="checkbox" checked disabled>
-      </li>
-    </ul>
+    <p>Small intro text here.</p>
+
     <h2>Supported Versions</h2>
     <ng-container *ngIf="baseModel$ | async as m">
       <section>
@@ -83,22 +52,19 @@ export class MigrationTimelineContainerComponent {
   selectedMigrationItemUIDChange = new Subject<string>();
   selectedMigrationReleaseUIDChange = new Subject<string>();
 
+  updateUrlSideEffect$ = merge(
+    this.selectedMigrationReleaseUIDChange,
+    this.selectedMigrationItemUIDChange
+  )
+    .pipe(tap(uid => this.setMigrationTimelineSelection(uid)));
+
   constructor(
     private _baseModel: State<MigrationTimelineContainerModelFromRemoteSources>,
     private _locationService: LocationService,
     private _va: MigrationTimelineContainerAdapter
   ) {
-
     this._baseModel.connectState(this._va.select());
-
-    this._baseModel.holdEffect(
-      merge(
-        this.selectedMigrationReleaseUIDChange,
-        this.selectedMigrationItemUIDChange
-      )
-        .pipe(tap(uid => this.setMigrationTimelineSelection(uid)))
-    );
-
+    this._baseModel.holdEffect(this.updateUrlSideEffect$);
   }
 
   private setMigrationTimelineSelection(uid: string) {
@@ -107,4 +73,3 @@ export class MigrationTimelineContainerComponent {
   }
 
 }
-
