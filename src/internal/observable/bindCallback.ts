@@ -137,14 +137,14 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  *
  * ### Compare behaviour with and without async Scheduler
  * ```ts
- * import { bindCallback } from 'rxjs';
+ * import { bindCallback, asyncScheduler } from 'rxjs';
  *
  * function iCallMyCallbackSynchronously(cb) {
  *   cb();
  * }
  *
  * const boundSyncFn = bindCallback(iCallMyCallbackSynchronously);
- * const boundAsyncFn = bindCallback(iCallMyCallbackSynchronously, null, Rx.Scheduler.async);
+ * const boundAsyncFn = bindCallback(iCallMyCallbackSynchronously, null, asyncScheduler);
  *
  * boundSyncFn().subscribe(() => console.log('I was sync!'));
  * boundAsyncFn().subscribe(() => console.log('I was async!'));
@@ -161,8 +161,9 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * import { bindCallback } from 'rxjs';
  *
  * const boundMethod = bindCallback(someObject.methodWithCallback);
- * boundMethod.call(someObject) // make sure methodWithCallback has access to someObject
- * .subscribe(subscriber);
+ * boundMethod
+ *   .call(someObject) // make sure methodWithCallback has access to someObject
+ *   .subscribe(subscriber);
  * ```
  *
  * @see {@link bindNodeCallback}
