@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { from, throwError, of, Observable } from 'rxjs';
 import { concatAll, take, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from 'spec/helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher';
 
 declare function asDiagram(arg: string): Function;
 declare const type: Function;
