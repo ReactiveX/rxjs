@@ -22,8 +22,8 @@ function createPackage(changedFile) {
     return require('./tutorial-package').createPackage(tutorialName);
   }
 
-  const guideMatch = /^aio\/content\/guide\/([^.]+)\.md/.exec(changedFile);
-  const exampleMatch = /^aio\/content\/examples\/(?:cb-)?([^\/]+)\//.exec(changedFile);
+  const guideMatch = /^docs_app\/content\/guide\/([^.]+)\.md/.exec(changedFile);
+  const exampleMatch = /^docs_app\/content\/examples\/(?:cb-)?([^\/]+)\//.exec(changedFile);
   if (guideMatch || exampleMatch) {
     const guideName = guideMatch && guideMatch[1] || exampleMatch[1];
     console.log(`Building guide doc: ${guideName}.md`);
