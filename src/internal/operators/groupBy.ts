@@ -21,7 +21,7 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  *
  * When the Observable emits an item, a key is computed for this item with the keySelector function.
  *
- * If a {@link GroupedObservable} for this key exists, this {@link GroupedObservable} emits. Elsewhere, a new
+ * If a {@link GroupedObservable} for this key exists, this {@link GroupedObservable} emits. Otherwise, a new
  * {@link GroupedObservable} for this key is created and emits.
  *
  * A {@link GroupedObservable} represents values belonging to the same group represented by a common key. The common
