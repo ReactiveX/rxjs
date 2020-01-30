@@ -20,7 +20,7 @@ import { map } from './map';
  * ![](timeinterval.png)
  *
  * ## Examples
- * Emit inteval between current value with the last value
+ * Emit interval between current value with the last value
  *
  * ```ts
  * const seconds = interval(1000);
