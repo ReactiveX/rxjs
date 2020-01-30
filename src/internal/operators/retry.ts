@@ -67,7 +67,7 @@ export function retry<T>(configOrCount: number | RetryConfig = -1): MonoTypeOper
       count: configOrCount as number
     };
   }
-  return (source: Observable<T>) => source.lift(new RetryOperator(config.count, config.resetOnSuccess, source));
+  return (source: Observable<T>) => source.lift(new RetryOperator(config.count, !!config.resetOnSuccess, source));
 }
 
 class RetryOperator<T> implements Operator<T, T> {
