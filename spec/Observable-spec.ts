@@ -18,10 +18,7 @@ function expectFullObserver(val: any) {
 /** @test {Observable} */
 describe('Observable', () => {
   let originalConfigPromise: any;
-  before(() => {
-      originalConfigPromise = config.Promise;
-    }
-  );
+  before(() => originalConfigPromise = config.Promise);
 
   after(() => {
     config.Promise = originalConfigPromise;
