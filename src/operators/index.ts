@@ -61,7 +61,7 @@ export { publish } from '../internal/operators/publish';
 export { publishBehavior } from '../internal/operators/publishBehavior';
 export { publishLast } from '../internal/operators/publishLast';
 export { publishReplay } from '../internal/operators/publishReplay';
-export { race } from '../internal/operators/race';
+export { race, raceWith } from '../internal/operators/raceWith';
 export { reduce } from '../internal/operators/reduce';
 export { repeat } from '../internal/operators/repeat';
 export { repeatWhen } from '../internal/operators/repeatWhen';

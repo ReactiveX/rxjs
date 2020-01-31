@@ -2,10 +2,10 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { EMPTY, NEVER, of, timer, defer, Observable, throwError } from 'rxjs';
-import { race, mergeMap, map, finalize, startWith } from 'rxjs/operators';
+import { raceWith, mergeMap, map, finalize, startWith } from 'rxjs/operators';
 
-/** @test {race} */
-describe('race operator', () => {
+/** @test {raceWith} */
+describe('raceWith operator', () => {
   it('should race cold and cold', () => {
     const e1 =  cold('---a-----b-----c----|');
     const e1subs =   '^                   !';
@@ -13,21 +13,7 @@ describe('race operator', () => {
     const e2subs =   '^  !';
     const expected = '---a-----b-----c----|';
 
-    const result = e1.pipe(race(e2));
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
-  });
-
-  it('should race cold and cold and accept an Array of Observable argument', () => {
-    const e1 =  cold('---a-----b-----c----|');
-    const e1subs =   '^                   !';
-    const e2 =  cold('------x-----y-----z----|');
-    const e2subs =   '^  !';
-    const expected = '---a-----b-----c----|';
-
-    const result = e1.pipe(race([e2]));
+    const result = e1.pipe(raceWith(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -41,7 +27,7 @@ describe('race operator', () => {
     const e2subs =   '^  !';
     const expected = '---a-----b-----c----|';
 
-    const result = e1.pipe(race(e2));
+    const result = e1.pipe(raceWith(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -55,7 +41,7 @@ describe('race operator', () => {
     const e2subs =   '^  !';
     const expected = '---a-----b-----c----|';
 
-    const result = e1.pipe(race(e2));
+    const result = e1.pipe(raceWith(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -69,7 +55,7 @@ describe('race operator', () => {
     const e2subs =   '^                   !';
     const expected = '---a-----b-----c----|';
 
-    const result = e1.pipe(race(e2));
+    const result = e1.pipe(raceWith(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -83,7 +69,7 @@ describe('race operator', () => {
     const e2subs =   '^    !';
     const expected = '-----|';
 
-    const result = e1.pipe(race(e2));
+    const result = e1.pipe(raceWith(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -98,7 +84,7 @@ describe('race operator', () => {
     const expected = '---a-----b---';
     const unsub =    '            !';
 
-    const result = e1.pipe(race(e2));
+    const result = e1.pipe(raceWith(e2));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -115,7 +101,7 @@ describe('race operator', () => {
 
     const result = e1.pipe(
       mergeMap((x: string) => of(x)),
-      race(e2),
+      raceWith(e2),
       mergeMap((x: string) => of(x))
     );
 
@@ -130,7 +116,7 @@ describe('race operator', () => {
     const e1subs =   '^  !';
     const expected = '---|';
 
-    const source = e1.pipe(race(e2));
+    const source = e1.pipe(raceWith(e2));
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -143,7 +129,7 @@ describe('race operator', () => {
     const e2subs =   '^  !';
     const expected = '---a-----#';
 
-    const result = e1.pipe(race(e2));
+    const result = e1.pipe(raceWith(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -157,7 +143,7 @@ describe('race operator', () => {
     const e2subs =   '^  !';
     const expected = '---#';
 
-    const result = e1.pipe(race(e2));
+    const result = e1.pipe(raceWith(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -168,7 +154,7 @@ describe('race operator', () => {
     const e1 = of(true);
     const e2 = timer(200).pipe(map(_ => false));
 
-    e1.pipe(race(e2)).subscribe(x => {
+    e1.pipe(raceWith(e2)).subscribe(x => {
       expect(x).to.be.true;
     }, done, done);
   });
@@ -179,7 +165,7 @@ describe('race operator', () => {
     const e1 = of('a'); // Wins the race
     const e2 = defer(onSubscribe); // Should be ignored
 
-    e1.pipe(race(e2)).subscribe(onNext);
+    e1.pipe(raceWith(e2)).subscribe(onNext);
     expect(onNext.calledWithExactly('a')).to.be.true;
     expect(onSubscribe.called).to.be.false;
   });
@@ -190,7 +176,7 @@ describe('race operator', () => {
     const e1 = EMPTY; // Wins the race
     const e2 = defer(onSubscribe); // Should be ignored
 
-    e1.pipe(race(e2)).subscribe({ complete: onComplete });
+    e1.pipe(raceWith(e2)).subscribe({ complete: onComplete });
     expect(onComplete.calledWithExactly()).to.be.true;
     expect(onSubscribe.called).to.be.false;
   });
@@ -201,7 +187,7 @@ describe('race operator', () => {
     const e1 = throwError('kaboom'); // Wins the race
     const e2 = defer(onSubscribe); // Should be ignored
 
-    e1.pipe(race(e2)).subscribe({ error: onError });
+    e1.pipe(raceWith(e2)).subscribe({ error: onError });
     expect(onError.calledWithExactly('kaboom')).to.be.true;
     expect(onSubscribe.called).to.be.false;
   });
@@ -212,7 +198,7 @@ describe('race operator', () => {
     const e1 = NEVER.pipe(finalize(onUnsubscribe)); // Should be unsubscribed
     const e2 = of('b'); // Wins the race
 
-    e1.pipe(race(e2)).subscribe(onNext);
+    e1.pipe(raceWith(e2)).subscribe(onNext);
     expect(onNext.calledWithExactly('b')).to.be.true;
     expect(onUnsubscribe.calledOnce).to.be.true;
   });
@@ -223,7 +209,7 @@ describe('race operator', () => {
     const e1 = <Observable<never>>NEVER.pipe(startWith('a'), finalize(onUnsubscribe)); // Wins the race
     const e2 = NEVER; // Loses the race
 
-    const subscription = e1.pipe(race(e2)).subscribe(onNext);
+    const subscription = e1.pipe(raceWith(e2)).subscribe(onNext);
     expect(onNext.calledWithExactly('a')).to.be.true;
     expect(onUnsubscribe.called).to.be.false;
     subscription.unsubscribe();

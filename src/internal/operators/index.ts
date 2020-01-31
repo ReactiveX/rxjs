@@ -57,7 +57,7 @@ export { publish } from './publish';
 export { publishBehavior } from './publishBehavior';
 export { publishLast } from './publishLast';
 export { publishReplay } from './publishReplay';
-export { race } from './race';
+export { race, raceWith } from './raceWith';
 export { reduce } from './reduce';
 export { repeat } from './repeat';
 export { repeatWhen } from './repeatWhen';
