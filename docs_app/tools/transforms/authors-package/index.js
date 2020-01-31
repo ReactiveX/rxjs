@@ -8,14 +8,14 @@
 /* eslint no-console: "off" */
 
 function createPackage(changedFile) {
-  const marketingMatch = /^aio\/content\/marketing\/(.*)/.exec(changedFile);
+  const marketingMatch = /^docs_app\/content\/marketing\/(.*)/.exec(changedFile);
   if (marketingMatch) {
     console.log('Building marketing docs');
     return require('./marketing-package').createPackage();
   }
 
-  const tutorialMatch = /^aio\/content\/tutorial\/([^.]+)\.md/.exec(changedFile);
-  const tutorialExampleMatch = /^aio\/content\/examples\/(toh-[^\/]+)\//.exec(changedFile);
+  const tutorialMatch = /^docs_app\/content\/tutorial\/([^.]+)\.md/.exec(changedFile);
+  const tutorialExampleMatch = /^docs_app\/content\/examples\/(toh-[^\/]+)\//.exec(changedFile);
   if (tutorialMatch || tutorialExampleMatch) {
     const tutorialName = tutorialMatch && tutorialMatch[1] || tutorialExampleMatch[1];
     console.log('Building tutorial docs');
