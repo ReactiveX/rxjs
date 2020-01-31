@@ -1,5 +1,6 @@
 import { Observable } from '../Observable';
 import { isArray } from '../util/isArray';
+import { from } from './from';
 import { fromArray } from './fromArray';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
@@ -76,9 +77,9 @@ export function race<T>(...observables: ObservableInput<any>[]): Observable<T> {
   // `race([obs1, obs2, ...])`
   if (observables.length === 1) {
     if (isArray(observables[0])) {
-      observables = observables[0] as Observable<any>[];
+      observables = observables[0] as ObservableInput<any>[];
     } else {
-      return observables[0] as Observable<T>;
+      return from(observables[0] as ObservableInput<T>);
     }
   }
 
