@@ -1,6 +1,7 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { race, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
+import { expect } from 'chai';
 
 /** @test {race} */
 describe('static race', () => {
@@ -203,5 +204,12 @@ describe('static race', () => {
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should support a single ObservableInput argument', (done: MochaDone) => {
+    const source = race(Promise.resolve(42));
+    source.subscribe(value => {
+      expect(value).to.equal(42);
+    }, done, done);
   });
 });
