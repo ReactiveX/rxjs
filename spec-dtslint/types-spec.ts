@@ -3,7 +3,9 @@ import {
   ObservedValueOf,
   ObservedValueUnionFromArray,
   ObservedValueTupleFromArray,
-  Unshift
+  Cons,
+  Head,
+  Tail
 } from 'rxjs';
 import { A, B, C } from './helpers';
 
@@ -58,10 +60,28 @@ describe('ObservedTupleFromArray', () => {
   });
 });
 
-describe('Unshift', () => {
-  it('should add the type to the beginning of the tuple', () => {
-    let tuple: ObservedValueTupleFromArray<[Observable<A>, Observable<B>]>;
-    let explicit: Unshift<typeof tuple, C>;
-    let inferred = explicit!; // $ExpectType [C, A, B]
+describe('Cons', () => {
+  it('should construct a tuple with the specified type at the head', () => {
+    let explicit: Cons<A, [B, C]>;
+    let inferred = explicit!; // $ExpectType [A, B, C]
+  });
+
+  it('should support rest tuples', () => {
+    let explicit: Cons<A, B[]>;
+    let inferred = explicit!; // $ExpectType [A, ...B[]]
+  });
+});
+
+describe('Head', () => {
+  it('should return the head of a tuple', () => {
+    let explicit: Head<[A, B, C]>;
+    let inferred = explicit!; // $ExpectType A
+  });
+});
+
+describe('Tail', () => {
+  it('should return the tail of a tuple', () => {
+    let explicit: Tail<[A, B, C]>;
+    let inferred = explicit!; // $ExpectType [B, C]
   });
 });
