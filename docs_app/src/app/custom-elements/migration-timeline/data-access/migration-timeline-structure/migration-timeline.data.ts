@@ -5,6 +5,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '5.3.0',
     date: '2017-04-03T20:28:46.482Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/5.3.0',
     deprecations: [
       {
         subject: '$$rxSubscriber',
@@ -48,6 +49,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '6.0.0-alpha.3',
     date: '2018-02-09T17:06:57.961Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3',
     deprecations: [
       {
         subject: 'last',
@@ -121,6 +123,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '6.0.0-alpha.4',
     date: '2018-03-13T19:00:55.397Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.4',
     deprecations: [],
     breakingChanges: [
       {
@@ -146,6 +149,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '6.0.0-beta.4',
     date: '2018-03-29T20:15:32.638Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-beta.4',
     deprecations: [
       {
         subject: 'never',
@@ -248,6 +252,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '6.0.0-rc.0',
     date: '2018-03-31T00:12:03.479Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0',
     deprecations: [
       {
         subject: 'fromEventPattern',
@@ -895,6 +900,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '6.0.0-rc.1',
     date: '2018-04-07T04:52:25.078Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.1',
     deprecations: [
       {
         subject: 'Observable',
@@ -973,6 +979,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '6.0.0-tactical-rc.1',
     date: '2018-04-07T05:03:49.629Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tactical-rc.1',
     deprecations: [
       {
         subject: 'Scheduler',
@@ -1041,6 +1048,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '6.0.0-tenacious-rc.2',
     date: '2018-04-11T04:44:27.465Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2',
     deprecations: [
       {
         subject: 'SubscribeOnObservable',
@@ -1050,9 +1058,225 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'deprecation',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'method-subscribe-to-private',
-        deprecationMsgCode: getInternalDeprecationMsg(),
-        reason: `It was meant to be used only internally.`,
-        implication: `The deprecation means the caller uses internal parts.`
+        deprecationMsgCode: getInternalDeprecationMsg('subscribe'),
+        reason: getInternalReason('subscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'AjaxCreationMethod',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-subscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/observable/dom/AjaxObservable.ts#L182',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-subscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('subscribe'),
+        reason: getInternalReason('subscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'Subscriber',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-unsubscribeAndRecycle-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/Subscriber.ts#L155',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-unsubscribeAndRecycle-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('unsubscribeAndRecycle'),
+        reason: getInternalReason('unsubscribeAndRecycle'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'TimeoutWithSubscriber',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-unsubscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/operators/timeoutWith.ts#L132',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-unsubscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('unsubscribe'),
+        reason: getInternalReason('unsubscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'ConnectableObservable',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-subscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/observable/ConnectableObservable.ts#L25',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-subscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('subscribe'),
+        reason: getInternalReason('subscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'RepeatWhenSubscriber',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-unsubscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/operators/repeatWhen.ts#L89',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-unsubscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('unsubscribe'),
+        reason: getInternalReason('unsubscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'RepeatWhenSubscriber',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-unsubscribeAndRecycle-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/operators/repeatWhen.ts#L103',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-unsubscribeAndRecycle-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('unsubscribeAndRecycle'),
+        reason: getInternalReason('unsubscribeAndRecycle'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'WindowToggleSubscriber',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-unsubscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/operators/windowToggle.ts#L137',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-unsubscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('unsubscribe'),
+        reason: getInternalReason('unsubscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'WindowSubscriber',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-unsubscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/operators/window.ts#L109',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-unsubscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('unsubscribe'),
+        reason: getInternalReason('unsubscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'GroupDurationSubscriber',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-unsubscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/operators/groupBy.ts#L237',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-unsubscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('unsubscribe'),
+        reason: getInternalReason('unsubscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'GroupedObservable',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-subscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/operators/groupBy.ts#L262',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-subscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('subscribe'),
+        reason: getInternalReason('subscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'BufferWhenSubscriber',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-unsubscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/operators/bufferWhen.ts#L88',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-unsubscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('unsubscribe'),
+        reason: getInternalReason('unsubscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'BufferWhenSubscriber',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-subscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/operators/bufferWhen.ts#L88',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-subscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('subscribe'),
+        reason: getInternalReason('subscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'BufferTimeSubscriber',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-unsubscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/operators/bufferTime.ts#L173',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-unsubscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('unsubscribe'),
+        reason: getInternalReason('unsubscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'AsyncAction',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-unsubscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/scheduler/AsyncAction.ts#L132',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-unsubscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('unsubscribe'),
+        reason: getInternalReason('unsubscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'Subscriber',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-unsubscribeAndRecycle-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/Subscriber.ts#L155',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-unsubscribeAndRecycle-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('unsubscribeAndRecycle'),
+        reason: getInternalReason('unsubscribeAndRecycle'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'Subscriber',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-trySubscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/Subject.ts#L103',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-trySubscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('trySubscribe'),
+        reason: getInternalReason('trySubscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'Subject',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-subscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/Subject.ts#L112',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-subscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('subscribe'),
+        reason: getInternalReason('subscribe'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'BehaviorSubject',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'method-subscribe-deprecated',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tenacious-rc.2/src/internal/BehaviorSubject.ts#L20',
+        itemType: 'deprecation',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'method-subscribe-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('subscribe'),
+        reason: getInternalReason('subscribe'),
+        implication: getInternalImplication()
       }
     ],
     breakingChanges: []
@@ -1060,6 +1284,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '6.1.0',
     date: '2018-05-03T18:15:54.101Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.1.0',
     deprecations: [
       {
         subject: 'ObservableLike',
@@ -1081,6 +1306,42 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         import { InteropObservable } from 'rxjs';
         let o: InteropObservable<number>;
         `
+      },
+      {
+        subject: 'AsyncScheduler',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'property-active-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.1.0/src/internal/scheduler/AsyncScheduler.ts#L14',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'property-active-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('active'),
+        reason: getInternalReason('active'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'AsyncScheduler',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'property-scheduled-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.1.0/src/internal/scheduler/AsyncScheduler.ts#L22',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'property-scheduled-to-private',
+        deprecationMsgCode: getInternalDeprecationMsg('scheduled'),
+        reason: getInternalReason('scheduled'),
+        implication: getInternalImplication()
+      },
+      {
+        subject: 'GroupedObservable',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'constructor-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-turbo-rc.4/src/internal/operators/groupBy.ts#L256',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'constructor-@TODO',
+        deprecationMsgCode: getInternalDeprecationMsg('constructor'),
+        reason: getInternalReason('constructor'),
+        implication: getInternalImplication()
       }
     ],
     breakingChanges: []
@@ -1088,6 +1349,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '6.2.0',
     date: '2018-05-22T04:52:34.571Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.2.0',
     deprecations: [
       {
         subject: 'race',
@@ -1123,8 +1385,49 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     breakingChanges: []
   },
   {
+    version: '6.2.1',
+    date: '2018-06-12T17:04:31.187Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.2.1',
+    deprecations: [
+      {
+        subject: 'delayWhen',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'constructor-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.2.1/src/internal/operators/delayWhen.ts#L11',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'constructor-@TODO',
+        deprecationMsgCode: `@TODO In future versions, empty notifiers will no longer re-emit the source value on the output observable.`,
+        reason: `@TODO In future versions, empty notifiers will no longer re-emit the source value on the output observable.`,
+        implication: `@TODO`
+      }
+    ],
+    breakingChanges: []
+  },
+  {
+    version: '6.3.3',
+    date: '2018-09-25T23:52:58.845Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.3.3',
+    deprecations: [
+      {
+        subject: 'rxSubscriber',
+        subjectSymbol: SubjectSymbols.symbol,
+        subjectAction: 'deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.3.3/src/internal/symbol/rxSubscriber.ts#L1',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'removed',
+        deprecationMsgCode: `do not use, this is no longer checked by RxJS internals`,
+        reason: `@TODO`,
+        implication: `@TODO`
+      }
+    ],
+    breakingChanges: []
+  },
+  {
     version: '6.4.0',
     date: '2019-01-30T03:50:24.313Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0',
     deprecations: [
       {
         subject: 'Observable',
@@ -1307,6 +1610,60 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         `
       },
       {
+        subject: 'Subscribable',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'argument-nextCallback-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/types.ts#L43',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'argument-nextCallback-removed',
+        deprecationMsgCode: getGeneralObserverCallbackDeprecationMsgCode(),
+        reason: getGeneralObserverCallbackReason(),
+        implication: getOperatorGeneralObserverCallbackImplication(),
+        exampleBefore: `
+        @TODO
+        `,
+        exampleAfter: `
+        @TODO
+        `
+      },
+      {
+        subject: 'Subscribable',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'argument-errorCallback-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/types.ts#L45',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'argument-errorCallback-removed',
+        deprecationMsgCode: getGeneralObserverCallbackDeprecationMsgCode(),
+        reason: getGeneralObserverCallbackReason(),
+        implication: getOperatorGeneralObserverCallbackImplication(),
+        exampleBefore: `
+        @TODO
+        `,
+        exampleAfter: `
+        @TODO
+        `
+      },
+      {
+        subject: 'Subscribable',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'argument-completeCallback-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/types.ts#L47',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'argument-completeCallback-removed',
+        deprecationMsgCode: getGeneralObserverCallbackDeprecationMsgCode(),
+        reason: getGeneralObserverCallbackReason(),
+        implication: getOperatorGeneralObserverCallbackImplication(),
+        exampleBefore: `
+        @TODO
+        `,
+        exampleAfter: `
+        @TODO
+        `
+      },
+      {
         subject: 'Observable',
         subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-create-deprecated',
@@ -1365,6 +1722,20 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
           );
         source.subscribe((n) => console.log(n));
         `
+      },
+      {
+        subject: 'Subject',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'static-create-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/Subject.ts#L49',
+        breakingChangeVersion: '8',
+        breakingChangeSubjectAction: 'static-create-removed',
+        deprecationMsgCode: 'use the interface TimeInterval instead',
+        reason: `@TODO`,
+        implication: `@TODO`,
+        exampleBefore: `@TODO`,
+        exampleAfter: `@TODO`
       }
     ],
     breakingChanges: []
@@ -1372,6 +1743,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '6.5.0',
     date: '2019-04-23T02:55:47.108Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0',
     deprecations: [
       {
         subject: 'from',
@@ -1608,6 +1980,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '6.5.1',
     date: '2019-04-23T03:40:26.583Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.1',
     deprecations: [
       {
         subject: 'NotificationKind',
@@ -1638,6 +2011,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '7.0.0-alpha.0',
     date: '2019-09-18T14:02:25.345Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0',
     deprecations: [
       {
         subject: 'concat',
@@ -1838,7 +2212,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'deprecation',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'property-hotObservables-to-private',
-        deprecationMsgCode: getInternalDeprecationMsg(),
+        deprecationMsgCode: getInternalDeprecationMsg('hotObservables'),
         reason: `TestScheduler deprecates public hotObservables property and makes it protected as it is meant to be used only internally.`,
         implication: `The deprecation of the property hotObservables in TestScheduler means
         the caller uses parts that should not be used outside.`
@@ -1851,7 +2225,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'deprecation',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'property-coldObservables-to-private',
-        deprecationMsgCode: getInternalDeprecationMsg(),
+        deprecationMsgCode: getInternalDeprecationMsg('coldObservables'),
         reason: `TestScheduler deprecates public coldObservables
         property and makes it protected as it is meant to be used only internally.`,
         implication: `The deprecation of the property coldObservables in TestScheduler means
@@ -1888,7 +2262,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/scheduler/VirtualTimeScheduler.ts#L23',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'property-index-to-private',
-        deprecationMsgCode: getInternalDeprecationMsg(),
+        deprecationMsgCode: getInternalDeprecationMsg('index'),
         reason: `index property of VirtualTimeScheduler is only used internally and should ot be used.`,
         implication: `The deprecation of the property index in VirtualTimeScheduler means the caller
         uses internal parts that should not be used outside.`,
@@ -1921,6 +2295,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '7.0.0',
     date: '2020-11-24T12:12:12.800Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0',
     deprecations: [],
     breakingChanges: [
       {
@@ -2126,6 +2501,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '8.0.0',
     date: '2020-12-24T12:12:12.800Z',
+    sourceLink: 'https://github.com/ReactiveX/rxjs/blob/8.0.0',
     deprecations: [],
     breakingChanges: [
       {
@@ -2402,11 +2778,18 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   }
 ];
 
-
 // GENERAL
 
-function getInternalDeprecationMsg() {
-  return `it is meant to be used only internally`;
+function getInternalDeprecationMsg(name: string) {
+  return `${name} it is meant to be used only internally.`;
+}
+
+function getInternalReason(name: string) {
+  return `${name} was meant to be used only internally.`;
+}
+
+function getInternalImplication() {
+  return `The deprecation means the caller uses internal parts.`;
 }
 
 function getOperatorRemovedMultipleArgumentsBreakingChangeMsg(operatorName: string, arg?: string) {

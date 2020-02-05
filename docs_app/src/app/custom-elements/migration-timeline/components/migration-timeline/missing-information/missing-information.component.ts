@@ -73,12 +73,14 @@ export class MissingInformationComponent extends State<{ deprecation: Deprecatio
       {
         version: uidObj.version,
         date: '',
+        sourceLink: '',
         deprecations: [deprecation],
         breakingChanges: []
       },
       {
         version: deprecation.breakingChangeVersion,
         date: '',
+        sourceLink: '',
         deprecations: [],
         breakingChanges: [getBreakingChangeFromDeprecation(deprecation,
           {deprecationVersion: uidObj.version, breakingChangeMsg: 'removed'}

@@ -33,6 +33,7 @@ export interface BreakingChange extends MigrationItemSubjectUIDFields {
 
 export interface MigrationReleaseItem extends MigrationReleaseUIDFields {
   date: string;
+  sourceLink: string;
   deprecations: Deprecation[];
   breakingChanges: BreakingChange[];
 }

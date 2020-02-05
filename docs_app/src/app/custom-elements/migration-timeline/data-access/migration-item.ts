@@ -33,6 +33,7 @@ export interface ClientMigrationTimelineReleaseItem {
   versionNumber: number;
   officialRelease: boolean;
   date: Date;
+  sourceLink: string,
   deprecations: ClientDeprecation[];
   breakingChanges: ClientBreakingChange[];
 }
