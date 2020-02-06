@@ -1,14 +1,18 @@
 import { Observable } from './Observable';
 import { Deferred } from './util/deferred';
 
-export function asyncIteratorFrom<T>(source: Observable<T>): AsyncIterableIterator<T> {
+export function asyncIteratorFrom<T>(source: Observable<T>) {
+  return coroutine(source);
+}
+
+async function* coroutine<T>(source: Observable<T>) {
   const deferreds: Deferred<IteratorResult<T>>[] = [];
   const values: T[] = [];
   let hasError = false;
   let error: any = null;
   let completed = false;
 
-  source.subscribe({
+  const subs = source.subscribe({
     next: value => {
       if (deferreds.length > 0) {
         deferreds.shift()!.resolve({ value, done: false });
@@ -31,27 +35,28 @@ export function asyncIteratorFrom<T>(source: Observable<T>): AsyncIterableIterat
     },
   });
 
-  return {
-    next(): Promise<IteratorResult<T>> {
+  try {
+    while (true) {
       if (values.length > 0) {
-        return Promise.resolve({ value: values.shift()!, done: false });
+        yield values.shift();
+      } else if (completed) {
+        return;
+      } else if (hasError) {
+        throw error;
+      } else {
+        const d = new Deferred<IteratorResult<T>>();
+        deferreds.push(d);
+        const result = await d.promise;
+        if (result.done) {
+          return;
+        } else {
+          yield result.value;
+        }
       }
-
-      if (completed) {
-        return Promise.resolve({ value: undefined, done: true });
-      }
-
-      if (hasError) {
-        return Promise.reject(error);
-      }
-
-      const d = new Deferred<IteratorResult<T>>();
-      deferreds.push(d);
-      return d.promise;
-    },
-
-    [Symbol.asyncIterator]() {
-      return this;
-    },
-  };
+    }
+  } catch (err) {
+    throw err;
+  } finally {
+    subs.unsubscribe();
+  }
 }

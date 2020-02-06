@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { Observer, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
 import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty, interval } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, take } from 'rxjs/operators';
+import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, take, finalize } from 'rxjs/operators';
 
 declare const asDiagram: any, rxTestScheduler: any;
 
@@ -979,6 +979,24 @@ if (Symbol && Symbol.asyncIterator) {
         results.push(value);
       }
       expect(results).to.deep.equal([0, 1, 2]);
+    });
+
+    it('should do something clever if the loop exits', async () => {
+      let finalized = false;
+      const source = interval(10).pipe(take(10), finalize(() => finalized = true));
+      const results: number[] = [];
+      try {
+        for await (const value of source) {
+          results.push(value);
+          if (value === 1) {
+            throw new Error('bad');
+          }
+        }
+      } catch (err) {
+        // ignore
+      }
+      expect(results).to.deep.equal([0, 1]);
+      expect(finalized).to.be.true;
     });
   });
 }
