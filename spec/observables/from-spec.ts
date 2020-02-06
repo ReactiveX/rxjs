@@ -102,6 +102,34 @@ describe('from', () => {
     { name: 'arguments', value: getArguments('x') },
   ];
 
+  if (Symbol && Symbol.asyncIterator) {
+    const fakeAsyncIterator = (...values: any[]) => {
+      return {
+        [Symbol.asyncIterator]() {
+          let i = 0;
+          return {
+            next() {
+              const index = i++;
+              if (index < values.length) {
+                return Promise.resolve({ done: false, value: values[index] });
+              } else {
+                return Promise.resolve({ done: true });
+              }
+            },
+            [Symbol.asyncIterator]() {
+              return this;
+            }
+          };
+        }
+      };
+    };
+
+    sources.push({
+      name: 'async-iterator',
+      value: fakeAsyncIterator('x')
+    });
+  }
+
   for (const source of sources) {
     it(`should accept ${source.name}`, (done) => {
       let nextInvoked = false;
