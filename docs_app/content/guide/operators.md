@@ -215,6 +215,7 @@ Also see the [Join Creation Operators](#join-creation-operators) section above.
 - [`concatAll`](/api/operators/concatAll)
 - [`exhaust`](/api/operators/exhaust)
 - [`mergeAll`](/api/operators/mergeAll)
+- [`switchAll`](/api/operators/switchAll)
 - [`startWith`](/api/operators/startWith)
 - [`withLatestFrom`](/api/operators/withLatestFrom)
 
