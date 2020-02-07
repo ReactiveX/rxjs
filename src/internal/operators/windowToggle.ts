@@ -53,8 +53,7 @@ import { OperatorFunction } from '../types';
  * associated window should complete.
  * @return {Observable<Observable<T>>} An observable of windows, which in turn
  * are Observables.
- * @method windowToggle
- * @owner Observable
+ * @name windowToggle
  */
 export function windowToggle<T, O>(openings: Observable<O>,
                                    closingSelector: (openValue: O) => Observable<any>): OperatorFunction<T, Observable<T>> {

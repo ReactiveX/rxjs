@@ -39,8 +39,7 @@ import { OperatorFunction } from '../types';
  * `project` function.
  * @return {Observable<R>} An Observable that emits the values from the source
  * Observable transformed by the given `project` function.
- * @method map
- * @owner Observable
+ * @name map
  */
 export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any): OperatorFunction<T, R> {
   return function mapOperation(source: Observable<T>): Observable<R> {

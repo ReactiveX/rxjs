@@ -51,8 +51,7 @@ import { OperatorFunction } from '../types';
  * @return {Observable<Notification<T>>} An Observable that emits
  * {@link Notification} objects that wrap the original emissions from the source
  * Observable with metadata.
- * @method materialize
- * @owner Observable
+ * @name materialize
  */
 export function materialize<T>(): OperatorFunction<T, Notification<T>> {
   return function materializeOperatorFunction(source: Observable<T>) {

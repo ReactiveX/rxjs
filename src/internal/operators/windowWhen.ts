@@ -50,8 +50,7 @@ import { OperatorFunction } from '../types';
  * `complete`) when to close the previous window and start a new one.
  * @return {Observable<Observable<T>>} An observable of windows, which in turn
  * are Observables.
- * @method windowWhen
- * @owner Observable
+ * @name windowWhen
  */
 export function windowWhen<T>(closingSelector: () => Observable<any>): OperatorFunction<T, Observable<T>> {
   return function windowWhenOperatorFunction(source: Observable<T>) {

@@ -58,8 +58,7 @@ import { Subscriber } from '../Subscriber';
  * - `source`: the source Observable instance itself.
  * @return {Observable} An Observable of one number that represents the count as
  * described above.
- * @method count
- * @owner Observable
+ * @name count
  */
 
 export function count<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, number> {

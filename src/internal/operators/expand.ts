@@ -61,8 +61,7 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  * result of applying the projection function to each value emitted on the
  * output Observable and merging the results of the Observables obtained
  * from this transformation.
- * @method expand
- * @owner Observable
+ * @name expand
  */
 export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>,
                              concurrent: number = Number.POSITIVE_INFINITY,

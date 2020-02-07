@@ -66,8 +66,7 @@ export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: nu
  * @param {SchedulerLike} [scheduler=async] The scheduler on which to schedule the
  * intervals that determine buffer boundaries.
  * @return {Observable<T[]>} An observable of arrays of buffered values.
- * @method bufferTime
- * @owner Observable
+ * @name bufferTime
  */
 export function bufferTime<T>(bufferTimeSpan: number): OperatorFunction<T, T[]> {
   let length: number = arguments.length;

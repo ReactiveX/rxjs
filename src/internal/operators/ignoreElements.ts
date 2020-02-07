@@ -33,8 +33,7 @@ import { OperatorFunction } from '../types';
  * ```
  * @return {Observable} An empty Observable that only calls `complete`
  * or `error`, based on which one is called by the source Observable.
- * @method ignoreElements
- * @owner Observable
+ * @name ignoreElements
  */
 export function ignoreElements(): OperatorFunction<any, never> {
   return function ignoreElementsOperatorFunction(source: Observable<any>) {

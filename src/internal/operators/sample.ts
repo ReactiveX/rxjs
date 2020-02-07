@@ -44,8 +44,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @return {Observable<T>} An Observable that emits the results of sampling the
  * values emitted by the source Observable whenever the notifier Observable
  * emits value or completes.
- * @method sample
- * @owner Observable
+ * @name sample
  */
 export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new SampleOperator(notifier));

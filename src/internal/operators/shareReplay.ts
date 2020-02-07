@@ -121,8 +121,7 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
  * will be invoked on.
  * @return {Observable} An observable sequence that contains the elements of a sequence produced
  * by multicasting the source sequence within a selector function.
- * @method shareReplay
- * @owner Observable
+ * @name shareReplay
  */
 export function shareReplay<T>(
   configOrBufferSize?: ShareReplayConfig | number,

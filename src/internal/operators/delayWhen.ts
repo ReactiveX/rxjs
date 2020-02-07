@@ -70,8 +70,7 @@ export function delayWhen<T>(delayDurationSelector: (value: T, index: number) =>
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by an amount of time specified by the Observable returned by
  * `delayDurationSelector`.
- * @method delayWhen
- * @owner Observable
+ * @name delayWhen
  */
 export function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<any>,
                              subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T> {

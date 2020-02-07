@@ -48,8 +48,7 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
  * @return {Observable<T>} An Observable that emits the values from the source
  * Observable so long as each value satisfies the condition defined by the
  * `predicate`, then completes.
- * @method takeWhile
- * @owner Observable
+ * @name takeWhile
  */
 export function takeWhile<T>(
     predicate: (value: T, index: number) => boolean,

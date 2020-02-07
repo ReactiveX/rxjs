@@ -55,8 +55,7 @@ import { OperatorFunction, TeardownLogic } from '../types';
  * on every other value from the source. A new buffer is started at the
  * beginning of the source by default.
  * @return {Observable<T[]>} An Observable of arrays of buffered values.
- * @method bufferCount
- * @owner Observable
+ * @name bufferCount
  */
 export function bufferCount<T>(bufferSize: number, startBufferEvery: number | null = null): OperatorFunction<T, T[]> {
   return function bufferCountOperatorFunction(source: Observable<T>) {

@@ -43,8 +43,7 @@ import { ObservableInput, OperatorFunction } from '../types';
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of
  * input Observables being subscribed to concurrently.
  * @return {Observable<R>} An observable of the accumulated values.
- * @method mergeScan
- * @owner Observable
+ * @name mergeScan
  */
 export function mergeScan<T, R>(accumulator: (acc: R, value: T, index: number) => ObservableInput<R>,
                                 seed: R,

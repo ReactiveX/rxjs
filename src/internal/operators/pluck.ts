@@ -42,8 +42,7 @@ export function pluck<T>(...properties: string[]): OperatorFunction<T, unknown>;
  * @param {...string} properties The nested properties to pluck from each source
  * value (an object).
  * @return {Observable} A new Observable of property values from the source values.
- * @method pluck
- * @owner Observable
+ * @name pluck
  */
 export function pluck<T, R>(...properties: string[]): OperatorFunction<T, R> {
   const length = properties.length;

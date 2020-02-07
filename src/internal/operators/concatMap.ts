@@ -66,8 +66,7 @@ export function concatMap<T, R, O extends ObservableInput<any>>(project: (value:
  * projection function (and the optional deprecated `resultSelector`) to each item emitted
  * by the source Observable and taking values from each projected inner
  * Observable sequentially.
- * @method concatMap
- * @owner Observable
+ * @name concatMap
  */
 export function concatMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,

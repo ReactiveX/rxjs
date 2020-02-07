@@ -45,8 +45,7 @@ export function mergeMapTo<T, R, O extends ObservableInput<any>>(innerObservable
  * Observables being subscribed to concurrently.
  * @return {Observable} An Observable that emits items from the given
  * `innerObservable`
- * @method mergeMapTo
- * @owner Observable
+ * @name mergeMapTo
  */
 export function mergeMapTo<T, R, O extends ObservableInput<any>>(
   innerObservable: O,

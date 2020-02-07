@@ -37,8 +37,7 @@ function toArrayReducer<T>(arr: T[], item: T, index: number): T[] {
  *
  * ```
 * @return An array from an observable sequence.
-* @method toArray
-* @owner Observable
+* @name toArray
 */
 export function toArray<T>(): OperatorFunction<T, T[]> {
   return reduce(toArrayReducer, [] as T[]);

@@ -19,8 +19,7 @@ export function race<T, R>(...observables: Array<Observable<any> | Array<Observa
  * error or complete notification from the combination of this Observable and supplied Observables.
  * @param {...Observables} ...observables Sources used to race for which Observable emits first.
  * @return {Observable} An Observable that mirrors the output of the first Observable to emit an item.
- * @method race
- * @owner Observable
+ * @name race
  * @deprecated Deprecated in favor of static {@link race}.
  */
 export function race<T>(...observables: (Observable<T> | Observable<T>[])[]): MonoTypeOperatorFunction<T> {
