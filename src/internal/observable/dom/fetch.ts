@@ -1,5 +1,18 @@
 import { Observable } from '../../Observable';
 import { Subscription } from '../../Subscription';
+import { from } from '../../observable/from';
+import { ObservableInput } from '../../types';
+
+export function fromFetch(
+  input: string | Request,
+  init?: RequestInit
+): Observable<Response>;
+
+export function fromFetch<T>(
+  input: string | Request,
+  init: RequestInit | undefined,
+  selector: (response: Response) => ObservableInput<T>
+): Observable<T>;
 
 /**
  * Uses [the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) to
@@ -51,8 +64,12 @@ import { Subscription } from '../../Subscription';
  * @returns An Observable, that when subscribed to performs an HTTP request using the native `fetch`
  * function. The {@link Subscription} is tied to an `AbortController` for the the fetch.
  */
-export function fromFetch(input: string | Request, init?: RequestInit): Observable<Response> {
-  return new Observable<Response>(subscriber => {
+export function fromFetch<T>(
+  input: string | Request,
+  init?: RequestInit,
+  selector?: (response: Response) => ObservableInput<T>
+): Observable<Response | T> {
+  return new Observable<Response | T>(subscriber => {
     const controller = new AbortController();
     const signal = controller.signal;
     let abortable = true;
@@ -91,9 +108,26 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
     }
 
     fetch(input, perSubscriberInit).then(response => {
-      abortable = false;
-      subscriber.next(response);
-      subscriber.complete();
+      if (selector) {
+        subscription.add(from(selector(response)).subscribe(
+          value => subscriber.next(value),
+          err => {
+            abortable = false;
+            if (!unsubscribed) {
+              // Only forward the error if it wasn't an abort.
+              subscriber.error(err);
+            }
+          },
+          () => {
+            abortable = false;
+            subscriber.complete();
+          }
+        ));
+      } else {
+        abortable = false;
+        subscriber.next(response);
+        subscriber.complete();
+      }
     }).catch(err => {
       abortable = false;
       if (!unsubscribed) {
