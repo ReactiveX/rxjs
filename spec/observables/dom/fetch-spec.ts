@@ -249,4 +249,19 @@ describe('fromFetch', () => {
     // The subscription will not be closed until the error fires when the promise resolves.
     expect(subscription.closed).to.be.false;
   });
+
+  it('should not leak listeners added to the passed in signal', done => {
+    const controller = new MockAbortController();
+    const signal = controller.signal as any;
+    const fetch$ = fromFetch('/foo', { signal });
+    const subscription = fetch$.subscribe();
+    subscription.add(() => {
+      try {
+        expect(signal._listeners).to.be.empty;
+        done();
+      } catch (error) {
+        done(error);
+      }
+    });
+  });
 });
