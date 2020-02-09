@@ -1,4 +1,5 @@
 import { Observable } from '../../Observable';
+import { Subscription } from '../../Subscription';
 
 /**
  * Uses [the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) to
@@ -54,9 +55,16 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
   return new Observable<Response>(subscriber => {
     const controller = new AbortController();
     const signal = controller.signal;
-    let outerSignalHandler: () => void;
     let abortable = true;
     let unsubscribed = false;
+
+    const subscription = new Subscription();
+    subscription.add(() => {
+      unsubscribed = true;
+      if (abortable) {
+        controller.abort();
+      }
+    });
 
     let perSubscriberInit: RequestInit;
     if (init) {
@@ -65,12 +73,14 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
         if (init.signal.aborted) {
           controller.abort();
         } else {
-          outerSignalHandler = () => {
+          const outerSignal = init.signal;
+          const outerSignalHandler = () => {
             if (!signal.aborted) {
               controller.abort();
             }
           };
-          init.signal.addEventListener('abort', outerSignalHandler);
+          outerSignal.addEventListener('abort', outerSignalHandler);
+          subscription.add(() => outerSignal.removeEventListener('abort', outerSignalHandler));
         }
       }
       // init cannot be mutated or reassigned as it's closed over by the
@@ -92,11 +102,6 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
       }
     });
 
-    return () => {
-      unsubscribed = true;
-      if (abortable) {
-        controller.abort();
-      }
-    };
+    return subscription;
   });
 }
