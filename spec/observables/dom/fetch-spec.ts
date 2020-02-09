@@ -206,7 +206,7 @@ describe('fromFetch', () => {
     expect(mockFetch.calls[0].init!.method).to.equal('HEAD');
   });
 
-  it('should pass in a signal with the init object without mutating the init', done => {
+  it('should add a signal to internal init object without mutating the passed init object', done => {
     const myInit = {method: 'DELETE'};
     const fetch$ = fromFetch('/bar', myInit);
     fetch$.subscribe({
