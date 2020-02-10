@@ -165,7 +165,7 @@ interface CloseState<T> {
 class CountedSubject<T> extends Subject<T> {
   private _numberOfNextedValues: number = 0;
 
-  next(value?: T): void {
+  next(value: T): void {
     this._numberOfNextedValues++;
     super.next(value);
   }

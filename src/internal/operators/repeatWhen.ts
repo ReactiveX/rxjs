@@ -60,7 +60,7 @@ class RepeatWhenOperator<T> implements Operator<T, T> {
  */
 class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
 
-  private notifications: Subject<any> | null = null;
+  private notifications: Subject<void> | null = null;
   private retries: Observable<any> | null = null;
   private retriesSubscription: Subscription | null | undefined = null;
   private sourceIsBeingSubscribedTo: boolean = true;

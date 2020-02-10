@@ -45,7 +45,7 @@ describe('bufferCount operator', () => {
   });
 
   it('should buffer properly (issue #2062)', () => {
-    const item$ = new Subject();
+    const item$ = new Subject<number>();
     const results: any[] = [];
     item$.pipe(
       bufferCount(3, 1)

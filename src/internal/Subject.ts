@@ -25,7 +25,7 @@ export class SubjectSubscriber<T> extends Subscriber<T> {
  *
  * @class Subject<T>
  */
-export class Subject<T> extends Observable<T> implements SubscriptionLike {
+export class Subject<T = void> extends Observable<T> implements SubscriptionLike {
 
   [rxSubscriberSymbol]() {
     return new SubjectSubscriber(this);
@@ -58,7 +58,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     return <any>subject;
   }
 
-  next(value?: T) {
+  next(value: T) {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }

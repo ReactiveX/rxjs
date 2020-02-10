@@ -247,7 +247,7 @@ describe('skipUntil', () => {
     const e1 =   hot( '--a--b--c--d--e--|');
     const e1subs =   ['^                !',
                       '^                !']; // for the explicit subscribe some lines below
-    const skip = new Subject();
+    const skip = new Subject<string>();
     const expected =  '-----------------|';
 
     e1.subscribe((x: string) => {

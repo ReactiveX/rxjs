@@ -6,7 +6,7 @@ import { Subject } from '../Subject';
 import { MonoTypeOperatorFunction } from '../types';
 
 function shareSubjectFactory() {
-  return new Subject();
+  return new Subject<any>();
 }
 
 /**
