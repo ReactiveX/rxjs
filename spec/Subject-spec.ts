@@ -13,7 +13,7 @@ describe('Subject', () => {
       expect(x).to.be.a('undefined');
     }, null, done);
 
-    const data: any = {};
+    const data: any = undefined;
     subject.next();
     subject.next(undefined);
     subject.next(data);
