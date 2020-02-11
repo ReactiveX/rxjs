@@ -6,6 +6,30 @@ import { delay } from 'rxjs/operators';
 
 /** @test {Subject} */
 describe('Subject', () => {
+
+  it('should allow next with empty, undefined or any when created with no type', (done: MochaDone) => {
+    const subject = new Subject();
+    subject.subscribe(x => {
+      expect(x).to.be.a('undefined');
+    }, null, done);
+
+    const data: any = {};
+    subject.next();
+    subject.next(undefined);
+    subject.next(data);
+    subject.complete();
+  });
+
+  it('should allow empty next when created with void type', (done: MochaDone) => {
+    const subject = new Subject<void>();
+    subject.subscribe(x => {
+      expect(x).to.be.a('undefined');
+    }, null, done);
+
+    subject.next();
+    subject.complete();
+  });
+
   it('should pump values right on through itself', (done: MochaDone) => {
     const subject = new Subject<string>();
     const expected = ['foo', 'bar'];
