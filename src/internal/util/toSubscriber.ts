@@ -18,8 +18,11 @@ export function toSubscriber<T>(
     }
   }
 
-  if (!nextOrObserver && !error && !complete) {
-    return new Subscriber(emptyObserver);
+  if (!error && !complete) {
+    if (!nextOrObserver) {
+      return new Subscriber(emptyObserver);
+    }
+    return new Subscriber(nextOrObserver);
   }
 
   return new Subscriber(nextOrObserver, error, complete);

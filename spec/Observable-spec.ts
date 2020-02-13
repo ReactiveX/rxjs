@@ -599,6 +599,45 @@ describe('Observable', () => {
         console.log = _log;
       });
     });
+
+    it('should fully propogate disposal when subscribed with a Subscriber', () => {
+      let observableUnsubscribed = false;
+      let subscriberUnsubscribed = false;
+      let subscriptionUnsubscribed = false;
+
+      const subscriber = new Subscriber<any>();
+      // verify unsubscribe is called on the Subscriber
+      subscriber.add(() => subscriberUnsubscribed = true);
+      const source = new Observable(_ => () => observableUnsubscribed = true);
+      const subscription = source.subscribe(subscriber);
+      // verify unsubscribe is called on children of the returned Subscription
+      subscription.add(() => subscriptionUnsubscribed = true);
+
+      subscription.unsubscribe();
+
+      expect(observableUnsubscribed).to.be.true;
+      expect(subscriberUnsubscribed).to.be.true;
+      expect(subscriptionUnsubscribed).to.be.true;
+    });
+
+    it('should fully propogate disposal when subscribed with a Subscriber-like', () => {
+      let observableUnsubscribed = false;
+      let subscriberUnsubscribed = false;
+      let subscriptionUnsubscribed = false;
+
+      // verify unsubscribe is called on the "Subscriber" (quack-quack)
+      const subscriber = { unsubscribe: () => subscriberUnsubscribed = true };
+      const source = new Observable(_ => () => observableUnsubscribed = true);
+      const subscription = source.subscribe(<any> subscriber as Subscriber<any>);
+      // verify unsubscribe is called on children of the returned Subscription
+      subscription.add(() => subscriptionUnsubscribed = true);
+
+      subscription.unsubscribe();
+
+      expect(observableUnsubscribed).to.be.true;
+      expect(subscriberUnsubscribed).to.be.true;
+      expect(subscriptionUnsubscribed).to.be.true;
+    });
   });
 
   describe('pipe', () => {

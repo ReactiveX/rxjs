@@ -77,6 +77,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
           } else {
             this.syncErrorThrowable = true;
             this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
+            this.add(<SafeSubscriber<T>> this.destination);
           }
           break;
         }
