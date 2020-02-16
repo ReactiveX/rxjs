@@ -354,13 +354,14 @@ export class Observable<T> implements Subscribable<T> {
 
   /**
    * Subscribe to this Observable and get a Promise resolving on
-   * `complete` with the last emission.
+   * `complete` with the last emission (if any).
    *
    * @method toPromise
    * @param [promiseCtor] a constructor function used to instantiate
    * the Promise
    * @return A Promise that resolves with the last value emit, or
-   * rejects on an error.
+   * rejects on an error. If there were no emissions, Promise
+   * resolves with undefined.
    */
   toPromise(promiseCtor?: PromiseConstructorLike): Promise<T | undefined> {
     promiseCtor = getPromiseCtor(promiseCtor);

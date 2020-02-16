@@ -4,6 +4,11 @@ import { Observable } from '../Observable';
 
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
+export interface RetryConfig {
+  count: number;
+  resetOnSuccess?: boolean;
+}
+
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
  * calls `error`, this method will resubscribe to the source Observable for a maximum of `count` resubscriptions (given
@@ -46,21 +51,33 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * ```
  *
  * @param {number} count - Number of retry attempts before failing.
+ * @param {boolean} resetOnSuccess - When set to `true` every successful emission will reset the error count
  * @return {Observable} The source Observable modified with the retry logic.
  * @method retry
  * @owner Observable
  */
-export function retry<T>(count: number = -1): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new RetryOperator(count, source));
+export function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
+export function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;
+export function retry<T>(configOrCount: number | RetryConfig = -1): MonoTypeOperatorFunction<T> {
+  let config: RetryConfig;
+  if (configOrCount && typeof configOrCount === 'object') {
+    config = configOrCount as RetryConfig;
+  } else {
+    config = {
+      count: configOrCount as number
+    };
+  }
+  return (source: Observable<T>) => source.lift(new RetryOperator(config.count, !!config.resetOnSuccess, source));
 }
 
 class RetryOperator<T> implements Operator<T, T> {
   constructor(private count: number,
+              private resetOnSuccess: boolean,
               private source: Observable<T>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new RetrySubscriber(subscriber, this.count, this.source));
+    return source.subscribe(new RetrySubscriber(subscriber, this.count, this.resetOnSuccess, this.source));
   }
 }
 
@@ -70,11 +87,24 @@ class RetryOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class RetrySubscriber<T> extends Subscriber<T> {
+  private readonly initialCount: number;
+
   constructor(destination: Subscriber<any>,
               private count: number,
-              private source: Observable<T>) {
+              private resetOnSuccess: boolean,
+              private source: Observable<T>
+  ) {
     super(destination);
+    this.initialCount = this.count;
   }
+
+  next(value?: T): void {
+    super.next(value);
+    if (this.resetOnSuccess) {
+      this.count = this.initialCount;
+    }
+  }
+
   error(err: any) {
     if (!this.isStopped) {
       const { source, count } = this;

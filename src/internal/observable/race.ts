@@ -1,34 +1,17 @@
 import { Observable } from '../Observable';
 import { isArray } from '../util/isArray';
+import { from } from './from';
 import { fromArray } from './fromArray';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { TeardownLogic, ObservableInput } from '../types';
+import { TeardownLogic, ObservableInput, ObservedValueUnionFromArray } from '../types';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
-// tslint:disable:max-line-length
-export function race<A>(arg: [ObservableInput<A>]): Observable<A>;
-export function race<A, B>(arg: [ObservableInput<A>, ObservableInput<B>]): Observable<A | B>;
-export function race<A, B, C>(arg: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>]): Observable<A | B | C>;
-export function race<A, B, C, D>(arg: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>]): Observable<A | B | C | D>;
-export function race<A, B, C, D, E>(arg: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>]): Observable<A | B | C | D | E>;
-export function race<T>(arg: ObservableInput<T>[]): Observable<T>;
-export function race(arg: ObservableInput<any>[]): Observable<unknown>;
-
-export function race<A>(a: ObservableInput<A>): Observable<A>;
-export function race<A, B>(a: ObservableInput<A>, b: ObservableInput<B>): Observable<A | B>;
-export function race<A, B, C>(a: ObservableInput<A>, b: ObservableInput<B>, c: ObservableInput<C>): Observable<A | B | C>;
-export function race<A, B, C, D>(a: ObservableInput<A>, b: ObservableInput<B>, c: ObservableInput<C>, d: ObservableInput<D>): Observable<A | B | C | D>;
-export function race<A, B, C, D, E>(a: ObservableInput<A>, b: ObservableInput<B>, c: ObservableInput<C>, d: ObservableInput<D>, e: ObservableInput<E>): Observable<A | B | C | D | E>;
-// tslint:enable:max-line-length
-
-export function race<T>(observables: ObservableInput<T>[]): Observable<T>;
-export function race(observables: ObservableInput<any>[]): Observable<unknown>;
-export function race<T>(...observables: ObservableInput<T>[]): Observable<T>;
-export function race(...observables: ObservableInput<any>[]): Observable<unknown>;
+export function race<A extends ObservableInput<any>[]>(observables: A): Observable<ObservedValueUnionFromArray<A>>;
+export function race<A extends ObservableInput<any>[]>(...observables: A): Observable<ObservedValueUnionFromArray<A>>;
 
 /**
  * Returns an observable that mirrors the first source observable to emit an item.
@@ -71,14 +54,14 @@ export function race(...observables: ObservableInput<any>[]): Observable<unknown
  * @param {...Observables} ...observables sources used to race for which Observable emits first.
  * @return {Observable} an Observable that mirrors the output of the first Observable to emit an item.
  */
-export function race<T>(...observables: ObservableInput<any>[]): Observable<T> {
+export function race<T>(...observables: (ObservableInput<T> | ObservableInput<T>[])[]): Observable<any> {
   // if the only argument is an array, it was most likely called with
   // `race([obs1, obs2, ...])`
   if (observables.length === 1) {
     if (isArray(observables[0])) {
-      observables = observables[0] as Observable<any>[];
+      observables = observables[0] as ObservableInput<T>[];
     } else {
-      return observables[0] as Observable<T>;
+      return from(observables[0] as ObservableInput<T>);
     }
   }
 

@@ -1,0 +1,28 @@
+name: CI (ts@latest)
+
+on:
+  pull_request:
+    types: ['opened', 'reopened', 'synchronize']
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '13' ]
+
+    name: ts@latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+    - name: build
+      run: |
+        npm install -g npm@latest
+        npm ci
+        npm install --no-save typescript@latest
+        npm run compile
+
