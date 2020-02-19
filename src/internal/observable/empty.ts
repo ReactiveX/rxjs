@@ -3,7 +3,27 @@ import { SchedulerLike } from '../types';
 
 /**
  * The same Observable instance returned by any call to {@link empty} without a
- * `scheduler`. It is preferrable to use this over `empty()`.
+ * `scheduler`. It is preferable to use this over `empty()`.
+ *
+ * <span class="informal">Just emits 'complete', and nothing else.</span>
+ *
+ * ![](empty.png)
+ *
+ * ## Examples
+ *
+ * ### Log complete notification
+ *
+ * ```ts
+ * import { EMPTY } from 'rxjs';
+ *
+ * EMPTY.subscribe({
+ *   next: () => console.log('Next'),
+ *   complete: () => console.log('Complete!')
+ * });
+ *
+ * // Outputs
+ * // Complete!
+ * ```
  */
 export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
 
