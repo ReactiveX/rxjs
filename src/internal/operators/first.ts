@@ -66,6 +66,7 @@ export function first<T, D = T>(
  *
  * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
+ * This is how `first()` is different from {@link take}(1) which completes instead.
  *
  * @param {function(value: T, index: number, source: Observable<T>): boolean} [predicate]
  * An optional function called with each item to test for condition matching.
