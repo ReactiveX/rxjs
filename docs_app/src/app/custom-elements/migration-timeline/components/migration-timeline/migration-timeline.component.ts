@@ -15,7 +15,6 @@ export interface MigrationTimelineComponentViewBaseModel {
   selector: `rxjs-migration-timeline`,
   template: `
     <mat-accordion *ngIf="vm$ | async as vm" class="migration-timeline">
-
       <missing-information *ngIf="vm.selectedMigrationItemUID === 'wrong-uid'">
       </missing-information>
 
@@ -28,11 +27,24 @@ export interface MigrationTimelineComponentViewBaseModel {
           <mat-panel-title
             class="migration-timeline-item-header-title"
             [id]="release.version">
-            <release-title
-              (shieldClick)="selectedMigrationReleaseUIDChange.next(release.version)"
-              [expandedRelease]="expandedRelease$"
-              [release]="release">
-            </release-title>
+               <shield [label]="'github'" [version]="release.version"
+      (click)="selectedMigrationReleaseUIDChange.next(release.version)">
+    </shield>&nbsp;-&nbsp;{{release.date | date:'dd.MM.yyyy'}}&nbsp;-
+    <ng-container *ngIf="(expandedRelease$ | async)[release.version]">&nbsp;
+      <mat-icon aria-hidden="false" aria-label="Deprecations">warning
+      </mat-icon>&nbsp;Deprecations:&nbsp;{{release.deprecations.length}}&nbsp;
+      <mat-icon aria-hidden="false" aria-label="Deprecations">error
+      </mat-icon>&nbsp;BreakingChanges:&nbsp;{{release.breakingChanges.length}}
+    </ng-container>
+    <ng-container *ngIf="!(expandedRelease$ | async)[release.version]">
+      <mat-icon *ngIf="release.deprecations.length" aria-hidden="false" aria-label="Deprecations">warning
+      </mat-icon>&nbsp;
+      <span *ngIf="release.deprecations.length">{{release.deprecations.length}}</span>
+      <mat-icon *ngIf="release.breakingChanges.length" aria-hidden="false" aria-label="BreakingChange">error
+      </mat-icon>
+      &nbsp;
+      <span *ngIf="release.breakingChanges.length">{{release.breakingChanges.length}}</span>&nbsp;
+    </ng-container>
           </mat-panel-title>
         </mat-expansion-panel-header>
 
