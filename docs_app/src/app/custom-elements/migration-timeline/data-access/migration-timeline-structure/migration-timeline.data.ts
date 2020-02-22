@@ -1610,60 +1610,6 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         `
       },
       {
-        subject: 'Subscribable',
-        subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'argument-nextCallback-deprecated',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/types.ts#L43',
-        breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'argument-nextCallback-removed',
-        deprecationMsgCode: getGeneralObserverCallbackDeprecationMsgCode(),
-        reason: getGeneralObserverCallbackReason(),
-        implication: getOperatorGeneralObserverCallbackImplication(),
-        exampleBefore: `
-        @TODO
-        `,
-        exampleAfter: `
-        @TODO
-        `
-      },
-      {
-        subject: 'Subscribable',
-        subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'argument-errorCallback-deprecated',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/types.ts#L45',
-        breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'argument-errorCallback-removed',
-        deprecationMsgCode: getGeneralObserverCallbackDeprecationMsgCode(),
-        reason: getGeneralObserverCallbackReason(),
-        implication: getOperatorGeneralObserverCallbackImplication(),
-        exampleBefore: `
-        @TODO
-        `,
-        exampleAfter: `
-        @TODO
-        `
-      },
-      {
-        subject: 'Subscribable',
-        subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'argument-completeCallback-deprecated',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/types.ts#L47',
-        breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'argument-completeCallback-removed',
-        deprecationMsgCode: getGeneralObserverCallbackDeprecationMsgCode(),
-        reason: getGeneralObserverCallbackReason(),
-        implication: getOperatorGeneralObserverCallbackImplication(),
-        exampleBefore: `
-        @TODO
-        `,
-        exampleAfter: `
-        @TODO
-        `
-      },
-      {
         subject: 'Observable',
         subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-create-deprecated',
@@ -1722,20 +1668,6 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
           );
         source.subscribe((n) => console.log(n));
         `
-      },
-      {
-        subject: 'Subject',
-        subjectSymbol: SubjectSymbols.class,
-        subjectAction: 'static-create-deprecated',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/Subject.ts#L49',
-        breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'static-create-removed',
-        deprecationMsgCode: 'use the interface TimeInterval instead',
-        reason: `@TODO`,
-        implication: `@TODO`,
-        exampleBefore: `@TODO`,
-        exampleAfter: `@TODO`
       }
     ],
     breakingChanges: []
