@@ -47,13 +47,14 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * an {@link Observable} that emits either an array of values in the exact same order as the passed array,
  * or a dictionary of values in the same shape as the passed dictionary.
  *
- * <span class="informal">Wait for Observables to complete and then combine last values they emitted.</span>
+ * <span class="informal">Wait for Observables to complete and then combine last values they emitted;
+ * complete immediately if an empty array is passed.</span>
  *
  * ![](forkJoin.png)
  *
  * `forkJoin` is an operator that takes any number of input observables which can be passed either as an array
- * or a dictionary of input observables. If no input observables are provided, then the resulting stream will complete
- * immediately.
+ * or a dictionary of input observables. If no input observables are provided (e.g. an empty array is passed),
+ * then the resulting stream will complete immediately.
  *
  * `forkJoin` will wait for all passed observables to emit and complete and then it will emit an array or an object with last
  * values from corresponding observables.
