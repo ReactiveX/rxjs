@@ -3,11 +3,11 @@ import {merge, Observable, Subject} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {LocationService} from '../../shared/location.service';
 import {State} from '../../shared/state.service';
-import {ClientMigrationTimelineReleaseItem, parseMigrationReleaseUIDFromString} from './data-access';
+import {Release, parseMigrationReleaseUIDFromString} from './data-access';
 import {MigrationTimelineContainerAdapter} from './migration-timeline.container.adapter';
 
 export interface MigrationTimelineContainerModelFromRemoteSources {
-  releaseList: ClientMigrationTimelineReleaseItem[];
+  releaseList: Release[];
   selectedMigrationItemUID: string;
 }
 

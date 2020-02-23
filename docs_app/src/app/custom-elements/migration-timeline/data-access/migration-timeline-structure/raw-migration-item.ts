@@ -6,14 +6,13 @@ export type MigrationItemTypeBreakingChange = 'breakingChange';
 
 export type MigrationItemTypes = MigrationItemTypeDeprecation | MigrationItemTypeBreakingChange;
 
-export type MigrationItem = Deprecation | BreakingChange;
-
-export interface Deprecation extends MigrationItemSubjectUIDFields {
+export interface RawDeprecation extends MigrationItemSubjectUIDFields {
   itemType: MigrationItemTypeDeprecation;
   sourceLink: string;
   breakingChangeVersion: string;
   breakingChangeSubjectAction: string;
   deprecationMsgCode: string;
+  breakingChangeMsg: string;
   reason: string;
   implication: string;
   exampleBeforeDependencies?: {[lib: string]: string},
@@ -23,17 +22,8 @@ export interface Deprecation extends MigrationItemSubjectUIDFields {
   notes?: string;
 }
 
-export interface BreakingChange extends MigrationItemSubjectUIDFields {
-  itemType: MigrationItemTypeBreakingChange;
-  deprecationVersion: string;
-  deprecationSubjectAction: string;
-  breakingChangeMsg: string;
-  notes?: string;
-}
-
-export interface MigrationReleaseItem extends MigrationReleaseUIDFields {
+export interface RawRelease extends MigrationReleaseUIDFields {
   date: string;
   sourceLink: string;
-  deprecations: Deprecation[];
-  breakingChanges: BreakingChange[];
+  deprecations: RawDeprecation[];
 }

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
-import {ClientMigrationTimelineReleaseItem} from '../../data-access';
+import {Release} from '../../data-access';
 
 @Component({
   selector: `release-title`,
@@ -11,9 +11,9 @@ import {ClientMigrationTimelineReleaseItem} from '../../data-access';
 })
 export class ReleaseTitleComponent {
 
-  _release: ClientMigrationTimelineReleaseItem;
+  _release: Release;
   @Input()
-  set release(release: ClientMigrationTimelineReleaseItem) {
+  set release(release: Release) {
     if (release) {
       this._release = release;
     }

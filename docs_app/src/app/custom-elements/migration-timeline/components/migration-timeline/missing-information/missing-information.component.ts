@@ -5,13 +5,12 @@ import {environment} from '../../../../../../environments/environment';
 import {LocationService} from '../../../../../shared/location.service';
 import {State} from '../../../../../shared/state.service';
 import {
-  BreakingChange,
-  Deprecation,
   MigrationItemSubjectUIDFields,
-  MigrationReleaseItem,
   MigrationReleaseUIDFields,
   parseMigrationItemUIDObject,
-  parseMigrationItemUIDURL
+  parseMigrationItemUIDURL,
+  RawDeprecation,
+  RawRelease
 } from '../../../data-access';
 
 
@@ -40,10 +39,10 @@ import {
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MissingInformationComponent extends State<{ deprecation: Deprecation }> {
+export class MissingInformationComponent extends State<{ deprecation: RawDeprecation }> {
 
   env = environment;
-  formOutput$ = new Subject<Deprecation>();
+  formOutput$ = new Subject<RawDeprecation>();
 
   private deprecation$ = this.select('deprecation');
   private migrationItemUIDObject$ = this.lo.currentSearchParams
@@ -68,23 +67,19 @@ export class MissingInformationComponent extends State<{ deprecation: Deprecatio
     this.connectState('deprecation', this.formOutput$);
   }
 
-  generateSnipped(deprecation: Deprecation, uidObj: MigrationItemSubjectUIDFields & MigrationReleaseUIDFields): string {
-    const snippet: MigrationReleaseItem[] = [
+  generateSnipped(deprecation: RawDeprecation, uidObj: MigrationItemSubjectUIDFields & MigrationReleaseUIDFields): string {
+    const snippet: RawRelease[] = [
       {
         version: uidObj.version,
         date: '',
         sourceLink: '',
-        deprecations: [deprecation],
-        breakingChanges: []
+        deprecations: [deprecation]
       },
       {
         version: deprecation.breakingChangeVersion,
         date: '',
         sourceLink: '',
-        deprecations: [],
-        breakingChanges: [getBreakingChangeFromDeprecation(deprecation,
-          {deprecationVersion: uidObj.version, breakingChangeMsg: 'removed'}
-        )]
+        deprecations: []
       }
     ];
     return JSON.stringify(snippet);
@@ -99,18 +94,4 @@ export class MissingInformationComponent extends State<{ deprecation: Deprecatio
   }
 
 }
-
-
-function getBreakingChangeFromDeprecation(d: Deprecation, r: { deprecationVersion: string, breakingChangeMsg: string }): BreakingChange {
-  return {
-    itemType: 'breakingChange',
-    subject: d.subject,
-    subjectSymbol: d.subjectSymbol,
-    subjectAction: d.breakingChangeSubjectAction,
-    deprecationVersion: r.deprecationVersion,
-    deprecationSubjectAction: d.subjectAction,
-    breakingChangeMsg: r.breakingChangeMsg
-  };
-}
-
 

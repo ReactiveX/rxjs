@@ -1,4 +1,4 @@
-import {MigrationItem, MigrationItemTypes} from './migration-item';
+import {MigrationItemTypes} from './raw-migration-item';
 import {formatSemVerString} from './semver';
 
 export interface MigrationReleaseUIDFields {
@@ -37,7 +37,7 @@ export enum SubjectActionSymbol {
 }
 
 export function parseMigrationItemUID(
-  item: MigrationItem,
+  item: any,
   args: Partial<MigrationReleaseUIDFields> & Partial<MigrationItemSubjectUIDFields>
 ) {
   let {version} = args;
@@ -48,7 +48,7 @@ export function parseMigrationItemUID(
   return `${version}_${migrationItemSubjectUID}`;
 }
 
-export function parseMigrationItemSubjectUID(item: MigrationItem, args?: Partial<MigrationItemSubjectUIDFields>): any {
+export function parseMigrationItemSubjectUID(item: MigrationItemSubjectUIDFields, args?: Partial<MigrationItemSubjectUIDFields>): any {
   const i = {...item, ...args};
   return `${i.itemType}-${i.subjectSymbol}-${i.subject}-${i.subjectAction}`;
 }

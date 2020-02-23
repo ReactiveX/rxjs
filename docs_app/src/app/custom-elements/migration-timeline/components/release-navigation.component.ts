@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
-import {ClientMigrationTimelineReleaseItem} from '../data-access';
+import {Release} from '../data-access';
 import {State} from '../../../shared/state.service';
 
 export interface MigrationTimelineNavigationItem {
@@ -50,7 +50,7 @@ export class ReleaseNavigationComponent {
   }
 
   @Input()
-  set releaseList(releaseList: ClientMigrationTimelineReleaseItem[]) {
+  set releaseList(releaseList: Release[]) {
     if (releaseList) {
       const releaseNavigationList: MigrationTimelineNavigationItem[] = this.parseVmReleaseNavigation(releaseList);
       this._baseModel.setState({releaseNavigationList});
@@ -68,7 +68,7 @@ export class ReleaseNavigationComponent {
     return i.versionNumber;
   };
 
-  private parseVmReleaseNavigation(releases: ClientMigrationTimelineReleaseItem[]): MigrationTimelineNavigationItem[] {
+  private parseVmReleaseNavigation(releases: Release[]): MigrationTimelineNavigationItem[] {
     return releases.reduce((res, release): MigrationTimelineNavigationItem[] => {
       const {deprecations, breakingChanges, ...navigationItem} = release;
       return res.concat([navigationItem]);

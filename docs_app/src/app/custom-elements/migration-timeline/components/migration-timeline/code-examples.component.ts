@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {ClientDeprecation, ClientMigrationTimelineReleaseItem} from '../../data-access';
+import {Deprecation, Release} from '../../data-access';
 
 @Component({
   selector: `code-examples`,
@@ -21,17 +21,17 @@ import {ClientDeprecation, ClientMigrationTimelineReleaseItem} from '../../data-
 })
 export class CodeExamplesComponent {
 
-  _release: ClientMigrationTimelineReleaseItem;
+  _release: Release;
   @Input()
-  set release(release: ClientMigrationTimelineReleaseItem) {
+  set release(release: Release) {
     if (release) {
       this._release = release;
     }
   }
 
-  _deprecation: ClientDeprecation;
+  _deprecation: Deprecation;
   @Input()
-  set deprecation(deprecation: ClientDeprecation) {
+  set deprecation(deprecation: Deprecation) {
     if (deprecation) {
       this._deprecation = deprecation;
     }

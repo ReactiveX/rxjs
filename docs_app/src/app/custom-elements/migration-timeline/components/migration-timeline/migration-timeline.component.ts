@@ -3,10 +3,10 @@ import {Observable, Subject} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {environment} from '../../../../../environments/environment';
 import {State} from '../../../../shared/state.service';
-import {ClientMigrationTimelineReleaseItem, parseMigrationReleaseUIDFromString} from '../../data-access';
+import {Release, parseMigrationReleaseUIDFromString} from '../../data-access';
 
 export interface MigrationTimelineComponentViewBaseModel {
-  releaseList: ClientMigrationTimelineReleaseItem[];
+  releaseList: Release[];
   selectedMigrationReleaseUID: string;
   selectedMigrationItemUID: string;
 }
@@ -113,7 +113,7 @@ export class MigrationTimelineComponent extends State<MigrationTimelineComponent
   env = environment;
 
   @Input()
-  set releaseList(releaseList: ClientMigrationTimelineReleaseItem[]) {
+  set releaseList(releaseList: Release[]) {
     if (releaseList) {
       this.setState({releaseList});
     }

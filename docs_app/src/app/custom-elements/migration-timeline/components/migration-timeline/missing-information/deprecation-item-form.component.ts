@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, Output} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {filter, map, withLatestFrom} from 'rxjs/operators';
-import {Deprecation, SubjectSymbols} from '../../../data-access';
+import {RawDeprecation, SubjectSymbols} from '../../../data-access';
 
 
 @Component({
@@ -115,17 +115,17 @@ export class DeprecationItemFormComponent {
     breakingChangeSubjectAction: ['', Validators.required]
   });
 
-  latestValidValuePrepared$: Observable<Deprecation> = this.deprecationForm.statusChanges.pipe(
+  latestValidValuePrepared$: Observable<RawDeprecation> = this.deprecationForm.statusChanges.pipe(
     filter(status => status === 'VALID'),
     withLatestFrom(this.deprecationForm.valueChanges),
-    map(([_, v]: [any, Deprecation]) => {
+    map(([_, v]: [any, RawDeprecation]) => {
       v.itemType = 'deprecation';
-      return v as Deprecation;
+      return v as RawDeprecation;
     })
   );
 
   @Output()
-  changes: Observable<Deprecation> = this.latestValidValuePrepared$;
+  changes: Observable<RawDeprecation> = this.latestValidValuePrepared$;
 
   constructor(private fb: FormBuilder) {
 

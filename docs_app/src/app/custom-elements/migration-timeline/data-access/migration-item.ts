@@ -1,17 +1,17 @@
 import {comparePropertyFactory} from '../utils';
 import {
-  BreakingChange,
-  Deprecation,
-  formatSemVerNumber,
-  MigrationReleaseItem,
+  formatSemVerNumber, MigrationItemSubjectUIDFields,
+  MigrationItemTypeBreakingChange,
   parseMigrationItemSubjectUID,
   parseMigrationItemUID,
-  parseMigrationReleaseUIDFromString
+  parseMigrationReleaseUIDFromString,
+  RawDeprecation,
+  RawRelease
 } from './migration-timeline-structure';
 
-export const compareByVersionNumberAsc = comparePropertyFactory(true, (i: ClientMigrationTimelineReleaseItem) => i.versionNumber);
+export const compareByVersionNumberAsc = comparePropertyFactory(true, (i: Release) => i.versionNumber);
 
-export const compareByReleaseDateAsc = comparePropertyFactory(true, (i: ClientMigrationTimelineReleaseItem) => i.date, d => d.getTime());
+export const compareByReleaseDateAsc = comparePropertyFactory(true, (i: Release) => i.date, d => d.getTime());
 
 export interface MigrationItemUIDAware {
   migrationItemUID: string;
@@ -20,26 +20,30 @@ export interface MigrationItemUIDAware {
   opponentMigrationItemUID: string;
 }
 
-export interface ClientDeprecation extends Deprecation, MigrationItemUIDAware {
+export interface Deprecation extends RawDeprecation, MigrationItemUIDAware {
 
 }
 
-export interface ClientBreakingChange extends BreakingChange, MigrationItemUIDAware {
-
+export interface BreakingChange extends MigrationItemUIDAware, MigrationItemSubjectUIDFields {
+  itemType: MigrationItemTypeBreakingChange;
+  deprecationVersion: string;
+  deprecationSubjectAction: string;
+  breakingChangeMsg: string;
+  notes?: string;
 }
 
-export interface ClientMigrationTimelineReleaseItem {
+export interface Release {
   version: string;
   versionNumber: number;
   officialRelease: boolean;
   date: Date;
   sourceLink: string,
-  deprecations: ClientDeprecation[];
-  breakingChanges: ClientBreakingChange[];
+  deprecations: Deprecation[];
+  breakingChanges: BreakingChange[];
 }
 
 export function findClosestVersion(version = '') {
-  return (rL: ClientMigrationTimelineReleaseItem[]): string => {
+  return (rL: Release[]): string => {
     if (rL) {
       const closestRelease = rL.find(release => {
         if (release.version === version) {
@@ -56,7 +60,7 @@ export function findClosestVersion(version = '') {
   };
 }
 
-export function findClosestRelease(rL: ClientMigrationTimelineReleaseItem[], selectedMigrationTimelineItemUID = '') {
+export function findClosestRelease(rL: Release[], selectedMigrationTimelineItemUID = '') {
   if (rL) {
     const selectedVersion = parseMigrationReleaseUIDFromString(selectedMigrationTimelineItemUID);
     const closestRelease = rL.find(release => {
@@ -71,7 +75,7 @@ export function findClosestRelease(rL: ClientMigrationTimelineReleaseItem[], sel
   return rL[0];
 }
 
-export const findLatestVersion = (date: Date) => (rL: ClientMigrationTimelineReleaseItem[]): string => {
+export const findLatestVersion = (date: Date) => (rL: Release[]): string => {
   if (rL) {
     const reIndex = rL.findIndex(r => {
       const reDate = new Date(r.date);
@@ -96,18 +100,33 @@ export function parseMigrationItemSubjectUIDFromString(migrationItemUID: string)
   return parts.length >= 4 ? migrationItemUID : '';
 }
 
-export function parseClientMigrationTimelineReleaseItem(r: MigrationReleaseItem): ClientMigrationTimelineReleaseItem {
-  return {
-    ...r,
-    date: new Date(r.date),
-    version: r.version,
-    officialRelease: r.version.split('-').length < 2,
-    versionNumber: formatSemVerNumber(r.version),
-    deprecations: r.deprecations
-      .map(parseToMigrationItemUIDAware(r.version)),
-    breakingChanges: r.breakingChanges
-      .map(parseToMigrationItemUIDAware(r.version)),
-  } as ClientMigrationTimelineReleaseItem;
+export function parseClientMigrationTimelineReleaseItem(
+  r: RawRelease = {} as RawRelease,
+  defaultOverrides: Partial<Release> = {}
+): Release {
+  const parsedRelease = {
+    date: new Date('2021-01-01'),
+    ...defaultOverrides
+  } as Release;
+  r.date && (parsedRelease.date = new Date(r.date));
+  r.version && (parsedRelease.version = r.version);
+  parsedRelease.officialRelease = parsedRelease.version.split('-').length < 2 || false;
+  parsedRelease.versionNumber = formatSemVerNumber(parsedRelease.version);
+  parsedRelease.deprecations || (parsedRelease.deprecations = []);
+  parsedRelease.breakingChanges || (parsedRelease.breakingChanges = []);
+  return parsedRelease;
+}
+
+export function getBreakingChangeFromDeprecation(d: RawDeprecation, r: { deprecationVersion: string }): BreakingChange {
+  return parseToMigrationItemUIDAware<BreakingChange>(r.deprecationVersion)({
+    itemType: 'breakingChange',
+    subject: d.subject,
+    subjectSymbol: d.subjectSymbol,
+    subjectAction: d.breakingChangeSubjectAction,
+    deprecationVersion: r.deprecationVersion,
+    deprecationSubjectAction: d.subjectAction,
+    breakingChangeMsg: d.breakingChangeMsg
+  });
 }
 
 export function parseToMigrationItemUIDAware<T>(version: string) {

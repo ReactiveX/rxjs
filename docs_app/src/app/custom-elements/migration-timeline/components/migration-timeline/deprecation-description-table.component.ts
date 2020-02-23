@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
-import {ClientDeprecation} from '../../data-access';
+import {Deprecation} from '../../data-access';
 
 @Component({
   selector: `deprecation-description-table`,
@@ -55,9 +55,9 @@ import {ClientDeprecation} from '../../data-access';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeprecationDescriptionTableComponent {
-  deprecationVal: ClientDeprecation;
+  deprecationVal: Deprecation;
   @Input()
-  set deprecation(deprecation: ClientDeprecation) {
+  set deprecation(deprecation: Deprecation) {
     if (deprecation) {
       this.deprecationVal = deprecation;
     }

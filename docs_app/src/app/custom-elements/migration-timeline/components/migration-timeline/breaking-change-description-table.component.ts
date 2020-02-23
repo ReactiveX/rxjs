@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
-import {ClientBreakingChange} from '../../data-access';
+import {BreakingChange} from '../../data-access';
 
 @Component({
   selector: `breaking-change-description-table`,
@@ -29,8 +29,9 @@ import {ClientBreakingChange} from '../../data-access';
         <td>
           <p>
             For refactoring suggestions please visit the version of deprecation:
-            (click)="migrationItemUidSelectRequest.next(vm.breakingChangeVal.opponentMigrationItemUID)
-            <a class="release-link">v{{breakingChangeVal.deprecationVersion}}</a>
+            <a class="release-link"
+              (click)="selectedMigrationItemUIDChange.next(breakingChangeVal.opponentMigrationItemUID)">
+              v{{breakingChangeVal.deprecationVersion}}</a>
           </p>
         </td>
       </tr>
@@ -44,9 +45,9 @@ export class BreakingChangeDescriptionTableComponent {
   @Output()
   selectedMigrationItemUIDChange = new Subject<string>();
 
-  breakingChangeVal: ClientBreakingChange;
+  breakingChangeVal: BreakingChange;
   @Input()
-  set breakingChange(breakingChange: ClientBreakingChange) {
+  set breakingChange(breakingChange: BreakingChange) {
     if (breakingChange) {
       this.breakingChangeVal = breakingChange;
     }
