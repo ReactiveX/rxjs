@@ -1,13 +1,30 @@
 import {ChangeDetectionStrategy, Component, Output} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {filter, map, withLatestFrom} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, EMPTY, Observable, of, ReplaySubject} from 'rxjs';
+import {catchError, concatMap, map, startWith, tap} from 'rxjs/operators';
+import {State} from '../../../../../shared/state.service';
 import {RawDeprecation, SubjectSymbols} from '../../../data-access';
 
 
 @Component({
   selector: 'deprecation-item-form',
   template: `
+    <mat-form-field class="full">
+      <mat-label>Parse Crawled Data</mat-label>
+      <input matInput
+        placeholder="Paste the deprecation item from crawled data"
+        [ngModel]="crawledData$ | async" (ngModelChange)="crawledData$.next($event)">
+    </mat-form-field>
+
+    <form [formGroup]="releaseForm">
+      <mat-form-field>
+        <mat-label>Release Version:</mat-label>
+        <input matInput
+          placeholder="SemVer of the release"
+          [formControlName]="'version'">
+      </mat-form-field>
+    </form>
+
     <form [formGroup]="deprecationForm">
       <mat-form-field class="full">
         <mat-label>SourceLink:</mat-label>
@@ -60,7 +77,7 @@ import {RawDeprecation, SubjectSymbols} from '../../../data-access';
           [formControlName]="'implication'"></textarea>
       </mat-form-field>
 
-      <mat-expansion-panel>
+      <mat-expansion-panel [expanded]="withCodeExamples$ | async" (expandedChange)="withCodeExamples$.next($event)">
         <mat-expansion-panel-header>
           Code Examples
         </mat-expansion-panel-header>
@@ -76,6 +93,11 @@ import {RawDeprecation, SubjectSymbols} from '../../../data-access';
         </mat-form-field>
       </mat-expansion-panel>
       <br/>
+
+      <mat-form-field>
+        <mat-label>BreakingChangeMsg:</mat-label>
+        <input matInput placeholder="Message of related BreakingChange item" [formControlName]="'breakingChangeSubjectAction'">
+      </mat-form-field>
 
       <mat-form-field>
         <mat-label>BreakingChangeVersion:</mat-label>
@@ -97,38 +119,62 @@ import {RawDeprecation, SubjectSymbols} from '../../../data-access';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DeprecationItemFormComponent {
-
+export class DeprecationItemFormComponent extends State<{ crawledData: any }> {
+  crawledData$ = new ReplaySubject<any>(1);
+  withCodeExamples$ = new BehaviorSubject<boolean>(true);
   subjectSymbols = SubjectSymbols;
-
+  defaultValue = '@TODO';
+  releaseForm = this.fb.group({
+    version: ['7.0.0-alpha.0', Validators.required],
+  });
   deprecationForm = this.fb.group({
-    sourceLink: ['', Validators.required],
+    sourceLink: ['https://github.com/ReactiveX/rxjs/tree/7.0.0-alpha.0/src', Validators.required],
     subject: [''],
     subjectSymbol: [''],
-    subjectAction: [''],
+    subjectAction: ['deprecated'],
     deprecationMsgCode: ['', Validators.required],
     reason: ['', Validators.required],
     implication: ['', Validators.required],
-    exampleBefore: [''],
-    exampleAfter: [''],
-    breakingChangeVersion: ['', Validators.required],
+    exampleBefore: [this.defaultValue],
+    exampleAfter: [this.defaultValue],
+    breakingChangeVersion: ['8.0.0', Validators.required],
+    breakingChangeMsg: ['', Validators.required],
     breakingChangeSubjectAction: ['', Validators.required]
   });
 
-  latestValidValuePrepared$: Observable<RawDeprecation> = this.deprecationForm.statusChanges.pipe(
-    filter(status => status === 'VALID'),
-    withLatestFrom(this.deprecationForm.valueChanges),
-    map(([_, v]: [any, RawDeprecation]) => {
-      v.itemType = 'deprecation';
-      return v as RawDeprecation;
+  latestValidValuePrepared$: Observable<RawDeprecation> = combineLatest(
+    this.deprecationForm.valueChanges.pipe(startWith(this.deprecationForm.value)),
+    this.withCodeExamples$
+  ).pipe(
+    map(([rawDeprecation, withCodeExamples]: [any, RawDeprecation, boolean]) => {
+      const d: RawDeprecation = {...rawDeprecation};
+      d.itemType = 'deprecation';
+      if (!withCodeExamples) {
+        delete d.exampleAfter;
+        delete d.exampleAfterDependencies;
+        delete d.exampleBefore;
+        delete d.exampleBeforeDependencies;
+      }
+      return d;
     })
   );
 
   @Output()
   changes: Observable<RawDeprecation> = this.latestValidValuePrepared$;
+  @Output()
+  release: Observable<RawDeprecation> = this.releaseForm.valueChanges.pipe(startWith(this.releaseForm.value));
 
   constructor(private fb: FormBuilder) {
-
+    super();
+    this.holdEffect(
+      this.crawledData$.pipe(
+        concatMap(o => of(o).pipe(
+          map(str => JSON.parse(str)),
+          catchError(_ => EMPTY)
+          )
+        ),
+        tap(r => this.deprecationForm.patchValue(r))
+      ));
   }
 
 }

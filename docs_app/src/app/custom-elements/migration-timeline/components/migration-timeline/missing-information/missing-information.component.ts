@@ -1,17 +1,11 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {Subject} from 'rxjs';
-import {map, withLatestFrom} from 'rxjs/operators';
+import {combineLatest, Subject} from 'rxjs';
+import {map, startWith, withLatestFrom} from 'rxjs/operators';
 import {environment} from '../../../../../../environments/environment';
 import {LocationService} from '../../../../../shared/location.service';
 import {State} from '../../../../../shared/state.service';
-import {
-  MigrationItemSubjectUIDFields,
-  MigrationReleaseUIDFields,
-  parseMigrationItemUIDObject,
-  parseMigrationItemUIDURL,
-  RawDeprecation,
-  RawRelease
-} from '../../../data-access';
+import {parseMigrationItemUIDObject, parseMigrationItemUIDURL, RawDeprecation, RawRelease} from '../../../data-access';
+import {fillDeprecation, fillRelease, generateSnipped, getBreakingChangeFromDeprecation, getIssuePreFill} from './utils';
 
 
 @Component({
@@ -22,35 +16,96 @@ import {
         <mat-card-title>Migration information is missing!</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p>
-          We suggest you go to the RxJS GitHub page and
-          <a [href]="link$ | async" target="_blank"> open an issue</a>
-          <span *ngIf="!env.production"> or <mat-icon
-            copy-to-clipboard
-            [content]="contentToCopy$ | async">
+        <div class="half">
+          <p>
+            We suggest you go to the RxJS GitHub page and
+            <a [href]="link$ | async" target="_blank"> open an issue</a>
+            <span *ngIf="!env.production"> or <mat-icon
+              copy-to-clipboard
+              [content]="contentToCopy$ | async">
           content_copy
         </mat-icon>
             </span>
-        </p>
-        <deprecation-item-form (changes)="formOutput$.next($event)"></deprecation-item-form>
+          </p>
+        </div>
+        <br/>
+        <div class="row">
+          <div class="half col">
+            <deprecation-item-form
+              (changes)="formOutput$.next($event)"
+              (release)="releaseFormOutput$.next($event)"
+            ></deprecation-item-form>
+          </div>
+          <div class="half col">
+            <preview [release]="releaseToPreview$"></preview>
+          </div>
+        </div>
         <mat-icon class="img" aria-hidden="false" aria-label="Missing Documentation">error_outline</mat-icon>
       </mat-card-content>
     </mat-card>
   `,
+  styles: [`
+    .row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .row > .col {
+      box-sizing: border-box;
+      margin: 10px 10px 0 0;
+      width: 100%;
+    }
+
+    .row::after {
+      content: '';
+      flex: auto;
+    }
+
+    .row > .col.half {
+      width: calc(1 / 2 * 100% - (1 - 1 / 3) * 10px);
+    }
+
+    .row > .col.half:nth-child(2n) {
+      margin-right: 0;
+    }
+
+    .row > .col.half:nth-child(-n+2) {
+      margin-top: 0;
+    }
+
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MissingInformationComponent extends State<{ deprecation: RawDeprecation }> {
+export class MissingInformationComponent extends State<{ deprecation: RawDeprecation, release: RawRelease }> {
 
   env = environment;
   formOutput$ = new Subject<RawDeprecation>();
+  releaseFormOutput$ = new Subject<RawRelease>();
 
   private deprecation$ = this.select('deprecation');
+  private release$ = this.select('release');
   private migrationItemUIDObject$ = this.lo.currentSearchParams
     .pipe(map(p => parseMigrationItemUIDObject(p.uid)));
 
+  releaseToPreview$ = combineLatest(
+    this.release$,
+    this.deprecation$,
+  ).pipe(
+    startWith([{}, {}]),
+    map(([release, deprecation]: [RawRelease, RawDeprecation]) => {
+      const previewRelease =  fillRelease(release,
+        {
+          deprecations: [fillDeprecation(deprecation)],
+        });
+      previewRelease['breakingChanges'] = [getBreakingChangeFromDeprecation(
+        previewRelease.deprecations[0], {deprecationVersion: release.version})];
+      return previewRelease;
+    }),
+  );
   contentToCopy$ = this.deprecation$.pipe(
     withLatestFrom(this.migrationItemUIDObject$),
-    map(([deprecation, uidObj]) => this.generateSnipped(deprecation, uidObj))
+    map(([deprecation, uidObj]) => generateSnipped(deprecation, uidObj))
   );
 
   link$ = this.lo.currentSearchParams
@@ -58,39 +113,14 @@ export class MissingInformationComponent extends State<{ deprecation: RawDepreca
       map(p => {
         const uidObj = parseMigrationItemUIDObject(p.uid);
         const itemUIDURL = parseMigrationItemUIDURL(p.uid);
-        return this.getIssuePreFill(uidObj, itemUIDURL);
+        return getIssuePreFill(uidObj, itemUIDURL);
       })
     );
 
   constructor(private lo: LocationService) {
     super();
     this.connectState('deprecation', this.formOutput$);
-  }
-
-  generateSnipped(deprecation: RawDeprecation, uidObj: MigrationItemSubjectUIDFields & MigrationReleaseUIDFields): string {
-    const snippet: RawRelease[] = [
-      {
-        version: uidObj.version,
-        date: '',
-        sourceLink: '',
-        deprecations: [deprecation]
-      },
-      {
-        version: deprecation.breakingChangeVersion,
-        date: '',
-        sourceLink: '',
-        deprecations: []
-      }
-    ];
-    return JSON.stringify(snippet);
-  }
-
-  getIssuePreFill(uidObj: MigrationItemSubjectUIDFields & MigrationReleaseUIDFields, itemUIDURL: string): string {
-    return `https://github.com/ReactiveX/rxjs/issues/new?
-      title=[docs] Missing ${uidObj.itemType} information for ${uidObj.subject} in version ${uidObj.version}&
-      body=The ID ${itemUIDURL} is not linked to any item of the migration timeline.\n Please insert the information.&
-      template=documentation.md
-      `;
+    this.connectState('release', this.releaseFormOutput$);
   }
 
 }
