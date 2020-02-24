@@ -9,16 +9,16 @@ export type MigrationItemTypes = MigrationItemTypeDeprecation | MigrationItemTyp
 export interface RawDeprecation extends MigrationItemSubjectUIDFields {
   itemType: MigrationItemTypeDeprecation;
   sourceLink: string;
-  breakingChangeVersion: string;
-  breakingChangeSubjectAction: string;
   deprecationMsgCode: string;
-  breakingChangeMsg: string;
   reason: string;
   implication: string;
   exampleBeforeDependencies?: {[lib: string]: string},
   exampleBefore?: string;
   exampleAfterDependencies?: {[lib: string]: string},
   exampleAfter?: string;
+  breakingChangeVersion: string;
+  breakingChangeSubjectAction: string;
+  breakingChangeMsg: string;
   notes?: string;
 }
 

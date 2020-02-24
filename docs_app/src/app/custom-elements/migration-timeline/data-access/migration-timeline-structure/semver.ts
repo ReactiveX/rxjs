@@ -6,7 +6,7 @@ export interface SemVerObj {
   subVersion?: number
 }
 
-export function parseSemVerObject(version: string): SemVerObj {
+export function parseSemVerObject(version: string = ''): SemVerObj {
   const [major, minor, _mid, subVersion] = version.split('.');
   const [patch, ...subVersionNameArr] = _mid ? _mid.split('-') : [0, false];
   const subVersionName = subVersionNameArr.join('-');
@@ -25,7 +25,7 @@ export function parseSemVerObject(version: string): SemVerObj {
   return obj;
 }
 
-export function formatSemVerNumber(version: string): number {
+export function formatSemVerNumber(version: string = ''): number {
   const _obj: SemVerObj = parseSemVerObject(version);
   const filledVersionNumber = {
     ..._obj,
@@ -41,7 +41,7 @@ export function formatSemVerNumber(version: string): number {
     filledVersionNumber.subVersion
   ].join('');
 
-  function getSubVersionNameNumber(sVN?: string): string {
+  function getSubVersionNameNumber(sVN: string = ''): string {
     // public releases, versions without a sub version part (6.0.0) are equal to 197 (sorting)
     let code: string = sVN !== undefined ? sVN.charCodeAt(0) + '' : '197';
     code = Array(3 - code.length).fill('0').join('') + code;
