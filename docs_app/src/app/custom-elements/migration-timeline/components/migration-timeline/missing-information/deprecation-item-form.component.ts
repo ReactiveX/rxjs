@@ -121,7 +121,7 @@ import {RawDeprecation, SubjectSymbols} from '../../../data-access';
 })
 export class DeprecationItemFormComponent extends State<{ crawledData: any }> {
   crawledData$ = new ReplaySubject<any>(1);
-  withCodeExamples$ = new BehaviorSubject<boolean>(true);
+  withCodeExamples$ = new BehaviorSubject<boolean>(false);
   subjectSymbols = SubjectSymbols;
   defaultValue = '@TODO';
   releaseForm = this.fb.group({
