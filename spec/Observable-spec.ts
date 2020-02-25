@@ -600,7 +600,7 @@ describe('Observable', () => {
       });
     });
 
-    it('should fully propogate disposal when subscribed with a Subscriber', () => {
+    it('should fully propagate disposal when subscribed with a Subscriber', () => {
       let observableUnsubscribed = false;
       let subscriberUnsubscribed = false;
       let subscriptionUnsubscribed = false;
@@ -620,7 +620,7 @@ describe('Observable', () => {
       expect(subscriptionUnsubscribed).to.be.true;
     });
 
-    it('should fully propogate disposal when subscribed with a Subscriber-like', () => {
+    it('should fully propagate disposal when subscribed with a Subscriber-like', () => {
       let observableUnsubscribed = false;
       let subscriberUnsubscribed = false;
       let subscriptionUnsubscribed = false;
