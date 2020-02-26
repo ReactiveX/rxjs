@@ -78,8 +78,8 @@ describe('single operator', () => {
   it('should raise error from empty predicate if observable emits error', () => {
     rxTest.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b^--#');
-      const e1subs = '  ^--!';
-      const expected = '---#';
+      const e1subs = '        ^--!';
+      const expected = '      ---#';
 
       expectObservable(e1.pipe(single())).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);

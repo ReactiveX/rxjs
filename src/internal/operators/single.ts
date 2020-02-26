@@ -8,15 +8,6 @@ import { NotFoundError } from '../util/NotFoundError';
 
 const defaultPredicate = () => true;
 
-export function single<T>(): MonoTypeOperatorFunction<T>;
-export function single<T>(
-  predicate: (value: T, index: number) => boolean
-): MonoTypeOperatorFunction<T>;
-/** @deprecated Providing `source` via the third argument to the predicate will be removed in upcoming versions. Use a closure. */
-export function single<T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean
-): MonoTypeOperatorFunction<T>;
-
 /**
  * Returns an observable that asserts that only one value is
  * emitted from the observable that matches the predicate. If no
