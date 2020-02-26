@@ -1,15 +1,21 @@
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { EmptyError } from '../util/EmptyError';
 
-import { Observer, MonoTypeOperatorFunction, TeardownLogic } from '../types';
-import { filter } from './filter';
+import { MonoTypeOperatorFunction } from '../types';
 import { SequenceError } from '../util/SequenceError';
-import { throwIfEmpty } from './throwIfEmpty';
 import { NotFoundError } from '../util/NotFoundError';
 
 const defaultPredicate = () => true;
+
+export function single<T>(): MonoTypeOperatorFunction<T>;
+export function single<T>(
+  predicate: (value: T, index: number) => boolean
+): MonoTypeOperatorFunction<T>;
+/** @deprecated Providing `source` via the third argument to the predicate will be removed in upcoming versions. Use a closure. */
+export function single<T>(
+  predicate: (value: T, index: number, source: Observable<T>) => boolean
+): MonoTypeOperatorFunction<T>;
 
 /**
  * Returns an observable that asserts that only one value is
@@ -92,12 +98,12 @@ const defaultPredicate = () => true;
  * the predicate or `undefined` when no items match.
  */
 export function single<T>(
-  predicate: (value: T, index: number) => boolean = defaultPredicate
+  predicate: (value: T, index: number, source: Observable<T>) => boolean = defaultPredicate
 ): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(singleOperator(predicate));
 }
 
-function singleOperator<T>(predicate: (value: T, index: number) => boolean) {
+function singleOperator<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean) {
   return function(this: Subscriber<T>, source: Observable<T>) {
     let _hasValue = false;
     let _seenValue = false;
@@ -110,7 +116,7 @@ function singleOperator<T>(predicate: (value: T, index: number) => boolean) {
         _seenValue = true;
         let match = false;
         try {
-          match = predicate(value, _i++);
+          match = predicate(value, _i++, source);
         } catch (err) {
           _destination.error(err);
           return;
