@@ -4,8 +4,6 @@ import { range, ArgumentOutOfRangeError, of, Observable, Subject } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {take} */
 describe('take operator', () => {
   let testScheduler: TestScheduler;
@@ -14,7 +12,28 @@ describe('take operator', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('take(2)')('should take two values of an observable with many values', () => {
+  it('should error when a non-number is passed to it, or when no argument is passed (Non-TS case)', () => {
+    expect(() => {
+      of(1, 2, 3).pipe(
+        (take as any)()
+      );
+    }).to.throw(TypeError, `'count' is not a number`);
+
+    expect(() => {
+      of(1, 2, 3).pipe(
+        (take as any)('banana')
+      );
+    }).to.throw(TypeError, `'count' is not a number`);
+
+    // Standard type coersion behavior in JS.
+    expect(() => {
+      of(1, 2, 3).pipe(
+        (take as any)('1')
+      );
+    }).not.to.throw();
+  });
+
+  it('should take two values of an observable with many values', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const e1 = cold(' --a-----b----c---d--|');
       const e1subs = '  ^-------!------------';
