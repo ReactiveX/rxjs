@@ -12,6 +12,20 @@ describe('takeLast operator', () => {
     rxTest = new TestScheduler(assertDeepEquals);
   });
 
+  it('should error for invalid arguments', () => {
+    expect(() => {
+      of(1, 2, 3).pipe((takeLast as any)());
+    }).to.throw(TypeError, `'count' is not a number`);
+
+    expect(() => {
+      of(1, 2, 3).pipe((takeLast as any)('banana'));
+    }).to.throw(TypeError, `'count' is not a number`);
+
+    expect(() => {
+      of(1, 2, 3).pipe((takeLast as any)('3'));
+    }).not.to.throw();
+  });
+
   it('should take two values of an observable with many values', () => {
     rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
       const e1 = cold('--a-----b----c---d--|    ');
