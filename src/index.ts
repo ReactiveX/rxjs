@@ -40,9 +40,11 @@ export { firstValueFrom } from './internal/firstValueFrom';
 /* Error types */
 export { ArgumentOutOfRangeError } from './internal/util/ArgumentOutOfRangeError';
 export { EmptyError } from './internal/util/EmptyError';
+export { NotFoundError } from './internal/util/NotFoundError';
 export { ObjectUnsubscribedError } from './internal/util/ObjectUnsubscribedError';
-export { UnsubscriptionError } from './internal/util/UnsubscriptionError';
+export { SequenceError } from './internal/util/SequenceError';
 export { TimeoutError } from './internal/util/TimeoutError';
+export { UnsubscriptionError } from './internal/util/UnsubscriptionError';
 
 /* Static observable creation exports */
 export { bindCallback } from './internal/observable/bindCallback';

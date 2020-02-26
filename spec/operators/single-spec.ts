@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { single, mergeMap, tap } from 'rxjs/operators';
-import { of, EmptyError } from 'rxjs';
+import { of, EmptyError, SequenceError, NotFoundError } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from '../helpers/test-helper';
 
@@ -17,9 +17,8 @@ describe('single operator', () => {
       const e1 = hot('  --a--b--c--|');
       const e1subs = '  ^----!      ';
       const expected = '-----#      ';
-      const errorMsg = 'Sequence contains more than one element';
 
-      expectObservable(e1.pipe(single())).toBe(expected, null, errorMsg);
+      expectObservable(e1.pipe(single())).toBe(expected, null, new SequenceError('Too many matching values'));
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -135,7 +134,7 @@ describe('single operator', () => {
       const e1subs = '  ^----------!      ';
       const expected = '-----------#      ';
 
-      expectObservable(e1.pipe(single(v => v === 'b'))).toBe(expected, null, 'Sequence contains more than one element');
+      expectObservable(e1.pipe(single(v => v === 'b'))).toBe(expected, null, new SequenceError('Too many matching values'));
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -155,9 +154,9 @@ describe('single operator', () => {
     rxTest.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--c--|');
       const e1subs = '  ^----------!';
-      const expected = '-----------(z|)';
+      const expected = '-----------#';
 
-      expectObservable(e1.pipe(single(v => v === 'x'))).toBe(expected, { z: undefined });
+      expectObservable(e1.pipe(single(v => v === 'x'))).toBe(expected, undefined, new NotFoundError('No matching values'));
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -183,6 +182,150 @@ describe('single operator', () => {
         )
       ).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
+  it('should error for synchronous empty observables when no arguments are provided', () => {
+    rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('|');
+      const expected = '   #';
+      const subs = ['      (^!)'];
+      const result = source.pipe(single());
+
+      expectObservable(result).toBe(expected, undefined, new EmptyError());
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should error for async empty observables when no arguments are provided', () => {
+    rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('-------|');
+      const expected = '   -------#';
+      const subs = ['      ^------!'];
+      const result = source.pipe(single());
+
+      expectObservable(result).toBe(expected, undefined, new EmptyError());
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should error for hot observables that do not emit while active when no arguments are provided', () => {
+    rxTest.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const source = hot('--a--b--^----|');
+      const expected = '          -----#';
+      const subs = ['             ^----!'];
+      const result = source.pipe(single());
+
+      expectObservable(result).toBe(expected, undefined, new EmptyError());
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should error for synchronous empty observables when predicate never passes', () => {
+    rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('|');
+      const expected = '   #';
+      const subs = ['      (^!)'];
+      const result = source.pipe(single(() => false));
+
+      expectObservable(result).toBe(expected, undefined, new EmptyError());
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should error for async empty observables when predicate never passes', () => {
+    rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('-------|');
+      const expected = '   -------#';
+      const subs = ['      ^------!'];
+      const result = source.pipe(single(() => false));
+
+      expectObservable(result).toBe(expected, undefined, new EmptyError());
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should error for hot observables that do not emit while active when predicate never passes', () => {
+    rxTest.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const source = hot('--a--b--^----|');
+      const expected = '          -----#';
+      const subs = ['             ^----!'];
+      const result = source.pipe(single(() => false));
+
+      expectObservable(result).toBe(expected, undefined, new EmptyError());
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should error for synchronous observables that emit when predicate never passes', () => {
+    rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('(a|)');
+      const expected = '   #';
+      const subs = ['      (^!)'];
+      const result = source.pipe(single(() => false));
+
+      expectObservable(result).toBe(expected, undefined, new NotFoundError('No matching values'));
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should error for async observables that emit when predicate never passes', () => {
+    rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('--a--b-|');
+      const expected = '   -------#';
+      const subs = ['      ^------!'];
+      const result = source.pipe(single(() => false));
+
+      expectObservable(result).toBe(expected, undefined, new NotFoundError('No matching values'));
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should error for hot observables that emit while active when predicate never passes', () => {
+    rxTest.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const source = hot('--a--b--^--c--d--|');
+      const expected = '          ---------#';
+      const subs = ['             ^--------!'];
+      const result = source.pipe(single(() => false));
+
+      expectObservable(result).toBe(expected, undefined, new NotFoundError('No matching values'));
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should error for synchronous observables when the predicate passes more than once', () => {
+    rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('(axbxc|)');
+      const expected = '   #';
+      const subs = ['      (^!)'];
+      const result = source.pipe(single(v => v === 'x'));
+
+      expectObservable(result).toBe(expected, undefined, new SequenceError('Too many matching values'));
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should error for async observables that emit when the predicate passes more than once', () => {
+    rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('--a-x-b-x-c-|');
+      const expected = '   --------#';
+      const subs = ['      ^-------!'];
+      const result = source.pipe(single(v => v === 'x'));
+
+      expectObservable(result).toBe(expected, undefined, new SequenceError('Too many matching values'));
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should error for hot observables that emit while active when the predicate passes more than once', () => {
+    rxTest.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const source = hot('--a--b--^--c--x--d--x--|');
+      const expected = '          ------------#';
+      const subs = ['             ^-----------!'];
+      const result = source.pipe(single(v => v === 'x'));
+
+      expectObservable(result).toBe(expected, undefined, new SequenceError('Too many matching values'));
+      expectSubscriptions(source.subscriptions).toBe(subs);
     });
   });
 });
