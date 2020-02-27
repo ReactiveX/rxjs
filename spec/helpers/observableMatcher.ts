@@ -2,18 +2,7 @@ import * as _ from 'lodash';
 import * as chai from 'chai';
 
 function stringify(x: any): string {
-  return JSON.stringify(x, function (key: string, value: any) {
-    if (Array.isArray(value)) {
-      return '[' + value
-        .map(function (i) {
-          return '\n\t' + stringify(i);
-        }) + '\n]';
-    }
-    return value;
-  })
-  .replace(/\\"/g, '"')
-  .replace(/\\t/g, '\t')
-  .replace(/\\n/g, '\n');
+  return JSON.stringify(x, null, 2);
 }
 
 function deleteErrorNotificationStack(marble: any) {
