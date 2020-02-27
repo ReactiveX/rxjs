@@ -64,8 +64,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified duration Observable returned by
  * `durationSelector`, and may drop some values if they occur too frequently.
- * @method debounce
- * @owner Observable
+ * @name debounce
  */
 export function debounce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new DebounceOperator(durationSelector));

@@ -71,8 +71,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @param {function} [keySelector] Optional function to select which value you want to check as distinct.
  * @param {Observable} [flushes] Optional Observable for flushing the internal HashSet of the operator.
  * @return {Observable} An Observable that emits items from the source Observable with distinct values.
- * @method distinct
- * @owner Observable
+ * @name distinct
  */
 export function distinct<T, K>(keySelector?: (value: T) => K,
                                flushes?: Observable<any>): MonoTypeOperatorFunction<T> {

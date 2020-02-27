@@ -54,8 +54,7 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  * managing the timers that handle the time-shift for each item.
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified timeout or Date.
- * @method delay
- * @owner Observable
+ * @name delay
  */
 export function delay<T>(delay: number|Date,
                          scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {

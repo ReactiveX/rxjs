@@ -79,8 +79,7 @@ import { throwError } from '../observable/throwError';
  *                          or Date specifying before when Observable should complete
  * @param {SchedulerLike} [scheduler] Scheduler controlling when timeout checks occur.
  * @return {Observable<T>} Observable that mirrors behaviour of source, unless timeout checks fail.
- * @method timeout
- * @owner Observable
+ * @name timeout
  */
 export function timeout<T>(due: number | Date,
                            scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {

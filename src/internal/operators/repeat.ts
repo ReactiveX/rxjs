@@ -57,8 +57,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * an empty Observable.
  * @return {Observable} An Observable that will resubscribe to the source stream when the source stream completes
  * , at most count times.
- * @method repeat
- * @owner Observable
+ * @name repeat
  */
 export function repeat<T>(count: number = -1): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => {

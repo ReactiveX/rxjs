@@ -60,8 +60,7 @@ export function concatAll<R>(): OperatorFunction<any, R>;
  *
  * @return {Observable} An Observable emitting values from all the inner
  * Observables concatenated.
- * @method concatAll
- * @owner Observable
+ * @name concatAll
  */
 export function concatAll<T>(): OperatorFunction<ObservableInput<T>, T> {
   return mergeAll<T>(1);

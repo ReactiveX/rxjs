@@ -49,8 +49,7 @@ export function scan<V, A, S>(accumulator: (acc: A|S, value: V, index: number) =
  * The accumulator function called on each source value.
  * @param {V|A} [seed] The initial accumulation value.
  * @return {Observable<A>} An observable of the accumulated values.
- * @method scan
- * @owner Observable
+ * @name scan
  */
 export function scan<V, A, S>(accumulator: (acc: V|A|S, value: V, index: number) => A, seed?: S): OperatorFunction<V, V|A> {
   let hasSeed = false;

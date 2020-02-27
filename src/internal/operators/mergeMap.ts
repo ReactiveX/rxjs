@@ -70,8 +70,7 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(project: (value: 
  * projection function (and the optional deprecated `resultSelector`) to each item
  * emitted by the source Observable and merging the results of the Observables
  * obtained from this transformation.
- * @method mergeMap
- * @owner Observable
+ * @name mergeMap
  */
 export function mergeMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,

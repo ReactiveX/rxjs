@@ -62,8 +62,7 @@ export function concatMapTo<T, R, O extends ObservableInput<any>>(observable: O,
  * @return {Observable} An observable of values merged together by joining the
  * passed observable with itself, one after the other, for each value emitted
  * from the source.
- * @method concatMapTo
- * @owner Observable
+ * @name concatMapTo
  */
 export function concatMapTo<T, R, O extends ObservableInput<any>>(
   innerObservable: O,

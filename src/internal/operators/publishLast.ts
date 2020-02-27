@@ -58,8 +58,7 @@ import { UnaryFunction } from '../types';
  *
  * @return {ConnectableObservable} An observable sequence that contains the elements of a
  * sequence produced by multicasting the source sequence.
- * @method publishLast
- * @owner Observable
+ * @name publishLast
  */
 
 export function publishLast<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>> {

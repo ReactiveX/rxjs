@@ -62,8 +62,7 @@ export function startWith<T, D = T>(...array: Array<D | SchedulerLike>): Operato
  * the emissions of the `next` notifications.
  * @return {Observable} An Observable that emits the items in the specified Iterable and then emits the items
  * emitted by the source Observable.
- * @method startWith
- * @owner Observable
+ * @name startWith
  */
 export function startWith<T, D>(...array: Array<D | SchedulerLike>): OperatorFunction<T, T | D> {
   const scheduler = array[array.length - 1] as SchedulerLike;

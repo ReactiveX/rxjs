@@ -47,8 +47,7 @@ import { OperatorFunction } from '../types';
  *
  * @return {Observable} An Observable that emits items and notifications
  * embedded in Notification objects emitted by the source Observable.
- * @method dematerialize
- * @owner Observable
+ * @name dematerialize
  */
 export function dematerialize<T>(): OperatorFunction<Notification<T>, T> {
   return function dematerializeOperatorFunction(source: Observable<Notification<T>>) {

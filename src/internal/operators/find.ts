@@ -43,8 +43,7 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
  * in the `predicate` function.
  * @return {Observable<T>} An Observable of the first item that matches the
  * condition.
- * @method find
- * @owner Observable
+ * @name find
  */
 export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
                         thisArg?: any): OperatorFunction<T, T | undefined> {

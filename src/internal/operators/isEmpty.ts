@@ -64,8 +64,7 @@ import { OperatorFunction } from '../types';
  * @see {@link index/EMPTY}
  *
  * @return {OperatorFunction<T, boolean>} An Observable of a boolean value indicating whether observable was empty or not.
- * @method isEmpty
- * @owner Observable
+ * @name isEmpty
  */
 
 export function isEmpty<T>(): OperatorFunction<T, boolean> {

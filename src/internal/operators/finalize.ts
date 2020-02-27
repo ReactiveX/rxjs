@@ -57,8 +57,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * @param {function} callback Function to be called when source terminates.
  * @return {Observable} An Observable that mirrors the source, but will call the specified function on termination.
- * @method finally
- * @owner Observable
+ * @name finally
  */
 export function finalize<T>(callback: () => void): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new FinallyOperator(callback));

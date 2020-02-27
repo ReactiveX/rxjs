@@ -82,8 +82,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * `trailing` behavior. Defaults to `{ leading: true, trailing: false }`.
  * @return {Observable<T>} An Observable that performs the throttle operation to
  * limit the rate of emissions from the source.
- * @method throttleTime
- * @owner Observable
+ * @name throttleTime
  */
 export function throttleTime<T>(duration: number,
                                 scheduler: SchedulerLike = async,

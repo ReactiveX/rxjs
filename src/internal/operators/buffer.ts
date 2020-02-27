@@ -43,8 +43,7 @@ import { OperatorFunction } from '../types';
  * buffer to be emitted on the output Observable.
  * @return {Observable<T[]>} An Observable of buffers, which are arrays of
  * values.
- * @method buffer
- * @owner Observable
+ * @name buffer
  */
 export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]> {
   return function bufferOperatorFunction(source: Observable<T>) {

@@ -60,8 +60,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @param {function(errors: Observable): Observable} notifier - Receives an Observable of notifications with which a
  * user can `complete` or `error`, aborting the retry.
  * @return {Observable} The source Observable modified with retry logic.
- * @method retryWhen
- * @owner Observable
+ * @name retryWhen
  */
 export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new RetryWhenOperator(notifier, source));

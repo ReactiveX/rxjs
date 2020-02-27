@@ -12,8 +12,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @param {Function} predicate - A function to test each item emitted from the source Observable.
  * @return {Observable<T>} An Observable that begins emitting items emitted by the source Observable when the
  * specified predicate becomes false.
- * @method skipWhile
- * @owner Observable
+ * @name skipWhile
  */
 export function skipWhile<T>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new SkipWhileOperator(predicate));

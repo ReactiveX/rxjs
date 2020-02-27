@@ -61,8 +61,7 @@ export function timeoutWith<T, R>(due: number | Date, withObservable: Observable
  * @param {SchedulerLike} [scheduler] Scheduler controlling when timeout checks occur.
  * @return {Observable<T>} Observable that mirrors behaviour of source or, when timeout check fails, of an Observable
  *                          passed as a second parameter.
- * @method timeoutWith
- * @owner Observable
+ * @name timeoutWith
  */
 export function timeoutWith<T, R>(due: number | Date,
                                   withObservable: ObservableInput<R>,

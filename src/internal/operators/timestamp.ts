@@ -33,8 +33,7 @@ import { map } from './map';
  *
  * @param scheduler
  * @return {Observable<Timestamp<any>>|WebSocketSubject<T>|Observable<T>}
- * @method timestamp
- * @owner Observable
+ * @name timestamp
  */
 export function timestamp<T>(scheduler: SchedulerLike = async): OperatorFunction<T, Timestamp<T>> {
   return map((value: T) => new Timestamp(value, scheduler.now()));

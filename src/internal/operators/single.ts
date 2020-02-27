@@ -48,8 +48,7 @@ import { Observer, MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @return {Observable<T>} An Observable that emits the single item emitted by the source Observable that matches
  * the predicate or `undefined` when no items match.
  *
- * @method single
- * @owner Observable
+ * @name single
  */
 export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new SingleOperator(predicate, source));

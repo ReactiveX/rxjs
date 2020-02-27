@@ -61,9 +61,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  *
  * @param {SchedulerLike} scheduler - The {@link SchedulerLike} to perform subscription actions on.
  * @return {Observable<T>} The source Observable modified so that its subscriptions happen on the specified {@link SchedulerLike}.
- .
- * @method subscribeOn
- * @owner Observable
+ * @name subscribeOn
  */
 export function subscribeOn<T>(scheduler: SchedulerLike, delay: number = 0): MonoTypeOperatorFunction<T> {
   return function subscribeOnOperatorFunction(source: Observable<T>): Observable<T> {

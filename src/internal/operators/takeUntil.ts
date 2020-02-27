@@ -45,8 +45,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * source Observable.
  * @return {Observable<T>} An Observable that emits the values from the source
  * Observable until such time as `notifier` emits its first value.
- * @method takeUntil
- * @owner Observable
+ * @name takeUntil
  */
 export function takeUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new TakeUntilOperator(notifier));

@@ -48,8 +48,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @return {Observable<T>} An Observable that emits only the first `count`
  * values emitted by the source Observable, or all of the values from the source
  * if the source emits fewer than `count` values.
- * @method take
- * @owner Observable
+ * @name take
  */
 export function take<T>(count: number): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => {

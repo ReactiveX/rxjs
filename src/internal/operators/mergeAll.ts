@@ -57,8 +57,7 @@ import { OperatorFunction, ObservableInput } from '../types';
  * Observables being subscribed to concurrently.
  * @return {Observable} An Observable that emits values coming from all the
  * inner Observables emitted by the source Observable.
- * @method mergeAll
- * @owner Observable
+ * @name mergeAll
  */
 export function mergeAll<T>(concurrent: number = Number.POSITIVE_INFINITY): OperatorFunction<ObservableInput<T>, T> {
   return mergeMap(identity, concurrent);

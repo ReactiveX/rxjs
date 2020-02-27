@@ -74,8 +74,7 @@ export function first<T, D = T>(
  * was found on the source.
  * @return {Observable<T|R>} An Observable of the first item that matches the
  * condition.
- * @method first
- * @owner Observable
+ * @name first
  */
 export function first<T, D>(
   predicate?: ((value: T, index: number, source: Observable<T>) => boolean) | null,

@@ -38,8 +38,7 @@ import { OperatorFunction } from '../types';
  * in the `predicate` function.
  * @return {Observable} An Observable of the index of the first item that
  * matches the condition.
- * @method find
- * @owner Observable
+ * @name find
  */
 export function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
                              thisArg?: any): OperatorFunction<T, number> {

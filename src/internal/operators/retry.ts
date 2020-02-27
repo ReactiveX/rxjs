@@ -53,8 +53,7 @@ export interface RetryConfig {
  * @param {number} count - Number of retry attempts before failing.
  * @param {boolean} resetOnSuccess - When set to `true` every successful emission will reset the error count
  * @return {Observable} The source Observable modified with the retry logic.
- * @method retry
- * @owner Observable
+ * @name retry
  */
 export function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
 export function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;

@@ -43,8 +43,7 @@ import { OperatorFunction } from '../types';
  *
  * @return {Observable<Array<T>>} An Observable of pairs (as arrays) of
  * consecutive values from the source Observable.
- * @method pairwise
- * @owner Observable
+ * @name pairwise
  */
 export function pairwise<T>(): OperatorFunction<T, [T, T]> {
   return (source: Observable<T>) => source.lift(new PairwiseOperator());

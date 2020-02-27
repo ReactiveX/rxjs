@@ -50,8 +50,7 @@ export function exhaust<R>(): OperatorFunction<any, R>;
  *
  * @return {Observable} An Observable that takes a source of Observables and propagates the first observable
  * exclusively until it completes before subscribing to the next.
- * @method exhaust
- * @owner Observable
+ * @name exhaust
  */
 export function exhaust<T>(): OperatorFunction<any, T> {
   return (source: Observable<T>) => source.lift(new SwitchFirstOperator<T>());

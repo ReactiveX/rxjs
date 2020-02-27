@@ -61,8 +61,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified `dueTime`, and may drop some values if they occur
  * too frequently.
- * @method debounceTime
- * @owner Observable
+ * @name debounceTime
  */
 export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new DebounceTimeOperator(dueTime, scheduler));

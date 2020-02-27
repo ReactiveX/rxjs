@@ -86,8 +86,7 @@ export function onErrorResumeNext<T, R>(array: ObservableInput<any>[]): Operator
  * @param {...ObservableInput} observables Observables passed either directly or as an array.
  * @return {Observable} An Observable that emits values from source Observable, but - if it errors - subscribes
  * to the next passed Observable and so on, until it completes or runs out of Observables.
- * @method onErrorResumeNext
- * @owner Observable
+ * @name onErrorResumeNext
  */
 
 export function onErrorResumeNext<T, R>(...nextSources: Array<ObservableInput<any> |

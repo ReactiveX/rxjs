@@ -39,8 +39,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @param {number} count Number of elements to skip from the end of the source Observable.
  * @returns {Observable<T>} An Observable that skips the last count values
  * emitted by the source Observable.
- * @method skipLast
- * @owner Observable
+ * @name skipLast
  */
 export function skipLast<T>(count: number): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new SkipLastOperator(count));
