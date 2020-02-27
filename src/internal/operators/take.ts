@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
-import { empty } from '../observable/empty';
+import { EMPTY } from '../observable/empty';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
@@ -53,7 +53,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 export function take<T>(count: number): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => {
     if (count === 0) {
-      return empty();
+      return EMPTY;
     } else {
       return source.lift(new TakeOperator(count));
     }
