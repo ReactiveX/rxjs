@@ -93,6 +93,7 @@ export { timeoutWith } from './timeoutWith';
 export { timestamp } from './timestamp';
 export { toArray } from './toArray';
 export { window } from './window';
+export { windowWith } from './windowWith';
 export { windowCount } from './windowCount';
 export { windowTime } from './windowTime';
 export { windowToggle } from './windowToggle';

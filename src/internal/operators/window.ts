@@ -1,11 +1,6 @@
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
-import { Subject } from '../Subject';
-import { Subscriber } from '../Subscriber';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
-import { Operator } from '../Operator';
+import { windowWith } from './windowWith';
 
 /**
  * Branch out the source Observable values as a nested Observable whenever
@@ -48,82 +43,9 @@ import { Operator } from '../Operator';
  * @return {Observable<Observable<T>>} An Observable of windows, which are
  * Observables emitting values of the source Observable.
  * @name window
+ *
+ * @deprecated use {@link windowWith}
  */
 export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T, Observable<T>> {
-  return function windowOperatorFunction(source: Observable<T>) {
-    return source.lift(new WindowOperator(windowBoundaries));
-  };
-}
-
-class WindowOperator<T> implements Operator<T, Observable<T>> {
-
-  constructor(private windowBoundaries: Observable<any>) {
-  }
-
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
-    const windowSubscriber = new WindowSubscriber(subscriber);
-    const sourceSubscription = source.subscribe(windowSubscriber);
-    if (!sourceSubscription.closed) {
-      windowSubscriber.add(subscribeToResult(windowSubscriber, this.windowBoundaries));
-    }
-    return sourceSubscription;
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class WindowSubscriber<T> extends OuterSubscriber<T, any> {
-
-  private window: Subject<T> = new Subject<T>();
-
-  constructor(destination: Subscriber<Observable<T>>) {
-    super(destination);
-    destination.next(this.window);
-  }
-
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
-    this.openWindow();
-  }
-
-  notifyError(error: any, innerSub: InnerSubscriber<T, any>): void {
-    this._error(error);
-  }
-
-  notifyComplete(innerSub: InnerSubscriber<T, any>): void {
-    this._complete();
-  }
-
-  protected _next(value: T): void {
-    this.window.next(value);
-  }
-
-  protected _error(err: any): void {
-    this.window.error(err);
-    this.destination.error(err);
-  }
-
-  protected _complete(): void {
-    this.window.complete();
-    this.destination.complete();
-  }
-
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _unsubscribe() {
-    this.window = null!;
-  }
-
-  private openWindow(): void  {
-    const prevWindow = this.window;
-    if (prevWindow) {
-      prevWindow.complete();
-    }
-    const destination = this.destination;
-    const newWindow = this.window = new Subject<T>();
-    destination.next(newWindow);
-  }
+  return windowWith<T>(windowBoundaries);
 }
