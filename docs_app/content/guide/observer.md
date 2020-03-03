@@ -12,7 +12,6 @@ const observer = {
 
 To use the Observer, provide it to the `subscribe` of an Observable:
 
-<!-- skip-example -->
 ```ts
 observable.subscribe(observer);
 ```
@@ -32,14 +31,12 @@ const observer = {
 
 When subscribing to an Observable, you may also just provide the callbacks as arguments, without being attached to an Observer object, for instance like this:
 
-<!-- skip-example -->
 ```ts
 observable.subscribe(x => console.log('Observer got a next value: ' + x));
 ```
 
 Internally in `observable.subscribe`, it will create an Observer object using the first callback argument as the `next` handler. All three types of callbacks may be provided as arguments:
 
-<!-- skip-example -->
 ```ts
 observable.subscribe(
   x => console.log('Observer got a next value: ' + x),

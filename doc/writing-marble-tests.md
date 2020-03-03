@@ -1,2 +1,0 @@
-- [USERS: Writing marble diagram tests for your application](../docs_app/content/guide/testing/marble-testing.md).
-- [INTERNAL MAINTAINERS ONLY: Writing marble diagram tests for the RxJS internals](../docs_app/content/guide/testing/internal-marble-tests.md).
