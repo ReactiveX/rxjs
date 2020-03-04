@@ -266,7 +266,7 @@ Also see the [Join Creation Operators](#join-creation-operators) section above.
 
 
 
-## Creating custom observables
+## Creating custom operators
 
 ### Use the `pipe()` function to make new operators
 
