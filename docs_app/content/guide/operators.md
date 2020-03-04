@@ -276,7 +276,7 @@ For example, you could make a function that discarded odd values and doubled eve
 
 ```ts
 import { pipe } from 'rxjs';
-import { filter, map } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 function discardOddDoubleEven() {
   return pipe(
