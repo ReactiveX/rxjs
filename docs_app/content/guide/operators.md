@@ -265,7 +265,7 @@ Also see the [Join Creation Operators](#join-creation-operators) section above.
 
 
 
-## Creating custom observables
+## Creating custom operators
 
 ### Use the `pipe()` function to make new operators
 
@@ -275,7 +275,7 @@ For example, you could make a function that discarded odd values and doubled eve
 
 ```ts
 import { pipe } from 'rxjs';
-import { filter, map } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 function discardOddDoubleEven() {
   return pipe(
