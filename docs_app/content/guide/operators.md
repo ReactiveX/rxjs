@@ -173,7 +173,7 @@ These are Observable creation operators that also have join functionality -- emi
 - [`scan`](/api/operators/scan)
 - [`switchMap`](/api/operators/switchMap)
 - [`switchMapTo`](/api/operators/switchMapTo)
-- [`window`](/api/operators/window)
+- [`windowWith`](/api/operators/windowWith)
 - [`windowCount`](/api/operators/windowCount)
 - [`windowTime`](/api/operators/windowTime)
 - [`windowToggle`](/api/operators/windowToggle)
