@@ -379,11 +379,16 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   }
 
   unsubscribe() {
-    const { _socket } = this;
-    if (_socket && _socket.readyState === 1) {
-      _socket.close();
-    }
+    this.closeSocket();
     this._resetState();
     super.unsubscribe();
+  }
+
+  closeSocket(code = 1000, message =  '') {
+    const { _socket } = this;
+
+    if (_socket && _socket.readyState === 1) {
+      _socket.close(code, message);
+    }
   }
 }
