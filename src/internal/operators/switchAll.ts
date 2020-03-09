@@ -50,7 +50,7 @@ export function switchAll<R>(): OperatorFunction<any, R>;
  *  ...
  *  click
  *  ...
- * */
+ */
  * ```
  *
  * @see {@link combineAll}
