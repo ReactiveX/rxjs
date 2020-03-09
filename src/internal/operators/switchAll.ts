@@ -36,20 +36,20 @@ export function switchAll<R>(): OperatorFunction<any, R>;
  *   switchAll()
  * ).subscribe(x => console.log(x));
  *
- /* Output
- *  click
- *  1
- *  2
- *  3
- *  4
- *  ...
- *  click
- *  1
- *  2
- *  3
- *  ...
- *  click
- *  ...
+ * // Output
+ * // click
+ * // 1
+ * // 2
+ * // 3
+ * // 4
+ * // ...
+ * // click
+ * // 1
+ * // 2
+ * // 3
+ * // ...
+ * // click
+ * // ...
  * ```
  *
  * @see {@link combineAll}
