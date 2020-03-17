@@ -30,6 +30,7 @@ Contents
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ---
+
 - Related documents
   - [Creating Operators](doc/operator-creation.md)
   - [Writing Marble Tests](doc/writing-marble-tests.md)
@@ -39,80 +40,82 @@ Contents
 (This document is a work and progress and is subject to change)
 
 ## Submitting a Pull Request (PR)
+
 Before you submit your Pull Request (PR) consider the following guidelines:
 
-* Search [GitHub](https://github.com/ReactiveX/RxJS/pulls) for an open or closed PR
+- Search [GitHub](https://github.com/ReactiveX/RxJS/pulls) for an open or closed PR
   that relates to your submission. You don't want to duplicate effort.
-* Make your changes in a new git branch:
+- Make your changes in a new git branch:
 
-     ```shell
-     git checkout -b my-fix-branch master
-     ```
+  ```shell
+  git checkout -b my-fix-branch master
+  ```
 
-* Create your patch, following [code style guidelines](#coding-style-guidelines), and **including appropriate test cases**.
-* Run the full test suite and ensure that all tests pass.
-* Run the micro and macro performance tests against your feature branch and compare against master
+- Create your patch, following [code style guidelines](#coding-style-guidelines), and **including appropriate test cases**.
+- Run the full test suite and ensure that all tests pass.
+- Run the micro and macro performance tests against your feature branch and compare against master
   to ensure performance wasn't changed for the worse.
-* Commit your changes using a descriptive commit message that follows our
+- Commit your changes using a descriptive commit message that follows our
   [commit message guidelines](#commit-message-guidelines). Adherence to these conventions
   is necessary because release notes are automatically generated from these messages.
 
-     ```shell
-     git commit -a
-     ```
+  ```shell
+  git commit -a
+  ```
+
   Note: the optional commit `-a` command line option will automatically "add" and "rm" edited files.
 
-* Push your branch to GitHub:
+- Push your branch to GitHub:
 
-    ```shell
-    git push origin my-fix-branch
-    ```
+  ```shell
+  git push origin my-fix-branch
+  ```
 
-* In GitHub, send a pull request to `RxJS:master`.
-* If we suggest changes then:
-  * Make the required updates.
-  * Re-run the test suites to ensure tests are still passing.
-  * Re-run performance tests to make sure your changes didn't hurt performance.
-  * Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
+- In GitHub, send a pull request to `RxJS:master`.
+- If we suggest changes then:
+
+  - Make the required updates.
+  - Re-run the test suites to ensure tests are still passing.
+  - Re-run performance tests to make sure your changes didn't hurt performance.
+  - Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
 
     ```shell
     git rebase master -i
     git push -f
     ```
 
-  * When updating your feature branch with the requested changes, please do not overwrite the commit history, but rather contain the changes in new commits. This is for the sake of a clearer and easier review process.
+  - When updating your feature branch with the requested changes, please do not overwrite the commit history, but rather contain the changes in new commits. This is for the sake of a clearer and easier review process.
 
 That's it! Thank you for your contribution!
-
 
 ### After your pull request is merged
 
 After your pull request is merged, you can safely delete your branch and pull the changes
 from the main (upstream) repository:
 
-* Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
+- Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
 
-    ```shell
-    git push origin --delete my-fix-branch
-    ```
+  ```shell
+  git push origin --delete my-fix-branch
+  ```
 
-* Check out the master branch:
+- Check out the master branch:
 
-    ```shell
-    git checkout master -f
-    ```
+  ```shell
+  git checkout master -f
+  ```
 
-* Delete the local branch:
+- Delete the local branch:
 
-    ```shell
-    git branch -D my-fix-branch
-    ```
+  ```shell
+  git branch -D my-fix-branch
+  ```
 
-* Update your master with the latest upstream version:
+- Update your master with the latest upstream version:
 
-    ```shell
-    git pull --ff upstream master
-    ```
+  ```shell
+  git pull --ff upstream master
+  ```
 
 ## Coding Style Guidelines
 
@@ -127,15 +130,14 @@ from the main (upstream) repository:
 - The documentation is auto-generated directly from the source code.
 - In short: From the source code we generate JSON documents, describing each operator, function ... and render this JSON within an Angular application
 - The folder `docs-app` contains everything you need for building and developing the docs
-- the folder `doc` used to be the documentation, but should remain until all content is transferred.
 - The [Documentation README](docs_app/README.md) will support you
 - After a PR is merged to master the docs will be published to https://rxjs.dev/
 
 ## Unit Tests
 
 Unit tests are located under the [spec directory](/spec). Unit tests over synchronous operators and operations
-can be written in a standard [jasmine](http://jasmine.github.io/) style. Unit tests written against any
-asynchronous operator should be written in [Marble Test Style outlined in detail here](doc/writing-marble-tests.md).
+can be written in a standard [chai](https://www.chaijs.com/) style. Unit tests written against any
+asynchronous operator should be written in [Marble Test Style outlined in detail here](doccs_app/content/guide/testing/internal-marble-tests.md).
 
 Each operator under test must be in its own file to cover the following cases:
 
@@ -154,10 +156,11 @@ then it must cover the following cases:
 - If an error is thrown
 
 ### CI Tests
+
 - Using [Travis](https://travis-ci.org/) on your forked version of RxJS will allow running CI tests on that fork before submitting a PR to master
- - Simply create a `Travis` account and add your fork as a new project
+- Simply create a `Travis` account and add your fork as a new project
 - [Sauce Labs](https://saucelabs.com/) setup will allow performing automated browser tests on the fork. Since `saucelabs` doesn't perform browser tests on a PR, this will help verify test results before PR's are checked into master.
- - In your `Travis` repo configuration, set the environment variables SAUCE_USERNAME and SAUCE_ACCESS_KEY to your `saucelabs` account ([reference](https://cloud.githubusercontent.com/assets/1210596/12679038/b9ba4eb6-c656-11e5-8c9b-b063c9a3f9dc.png))
+- In your `Travis` repo configuration, set the environment variables SAUCE_USERNAME and SAUCE_ACCESS_KEY to your `saucelabs` account ([reference](https://cloud.githubusercontent.com/assets/1210596/12679038/b9ba4eb6-c656-11e5-8c9b-b063c9a3f9dc.png))
 - As master runs both of these tests per each check in, it'd be welcome to setup those test before creating your PR
 
 ## Performance Tests
@@ -165,15 +168,14 @@ then it must cover the following cases:
 One of the primary goals of this library is (and will continue to be) great performance. As such, we've employed a variety of performance
 testing techniques.
 
-  - DON'T labor over minute variations in ops/sec or milliseconds, there will always be variance in perf test results.
-  - DON'T alter a performance test unless absolutely necessary. Performance tests may be compared to previous results from previous builds.
-  - DO run tests multiple times and make sure the margins of error are low
-  - DO run tests in your feature branches and compare them to master
-  - DO add performance tests for all new operators
-  - DO add performance tests that you feel are missing from other operators
-  - DO add additional performance tests for all worthy code paths. If you develop an operator with special handling for scalar observables,
-    please add tests for those scenarios
-
+- DON'T labor over minute variations in ops/sec or milliseconds, there will always be variance in perf test results.
+- DON'T alter a performance test unless absolutely necessary. Performance tests may be compared to previous results from previous builds.
+- DO run tests multiple times and make sure the margins of error are low
+- DO run tests in your feature branches and compare them to master
+- DO add performance tests for all new operators
+- DO add performance tests that you feel are missing from other operators
+- DO add additional performance tests for all worthy code paths. If you develop an operator with special handling for scalar observables,
+  please add tests for those scenarios
 
 ### Macro
 
@@ -192,7 +194,6 @@ then running:
 npm run build_all
 protractor protractor.conf.js
 ```
-
 
 ### Micro
 
@@ -214,13 +215,14 @@ node perf/micro zip
 
 ## Commit Message Guidelines
 
-We have very precise rules over how our git commit messages can be formatted.  This leads to **more
+We have very precise rules over how our git commit messages can be formatted. This leads to **more
 readable messages** that are easy to follow when looking through the **project history**. But also,
 we use the git commit messages to **generate the RxJS change log**. Helper script `npm run commit`
 provides command line based wizard to format commit message easily.
 
 ### Commit Message Format
-Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
+
+Each commit message consists of a **header**, a **body** and a **footer**. The header has a special
 format that includes a **type**, a **scope** and a **subject**:
 
 ```
@@ -237,38 +239,43 @@ Any line of the commit message cannot be longer than 100 characters! This allows
 to read on GitHub as well as in various git tools.
 
 ### Revert
-If the commit reverts a previous commit, it should begin with `revert: `, followed by the header of the reverted commit. In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
+
+If the commit reverts a previous commit, it should begin with `revert:`, followed by the header of the reverted commit. In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
 
 ### Type
+
 Must be one of the following:
 
-* **feat**: A new feature
-* **fix**: A bug fix
-* **docs**: Documentation only changes
-* **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing
+- **feat**: A new feature
+- **fix**: A bug fix
+- **docs**: Documentation only changes
+- **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing
   semi-colons, etc)
-* **refactor**: A code change that neither fixes a bug nor adds a feature
-* **perf**: A code change that improves performance
-* **test**: Adding missing tests
-* **chore**: Changes to the build process or auxiliary tools and libraries such as documentation
+- **refactor**: A code change that neither fixes a bug nor adds a feature
+- **perf**: A code change that improves performance
+- **test**: Adding missing tests
+- **chore**: Changes to the build process or auxiliary tools and libraries such as documentation
   generation
 
 ### Scope
-The scope could be anything specifying place of the commit change. For example
-`Observable`, `Subject`, `switchMap`, etc.
+
+The scope could be anything specifying the place of the commit change. For example `Observable`, `Subject`, `switchMap`, etc.
 
 ### Subject
+
 The subject contains succinct description of the change:
 
-* use the imperative, present tense: "change" not "changed" nor "changes"
-* don't capitalize first letter
-* no dot (.) at the end
+- use the imperative, present tense: "change" not "changed" nor "changes"
+- don't capitalize first letter
+- no dot (.) at the end
 
 ### Body
+
 Just as in the **subject**, use the imperative, present tense: "change" not "changed" nor "changes".
 The body should include the motivation for the change and contrast this with previous behavior.
 
 ### Footer
+
 The footer should contain any information about **Breaking Changes** and is also the place to
 reference GitHub issues that this commit **Closes**.
 
