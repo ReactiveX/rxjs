@@ -26,7 +26,6 @@
     "precommit": "lint-staged",
     "commitmsg": "validate-commit-msg",
     "build:spec:browser": "echo \"Browser test is not working currently\" && exit -1 && webpack --config spec/support/webpack.mocha.config.js",
-    "decision_tree_widget": "cd doc/decision-tree-widget && npm run build && cd ../..",
     "lint_spec": "tslint -c tslint.json \"spec/**/*.ts\"",
     "lint_src": "tslint -c tslint.json \"src/**/*.ts\"",
     "lint": "npm-run-all --parallel lint_*",
