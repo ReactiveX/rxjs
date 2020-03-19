@@ -10,6 +10,11 @@ export function fromFetch(
 
 export function fromFetch<T>(
   input: string | Request,
+  selector: (response: Response) => ObservableInput<T>
+): Observable<T>;
+
+export function fromFetch<T>(
+  input: string | Request,
   init: RequestInit | undefined,
   selector: (response: Response) => ObservableInput<T>
 ): Observable<T>;
@@ -66,9 +71,16 @@ export function fromFetch<T>(
  */
 export function fromFetch<T>(
   input: string | Request,
-  init?: RequestInit,
+  initOrSelector?: RequestInit | ((response: Response) => ObservableInput<T>),
   selector?: (response: Response) => ObservableInput<T>
 ): Observable<Response | T> {
+  let init: RequestInit | undefined;
+  if (typeof initOrSelector === 'function') {
+    init = undefined;
+    selector = initOrSelector;
+  } else {
+    init = initOrSelector;
+  }
   return new Observable<Response | T>(subscriber => {
     const controller = new AbortController();
     const signal = controller.signal;
