@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 @Component({
   selector: `empty-migration-section`,
@@ -7,6 +7,7 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
       <mat-card-header class="migration-headline">
         <mat-card-title>
           <ng-content>
+
           </ng-content>
         </mat-card-title>
       </mat-card-header>
@@ -15,21 +16,5 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmptyMigrationSectionComponent {
-
-  _label: string;
-  @Input()
-  set label(label: string) {
-    if (label) {
-      this._label = label;
-    }
-  }
-
-  _version: string;
-  @Input()
-  set version(version: string) {
-    if (version) {
-      this._version = version;
-    }
-  }
 
 }
