@@ -229,7 +229,9 @@ export class Observable<T> implements Subscribable<T> {
       }
     }
 
-    return sink;
+    const subscription = new Subscription();
+    subscription.add(sink);
+    return subscription;
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
