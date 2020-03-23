@@ -6,6 +6,7 @@ import { Subscriber } from '../Subscriber';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { Operator } from '../Operator';
 import { InnerSubscriber } from '../InnerSubscriber';
+import { isObject } from '../util/isObject';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { fromArray } from './fromArray';
 import { lift } from '../util/lift';
@@ -100,6 +101,11 @@ export function combineLatest<O extends ObservableInput<any>, R>(...observables:
 
 /** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
 export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R) | SchedulerLike>): Observable<R>;
+
+// combineLatest({})
+export function combineLatest(sourcesObject: {}): Observable<never>;
+export function combineLatest<T, K extends keyof T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
+
 /* tslint:enable:max-line-length */
 
 /**
@@ -160,7 +166,24 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * // [1, 1] after 1.5s
  * // [2, 1] after 2s
  * ```
+ * ### Combine a dictionary of Observables
+ * ```ts
+* import { combineLatest, of } from 'rxjs';
+ * import { delay, startWith } from 'rxjs/operators';
  *
+ * const observables = {
+ *   a: of(1).pipe(delay(1000), startWith(0)),
+ *   b: of(5).pipe(delay(5000), startWith(0)),
+ *   c: of(10).pipe(delay(10000), startWith(0))
+ * };
+ * const combined = combineLatest(observables);
+ * combined.subscribe(value => console.log(value));
+ * // Logs
+ * // {a: 0, b: 0, c: 0} immediately
+ * // {a: 1, b: 0, c: 0} after 1s
+ * // {a: 1, b: 5, c: 0} after 5s
+ * // {a: 1, b: 5, c: 10} after 10s
+ * ```
  * ### Combine an array of Observables
  * ```ts
  * import { combineLatest, of } from 'rxjs';
@@ -219,6 +242,7 @@ export function combineLatest<O extends ObservableInput<any>, R>(
 ): Observable<R> {
   let resultSelector: ((...values: Array<any>) => R) | undefined =  undefined;
   let scheduler: SchedulerLike | undefined = undefined;
+  let keys: Array<string> | undefined = undefined;
 
   if (isScheduler(observables[observables.length - 1])) {
     scheduler = observables.pop() as SchedulerLike;
@@ -228,21 +252,30 @@ export function combineLatest<O extends ObservableInput<any>, R>(
     resultSelector = observables.pop() as (...values: Array<any>) => R;
   }
 
-  // if the first and only other argument besides the resultSelector is an array
-  // assume it's been called with `combineLatest([obs1, obs2, obs3], resultSelector)`
-  if (observables.length === 1 && isArray(observables[0])) {
-    observables = observables[0] as any;
+  if (observables.length === 1) {
+    const first = observables[0] as any;
+    if (isArray(first)) {
+      // if the first and only other argument besides the resultSelector is an array
+      // assume it's been called with `combineLatest([obs1, obs2, obs3], resultSelector)`
+      observables = first;
+    }
+    // if the first and only argument is an object, assume it's been called with
+    // `combineLatest({})`
+    if (isObject(first) && Object.getPrototypeOf(first) === Object.prototype) {
+      keys = Object.keys(first);
+      observables = keys.map(key => first[key]);
+    }
   }
 
-  return lift(fromArray(observables, scheduler), new CombineLatestOperator<ObservedValueOf<O>, R>(resultSelector));
+  return lift(fromArray(observables, scheduler), new CombineLatestOperator<ObservedValueOf<O>, R>(resultSelector, keys));
 }
 
 export class CombineLatestOperator<T, R> implements Operator<T, R> {
-  constructor(private resultSelector?: (...values: Array<any>) => R) {
+  constructor(private resultSelector?: (...values: Array<any>) => R, private keys?: Array<string>) {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new CombineLatestSubscriber(subscriber, this.resultSelector));
+    return source.subscribe(new CombineLatestSubscriber(subscriber, this.resultSelector, this.keys));
   }
 }
 
@@ -257,7 +290,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
   private observables: any[] = [];
   private toRespond: number | undefined;
 
-  constructor(destination: Subscriber<R>, private resultSelector?: (...values: Array<any>) => R) {
+  constructor(destination: Subscriber<R>, private resultSelector?: (...values: Array<any>) => R, private keys?: Array<string>) {
     super(destination);
   }
 
@@ -301,7 +334,9 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
       if (this.resultSelector) {
         this._tryResultSelector(values);
       } else {
-        this.destination.next(values.slice());
+        this.destination.next(this.keys ?
+          this.keys.reduce((result, key, i) => ((result as any)[key] = values[i], result), {}) :
+          values.slice());
       }
     }
   }
