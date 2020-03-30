@@ -7,6 +7,19 @@ import { iterator } from 'rxjs/internal/symbol/iterator';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
 
+if (process && process.on) {
+  /**
+   * With async/await functions in Node, mocha seems to allow
+   * tests to pass, even they shouldn't there's something about how
+   * it handles the rejected promise where it does not notice
+   * that the test failed.
+   */
+  process.on('unhandledRejection', err => {
+    console.error(err);
+    process.exit(1);
+  });
+}
+
 export function lowerCaseO<T>(...args: Array<any>): Observable<T> {
   const o: any = {
     subscribe(observer: any) {

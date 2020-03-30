@@ -33,6 +33,10 @@ export { noop } from './internal/util/noop';
 export { identity } from './internal/util/identity';
 export { isObservable } from './internal/util/isObservable';
 
+/* Promise Conversion */
+export { lastValueFrom } from './internal/lastValueFrom';
+export { firstValueFrom } from './internal/firstValueFrom';
+
 /* Error types */
 export { ArgumentOutOfRangeError } from './internal/util/ArgumentOutOfRangeError';
 export { EmptyError } from './internal/util/EmptyError';
