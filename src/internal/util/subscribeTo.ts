@@ -10,6 +10,7 @@ import { iterator as Symbol_iterator } from '../symbol/iterator';
 import { observable as Symbol_observable } from '../symbol/observable';
 import { Subscription } from '../Subscription';
 import { Subscriber } from '../Subscriber';
+import { subscribeToAsyncIterable } from './subscribeToAsyncIterable';
 
 export const subscribeTo = <T>(result: ObservableInput<T>): (subscriber: Subscriber<T>) => Subscription | void => {
   if (!!result && typeof (result as any)[Symbol_observable] === 'function') {
@@ -20,6 +21,11 @@ export const subscribeTo = <T>(result: ObservableInput<T>): (subscriber: Subscri
     return subscribeToPromise(result);
   } else if (!!result && typeof (result as any)[Symbol_iterator] === 'function') {
     return subscribeToIterable(result as any);
+  } else if (
+    Symbol && Symbol.asyncIterator &&
+    !!result && typeof (result as any)[Symbol.asyncIterator] === 'function'
+  ) {
+    return subscribeToAsyncIterable(result as any);
   } else {
     const value = isObject(result) ? 'an invalid object' : `'${result}'`;
     const msg = `You provided ${value} where a stream was expected.`

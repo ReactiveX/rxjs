@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { Observer, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
-import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip } from 'rxjs/operators';
+import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty, interval } from 'rxjs';
+import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, take, finalize } from 'rxjs/operators';
 
 declare const asDiagram: any, rxTestScheduler: any;
 
@@ -946,3 +946,57 @@ describe('Observable.lift', () => {
     }
   });
 });
+
+if (Symbol && Symbol.asyncIterator) {
+  describe('async iterator support', () => {
+    it('should work for sync observables', async () => {
+      const source = of(1, 2, 3);
+      const results: number[] = [];
+      for await (const value of source) {
+        results.push(value);
+      }
+      expect(results).to.deep.equal([1, 2, 3]);
+    });
+
+    it('should throw if the observable errors', async () => {
+      const source = throwError(new Error('bad'));
+      let error: any;
+      try {
+        for await (const _ of source) {
+          // do nothing
+        }
+      } catch (err) {
+        error = err;
+      }
+      expect(error).to.be.an.instanceOf(Error);
+      expect(error.message).to.equal('bad');
+    });
+
+    it('should support async observables', async () => {
+      const source = interval(10).pipe(take(3));
+      const results: number[] = [];
+      for await (const value of source) {
+        results.push(value);
+      }
+      expect(results).to.deep.equal([0, 1, 2]);
+    });
+
+    it('should do something clever if the loop exits', async () => {
+      let finalized = false;
+      const source = interval(10).pipe(take(10), finalize(() => finalized = true));
+      const results: number[] = [];
+      try {
+        for await (const value of source) {
+          results.push(value);
+          if (value === 1) {
+            throw new Error('bad');
+          }
+        }
+      } catch (err) {
+        // ignore
+      }
+      expect(results).to.deep.equal([0, 1]);
+      expect(finalized).to.be.true;
+    });
+  });
+}

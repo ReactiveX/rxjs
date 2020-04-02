@@ -49,7 +49,7 @@ export interface Subscribable<T> {
   subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Unsubscribable;
 }
 
-export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T> | Iterable<T>;
+export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T> | Iterable<T> | AsyncIterableIterator<T>;
 
 /** @deprecated use {@link InteropObservable } */
 export type ObservableLike<T> = InteropObservable<T>;
