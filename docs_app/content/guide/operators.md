@@ -146,6 +146,7 @@ These are Observable creation operators that also have join functionality -- emi
 - [`concat`](/api/index/function/concat)
 - [`forkJoin`](/api/index/function/forkJoin)
 - [`merge`](/api/index/function/merge)
+- [`partition`](/api/index/function/partition)
 - [`race`](/api/index/function/race)
 - [`zip`](/api/index/function/zip)
 
