@@ -1,30 +1,24 @@
 import { of, asyncScheduler  } from 'rxjs';
 import { startWith } from 'rxjs/operators';
+import { a, b, c, d, e, f, g, h } from '../helpers';
 
-it('should infer correctly with one value', () => {
-  const o = of(1, 2, 3).pipe(startWith(4)); // $ExpectType Observable<number>
-});
-
-it('should infer correctly with multiple values', () => {
-  const o = of(1, 2, 3).pipe(startWith(4, 5, 6)); // $ExpectType Observable<number>
-});
-
-it('should infer correctly with no value', () => {
-  const o = of(1, 2, 3).pipe(startWith()); // $ExpectType Observable<number>
-});
-
-it('should infer correctly with a value and a scheduler', () => {
-  const o = of(1, 2, 3).pipe(startWith(5, asyncScheduler)); // $ExpectType Observable<number>
-});
-
-it('should infer correctly with a different type', () => {
-  const o = of(1, 2, 3).pipe(startWith('foo')); // $ExpectType Observable<string | number>
-});
-
-it('should infer correctly with multiple different types', () => {
-  const o = of(1, 2, 3).pipe(startWith('foo', 4, true)); // $ExpectType Observable<string | number | boolean>
+it('should infer correctly with N values', () => {
+  const r0 = of(a).pipe(startWith()); // $ExpectType Observable<A>
+  const r1 = of(a).pipe(startWith(b)); // $ExpectType Observable<A | B>
+  const r2 = of(a).pipe(startWith(b, c)); // $ExpectType Observable<A | B | C>
+  const r3 = of(a).pipe(startWith(b, c, d)); // $ExpectType Observable<A | B | C | D>
+  const r4 = of(a).pipe(startWith(b, c, d, e)); // $ExpectType Observable<A | B | C | D | E>
+  const r5 = of(a).pipe(startWith(b, c, d, e, f)); // $ExpectType Observable<A | B | C | D | E | F>
+  const r6 = of(a).pipe(startWith(b, c, d, e, f, g)); // $ExpectType Observable<A | B | C | D | E | F | G>
+  const r7 = of(a).pipe(startWith(b, c, d, e, f, g, h)); // $ExpectType Observable<A | B | C | D | E | F | G | H>
 });
 
 it('should infer correctly with only a scheduler', () => {
-  const o = of(1, 2, 3).pipe(startWith(asyncScheduler)); // $ExpectType Observable<number>
-});
+  const r = of(a).pipe(startWith(asyncScheduler)); // $ExpectType Observable<A>
+  const r1 = of(a).pipe(startWith(b, asyncScheduler)); // $ExpectType Observable<A | B>
+  const r2 = of(a).pipe(startWith(b, c, asyncScheduler)); // $ExpectType Observable<A | B | C>
+  const r3 = of(a).pipe(startWith(b, c, d, asyncScheduler)); // $ExpectType Observable<A | B | C | D>
+  const r4 = of(a).pipe(startWith(b, c, d, e, asyncScheduler)); // $ExpectType Observable<A | B | C | D | E>
+  const r5 = of(a).pipe(startWith(b, c, d, e, f, asyncScheduler)); // $ExpectType Observable<A | B | C | D | E | F>
+  const r6 = of(a).pipe(startWith(b, c, d, e, f, g, asyncScheduler)); // $ExpectType Observable<A | B | C | D | E | F | G>
+  });
