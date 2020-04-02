@@ -23,7 +23,7 @@ import { Subscription } from './Subscription';
  *
  * async function execute() {
  *    const source$ = interval(2000);
- *    const firstNumber = await firstValueFrom(source);
+ *    const firstNumber = await firstValueFrom(source$);
  *    console.log(`The first number is ${firstNumber}`);
  * }
  *
@@ -35,11 +35,11 @@ import { Subscription } from './Subscription';
  *
  * @param source the observable to convert to a promise
  */
-export function firstValueFrom<T>(source$: Observable<T>) {
+export function firstValueFrom<T>(source: Observable<T>) {
   return new Promise<T>((resolve, reject) => {
     const subs = new Subscription();
     subs.add(
-      source$.subscribe({
+      source.subscribe({
         next: value => {
           resolve(value);
           subs.unsubscribe();

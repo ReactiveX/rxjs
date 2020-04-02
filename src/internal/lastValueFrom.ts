@@ -23,7 +23,7 @@ import { EmptyError } from './util/EmptyError';
  *
  * async function execute() {
  *    const source$ = interval(2000).pipe(take(10));
- *    const finalNumber = await lastValueFrom(source);
+ *    const finalNumber = await lastValueFrom(source$);
  *    console.log(`The final number is ${finalNumber}`);
  * }
  *
