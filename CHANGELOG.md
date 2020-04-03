@@ -1,10 +1,47 @@
+# [7.0.0-beta.0](https://github.com/reactivex/rxjs/compare/7.0.0-alpha.1...7.0.0-beta.0) (2020-04-03)
+
+
+### Bug Fixes
+
+* **mergeMapTo:** remove redundant/unused generic ([#5299](https://github.com/reactivex/rxjs/issues/5299)) ([d67b7da](https://github.com/reactivex/rxjs/commit/d67b7dafbacb3aac8f4dd7f215fe2d2c602f0d36))
+* **ajax:** AjaxTimeoutErrorImpl extends AjaxError ([#5226](https://github.com/reactivex/rxjs/issues/5226)) ([a8da8dc](https://github.com/reactivex/rxjs/commit/a8da8dcc899342d3bb6d2d913247d9e734095287))
+* **delay:** emit complete notification as soon as possible ([63b8797](https://github.com/reactivex/rxjs/commit/63b8797fbeed09eb675ea64b0b83607cef1367a9)), closes [#4249](https://github.com/reactivex/rxjs/issues/4249)
+* **endWith:** will properly type N arguments ([#5246](https://github.com/reactivex/rxjs/issues/5246)) ([81ee1f7](https://github.com/reactivex/rxjs/commit/81ee1f72408854f4017615fe7949edf5dd50533b))
+* **fetch:** don't leak event listeners added to passed-in signals ([#5305](https://github.com/reactivex/rxjs/issues/5305)) ([d4d6c47](https://github.com/reactivex/rxjs/commit/d4d6c47d8abccc8cbe17e46192fc1eaa42d2d023))
+* **TestScheduler:** Subclassing TestScheduler needs RunHelpers ([#5138](https://github.com/reactivex/rxjs/issues/5138)) ([927d5d9](https://github.com/reactivex/rxjs/commit/927d5d90ab5f12a79cd50f7290b4f8df1e83ecfc))
+* **pipe:** Special handling for 0-arg case. ([#4936](https://github.com/reactivex/rxjs/issues/4936)) ([290fa51](https://github.com/reactivex/rxjs/commit/290fa51c44881f25f2fe4cf9885028396c7fd74c))
+* **pluck:** fix pluck's catch-all signature for better type safety ([#5192](https://github.com/reactivex/rxjs/issues/5192)) ([e0c5b7c](https://github.com/reactivex/rxjs/commit/e0c5b7c790bb9d99fa8bee26c805b5e70c1e456b))
+* **pluck:** param type now accepts number and symbol ([9697b69](https://github.com/reactivex/rxjs/commit/9697b695c23c3dcb614e6a70be63a94ffcd86ed9))
+* **startWith:** accepts N arguments and returns correct type ([#5247](https://github.com/reactivex/rxjs/issues/5247)) ([150ed8b](https://github.com/reactivex/rxjs/commit/150ed8b75909b0e0bb9dc8928287ebdc47e19c51))
+* **combineLatestWith:** and zipWith infer types from n-arguments ([#5257](https://github.com/reactivex/rxjs/issues/5257)) ([3e282a5](https://github.com/reactivex/rxjs/commit/3e282a58b1baf7aa03b17142f858bca09a542adf))
+* **race:** support N args in static race and ensure observable returned ([#5286](https://github.com/reactivex/rxjs/issues/5286)) ([6d901cb](https://github.com/reactivex/rxjs/commit/6d901cbb0c0f2aa3fc5a02ef895cc9e9a7a09243))
+* **toPromise:** correct toPromise return type ([#5072](https://github.com/reactivex/rxjs/issues/5072)) ([b1c3573](https://github.com/reactivex/rxjs/commit/b1c35738204b5b1a5d325a16e70cdbf25b523976))
+* **fromFetch:** don't reassign closed-over parameter in fromFetch ([#5234](https://github.com/reactivex/rxjs/issues/5234)) ([37d2d99](https://github.com/reactivex/rxjs/commit/37d2d99762264ef5faabc0ce4f56d7aab51806dc)), closes [#5233](https://github.com/reactivex/rxjs/issues/5233) [#5233](https://github.com/reactivex/rxjs/issues/5233)
+
+
+### Features
+
+* add `lastValueFrom` and `firstValueFrom` methods ([#5295](https://github.com/reactivex/rxjs/issues/5295)) ([e69b765](https://github.com/reactivex/rxjs/commit/e69b76584d6872b3c55aa1bdf39c8984e9d9b00e))
+* RxJS now supports first-class interop with AsyncIterables ([4fa9d01](https://github.com/reactivex/rxjs/commit/4fa9d016a83049d014d77b89c56301e42db16b4d))
+* **combineLatestWith:** adds `combineLatestWith` - renamed legacy `combineLatest` operator ([#5251](https://github.com/reactivex/rxjs/issues/5251)) ([6d7b146](https://github.com/reactivex/rxjs/commit/6d7b1469110b405405549c9b6c311d2621738353))
+* **retry:** add config to reset error count on successful emission ([#5280](https://github.com/reactivex/rxjs/issues/5280)) ([ab6e9fc](https://github.com/reactivex/rxjs/commit/ab6e9fc32c19c1f14f8f59459db75312e75b9351))
+* **zipWith:** add `zipWith` which is just a rename of legacy `zip` operator ([#5249](https://github.com/reactivex/rxjs/issues/5249)) ([86b6a27](https://github.com/reactivex/rxjs/commit/86b6a272fd48c4712adba78963e05bb759ecf4f9))
+
+
+### BREAKING CHANGES
+
+* **startWith:** `startWith` will return incorrect types when called with more than 7 arguments and a scheduler. Passing scheduler to startWith is deprecated
+* **toPromise:** toPromise return type now returns `T | undefined` in TypeScript, which is correct, but may break builds.
+
+
+
 # [7.0.0-alpha.1](https://github.com/reactivex/rxjs/compare/7.0.0-alpha.0...7.0.0-alpha.1) (2019-12-27)
 
 
 ### Bug Fixes
 
-* chain subscriptions from interop observables ([#5059](https://github.com/reactivex/rxjs/issues/5059)) ([d7f7078](https://github.com/reactivex/rxjs/commit/d7f7078))
-* clear subscription on shareReplay completion ([#5044](https://github.com/reactivex/rxjs/issues/5044)) ([35e600f](https://github.com/reactivex/rxjs/commit/35e600f)), closes [#5034](https://github.com/reactivex/rxjs/issues/5034)
+* chain subscriptions from observables that belong to other instances of RxJS (e.g. in node_modules) ([#5059](https://github.com/reactivex/rxjs/issues/5059)) ([d7f7078](https://github.com/reactivex/rxjs/commit/d7f7078))
+* clear subscription on `shareReplay` completion ([#5044](https://github.com/reactivex/rxjs/issues/5044)) ([35e600f](https://github.com/reactivex/rxjs/commit/35e600f)), closes [#5034](https://github.com/reactivex/rxjs/issues/5034)
 * **closure:** Annotate next() for ReplaySubject ([#5088](https://github.com/reactivex/rxjs/issues/5088)) ([8687fbd](https://github.com/reactivex/rxjs/commit/8687fbd))
 * **closure:** static prop frameTimeFactor being collapsed when compiled with closure. ([39872c9](https://github.com/reactivex/rxjs/commit/39872c9))
 * **docs:** remove repetitive op3() in example ([#5043](https://github.com/reactivex/rxjs/issues/5043)) ([e17df33](https://github.com/reactivex/rxjs/commit/e17df33))
