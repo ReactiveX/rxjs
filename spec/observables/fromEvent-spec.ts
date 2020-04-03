@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { expectObservable } from '../helpers/marble-testing';
-import { Observable, fromEvent, NEVER, timer, pipe } from 'rxjs';
+import { Observable, fromEvent, NEVER, timer } from 'rxjs';
 import { NodeStyleEventEmitter, NodeCompatibleEventEmitter, NodeEventHandler } from 'rxjs/internal/observable/fromEvent';
 import { mapTo, take, concat } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';

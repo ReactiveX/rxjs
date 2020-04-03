@@ -1,4 +1,4 @@
-import { OperatorFunction, Timestamp as TimestampInterface, TimestampProvider, Timestamp } from '../types';
+import { OperatorFunction, TimestampProvider, Timestamp } from '../types';
 import { map } from './map';
 
 /**

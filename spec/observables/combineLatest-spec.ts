@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { queueScheduler as rxQueueScheduler, combineLatest, of, Observable } from 'rxjs';
+import { queueScheduler as rxQueueScheduler, combineLatest, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 declare const type: Function;

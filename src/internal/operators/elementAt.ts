@@ -1,6 +1,6 @@
 import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction } from '../types';
 import { filter } from './filter';
 import { throwIfEmpty } from './throwIfEmpty';
 import { defaultIfEmpty } from './defaultIfEmpty';

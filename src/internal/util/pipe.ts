@@ -1,4 +1,3 @@
-import { noop } from './noop';
 import { identity } from './identity';
 import { UnaryFunction } from '../types';
 

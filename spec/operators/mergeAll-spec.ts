@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { mergeAll, mergeMap, take } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { throwError, from, of, Observable, queueScheduler } from 'rxjs';
+import { throwError, from, of, queueScheduler } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 declare const type: Function;

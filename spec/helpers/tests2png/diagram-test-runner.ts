@@ -1,9 +1,6 @@
 import { painter } from './painter';
-import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { TestMessage } from '../../../src/internal/testing/TestMessage';
-import { ColdObservable } from '../../../src/internal/testing/ColdObservable';
-import { HotObservable } from '../../../src/internal/testing/HotObservable';
 import { TestStream } from './types';
 
 declare const global: any;

@@ -1,5 +1,5 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { concat, defer, Observable, of, from } from 'rxjs';
+import { concat, defer, Observable, of } from 'rxjs';
 import { exhaustMap, mergeMap, takeWhile, map } from 'rxjs/operators';
 import { expect } from 'chai';
 import { asInteropObservable } from '../helpers/interop-helper';

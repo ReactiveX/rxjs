@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { TestScheduler } from 'rxjs/testing';
 import { SubscriptionLog } from '../../src/internal/testing/SubscriptionLog';
 import { ColdObservable } from '../../src/internal/testing/ColdObservable';
 import { HotObservable } from '../../src/internal/testing/HotObservable';

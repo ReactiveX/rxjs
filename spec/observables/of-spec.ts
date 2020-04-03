@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { of, Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { expectObservable } from '../helpers/marble-testing';
 import { TestScheduler } from 'rxjs/testing';
 import { concatMap, delay, concatAll } from 'rxjs/operators';
