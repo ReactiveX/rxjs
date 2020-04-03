@@ -42,7 +42,7 @@ it('should not accept a number when plucking an object', () => {
 });
 
 it('should support arrays', () => {
-  const a = of(['abc']).pipe(pluck(0)) // ExpectType Observable<string>
+  const a = of(['abc']).pipe(pluck(0)) // $ExpectType Observable<string>
 })
 
 it('should support picking by symbols', () => {
