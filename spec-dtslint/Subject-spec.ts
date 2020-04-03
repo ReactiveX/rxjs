@@ -24,7 +24,8 @@ it('should have the proper subscription types for new Subject<number>()', () => 
   const a = new Subject<number>(); // $ExpectType Subject<number>
   const r = a.next(123); // $ExpectType void
   a.next('test'); // $ExpectError
-  const subs /* $ExpectType Subscription */ = a.subscribe((out) => {
+  const subs = a.subscribe((out) => { // $ExpectType Subscription
+    // $ExpectType Subscription
     const x = out; // $ExpectType number
   });
 });
@@ -32,7 +33,7 @@ it('should have the proper subscription types for new Subject<number>()', () => 
 it('should have the proper subscription types for new Subject()', () => {
   const a = new Subject(); // $ExpectType Subject<unknown>
   const r = a.next('test'); // $ExpectType void
-  const subs /* $ExpectType Subscription */ = a.subscribe((out) => {
+  const subs = a.subscribe((out) => { // $ExpectType Subscription
     const x = out; // $ExpectType unknown
   });
 });
