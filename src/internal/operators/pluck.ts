@@ -14,14 +14,14 @@ export function pluck<T>(...properties: string[]): OperatorFunction<T, unknown>;
 /* tslint:enable:max-line-length */
 
 /**
- * Maps each source value (an object) to its specified nested property.
+ * Maps each source value to its specified nested property.
  *
  * <span class="informal">Like {@link map}, but meant only for picking one of
- * the nested properties of every emitted object.</span>
+ * the nested properties of every emitted value.</span>
  *
  * ![](pluck.png)
  *
- * Given a list of strings describing a path to an object property, retrieves
+ * Given a list of strings or numbers describing a path to a property, retrieves
  * the value of a specified nested property from all values in the source
  * Observable. If a property can't be resolved, it will return `undefined` for
  * that value.
@@ -39,24 +39,20 @@ export function pluck<T>(...properties: string[]): OperatorFunction<T, unknown>;
  *
  * @see {@link map}
  *
- * @param {...string} properties The nested properties to pluck from each source
- * value (an object).
- * @return {Observable} A new Observable of property values from the source values.
- * @name pluck
+ * @param properties The nested properties to pluck from each source
+ * value.
+ * @return A new Observable of property values from the source values.
+ * @deprecated Remove in v8. Use {@link map} and optional chaining: `pluck('foo', 'bar')` is `map(x => x?.foo?.bar)`.
  */
-export function pluck<T, R>(...properties: string[]): OperatorFunction<T, R> {
+export function pluck<T, R>(...properties: Array<string | number | symbol>): OperatorFunction<T, R> {
   const length = properties.length;
   if (length === 0) {
     throw new Error('list of properties cannot be empty.');
   }
-  return (source: Observable<T>) => map(plucker(properties, length))(source as any);
-}
-
-function plucker(props: string[], length: number): (x: string) => any {
-  const mapper = (x: any) => {
-    let currentProp = x;
+  return map((x) => {
+    let currentProp: any = x;
     for (let i = 0; i < length; i++) {
-      const p = currentProp[props[i]];
+      const p = currentProp[properties[i]];
       if (typeof p !== 'undefined') {
         currentProp = p;
       } else {
@@ -64,7 +60,5 @@ function plucker(props: string[], length: number): (x: string) => any {
       }
     }
     return currentProp;
-  };
-
-  return mapper;
+  });
 }
