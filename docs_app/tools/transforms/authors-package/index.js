@@ -8,22 +8,22 @@
 /* eslint no-console: "off" */
 
 function createPackage(changedFile) {
-  const marketingMatch = /^aio\/content\/marketing\/(.*)/.exec(changedFile);
+  const marketingMatch = /^docs_app\/content\/marketing\/(.*)/.exec(changedFile);
   if (marketingMatch) {
     console.log('Building marketing docs');
     return require('./marketing-package').createPackage();
   }
 
-  const tutorialMatch = /^aio\/content\/tutorial\/([^.]+)\.md/.exec(changedFile);
-  const tutorialExampleMatch = /^aio\/content\/examples\/(toh-[^\/]+)\//.exec(changedFile);
+  const tutorialMatch = /^docs_app\/content\/tutorial\/([^.]+)\.md/.exec(changedFile);
+  const tutorialExampleMatch = /^docs_app\/content\/examples\/(toh-[^\/]+)\//.exec(changedFile);
   if (tutorialMatch || tutorialExampleMatch) {
     const tutorialName = tutorialMatch && tutorialMatch[1] || tutorialExampleMatch[1];
     console.log('Building tutorial docs');
     return require('./tutorial-package').createPackage(tutorialName);
   }
 
-  const guideMatch = /^aio\/content\/guide\/([^.]+)\.md/.exec(changedFile);
-  const exampleMatch = /^aio\/content\/examples\/(?:cb-)?([^\/]+)\//.exec(changedFile);
+  const guideMatch = /^docs_app\/content\/guide\/([^.]+)\.md/.exec(changedFile);
+  const exampleMatch = /^docs_app\/content\/examples\/(?:cb-)?([^\/]+)\//.exec(changedFile);
   if (guideMatch || exampleMatch) {
     const guideName = guideMatch && guideMatch[1] || exampleMatch[1];
     console.log(`Building guide doc: ${guideName}.md`);
