@@ -11,13 +11,37 @@ export type FactoryOrValue<T> = T | (() => T);
 
 export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> {}
 
+/**
+ * A value and the time at which it was emitted.
+ *
+ * Emitted by the `timestamp` operator
+ *
+ * {@see timestamp}
+ */
 export interface Timestamp<T> {
   value: T;
+  /**
+   * The timestamp. By default, this is in epoch milliseconds.
+   * Could vary based on the timestamp provider passed to the operator.
+   */
   timestamp: number;
 }
 
+/**
+ * A value emitted and the amount of time since the last value was emitted.
+ *
+ * Emitted by the `timeInterval` operator.
+ *
+ * {@see timeInterval}
+ */
 export interface TimeInterval<T> {
   value: T;
+
+  /**
+   * The amount of time between this value's emission and the previous value's emission.
+   * If this is the first emitted value, then it will be the amount of time since subscription
+   * started.
+   */
   interval: number;
 }
 
@@ -90,13 +114,25 @@ export interface Observer<T> {
 
 /** SCHEDULER INTERFACES */
 
-export interface SchedulerLike {
-  now(): number;
+export interface SchedulerLike extends TimestampProvider {
   schedule<T>(work: (this: SchedulerAction<T>, state?: T) => void, delay?: number, state?: T): Subscription;
 }
 
 export interface SchedulerAction<T> extends Subscription {
   schedule(state?: T, delay?: number): Subscription;
+}
+
+/**
+ * This is a type that provides a method to allow RxJS to create a numeric timestamp
+ */
+export interface TimestampProvider {
+  /**
+   * Returns a timestamp as a number.
+   *
+   * This is used by types like `ReplaySubject` or operators like `timestamp` to calculate
+   * the amount of time passed between events.
+   */
+  now(): number;
 }
 
 /**
