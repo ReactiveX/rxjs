@@ -37,7 +37,7 @@ it('should not accept empty parameter', () => {
   const a = of({ name: 'abc' }).pipe(pluck()); // $ExpectType Observable<unknown>
 });
 
-it('should accept string only', () => {
+it('should not accept a number when plucking an object', () => {
   const a = of({ name: 'abc' }).pipe(pluck(1)); // $ExpectError
 });
 
@@ -60,3 +60,12 @@ it('should accept a spread of arguments', () => {
   const path2 = ['bar', 'baz'];
   const b = of(obj).pipe(pluck('foo', ...path2)); // $ExpectType Observable<unknown>
 });
+
+it('should support arrays', () => {
+  const a = of(['abc']).pipe(pluck(0)) // $ExpectType Observable<string>
+})
+
+it('should support picking by symbols', () => {
+  const sym = Symbol('sym')
+  const a = of({ [sym]: 'abc' }).pipe(pluck(sym)) // $ExpectType Observable<string>
+})
