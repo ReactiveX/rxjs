@@ -102,6 +102,9 @@ class DelaySubscriber<T> extends Subscriber<T> {
     if (queue.length > 0) {
       const delay = Math.max(0, queue[0].time - scheduler.now());
       this.schedule(state, delay);
+    } else if (source.isStopped) {
+      source.destination.complete();
+      source.active = false;
     } else {
       this.unsubscribe();
       source.active = false;
@@ -148,7 +151,9 @@ class DelaySubscriber<T> extends Subscriber<T> {
   }
 
   protected _complete() {
-    this.scheduleNotification(Notification.createComplete());
+    if (this.queue.length === 0) {
+      this.destination.complete();
+    }
     this.unsubscribe();
   }
 }

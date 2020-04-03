@@ -320,7 +320,7 @@ describe('mergeScan', () => {
   it('should emit accumulator if inner completes without value after source completes', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
     const e1subs =      '^                    !';
-    const expected =    '-----------------------(x|)';
+    const expected =    '---------------------(x|)';
 
     const source = e1.pipe(
       mergeScan((acc, x) => EMPTY.pipe(delay(50, rxTestScheduler)), ['1'])
