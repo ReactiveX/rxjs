@@ -3,21 +3,17 @@ import { Subscription } from '../../Subscription';
 import { from } from '../../observable/from';
 import { ObservableInput } from '../../types';
 
+export function fromFetch<T>(
+  input: string | Request,
+  init: RequestInit & {
+    selector: (response: Response) => ObservableInput<T>
+  }
+): Observable<T>;
+
 export function fromFetch(
   input: string | Request,
   init?: RequestInit
 ): Observable<Response>;
-
-export function fromFetch<T>(
-  input: string | Request,
-  selector: (response: Response) => ObservableInput<T>
-): Observable<T>;
-
-export function fromFetch<T>(
-  input: string | Request,
-  init: RequestInit | undefined,
-  selector: (response: Response) => ObservableInput<T>
-): Observable<T>;
 
 /**
  * Uses [the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) to
@@ -71,16 +67,11 @@ export function fromFetch<T>(
  */
 export function fromFetch<T>(
   input: string | Request,
-  initOrSelector?: RequestInit | ((response: Response) => ObservableInput<T>),
-  selector?: (response: Response) => ObservableInput<T>
+  initWithSelector: RequestInit & {
+    selector?: (response: Response) => ObservableInput<T>
+  } = {}
 ): Observable<Response | T> {
-  let init: RequestInit | undefined;
-  if (typeof initOrSelector === 'function') {
-    init = undefined;
-    selector = initOrSelector;
-  } else {
-    init = initOrSelector;
-  }
+  const { selector, ...init } = initWithSelector;
   return new Observable<Response | T>(subscriber => {
     const controller = new AbortController();
     const signal = controller.signal;
