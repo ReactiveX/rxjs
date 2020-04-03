@@ -1,3 +1,19 @@
+## [6.5.5](https://github.com/reactivex/rxjs/compare/6.5.3...6.5.5) (2020-04-03)
+
+
+### Bug Fixes
+
+* **fetch:** don't leak event listeners added to passed-in signals ([#5305](https://github.com/reactivex/rxjs/issues/5305)) ([06bf3a3](https://github.com/reactivex/rxjs/commit/06bf3a30c65d85f18aeb2ef2b800e918c8d36979))
+* **pipe:** Special handling for 0-arg case. ([#4936](https://github.com/reactivex/rxjs/issues/4936)) ([2e9d867](https://github.com/reactivex/rxjs/commit/2e9d867d8d082dc6130cce3cd49988c4e3c0c424))
+* don't reassign closed-over parameter in fromFetch ([#5234](https://github.com/reactivex/rxjs/issues/5234)) ([0377710](https://github.com/reactivex/rxjs/commit/03777102a3491e0b3dac00c53a1b217c45616fc6)), closes [#5233](https://github.com/reactivex/rxjs/issues/5233) [#5233](https://github.com/reactivex/rxjs/issues/5233)
+* **asapScheduler:** resolved memory leak ([#5183](https://github.com/reactivex/rxjs/issues/5183)) ([4312af5](https://github.com/reactivex/rxjs/commit/4312af5c5c5dde51873a8f02387bea25e23a36ca)), closes [#5016](https://github.com/reactivex/rxjs/issues/5016)
+* chain subscriptions from interop observables for 6.x ([#5178](https://github.com/reactivex/rxjs/issues/5178)) ([cbc7721](https://github.com/reactivex/rxjs/commit/cbc77213e97ecc00d90a65ecf18707b76ebfe7fc))
+* clear subscription on shareReplay completion ([#5044](https://github.com/reactivex/rxjs/issues/5044)) ([9f87505](https://github.com/reactivex/rxjs/commit/9f87505deae0aeae7dd53918e392487d6de7ab73)), closes [#5034](https://github.com/reactivex/rxjs/issues/5034)
+* **fromFetch:** passing already aborted signal to init aborts fetch ([c2657a8](https://github.com/reactivex/rxjs/commit/c2657a868e1c079d50f63ce5c0850572d491238a))
+* missing package.json in rxjs/fetch ([#5001](https://github.com/reactivex/rxjs/issues/5001)) ([06fb735](https://github.com/reactivex/rxjs/commit/06fb73555375095bb55cdd02287bea5f9c0ddafc))
+
+
+
 ## [6.5.4](https://github.com/reactivex/rxjs/compare/6.5.3...6.5.4) (2019-12-27)
 
 
