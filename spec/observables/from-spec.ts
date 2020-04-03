@@ -167,8 +167,8 @@ describe('from', () => {
       expect(nextInvoked).to.equal(false);
     });
     it(`should accept a function`, (done) => {
-      const subject = new Subject();
-      const handler: any = (...args: any[]) => subject.next(...args);
+      const subject = new Subject<any>();
+      const handler: any = (arg: any) => subject.next(arg);
       handler[observable] = () => subject;
       let nextInvoked = false;
 
