@@ -22,10 +22,8 @@ export class SubjectSubscriber<T> extends Subscriber<T> {
  *
  * Every Subject is an Observable and an Observer. You can subscribe to a
  * Subject, and you can call next to feed values as well as error and complete.
- *
- * @class Subject<T>
  */
-export class Subject<T = void> extends Observable<T> implements SubscriptionLike {
+export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   [rxSubscriberSymbol]() {
     return new SubjectSubscriber(this);
