@@ -341,3 +341,40 @@ subject.complete();
 ```
 
 The AsyncSubject is similar to the [`last()`](/api/operators/last) operator, in that it waits for the `complete` notification in order to deliver a single value.
+
+
+## Void subject
+
+Sometimes the emitted value doesn't matter as much as the fact that a value was emitted.
+
+For instance, the code below signals that one second has passed.
+
+```ts
+const subject = new Subject<string>();
+setTimeout(() => subject.next('dummy'), 1000);
+```
+
+Passing a dummy value this way is clumsy and can confuse users.
+
+By declaring a _void subject_, you signal that the value is irrelevant. Only the event itself matters.
+
+```ts
+const subject = new Subject<void>();
+setTimeout(() => subject.next(), 1000);
+```
+
+A complete example with context is shown below:
+
+```ts
+import { Subject } from 'rxjs';
+
+const subject = new Subject(); // Shorthand for Subject<void>
+
+subject.subscribe({
+  next: () => console.log('One second has passed')
+});
+
+setTimeout(() => subject.next(), 1000);
+```
+
+<span class="informal">Before version 7, the default type of Subject values was `any`. `Subject<any>` disables type checking of the emitted values, whereas `Subject<void>` prevents accidental access to the emitted value. If you want the old behavior, then replace `Subject` with `Subject<any>`.</span>
