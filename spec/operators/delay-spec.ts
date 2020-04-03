@@ -1,5 +1,5 @@
-import { of } from 'rxjs';
-import { delay, repeatWhen, skip, take, tap, mergeMap } from 'rxjs/operators';
+import { of, concat } from 'rxjs';
+import { delay, repeatWhen, skip, take, tap, mergeMap, ignoreElements } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
@@ -16,11 +16,11 @@ describe('delay operator', () => {
   });
 
   asDiagram('delay(20)')('should delay by specified timeframe', () => {
-    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  ---a--b--|  ');
-      const t = time('     --|      ');
-      const expected = '-----a--b--|';
-      const subs = '    ^--------!  ';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+    const e1 =   hot('---a--b--|');
+    const t = 2; //      --|
+    const expected = '-----a--b|';
+    const subs =     '^--------!';
 
       const result = e1.pipe(delay(t, testScheduler));
 
@@ -30,10 +30,10 @@ describe('delay operator', () => {
   });
 
   it('should delay by absolute time period', () => {
-    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--|   ');
-      const t = time('    ---|      ');
-      const expected = '-----a--b--|';
+      const t = 3; //     ---|
+      const expected = '-----a--(b|)';
       const subs = '    ^-------!   ';
 
       const absoluteDelay = new Date(testScheduler.now() + t);
@@ -45,10 +45,10 @@ describe('delay operator', () => {
   });
 
   it('should delay by absolute time period after subscription', () => {
-    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  ---^--a--b--|   ');
-      const t = time('        ---|      ');
-      const expected = '   ------a--b--|';
+      const t = 3; //         ---|
+      const expected = '   ------a--(b|)';
       const subs = '       ^--------!   ';
 
       const absoluteDelay = new Date(testScheduler.now() + t);
@@ -60,9 +60,9 @@ describe('delay operator', () => {
   });
 
   it('should raise error when source raises error', () => {
-    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  ---a---b---#');
-      const t = time('     ---|     ');
+      const t = 3; //      ---|
       const expected = '------a---b#';
       const subs = '    ^----------!';
 
@@ -74,9 +74,9 @@ describe('delay operator', () => {
   });
 
   it('should raise error when source raises error', () => {
-    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--#');
-      const t = time('    ---|   ');
+      const t = 3; //     ---|
       const expected = '-----a--#';
       const subs = '    ^-------!';
 
@@ -89,9 +89,9 @@ describe('delay operator', () => {
   });
 
   it('should raise error when source raises error after subscription', () => {
-    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  ---^---a---b---#');
-      const t = time('         ---|     ');
+      const t = 3; //          ---|
       const expected = '   -------a---b#';
       const e1Sub = '      ^-----------!';
 
@@ -104,10 +104,10 @@ describe('delay operator', () => {
   });
 
   it('should delay when source does not emits', () => {
-    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  ----|   ');
-      const t = time('      ---|');
-      const expected = '-------|';
+      const t = 3; //       ---|
+      const expected = '----|';
       const subs = '    ^---!   ';
 
       const result = e1.pipe(delay(t, testScheduler));
@@ -117,11 +117,22 @@ describe('delay operator', () => {
     });
   });
 
-  it('should delay when source is empty', () => {
-    testScheduler.run(({ cold, time, expectObservable }) => {
-      const e1 = cold(' |');
-      const t = time('  ---|');
-      const expected = '---|';
+  it('should not delay when source is empty', () => {
+    testScheduler.run(({ cold, expectObservable }) => {
+    const e1 =  cold('|');
+    const t =  3; // ---|
+    const expected = '|';
+
+    const result = e1.pipe(delay(t, testScheduler));
+
+    expectObservable(result).toBe(expected);
+  }); });
+
+  it('should delay complete when a value is scheduled', () => {
+    testScheduler.run(({ cold, expectObservable }) => {
+    const e1 =  cold('-a-|');
+    const t = 3; //    ---|
+    const expected = '----(a|)';
 
       const result = e1.pipe(delay(t, testScheduler));
 
@@ -130,9 +141,9 @@ describe('delay operator', () => {
   });
 
   it('should not complete when source does not completes', () => {
-    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  ---a---b---------');
-      const t = time('     ---|          ');
+      const t = 3; //      ---|
       const expected = '------a---b------';
       const unsub = '   ----------------!';
       const subs = '    ^---------------!';
@@ -145,9 +156,9 @@ describe('delay operator', () => {
   });
 
   it('should not break unsubscription chains when result is unsubscribed explicitly', () => {
-    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  ---a---b----');
-      const t = time('     ---|     ');
+      const t = 3; //      ---|
       const e1subs = '  ^-------!   ';
       const expected = '------a--   ';
       const unsub = '   --------!   ';
@@ -164,9 +175,9 @@ describe('delay operator', () => {
   });
 
   it('should not complete when source never completes', () => {
-    testScheduler.run(({ cold, time, expectObservable }) => {
+    testScheduler.run(({ cold, expectObservable }) => {
       const e1 = cold(' -');
-      const t = time('  ---|');
+      const t = 3; //   ---|
       const expected = '-';
 
       const result = e1.pipe(delay(t, testScheduler));
@@ -176,13 +187,13 @@ describe('delay operator', () => {
   });
 
   it('should unsubscribe scheduled actions after execution', () => {
-    testScheduler.run(({ cold, time, expectObservable }) => {
+    testScheduler.run(({ cold, expectObservable }) => {
       let subscribeSpy: any = null;
       const counts: number[] = [];
 
       const e1 = cold('      a|');
       const expected = '     --a-(a|)';
-      const duration = time('-|');
+      const duration = 1; // -|
       const result = e1.pipe(
         repeatWhen(notifications => {
           const delayed = notifications.pipe(delay(duration, testScheduler));
@@ -203,6 +214,23 @@ describe('delay operator', () => {
       );
 
       expectObservable(result).toBe(expected);
+    });
+  });
+
+  it('should be possible to delay complete by composition', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 =   hot('---a--b--|');
+      const t = 2; //      --|--|
+      const expected = '-----a--b--|';
+      const subs = '    ^--------!';
+
+      const result = concat(
+        e1.pipe(delay(t, testScheduler)),
+        of(undefined).pipe(delay(t, testScheduler), ignoreElements()),
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(subs);
     });
   });
 });

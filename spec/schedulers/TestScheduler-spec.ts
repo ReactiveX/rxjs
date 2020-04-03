@@ -380,7 +380,7 @@ describe('TestScheduler', () => {
         const output = cold('-a|').pipe(
           delay(1000 * 10)
         );
-        const expected = '   - 10s a|';
+        const expected = '   - 10s (a|)';
         expectObservable(output).toBe(expected);
       });
     });
