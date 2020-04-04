@@ -32,19 +32,19 @@ describe('callbackFunc', () => {
   });
 
   it('should accept cb 1 param', () => {
-    const o = bindCallback<A>(f1) // $ExpectType () => Observable<A>
+    const o = bindCallback(f1) // $ExpectType () => Observable<A>
   });
 
   it('should accept cb 2 params', () => {
-    const o = bindCallback<A, B>(f2) // $ExpectType () => Observable<[A, B]>
+    const o = bindCallback(f2) // $ExpectType () => Observable<[A, B]>
   });
 
   it('should accept cb 3 params', () => {
-    const o = bindCallback<A, B, C>(f3) // $ExpectType () => Observable<[A, B, C]>
+    const o = bindCallback(f3) // $ExpectType () => Observable<[A, B, C]>
   });
 
   it('should accept cb 4 params', () => {
-    const o = bindCallback<A, B, C, D>(f4) // $ExpectType () => Observable<any[]>
+    const o = bindCallback(f4) // $ExpectType () => Observable<any[]>
   });
 });
 
@@ -70,23 +70,23 @@ describe('callbackFunc and 1 args', () => {
   };
 
   it('should accept cb 0 param', () => {
-    const o = bindCallback<E>(fa1cb0) // $ExpectType (arg1: E) => Observable<void>
+    const o = bindCallback(fa1cb0) // $ExpectType (arg1: E) => Observable<void>
   });
 
   it('should accept cb 1 param', () => {
-    const o = bindCallback<E, A>(fa1cb1) // $ExpectType (arg1: E) => Observable<A>
+    const o = bindCallback(fa1cb1) // $ExpectType (arg1: E) => Observable<A>
   });
 
   it('should accept cb 2 param', () => {
-    const o = bindCallback<E, A, B>(fa1cb2) // $ExpectType (arg1: E) => Observable<[A, B]>
+    const o = bindCallback(fa1cb2) // $ExpectType (arg1: E) => Observable<[A, B]>
   });
 
   it('should accept cb 3 param', () => {
-    const o = bindCallback<E, A, B, C>(fa1cb3) // $ExpectType (arg1: E) => Observable<[A, B, C]>
+    const o = bindCallback(fa1cb3) // $ExpectType (arg1: E) => Observable<[A, B, C]>
   });
 
   it('should accept cb 4 param', () => {
-    const o = bindCallback<E, A, B, C, D>(fa1cb4) // $ExpectType (arg1: E) => Observable<any[]>
+    const o = bindCallback(fa1cb4) // $ExpectType (arg1: E) => Observable<any[]>
   });
 });
 
@@ -112,23 +112,23 @@ describe('callbackFunc and 2 args' , () => {
   };
 
   it('should accept cb 0 param', () => {
-    const o = bindCallback<E, F>(fa2cb0) // $ExpectType (arg1: E, arg2: F) => Observable<void>
+    const o = bindCallback(fa2cb0) // $ExpectType (arg1: E, arg2: F) => Observable<void>
   });
 
   it('should accept cb 1 param', () => {
-    const o = bindCallback<E, F, A>(fa2cb1) // $ExpectType (arg1: E, arg2: F) => Observable<A>
+    const o = bindCallback(fa2cb1) // $ExpectType (arg1: E, arg2: F) => Observable<A>
   });
 
   it('should accept cb 2 param', () => {
-    const o = bindCallback<E, F, A, B>(fa2cb2) // $ExpectType (arg1: E, arg2: F) => Observable<[A, B]>
+    const o = bindCallback(fa2cb2) // $ExpectType (arg1: E, arg2: F) => Observable<[A, B]>
   });
 
   it('should accept cb 3 param', () => {
-    const o = bindCallback<E, F, A, B, C>(fa2cb3) // $ExpectType (arg1: E, arg2: F) => Observable<[A, B, C]>
+    const o = bindCallback(fa2cb3) // $ExpectType (arg1: E, arg2: F) => Observable<[A, B, C]>
   });
 
   it('should accept cb 4 param', () => {
-    const o = bindCallback<E, F, A, B, C, D>(fa2cb4) // $ExpectType (arg1: E, arg2: F) => Observable<any[]>
+    const o = bindCallback(fa2cb4) // $ExpectType (arg1: E, arg2: F) => Observable<any[]>
   });
 });
 
@@ -155,23 +155,23 @@ describe('callbackFunc and 3 args' , () => {
 
 
   it('should accept cb 0 param', () => {
-    const o = bindCallback<E, F, G>(fa3cb0) // $ExpectType (arg1: E, arg2: F, arg3: G) => Observable<void>
+    const o = bindCallback(fa3cb0) // $ExpectType (arg1: E, arg2: F, arg3: G) => Observable<void>
   });
 
   it('should accept cb 1 param', () => {
-    const o = bindCallback<E, F, G, A>(fa3cb1) // $ExpectType (arg1: E, arg2: F, arg3: G) => Observable<A>
+    const o = bindCallback(fa3cb1) // $ExpectType (arg1: E, arg2: F, arg3: G) => Observable<A>
   });
 
   it('should accept cb 2 params', () => {
-    const o = bindCallback<E, F, G, A, B>(fa3cb2) // $ExpectType (arg1: E, arg2: F, arg3: G) => Observable<[A, B]>
+    const o = bindCallback(fa3cb2) // $ExpectType (arg1: E, arg2: F, arg3: G) => Observable<[A, B]>
   });
 
   it('should accept cb 3 params', () => {
-    const o = bindCallback<E, F, G, A, B, C>(fa3cb3) // $ExpectType (arg1: E, arg2: F, arg3: G) => Observable<[A, B, C]>
+    const o = bindCallback(fa3cb3) // $ExpectType (arg1: E, arg2: F, arg3: G) => Observable<[A, B, C]>
   });
 
   it('should accept cb 4 params', () => {
-    const o = bindCallback<E, F, G, A, B, C, D>(fa3cb4) // $ExpectType (arg1: E, arg2: F, arg3: G) => Observable<any[]>
+    const o = bindCallback(fa3cb4) // $ExpectType (arg1: E, arg2: F, arg3: G) => Observable<any[]>
   });
 });
 
@@ -198,23 +198,23 @@ describe('callbackFunc and 4 args' , () => {
 
 
   it('should accept cb 0 param', () => {
-    const o = bindCallback<E, F, G, A>(fa4cb0) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A) => Observable<void>
+    const o = bindCallback(fa4cb0) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A) => Observable<void>
   });
 
   it('should accept cb 0 param', () => {
-    const o = bindCallback<E, F, G, A, A>(fa4cb1) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A) => Observable<A>
+    const o = bindCallback(fa4cb1) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A) => Observable<A>
   });
 
   it('should accept cb 2 params', () => {
-    const o = bindCallback<E, F, G, A, A, B>(fa4cb2) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A) => Observable<[A, B]>
+    const o = bindCallback(fa4cb2) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A) => Observable<[A, B]>
   });
 
   it('should accept cb 3 params', () => {
-    const o = bindCallback<E, F, G, A, A, B, C>(fa4cb3) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A) => Observable<[A, B, C]>
+    const o = bindCallback(fa4cb3) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A) => Observable<[A, B, C]>
   });
 
   it('should accept cb 4 params', () => {
-    const o = bindCallback<E, F, G, A, A, B, C, D>(fa4cb4) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A) => Observable<any[]>
+    const o = bindCallback(fa4cb4) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A) => Observable<any[]>
   });
 });
 
@@ -241,23 +241,23 @@ describe('callbackFunc and 5 args' , () => {
 
 
   it('should accept cb 0 param', () => {
-    const o = bindCallback<E, F, G, A, B>(fa5cb0) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A, arg5: B) => Observable<void>
+    const o = bindCallback(fa5cb0) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A, arg5: B) => Observable<void>
   });
 
   it('should accept cb 0 param', () => {
-    const o = bindCallback<E, F, G, A, B, A>(fa5cb1) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A, arg5: B) => Observable<A>
+    const o = bindCallback(fa5cb1) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A, arg5: B) => Observable<A>
   });
 
   it('should accept cb 2 params', () => {
-    const o = bindCallback<E, F, G, A, B, A, B>(fa5cb2) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A, arg5: B) => Observable<[A, B]>
+    const o = bindCallback(fa5cb2) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A, arg5: B) => Observable<[A, B]>
   });
 
   it('should accept cb 3 params', () => {
-    const o = bindCallback<E, F, G, A, B, A, B, C>(fa5cb3) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A, arg5: B) => Observable<[A, B, C]>
+    const o = bindCallback(fa5cb3) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A, arg5: B) => Observable<[A, B, C]>
   });
 
   it('should accept cb 4 params', () => {
-    const o = bindCallback<E, F, G, A, B, A, B, C, D>(fa5cb4) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A, arg5: B) => Observable<any[]>
+    const o = bindCallback(fa5cb4) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A, arg5: B) => Observable<any[]>
   });
 });
 
