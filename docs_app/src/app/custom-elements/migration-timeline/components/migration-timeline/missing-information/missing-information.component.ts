@@ -92,7 +92,7 @@ export class MissingInformationComponent extends State<{ deprecation: RawDepreca
     this.release$,
     this.deprecation$,
   ).pipe(
-    startWith([{}, {}]),
+    startWith([{} as any, {} as any]),
     map(([release, deprecation]: [RawRelease, RawDeprecation]) => {
       const previewRelease =  fillRelease(release,
         {

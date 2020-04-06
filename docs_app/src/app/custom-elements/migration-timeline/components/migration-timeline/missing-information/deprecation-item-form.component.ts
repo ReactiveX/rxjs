@@ -142,11 +142,12 @@ export class DeprecationItemFormComponent extends State<{ crawledData: any }> {
     breakingChangeSubjectAction: ['', Validators.required]
   });
 
-  latestValidValuePrepared$: Observable<RawDeprecation> = combineLatest(
+  latestValidValuePrepared$: Observable<RawDeprecation> = combineLatest([
     this.deprecationForm.valueChanges.pipe(startWith(this.deprecationForm.value)),
     this.withCodeExamples$
+    ]
   ).pipe(
-    map(([rawDeprecation, withCodeExamples]: [any, RawDeprecation, boolean]) => {
+    map(([rawDeprecation, withCodeExamples]: [any, RawDeprecation]) => {
       let deprecation: RawDeprecation = {...rawDeprecation};
       deprecation.itemType = 'deprecation';
       if (!withCodeExamples) {

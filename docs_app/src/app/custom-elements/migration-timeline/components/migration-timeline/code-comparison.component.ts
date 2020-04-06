@@ -7,13 +7,13 @@ import {Deprecation, Release} from '../../data-access';
     <code-example
       [dependencies]="{rxjs: '<' + _release.version}"
       [language]="'typescript'"
-      [title]="'Before Deprecation (< v' + _release.version + ')'">
+      [header]="'Before Deprecation (< v' + _release.version + ')'">
       {{_deprecation.exampleBefore}}
     </code-example>
     <code-example
       [dependencies]="{rxjs: '>=' + _release.version + ' <=' + _deprecation.breakingChangeVersion}"
       [language]="'typescript'"
-      [title]="'After Deprecation (>= v' + _release.version + ')'">
+      [header]="'After Deprecation (>= v' + _release.version + ')'">
       {{_deprecation.exampleAfter}}
     </code-example>
   `,

@@ -162,3 +162,10 @@ export class State<T> implements OnDestroy {
   }
 
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class GlobalState<T> extends State<T> {
+
+}
