@@ -4,7 +4,7 @@ import {State} from '../../../../../shared/state.service';
 import {Release} from '../../../data-access';
 
 @Component({
-  selector: `preview`,
+  selector: `rxjs-preview`,
   template: `
     <ng-container *ngIf="release$ | async as release">
       <h3 class="migration-section-headline">
@@ -62,7 +62,7 @@ export class PreviewComponent extends State<{ release: Release }> {
 
   @Input()
   set release(release$: Observable<Release>) {
-    this.connectState('release', release$);
+    this.connect('release', release$);
   }
 
   release$: Observable<Release> = this.select('release');

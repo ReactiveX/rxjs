@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 
 @Component({
-  selector: `shield`,
+  selector: `rxjs-shield`,
   template: `
     <div class="shield">
       <span class="label">{{_label}}</span>

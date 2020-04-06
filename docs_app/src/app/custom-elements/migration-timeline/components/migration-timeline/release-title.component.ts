@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 import {Release} from '../../data-access';
 
 @Component({
-  selector: `release-title`,
+  selector: `rxjs-release-title`,
   template: `
 
   `,

@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 import {Deprecation} from '../../data-access';
 
 @Component({
-  selector: `deprecation-description-table`,
+  selector: `rxjs-deprecation-description-table`,
   template: `
     <table>
       <thead>
@@ -30,24 +30,12 @@ import {Deprecation} from '../../data-access';
       </thead>
       <tbody>
       <tr>
-        <td>
-          <b>Reason</b>
-        </td>
-        <td>
-          <p>
-            {{deprecationVal.reason}}
-          </p>
-        </td>
+        <td><b>Reason</b></td>
+        <td><p>{{deprecationVal.reason}}</p></td>
       </tr>
       <tr>
-        <td>
-          <b>Implication</b>
-        </td>
-        <td>
-          <p>
-            {{deprecationVal.implication}}
-          </p>
-        </td>
+        <td><b>Implication</b></td>
+        <td><p>{{deprecationVal.implication}}</p></td>
       </tr>
       </tbody>
     </table>
@@ -56,12 +44,14 @@ import {Deprecation} from '../../data-access';
 })
 export class DeprecationDescriptionTableComponent {
   deprecationVal: Deprecation;
+
   @Input()
   set deprecation(deprecation: Deprecation) {
     if (deprecation) {
       this.deprecationVal = deprecation;
     }
   }
+
   @Output()
   selectedMigrationItemUIDChange = new Subject<string>();
 }

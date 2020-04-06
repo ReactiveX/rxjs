@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 import {BreakingChange} from '../../data-access';
 
 @Component({
-  selector: `breaking-change-description-table`,
+  selector: `rxjs-breaking-change-description-table`,
   template: `
     <table>
       <thead>
@@ -23,9 +23,7 @@ import {BreakingChange} from '../../data-access';
       </thead>
       <tbody>
       <tr>
-        <td>
-          <b>Refactoring</b>
-        </td>
+        <td><b>Refactoring</b></td>
         <td>
           <p>
             For refactoring suggestions please visit the version of deprecation:

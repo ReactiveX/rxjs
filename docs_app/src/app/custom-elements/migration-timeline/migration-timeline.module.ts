@@ -15,7 +15,7 @@ import {CodeExampleModule} from '../code/code-example.module';
 import {WithCustomElementComponent} from '../element-registry';
 import {CopyToClipboardDirective} from './components/copy-to-clipboard.directive';
 import {BreakingChangeDescriptionTableComponent} from './components/migration-timeline/breaking-change-description-table.component';
-import {CodeExamplesComponent} from './components/migration-timeline/code-examples.component';
+import {CodeComparisonComponent} from './components/migration-timeline/code-comparison.component';
 import {DeprecationDescriptionTableComponent} from './components/migration-timeline/deprecation-description-table.component';
 import {EmptyMigrationSectionComponent} from './components/migration-timeline/empty-migration-section.component';
 import {MigrationTimelineComponent} from './components/migration-timeline/migration-timeline.component';
@@ -44,7 +44,7 @@ import {MigrationTimelineContainerComponent} from './migration-timeline.containe
     MigrationTimelineContainerComponent,
     MigrationTimelineComponent, DeprecationDescriptionTableComponent,
     BreakingChangeDescriptionTableComponent, MissingInformationComponent, DeprecationItemFormComponent,
-    CopyToClipboardDirective, ShieldComponent, ReleaseTitleComponent, CodeExamplesComponent,
+    CopyToClipboardDirective, ShieldComponent, ReleaseTitleComponent, CodeComparisonComponent,
     EmptyMigrationSectionComponent, PreviewComponent,
     ReleaseNavigationComponent
   ],

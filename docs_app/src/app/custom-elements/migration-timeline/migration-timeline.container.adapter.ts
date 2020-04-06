@@ -28,9 +28,9 @@ export class MigrationTimelineContainerAdapter extends State<MigrationTimelineCo
   ) {
     super();
 
-    this.connectState('releaseList', this.migrationService.migrations$);
+    this.connect('releaseList', this.migrationService.migrations$);
 
-    this.connectState('selectedMigrationItemUID',
+    this.connect('selectedMigrationItemUID',
       combineLatest(
         this.releaseList$,
         this._selectedMigrationTimelineItemUIDUrl$

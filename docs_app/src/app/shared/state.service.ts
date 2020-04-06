@@ -54,9 +54,9 @@ export class State<T> implements OnDestroy {
     this.stateSlices.next(s);
   }
 
-  connectState<A extends keyof T>(str: A, obs: Observable<T[A]>): void;
-  connectState<A extends keyof T>(obs: Observable<Partial<T>>): void;
-  connectState<A extends keyof T>(strOrObs: any, obs?: any): void {
+  connect<A extends keyof T>(str: A, obs: Observable<T[A]>): void;
+  connect<A extends keyof T>(obs: Observable<Partial<T>>): void;
+  connect<A extends keyof T>(strOrObs: any, obs?: any): void {
     if (typeof strOrObs === 'string') {
       this.stateObservables.next(obs.pipe(map(s => ({[strOrObs as A]: s}))) as Observable<T[A]>);
     } else {
@@ -137,8 +137,8 @@ export class State<T> implements OnDestroy {
     throw new Error('Wrong params passed' + JSON.stringify(opOrMapFn));
   }
 
-  holdEffect<S>(observableWithSideEffect: Observable<S>): void;
-  holdEffect<S>(obsOrObsWithSideEffect: Observable<S>, sideEffectFn?: (arg: S) => void): void {
+  hold<S>(observableWithSideEffect: Observable<S>): void;
+  hold<S>(obsOrObsWithSideEffect: Observable<S>, sideEffectFn?: (arg: S) => void): void {
     if (sideEffectFn) {
       this.effectSubject.next(obsOrObsWithSideEffect.pipe(tap(sideEffectFn)));
     }
@@ -160,12 +160,5 @@ export class State<T> implements OnDestroy {
   ngOnDestroy(): void {
     this.teardown();
   }
-
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class GlobalState<T> extends State<T> {
 
 }

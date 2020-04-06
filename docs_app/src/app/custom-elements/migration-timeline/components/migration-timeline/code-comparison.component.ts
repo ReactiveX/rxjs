@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {Deprecation, Release} from '../../data-access';
 
 @Component({
-  selector: `code-examples`,
+  selector: `rxjs-code-comparison`,
   template: `
     <code-example
       [dependencies]="{rxjs: '<' + _release.version}"
@@ -19,7 +19,7 @@ import {Deprecation, Release} from '../../data-access';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CodeExamplesComponent {
+export class CodeComparisonComponent {
 
   _release: Release;
   @Input()

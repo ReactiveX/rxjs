@@ -9,7 +9,7 @@ import {fillDeprecation, fillRelease, generateSnipped, getBreakingChangeFromDepr
 
 
 @Component({
-  selector: `missing-information`,
+  selector: `rxjs-missing-information`,
   template: `
     <mat-card class="migration-section manual-step selected suggestion-open-issue">
       <mat-card-header id="wrong-uid" class="migration-headline">
@@ -21,7 +21,7 @@ import {fillDeprecation, fillRelease, generateSnipped, getBreakingChangeFromDepr
             We suggest you go to the RxJS GitHub page and
             <a [href]="link$ | async" target="_blank"> open an issue</a>
             <span *ngIf="!env.production"> or <mat-icon
-              copy-to-clipboard
+              rxjs-copy-to-clipboard
               [content]="contentToCopy$ | async">
           content_copy
         </mat-icon>
@@ -31,13 +31,13 @@ import {fillDeprecation, fillRelease, generateSnipped, getBreakingChangeFromDepr
         <br/>
         <div class="row">
           <div class="half col">
-            <deprecation-item-form
+            <rxjs-deprecation-item-form
               (changes)="formOutput$.next($event)"
               (release)="releaseFormOutput$.next($event)"
-            ></deprecation-item-form>
+            ></rxjs-deprecation-item-form>
           </div>
           <div class="half col">
-            <preview [release]="releaseToPreview$"></preview>
+            <rxjs-preview [release]="releaseToPreview$"></rxjs-preview>
           </div>
         </div>
         <mat-icon class="img" aria-hidden="false" aria-label="Missing Documentation">error_outline</mat-icon>
@@ -119,8 +119,8 @@ export class MissingInformationComponent extends State<{ deprecation: RawDepreca
 
   constructor(private lo: LocationService) {
     super();
-    this.connectState('deprecation', this.formOutput$);
-    this.connectState('release', this.releaseFormOutput$);
+    this.connect('deprecation', this.formOutput$);
+    this.connect('release', this.releaseFormOutput$);
   }
 
 }

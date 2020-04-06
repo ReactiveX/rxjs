@@ -6,7 +6,7 @@ import {CopierService} from '../../../shared/copier.service';
 import {State} from '../../../shared/state.service';
 
 @Directive({
-  selector: '[copy-to-clipboard]'
+  selector: '[rxjs-copy-to-clipboard]'
 })
 export class CopyToClipboardDirective extends State<{ title: string, content: string }> {
   hostClick$ = new Subject<Event>();
@@ -39,7 +39,7 @@ export class CopyToClipboardDirective extends State<{ title: string, content: st
   constructor(private copier: CopierService, private snackbar: MatSnackBar) {
     super();
     this.setState({title: 'Copy to clipboard'});
-    this.holdEffect(this.copyToClipBoardEffect$);
+    this.hold(this.copyToClipBoardEffect$);
   }
 
   saveContent(content: string): void {

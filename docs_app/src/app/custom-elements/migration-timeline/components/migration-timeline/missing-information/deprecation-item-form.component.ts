@@ -7,7 +7,7 @@ import {RawDeprecation, SubjectSymbols} from '../../../data-access';
 
 
 @Component({
-  selector: 'deprecation-item-form',
+  selector: 'rxjs-deprecation-item-form',
   template: `
     <mat-form-field class="full">
       <mat-label>Parse Crawled Data</mat-label>
@@ -147,15 +147,13 @@ export class DeprecationItemFormComponent extends State<{ crawledData: any }> {
     this.withCodeExamples$
   ).pipe(
     map(([rawDeprecation, withCodeExamples]: [any, RawDeprecation, boolean]) => {
-      const d: RawDeprecation = {...rawDeprecation};
-      d.itemType = 'deprecation';
+      let deprecation: RawDeprecation = {...rawDeprecation};
+      deprecation.itemType = 'deprecation';
       if (!withCodeExamples) {
-        delete d.exampleAfter;
-        delete d.exampleAfterDependencies;
-        delete d.exampleBefore;
-        delete d.exampleBeforeDependencies;
+        const {exampleAfter, exampleAfterDependencies, exampleBefore, exampleBeforeDependencies, ...newDeprecation} = deprecation;
+        deprecation = newDeprecation;
       }
-      return d;
+      return deprecation;
     })
   );
 
@@ -166,7 +164,7 @@ export class DeprecationItemFormComponent extends State<{ crawledData: any }> {
 
   constructor(private fb: FormBuilder) {
     super();
-    this.holdEffect(
+    this.hold(
       this.crawledData$.pipe(
         concatMap(o => of(o).pipe(
           map(str => JSON.parse(str)),

@@ -20,11 +20,11 @@ export interface MigrationTimelineContainerModelFromRemoteSources {
     <h2>Supported Versions</h2>
     <ng-container *ngIf="baseModel$ | async as m">
       <section>
-        <release-navigation
+        <rxjs-release-navigation
           [selectedMigrationReleaseUID]="(selectedMigrationReleaseUID$ | async)"
           [releaseList]="m.releaseList"
           (selectedMigrationReleaseUIDChange)="selectedMigrationReleaseUIDChange.next($event)">
-        </release-navigation>
+        </rxjs-release-navigation>
       </section>
       <h2>Timeline</h2>
       <section class="grid-fluid">
@@ -64,8 +64,8 @@ export class MigrationTimelineContainerComponent {
     private _locationService: LocationService,
     private _va: MigrationTimelineContainerAdapter
   ) {
-    this._baseModel.connectState(this._va.select());
-    this._baseModel.holdEffect(this.updateUrlSideEffect$);
+    this._baseModel.connect(this._va.select());
+    this._baseModel.hold(this.updateUrlSideEffect$);
   }
 
   private setMigrationTimelineSelection(uid: string) {

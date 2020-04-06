@@ -16,7 +16,7 @@ export interface MigrationTimelineNavigationComponentModel {
 }
 
 @Component({
-  selector: 'release-navigation',
+  selector: 'rxjs-release-navigation',
   template: `
     <div class="flex-center group-buttons migration-timeline-navigation"
       *ngIf="baseModel$ | async as vm">
