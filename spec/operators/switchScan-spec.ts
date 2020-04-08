@@ -61,7 +61,7 @@ describe('switchScan', () => {
     const e1subs =   '^                            !        ';
     const expected = '-----------a--b--c----f---g---h---i--|';
 
-    const observableLookup = { x, y };
+    const observableLookup: Record<string, Observable<string>> = { x, y };
 
     const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
@@ -93,7 +93,7 @@ describe('switchScan', () => {
     const unsub =    '                     !                ';
     const expected = '-----------a--b--c----                ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x, y };
 
     const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
@@ -113,7 +113,7 @@ describe('switchScan', () => {
     const expected = '-----------a--b--c----                ';
     const unsub =    '                     !                ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x, y };
 
     const result = e1.pipe(
       mergeMap(x => of(x)),
@@ -161,7 +161,7 @@ describe('switchScan', () => {
     const e1subs =   '^                            !       ';
     const expected = '-----------a--b--c----f---g---h---i--';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x, y };
 
     const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
@@ -180,7 +180,7 @@ describe('switchScan', () => {
     const e1subs =   '^                            !';
     const expected = '------------f---g---h---i----|';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x, y };
 
     const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
@@ -199,7 +199,7 @@ describe('switchScan', () => {
     const e1subs =   '^                !                   ';
     const expected = '-----------a--b--#                   ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x, y };
 
     const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
@@ -218,7 +218,7 @@ describe('switchScan', () => {
     const e1subs =   '^                            !        ';
     const expected = '-----------c--d--e----f---g---h---i--|';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x, y };
 
     const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
@@ -237,7 +237,7 @@ describe('switchScan', () => {
     const e1subs =   '^                            !';
     const expected = '-----------------------------|';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x, y };
 
     const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
@@ -256,7 +256,7 @@ describe('switchScan', () => {
     const e1subs =   '^                            !';
     const expected = '------------------------------';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x, y };
 
     const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
@@ -275,7 +275,7 @@ describe('switchScan', () => {
     const e1subs =   '^                            !';
     const expected = '-----------------------------|';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x, y };
 
     const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
@@ -287,14 +287,14 @@ describe('switchScan', () => {
 
   it('should switch inner never and throw', () => {
     const x = cold('-');
-    const y = cold('#', null, 'sad');
+    const y = cold('#', undefined, 'sad');
     const xsubs =    '         ^         !          ';
     const ysubs =    '                   (^!)       ';
     const e1 =   hot('---------x---------y---------|');
     const e1subs =   '^                  !          ';
     const expected = '-------------------#          ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x, y };
 
     const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
@@ -306,14 +306,14 @@ describe('switchScan', () => {
 
   it('should switch inner empty and throw', () => {
     const x = cold('|');
-    const y = cold('#', null, 'sad');
+    const y = cold('#', undefined, 'sad');
     const xsubs =    '         (^!)                 ';
     const ysubs =    '                   (^!)       ';
     const e1 =   hot('---------x---------y---------|');
     const e1subs =   '^                  !          ';
     const expected = '-------------------#          ';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup: Record<string, Observable<string>> = { x, y };
 
     const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
@@ -363,7 +363,7 @@ describe('switchScan', () => {
     const e1subs =   '^                  !       ';
     const expected = '-----------a--b--c-#       ';
 
-    const observableLookup = { x: x };
+    const observableLookup: Record<string, Observable<string>> = { x: x };
 
     const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
