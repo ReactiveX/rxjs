@@ -179,7 +179,7 @@ export class AjaxObservable<T> extends Observable<T> {
         }
       }
       const requestParams = urlOrRequest.params;
-      if (requestParams) {
+      if (requestParams && urlOrRequest.url) {
         const url = new URL(urlOrRequest.url);
         for (const param in requestParams) {
           if (requestParams.hasOwnProperty(param)) {
