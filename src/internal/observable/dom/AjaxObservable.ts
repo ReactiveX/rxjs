@@ -19,6 +19,7 @@ export interface AjaxRequest {
   createXHR?: () => XMLHttpRequest;
   progressSubscriber?: Subscriber<any>;
   responseType?: string;
+  params?: { [param: string]: string };
 }
 
 function getCORSRequest(): XMLHttpRequest {
@@ -126,6 +127,7 @@ export class AjaxObservable<T> extends Observable<T> {
    *   - headers: Optional headers
    *   - crossDomain: true if a cross domain request, else false
    *   - createXHR: a function to override if you need to use an alternate
+   *   - params: Optional URL Query Parameters
    *   XMLHttpRequest implementation.
    *   - resultSelector: a function to use to alter the output value type of
    *   the Observable. Gets {@link AjaxResponse} as an argument.
@@ -175,6 +177,16 @@ export class AjaxObservable<T> extends Observable<T> {
         if (urlOrRequest.hasOwnProperty(prop)) {
           request[prop] = urlOrRequest[prop];
         }
+      }
+      const requestParams = urlOrRequest.params;
+      if (requestParams) {
+        const url = new URL(urlOrRequest.url);
+        for (const param in requestParams) {
+          if (requestParams.hasOwnProperty(param)) {
+            url.searchParams.set(param, requestParams[param]);
+          }
+        }
+        request.url += url.search;
       }
     }
 

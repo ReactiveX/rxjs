@@ -676,6 +676,35 @@ describe('ajax', () => {
       expect(complete).to.be.true;
     });
 
+    it('request for url and params should succeed on 200', () => {
+      const expected = { foo: 'bar' };
+      let result;
+      let complete = false;
+      const obj: AjaxRequest = {
+        url: 'http://talk-to-me-goose',
+        method: 'GET',
+        params: {baz: 'foo'}
+      };
+      ajax(obj).subscribe(x => {
+          result = x.response;
+        }, null, () => {
+          complete = true;
+        });
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      expect(request.url).to.equal('http://talk-to-me-goose?baz=foo');
+
+      request.respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': JSON.stringify(expected)
+      });
+
+      expect(result).to.deep.equal(expected);
+      expect(complete).to.be.true;
+    });
+
     it('should succeed on 204 No Content', () => {
       const expected: null = null;
       let result;
