@@ -7,9 +7,6 @@ import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
 import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
 
-/**
- * @class SubjectSubscriber<T>
- */
 export class SubjectSubscriber<T> extends Subscriber<T> {
   constructor(protected destination: Subject<T>) {
     super(destination);
@@ -17,15 +14,31 @@ export class SubjectSubscriber<T> extends Subscriber<T> {
 }
 
 /**
- * A Subject is a special type of Observable that allows values to be
- * multicasted to many Observers. Subjects are like EventEmitters.
+ * A Subject is a both an observer and an observable.
  *
- * Every Subject is an Observable and an Observer. You can subscribe to a
- * Subject, and you can call next to feed values as well as error and complete.
+ * The main use cases for a Subject in RxJS are:
  *
- * @class Subject<T>
+ * 1. To multicast an observable. That is, to allow many subscribers to subscribe
+ * to a single subscription to a source observable. This can be accomplished with
+ * various operators, or with Subject alone.
+ * 2. As a bridge between event handling systems that only allow one handler and
+ * creating an observable of those events. For example, registering an event handler
+ * via JSX in React, or via a template in Angular.
+ *
+ * **TypeScript Users**
+ *
+ * Note that because Subject was developed against older versions of TypeScript, the
+ * `next` method is incorrectly typed, as `next(value?): void` and always allows `value` to be optional.
+ * This was done to provide better ergonomics for TypeScript users, so that they may
+ * call `subject.next()` if they are using a `Subject<void>(). This is incorrect,
+ * and we experimented with fixing it in v7, however we are unable to fix it until a later version
+ * because of the number of builds it would break. We want to have linting in place
+ * to make sure we migrate users gracefully.
+ *
+ * If you want to call `subject.next()` without an argument, you must be using a
+ * `Subject<void>` or a `Subject<T | void>`.
  */
-export class Subject<T = void> extends Observable<T> implements SubscriptionLike {
+export class Subject<T> extends Observable<T> implements SubscriptionLike, Observer<T> {
 
   [rxSubscriberSymbol]() {
     return new SubjectSubscriber(this);
@@ -33,21 +46,31 @@ export class Subject<T = void> extends Observable<T> implements SubscriptionLike
 
   observers: Observer<T>[] = [];
 
+  /**
+   * Whether or not the subject is closed.
+   * @deprecated Will be `readonly` in the future
+   */
   closed = false;
 
+  /**
+   * @deprecated do not read or set, this was for internal use only
+   */
   isStopped = false;
 
+  /**
+   * @deprecated do not read or set, this was for internal use only
+   */
   hasError = false;
 
+  /**
+   * @deprecated do not read or set, this was for internal use only
+   */
   thrownError: any = null;
 
-  constructor() {
-    super();
-  }
-
-  /**@nocollapse
+  /**
+   * @nocollapse
    * @deprecated use new Subject() instead
-  */
+   */
   static create: Function = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
     return new AnonymousSubject<T>(destination, source);
   }
@@ -58,7 +81,14 @@ export class Subject<T = void> extends Observable<T> implements SubscriptionLike
     return <any>subject;
   }
 
-  next(value: T) {
+  /**
+   * Next a value through the subject to all subscribers. Only works if
+   * the subject is not `closed`.
+   *
+   * **Typings incorrect here**. See class documentation.
+   * @param value
+   */
+  next(value?: T) {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
@@ -102,6 +132,11 @@ export class Subject<T = void> extends Observable<T> implements SubscriptionLike
     this.observers.length = 0;
   }
 
+  /**
+   * Calling `unsubscribe` will clean up the subscriptions to this
+   * subject, and also cause the subject to throw errors on any
+   * action against it.
+   */
   unsubscribe() {
     this.isStopped = true;
     this.closed = true;
@@ -146,9 +181,6 @@ export class Subject<T = void> extends Observable<T> implements SubscriptionLike
   }
 }
 
-/**
- * @class AnonymousSubject<T>
- */
 export class AnonymousSubject<T> extends Subject<T> {
   constructor(protected destination?: Observer<T>, source?: Observable<T>) {
     super();
