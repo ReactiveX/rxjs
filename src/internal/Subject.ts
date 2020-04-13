@@ -41,13 +41,10 @@ export class Subject<T = void> extends Observable<T> implements SubscriptionLike
 
   thrownError: any = null;
 
-  constructor() {
-    super();
-  }
-
-  /**@nocollapse
-   * @deprecated use new Subject() instead
-  */
+  /**
+   * @nocollapse
+   * @deprecated use {@link FrankenSubject} instead
+   */
   static create: Function = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
     return new AnonymousSubject<T>(destination, source);
   }
@@ -146,9 +143,6 @@ export class Subject<T = void> extends Observable<T> implements SubscriptionLike
   }
 }
 
-/**
- * @class AnonymousSubject<T>
- */
 export class AnonymousSubject<T> extends Subject<T> {
   constructor(protected destination?: Observer<T>, source?: Observable<T>) {
     super();
