@@ -19,7 +19,7 @@ export function startWith<T, D, E, F, G, H>(v1: D, v2: E, v3: F, v4: G, v5: H, s
 /** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([[a, b, c], source], scheduler).pipe(concatAll())`) */
 export function startWith<T, D, E, F, G, H, I>(v1: D, v2: E, v3: F, v4: G, v5: H, v6: I, scheduler: SchedulerLike): OperatorFunction<T, T | D | E | F | G | H | I>;
 
-export function startWith<T, A extends any[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
+export function startWith<T, A extends any[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
 /**
  * Returns an observable that, at the moment of subscription, will synchronously emit all
