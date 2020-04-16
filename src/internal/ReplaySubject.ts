@@ -47,14 +47,14 @@ export class ReplaySubject<T> extends Subject<T> {
    * @param timestampProvider An object with a `now()` method that provides the current timestamp. This is used to
    * calculate the amount of time something has been buffered.
    */
-  constructor(bufferSize: number = Number.POSITIVE_INFINITY,
-              windowTime: number = Number.POSITIVE_INFINITY,
+  constructor(bufferSize: number = Infinity,
+              windowTime: number = Infinity,
               private timestampProvider: TimestampProvider = Date) {
     super();
     this._bufferSize = bufferSize < 1 ? 1 : bufferSize;
     this._windowTime = windowTime < 1 ? 1 : windowTime;
 
-    if (windowTime === Number.POSITIVE_INFINITY) {
+    if (windowTime === Infinity) {
       this._infiniteTimeWindow = true;
       /** @override */
       this.next = this.nextInfiniteTimeWindow;

@@ -32,7 +32,7 @@ describe('expand operator', () => {
     const expected =  '--a-b-c-d|';
     const values = {a: 1, b: 2, c: 4, d: 8};
 
-    const result = e1.pipe(expand(x => x === 8 ? EMPTY : e2.pipe(map(c => c * x)), Number.POSITIVE_INFINITY, rxTestScheduler));
+    const result = e1.pipe(expand(x => x === 8 ? EMPTY : e2.pipe(map(c => c * x)), Infinity, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

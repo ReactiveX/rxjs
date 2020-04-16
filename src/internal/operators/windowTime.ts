@@ -100,7 +100,7 @@ export function windowTime<T>(windowTimeSpan: number,
 export function windowTime<T>(windowTimeSpan: number): OperatorFunction<T, Observable<T>> {
   let scheduler: SchedulerLike = async;
   let windowCreationInterval: number | null = null;
-  let maxWindowSize: number = Number.POSITIVE_INFINITY;
+  let maxWindowSize: number = Infinity;
 
   if (isScheduler(arguments[3])) {
     scheduler = arguments[3];
@@ -206,7 +206,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     // If we have a max window size, we might end up mutating the
     // array while we're iterating over it. If that's the case, we'll
     // copy it, otherwise, we don't just to save memory allocation.
-    const windows = this.maxWindowSize < Number.POSITIVE_INFINITY ? this.windows.slice() : this.windows;
+    const windows = this.maxWindowSize < Infinity ? this.windows.slice() : this.windows;
     const len = windows.length;
     for (let i = 0; i < len; i++) {
       const window = windows[i];

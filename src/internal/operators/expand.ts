@@ -53,7 +53,7 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  * @param {function(value: T, index: number) => Observable} project A function
  * that, when applied to an item emitted by the source or the output Observable,
  * returns an Observable.
- * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
+ * @param {number} [concurrent=Infinity] Maximum number of input
  * Observables being subscribed to concurrently.
  * @param {SchedulerLike} [scheduler=null] The {@link SchedulerLike} to use for subscribing to
  * each projected inner Observable.
@@ -64,9 +64,9 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  * @name expand
  */
 export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>,
-                             concurrent: number = Number.POSITIVE_INFINITY,
+                             concurrent: number = Infinity,
                              scheduler?: SchedulerLike): OperatorFunction<T, R> {
-  concurrent = (concurrent || 0) < 1 ? Number.POSITIVE_INFINITY : concurrent;
+  concurrent = (concurrent || 0) < 1 ? Infinity : concurrent;
 
   return (source: Observable<T>) => source.lift(new ExpandOperator(project, concurrent, scheduler));
 }
@@ -105,7 +105,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
               private concurrent: number,
               private scheduler?: SchedulerLike) {
     super(destination);
-    if (concurrent < Number.POSITIVE_INFINITY) {
+    if (concurrent < Infinity) {
       this.buffer = [];
     }
   }
