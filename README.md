@@ -14,7 +14,7 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Contribution Guidelines](CONTRIBUTING.md)
-- [Maintainer Guidelines](doc_app/content/maintainer-guidelines.md)
+- [Maintainer Guidelines](docs_app/content/maintainer-guidelines.md)
 - [API Documentation](https://rxjs.dev/)
 
 ## Versions In This Repository
