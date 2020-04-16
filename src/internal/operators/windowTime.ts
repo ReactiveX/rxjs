@@ -8,7 +8,6 @@ import { isNumeric } from '../util/isNumeric';
 import { isScheduler } from '../util/isScheduler';
 import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
 
-
 export function windowTime<T>(windowTimeSpan: number,
                               scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(windowTimeSpan: number,
