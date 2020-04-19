@@ -87,7 +87,7 @@ export function fromFetch(
  *  complete: () => console.log('done')
  * });
  * ```
- * 
+ *
  * @param input The resource you would like to fetch. Can be a url or a request object.
  * @param init A configuration object for the fetch.
  * [See MDN for more details](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
