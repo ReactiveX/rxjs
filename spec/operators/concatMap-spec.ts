@@ -375,8 +375,9 @@ describe('Observable.prototype.concatMap', () => {
         const inner = cold(' --i-j-k-l-|      ', values);
         const innersubs = [
           '                -^---------!      ',
-          '                -----------^-----!'];
-        const expected =  '---i-j-k-l---i-j-#';
+          '                -----------^-----!'
+        ];
+        const expected = ' ---i-j-k-l---i-j-#';
 
         const result = e1.pipe(concatMap(value => inner));
 
@@ -546,34 +547,34 @@ describe('Observable.prototype.concatMap', () => {
           '          -2--3--4--5----6-|                                   '
         );
         const csubs =
-          '         --^----------------!                                   ';
+          '        --^----------------!                                   ';
         const d = cold(
           '                           ----2--3|                           '
         );
         const dsubs =
-          '         -------------------^-------!                           ';
+          '        -------------------^-------!                           ';
         const e = cold(
           '                                   -1------2--3-4-5---|        '
         );
         const esubs =
-          '         ---------------------------^------------------!        ';
+          '        ---------------------------^------------------!        ';
         const f = cold(
           '                                                      --|      '
         );
         const fsubs =
-          '         ----------------------------------------------^-!      ';
+          '        ----------------------------------------------^-!      ';
         const g = cold(
           '                                                        ---1-2|'
         );
         const gsubs =
           '         ------------------------------------------------^-----!';
         const e1 = hot(
-          '  -a-b--^-c-----d------e----------------f-----g---             '
+          '   -a-b--^-c-----d------e----------------f-----g---             '
         );
         const e1subs =
-          '        ^                                                      ';
+          '         ^                                                      ';
         const expected =
-          '      ---2--3--4--5----6-----2--3-1------2--3-4-5--------1-2-';
+          '         ---2--3--4--5----6-----2--3-1------2--3-4-5--------1-2-';
         const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
         const result = e1.pipe(
@@ -610,17 +611,17 @@ describe('Observable.prototype.concatMap', () => {
           '          -2--3--4--5----6-|                                   '
         );
         const csubs =
-          '         --^----------------!                                   ';
+          '        --^----------------!                                   ';
         const d = cold(
           '                           ----2--3|                           '
         );
         const dsubs =
-          '         -------------------^-------!                           ';
+          '        -------------------^-------!                           ';
         const e = cold(
           '                                   -1------2--3-4-5---|        '
         );
         const esubs =
-          '         ---------------------------^-----------!               ';
+          '        ---------------------------^-----------!               ';
         const f = cold(
           '                                                      --|      '
         );
@@ -635,7 +636,7 @@ describe('Observable.prototype.concatMap', () => {
         const e1subs =
           '        ^--------------------------------------!               ';
         const expected =
-          '      ---2--3--4--5----6-----2--3-1------2--3#               ';
+          '        ---2--3--4--5----6-----2--3-1------2--3#               ';
         const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
         const result = e1.pipe(
@@ -672,7 +673,7 @@ describe('Observable.prototype.concatMap', () => {
           '          -2--3--4--5----6-#                                   '
         );
         const csubs =
-          '         --^----------------!                                   ';
+          '        --^----------------!                                   ';
         const d = cold(
           '                           ----2--3|                           '
         );
@@ -695,7 +696,7 @@ describe('Observable.prototype.concatMap', () => {
         const e1subs =
           '        ^------------------!                                   ';
         const expected =
-          '      ---2--3--4--5----6-#                                   ';
+          '        ---2--3--4--5----6-#                                   ';
         const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
         const result = e1.pipe(
@@ -725,24 +726,24 @@ describe('Observable.prototype.concatMap', () => {
         );
         const asubs: string[] = [];
         const b = cold(
-          '   -#                                                        '
+          '     -#                                                        '
         );
         const bsubs: string[] = [];
         const c = cold(
           '          -2--3--4--5----6-|                                   '
         );
         const csubs =
-          '         --^----------------!                                   ';
+          '        --^----------------!                                   ';
         const d = cold(
           '                           ----2--3|                           '
         );
         const dsubs =
-          '         -------------------^-------!                           ';
+          '        -------------------^-------!                           ';
         const e = cold(
           '                                   -1------2--3-4-5---|        '
         );
         const esubs =
-          '         ---------------------------^--!                        ';
+          '        ---------------------------^--!                        ';
         const f = cold(
           '                                                      --|      '
         );
@@ -757,9 +758,9 @@ describe('Observable.prototype.concatMap', () => {
         const e1subs =
           '        ^-----------------------------!                        ';
         const unsub =
-          '         ^-----------------------------!                        ';
+          '        ^-----------------------------!                        ';
         const expected =
-          '      ---2--3--4--5----6-----2--3-1--                        ';
+          '        ---2--3--4--5----6-----2--3-1--                        ';
         const observableLookup: Record<string, Observable<string>> = {
           a: a,
           b: b,
@@ -800,17 +801,17 @@ describe('Observable.prototype.concatMap', () => {
           '          -2--3--4--5----6-|                                   '
         );
         const csubs =
-          '         --^----------------!                                   ';
+          '        --^----------------!                                   ';
         const d = cold(
           '                           ----2--3|                           '
         );
         const dsubs =
-          '         -------------------^-------!                           ';
+          '        -------------------^-------!                           ';
         const e = cold(
           '                                   -1------2--3-4-5---|        '
         );
         const esubs =
-          '         ---------------------------^--!                        ';
+          '        ---------------------------^--!                        ';
         const f = cold(
           '                                                      --|      '
         );
@@ -825,9 +826,9 @@ describe('Observable.prototype.concatMap', () => {
         const e1subs =
           '        ^-----------------------------!                        ';
         const unsub =
-          '         ^-----------------------------!                        ';
+          '        ^-----------------------------!                        ';
         const expected =
-          '      ---2--3--4--5----6-----2--3-1--                        ';
+          '        ---2--3--4--5----6-----2--3-1--                        ';
         const observableLookup: Record<string, Observable<string>> = {
           a: a,
           b: b,
@@ -872,12 +873,12 @@ describe('Observable.prototype.concatMap', () => {
           '          -2--3--4--5----6-|                                   '
         );
         const csubs =
-          '         --^----------------!                                   ';
+          '        --^----------------!                                   ';
         const d = cold(
           '                           ----2--3|                           '
         );
         const dsubs =
-          '         -------------------^-------!                           ';
+          '        -------------------^-------!                           ';
         const e = cold(
           '                                   -1------2--3-4-5---|        '
         );
@@ -896,7 +897,7 @@ describe('Observable.prototype.concatMap', () => {
         const e1subs =
           '        ^--------------------------!                           ';
         const expected =
-          '      ---2--3--4--5----6-----2--3#                           ';
+          '        ---2--3--4--5----6-----2--3#                           ';
         const observableLookup: Record<string, Observable<string>> = {
           a: a,
           b: b,
