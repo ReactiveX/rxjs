@@ -170,4 +170,32 @@ describe('Scheduler.asap', () => {
       firstSubscription.unsubscribe();
     }
   });
+
+  it('should not execute rescheduled actions when flushing', (done: MochaDone) => {
+    let flushCount = 0;
+    let scheduledIndices: number[] = [];
+
+    let originalFlush = asap.flush;
+    asap.flush = (...args) => {
+      ++flushCount;
+      originalFlush.apply(asap, args);
+      if (flushCount === 2) {
+        asap.flush = originalFlush;
+        try {
+          expect(scheduledIndices).to.deep.equal([0, 1]);
+          done();
+        } catch (error) {
+          done(error);
+        }
+      }
+    };
+
+    asap.schedule(function (index) {
+      if (flushCount < 2) {
+        this.schedule(index! + 1);
+        scheduledIndices.push(index! + 1);
+      }
+    }, 0, 0);
+    scheduledIndices.push(0);
+  });
 });
