@@ -115,4 +115,32 @@ describe('Scheduler.animationFrame', () => {
       firstSubscription.unsubscribe();
     }
   });
+
+  it('should not execute rescheduled actions when flushing', (done: MochaDone) => {
+    let flushCount = 0;
+    let scheduledIndices: number[] = [];
+
+    let originalFlush = animationFrame.flush;
+    animationFrame.flush = (...args) => {
+      ++flushCount;
+      originalFlush.apply(animationFrame, args);
+      if (flushCount === 2) {
+        animationFrame.flush = originalFlush;
+        try {
+          expect(scheduledIndices).to.deep.equal([0, 1]);
+          done();
+        } catch (error) {
+          done(error);
+        }
+      }
+    };
+
+    animationFrame.schedule(function (index) {
+      if (flushCount < 2) {
+        this.schedule(index! + 1);
+        scheduledIndices.push(index! + 1);
+      }
+    }, 0, 0);
+    scheduledIndices.push(0);
+  });
 });
