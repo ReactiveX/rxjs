@@ -2,7 +2,8 @@ import { expect } from 'chai';
 import { of, from, Observable } from 'rxjs';
 import { concatMap, mergeMap, map } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from 'spec/helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher';
+
 
 declare function asDiagram(arg: string): Function;
 
@@ -95,17 +96,17 @@ describe('Observable.prototype.concatMap', () => {
       const a = cold('  --a-a-a-(a|)                            ');
       const asubs = '   ^-------!                               ';
       const b = cold('          ----b--b--(b|)                  ');
-      const bsubs = '           ^---------!                     ';
+      const bsubs = '   --------^---------!                     ';
       const c = cold('                           -c-c-(c|)      ');
-      const csubs = '                            ^    !         ';
+      const csubs = '   -------------------------^----!         ';
       const d = cold('                                ------(d|)');
-      const dsubs =    '                              ^-----!   ';
+      const dsubs = '   ------------------------------^-----!   ';
       const e1 = hot('  a---b--------------------c-d----|       ');
-      const e1subs = '  ^                               !       ';
+      const e1subs = '  ^-------------------------------!       ';
       const expected = '--a-a-a-a---b--b--b-------c-c-c-----(d|)';
 
       const observableLookup = { a: a, b: b, c: c, d: d };
-      const source = e1.pipe(concatMap((value) => observableLookup[value]));
+      const source = e1.pipe(concatMap(value => observableLookup[value as keyof typeof observableLookup]));
 
       expectObservable(source).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -122,10 +123,10 @@ describe('Observable.prototype.concatMap', () => {
     const e1 = hot('    -a---b---c---d---|                        ');
     const e1subs = '    ^----------------!                        ';
     const inner = cold('--i-j-k-l-|                               ', values);
-    const innersubs = [' ^---------!                              ',
-                       '           ^---------!                    ',
-                       '                     ^---------!          ',
-                       '                               ^---------!'];
+    const innersubs = ['-^---------!                              ',
+                       '-----------^---------!                    ',
+                       '---------------------^---------!          ',
+                       '-------------------------------^---------!'];
     const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l-|';
 
     const result = e1.pipe(concatMap((value) => inner));
@@ -189,9 +190,9 @@ describe('Observable.prototype.concatMap', () => {
     const e1 = cold('   --a-b--c-| ');
     const e1subs = '    ^--------! ';
     const inner = cold('|');
-    const innersubs = ['  (^!)     ',
-                       '    (^!)   ',
-                       '       (^!)'];
+    const innersubs = ['--(^!)     ',
+                       '----(^!)   ',
+                       '-------(^!)'];
     const expected =   '---------| ';
 
     const result = e1.pipe(concatMap(() => { return inner; }));
@@ -207,8 +208,8 @@ describe('Observable.prototype.concatMap', () => {
     const e1 = cold('--a-b--c-|');
     const e1subs = ' ^--------!';
     const inner = cold('-');
-    const innersubs = '  ^-------';
-    const expected =  '----------';
+    const innersubs = '--^-------';
+    const expected = ' ----------';
 
     const result = e1.pipe(concatMap(() => { return inner; }));
 
@@ -223,7 +224,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1 = cold('  --a-b--c-|');
     const e1subs = '   ^-!       ';
     const inner = cold('#');
-    const innersubs = '  (^!)    ';
+    const innersubs = '--(^!)    ';
     const expected = ' --#       ';
 
     const result = e1.pipe(concatMap(() => { return inner; }));
@@ -240,10 +241,10 @@ describe('Observable.prototype.concatMap', () => {
     const e1 = hot('    -a---b---c---d----------------------------------|');
     const e1subs = '    ^-----------------------------------------------!';
     const inner = cold(' --i-j-k-l-|                                     ', values);
-    const innersubs = [' ^---------!                                     ',
-                       '           ^---------!                           ',
-                       '                     ^---------!                 ',
-                       '                               ^---------!       '];
+    const innersubs = ['-^---------!                                     ',
+                       '-----------^---------!                           ',
+                       '---------------------^---------!                 ',
+                       '-------------------------------^---------!       '];
     const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l--------|';
 
     const result = e1.pipe(concatMap((value) => inner));
@@ -260,10 +261,10 @@ describe('Observable.prototype.concatMap', () => {
     const e1 = hot('    -a---b---c---d-----------------------------------');
     const e1subs = '    ^------------------------------------------------';
     const inner =  cold('--i-j-k-l-|                                     ', values);
-    const innersubs = [' ^---------!                                     ',
-                       '           ^---------!                           ',
-                       '                     ^---------!                 ',
-                       '                               ^---------!       '];
+    const innersubs = ['-^---------!                                     ',
+                       '-----------^---------!                           ',
+                       '---------------------^---------!                 ',
+                       '-------------------------------^---------!       '];
     const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l---------';
 
     const result = e1.pipe(concatMap((value) => inner));
@@ -280,7 +281,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1 = hot('    -a---b---c---d---|');
     const e1subs = '    ^----------------!';
     const inner = cold(' --i-j-k-l-       ', values);
-    const innersubs = '  ^----------------';
+    const innersubs = ' -^----------------';
     const expected = '  ---i-j-k-l--------';
 
     const result = e1.pipe(concatMap((value) => inner));
@@ -297,7 +298,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1 = hot('    -a---b---c---d---|');
     const e1subs = '    ^----------!      ';
     const inner = cold(' --i-j-k-l-#      ', values);
-    const innersubs = '  ^         !      ';
+    const innersubs = ' -^---------!      ';
     const expected = '  ---i-j-k-l-#      ';
 
     const result = e1.pipe(concatMap((value) => inner));
@@ -314,8 +315,8 @@ describe('Observable.prototype.concatMap', () => {
     const e1 = hot('    -a---b---c---d---#');
     const e1subs = '    ^----------------!';
     const inner = cold(' --i-j-k-l-|      ', values);
-    const innersubs = [' ^---------!      ',
-                       '           ^-----!'];
+    const innersubs = ['-^---------!      ',
+                       '-----------^-----!'];
     const expected =   '---i-j-k-l---i-j-#';
 
     const result = e1.pipe(concatMap((value) => inner));
@@ -332,7 +333,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1 = hot('    -a---b---c---d---#');
     const e1subs = '    ^----------!      ';
     const inner = cold(' --i-j-k-l-#      ', values);
-    const innersubs = '  ^---------!      ';
+    const innersubs = ' -^---------!      ';
     const expected = '  ---i-j-k-l-#      ';
 
     const result = e1.pipe(concatMap((value) => inner));
@@ -350,21 +351,21 @@ describe('Observable.prototype.concatMap', () => {
     const b = cold('     -#                                                        ');
     const bsubs: string[] = [];
     const c = cold('          -2--3--4--5----6-|                                   ');
-    const csubs = '           ^----------------!                                   ';
+    const csubs = '         --^----------------!                                   ';
     const d = cold('                           ----2--3|                           ');
-    const dsubs = '                            ^-------!                           ';
+    const dsubs = '         -------------------^-------!                           ';
     const e = cold('                                   -1------2--3-4-5---|        ');
-    const esubs ='                                     ^------------------!        ';
+    const esubs ='          ---------------------------^------------------!        ';
     const f = cold('                                                      --|      ');
-    const fsubs = '                                                       ^-!      ';
+    const fsubs = '         ----------------------------------------------^-!      ';
     const g = cold('                                                        ---1-2|');
-    const gsubs = '                                                         ^-----!';
+    const gsubs = '         ------------------------------------------------^-----!';
     const e1 = hot('  -a-b--^-c-----d------e----------------f-----g|               ');
-    const e1subs = '        ^                                      !               ';
+    const e1subs = '        ^--------------------------------------!               ';
     const expected = '      ---2--3--4--5----6-----2--3-1------2--3-4-5--------1-2|';
     const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    const result = e1.pipe(concatMap((value) => observableLookup[value]));
+    const result = e1.pipe(concatMap((value) => observableLookup[value as keyof typeof observableLookup]));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -385,9 +386,9 @@ describe('Observable.prototype.concatMap', () => {
     const b = cold('     -#                                                        ');
     const bsubs: string[] = [];
     const c = cold('          -2--3--4--5----6-|                                   ');
-    const csubs = '           ^----------------!                                   ';
+    const csubs = '         --^----------------!                                   ';
     const d = cold('                           ----2--3-                           ');
-    const dsubs = '                            ^-----------------------------------';
+    const dsubs = '         -------------------^-----------------------------------';
     const e = cold('                                   -1------2--3-4-5---|        ');
     const esubs: string[] = [];
     const f = cold('                                                      --|      ');
@@ -399,7 +400,7 @@ describe('Observable.prototype.concatMap', () => {
     const expected = '      ---2--3--4--5----6-----2--3----------------------------';
     const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    const result = e1.pipe(concatMap((value) => observableLookup[value]));
+    const result = e1.pipe(concatMap((value) => observableLookup[value as keyof typeof observableLookup]));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -420,21 +421,21 @@ describe('Observable.prototype.concatMap', () => {
     const b = cold('     -#                                                        ');
     const bsubs: string[] = [];
     const c = cold('          -2--3--4--5----6-|                                   ');
-    const csubs = '           ^----------------!                                   ';
+    const csubs = '         --^----------------!                                   ';
     const d = cold('                           ----2--3|                           ');
-    const dsubs = '                            ^-------!                           ';
+    const dsubs = '         -------------------^-------!                           ';
     const e = cold('                                   -1------2--3-4-5---|        ');
-    const esubs = '                                    ^------------------!        ';
+    const esubs = '         ---------------------------^------------------!        ';
     const f = cold('                                                      --|      ');
-    const fsubs = '                                                       ^-!      ';
+    const fsubs = '         ----------------------------------------------^-!      ';
     const g = cold('                                                        ---1-2|');
-    const gsubs = '                                                         ^-----!';
+    const gsubs = '         ------------------------------------------------^-----!';
     const e1 = hot('  -a-b--^-c-----d------e----------------f-----g---             ');
     const e1subs = '        ^                                                      ';
     const expected = '      ---2--3--4--5----6-----2--3-1------2--3-4-5--------1-2-';
     const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    const result = e1.pipe(concatMap((value) => observableLookup[value]));
+    const result = e1.pipe(concatMap((value) => observableLookup[value as keyof typeof observableLookup]));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -455,11 +456,11 @@ describe('Observable.prototype.concatMap', () => {
     const b = cold('     -#                                                        ');
     const bsubs: string[] = [];
     const c = cold('          -2--3--4--5----6-|                                   ');
-    const csubs = '           ^----------------!                                   ';
+    const csubs = '         --^----------------!                                   ';
     const d = cold('                           ----2--3|                           ');
-    const dsubs = '                            ^-------!                           ';
+    const dsubs = '         -------------------^-------!                           ';
     const e = cold('                                   -1------2--3-4-5---|        ');
-    const esubs = '                                    ^-----------!               ';
+    const esubs = '         ---------------------------^-----------!               ';
     const f = cold('                                                      --|      ');
     const fsubs: string[] = [];
     const g = cold('                                                        ---1-2|');
@@ -469,7 +470,7 @@ describe('Observable.prototype.concatMap', () => {
     const expected = '      ---2--3--4--5----6-----2--3-1------2--3#               ';
     const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    const result = e1.pipe(concatMap((value) => observableLookup[value]));
+    const result = e1.pipe(concatMap((value) => observableLookup[value as keyof typeof observableLookup]));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -490,7 +491,7 @@ describe('Observable.prototype.concatMap', () => {
     const b = cold('     -#                                                        ');
     const bsubs: string[] = [];
     const c = cold('          -2--3--4--5----6-#                                   ');
-    const csubs = '           ^----------------!                                   ';
+    const csubs = '         --^----------------!                                   ';
     const d = cold('                           ----2--3|                           ');
     const dsubs: string[] = [];
     const e = cold('                                   -1------2--3-4-5---|        ');
@@ -504,7 +505,7 @@ describe('Observable.prototype.concatMap', () => {
     const expected = '      ---2--3--4--5----6-#                                   ';
     const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    const result = e1.pipe(concatMap((value) => observableLookup[value]));
+    const result = e1.pipe(concatMap((value) => observableLookup[value as keyof typeof observableLookup]));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -525,18 +526,18 @@ describe('Observable.prototype.concatMap', () => {
     const b = cold('   -#                                                        ');
     const bsubs: string[] = [];
     const c = cold('          -2--3--4--5----6-|                                   ');
-    const csubs = '           ^                !                                   ';
+    const csubs = '         --^----------------!                                   ';
     const d = cold('                           ----2--3|                           ');
-    const dsubs = '                            ^       !                           ';
+    const dsubs = '         -------------------^-------!                           ';
     const e = cold('                                   -1------2--3-4-5---|        ');
-    const esubs = '                                    ^  !                        ';
+    const esubs = '         ---------------------------^--!                        ';
     const f = cold('                                                      --|      ');
     const fsubs: string[] = [];
     const g = cold('                                                        ---1-2|');
     const gsubs: string[] = [];
     const e1 = hot('  -a-b--^-c-----d------e----------------f-----g|               ');
-    const e1subs = '        ^                             !                        ';
-    const unsub = '                                       !                        ';
+    const e1subs = '        ^-----------------------------!                        ';
+    const unsub = '         ^-----------------------------!                        ';
     const expected = '      ---2--3--4--5----6-----2--3-1--                        ';
     const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
@@ -561,18 +562,18 @@ describe('Observable.prototype.concatMap', () => {
     const b = cold('   -#                                                          ');
     const bsubs: string[] = [];
     const c = cold('          -2--3--4--5----6-|                                   ');
-    const csubs = '           ^                !                                   ';
+    const csubs = '         --^----------------!                                   ';
     const d = cold('                           ----2--3|                           ');
-    const dsubs = '                            ^       !                           ';
+    const dsubs = '         -------------------^-------!                           ';
     const e = cold('                                   -1------2--3-4-5---|        ');
-    const esubs = '                                    ^  !                        ';
+    const esubs = '         ---------------------------^--!                        ';
     const f = cold('                                                      --|      ');
     const fsubs: string[] = [];
     const g = cold('                                                        ---1-2|');
     const gsubs: string[] = [];
     const e1 = hot('  -a-b--^-c-----d------e----------------f-----g|               ');
-    const e1subs = '        ^                             !                        ';
-    const unsub = '                                       !                        ';
+    const e1subs = '        ^-----------------------------!                        ';
+    const unsub = '         ^-----------------------------!                        ';
     const expected = '      ---2--3--4--5----6-----2--3-1--                        ';
     const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
@@ -601,9 +602,9 @@ describe('Observable.prototype.concatMap', () => {
     const b = cold('     -#                                                        ');
     const bsubs: string[] = [];
     const c = cold('          -2--3--4--5----6-|                                   ');
-    const csubs = '           ^                !                                   ';
+    const csubs = '         --^----------------!                                   ';
     const d = cold('                           ----2--3|                           ');
-    const dsubs = '                            ^       !                           ';
+    const dsubs = '         -------------------^-------!                           ';
     const e = cold('                                   -1------2--3-4-5---|        ');
     const esubs: string[] = [];
     const f = cold('                                                      --|      ');
@@ -611,7 +612,7 @@ describe('Observable.prototype.concatMap', () => {
     const g = cold('                                                        ---1-2|');
     const gsubs: string[] = [];
     const e1 = hot('  -a-b--^-c-----d------e----------------f-----g|               ');
-    const e1subs = '        ^                          !                           ';
+    const e1subs = '        ^--------------------------!                           ';
     const expected = '      ---2--3--4--5----6-----2--3#                           ';
     const observableLookup: Record<string, Observable<string>>  = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
@@ -646,7 +647,7 @@ describe('Observable.prototype.concatMap', () => {
   it('should concatMap many outer to an array for each value', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
     const e1 = hot('  2-----4--------3--------2-------|');
-    const e1subs = '  ^                               !';
+    const e1subs = '  ^-------------------------------!';
     const expected = '(22)--(4444)---(333)----(22)----|';
 
     const result = e1.pipe(concatMap((value) => arrayRepeat(value, +value)));
@@ -659,8 +660,8 @@ describe('Observable.prototype.concatMap', () => {
   it('should concatMap many outer to inner arrays, outer unsubscribed early', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
     const e1 = hot('  2-----4--------3--------2-------|');
-    const e1subs = '  ^            !                   ';
-    const unsub = '                !                   ';
+    const e1subs = '  ^------------!                   ';
+    const unsub = '   ^------------!                   ';
     const expected = '(22)--(4444)--                   ';
 
     const result = e1.pipe(concatMap((value) => arrayRepeat(value, +value)));
@@ -673,7 +674,7 @@ describe('Observable.prototype.concatMap', () => {
   it('should concatMap many outer to inner arrays, project throws', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
     const e1 = hot('  2-----4--------3--------2-------|');
-    const e1subs = '  ^              !                 ';
+    const e1subs = '  ^--------------!                 ';
     const expected = '(22)--(4444)---#                 ';
 
     let invoked = 0;
