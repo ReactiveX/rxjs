@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { hot, expectObservable } from '../helpers/marble-testing';
-import { BehaviorSubject, Subject, ObjectUnsubscribedError, Observable, of } from 'rxjs';
+import { BehaviorSubject, Subject, ObjectUnsubscribedError, of } from 'rxjs';
 import { tap, mergeMapTo } from 'rxjs/operators';
 import { asInteropSubject } from '../helpers/interop-helper';
 

@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { shareReplay, mergeMapTo, retry, take } from 'rxjs/operators';
+import { shareReplay, mergeMapTo, retry } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, interval, Operator, Observer, of } from 'rxjs';
+import { Observable, Operator, Observer, of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;

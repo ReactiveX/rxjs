@@ -1,8 +1,7 @@
 import { expect } from 'chai';
-import { Observable, forkJoin, of } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { lowerCaseO } from '../helpers/test-helper';
 import { hot, expectObservable, expectSubscriptions, cold } from '../helpers/marble-testing';
-import { AssertionError } from 'assert';
 
 declare const type: Function;
 declare const asDiagram: Function;

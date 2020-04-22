@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 import { AsyncScheduler } from 'rxjs/internal/scheduler/AsyncScheduler';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, NEVER, EMPTY, Subject, of, concat, merge, Notification } from 'rxjs';
+import { Observable, NEVER, EMPTY, Subject, of, merge, Notification } from 'rxjs';
 import { delay, debounceTime, concatMap } from 'rxjs/operators';
 
 declare const rxTestScheduler: TestScheduler;

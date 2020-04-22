@@ -1,6 +1,6 @@
 import { async } from '../scheduler/async';
 import { TimeoutError } from '../util/TimeoutError';
-import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { timeoutWith } from './timeoutWith';
 import { throwError } from '../observable/throwError';
 

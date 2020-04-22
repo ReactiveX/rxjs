@@ -3,7 +3,7 @@ import { isArray } from '../util/isArray';
 import { CombineLatestOperator } from '../observable/combineLatest';
 import { from } from '../observable/from';
 import { Observable } from '../Observable';
-import { ObservableInput, OperatorFunction, ObservedValueUnionFromArray, ObservedValueTupleFromArray, Unshift } from '../types';
+import { ObservableInput, OperatorFunction, ObservedValueTupleFromArray, Unshift } from '../types';
 
 /* tslint:disable:max-line-length */
 /** @deprecated use {@link combineLatestWith} */

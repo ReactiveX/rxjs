@@ -1,4 +1,4 @@
-import { of, Notification, Observable } from 'rxjs';
+import { of, Notification } from 'rxjs';
 import { dematerialize, map, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 

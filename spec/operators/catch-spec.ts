@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { concat, defer, Observable, of, throwError, EMPTY, from } from 'rxjs';
-import { catchError, delay, map, mergeMap, takeWhile } from 'rxjs/operators';
+import { catchError, map, mergeMap, takeWhile } from 'rxjs/operators';
 import * as sinon from 'sinon';
 import { createObservableInputs } from '../helpers/test-helper';
 import { TestScheduler } from 'rxjs/testing';

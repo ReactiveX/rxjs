@@ -1,4 +1,3 @@
-import { Observable } from '../Observable';
 import { map } from './map';
 import { OperatorFunction } from '../types';
 
