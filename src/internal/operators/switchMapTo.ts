@@ -4,7 +4,7 @@ import { switchMap } from './switchMap';
 /* tslint:disable:max-line-length */
 export function switchMapTo<R>(observable: ObservableInput<R>): OperatorFunction<any, R>;
 /** @deprecated resultSelector is no longer supported. Switch to using switchMap with an inner map */
-export function switchMapTo<T, R>(observable: ObservableInput<R>, resultSelector: undefined): OperatorFunction<T, R>;
+export function switchMapTo<R>(observable: ObservableInput<R>, resultSelector: undefined): OperatorFunction<any, R>;
 /** @deprecated resultSelector is no longer supported. Switch to using switchMap with an inner map */
 export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
