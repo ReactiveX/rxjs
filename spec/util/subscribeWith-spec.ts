@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { of, Subscriber, observable } from 'rxjs';
+import { of, Subscriber } from 'rxjs';
 import { subscribeWith } from 'rxjs/internal/util/subscribeWith';
 import { asInteropObservable, asInteropSubscriber } from '../helpers/interop-helper';
 
