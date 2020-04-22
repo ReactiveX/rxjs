@@ -264,4 +264,57 @@ describe('fromFetch', () => {
       }
     });
   });
+
+  it('should support a selector', done => {
+    mockFetch.respondWith = {
+      ...OK_RESPONSE,
+      text: () => Promise.resolve('bar')
+    };
+    const fetch$ = fromFetch('/foo', {
+      selector: response => response.text()
+    });
+    expect(mockFetch.calls.length).to.equal(0);
+    expect(MockAbortController.created).to.equal(0);
+
+    fetch$.subscribe({
+      next: text => {
+        expect(text).to.equal('bar');
+      },
+      error: done,
+      complete: () => {
+        // Wait until the complete and the subsequent unsubscribe are finished
+        // before testing these expectations:
+        setTimeout(() => {
+          expect(MockAbortController.created).to.equal(1);
+          expect(mockFetch.calls.length).to.equal(1);
+          expect(mockFetch.calls[0].input).to.equal('/foo');
+          expect(mockFetch.calls[0].init!.signal).not.to.be.undefined;
+          expect(mockFetch.calls[0].init!.signal!.aborted).to.be.false;
+          done();
+        }, 0);
+      }
+    });
+  });
+
+  it('should abort when unsubscribed and a selector is specified', () => {
+    mockFetch.respondWith = {
+      ...OK_RESPONSE,
+      text: () => Promise.resolve('bar')
+    };
+    const fetch$ = fromFetch('/foo', {
+      selector: response => response.text()
+    });
+    expect(mockFetch.calls.length).to.equal(0);
+    expect(MockAbortController.created).to.equal(0);
+    const subscription = fetch$.subscribe();
+
+    expect(MockAbortController.created).to.equal(1);
+    expect(mockFetch.calls.length).to.equal(1);
+    expect(mockFetch.calls[0].input).to.equal('/foo');
+    expect(mockFetch.calls[0].init!.signal).not.to.be.undefined;
+    expect(mockFetch.calls[0].init!.signal!.aborted).to.be.false;
+
+    subscription.unsubscribe();
+    expect(mockFetch.calls[0].init!.signal!.aborted).to.be.true;
+  });
 });
