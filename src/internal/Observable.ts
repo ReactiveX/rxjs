@@ -348,8 +348,11 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /* tslint:disable:max-line-length */
+  /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
   toPromise<T>(this: Observable<T>): Promise<T | undefined>;
+  /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
   toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T | undefined>;
+  /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
   toPromise<T>(this: Observable<T>, PromiseCtor: PromiseConstructorLike): Promise<T | undefined>;
   /* tslint:enable:max-line-length */
 
@@ -364,6 +367,7 @@ export class Observable<T> implements Subscribable<T> {
    * rejects on an error. If there were no emissions, Promise
    * resolves with undefined.
    */
+  /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
   toPromise(promiseCtor?: PromiseConstructorLike): Promise<T | undefined> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
