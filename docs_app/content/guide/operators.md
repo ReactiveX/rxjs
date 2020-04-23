@@ -222,6 +222,7 @@ Also see the [Join Creation Operators](#join-creation-operators) section above.
 
 ### Multicasting Operators
 
+- [`dequeueReplay`](/api/operators/dequeueReplay)
 - [`multicast`](/api/operators/multicast)
 - [`publish`](/api/operators/publish)
 - [`publishBehavior`](/api/operators/publishBehavior)

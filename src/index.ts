@@ -11,6 +11,7 @@ export { Subject } from './internal/Subject';
 export { BehaviorSubject } from './internal/BehaviorSubject';
 export { ReplaySubject } from './internal/ReplaySubject';
 export { AsyncSubject } from './internal/AsyncSubject';
+export { DequeueReplaySubject } from './internal/DequeueReplaySubject';
 
 /* Schedulers */
 export { asap as asapScheduler } from './internal/scheduler/asap';

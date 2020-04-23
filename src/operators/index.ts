@@ -22,6 +22,7 @@ export { defaultIfEmpty } from '../internal/operators/defaultIfEmpty';
 export { delay } from '../internal/operators/delay';
 export { delayWhen } from '../internal/operators/delayWhen';
 export { dematerialize } from '../internal/operators/dematerialize';
+export { dequeueReplay } from '../internal/operators/dequeueReplay';
 export { distinct } from '../internal/operators/distinct';
 export { distinctUntilChanged } from '../internal/operators/distinctUntilChanged';
 export { distinctUntilKeyChanged } from '../internal/operators/distinctUntilKeyChanged';
