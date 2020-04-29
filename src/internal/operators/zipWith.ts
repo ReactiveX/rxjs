@@ -1,6 +1,6 @@
 import { zip as zipStatic } from '../observable/zip';
 import { Observable } from '../Observable';
-import { ObservableInput, OperatorFunction, ObservedValueTupleFromArray, Unshift } from '../types';
+import { ObservableInput, OperatorFunction, ObservedValueTupleFromArray, Cons } from '../types';
 
 /* tslint:disable:max-line-length */
 /** @deprecated Deprecated use {@link zipWith} */
@@ -67,6 +67,6 @@ export function zip<T, R>(...observables: Array<ObservableInput<any> | ((...valu
  */
 export function zipWith<T, A extends ObservableInput<any>[]>(
   ...otherInputs: A
-): OperatorFunction<T, Unshift<ObservedValueTupleFromArray<A>, T>> {
+): OperatorFunction<T, Cons<T, ObservedValueTupleFromArray<A>>> {
   return zip(...otherInputs);
 }

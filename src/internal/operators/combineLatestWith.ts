@@ -3,7 +3,7 @@ import { isArray } from '../util/isArray';
 import { CombineLatestOperator } from '../observable/combineLatest';
 import { from } from '../observable/from';
 import { Observable } from '../Observable';
-import { ObservableInput, OperatorFunction, ObservedValueTupleFromArray, Unshift } from '../types';
+import { ObservableInput, OperatorFunction, ObservedValueTupleFromArray, Cons } from '../types';
 
 /* tslint:disable:max-line-length */
 /** @deprecated use {@link combineLatestWith} */
@@ -97,6 +97,6 @@ export function combineLatest<T, R>(...observables: Array<ObservableInput<any> |
  */
 export function combineLatestWith<T, A extends ObservableInput<any>[]>(
   ...otherSources: A
-): OperatorFunction<T, Unshift<ObservedValueTupleFromArray<A>, T>> {
+): OperatorFunction<T, Cons<T, ObservedValueTupleFromArray<A>>> {
   return combineLatest(...otherSources);
 }
