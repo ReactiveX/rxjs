@@ -10,7 +10,6 @@ import { map } from './map';
 import { from } from '../observable/from';
 
 /* tslint:disable:max-line-length */
-export function mergeMap<T>(project: (value: T, index: number) => ObservableInput<never>, concurrent?: number): OperatorFunction<T, never>;
 export function mergeMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, concurrent?: number): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector no longer supported, use inner map instead */
 export function mergeMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined, concurrent?: number): OperatorFunction<T, ObservedValueOf<O>>;

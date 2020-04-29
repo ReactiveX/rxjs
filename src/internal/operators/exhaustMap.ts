@@ -10,7 +10,6 @@ import { map } from './map';
 import { from } from '../observable/from';
 
 /* tslint:disable:max-line-length */
-export function exhaustMap<T>(project: (value: T, index: number) => ObservableInput<never>): OperatorFunction<T, never>;
 export function exhaustMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector is no longer supported. Use inner map instead. */
 export function exhaustMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;
