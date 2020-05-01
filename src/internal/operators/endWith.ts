@@ -19,7 +19,7 @@ export function endWith<T, A, B, C, D, E>(v1: A, v2: B, v3: C, v4: D, v5: E, sch
 /** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([source, [a, b, c]], scheduler).pipe(concatAll())`) */
 export function endWith<T, A, B, C, D, E, F>(v1: A, v2: B, v3: C, v4: D, v5: E, v6: F, scheduler: SchedulerLike): OperatorFunction<T, T | A | B | C | D | E | F>;
 
-export function endWith<T, A extends any[]>(...args: A): OperatorFunction<T, T | ValueFromArray<A>>;
+export function endWith<T, A extends any[] = T[]>(...args: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
 /* tslint:enable:max-line-length */
 
