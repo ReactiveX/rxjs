@@ -1,7 +1,26 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {ConnectableObservable, merge, noop, Observable, OperatorFunction, Subject, Subscription, UnaryFunction} from 'rxjs';
-import {map, mergeAll, pluck, publishReplay, scan, tap} from 'rxjs/operators';
+import {ConnectableObservable, isObservable, merge, noop, Observable, OperatorFunction, Subject, Subscription, UnaryFunction} from 'rxjs';
+import {filter, map, mergeAll, pluck, publishReplay, scan, tap} from 'rxjs/operators';
 import {stateful} from './operators';
+
+
+type ProjectStateFn<T> = (oldState: T) => Partial<T>;
+type ProjectValueFn<T, K extends keyof T> = (oldState: T) => T[K];
+type ProjectStateReducer<T, K extends keyof T> = (
+    oldState: T,
+    value: any
+) => Partial<T>;
+type ProjectValueReducer<T, K extends keyof T> = (
+    oldState: T,
+    value: any
+) => T[K];
+
+export function isKeyOf<O>(k: unknown): k is keyof O {
+  return (
+      !!k &&
+      (typeof k === 'string' || typeof k === 'symbol' || typeof k === 'number')
+  );
+}
 
 function pipeFromArray<T, R>(fns: Array<UnaryFunction<T, R>>): UnaryFunction<T, R> {
   if (!fns) {
@@ -23,14 +42,23 @@ export class State<T> implements OnDestroy {
   private stateObservables = new Subject<Observable<Partial<T>>>();
   private effectSubject = new Subject<any>();
   private stateSlices = new Subject<Partial<T>>();
+  private state = {} as T;
 
   private state$ = merge(
     this.stateObservables.pipe(mergeAll()),
     this.stateSlices
   ).pipe(
     scan(this.stateAccumulator, {} as T),
+    tap(newState => (this.state = newState)),
     publishReplay(1)
   );
+
+  /**
+   * @description
+   * The full state exposed as `Observable<T>`
+   */
+  readonly $ = this.state$;
+
 
   constructor() {
     this.init();
@@ -49,20 +77,248 @@ export class State<T> implements OnDestroy {
         .subscribe()
     );
   }
+  /**
+   * @description
+   * Manipulate one or many properties of the state by providing a `Partial<T>` state or a `ProjectionFunction<T>`.
+   *
+   * @example
+   * Update one or many properties of the state by providing a `Partial<T>`
+   * ```TypeScript
+   * const partialState = {
+   *   foo: 'bar',
+   *   bar: 5
+   * };
+   * state.set(partialState);
+   * ```
+   *
+   * Update one or many properties of the state by providing a `ProjectionFunction<T>`
+   * ```TypeScript
+   * const reduceFn = oldState => ({
+   *   bar: oldState.bar + 5
+   * });
+   * state.set(reduceFn);
+   * ```
+   *
+   * @param {Partial<T>|ProjectStateFn<T>} stateOrProjectState
+   * @return void
+   */
+  set(stateOrProjectState: Partial<T> | ProjectStateFn<T>): void;
 
-  setState(s: Partial<T>): void {
-    this.stateSlices.next(s);
-  }
-
-  connect<A extends keyof T>(str: A, obs: Observable<T[A]>): void;
-  connect<A extends keyof T>(obs: Observable<Partial<T>>): void;
-  connect<A extends keyof T>(strOrObs: any, obs?: any): void {
-    if (typeof strOrObs === 'string') {
-      this.stateObservables.next(obs.pipe(map(s => ({[strOrObs as A]: s}))) as Observable<T[A]>);
-    } else {
-      this.stateObservables.next(strOrObs);
+  /**
+   * @description
+   * Manipulate a single property of the state by the property name and a `ProjectionFunction<T>`.
+   *
+   * @example
+   * ```TypeScript
+   * const reduceFn = oldState => oldState.bar + 5;
+   * state.set('bar', reduceFn);
+   * ```
+   *
+   * @param {K} key
+   * @param {ProjectValueFn<T, K>} projectSlice
+   * @return void
+   */
+  set<K extends keyof T, O>(key: K, projectSlice: ProjectValueFn<T, K>): void;
+  // TODO: set correct parameters
+  /**
+   * @description
+   * Manipulate a single property by providing the property name and a value.
+   *
+   * @example
+   * ```TypeScript
+   * state.set('bar', 5);
+   * ```
+   *
+   * @param {K} keyOrStateOrProjectState
+   * @param {ProjectValueFn<T, K>} stateOrSliceProjectFn
+   * @return void
+   */
+  set<K extends keyof T>(
+      keyOrStateOrProjectState: Partial<T> | ProjectStateFn<T> | K,
+      stateOrSliceProjectFn?: ProjectValueFn<T, K>
+  ): void {
+    if (
+        typeof keyOrStateOrProjectState === 'object' &&
+        stateOrSliceProjectFn === undefined
+    ) {
+      this.stateSlices.next(keyOrStateOrProjectState);
+      return;
     }
+
+    if (
+        typeof keyOrStateOrProjectState === 'function' &&
+        stateOrSliceProjectFn === undefined
+    ) {
+      this.stateSlices.next(
+          keyOrStateOrProjectState(this.state)
+      );
+      return;
+    }
+
+    if (
+        isKeyOf<T>(keyOrStateOrProjectState) &&
+        typeof stateOrSliceProjectFn === 'function'
+    ) {
+      const state: Partial<T> = {};
+      state[keyOrStateOrProjectState] = stateOrSliceProjectFn(
+          this.state
+      );
+      this.stateSlices.next(state);
+      return;
+    }
+
+    throw new Error('wrong param');
   }
+
+
+
+  /**
+   * @description
+   * Read from the state in imperative manner. Returns the state object in its current state.
+   *
+   * @example
+   * ```Typescript
+   * const { disabled } = state.get();
+   * if (!disabled) {
+   *   doStuff();
+   * }
+   * ```
+   *
+   * @return T
+   */
+  get(): T {
+    return this.state;
+  }
+
+  /**
+   * @description
+   * Connect an `Observable<Partial<T>>` to the state `T`.
+   * Any change emitted by the source will get merged into the state.
+   * Subscription handling is done automatically.
+   *
+   * @example
+   * ```Typescript
+   * const sliceToAdd$ = interval(250).pipe(mapTo({
+   *   bar: 5,
+   *   foo: 'foo'
+   * });
+   * state.connect(sliceToAdd$);
+   * // every 250ms the properties bar and foo get updated due to the emission of sliceToAdd$
+   * ```
+   *
+   * Additionally you can provide a `projectionFunction` to access the current state object and do custom mappings.
+   * ```Typescript
+   * const sliceToAdd$ = interval(250).pipe(mapTo({
+   *   bar: 5,
+   *   foo: 'foo'
+   * });
+   * state.connect(sliceToAdd$, (state, slice) => state.bar += slice.bar);
+   * // every 250ms the properties bar and foo get updated due to the emission of sliceToAdd$. Bar will increase by
+   * 5 due to the projectionFunction
+   * ```
+   */
+  connect<K extends keyof T>(
+      slice$: Observable<any | Partial<T>>,
+      projectFn?: ProjectStateReducer<T, K>
+  ): void;
+  /**
+   *
+   * @description
+   * Connect an `Observable<T[K]>` source to a specific property `K` in the state `T`. Any emitted change will update
+   * this
+   * specific property in the state.
+   * Subscription handling is done automatically.
+   *
+   * @example
+   * ```Typescript
+   * const myTimer$ = interval(250);
+   * state.connect('timer', myTimer$);
+   * // every 250ms the property timer will get updated
+   * ```
+   */
+  connect<K extends keyof T>(key: K, slice$: Observable<T[K]>): void;
+  /**
+   *
+   * @description
+   * Connect an `Observable<Partial<T>>` source to a specific property in the state. Additionally you can provide a
+   * `projectionFunction` to access the current state object on every emission of your connected `Observable`.
+   * Any change emitted by the source will get merged into the state.
+   * Subscription handling is done automatically.
+   *
+   * @example
+   *
+   * ```Typescript
+   * const myTimer$ = interval(250);
+   * state.connect('timer', myTimer$, (state, timerChange) => state.timer += timerChange);
+   * // every 250ms the property timer will get updated
+   * ```
+   */
+  connect<K extends keyof T>(
+      key: K,
+      slice$: Observable<any>,
+      projectSliceFn: ProjectValueReducer<T, K>
+  ): void;
+  connect<K extends keyof T>(
+      keyOrSlice$: K | Observable<any>,
+      projectOrSlices$?: ProjectStateReducer<T, K> | Observable<T[K] | any>,
+      projectValueFn?: ProjectValueReducer<T, K>
+  ): void {
+    if (
+        isObservable<any>(keyOrSlice$) &&
+        projectOrSlices$ === undefined &&
+        projectValueFn === undefined
+    ) {
+      const slice$ = keyOrSlice$.pipe(filter(slice => slice !== undefined));
+      this.stateObservables.next(slice$);
+      return;
+    }
+
+    if (
+        isObservable<any>(keyOrSlice$) &&
+        typeof projectOrSlices$ === 'function' &&
+        !isObservable<T[K]>(projectOrSlices$) &&
+        projectValueFn === undefined
+    ) {
+      const project = projectOrSlices$;
+      const slice$ = keyOrSlice$.pipe(
+          filter(slice => slice !== undefined),
+          map(v => project(this.get(), v))
+      );
+      this.stateObservables.next(slice$);
+      return;
+    }
+
+    if (
+        isKeyOf<T>(keyOrSlice$) &&
+        isObservable<T[K]>(projectOrSlices$) &&
+        projectValueFn === undefined
+    ) {
+      const key = keyOrSlice$;
+      const slice$ = projectOrSlices$.pipe(
+          filter(slice => slice !== undefined),
+          map(value => ({ ...{}, [key]: value }))
+      );
+      this.stateObservables.next(slice$);
+      return;
+    }
+
+    if (
+        isKeyOf<T>(keyOrSlice$) &&
+        isObservable<any>(projectOrSlices$) &&
+        typeof projectValueFn === 'function'
+    ) {
+      const key = keyOrSlice$;
+      const slice$ = projectOrSlices$.pipe(
+          filter(slice => slice !== undefined),
+          map(value => ({ ...{}, [key]: projectValueFn(this.get(), value) }))
+      );
+      this.stateObservables.next(slice$);
+      return;
+    }
+
+    throw new Error('wrong params passed to connect');
+  }
+
 
   select(): Observable<T>;
   // ========================

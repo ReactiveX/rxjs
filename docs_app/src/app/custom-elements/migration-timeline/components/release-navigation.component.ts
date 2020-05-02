@@ -45,7 +45,7 @@ export class ReleaseNavigationComponent {
   @Input()
   set selectedMigrationReleaseUID(selectedMigrationReleaseUID: string) {
     if (selectedMigrationReleaseUID) {
-      this._baseModel.setState({selectedMigrationReleaseUID});
+      this._baseModel.set({selectedMigrationReleaseUID});
     }
   }
 
@@ -53,7 +53,7 @@ export class ReleaseNavigationComponent {
   set releaseList(releaseList: Release[]) {
     if (releaseList) {
       const releaseNavigationList: MigrationTimelineNavigationItem[] = this.parseVmReleaseNavigation(releaseList);
-      this._baseModel.setState({releaseNavigationList});
+      this._baseModel.set({releaseNavigationList});
     }
   }
 

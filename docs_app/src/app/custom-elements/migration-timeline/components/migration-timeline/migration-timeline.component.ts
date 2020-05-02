@@ -23,13 +23,13 @@ export class MigrationTimelineComponent extends State<MigrationTimelineComponent
   @Input()
   set releaseList(releaseList: Release[]) {
     if (releaseList) {
-      this.setState({releaseList});
+      this.set({releaseList});
     }
   }
 
   @Input()
   set selectedMigrationItemUID(selectedMigrationItemUID: string) {
-    this.setState({
+    this.set({
       selectedMigrationItemUID: selectedMigrationItemUID || '',
       selectedMigrationReleaseUID: parseMigrationReleaseUIDFromString(selectedMigrationItemUID)
     });

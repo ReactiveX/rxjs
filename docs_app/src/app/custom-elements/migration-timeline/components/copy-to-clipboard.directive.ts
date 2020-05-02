@@ -23,12 +23,12 @@ export class CopyToClipboardDirective extends State<{ title: string, content: st
 
   @Input()
   set title(title: string) {
-    this.setState({title});
+    this.set({title});
   }
 
   @Input()
   set content(content: string) {
-    this.setState({content});
+    this.set({content});
   }
 
   @HostListener('click')
@@ -38,7 +38,7 @@ export class CopyToClipboardDirective extends State<{ title: string, content: st
 
   constructor(private copier: CopierService, private snackbar: MatSnackBar) {
     super();
-    this.setState({title: 'Copy to clipboard'});
+    this.set({title: 'Copy to clipboard'});
     this.hold(this.copyToClipBoardEffect$);
   }
 
