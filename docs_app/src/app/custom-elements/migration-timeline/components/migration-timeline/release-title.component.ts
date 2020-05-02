@@ -3,6 +3,7 @@ import {Subject} from 'rxjs';
 import {Release} from '../../data-access';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: `rxjs-release-title`,
   template: `
 

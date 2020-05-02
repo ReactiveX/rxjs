@@ -31,7 +31,7 @@ export class MigrationTimelineService extends GlobalState<MigrationTimelineState
   }
 
   fetchMigrationTimeline(): void {
-    this.connectState(of({
+    this.connect(of({
         migrations: this.staticMigrations.sort(compareByReleaseDateAsc)
       })
     );

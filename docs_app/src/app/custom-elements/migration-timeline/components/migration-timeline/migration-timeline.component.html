@@ -1,8 +1,7 @@
 
 <mat-accordion *ngIf="vm$ | async as vm" class="migration-timeline">
-  <missing-information *ngIf="vm.selectedMigrationItemUID === 'wrong-uid'">
-  </missing-information>
-
+  <rxjs-missing-information *ngIf="vm.selectedMigrationItemUID === 'wrong-uid'">
+  </rxjs-missing-information>
   <mat-expansion-panel
     class="release"
     *ngFor="let release of vm.releaseList"

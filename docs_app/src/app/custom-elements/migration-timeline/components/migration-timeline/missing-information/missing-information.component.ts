@@ -9,6 +9,7 @@ import {fillDeprecation, fillRelease, generateSnipped, getBreakingChangeFromDepr
 
 
 @Component({
+    // tslint:disable-next-line:component-selector
   selector: `rxjs-missing-information`,
   template: `
     <mat-card class="migration-section manual-step selected suggestion-open-issue">
@@ -89,11 +90,10 @@ export class MissingInformationComponent extends State<{ deprecation: RawDepreca
     .pipe(map(p => parseMigrationItemUIDObject(p.uid)));
 
   releaseToPreview$ = combineLatest(
-    this.release$,
-    this.deprecation$,
+    this.release$.pipe(startWith({} as RawRelease)),
+    this.deprecation$.pipe(startWith({} as RawDeprecation)),
   ).pipe(
-    startWith([{} as any, {} as any]),
-    map(([release, deprecation]: [RawRelease, RawDeprecation]) => {
+    map(([release, deprecation]) => {
       const previewRelease =  fillRelease(release,
         {
           deprecations: [fillDeprecation(deprecation)],

@@ -12,6 +12,7 @@ export interface MigrationTimelineContainerModelFromRemoteSources {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: `rxjs-migration-timeline-container`,
   template: `
     <h1>RxJS Migration Timeline</h1>

@@ -19,7 +19,7 @@ export const ELEMENT_MODULE_LOAD_CALLBACKS_AS_ROUTES = [
   },
   {
     selector: 'rxjs-migration-timeline-container',
-    loadChildren: './migration-timeline/migration-timeline.module#MigrationTimelineModule'
+    loadChildren: () => import('./migration-timeline/migration-timeline.module').then(m => m.MigrationTimelineModule)
   },
   {
     selector: 'aio-file-not-found-search',
@@ -82,5 +82,5 @@ export const ELEMENT_MODULE_LOAD_CALLBACKS_TOKEN = new InjectionToken<Map<string
 /** Map of possible custom element selectors to their lazy-loadable module paths. */
 export const ELEMENT_MODULE_LOAD_CALLBACKS = new Map<string, LoadChildrenCallback>();
 ELEMENT_MODULE_LOAD_CALLBACKS_AS_ROUTES.forEach(route => {
-  ELEMENT_MODULE_LOAD_CALLBACKS.set(route.selector, route.loadChildren);
+  ELEMENT_MODULE_LOAD_CALLBACKS.set(route.selector, route.loadChildren as LoadChildrenCallback);
 });

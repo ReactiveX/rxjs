@@ -3,10 +3,11 @@ import {FormBuilder, Validators} from '@angular/forms';
 import {BehaviorSubject, combineLatest, EMPTY, Observable, of, ReplaySubject} from 'rxjs';
 import {catchError, concatMap, map, startWith, tap} from 'rxjs/operators';
 import {State} from '../../../../../shared/state.service';
-import {RawDeprecation, SubjectSymbols} from '../../../data-access';
+import {RawDeprecation, RawRelease, SubjectSymbols} from '../../../data-access';
 
-
+const subjectSymbols = SubjectSymbols;
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'rxjs-deprecation-item-form',
   template: `
     <mat-form-field class="full">
@@ -44,7 +45,7 @@ import {RawDeprecation, SubjectSymbols} from '../../../data-access';
         <mat-label>Subject Symbol</mat-label>
         <mat-select [formControlName]="'subjectSymbol'">
           <mat-option [value]="''">None</mat-option>
-          <mat-option [value]="option.key" *ngFor="let option of subjectSymbols| keyvalue">
+          <mat-option [value]="option.key" *ngFor="let option of subjectSymbols | keyvalue">
             {{option.value}}
           </mat-option>
         </mat-select>
@@ -122,7 +123,7 @@ import {RawDeprecation, SubjectSymbols} from '../../../data-access';
 export class DeprecationItemFormComponent extends State<{ crawledData: any }> {
   crawledData$ = new ReplaySubject<any>(1);
   withCodeExamples$ = new BehaviorSubject<boolean>(false);
-  subjectSymbols = SubjectSymbols;
+  subjectSymbols = subjectSymbols as object;
   defaultValue = '@TODO';
   releaseForm = this.fb.group({
     version: ['7.0.0-alpha.0', Validators.required],
@@ -147,7 +148,7 @@ export class DeprecationItemFormComponent extends State<{ crawledData: any }> {
     this.withCodeExamples$
     ]
   ).pipe(
-    map(([rawDeprecation, withCodeExamples]: [any, RawDeprecation]) => {
+    map(([rawDeprecation, withCodeExamples]) => {
       let deprecation: RawDeprecation = {...rawDeprecation};
       deprecation.itemType = 'deprecation';
       if (!withCodeExamples) {
@@ -161,7 +162,7 @@ export class DeprecationItemFormComponent extends State<{ crawledData: any }> {
   @Output()
   changes: Observable<RawDeprecation> = this.latestValidValuePrepared$;
   @Output()
-  release: Observable<RawDeprecation> = this.releaseForm.valueChanges.pipe(startWith(this.releaseForm.value));
+  release: Observable<RawRelease> = this.releaseForm.valueChanges.pipe(startWith(this.releaseForm.value));
 
   constructor(private fb: FormBuilder) {
     super();

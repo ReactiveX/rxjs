@@ -4,6 +4,7 @@ import {State} from '../../../../../shared/state.service';
 import {Release} from '../../../data-access';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: `rxjs-preview`,
   template: `
     <ng-container *ngIf="release$ | async as release">
@@ -23,13 +24,13 @@ import {Release} from '../../../data-access';
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <deprecation-description-table
+          <rxjs-deprecation-description-table
             [deprecation]="deprecation">
-          </deprecation-description-table>
-          <code-examples
+          </rxjs-deprecation-description-table>
+          <rxjs-code-comparison
             *ngIf="deprecation.exampleBefore && deprecation.exampleAfter"
             [release]="release" [deprecation]="deprecation">
-          </code-examples>
+          </rxjs-code-comparison>
         </mat-card-content>
       </mat-card>
 
@@ -44,9 +45,9 @@ import {Release} from '../../../data-access';
             <mat-card-title>{{breakingChange.breakingChangeMsg}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <breaking-change-description-table
+            <rxjs-breaking-change-description-table
               [breakingChange]="breakingChange">
-            </breaking-change-description-table>
+            </rxjs-breaking-change-description-table>
           </mat-card-content>
         </mat-card>
     </ng-container>

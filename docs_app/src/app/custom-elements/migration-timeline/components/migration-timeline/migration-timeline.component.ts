@@ -12,6 +12,7 @@ export interface MigrationTimelineComponentViewBaseModel {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: `rxjs-migration-timeline`,
   templateUrl: `./migration-timeline.component.html`,
   changeDetection: ChangeDetectionStrategy.OnPush
