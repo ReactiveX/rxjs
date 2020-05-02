@@ -53,8 +53,10 @@ import { Observer, NextObserver } from '../../types';
  *
  * wsSubject.subscribe(() => subject.next("msg to the server"));
  *
- * // Let's suppose we have this on the Server: ws.send("This is a msg from the server")
- * //output
+ * // Let's suppose we have this on the Server:
+ * //   ws.on("message", msg => console.log);
+ * //   ws.send("This is a msg from the server");
+ * //output at server side:
  * //
  * // {"channel":"webDevelopment","msg":"msg to the server"}
  * ```
