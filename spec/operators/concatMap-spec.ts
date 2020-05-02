@@ -111,7 +111,7 @@ describe('Observable.prototype.concatMap', () => {
       const values = { i: 'foo', j: 'bar', k: 'baz', l: 'qux' };
       const e1 = hot('    -a---b---c---d---|                        ');
       const e1subs = '    ^----------------!                        ';
-      const inner = cold('                 --i-j-k-l-|                               ', values);
+      const inner = cold(' --i-j-k-l-|                              ', values);
       const innersubs = [
         '                 -^---------!                              ',
         '                 -----------^---------!                    ',
@@ -130,11 +130,11 @@ describe('Observable.prototype.concatMap', () => {
 
   it('should handle an empty source', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const e1 = cold('|');
-      const e1subs = '  (^!)';
+      const e1 = cold('   |');
+      const e1subs = '    (^!)';
       const inner = cold('-1-2-3|');
       const innersubs: string[] = [];
-      const expected = '|';
+      const expected = '  |';
 
       const result = e1.pipe(concatMap(() => inner));
 
@@ -146,11 +146,11 @@ describe('Observable.prototype.concatMap', () => {
 
   it('should handle a never source', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const e1 = cold('-');
-      const e1subs = '  ^';
+      const e1 = cold('   -');
+      const e1subs = '    ^';
       const inner = cold('-1-2-3|');
       const innersubs: string[] = [];
-      const expected = '-';
+      const expected = '  -';
 
       const result = e1.pipe(
         concatMap(() => {
@@ -166,11 +166,11 @@ describe('Observable.prototype.concatMap', () => {
 
   it('should error immediately if given a just-throw source', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 = cold(' #');
-      const e1subs = '  (^!)';
+      const e1 = cold('   #');
+      const e1subs = '    (^!)';
       const inner = cold('-1-2-3|');
       const innersubs: string[] = [];
-      const expected = '#';
+      const expected = '  #';
 
       const result = e1.pipe(
         concatMap(() => {
@@ -186,13 +186,13 @@ describe('Observable.prototype.concatMap', () => {
 
   it('should return a silenced version of the source if the mapped inner is empty', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 = cold('                --a-b--c-| ');
-      const e1subs = '                 ^--------! ';
-      const inner = cold('             |');
+      const e1 = cold('   --a-b--c-| ');
+      const e1subs = '    ^--------! ';
+      const inner = cold('  |');
       const innersubs = [
-        '                              --(^!)     ',
-        '                              ----(^!)   ',
-        '                              -------(^!)'
+        '                 --(^!)     ',
+        '                 ----(^!)   ',
+        '                 -------(^!)'
       ];
       const expected = '  ---------| ';
 
@@ -210,9 +210,9 @@ describe('Observable.prototype.concatMap', () => {
 
   it('should return a never if the mapped inner is never', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const e1 = cold('--a-b--c-|');
-      const e1subs = ' ^--------!';
-      const inner = cold('-');
+      const e1 = cold('  --a-b--c-|');
+      const e1subs = '   ^--------!';
+      const inner = cold(' -');
       const innersubs = '--^-------';
       const expected = ' ----------';
 
@@ -232,7 +232,7 @@ describe('Observable.prototype.concatMap', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const e1 = cold('  --a-b--c-|');
       const e1subs = '   ^-!       ';
-      const inner = cold('#');
+      const inner = cold(' #');
       const innersubs = '--(^!)    ';
       const expected = ' --#       ';
 
@@ -253,7 +253,7 @@ describe('Observable.prototype.concatMap', () => {
       const values = { i: 'foo', j: 'bar', k: 'baz', l: 'qux' };
       const e1 = hot('    -a---b---c---d----------------------------------|');
       const e1subs = '    ^-----------------------------------------------!';
-      const inner = cold('                 --i-j-k-l-|                                     ', values);
+      const inner = cold(' --i-j-k-l-|                                     ', values);
       const innersubs = [
         '                 -^---------!                                     ',
         '                 -----------^---------!                           ',
@@ -275,7 +275,7 @@ describe('Observable.prototype.concatMap', () => {
       const values = { i: 'foo', j: 'bar', k: 'baz', l: 'qux' };
       const e1 = hot('    -a---b---c---d-----------------------------------');
       const e1subs = '    ^------------------------------------------------';
-      const inner = cold('                  --i-j-k-l-|                                     ', values);
+      const inner = cold(' --i-j-k-l-|                                     ', values);
       const innersubs = [
         '                 -^---------!                                     ',
         '                 -----------^---------!                           ',
@@ -332,8 +332,11 @@ describe('Observable.prototype.concatMap', () => {
       const e1 = hot('    -a---b---c---d---#');
       const e1subs = '    ^----------------!';
       const inner = cold(' --i-j-k-l-|      ', values);
-      const innersubs = ['                -^---------!      ', '                -----------^-----!'];
-      const expected = ' ---i-j-k-l---i-j-#';
+      const innersubs = [
+        '                 -^---------!      ',
+        '                 -----------^-----!'
+      ];
+      const expected = '  ---i-j-k-l---i-j-#';
 
       const result = e1.pipe(concatMap(value => inner));
 
@@ -733,6 +736,7 @@ describe('Observable.prototype.concatMap', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
+
   it('should map values to constant resolved promises and concatenate', (done: MochaDone) => {
     const source = from([4, 3, 2, 1]);
     const project = (value: number) => from(Promise.resolve(42));
