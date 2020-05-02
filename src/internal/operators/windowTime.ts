@@ -8,6 +8,15 @@ import { isNumeric } from '../util/isNumeric';
 import { isScheduler } from '../util/isScheduler';
 import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
 
+export function windowTime<T>(windowTimeSpan: number,
+                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
+export function windowTime<T>(windowTimeSpan: number,
+                              windowCreationInterval: number,
+                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
+export function windowTime<T>(windowTimeSpan: number,
+                              windowCreationInterval: number,
+                              maxWindowSize: number,
+                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 /**
  * Branch out the source Observable values as a nested Observable periodically
  * in time.
@@ -87,16 +96,6 @@ import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
  * intervals that determine window boundaries.
  * @returnAn observable of windows, which in turn are Observables.
  */
-export function windowTime<T>(windowTimeSpan: number,
-                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
-export function windowTime<T>(windowTimeSpan: number,
-                              windowCreationInterval: number,
-                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
-export function windowTime<T>(windowTimeSpan: number,
-                              windowCreationInterval: number,
-                              maxWindowSize: number,
-                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
-
 export function windowTime<T>(windowTimeSpan: number): OperatorFunction<T, Observable<T>> {
   let scheduler: SchedulerLike = async;
   let windowCreationInterval: number | null = null;
