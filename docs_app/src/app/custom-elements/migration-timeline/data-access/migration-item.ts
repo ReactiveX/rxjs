@@ -118,7 +118,7 @@ export function parseClientMigrationTimelineReleaseItem(
 }
 
 export function getBreakingChangeFromDeprecation(d: RawDeprecation, r: { deprecationVersion: string }): BreakingChange {
-  return parseToMigrationItemUIDAware<BreakingChange>(r.deprecationVersion)({
+  return parseToMigrationItemUIDAware<BreakingChange>(d.breakingChangeVersion)({
     itemType: 'breakingChange',
     subject: d.subject,
     subjectSymbol: d.subjectSymbol,

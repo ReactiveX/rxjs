@@ -16,6 +16,7 @@ export interface MigrationTimelineNavigationComponentModel {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'rxjs-release-navigation',
   template: `
     <div class="flex-center group-buttons migration-timeline-navigation"

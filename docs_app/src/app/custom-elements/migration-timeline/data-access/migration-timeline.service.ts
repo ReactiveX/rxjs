@@ -4,10 +4,10 @@ import {map, startWith} from 'rxjs/operators';
 import {GlobalState} from '../../../shared/state.service';
 import {
   Release,
-  compareByReleaseDateAsc,
   getBreakingChangeFromDeprecation,
   parseClientMigrationTimelineReleaseItem,
-  parseToMigrationItemUIDAware
+  parseToMigrationItemUIDAware,
+  compareByVersionNumberAsc
 } from './migration-item';
 import {deprecationAndBreakingChangeTimeline, formatSemVerString, RawRelease} from './migration-timeline-structure';
 
@@ -31,10 +31,9 @@ export class MigrationTimelineService extends GlobalState<MigrationTimelineState
   }
 
   fetchMigrationTimeline(): void {
-    this.connect(of({
-        migrations: this.staticMigrations.sort(compareByReleaseDateAsc)
-      })
-    );
+    this.set({
+        migrations: this.staticMigrations.sort(compareByVersionNumberAsc)
+      });
   }
 
   getStaticMigrations(): Release[] {

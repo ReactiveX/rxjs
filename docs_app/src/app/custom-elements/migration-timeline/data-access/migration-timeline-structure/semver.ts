@@ -12,14 +12,14 @@ export function parseSemVerObject(version: string = ''): SemVerObj {
   const subVersionName = subVersionNameArr.join('-');
 
   const obj: SemVerObj = {
-    major: +major,
-    minor: +minor,
-    patch: +patch
+    major: +(major || 0),
+    minor: +(minor || 0),
+    patch: +(patch || 0),
   };
 
   if (subVersionName !== '') {
     obj.subVersionName = subVersionName + '';
-    obj.subVersion = +subVersion;
+    obj.subVersion = +(subVersion || '000');
   }
 
   return obj;
@@ -43,7 +43,7 @@ export function formatSemVerNumber(version: string = ''): number {
 
   function getSubVersionNameNumber(sVN: string = ''): string {
     // public releases, versions without a sub version part (6.0.0) are equal to 197 (sorting)
-    let code: string = sVN !== undefined ? sVN.charCodeAt(0) + '' : '197';
+    let code: string = sVN !== '' ? sVN.charCodeAt(0) + '' : '197';
     code = Array(3 - code.length).fill('0').join('') + code;
     return code;
   }
