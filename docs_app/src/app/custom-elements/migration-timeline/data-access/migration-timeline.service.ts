@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, of, pipe} from 'rxjs';
+import {Observable, pipe} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {GlobalState} from '../../../shared/state.service';
 import {
