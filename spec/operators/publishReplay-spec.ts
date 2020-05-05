@@ -426,7 +426,7 @@ describe('publishReplay operator', () => {
     const selector = (observable: Observable<string>) => observable.pipe(map(v => 2 * +v));
     const source = cold('--1-2---3-4---|');
     const sourceSubs =  '^             !';
-    const published = source.pipe(publishReplay(1, Number.POSITIVE_INFINITY, selector));
+    const published = source.pipe(publishReplay(1, Infinity, selector));
     const expected =    '--a-b---c-d---|';
 
     expectObservable(published).toBe(expected, values);
@@ -439,7 +439,7 @@ describe('publishReplay operator', () => {
       throw error;
     };
     const source = cold('--1-2---3-4---|');
-    const published = source.pipe(publishReplay(1, Number.POSITIVE_INFINITY, selector));
+    const published = source.pipe(publishReplay(1, Infinity, selector));
 
     // The exception is thrown outside Rx chain (not as an error notification).
     expect(() => published.subscribe()).to.throw(error);
@@ -451,7 +451,7 @@ describe('publishReplay operator', () => {
     const selector = (observable: Observable<string>) => observable.pipe(mergeMapTo(innerObservable));
     const source = cold('--1--2---3---|');
     const sourceSubs =  '^          !';
-    const published = source.pipe(publishReplay(1, Number.POSITIVE_INFINITY, selector));
+    const published = source.pipe(publishReplay(1, Infinity, selector));
     const expected =    '----5-65-6-#';
 
     expectObservable(published).toBe(expected, undefined, error);
@@ -462,7 +462,7 @@ describe('publishReplay operator', () => {
     const selector = () => EMPTY;
     const source = cold('--1--2---3---|');
     const sourceSubs =  '(^!)';
-    const published = source.pipe(publishReplay(1, Number.POSITIVE_INFINITY, selector));
+    const published = source.pipe(publishReplay(1, Infinity, selector));
     const expected =    '|';
 
     expectObservable(published).toBe(expected);
@@ -473,7 +473,7 @@ describe('publishReplay operator', () => {
     const selector = () => NEVER;
     const source = cold('-');
     const sourceSubs =  '^';
-    const published = source.pipe(publishReplay(1, Number.POSITIVE_INFINITY, selector));
+    const published = source.pipe(publishReplay(1, Infinity, selector));
     const expected =    '-';
 
     expectObservable(published).toBe(expected);
@@ -485,7 +485,7 @@ describe('publishReplay operator', () => {
     const selector = () => throwError(error);
     const source = cold('--1--2---3---|');
     const sourceSubs =  '(^!)';
-    const published = source.pipe(publishReplay(1, Number.POSITIVE_INFINITY, selector));
+    const published = source.pipe(publishReplay(1, Infinity, selector));
     const expected =    '#';
 
     expectObservable(published).toBe(expected, undefined, error);

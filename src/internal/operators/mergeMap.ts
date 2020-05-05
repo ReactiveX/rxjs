@@ -64,7 +64,7 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(project: (value: 
  * @param {function(value: T, ?index: number): ObservableInput} project A function
  * that, when applied to an item emitted by the source Observable, returns an
  * Observable.
- * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
+ * @param {number} [concurrent=Infinity] Maximum number of input
  * Observables being subscribed to concurrently.
  * @return {Observable} An Observable that emits the result of applying the
  * projection function (and the optional deprecated `resultSelector`) to each item
@@ -75,7 +75,7 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(project: (value: 
 export function mergeMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
   resultSelector?: ((outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R) | number,
-  concurrent: number = Number.POSITIVE_INFINITY
+  concurrent: number = Infinity
 ): OperatorFunction<T, ObservedValueOf<O>|R> {
   if (typeof resultSelector === 'function') {
     // DEPRECATED PATH
@@ -92,7 +92,7 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
 
 export class MergeMapOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => ObservableInput<R>,
-              private concurrent: number = Number.POSITIVE_INFINITY) {
+              private concurrent: number = Infinity) {
   }
 
   call(observer: Subscriber<R>, source: any): any {
@@ -115,7 +115,7 @@ export class MergeMapSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   constructor(destination: Subscriber<R>,
               private project: (value: T, index: number) => ObservableInput<R>,
-              private concurrent: number = Number.POSITIVE_INFINITY) {
+              private concurrent: number = Infinity) {
     super(destination);
   }
 

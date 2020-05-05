@@ -106,7 +106,7 @@ describe('TestScheduler', () => {
     it('should parse a subscription marble string with an unsubscription', () => {
       const result = TestScheduler.parseMarblesAsSubscriptions('---^-');
       expect(result.subscribedFrame).to.equal(30);
-      expect(result.unsubscribedFrame).to.equal(Number.POSITIVE_INFINITY);
+      expect(result.unsubscribedFrame).to.equal(Infinity);
     });
 
     it('should parse a subscription marble string with a synchronous unsubscription', () => {

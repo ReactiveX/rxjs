@@ -82,7 +82,7 @@ export function bufferTime<T>(bufferTimeSpan: number): OperatorFunction<T, T[]> 
     bufferCreationInterval = arguments[1];
   }
 
-  let maxBufferSize: number = Number.POSITIVE_INFINITY;
+  let maxBufferSize: number = Infinity;
   if (length >= 3) {
     maxBufferSize = arguments[2];
   }

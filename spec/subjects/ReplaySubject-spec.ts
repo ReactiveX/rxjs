@@ -194,7 +194,7 @@ describe('ReplaySubject', () => {
 
   describe('with windowTime=40', () => {
     it('should replay previous values since 40 time units ago when subscribed', () => {
-      const replaySubject = new ReplaySubject<string>(Number.POSITIVE_INFINITY, 40, rxTestScheduler);
+      const replaySubject = new ReplaySubject<string>(Infinity, 40, rxTestScheduler);
       function feedNextIntoSubject(x: string) { replaySubject.next(x); }
       function feedErrorIntoSubject(err: any) { replaySubject.error(err); }
       function feedCompleteIntoSubject() { replaySubject.complete(); }
@@ -218,7 +218,7 @@ describe('ReplaySubject', () => {
     });
 
     it('should replay last values since 40 time units ago when subscribed', () => {
-      const replaySubject = new ReplaySubject<string>(Number.POSITIVE_INFINITY, 40, rxTestScheduler);
+      const replaySubject = new ReplaySubject<string>(Infinity, 40, rxTestScheduler);
       function feedNextIntoSubject(x: string) { replaySubject.next(x); }
       function feedErrorIntoSubject(err: any) { replaySubject.error(err); }
       function feedCompleteIntoSubject() { replaySubject.complete(); }

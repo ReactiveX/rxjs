@@ -115,8 +115,8 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
  * @see {@link share}
  * @see {@link publishReplay}
  *
- * @param {Number} [bufferSize=Number.POSITIVE_INFINITY] Maximum element count of the replay buffer.
- * @param {Number} [windowTime=Number.POSITIVE_INFINITY] Maximum time length of the replay buffer in milliseconds.
+ * @param {Number} [bufferSize=Infinity] Maximum element count of the replay buffer.
+ * @param {Number} [windowTime=Infinity] Maximum time length of the replay buffer in milliseconds.
  * @param {Scheduler} [scheduler] Scheduler where connected observers within the selector function
  * will be invoked on.
  * @return {Observable} An observable sequence that contains the elements of a sequence produced
@@ -143,8 +143,8 @@ export function shareReplay<T>(
 }
 
 function shareReplayOperator<T>({
-  bufferSize = Number.POSITIVE_INFINITY,
-  windowTime = Number.POSITIVE_INFINITY,
+  bufferSize = Infinity,
+  windowTime = Infinity,
   refCount: useRefCount,
   scheduler
 }: ShareReplayConfig) {
