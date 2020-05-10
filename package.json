@@ -42,7 +42,9 @@
     "compile": "tsc -b ./src/tsconfig.cjs.json ./src/tsconfig.cjs.spec.json ./src/tsconfig.esm.json ./src/tsconfig.esm5.json ./src/tsconfig.esm5.rollup.json ./src/tsconfig.types.json ./spec/tsconfig.json",
     "build:clean": "shx rm -rf ./dist",
     "build:global": "node ./tools/make-umd-bundle.js && node ./tools/make-closure-core.js",
-    "build:package": "npm-run-all build:clean compile build:global && node ./tools/prepare-package.js && node ./tools/generate-alias.js"
+    "build:package": "npm-run-all build:clean compile build:global && node ./tools/prepare-package.js && node ./tools/generate-alias.js",
+    "build:marbles": "rm -rf ./marbles/svgs/* && ./marbles/scripts/generate.sh",
+    "generate:marbles": "swirly"
   },
   "repository": {
     "type": "git",
@@ -137,7 +139,9 @@
     "sinon": "4.3.0",
     "sinon-chai": "2.14.0",
     "source-map-support": "0.5.3",
+    "swirly": "^0.11.1",
     "systemjs": "^0.21.0",
+    "ts-node": "^8.10.1",
     "tslint": "5.9.1",
     "tslint-etc": "1.9.2",
     "tslint-no-toplevel-property-access": "0.0.2",
