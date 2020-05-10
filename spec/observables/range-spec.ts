@@ -6,13 +6,11 @@ import { expectObservable } from '../helpers/marble-testing';
 import { dispatch } from 'rxjs/internal/observable/range';
 import { concatMap, delay } from 'rxjs/operators';
 
-declare const asDiagram: any;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {range} */
 describe('range', () => {
-  asDiagram('range(1, 10)')('should create an observable with numbers 1 to 10', () => {
+  it('should create an observable with numbers 1 to 10', () => {
     const e1 = range(1, 10)
       // for the purpose of making a nice diagram, spread out the synchronous emissions
       .pipe(concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : 20, rxTestScheduler))));

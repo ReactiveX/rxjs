@@ -2,11 +2,9 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { of, EMPTY } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {takeUntil} */
 describe('takeUntil operator', () => {
-  asDiagram('takeUntil')('should take values until notifier emits', () => {
+  it('should take values until notifier emits', () => {
     const e1 =     hot('--a--b--c--d--e--f--g--|');
     const e1subs =     '^            !          ';
     const e2 =     hot('-------------z--|       ');

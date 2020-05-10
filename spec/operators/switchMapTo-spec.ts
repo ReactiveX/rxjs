@@ -3,12 +3,9 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { Observable, of } from 'rxjs';
 import { switchMapTo, mergeMap } from 'rxjs/operators';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {switchMapTo} */
 describe('switchMapTo', () => {
-  asDiagram('switchMapTo( 10\u2014\u201410\u2014\u201410\u2014| )')
-  ('should map-and-flatten each item to an Observable', () => {
+  it('should map-and-flatten each item to an Observable', () => {
     const e1 =    hot('--1-----3--5-------|');
     const e1subs =    '^                  !';
     const e2 =   cold('x-x-x|              ', {x: 10});

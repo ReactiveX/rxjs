@@ -3,14 +3,12 @@ import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpe
 import { sequenceEqual } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 
-declare const type: Function;
-declare const asDiagram: Function;
 declare const rxTestScheduler: TestScheduler;
 const booleans = { T: true, F: false };
 
 /** @test {sequenceEqual} */
 describe('sequenceEqual operator', () => {
-  asDiagram('sequenceEqual(observable)')('should return true for two equal sequences', () => {
+  it('should return true for two equal sequences', () => {
     const s1 = hot('--a--^--b--c--d--e--f--g--|');
     const s1subs =      '^                    !';
     const s2 = hot('-----^-----b--c--d-e-f------g-|');

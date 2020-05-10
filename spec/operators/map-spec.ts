@@ -3,15 +3,13 @@ import { map, tap, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 // function shortcuts
 const addDrama = function (x: number | string) { return x + '!'; };
 const identity = function <T>(x: T) { return x; };
 
 /** @test {map} */
 describe('map operator', () => {
-  asDiagram('map(x => 10 * x)')('should map multiple values', () => {
+  it('should map multiple values', () => {
     const a =   cold('--1--2--3--|');
     const asubs =    '^          !';
     const expected = '--x--y--z--|';

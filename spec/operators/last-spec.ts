@@ -3,11 +3,9 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { last, mergeMap } from 'rxjs/operators';
 import { EmptyError, of, from, Observable } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {last} */
 describe('Observable.prototype.last', () => {
-  asDiagram('last')('should take the last value of an observable', () => {
+  it('should take the last value of an observable', () => {
     const e1 =   hot('--a----b--c--|');
     const e1subs =   '^            !';
     const expected = '-------------(c|)';

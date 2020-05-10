@@ -3,12 +3,11 @@ import { timeoutWith, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {timeoutWith} */
 describe('timeoutWith operator', () => {
-  asDiagram('timeoutWith(50)')('should timeout after a specified period then subscribe to the passed observable', () => {
+  it('should timeout after a specified period then subscribe to the passed observable', () => {
     const e1 =  cold('-------a--b--|');
     const e1subs =   '^    !        ';
     const e2 =       cold('x-y-z-|  ');

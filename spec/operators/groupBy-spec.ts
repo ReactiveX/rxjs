@@ -4,13 +4,11 @@ import { TestScheduler } from 'rxjs/testing';
 import { ReplaySubject, of, GroupedObservable, Observable, Operator, Observer } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {groupBy} */
 describe('groupBy operator', () => {
-  asDiagram('groupBy(i => i % 2)')('should group numbers by odd/even', () => {
+  it('should group numbers by odd/even', () => {
     const e1 =   hot('--1---2---3---4---5---|');
     const expected = '--x---y---------------|';
     const x = cold(    '1-------3-------5---|');

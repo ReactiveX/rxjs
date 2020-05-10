@@ -1,16 +1,10 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { TestScheduler } from 'rxjs/testing';
 import { windowWhen, mergeMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
-declare const type: Function;
-declare const asDiagram: Function;
-
-declare const rxTestScheduler: TestScheduler;
-
 /** @test {windowWhen} */
 describe('windowWhen operator', () => {
-  asDiagram('windowWhen')('should emit windows that close and reopen', () => {
+  it('should emit windows that close and reopen', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--h--i--|');
     const e1subs =      '^                          !';
     const e2 = cold(    '-----------|                ');

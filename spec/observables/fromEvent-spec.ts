@@ -7,13 +7,11 @@ import { TestScheduler } from 'rxjs/testing';
 
 declare const type: Function;
 
-declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {fromEvent} */
 describe('fromEvent', () => {
-  asDiagram('fromEvent(element, \'click\')')
-  ('should create an observable of click on the element', () => {
+  it('should create an observable of click on the element', () => {
     const target = {
       addEventListener: (eventType: any, listener: any) => {
         timer(50, 20, rxTestScheduler)

@@ -3,15 +3,13 @@ import { startWith, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {startWith} */
 describe('startWith operator', () => {
   const defaultStartValue = 'x';
 
-  asDiagram('startWith(s)')('should prepend to a cold Observable', () => {
+  it('should prepend to a cold Observable', () => {
     const e1 =  cold('---a--b--c--|');
     const e1subs =   '^           !';
     const expected = 's--a--b--c--|';

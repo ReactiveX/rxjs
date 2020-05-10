@@ -2,11 +2,9 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { skip, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {skip} */
 describe('skip operator', () => {
-  asDiagram('skip(3)')('should skip values before a total', () => {
+  it('should skip values before a total', () => {
     const source = hot('--a--b--c--d--e--|');
     const subs =       '^                !';
     const expected =   '-----------d--e--|';

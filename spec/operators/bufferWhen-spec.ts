@@ -4,8 +4,6 @@ import { bufferWhen, mergeMap, takeWhile } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {bufferWhen} */
 describe('bufferWhen operator', () => {
   let testScheduler: TestScheduler;
@@ -14,7 +12,7 @@ describe('bufferWhen operator', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('bufferWhen')('should emit buffers that close and reopen', () => {
+  it('should emit buffers that close and reopen', () => {
     testScheduler.run(({ hot, cold, expectObservable }) => {
       const e1 = hot('--a--^---b---c---d---e---f---g---------|   ');
       const e2 = cold('    --------------(s|)                    ');

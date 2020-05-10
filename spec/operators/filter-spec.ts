@@ -3,8 +3,6 @@ import { filter, tap, map, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of, Observable, from } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {filter} */
 describe('filter operator', () => {
   function oddFilter(x: number | string) {
@@ -20,7 +18,7 @@ describe('filter operator', () => {
     return true;
   }
 
-  asDiagram('filter(x => x % 2 === 1)')('should filter out even values', () => {
+  it('should filter out even values', () => {
     const source = hot('--0--1--2--3--4--|');
     const subs =       '^                !';
     const expected =   '-----1-----3-----|';

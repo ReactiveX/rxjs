@@ -7,8 +7,6 @@ import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 import { asInteropObservable } from '../helpers/interop-helper';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {catch} */
 describe('catchError operator', () => {
   let testScheduler: TestScheduler;
@@ -17,7 +15,7 @@ describe('catchError operator', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('catch')('should catch error and replace with a cold Observable', () => {
+  it('should catch error and replace with a cold Observable', () => {
     testScheduler.run(({ hot, cold, expectObservable }) => {
       const e1 = hot('  --a--b--#       ');
       const e2 = cold('         -1-2-3-|');

@@ -4,13 +4,11 @@ import { throttleTime, take, map, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, concat, timer } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {throttleTime} */
 describe('throttleTime operator', () => {
-  asDiagram('throttleTime(50)')('should immediately emit the first value in each time window', () => {
+  it('should immediately emit the first value in each time window', () => {
     const e1 =   hot('-a-x-y----b---x-cx---|');
     const subs =     '^                    !';
     const expected = '-a--------b-----c----|';
@@ -141,7 +139,7 @@ describe('throttleTime operator', () => {
   });
 
   describe('throttleTime(fn, { leading: true, trailing: true })', () => {
-    asDiagram('throttleTime(fn, { leading: true, trailing: true })')('should immediately emit the first and last values in each time window', () =>  {
+    it('should immediately emit the first and last values in each time window', () =>  {
       const e1 =   hot('-a-xy-----b--x--cxxx--|');
       const e1subs =   '^                     !';
       const t =  time( '----|                  ');
@@ -165,7 +163,7 @@ describe('throttleTime operator', () => {
   });
 
   describe('throttleTime(fn, { leading: false, trailing: true })', () => {
-    asDiagram('throttleTime(fn, { leading: false, trailing: true })')('should immediately emit the last value in each time window', () =>  {
+    it('should immediately emit the last value in each time window', () =>  {
       const e1 =   hot('-a-xy-----b--x--cxxx--|');
       const e1subs =   '^                     !';
       const t =  time( '----|                  ');

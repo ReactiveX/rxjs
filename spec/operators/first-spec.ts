@@ -4,13 +4,11 @@ import { first, mergeMap, delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, from, Observable, Subject, EmptyError } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {first} */
 describe('Observable.prototype.first', () => {
-  asDiagram('first')('should take the first value of an observable with many values', () => {
+  it('should take the first value of an observable with many values', () => {
     const e1 =   hot('-----a--b--c---d---|');
     const expected = '-----(a|)           ';
     const sub =      '^    !              ';

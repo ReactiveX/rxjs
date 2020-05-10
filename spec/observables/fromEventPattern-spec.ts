@@ -6,13 +6,11 @@ import { fromEventPattern, noop, NEVER, timer } from 'rxjs';
 import { mapTo, take, concat } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 
-declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {fromEventPattern} */
 describe('fromEventPattern', () => {
-  asDiagram('fromEventPattern(addHandler, removeHandler)')
-  ('should create an observable from the handler API', () => {
+  it('should create an observable from the handler API', () => {
     function addHandler(h: any) {
       timer(50, 20, rxTestScheduler).pipe(
         mapTo('ev'),

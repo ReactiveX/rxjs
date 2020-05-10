@@ -3,12 +3,11 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { Observable, of, NEVER, queueScheduler, Subject } from 'rxjs';
 import { map, switchAll, mergeMap } from 'rxjs/operators';
 
-declare function asDiagram(arg: string): Function;
 declare const type: Function;
 
 /** @test {switch} */
 describe('switchAll', () => {
-  asDiagram('switchAll')('should switch a hot observable of cold observables', () => {
+  it('should switch a hot observable of cold observables', () => {
     const x = cold(    '--a---b--c---d--|      ');
     const y = cold(           '----e---f--g---|');
     const e1 = hot(  '--x------y-------|       ', { x: x, y: y });

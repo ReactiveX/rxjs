@@ -4,7 +4,6 @@ import { asyncScheduler, of, from, Observable, asapScheduler, Observer, observab
 import { first, concatMap, delay } from 'rxjs/operators';
 
 // tslint:disable:no-any
-declare const asDiagram: any;
 declare const expectObservable: any;
 declare const type: any;
 declare const rxTestScheduler: TestScheduler;
@@ -16,8 +15,7 @@ function getArguments<T>(...args: T[]) {
 
 /** @test {from} */
 describe('from', () => {
-  asDiagram('from([10, 20, 30])')
-  ('should create an observable from an array', () => {
+  it('should create an observable from an array', () => {
     const e1 = from([10, 20, 30]).pipe(
       // for the purpose of making a nice diagram, spread out the synchronous emissions
       concatMap((x, i) => of(x).pipe(

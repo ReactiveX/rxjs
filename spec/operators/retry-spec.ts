@@ -3,11 +3,9 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { retry, map, take, mergeMap, concat, multicast, refCount } from 'rxjs/operators';
 import { Observable, Observer, defer, range, of, throwError, Subject } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {retry} */
 describe('retry operator', () => {
-  asDiagram('retry(2)')('should handle a basic source that emits next then errors, count=3', () => {
+  it('should handle a basic source that emits next then errors, count=3', () => {
     const source = cold('--1-2-3-#');
     const subs =       ['^       !                ',
                       '        ^       !        ',

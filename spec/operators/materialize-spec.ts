@@ -2,11 +2,9 @@ import { materialize, map, mergeMap } from 'rxjs/operators';
 import { Notification, of } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {materialize} */
 describe('materialize operator', () => {
-  asDiagram('materialize')('should materialize an Observable', () => {
+  it('should materialize an Observable', () => {
     const e1 =   hot('--x--y--z--|');
     const expected = '--a--b--c--(d|)';
     const values = { a: '{x}', b: '{y}', c: '{z}', d: '|' };

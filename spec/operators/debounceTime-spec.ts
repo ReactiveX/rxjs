@@ -5,13 +5,11 @@ import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { VirtualTimeScheduler } from '../../src/internal/scheduler/VirtualTimeScheduler';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {debounceTime} */
 describe('debounceTime operator', () => {
-  asDiagram('debounceTime(20)')('should debounce values by 20 time units', () => {
+  it('should debounce values by 20 time units', () => {
     const e1 =   hot('-a--bc--d---|');
     const expected = '---a---c--d-|';
 

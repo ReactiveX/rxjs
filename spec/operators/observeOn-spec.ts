@@ -4,13 +4,11 @@ import { expect } from 'chai';
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of, Observable, asapScheduler } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {observeOn} */
 describe('observeOn operator', () => {
-  asDiagram('observeOn(scheduler)')('should observe on specified scheduler', () => {
+  it('should observe on specified scheduler', () => {
     const e1 =    hot('--a--b--|');
     const expected =  '--a--b--|';
     const sub =       '^       !';

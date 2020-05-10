@@ -4,7 +4,6 @@ import { expectObservable } from '../helpers/marble-testing';
 import { generate, Subscriber } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
 
 function err(): any {
@@ -12,24 +11,21 @@ function err(): any {
 }
 
 describe('generate', () => {
-  asDiagram('generate(1, x => false, x => x + 1)')
-  ('should complete if condition does not meet', () => {
+  it('should complete if condition does not meet', () => {
     const source = generate(1, x => false, x => x + 1);
     const expected = '|';
 
     expectObservable(source).toBe(expected);
   });
 
-  asDiagram('generate(1, x => x == 1, x => x + 1)')
-  ('should produce first value immediately', () => {
+  it('should produce first value immediately', () => {
     const source = generate(1, x => x == 1, x => x + 1);
     const expected = '(1|)';
 
     expectObservable(source).toBe(expected, { '1': 1 });
   });
 
-  asDiagram('generate(1, x => x < 3, x => x + 1)')
-  ('should produce all values synchronously', () => {
+  it('should produce all values synchronously', () => {
     const source = generate(1, x => x < 3, x => x + 1);
     const expected = '(12|)';
 

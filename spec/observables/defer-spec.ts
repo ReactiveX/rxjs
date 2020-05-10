@@ -3,12 +3,9 @@ import { defer, of } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { mergeMap } from 'rxjs/operators';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {defer} */
 describe('defer', () => {
-  asDiagram('defer(() => Observable.of(a, b, c))')
-  ('should defer the creation of a simple Observable', () => {
+  it('should defer the creation of a simple Observable', () => {
     const expected =    '-a--b--c--|';
     const e1 = defer(() => cold('-a--b--c--|'));
     expectObservable(e1).toBe(expected);

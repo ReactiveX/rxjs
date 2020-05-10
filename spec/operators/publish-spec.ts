@@ -3,12 +3,11 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { publish, zip, mergeMapTo, mergeMap, tap, refCount, retry, repeat, map } from 'rxjs/operators';
 import { ConnectableObservable, of, Subscription, Observable } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
 declare const type: Function;
 
 /** @test {publish} */
 describe('publish operator', () => {
-  asDiagram('publish')('should mirror a simple source Observable', () => {
+  it('should mirror a simple source Observable', () => {
     const source = cold('--1-2---3-4--5-|');
     const sourceSubs =  '^              !';
     const published = source.pipe(publish()) as ConnectableObservable<any>;

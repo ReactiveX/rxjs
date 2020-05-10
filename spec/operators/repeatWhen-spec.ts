@@ -3,11 +3,9 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { repeatWhen, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { of, EMPTY, Observable, Subscriber } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {repeatWhen} */
 describe('repeatWhen operator', () => {
-  asDiagram('repeatWhen')('should handle a source with eventual complete using a hot notifier', () => {
+  it('should handle a source with eventual complete using a hot notifier', () => {
     const source =  cold('-1--2--|');
     const subs =        ['^      !                     ',
                        '             ^      !        ',

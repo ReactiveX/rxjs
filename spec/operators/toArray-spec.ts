@@ -3,11 +3,10 @@ import { toArray, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 declare const type: Function;
-declare const asDiagram: Function;
 
 /** @test {toArray} */
 describe('toArray operator', () => {
-  asDiagram('toArray')('should reduce the values of an observable into an array', () => {
+  it('should reduce the values of an observable into an array', () => {
     const e1 =   hot('---a--b--|');
     const e1subs =   '^        !';
     const expected = '---------(w|)';

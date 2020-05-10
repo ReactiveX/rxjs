@@ -4,15 +4,13 @@ import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { Subscribable, EMPTY, Observable, of, Observer } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
 declare const type: Function;
 
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {expand} */
 describe('expand operator', () => {
-  asDiagram('expand(x => x === 8 ? empty : \u2014\u20142*x\u2014| )')
-  ('should recursively map-and-flatten each item to an Observable', () => {
+  it('should recursively map-and-flatten each item to an Observable', () => {
     const e1 =    hot('--x----|  ', {x: 1});
     const e1subs =    '^      !  ';
     const e2 =   cold(  '--c|    ', {c: 2});

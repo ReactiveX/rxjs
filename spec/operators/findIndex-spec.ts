@@ -3,8 +3,6 @@ import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {findIndex} */
@@ -13,7 +11,7 @@ describe('findIndex operator', () => {
     return true;
   }
 
-  asDiagram('findIndex(x => x % 5 === 0)')('should return matching element from source emits single element', () => {
+  it('should return matching element from source emits single element', () => {
     const values = {a: 3, b: 9, c: 15, d: 20};
     const source = hot('---a--b--c--d---|', values);
     const subs =       '^        !       ';

@@ -2,11 +2,9 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { of } from 'rxjs';
 import { defaultIfEmpty, mergeMap } from 'rxjs/operators';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {defaultIfEmpty} */
 describe('Observable.prototype.defaultIfEmpty', () => {
-  asDiagram('defaultIfEmpty(42)')('should return the Observable if not empty with a default value', () => {
+  it('should return the Observable if not empty with a default value', () => {
     const e1 =   hot('--------|');
     const expected = '--------(x|)';
 

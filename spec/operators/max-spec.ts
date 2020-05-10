@@ -3,11 +3,9 @@ import { max, mergeMap, skip, take } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of, range } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {max} */
 describe('max operator', () => {
-  asDiagram('max')('should find the max of values of an observable', () => {
+  it('should find the max of values of an observable', () => {
     const e1 = hot('--a--b--c--|', { a: 42, b: -1, c: 3 });
     const subs =       '^          !';
     const expected =   '-----------(x|)';

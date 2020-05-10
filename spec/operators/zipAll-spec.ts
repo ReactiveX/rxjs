@@ -3,12 +3,11 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { zipAll, mergeMap } from 'rxjs/operators';
 import { queueScheduler, of, zip, Observable } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
 declare const type: Function;
 
 /** @test {zipAll} */
 describe('zipAll operator', () => {
-  asDiagram('zipAll')('should combine paired events from two observables', () => {
+  it('should combine paired events from two observables', () => {
     const x =    cold(               '-a-----b-|');
     const y =    cold(               '--1-2-----');
     const outer = hot('-x----y--------|         ', { x: x, y: y });

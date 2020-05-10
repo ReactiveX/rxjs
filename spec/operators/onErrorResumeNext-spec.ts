@@ -4,10 +4,8 @@ import { onErrorResumeNext, takeWhile } from 'rxjs/operators';
 import { concat, defer, throwError, of } from 'rxjs';
 import { asInteropObservable } from '../helpers/interop-helper';
 
-declare function asDiagram(arg: string): Function;
-
 describe('onErrorResumeNext operator', () => {
-  asDiagram('onErrorResumeNext')('should continue observable sequence with next observable', () => {
+  it('should continue observable sequence with next observable', () => {
     const source =  hot('--a--b--#');
     const next   = cold(        '--c--d--|');
     const subs =        '^       !';

@@ -4,12 +4,11 @@ import { expectObservable } from '../helpers/marble-testing';
 import { TestScheduler } from 'rxjs/testing';
 import { concatMap, delay, concatAll } from 'rxjs/operators';
 
-declare const asDiagram: any;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {of} */
 describe('of', () => {
-  asDiagram('of(1, 2, 3)')('should create a cold observable that emits 1, 2, 3', () => {
+  it('should create a cold observable that emits 1, 2, 3', () => {
     const e1 = of(1, 2, 3).pipe(
       // for the purpose of making a nice diagram, spread out the synchronous emissions
       concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : 20, rxTestScheduler)))

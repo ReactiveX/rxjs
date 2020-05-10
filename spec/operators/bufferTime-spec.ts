@@ -3,8 +3,6 @@ import { bufferTime, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare const asDiagram: Function;
-
 /** @test {bufferTime} */
 describe('bufferTime operator', () => {
   let testScheduler: TestScheduler;
@@ -13,7 +11,7 @@ describe('bufferTime operator', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('bufferTime(100)')('should emit buffers at intervals', () => {
+  it('should emit buffers at intervals', () => {
     testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  ---a---b---c---d---e---f---g-----|   ');
       const subs = '    ^--------------------------------!   ';

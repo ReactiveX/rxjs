@@ -4,8 +4,6 @@ import { bufferCount, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {bufferCount} */
 describe('bufferCount operator', () => {
   let testScheduler: TestScheduler;
@@ -14,7 +12,7 @@ describe('bufferCount operator', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('bufferCount(3,2)')('should emit buffers at intervals', () => {
+  it('should emit buffers at intervals', () => {
     testScheduler.run(({ hot, expectObservable }) => {
       const values = {
         v: ['a', 'b', 'c'],

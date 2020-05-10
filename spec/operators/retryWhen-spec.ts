@@ -3,11 +3,9 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { retryWhen, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { of, EMPTY } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {retryWhen} */
 describe('retryWhen operator', () => {
-  asDiagram('retryWhen')('should handle a source with eventual error using a hot notifier', () => {
+  it('should handle a source with eventual error using a hot notifier', () => {
     const source =  cold('-1--2--#');
     const subs =        ['^      !                     ',
                        '             ^      !        ',

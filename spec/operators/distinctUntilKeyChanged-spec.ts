@@ -2,11 +2,9 @@ import { distinctUntilKeyChanged, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {distinctUntilKeyChanged} */
 describe('distinctUntilKeyChanged operator', () => {
-  asDiagram('distinctUntilKeyChanged(\'k\')')('should distinguish between values', () => {
+  it('should distinguish between values', () => {
     const values = {a: {k: 1}, b: {k: 2}, c: {k: 3}};
     const e1 =   hot('-a--b-b----a-c-|', values);
     const expected = '-a--b------a-c-|';

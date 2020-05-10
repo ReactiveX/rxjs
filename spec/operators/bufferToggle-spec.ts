@@ -4,8 +4,6 @@ import { bufferToggle, mergeMap, mapTo } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {bufferToggle} */
 describe('bufferToggle operator', () => {
   let testScheduler: TestScheduler;
@@ -14,7 +12,7 @@ describe('bufferToggle operator', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('bufferToggle')('should emit buffers using hot openings and hot closings', () => {
+  it('should emit buffers using hot openings and hot closings', () => {
     testScheduler.run(({ hot, expectObservable }) => {
       const e1 = hot('  ---a---b---c---d---e---f---g---|');
       const e2 = hot('  --o------------------o---------|');

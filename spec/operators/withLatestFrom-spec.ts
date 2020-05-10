@@ -4,11 +4,9 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { withLatestFrom, mergeMap, delay } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {withLatestFrom} */
 describe('withLatestFrom operator', () => {
-  asDiagram('withLatestFrom')('should combine events from cold observables', () => {
+  it('should combine events from cold observables', () => {
     const e1 =  cold('-a--b-----c-d-e-|');
     const e2 =  cold('--1--2-3-4---|   ');
     const expected = '----B-----C-D-E-|';

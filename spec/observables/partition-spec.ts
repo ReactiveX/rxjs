@@ -3,8 +3,6 @@ import { Observable, partition, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {partition} */
 describe('Observable.prototype.partition', () => {
   function expectObservableArray(result: Observable<string>[], expected: string[]) {
@@ -13,7 +11,7 @@ describe('Observable.prototype.partition', () => {
     }
   }
 
-  asDiagram('partition(x => x % 2 === 1)')('should partition an observable of ' +
+  it('should partition an observable of ' +
   'integers into even and odd', () => {
     const e1 =    hot('--1-2---3------4--5---6--|');
     const e1subs =    '^                        !';
