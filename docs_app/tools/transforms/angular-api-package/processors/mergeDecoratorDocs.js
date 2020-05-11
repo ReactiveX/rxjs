@@ -86,8 +86,8 @@ module.exports = function mergeDecoratorDocs(log) {
           var decoratorDoc = docsToMerge[doc.name];
           var callMember = doc.members.filter(function(member) { return member.isCallMember; })[0];
           log.debug(
-              'mergeDecoratorDocs: merging', doc.name, 'into', decoratorDoc.name,
-              callMember.description.substring(0, 50));
+            'mergeDecoratorDocs: merging', doc.name, 'into', decoratorDoc.name,
+            callMember.description.substring(0, 50));
           // Merge the documentation found in this call signature into the original decorator
           decoratorDoc.description = callMember.description;
           decoratorDoc.howToUse = callMember.howToUse;

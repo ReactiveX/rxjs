@@ -31,7 +31,7 @@ describe('authors-package (integration tests)', () => {
       expect(files).toContain(resolve(DOCS_OUTPUT_PATH, '../contributors.json'));
       expect(files).toContain(resolve(DOCS_OUTPUT_PATH, '../resources.json'));
       done();
-    });
+    }).catch(done.fail);
   });
 
   it('should generate tutorial docs if the "fileChanged" is a tutorial doc', (done) => {
@@ -39,7 +39,7 @@ describe('authors-package (integration tests)', () => {
       expect(fs.writeFile).toHaveBeenCalled();
       expect(files).toContain(resolve(DOCS_OUTPUT_PATH, 'tutorial/toh-pt5.json'));
       done();
-    });
+    }).catch(done.fail);
   });
 
   it('should generate tutorial docs if the "fileChanged" is the tutorial index', (done) => {
@@ -47,7 +47,7 @@ describe('authors-package (integration tests)', () => {
       expect(fs.writeFile).toHaveBeenCalled();
       expect(files).toContain(resolve(DOCS_OUTPUT_PATH, 'tutorial.json'));
       done();
-    });
+    }).catch(done.fail);
   });
 
   it('should generate tutorial docs if the "fileChanged" is a tutorial example', (done) => {
@@ -55,7 +55,7 @@ describe('authors-package (integration tests)', () => {
       expect(fs.writeFile).toHaveBeenCalled();
       expect(files).toContain(resolve(DOCS_OUTPUT_PATH, 'tutorial/toh-pt3.json'));
       done();
-    });
+    }).catch(done.fail);
   });
 
   it('should generate guide doc if the "fileChanged" is a guide doc', (done) => {
@@ -63,7 +63,7 @@ describe('authors-package (integration tests)', () => {
       expect(fs.writeFile).toHaveBeenCalled();
       expect(files).toContain(resolve(DOCS_OUTPUT_PATH, 'guide/architecture.json'));
       done();
-    });
+    }).catch(done.fail);
   });
 
   it('should generate guide doc if the "fileChanged" is a guide example', (done) => {
@@ -71,7 +71,7 @@ describe('authors-package (integration tests)', () => {
       expect(fs.writeFile).toHaveBeenCalled();
       expect(files).toContain(resolve(DOCS_OUTPUT_PATH, 'guide/architecture.json'));
       done();
-    });
+    }).catch(done.fail);
   });
 
   it('should generate API doc if the "fileChanged" is an API doc', (done) => {
@@ -79,7 +79,7 @@ describe('authors-package (integration tests)', () => {
       expect(fs.writeFile).toHaveBeenCalled();
       expect(files).toContain(resolve(DOCS_OUTPUT_PATH, 'api/forms/FormBuilder.json'));
       done();
-    });
+    }).catch(done.fail);
   }, 16000);
 
   it('should generate API doc if the "fileChanged" is an API example', (done) => {
@@ -87,6 +87,6 @@ describe('authors-package (integration tests)', () => {
       expect(fs.writeFile).toHaveBeenCalled();
       expect(files).toContain(resolve(DOCS_OUTPUT_PATH, 'api/forms/FormBuilder.json'));
       done();
-    });
+    }).catch(done.fail);
   }, 16000);
 });

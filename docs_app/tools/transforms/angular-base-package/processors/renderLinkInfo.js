@@ -48,5 +48,5 @@ function getLinks(hash, docPath) {
     }
   });
   return Object.keys(internal).sort()
-        .concat(Object.keys(external).sort());
+    .concat(Object.keys(external).sort());
 }

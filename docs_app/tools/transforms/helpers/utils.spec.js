@@ -81,7 +81,7 @@ describe('utils', () => {
 
     it('should handle boolean values', () => {
       expect(renderAttributes({ foo: 'bar', loo: true, moo: false }))
-          .toEqual(' foo="bar" loo');
+        .toEqual(' foo="bar" loo');
     });
 
     it('should escape double quotes inside the value', () => {

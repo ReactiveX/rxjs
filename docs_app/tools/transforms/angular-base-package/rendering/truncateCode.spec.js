@@ -6,7 +6,7 @@ describe('truncateCode filter', function() {
   beforeEach(function() { filter = factory(); });
 
   it('should be called "truncateCode"',
-     function() { expect(filter.name).toEqual('truncateCode'); });
+    function() { expect(filter.name).toEqual('truncateCode'); });
 
   it('should return the whole string given lines is undefined', function() {
     expect(filter.process('some text\n  \nmore text\n  \n'))

@@ -23,7 +23,7 @@ describe('checkUnbalancedBackTicks', function() {
     processor.$process(docs);
 
     expect(log.warn).toHaveBeenCalledWith(
-        'checkUnbalancedBackTicks processor: unbalanced backticks found in rendered content - doc');
+      'checkUnbalancedBackTicks processor: unbalanced backticks found in rendered content - doc');
     expect(docs[0].unbalancedBackTicks).toBe(true);
   });
 });

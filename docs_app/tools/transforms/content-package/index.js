@@ -16,7 +16,7 @@ module.exports = new Package('content', [jsdocPackage, linksPackage])
 
   .config(function(parseTagsProcessor, getInjectables) {
     parseTagsProcessor.tagDefinitions = parseTagsProcessor.tagDefinitions.concat(
-        getInjectables(requireFolder(__dirname, './tag-defs')));
+      getInjectables(requireFolder(__dirname, './tag-defs')));
   })
 
   // Configure ids and paths
@@ -26,13 +26,13 @@ module.exports = new Package('content', [jsdocPackage, linksPackage])
       docTypes: ['content'],
       getId: function(doc) {
         return doc.fileInfo
-            .relativePath
-            // path should be relative to `modules` folder
-            .replace(/.*\/?modules\//, '')
-            // path should not include `/docs/`
-            .replace(/\/docs\//, '/')
-            // path should not have a suffix
-            .replace(/\.\w*$/, '');
+          .relativePath
+        // path should be relative to `modules` folder
+          .replace(/.*\/?modules\//, '')
+        // path should not include `/docs/`
+          .replace(/\/docs\//, '/')
+        // path should not have a suffix
+          .replace(/\.\w*$/, '');
       },
       getAliases: function(doc) { return [doc.id]; }
     });

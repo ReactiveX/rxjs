@@ -25,7 +25,7 @@ module.exports = function postProcessHtml(log, createDocMessage) {
     plugins: [],
     $process(docs) {
       const engine = rehype()
-            .data('settings', { fragment: true });
+        .data('settings', { fragment: true });
       this.plugins.forEach(plugin => engine.use(plugin));
 
       let vFile;

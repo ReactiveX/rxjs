@@ -89,20 +89,20 @@ describe('target inline-tag-def', function() {
 
   describe('someActive', function() {
     it('should return true if the array of targets passed are all allowed and at least on is active',
-       function() {
-         te.addAllowed('a', true);
-         te.addAllowed('b', false);
-         te.addAllowed('c');
+      function() {
+        te.addAllowed('a', true);
+        te.addAllowed('b', false);
+        te.addAllowed('c');
 
-         expect(te.someActive(['a'])).toBe(true);
-         expect(te.someActive(['b'])).toBe(false);
-         expect(te.someActive(['a', 'b'])).toBe(true);
-         expect(te.someActive(['b', 'c'])).toBe(false);
-         expect(te.someActive([])).toBe(false);
+        expect(te.someActive(['a'])).toBe(true);
+        expect(te.someActive(['b'])).toBe(false);
+        expect(te.someActive(['a', 'b'])).toBe(true);
+        expect(te.someActive(['b', 'c'])).toBe(false);
+        expect(te.someActive([])).toBe(false);
 
-         expect(function() { te.someActive('d'); })
-             .toThrowError(
-                 'Error accessing target "d". It is not in the list of allowed targets: a,b,c');
-       });
+        expect(function() { te.someActive('d'); })
+          .toThrowError(
+            'Error accessing target "d". It is not in the list of allowed targets: a,b,c');
+      });
   });
 });

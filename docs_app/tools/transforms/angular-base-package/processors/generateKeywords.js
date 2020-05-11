@@ -72,10 +72,10 @@ module.exports = function generateKeywordsProcessor(log, readFilesProcessor) {
 
 
       const filteredDocs = docs
-          // We are not interested in some docTypes
-          .filter(function(doc) { return !docTypesToIgnore[doc.docType]; })
-          // Ignore internals and private exports (indicated by the ɵ prefix)
-          .filter(function(doc) { return !doc.internal && !doc.privateExport; });
+      // We are not interested in some docTypes
+        .filter(function(doc) { return !docTypesToIgnore[doc.docType]; })
+      // Ignore internals and private exports (indicated by the ɵ prefix)
+        .filter(function(doc) { return !doc.internal && !doc.privateExport; });
 
 
       filteredDocs.forEach(function(doc) {

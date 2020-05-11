@@ -51,7 +51,7 @@ module.exports = function collectExamples(exampleMap, regionParser, log, createD
                 const parsedRegions = regionParser(doc.content, fileType);
 
                 log.debug(
-                    'found example file', folder, relativePath, Object.keys(parsedRegions.regions));
+                  'found example file', folder, relativePath, Object.keys(parsedRegions.regions));
 
                 doc.renderedContent = parsedRegions.contents;
 
