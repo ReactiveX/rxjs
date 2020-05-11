@@ -6,7 +6,7 @@ shepherding the community. As the roster of trusted maintainers grows, we'll exp
 much the same (but suggestions are always welcome).
 
 
-### The ~~10~~ 6 Commandments
+## The ~~10~~ 6 Commandments
  
  * __[Code of Conduct](../CODE_OF_CONDUCT.md)__. We should be setting a good example and be welcoming to all. We should be listening
  to all feedback from everyone in our community and respect their viewpoints and opinions.
