@@ -50,5 +50,5 @@ describe('inline-hash region-matcher', () => {
   });
 
   it('should create a plaster comment',
-     () => { expect(matcher.createPlasterComment('... elided ...')).toEqual('# ... elided ...'); });
+    () => { expect(matcher.createPlasterComment('... elided ...')).toEqual('# ... elided ...'); });
 });

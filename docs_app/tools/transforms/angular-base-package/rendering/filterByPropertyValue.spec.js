@@ -9,6 +9,6 @@ describe('filterByPropertyValue filter', () => {
 
   it('should filter out items that do not match the given property value', function() {
     expect(filter.process([{ a: 1 }, { a: 2 }, { b: 1 }, { a: 1, b: 2 }, { a: null }, { a: undefined }], 'a', 1))
-        .toEqual([{ a: 1 }, { a: 1, b: 2 }]);
+      .toEqual([{ a: 1 }, { a: 1, b: 2 }]);
   });
 });

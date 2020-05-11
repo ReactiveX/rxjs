@@ -6,4 +6,4 @@ var Package = require('dgeni').Package;
  */
 module.exports = new Package('remark', ['nunjucks'])
 
-                     .factory(require('./services/renderMarkdown'));
+  .factory(require('./services/renderMarkdown'));

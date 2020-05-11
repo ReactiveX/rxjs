@@ -74,10 +74,10 @@ describe('collectExampleRegions processor', () => {
       const processedDocs = processor.$process(docs);
 
       expect(processedDocs.filter(doc => doc.docType !== 'example-file'))
-          .toEqual(jasmine.objectContaining([
-            createDoc('Other doc 1', 'examples-2/t/style.css', 'content'),
-            createDoc('Other doc 2', 'other/b/c.js', 'content')
-          ]));
+        .toEqual(jasmine.objectContaining([
+          createDoc('Other doc 1', 'examples-2/t/style.css', 'content'),
+          createDoc('Other doc 2', 'other/b/c.js', 'content')
+        ]));
     });
 
     it('should call `regionParser` from with the content and file extension of each example doc',

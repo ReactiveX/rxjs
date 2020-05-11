@@ -5,7 +5,7 @@ module.exports = function targetEnvironments() {
   var checkAllowed = function(target) {
     if (!(target in _targets)) {
       throw new Error(
-          'Error accessing target "' + target + '". It is not in the list of allowed targets: ' +
+        'Error accessing target "' + target + '". It is not in the list of allowed targets: ' +
           Object.keys(_targets));
     }
   };

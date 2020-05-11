@@ -12,5 +12,5 @@ export class Contributor {
   twitter?: string;
   github?: string;
   bio?: string;
-  isFlipped? = false;
+  isFlipped ? = false;
 }

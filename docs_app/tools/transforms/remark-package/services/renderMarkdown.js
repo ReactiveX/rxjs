@@ -10,14 +10,14 @@ const code = require('./handlers/code');
 module.exports = function renderMarkdown() {
   const handlers = { code };
   const renderer = remark()
-                    .use(inlineTagDefs)
-                    .use(noIndentedCodeBlocks)
-                    .use(plainHTMLBlocks)
-                    // USEFUL DEBUGGING CODE
-                    // .use(() => tree => {
-                    //   console.log(require('util').inspect(tree, { colors: true, depth: 4 }));
-                    // })
-                    .use(html, { handlers });
+    .use(inlineTagDefs)
+    .use(noIndentedCodeBlocks)
+    .use(plainHTMLBlocks)
+  // USEFUL DEBUGGING CODE
+  // .use(() => tree => {
+  //   console.log(require('util').inspect(tree, { colors: true, depth: 4 }));
+  // })
+    .use(html, { handlers });
 
   return function renderMarkdownImpl(content) {
     return renderer.processSync(content).toString();
@@ -52,7 +52,7 @@ module.exports = function renderMarkdown() {
     tokenizeInlineTag.locator = inlineTagLocator;
 
     function tokenizeInlineTag(eat, value, silent) {
-      const match = /^\{@[^\s\}]+[^\}]*\}/.exec(value);
+      const match = /^\{@[^\s}]+[^}]*\}/.exec(value);
 
       if (match) {
         if (silent) {
@@ -165,6 +165,7 @@ function rgxFindMatchPos(str, left, right, flags) {
   let index, match, start, end;
   let count = 0;
 
+  // eslint-disable-next-line no-cond-assign
   while ((match = bothMatcher.exec(str))) {
     if (leftMatcher.test(match[0])) {
       if (!(count++)) {

@@ -6,7 +6,7 @@ describe('addImageDimensions post-processor', () => {
 
   beforeEach(() => {
     const testPackage = createTestPackage('angular-base-package')
-        .factory('getImageDimensions', mockGetImageDimensions);
+      .factory('getImageDimensions', mockGetImageDimensions);
     const dgeni = new Dgeni([testPackage]);
     const injector = dgeni.configureInjector();
     log = injector.get('log');

@@ -22,8 +22,8 @@ module.exports = function checkUnbalancedBackTicks(log, createDocMessage) {
           if (matches && matches.length % 2 !== 0) {
             doc.unbalancedBackTicks = true;
             log.warn(createDocMessage(
-                'checkUnbalancedBackTicks processor: unbalanced backticks found in rendered content',
-                doc));
+              'checkUnbalancedBackTicks processor: unbalanced backticks found in rendered content',
+              doc));
             log.warn(doc.renderedContent);
           }
         }

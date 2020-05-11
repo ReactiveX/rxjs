@@ -16,7 +16,7 @@ describe('remark: renderMarkdown service', () => {
     const output = renderMarkdown(content);
 
     expect(output).toEqual(
-        '<h1>heading 1</h1>\n' +
+      '<h1>heading 1</h1>\n' +
         '<p>A paragraph with <strong>bold</strong> and <em>italic</em>.</p>\n' +
         '<ul>\n' +
         '<li>List item 1</li>\n' +
@@ -38,7 +38,7 @@ describe('remark: renderMarkdown service', () => {
         'Another paragraph {@link _containing_ } an inline tag';
     const output = renderMarkdown(content);
     expect(output).toEqual(
-        '<p>A paragraph.</p>\n' +
+      '<p>A paragraph.</p>\n' +
         '{@example blah **blah** blah }\n' +
         '<p>Another paragraph {@link _containing_ } an inline tag</p>\n');
   });
@@ -88,7 +88,7 @@ describe('remark: renderMarkdown service', () => {
     '```';
     const output = renderMarkdown(content);
     expect(output).toEqual(
-    '<code-example language="ts">\n' +
+      '<code-example language="ts">\n' +
     '  class MyClass {\n' +
     '    method1() { ... }\n' +
     '  }\n' +

@@ -52,7 +52,7 @@ function regionParserImpl(contents, fileType) {
           if (region) {
             if (region.open) {
               throw new RegionParserError(
-                  `Tried to open a region, named "${regionName}", that is already open`, index);
+                `Tried to open a region, named "${regionName}", that is already open`, index);
             }
             region.open = true;
             if (plaster) {
@@ -79,7 +79,7 @@ function regionParserImpl(contents, fileType) {
           const region = regionMap[regionName];
           if (!region || !region.open) {
             throw new RegionParserError(
-                `Tried to close a region, named "${regionName}", that is not open`, index);
+              `Tried to close a region, named "${regionName}", that is not open`, index);
           }
           region.open = false;
           removeLast(openRegions, regionName);

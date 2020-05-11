@@ -51,8 +51,8 @@ module.exports = function autoLinkCode(getDocFromAlias) {
                     // remove docs that fail the custom filter tests
                     const filteredDocs = autoLinkCodeImpl.customFilters.reduce((docs, filter) => filter(docs, words, index), getDocFromAlias(word));
                     return foundValidDoc(filteredDocs) ?
-                              createLinkNode(filteredDocs[0], word) : // Create a link wrapping the text node.
-                              { type: 'text', value: word };  // this is just text so push a new text node
+                      createLinkNode(filteredDocs[0], word) : // Create a link wrapping the text node.
+                      { type: 'text', value: word };  // this is just text so push a new text node
                   });
 
                 // Replace the text node with the links and leftover text nodes

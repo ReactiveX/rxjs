@@ -145,10 +145,6 @@ describe('ApiListComponent', () => {
       expectFilteredResult('security-risk', item => item.securityRisk);
     });
 
-    it('should filter as expected for ?type', () => {
-      locationService.query = {type: 'pipe'};
-      expectOneItem('pipe_1', 'common', 'pipe', 'stable');
-    });
 
     it('should filter as expected for ?query&status&type', () => {
       locationService.query = {
@@ -251,15 +247,7 @@ const apiSections: ApiSection[] = [
         "docType": "directive",
         "stability": "stable",
         "securityRisk": true,
-      },
-      {
-        "name": "pipe_1",
-        "title": "Pipe 1",
-        "path": "api/common/pipe_1",
-        "docType": "pipe",
-        "stability": "stable",
-        "securityRisk": true,
-      },
+      }
     ]
   },
   {

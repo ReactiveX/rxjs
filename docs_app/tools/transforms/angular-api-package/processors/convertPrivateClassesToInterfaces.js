@@ -1,5 +1,5 @@
 module.exports = function convertPrivateClassesToInterfacesProcessor(
-    convertPrivateClassesToInterfaces) {
+  convertPrivateClassesToInterfaces) {
   return {
     $runAfter: ['processing-docs'],
     $runBefore: ['docs-processed'],

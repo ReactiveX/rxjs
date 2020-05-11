@@ -77,7 +77,7 @@ module.exports = new Package('angular-base', [
 
   // Configure nunjucks rendering of docs via templates
   .config(function(
-      renderDocsProcessor, templateFinder, templateEngine, getInjectables) {
+    renderDocsProcessor, templateFinder, templateEngine, getInjectables) {
 
     // Where to find the templates for the doc rendering
     templateFinder.templateFolders = [TEMPLATES_PATH];

@@ -15,7 +15,7 @@ function createPackage(changedFile) {
   }
 
   const tutorialMatch = /^docs_app\/content\/tutorial\/([^.]+)\.md/.exec(changedFile);
-  const tutorialExampleMatch = /^docs_app\/content\/examples\/(toh-[^\/]+)\//.exec(changedFile);
+  const tutorialExampleMatch = /^docs_app\/content\/examples\/(toh-[^/]+)\//.exec(changedFile);
   if (tutorialMatch || tutorialExampleMatch) {
     const tutorialName = tutorialMatch && tutorialMatch[1] || tutorialExampleMatch[1];
     console.log('Building tutorial docs');
@@ -23,15 +23,15 @@ function createPackage(changedFile) {
   }
 
   const guideMatch = /^docs_app\/content\/guide\/([^.]+)\.md/.exec(changedFile);
-  const exampleMatch = /^docs_app\/content\/examples\/(?:cb-)?([^\/]+)\//.exec(changedFile);
+  const exampleMatch = /^docs_app\/content\/examples\/(?:cb-)?([^/]+)\//.exec(changedFile);
   if (guideMatch || exampleMatch) {
     const guideName = guideMatch && guideMatch[1] || exampleMatch[1];
     console.log(`Building guide doc: ${guideName}.md`);
     return require('./guide-package').createPackage(guideName);
   }
 
-  const apiExamplesMatch = /^packages\/examples\/([^\/]+)\//.exec(changedFile);
-  const apiMatch = /^packages\/([^\/]+)\//.exec(changedFile);
+  const apiExamplesMatch = /^packages\/examples\/([^/]+)\//.exec(changedFile);
+  const apiMatch = /^packages\/([^/]+)\//.exec(changedFile);
   if (apiExamplesMatch || apiMatch) {
     const packageName = apiExamplesMatch && apiExamplesMatch[1] || apiMatch[1];
     console.log('Building API docs for', packageName);
