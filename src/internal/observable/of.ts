@@ -5,27 +5,27 @@ import { Observable } from '../Observable';
 import { scheduleArray } from '../scheduled/scheduleArray';
 
 /* tslint:disable:max-line-length */
-/** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([], scheduler)` */
+/** @deprecated The scheduler argument is deprecated, use {@link scheduled}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function of(scheduler: SchedulerLike): Observable<never>;
-/** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
+/** @deprecated The scheduler argument is deprecated, use {@link scheduled}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function of<T>(a: T, scheduler: SchedulerLike): Observable<T>;
-/** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
+/** @deprecated The scheduler argument is deprecated, use {@link scheduled}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function of<T, T2>(a: T, b: T2, scheduler: SchedulerLike): Observable<T | T2>;
-/** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
+/** @deprecated The scheduler argument is deprecated, use {@link scheduled}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function of<T, T2, T3>(a: T, b: T2, c: T3, scheduler: SchedulerLike): Observable<T | T2 | T3>;
-/** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
+/** @deprecated The scheduler argument is deprecated, use {@link scheduled}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function of<T, T2, T3, T4>(a: T, b: T2, c: T3, d: T4, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4>;
-/** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
+/** @deprecated The scheduler argument is deprecated, use {@link scheduled}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function of<T, T2, T3, T4, T5>(a: T, b: T2, c: T3, d: T4, e: T5, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4 | T5>;
-/** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
+/** @deprecated The scheduler argument is deprecated, use {@link scheduled}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function of<T, T2, T3, T4, T5, T6>(a: T, b: T2, c: T3, d: T4, e: T5, f: T6, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4 | T5 | T6>;
-/** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
+/** @deprecated The scheduler argument is deprecated, use {@link scheduled}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function of<T, T2, T3, T4, T5, T6, T7>(a: T, b: T2, c: T3, d: T4, e: T5, f: T6, g: T7, scheduler: SchedulerLike):
   Observable<T | T2 | T3 | T4 | T5 | T6 | T7>;
-/** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
+/** @deprecated The scheduler argument is deprecated, use {@link scheduled}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function of<T, T2, T3, T4, T5, T6, T7, T8>(a: T, b: T2, c: T3, d: T4, e: T5, f: T6, g: T7, h: T8, scheduler: SchedulerLike):
   Observable<T | T2 | T3 | T4 | T5 | T6 | T7 | T8>;
-/** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
+/** @deprecated The scheduler argument is deprecated, use {@link scheduled}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function of<T, T2, T3, T4, T5, T6, T7, T8, T9>(a: T, b: T2, c: T3, d: T4, e: T5, f: T6, g: T7, h: T8, i: T9, scheduler: SchedulerLike):
   Observable<T | T2 | T3 | T4 | T5 | T6 | T7 | T8 | T9>;
 

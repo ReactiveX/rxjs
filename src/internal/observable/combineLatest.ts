@@ -177,19 +177,19 @@ export function combineLatest<
 ): Observable<R>;
 
 // With a scheduler (deprecated)
-/** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
+/** @deprecated The scheduler argument is deprecated, use {@link subscribeOn} and/or {@link observeOn}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function combineLatest<O1 extends ObservableInput<any>>(sources: [O1], scheduler: SchedulerLike): Observable<[ObservedValueOf<O1>]>;
-/** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
+/** @deprecated The scheduler argument is deprecated, use {@link subscribeOn} and/or {@link observeOn}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>>(
   sources: [O1, O2],
   scheduler: SchedulerLike
 ): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>]>;
-/** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
+/** @deprecated The scheduler argument is deprecated, use {@link subscribeOn} and/or {@link observeOn}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(
   sources: [O1, O2, O3],
   scheduler: SchedulerLike
 ): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>]>;
-/** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
+/** @deprecated The scheduler argument is deprecated, use {@link subscribeOn} and/or {@link observeOn}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function combineLatest<
   O1 extends ObservableInput<any>,
   O2 extends ObservableInput<any>,
@@ -199,7 +199,7 @@ export function combineLatest<
   sources: [O1, O2, O3, O4],
   scheduler: SchedulerLike
 ): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>]>;
-/** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
+/** @deprecated The scheduler argument is deprecated, use {@link subscribeOn} and/or {@link observeOn}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function combineLatest<
   O1 extends ObservableInput<any>,
   O2 extends ObservableInput<any>,
@@ -210,7 +210,7 @@ export function combineLatest<
   sources: [O1, O2, O3, O4, O5],
   scheduler: SchedulerLike
 ): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>]>;
-/** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
+/** @deprecated The scheduler argument is deprecated, use {@link subscribeOn} and/or {@link observeOn}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function combineLatest<
   O1 extends ObservableInput<any>,
   O2 extends ObservableInput<any>,
@@ -224,7 +224,7 @@ export function combineLatest<
 ): Observable<
   [ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>, ObservedValueOf<O6>]
 >;
-/** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
+/** @deprecated The scheduler argument is deprecated, use {@link subscribeOn} and/or {@link observeOn}. Details: {@link https://rxjs.dev/deprecations/scheduler-argument} */
 export function combineLatest<O extends ObservableInput<any>>(sources: O[], scheduler: SchedulerLike): Observable<ObservedValueOf<O>[]>;
 
 // Best case
