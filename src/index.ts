@@ -1,6 +1,5 @@
 /* Observable */
 export { Observable } from './internal/Observable';
-export { ConnectableObservable } from './internal/observable/ConnectableObservable';
 export { GroupedObservable } from './internal/operators/groupBy';
 export { Operator } from './internal/Operator';
 export { observable } from './internal/symbol/observable';
@@ -73,6 +72,15 @@ export { timer } from './internal/observable/timer';
 export { using } from './internal/observable/using';
 export { zip } from './internal/observable/zip';
 export { scheduled } from './internal/scheduled/scheduled';
+
+/* Connectable Observable creators */
+export {
+  ConnectableObservable,
+  multicastFrom,
+  publishFrom,
+  publishBehaviorFrom,
+  publishReplayFrom,
+} from './internal/observable/ConnectableObservable';
 
 /* Constants */
 export { EMPTY } from './internal/observable/empty';

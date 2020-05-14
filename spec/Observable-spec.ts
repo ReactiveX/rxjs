@@ -759,6 +759,38 @@ describe('Observable.lift', () => {
       });
   });
 
+  // TODO: This test shows a limitation of the library as it is currently implemented
+  // This test should never pass, and it was probably not a great goal to have the one
+  // above this pass.
+  // See issue here: https://github.com/ReactiveX/rxjs/issues/5431
+  xit('should compose through more than one multicast and a refCount', (done) => {
+    const result = new MyCustomObservable<number>((observer) => {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+    }).pipe(
+      multicast(() => new Subject<number>()),
+      multicast(() => new Subject<number>()),
+      refCount(),
+      map(x => 10 * x),
+    );
+
+    // NOTE: This was a bad goal.
+    expect(result instanceof MyCustomObservable).to.be.true;
+
+    const expected = [10, 20, 30];
+
+    result.subscribe(
+      function (x) {
+        expect(x).to.equal(expected.shift());
+      }, (x) => {
+        done(new Error('should not be called'));
+      }, () => {
+        done();
+      });
+  });
+
   it('should compose through multicast with selector function', (done) => {
     const result = new MyCustomObservable<number>((observer) => {
       observer.next(1);
