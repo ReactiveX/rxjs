@@ -50,7 +50,7 @@ describe('dematerialize operator', () => {
   });
 
   it('should dematerialize a sad stream', () => {
-    const values = {
+    const values: Record<string, Notification<string | undefined>> = {
       a: Notification.createNext('w'),
       b: Notification.createNext('x'),
       c: Notification.createNext('y'),
