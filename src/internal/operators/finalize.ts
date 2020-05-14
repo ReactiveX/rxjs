@@ -79,8 +79,15 @@ class FinallyOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class FinallySubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<T>, callback: () => void) {
+  constructor(destination: Subscriber<T>, private callback?: () => void) {
     super(destination);
-    this.add(new Subscription(callback));
+  }
+  unsubscribe() {
+    super.unsubscribe();
+    const { callback } = this;
+    if (callback) {
+      callback();
+      this.callback = undefined;
+    }
   }
 }
