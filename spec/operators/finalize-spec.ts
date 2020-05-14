@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { finalize, map, share } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { of, timer, interval, NEVER } from 'rxjs';
+import { of, timer, interval, NEVER, Observable } from 'rxjs';
 import { asInteropObservable } from '../helpers/interop-helper';
 
 declare const type: Function;
@@ -180,5 +180,17 @@ describe('finalize operator', () => {
       finalize(() => finalized.push('sink'))
     ).subscribe();
     expect(finalized).to.deep.equal(['source', 'sink']);
+  });
+
+  it('should finalize after the teardown', () => {
+    const order: string[] = [];
+    const source = new Observable<void>(() => {
+      return () => order.push('teardown');
+    });
+    const subscription = source.pipe(
+      finalize(() => order.push('finalize'))
+    ).subscribe();
+    subscription.unsubscribe();
+    expect(order).to.deep.equal(['teardown', 'finalize']);
   });
 });
