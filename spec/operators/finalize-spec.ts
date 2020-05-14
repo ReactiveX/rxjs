@@ -172,4 +172,13 @@ describe('finalize operator', () => {
     subscription.unsubscribe();
     expect(finalized).to.be.true;
   });
+
+  it('should finalize sources before sinks', () => {
+    const finalized: string[] = [];
+    of(42).pipe(
+      finalize(() => finalized.push('source')),
+      finalize(() => finalized.push('sink'))
+    ).subscribe();
+    expect(finalized).to.deep.equal(['source', 'sink']);
+  });
 });
