@@ -1,9 +1,9 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
-import { EMPTY } from '../observable/empty';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { EMPTY } from '../observable/empty';
 
 /**
  * Emits only the first `count` values emitted by the source Observable.
@@ -43,50 +43,42 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * @throws {ArgumentOutOfRangeError} When using `take(i)`, it delivers an
  * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0`.
- *
- * @param {number} count The maximum number of `next` values to emit.
- * @return {Observable<T>} An Observable that emits only the first `count`
+ * @throws {TypeError} when no numeric argument is passed.
+ * @param count The maximum number of `next` values to emit.
+ * @return An Observable that emits only the first `count`
  * values emitted by the source Observable, or all of the values from the source
  * if the source emits fewer than `count` values.
- * @name take
  */
 export function take<T>(count: number): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => {
-    if (count === 0) {
-      return EMPTY;
-    } else {
-      return source.lift(new TakeOperator(count));
-    }
-  };
+  if (isNaN(count)) {
+    throw new TypeError(`'count' is not a number`);
+  }
+  if (count < 0) {
+    throw new ArgumentOutOfRangeError;
+  }
+
+  return (source: Observable<T>) => (count === 0) ? EMPTY : source.lift(new TakeOperator(count));
 }
 
 class TakeOperator<T> implements Operator<T, T> {
-  constructor(private total: number) {
-    if (this.total < 0) {
-      throw new ArgumentOutOfRangeError;
-    }
+  constructor(private count: number) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new TakeSubscriber(subscriber, this.total));
+    return source.subscribe(new TakeSubscriber(subscriber, this.count));
   }
 }
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
 class TakeSubscriber<T> extends Subscriber<T> {
-  private count: number = 0;
+  private _valueCount: number = 0;
 
-  constructor(destination: Subscriber<T>, private total: number) {
+  constructor(destination: Subscriber<T>, private count: number) {
     super(destination);
   }
 
   protected _next(value: T): void {
-    const total = this.total;
-    const count = ++this.count;
+    const total = this.count;
+    const count = ++this._valueCount;
     if (count <= total) {
       this.destination.next(value);
       if (count === total) {
