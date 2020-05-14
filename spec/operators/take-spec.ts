@@ -190,7 +190,7 @@ describe('take operator', () => {
 
   it('should complete when the source is reentrant', () => {
     let completed = false;
-    const source = new Subject();
+    const source = new Subject<void>();
     source.pipe(take(5)).subscribe({
       next() {
         source.next();

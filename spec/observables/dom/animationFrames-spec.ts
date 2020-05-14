@@ -124,7 +124,7 @@ describe('animationFrame', () => {
   });
 
   it('should compose with takeUntil', () => {
-    const subject = new Subject();
+    const subject = new Subject<void>();
     const results: any[] = [];
     const source$ = animationFrames();
     expect(requestAnimationFrame).not.to.have.been.called;
