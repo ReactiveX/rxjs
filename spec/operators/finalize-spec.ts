@@ -193,4 +193,16 @@ describe('finalize operator', () => {
     subscription.unsubscribe();
     expect(order).to.deep.equal(['teardown', 'finalize']);
   });
+
+  it('should finalize after the teardown with synchronous completion', () => {
+    const order: string[] = [];
+    const source = new Observable<void>(subscriber => {
+      subscriber.complete();
+      return () => order.push('teardown');
+    });
+    source.pipe(
+      finalize(() => order.push('finalize'))
+    ).subscribe();
+    expect(order).to.deep.equal(['teardown', 'finalize']);
+  });
 });

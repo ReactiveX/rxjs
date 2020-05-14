@@ -68,25 +68,8 @@ class FinallyOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return subscribeWith(source, new FinallySubscriber(subscriber, this.callback));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class FinallySubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<T>, private callback?: () => void) {
-    super(destination);
-  }
-  unsubscribe() {
-    super.unsubscribe();
-    const { callback } = this;
-    if (callback) {
-      callback();
-      this.callback = undefined;
-    }
+    const subscription = subscribeWith(source, subscriber);
+    subscription.add(this.callback);
+    return subscription;
   }
 }
