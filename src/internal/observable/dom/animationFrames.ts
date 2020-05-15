@@ -76,7 +76,7 @@ import { requestAnimationFrameProvider } from '../../scheduler/requestAnimationF
  *
  * @param timestampProvider An object with a `now` method that provides a numeric timestamp
  */
-export function animationFrames(timestampProvider: TimestampProvider = dateTimestampProvider) {
+export function animationFrames(timestampProvider?: TimestampProvider) {
   return timestampProvider === dateTimestampProvider ? DEFAULT_ANIMATION_FRAMES : animationFramesFactory(timestampProvider);
 }
 
