@@ -77,7 +77,7 @@ import { requestAnimationFrameProvider } from '../../scheduler/requestAnimationF
  * @param timestampProvider An object with a `now` method that provides a numeric timestamp
  */
 export function animationFrames(timestampProvider?: TimestampProvider) {
-  return timestampProvider === dateTimestampProvider ? DEFAULT_ANIMATION_FRAMES : animationFramesFactory(timestampProvider);
+  return timestampProvider ? animationFramesFactory(timestampProvider) : DEFAULT_ANIMATION_FRAMES;
 }
 
 /**
@@ -103,7 +103,7 @@ function animationFramesFactory(timestampProvider: TimestampProvider) {
 }
 
 /**
- * In the common case, where `Date` is passed to `animationFrames` as the default,
+ * In the common case, where the timestamp provided by the rAF API is used,
  * we use this shared observable to reduce overhead.
  */
 const DEFAULT_ANIMATION_FRAMES = animationFramesFactory(dateTimestampProvider);
