@@ -7,14 +7,13 @@ import { delay } from 'rxjs/operators';
 /** @test {Subject} */
 describe('Subject', () => {
 
-  it('should allow next with empty, undefined or any when created with no type', (done: MochaDone) => {
+  it('should allow next with undefined or any when created with no type', (done: MochaDone) => {
     const subject = new Subject();
     subject.subscribe(x => {
       expect(x).to.be.a('undefined');
     }, null, done);
 
     const data: any = undefined;
-    subject.next();
     subject.next(undefined);
     subject.next(data);
     subject.complete();

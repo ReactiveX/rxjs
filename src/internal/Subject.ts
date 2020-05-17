@@ -25,7 +25,7 @@ export class SubjectSubscriber<T> extends Subscriber<T> {
  *
  * @class Subject<T>
  */
-export class Subject<T = void> extends Observable<T> implements SubscriptionLike {
+export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   [rxSubscriberSymbol]() {
     return new SubjectSubscriber(this);
@@ -41,13 +41,10 @@ export class Subject<T = void> extends Observable<T> implements SubscriptionLike
 
   thrownError: any = null;
 
-  constructor() {
-    super();
-  }
-
-  /**@nocollapse
+  /**
+   * @nocollapse
    * @deprecated use new Subject() instead
-  */
+   */
   static create: Function = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
     return new AnonymousSubject<T>(destination, source);
   }
