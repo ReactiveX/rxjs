@@ -842,7 +842,7 @@ describe('mergeMap', () => {
           }
           yield d;
         }
-      }
+      };
       const result = source.pipe(
         mergeMap(x => of(x).pipe(
           delay(0),

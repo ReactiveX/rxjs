@@ -6,7 +6,7 @@ export const subscribeToIterable = <T>(iterable: Iterable<T>) => (subscriber: Su
 
   do {
     let item: IteratorResult<T>;
-    try{
+    try {
       item = iterator.next();
     } catch (err) {
       subscriber.error(err);

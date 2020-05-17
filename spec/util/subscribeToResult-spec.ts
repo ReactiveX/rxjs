@@ -126,7 +126,7 @@ describe('subscribeToResult', () => {
       yield 2;
       yield 3;
       throw 'bad';
-    }
+    };
 
     const results: any[] = [];
     let foundError: any = null;
