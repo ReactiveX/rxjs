@@ -1,5 +1,5 @@
 import { fromFetch } from 'rxjs/fetch';
-import { a$ } from '../../helpers';
+import { a as a$ } from '../../helpers';
 
 it('should emit the fetch Response by default', () => {
   const a = fromFetch("a"); // $ExpectType Observable<Response>
