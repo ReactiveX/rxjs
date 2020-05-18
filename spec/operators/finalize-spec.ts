@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { finalize, map, share } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { of, timer, interval, NEVER } from 'rxjs';
+import { of, timer, interval, NEVER, Observable } from 'rxjs';
 import { asInteropObservable } from '../helpers/interop-helper';
 
 declare const type: Function;
@@ -171,5 +171,38 @@ describe('finalize operator', () => {
     ).subscribe();
     subscription.unsubscribe();
     expect(finalized).to.be.true;
+  });
+
+  it('should finalize sources before sinks', () => {
+    const finalized: string[] = [];
+    of(42).pipe(
+      finalize(() => finalized.push('source')),
+      finalize(() => finalized.push('sink'))
+    ).subscribe();
+    expect(finalized).to.deep.equal(['source', 'sink']);
+  });
+
+  it('should finalize after the teardown', () => {
+    const order: string[] = [];
+    const source = new Observable<void>(() => {
+      return () => order.push('teardown');
+    });
+    const subscription = source.pipe(
+      finalize(() => order.push('finalize'))
+    ).subscribe();
+    subscription.unsubscribe();
+    expect(order).to.deep.equal(['teardown', 'finalize']);
+  });
+
+  it('should finalize after the teardown with synchronous completion', () => {
+    const order: string[] = [];
+    const source = new Observable<void>(subscriber => {
+      subscriber.complete();
+      return () => order.push('teardown');
+    });
+    source.pipe(
+      finalize(() => order.push('finalize'))
+    ).subscribe();
+    expect(order).to.deep.equal(['teardown', 'finalize']);
   });
 });
