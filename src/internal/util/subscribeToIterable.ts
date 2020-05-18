@@ -3,8 +3,15 @@ import { iterator as Symbol_iterator } from '../symbol/iterator';
 
 export const subscribeToIterable = <T>(iterable: Iterable<T>) => (subscriber: Subscriber<T>) => {
   const iterator = (iterable as any)[Symbol_iterator]();
+
   do {
-    const item = iterator.next();
+    let item: IteratorResult<T>;
+    try {
+      item = iterator.next();
+    } catch (err) {
+      subscriber.error(err);
+      return;
+    }
     if (item.done) {
       subscriber.complete();
       break;

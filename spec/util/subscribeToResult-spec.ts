@@ -119,6 +119,28 @@ describe('subscribeToResult', () => {
     expect(expected!).to.be.equal(42);
   });
 
+  // NOTE: From https://github.com/ReactiveX/rxjs/issues/5436
+  it('should pass along errors from an iterable', () => {
+    const generator = function* () {
+      yield 1;
+      yield 2;
+      yield 3;
+      throw 'bad';
+    };
+
+    const results: any[] = [];
+    let foundError: any = null;
+
+    const subscriber = new OuterSubscriber({
+      next: x => results.push(x),
+      error: err => foundError = err
+    });
+
+    subscribeToResult(subscriber, generator());
+    expect(results).to.deep.equal([1, 2, 3]);
+    expect(foundError).to.equal('bad');
+  });
+
   it('should subscribe to to an object that implements Symbol.observable', (done) => {
     const observableSymbolObject = { [$$symbolObservable]: () => of(42) };
 
