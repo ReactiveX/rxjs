@@ -41,6 +41,10 @@ it('should support a resultSelector and concurrent parameter', () => {
   const o = of(1, 2, 3).pipe(mergeMapTo(of('foo'), (a, b) => b, 4)); // $ExpectType Observable<string>
 });
 
+it('should support union-type projections with empty streams', () => {
+  const o = of(1, 2, 3).pipe(mergeMapTo(Math.random() < 0.5 ? of(123) : of())); // $ExpectType Observable<number>
+});
+
 it('should support union types', () => {
   const s = Math.random() > 0.5 ? of(123) : of('abc');
   const r = of(1, 2, 3).pipe(mergeMapTo(s)); // $ExpectType Observable<string | number>
@@ -61,4 +65,8 @@ it('should enforce types of the concurrent parameter', () => {
 
 it('should enforce types of the concurrent parameter with a resultSelector', () => {
   const o = of(1, 2, 3).pipe(mergeMapTo(of('foo'), (a => a), '4')); // $ExpectError
+});
+
+it('should produce `Observable<never>` when mapping to an `ObservableInput<never>`', () => {
+  const o = of(1, 2, 3).pipe(mergeMapTo(Promise.reject())); // $ExpectType Observable<never>
 });
