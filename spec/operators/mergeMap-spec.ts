@@ -1,14 +1,22 @@
 import { expect } from 'chai';
-import { mergeMap, map } from 'rxjs/operators';
+import { mergeMap, map, delay } from 'rxjs/operators';
 import { asapScheduler, defer, Observable, from, of, timer } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { asInteropObservable } from '../helpers/interop-helper';
+import { TestScheduler } from 'rxjs/testing';
+import { observableMatcher } from '../helpers/observableMatcher';
 
-declare const type: Function;
 declare const asDiagram: Function;
 
 /** @test {mergeMap} */
 describe('mergeMap', () => {
+  let rxTest: TestScheduler;
+
+  // TODO: Convert the rest of these tests to use run mode!
+  beforeEach(() => {
+    rxTest = new TestScheduler(observableMatcher);
+  });
+
   asDiagram('mergeMap(i => 10*i\u2014\u201410*i\u2014\u201410*i\u2014| )')
   ('should map-and-flatten each item to an Observable', () => {
     const e1 =    hot('--1-----3--5-------|');
@@ -821,14 +829,27 @@ describe('mergeMap', () => {
     }, 0);
   });
 
-  type('should support type signatures', () => {
-    let o: Observable<number>;
-
-    /* tslint:disable:no-unused-variable */
-    let a1: Observable<string> = o.pipe(mergeMap(x => x.toString()));
-    let a2: Observable<string> = o.pipe(mergeMap(x => x.toString(), 3));
-    let a3: Observable<{ o: number; i: string; }> = o.pipe(mergeMap(x => x.toString(), (o, i) => ({ o, i })));
-    let a4: Observable<{ o: number; i: string; }> = o.pipe(mergeMap(x => x.toString(), (o, i) => ({ o, i }), 3));
-    /* tslint:enable:no-unused-variable */
+  // NOTE: From https://github.com/ReactiveX/rxjs/issues/5436
+  it('should properly handle errors from iterables that are processed after some async', () => {
+    rxTest.run(({ cold, expectObservable }) => {
+      const noXError = new Error('we do not allow x');
+      const source = cold('-----A------------B-----|', { A: ['o', 'o', 'o'], B: ['o', 'x', 'o']});
+      const expected = '   -----(ooo)--------(o#)';
+      const iterable = function* (data: string[]) {
+        for (let d of data) {
+          if (d === 'x') {
+            throw noXError;
+          }
+          yield d;
+        }
+      };
+      const result = source.pipe(
+        mergeMap(x => of(x).pipe(
+          delay(0),
+          mergeMap(iterable)
+        ))
+      );
+      expectObservable(result).toBe(expected, undefined, noXError);
+    });
   });
 });
