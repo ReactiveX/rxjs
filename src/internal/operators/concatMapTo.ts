@@ -2,7 +2,7 @@ import { concatMap } from './concatMap';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 
 /* tslint:disable:max-line-length */
-export function concatMapTo<T, O extends ObservableInput<any>>(observable: O): OperatorFunction<T, ObservedValueOf<O>>;
+export function concatMapTo<O extends ObservableInput<any>>(observable: O): OperatorFunction<any, ObservedValueOf<O>>;
 /** @deprecated */
 export function concatMapTo<O extends ObservableInput<any>>(observable: O, resultSelector: undefined): OperatorFunction<any, ObservedValueOf<O>>;
 /** @deprecated */
