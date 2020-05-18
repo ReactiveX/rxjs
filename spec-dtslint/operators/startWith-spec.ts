@@ -21,7 +21,7 @@ it('should infer correctly with a scheduler', () => {
   const r4 = of(a).pipe(startWith(b, c, d, e, asyncScheduler)); // $ExpectType Observable<A | B | C | D | E>
   const r5 = of(a).pipe(startWith(b, c, d, e, f, asyncScheduler)); // $ExpectType Observable<A | B | C | D | E | F>
   const r6 = of(a).pipe(startWith(b, c, d, e, f, g, asyncScheduler)); // $ExpectType Observable<A | B | C | D | E | F | G>
-  });
+});
 
 it('should infer correctly with a single specified type', () => {
   const r0 = of(a).pipe(startWith<A>(a)); // $ExpectType Observable<A>
