@@ -64,8 +64,9 @@ export function last<T, D = T>(
  * @param {function} [predicate] - The condition any source emitted item has to satisfy.
  * @param {any} [defaultValue] - An optional default value to provide if last
  * predicate isn't met or no values were emitted.
- * @return {Observable} An Observable that emits only the last item satisfying the given condition
- * from the source, or an NoSuchElementException if no such items are emitted.
+ * @return A function that returns an Observable that emits only the last item
+ * satisfying the given condition from the source, or a NoSuchElementException
+ * if no such items are emitted.
  * @throws - Throws if no items that match the predicate are emitted by the source Observable.
  */
 export function last<T, D>(

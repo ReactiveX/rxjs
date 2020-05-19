@@ -20,6 +20,9 @@ import { zip } from './zip';
  * In many cases, authors want `combineLatestWith` and not `zipWith`.
  *
  * @param otherInputs other observable inputs to collate values from.
+ * @return A function that returns an Observable that emits items by index
+ * combined from the source Observable and provided Observables, in form of an
+ * array.
  */
 export function zipWith<T, A extends readonly unknown[]>(...otherInputs: [...ObservableInputTuple<A>]): OperatorFunction<T, Cons<T, A>> {
   return zip(...otherInputs);

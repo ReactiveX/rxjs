@@ -56,8 +56,8 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * duration for each source value, returned as an Observable or a Promise.
  * @param config a configuration object to define `leading` and `trailing` behavior. Defaults
  * to `{ leading: true, trailing: false }`.
- * @return An Observable that performs the throttle operation to
- * limit the rate of emissions from the source.
+ * @return A function that returns an Observable that performs the throttle
+ * operation to limit the rate of emissions from the source.
  */
 export function throttle<T>(
   durationSelector: (value: T) => ObservableInput<any>,

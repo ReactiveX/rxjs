@@ -50,7 +50,12 @@ import { UnaryFunction } from '../types';
  * //    "Sub. B Complete"
  * ```
  *
- * @return A connectable observable sequence that contains the elements of a
+ * @see {@link ConnectableObservable}
+ * @see {@link publish}
+ * @see {@link publishReplay}
+ * @see {@link publishBehavior}
+ *
+ * @return A function that returns an Observable that emits elements of a
  * sequence produced by multicasting the source sequence.
  * @deprecated To be removed in version 8. If you're trying to create a connectable observable
  * with an {@link AsyncSubject} under the hood, please use the new {@link connectable} creation function.

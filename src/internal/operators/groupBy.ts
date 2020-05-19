@@ -110,10 +110,9 @@ export function groupBy<T, K, R>(
  * exist.
  * @param {function(): Subject<R>} [subjectSelector] Factory function to create an
  * intermediate Subject through which grouped elements are emitted.
- * @return {Observable<GroupedObservable<K,R>>} An Observable that emits
- * GroupedObservables, each of which corresponds to a unique key value and each
- * of which emits those items from the source Observable that share that key
- * value.
+ * @return A function that returns an Observable that emits GroupedObservables,
+ * each of which corresponds to a unique key value and each of which emits
+ * those items from the source Observable that share that key value.
  */
 export function groupBy<T, K, R>(
   keySelector: (value: T) => K,

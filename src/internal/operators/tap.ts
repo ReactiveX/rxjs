@@ -104,6 +104,8 @@ export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T
  * @param observerOrNext A next handler or partial observer
  * @param error An error handler
  * @param complete A completion handler
+ * @return A function that returns an Observable identical to the source, but
+ * runs the specified Observer or callback(s) for each item.
  */
 export function tap<T>(
   observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,

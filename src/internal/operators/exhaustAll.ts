@@ -43,8 +43,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @see {@link exhaustMap}
  * @see {@link zipAll}
  *
- * @return {Observable} An Observable that takes a source of Observables and propagates the first observable
- * exclusively until it completes before subscribing to the next.
+ * @return A function that returns an Observable that takes a source of
+ * Observables and propagates the first Observable exclusively until it
+ * completes before subscribing to the next.
  */
 export function exhaustAll<O extends ObservableInput<any>>(): OperatorFunction<O, ObservedValueOf<O>> {
   return operate((source, subscriber) => {

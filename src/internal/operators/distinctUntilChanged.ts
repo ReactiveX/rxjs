@@ -90,6 +90,8 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * @param comparator A function used to compare the previous and current values for
  * equality. Defaults to a `===` check.
+ * @return A function that returns an Observable that emits items from the
+ * source Observable with distinct values.
  */
 export function distinctUntilChanged<T>(comparator?: (previous: T, current: T) => boolean): MonoTypeOperatorFunction<T>;
 
@@ -134,6 +136,8 @@ export function distinctUntilChanged<T>(comparator?: (previous: T, current: T) =
  * @param comparator A function used to compare the previous and current keys for
  * equality. Defaults to a `===` check.
  * @param keySelector Used to select a key value to be passed to the `comparator`.
+ * @return A function that returns an Observable that emits items from the
+ * source Observable with distinct values.
  */
 export function distinctUntilChanged<T, K>(
   comparator: (previous: K, current: K) => boolean,

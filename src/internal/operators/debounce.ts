@@ -58,8 +58,8 @@ import { innerFrom } from '../observable/from';
  * @param durationSelector A function
  * that receives a value from the source Observable, for computing the timeout
  * duration for each source value, returned as an Observable or a Promise.
- * @return An Observable that delays the emissions of the source
- * Observable by the specified duration Observable returned by
+ * @return A function that returns an Observable that delays the emissions of
+ * the source Observable by the specified duration Observable returned by
  * `durationSelector`, and may drop some values if they occur too frequently.
  */
 export function debounce<T>(durationSelector: (value: T) => ObservableInput<any>): MonoTypeOperatorFunction<T> {

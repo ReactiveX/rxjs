@@ -38,6 +38,9 @@ import { concat } from './concat';
  * ```
  *
  * @param otherSources Other observable sources to subscribe to, in sequence, after the original source is complete.
+ * @return A function that returns an Observable that concatenates
+ * subscriptions to the source and provided Observables subscribing to the next
+ * only once the current subscription completes.
  */
 export function concatWith<T, A extends readonly unknown[]>(
   ...otherSources: [...ObservableInputTuple<A>]

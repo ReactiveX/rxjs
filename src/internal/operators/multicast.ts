@@ -11,6 +11,7 @@ import { connect } from './connect';
  * from the source to all consumers.
  *
  * @param subject The subject to multicast through.
+ * @return A function that returns a {@link ConnectableObservable}
  * @deprecated This will be removed in version 8. Please use the {@link connectable} creation
  * function, which creates a connectable observable. If you were using the {@link refCount} operator
  * on the result of the `multicast` operator, then use the {@link share} operator, which is now
@@ -26,6 +27,7 @@ export function multicast<T>(subject: Subject<T>): UnaryFunction<Observable<T>, 
  *
  * @param subject The subject used to multicast.
  * @param selector A setup function to setup the multicast
+ * @return A function that returns an observable that mirrors the observable returned by the selector.
  * @deprecated To be removed in version 8. Please use the new {@link connect} operator.
  * `multicast(subject, fn)` is equivalent to `connect({ connector: () => subject, setup: fn })`.
  */
@@ -42,6 +44,7 @@ export function multicast<T, O extends ObservableInput<any>>(
  * @param subjectFactory A factory that will be called to create the subject. Passing a function here
  * will cause the underlying subject to be "reset" on error, completion, or refCounted unsubscription of
  * the source.
+ * @return A function that returns a {@link ConnectableObservable}
  * @deprecated This will be removed in version 8. Please use the {@link connectable} creation
  * function, which creates a connectable observable. If you were using the {@link refCount} operator
  * on the result of the `multicast` operator, then use the {@link share} operator, which is now
@@ -57,6 +60,7 @@ export function multicast<T>(subjectFactory: () => Subject<T>): UnaryFunction<Ob
  *
  * @param subjectFactory A factory that creates the subject used to multicast.
  * @param selector A function to setup the multicast and select the output.
+ * @return A function that returns an observable that mirrors the observable returned by the selector.
  * @deprecated To be removed in version 8. Please use the new {@link connect} operator.
  * `multicast(subjectFactor, selector)` is equivalent to `connect(selector, { connector: subjectFactory })`.
  */

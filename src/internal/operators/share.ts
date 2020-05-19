@@ -84,6 +84,12 @@ export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
  * // subscription 1:  9
  * // ... and so on
  * ```
+ *
+ * @see {@link api/index/function/interval}
+ * @see {@link map}
+ *
+ * @return A function that returns an Observable that upon connection causes
+ * the source Observable to emit items to its Observers.
  */
 export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
   options = options || {};

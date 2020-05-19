@@ -299,6 +299,9 @@ export function timeout<T>(each: number, scheduler?: SchedulerLike): MonoTypeOpe
  * <span class="informal">Timeouts on Observable that doesn't emit values fast enough.</span>
  *
  * ![](timeout.png)
+ *
+ * @return A function that returns an Observable that mirrors behaviour of the
+ * source Observable, unless timeout happens when it throws an error.
  */
 export function timeout<T, O extends ObservableInput<any>, M>(
   config: number | Date | TimeoutConfig<T, O, M>,

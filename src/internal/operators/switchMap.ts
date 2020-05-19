@@ -75,10 +75,10 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
  * @param {function(value: T, ?index: number): ObservableInput} project A function
  * that, when applied to an item emitted by the source Observable, returns an
  * Observable.
- * @return {Observable} An Observable that emits the result of applying the
- * projection function (and the optional deprecated `resultSelector`) to each item
- * emitted by the source Observable and taking only the values from the most recently
- * projected inner Observable.
+ * @return A function that returns an Observable that emits the result of
+ * applying the projection function (and the optional deprecated
+ * `resultSelector`) to each item emitted by the source Observable and taking
+ * only the values from the most recently projected inner Observable.
  */
 export function switchMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,

@@ -115,8 +115,9 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
  * @param {Number} [windowTime=Infinity] Maximum time length of the replay buffer in milliseconds.
  * @param {Scheduler} [scheduler] Scheduler where connected observers within the selector function
  * will be invoked on.
- * @return {Observable} An observable sequence that contains the elements of a sequence produced
- * by multicasting the source sequence within a selector function.
+ * @return A function that returns an Observable sequence that contains the
+ * elements of a sequence produced by multicasting the source sequence within a
+ * selector function.
  */
 export function shareReplay<T>(
   configOrBufferSize?: ShareReplayConfig | number,

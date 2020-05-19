@@ -48,7 +48,7 @@ import { arrRemove } from '../util/arrRemove';
  * the value emitted by the `openings` observable and returns a Subscribable or Promise,
  * which, when it emits, signals that the associated buffer should be emitted
  * and cleared.
- * @return An observable of arrays of buffered values.
+ * @return A function that returns an Observable of arrays of buffered values.
  */
 export function bufferToggle<T, O>(
   openings: ObservableInput<O>,

@@ -29,6 +29,8 @@ import { identity } from '../util/identity';
  * ```
  *
  * @param otherSources Sources used to race for which Observable emits first.
+ * @return A function that returns an Observable that mirrors the output of the
+ * first Observable to emit an item.
  */
 
 export function raceWith<T, A extends readonly unknown[]>(

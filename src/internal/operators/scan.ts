@@ -86,6 +86,7 @@ export function scan<V, A, S>(accumulator: (acc: A | S, value: V, index: number)
  * be used as the initial state, and emitted without going through the accumulator. All subsequent values
  * will be processed by the accumulator function. If this is provided, all values will go through
  * the accumulator function.
+ * @return A function that returns an Observable of the accumulated values.
  */
 export function scan<V, A, S>(accumulator: (acc: V | A | S, value: V, index: number) => A, seed?: S): OperatorFunction<V, V | A> {
   // providing a seed of `undefined` *should* be valid and trigger

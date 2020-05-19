@@ -40,7 +40,8 @@ export function pluck<T>(...properties: string[]): OperatorFunction<T, unknown>;
  *
  * @param properties The nested properties to pluck from each source
  * value.
- * @return A new Observable of property values from the source values.
+ * @return A function that returns an Observable of property values from the
+ * source values.
  * @deprecated Remove in v8. Use {@link map} and optional chaining: `pluck('foo', 'bar')` is `map(x => x?.foo?.bar)`.
  */
 export function pluck<T, R>(...properties: Array<string | number | symbol>): OperatorFunction<T, R> {

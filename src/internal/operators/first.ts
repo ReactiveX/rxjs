@@ -70,8 +70,8 @@ export function first<T, D = T>(
  * An optional function called with each item to test for condition matching.
  * @param {R} [defaultValue] The default value emitted in case no valid value
  * was found on the source.
- * @return {Observable<T|R>} An Observable of the first item that matches the
- * condition.
+ * @return A function that returns an Observable that emits the first item that
+ * matches the condition.
  */
 export function first<T, D>(
   predicate?: ((value: T, index: number, source: Observable<T>) => boolean) | null,

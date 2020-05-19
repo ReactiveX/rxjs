@@ -6,6 +6,7 @@ export function combineLatestAll<T>(): OperatorFunction<ObservableInput<T>, T[]>
 export function combineLatestAll<T>(): OperatorFunction<any, T[]>;
 export function combineLatestAll<T, R>(project: (...values: T[]) => R): OperatorFunction<ObservableInput<T>, R>;
 export function combineLatestAll<R>(project: (...values: Array<any>) => R): OperatorFunction<any, R>;
+
 /**
  * Flattens an Observable-of-Observables by applying {@link combineLatest} when the Observable-of-Observables completes.
  *
@@ -50,6 +51,8 @@ export function combineLatestAll<R>(project: (...values: Array<any>) => R): Oper
  *
  * @param project optional function to map the most recent values from each inner Observable into a new result.
  * Takes each of the most recent values from each collected inner Observable as arguments, in order.
+ * @return A function that returns an Observable that flattens Observables
+ * emitted by the source Observable.
  */
 export function combineLatestAll<R>(project?: (...values: Array<any>) => R) {
   return joinAllInternals(combineLatest, project);

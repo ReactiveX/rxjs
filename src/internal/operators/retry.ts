@@ -52,7 +52,8 @@ export interface RetryConfig {
  *
  * @param {number} count - Number of retry attempts before failing.
  * @param {boolean} resetOnSuccess - When set to `true` every successful emission will reset the error count
- * @return {Observable} The source Observable modified with the retry logic.
+ * @return A function that returns an Observable that will resubscribe to the
+ * source stream when the source stream errors, at most `count` times.
  */
 export function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
 export function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;

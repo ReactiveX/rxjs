@@ -7,7 +7,7 @@ import { UnaryFunction } from '../types';
  * Creates a {@link ConnectableObservable} that utilizes a {@link BehaviorSubject}.
  * 
  * @param initialValue The initial value passed to the {@link BehaviorSubject}.
- * @return {ConnectableObservable<T>}
+ * @return A function that returns a {@link ConnectableObservable}
  * @deprecated to be removed in version 8. If you want to get a connectable observable that uses a 
  * {@link BehaviorSubject} under the hood, please use {@link connectable}. `source.pipe(publishBehavior(initValue))` 
  * is equivalent to: `connectable(source, () => new BehaviorSubject(initValue))`.

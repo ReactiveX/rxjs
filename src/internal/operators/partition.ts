@@ -44,9 +44,9 @@ import { UnaryFunction } from '../types';
  * happened since the subscription, starting from the number `0`.
  * @param {any} [thisArg] An optional argument to determine the value of `this`
  * in the `predicate` function.
- * @return {[Observable<T>, Observable<T>]} An array with two Observables: one
- * with values that passed the predicate, and another with values that did not
- * pass the predicate.
+ * @return A function that returns an array with two Observables: one with
+ * values that passed the predicate, and another with values that did not pass
+ * the predicate.
  * @deprecated use `partition` static creation function instead
  */
 export function partition<T>(predicate: (value: T, index: number) => boolean,

@@ -62,8 +62,8 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * For example if `startWindowEvery` is `2`, then a new window will be started
  * on every other value from the source. A new window is started at the
  * beginning of the source by default.
- * @return {Observable<Observable<T>>} An Observable of windows, which in turn
- * are Observable of values.
+ * @return A function that returns an Observable of windows, which in turn are
+ * Observable of values.
  */
 export function windowCount<T>(windowSize: number, startWindowEvery: number = 0): OperatorFunction<T, Observable<T>> {
   const startEvery = startWindowEvery > 0 ? startWindowEvery : windowSize;

@@ -36,6 +36,8 @@ import { combineLatest } from './combineLatest';
  *
  * ```
  * @param otherSources the other sources to subscribe to.
+ * @return A function that returns an Observable that emits the latest
+ * emissions from both source and provided Observables.
  */
 export function combineLatestWith<T, A extends readonly unknown[]>(
   ...otherSources: [...ObservableInputTuple<A>]

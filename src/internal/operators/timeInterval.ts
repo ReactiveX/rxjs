@@ -47,7 +47,8 @@ import { map } from './map';
  * ```
  *
  * @param {SchedulerLike} [scheduler] Scheduler used to get the current time.
- * @return {Observable<{ interval: number, value: T }>} Observable that emit infomation about value and interval
+ * @return A function that returns an Observable that emits information about
+ * value and interval.
  */
 export function timeInterval<T>(scheduler: SchedulerLike = async): OperatorFunction<T, TimeInterval<T>> {
   return (source: Observable<T>) => defer(() => {

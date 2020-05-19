@@ -43,14 +43,14 @@ export function mergeMapTo<T, R, O extends ObservableInput<unknown>>(innerObserv
  * the source Observable.
  * @param {number} [concurrent=Infinity] Maximum number of input
  * Observables being subscribed to concurrently.
- * @return {Observable} An Observable that emits items from the given
- * `innerObservable`
+ * @return A function that returns an Observable that emits items from the
+ * given `innerObservable`.
  */
 export function mergeMapTo<T, R, O extends ObservableInput<unknown>>(
   innerObservable: O,
   resultSelector?: ((outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R) | number,
   concurrent: number = Infinity
-): OperatorFunction<T, ObservedValueOf<O>|R> {
+): OperatorFunction<T, ObservedValueOf<O> | R> {
   if (isFunction(resultSelector)) {
     return mergeMap(() => innerObservable, resultSelector, concurrent);
   }

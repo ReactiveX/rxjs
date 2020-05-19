@@ -55,7 +55,8 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * @param {function(errors: Observable): Observable} notifier - Receives an Observable of notifications with which a
  * user can `complete` or `error`, aborting the retry.
- * @return {Observable} The source Observable modified with retry logic.
+ * @return A function that returns an Observable that mirrors the source
+ * Observable with the exception of an `error`.
  */
 export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

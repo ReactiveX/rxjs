@@ -51,8 +51,8 @@ import { arrRemove } from '../util/arrRemove';
  * the value emitted by the `openings` observable and returns an Observable,
  * which, when it emits a next notification, signals that the
  * associated window should complete.
- * @return {Observable<Observable<T>>} An observable of windows, which in turn
- * are Observables.
+ * @return A function that returns an Observable of windows, which in turn are
+ * Observables.
  */
 export function windowToggle<T, O>(
   openings: ObservableInput<O>,

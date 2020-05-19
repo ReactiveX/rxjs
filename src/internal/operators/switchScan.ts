@@ -19,7 +19,7 @@ import { operate } from '../util/lift';
  * @param accumulator
  * The accumulator function called on each source value.
  * @param seed The initial accumulation value.
- * @return An observable of the accumulated values.
+ * @return A function that returns an observable of the accumulated values.
  */
 export function switchScan<T, R, O extends ObservableInput<any>>(
   accumulator: (acc: R, value: T, index: number) => O,

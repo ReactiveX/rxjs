@@ -76,6 +76,9 @@ export function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, sch
  * @param waitFor The time allowed between values from the source before timeout is triggered.
  * @param switchTo The observable to switch to when timeout occurs.
  * @param scheduler The scheduler to use with time-related operations within this operator. Defaults to {@link asyncScheduler}
+ * @return A function that returns an Observable that mirrors behaviour of the
+ * source Observable, unless timeout happens when it starts emitting values
+ * from the Observable passed as a second parameter.
  * @deprecated This will be removed in v8. Use the configuration object with {@link timeout} instead: `timeoutWith(100, a$, scheduler)` -> `timeout({ each: 100, with: () => a$, scheduler })`
  */
 export function timeoutWith<T, R>(waitFor: number, switchTo: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;

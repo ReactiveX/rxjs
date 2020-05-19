@@ -46,7 +46,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @param durationSelector A function
  * that receives a value from the source Observable, for computing the silencing
  * duration, returned as an Observable or a Promise.
- * @return An Observable that performs rate-limiting of
+ * @return A function that returns an Observable that performs rate-limiting of
  * emissions from the source Observable.
  */
 export function audit<T>(durationSelector: (value: T) => ObservableInput<any>): MonoTypeOperatorFunction<T> {
