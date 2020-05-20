@@ -79,7 +79,9 @@ describe('defer', () => {
 
   it('should create an observable when factory throws', () => {
     const e1 = defer(() => {
-      if (1 !== Infinity) throw 'error';
+      if (1 !== Infinity) {
+        throw 'error';
+      }
       return of();
     });
     const expected = '#';
