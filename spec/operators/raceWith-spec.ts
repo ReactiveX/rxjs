@@ -161,7 +161,7 @@ describe('raceWith operator', () => {
 
   it('should ignore latter observables if a former one emits immediately', () => {
     const onNext = sinon.spy();
-    const onSubscribe = sinon.spy();
+    const onSubscribe = sinon.spy() as any;
     const e1 = of('a'); // Wins the race
     const e2 = defer(onSubscribe); // Should be ignored
 
@@ -172,7 +172,7 @@ describe('raceWith operator', () => {
 
   it('should ignore latter observables if a former one completes immediately', () => {
     const onComplete = sinon.spy();
-    const onSubscribe = sinon.spy();
+    const onSubscribe = sinon.spy() as any;
     const e1 = EMPTY; // Wins the race
     const e2 = defer(onSubscribe); // Should be ignored
 
@@ -183,7 +183,7 @@ describe('raceWith operator', () => {
 
   it('should ignore latter observables if a former one errors immediately', () => {
     const onError = sinon.spy();
-    const onSubscribe = sinon.spy();
+    const onSubscribe = sinon.spy() as any;
     const e1 = throwError('kaboom'); // Wins the race
     const e2 = defer(onSubscribe); // Should be ignored
 

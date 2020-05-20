@@ -16,8 +16,8 @@ it('should support union type returns', () => {
   const a = defer(() => Math.random() > 0.5 ? of(123) : of('abc')); // $ExpectType Observable<string | number>
 });
 
-it('should infer correctly with void functions', () => {
-  const a = defer(() => {}); // $ExpectType Observable<never>
+it('should error with void functions', () => {
+  const a = defer(() => {}); // $ExpectError
 });
 
 it('should error if an ObservableInput is not returned', () => {
@@ -26,6 +26,10 @@ it('should error if an ObservableInput is not returned', () => {
 
 it('should error if function returns undefined', () => {
   const a = defer(() => undefined); // $ExpectError
+});
+
+it('should error if function returns never', () => {
+  const a = defer(() => { throw new Error(); }); // $ExpectError
 });
 
 it('should infer correctly with functions that sometimes do not return an ObservableInput', () => {
