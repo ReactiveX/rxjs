@@ -4,9 +4,9 @@ import { isFunction } from '../util/isFunction';
 import { Subscriber } from '../Subscriber';
 import { map } from '../operators/map';
 
-export interface NodeStyleEventEmitter {
-  addListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
-  removeListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
+export interface NodeStyleEventEmitter<T extends string|symbol> {
+  addListener: (eventName: T, handler: NodeEventHandler) => this;
+  removeListener: (eventName: T, handler: NodeEventHandler) => this;
 }
 
 export type NodeEventHandler = (...args: any[]) => void;
@@ -14,19 +14,19 @@ export type NodeEventHandler = (...args: any[]) => void;
 // For APIs that implement `addListener` and `removeListener` methods that may
 // not use the same arguments or return EventEmitter values
 // such as React Native
-export interface NodeCompatibleEventEmitter {
-  addListener: (eventName: string, handler: NodeEventHandler) => void | {};
-  removeListener: (eventName: string, handler: NodeEventHandler) => void | {};
+export interface NodeCompatibleEventEmitter<T extends string> {
+  addListener: (eventName: T, handler: NodeEventHandler) => void | {};
+  removeListener: (eventName: T, handler: NodeEventHandler) => void | {};
 }
 
-export interface JQueryStyleEventEmitter {
-  on: (eventName: string, handler: Function) => void;
-  off: (eventName: string, handler: Function) => void;
+export interface JQueryStyleEventEmitter<T extends string> {
+  on: (eventName: T, handler: Function) => void;
+  off: (eventName: T, handler: Function) => void;
 }
 
-export interface HasEventTargetAddRemove<E> {
-  addEventListener(type: string, listener: ((evt: E) => void) | null, options?: boolean | AddEventListenerOptions): void;
-  removeEventListener(type: string, listener?: ((evt: E) => void) | null, options?: EventListenerOptions | boolean): void;
+export interface HasEventTargetAddRemove<E, T extends string> {
+  addEventListener(type: T, listener: ((evt: E) => void) | null, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener(type: T, listener?: ((evt: E) => void) | null, options?: EventListenerOptions | boolean): void;
 }
 
 export type EventTargetLike<T> = HasEventTargetAddRemove<T> | NodeStyleEventEmitter | NodeCompatibleEventEmitter | JQueryStyleEventEmitter;
