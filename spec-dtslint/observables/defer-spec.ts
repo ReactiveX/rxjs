@@ -24,6 +24,10 @@ it('should error if an ObservableInput is not returned', () => {
   const a = defer(() => 42); // $ExpectError
 });
 
+it('should error if function returns undefined', () => {
+  const a = defer(() => undefined); // $ExpectError
+});
+
 it('should infer correctly with functions that sometimes do not return an ObservableInput', () => {
   const a = defer(() => { if (Math.random() < 0.5) { return of(42); } }); // $ExpectType Observable<number>
 });

@@ -52,7 +52,9 @@ import { EMPTY } from './empty';
  * @name defer
  * @owner Observable
  */
-export function defer<R extends ObservableInput<any> | void>(observableFactory: () => R): Observable<ObservedValueOf<R>> {
+export function defer<R extends ObservableInput<any> | void>(
+  observableFactory: [R] extends [undefined] ? never : () => R
+): Observable<ObservedValueOf<R>> {
   return new Observable<ObservedValueOf<R>>(subscriber => {
     let input: R | void;
     try {
