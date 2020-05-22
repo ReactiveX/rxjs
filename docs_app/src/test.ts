@@ -10,8 +10,8 @@ import {
 declare const require: any;
 
 // Reflect.metadata polyfill is only needed in the JIT mode which we use only for unit tests
-import 'core-js/es6/reflect';
-import 'core-js/es7/reflect';
+import 'core-js/es/reflect';
+// import 'core-js/es7/reflect';
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(

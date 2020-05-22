@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
-import { inject, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { inject, ComponentFixture, TestBed, fakeAsync, tick, flushMicrotasks } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -15,7 +15,6 @@ import { AppModule } from './app.module';
 import { DocumentService } from 'app/documents/document.service';
 import { DocViewerComponent } from 'app/layout/doc-viewer/doc-viewer.component';
 import { Deployment } from 'app/shared/deployment.service';
-import { ElementsLoader } from 'app/custom-elements/elements-loader';
 import { GaService } from 'app/shared/ga.service';
 import { LocationService } from 'app/shared/location.service';
 import { Logger } from 'app/shared/logger.service';
@@ -29,6 +28,7 @@ import { SearchResultsComponent } from 'app/shared/search-results/search-results
 import { SearchService } from 'app/search/search.service';
 import { SelectComponent } from 'app/shared/select/select.component';
 import { TocItem, TocService } from 'app/shared/toc.service';
+import { ElementsLoader } from './custom-elements/elements-loader';
 
 const sideBySideBreakPoint = 992;
 const hideToCBreakPoint = 800;
@@ -417,6 +417,15 @@ describe('AppComponent', () => {
         selectElement.triggerEventHandler('change', { option: versionWithoutUrl, index: versionWithoutUrlIndex });
         expect(locationService.go).not.toHaveBeenCalled();
       });
+
+      it('should navigate when change to a version with a url that does not end with `/`', async () => {
+        await setupSelectorForTesting();
+        locationService.urlSubject.next('docs#section-1');
+        const versionWithoutSlashIndex = component.docVersions.length;
+        const versionWithoutSlashUrl = component.docVersions[versionWithoutSlashIndex] = { url: 'https://next.angular.io', title: 'foo' };
+        selectElement.triggerEventHandler('change', { option: versionWithoutSlashUrl, index: versionWithoutSlashIndex });
+        expect(locationService.go).toHaveBeenCalledWith('https://next.angular.io/docs#section-1');
+      });
     });
 
     describe('currentDocument', () => {
@@ -441,7 +450,7 @@ describe('AppComponent', () => {
       });
 
       it('should update the document title', async () => {
-        const titleService = TestBed.get(Title);
+        const titleService = TestBed.inject(Title);
         spyOn(titleService, 'setTitle');
 
         await navigateTo('guide/pipes');
@@ -449,7 +458,7 @@ describe('AppComponent', () => {
       });
 
       it('should update the document title, with a default value if the document has no title', async () => {
-        const titleService = TestBed.get(Title);
+        const titleService = TestBed.inject(Title);
         spyOn(titleService, 'setTitle');
 
         await navigateTo('no-title');
@@ -528,7 +537,8 @@ describe('AppComponent', () => {
       it('should call `scrollAfterRender` (via `onDocInserted`) when navigate to a new Doc', fakeAsync(() => {
         locationService.go('guide/pipes');
         tick(1); // triggers the HTTP response for the document
-        fixture.detectChanges(); // triggers the event that calls `onDocInserted`
+        fixture.detectChanges();  // passes the new doc to the `DocViewer`
+        flushMicrotasks();  // triggers the `DocViewer` event that calls `onDocInserted`
 
         expect(scrollAfterRenderSpy).toHaveBeenCalledWith(scrollDelay);
 
@@ -671,7 +681,7 @@ describe('AppComponent', () => {
       });
 
       it('should not be loaded/registered until necessary', () => {
-        const loader: TestElementsLoader = fixture.debugElement.injector.get(ElementsLoader);
+        const loader = fixture.debugElement.injector.get(ElementsLoader) as unknown as TestElementsLoader;
         expect(loader.loadCustomElement).not.toHaveBeenCalled();
 
         setHasFloatingToc(true);
@@ -776,14 +786,14 @@ describe('AppComponent', () => {
 
       describe('showing search results', () => {
         it('should not display search results when query is empty', () => {
-          const searchService: MockSearchService = TestBed.get(SearchService);
+          const searchService = TestBed.inject(SearchService) as Partial<SearchService> as MockSearchService;
           searchService.searchResults.next({ query: '', results: [] });
           fixture.detectChanges();
           expect(component.showSearchResults).toBe(false);
         });
 
         it('should hide the results when a search result is selected', () => {
-          const searchService: MockSearchService = TestBed.get(SearchService);
+          const searchService = TestBed.inject(SearchService) as Partial<SearchService> as MockSearchService;
 
           const results = [
             { path: 'news', title: 'News', type: 'marketing', keywords: '', titleWords: '', deprecated: false }
@@ -1005,7 +1015,7 @@ describe('AppComponent', () => {
         triggerDocViewerEvent('docRendered');
         fixture.detectChanges();
         expect(component.isTransitioning).toBe(false);
-        expect(toolbar.classes['transitioning']).toBe(false);
+        expect(toolbar.classes['transitioning']).toBeFalsy();
 
         // While a document is being rendered, `isTransitoning` is set to true.
         triggerDocViewerEvent('docReady');
@@ -1016,7 +1026,7 @@ describe('AppComponent', () => {
         triggerDocViewerEvent('docRendered');
         fixture.detectChanges();
         expect(component.isTransitioning).toBe(false);
-        expect(toolbar.classes['transitioning']).toBe(false);
+        expect(toolbar.classes['transitioning']).toBeFalsy();
       });
 
       it('should update the sidenav state as soon as a new document is inserted (but not before)', () => {

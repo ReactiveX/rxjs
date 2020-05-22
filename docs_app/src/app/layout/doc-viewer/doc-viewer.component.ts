@@ -1,8 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 
-import { Observable, of, timer } from 'rxjs';
-import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { asapScheduler, Observable, of, timer } from 'rxjs';
+import { catchError, observeOn, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { DocumentContents, FILE_NOT_FOUND_ID, FETCHING_ERROR_ID } from 'app/documents/document.service';
 import { Logger } from 'app/shared/logger.service';
@@ -78,6 +78,7 @@ export class DocViewerComponent implements OnDestroy {
 
     this.docContents$
         .pipe(
+            observeOn(asapScheduler),
             switchMap(newDoc => this.render(newDoc)),
             takeUntil(this.onDestroy$),
         )
@@ -161,10 +162,8 @@ export class DocViewerComponent implements OnDestroy {
    */
   private setNoIndex(val: boolean) {
     if (val) {
-      this.metaService.addTag({ name: 'googlebot', content: 'noindex' });
       this.metaService.addTag({ name: 'robots', content: 'noindex' });
     } else {
-      this.metaService.removeTag('name="googlebot"');
       this.metaService.removeTag('name="robots"');
     }
   }
@@ -213,7 +212,7 @@ export class DocViewerComponent implements OnDestroy {
                     // setting each style.
                     switchMap(() => raf$), tap(() => elem.style[prop] = from),
                     switchMap(() => raf$), tap(() => elem.style.transition = `all ${duration}ms ease-in-out`),
-                    switchMap(() => raf$), tap(() => (elem.style as any)[prop] = to),
+                    switchMap(() => raf$), tap(() => elem.style[prop] = to),
                     switchMap(() => timer(getActualDuration(elem))), switchMap(() => this.void$),
                 );
         };

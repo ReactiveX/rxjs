@@ -23,7 +23,6 @@
       <mat-icon svgIcon="menu"></mat-icon>
     </button>
     <a class="nav-link home" href="/" [ngSwitch]="isSideBySide">
-      <!--<img *ngSwitchCase="true" src="assets/images/logos/angular/logo-nav@2x.png" width="150" height="40" title="Home" alt="Home">-->
       <img *ngSwitchCase="true" src="assets/images/logos/logo.png" width="150" height="40" title="Home" alt="Home">
       <img *ngSwitchDefault src="assets/images/logos/Rx_Logo_S.png" width="37" height="40" title="Home" alt="Home">
     </a>
@@ -58,7 +57,7 @@
         (docInserted)="onDocInserted()"
         (docRendered)="onDocRendered()">
     </aio-doc-viewer>
-    <aio-dt [on]="dtOn" [(doc)]="currentDocument"></aio-dt>
+    <aio-dt *ngIf="dtOn" [(doc)]="currentDocument"></aio-dt>
   </section>
 
 </mat-sidenav-container>
@@ -68,6 +67,6 @@
 </div>
 
 <footer class="no-print">
-  <aio-footer [nodes]="footerNodes" [versionInfo]="versionInfo" ></aio-footer>
+  <aio-footer [nodes]="footerNodes" [versionInfo]="versionInfo"></aio-footer>
 </footer>
 

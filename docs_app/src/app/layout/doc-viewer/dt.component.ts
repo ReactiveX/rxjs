@@ -18,7 +18,7 @@ export class DtComponent {
   @Input() doc: DocumentContents;
   @Output() docChange = new EventEmitter<DocumentContents>();
 
-  @ViewChild('dt', { read: ElementRef, static: false })
+  @ViewChild('dt', { read: ElementRef })
   dt: ElementRef;
 
   get text() { return this.doc && this.doc.contents; }
