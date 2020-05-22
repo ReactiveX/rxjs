@@ -13,7 +13,7 @@ export function concatAll<R>(): OperatorFunction<any, R>;
  * inner Observable after the other.</span>
  *
  * ![](../../assets/images/svgs/concatAll.svg)
- * 
+ *
  * Joins every Observable emitted by the source (a higher-order Observable), in
  * a serial fashion. It subscribes to each inner Observable only after the
  * previous inner Observable has completed, and merges all of their values into
