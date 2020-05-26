@@ -175,6 +175,7 @@ describe('shareReplay operator', () => {
 
   it('should not restart due to unsubscriptions if refCount is false', () => {
     const source = cold('a-b-c-d-e-f-g-h-i-j');
+    const sourceSubs =  '^------------------';
     const sub1 =        '^------!';
     const expected1 =   'a-b-c-d-';
     const sub2 =        '-----------^-------';
@@ -184,10 +185,14 @@ describe('shareReplay operator', () => {
 
     expectObservable(shared, sub1).toBe(expected1);
     expectObservable(shared, sub2).toBe(expected2);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
   it('should restart due to unsubscriptions if refCount is true', () => {
+    const sourceSubs = [];
     const source = cold('a-b-c-d-e-f-g-h-i-j');
+    sourceSubs.push(    '^------!----------------------');
+    sourceSubs.push(    '-----------^------------------');
     const sub1 =        '^------!';
     const expected1 =   'a-b-c-d-';
     const sub2 =        '-----------^------------------';
@@ -197,6 +202,7 @@ describe('shareReplay operator', () => {
 
     expectObservable(shared, sub1).toBe(expected1);
     expectObservable(shared, sub2).toBe(expected2);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
   it('should not restart due to unsubscriptions if refCount is true when the source has completed', () => {
@@ -216,6 +222,7 @@ describe('shareReplay operator', () => {
 
   it('should default to refCount being false', () => {
     const source = cold('a-b-c-d-e-f-g-h-i-j');
+    const sourceSubs =  '^------------------';
     const sub1 =        '^------!';
     const expected1 =   'a-b-c-d-';
     const sub2 =        '-----------^-------';
@@ -225,6 +232,7 @@ describe('shareReplay operator', () => {
 
     expectObservable(shared, sub1).toBe(expected1);
     expectObservable(shared, sub2).toBe(expected2);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
   it('should not break lift() composability', (done: MochaDone) => {
