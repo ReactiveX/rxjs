@@ -199,6 +199,21 @@ describe('shareReplay operator', () => {
     expectObservable(shared, sub2).toBe(expected2);
   });
 
+  it('should not restart due to unsubscriptions if refCount is true when the source has completed', () => {
+    const source = cold('a-(b|)         ');
+    const sourceSubs =  '^-!            ';
+    const sub1 =        '^------!       ';
+    const expected1 =   'a-(b|)         ';
+    const sub2 =        '-----------^!  ';
+    const expected2 =   '-----------(b|)';
+
+    const shared = source.pipe(shareReplay({ bufferSize: 1, refCount: true }));
+
+    expectObservable(shared, sub1).toBe(expected1);
+    expectObservable(shared, sub2).toBe(expected2);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
   it('should default to refCount being false', () => {
     const source = cold('a-b-c-d-e-f-g-h-i-j');
     const sub1 =        '^------!';
