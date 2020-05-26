@@ -199,6 +199,23 @@ describe('shareReplay operator', () => {
     expectObservable(shared, sub2).toBe(expected2);
   });
 
+  it('should restart due to unsubscriptions if refCount is true and the source completes first', () => {
+    const source =  cold(   '1-(2|)      ');
+    const shared = source.pipe(
+      shareReplay({refCount: true, bufferSize: 1}),
+    );
+    const subscriber1 = hot('a---|       ').pipe(mergeMapTo(shared));
+    const unsub1 =          '     !      ';
+    const expected1   =     '1-2-|       ';
+
+    const subscriber2 = hot('      c---| ').pipe(mergeMapTo(shared));
+    const unsub2 =          '           !';
+    const expected2   =     '      1-2-| ';
+
+    expectObservable(subscriber1, unsub1).toBe(expected1);
+    expectObservable(subscriber2, unsub2).toBe(expected2);
+  });
+
   it('should default to refCount being false', () => {
     const source = cold('a-b-c-d-e-f-g-h-i-j');
     const sub1 =        '^------!';
