@@ -152,7 +152,6 @@ function shareReplayOperator<T>({
   let refCount = 0;
   let subscription: Subscription | undefined;
   let hasError = false;
-  let isComplete = false;
 
   return function shareReplayOperation(this: Subscriber<T>, source: Observable<T>) {
     refCount++;
@@ -166,7 +165,6 @@ function shareReplayOperator<T>({
           subject!.error(err);
         },
         complete() {
-          isComplete = true;
           subscription = undefined;
           subject!.complete();
         },
@@ -177,7 +175,7 @@ function shareReplayOperator<T>({
     this.add(() => {
       refCount--;
       innerSub.unsubscribe();
-      if (subscription && !isComplete && useRefCount && refCount === 0) {
+      if (subscription && useRefCount && refCount === 0) {
         subscription.unsubscribe();
         subscription = undefined;
         subject = undefined;
