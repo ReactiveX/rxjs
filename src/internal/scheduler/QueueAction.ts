@@ -3,11 +3,6 @@ import { Subscription } from '../Subscription';
 import { QueueScheduler } from './QueueScheduler';
 import { SchedulerAction } from '../types';
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
 export class QueueAction<T> extends AsyncAction<T> {
 
   constructor(protected scheduler: QueueScheduler,

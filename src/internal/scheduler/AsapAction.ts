@@ -3,11 +3,6 @@ import { AsapScheduler } from './AsapScheduler';
 import { SchedulerAction } from '../types';
 import { immediateProvider } from './immediateProvider';
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
 export class AsapAction<T> extends AsyncAction<T> {
 
   constructor(protected scheduler: AsapScheduler,

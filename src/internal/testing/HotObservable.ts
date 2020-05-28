@@ -8,11 +8,6 @@ import { SubscriptionLoggable } from './SubscriptionLoggable';
 import { applyMixins } from '../util/applyMixins';
 import { observeNotification } from '../Notification';
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
 export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
   scheduler: Scheduler;
