@@ -226,7 +226,6 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  * every input Observable.
  * @static true
  * @name merge
- * @owner Observable
  */
 export function merge(...args: (ObservableInput<any> | SchedulerLike | number)[]): Observable<unknown> {
   const scheduler = popScheduler(args);

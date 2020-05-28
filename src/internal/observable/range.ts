@@ -55,7 +55,6 @@ export function range(start: number, count: number | undefined, scheduler: Sched
  * sequential integers.
  * @static true
  * @name range
- * @owner Observable
  */
 export function range(start: number, count?: number, scheduler?: SchedulerLike): Observable<number> {
   if (count == null) {

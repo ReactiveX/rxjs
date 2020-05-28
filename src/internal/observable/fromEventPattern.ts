@@ -142,9 +142,7 @@ export function fromEventPattern<T>(
  * at that moment.
  * @static true
  * @name fromEventPattern
- * @owner Observable
  */
-
 export function fromEventPattern<T>(
   addHandler: (handler: NodeEventHandler) => any,
   removeHandler?: (handler: NodeEventHandler, signal?: any) => void,

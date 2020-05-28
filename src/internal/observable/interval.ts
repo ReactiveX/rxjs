@@ -50,7 +50,6 @@ import { timer } from './timer';
  * interval.
  * @static true
  * @name interval
- * @owner Observable
  */
 export function interval(period = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number> {
   if (period < 0) {
