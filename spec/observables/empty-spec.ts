@@ -3,12 +3,11 @@ import { expectObservable } from '../helpers/marble-testing';
 import { empty, EMPTY } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 
-declare const asDiagram: any;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {empty} */
 describe('empty', () => {
-  asDiagram('empty')('should create a cold observable with only complete', () => {
+  it('should create a cold observable with only complete', () => {
     const expected = '|';
     const e1 = empty();
     expectObservable(e1).toBe(expected);

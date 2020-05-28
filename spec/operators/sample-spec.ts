@@ -3,11 +3,9 @@ import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-te
 import { sample, mergeMap } from 'rxjs/operators';
 import { Subject, of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {sample} */
 describe('sample operator', () => {
-  asDiagram('sample')('should get samples when the notifier emits', () => {
+  it('should get samples when the notifier emits', () => {
     const e1 =   hot('---a----b---c----------d-----|   ');
     const e1subs =   '^                            !   ';
     const e2 =   hot('-----x----------x---x------x---|');

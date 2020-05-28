@@ -3,12 +3,9 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { scan, mergeMap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-declare const type: Function;
-declare const asDiagram: Function;
-
 /** @test {scan} */
 describe('scan operator', () => {
-  asDiagram('scan((acc, curr) => acc + curr, 0)')('should scan', () => {
+  it('should scan', () => {
     const values = {
       a: 1, b: 3, c: 5,
       x: 1, y: 4, z: 9

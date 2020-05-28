@@ -3,13 +3,11 @@ import { sampleTime, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {sampleTime} */
 describe('sampleTime operator', () => {
-  asDiagram('sampleTime(70)')('should get samples on a delay', () => {
+  it('should get samples on a delay', () => {
     const e1 =   hot('a---b-c---------d--e---f-g-h--|');
     const e1subs =   '^                             !';
     const expected = '-------c-------------e------h-|';

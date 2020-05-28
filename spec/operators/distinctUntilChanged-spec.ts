@@ -2,11 +2,9 @@ import { distinctUntilChanged, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {distinctUntilChanged} */
 describe('distinctUntilChanged operator', () => {
-  asDiagram('distinctUntilChanged')('should distinguish between values', () => {
+  it('should distinguish between values', () => {
     const e1 =   hot('-1--2-2----1-3-|');
     const expected = '-1--2------1-3-|';
 

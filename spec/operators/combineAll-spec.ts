@@ -4,7 +4,6 @@ import { combineAll, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare function asDiagram(arg: string): Function;
 declare const type: Function;
 
 /** @test {combineAll} */
@@ -15,7 +14,7 @@ describe('combineAll operator', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('combineAll')('should combine events from two observables', () => {
+  it('should combine events from two observables', () => {
     testScheduler.run(({ hot, cold, expectObservable }) => {
       const x = cold('                  -a-----b---|');
       const y = cold('                  --1-2-|     ');

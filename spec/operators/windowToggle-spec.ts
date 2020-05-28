@@ -5,12 +5,10 @@ import { windowToggle, tap, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 
 declare const rxTestScheduler: TestScheduler;
-declare const type: Function;
-declare const asDiagram: Function;
 
 /** @test {windowToggle} */
 describe('windowToggle', () => {
-  asDiagram('windowToggle')('should emit windows governed by openings and closings', () => {
+  it('should emit windows governed by openings and closings', () => {
     const source = hot('--1--2--^-a--b--c--d--e--f--g--h-|');
     const subs =               '^                        !';
     const e2 = cold(           '----w--------w--------w--|');

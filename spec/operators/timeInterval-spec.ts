@@ -4,13 +4,11 @@ import { TestScheduler } from 'rxjs/testing';
 import { of } from 'rxjs';
 import { TimeInterval } from 'rxjs/internal/operators/timeInterval';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {timeInterval} */
 describe('timeInterval operator', () => {
-  asDiagram('timeInterval')('should record the time interval between source elements', () => {
+  it('should record the time interval between source elements', () => {
     const e1 = hot('--a--^b-c-----d--e--|');
     const e1subs =      '^              !';
     const expected =    '-w-x-----y--z--|';

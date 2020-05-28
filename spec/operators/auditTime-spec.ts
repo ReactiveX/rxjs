@@ -4,8 +4,6 @@ import { auditTime, take, map, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {auditTime} */
 describe('auditTime operator', () => {
   let testScheduler: TestScheduler;
@@ -14,7 +12,7 @@ describe('auditTime operator', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('auditTime(5)')('should emit the last value in each time window', () => {
+  it('should emit the last value in each time window', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  -a-x-y----b---x-cx---|');
       const subs = '    ^--------------------!';

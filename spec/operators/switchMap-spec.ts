@@ -4,12 +4,9 @@ import { switchMap, mergeMap, map, takeWhile } from 'rxjs/operators';
 import { concat, defer, of, Observable } from 'rxjs';
 import { asInteropObservable } from '../helpers/interop-helper';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {switchMap} */
 describe('switchMap', () => {
-  asDiagram('switchMap(i => 10*i\u2014\u201410*i\u2014\u201410*i\u2014| )')
-  ('should map-and-flatten each item to an Observable', () => {
+  it('should map-and-flatten each item to an Observable', () => {
     const e1 =    hot('--1-----3--5-------|');
     const e1subs =    '^                  !';
     const e2 =   cold('x-x-x|              ', {x: 10});

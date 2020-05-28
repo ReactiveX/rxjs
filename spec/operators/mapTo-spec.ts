@@ -3,11 +3,9 @@ import { mapTo, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {mapTo} */
 describe('mapTo operator', () => {
-  asDiagram('mapTo(\'a\')')('should map multiple values', () => {
+  it('should map multiple values', () => {
     const a =   cold('--1--2--3--|');
     const asubs =    '^          !';
     const expected = '--a--a--a--|';

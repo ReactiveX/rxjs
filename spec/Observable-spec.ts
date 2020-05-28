@@ -5,7 +5,7 @@ import { cold, expectObservable, expectSubscriptions } from './helpers/marble-te
 import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty, interval } from 'rxjs';
 import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, take, finalize } from 'rxjs/operators';
 
-declare const asDiagram: any, rxTestScheduler: any;
+declare const rxTestScheduler: any;
 
 function expectFullObserver(val: any) {
   expect(val).to.be.a('object');
@@ -632,13 +632,6 @@ describe('Observable', () => {
 
 /** @test {Observable} */
 describe('Observable.create', () => {
-  asDiagram('create(obs => { obs.next(1); })')
-    ('should create a cold observable that emits just 1', () => {
-      const e1 = Observable.create((obs: Observer<number>) => { obs.next(1); });
-      const expected = 'x';
-      expectObservable(e1).toBe(expected, { x: 1 });
-    });
-
   it('should create an Observable', () => {
     const result = Observable.create(() => {
       //noop

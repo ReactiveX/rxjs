@@ -4,13 +4,11 @@ import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { expect } from 'chai';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {delayWhen} */
 describe('delayWhen operator', () => {
-  asDiagram('delayWhen(durationSelector)')('should delay by duration selector', () => {
+  it('should delay by duration selector', () => {
     const e1 =        hot('---a---b---c--|');
     const expected =      '-----a------c----(b|)';
     const subs =          '^             !';

@@ -4,8 +4,6 @@ import { concat, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {concat} */
@@ -16,7 +14,7 @@ describe('concat operator', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('concat')('should concatenate two cold observables', () => {
+  it('should concatenate two cold observables', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const e1 = cold('  --a--b-|');
       const e2 = cold('         --x---y--|');

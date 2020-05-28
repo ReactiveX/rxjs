@@ -3,8 +3,6 @@ import { every, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of, Observable, Observer } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {every} */
 describe('every operator', () => {
   function truePredicate(x: number | string) {
@@ -15,7 +13,7 @@ describe('every operator', () => {
     return (+x) % 5 === 0;
   }
 
-  asDiagram('every(x => x % 5 === 0)')('should return false if only some of element matches with predicate', () => {
+  it('should return false if only some of element matches with predicate', () => {
     const source = hot('--a--b--c--d--e--|', {a: 5, b: 10, c: 15, d: 18, e: 20});
     const sourceSubs = '^          !      ';
     const expected =   '-----------(F|)   ';

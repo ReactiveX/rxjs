@@ -4,14 +4,13 @@ import { timeout, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { TimeoutError, of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {timeout} */
 describe('timeout operator', () => {
   const defaultTimeoutError = new TimeoutError();
 
-  asDiagram('timeout(50)')('should timeout after a specified timeout period', () => {
+  it('should timeout after a specified timeout period', () => {
     const e1 =  cold('-------a--b--|');
     const e1subs =   '^    !        ';
     const expected = '-----#        ';

@@ -3,15 +3,13 @@ import { endWith, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {endWith} */
 describe('endWith operator', () => {
   const defaultStartValue = 'x';
 
-  asDiagram('endWith(s)')('should append to a cold Observable', () => {
+  it('should append to a cold Observable', () => {
     const e1 =  cold('---a--b--c--|');
     const e1subs =   '^           !';
     const expected = '---a--b--c--(s|)';

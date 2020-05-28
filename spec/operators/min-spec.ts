@@ -3,11 +3,9 @@ import { min, skip, take, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { range, of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {min} */
 describe('min operator', () => {
-  asDiagram('min')('should min the values of an observable', () => {
+  it('should min the values of an observable', () => {
     const source = hot('--a--b--c--|', { a: 42, b: -1, c: 3 });
     const subs =       '^          !';
     const expected =   '-----------(x|)';

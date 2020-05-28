@@ -3,12 +3,11 @@ import { exhaust, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of, Observable } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
 declare const type: Function;
 
 /** @test {exhaust} */
 describe('exhaust operator', () => {
-  asDiagram('exhaust')('should handle a hot observable of hot observables', () => {
+  it('should handle a hot observable of hot observables', () => {
     const x =   cold(      '--a---b---c--|               ');
     const y =   cold(              '---d--e---f---|      ');
     const z =   cold(                    '---g--h---i---|');

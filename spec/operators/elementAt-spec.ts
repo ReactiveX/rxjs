@@ -3,11 +3,9 @@ import { elementAt, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { ArgumentOutOfRangeError, of, range } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {elementAt} */
 describe('elementAt operator', () => {
-  asDiagram('elementAt(2)')('should return last element by zero-based index', () => {
+  it('should return last element by zero-based index', () => {
     const source = hot('--a--b--c-d---|');
     const subs =       '^       !      ';
     const expected =   '--------(c|)   ';

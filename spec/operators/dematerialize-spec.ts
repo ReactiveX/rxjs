@@ -2,13 +2,11 @@ import { of, Notification } from 'rxjs';
 import { dematerialize, map, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare function asDiagram(arg: string): Function;
-
 const NO_VALUES: { [key: string]: Notification<any> } = {};
 
 /** @test {dematerialize} */
 describe('dematerialize operator', () => {
-  asDiagram('dematerialize')('should dematerialize an Observable', () => {
+  it('should dematerialize an Observable', () => {
     const values = {
       a: '{x}',
       b: '{y}',

@@ -3,11 +3,9 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { skipLast, mergeMap } from 'rxjs/operators';
 import { range, ArgumentOutOfRangeError, of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {takeLast} */
 describe('skipLast operator', () => {
-  asDiagram('skipLast(2)')('should skip two values of an observable with many values', () => {
+  it('should skip two values of an observable with many values', () => {
     const e1 =  cold('--a-----b----c---d--|');
     const e1subs =   '^                   !';
     const expected = '-------------a---b--|';

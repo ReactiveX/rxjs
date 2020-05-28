@@ -5,12 +5,11 @@ import { TestScheduler } from 'rxjs/testing';
 import { take, concat } from 'rxjs/operators';
 import * as sinon from 'sinon';
 
-declare const asDiagram: any;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {interval} */
 describe('interval', () => {
-  asDiagram('interval(1000)')('should create an observable emitting periodically', () => {
+  it('should create an observable emitting periodically', () => {
     const e1 = interval(20, rxTestScheduler).pipe(
       take(6), // make it actually finite, so it can be rendered
       concat(NEVER) // but pretend it's infinite by not completing

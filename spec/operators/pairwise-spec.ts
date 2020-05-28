@@ -3,11 +3,9 @@ import { pairwise, take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { expect } from 'chai';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {pairwise} */
 describe('pairwise operator', () => {
-  asDiagram('pairwise')('should group consecutive emissions as arrays of two', () => {
+  it('should group consecutive emissions as arrays of two', () => {
     const e1 =   hot('--a--b-c----d--e---|');
     const expected = '-----u-v----w--x---|';
 

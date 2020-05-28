@@ -3,8 +3,6 @@ import { combineLatest, mergeMap, distinct, count } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {combineLatest} */
 describe('combineLatest', () => {
   let testScheduler: TestScheduler;
@@ -13,7 +11,7 @@ describe('combineLatest', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('combineLatest')('should combine events from two cold observables', () => {
+  it('should combine events from two cold observables', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const e1 = cold(' -a--b-----c-d-e-|');
       const e2 = cold(' --1--2-3-4---|   ');

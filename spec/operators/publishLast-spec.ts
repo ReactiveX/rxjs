@@ -3,12 +3,11 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { publishLast, mergeMapTo, tap, mergeMap, refCount, retry } from 'rxjs/operators';
 import { ConnectableObservable, of, Subscription, Observable } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
 declare const type: Function;
 
 /** @test {publishLast} */
 describe('publishLast operator', () => {
-  asDiagram('publishLast')('should emit last notification of a simple source Observable', () => {
+  it('should emit last notification of a simple source Observable', () => {
     const source = cold('--1-2---3-4--5-|');
     const sourceSubs =  '^              !';
     const published = source.pipe(publishLast()) as ConnectableObservable<string>;

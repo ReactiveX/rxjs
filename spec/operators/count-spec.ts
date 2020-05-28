@@ -3,11 +3,9 @@ import { of, range } from 'rxjs';
 import { count, skip, take, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {count} */
 describe('count operator', () => {
-  asDiagram('count')('should count the values of an observable', () => {
+  it('should count the values of an observable', () => {
     const source = hot('--a--b--c--|');
     const subs =       '^          !';
     const expected =   '-----------(x|)';

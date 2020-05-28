@@ -4,11 +4,10 @@ import { throttle, mergeMap, mapTo } from 'rxjs/operators';
 import { of, concat, timer, Observable } from 'rxjs';
 
 declare const type: Function;
-declare function asDiagram(arg: string): Function;
 
 /** @test {throttle} */
 describe('throttle operator', () =>  {
-  asDiagram('throttle')('should immediately emit the first value in each time window', () =>  {
+  it('should immediately emit the first value in each time window', () =>  {
     const e1 =   hot('-a-xy-----b--x--cxxx-|');
     const e1subs =   '^                    !';
     const e2 =  cold( '----|                ');
@@ -348,7 +347,7 @@ describe('throttle operator', () =>  {
   });
 
   describe('throttle(fn, { leading: true, trailing: true })', () => {
-    asDiagram('throttle(fn, { leading: true, trailing: true })')('should immediately emit the first value in each time window', () =>  {
+    it('should immediately emit the first value in each time window', () =>  {
       const e1 =   hot('-a-xy-----b--x--cxxx------|');
       const e1subs =   '^                         !';
       const e2 =  cold( '----|                     ');
@@ -382,7 +381,7 @@ describe('throttle operator', () =>  {
   });
 
   describe('throttle(fn, { leading: false, trailing: true })', () => {
-    asDiagram('throttle(fn, { leading: false, trailing: true })')('should immediately emit the first value in each time window', () =>  {
+    it('should immediately emit the first value in each time window', () =>  {
       const e1 =   hot('-a-xy-----b--x--cxxx------|');
       const e1subs =   '^                         !';
       const e2 =  cold( '----|                     ');

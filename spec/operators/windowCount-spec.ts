@@ -1,16 +1,10 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { windowCount, mergeMap } from 'rxjs/operators';
-import { TestScheduler } from 'rxjs/testing';
 import { of, Observable } from 'rxjs';
-
-declare const type: Function;
-declare const asDiagram: Function;
-
-declare const rxTestScheduler: TestScheduler;
 
 /** @test {windowCount} */
 describe('windowCount operator', () => {
-  asDiagram('windowCount(3)')('should emit windows with count 3, no skip specified', () => {
+  it('should emit windows with count 3, no skip specified', () => {
     const source =   hot('---a---b---c---d---e---f---g---h---i---|');
     const sourceSubs =   '^                                      !';
     const expected =     'x----------y-----------z-----------w---|';

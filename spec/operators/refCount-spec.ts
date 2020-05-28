@@ -3,11 +3,9 @@ import { cold, expectObservable, expectSubscriptions } from '../helpers/marble-t
 import { refCount, publish, publishReplay, first } from 'rxjs/operators';
 import { NEVER, noop, Observable, Subject } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {refCount} */
 describe('refCount', () => {
-  asDiagram('refCount')('should turn a multicasted Observable an automatically ' +
+  it('should turn a multicasted Observable an automatically ' +
   '(dis)connecting hot one', () => {
     const source = cold('--1-2---3-4--5-|');
     const sourceSubs =  '^              !';

@@ -3,12 +3,11 @@ import { TestScheduler } from 'rxjs/testing';
 import { throwError } from 'rxjs';
 import { expectObservable } from '../helpers/marble-testing';
 
-declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {throw} */
 describe('throwError', () => {
-  asDiagram('throw(e)')('should create a cold observable that just emits an error', () => {
+  it('should create a cold observable that just emits an error', () => {
     const expected = '#';
     const e1 = throwError('error');
     expectObservable(e1).toBe(expected);

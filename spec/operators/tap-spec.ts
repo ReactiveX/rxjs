@@ -3,12 +3,9 @@ import { tap, mergeMap } from 'rxjs/operators';
 import { Subject, of, throwError, Observer, EMPTY } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {tap} */
 describe('tap operator', () => {
-  asDiagram('tap(x => console.log(x))')
-  ('should mirror multiple values and complete', () => {
+  it('should mirror multiple values and complete', () => {
     const e1 =  cold('--1--2--3--|');
     const e1subs =   '^          !';
     const expected = '--1--2--3--|';

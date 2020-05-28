@@ -5,7 +5,6 @@ import { shareReplay, mergeMapTo, retry } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { Observable, Operator, Observer, of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {shareReplay} */

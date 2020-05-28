@@ -4,7 +4,6 @@ import { concatAll, take, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare function asDiagram(arg: string): Function;
 declare const type: Function;
 declare const rxTestScheduler: TestScheduler;
 
@@ -16,7 +15,7 @@ describe('concatAll operator', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('concatAll')('should concat an observable of observables', () => {
+  it('should concat an observable of observables', () => {
     testScheduler.run(({ cold, hot, expectObservable }) => {
       const x = cold('    ----a------b------|                 ');
       const y = cold('                      ---c-d---|        ');

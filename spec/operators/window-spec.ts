@@ -4,13 +4,12 @@ import { TestScheduler } from 'rxjs/testing';
 import { EMPTY, of, Observable } from 'rxjs';
 
 declare const type: Function;
-declare const asDiagram: Function;
 
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {window} */
 describe('window operator', () => {
-  asDiagram('window')('should emit windows that close and reopen', () => {
+  it('should emit windows that close and reopen', () => {
     const source =   hot('---a---b---c---d---e---f---g---h---i---|    ');
     const sourceSubs =   '^                                      !    ';
     const closings = hot('-------------w------------w----------------|');

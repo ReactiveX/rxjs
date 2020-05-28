@@ -3,13 +3,11 @@ import { timestamp, map, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {timestamp} */
 describe('timestamp operator', () => {
-  asDiagram('timestamp')('should record the time stamp per each source elements', () => {
+  it('should record the time stamp per each source elements', () => {
     const e1 =   hot('-b-c-----d--e--|');
     const e1subs =   '^              !';
     const expected = '-w-x-----y--z--|';

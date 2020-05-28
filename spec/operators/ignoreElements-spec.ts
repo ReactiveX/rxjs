@@ -2,11 +2,9 @@ import { ignoreElements, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {ignoreElements} */
 describe('ignoreElements operator', () => {
-  asDiagram('ignoreElements')('should ignore all the elements of the source', () => {
+  it('should ignore all the elements of the source', () => {
     const source = hot('--a--b--c--d--|');
     const subs =       '^             !';
     const expected =   '--------------|';

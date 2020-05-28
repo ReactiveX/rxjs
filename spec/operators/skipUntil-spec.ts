@@ -4,11 +4,9 @@ import { concat, defer, of, Subject } from 'rxjs';
 import { skipUntil, mergeMap } from 'rxjs/operators';
 import { asInteropObservable } from '../helpers/interop-helper';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {skipUntil} */
 describe('skipUntil', () => {
-  asDiagram('skipUntil')('should skip values until another observable notifies', () => {
+  it('should skip values until another observable notifies', () => {
     const e1 =     hot('--a--b--c--d--e----|');
     const e1subs =     '^                  !';
     const skip =   hot('---------x------|   ');

@@ -5,7 +5,6 @@ import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare const type: Function;
-declare function asDiagram(arg: string): Function;
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -15,7 +14,7 @@ describe('debounce operator', () => {
     return () => timer(x, rxTestScheduler);
   }
 
-  asDiagram('debounce')('should debounce values by a specified cold Observable', () => {
+  it('should debounce values by a specified cold Observable', () => {
     const e1 =   hot('-a--bc--d---|');
     const e2 =  cold('--|          ');
     const expected = '---a---c--d-|';

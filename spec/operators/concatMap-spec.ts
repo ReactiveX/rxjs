@@ -4,8 +4,6 @@ import { concatMap, mergeMap, map } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {concatMap} */
 describe('Observable.prototype.concatMap', () => {
   let testScheduler: TestScheduler;
@@ -14,7 +12,7 @@ describe('Observable.prototype.concatMap', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('concatMap(i => 10*i\u2014\u201410*i\u2014\u201410*i\u2014| )')('should map-and-flatten each item to an Observable', () => {
+  it('should map-and-flatten each item to an Observable', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const e1 = hot('   --1-----3--5-------|');
       const e1subs = '   ^------------------!';

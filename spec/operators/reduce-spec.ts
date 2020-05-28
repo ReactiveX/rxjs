@@ -4,11 +4,10 @@ import { reduce, mergeMap } from 'rxjs/operators';
 import { range, of } from 'rxjs';
 
 declare const type: Function;
-declare const asDiagram: Function;
 
 /** @test {reduce} */
 describe('reduce operator', () => {
-  asDiagram('reduce((acc, curr) => acc + curr, 0)')('should reduce', () => {
+  it('should reduce', () => {
     const values = {
       a: 1, b: 3, c: 5, x: 9
     };

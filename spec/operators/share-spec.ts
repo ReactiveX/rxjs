@@ -3,11 +3,9 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { share, retry, mergeMapTo, mergeMap, tap, repeat } from 'rxjs/operators';
 import { Observable, EMPTY, NEVER, of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {share} */
 describe('share operator', () => {
-  asDiagram('share')('should mirror a simple source Observable', () => {
+  it('should mirror a simple source Observable', () => {
     const source = cold('--1-2---3-4--5-|');
     const sourceSubs =  '^              !';
     const expected =    '--1-2---3-4--5-|';

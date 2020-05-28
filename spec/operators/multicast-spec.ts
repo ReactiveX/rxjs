@@ -5,13 +5,12 @@ import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 
 declare const type: Function;
-declare const asDiagram: Function;
 
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {multicast} */
 describe('multicast operator', () => {
-  asDiagram('multicast(() => new Subject<string>())')('should mirror a simple source Observable', () => {
+  it('should mirror a simple source Observable', () => {
     const source = cold('--1-2---3-4--5-|');
     const sourceSubs =  '^              !';
     const multicasted = source.pipe(multicast(() => new Subject<string>())) as ConnectableObservable<string>;

@@ -3,8 +3,6 @@ import { EMPTY, NEVER, throwError, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {buffer} */
 describe('Observable.prototype.buffer', () => {
   let testScheduler: TestScheduler;
@@ -13,7 +11,7 @@ describe('Observable.prototype.buffer', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('buffer')('should emit buffers that close and reopen', () => {
+  it('should emit buffers that close and reopen', () => {
     testScheduler.run(({ hot, expectObservable }) => {
       const a = hot('   -a-b-c-d-e-f-g-h-i-|');
       const b = hot('   -----B-----B-----B-|');

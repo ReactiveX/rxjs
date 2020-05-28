@@ -4,13 +4,11 @@ import { repeat, mergeMap, map, multicast, refCount } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, Subject } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {repeat} */
 describe('repeat operator', () => {
-  asDiagram('repeat(3)')('should resubscribe count number of times', () => {
+  it('should resubscribe count number of times', () => {
     const e1 =   cold('--a--b--|                ');
     const subs =     ['^       !                ',
                     '        ^       !        ',

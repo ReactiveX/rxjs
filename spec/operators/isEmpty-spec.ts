@@ -2,11 +2,9 @@ import { isEmpty, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
-
 /** @test {isEmpty} */
 describe('isEmpty operator', () => {
-  asDiagram('isEmpty')('should return true if source is empty', () => {
+  it('should return true if source is empty', () => {
     const source = hot('-----|');
     const subs =       '^    !';
     const expected =   '-----(T|)';

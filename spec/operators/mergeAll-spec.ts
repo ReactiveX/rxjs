@@ -3,12 +3,11 @@ import { mergeAll, mergeMap, take } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { throwError, from, of, queueScheduler } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
 declare const type: Function;
 
 /** @test {mergeAll} */
 describe('mergeAll oeprator', () => {
-  asDiagram('mergeAll')('should merge a hot observable of cold observables', () => {
+  it('should merge a hot observable of cold observables', () => {
     const x = cold(    '--a---b--c---d--|      ');
     const y = cold(           '----e---f--g---|');
     const e1 = hot(  '--x------y-------|       ', { x: x, y: y });

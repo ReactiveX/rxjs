@@ -195,7 +195,10 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
   .config(function(convertToJsonProcessor, postProcessHtml, API_DOC_TYPES_TO_RENDER, API_DOC_TYPES, autoLinkCode, embedMarbleDiagramsPostProcessor) {
     convertToJsonProcessor.docTypes = convertToJsonProcessor.docTypes.concat(API_DOC_TYPES_TO_RENDER);
     postProcessHtml.docTypes = convertToJsonProcessor.docTypes.concat(API_DOC_TYPES_TO_RENDER);
-    postProcessHtml.plugins = [embedMarbleDiagramsPostProcessor.process];
+    postProcessHtml.plugins = [
+      [embedMarbleDiagramsPostProcessor.process],
+      [require('@jsdevtools/rehype-inline-svg'), {maxImageSize: 12000}]
+    ];
     autoLinkCode.docTypes = API_DOC_TYPES;
     autoLinkCode.codeElements = ['code', 'code-example', 'code-pane'];
   });

@@ -5,8 +5,6 @@ import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare const asDiagram: Function;
-
 /** @test {delay} */
 describe('delay operator', () => {
   let testScheduler: TestScheduler;
@@ -15,7 +13,7 @@ describe('delay operator', () => {
     testScheduler = new TestScheduler(observableMatcher);
   });
 
-  asDiagram('delay(20)')('should delay by specified timeframe', () => {
+  it('should delay by specified timeframe', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
     const e1 =   hot('---a--b--|');
     const t = 2; //      --|
