@@ -63,6 +63,7 @@ export class Subscription implements SubscriptionLike {
     // null out _subscriptions first so any child subscriptions that attempt
     // to remove themselves from this subscription will noop
     this._subscriptions = null;
+    (<any> this)._unsubscribe = null;
 
     if (_parentOrParents instanceof Subscription) {
       _parentOrParents.remove(this);
