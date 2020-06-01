@@ -159,5 +159,17 @@ describe('Subscription', () => {
         done();
       });
     });
+
+    it('Should have idempotent unsubscription', () => {
+      let count = 0;
+      const subscription = new Subscription(() => ++count);
+      expect(count).to.equal(0);
+
+      subscription.unsubscribe();
+      expect(count).to.equal(1);
+
+      subscription.unsubscribe();
+      expect(count).to.equal(1);
+    });
   });
 });
