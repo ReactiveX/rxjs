@@ -63,13 +63,6 @@ export class Subscription implements SubscriptionLike {
     // null out _subscriptions first so any child subscriptions that attempt
     // to remove themselves from this subscription will noop
     this._subscriptions = null;
-    // It's not possible to null the _unsubscribe member as there are many
-    // classes that are derived from Subscriber (which derives from
-    // Subscription) that implement an _unsubscribe method as a mechanism for
-    // obtaining unsubscription notifications and some of those subscribers are
-    // recycled. Deleting the member will release the reference to any teardown
-    // functions passed in the constructor and will leave any methods intact.
-    delete (this as any)._unsubscribe;
 
     if (_parentOrParents instanceof Subscription) {
       _parentOrParents.remove(this);
@@ -81,6 +74,14 @@ export class Subscription implements SubscriptionLike {
     }
 
     if (isFunction(_unsubscribe)) {
+      // It's not possible to null the _unsubscribe member as there are many
+      // classes that are derived from Subscriber (which derives from
+      // Subscription) that implement an _unsubscribe method as a mechanism for
+      // obtaining unsubscription notifications and some of those subscribers
+      // are recycled. Deleting the member will release the reference to any
+      // teardown functions passed in the constructor and will leave any
+      // methods intact.
+      delete (this as any)._unsubscribe;
       try {
         _unsubscribe.call(this);
       } catch (e) {
