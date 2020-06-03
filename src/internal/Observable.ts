@@ -366,8 +366,8 @@ export class Observable<T> implements Subscribable<T> {
    * @return A Promise that resolves with the last value emit, or
    * rejects on an error. If there were no emissions, Promise
    * resolves with undefined.
+   * @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead
    */
-  /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
   toPromise(promiseCtor?: PromiseConstructorLike): Promise<T | undefined> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
