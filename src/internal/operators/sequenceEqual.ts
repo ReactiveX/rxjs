@@ -19,7 +19,7 @@ import { Observer, OperatorFunction } from '../types';
  * up; If any value pair doesn't match, the returned observable will emit `false` and complete. If one of the
  * observables completes, the operator will wait for the other observable to complete; If the other
  * observable emits before completing, the returned observable will emit `false` and complete. If one observable never
- * completes or emits after the other complets, the returned observable will never complete.
+ * completes or emits after the other completes, the returned observable will never complete.
  *
  * ## Example
  * figure out if the Konami code matches
