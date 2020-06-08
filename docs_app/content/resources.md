@@ -37,3 +37,9 @@ This is a collection of resources that can be found to help with the learning pr
 * RxJS 6 Changes - Overview |  [academind.com](https://www.academind.com/learn/javascript/rxjs-6-what-changed/) | Last Updated: May 3, 2018
 * Introducing RxJS! | [ng-conf 2018](https://www.youtube.com/watch?v=JCXZhe6KsxQ) | April 20, 2018
 * Learn RxJS in 60 Minutes for Beginners | [YouTube](https://www.youtube.com/watch?v=PhggNGsSQyg) | March 30, 2018
+
+## Courses
+
+### 2020
+
+* RxJS Basics + RxJS Masterclass Courses | [ultimatecourses.com/courses/rxjs](https://ultimatecourses.com/courses/rxjs)
