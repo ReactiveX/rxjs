@@ -30,6 +30,10 @@ describe('Subject', () => {
     });
   });
 
+  it('should not accept an argument in the ctor', () => {
+    const s1 = new Subject<number>(subscriber => { }); // $ExpectError
+  });
+
   describe('asObservable', () => {
     it('should return an observable of the same generic type', () => {
       const s1 = new Subject();
