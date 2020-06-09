@@ -25,9 +25,8 @@ export class Subscription implements SubscriptionLike {
 
   /**
    * A flag to indicate whether this Subscription has already been unsubscribed.
-   * @param {boolean}
    */
-  public closed: boolean = false;
+  public closed = false;
 
   /** @internal */
   protected _parentOrParents: Subscription | Subscription[] = null;
