@@ -80,6 +80,42 @@ export type ObservableLike<T> = InteropObservable<T>;
 
 export type InteropObservable<T> = { [Symbol.observable]: () => Subscribable<T>; };
 
+/** NOTIFICATIONS */
+
+/**
+ * A notification representing a "next" from an observable.
+ * Can be used with {@link dematerialize}.
+ */
+export interface NextNotification<T> {
+  /** The kind of notification. Always "N" */
+  kind: 'N';
+  /** The value of the notification. */
+  value: T;
+}
+
+/**
+ * A notification representing an "error" from an observable.
+ * Can be used with {@link dematerialize}.
+ */
+export interface ErrorNotification {
+  /** The kind of notification. Always "E" */
+  kind: 'E';
+  error: any;
+}
+
+/**
+ * A notification representing a "completion" from an observable.
+ * Can be used with {@link dematerialize}.
+ */
+export interface CompleteNotification {
+  kind: 'C';
+}
+
+/**
+ * Valid observable notification types.
+ */
+export type ObservableNotification<T> = NextNotification<T> | ErrorNotification | CompleteNotification;
+
 /** OBSERVER INTERFACES */
 
 export interface NextObserver<T> {
