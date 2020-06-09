@@ -206,6 +206,12 @@ export class Subscription implements SubscriptionLike {
   }
 }
 
+export function isSubscription(value: any): value is Subscription {
+  return value &&
+    typeof value.add === 'function' &&
+    typeof value.unsubscribe === 'function';
+}
+
 function flattenUnsubscriptionErrors(errors: any[]) {
  return errors.reduce((errs, err) => errs.concat((err instanceof UnsubscriptionError) ? err.errors : err), []);
 }

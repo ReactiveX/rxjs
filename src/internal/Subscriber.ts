@@ -1,7 +1,7 @@
 import { isFunction } from './util/isFunction';
 import { empty as emptyObserver } from './Observer';
 import { Observer, PartialObserver } from './types';
-import { Subscription } from './Subscription';
+import { Subscription, isSubscription } from './Subscription';
 import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
 import { config } from './config';
 import { hostReportError } from './util/hostReportError';
@@ -187,8 +187,8 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       complete = (<PartialObserver<T>> observerOrNext).complete;
       if (observerOrNext !== emptyObserver) {
         context = Object.create(observerOrNext);
-        if (isFunction(context.unsubscribe)) {
-          this.add(<() => void> context.unsubscribe.bind(context));
+        if (isSubscription(observerOrNext)) {
+          observerOrNext.add(this.unsubscribe.bind(this));
         }
         context.unsubscribe = this.unsubscribe.bind(this);
       }
