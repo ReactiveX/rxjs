@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import { expand, mergeMap, map } from 'rxjs/operators';
+import { expand, mergeMap, map, take, toArray } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { Subscribable, EMPTY, Observable, of, Observer } from 'rxjs';
+import { Subscribable, EMPTY, Observable, of, Observer, asapScheduler, asyncScheduler } from 'rxjs';
 
 declare const type: Function;
 
@@ -413,5 +413,29 @@ describe('expand operator', () => {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should work with the AsapScheduler', (done) => {
+    const expected = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    of(0).pipe(
+      expand((x) => of(x + 1), Infinity, asapScheduler),
+      take(10),
+      toArray()
+    ).subscribe(
+      (actual) => expect(actual).to.deep.equal(expected),
+      done, done
+    );
+  });
+
+  it('should work with the AsyncScheduler', (done) => {
+    const expected = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    of(0).pipe(
+      expand((x) => of(x + 1), Infinity, asyncScheduler),
+      take(10),
+      toArray()
+    ).subscribe(
+      (actual) => expect(actual).to.deep.equal(expected),
+      done, done
+    );
   });
 });
