@@ -1,118 +1,171 @@
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
-import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, SchedulerLike } from '../types';
-
-/* tslint:disable:max-line-length */
-export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: SchedulerLike): OperatorFunction<T, R>;
-export function expand<T>(project: (value: T, index: number) => ObservableInput<T>, concurrent?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
-/* tslint:enable:max-line-length */
+import { OperatorFunction, ObservableInput } from '../types';
 
 /**
- * Recursively projects each source value to an Observable which is merged in
- * the output Observable.
+ * Emit all values from source, then map them to new observables, which are subscribed to,
+ * and treated just like values from the source (emitting them, them mapping them to new observables,
+ * subscribing, etc), recursively.
  *
- * <span class="informal">It's similar to {@link mergeMap}, but applies the
- * projection function to every source value as well as every output value.
- * It's recursive.</span>
+ * <span class="informal">Used to process recursive patterns in RxJS.</span>
  *
  * ![](expand.png)
  *
- * Returns an Observable that emits items based on applying a function that you
- * supply to each item emitted by the source Observable, where that function
- * returns an Observable, and then merging those resulting Observables and
- * emitting the results of this merger. *Expand* will re-emit on the output
- * Observable every source value. Then, each output value is given to the
- * `project` function which returns an inner Observable to be merged on the
- * output Observable. Those output values resulting from the projection are also
- * given to the `project` function to produce new output values. This is how
- * *expand* behaves recursively.
+ * What the process looks like:
+ *
+ * 1. Let `V` = each new value from the source observable
+ * 2. Emit `V`.
+ * 3. Map `V` to a new observable with the `project` function.
+ * 4. Subscribe to the new observable.
+ * 5. Let `V` = each new value from the new observable.
+ * 6. Goto 2.
+ *
+ * Effectively, for every new value from the source observable you'll immediately see
+ * that in the output from the resulting observable. Immediately after, it will be
+ * mapped to a new observable, which is subscribed to. When that new observable emits
+ * a value, it goes through the same process as the values from the source. They're
+ * emitted, mapped to new observables (and the process repeats itself).
+ *
+ * This is a useful pattern when you have to deal with things like backpressure.
+ * Frequently, developers will use a `Subject` that "subscribes to itself", `expand`
+ * eliminates the need for that.
  *
  * ## Example
- * Start emitting the powers of two on every click, at most 10 of them
- * ```ts
- * import { fromEvent, of } from 'rxjs';
- * import { expand, mapTo, delay, take } from 'rxjs/operators';
  *
- * const clicks = fromEvent(document, 'click');
- * const powersOfTwo = clicks.pipe(
- *   mapTo(1),
- *   expand(x => of(2 * x).pipe(delay(1000))),
- *   take(10),
- * );
- * powersOfTwo.subscribe(x => console.log(x));
+ * Recursively load 100 paginated values from GitHub API.
+ *
+ * ```ts
+ * import { of, EMPTY } from "rxjs";
+ * import { ajax } from "rxjs/ajax";
+ * import { map, expand, take, concatMap } from "rxjs/operators";
+ *
+ * const source = of({ nextPage: 1, page: 0, items: [] }).pipe(
+ *   expand(({ nextPage }) => {
+ *     if (nextPage === -1) {
+ *       // Use something to signal we want to stop recursion,
+ *       // in this case, a `nextPage` of -1
+ *       return EMPTY;
+ *     }
+ *     return ajax
+ *       .getJSON<{ incomplete_results: boolean; items: any[] }>(
+ *         `https://api.github.com/search/code?q=rxjs+user:reactivex&page=${nextPage}`
+ *       )
+ *       .pipe(
+ *         map(data => {
+ *           return {
+ *             page: nextPage,
+ *             // If the results are incomplete, return the next page number.
+ *             // Otherwise, return -1, which will stop the
+ *             // recursion (above).
+ *             nextPage: data.incomplete_results ? nextPage + 1 : -1,
+ *             items: data.items
+ *           };
+ *         })
+ *       );
+ *   }),
+ *   concatMap(({ items }) => items),
+ *   take(100),
+ * )
+ * .subscribe(x => console.log(x));
  * ```
+ *
+ * ## Example
+ *
+ * Crawl an async tree.
+ *
+ * ```ts
+ * import { of, EMPTY, isObservable } from "rxjs";
+ * import { expand, filter } from "rxjs/operators";
+ *
+ * // As async tree to crawl.
+ * // (Could be any shape, really, this is just an example)
+ * const asyncTree = of({
+ *   a: of({
+ *     c: of({
+ *       d: of("peas")
+ *     })
+ *   }),
+ *   b: of({
+ *     a: of({
+ *       x: of({
+ *         y: of("and")
+ *       })
+ *     })
+ *   }),
+ *   z: of("carrots")
+ * });
+ *
+ * const source = asyncTree.pipe(
+ *   expand(node => {
+ *     if (isObservable(node)) {
+ *       // We have an observable from a property,
+ *       // Get the value out of it and reenter.
+ *       return node;
+ *     } else if (node && typeof node === "object") {
+ *       // A map of properties, convert them into an
+ *       // array, which is observable. Reenter with each value
+ *       return Object.keys(node).map(key => node[key]);
+ *     } else {
+ *       // Leaf node
+ *       return EMPTY;
+ *     }
+ *   }),
+ *   // We only really need the values out of this.
+ *   filter(
+ *     value => typeof value === 'string'
+ *   )
+ * );
+ *
+ * source.subscribe(x => console.log(x));
+ *
+ * // Expected output:
+ * // "peas"
+ * // "and"
+ * // "carrots"
+ * ```
+ *
+ *
  *
  * @see {@link mergeMap}
  * @see {@link mergeScan}
  *
- * @param {function(value: T, index: number) => Observable} project A function
- * that, when applied to an item emitted by the source or the output Observable,
- * returns an Observable.
- * @param {number} [concurrent=Infinity] Maximum number of input
- * Observables being subscribed to concurrently.
- * @param {SchedulerLike} [scheduler=null] The {@link SchedulerLike} to use for subscribing to
- * each projected inner Observable.
- * @return {Observable} An Observable that emits the source values and also
- * result of applying the projection function to each value emitted on the
- * output Observable and merging the results of the Observables obtained
- * from this transformation.
- * @name expand
+ * @param project A function applied to each value from the source observable, projecting
+ * that value to an observable inner source. That inner source will be subscribed to, and its
+ * values will be sent back into this function.
+ * @param concurrent Maximum number of projected observables to subscribe to at the same time
+ * @return An observable that takes the values from the source observable and emits them,
+ * then also projects them into new, inner observables which are subscribed to, and projected,
+ * recursively, with the same function.
  */
-export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>,
-                             concurrent: number = Infinity,
-                             scheduler?: SchedulerLike): OperatorFunction<T, R> {
+export function expand<T, R>(
+  project: (value: T, index: number) => ObservableInput<R>,
+  concurrent: number = Infinity
+): OperatorFunction<T, R> {
   concurrent = (concurrent || 0) < 1 ? Infinity : concurrent;
 
-  return (source: Observable<T>) => source.lift(new ExpandOperator(project, concurrent, scheduler));
+  return (source: Observable<T>) => source.lift(function expandOperator(this: Subscriber<R>, source: Observable<T>) {
+    return source.subscribe(new ExpandSubscriber(this, project, concurrent));
+  });
 }
 
-export class ExpandOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => ObservableInput<R>,
-              private concurrent: number,
-              private scheduler?: SchedulerLike) {
-  }
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new ExpandSubscriber(subscriber, this.project, this.concurrent, this.scheduler));
-  }
-}
-
-interface DispatchArg<T, R> {
-  subscriber: ExpandSubscriber<T, R>;
-  result: ObservableInput<R>;
-  value: any;
-  index: number;
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
+class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   private index: number = 0;
   private active: number = 0;
   private hasCompleted: boolean = false;
-  private buffer: any[] | undefined;
+  private buffer: T[] | undefined;
 
-  constructor(destination: Subscriber<R>,
-              private project: (value: T, index: number) => ObservableInput<R>,
-              private concurrent: number,
-              private scheduler?: SchedulerLike) {
+  constructor(
+    protected destination: Subscriber<R>,
+    private project: (value: T, index: number) => ObservableInput<R>,
+    private concurrent: number
+  ) {
     super(destination);
     if (concurrent < Infinity) {
       this.buffer = [];
     }
-  }
-
-  private static dispatch<T, R>(arg: DispatchArg<T, R>): void {
-    const {subscriber, result, value, index} = arg;
-    subscriber.subscribeToProjection(result, value, index);
   }
 
   protected _next(value: any): void {
@@ -129,29 +182,14 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
       try {
         const { project } = this;
         const result = project(value, index);
-        if (!this.scheduler) {
-          this.subscribeToProjection(result, value, index);
-        } else {
-          const state: DispatchArg<T, R> = { subscriber: this, result, value, index };
-          const destination = this.destination as Subscription;
-          destination.add(this.scheduler.schedule<DispatchArg<T, R>>(
-            ExpandSubscriber.dispatch as any,
-            0,
-            state
-          ));
-        }
-      } catch (e) {
-        destination.error(e);
+        this.active++;
+        destination.add(subscribeToResult<T, R>(this, result, value, index));
+      } catch (err) {
+        destination.error(err);
       }
     } else {
       this.buffer!.push(value);
     }
-  }
-
-  private subscribeToProjection(result: any, value: T, index: number): void {
-    this.active++;
-    const destination = this.destination as Subscription;
-    destination.add(subscribeToResult<T, R>(this, result, value, index));
   }
 
   protected _complete(): void {
@@ -162,9 +200,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.unsubscribe();
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(_outerValue: T, innerValue: R): void {
     this._next(innerValue);
   }
 

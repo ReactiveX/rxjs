@@ -23,19 +23,6 @@ describe('expand operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should work with scheduler', () => {
-    const e1 =    hot('--x----|  ', {x: 1});
-    const e1subs =    '^      !  ';
-    const e2 =   cold(  '--c|    ', {c: 2});
-    const expected =  '--a-b-c-d|';
-    const values = {a: 1, b: 2, c: 4, d: 8};
-
-    const result = e1.pipe(expand(x => x === 8 ? EMPTY : e2.pipe(map(c => c * x)), Infinity, rxTestScheduler));
-
-    expectObservable(result).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
   it('should map and recursively flatten', () => {
     const values = {
       a: 1,
@@ -409,7 +396,7 @@ describe('expand operator', () => {
       return cold(e2shape, { z: x + x });
     };
 
-    const result = e1.pipe(expand(project, undefined, undefined));
+    const result = e1.pipe(expand(project, undefined));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
