@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
+import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueTupleFromArray } from '../types';
 import { isScheduler  } from '../util/isScheduler';
 import { isArray  } from '../util/isArray';
 import { Subscriber } from '../Subscriber';
@@ -67,6 +67,7 @@ export function combineLatest<O1 extends ObservableInput<any>, O2 extends Observ
 export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>>(sources: [O1, O2, O3, O4, O5]): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>]>;
 export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, O6 extends ObservableInput<any>>(sources: [O1, O2, O3, O4, O5, O6]): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>, ObservedValueOf<O6>]>;
 export function combineLatest<O extends ObservableInput<any>>(sources: O[]): Observable<ObservedValueOf<O>[]>;
+export function combineLatest<O extends readonly ObservableInput<any>[]>(sources: O): Observable<ObservedValueTupleFromArray<O>>;
 
 // Standard calls
 /** @deprecated Pass arguments in a single array instead `combineLatest([a, b, c])` */
