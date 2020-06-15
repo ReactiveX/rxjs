@@ -12,6 +12,12 @@ import { EmptyError } from './util/EmptyError';
  * If the observable stream emits an error, the returned promise will reject
  * with that error.
  *
+ * **WARNING**: Only use this with observables you *know* will complete. If the source
+ * observable does not complete, you will end up with a promise that is hung up, and
+ * potentially all of the state of an async function hanging out in memory. To avoid
+ * this situation, look into adding something like {@link timeout}, {@link take},
+ * {@link takeWhile}, or {@link takeUntil} amongst others.
+ *
  * ### Example
  *
  * Wait for the last value from a stream and emit it from a promise in

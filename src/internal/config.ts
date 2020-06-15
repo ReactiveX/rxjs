@@ -8,6 +8,10 @@ export const config = {
   /**
    * The promise constructor used by default for methods such as
    * {@link toPromise} and {@link forEach}
+   *
+   * @deprecated remove in v8. RxJS will no longer support this sort of injection of a
+   * Promise constructor. If you need a Promise implementation other than native promises,
+   * please polyfill/patch Promises as you see appropriate.
    */
   Promise: undefined! as PromiseConstructorLike,
 
@@ -18,6 +22,10 @@ export const config = {
    * where a multicast can be broken for all observers by a downstream consumer with
    * an unhandled error. DO NOT USE THIS FLAG UNLESS IT'S NEEDED TO BY TIME
    * FOR MIGRATION REASONS.
+   *
+   * @deprecated remove in v8. As of version 8, RxJS will no longer support synchronous throwing
+   * of unhandled errors. All errors will be thrown on a separate call stack to prevent bad
+   * behaviors described above.
    */
   set useDeprecatedSynchronousErrorHandling(value: boolean) {
     if (value) {
@@ -29,6 +37,11 @@ export const config = {
     _enable_super_gross_mode_that_will_cause_bad_things = value;
   },
 
+  /**
+   * @deprecated remove in v8. As of version 8, RxJS will no longer support synchronous throwing
+   * of unhandled errors. All errors will be thrown on a separate call stack to prevent bad
+   * behaviors described above.
+   */
   get useDeprecatedSynchronousErrorHandling() {
     return _enable_super_gross_mode_that_will_cause_bad_things;
   },
