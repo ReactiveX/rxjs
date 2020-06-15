@@ -77,7 +77,7 @@ describe('defer', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
-  it('should create an observable when factory does not throws', () => {
+  it('should create an observable when factory does not throw', () => {
     const e1 = defer(() => {
       if (1 !== Infinity) {
         throw 'error';
