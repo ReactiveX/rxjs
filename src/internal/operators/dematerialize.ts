@@ -2,7 +2,7 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { observeNotification } from '../Notification';
-import { OperatorFunction, ObservableNotification, NextNotification } from '../types';
+import { OperatorFunction, ObservableNotification, ValueFromNotification } from '../types';
 
 /**
  * Converts an Observable of {@link ObservableNotification} objects into the emissions
@@ -51,13 +51,13 @@ import { OperatorFunction, ObservableNotification, NextNotification } from '../t
  * @return {Observable} An Observable that emits items and notifications
  * embedded in Notification objects emitted by the source Observable.
  */
-export function dematerialize<N extends ObservableNotification<any>>(): OperatorFunction<N, GetNotificationValueOf<N>> {
+export function dematerialize<N extends ObservableNotification<any>>(): OperatorFunction<N, ValueFromNotification<N>> {
   return function dematerializeOperatorFunction(source: Observable<N>) {
     return source.lift(new DeMaterializeOperator<N>());
   };
 }
 
-class DeMaterializeOperator<N extends ObservableNotification<any>> implements Operator<N, GetNotificationValueOf<N>> {
+class DeMaterializeOperator<N extends ObservableNotification<any>> implements Operator<N, ValueFromNotification<N>> {
   call(subscriber: Subscriber<any>, source: any): any {
     return source.subscribe(new DeMaterializeSubscriber<N>(subscriber));
   }
@@ -69,7 +69,7 @@ class DeMaterializeOperator<N extends ObservableNotification<any>> implements Op
  * @extends {Ignored}
  */
 class DeMaterializeSubscriber<N extends ObservableNotification<any>> extends Subscriber<N> {
-  constructor(destination: Subscriber<GetNotificationValueOf<N>>) {
+  constructor(destination: Subscriber<ValueFromNotification<N>>) {
     super(destination);
   }
 
@@ -77,9 +77,3 @@ class DeMaterializeSubscriber<N extends ObservableNotification<any>> extends Sub
     observeNotification(notification, this.destination);
   }
 }
-
-type GetNotificationValueOf<T> = T extends { kind: 'N'|'E'|'C' } ?
-  (T extends NextNotification<any> ?
-    (T extends { value: infer V } ? V : undefined )
-  : never)
-  : never;

@@ -1,4 +1,4 @@
-import { Notification } from "../dist/types/internal/Notification";
+import { Notification } from 'rxjs';
 
 describe('Notification', () => {
   // Basic method tests

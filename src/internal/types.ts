@@ -238,3 +238,12 @@ export type Tail<X extends any[]> =
  * `ValueFromArray<T>` will return the actual type of `string`.
  */
 export type ValueFromArray<A> = A extends Array<infer T> ? T : never;
+
+/**
+ * Gets the value type from an {@link ObservableNotification}, if possible.
+ */
+export type ValueFromNotification<T> = T extends { kind: 'N'|'E'|'C' } ?
+  (T extends NextNotification<any> ?
+    (T extends { value: infer V } ? V : undefined )
+  : never)
+  : never;

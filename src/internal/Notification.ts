@@ -193,7 +193,7 @@ export class Notification<T> {
     throw new Error('unexpected notification kind value');
   }
 
-  private static completeNotification: Notification<never> & CompleteNotification = new Notification('C') as any;
+  private static completeNotification = new Notification('C') as Notification<never> & CompleteNotification;
   /**
    * A shortcut to create a Notification instance of the type `next` from a
    * given value.
@@ -205,8 +205,8 @@ export class Notification<T> {
    * and use them. Rather, try to create POJOs matching the signature outlined in {@link ObservableNotification}.
    * For example: `{ kind: 'N', value: 1 }`, `{kind: 'E', error: new Error('bad') }`, or `{ kind: 'C' }`.
    */
-  static createNext<T>(value: T): Notification<T> & NextNotification<T> {
-    return new Notification('N', value) as any;
+  static createNext<T>(value: T) {
+    return new Notification('N', value) as Notification<T> & NextNotification<T>;
   }
 
   /**
@@ -220,8 +220,8 @@ export class Notification<T> {
    * and use them. Rather, try to create POJOs matching the signature outlined in {@link ObservableNotification}.
    * For example: `{ kind: 'N', value: 1 }`, `{kind: 'E', error: new Error('bad') }`, or `{ kind: 'C' }`.
    */
-  static createError(err?: any): Notification<never> & ErrorNotification {
-    return new Notification('E', undefined, err) as any;
+  static createError(err?: any) {
+    return new Notification('E', undefined, err) as Notification<never> & ErrorNotification;
   }
 
   /**
@@ -266,7 +266,7 @@ export function observeNotification<T>(notification: ObservableNotification<T>, 
  * same "shape" as other notifications in v8.
  * @internal
  */
-export const COMPLETE_NOTIFICATION = (() => createNotification('C', undefined, undefined))();
+export const COMPLETE_NOTIFICATION = (() => createNotification('C', undefined, undefined) as CompleteNotification)();
 
 /**
  * Internal use only. Creates an optimized error notification that is the same "shape"
@@ -282,8 +282,8 @@ export function errorNotification(error: any): ErrorNotification {
  * as other notifications.
  * @internal
  */
-export function nextNotification<T>(value: T): NextNotification<T> {
-  return createNotification('N', value, undefined) as any;
+export function nextNotification<T>(value: T) {
+  return createNotification('N', value, undefined) as NextNotification<T>;
 }
 
 /**
@@ -292,10 +292,10 @@ export function nextNotification<T>(value: T): NextNotification<T> {
  * TODO: This is only exported to support a crazy legacy test in `groupBy`.
  * @internal
  */
-export function createNotification(kind: 'N'|'E'|'C', value: any, error: any) {
+export function createNotification(kind: 'N' | 'E' | 'C', value: any, error: any) {
   return {
     kind,
     value,
-    error
+    error,
   };
 }
