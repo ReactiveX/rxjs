@@ -1,7 +1,6 @@
 import { Observable } from '../Observable';
 import { ObservedValueOf, ObservableInput } from '../types';
 import { from } from './from'; // lol
-import { EMPTY } from './empty';
 
 /**
  * Creates an Observable that, on subscribe, calls an Observable factory to
@@ -52,16 +51,18 @@ import { EMPTY } from './empty';
  * @name defer
  * @owner Observable
  */
-export function defer<R extends ObservableInput<any> | void>(observableFactory: () => R): Observable<ObservedValueOf<R>> {
+export function defer<R extends ObservableInput<any>>(
+  observableFactory: [R] extends [undefined] | [void] ? never : () => R
+): Observable<ObservedValueOf<R>> {
   return new Observable<ObservedValueOf<R>>(subscriber => {
-    let input: R | void;
+    let input: R;
     try {
       input = observableFactory();
     } catch (err) {
       subscriber.error(err);
       return undefined;
     }
-    const source = input ? from(input as ObservableInput<ObservedValueOf<R>>) : EMPTY;
+    const source = from(input);
     return source.subscribe(subscriber);
   });
 }

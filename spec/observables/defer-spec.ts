@@ -74,13 +74,28 @@ describe('defer', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
-  it('should create an observable when factory throws', () => {
+  it('should create an observable when factory does not throw', () => {
     const e1 = defer(() => {
-      throw 'error';
+      if (1 !== Infinity) {
+        throw 'error';
+      }
+      return of();
     });
     const expected = '#';
 
     expectObservable(e1).toBe(expected);
+  });
+
+  it('should error when factory throws', (done) => {
+    const e1 = defer(() => {
+      if (1 + 2 === 3) {
+        throw 'error';
+      }
+      return of();
+    });
+    e1.subscribe({
+      error: () => done()
+    });
   });
 
   it('should allow unsubscribing early and explicitly', () => {
