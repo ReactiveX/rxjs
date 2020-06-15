@@ -30,7 +30,7 @@
     "lint_src": "tslint -c tslint.json -p src/tsconfig.base.json \"src/**/*.ts\"",
     "lint": "npm-run-all --parallel lint_*",
     "dtslint": "tsc -b ./src/tsconfig.types.json && tslint -c spec-dtslint/tslint.json -p spec-dtslint/tsconfig.json \"spec-dtslint/**/*.ts\"",
-    "prepublishOnly": "npm run build:package && npm run lint && npm run test && npm run test:circular && npm run dtslint && npm run test:side-effects npm run api_guardian:verify",
+    "prepublishOnly": "npm run build:package && npm run lint && npm run test && npm run test:circular && npm run dtslint && npm run test:side-effects npm run api_guardian",
     "postpublish": "./docs_app/scripts/publish-docs.sh",
     "publish_docs": "./publish_docs.sh",
     "test": "npm run compile && mocha --opts spec/support/default.opts \"dist/spec/**/*-spec.js\"",
