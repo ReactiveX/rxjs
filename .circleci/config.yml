@@ -57,7 +57,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace: *attach_options
-      - run: npm run api_guardian:verify
+      - run: npm run api_guardian
 
   dtslint:
     <<: *defaults
