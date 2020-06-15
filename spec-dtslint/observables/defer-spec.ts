@@ -44,5 +44,5 @@ it('should infer correctly with function that sometimes error', () => {
 });
 
 it('should infer correctly with functions that sometimes do not return an ObservableInput', () => {
-  const a = defer(() => { if (Math.random() < 0.5) { return of(42); } }); // $ExpectType Observable<number>
+  const a = defer(() => { if (Math.random() < 0.5) { return of(42); } }); // $ExpectError
 });
