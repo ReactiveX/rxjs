@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { Observer, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
-import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty, interval } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, take, finalize } from 'rxjs/operators';
+import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty } from 'rxjs';
+import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip } from 'rxjs/operators';
 
 declare const rxTestScheduler: any;
 
@@ -36,7 +36,7 @@ describe('Observable', () => {
   });
 
   it('should send errors thrown in the constructor down the error path', (done) => {
-    new Observable<number>((observer) => {
+    new Observable<number>(() => {
       throw new Error('this should be handled');
     })
       .subscribe({
@@ -68,7 +68,7 @@ describe('Observable', () => {
     });
 
     it('should reject promise when in error', (done) => {
-      throwError('bad').forEach((x) => {
+      throwError('bad').forEach(() => {
         done(new Error('should not be called'));
       }, Promise).then(() => {
         done(new Error('should not complete'));
@@ -265,7 +265,7 @@ describe('Observable', () => {
       });
 
       source.subscribe({
-        error(err) {
+        error() {
           /* noop: expected error */
         }
       });
@@ -655,7 +655,7 @@ describe('Observable.create', () => {
   });
 
   it('should send errors thrown in the passed function down the error path', (done) => {
-    Observable.create((observer: Observer<any>) => {
+    Observable.create(() => {
       throw new Error('this should be handled');
     })
       .subscribe({
@@ -719,7 +719,7 @@ describe('Observable.lift', () => {
     result.subscribe(
       function (x) {
         expect(x).to.equal(expected.shift());
-      }, (x) => {
+      }, () => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -745,7 +745,7 @@ describe('Observable.lift', () => {
     result.subscribe(
       function (x) {
         expect(x).to.equal(expected.shift());
-      }, (x) => {
+      }, () => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -769,7 +769,7 @@ describe('Observable.lift', () => {
     result.subscribe(
       function (x) {
         expect(x).to.equal(expected.shift());
-      }, (x) => {
+      }, () => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -909,7 +909,7 @@ describe('Observable.lift', () => {
         function (x) {
           expect(x).to.equal(expected.shift());
         },
-        (x) => {
+        () => {
           done(new Error('should not be called'));
         }, () => {
           expect(log).to.deep.equal([

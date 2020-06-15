@@ -9,7 +9,6 @@ import { throwError } from './observable/throwError';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
-import { asyncIteratorFrom } from './asyncIteratorFrom';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
