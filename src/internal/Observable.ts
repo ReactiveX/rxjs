@@ -396,24 +396,3 @@ function getPromiseCtor(promiseCtor: PromiseConstructorLike | undefined) {
 
   return promiseCtor;
 }
-
-export interface Observable<T> {
-  [Symbol.asyncIterator](): AsyncIterableIterator<T>;
-}
-
-(function () {
-  /**
-   * We only add this symbol if the runtime supports it.
-   * Adding this adds support for subscribing to observables
-   * via `for await(const value of source$) {}`
-   *
-   * This passes muster in Node 9, which does not support
-   * async iterators. As well as working in Node 12, which does
-   * support the symbol.
-   */
-  if (Symbol && Symbol.asyncIterator) {
-    Observable.prototype[Symbol.asyncIterator] = function () {
-      return asyncIteratorFrom(this);
-    };
-  }
-})();
