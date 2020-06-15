@@ -34,9 +34,10 @@ import { AsapScheduler } from './AsapScheduler';
  * // "async"
  * // ... but 'asap' goes first!
  * ```
- * @static true
- * @name asap
- * @owner Scheduler
  */
+export const asapScheduler = new AsapScheduler(AsapAction);
 
-export const asap = new AsapScheduler(AsapAction);
+/**
+ * @deprecated renamed. Use {@link asapScheduler}
+ */
+export const asap = asapScheduler;

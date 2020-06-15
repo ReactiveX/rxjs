@@ -10,7 +10,7 @@ export const subscribeToIterable = <T>(iterable: Iterable<T>) => (subscriber: Su
       item = iterator.next();
     } catch (err) {
       subscriber.error(err);
-      return;
+      return subscriber;
     }
     if (item.done) {
       subscriber.complete();

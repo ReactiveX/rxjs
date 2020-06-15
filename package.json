@@ -40,7 +40,8 @@
       ]
     },
     "ignore": [
-      "spec-dtslint/**/*.{js,ts}"
+      "spec-dtslint/**/*.{js,ts}",
+      "api_guard/**/*.{js,ts}"
     ]
   },
   "scripts": {
@@ -122,7 +123,9 @@
     "compat_compile_dist_esm5_for_rollup": "tsc -p ./tsconfig/compat/tsconfig.esm5.rollup.json",
     "compat_compile_dist_esm2015": "tsc -p ./tsconfig/compat/tsconfig.esm2015.json",
     "compat_copy_sources": "mkdirp dist-compat && shx cp -r ./compat/ ./dist-compat/",
-    "compat_generate_packages": "node .make-compat-package.js"
+    "compat_generate_packages": "node .make-compat-package.js",
+    "api_guardian:update": "ts-api-guardian --outDir api_guard dist/typings/index.d.ts dist/typings/ajax/index.d.ts dist/typings/fetch/index.d.ts dist/typings/operators/index.d.ts dist/typings/testing/index.d.ts dist/typings/webSocket/index.d.ts",
+    "api_guardian": "ts-api-guardian --verifyDir api_guard dist/typings/index.d.ts dist/typings/ajax/index.d.ts dist/typings/fetch/index.d.ts dist/typings/operators/index.d.ts dist/typings/testing/index.d.ts dist/types/webSocket/index.d.ts"
   },
   "repository": {
     "type": "git",
@@ -238,6 +241,7 @@
     "source-map-support": "0.5.3",
     "symbol-observable": "1.0.1",
     "systemjs": "^0.21.0",
+    "ts-api-guardian": "^0.5.0",
     "ts-node": "6.1.0",
     "tsconfig-paths": "3.2.0",
     "tslint": "5.9.1",

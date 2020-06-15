@@ -70,8 +70,6 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(project: (value: 
  * projection function (and the optional deprecated `resultSelector`) to each item
  * emitted by the source Observable and merging the results of the Observables
  * obtained from this transformation.
- * @method mergeMap
- * @owner Observable
  */
 export function mergeMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
@@ -179,3 +177,8 @@ export class MergeMapSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 }
+
+/**
+ * @deprecated renamed. Use {@link mergeMap}
+ */
+export const flatMap = mergeMap;
