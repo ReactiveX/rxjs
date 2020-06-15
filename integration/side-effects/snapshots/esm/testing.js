@@ -1,5 +1,3 @@
-import "tslib";
-
 var NotificationKind;
 
 (function(NotificationKind) {
