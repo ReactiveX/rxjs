@@ -83,10 +83,8 @@ describe('subscribeOn operator', () => {
   it('should properly support a delayTime of Infinity', () => {
     const e1 =   hot('--a--b--|');
     const expected = '---------';
-    // TODO: Support lack of subscription in `expectSubscriptions`
-    // const sub =      '         ';
 
     expectObservable(e1.pipe(subscribeOn(rxTestScheduler, Infinity))).toBe(expected);
-    // expectSubscriptions(e1.subscriptions).toBe(sub);
+    expectSubscriptions(e1.subscriptions).toBe([]);
   });
 });
