@@ -170,7 +170,7 @@ export class TestScheduler extends VirtualTimeScheduler {
         flushTest.ready = true;
         flushTest.expected = marblesArray.map(marbles =>
           TestScheduler.parseMarblesAsSubscriptions(marbles, runMode)
-        );
+        ).filter(marbles => marbles.subscribedFrame !== Infinity);
       }
     };
   }
