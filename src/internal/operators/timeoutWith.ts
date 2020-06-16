@@ -2,7 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
-import { isDate } from '../util/isDate';
+import { isValidDate } from '../util/isDate';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
@@ -67,7 +67,7 @@ export function timeoutWith<T, R>(due: number | Date,
                                   withObservable: ObservableInput<R>,
                                   scheduler: SchedulerLike = async): OperatorFunction<T, T | R> {
   return (source: Observable<T>) => {
-    let absoluteTimeout = isDate(due);
+    let absoluteTimeout = isValidDate(due);
     let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
     return source.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));
   };
