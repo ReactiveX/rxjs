@@ -282,6 +282,18 @@ describe('TestScheduler', () => {
         expectSubscriptions(source.subscriptions).toBe(subs);
         source.subscribe();
       });
+
+      it('should support empty subscription marbles', () => {
+        const source = cold('---a---b-|');
+        const subs =        '----------';
+        expectSubscriptions(source.subscriptions).toBe(subs);
+      });
+
+      it('should support empty subscription marbles within arrays', () => {
+        const source = cold('---a---b-|');
+        const subs =       ['----------'];
+        expectSubscriptions(source.subscriptions).toBe(subs);
+      });
     });
 
     describe('end-to-end helper tests', () => {
