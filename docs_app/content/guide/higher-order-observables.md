@@ -10,7 +10,7 @@ const fileObservable = urlObservable.pipe(
 
 `http.get()` returns an Observable for each URL. Now you have an Observable *of* Observables, a higher-order Observable.
 
-But how do you work with a higher-order Observable? Typically, by _flattening_: by converting a higher-order Obser vable into an ordinary Observable. For example:
+But how do you work with a higher-order Observable? Typically, by _flattening_: by converting a higher-order Observable into an ordinary Observable. For example:
 
 ```ts
 const fileObservable = urlObservable.pipe(

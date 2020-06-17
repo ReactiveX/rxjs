@@ -44,7 +44,7 @@ scheduled(of([1,2,3]), asyncScheduler).subscribe(x => console.log(x));
 
 ### Refactoring of `merge`, `concat`, `startWith` and `endWith`
 
-In case you used to pass a scheduler argument to one of these operators you propably had code like this:
+In case you used to pass a scheduler argument to one of these operators you probably had code like this:
 
 ```ts
 import { concat, of, asyncScheduler } from 'rxjs'; 
