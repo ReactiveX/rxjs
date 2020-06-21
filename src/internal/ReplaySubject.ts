@@ -49,21 +49,22 @@ export class ReplaySubject<T> extends Subject<T> {
    */
   constructor(bufferSize: number = Infinity,
               windowTime: number = Infinity,
-              private timestampProvider: TimestampProvider = Date) {
+              private timestampProvider: TimestampProvider = Date,
+              private materialize: boolean = false) {
     super();
     this._bufferSize = bufferSize < 1 ? 1 : bufferSize;
     this._windowTime = windowTime < 1 ? 1 : windowTime;
 
-    if (windowTime === Infinity) {
+    if (windowTime !== Infinity || this.materialize) {
+      this.next = this.nextWithTime;
+    } else {
       this._infiniteTimeWindow = true;
       /** @override */
-      this.next = this.nextInfiniteTimeWindow;
-    } else {
-      this.next = this.nextTimeWindow;
+      this.next = this.nextWithoutTime;
     }
   }
 
-  private nextInfiniteTimeWindow(value: T): void {
+  private nextWithoutTime(value: T): void {
     const _events = this._events;
     _events.push(value);
     // Since this method is invoked in every next() call than the buffer
@@ -75,7 +76,7 @@ export class ReplaySubject<T> extends Subject<T> {
     super.next(value);
   }
 
-  private nextTimeWindow(value: T): void {
+  private nextWithTime(value: T): void {
     this._events.push({ time: this._getNow(), value });
     this._trimBufferThenGetEvents();
 
@@ -99,7 +100,7 @@ export class ReplaySubject<T> extends Subject<T> {
       subscription = new SubjectSubscription(this, subscriber);
     }
 
-    if (_infiniteTimeWindow) {
+    if (_infiniteTimeWindow || this.materialize) {
       for (let i = 0; i < len && !subscriber.closed; i++) {
         subscriber.next(<T>_events[i]);
       }
