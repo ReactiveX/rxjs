@@ -35,20 +35,18 @@ describe('ReplaySubject', () => {
     subject.next(1);
     subject.next(2);
     subject.next(3);
-    subject.subscribe(
-      (x: number) => {
-        expect(x).to.equal(expects[i++]);
-        if (i === 3) {
-          subject.complete();
-        }
-      },
-      (err: any) => {
-        done(new Error('should not be called'));
-      },
-      () => {
-        done();
+    subject.subscribe((x: number) => {
+      expect(x).to.equal(expects[i++]);
+      if (i === 3) {
+        subject.complete();
       }
-    );
+    },
+    (err: any) => {
+      done(new Error('should not be called'));
+    },
+    () => {
+      done();
+    });
   });
 
   it('should replay meterialized events with values and timestamps upon subscription', (done: MochaDone) => {
@@ -67,20 +65,18 @@ describe('ReplaySubject', () => {
     subject.next(2);
     now = 700;
     subject.next(3);
-    subject.subscribe(
-      (x: number) => {
-        expect(x).to.deep.equal(expects[i++]);
-        if (i === 3) {
-          subject.complete();
-        }
-      },
-      (err: any) => {
-        done(new Error('should not be called'));
-      },
-      () => {
-        done();
+    subject.subscribe((x: number) => {
+      expect(x).to.deep.equal(expects[i++]);
+      if (i === 3) {
+        subject.complete();
       }
-    );
+    },
+    (err: any) => {
+      done(new Error('should not be called'));
+    },
+    () => {
+      done();
+    });
   });
 
   it('should replay values and complete', (done: MochaDone) => {
