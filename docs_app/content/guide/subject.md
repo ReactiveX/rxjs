@@ -311,6 +311,74 @@ setTimeout(() => {
 // ...
 ```
 
+You can pass a timestamp provider, an object implementing the `now()` method, which will be used to source the timestamps the `ReplaySubject` uses internally, by default it uses `Date.now()`.
+
+<!-- skip-example -->
+```ts
+import { ReplaySubject } from 'rxjs';
+
+let now = 0;
+const timestampProvider = () => now;
+
+const subject = new ReplaySubject(100, 500 /* windowTime */, timestampProvider);
+
+subject.subscribe({
+  next: (v) => console.log(`observerA: ${v}`)
+});
+
+let i = 1;
+setInterval(() => {
+  subject.next(i++)
+  now += 200 // the timestamp provider will pretend the interval was 200ms, like the above example
+}, 50); // unlike the above example, the interval is faster, 50ms instead of 200ms
+
+setTimeout(() => {
+  subject.subscribe({
+    next: (v) => console.log(`observerB: ${v}`)
+  });
+}, 1000);
+
+// Logs the same as the above example, even though the interval is faster this time, the timestamp
+// provider indicates the same amount of time has passed, and the ReplaySubject obeys the timestamp provider
+// observerA: 1
+// observerA: 2
+// observerA: 3
+// observerA: 4
+// observerA: 5
+// observerB: 3
+// observerB: 4
+// observerB: 5
+// observerA: 6
+// observerB: 6
+// ...
+```
+
+
+You can also specify the *materialize* flag, which will cause the observable to emit events instead of values. Events are objects with a time & value property. The time is the moment in time which the value was nexted onto the replay subject.
+
+```ts
+import { ReplaySubject } from 'rxjs';
+
+let now: number = 0;
+const timestampProvider: TimestampProvider = {now: () => now};
+
+const subject = new ReplaySubject<number>(Infinity, Infinity, timestampProvider, true);
+
+now = 500;
+subject.next(1);
+now = 600;
+subject.next(2);
+now = 700;
+subject.next(3);
+
+subject.subscribe(console.log);
+
+// Logs
+// { time: 500, value: 1 },
+// { time: 600, value: 2 },
+// { time: 700, value: 3 },
+```
+
 ## AsyncSubject
 
 The AsyncSubject is a variant where only the last value of the Observable execution is sent to its observers, and only when the execution completes.

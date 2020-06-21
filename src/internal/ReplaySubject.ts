@@ -16,10 +16,11 @@ import { SubjectSubscription } from './SubjectSubscription';
  * a First-In-First-Out (FIFO) manner. The `ReplaySubject` will also complete, if it has observed completion; and it will
  * error if it has observed an error.
  *
- * There are two main configuration items to be concerned with:
+ * There are three main configuration items to be concerned with:
  *
  * 1. `bufferSize` - This will determine how many items are stored in the buffer, defaults to infinite.
  * 2. `windowTime` - The amount of time to hold a value in the buffer before removing it from the buffer.
+ * 3. `materialize` - Will record times when you next values, and emits objects with time & value properties, if true.
  *
  * Both configurations may exist simultaneously. So if you would like to buffer a maximum of 3 values, as long as the values
  * are less than 2 seconds old, you could do so with a `new ReplaySubject(3, 2000)`.

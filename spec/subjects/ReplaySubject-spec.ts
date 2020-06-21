@@ -49,10 +49,10 @@ describe('ReplaySubject', () => {
     });
   });
 
-  it('should replay meterialized events with values and timestamps upon subscription', (done: MochaDone) => {
+  it('should replay meterialized events with timestamps upon subscription', (done: MochaDone) => {
     let now: number = 0;
-    const nowFn: TimestampProvider = {now: () => now};
-    const subject = new ReplaySubject<number>(Infinity, Infinity, nowFn, true);
+    const timestampProvider: TimestampProvider = {now: () => now};
+    const subject = new ReplaySubject<number>(Infinity, Infinity, timestampProvider, true);
     const expects = [
       { time: 500, value: 1 },
       { time: 600, value: 2 },
@@ -70,6 +70,32 @@ describe('ReplaySubject', () => {
       if (i === 3) {
         subject.complete();
       }
+    },
+    (err: any) => {
+      done(new Error('should not be called'));
+    },
+    () => {
+      done();
+    });
+  });
+
+  it('should materialize events with time when using windowTime', (done: MochaDone) => {
+    let now: number = 0;
+    const timestampProvider: TimestampProvider = {now: () => now};
+    const subject = new ReplaySubject<number>(Infinity, 100 /* window time */, timestampProvider, true);
+    const expects = [
+      { time: 700, value: 3 },
+    ];
+    let i = 0;
+    now = 500;
+    subject.next(1);
+    now = 600;
+    subject.next(2);
+    now = 700;
+    subject.next(3);
+    subject.subscribe((x: number) => {
+      expect(x).to.deep.equal(expects[i++]);
+      subject.complete();
     },
     (err: any) => {
       done(new Error('should not be called'));
