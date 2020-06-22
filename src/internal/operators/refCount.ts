@@ -60,20 +60,18 @@ import { Observable } from '../Observable';
  */
 export function refCount<T>(): MonoTypeOperatorFunction<T> {
   return function refCountOperatorFunction(source: ConnectableObservable<T>): Observable<T> {
-    return source.lift(new RefCountOperator(source));
+    return source.lift(new RefCountOperator());
   } as MonoTypeOperatorFunction<T>;
 }
 
 class RefCountOperator<T> implements Operator<T, T> {
-  constructor(private connectable: ConnectableObservable<T>) {
-  }
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
 
-    const { connectable } = this;
+  call(subscriber: Subscriber<T>, connectable: ConnectableObservable<T>): TeardownLogic {
+
     (<any> connectable)._refCount++;
 
     const refCounter = new RefCountSubscriber(subscriber, connectable);
-    const subscription = source.subscribe(refCounter);
+    const subscription = connectable.subscribe(refCounter);
 
     if (!refCounter.closed) {
       (<any> refCounter).connection = connectable.connect();
