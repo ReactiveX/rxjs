@@ -82,7 +82,7 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  * the emission of the complete notification.
  * @return An "empty" Observable: emits only the complete
  * notification.
- * @deprecated Deprecated in favor of using {@link index/EMPTY} constant, or {@link scheduled} (e.g. `scheduled([], scheduler)`)
+ * @deprecated Deprecated in favor of using {@link EMPTY} constant, or {@link scheduled} (e.g. `scheduled([], scheduler)`)
  */
 export function empty(scheduler?: SchedulerLike) {
   return scheduler ? emptyScheduled(scheduler) : EMPTY;
