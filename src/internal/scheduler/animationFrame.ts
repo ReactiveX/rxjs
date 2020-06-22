@@ -31,10 +31,10 @@ import { AnimationFrameScheduler } from './AnimationFrameScheduler';
  *
  * // You will see a div element growing in height
  * ```
- *
- * @static true
- * @name animationFrame
- * @owner Scheduler
  */
+export const animationFrameScheduler = new AnimationFrameScheduler(AnimationFrameAction);
 
-export const animationFrame = new AnimationFrameScheduler(AnimationFrameAction);
+/**
+ * @deprecated renamed. Use {@link animationFrameScheduler}
+ */
+export const animationFrame = animationFrameScheduler;

@@ -46,10 +46,10 @@ import { AsyncScheduler } from './AsyncScheduler';
  * // 2 after 5s
  * // 3 after 6s
  * ```
- *
- * @static true
- * @name async
- * @owner Scheduler
  */
+export const asyncScheduler = new AsyncScheduler(AsyncAction);
 
-export const async = new AsyncScheduler(AsyncAction);
+/**
+ * @deprecated renamed. Use {@link asyncScheduler}
+ */
+export const async = asyncScheduler;

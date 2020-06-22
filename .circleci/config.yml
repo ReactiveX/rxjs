@@ -58,6 +58,12 @@ jobs:
       - attach_workspace: *attach_options
       - run: npm run dtslint
 
+  api_guardian:
+    <<: *defaults
+    steps:
+      - attach_workspace: *attach_options
+      - run: npm run api_guardian
+
   typescript3:
     <<: *defaults
     steps:

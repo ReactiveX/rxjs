@@ -12,10 +12,10 @@ export { ReplaySubject } from './internal/ReplaySubject';
 export { AsyncSubject } from './internal/AsyncSubject';
 
 /* Schedulers */
-export { asap as asapScheduler } from './internal/scheduler/asap';
-export { async as asyncScheduler } from './internal/scheduler/async';
-export { queue as queueScheduler } from './internal/scheduler/queue';
-export { animationFrame as animationFrameScheduler } from './internal/scheduler/animationFrame';
+export { asap, asapScheduler } from './internal/scheduler/asap';
+export { async, asyncScheduler } from './internal/scheduler/async';
+export { queue, queueScheduler } from './internal/scheduler/queue';
+export { animationFrame, animationFrameScheduler } from './internal/scheduler/animationFrame';
 export { VirtualTimeScheduler, VirtualAction } from './internal/scheduler/VirtualTimeScheduler';
 export { Scheduler } from './internal/Scheduler';
 
