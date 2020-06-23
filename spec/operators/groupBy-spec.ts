@@ -3,6 +3,7 @@ import { groupBy, delay, tap, map, take, mergeMap, materialize, skip } from 'rxj
 import { TestScheduler } from 'rxjs/testing';
 import { ReplaySubject, of, GroupedObservable, Observable, Operator, Observer } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { createNotification } from 'rxjs/internal/Notification';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -547,18 +548,15 @@ describe('groupBy operator', () => {
       .unsubscribedFrame;
 
     const source = e1.pipe(
-      groupBy((val: string) => val.toLowerCase().trim()),
-      map((group: any) => {
+      groupBy((val) => val.toLowerCase().trim()),
+      map((group) => {
         const arr: any[] = [];
 
         const subscription = group.pipe(
-          materialize(),
-          map((notification: Notification) => {
-            return { frame: rxTestScheduler.frame, notification: notification };
-          })
-        ).subscribe((value: any) => {
-            arr.push(value);
-          });
+          phonyMarbelize()
+        ).subscribe((value) => {
+          arr.push(value);
+        });
 
         if (group.key === 'foo') {
           rxTestScheduler.schedule(() => {
@@ -618,10 +616,7 @@ describe('groupBy operator', () => {
         const arr: any[] = [];
 
         const subscription = group.pipe(
-          materialize(),
-          map((notification: Notification) => {
-            return { frame: rxTestScheduler.frame, notification: notification };
-          })
+          phonyMarbelize()
         ).subscribe((value: any) => {
             arr.push(value);
           });
@@ -893,13 +888,10 @@ describe('groupBy operator', () => {
         const arr: any[] = [];
 
         const subscription = group.pipe(
-          materialize(),
-          map((notification: Notification) => {
-            return { frame: rxTestScheduler.frame, notification: notification };
-          })
+          phonyMarbelize()
         ).subscribe((value: any) => {
-            arr.push(value);
-          });
+          arr.push(value);
+        });
 
         rxTestScheduler.schedule(() => {
           subscription.unsubscribe();
@@ -1124,13 +1116,10 @@ describe('groupBy operator', () => {
         const arr: any[] = [];
 
         const subscription = group.pipe(
-          materialize(),
-          map((notification: Notification) => {
-            return { frame: rxTestScheduler.frame, notification: notification };
-          })
+          phonyMarbelize()
         ).subscribe((value: any) => {
-            arr.push(value);
-          });
+          arr.push(value);
+        });
 
         if (group.key === 'foo' && index === 0) {
           rxTestScheduler.schedule(() => {
@@ -1202,13 +1191,10 @@ describe('groupBy operator', () => {
         const arr: any[] = [];
 
         const subscription = group.pipe(
-          materialize(),
-          map((notification: Notification) => {
-            return { frame: rxTestScheduler.frame, notification: notification };
-          })
+          phonyMarbelize()
         ).subscribe((value: any) => {
-            arr.push(value);
-          });
+          arr.push(value);
+        });
 
         const unsubscriptionFrame = hasUnsubscribed[group.key] ?
           unsubscriptionFrames[group.key + '2'] :
@@ -1272,21 +1258,18 @@ describe('groupBy operator', () => {
          (val: string) => val
        ),
        map((group: any) => {
-         const innerNotifications: any[] = [];
-         const subscriptionFrame = subscriptionFrames[group.key];
+        const innerNotifications: any[] = [];
+        const subscriptionFrame = subscriptionFrames[group.key];
 
-         rxTestScheduler.schedule(() => {
-           group.pipe(
-              materialize(),
-              map((notification: Notification) => {
-                return { frame: rxTestScheduler.frame, notification: notification };
-              })
-            ).subscribe((value: any) => {
-               innerNotifications.push(value);
-             });
-         }, subscriptionFrame - rxTestScheduler.frame);
+        rxTestScheduler.schedule(() => {
+          group.pipe(
+            phonyMarbelize()
+          ).subscribe((value: any) => {
+            innerNotifications.push(value);
+          });
+        }, subscriptionFrame - rxTestScheduler.frame);
 
-         return innerNotifications;
+        return innerNotifications;
        })
       );
 
@@ -1327,13 +1310,10 @@ describe('groupBy operator', () => {
 
         rxTestScheduler.schedule(() => {
           group.pipe(
-            materialize(),
-            map((notification: Notification) => {
-              return { frame: rxTestScheduler.frame, notification: notification };
-            })
+            phonyMarbelize()
           ).subscribe((value: any) => {
-              arr.push(value);
-            });
+            arr.push(value);
+          });
         }, innerSubscriptionFrame - rxTestScheduler.frame);
 
         return arr;
@@ -1377,13 +1357,10 @@ describe('groupBy operator', () => {
 
         rxTestScheduler.schedule(() => {
           group.pipe(
-            materialize(),
-            map((notification: Notification) => {
-              return { frame: rxTestScheduler.frame, notification: notification };
-            })
+            phonyMarbelize()
           ).subscribe((value: any) => {
-              arr.push(value);
-            });
+            arr.push(value);
+          });
         }, innerSubscriptionFrame - rxTestScheduler.frame);
 
         return arr;
@@ -1429,13 +1406,10 @@ describe('groupBy operator', () => {
 
         rxTestScheduler.schedule(() => {
           group.pipe(
-            materialize(),
-            map((notification: Notification) => {
-              return { frame: rxTestScheduler.frame, notification: notification };
-            })
+            phonyMarbelize()
           ).subscribe((value: any) => {
-              arr.push(value);
-            });
+            arr.push(value);
+          });
         }, innerSubscriptionFrame - rxTestScheduler.frame);
 
         return arr;
@@ -1488,3 +1462,21 @@ describe('groupBy operator', () => {
       });
   });
 });
+
+/**
+ * TODO: A helper operator to deal with legacy tests above that could probably be written a different way
+ */
+function phonyMarbelize<T>() {
+  return (source: Observable<T>) => source.pipe(
+    materialize(),
+    map((notification) => {
+      // Because we're hacking some weird inner-observable marbles here, we need
+      // to make sure this is all the same shape as it would be from the TestScheduler
+      // assertions
+      return {
+        frame: rxTestScheduler.frame,
+        notification: createNotification(notification.kind, notification.value, notification.error)
+      };
+    })
+  );
+}

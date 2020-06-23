@@ -81,13 +81,6 @@ describe('Notification', () => {
       expect(first).not.to.equal(second);
     });
 
-    it('should return static next Notification reference without value', () => {
-      const first = Notification.createNext(undefined);
-      const second = Notification.createNext(undefined);
-
-      expect(first).to.equal(second);
-    });
-
     it('should return static complete Notification reference', () => {
       const first = Notification.createComplete();
       const second = Notification.createComplete();
@@ -160,7 +153,7 @@ describe('Notification', () => {
 
     it('should accept observer for error Notification', () => {
       let observed = false;
-      const n = Notification.createError<string>();
+      const n = Notification.createError();
       const observer = Subscriber.create((x?: string) => {
         throw 'should not be called';
       }, (err: any) => {

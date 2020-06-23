@@ -1,7 +1,7 @@
-import { Notification } from '../Notification';
+import { ObservableNotification } from '../types';
 
 export interface TestMessage {
   frame: number;
-  notification: Notification<any>;
+  notification: ObservableNotification<any>;
   isGhost?: boolean;
 }
