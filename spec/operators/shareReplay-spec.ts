@@ -265,4 +265,15 @@ describe('shareReplay operator', () => {
         done();
       });
   });
+
+  it('should not skip values on a sync source', () => {
+    const a = cold(  '(abcd)');
+    const x = cold(  'x-------x');
+    const expected = '(abcd)--d';
+
+    const shared = a.pipe(shareReplay(1));
+    const result = x.pipe(mergeMapTo(shared));
+    expectObservable(result).toBe(expected);
+  });
+
 });
