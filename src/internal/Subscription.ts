@@ -108,8 +108,9 @@ export class Subscription implements SubscriptionLike {
   }
 
   /**
-   * Adds a tear down to be called during the unsubscribe() of this
-   * Subscription. Can also be used to add a child subscription.
+   * Adds a tear down to be called when the subscription terminates
+   * (on complete, error, or during unsubscribe()). Can also be used
+   * to add a child subscription.
    *
    * If the tear down being added is a subscription that is already
    * unsubscribed, is the same reference `add` is being called on, or is
