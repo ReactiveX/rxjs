@@ -42,7 +42,7 @@ module.exports = function rollupBundle(options) {
     result.code = result.code + '\n//# sourceMappingURL=' + path.basename(sourcemapFullFile);
 
     fs.writeFileSync(dest, result.code);
-    fs.writeFileSync(sourcemapFullFile, result.map);
+    fs.writeFileSync(sourcemapFullFile, JSON.stringify(result.map));
   }).catch(function (err) {
     console.error(err);
     process.exit(1);

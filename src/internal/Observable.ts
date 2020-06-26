@@ -9,7 +9,6 @@ import { throwError } from './observable/throwError';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
-import { asyncIteratorFrom } from './asyncIteratorFrom';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -251,12 +250,64 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /**
-   * @method forEach
+   * Used as a NON-CANCELLABLE means of subscribing to an observable, for use with
+   * APIs that expect promises, like `async/await`. You cannot unsubscribe from this.
+   *
+   * **WARNING**: Only use this with observables you *know* will complete. If the source
+   * observable does not complete, you will end up with a promise that is hung up, and
+   * potentially all of the state of an async function hanging out in memory. To avoid
+   * this situation, look into adding something like {@link timeout}, {@link take},
+   * {@link takeWhile}, or {@link takeUntil} amongst others.
+   *
+   * ### Example:
+   *
+   * ```ts
+   * import { interval } from 'rxjs';
+   * import { take } from 'rxjs/operators';
+   *
+   * const source$ = interval(1000).pipe(take(4));
+   *
+   * async function getTotal() {
+   *    let total = 0;
+   *
+   *    await source$.forEach(value => {
+   *      total += value;
+   *      console.log('observable -> ', value);
+   *    });
+   *
+   *    return total;
+   * }
+   *
+   * getTotal().then(
+   *    total => console.log('Total:', total)
+   * )
+   *
+   * // Expected:
+   * // "observable -> 0"
+   * // "observable -> 1"
+   * // "observable -> 2"
+   * // "observable -> 3"
+   * // "Total: 6"
+   * ```
    * @param next a handler for each value emitted by the observable
-   * @param [promiseCtor] a constructor function used to instantiate the Promise
    * @return a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
+  forEach(next: (value: T) => void): Promise<void>;
+
+  /**
+   * @param next a handler for each value emitted by the observable
+   * @param promiseCtor a constructor function used to instantiate the Promise
+   * @return a promise that either resolves on observable completion or
+   *  rejects with the handled error
+   * @deprecated remove in v8. Passing a Promise constructor will no longer be available
+   * in upcoming versions of RxJS. This is because it adds weight to the library, for very
+   * little benefit. If you need this functionality, it is recommended that you either
+   * polyfill Promise, or you create an adapter to convert the returned native promise
+   * to whatever promise implementation you wanted.
+   */
+  forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
+
   forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): Promise<void> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
@@ -360,6 +411,12 @@ export class Observable<T> implements Subscribable<T> {
    * Subscribe to this Observable and get a Promise resolving on
    * `complete` with the last emission (if any).
    *
+   * **WARNING**: Only use this with observables you *know* will complete. If the source
+   * observable does not complete, you will end up with a promise that is hung up, and
+   * potentially all of the state of an async function hanging out in memory. To avoid
+   * this situation, look into adding something like {@link timeout}, {@link take},
+   * {@link takeWhile}, or {@link takeUntil} amongst others.
+   *
    * @method toPromise
    * @param [promiseCtor] a constructor function used to instantiate
    * the Promise
@@ -396,24 +453,3 @@ function getPromiseCtor(promiseCtor: PromiseConstructorLike | undefined) {
 
   return promiseCtor;
 }
-
-export interface Observable<T> {
-  [Symbol.asyncIterator](): AsyncIterableIterator<T>;
-}
-
-(function () {
-  /**
-   * We only add this symbol if the runtime supports it.
-   * Adding this adds support for subscribing to observables
-   * via `for await(const value of source$) {}`
-   *
-   * This passes muster in Node 9, which does not support
-   * async iterators. As well as working in Node 12, which does
-   * support the symbol.
-   */
-  if (Symbol && Symbol.asyncIterator) {
-    Observable.prototype[Symbol.asyncIterator] = function () {
-      return asyncIteratorFrom(this);
-    };
-  }
-})();

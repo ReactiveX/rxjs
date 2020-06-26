@@ -2,7 +2,7 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Notification } from '../Notification';
-import { OperatorFunction } from '../types';
+import { OperatorFunction, ObservableNotification } from '../types';
 
 /**
  * Represents all of the notifications from the source Observable as `next`
@@ -27,7 +27,9 @@ import { OperatorFunction } from '../types';
  * {@link dematerialize}.
  *
  * ## Example
+ *
  * Convert a faulty Observable to an Observable of Notifications
+ *
  * ```ts
  * import { of } from 'rxjs';
  * import { materialize, map } from 'rxjs/operators';
@@ -51,16 +53,19 @@ import { OperatorFunction } from '../types';
  * @return {Observable<Notification<T>>} An Observable that emits
  * {@link Notification} objects that wrap the original emissions from the source
  * Observable with metadata.
- * @name materialize
+ *
+ * @deprecated In version 8, materialize will start to emit {@link ObservableNotification} objects, and not
+ * {@link Notification} instances. This means that methods that are not commonly used, like `Notification.observe`
+ * will not be available on the emitted values at that time.
  */
-export function materialize<T>(): OperatorFunction<T, Notification<T>> {
+export function materialize<T>(): OperatorFunction<T, Notification<T> & ObservableNotification<T>> {
   return function materializeOperatorFunction(source: Observable<T>) {
-    return source.lift(new MaterializeOperator());
+    return source.lift(new MaterializeOperator<T>());
   };
 }
 
-class MaterializeOperator<T> implements Operator<T, Notification<T>> {
-  call(subscriber: Subscriber<Notification<T>>, source: any): any {
+class MaterializeOperator<T> implements Operator<T, Notification<T> & ObservableNotification<T>> {
+  call(subscriber: Subscriber<Notification<T> & ObservableNotification<T>>, source: any): any {
     return source.subscribe(new MaterializeSubscriber(subscriber));
   }
 }

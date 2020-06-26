@@ -1,5 +1,4 @@
 import { Observable } from '../Observable';
-import { Notification } from '../Notification';
 import { ColdObservable } from './ColdObservable';
 import { HotObservable } from './HotObservable';
 import { TestMessage } from './TestMessage';
@@ -7,6 +6,8 @@ import { SubscriptionLog } from './SubscriptionLog';
 import { Subscription } from '../Subscription';
 import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler';
 import { AsyncScheduler } from '../scheduler/AsyncScheduler';
+import { ObservableNotification } from '../types';
+import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Notification';
 
 const defaultMaxFrame: number = 750;
 
@@ -111,11 +112,11 @@ export class TestScheduler extends VirtualTimeScheduler {
                                      outerFrame: number): TestMessage[] {
     const messages: TestMessage[] = [];
     observable.subscribe((value) => {
-      messages.push({ frame: this.frame - outerFrame, notification: Notification.createNext(value) });
-    }, (err) => {
-      messages.push({ frame: this.frame - outerFrame, notification: Notification.createError(err) });
+      messages.push({ frame: this.frame - outerFrame, notification: nextNotification(value) });
+    }, (error) => {
+      messages.push({ frame: this.frame - outerFrame, notification: errorNotification(error) });
     }, () => {
-      messages.push({ frame: this.frame - outerFrame, notification: Notification.createComplete() });
+      messages.push({ frame: this.frame - outerFrame, notification: COMPLETE_NOTIFICATION });
     });
     return messages;
   }
@@ -137,11 +138,11 @@ export class TestScheduler extends VirtualTimeScheduler {
         if (x instanceof Observable) {
           value = this.materializeInnerObservable(value, this.frame);
         }
-        actual.push({ frame: this.frame, notification: Notification.createNext(value) });
-      }, (err) => {
-        actual.push({ frame: this.frame, notification: Notification.createError(err) });
+        actual.push({ frame: this.frame, notification: nextNotification(value) });
+      }, (error) => {
+        actual.push({ frame: this.frame, notification: errorNotification(error) });
       }, () => {
-        actual.push({ frame: this.frame, notification: Notification.createComplete() });
+        actual.push({ frame: this.frame, notification: COMPLETE_NOTIFICATION });
       });
     }, subscriptionFrame);
 
@@ -170,7 +171,7 @@ export class TestScheduler extends VirtualTimeScheduler {
         flushTest.ready = true;
         flushTest.expected = marblesArray.map(marbles =>
           TestScheduler.parseMarblesAsSubscriptions(marbles, runMode)
-        );
+        ).filter(marbles => marbles.subscribedFrame !== Infinity);
       }
     };
   }
@@ -321,7 +322,7 @@ export class TestScheduler extends VirtualTimeScheduler {
         nextFrame += count * this.frameTimeFactor;
       };
 
-      let notification: Notification<any> | undefined;
+      let notification: ObservableNotification<any> | undefined;
       const c = marbles[i];
       switch (c) {
         case ' ':
@@ -342,14 +343,14 @@ export class TestScheduler extends VirtualTimeScheduler {
           advanceFrameBy(1);
           break;
         case '|':
-          notification = Notification.createComplete();
+          notification = COMPLETE_NOTIFICATION;
           advanceFrameBy(1);
           break;
         case '^':
           advanceFrameBy(1);
           break;
         case '#':
-          notification = Notification.createError(errorValue || 'error');
+          notification = errorNotification(errorValue || 'error');
           advanceFrameBy(1);
           break;
         default:
@@ -386,7 +387,7 @@ export class TestScheduler extends VirtualTimeScheduler {
             }
           }
 
-          notification = Notification.createNext(getValue(c));
+          notification = nextNotification(getValue(c));
           advanceFrameBy(1);
           break;
       }

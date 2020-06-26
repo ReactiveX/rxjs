@@ -7,7 +7,7 @@ var_2: &cache_key rxjs-node-10.12-{{ checksum "package-lock.json" }}
 
 # Settings common to each job
 var_3: &defaults
-  working_directory: ~/ng
+  working_directory: ~/rx
   docker:
     - image: *default_docker_image
 
@@ -52,6 +52,13 @@ jobs:
       - run: npm test
       - run: npm run test:side-effects
 
+  # Test to ensure type API-surface area has not changed.
+  api_guardian:
+    <<: *defaults
+    steps:
+      - attach_workspace: *attach_options
+      - run: npm run api_guardian
+
   dtslint:
     <<: *defaults
     steps:
@@ -64,12 +71,12 @@ jobs:
   # Instead, we should aim to keep the TypeScript version specified here as
   # high as possible, but it should be known to be good. That is, it should be
   # the upper bound - the latest version of TypeScript that we can be confident
-  # we can support. 
+  # we can support.
   typescriptLatestSupported:
     <<: *defaults
     steps:
       - attach_workspace: *attach_options
-      - run: npm i --no-save typescript@3.7.2
+      - run: npm i --no-save typescript@3.9.*
       - run: npm run compile
 
 workflows:

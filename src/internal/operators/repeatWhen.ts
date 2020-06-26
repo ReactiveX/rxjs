@@ -39,12 +39,12 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @return {Observable} The source Observable modified with repeat logic.
  * @name repeatWhen
  */
-export function repeatWhen<T>(notifier: (notifications: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T> {
+export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Observable<any>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new RepeatWhenOperator(notifier));
 }
 
 class RepeatWhenOperator<T> implements Operator<T, T> {
-  constructor(protected notifier: (notifications: Observable<any>) => Observable<any>) {
+  constructor(protected notifier: (notifications: Observable<void>) => Observable<any>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -65,7 +65,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   private sourceIsBeingSubscribedTo: boolean = true;
 
   constructor(destination: Subscriber<R>,
-              private notifier: (notifications: Observable<any>) => Observable<any>,
+              private notifier: (notifications: Observable<void>) => Observable<any>,
               private source: Observable<T>) {
     super(destination);
   }

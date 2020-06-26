@@ -6,6 +6,7 @@ import { SubscriptionLog } from './SubscriptionLog';
 import { SubscriptionLoggable } from './SubscriptionLoggable';
 import { applyMixins } from '../util/applyMixins';
 import { Subscriber } from '../Subscriber';
+import { observeNotification } from '../Notification';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -20,15 +21,16 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
   // @ts-ignore: Property has no initializer and is not definitely assigned
   logUnsubscribedFrame: (index: number) => void;
 
-  constructor(public messages: TestMessage[],
-              scheduler: Scheduler) {
+  constructor(public messages: TestMessage[], scheduler: Scheduler) {
     super(function (this: Observable<T>, subscriber: Subscriber<any>) {
       const observable: ColdObservable<T> = this as any;
       const index = observable.logSubscribedFrame();
       const subscription = new Subscription();
-      subscription.add(new Subscription(() => {
-        observable.logUnsubscribedFrame(index);
-      }));
+      subscription.add(
+        new Subscription(() => {
+          observable.logUnsubscribedFrame(index);
+        })
+      );
       observable.scheduleMessages(subscriber);
       return subscription;
     });
@@ -41,9 +43,9 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
       const message = this.messages[i];
       subscriber.add(
         this.scheduler.schedule(
-          state => {
+          (state) => {
             const { message, subscriber } = state!;
-            message.notification.observe(subscriber);
+            observeNotification(message.notification, subscriber);
           },
           message.frame,
           { message, subscriber }

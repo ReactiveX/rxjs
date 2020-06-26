@@ -127,6 +127,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     if (this.active < this.concurrent) {
       destination.next(value);
       try {
+        this.active++;
         const { project } = this;
         const result = project(value, index);
         if (!this.scheduler) {
@@ -149,7 +150,6 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private subscribeToProjection(result: any, value: T, index: number): void {
-    this.active++;
     const destination = this.destination as Subscription;
     destination.add(subscribeToResult<T, R>(this, result, value, index));
   }
