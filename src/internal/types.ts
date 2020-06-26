@@ -247,4 +247,3 @@ export type ValueFromNotification<T> = T extends { kind: 'N'|'E'|'C' } ?
     (T extends { value: infer V } ? V : undefined )
   : never)
   : never;
-                                                           
