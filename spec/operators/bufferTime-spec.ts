@@ -1,5 +1,5 @@
 import { of, throwError, interval } from 'rxjs';
-import { bufferTime, mergeMap, take } from 'rxjs/operators';
+import { bufferTime, mergeMap, take, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -38,11 +38,11 @@ describe('bufferTime operator', () => {
       const expected = '--------------------------------x-------------------------------y---(z|)';
       const values = {
         x: ['a', 'b', 'c'],
-        y: ['d', 'e', 'g'],
-        z: [] as string[]
+        y: ['9', 'd', 'e', 'g'],
+        z: ['9']
       };
 
-      const result = e1.pipe(bufferTime(t, null, Infinity, testScheduler));
+      const result = e1.pipe(bufferTime(t, null, Infinity, testScheduler), tap(_value => e1.next('9')));
 
       expectObservable(result).toBe(expected, values);
     });
