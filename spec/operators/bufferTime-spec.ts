@@ -88,6 +88,29 @@ describe('bufferTime operator', () => {
     });
   });
 
+  it('should emit buffers at intervals or when the buffer is full, when nexting in subsequent operator', () => {
+    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  ---a---b---c---d---e---f---g-----|   ');
+      const subs = '    ^--------------------------------!   ';
+      const t = time('  ----------|                          ');
+      const expected = '-------u---v---w---x---y---z-----(c|)';
+      const values = {
+        u: ['a', 'b'],
+        v: ['9', 'c'],
+        w: ['9', 'd'],
+        x: ['9', 'e'],
+        y: ['9', 'f'],
+        z: ['9', 'g'],
+        c: ['9']
+      };
+
+      const result = e1.pipe(bufferTime(t, null, 2, testScheduler), tap(_value => e1.next('9')));
+
+      expectObservable(result).toBe(expected, values);
+      expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+  });
+
   it('should emit buffers that have been created at intervals and close after the specified delay', () => {
     testScheduler.run(({ hot, time, expectObservable }) => {
       const e1 = hot('       ---a---b---c----d----e----f----g----h----i----(k|)');
