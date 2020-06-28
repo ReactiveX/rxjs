@@ -37,3 +37,4 @@ This is a collection of resources that can be found to help with the learning pr
 * RxJS 6 Changes - Overview |  [academind.com](https://www.academind.com/learn/javascript/rxjs-6-what-changed/) | Last Updated: May 3, 2018
 * Introducing RxJS! | [ng-conf 2018](https://www.youtube.com/watch?v=JCXZhe6KsxQ) | April 20, 2018
 * Learn RxJS in 60 Minutes for Beginners | [YouTube](https://www.youtube.com/watch?v=PhggNGsSQyg) | March 30, 2018
+* RxJs & Reactive Programming  | [Youtube](https://www.youtube.com/watch?v=iEJ_Rhkg3_o&list=PLj2oFNVaxfJ8nRFUA2CLyt8TymA0_vQux&index=3&t=0s)
