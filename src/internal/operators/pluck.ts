@@ -51,7 +51,7 @@ export function pluck<T, R>(...properties: Array<string | number | symbol>): Ope
   return map((x) => {
     let currentProp: any = x;
     for (let i = 0; i < length; i++) {
-      const p = currentProp[properties[i]];
+      const p = currentProp?.[properties[i]];
       if (typeof p !== 'undefined') {
         currentProp = p;
       } else {
