@@ -4,6 +4,13 @@ This is a collection of resources that can be found to help with the learning pr
 
 **Note**: RxJS maintainers are not responsible for any of the following content that is not part of the official rxjs documentation site. Please adhere to the terms and copyrights of the sites and links listed.
 
+## Community Packages
+
+We occasionally have to reject feature requests for new APIs, as the core RxJS API is already large and imposing. Such rejections usually take the form of suggesting the creation of a user-land package, so that the feature’s utility and popularity can be gauged before considering its inclusion in the core.
+
+[There’s a site upon](https://rxjs.xyz/) which such user-land packages can be listed — and can be made a little more visible — these rejections will be a little less disappointing. [Browse the community packages at https://rxjs.xyz](https://rxjs.xyz/)
+
+
 ## Blogs
 
 ### 2018
