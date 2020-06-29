@@ -56,8 +56,8 @@ function plucker(props: string[], length: number): (x: string) => any {
   const mapper = (x: string) => {
     let currentProp = x;
     for (let i = 0; i < length; i++) {
-      const p = currentProp[props[i]];
-      if (typeof p !== 'undefined') {
+      const p = currentProp != null ? currentProp[props[i]] : undefined;
+      if (p !== void 0) {
         currentProp = p;
       } else {
         return undefined;

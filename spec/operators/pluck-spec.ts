@@ -176,4 +176,26 @@ describe('pluck operator', () => {
     expectObservable(r, unsub).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
   });
+
+  it('should support symbols', () => {
+    const sym = Symbol('sym');
+
+    const a =   cold('--x--|', {x: {[sym]: 'abc'}});
+    const asubs =    '^    !';
+    const expected = '--y--|';
+
+    const r = a.pipe(pluck(sym));
+    expectObservable(r).toBe(expected, {y: 'abc'});
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+  });
+
+  it('should not break on null values', () => {
+    const a =   cold('--x--|', {x: null});
+    const asubs =    '^    !';
+    const expected = '--y--|';
+
+    const r = a.pipe(pluck('prop'));
+    expectObservable(r).toBe(expected, {y: undefined});
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+  });
 });
