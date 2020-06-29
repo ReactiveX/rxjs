@@ -91,9 +91,11 @@ function shareReplayOperator<T>({
 
   return function shareReplayOperation(this: Subscriber<T>, source: Observable<T>) {
     refCount++;
+    let innerSub: Subscription;
     if (!subject || hasError) {
       hasError = false;
       subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler);
+      innerSub = subject.subscribe(this);
       subscription = source.subscribe({
         next(value) { subject.next(value); },
         error(err) {
@@ -106,9 +108,10 @@ function shareReplayOperator<T>({
           subject.complete();
         },
       });
+    } else {
+      innerSub = subject.subscribe(this);
     }
 
-    const innerSub = subject.subscribe(this);
     this.add(() => {
       refCount--;
       innerSub.unsubscribe();

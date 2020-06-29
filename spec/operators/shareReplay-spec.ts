@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { shareReplay, mergeMapTo, retry, take } from 'rxjs/operators';
+import { shareReplay, mergeMapTo, retry } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, interval, Operator, Observer, of } from 'rxjs';
+import { Observable, Operator, Observer, of, from } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
@@ -243,4 +243,23 @@ describe('shareReplay operator', () => {
         done();
       });
   });
+
+  it('should not skip values on a sync source', () => {
+    const a = from(['a', 'b', 'c', 'd']);
+    // We would like for the previous line to read like this:
+    //
+    // const a = cold('(abcd|)');
+    //
+    // However, that would synchronously emit multiple values at frame 0,
+    // but it's not synchronous upon-subscription.
+    // TODO: revisit once https://github.com/ReactiveX/rxjs/issues/5523 is fixed
+
+    const x = cold(  'x-------x');
+    const expected = '(abcd)--d';
+
+    const shared = a.pipe(shareReplay(1));
+    const result = x.pipe(mergeMapTo(shared));
+    expectObservable(result).toBe(expected);
+  });
+
 });
