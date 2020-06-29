@@ -18,7 +18,7 @@ For example, the operator called [`map`](/api/operators/map) is analogous to the
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-map(x => x * x)(of(1, 2, 3)).subscribe((v) => console.log(`value: ${v}`));
+of(1, 2, 3).pipe(map(x => x * x)).subscribe((v) => console.log(`value: ${v}`));
 
 // Logs:
 // value: 1 
@@ -33,7 +33,7 @@ will emit `1`, `4`, `9`.  Another useful operator is [`first`](/api/operators/fi
 import { of } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-first()(of(1, 2, 3)).subscribe((v) => console.log(`value: ${v}`));
+of(1, 2, 3).pipe(first()).subscribe((v) => console.log(`value: ${v}`));
 
 // Logs:
 // value: 1 
