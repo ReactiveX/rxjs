@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { shareReplay, mergeMapTo, retry } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, Operator, Observer, of, from } from 'rxjs';
+import { Observable, Operator, Observer, of, from, defer } from 'rxjs';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -217,6 +217,21 @@ describe('shareReplay operator', () => {
     expectObservable(shared, sub1).toBe(expected1);
     expectObservable(shared, sub2).toBe(expected2);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should not restart a synchronous source due to unsubscriptions if refCount is true when the source has completed', () => {
+    // The test above this one doesn't actually test completely synchronous
+    // behaviour because of this problem:
+    // https://github.com/ReactiveX/rxjs/issues/5523
+
+    let subscriptions = 0;
+    const source = defer(() => {
+      ++subscriptions;
+      return of(42);
+    }).pipe(shareReplay({ bufferSize: 1, refCount: true }));
+    source.subscribe();
+    source.subscribe();
+    expect(subscriptions).to.equal(1);
   });
 
   it('should default to refCount being false', () => {
