@@ -1,9 +1,15 @@
 import { expect } from 'chai';
-import { expectObservable } from './helpers/marble-testing';
 import { Notification, Subscriber } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
+import { observableMatcher } from './helpers/observableMatcher';
 
 /** @test {Notification} */
 describe('Notification', () => {
+  let rxTestScheduler: TestScheduler;
+  beforeEach(() => {
+    rxTestScheduler = new TestScheduler(observableMatcher);
+  });
+
   it('should exist', () => {
     expect(Notification).exist;
     expect(Notification).to.be.a('function');
@@ -49,19 +55,25 @@ describe('Notification', () => {
 
   describe('toObservable', () => {
     it('should create observable from a next Notification', () => {
-      const value = 'a';
-      const next = Notification.createNext(value);
-      expectObservable(next.toObservable()).toBe('(a|)');
+      rxTestScheduler.run(({ expectObservable }) => {
+        const value = 'a';
+        const next = Notification.createNext(value);
+        expectObservable(next.toObservable()).toBe('(a|)');
+      });
     });
 
     it('should create observable from a complete Notification', () => {
-      const complete = Notification.createComplete();
-      expectObservable(complete.toObservable()).toBe('|');
+      rxTestScheduler.run(({ expectObservable }) => {
+        const complete = Notification.createComplete();
+        expectObservable(complete.toObservable()).toBe('|');
+      });
     });
 
     it('should create observable from a error Notification', () => {
-      const error = Notification.createError('error');
-      expectObservable(error.toObservable()).toBe('#');
+      rxTestScheduler.run(({ expectObservable }) => {
+        const error = Notification.createError('error');
+        expectObservable(error.toObservable()).toBe('#');
+      });
     });
   });
 
@@ -93,13 +105,17 @@ describe('Notification', () => {
     it('should invoke on next', () => {
       const n = Notification.createNext('a');
       let invoked = false;
-      n.do((x: string) => {
-        invoked = true;
-      }, (err: any) => {
-        throw 'should not be called';
-      }, () => {
-        throw 'should not be called';
-      });
+      n.do(
+        () => {
+          invoked = true;
+        },
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          throw 'should not be called';
+        }
+      );
 
       expect(invoked).to.be.true;
     });
@@ -107,13 +123,17 @@ describe('Notification', () => {
     it('should invoke on error', () => {
       const n = Notification.createError();
       let invoked = false;
-      n.do((x: any) => {
-        throw 'should not be called';
-      }, (err: any) => {
-        invoked = true;
-      }, () => {
-        throw 'should not be called';
-      });
+      n.do(
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          invoked = true;
+        },
+        () => {
+          throw 'should not be called';
+        }
+      );
 
       expect(invoked).to.be.true;
     });
@@ -121,13 +141,17 @@ describe('Notification', () => {
     it('should invoke on complete', () => {
       const n = Notification.createComplete();
       let invoked = false;
-      n.do((x: any) => {
-        throw 'should not be called';
-      }, (err: any) => {
-        throw 'should not be called';
-      }, () => {
-        invoked = true;
-      });
+      n.do(
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          invoked = true;
+        }
+      );
 
       expect(invoked).to.be.true;
     });
@@ -138,14 +162,18 @@ describe('Notification', () => {
       const value = 'a';
       let observed = false;
       const n = Notification.createNext(value);
-      const observer = Subscriber.create((x?: string) => {
-        expect(x).to.equal(value);
-        observed = true;
-      }, (err: any) => {
-        throw 'should not be called';
-      }, () => {
-        throw 'should not be called';
-      });
+      const observer = Subscriber.create(
+        (x?: string) => {
+          expect(x).to.equal(value);
+          observed = true;
+        },
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          throw 'should not be called';
+        }
+      );
 
       n.accept(observer);
       expect(observed).to.be.true;
@@ -154,13 +182,17 @@ describe('Notification', () => {
     it('should accept observer for error Notification', () => {
       let observed = false;
       const n = Notification.createError();
-      const observer = Subscriber.create((x?: string) => {
-        throw 'should not be called';
-      }, (err: any) => {
-        observed = true;
-      }, () => {
-        throw 'should not be called';
-      });
+      const observer = Subscriber.create(
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          observed = true;
+        },
+        () => {
+          throw 'should not be called';
+        }
+      );
 
       n.accept(observer);
       expect(observed).to.be.true;
@@ -169,13 +201,17 @@ describe('Notification', () => {
     it('should accept observer for complete Notification', () => {
       let observed = false;
       const n = Notification.createComplete();
-      const observer = Subscriber.create((x?: string) => {
-        throw 'should not be called';
-      }, (err: any) => {
-        throw 'should not be called';
-      }, () => {
-        observed = true;
-      });
+      const observer = Subscriber.create(
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          observed = true;
+        }
+      );
 
       n.accept(observer);
       expect(observed).to.be.true;
@@ -186,14 +222,18 @@ describe('Notification', () => {
       let observed = false;
       const n = Notification.createNext(value);
 
-      n.accept((x: string) => {
-        expect(x).to.equal(value);
-        observed = true;
-      }, (err: any) => {
-        throw 'should not be called';
-      }, () => {
-        throw 'should not be called';
-      });
+      n.accept(
+        (x: string) => {
+          expect(x).to.equal(value);
+          observed = true;
+        },
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          throw 'should not be called';
+        }
+      );
       expect(observed).to.be.true;
     });
 
@@ -202,14 +242,18 @@ describe('Notification', () => {
       const error = 'error';
       const n = Notification.createError(error);
 
-      n.accept((x: any) => {
-        throw 'should not be called';
-      }, (err: any) => {
-        expect(err).to.equal(error);
-        observed = true;
-      }, () => {
-        throw 'should not be called';
-      });
+      n.accept(
+        () => {
+          throw 'should not be called';
+        },
+        (err: any) => {
+          expect(err).to.equal(error);
+          observed = true;
+        },
+        () => {
+          throw 'should not be called';
+        }
+      );
       expect(observed).to.be.true;
     });
 
@@ -217,13 +261,17 @@ describe('Notification', () => {
       let observed = false;
       const n = Notification.createComplete();
 
-      n.accept((x: any) => {
-        throw 'should not be called';
-      }, (err: any) => {
-        throw 'should not be called';
-      }, () => {
-        observed = true;
-      });
+      n.accept(
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          observed = true;
+        }
+      );
       expect(observed).to.be.true;
     });
   });
@@ -233,14 +281,18 @@ describe('Notification', () => {
       const value = 'a';
       let observed = false;
       const n = Notification.createNext(value);
-      const observer = Subscriber.create((x?: string) => {
-        expect(x).to.equal(value);
-        observed = true;
-      }, (err: any) => {
-        throw 'should not be called';
-      }, () => {
-        throw 'should not be called';
-      });
+      const observer = Subscriber.create(
+        (x?: string) => {
+          expect(x).to.equal(value);
+          observed = true;
+        },
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          throw 'should not be called';
+        }
+      );
 
       n.observe(observer);
       expect(observed).to.be.true;
@@ -249,13 +301,17 @@ describe('Notification', () => {
     it('should observe for error Notification', () => {
       let observed = false;
       const n = Notification.createError();
-      const observer = Subscriber.create((x: any) => {
-        throw 'should not be called';
-      }, (err: any) => {
-        observed = true;
-      }, () => {
-        throw 'should not be called';
-      });
+      const observer = Subscriber.create(
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          observed = true;
+        },
+        () => {
+          throw 'should not be called';
+        }
+      );
 
       n.observe(observer);
       expect(observed).to.be.true;
@@ -264,13 +320,17 @@ describe('Notification', () => {
     it('should observe for complete Notification', () => {
       let observed = false;
       const n = Notification.createComplete();
-      const observer = Subscriber.create((x: any) => {
-        throw 'should not be called';
-      }, (err: any) => {
-        throw 'should not be called';
-      }, () => {
-        observed = true;
-      });
+      const observer = Subscriber.create(
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          throw 'should not be called';
+        },
+        () => {
+          observed = true;
+        }
+      );
 
       n.observe(observer);
       expect(observed).to.be.true;
