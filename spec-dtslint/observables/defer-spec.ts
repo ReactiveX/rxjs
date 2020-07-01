@@ -32,8 +32,8 @@ it('should error if function returns undefined', () => {
   const a = defer(() => undefined); // $ExpectError
 });
 
-it('should error if function returns never', () => {
-  const a = defer(() => { throw new Error(); }); // $ExpectError
+it('should infer if function returns never', () => {
+  const a = defer(() => { throw new Error(); }); // $ExpectType Observable<never>
 });
 
 

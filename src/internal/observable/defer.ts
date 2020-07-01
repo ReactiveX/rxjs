@@ -51,16 +51,7 @@ import { from } from './from'; // lol
  * @name defer
  * @owner Observable
  */
-export function defer<R extends ObservableInput<any>>(
-  observableFactory:
-    [R] extends [never] ?
-      never :
-      [R] extends [any] ?
-        () => R :
-        [R] extends [undefined] | [void] ?
-          never :
-          () => R
-): Observable<ObservedValueOf<R>> {
+export function defer<R extends ObservableInput<any>>(observableFactory: () => R): Observable<ObservedValueOf<R>> {
   return new Observable<ObservedValueOf<R>>(subscriber => {
     let input: R;
     try {
