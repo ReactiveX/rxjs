@@ -267,20 +267,14 @@ describe('shareReplay operator', () => {
   });
 
   it('should not skip values on a sync source', () => {
-    const a = from(['a', 'b', 'c', 'd']);
-    // We would like for the previous line to read like this:
-    //
-    // const a = cold('(abcd|)');
-    //
-    // However, that would synchronously emit multiple values at frame 0,
-    // but it's not synchronous upon-subscription.
+    const source = from(['a', 'b', 'c', 'd']);
     // TODO: revisit once https://github.com/ReactiveX/rxjs/issues/5523 is fixed
+    // const source = cold(    '(abcd|)');
+    const subscriptions = cold('x-------x');
+    const expected =           '(abcd)--d';
 
-    const x = cold(  'x-------x');
-    const expected = '(abcd)--d';
-
-    const shared = a.pipe(shareReplay(1));
-    const result = x.pipe(mergeMapTo(shared));
+    const shared = source.pipe(shareReplay(1));
+    const result = subscriptions.pipe(mergeMapTo(shared));
     expectObservable(result).toBe(expected);
   });
 
