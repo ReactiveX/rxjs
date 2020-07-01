@@ -219,6 +219,21 @@ describe('shareReplay operator', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
+  it('should not restart due to unsubscriptions if refCount is true when the source completes synchronously', () => {
+    const source = from(['a', 'b', 'c']); // TODO: revisit once https://github.com/ReactiveX/rxjs/issues/5523 is fixed
+
+    // const source = cold('(abc|)');
+    const sub1 =           '^------!       ';
+    const expected1 =      '(abc|)         ';
+    const sub2 =           '-----------^!  ';
+    const expected2 =      '-----------(c|)';
+
+    const shared = source.pipe(shareReplay({ bufferSize: 1, refCount: true }));
+
+    expectObservable(shared, sub1).toBe(expected1);
+    expectObservable(shared, sub2).toBe(expected2);
+  });
+
   it('should default to refCount being false', () => {
     const source = cold('a-b-c-d-e-f-g-h-i-j');
     const sourceSubs =  '^------------------';

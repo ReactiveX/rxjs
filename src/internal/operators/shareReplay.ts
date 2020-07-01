@@ -178,7 +178,7 @@ function shareReplayOperator<T>({
     this.add(() => {
       refCount--;
       innerSub.unsubscribe();
-      if (subscription && useRefCount && refCount === 0) {
+      if (subscription && !subscription.closed && useRefCount && refCount === 0) {
         subscription.unsubscribe();
         subscription = undefined;
         subject = undefined;
