@@ -1,85 +1,44 @@
 {
+  "extends": ["tslint:latest", "tslint-no-unused-expression-chai", "tslint-config-prettier"],
+  "rulesDirectory": ["node_modules/tslint-etc/dist/rules", "node_modules/tslint-no-toplevel-property-access/rules"],
+  // This is really just a list of what is wrong in our codebase,
+  // We should remove all of these over time.
   "rules": {
-    "curly": true,
-    "eofline": false,
-    "align": [
-      true,
-      "parameters"
-    ],
-    "class-name": true,
-    "indent": [
-      true,
-      "spaces"
-    ],
-    "max-line-length": [
-      true,
-      150
-    ],
-    "no-consecutive-blank-lines": true,
-    "no-trailing-whitespace": true,
-    "no-duplicate-variable": true,
-    "no-duplicate-imports": true,
-    "no-var-keyword": true,
-    "no-empty": true,
-    "no-unused-expression-chai": true,
-    "no-var-requires": true,
-    "no-require-imports": true,
-    "one-line": [
-      true,
-      "check-else",
-      "check-whitespace",
-      "check-open-brace"
-    ],
-    "quotemark": [
-      true,
-      "single",
-      "avoid-escape"
-    ],
-    "semicolon": [
-      true,
-      "always"
-    ],
-    "typedef-whitespace": [
-      true,
-      {
-        "call-signature": "nospace",
-        "index-signature": "nospace",
-        "parameter": "nospace",
-        "property-declaration": "nospace",
-        "variable-declaration": "nospace"
-      }
-    ],
-    "import-spacing": true,
-    "whitespace": [
-      true,
-      "check-branch",
-      "check-decl",
-      "check-operator",
-      "check-separator",
-      "check-type"
-    ],
-    "no-const-enum": true,
-    "no-unused-declaration": [
-      true,
-      {
-        "declarations": false,
-        "imports": true
-      }
-    ],
-    "no-toplevel-property-access": [
-      true,
-      "src/index.ts",
-      "src/ajax/",
-      "src/fetch/",
-      "src/internal/",
-      "src/operators/",
-      "src/testing/",
-      "src/webSocket/"
-    ]
-  },
-  "rulesDirectory": [
-    "tslint-no-unused-expression-chai",
-    "node_modules/tslint-etc/dist/rules",
-    "node_modules/tslint-no-toplevel-property-access/rules"
-  ]
+    "ordered-imports": [false],
+    "interface-name": [false],
+    "variable-name": [false], // Ben cries
+    "member-access": [false],
+    "ban-types": [false],
+    "array-type": [false],
+    "no-angle-bracket-type-assertion": [false],
+    "no-shadowed-variable": [false],
+    "no-empty-interface": [false],
+    "interface-over-type-literal": [false],
+    "member-ordering": [false],
+    "only-arrow-functions": [false],
+    "callable-types": [false],
+    "prefer-const": [false],
+    "object-literal-sort-keys": [false],
+    "no-this-assignment": [false],
+    "one-variable-per-declaration": [false],
+    "no-conditional-assignment": [false],
+    "no-unnecessary-initializer": [false],
+    "max-classes-per-file": [true, 10],
+    "unified-signatures": [false],
+    "jsdoc-format": [false],
+    "no-console": [false],
+    "prefer-for-of": [false],
+    "comment-format": [false],
+    "object-literal-shorthand": [false],
+    "prefer-conditional-expression": [false],
+    "triple-equals": [false], // OH MY GOD!!!!! AHHH!!!!
+    "no-object-literal-type-assertion": [false],
+    "ban-comma-operator": [false],
+    "no-submodule-imports": [false],
+    "no-implicit-dependencies": [true, "dev", ["rxjs", "chai"]],
+    "radix": [false],
+    "no-string-literal": [false],
+    "no-string-throw": [false],
+    "arrow-return-shorthand": [false]
+  }
 }
