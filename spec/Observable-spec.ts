@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { Observer, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
 import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip } from 'rxjs/operators';
+import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError } from 'rxjs/operators';
 
 declare const rxTestScheduler: any;
 
@@ -937,5 +937,30 @@ describe('Observable.lift', () => {
     } finally {
       consoleStub.restore();
     }
+  });
+
+  // TODO: Stop skipping this until a later refactor (probably in version 8)
+  // Discussion here: https://github.com/ReactiveX/rxjs/issues/5370
+  it.skip('should emit an error for unhandled synchronous exceptions from something like a stack overflow', (done) => {
+    const source = of(4).pipe(
+      map(n => {
+        if (n === 4) {
+          throw 'four!';
+        }
+        return n;
+      }),
+      catchError((_, source) => source),
+    );
+
+    let thrownError: any = undefined;
+    try {
+      source.subscribe({
+        error: err => thrownError = err
+      });
+    } catch (err) {
+      done("Should never hit this!");
+    }
+
+    expect(thrownError).to.equal(new RangeError('Maximum call stack size exceeded'));
   });
 });
