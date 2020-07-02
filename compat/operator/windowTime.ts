@@ -86,13 +86,13 @@ export function windowTime<T>(this: Observable<T>,
   if (isScheduler(arguments[2])) {
     scheduler = arguments[2];
   } else if (isNumeric(arguments[2])) {
-    maxWindowSize = arguments[2];
+    maxWindowSize = Number(arguments[2]);
   }
 
   if (isScheduler(arguments[1])) {
     scheduler = arguments[1];
   } else if (isNumeric(arguments[1])) {
-    windowCreationInterval = arguments[1];
+    windowCreationInterval = Number(arguments[1]);
   }
 
   return higherOrder(windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler)(this) as Observable<Observable<T>>;
