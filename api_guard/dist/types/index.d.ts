@@ -140,6 +140,10 @@ export declare function combineLatest<O extends ObservableInput<any>>(...observa
 export declare function combineLatest<O extends ObservableInput<any>, R>(...observables: Array<O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike>): Observable<R>;
 export declare function combineLatest<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R) | SchedulerLike>): Observable<R>;
 
+export interface CompleteNotification {
+    kind: 'C';
+}
+
 export interface CompletionObserver<T> {
     closed?: boolean;
     complete: () => void;
@@ -176,7 +180,7 @@ export declare class ConnectableObservable<T> extends Observable<T> {
 
 export declare type Cons<X, Y extends any[]> = ((arg: X, ...rest: Y) => any) extends ((...args: infer U) => any) ? U : never;
 
-export declare function defer<R extends ObservableInput<any> | void>(observableFactory: () => R): Observable<ObservedValueOf<R>>;
+export declare function defer<R extends ObservableInput<any>>(observableFactory: () => R): Observable<ObservedValueOf<R>>;
 
 export declare function empty(scheduler?: SchedulerLike): Observable<never>;
 
@@ -186,6 +190,11 @@ export interface EmptyError extends Error {
 }
 
 export declare const EmptyError: EmptyErrorCtor;
+
+export interface ErrorNotification {
+    error: any;
+    kind: 'E';
+}
 
 export interface ErrorObserver<T> {
     closed?: boolean;
@@ -292,6 +301,11 @@ export declare function never(): Observable<never>;
 
 export declare const NEVER: Observable<never>;
 
+export interface NextNotification<T> {
+    kind: 'N';
+    value: T;
+}
+
 export interface NextObserver<T> {
     closed?: boolean;
     complete?: () => void;
@@ -307,20 +321,25 @@ export interface NotFoundError extends Error {
 export declare const NotFoundError: NotFoundErrorCtor;
 
 export declare class Notification<T> {
-    error?: any;
-    hasValue: boolean;
-    kind: 'N' | 'E' | 'C';
-    value?: T | undefined;
+    readonly error?: any;
+    readonly hasValue: boolean;
+    readonly kind: 'N' | 'E' | 'C';
+    readonly value?: T | undefined;
     constructor(kind: 'C');
     constructor(kind: 'E', value: undefined, error: any);
     constructor(kind: 'N', value?: T);
-    accept(nextOrObserver: PartialObserver<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void): any;
-    do(next: (value: T) => void, error?: (err: any) => void, complete?: () => void): any;
-    observe(observer: PartialObserver<T>): any;
+    accept(next: (value: T) => void, error: (err: any) => void, complete: () => void): void;
+    accept(next: (value: T) => void, error: (err: any) => void): void;
+    accept(next: (value: T) => void): void;
+    accept(observer: PartialObserver<T>): void;
+    do(next: (value: T) => void, error: (err: any) => void, complete: () => void): void;
+    do(next: (value: T) => void, error: (err: any) => void): void;
+    do(next: (value: T) => void): void;
+    observe(observer: PartialObserver<T>): void;
     toObservable(): Observable<T>;
-    static createComplete(): Notification<any>;
-    static createError<T>(err?: any): Notification<T>;
-    static createNext<T>(value: T): Notification<T>;
+    static createComplete(): Notification<never> & CompleteNotification;
+    static createError(err?: any): Notification<never> & ErrorNotification;
+    static createNext<T>(value: T): Notification<T> & NextNotification<T>;
 }
 
 export declare enum NotificationKind {
@@ -343,7 +362,8 @@ export declare class Observable<T> implements Subscribable<T> {
     constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic);
     _subscribe(subscriber: Subscriber<any>): TeardownLogic;
     _trySubscribe(sink: Subscriber<T>): TeardownLogic;
-    forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): Promise<void>;
+    forEach(next: (value: T) => void): Promise<void>;
+    forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
     lift<R>(operator?: Operator<T, R>): Observable<R>;
     pipe(): Observable<T>;
     pipe<A>(op1: OperatorFunction<T, A>): Observable<A>;
@@ -372,6 +392,8 @@ export declare class Observable<T> implements Subscribable<T> {
 export declare type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T> | Iterable<T> | AsyncIterableIterator<T>;
 
 export declare type ObservableLike<T> = InteropObservable<T>;
+
+export declare type ObservableNotification<T> = NextNotification<T> | ErrorNotification | CompleteNotification;
 
 export declare type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;
 
@@ -482,6 +504,7 @@ export declare class Subject<T> extends Observable<T> implements SubscriptionLik
     isStopped: boolean;
     observers: Observer<T>[];
     thrownError: any;
+    constructor();
     _subscribe(subscriber: Subscriber<T>): Subscription;
     _trySubscribe(subscriber: Subscriber<T>): TeardownLogic;
     asObservable(): Observable<T>;
@@ -578,6 +601,12 @@ export declare function using<T>(resourceFactory: () => Unsubscribable | void, o
 
 export declare type ValueFromArray<A> = A extends Array<infer T> ? T : never;
 
+export declare type ValueFromNotification<T> = T extends {
+    kind: 'N' | 'E' | 'C';
+} ? (T extends NextNotification<any> ? (T extends {
+    value: infer V;
+} ? V : undefined) : never) : never;
+
 export declare class VirtualAction<T> extends AsyncAction<T> {
     protected active: boolean;
     protected index: number;
@@ -588,7 +617,7 @@ export declare class VirtualAction<T> extends AsyncAction<T> {
     protected recycleAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay?: number): any;
     protected requestAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay?: number): any;
     schedule(state?: T, delay?: number): Subscription;
-    static sortActions<T>(a: VirtualAction<T>, b: VirtualAction<T>): 0 | 1 | -1;
+    static sortActions<T>(a: VirtualAction<T>, b: VirtualAction<T>): 1 | 0 | -1;
 }
 
 export declare class VirtualTimeScheduler extends AsyncScheduler {

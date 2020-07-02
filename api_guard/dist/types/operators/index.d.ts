@@ -74,7 +74,7 @@ export declare function delay<T>(delay: number | Date, scheduler?: SchedulerLike
 export declare function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<never>, subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T>;
 export declare function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<any>, subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T>;
 
-export declare function dematerialize<T>(): OperatorFunction<Notification<T>, T>;
+export declare function dematerialize<N extends ObservableNotification<any>>(): OperatorFunction<N, ValueFromNotification<N>>;
 
 export declare function distinct<T, K>(keySelector?: (value: T) => K, flushes?: Observable<any>): MonoTypeOperatorFunction<T>;
 
@@ -143,7 +143,7 @@ export declare function map<T, R>(project: (value: T, index: number) => R, thisA
 export declare function mapTo<R>(value: R): OperatorFunction<any, R>;
 export declare function mapTo<T, R>(value: R): OperatorFunction<T, R>;
 
-export declare function materialize<T>(): OperatorFunction<T, Notification<T>>;
+export declare function materialize<T>(): OperatorFunction<T, Notification<T> & ObservableNotification<T>>;
 
 export declare function max<T>(comparer?: (x: T, y: T) => number): MonoTypeOperatorFunction<T>;
 
@@ -240,7 +240,7 @@ export declare function refCount<T>(): MonoTypeOperatorFunction<T>;
 
 export declare function repeat<T>(count?: number): MonoTypeOperatorFunction<T>;
 
-export declare function repeatWhen<T>(notifier: (notifications: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T>;
+export declare function repeatWhen<T>(notifier: (notifications: Observable<void>) => Observable<any>): MonoTypeOperatorFunction<T>;
 
 export declare function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
 export declare function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;
