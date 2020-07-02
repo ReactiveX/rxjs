@@ -84,27 +84,35 @@ interface MockFetch {
   respondWith: Response;
 }
 
+function hasFetch(root: any): root is { fetch: typeof fetch } {
+  return root && 'fetch' in root && typeof root.fetch === 'function';
+}
+
+function hasAbortController(root: any): root is { AbortController: typeof AbortController } {
+  return root && 'AbortController' in root && typeof root.AbortController === 'function';
+}
+
 describe('fromFetch', () => {
   let _fetch: typeof fetch;
-  let _AbortController: AbortController;
+  let _AbortController: typeof AbortController;
 
   beforeEach(() => {
     mockFetch.reset();
-    if (root.fetch) {
+    if (hasFetch(root)) {
       _fetch = root.fetch;
     }
-    root.fetch = mockFetch;
+    (root as any).fetch = mockFetch;
 
     MockAbortController.reset();
-    if (root.AbortController) {
+    if (hasAbortController(root)) {
       _AbortController = root.AbortController;
     }
-    root.AbortController = MockAbortController;
+    (root as any).AbortController = MockAbortController;
   });
 
   afterEach(() => {
-    root.fetch = _fetch;
-    root.AbortController = _AbortController;
+    (root as any).fetch = _fetch;
+    (root as any).AbortController = _AbortController;
   });
 
   it('should exist', () => {

@@ -17,10 +17,10 @@ describe('ajax', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
     gXHR = global.XMLHttpRequest;
-    rXHR = root.XMLHttpRequest;
+    rXHR = (root as any).XMLHttpRequest;
 
     global.XMLHttpRequest = MockXMLHttpRequest;
-    root.XMLHttpRequest = MockXMLHttpRequest;
+    (root as any).XMLHttpRequest = MockXMLHttpRequest;
   });
 
   afterEach(() => {
@@ -28,10 +28,10 @@ describe('ajax', () => {
     MockXMLHttpRequest.clearRequest();
 
     global.XMLHttpRequest = gXHR;
-    root.XMLHttpRequest = rXHR;
+    (root as any).XMLHttpRequest = rXHR;
 
-    root.XDomainRequest = null;
-    root.ActiveXObject = null;
+    (root as any).XDomainRequest = null;
+    (root as any).ActiveXObject = null;
   });
 
   it('should create default XMLHttpRequest for non CORS', () => {
@@ -47,8 +47,8 @@ describe('ajax', () => {
   it('should try to create AXObject for XHR in old version of IE', () => {
     const axObjectStub = sandbox.stub();
     axObjectStub.returns(sinon.stub(new MockXMLHttpRequest()));
-    root.ActiveXObject = axObjectStub;
-    root.XMLHttpRequest = null;
+    (root as any).ActiveXObject = axObjectStub;
+    (root as any).XMLHttpRequest = null;
 
     const obj: AjaxRequest = {
       url: '/',
@@ -61,8 +61,8 @@ describe('ajax', () => {
   });
 
   it('should raise an error if not able to create XMLHttpRequest', () => {
-    root.XMLHttpRequest = null;
-    root.ActiveXObject = null;
+    (root as any).XMLHttpRequest = null;
+    (root as any).ActiveXObject = null;
 
     const obj: AjaxRequest = {
       url: '/',
@@ -87,8 +87,8 @@ describe('ajax', () => {
   it('should try to create XDomainRequest for CORS if XMLHttpRequest is not available', () => {
     const xDomainStub = sandbox.stub();
     xDomainStub.returns(sinon.stub(new MockXMLHttpRequest()));
-    root.XDomainRequest = xDomainStub;
-    root.XMLHttpRequest = null;
+    (root as any).XDomainRequest = xDomainStub;
+    (root as any).XMLHttpRequest = null;
 
     const obj: AjaxRequest = {
       url: '/',
@@ -102,8 +102,8 @@ describe('ajax', () => {
   });
 
   it('should raise an error if not able to create CORS request', () => {
-    root.XMLHttpRequest = null;
-    root.XDomainRequest = null;
+    (root as any).XMLHttpRequest = null;
+    (root as any).XDomainRequest = null;
 
     const obj: AjaxRequest = {
       url: '/',
@@ -508,12 +508,12 @@ describe('ajax', () => {
     let rFormData: FormData;
 
     beforeEach(() => {
-      rFormData = root.FormData;
-      root.FormData = root.FormData || class { };
+      rFormData = (root as any).FormData;
+      (root as any).FormData = (root as any).FormData || class { };
     });
 
     afterEach(() => {
-      root.FormData = rFormData;
+      (root as any).FormData = rFormData;
     });
 
     it('can take string body', () => {
@@ -530,7 +530,7 @@ describe('ajax', () => {
     });
 
     it('can take FormData body', () => {
-      const body = new root.FormData();
+      const body = new (root as any).FormData();
       const obj = {
         url: '/flibbertyJibbet',
         method: '',
@@ -546,7 +546,7 @@ describe('ajax', () => {
     });
 
     it('should not fail when FormData is undefined', () => {
-      root.FormData = void 0;
+      (root as any).FormData = void 0;
 
       const obj = {
         url: '/flibbertyJibbet',
@@ -830,7 +830,7 @@ describe('ajax', () => {
       let result: AjaxResponse;
       let complete = false;
 
-      root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
+      (root as any).XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
 
       ajax.post('/flibbertyJibbet', expected)
         .subscribe(x => {
@@ -898,8 +898,8 @@ describe('ajax', () => {
         }
       });
 
-      root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
-      root.XDomainRequest = MockXMLHttpRequestInternetExplorer;
+      (root as any).XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
+      (root as any).XDomainRequest = MockXMLHttpRequestInternetExplorer;
 
       ajax({
         url: '/flibbertyJibbet',
@@ -921,7 +921,7 @@ describe('ajax', () => {
   });
 
   it('should work fine when XMLHttpRequest onreadystatechange property is monkey patched', function() {
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'onreadystatechange', {
+    Object.defineProperty((root as any).XMLHttpRequest.prototype, 'onreadystatechange', {
       set: function (fn: (e: ProgressEvent) => any) {
         const wrapFn = (ev: ProgressEvent) => {
           const result = fn.call(this, ev);
@@ -947,11 +947,11 @@ describe('ajax', () => {
       request.onreadystatechange((<any>'onreadystatechange'));
     }).not.throw();
 
-    delete root.XMLHttpRequest.prototype.onreadystatechange;
+    delete (root as any).XMLHttpRequest.prototype.onreadystatechange;
   });
 
   it('should work fine when XMLHttpRequest ontimeout property is monkey patched', function(done) {
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'ontimeout', {
+    Object.defineProperty((root as any).XMLHttpRequest.prototype, 'ontimeout', {
       set(fn: (e: ProgressEvent) => any) {
         const wrapFn = (ev: ProgressEvent) => {
           const result = fn.call(this, ev);
@@ -985,11 +985,11 @@ describe('ajax', () => {
     } catch (e) {
       expect(e.message).to.equal(new AjaxTimeoutError((<any>request), ajaxRequest).message);
     }
-    delete root.XMLHttpRequest.prototype.ontimeout;
+    delete (root as any).XMLHttpRequest.prototype.ontimeout;
   });
 
   it('should work fine when XMLHttpRequest onprogress property is monkey patched', function() {
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'onprogress', {
+    Object.defineProperty((root as any).XMLHttpRequest.prototype, 'onprogress', {
       set: function (fn: (e: ProgressEvent) => any) {
         const wrapFn = (ev: ProgressEvent) => {
           const result = fn.call(this, ev);
@@ -1027,12 +1027,12 @@ describe('ajax', () => {
       (request.upload as any).onprogress((<any>'onprogress'));
     }).not.throw();
 
-    delete root.XMLHttpRequest.prototype.onprogress;
-    delete root.XMLHttpRequest.prototype.upload;
+    delete (root as any).XMLHttpRequest.prototype.onprogress;
+    delete (root as any).XMLHttpRequest.prototype.upload;
   });
 
   it('should work fine when XMLHttpRequest onerror property is monkey patched', function() {
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'onerror', {
+    Object.defineProperty((root as any).XMLHttpRequest.prototype, 'onerror', {
       set(fn: (e: ProgressEvent) => any) {
         const wrapFn = (ev: ProgressEvent) => {
           const result = fn.call(this, ev);
@@ -1065,8 +1065,8 @@ describe('ajax', () => {
       expect(e.message).to.equal('ajax error');
     }
 
-    delete root.XMLHttpRequest.prototype.onerror;
-    delete root.XMLHttpRequest.prototype.upload;
+    delete (root as any).XMLHttpRequest.prototype.onerror;
+    delete (root as any).XMLHttpRequest.prototype.upload;
   });
 
   describe('ajax.patch', () => {

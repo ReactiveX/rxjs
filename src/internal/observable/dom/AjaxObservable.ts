@@ -21,10 +21,27 @@ export interface AjaxRequest {
   responseType?: string;
 }
 
+function hasXMLHttpRequest(root: any): root is { XMLHttpRequest: typeof XMLHttpRequest } {
+  return root && 'XMLHttpRequest' in root && typeof root.XMLHttpRequest === 'function';
+}
+
+function hasXDomainRequest(root: any): root is { XDomainRequest: { new(): any } } {
+  return root && 'XDomainRequest' in root && typeof root.XDomainRequest === 'function';
+}
+
+function isFormData(body: any): body is FormData {
+  if (body) {
+    if ('FormData' in root && typeof root.FormData === 'function') {
+      return body instanceof root.FormData;
+    }
+  }
+  return false;
+}
+
 function getCORSRequest(): XMLHttpRequest {
-  if (root.XMLHttpRequest) {
+  if (hasXMLHttpRequest(root)) {
     return new root.XMLHttpRequest();
-  } else if (!!root.XDomainRequest) {
+  } else if (hasXDomainRequest(root)) {
     return new root.XDomainRequest();
   } else {
     throw new Error('CORS is not supported by your browser');
@@ -32,26 +49,26 @@ function getCORSRequest(): XMLHttpRequest {
 }
 
 function getXMLHttpRequest(): XMLHttpRequest {
-  if (root.XMLHttpRequest) {
+  if (hasXMLHttpRequest(root)) {
     return new root.XMLHttpRequest();
   } else {
-    let progId: string;
-    try {
+    // TODO: Consider removing this branch entirely and stop supporting IE 9 and under
+    const ActiveXObject = (root as any).ActiveXObject;
+    if (ActiveXObject) {
+      // Support REALLY old versions of IE (6, 7, 8)
       const progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
-      for (let i = 0; i < 3; i++) {
+      for (const progId of progIds) {
         try {
-          progId = progIds[i];
-          if (new root.ActiveXObject(progId)) {
-            break;
+          const axo = new ActiveXObject(progId);
+          if (axo) {
+            return axo;
           }
         } catch (e) {
           //suppress exceptions
         }
       }
-      return new root.ActiveXObject(progId!);
-    } catch (e) {
-      throw new Error('XMLHttpRequest is not supported by your browser');
     }
+    throw new Error('XMLHttpRequest is not supported by your runtime');
   }
 }
 
@@ -111,7 +128,7 @@ export class AjaxObservable<T> extends Observable<T> {
    * ## Example
    * ```ts
    * import { ajax } from 'rxjs/ajax';
- *
+   *
    * const source1 = ajax('/products');
    * const source2 = ajax({ url: 'products', method: 'GET' });
    * ```
@@ -209,7 +226,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
     // ensure content type is set
     let contentTypeHeader = this.getHeader(headers, 'Content-Type');
-    if (!contentTypeHeader && !(root.FormData && request.body instanceof root.FormData) && typeof request.body !== 'undefined') {
+    if (!contentTypeHeader && !isFormData(request.body) && typeof request.body !== 'undefined') {
       (headers as any)['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     }
 
@@ -278,7 +295,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private serializeBody(body: any, contentType?: string) {
     if (!body || typeof body === 'string') {
       return body;
-    } else if (root.FormData && body instanceof root.FormData) {
+    } else if (isFormData(body)) {
       return body;
     }
 
@@ -344,7 +361,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
           const { progressSubscriber } = (<any>xhrProgress);
           progressSubscriber.next(e);
         };
-        if (root.XDomainRequest) {
+        if (hasXDomainRequest(root)) {
           xhr.onprogress = xhrProgress;
         } else {
           xhr.upload.onprogress = xhrProgress;
