@@ -4,12 +4,7 @@
 import { Operator } from './Operator';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
-import {
-  TeardownLogic,
-  OperatorFunction,
-  PartialObserver,
-  Subscribable,
-} from './types';
+import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable } from './types';
 import { canReportError } from './util/canReportError';
 import { toSubscriber } from './util/toSubscriber';
 import { iif } from './observable/iif';
@@ -41,12 +36,7 @@ export class Observable<T> implements Subscribable<T> {
    * can be `next`ed, or an `error` method can be called to raise an error, or
    * `complete` can be called to notify of a successful completion.
    */
-  constructor(
-    subscribe?: (
-      this: Observable<T>,
-      subscriber: Subscriber<T>
-    ) => TeardownLogic
-  ) {
+  constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic) {
     if (subscribe) {
       this._subscribe = subscribe;
     }
@@ -64,9 +54,7 @@ export class Observable<T> implements Subscribable<T> {
    * @nocollapse
    * @deprecated use new Observable() instead
    */
-  static create: Function = <T>(
-    subscribe?: (subscriber: Subscriber<T>) => TeardownLogic
-  ) => {
+  static create: Function = <T>(subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) => {
     return new Observable<T>(subscribe);
   };
 
@@ -86,28 +74,12 @@ export class Observable<T> implements Subscribable<T> {
 
   subscribe(observer?: PartialObserver<T>): Subscription;
   /** @deprecated Use an observer instead of a complete callback */
-  subscribe(
-    next: null | undefined,
-    error: null | undefined,
-    complete: () => void
-  ): Subscription;
+  subscribe(next: null | undefined, error: null | undefined, complete: () => void): Subscription;
   /** @deprecated Use an observer instead of an error callback */
-  subscribe(
-    next: null | undefined,
-    error: (error: any) => void,
-    complete?: () => void
-  ): Subscription;
+  subscribe(next: null | undefined, error: (error: any) => void, complete?: () => void): Subscription;
   /** @deprecated Use an observer instead of a complete callback */
-  subscribe(
-    next: (value: T) => void,
-    error: null | undefined,
-    complete: () => void
-  ): Subscription;
-  subscribe(
-    next?: (value: T) => void,
-    error?: (error: any) => void,
-    complete?: () => void
-  ): Subscription;
+  subscribe(next: (value: T) => void, error: null | undefined, complete: () => void): Subscription;
+  subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
   /**
    * Invokes an execution of an Observable and registers Observer handlers for notifications it will emit.
    *
@@ -245,9 +217,7 @@ export class Observable<T> implements Subscribable<T> {
       sink.add(operator.call(sink, this.source));
     } else {
       sink.add(
-        this.source ||
-          (config.useDeprecatedSynchronousErrorHandling &&
-            !sink.syncErrorThrowable)
+        this.source || (config.useDeprecatedSynchronousErrorHandling && !sink.syncErrorThrowable)
           ? this._subscribe(sink)
           : this._trySubscribe(sink)
       );
@@ -339,15 +309,9 @@ export class Observable<T> implements Subscribable<T> {
    * polyfill Promise, or you create an adapter to convert the returned native promise
    * to whatever promise implementation you wanted.
    */
-  forEach(
-    next: (value: T) => void,
-    promiseCtor: PromiseConstructorLike
-  ): Promise<void>;
+  forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
 
-  forEach(
-    next: (value: T) => void,
-    promiseCtor?: PromiseConstructorLike
-  ): Promise<void> {
+  forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): Promise<void> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor<void>((resolve, reject) => {
@@ -402,15 +366,8 @@ export class Observable<T> implements Subscribable<T> {
   /* tslint:disable:max-line-length */
   pipe(): Observable<T>;
   pipe<A>(op1: OperatorFunction<T, A>): Observable<A>;
-  pipe<A, B>(
-    op1: OperatorFunction<T, A>,
-    op2: OperatorFunction<A, B>
-  ): Observable<B>;
-  pipe<A, B, C>(
-    op1: OperatorFunction<T, A>,
-    op2: OperatorFunction<A, B>,
-    op3: OperatorFunction<B, C>
-  ): Observable<C>;
+  pipe<A, B>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>): Observable<B>;
+  pipe<A, B, C>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>): Observable<C>;
   pipe<A, B, C, D>(
     op1: OperatorFunction<T, A>,
     op2: OperatorFunction<A, B>,
@@ -508,15 +465,9 @@ export class Observable<T> implements Subscribable<T> {
   /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
   toPromise<T>(this: Observable<T>): Promise<T | undefined>;
   /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
-  toPromise<T>(
-    this: Observable<T>,
-    PromiseCtor: typeof Promise
-  ): Promise<T | undefined>;
+  toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T | undefined>;
   /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
-  toPromise<T>(
-    this: Observable<T>,
-    PromiseCtor: PromiseConstructorLike
-  ): Promise<T | undefined>;
+  toPromise<T>(this: Observable<T>, PromiseCtor: PromiseConstructorLike): Promise<T | undefined>;
   /* tslint:enable:max-line-length */
 
   /**
