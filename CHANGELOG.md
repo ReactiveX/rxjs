@@ -1,3 +1,55 @@
+# [7.0.0-beta.1](https://github.com/reactivex/rxjs/compare/7.0.0-beta.0...7.0.0-beta.1) (2020-07-02)
+
+
+### Bug Fixes
+
+* **pluck:** operator breaks with null/undefined inputs. ([#5524](https://github.com/reactivex/rxjs/issues/5524)) ([c5f6550](https://github.com/reactivex/rxjs/commit/c5f65508505cf1f90560e6be76425e09c455bec3))
+* **shareReplay:** no longer misses synchronous values from source ([92452cc](https://github.com/reactivex/rxjs/commit/92452cc20021141aa0f047c7e5af569a413143e5))
+* **interop:** chain interop/safe subscriber unsubscriptions correctly ([#5472](https://github.com/reactivex/rxjs/issues/5472)) ([98ad0eb](https://github.com/reactivex/rxjs/commit/98ad0eba6bc079851b44951f3963e8aae0abf861)), closes [#5469](https://github.com/reactivex/rxjs/issues/5469) [#5311](https://github.com/reactivex/rxjs/issues/5311) [#2675](https://github.com/reactivex/rxjs/issues/2675)
+* **finalize:** chain subscriptions for interop with finalize ([#5239](https://github.com/reactivex/rxjs/issues/5239)) ([04ba662](https://github.com/reactivex/rxjs/commit/04ba6621fe9e09238e1796217d04107e52dd36d5)), closes [#5237](https://github.com/reactivex/rxjs/issues/5237) [#5237](https://github.com/reactivex/rxjs/issues/5237)
+* **animationFrameScheduler:** don't execute rescheduled animation frame and asap actions in flush ([#5399](https://github.com/reactivex/rxjs/issues/5399)) ([33c9c8c](https://github.com/reactivex/rxjs/commit/33c9c8cf7e247d4ad4d7318bfd02e8e5bedb0f40)), closes [#4972](https://github.com/reactivex/rxjs/issues/4972) [#5397](https://github.com/reactivex/rxjs/issues/5397)
+* **iterables:** errors thrown from iterables now properly propagated ([#5444](https://github.com/reactivex/rxjs/issues/5444)) ([75d4c2f](https://github.com/reactivex/rxjs/commit/75d4c2f33d2e2121b2a316849044ad17ab28dbaf))
+* **finalize:** callback will be called after the source observable is torn down. ([0d7b7c1](https://github.com/reactivex/rxjs/commit/0d7b7c14e34eed43fb2ad1386281800fa3ae8aec)), closes [#5357](https://github.com/reactivex/rxjs/issues/5357)
+* **Notification:** typing improvements ([#5478](https://github.com/reactivex/rxjs/issues/5478)) ([96868ac](https://github.com/reactivex/rxjs/commit/96868ac754c0147a9aa61182185f27224eb7f11a))
+* **TestScheduler:** support empty subscription marbles ([#5502](https://github.com/reactivex/rxjs/issues/5502)) ([e65696e](https://github.com/reactivex/rxjs/commit/e65696e2f7f7338659a873f6653026b33b9011a9)), closes [#5499](https://github.com/reactivex/rxjs/issues/5499)
+* **expand:** now works properly with asynchronous schedulers ([294b27e](https://github.com/reactivex/rxjs/commit/294b27eb6a96e8edee3af35e6aaaef50628376e4))
+* **subscribeOn:** allow Infinity as valid delay ([#5500](https://github.com/reactivex/rxjs/issues/5500)) ([cd7d649](https://github.com/reactivex/rxjs/commit/cd7d64901e82fd7fb5e8407f1f30828906fac420))
+* **Subject:** resolve issue where Subject constructor errantly allowed an argument ([#5476](https://github.com/reactivex/rxjs/issues/5476)) ([e1d35dc](https://github.com/reactivex/rxjs/commit/e1d35dc258edea0237ef49a31f7b34c058755969))
+* **Subject:** no default generic ([e678e81](https://github.com/reactivex/rxjs/commit/e678e81ba80f5bcc27b0e956295ce2fc8dfe4576))
+* **defer:** No longer allows `() => undefined` to observableFactory (#5449) ([1ae937a](https://github.com/reactivex/rxjs/commit/1ae937a8e594aef96b93313bb3c68ea910e6f528)), closes [#5449](https://github.com/reactivex/rxjs/issues/5449)
+* **single:** Corrected behavior for `single(() => false)` on empty observables. (#5325) ([27931bc](https://github.com/reactivex/rxjs/commit/27931bcfd2aa864e277d3e72128c57e807b28bb0)), closes [#5325](https://github.com/reactivex/rxjs/issues/5325)
+* **take/takeLast**: Properly assert number types at runtime (#5326) ([5efc474](https://github.com/reactivex/rxjs/commit/5efc474161c9196dbdf4803a9cc444a547067549)), closes [#5326](https://github.com/reactivex/rxjs/issues/5326)
+
+
+### Features
+
+* **Observable:** Remove async iteration ([#5492](https://github.com/reactivex/rxjs/issues/5492)) ([8f43e71](https://github.com/reactivex/rxjs/commit/8f43e71f5692119e57a7acc5817c146d0b288e8c))
+* **groupBy:** Add typeguards support for groupBy ([#5441](https://github.com/reactivex/rxjs/issues/5441)) ([da382da](https://github.com/reactivex/rxjs/commit/da382da4cdcc6e7ab1ffc6a499f4f7f5ea7de130))
+* **raceWith:** add raceWith, the renamed `race` operator ([#5303](https://github.com/reactivex/rxjs/issues/5303)) ([ca7f370](https://github.com/reactivex/rxjs/commit/ca7f370d8379f22526cfb17d40deff53e1358742))
+* **fetch:** add selector ([#5306](https://github.com/reactivex/rxjs/issues/5306)) ([99b5af1](https://github.com/reactivex/rxjs/commit/99b5af1af5d169d55d454ff8e27d88105cee4b6f)), closes [#4744](https://github.com/reactivex/rxjs/issues/4744)
+* **TimestampProvider:** Reduced scheduler footprint for default usage of shareReplay, timeInterval, and timestamp ([#4973](https://github.com/reactivex/rxjs/issues/4973)) ([b2e67e3](https://github.com/reactivex/rxjs/commit/b2e67e3139f0be1fb000ba42bb42c5ba60cc803a))
+
+
+
+
+### BREAKING CHANGES
+
+* `Notification.createNext(undefined)` will no longer return the exact same reference everytime.
+* Type signatures tightened up around `Notification` and `dematerialize`, may uncover issues with invalid types passed to those operators.
+* Experimental support for `for await` as been removed. Use https://github.com/benlesh/rxjs-for-await instead.
+* `defer` no longer allows factories to return `void` or `undefined`. All factories passed to defer must return a proper `ObservableInput`, such as `Observable`, `Promise`, et al. To get the same behavior as you may have relied on previously, `return EMPTY` or `return of()` from the factory.
+* `single` operator will now throw for scenarios where values coming in are either not present, or do not match the provided predicate. Error types have thrown have also been updated, please check documentation for changes.
+* `take` and will now throw runtime error for arguments that are negative or NaN, this includes non-TS calls like `take()`.
+
+* `takeLast` now has runtime assertions that throw `TypeError`s for invalid arguments. Calling takeLast without arguments or with an argument that is `NaN` will throw a `TypeError`
+* `ReplaySubject` no longer schedules emissions when a scheduler is provided. If you need that behavior,
+please compose in `observeOn` using `pipe`, for example: `new ReplaySubject(2, 3000).pipe(observeOn(asap))`
+
+* `timestamp` operator accepts a `TimestampProvider`, which is any object with a `now` method
+that returns a number. This means pulling in less code for the use of the `timestamp` operator. This may cause
+issues with `TestScheduler` run mode. (Issue here: https://github.com/ReactiveX/rxjs/issues/5553)
+
+
 # [7.0.0-beta.0](https://github.com/reactivex/rxjs/compare/7.0.0-alpha.1...7.0.0-beta.0) (2020-04-03)
 
 
