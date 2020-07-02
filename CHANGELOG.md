@@ -1,3 +1,27 @@
+# [6.6.0](https://github.com/reactivex/rxjs/compare/6.5.3...6.6.0) (2020-07-02)
+
+
+### Bug Fixes
+
+* **asapScheduler:** resolved memory leak ([#5183](https://github.com/reactivex/rxjs/issues/5183)) ([4312af5](https://github.com/reactivex/rxjs/commit/4312af5c5c5dde51873a8f02387bea25e23a36ca)), closes [#5016](https://github.com/reactivex/rxjs/issues/5016)
+* **fetch:** don't leak event listeners added to passed-in signals ([#5305](https://github.com/reactivex/rxjs/issues/5305)) ([06bf3a3](https://github.com/reactivex/rxjs/commit/06bf3a30c65d85f18aeb2ef2b800e918c8d36979))
+* **fromFetch:** passing already aborted signal to init aborts fetch ([c2657a8](https://github.com/reactivex/rxjs/commit/c2657a868e1c079d50f63ce5c0850572d491238a))
+* **pipe:** Special handling for 0-arg case. ([#4936](https://github.com/reactivex/rxjs/issues/4936)) ([2e9d867](https://github.com/reactivex/rxjs/commit/2e9d867d8d082dc6130cce3cd49988c4e3c0c424))
+* **pluck:** operator breaks with null/undefined inputs. ([#5524](https://github.com/reactivex/rxjs/issues/5524)) ([3bb2f7f](https://github.com/reactivex/rxjs/commit/3bb2f7fe4cfb42695cbfac4cfaa15b72708963a1))
+* **shareReplay:** no longer misses synchronous values from source ([d2f6ac7](https://github.com/reactivex/rxjs/commit/d2f6ac709ae0435e2d4990edcb3245dc5a5e8d2c))
+* **interop:** chain subscriptions from interop observables for 6.x ([#5178](https://github.com/reactivex/rxjs/issues/5178)) ([cbc7721](https://github.com/reactivex/rxjs/commit/cbc77213e97ecc00d90a65ecf18707b76ebfe7fc))
+* **shareReplay:** clear subscription on shareReplay completion ([#5044](https://github.com/reactivex/rxjs/issues/5044)) ([9f87505](https://github.com/reactivex/rxjs/commit/9f87505deae0aeae7dd53918e392487d6de7ab73)), closes [#5034](https://github.com/reactivex/rxjs/issues/5034)
+* **fromFetch:** don't reassign closed-over parameter in fromFetch ([#5234](https://github.com/reactivex/rxjs/issues/5234)) ([0377710](https://github.com/reactivex/rxjs/commit/03777102a3491e0b3dac00c53a1b217c45616fc6)), closes [#5233](https://github.com/reactivex/rxjs/issues/5233) [#5233](https://github.com/reactivex/rxjs/issues/5233)
+* **iterables:** errors thrown from iterables now properly propagated ([#5444](https://github.com/reactivex/rxjs/issues/5444)) ([2bce0e3](https://github.com/reactivex/rxjs/commit/2bce0e39d51fb2e9bee3e2419e1b66a6c6e48e9e))
+* **fromFetch:** missing package.json in rxjs/fetch ([#5001](https://github.com/reactivex/rxjs/issues/5001)) ([06fb735](https://github.com/reactivex/rxjs/commit/06fb73555375095bb55cdd02287bea5f9c0ddafc))
+
+
+### Features
+
+* **fromFetch:** add selector (cherry pick [#5306](https://github.com/reactivex/rxjs/issues/5306) for v6) ([#5442](https://github.com/reactivex/rxjs/issues/5442)) ([3d6e4c5](https://github.com/reactivex/rxjs/commit/3d6e4c5bf2ba2eec31fdf2498a9fcc9ad364511f))
+
+
+
 ## [6.5.5](https://github.com/reactivex/rxjs/compare/6.5.3...6.5.5) (2020-04-03)
 
 
