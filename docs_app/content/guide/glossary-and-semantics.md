@@ -26,7 +26,7 @@ The primary type in RxJS. At its highest level, an observable represents a templ
 
 ### Observer
 
-The manifestation of a [consumer](#Consumer). A type that may have some (or all) handlers for each type of [notification](#Notification): [next](#Next), [error](#Error), and [complete](#Complete). Having all three types of handlers generally gets this to be called an "observer", where if it is missing any of the notification handlers, it may be called a ["partial observer"](Partial_Observer).
+The manifestation of a [consumer](#Consumer). A type that may have some (or all) handlers for each type of [notification](#Notification): [next](#Next), [error](#Error), and [complete](#Complete). Having all three types of handlers generally gets this to be called an "observer", where if it is missing any of the notification handlers, it may be called a ["partial observer"](#Partial_Observer).
 
 ## Major Actions
 
