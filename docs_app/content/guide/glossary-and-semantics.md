@@ -34,7 +34,7 @@ There are specific actions and events that occur between major entities in RxJS 
 
 ### Subscribe
 
-The act of a [consumer](#Consumer) requesting an Observable set up a [subscription](#Subscription) so that it may [observe](#Observation) a [producer](#Producer). A subscribe action can occur with an observable via many different mechanisms. The primary mechanism is the [`subscribe` method](/api/index/class/Observable#subscribe) on the [Observable class](TODO). Other mechanisms include the [`forEach` method](/api/index/class/Observable#forEach), functions like [`lastValueFrom`](/api/index/function/lastValueFrom), and [`firstValueFrom`](/api/index/function/firstValueFrom), and the deprecated [`toPromise` method](/api/index/class/Observable#forEach).
+The act of a [consumer](#Consumer) requesting an Observable set up a [subscription](#Subscription) so that it may [observe](#Observation) a [producer](#Producer). A subscribe action can occur with an observable via many different mechanisms. The primary mechanism is the [`subscribe` method](/api/index/class/Observable#subscribe) on the [Observable class](/api/index/class/Observable). Other mechanisms include the [`forEach` method](/api/index/class/Observable#forEach), functions like [`lastValueFrom`](/api/index/function/lastValueFrom), and [`firstValueFrom`](/api/index/function/firstValueFrom), and the deprecated [`toPromise` method](/api/index/class/Observable#forEach).
 
 ### Teardown
 
