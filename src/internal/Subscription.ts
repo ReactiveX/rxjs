@@ -74,14 +74,15 @@ export class Subscription implements SubscriptionLike {
     }
 
     if (isFunction(_unsubscribe)) {
-      // It's not possible to null the _unsubscribe member as there are many
-      // classes that are derived from Subscriber (which derives from
-      // Subscription) that implement an _unsubscribe method as a mechanism for
-      // obtaining unsubscription notifications and some of those subscribers
-      // are recycled. Deleting the member will release the reference to any
-      // teardown functions passed in the constructor and will leave any
-      // methods intact.
-      delete (this as any)._unsubscribe;
+      // It's only possible to null _unsubscribe - to release the reference to
+      // any teardown function passed in the constructor - if it is actually an
+      // instance property, as there are some classes that are derived from
+      // Subscriber (which derives from Subscription) that implement an
+      // _unsubscribe method as a mechanism for obtaining unsubscription
+      // notifications and some of those subscribers are recycled.
+      if (this.hasOwnProperty('_unsubscribe')) {
+        (this as any)._unsubscribe = undefined;
+      }
       try {
         _unsubscribe.call(this);
       } catch (e) {
