@@ -1,9 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { throttle, mergeMap, mapTo } from 'rxjs/operators';
-import { of, concat, timer, Observable } from 'rxjs';
-
-declare const type: Function;
+import { of, concat, timer } from 'rxjs';
 
 /** @test {throttle} */
 describe('throttle operator', () =>  {
@@ -328,22 +326,6 @@ describe('throttle operator', () =>  {
         done(new Error('should not be called'));
       }
     );
-  });
-
-  type('should support selectors of the same type', () => {
-    /* tslint:disable:no-unused-variable */
-    let o: Observable<number>;
-    let s: Observable<number>;
-    let r: Observable<number> = o!.pipe(throttle((n) => s));
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should support selectors of a different type', () => {
-    /* tslint:disable:no-unused-variable */
-    let o: Observable<number>;
-    let s: Observable<string>;
-    let r: Observable<number> = o!.pipe(throttle((n) => s));
-    /* tslint:enable:no-unused-variable */
   });
 
   describe('throttle(fn, { leading: true, trailing: true })', () => {

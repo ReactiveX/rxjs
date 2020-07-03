@@ -1,11 +1,8 @@
 import { expect } from 'chai';
 import { expectObservable } from '../helpers/marble-testing';
-import { Observable, fromEvent, NEVER, timer } from 'rxjs';
-import { NodeStyleEventEmitter, NodeCompatibleEventEmitter, NodeEventHandler } from 'rxjs/internal/observable/fromEvent';
+import { fromEvent, NEVER, timer } from 'rxjs';
 import { mapTo, take, concat } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-
-declare const type: Function;
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -393,47 +390,6 @@ describe('fromEvent', () => {
       fromEvent(obj, 'foo').subscribe();
       done();
     }).to.not.throw(TypeError);
-  });
-
-  type('should support node style event emitters interfaces', () => {
-    /* tslint:disable:no-unused-variable */
-    let a: NodeStyleEventEmitter;
-    let b: Observable<any> = fromEvent(a!, 'mock');
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should support node compatible event emitters interfaces', () => {
-    /* tslint:disable:no-unused-variable */
-    let a: NodeCompatibleEventEmitter;
-    let b: Observable<any> = fromEvent(a!, 'mock');
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should support node style event emitters objects', () => {
-    /* tslint:disable:no-unused-variable */
-    interface NodeEventEmitter {
-      addListener(eventType: string | symbol, handler: NodeEventHandler): this;
-      removeListener(eventType: string | symbol, handler: NodeEventHandler): this;
-    }
-    let a: NodeEventEmitter;
-    let b: Observable<any> = fromEvent(a!, 'mock');
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should support React Native event emitters', () => {
-    /* tslint:disable:no-unused-variable */
-    interface EmitterSubscription {
-      context: any;
-    }
-    interface ReactNativeEventEmitterListener {
-      addListener(eventType: string, listener: (...args: any[]) => any, context?: any): EmitterSubscription;
-    }
-    interface ReactNativeEventEmitter extends ReactNativeEventEmitterListener {
-      removeListener(eventType: string, listener: (...args: any[]) => any): void;
-    }
-    let a: ReactNativeEventEmitter;
-    let b: Observable<any> = fromEvent(a!, 'mock');
-    /* tslint:enable:no-unused-variable */
   });
 
 });

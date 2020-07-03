@@ -3,8 +3,6 @@ import { forkJoin, of } from 'rxjs';
 import { lowerCaseO } from '../helpers/test-helper';
 import { hot, expectObservable, expectSubscriptions, cold } from '../helpers/marble-testing';
 
-declare const type: Function;
-
 /** @test {forkJoin} */
 describe('forkJoin', () => {
   it('should join the last values of the provided observables into an array', () => {

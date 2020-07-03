@@ -117,17 +117,6 @@ module.exports = function(suite: any) {
       return suite;
     };
 
-    /**
-     * Describe a test case to test type definition
-     * sanity on build time. Recommended only for
-     * exceptional type definition won't be used in test cases.
-     */
-
-    context.type = function(title: any, fn: any) {
-      //intentionally does not execute to avoid unexpected side effect occurs by subscription,
-      //or infinite source. Suffecient to check build time only.
-    };
-
     function stringify(x: any): string {
       return JSON.stringify(x, function (key: string, value: any) {
         if (Array.isArray(value)) {

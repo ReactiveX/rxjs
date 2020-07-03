@@ -3,8 +3,6 @@ import { mergeAll, mergeMap, take } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { throwError, from, of, queueScheduler } from 'rxjs';
 
-declare const type: Function;
-
 /** @test {mergeAll} */
 describe('mergeAll oeprator', () => {
   it('should merge a hot observable of cold observables', () => {

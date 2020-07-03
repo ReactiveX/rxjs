@@ -3,8 +3,6 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { publishLast, mergeMapTo, tap, mergeMap, refCount, retry } from 'rxjs/operators';
 import { ConnectableObservable, of, Subscription, Observable } from 'rxjs';
 
-declare const type: Function;
-
 /** @test {publishLast} */
 describe('publishLast operator', () => {
   it('should emit last notification of a simple source Observable', () => {
@@ -262,20 +260,5 @@ describe('publishLast operator', () => {
     expect(results2).to.deep.equal([4]);
     expect(subscriptions).to.equal(1);
     done();
-  });
-
-  type('should infer the type', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of(1, 2, 3);
-    const result: ConnectableObservable<number> = source.pipe(publishLast()) as ConnectableObservable<number>;
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should infer the type for the pipeable operator', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of(1, 2, 3);
-    // TODO: https://github.com/ReactiveX/rxjs/issues/2972
-    const result: ConnectableObservable<unknown> = publishLast()(source);
-    /* tslint:enable:no-unused-variable */
   });
 });

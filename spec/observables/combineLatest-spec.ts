@@ -3,8 +3,6 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { queueScheduler as rxQueueScheduler, combineLatest, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
-declare const type: Function;
-
 const queueScheduler = rxQueueScheduler;
 
 /** @test {combineLatest} */

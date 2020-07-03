@@ -1,10 +1,8 @@
 import { expect } from 'chai';
-import { NEVER, timer, of, EMPTY, concat, Subject, Observable } from 'rxjs';
+import { NEVER, timer, of, EMPTY, concat, Subject } from 'rxjs';
 import { debounce, mergeMap, mapTo } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-
-declare const type: Function;
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -432,21 +430,5 @@ describe('debounce operator', () => {
     source.next(1);
 
     expect(results).to.deep.equal([1, 2]);
-  });
-
-  type('should support selectors of the same type', () => {
-    /* tslint:disable:no-unused-variable */
-    let o: Observable<number>;
-    let s: Observable<number>;
-    let r: Observable<number> = o!.pipe(debounce((n) => s));
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should support selectors of a different type', () => {
-    /* tslint:disable:no-unused-variable */
-    let o: Observable<number>;
-    let s: Observable<string>;
-    let r: Observable<number> = o!.pipe(debounce((n) => s));
-    /* tslint:enable:no-unused-variable */
   });
 });
