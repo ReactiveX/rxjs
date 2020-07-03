@@ -26,6 +26,8 @@ While not all of the documentation for RxJS reflects this terminology, it is a g
     - [Unicast](#unicast)
     - [Cold](#cold)
     - [Hot](#hot)
+    - [Push](#push)
+    - [Pull](#pull)
   - [Minor Entities](#minor-entities)
     - [Operator](#operator)
     - [Operator Function](#operator-function)
@@ -124,6 +126,15 @@ An observable is "cold" when it creates a new [producer](#Producer) during [subs
 ### Hot
 
 An observable is "hot", when its [producer](#Producer) was created outside of the context of the [subscribe](#Subscribe) action. This means that the "hot" observable is almost always [multicast](#Multicast). It is possible that a "hot" observable is still _technically_ unicast, if it is engineered to only allow one [subscription](#Subscription) at a time, however, there is no straightforward mechanism for this in RxJS, and the scenario is a unlikely. For the purposes of discussion, all "hot" observables can be assumed to be [multicast](#Multicast). Hot observables cannot be made [cold](#Cold).
+
+### Push
+
+[Observables](#Observable) are a push-based type. That means rather than having the [consumer](#Consumer) call a function or perform some other action to get a value, the [consumer](#Consumer) receives values as soon as the [producer](#Producer) has produced them, via a registered [next](#Next) handler.
+
+
+### Pull 
+
+Pull-based systems are the opposite of [push](#Push)-based. In a pull-based type or system, the [consumer](#Consumer) must request each value the [producer](#Producer) has produced manually, perhaps long after the [producer](#Producer) has actually done so. Examples of such systems are [Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function) and [Iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) 
 
 ## Minor Entities
 
