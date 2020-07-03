@@ -62,7 +62,7 @@ The [producer](#Producer) has encountered a problem and is notifying the [consum
 
 ### Complete
 
-The [producer](#Producer) is notifying the [consumer](#Consumer) that it is done [nexting](#Next) values, without error, will send no more values, and intends to [teardown](#Teardown). [Completion](#Complete) cannot occur after an [error](#Error), or [unsubscribe](#Unsubscription). [Complete](#Complete) cannot be called twice. Complete will always happen before [teardown](#Teardown).
+The [producer](#Producer) is notifying the [consumer](#Consumer) that it is done [nexting](#Next) values, without error, will send no more values, and it will [teardown](#Teardown). [Completion](#Complete) cannot occur after an [error](#Error), or [unsubscribe](#Unsubscription). [Complete](#Complete) cannot be called twice. [Complete](#Complete), if it occurs, will always happen before [teardown](#Teardown).
 
 ### Notification
 
@@ -78,7 +78,7 @@ The act of one [producer](#Producer) being [observed](#Observation) by **many** 
 
 ### Unicast
 
-The act of one [producer](#Producer) being [observed](#Observation) **only one** [consumer](#Consumer). An observable is "unicast" when it only connects one [producer](#Producer) to one [consumer](#consumer). Unicast doesn't necessarily mean ["cold"]([#3254](https://github.com/ReactiveX/rxjs/issues/3254)
+The act of one [producer](#Producer) being [observed](#Observation) **only one** [consumer](#Consumer). An observable is "unicast" when it only connects one [producer](#Producer) to one [consumer](#consumer). Unicast doesn't necessarily mean ["cold"](#Cold).
 
 ### Cold
 
@@ -100,7 +100,11 @@ A function that takes an [observable](#Observable), and maps it to a new [observ
 
 ### Operation
 
-An action taken while handling a [notification](#Notification), as set up by an [operator](#Operator) and/or [operator function](#Operator_Function). In RxJS, a developer can chain several [operator functions](#Operator_Function) together by calling [operators](#Operator) and passing them to [pipe](/api/index/class/Observable#pipe), which results in a new [observable](#Observable). During [subscription](#Subscription) to that observable, operations are performed in an order dictated by the [observation chain](#Observation_Chain).
+An action taken while handling a [notification](#Notification), as set up by an [operator](#Operator) and/or [operator function](#Operator_Function). In RxJS, a developer can chain several [operator functions](#Operator_Function) together by calling [operators](#Operator) and passing the created [operator functions](#Operator_Function) to the [`pipe`](/api/index/class/Observable#pipe) method of [`Observable`](/api/index/class/Observable), which results in a new [observable](#Observable). During [subscription](#Subscription) to that observable, operations are performed in an order dictated by the [observation chain](#Observation_Chain).
+
+### Stream
+
+A "stream" or "streaming" in the case of observables, refers to the collection of [operations](#Operation), as they are processed during a [subscription](#Subscription). This is not to be confused with node [Streams](https://nodejs.org/api/stream.html), and the word "stream", on its own, should be used _sparingly_ in documentation and articles. Instead, prefer [observation chain](#Observation_Chain), [operations](#Operation), or [subscription](#Subscription). "Streaming" is less ambiguous, and is fine to use given this defined meaning.
 
 ### Source
 A [observable](#Observable) or [valid observable input](#Observable_Inputs) having been converted to an observable, that will supply values to another [observable](#Observable), either as the result of an [operator](#Operator) or other function that creates one observable as another. This [source](#Source), will be the [producer](#Producer) for the resulting [observable](#Observable) and all of its [subscriptions](#Subscriptions). Sources may generally be any type of observable.
@@ -133,4 +137,4 @@ An "unhandled error" is any [error](#Error) that is not handled by a [consumer](
 
 ### Upstream And Downstream
 
-The order in which [notifications](#Notification) are processed by [operations](#Operation) in a [stream](#Stream) have a directionality to them. "Upstream" refers to an [operation](#Operation) that was already processed before the current [operation](#Operation), and "downstream" refers to an [operation](#Operation) that _will_ be processed _after_ the current [operation](#Operation).
+The order in which [notifications](#Notification) are processed by [operations](#Operation) in a [stream](#Stream) have a directionality to them. "Upstream" refers to an [operation](#Operation) that was already processed before the current [operation](#Operation), and "downstream" refers to an [operation](#Operation) that _will_ be processed _after_ the current [operation](#Operation). See also: [Streaming](#Stream).
