@@ -1,9 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { zipAll, mergeMap } from 'rxjs/operators';
-import { queueScheduler, of, zip, Observable } from 'rxjs';
-
-declare const type: Function;
+import { queueScheduler, of, zip } from 'rxjs';
 
 /** @test {zipAll} */
 describe('zipAll operator', () => {
@@ -726,97 +724,5 @@ describe('zipAll operator', () => {
     const expected =   '|';
 
     expectObservable(source.pipe(zipAll())).toBe(expected);
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number[]> = of(source1, source2, source3)
-      .pipe(zipAll());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number> = of(source1, source2, source3)
-      .pipe(zipAll((...args) => args.reduce((acc, x) => acc + x, 0)));
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number[]> = of(source1, source2, source3)
-      .pipe(zipAll());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number> = of(source1, source2, source3)
-      .pipe(zipAll((...args) => args.reduce((acc, x) => acc + x, 0)));
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string[]> = of(<any>source1, <any>source2, <any>source3)
-      .pipe(zipAll<string>());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string> = of(<any>source1, <any>source2, <any>source3)
-      .pipe(zipAll<string>((...args) => args.reduce((acc, x) => acc + x, 0)));
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string[]> = of(<any>source1, <any>source2, <any>source3)
-      .pipe(zipAll<string>());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string> = of(<any>source1, <any>source2, <any>source3)
-      .pipe(zipAll<string>((...args) => args.reduce((acc, x) => acc + x, 0)));
-    /* tslint:enable:no-unused-variable */
   });
 });

@@ -3,8 +3,6 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { throwError, ConnectableObservable, EMPTY, NEVER, of, Observable, Subscription } from 'rxjs';
 import { publishReplay, mergeMapTo, tap, mergeMap, refCount, retry, repeat, map } from 'rxjs/operators';
 
-declare const type: Function;
-
 /** @test {publishReplay} */
 describe('publishReplay operator', () => {
   it('should mirror a simple source Observable', () => {
@@ -489,48 +487,5 @@ describe('publishReplay operator', () => {
 
     expectObservable(published).toBe(expected, undefined, error);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
-  });
-
-  type('should infer the type', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of(1, 2, 3);
-    const result: ConnectableObservable<number> = source.pipe(publishReplay(1)) as ConnectableObservable<number>;
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should infer the type with a selector', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of(1, 2, 3);
-    const result: Observable<number> = source.pipe(publishReplay(1, undefined, s => s.pipe(map(x => x))));
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should infer the type with a type-changing selector', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of(1, 2, 3);
-    const result: Observable<string> = source.pipe(publishReplay(1, undefined, s => s.pipe(map(x => x + '!'))));
-    /* tslint:enable:no-unused-variable */
-  });
-
-  // TODO: https://github.com/ReactiveX/rxjs/issues/2972
-  // type('should infer the type for the pipeable operator', () => {
-  //   /* tslint:disable:no-unused-variable */
-  //   const source =of(1, 2, 3);
-  //   const result: ConnectableObservable<number> = publishReplay<number>(1)(source);
-  //   /* tslint:enable:no-unused-variable */
-  // });
-
-  type('should infer the type for the pipeable operator with a selector', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of(1, 2, 3);
-    const result: Observable<number> = source.pipe(publishReplay(1, undefined, s => s.pipe(map(x => x))));
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should infer the type for the pipeable operator with a type-changing selector', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of(1, 2, 3);
-    const result: Observable<string> = source.pipe(publishReplay(1, undefined, s => s.pipe(map(x => x + '!'))));
-    /* tslint:enable:no-unused-variable */
   });
 });

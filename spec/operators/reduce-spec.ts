@@ -3,8 +3,6 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { reduce, mergeMap } from 'rxjs/operators';
 import { range, of } from 'rxjs';
 
-declare const type: Function;
-
 /** @test {reduce} */
 describe('reduce operator', () => {
   it('should reduce', () => {

@@ -1,10 +1,8 @@
 import { expect } from 'chai';
-import { queueScheduler, of, Observable } from 'rxjs';
+import { queueScheduler, of } from 'rxjs';
 import { combineAll, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
-
-declare const type: Function;
 
 /** @test {combineAll} */
 describe('combineAll operator', () => {
@@ -542,103 +540,5 @@ describe('combineAll operator', () => {
       expect(r.length).to.equal(0);
       done();
     });
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number[]> = of(source1, source2, source3).pipe(combineAll());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number> = of(source1, source2, source3).pipe(
-      combineAll((...args) => args.reduce((acc, x) => acc + x, 0))
-    );
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number[]> = of(source1, source2, source3).pipe(
-      combineAll()
-    );
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number> = of(source1, source2, source3).pipe(
-      combineAll((...args) => args.reduce((acc, x) => acc + x, 0))
-    );
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string[]> = of(<any>source1, <any>source2, <any>source3).pipe(
-      combineAll<string>()
-    );
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string> = of(<any>source1, <any>source2, <any>source3).pipe(
-      combineAll<string>((...args) => args.reduce((acc, x) => acc + x, 0))
-    );
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string[]> = of(<any>source1, <any>source2, <any>source3).pipe(
-      combineAll<string>()
-    );
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string> = of(<any>source1, <any>source2, <any>source3).pipe(
-      combineAll<string>((...args) => args.reduce((acc, x) => acc + x, 0))
-    );
-    /* tslint:enable:no-unused-variable */
   });
 });

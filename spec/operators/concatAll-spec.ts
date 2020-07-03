@@ -1,10 +1,9 @@
 import { expect } from 'chai';
-import { from, throwError, of, Observable } from 'rxjs';
+import { from, throwError, of } from 'rxjs';
 import { concatAll, take, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare const type: Function;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {concatAll} */
@@ -522,59 +521,5 @@ describe('concatAll operator', () => {
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number> = of(source1, source2, source3).pipe(
-      concatAll()
-    );
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number> = of(source1, source2, source3).pipe(
-      concatAll()
-    );
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string> = of(
-      <any>source1,
-      <any>source2,
-      <any>source3
-    ).pipe(concatAll<string>());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string> = of(
-      <any>source1,
-      <any>source2,
-      <any>source3
-    ).pipe(concatAll<string>());
-    /* tslint:enable:no-unused-variable */
   });
 });

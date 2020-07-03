@@ -4,8 +4,6 @@ import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { Subscribable, EMPTY, Observable, of, Observer, asapScheduler, asyncScheduler } from 'rxjs';
 
-declare const type: Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {expand} */

@@ -1,9 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { mergeMapTo, map } from 'rxjs/operators';
-import { from, of, Observable } from 'rxjs';
-
-declare const type: Function;
+import { from, of } from 'rxjs';
 
 /** @test {mergeMapTo} */
 describe('mergeMapTo', () => {
@@ -367,15 +365,5 @@ describe('mergeMapTo', () => {
     });
 
     expect(completed).to.be.true;
-  });
-
-  type('should support type signatures', () => {
-    let o: Observable<number>;
-    let m: Observable<string>;
-
-    /* tslint:disable:no-unused-variable */
-    let a1: Observable<string> = o!.pipe(mergeMapTo(m!));
-    let a2: Observable<string> = o!.pipe(mergeMapTo(m!, 3));
-    /* tslint:enable:no-unused-variable */
   });
 });

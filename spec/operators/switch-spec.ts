@@ -3,8 +3,6 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { Observable, of, NEVER, queueScheduler, Subject } from 'rxjs';
 import { map, switchAll, mergeMap } from 'rxjs/operators';
 
-declare const type: Function;
-
 /** @test {switch} */
 describe('switchAll', () => {
   it('should switch a hot observable of cold observables', () => {

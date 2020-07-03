@@ -1,9 +1,7 @@
 import { expect } from 'chai';
 import { exhaust, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { of, Observable } from 'rxjs';
-
-declare const type: Function;
+import { of } from 'rxjs';
 
 /** @test {exhaust} */
 describe('exhaust operator', () => {
@@ -213,51 +211,5 @@ describe('exhaust operator', () => {
       }, () => {
         done(new Error('should not be called'));
       });
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number> = of(source1, source2, source3)
-      .pipe(exhaust());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number> = of(source1, source2, source3)
-      .pipe(exhaust());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string> = of(<any>source1, <any>source2, <any>source3)
-      .pipe(exhaust<string>());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string> = of(<any>source1, <any>source2, <any>source3)
-      .pipe(exhaust<string>());
-    /* tslint:enable:no-unused-variable */
   });
 });

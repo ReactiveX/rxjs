@@ -4,8 +4,6 @@ import { Subject, ReplaySubject, of, ConnectableObservable, zip, concat, Subscri
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 
-declare const type: Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {multicast} */
@@ -700,51 +698,6 @@ describe('multicast operator', () => {
           expect(expected.length).to.equal(0);
           done();
         });
-    });
-  });
-
-  describe('typings', () => {
-    type('should infer the type', () => {
-      /* tslint:disable:no-unused-variable */
-      const source = of(1, 2, 3);
-      const result: ConnectableObservable<number> = source.pipe(multicast(() => new Subject<number>())) as ConnectableObservable<number>;
-      /* tslint:enable:no-unused-variable */
-    });
-
-    type('should infer the type with a selector', () => {
-      /* tslint:disable:no-unused-variable */
-      const source = of(1, 2, 3);
-      const result: Observable<number> = source.pipe(multicast(() => new Subject<number>(), s => s.pipe(map(x => x))));
-      /* tslint:enable:no-unused-variable */
-    });
-
-    type('should infer the type with a type-changing selector', () => {
-      /* tslint:disable:no-unused-variable */
-      const source = of(1, 2, 3);
-      const result: Observable<string> = source.pipe(multicast(() => new Subject<number>(), s => s.pipe(map(x => x + '!'))));
-      /* tslint:enable:no-unused-variable */
-    });
-
-    type('should infer the type for the pipeable operator', () => {
-      /* tslint:disable:no-unused-variable */
-      const source = of(1, 2, 3);
-      // TODO: https://github.com/ReactiveX/rxjs/issues/2972
-      const result: ConnectableObservable<number> = multicast(() => new Subject<number>())(source);
-      /* tslint:enable:no-unused-variable */
-    });
-
-    type('should infer the type for the pipeable operator with a selector', () => {
-      /* tslint:disable:no-unused-variable */
-      const source = of(1, 2, 3);
-      const result: Observable<number> = source.pipe(multicast(() => new Subject<number>(), s => s.pipe(map(x => x))));
-      /* tslint:enable:no-unused-variable */
-    });
-
-    type('should infer the type for the pipeable operator with a type-changing selector', () => {
-      /* tslint:disable:no-unused-variable */
-      const source = of(1, 2, 3);
-      const result: Observable<string> = source.pipe(multicast(() => new Subject<number>(), s => s.pipe(map(x => x + '!'))));
-      /* tslint:enable:no-unused-variable */
     });
   });
 });

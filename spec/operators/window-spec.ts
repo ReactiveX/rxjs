@@ -3,8 +3,6 @@ import { window, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { EMPTY, of, Observable } from 'rxjs';
 
-declare const type: Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {window} */

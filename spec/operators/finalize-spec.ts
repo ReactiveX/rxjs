@@ -5,8 +5,6 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { of, timer, interval, NEVER, Observable } from 'rxjs';
 import { asInteropObservable } from '../helpers/interop-helper';
 
-declare const type: Function;
-
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {finalize} */
