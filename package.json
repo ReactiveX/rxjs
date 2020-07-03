@@ -13,17 +13,16 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
+    "src/**/*.ts": [
+      "prettier --write"
     ],
+    "*.js": "eslint --cache --fix",
     "*.ts": [
-      "tslint --fix",
-      "git add"
-    ]
+      "tslint --fix"
+    ],
+    "*.{js,css,md}": "prettier --write"
   },
   "scripts": {
-    "precommit": "lint-staged",
     "commitmsg": "validate-commit-msg",
     "build:spec:browser": "echo \"Browser test is not working currently\" && exit -1 && webpack --config spec/support/webpack.mocha.config.js",
     "lint_spec": "tslint -c tslint.json -p spec/tsconfig.json \"spec/**/*.ts\"",
@@ -121,8 +120,9 @@
     "fs-extra": "^8.1.0",
     "glob": "7.1.2",
     "google-closure-compiler-js": "20170218.0.0",
+    "husky": "^4.2.5",
     "klaw-sync": "3.0.2",
-    "lint-staged": "^8.1.6",
+    "lint-staged": "^10.2.11",
     "lodash": "^4.17.15",
     "minimist": "1.2.2",
     "mkdirp": "0.5.1",
@@ -130,6 +130,7 @@
     "npm-run-all": "4.1.2",
     "opn-cli": "3.1.0",
     "platform": "1.3.5",
+    "prettier": "^2.0.5",
     "promise": "8.0.1",
     "rollup": "0.66.6",
     "rollup-plugin-alias": "1.4.0",
@@ -141,7 +142,8 @@
     "source-map-support": "0.5.3",
     "systemjs": "^0.21.0",
     "ts-api-guardian": "^0.5.0",
-    "tslint": "5.9.1",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
     "tslint-etc": "1.9.2",
     "tslint-no-toplevel-property-access": "0.0.2",
     "tslint-no-unused-expression-chai": "0.0.3",
@@ -168,5 +170,10 @@
     "package.json",
     "README.md",
     "tsconfig.json"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
 }
