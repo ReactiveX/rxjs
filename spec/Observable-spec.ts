@@ -958,7 +958,7 @@ describe('Observable.lift', () => {
         error: err => thrownError = err
       });
     } catch (err) {
-      done("Should never hit this!");
+      done('Should never hit this!');
     }
 
     expect(thrownError).to.equal(new RangeError('Maximum call stack size exceeded'));
