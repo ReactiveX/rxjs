@@ -1,3 +1,12 @@
+# [7.0.0-beta.2](https://github.com/reactivex/rxjs/compare/7.0.0-beta.1...7.0.0-beta.2) (2020-07-03)
+
+
+### Bug Fixes
+
+* **dependencies:** Move accidental dependency on `typedoc` to dev-dependencies. ([#5566](https://github.com/reactivex/rxjs/issues/5566)) ([45702bf](https://github.com/ReactiveX/rxjs/commit/45702bf6cd1b4a150f47b2a1d273f1ee31ca2482))
+
+
+
 # [7.0.0-beta.1](https://github.com/reactivex/rxjs/compare/7.0.0-beta.0...7.0.0-beta.1) (2020-07-02)
 
 
