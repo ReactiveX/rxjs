@@ -2,6 +2,7 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.
@@ -37,7 +38,7 @@ import { OperatorFunction } from '../types';
  */
 export function ignoreElements(): OperatorFunction<any, never> {
   return function ignoreElementsOperatorFunction(source: Observable<any>) {
-    return source.lift(new IgnoreElementsOperator());
+    return lift(source, new IgnoreElementsOperator());
   };
 }
 

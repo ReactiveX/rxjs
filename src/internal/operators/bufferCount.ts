@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { OperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Buffers the source Observable values until the size hits the maximum
@@ -59,7 +60,7 @@ import { OperatorFunction, TeardownLogic } from '../types';
  */
 export function bufferCount<T>(bufferSize: number, startBufferEvery: number | null = null): OperatorFunction<T, T[]> {
   return function bufferCountOperatorFunction(source: Observable<T>) {
-    return source.lift(new BufferCountOperator<T>(bufferSize, startBufferEvery));
+    return lift(source, new BufferCountOperator<T>(bufferSize, startBufferEvery));
   };
 }
 

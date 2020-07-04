@@ -7,6 +7,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Branch out the source Observable values as a nested Observable starting from
@@ -57,7 +58,7 @@ import { OperatorFunction } from '../types';
  */
 export function windowToggle<T, O>(openings: Observable<O>,
                                    closingSelector: (openValue: O) => Observable<any>): OperatorFunction<T, Observable<T>> {
-  return (source: Observable<T>) => source.lift(new WindowToggleOperator<T, O>(openings, closingSelector));
+  return (source: Observable<T>) => lift(source, new WindowToggleOperator<T, O>(openings, closingSelector));
 }
 
 class WindowToggleOperator<T, O> implements Operator<T, Observable<T>> {

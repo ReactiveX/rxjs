@@ -8,6 +8,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext<T>(): OperatorFunction<T, T>;
@@ -95,7 +96,7 @@ export function onErrorResumeNext<T, R>(...nextSources: Array<ObservableInput<an
     nextSources = <Array<Observable<any>>>nextSources[0];
   }
 
-  return (source: Observable<T>) => source.lift(new OnErrorResumeNextOperator<T, R>(nextSources));
+  return (source: Observable<T>) => lift(source, new OnErrorResumeNextOperator<T, R>(nextSources));
 }
 
 /* tslint:disable:max-line-length */
@@ -119,7 +120,7 @@ export function onErrorResumeNextStatic<T, R>(...nextSources: Array<ObservableIn
   }
   source = nextSources.shift()!;
 
-  return from(source, null!).lift(new OnErrorResumeNextOperator<T, R>(nextSources));
+  return lift(from(source), new OnErrorResumeNextOperator<T, R>(nextSources));
 }
 
 class OnErrorResumeNextOperator<T, R> implements Operator<T, R> {

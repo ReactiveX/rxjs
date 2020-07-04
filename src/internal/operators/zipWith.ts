@@ -1,6 +1,7 @@
 import { zip as zipStatic } from '../observable/zip';
 import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueTupleFromArray, Cons } from '../types';
+import { stankyLift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 /** @deprecated Deprecated use {@link zipWith} */
@@ -38,10 +39,10 @@ export function zip<T, TOther, R>(array: Array<ObservableInput<TOther>>, project
  */
 export function zip<T, R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): OperatorFunction<T, R> {
   return function zipOperatorFunction(source: Observable<T>) {
-    return source.lift.call(
-      zipStatic<R>(source, ...observables),
-      undefined
-    ) as Observable<R>;
+    return stankyLift(
+      source,
+      zipStatic<R>(source, ...observables)
+    );
   };
 }
 

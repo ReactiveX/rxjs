@@ -5,6 +5,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Buffers the source Observable values until `closingNotifier` emits.
@@ -47,7 +48,7 @@ import { OperatorFunction } from '../types';
  */
 export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]> {
   return function bufferOperatorFunction(source: Observable<T>) {
-    return source.lift(new BufferOperator<T>(closingNotifier));
+    return lift(source, new BufferOperator<T>(closingNotifier));
   };
 }
 

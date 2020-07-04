@@ -6,6 +6,7 @@ import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '
 
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
+import { lift } from '../util/lift';
 
 /**
  * Ignores source values for a duration determined by another Observable, then
@@ -54,7 +55,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
  */
 export function audit<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): MonoTypeOperatorFunction<T> {
   return function auditOperatorFunction(source: Observable<T>) {
-    return source.lift(new AuditOperator(durationSelector));
+    return lift(source, new AuditOperator(durationSelector));
   };
 }
 

@@ -1,6 +1,7 @@
 import { merge as mergeStatic } from '../observable/merge';
 import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, SchedulerLike, ObservedValueUnionFromArray } from '../types';
+import { stankyLift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 
@@ -57,10 +58,10 @@ export function merge<T, R>(...observables: Array<ObservableInput<any> | Schedul
  * @deprecated use {@link mergeWith} or static {@link merge}
  */
 export function merge<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike | number | undefined>): OperatorFunction<T, R> {
-  return (source: Observable<T>) => source.lift.call(
-    mergeStatic(source, ...(observables as any[])),
-    undefined
-  ) as Observable<R>;
+  return (source: Observable<T>) => stankyLift(
+    source,
+    mergeStatic(source, ...(observables as any[]))
+  );
 }
 
 export function mergeWith<T>(): OperatorFunction<T, T>;

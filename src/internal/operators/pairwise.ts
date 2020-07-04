@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Groups pairs of consecutive emissions together and emits them as an array of
@@ -46,7 +47,7 @@ import { OperatorFunction } from '../types';
  * @name pairwise
  */
 export function pairwise<T>(): OperatorFunction<T, [T, T]> {
-  return (source: Observable<T>) => source.lift(new PairwiseOperator());
+  return (source: Observable<T>) => lift(source, new PairwiseOperator());
 }
 
 class PairwiseOperator<T> implements Operator<T, [T, T]> {

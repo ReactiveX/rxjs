@@ -1,6 +1,7 @@
 import { CombineLatestOperator } from '../observable/combineLatest';
 import { Observable } from '../Observable';
 import { OperatorFunction, ObservableInput } from '../types';
+import { lift } from '../util/lift';
 
 export function combineAll<T>(): OperatorFunction<ObservableInput<T>, T[]>;
 export function combineAll<T>(): OperatorFunction<any, T[]>;
@@ -53,5 +54,5 @@ export function combineAll<R>(project: (...values: Array<any>) => R): OperatorFu
  * @name combineAll
  */
 export function combineAll<T, R>(project?: (...values: Array<any>) => R): OperatorFunction<T, R> {
-  return (source: Observable<T>) => source.lift(new CombineLatestOperator(project));
+  return (source: Observable<T>) => lift(source, new CombineLatestOperator(project));
 }

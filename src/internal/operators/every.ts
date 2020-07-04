@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Observer, OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
@@ -30,7 +31,7 @@ import { Observer, OperatorFunction } from '../types';
  */
 export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
                          thisArg?: any): OperatorFunction<T, boolean> {
-  return (source: Observable<T>) => source.lift(new EveryOperator(predicate, thisArg, source));
+  return (source: Observable<T>) => lift(source, new EveryOperator(predicate, thisArg, source));
 }
 
 class EveryOperator<T> implements Operator<T, boolean> {

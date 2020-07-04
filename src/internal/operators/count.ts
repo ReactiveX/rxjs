@@ -2,6 +2,7 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Observer, OperatorFunction } from '../types';
 import { Subscriber } from '../Subscriber';
+import { lift } from '../util/lift';
 /**
  * Counts the number of emissions on the source and emits that number when the
  * source completes.
@@ -62,7 +63,7 @@ import { Subscriber } from '../Subscriber';
  */
 
 export function count<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, number> {
-  return (source: Observable<T>) => source.lift(new CountOperator(predicate, source));
+  return (source: Observable<T>) => lift(source, new CountOperator(predicate, source));
 }
 
 class CountOperator<T> implements Operator<T, number> {

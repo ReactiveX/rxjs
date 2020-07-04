@@ -5,6 +5,7 @@ import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { ThrottleConfig, defaultThrottleConfig } from './throttle';
 import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source
@@ -87,7 +88,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
 export function throttleTime<T>(duration: number,
                                 scheduler: SchedulerLike = async,
                                 config: ThrottleConfig = defaultThrottleConfig): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new ThrottleTimeOperator(duration, scheduler, !!config.leading, !!config.trailing));
+  return (source: Observable<T>) => lift(source, new ThrottleTimeOperator(duration, scheduler, !!config.leading, !!config.trailing));
 }
 
 class ThrottleTimeOperator<T> implements Operator<T, T> {

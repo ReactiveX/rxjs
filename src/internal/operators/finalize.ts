@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Returns an Observable that mirrors the source Observable, but will call a specified function when
@@ -59,7 +60,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @name finally
  */
 export function finalize<T>(callback: () => void): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new FinallyOperator(callback));
+  return (source: Observable<T>) => lift(source, new FinallyOperator(callback));
 }
 
 class FinallyOperator<T> implements Operator<T, T> {

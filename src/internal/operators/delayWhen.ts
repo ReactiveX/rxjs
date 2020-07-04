@@ -6,6 +6,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 /** @deprecated In future versions, empty notifiers will no longer re-emit the source value on the output observable. */
@@ -76,10 +77,9 @@ export function delayWhen<T>(delayDurationSelector: (value: T, index: number) =>
                              subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T> {
   if (subscriptionDelay) {
     return (source: Observable<T>) =>
-      new SubscriptionDelayObservable(source, subscriptionDelay)
-        .lift(new DelayWhenOperator(delayDurationSelector));
+      lift(new SubscriptionDelayObservable(source, subscriptionDelay), new DelayWhenOperator(delayDurationSelector));
   }
-  return (source: Observable<T>) => source.lift(new DelayWhenOperator(delayDurationSelector));
+  return (source: Observable<T>) => lift(source, new DelayWhenOperator(delayDurationSelector));
 }
 
 class DelayWhenOperator<T> implements Operator<T, T> {

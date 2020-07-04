@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 export function mapTo<R>(value: R): OperatorFunction<any, R>;
 /** @deprecated remove in v8. Use mapTo<R>(value: R): OperatorFunction<any, R> signature instead **/
@@ -39,7 +40,7 @@ export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
  * @name mapTo
  */
 export function mapTo<R>(value: R): OperatorFunction<any, R> {
-  return (source: Observable<any>) => source.lift(new MapToOperator(value));
+  return (source: Observable<any>) => lift(source, new MapToOperator(value));
 }
 
 class MapToOperator<T, R> implements Operator<T, R> {

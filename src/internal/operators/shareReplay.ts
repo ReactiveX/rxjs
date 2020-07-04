@@ -3,6 +3,7 @@ import { ReplaySubject } from '../ReplaySubject';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { Subscriber } from '../Subscriber';
+import { lift } from '../util/lift';
 
 export interface ShareReplayConfig {
   bufferSize?: number;
@@ -139,7 +140,7 @@ export function shareReplay<T>(
       scheduler
     };
   }
-  return (source: Observable<T>) => source.lift(shareReplayOperator(config));
+  return (source: Observable<T>) => lift(source, shareReplayOperator(config));
 }
 
 function shareReplayOperator<T>({

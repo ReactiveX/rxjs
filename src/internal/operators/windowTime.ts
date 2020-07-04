@@ -7,6 +7,7 @@ import { Subscription } from '../Subscription';
 import { isNumeric } from '../util/isNumeric';
 import { isScheduler } from '../util/isScheduler';
 import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
+import { lift } from '../util/lift';
 
 export function windowTime<T>(windowTimeSpan: number,
                               scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
@@ -118,7 +119,7 @@ export function windowTime<T>(windowTimeSpan: number): OperatorFunction<T, Obser
   }
 
   return function windowTimeOperatorFunction(source: Observable<T>) {
-    return source.lift(new WindowTimeOperator<T>(windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler));
+    return lift(source, new WindowTimeOperator<T>(windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler));
   };
 }
 

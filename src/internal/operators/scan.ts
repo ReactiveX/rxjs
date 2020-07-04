@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { OperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function scan<V, A = V>(accumulator: (acc: A|V, value: V, index: number) => A): OperatorFunction<V, V|A>;
@@ -63,7 +64,7 @@ export function scan<V, A, S>(accumulator: (acc: V|A|S, value: V, index: number)
   }
 
   return function scanOperatorFunction(source: Observable<V>) {
-    return source.lift(new ScanOperator(accumulator, seed, hasSeed));
+    return lift(source, new ScanOperator(accumulator, seed, hasSeed));
   };
 }
 

@@ -8,6 +8,7 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function mergeMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, concurrent?: number): OperatorFunction<T, ObservedValueOf<O>>;
@@ -86,7 +87,7 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
   } else if (typeof resultSelector === 'number') {
     concurrent = resultSelector;
   }
-  return (source: Observable<T>) => source.lift(new MergeMapOperator(project, concurrent));
+  return (source: Observable<T>) => lift(source, new MergeMapOperator(project, concurrent));
 }
 
 export class MergeMapOperator<T, R> implements Operator<T, R> {

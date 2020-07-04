@@ -3,6 +3,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { async } from '../scheduler/async';
 import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Emits the most recently emitted value from the source Observable within
@@ -46,7 +47,7 @@ import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic
  * @name sampleTime
  */
 export function sampleTime<T>(period: number, scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new SampleTimeOperator(period, scheduler));
+  return (source: Observable<T>) => lift(source, new SampleTimeOperator(period, scheduler));
 }
 
 class SampleTimeOperator<T> implements Operator<T, T> {

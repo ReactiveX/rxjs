@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { OperatorFunction, MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function filter<T, S extends T>(predicate: (value: T, index: number) => value is S,
@@ -56,7 +57,7 @@ export function filter<T>(predicate: (value: T, index: number) => boolean,
 export function filter<T>(predicate: (value: T, index: number) => boolean,
                           thisArg?: any): MonoTypeOperatorFunction<T> {
   return function filterOperatorFunction(source: Observable<T>): Observable<T> {
-    return source.lift(new FilterOperator(predicate, thisArg));
+    return lift(source, new FilterOperator(predicate, thisArg));
   };
 }
 

@@ -3,6 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Branch out the source Observable values as a nested Observable with each
@@ -69,7 +70,7 @@ import { OperatorFunction } from '../types';
 export function windowCount<T>(windowSize: number,
                                startWindowEvery: number = 0): OperatorFunction<T, Observable<T>> {
   return function windowCountOperatorFunction(source: Observable<T>) {
-    return source.lift(new WindowCountOperator<T>(windowSize, startWindowEvery));
+    return lift(source, new WindowCountOperator<T>(windowSize, startWindowEvery));
   };
 }
 

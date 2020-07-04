@@ -3,6 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Skip the last `count` values emitted by the source Observable.
@@ -42,7 +43,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @name skipLast
  */
 export function skipLast<T>(count: number): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new SkipLastOperator(count));
+  return (source: Observable<T>) => lift(source, new SkipLastOperator(count));
 }
 
 class SkipLastOperator<T> implements Operator<T, T> {

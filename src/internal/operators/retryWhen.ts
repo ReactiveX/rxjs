@@ -9,6 +9,7 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
@@ -63,7 +64,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @name retryWhen
  */
 export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new RetryWhenOperator(notifier, source));
+  return (source: Observable<T>) => lift(source, new RetryWhenOperator(notifier, source));
 }
 
 class RetryWhenOperator<T> implements Operator<T, T> {

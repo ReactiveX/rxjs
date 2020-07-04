@@ -9,6 +9,7 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source
@@ -40,7 +41,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @name repeatWhen
  */
 export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new RepeatWhenOperator(notifier));
+  return (source: Observable<T>) => lift(source, new RepeatWhenOperator(notifier));
 }
 
 class RepeatWhenOperator<T> implements Operator<T, T> {

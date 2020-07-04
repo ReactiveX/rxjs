@@ -8,6 +8,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function switchMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
@@ -89,7 +90,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
       ))
     );
   }
-  return (source: Observable<T>) => source.lift(new SwitchMapOperator(project));
+  return (source: Observable<T>) => lift(source, new SwitchMapOperator(project));
 }
 
 class SwitchMapOperator<T, R> implements Operator<T, R> {

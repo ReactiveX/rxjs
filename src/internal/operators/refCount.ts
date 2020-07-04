@@ -4,6 +4,7 @@ import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { Observable } from '../Observable';
+import { lift } from '../util/lift';
 
 /**
  * Make a {@link ConnectableObservable} behave like a ordinary observable and automates the way
@@ -60,7 +61,7 @@ import { Observable } from '../Observable';
  */
 export function refCount<T>(): MonoTypeOperatorFunction<T> {
   return function refCountOperatorFunction(source: ConnectableObservable<T>): Observable<T> {
-    return source.lift(new RefCountOperator());
+    return lift(source, new RefCountOperator());
   } as MonoTypeOperatorFunction<T>;
 }
 

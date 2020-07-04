@@ -5,6 +5,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function withLatestFrom<T, R>(project: (v1: T) => R): OperatorFunction<T, R>;
@@ -74,7 +75,7 @@ export function withLatestFrom<T, R>(...args: Array<ObservableInput<any> | ((...
       project = args.pop();
     }
     const observables = <Observable<any>[]>args;
-    return source.lift(new WithLatestFromOperator(observables, project));
+    return lift(source, new WithLatestFromOperator(observables, project));
   };
 }
 

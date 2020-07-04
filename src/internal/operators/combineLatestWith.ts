@@ -4,6 +4,7 @@ import { CombineLatestOperator } from '../observable/combineLatest';
 import { from } from '../observable/from';
 import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueTupleFromArray, Cons } from '../types';
+import { lift, stankyLift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 /** @deprecated use {@link combineLatestWith} */
@@ -53,10 +54,11 @@ export function combineLatest<T, R>(...observables: Array<ObservableInput<any> |
     observables = (<any>observables[0]).slice();
   }
 
-  return (source: Observable<T>) => source.lift.call(
+  return (source: Observable<T>) => stankyLift(
+    source,
     from([source, ...observables]),
     new CombineLatestOperator(project)
-  ) as Observable<R>;
+  );
 }
 
 /**

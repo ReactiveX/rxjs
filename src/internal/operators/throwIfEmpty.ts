@@ -3,6 +3,7 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { TeardownLogic, MonoTypeOperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * If the source observable completes without emitting a value, it will emit
@@ -36,7 +37,7 @@ import { TeardownLogic, MonoTypeOperatorFunction } from '../types';
  */
 export function throwIfEmpty <T>(errorFactory: (() => any) = defaultErrorFactory): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => {
-    return source.lift(new ThrowIfEmptyOperator(errorFactory));
+    return lift(source, new ThrowIfEmptyOperator(errorFactory));
   };
 }
 

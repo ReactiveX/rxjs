@@ -3,6 +3,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { observeNotification } from '../Notification';
 import { OperatorFunction, ObservableNotification, ValueFromNotification } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Converts an Observable of {@link ObservableNotification} objects into the emissions
@@ -53,7 +54,7 @@ import { OperatorFunction, ObservableNotification, ValueFromNotification } from 
  */
 export function dematerialize<N extends ObservableNotification<any>>(): OperatorFunction<N, ValueFromNotification<N>> {
   return function dematerializeOperatorFunction(source: Observable<N>) {
-    return source.lift(new DeMaterializeOperator<N>());
+    return lift(source, new DeMaterializeOperator<N>());
   };
 }
 

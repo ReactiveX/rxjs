@@ -9,6 +9,7 @@ import {
   TeardownLogic,
   ObservableNotification,
 } from '../types';
+import { lift } from '../util/lift';
 
 /**
  *
@@ -64,7 +65,7 @@ import {
  */
 export function observeOn<T>(scheduler: SchedulerLike, delay: number = 0): MonoTypeOperatorFunction<T> {
   return function observeOnOperatorFunction(source: Observable<T>): Observable<T> {
-    return source.lift(new ObserveOnOperator(scheduler, delay));
+    return lift(source, new ObserveOnOperator(scheduler, delay));
   };
 }
 

@@ -7,8 +7,6 @@ import { Subscription } from './Subscription';
 import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable } from './types';
 import { canReportError } from './util/canReportError';
 import { toSubscriber } from './util/toSubscriber';
-import { iif } from './observable/iif';
-import { throwError } from './observable/throwError';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
@@ -20,14 +18,11 @@ import { config } from './config';
  * @class Observable<T>
  */
 export class Observable<T> implements Subscribable<T> {
-  /** Internal implementation detail, do not use directly. */
-  public _isScalar: boolean = false;
+  /** @deprecated This is an internal implementation detail, do not use. */
+  protected source: Observable<any> | undefined;
 
   /** @deprecated This is an internal implementation detail, do not use. */
-  source: Observable<any> | undefined;
-
-  /** @deprecated This is an internal implementation detail, do not use. */
-  operator: Operator<any, T> | undefined;
+  protected operator: Operator<any, T> | undefined;
 
   /**
    * @constructor
@@ -59,13 +54,16 @@ export class Observable<T> implements Subscribable<T> {
   };
 
   /**
-   * Creates a new Observable, with this Observable as the source, and the passed
+   * Creates a new Observable, with this Observable instance as the source, and the passed
    * operator defined as the new observable's operator.
    * @method lift
-   * @param {Operator} operator the operator defining the operation to take on the observable
-   * @return {Observable} a new observable with the Operator applied
+   * @param operator the operator defining the operation to take on the observable
+   * @return a new observable with the Operator applied
+   * @deprecated This is an internal implementation detail, do not use directly. If you have implemented an operator
+   * using `lift`, it is recommended that you create an operator by simply returning `new Observable()` directly.
+   * See "Creating new operators from scratch" section here: https://rxjs.dev/guide/operators
    */
-  lift<R>(operator?: Operator<T, R>): Observable<R> {
+  protected lift<R>(operator?: Operator<T, R>): Observable<R> {
     const observable = new Observable<R>();
     observable.source = this;
     observable.operator = operator;
@@ -236,7 +234,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
-  _trySubscribe(sink: Subscriber<T>): TeardownLogic {
+  protected _trySubscribe(sink: Subscriber<T>): TeardownLogic {
     try {
       return this._subscribe(sink);
     } catch (err) {
@@ -336,23 +334,10 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /** @internal This is an internal implementation detail, do not use. */
-  _subscribe(subscriber: Subscriber<any>): TeardownLogic {
+  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     const { source } = this;
     return source && source.subscribe(subscriber);
   }
-
-  // `if` and `throw` are special snow flakes, the compiler sees them as reserved words. Deprecated in
-  // favor of iif and throwError functions.
-  /**
-   * @nocollapse
-   * @deprecated In favor of iif creation function: import { iif } from 'rxjs';
-   */
-  static if: typeof iif;
-  /**
-   * @nocollapse
-   * @deprecated In favor of throwError creation function: import { throwError } from 'rxjs';
-   */
-  static throw: typeof throwError;
 
   /**
    * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable

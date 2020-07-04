@@ -6,6 +6,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { ObservableInput, OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Applies an accumulator function over the source Observable where the
@@ -48,7 +49,7 @@ import { ObservableInput, OperatorFunction } from '../types';
 export function mergeScan<T, R>(accumulator: (acc: R, value: T, index: number) => ObservableInput<R>,
                                 seed: R,
                                 concurrent: number = Infinity): OperatorFunction<T, R> {
-  return (source: Observable<T>) => source.lift(new MergeScanOperator(accumulator, seed, concurrent));
+  return (source: Observable<T>) => lift(source, new MergeScanOperator(accumulator, seed, concurrent));
 }
 
 export class MergeScanOperator<T, R> implements Operator<T, R> {

@@ -4,6 +4,7 @@ import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { async } from '../scheduler/async';
 import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -64,7 +65,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * @name debounceTime
  */
 export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new DebounceTimeOperator(dueTime, scheduler));
+  return (source: Observable<T>) => lift(source, new DebounceTimeOperator(dueTime, scheduler));
 }
 
 class DebounceTimeOperator<T> implements Operator<T, T> {

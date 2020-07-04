@@ -3,6 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { EMPTY } from '../observable/empty';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Returns an Observable that will resubscribe to the source stream when the source stream completes, at most count times.
@@ -64,9 +65,9 @@ export function repeat<T>(count: number = -1): MonoTypeOperatorFunction<T> {
     if (count === 0) {
       return EMPTY;
     } else if (count < 0) {
-      return source.lift(new RepeatOperator(-1, source));
+      return lift(source, new RepeatOperator(-1, source));
     } else {
-      return source.lift(new RepeatOperator(count - 1, source));
+      return lift(source, new RepeatOperator(count - 1, source));
     }
   };
 }

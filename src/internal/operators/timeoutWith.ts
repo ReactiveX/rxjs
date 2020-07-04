@@ -6,6 +6,7 @@ import { isValidDate } from '../util/isDate';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function timeoutWith<T, R>(due: number | Date, withObservable: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
@@ -69,7 +70,7 @@ export function timeoutWith<T, R>(due: number | Date,
   return (source: Observable<T>) => {
     let absoluteTimeout = isValidDate(due);
     let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
-    return source.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));
+    return lift(source, new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));
   };
 }
 

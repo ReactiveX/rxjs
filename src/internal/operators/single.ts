@@ -5,6 +5,7 @@ import { EmptyError } from '../util/EmptyError';
 import { MonoTypeOperatorFunction } from '../types';
 import { SequenceError } from '../util/SequenceError';
 import { NotFoundError } from '../util/NotFoundError';
+import { lift } from '../util/lift';
 
 const defaultPredicate = () => true;
 
@@ -91,7 +92,7 @@ const defaultPredicate = () => true;
 export function single<T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean = defaultPredicate
 ): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(singleOperator(predicate));
+  return (source: Observable<T>) => lift(source, singleOperator(predicate));
 }
 
 function singleOperator<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean) {

@@ -3,6 +3,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Notification } from '../Notification';
 import { OperatorFunction, ObservableNotification } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Represents all of the notifications from the source Observable as `next`
@@ -60,7 +61,7 @@ import { OperatorFunction, ObservableNotification } from '../types';
  */
 export function materialize<T>(): OperatorFunction<T, Notification<T> & ObservableNotification<T>> {
   return function materializeOperatorFunction(source: Observable<T>) {
-    return source.lift(new MaterializeOperator<T>());
+    return lift(source, new MaterializeOperator<T>());
   };
 }
 

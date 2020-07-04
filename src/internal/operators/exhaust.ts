@@ -5,6 +5,7 @@ import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 export function exhaust<T>(): OperatorFunction<ObservableInput<T>, T>;
 export function exhaust<R>(): OperatorFunction<any, R>;
@@ -53,7 +54,7 @@ export function exhaust<R>(): OperatorFunction<any, R>;
  * @name exhaust
  */
 export function exhaust<T>(): OperatorFunction<any, T> {
-  return (source: Observable<T>) => source.lift(new SwitchFirstOperator<T>());
+  return (source: Observable<T>) => lift(source, new SwitchFirstOperator<T>());
 }
 
 class SwitchFirstOperator<T> implements Operator<T, T> {

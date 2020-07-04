@@ -4,6 +4,7 @@ import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 import { EMPTY } from '../observable/empty';
+import { lift } from '../util/lift';
 
 /**
  * Emits only the first `count` values emitted by the source Observable.
@@ -57,7 +58,7 @@ export function take<T>(count: number): MonoTypeOperatorFunction<T> {
     throw new ArgumentOutOfRangeError;
   }
 
-  return (source: Observable<T>) => (count === 0) ? EMPTY : source.lift(new TakeOperator(count));
+  return (source: Observable<T>) => (count === 0) ? EMPTY : lift(source, new TakeOperator(count));
 }
 
 class TakeOperator<T> implements Operator<T, T> {

@@ -6,6 +6,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function catchError<T, O extends ObservableInput<any>>(selector: (err: any, caught: Observable<T>) => O): OperatorFunction<T, T | ObservedValueOf<O>>;
@@ -108,8 +109,9 @@ export function catchError<T, O extends ObservableInput<any>>(
 ): OperatorFunction<T, T | ObservedValueOf<O>> {
   return function catchErrorOperatorFunction(source: Observable<T>): Observable<T | ObservedValueOf<O>> {
     const operator = new CatchOperator(selector);
-    const caught = source.lift(operator);
-    return (operator.caught = caught as Observable<T>);
+    const caught = lift(source, operator);
+    operator.caught = caught;
+    return caught;
   };
 }
 

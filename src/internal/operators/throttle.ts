@@ -8,6 +8,7 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
 import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 export interface ThrottleConfig {
   leading?: boolean;
@@ -66,7 +67,7 @@ export const defaultThrottleConfig: ThrottleConfig = {
  */
 export function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<any>,
                             config: ThrottleConfig = defaultThrottleConfig): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new ThrottleOperator(durationSelector, !!config.leading, !!config.trailing));
+  return (source: Observable<T>) => lift(source, new ThrottleOperator(durationSelector, !!config.leading, !!config.trailing));
 }
 
 class ThrottleOperator<T> implements Operator<T, T> {
