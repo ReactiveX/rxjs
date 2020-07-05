@@ -7,6 +7,7 @@ export { bufferCount } from '../internal/operators/bufferCount';
 export { bufferTime } from '../internal/operators/bufferTime';
 export { bufferToggle } from '../internal/operators/bufferToggle';
 export { bufferWhen } from '../internal/operators/bufferWhen';
+export { bufferWith } from '../internal/operators/bufferWith';
 export { catchError } from '../internal/operators/catchError';
 export { combineAll } from '../internal/operators/combineAll';
 export { combineLatest, combineLatestWith } from '../internal/operators/combineLatestWith';

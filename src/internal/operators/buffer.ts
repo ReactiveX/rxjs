@@ -1,11 +1,6 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { bufferWith } from './bufferWith';
 
 /**
  * Buffers the source Observable values until `closingNotifier` emits.
@@ -45,45 +40,9 @@ import { lift } from '../util/lift';
  * @return {Observable<T[]>} An Observable of buffers, which are arrays of
  * values.
  * @name buffer
+ *
+ * @deprecated use {@link bufferWith}
  */
 export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]> {
-  return function bufferOperatorFunction(source: Observable<T>) {
-    return lift(source, new BufferOperator<T>(closingNotifier));
-  };
-}
-
-class BufferOperator<T> implements Operator<T, T[]> {
-
-  constructor(private closingNotifier: Observable<any>) {
-  }
-
-  call(subscriber: Subscriber<T[]>, source: any): any {
-    return source.subscribe(new BufferSubscriber(subscriber, this.closingNotifier));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class BufferSubscriber<T> extends OuterSubscriber<T, any> {
-  private buffer: T[] = [];
-
-  constructor(destination: Subscriber<T[]>, closingNotifier: Observable<any>) {
-    super(destination);
-    this.add(subscribeToResult(this, closingNotifier));
-  }
-
-  protected _next(value: T) {
-    this.buffer.push(value);
-  }
-
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
-    const buffer = this.buffer;
-    this.buffer = [];
-    this.destination.next(buffer);
-  }
+  return bufferWith<T>(closingNotifier);
 }

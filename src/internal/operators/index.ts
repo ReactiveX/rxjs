@@ -5,6 +5,7 @@ export { bufferCount } from './bufferCount';
 export { bufferTime } from './bufferTime';
 export { bufferToggle } from './bufferToggle';
 export { bufferWhen } from './bufferWhen';
+export { bufferWith } from './bufferWith';
 export { catchError } from './catchError';
 export { combineAll } from './combineAll';
 export { combineLatest, combineLatestWith } from './combineLatestWith';
