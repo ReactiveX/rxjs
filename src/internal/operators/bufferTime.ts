@@ -5,6 +5,7 @@ import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { isScheduler } from '../util/isScheduler';
 import { OperatorFunction, SchedulerAction, SchedulerLike } from '../types';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
@@ -88,7 +89,7 @@ export function bufferTime<T>(bufferTimeSpan: number): OperatorFunction<T, T[]> 
   }
 
   return function bufferTimeOperatorFunction(source: Observable<T>) {
-    return source.lift(new BufferTimeOperator<T>(bufferTimeSpan, bufferCreationInterval, maxBufferSize, scheduler));
+    return lift(source, new BufferTimeOperator<T>(bufferTimeSpan, bufferCreationInterval, maxBufferSize, scheduler));
   };
 }
 

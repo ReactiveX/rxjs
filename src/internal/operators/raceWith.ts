@@ -1,7 +1,9 @@
 import { Observable } from '../Observable';
 import { isArray } from '../util/isArray';
 import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, ObservedValueUnionFromArray } from '../types';
-import { race as raceStatic } from '../observable/race';
+import { race as raceStatic, RaceOperator } from '../observable/race';
+import { fromArray } from '../observable/fromArray';
+import { lift, stankyLift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 /** @deprecated Deprecated use {@link raceWith} */
@@ -21,19 +23,14 @@ export function race<T, R>(...observables: Array<Observable<any> | Array<Observa
  * @return {Observable} An Observable that mirrors the output of the first Observable to emit an item.
  * @deprecated Deprecated use {@link raceWith}
  */
-export function race<T>(...observables: (Observable<T> | Observable<T>[])[]): MonoTypeOperatorFunction<T> {
-  return function raceOperatorFunction(source: Observable<T>) {
-    // if the only argument is an array, it was most likely called with
-    // `pair([obs1, obs2, ...])`
-    if (observables.length === 1 && isArray(observables[0])) {
-      observables = observables[0] as Observable<T>[];
-    }
+export function race<T, R>(...observables: ObservableInput<R>[]): OperatorFunction<T, (T|R)[]> {
+  // if the only argument is an array, it was most likely called with
+  // `pair([obs1, obs2, ...])`
+  if (observables.length === 1 && isArray(observables[0])) {
+    observables = observables[0];
+  }
 
-    return source.lift.call(
-      raceStatic(source, ...(observables as Observable<T>[])),
-      undefined
-    ) as Observable<T>;
-  };
+  return raceWith(...observables) as any;
 }
 
 /**
@@ -68,9 +65,13 @@ export function raceWith<T, A extends ObservableInput<any>[]>(
   ...otherSources: A
 ): OperatorFunction<T, T | ObservedValueUnionFromArray<A>> {
   return function raceWithOperatorFunction(source: Observable<T>) {
-    return source.lift.call(
-      raceStatic(source, ...otherSources),
-      undefined
-    ) as Observable<T | ObservedValueUnionFromArray<A>>;
+    if (otherSources.length === 0) {
+      return source;
+    }
+
+    return stankyLift(
+      source,
+      raceStatic(source, ...otherSources)
+    );
   };
 }

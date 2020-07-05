@@ -6,6 +6,7 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Emits the most recently emitted value from the source Observable whenever
@@ -47,7 +48,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @name sample
  */
 export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new SampleOperator(notifier));
+  return (source: Observable<T>) => lift(source, new SampleOperator(notifier));
 }
 
 class SampleOperator<T> implements Operator<T, T> {

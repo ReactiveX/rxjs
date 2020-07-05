@@ -4,6 +4,7 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subject } from '../Subject';
 import { OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function groupBy<T, K extends T>(keySelector: (value: T) => value is K): OperatorFunction<T, GroupedObservable<true, K> | GroupedObservable<false, Exclude<T, K>>>;
@@ -109,7 +110,7 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K,
                                  durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>,
                                  subjectSelector?: () => Subject<R>): OperatorFunction<T, GroupedObservable<K, R>> {
   return (source: Observable<T>) =>
-    source.lift(new GroupByOperator(keySelector, elementSelector, durationSelector, subjectSelector));
+    lift(source, new GroupByOperator(keySelector, elementSelector, durationSelector, subjectSelector));
 }
 
 export interface RefCountSubscription {

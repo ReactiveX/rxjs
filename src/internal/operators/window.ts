@@ -6,6 +6,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { Operator } from '../Operator';
+import { lift } from '../util/lift';
 
 /**
  * Branch out the source Observable values as a nested Observable whenever
@@ -51,7 +52,7 @@ import { Operator } from '../Operator';
  */
 export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T, Observable<T>> {
   return function windowOperatorFunction(source: Observable<T>) {
-    return source.lift(new WindowOperator(windowBoundaries));
+    return lift(source, new WindowOperator(windowBoundaries));
   };
 }
 

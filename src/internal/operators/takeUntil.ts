@@ -7,6 +7,7 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Emits the values emitted by the source Observable until a `notifier`
@@ -48,7 +49,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @name takeUntil
  */
 export function takeUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new TakeUntilOperator(notifier));
+  return (source: Observable<T>) => lift(source, new TakeUntilOperator(notifier));
 }
 
 class TakeUntilOperator<T> implements Operator<T, T> {

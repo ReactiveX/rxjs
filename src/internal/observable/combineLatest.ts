@@ -8,6 +8,7 @@ import { Operator } from '../Operator';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { fromArray } from './fromArray';
+import { lift } from '../util/lift';
 
 const NONE = {};
 
@@ -233,7 +234,7 @@ export function combineLatest<O extends ObservableInput<any>, R>(
     observables = observables[0] as any;
   }
 
-  return fromArray(observables, scheduler).lift(new CombineLatestOperator<ObservedValueOf<O>, R>(resultSelector));
+  return lift(fromArray(observables, scheduler), new CombineLatestOperator<ObservedValueOf<O>, R>(resultSelector));
 }
 
 export class CombineLatestOperator<T, R> implements Operator<T, R> {

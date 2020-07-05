@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function defaultIfEmpty<T, R = T>(defaultValue?: R): OperatorFunction<T, T | R>;
@@ -43,7 +44,7 @@ export function defaultIfEmpty<T, R = T>(defaultValue?: R): OperatorFunction<T, 
  * @name defaultIfEmpty
  */
 export function defaultIfEmpty<T, R>(defaultValue: R | null = null): OperatorFunction<T, T | R> {
-  return (source: Observable<T>) => source.lift(new DefaultIfEmptyOperator(defaultValue)) as Observable<T | R>;
+  return (source: Observable<T>) => lift(source, new DefaultIfEmptyOperator(defaultValue)) as Observable<T | R>;
 }
 
 class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {

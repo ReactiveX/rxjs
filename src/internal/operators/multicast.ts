@@ -4,6 +4,7 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { ConnectableObservable, connectableObservableDescriptor } from '../observable/ConnectableObservable';
 import { OperatorFunction, UnaryFunction, ObservedValueOf, ObservableInput } from '../types';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function multicast<T>(subject: Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
@@ -43,7 +44,7 @@ export function multicast<T, R>(subjectOrSubjectFactory: Subject<T> | (() => Sub
     }
 
     if (typeof selector === 'function') {
-      return source.lift(new MulticastOperator(subjectFactory, selector));
+      return lift(source, new MulticastOperator(subjectFactory, selector));
     }
 
     const connectable: any = Object.create(source, connectableObservableDescriptor);

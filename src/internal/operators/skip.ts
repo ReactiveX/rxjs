@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Returns an Observable that skips the first `count` items emitted by the source Observable.
@@ -13,7 +14,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @name skip
  */
 export function skip<T>(count: number): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new SkipOperator(count));
+  return (source: Observable<T>) => lift(source, new SkipOperator(count));
 }
 
 class SkipOperator<T> implements Operator<T, T> {

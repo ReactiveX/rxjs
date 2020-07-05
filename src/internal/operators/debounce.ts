@@ -7,6 +7,7 @@ import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
+import { lift } from '../util/lift';
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -67,7 +68,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @name debounce
  */
 export function debounce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new DebounceOperator(durationSelector));
+  return (source: Observable<T>) => lift(source, new DebounceOperator(durationSelector));
 }
 
 class DebounceOperator<T> implements Operator<T, T> {

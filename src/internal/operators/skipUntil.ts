@@ -6,6 +6,7 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { MonoTypeOperatorFunction, TeardownLogic, ObservableInput } from '../types';
 import { Subscription } from '../Subscription';
+import { lift } from '../util/lift';
 
 /**
  * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.
@@ -46,7 +47,7 @@ import { Subscription } from '../Subscription';
  * @name skipUntil
  */
 export function skipUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new SkipUntilOperator(notifier));
+  return (source: Observable<T>) => lift(source, new SkipUntilOperator(notifier));
 }
 
 class SkipUntilOperator<T> implements Operator<T, T> {

@@ -1,6 +1,7 @@
 import { Observable } from '../Observable';
 import { FindValueOperator } from '../operators/find';
 import { OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 /**
  * Emits only the index of the first value emitted by the source Observable that
  * meets some condition.
@@ -42,5 +43,5 @@ import { OperatorFunction } from '../types';
  */
 export function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
                              thisArg?: any): OperatorFunction<T, number> {
-  return (source: Observable<T>) => source.lift(new FindValueOperator(predicate, source, true, thisArg)) as Observable<any>;
+  return (source: Observable<T>) => lift(source, new FindValueOperator(predicate, source, true, thisArg)) as Observable<any>;
 }

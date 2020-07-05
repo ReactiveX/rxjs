@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { OperatorFunction, MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 export function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
 export function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S, inclusive: false): OperatorFunction<T, S>;
@@ -54,7 +55,7 @@ export function takeWhile<T>(
     predicate: (value: T, index: number) => boolean,
     inclusive = false): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) =>
-             source.lift(new TakeWhileOperator(predicate, inclusive));
+             lift(source, new TakeWhileOperator(predicate, inclusive));
 }
 
 class TakeWhileOperator<T> implements Operator<T, T> {

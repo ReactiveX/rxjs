@@ -11,7 +11,7 @@ export function asInteropObservable<T>(observable: Observable<T>): Observable<T>
   return new Proxy(observable, {
     get(target: Observable<T>, key: string | number | symbol) {
       if (key === 'lift') {
-        const { lift } = target;
+        const { lift } = target as any;
         return interopLift(lift);
       }
       if (key === 'subscribe') {

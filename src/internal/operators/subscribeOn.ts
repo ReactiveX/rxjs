@@ -5,6 +5,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic, SchedulerAction
 import { asap as asapScheduler } from '../scheduler/asap';
 import { Subscription } from '../Subscription';
 import { isScheduler } from '../util/isScheduler';
+import { lift } from '../util/lift';
 
 export interface DispatchArg<T> {
   source: Observable<T>;
@@ -106,7 +107,7 @@ class SubscribeOnObservable<T> extends Observable<T> {
  */
 export function subscribeOn<T>(scheduler: SchedulerLike, delay: number = 0): MonoTypeOperatorFunction<T> {
   return function subscribeOnOperatorFunction(source: Observable<T>): Observable<T> {
-    return source.lift(new SubscribeOnOperator<T>(scheduler, delay));
+    return lift(source, new SubscribeOnOperator<T>(scheduler, delay));
   };
 }
 

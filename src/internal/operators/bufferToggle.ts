@@ -6,6 +6,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { OperatorFunction, SubscribableOrPromise } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Buffers the source Observable values starting from an emission from
@@ -57,7 +58,7 @@ export function bufferToggle<T, O>(
   closingSelector: (value: O) => SubscribableOrPromise<any>
 ): OperatorFunction<T, T[]> {
   return function bufferToggleOperatorFunction(source: Observable<T>) {
-    return source.lift(new BufferToggleOperator<T, O>(openings, closingSelector));
+    return lift(source, new BufferToggleOperator<T, O>(openings, closingSelector));
   };
 }
 

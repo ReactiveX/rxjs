@@ -4,6 +4,7 @@ import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { EMPTY } from '../observable/empty';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Emits only the last `count` values emitted by the source Observable.
@@ -58,7 +59,7 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
     if (count === 0) {
       return EMPTY;
     } else {
-      return source.lift(new TakeLastOperator(count));
+      return lift(source, new TakeLastOperator(count));
     }
   };
 }

@@ -4,6 +4,7 @@ import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 
 import { Observer, OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Compares all values of two observables in sequence using an optional comparator function
@@ -63,7 +64,7 @@ import { Observer, OperatorFunction } from '../types';
  */
 export function sequenceEqual<T>(compareTo: Observable<T>,
                                  comparator?: (a: T, b: T) => boolean): OperatorFunction<T, boolean> {
-  return (source: Observable<T>) => source.lift(new SequenceEqualOperator(compareTo, comparator));
+  return (source: Observable<T>) => lift(source, new SequenceEqualOperator(compareTo, comparator));
 }
 
 export class SequenceEqualOperator<T> implements Operator<T, boolean> {

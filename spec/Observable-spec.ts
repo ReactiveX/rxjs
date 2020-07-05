@@ -698,7 +698,7 @@ describe('Observable.lift', () => {
       }
     };
 
-    NEVER.lift(myOperator)
+    (NEVER as any).lift(myOperator)
       .subscribe()
       .unsubscribe();
 
@@ -883,8 +883,8 @@ describe('Observable.lift', () => {
       class LogObservable<T> extends Observable<T> {
         lift<R>(operator: Operator<T, R>): Observable<R> {
           const observable = new LogObservable<R>();
-          (<any>observable).source = this;
-          (<any>observable).operator = new LogOperator(operator);
+          observable.source = this;
+          observable.operator = new LogOperator(operator);
           return observable;
         }
       }

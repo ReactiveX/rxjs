@@ -8,6 +8,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function exhaustMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
@@ -74,7 +75,7 @@ export function exhaustMap<T, R, O extends ObservableInput<any>>(
     );
   }
   return (source: Observable<T>) =>
-    source.lift(new ExhaustMapOperator(project));
+    lift(source, new ExhaustMapOperator(project));
 }
 
 class ExhaustMapOperator<T, R> implements Operator<T, R> {

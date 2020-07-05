@@ -9,6 +9,7 @@ import {
   SchedulerLike,
   TeardownLogic
 } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Delays the emission of items from the source Observable by a given timeout or
@@ -60,7 +61,7 @@ import {
  */
 export function delay<T>(delay: number | Date, scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
   const delayFor = isValidDate(delay) ? +delay - scheduler.now() : Math.abs(delay);
-  return (source: Observable<T>) => source.lift(new DelayOperator(delayFor, scheduler));
+  return (source: Observable<T>) => lift(source, new DelayOperator(delayFor, scheduler));
 }
 
 class DelayOperator<T> implements Operator<T, T> {

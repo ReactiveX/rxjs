@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function distinctUntilChanged<T>(compare?: (x: T, y: T) => boolean): MonoTypeOperatorFunction<T>;
@@ -63,7 +64,7 @@ export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, key
  * @name distinctUntilChanged
  */
 export function distinctUntilChanged<T, K>(compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new DistinctUntilChangedOperator<T, K>(compare, keySelector));
+  return (source: Observable<T>) => lift(source, new DistinctUntilChangedOperator<T, K>(compare, keySelector));
 }
 
 class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {

@@ -7,6 +7,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Branch out the source Observable values as a nested Observable using a
@@ -54,7 +55,7 @@ import { OperatorFunction } from '../types';
  */
 export function windowWhen<T>(closingSelector: () => Observable<any>): OperatorFunction<T, Observable<T>> {
   return function windowWhenOperatorFunction(source: Observable<T>) {
-    return source.lift(new WindowOperator<T>(closingSelector));
+    return lift(source, new WindowOperator<T>(closingSelector));
   };
 }
 

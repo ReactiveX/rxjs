@@ -9,6 +9,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { iterator as Symbol_iterator } from '../../internal/symbol/iterator';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 /** @deprecated resultSelector is no longer supported, pipe to map instead */
@@ -85,7 +86,7 @@ export function zip<O extends ObservableInput<any>, R>(
   if (typeof last === 'function') {
     resultSelector = observables.pop() as typeof resultSelector;
   }
-  return fromArray(observables, undefined).lift(new ZipOperator(resultSelector));
+  return lift(fromArray(observables, undefined), new ZipOperator(resultSelector));
 }
 
 export class ZipOperator<T, R> implements Operator<T, R> {

@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Applies a given `project` function to each value emitted by the source
@@ -46,7 +47,7 @@ export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any
     if (typeof project !== 'function') {
       throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
     }
-    return source.lift(new MapOperator(project, thisArg));
+    return lift(source, new MapOperator(project, thisArg));
   };
 }
 

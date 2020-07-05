@@ -1,6 +1,7 @@
 import {  concat as concatStatic } from '../observable/concat';
 import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, SchedulerLike } from '../types';
+import { stankyLift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 /** @deprecated remove in v8. Use {@link concatWith} */
@@ -25,8 +26,8 @@ export function concat<T, R>(...observables: Array<ObservableInput<any> | Schedu
  * @deprecated remove in v8. Use {@link concatWith}
  */
 export function concat<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike | undefined>): OperatorFunction<T, R> {
-  return (source: Observable<T>) => source.lift.call(
+  return (source: Observable<T>) => stankyLift(
+    source,
     concatStatic(source, ...(observables as any[])),
-    undefined
-  ) as Observable<R>;
+  );
 }

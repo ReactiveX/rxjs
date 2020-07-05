@@ -6,6 +6,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, SchedulerLike } from '../types';
+import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: SchedulerLike): OperatorFunction<T, R>;
@@ -68,7 +69,7 @@ export function expand<T, R>(project: (value: T, index: number) => ObservableInp
                              scheduler?: SchedulerLike): OperatorFunction<T, R> {
   concurrent = (concurrent || 0) < 1 ? Infinity : concurrent;
 
-  return (source: Observable<T>) => source.lift(new ExpandOperator(project, concurrent, scheduler));
+  return (source: Observable<T>) => lift(source, new ExpandOperator(project, concurrent, scheduler));
 }
 
 export class ExpandOperator<T, R> implements Operator<T, R> {

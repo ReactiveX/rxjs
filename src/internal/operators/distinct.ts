@@ -5,6 +5,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
@@ -75,7 +76,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  */
 export function distinct<T, K>(keySelector?: (value: T) => K,
                                flushes?: Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new DistinctOperator(keySelector, flushes));
+  return (source: Observable<T>) => lift(source, new DistinctOperator(keySelector, flushes));
 }
 
 class DistinctOperator<T, K> implements Operator<T, T> {

@@ -1,6 +1,7 @@
 import { concat as concatStatic } from '../observable/concat';
 import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueUnionFromArray } from '../types';
+import { stankyLift } from '../util/lift';
 
 export function concatWith<T>(): OperatorFunction<T, T>;
 export function concatWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, ObservedValueUnionFromArray<A> | T>;
@@ -44,8 +45,8 @@ export function concatWith<T, A extends ObservableInput<any>[]>(...otherSources:
  * @param otherSources Other observable sources to subscribe to, in sequence, after the original source is complete.
  */
 export function concatWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, ObservedValueUnionFromArray<A> | T> {
-  return (source: Observable<T>) => source.lift.call(
-    concatStatic(source, ...otherSources),
-    undefined
-  ) as Observable<ObservedValueUnionFromArray<A> | T>;
+  return (source: Observable<T>) => stankyLift(
+    source,
+    concatStatic(source, ...otherSources)
+  );
 }

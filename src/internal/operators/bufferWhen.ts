@@ -6,6 +6,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Buffers the source Observable values, using a factory function of closing
@@ -50,7 +51,7 @@ import { OperatorFunction } from '../types';
  */
 export function bufferWhen<T>(closingSelector: () => Observable<any>): OperatorFunction<T, T[]> {
   return function (source: Observable<T>) {
-    return source.lift(new BufferWhenOperator(closingSelector));
+    return lift(source, new BufferWhenOperator(closingSelector));
   };
 }
 

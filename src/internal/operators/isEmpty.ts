@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Emits `false` if the input Observable emits any values, or emits `true` if the
@@ -68,7 +69,7 @@ import { OperatorFunction } from '../types';
  */
 
 export function isEmpty<T>(): OperatorFunction<T, boolean> {
-  return (source: Observable<T>) => source.lift(new IsEmptyOperator());
+  return (source: Observable<T>) => lift(source, new IsEmptyOperator());
 }
 
 class IsEmptyOperator implements Operator<any, boolean> {

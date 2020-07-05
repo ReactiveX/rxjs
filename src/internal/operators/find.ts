@@ -2,6 +2,7 @@ import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {OperatorFunction} from '../types';
+import { lift } from '../util/lift';
 
 export function find<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S,
                                      thisArg?: any): OperatorFunction<T, S | undefined>;
@@ -50,7 +51,7 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
   if (typeof predicate !== 'function') {
     throw new TypeError('predicate is not a function');
   }
-  return (source: Observable<T>) => source.lift(new FindValueOperator(predicate, source, false, thisArg)) as Observable<T | undefined>;
+  return (source: Observable<T>) => lift(source, new FindValueOperator(predicate, source, false, thisArg)) as Observable<T | undefined>;
 }
 
 export class FindValueOperator<T> implements Operator<T, T | number | undefined> {

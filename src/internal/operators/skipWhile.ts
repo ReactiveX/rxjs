@@ -2,6 +2,7 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { lift } from '../util/lift';
 
 /**
  * Returns an Observable that skips all items emitted by the source Observable as long as a specified condition holds
@@ -15,7 +16,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @name skipWhile
  */
 export function skipWhile<T>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new SkipWhileOperator(predicate));
+  return (source: Observable<T>) => lift(source, new SkipWhileOperator(predicate));
 }
 
 class SkipWhileOperator<T> implements Operator<T, T> {

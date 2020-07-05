@@ -9,6 +9,7 @@ import { TeardownLogic, ObservableInput, ObservedValueUnionFromArray } from '../
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
+import { lift } from '../util/lift';
 
 export function race<A extends ObservableInput<any>[]>(observables: A): Observable<ObservedValueUnionFromArray<A>>;
 export function race<A extends ObservableInput<any>[]>(...observables: A): Observable<ObservedValueUnionFromArray<A>>;
@@ -65,7 +66,7 @@ export function race<T>(...observables: (ObservableInput<T> | ObservableInput<T>
     }
   }
 
-  return fromArray(observables, undefined).lift(new RaceOperator<T>());
+  return lift(fromArray(observables, undefined), new RaceOperator<T>());
 }
 
 export class RaceOperator<T> implements Operator<T, T> {
