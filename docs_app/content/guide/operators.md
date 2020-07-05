@@ -152,11 +152,11 @@ These are Observable creation operators that also have join functionality -- emi
 
 ### Transformation Operators
 
-- [`buffer`](/api/operators/buffer)
 - [`bufferCount`](/api/operators/bufferCount)
 - [`bufferTime`](/api/operators/bufferTime)
 - [`bufferToggle`](/api/operators/bufferToggle)
 - [`bufferWhen`](/api/operators/bufferWhen)
+- [`bufferWith`](/api/operators/bufferWith)
 - [`concatMap`](/api/operators/concatMap)
 - [`concatMapTo`](/api/operators/concatMapTo)
 - [`exhaust`](/api/operators/exhaust)
