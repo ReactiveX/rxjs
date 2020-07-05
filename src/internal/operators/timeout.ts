@@ -3,6 +3,9 @@ import { TimeoutError } from '../util/TimeoutError';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { timeoutWith } from './timeoutWith';
 import { throwError } from '../observable/throwError';
+import { defer } from '../observable/defer';
+
+function timeoutErrFactory() { return throwError(new TimeoutError()); }
 
 /**
  *
@@ -83,5 +86,5 @@ import { throwError } from '../observable/throwError';
  */
 export function timeout<T>(due: number | Date,
                            scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
-  return timeoutWith(due, throwError(new TimeoutError()), scheduler);
+  return timeoutWith(due, defer(timeoutErrFactory), scheduler);
 }
