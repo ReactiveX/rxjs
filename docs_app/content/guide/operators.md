@@ -1,3 +1,5 @@
+# RxJS Operators
+
 RxJS is mostly useful for its *operators*, even though the Observable is the foundation. Operators are the essential pieces that allow complex asynchronous code to be easily composed in a declarative manner.
 
 ## What are operators?
