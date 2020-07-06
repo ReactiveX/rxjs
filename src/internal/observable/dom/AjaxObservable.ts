@@ -24,6 +24,10 @@ export interface AjaxRequest {
 declare const XDomainRequest: any;
 declare const ActiveXObject: any;
 
+function isFormData(body: any): body is FormData {
+  return typeof FormData !== 'undefined' && body instanceof FormData;
+}
+
 function getCORSRequest(): XMLHttpRequest {
   if (XMLHttpRequest) {
     return new XMLHttpRequest();
@@ -212,7 +216,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
     // ensure content type is set
     let contentTypeHeader = this.getHeader(headers, 'Content-Type');
-    if (!contentTypeHeader && !(FormData && request.body instanceof FormData) && typeof request.body !== 'undefined') {
+    if (!contentTypeHeader && typeof request.body !== 'undefined' && !(isFormData(request.body))) {
       (headers as any)['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     }
 
@@ -281,7 +285,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private serializeBody(body: any, contentType?: string) {
     if (!body || typeof body === 'string') {
       return body;
-    } else if (FormData && body instanceof FormData) {
+    } else if (isFormData(body)) {
       return body;
     }
 
