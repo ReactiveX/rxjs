@@ -1,4 +1,3 @@
-import { root } from '../../util/root';
 import { Observable } from '../../Observable';
 import { Subscriber } from '../../Subscriber';
 import { TeardownLogic } from '../../types';
@@ -21,19 +20,23 @@ export interface AjaxRequest {
   responseType?: string;
 }
 
+// Declare older APIs we'll check for on global scope.
+declare const XDomainRequest: any;
+declare const ActiveXObject: any;
+
 function getCORSRequest(): XMLHttpRequest {
-  if (root.XMLHttpRequest) {
-    return new root.XMLHttpRequest();
-  } else if (!!root.XDomainRequest) {
-    return new root.XDomainRequest();
+  if (XMLHttpRequest) {
+    return new XMLHttpRequest();
+  } else if (!!XDomainRequest) {
+    return new XDomainRequest();
   } else {
     throw new Error('CORS is not supported by your browser');
   }
 }
 
 function getXMLHttpRequest(): XMLHttpRequest {
-  if (root.XMLHttpRequest) {
-    return new root.XMLHttpRequest();
+  if (XMLHttpRequest) {
+    return new XMLHttpRequest();
   } else {
     let progId: string;
     try {
@@ -41,14 +44,14 @@ function getXMLHttpRequest(): XMLHttpRequest {
       for (let i = 0; i < 3; i++) {
         try {
           progId = progIds[i];
-          if (new root.ActiveXObject(progId)) {
+          if (new ActiveXObject(progId)) {
             break;
           }
         } catch (e) {
           //suppress exceptions
         }
       }
-      return new root.ActiveXObject(progId!);
+      return new ActiveXObject(progId!);
     } catch (e) {
       throw new Error('XMLHttpRequest is not supported by your browser');
     }
@@ -209,7 +212,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
     // ensure content type is set
     let contentTypeHeader = this.getHeader(headers, 'Content-Type');
-    if (!contentTypeHeader && !(root.FormData && request.body instanceof root.FormData) && typeof request.body !== 'undefined') {
+    if (!contentTypeHeader && !(FormData && request.body instanceof FormData) && typeof request.body !== 'undefined') {
       (headers as any)['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     }
 
@@ -278,7 +281,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private serializeBody(body: any, contentType?: string) {
     if (!body || typeof body === 'string') {
       return body;
-    } else if (root.FormData && body instanceof root.FormData) {
+    } else if (FormData && body instanceof FormData) {
       return body;
     }
 
@@ -344,7 +347,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
           const { progressSubscriber } = (<any>xhrProgress);
           progressSubscriber.next(e);
         };
-        if (root.XDomainRequest) {
+        if (XDomainRequest) {
           xhr.onprogress = xhrProgress;
         } else {
           xhr.upload.onprogress = xhrProgress;
