@@ -17,7 +17,7 @@ const rehype = require('rehype');
  * @property plugins {Function[]} the rehype plugins that will modify the HAST.
  *
  */
-module.exports = function postProcessHtml() {
+module.exports = function postProcessHtml(log, createDocMessage) {
   return {
     $runAfter: ['docs-rendered'],
     $runBefore: ['writing-files'],
@@ -25,29 +25,12 @@ module.exports = function postProcessHtml() {
     plugins: [],
     $process(docs) {
       const engine = rehype()
-            .data('settings', { fragment: true });
-      this.plugins.forEach(plugin => engine.use(...plugin));
+        .data('settings', { fragment: true });
+      this.plugins.forEach(plugin => engine.use(plugin));
 
-      return Promise.all(docs
-        .filter(doc => this.docTypes.indexOf(doc.docType) !== -1)
-        .map(doc => {
-          doc.contents = doc.renderedContent;
-          return engine.process(doc).catch((e) => {
-            throw new Error(`processing markdown to html failed! ${e}`);
-          });
-        })
-      ).then(processedDocs => {
-        return processedDocs.map(doc => {
-          doc.renderedContent = doc.contents;
-          return doc;
-        });
-      });
-    }
-  };
-};
+      let vFile;
 
-/**
- * docs
+      docs
         .filter(doc => this.docTypes.indexOf(doc.docType) !== -1)
         .forEach(doc => {
           try {
@@ -61,4 +44,6 @@ module.exports = function postProcessHtml() {
             throw new Error(createDocMessage(e.message, doc));
           }
         });
- */
+    }
+  };
+};

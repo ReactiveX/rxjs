@@ -27,7 +27,7 @@ const renderMarble = (path: string, fileName: string): Promise<true> => {
     const optimizedSVGPromise = optimizeXml(unoptXml);
     return optimizedSVGPromise.then((svgXML) => {
         const svgFileName = fileName.split('.')[0] + '.svg';
-        const svgPath = join(process.cwd(), 'assets', 'images', 'svgs', svgFileName);
+        const svgPath = join(process.cwd(), 'src', 'assets', 'images', 'marble-diagrams', svgFileName);
         writeFileSync(svgPath, svgXML, { encoding: 'utf-8', flag: 'w' });
         return true;
     });
