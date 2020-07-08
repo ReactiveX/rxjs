@@ -1,7 +1,6 @@
 declare const global: any;
 
 import { of, asyncScheduler, Observable, scheduled, ObservableInput } from 'rxjs';
-import { root } from 'rxjs/internal/util/root';
 import { observable } from 'rxjs/internal/symbol/observable';
 import { iterator } from 'rxjs/internal/symbol/iterator';
 import * as sinon from 'sinon';
@@ -75,8 +74,6 @@ export const NO_SUBS: string[] = [];
 export function assertDeepEquals (actual: any, expected: any) {
   expect(actual).to.deep.equal(expected);
 }
-
-global.__root__ = root;
 
 let _raf: any;
 let _caf: any;
