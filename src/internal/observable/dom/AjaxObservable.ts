@@ -29,37 +29,34 @@ function isFormData(body: any): body is FormData {
 }
 
 function getCORSRequest(): XMLHttpRequest {
-  if (XMLHttpRequest) {
+  if (typeof XMLHttpRequest === 'function') {
     return new XMLHttpRequest();
-  } else if (!!XDomainRequest) {
+  } else if (typeof XDomainRequest === 'function') {
     return new XDomainRequest();
   } else {
     throw new Error('CORS is not supported by your browser');
   }
 }
 
+const ancientInternetExplorerProgIDs = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
+
 function getXMLHttpRequest(): XMLHttpRequest {
   if (XMLHttpRequest) {
     return new XMLHttpRequest();
-  } else {
-    let progId: string;
-    try {
-      const progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
-      for (let i = 0; i < 3; i++) {
-        try {
-          progId = progIds[i];
-          if (new ActiveXObject(progId)) {
-            break;
-          }
-        } catch (e) {
-          //suppress exceptions
+  } else if (typeof ActiveXObject === 'function') {
+    // TODO: Remove when we stop supporting IE.
+    for (const progId of ancientInternetExplorerProgIDs) {
+      try {
+        const axoXHR = new ActiveXObject(progId);
+        if (axoXHR) {
+          return axoXHR;
         }
+      } catch (e) {
+        // Ignore and try the next one
       }
-      return new ActiveXObject(progId!);
-    } catch (e) {
-      throw new Error('XMLHttpRequest is not supported by your browser');
     }
   }
+  throw new Error('XMLHttpRequest is not supported by your browser');
 }
 
 export interface AjaxCreationMethod {
@@ -351,7 +348,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
           const { progressSubscriber } = (<any>xhrProgress);
           progressSubscriber.next(e);
         };
-        if (XDomainRequest) {
+        if (typeof XDomainRequest === 'function') {
           xhr.onprogress = xhrProgress;
         } else {
           xhr.upload.onprogress = xhrProgress;
