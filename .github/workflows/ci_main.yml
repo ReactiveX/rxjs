@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '11', '12', '13' ]
+        node: [ '11', '12', '13', '14' ]
 
     name: Node ${{ matrix.node }} build
 
@@ -26,11 +26,13 @@ jobs:
     - name: lint
       run: npm run lint
     - name: build
-      run: npm run build:package
+      run: npm run build_all
     - name: test
       run: |
         npm test
         npm run test:side-effects
     - name: dtslint
       run: npm run dtslint
+    - name: api_guardian
+      run: npm run api_guardian
 
