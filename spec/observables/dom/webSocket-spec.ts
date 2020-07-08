@@ -3,7 +3,9 @@ import * as sinon from 'sinon';
 import { webSocket } from 'rxjs/webSocket';
 import { map, retry, take, repeat, takeWhile } from 'rxjs/operators';
 
-const root: any = globalThis || self || global;
+const root: any = (typeof globalThis !== 'undefined' && globalThis)
+  || (typeof self !== 'undefined' && self)
+  || global;
 
 /** @test {webSocket} */
 describe('webSocket', () => {

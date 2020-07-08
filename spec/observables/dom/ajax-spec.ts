@@ -5,7 +5,9 @@ import { ajax, AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rx
 
 declare const rxTestScheduler: TestScheduler;
 
-const root: any = globalThis || self || global;
+const root: any = (typeof globalThis !== 'undefined' && globalThis)
+  || (typeof self !== 'undefined' && self)
+  || global;
 
 /** @test {ajax} */
 describe('ajax', () => {
