@@ -3,19 +3,21 @@ import * as sinon from 'sinon';
 import { webSocket } from 'rxjs/webSocket';
 import { map, retry, take, repeat, takeWhile } from 'rxjs/operators';
 
-declare const __root__: any;
+const root: any = (typeof globalThis !== 'undefined' && globalThis)
+  || (typeof self !== 'undefined' && self)
+  || global;
 
 /** @test {webSocket} */
 describe('webSocket', () => {
   let __ws: any;
 
   function setupMockWebSocket() {
-    __ws = __root__.WebSocket;
-    __root__.WebSocket = MockWebSocket;
+    __ws = root.WebSocket;
+    root.WebSocket = MockWebSocket;
   }
 
   function teardownMockWebSocket() {
-    __root__.WebSocket = __ws;
+    root.WebSocket = __ws;
     MockWebSocket.clearSockets();
   }
 
@@ -751,7 +753,7 @@ class MockWebSocket {
       data: data,
       origin: 'mockorigin',
       ports: undefined as any,
-      source: __root__,
+      source: root,
     };
 
     this.trigger('message', messageEvent);

@@ -1,25 +1,23 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { root } from 'rxjs/internal/util/root';
 import { TestScheduler } from 'rxjs/testing';
 import { ajax, AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
 
-declare const global: any;
 declare const rxTestScheduler: TestScheduler;
+
+const root: any = (typeof globalThis !== 'undefined' && globalThis)
+  || (typeof self !== 'undefined' && self)
+  || global;
 
 /** @test {ajax} */
 describe('ajax', () => {
-  let gXHR: XMLHttpRequest;
   let rXHR: XMLHttpRequest;
 
   let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
-    gXHR = global.XMLHttpRequest;
     rXHR = root.XMLHttpRequest;
-
-    global.XMLHttpRequest = MockXMLHttpRequest;
     root.XMLHttpRequest = MockXMLHttpRequest;
   });
 
@@ -27,9 +25,7 @@ describe('ajax', () => {
     sandbox.restore();
     MockXMLHttpRequest.clearRequest();
 
-    global.XMLHttpRequest = gXHR;
     root.XMLHttpRequest = rXHR;
-
     root.XDomainRequest = null;
     root.ActiveXObject = null;
   });

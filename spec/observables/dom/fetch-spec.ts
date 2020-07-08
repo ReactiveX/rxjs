@@ -1,6 +1,9 @@
 import { fromFetch } from 'rxjs/fetch';
 import { expect } from 'chai';
-import { root } from '../../../src/internal/util/root';
+
+const root: any = (typeof globalThis !== 'undefined' && globalThis)
+  || (typeof self !== 'undefined' && self)
+  || global;
 
 const OK_RESPONSE = {
   ok: true,
