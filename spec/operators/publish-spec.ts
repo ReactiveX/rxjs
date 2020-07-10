@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { publish, zip, mergeMapTo, mergeMap, tap, refCount, retry, repeat } from 'rxjs/operators';
-import { ConnectableObservable, of, Subscription, Observable } from 'rxjs';
+import { ConnectableObservable, of, Subscription, Observable, pipe } from 'rxjs';
 
 /** @test {publish} */
 describe('publish operator', () => {
@@ -336,5 +336,29 @@ describe('publish operator', () => {
     expect(results2).to.deep.equal([1, 2, 3, 4]);
     expect(subscriptions).to.equal(1);
     done();
+  });
+
+  it('should subscribe to its own source when using a shared pipeline', () => {
+    const source1 = cold('-1-2-3-4-5-|');
+    const source1Subs =  '^          !';
+    const source2 = cold('-6-7-8-9-0-|');
+    const source2Subs =  '^          !'; 
+
+    const sharedPipeLine = pipe(
+       publish()
+     );
+
+    const published1 = source1.pipe(sharedPipeLine) as ConnectableObservable<any>;
+    const published2 = source2.pipe(sharedPipeLine) as ConnectableObservable<any>;
+    const expected1 =    '-1-2-3-4-5-|';
+    const expected2 =    '-6-7-8-9-0-|';
+
+    expectObservable(published1).toBe(expected1);
+    expectSubscriptions(source1.subscriptions).toBe(source1Subs);
+    expectObservable(published2).toBe(expected2);
+    expectSubscriptions(source2.subscriptions).toBe(source2Subs);
+
+    published1.connect();
+    published2.connect();
   });
 });
