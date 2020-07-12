@@ -10,4 +10,5 @@ module.exports = {
   reporter: 'dot',
   timeout: 5000,
   recursive: true,
+  'enable-source-maps': true
 };
