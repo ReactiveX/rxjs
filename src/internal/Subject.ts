@@ -5,16 +5,6 @@ import { Subscription } from './Subscription';
 import { Observer, SubscriptionLike, TeardownLogic } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
-import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
-
-/**
- * @class SubjectSubscriber<T>
- */
-export class SubjectSubscriber<T> extends Subscriber<T> {
-  constructor(protected destination: Subject<T>) {
-    super(destination);
-  }
-}
 
 /**
  * A Subject is a special type of Observable that allows values to be
@@ -24,11 +14,6 @@ export class SubjectSubscriber<T> extends Subscriber<T> {
  * Subject, and you can call next to feed values as well as error and complete.
  */
 export class Subject<T> extends Observable<T> implements SubscriptionLike {
-
-  [rxSubscriberSymbol]() {
-    return new SubjectSubscriber(this);
-  }
-
   observers: Observer<T>[] = [];
 
   closed = false;
