@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { queueScheduler as rxQueueScheduler, combineLatest, of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -63,6 +63,20 @@ describe('static combineLatest', () => {
       const combined = combineLatest([firstSource, secondSource], (a: string, b: string) => '' + a + b);
 
       expectObservable(combined).toBe(expected, { u: 'ad', v: 'ae', w: 'af', x: 'bf', y: 'bg', z: 'cg' });
+    });
+  });
+
+  it('should accept a dictionary of observables', () => {
+    rxTestScheduler.run(({ hot, expectObservable }) => {
+      const firstSource =  hot('----a----b----c----|');
+      const secondSource = hot('--d--e--f--g--|');
+      const expected = '        ----uv--wx-y--z----|';
+
+      const combined = combineLatest({a: firstSource, b: secondSource}).pipe(
+        map(({a, b}) => '' + a + b)
+      );  
+
+      expectObservable(combined).toBe(expected, {u: 'ad', v: 'ae', w: 'af', x: 'bf', y: 'bg', z: 'cg'});
     });
   });
 

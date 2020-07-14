@@ -139,6 +139,10 @@ export declare function combineLatest<O extends ObservableInput<any>, R>(array: 
 export declare function combineLatest<O extends ObservableInput<any>>(...observables: Array<O | SchedulerLike>): Observable<any[]>;
 export declare function combineLatest<O extends ObservableInput<any>, R>(...observables: Array<O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike>): Observable<R>;
 export declare function combineLatest<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R) | SchedulerLike>): Observable<R>;
+export declare function combineLatest(sourcesObject: {}): Observable<never>;
+export declare function combineLatest<T, K extends keyof T>(sourcesObject: T): Observable<{
+    [K in keyof T]: ObservedValueOf<T[K]>;
+}>;
 
 export interface CompleteNotification {
     kind: 'C';
