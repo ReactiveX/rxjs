@@ -1,10 +1,11 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { Observer, TeardownLogic } from '../src/internal/types';
-import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError } from 'rxjs/operators';
+import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty, interval } from 'rxjs';
+import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError, mergeMap, finalize, mergeAll } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
+import 'yet-another-abortcontroller-polyfill';
 
 function expectFullObserver(val: any) {
   expect(val).to.be.a('object');
@@ -196,6 +197,84 @@ describe('Observable', () => {
             expect(results).to.deep.equal([1, 2, expected]);
           }
         );
+    });
+  });
+
+  describe.only('subscribe with abortSignal', () => {
+    it('should allow unsubscription with the abortSignal', (done) => {
+      const source = new Observable<number>(subscriber => {
+        let i = 0;
+        const id = setInterval(() => subscriber.next(i++));
+        return () => {
+          clearInterval(id);
+          expect(results).to.deep.equal([0, 1, 2, 3]);
+          expect(subscription.closed).to.be.true;
+          done();
+        }
+      });
+
+      const results: number[] = [];
+      const ac = new AbortController();
+      const subscription = source.subscribe({
+        next: n => {
+          results.push(n);
+          if (n === 3) {
+            ac.abort();
+          }
+        }
+      }, ac.signal);
+    });
+
+    it('should not subscribe if the abortSignal is already aborted', () => {
+      let called = false;
+      const source = new Observable(() => {
+        called = true;
+        throw new Error('should not be called');
+      });
+      const ac = new AbortController();
+      ac.abort();
+      const subscription = source.subscribe(undefined, ac.signal);
+      expect(called).to.be.false;
+      expect(subscription.closed).to.be.true;
+    });
+
+    it('should still chain the unsubscriptions', () => {
+      rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions, time }) => {
+        const inner1 = cold('    ----a----a-----a-|');
+        const inner2 = cold('        ----b----b------b---|');
+        const inner3 = cold('            ----c----c----c----c---|');
+        const source = hot('  ---a---b---c---|', { a: inner1, b: inner2, c: inner3 });
+        const sSubs = '       ^--------------!';
+        const i1Subs = '      ---^----------------!';
+        const i2Subs = '      -------^--------------!';
+        const i3Subs = '      -----------^----------!';
+        const abortAt = time('----------------------|')
+        const expected = '    -------a---ba--cb-a-c---';
+        const result = source.pipe(
+          mergeAll()
+        );
+
+        const ac = new AbortController();
+
+        const wrapperBecauseTestSchedulerDoesntSupportAbortYet = new Observable<string>(subscriber => {
+          return result.subscribe({
+            next: value => {
+              subscriber.next(value);
+            },
+            error: err => subscriber.error(err),
+            complete: () => subscriber.complete()
+          }, ac.signal);
+        });
+        rxTestScheduler.schedule(() => {
+          ac.abort();
+        }, abortAt);
+
+        expectObservable(wrapperBecauseTestSchedulerDoesntSupportAbortYet).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sSubs);
+        expectSubscriptions(inner1.subscriptions).toBe(i1Subs);
+        expectSubscriptions(inner2.subscriptions).toBe(i2Subs);
+        expectSubscriptions(inner3.subscriptions).toBe(i3Subs);
+      })
     });
   });
 

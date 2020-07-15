@@ -71,6 +71,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   subscribe(observer?: PartialObserver<T>): Subscription;
+  subscribe(observer: PartialObserver<T> | null | undefined, signal: AbortSignal): Subscription;
   /** @deprecated Use an observer instead of a complete callback */
   subscribe(next: null | undefined, error: null | undefined, complete: () => void): Subscription;
   /** @deprecated Use an observer instead of an error callback */
@@ -205,11 +206,33 @@ export class Observable<T> implements Subscribable<T> {
    */
   subscribe(
     observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
-    error?: ((error: any) => void) | null,
+    errorOrSignal?: ((error: any) => void) | null | AbortSignal,
     complete?: (() => void) | null
   ): Subscription {
     const { operator } = this;
+
+    let error: ((error: any) => void) | null | undefined = null;
+    let signal: AbortSignal | undefined = undefined;
+    if (isAbortSignal(errorOrSignal)) {
+      signal = errorOrSignal;
+      if (signal.aborted) {
+        return Subscription.EMPTY;
+      }
+    } else {
+      error = errorOrSignal;
+    }
+
     const sink = toSubscriber(observerOrNext, error, complete);
+
+    if (signal) {
+      const handler = () => {
+        sink.unsubscribe();
+      };
+      signal.addEventListener('abort', handler);
+      sink.add(() => {
+        signal?.removeEventListener('abort', handler);
+      });
+    }
 
     if (operator) {
       sink.add(operator.call(sink, this.source));
@@ -504,4 +527,11 @@ function getPromiseCtor(promiseCtor: PromiseConstructorLike | undefined) {
   }
 
   return promiseCtor;
+}
+
+function isAbortSignal(value: any): value is AbortSignal {
+  return (
+    (typeof AbortSignal !== 'undefined' && value instanceof AbortSignal) ||
+    (value && 'aborted' in value && typeof value.addEventListener === 'function' && typeof value.removeEventListener === 'function')
+  );
 }
