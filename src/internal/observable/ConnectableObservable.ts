@@ -1,4 +1,4 @@
-import { Subject, SubjectSubscriber } from '../Subject';
+import { Subject } from '../Subject';
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
@@ -70,10 +70,10 @@ export const connectableObservableDescriptor: PropertyDescriptorMap = (() => {
   };
 })();
 
-class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
-  constructor(destination: Subject<T>,
+class ConnectableSubscriber<T> extends Subscriber<T> {
+  constructor(protected destination: Subject<T>,
               private connectable: ConnectableObservable<T>) {
-    super(destination);
+    super();
   }
   protected _error(err: any): void {
     this._unsubscribe();

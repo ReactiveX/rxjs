@@ -2,7 +2,6 @@ import { isFunction } from './util/isFunction';
 import { empty as emptyObserver } from './Observer';
 import { Observer, PartialObserver } from './types';
 import { Subscription, isSubscription } from './Subscription';
-import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
 import { config } from './config';
 import { hostReportError } from './util/hostReportError';
 
@@ -17,9 +16,6 @@ import { hostReportError } from './util/hostReportError';
  * @class Subscriber<T>
  */
 export class Subscriber<T> extends Subscription implements Observer<T> {
-
-  [rxSubscriberSymbol]() { return this; }
-
   /**
    * A static factory for a Subscriber, given a (potentially partial) definition
    * of an Observer.

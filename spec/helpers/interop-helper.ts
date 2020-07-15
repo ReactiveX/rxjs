@@ -1,5 +1,4 @@
 import { Observable, Operator, Subject, Subscriber, Subscription } from 'rxjs';
-import { rxSubscriber as symbolSubscriber } from 'rxjs/internal/symbol/rxSubscriber';
 
 /**
  * Returns an observable that will be deemed by this package's implementation
@@ -48,13 +47,10 @@ export function asInteropSubject<T>(subject: Subject<T>): Subject<T> {
 export function asInteropSubscriber<T>(subscriber: Subscriber<T>): Subscriber<T> {
   return new Proxy(subscriber, {
     get(target: Subscriber<T>, key: string | number | symbol) {
-      if (key === symbolSubscriber) {
-        return undefined;
-      }
       return Reflect.get(target, key);
     },
     getPrototypeOf(target: Subscriber<T>) {
-      const { [symbolSubscriber]: symbol, ...rest } = Object.getPrototypeOf(target);
+      const { ...rest } = Object.getPrototypeOf(target);
       return rest;
     }
   });
