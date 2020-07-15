@@ -261,6 +261,8 @@ export declare type InteropObservable<T> = {
 
 export declare function interval(period?: number, scheduler?: SchedulerLike): Observable<number>;
 
+export declare function isAbortError(value: any): boolean;
+
 export declare function isObservable<T>(obj: any): obj is Observable<T>;
 
 export declare function lastValueFrom<T>(source: Observable<T>): Promise<T>;
@@ -361,8 +363,8 @@ export declare class Observable<T> implements Subscribable<T> {
     constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic);
     protected _subscribe(subscriber: Subscriber<any>): TeardownLogic;
     protected _trySubscribe(sink: Subscriber<T>): TeardownLogic;
-    forEach(next: (value: T) => void): Promise<void>;
-    forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
+    forEach(nextHandler: (value: T) => void, signal?: AbortSignal): Promise<void>;
+    forEach(nextHandler: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
     protected lift<R>(operator?: Operator<T, R>): Observable<R>;
     pipe(): Observable<T>;
     pipe<A>(op1: OperatorFunction<T, A>): Observable<A>;
@@ -376,6 +378,7 @@ export declare class Observable<T> implements Subscribable<T> {
     pipe<A, B, C, D, E, F, G, H, I>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>, op9: OperatorFunction<H, I>): Observable<I>;
     pipe<A, B, C, D, E, F, G, H, I>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>, op9: OperatorFunction<H, I>, ...operations: OperatorFunction<any, any>[]): Observable<unknown>;
     subscribe(observer?: PartialObserver<T>): Subscription;
+    subscribe(observer: PartialObserver<T> | null | undefined, signal: AbortSignal | null | undefined): Subscription;
     subscribe(next: null | undefined, error: null | undefined, complete: () => void): Subscription;
     subscribe(next: null | undefined, error: (error: any) => void, complete?: () => void): Subscription;
     subscribe(next: (value: T) => void, error: null | undefined, complete: () => void): Subscription;
