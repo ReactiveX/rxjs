@@ -1,5 +1,5 @@
 /* Observable */
-export { Observable } from './internal/Observable';
+export { Observable, isAbortError } from './internal/Observable';
 export { ConnectableObservable } from './internal/observable/ConnectableObservable';
 export { GroupedObservable } from './internal/operators/groupBy';
 export { Operator } from './internal/Operator';

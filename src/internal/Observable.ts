@@ -10,6 +10,7 @@ import { toSubscriber } from './util/toSubscriber';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
+import { values } from 'lodash';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -71,7 +72,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   subscribe(observer?: PartialObserver<T>): Subscription;
-  subscribe(observer: PartialObserver<T> | null | undefined, signal: AbortSignal): Subscription;
+  subscribe(observer: PartialObserver<T> | null | undefined, signal: AbortSignal | null | undefined): Subscription;
   /** @deprecated Use an observer instead of a complete callback */
   subscribe(next: null | undefined, error: null | undefined, complete: () => void): Subscription;
   /** @deprecated Use an observer instead of an error callback */
@@ -274,53 +275,80 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /**
-   * Used as a NON-CANCELLABLE means of subscribing to an observable, for use with
-   * APIs that expect promises, like `async/await`. You cannot unsubscribe from this.
+   * Subscribes to the observable in a way that returns a promise. Useful for async-await and
+   * other promise-based APIs.
    *
-   * **WARNING**: Only use this with observables you *know* will complete. If the source
-   * observable does not complete, you will end up with a promise that is hung up, and
-   * potentially all of the state of an async function hanging out in memory. To avoid
-   * this situation, look into adding something like {@link timeout}, {@link take},
-   * {@link takeWhile}, or {@link takeUntil} amongst others.
+   * Returns a promise that will:
    *
-   * ### Example:
+   * - Resolve when the observable's producer completes and is done pushing values.
+   * - Rejects with the error if the observable's producer errors and can no longer produce values.
+   * - Rejects with an AbortError (see note below) if a passed `AbortSignal` signals.
+   *
+   * ### Example
    *
    * ```ts
-   * import { interval } from 'rxjs';
+   * import { interval, isAbortError } from 'rxjs';
    * import { take } from 'rxjs/operators';
    *
-   * const source$ = interval(1000).pipe(take(4));
+   * async function test() {
+   *    const source = interval(200);
    *
-   * async function getTotal() {
-   *    let total = 0;
+   *    console.log('start first forEach');
+   *    await source.pipe(take(4)).forEach(console.log);
+   *    console.log('first forEach complete');
    *
-   *    await source$.forEach(value => {
-   *      total += value;
-   *      console.log('observable -> ', value);
-   *    });
+   *    const ac = new AbortController();
+   *    setTimeout(() => {
+   *      // unsubscribe after ~1 second
+   *      ac.abort();
+   *    }, 1000);
    *
-   *    return total;
+   *    console.log('start second forEach');
+   *    try {
+   *      await source.forEach(console.log, ac.signal);
+   *    } catch (err) {
+   *      if (isAbortError(err)) {
+   *        console.log('second forEach cancelled');
+   *      }
+   *    }
    * }
    *
-   * getTotal().then(
-   *    total => console.log('Total:', total)
-   * )
+   * test();
    *
-   * // Expected:
-   * // "observable -> 0"
-   * // "observable -> 1"
-   * // "observable -> 2"
-   * // "observable -> 3"
-   * // "Total: 6"
+   * // Expected output
+   * // "start first forEach"
+   * // 0
+   * // 1
+   * // 2
+   * // 3
+   * // "first forEach complete"
+   * // "start second forEach"
+   * // 0
+   * // 1
+   * // 2
+   * // 3
+   * // 4
+   * // "second forEach cancelled"
    * ```
-   * @param next a handler for each value emitted by the observable
-   * @return a promise that either resolves on observable completion or
-   *  rejects with the handled error
+   *
+   * NOTE: `AbortError` isn't really a type yet. At the time of this writing, Chrome and Firefox utilize
+   * DOMException for `fetch` calls that are aborted via `AbortSignal`. However, MDN Documentation currently
+   * states that should be `AbortError`. As a middle ground, RxJS is currently just rejecting with a
+   * plain `Error`, that has a `name` of `"AbortError"`. RxJS provides a helper method called {@link isAbortError}
+   * to allow you to check to see if a promise rejection was due to cancellation via `abort` or not.
+   * The idea is that as this semantic evolves in various runtimes, we can evolve the inner workings of
+   * `isAbortError` without breaking your code. (we hope, lol).
+   *
+   * @param nextHandler A handler that is fired for each value pushed from the producer.
+   * @param signal A signal that can be used to unsubscribe, and tell the producer to
+   * stop pushing values. If the subscription ends because of this signal, the returned
+   * promise will reject. You can determine this rejection was from the signal using
+   * {@link isAbortError}
    */
-  forEach(next: (value: T) => void): Promise<void>;
+  forEach(nextHandler: (value: T) => void, signal?: AbortSignal): Promise<void>;
 
   /**
-   * @param next a handler for each value emitted by the observable
+   * @param nextHandler a handler for each value emitted by the observable
    * @param promiseCtor a constructor function used to instantiate the Promise
    * @return a promise that either resolves on observable completion or
    *  rejects with the handled error
@@ -330,28 +358,57 @@ export class Observable<T> implements Subscribable<T> {
    * polyfill Promise, or you create an adapter to convert the returned native promise
    * to whatever promise implementation you wanted.
    */
-  forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
+  forEach(nextHandler: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
 
-  forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): Promise<void> {
+  forEach(nextHandler: (value: T) => void, promiseCtorOrSignal?: PromiseConstructorLike | AbortSignal): Promise<void> {
+    let promiseCtor: PromiseConstructorLike | undefined;
+    let signal: AbortSignal | undefined;
+    if (isAbortSignal(promiseCtorOrSignal)) {
+      signal = promiseCtorOrSignal;
+    } else {
+      promiseCtor = promiseCtorOrSignal;
+    }
+
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor<void>((resolve, reject) => {
+      if (signal) {
+        signal.addEventListener(
+          'abort',
+          () => {
+            // TODO: Chrome and Firefox both use DOMException here for now
+            // This should probably be something better defined. MDN documentation
+            // says there is supposed to be an AbortError, but I haven't found any
+            // implementations in any runtimes. For now, we can document this
+            // as the users needing to check `err.name === 'AbortError'` and
+            // adjust over time.
+            const err = new Error('Abort exception');
+            err.name = 'AbortError';
+            reject(err);
+          },
+          { once: true }
+        );
+      }
+
       // Must be declared in a separate statement to avoid a ReferenceError when
       // accessing subscription below in the closure due to Temporal Dead Zone.
       let subscription: Subscription;
       subscription = this.subscribe(
-        (value) => {
-          try {
-            next(value);
-          } catch (err) {
-            reject(err);
-            if (subscription) {
-              subscription.unsubscribe();
+        {
+          next(value) {
+            try {
+              nextHandler(value);
+            } catch (err) {
+              reject(err);
+              if (subscription) {
+                subscription.unsubscribe();
+              }
             }
-          }
+          },
+          error: reject,
+          complete: resolve,
         },
-        reject,
-        resolve
+        signal
       );
     }) as Promise<void>;
   }
@@ -533,5 +590,28 @@ function isAbortSignal(value: any): value is AbortSignal {
   return (
     (typeof AbortSignal !== 'undefined' && value instanceof AbortSignal) ||
     (value && 'aborted' in value && typeof value.addEventListener === 'function' && typeof value.removeEventListener === 'function')
+  );
+}
+
+/**
+ * A utility function to check to see if an error is an error created because a
+ * subscription was aborted in a method that returns a promise, such as {@link forEach}.
+ *
+ * Promises must resolve or reject, therefor aborting a subscription that was supposed to
+ * either resolve or reject a promise must be rejected, so the promise does not just
+ * hang out in memory.
+ *
+ * This is most useful in async-await.
+ *
+ * RxJS is providing this helper method because the error that is returned in
+ * @param value The error to test to see if you have an abort error.
+ */
+export function isAbortError(value: any): boolean {
+  return (
+    (value && value.name === 'AbortError') ||
+    // It could be an abort error from an inner fetch, and Firefox and Chrome, as of this
+    // writing, reject with a DOMException. There's no telling what other platforms will
+    // do, or how this will change over time. We may need to add more do this conditional.
+    (typeof DOMException !== 'undefined' && value instanceof DOMException)
   );
 }

@@ -66,6 +66,26 @@ describe('Observable', () => {
   });
 
   describe('forEach', () => {
+    it('should support AbortSignal', async () => {
+      const results: number[] = []
+      const ac = new AbortController();
+      try {
+      await of(1, 2, 3, 4, 5).forEach(
+        n => {
+          results.push(n);
+          if (n === 3) {
+            ac.abort();
+          }
+        },
+        ac.signal
+      ) 
+      } catch (err) {
+        expect(err.name).to.equal('AbortError');
+      }
+      expect(results).to.deep.equal([1, 2, 3]);
+    });
+
+
     it('should iterate and return a Promise', (done) => {
       const expected = [1, 2, 3];
       const result = of(1, 2, 3)
@@ -200,7 +220,7 @@ describe('Observable', () => {
     });
   });
 
-  describe.only('subscribe with abortSignal', () => {
+  describe('subscribe with abortSignal', () => {
     it('should allow unsubscription with the abortSignal', (done) => {
       const source = new Observable<number>(subscriber => {
         let i = 0;
