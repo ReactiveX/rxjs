@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { timeout, mergeMap } from 'rxjs/operators';
+import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
+import { timeout, mergeMap, mergeMapTo } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { TimeoutError, of } from 'rxjs';
 
@@ -21,10 +21,10 @@ describe('timeout operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should emit and error of an instanceof TimeoutError on timeout', () => {
+  it('should emit and TimeoutError on timeout with appropriate due as number', () => {
     const e1 =  cold('-------a--b--|');
     const result = e1.pipe(timeout(50, rxTestScheduler));
-    let error;
+    let error: any;
     result.subscribe(() => {
       throw new Error('this should not next');
     }, err => {
@@ -35,6 +35,36 @@ describe('timeout operator', () => {
     rxTestScheduler.flush();
     expect(error).to.be.an.instanceof(TimeoutError);
     expect(error).to.have.property('name', 'TimeoutError');
+    expect(error!.info).to.deep.equal({
+      seen: 0,
+      meta: null,
+      lastValue: null
+    });
+  });
+
+  it('should emit and TimeoutError on timeout with appropriate due as Date', () => {
+    const e1 =  cold('-------a--b--|');
+
+    // 4ms from "now", considering "now" with the rxTestScheduler is currently frame 0.
+    const dueDate = new Date(40);
+
+    const result = e1.pipe(timeout(dueDate, rxTestScheduler));
+    let error: any;
+    result.subscribe(() => {
+      throw new Error('this should not next');
+    }, err => {
+      error = err;
+    }, () => {
+      throw new Error('this should not complete');
+    });
+    rxTestScheduler.flush();
+    expect(error).to.be.an.instanceof(TimeoutError);
+    expect(error).to.have.property('name', 'TimeoutError');
+    expect(error!.info).to.deep.equal({
+      seen: 0,
+      meta: null,
+      lastValue: null
+    });
   });
 
   it('should not timeout if source completes within absolute timeout period', () => {
@@ -103,7 +133,7 @@ describe('timeout operator', () => {
     const e1subs =   '^         !';
     const expected = '----------#';
 
-    const result = e1.pipe(timeout(new Date(rxTestScheduler.now() + 100), rxTestScheduler));
+    const result = e1.pipe(timeout(new Date(100), rxTestScheduler));
 
     expectObservable(result).toBe(expected, null, defaultTimeoutError);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -118,30 +148,6 @@ describe('timeout operator', () => {
     const result = e1.pipe(timeout(new Date(rxTestScheduler.now() + 100), rxTestScheduler));
 
     expectObservable(result).toBe(expected, values, defaultTimeoutError);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should unsubscribe from the scheduled timeout action when timeout is unsubscribed early', () => {
-    const e1 =   hot('--a--b--c---d--e--|');
-    const e1subs =   '^         !        ';
-    const expected = '--a--b--c--        ';
-    const unsub =    '          !        ';
-
-    const result = e1
-      .lift({
-        call: (timeoutSubscriber, source) => {
-          const { action } = <any> timeoutSubscriber; // get a ref to the action here
-          timeoutSubscriber.add(() => {               // because it'll be null by the
-            if (!action.closed) {                     // time we get into this function.
-              throw new Error('TimeoutSubscriber scheduled action wasn\'t canceled');
-            }
-          });
-          return source.subscribe(timeoutSubscriber);
-        }
-      })
-      .pipe(timeout(50, rxTestScheduler));
-
-    expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
