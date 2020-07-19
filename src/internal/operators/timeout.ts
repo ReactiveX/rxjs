@@ -1,11 +1,16 @@
+/** @prettier */
 import { async } from '../scheduler/async';
 import { TimeoutError } from '../util/TimeoutError';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
-import { timeoutWith } from './timeoutWith';
-import { throwError } from '../observable/throwError';
+import { timeoutWith, TimeoutConfig, TimeoutInfo, TimeoutWithConfig } from './timeoutWith';
 import { defer } from '../observable/defer';
+import { isValidDate } from '../util/isDate';
 
-function timeoutErrFactory() { return throwError(new TimeoutError()); }
+export function timeout<T>(config: TimeoutConfig): MonoTypeOperatorFunction<T>;
+
+export function timeout<T>(first: Date, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+
+export function timeout<T>(each: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
 /**
  *
@@ -84,7 +89,28 @@ function timeoutErrFactory() { return throwError(new TimeoutError()); }
  * @return {Observable<T>} Observable that mirrors behaviour of source, unless timeout checks fail.
  * @name timeout
  */
-export function timeout<T>(due: number | Date,
-                           scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
-  return timeoutWith(due, defer(timeoutErrFactory), scheduler);
+export function timeout<T>(dueOrConfig: number | Date | TimeoutConfig, scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
+  const switchTo = (info: TimeoutInfo<T>) =>
+    defer(() => {
+      throw new TimeoutError(info);
+    });
+
+  const config: TimeoutWithConfig<T, T | never> = isValidDate(dueOrConfig)
+    ? {
+        first: dueOrConfig,
+        switchTo,
+        scheduler,
+      }
+    : typeof dueOrConfig === 'number'
+    ? {
+        each: dueOrConfig,
+        switchTo,
+        scheduler,
+      }
+    : {
+        ...dueOrConfig,
+        switchTo,
+      };
+
+  return timeoutWith(config);
 }
