@@ -5,6 +5,7 @@ import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Su
 import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError, mergeMap, finalize, mergeAll } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
+import 'event-target-polyfill';
 import 'yet-another-abortcontroller-polyfill';
 
 function expectFullObserver(val: any) {
