@@ -194,6 +194,7 @@ These are Observable creation operators that also have join functionality -- emi
 - [`distinctUntilKeyChanged`](/api/operators/distinctUntilKeyChanged)
 - [`elementAt`](/api/operators/elementAt)
 - [`filter`](/api/operators/filter)
+- [`filterExists`](/api/operators/filterExists)
 - [`first`](/api/operators/first)
 - [`ignoreElements`](/api/operators/ignoreElements)
 - [`last`](/api/operators/last)
