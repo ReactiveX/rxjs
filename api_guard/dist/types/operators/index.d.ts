@@ -111,6 +111,8 @@ export declare function filter<T, S extends T>(predicate: (value: T, index: numb
 export declare function filter<T>(predicate: BooleanConstructor): OperatorFunction<T | null | undefined, NonNullable<T>>;
 export declare function filter<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): MonoTypeOperatorFunction<T>;
 
+export declare function filterExists<T>(): MonoTypeOperatorFunction<T>;
+
 export declare function finalize<T>(callback: () => void): MonoTypeOperatorFunction<T>;
 
 export declare function find<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, thisArg?: any): OperatorFunction<T, S | undefined>;
