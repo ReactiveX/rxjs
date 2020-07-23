@@ -1,267 +1,277 @@
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { dateTimestampProvider } from '../../src/internal/scheduler/dateTimestampProvider';
+/** @prettier */
 import { timeoutWith, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of } from 'rxjs';
-
-declare const rxTestScheduler: TestScheduler;
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {timeoutWith} */
 describe('timeoutWith operator', () => {
+  let rxTestScheduler: TestScheduler;
+
+  beforeEach(() => {
+    rxTestScheduler = new TestScheduler(observableMatcher);
+  });
+
   it('should timeout after a specified period then subscribe to the passed observable', () => {
-    const e1 =  cold('-------a--b--|');
-    const e1subs =   '^    !        ';
-    const e2 =       cold('x-y-z-|  ');
-    const e2subs =   '     ^     !  ';
-    const expected = '-----x-y-z-|  ';
+    rxTestScheduler.run(({ cold, time, expectObservable, expectSubscriptions }) => {
+      const source = cold('  -------a--b--|');
+      const sourceSubs = '   ^----!        ';
+      const t = time('       -----|');
+      const switchTo = cold('     x-y-z-|  ');
+      const switchToSubs = ' -----^-----!  ';
+      const expected = '     -----x-y-z-|  ';
 
-    const result = e1.pipe(timeoutWith(50, e2, rxTestScheduler));
+      const result = source.pipe(timeoutWith(t, switchTo, rxTestScheduler));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe(switchToSubs);
+    });
   });
 
   it('should timeout at a specified date then subscribe to the passed observable', () => {
-    const e1 =  cold('-');
-    const e1subs =   '^         !           ';
-    const e2 = cold(           '--x--y--z--|');
-    const e2subs =   '          ^          !';
-    const expected = '------------x--y--z--|';
+    rxTestScheduler.run(({ cold, time, expectObservable, expectSubscriptions }) => {
+      const source = cold('  -');
+      const sourceSubs = '   ^---------!           ';
+      const t = time('       ----------|')
+      const switchTo = cold('          --x--y--z--|');
+      const switchToSubs = ' ----------^----------!';
+      const expected = '     ------------x--y--z--|';
 
-    const result = e1.pipe(timeoutWith(new Date(rxTestScheduler.now() + 100), e2, rxTestScheduler));
+      // The the current frame is zero.
+      const result = source.pipe(timeoutWith(new Date(t), switchTo, rxTestScheduler));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe(switchToSubs);
+    });
   });
 
-  it('should timeout after a specified period between emit then subscribe ' +
-  'to the passed observable when source emits', () => {
-    const e1 =     hot('---a---b------c---|');
-    const e1subs =     '^          !       ';
-    const e2 = cold(              '-x-y-|  ');
-    const e2subs =     '           ^    !  ';
-    const expected =   '---a---b----x-y-|  ';
+  it('should timeout after a specified period between emit then subscribe to the passed observable when source emits', () => {
+    rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
+      const source = hot('  ---a---b------c---|');
+      const t = time('             ----|       ')
+      const sourceSubs = '  ^----------!       ';
+      const switchTo = cold('          -x-y-|  ');
+      const switchToSubs = '-----------^----!  ';
+      const expected = '    ---a---b----x-y-|  ';
 
-    const result = e1.pipe(timeoutWith(40, e2, rxTestScheduler));
+      const result = source.pipe(timeoutWith(t, switchTo, rxTestScheduler));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe(switchToSubs);
+    });
   });
 
   it('should allow unsubscribing explicitly and early', () => {
-    const e1 =     hot('---a---b-----c----|');
-    const e1subs =     '^          !       ';
-    const e2 = cold(              '-x---y| ');
-    const e2subs =     '           ^  !    ';
-    const expected =   '---a---b----x--    ';
-    const unsub =      '              !    ';
+    rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
+      const source = hot('  ---a---b-----c----|');
+      const t = time('             ----|       ')
+      const sourceSubs = '  ^----------!       ';
+      const switchTo = cold('          -x---y| ');
+      const switchToSubs = '-----------^--!    ';
+      const expected = '    ---a---b----x--    ';
+      const unsub = '       --------------!    ';
 
-    const result = e1.pipe(timeoutWith(40, e2, rxTestScheduler));
+      const result = source.pipe(timeoutWith(t, switchTo, rxTestScheduler));
 
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe(switchToSubs);
+    });
   });
 
   it('should not break unsubscription chain when unsubscribed explicitly', () => {
-    const e1 =     hot('---a---b-----c----|');
-    const e1subs =     '^          !       ';
-    const e2 = cold(              '-x---y| ');
-    const e2subs =     '           ^  !    ';
-    const expected =   '---a---b----x--    ';
-    const unsub =      '              !    ';
+    rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
+      const source = hot('  ---a---b-----c----|');
+      const t = time('      ----|              ');
+      const sourceSubs = '  ^----------!       ';
+      const switchTo = cold('          -x---y| ');
+      const switchToSubs = '-----------^--!    ';
+      const expected = '    ---a---b----x--    ';
+      const unsub = '       --------------!    ';
 
-    const result = e1.pipe(
-      mergeMap((x: string) => of(x)),
-      timeoutWith(40, e2, rxTestScheduler),
-      mergeMap((x: string) => of(x))
-    );
+      const result = source.pipe(
+        mergeMap((x) => of(x)),
+        timeoutWith(t, switchTo, rxTestScheduler),
+        mergeMap((x) => of(x))
+      );
 
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe(switchToSubs);
+    });
   });
 
   it('should not subscribe to withObservable after explicit unsubscription', () => {
-    const e1 =  cold('---a------b------');
-    const e1subs =   '^    !           ';
-    const e2 =  cold(        'i---j---|');
-    const e2subs: string[] = [];
-    const expected = '---a--           ';
-    const unsub =    '     !           ';
+    rxTestScheduler.run(({ cold, time, expectObservable, expectSubscriptions }) => {
+      const source = cold('---a------b------');
+      const t = time('     -----|           ')
+      const sourceSubs = ' ^----!           ';
+      const switchTo = cold('   i---j---|   ');
+      const expected = '   ---a--           ';
+      const unsub = '      -----!           ';
 
-    const result = e1.pipe(
-      mergeMap((x: string) => of(x)),
-      timeoutWith(50, e2, rxTestScheduler),
-      mergeMap((x: string) => of(x))
-    );
+      const result = source.pipe(
+        mergeMap((x: string) => of(x)),
+        timeoutWith(t, switchTo, rxTestScheduler),
+        mergeMap((x: string) => of(x))
+      );
 
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe([]);
+    });
   });
 
-  it('should timeout after a specified period then subscribe to the ' +
-  'passed observable when source is empty', () => {
-    const e1 =   hot('-------------|      ');
-    const e1subs =   '^         !         ';
-    const e2 = cold(           '----x----|');
-    const e2subs =   '          ^        !';
-    const expected = '--------------x----|';
+  it('should timeout after a specified period then subscribe to the passed observable when source is empty', () => {
+    rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
+      const source = hot('  -------------|      ');
+      const t = time('      ----------|         ')
+      const sourceSubs = '  ^---------!         ';
+      const switchTo = cold('         ----x----|');
+      const switchToSubs = '----------^--------!';
+      const expected = '    --------------x----|';
 
-    const result = e1.pipe(timeoutWith(100, e2, rxTestScheduler));
+      const result = source.pipe(timeoutWith(t, switchTo, rxTestScheduler));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe(switchToSubs);
+    });
   });
 
-  it('should timeout after a specified period between emit then never completes ' +
-  'if other source does not complete', () => {
-    const e1 =   hot('--a--b--------c--d--|');
-    const e1subs =   '^        !           ';
-    const e2 =  cold('-');
-    const e2subs =   '         ^           ';
-    const expected = '--a--b----           ';
+  it('should timeout after a specified period between emit then never completes if other source does not complete', () => {
+    rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
+      const source = hot('  --a--b--------c--d--|');
+      const t = time('           ----|           ');
+      const sourceSubs = '  ^--------!           ';
+      const switchTo = cold('        ------------');
+      const switchToSubs = '---------^-----------';
+      const expected = '    --a--b---------------';
 
-    const result = e1.pipe(timeoutWith(40, e2, rxTestScheduler));
+      const result = source.pipe(timeoutWith(t, switchTo, rxTestScheduler));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe(switchToSubs);
+    });
   });
 
-  it('should timeout after a specified period then subscribe to the ' +
-  'passed observable when source raises error after timeout', () => {
-    const e1 =   hot('-------------#      ');
-    const e1subs =   '^         !         ';
-    const e2 =  cold(          '----x----|');
-    const e2subs =   '          ^        !';
-    const expected = '--------------x----|';
+  it('should timeout after a specified period then subscribe to the passed observable when source raises error after timeout', () => {
+    rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
+      const source = hot('  -------------#      ');
+      const t = time('      ----------|         ');
+      const sourceSubs = '  ^---------!         ';
+      const switchTo = cold('         ----x----|');
+      const switchToSubs = '----------^--------!';
+      const expected = '    --------------x----|';
 
-    const result = e1.pipe(timeoutWith(100, e2, rxTestScheduler));
+      const result = source.pipe(timeoutWith(t, switchTo, rxTestScheduler));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe(switchToSubs);
+    });
   });
 
-  it('should timeout after a specified period between emit then never completes ' +
-  'if other source emits but not complete', () => {
-    const e1 =   hot('-------------|     ');
-    const e1subs =   '^         !        ';
-    const e2 =            cold('----x----');
-    const e2subs =   '          ^        ';
-    const expected = '--------------x----';
+  it('should timeout after a specified period between emit then never completes if other source emits but not complete', () => {
+    rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
+      const source = hot('  -------------|      ');
+      const t = time('      -----------|        ')
+      const sourceSubs = '  ^----------!        ';
+      const switchTo = cold('          ----x----');
+      const switchToSubs = '-----------^--------';
+      const expected = '    ---------------x----';
 
-    const result = e1.pipe(timeoutWith(100, e2, rxTestScheduler));
+      const result = source.pipe(timeoutWith(t, switchTo, rxTestScheduler));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe(switchToSubs);
+    });
   });
 
   it('should not timeout if source completes within timeout period', () => {
-    const e1 =   hot('-----|');
-    const e1subs =   '^    !';
-    const e2 = cold(           '----x----');
-    const e2subs: string[] = [];
-    const expected = '-----|';
+    rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
+      const source = hot('  -----|        ');
+      const t = time('      ----------|   ');
+      const sourceSubs = '  ^----!        ';
+      const switchTo = cold('    ----x----');
+      const expected = '    -----|        ';
 
-    const result = e1.pipe(timeoutWith(100, e2, rxTestScheduler));
+      const result = source.pipe(timeoutWith(t, switchTo, rxTestScheduler));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe([]);
+    });
   });
 
   it('should not timeout if source raises error within timeout period', () => {
-    const e1 =   hot('-----#');
-    const e1subs =   '^    !';
-    const e2 = cold(           '----x----|');
-    const e2subs: string[] = [];
-    const expected = '-----#';
+    rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
+      const source = hot('-----#              ');
+      const t = time('    ----------|         ');
+      const sourceSubs = '^----!              ';
+      const switchTo = cold('       ----x----|');
+      const expected = '  -----#              ';
 
-    const result = e1.pipe(timeoutWith(100, e2, rxTestScheduler));
+      const result = source.pipe(timeoutWith(t, switchTo, rxTestScheduler));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe([]);
+    });
   });
 
   it('should not timeout if source emits within timeout period', () => {
-    const e1 =   hot('--a--b--c--d--e--|');
-    const e1subs =   '^                !';
-    const e2 =  cold('----x----|');
-    const e2subs: string[] = [];
-    const expected = '--a--b--c--d--e--|';
+    rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
+      const source = hot('   --a--b--c--d--e--|');
+      const t = time('       -----|            ');
+      const sourceSubs = '   ^----------------!';
+      const switchTo = cold('----x----|        ');
+      const expected = '     --a--b--c--d--e--|';
 
-    const result = e1.pipe(timeoutWith(50, e2, rxTestScheduler));
+      const result = source.pipe(timeoutWith(t, switchTo, rxTestScheduler));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
-  });
-
-  it('should timeout after specified Date then subscribe to the passed observable', () => {
-    const e1 =   hot('--a--b--c--d--e--|');
-    const e1subs =   '^      !          ';
-    const e2 =  cold(       '--z--|     ');
-    const e2subs =   '       ^    !     ';
-    const expected = '--a--b---z--|     ';
-
-    const result = e1.pipe(timeoutWith(new Date(rxTestScheduler.now() + 70), e2, rxTestScheduler));
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe([]);
+    });
   });
 
   it('should not timeout if source completes within specified Date', () => {
-    const e1 =   hot('--a--b--c--d--e--|');
-    const e1subs =   '^                !';
-    const e2 =  cold('--x--|');
-    const e2subs: string[] = [];
-    const expected = '--a--b--c--d--e--|';
+    rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
+      const source = hot('--a--b--c--d--e--|   ');
+      const t = time('    --------------------|');
+      const sourceSubs = '^----------------!   ';
+      const switchTo = cold('--x--|            ');
+      const expected = '  --a--b--c--d--e--|   ';
 
-    const timeoutValue = new Date(dateTimestampProvider.now() + (expected.length + 2) * 10);
+      // Start frame is zero.
+      const result = source.pipe(timeoutWith(new Date(t), switchTo, rxTestScheduler));
 
-    const result = e1.pipe(timeoutWith(timeoutValue, e2, rxTestScheduler));
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe([]);
+    });
   });
 
   it('should not timeout if source raises error within specified Date', () => {
-    const e1 =   hot('---a---#');
-    const e1subs =   '^      !';
-    const e2 =  cold('--x--|');
-    const e2subs: string[] = [];
-    const expected = '---a---#';
+    rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
+      const source = hot('---a---#           ');
+      const t = time('       ----------|     ');
+      const sourceSubs = '^------!           ';
+      const switchTo = cold('          --x--|');
+      const expected = '  ---a---#           ';
 
-    const result = e1.pipe(timeoutWith(new Date(dateTimestampProvider.now() + 100), e2, rxTestScheduler));
+      // Start frame is zero.
+      const result = source.pipe(timeoutWith(new Date(t), switchTo, rxTestScheduler));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
-  });
-
-  it('should timeout specified Date after specified Date then never completes ' +
-  'if other source does not complete', () => {
-    const e1 =   hot('---a---b---c---d---e---|');
-    const e1subs =   '^         !             ';
-    const e2 =  cold('-');
-    const e2subs =   '          ^             ';
-    const expected = '---a---b---             ';
-
-    const result = e1.pipe(timeoutWith(new Date(rxTestScheduler.now() + 100), e2, rxTestScheduler));
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(switchTo.subscriptions).toBe([]);
+    });
   });
 });

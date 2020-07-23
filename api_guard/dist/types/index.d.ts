@@ -571,7 +571,8 @@ export interface TimeInterval<T> {
     value: T;
 }
 
-export interface TimeoutError extends Error {
+export interface TimeoutError<T = unknown, M = unknown> extends Error {
+    info: TimeoutInfo<T, M> | null;
 }
 
 export declare const TimeoutError: TimeoutErrorCtor;
