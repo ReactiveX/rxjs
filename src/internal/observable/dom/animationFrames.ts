@@ -1,9 +1,5 @@
 import { Observable } from '../../Observable';
-
-// TODO: move to types.ts
-export interface TimestampProvider {
-  now(): number;
-}
+import { TimestampProvider } from "../../types";
 
 /**
  * An observable of animation frames
