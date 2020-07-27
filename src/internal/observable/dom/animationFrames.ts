@@ -1,6 +1,8 @@
 import { Observable } from '../../Observable';
+import { Subscription } from '../../Subscription';
 import { TimestampProvider } from "../../types";
-import { dateTimestampProvider } from 'rxjs/internal/scheduler/dateTimestampProvider';
+import { dateTimestampProvider } from '../../scheduler/dateTimestampProvider';
+import { requestAnimationFrameProvider } from '../../scheduler/requestAnimationFrameProvider';
 
 /**
  * An observable of animation frames
@@ -83,17 +85,20 @@ export function animationFrames(timestampProvider: TimestampProvider = dateTimes
  * @param timestampProvider The timestamp provider to use to create the observable
  */
 function animationFramesFactory(timestampProvider: TimestampProvider) {
+  const { schedule } = requestAnimationFrameProvider;
   return new Observable<number>(subscriber => {
-    let id: number;
     const start = timestampProvider.now();
+    let subscription: Subscription;
     const run = () => {
       subscriber.next(timestampProvider.now() - start);
       if (!subscriber.closed) {
-        id = requestAnimationFrame(run);
+        subscription = schedule(run);
       }
     };
-    id = requestAnimationFrame(run);
-    return () => cancelAnimationFrame(id);
+    subscription = schedule(run);
+    // The subscription is returned within a teardown because it is reassigned
+    // within the run callback whenever the callback is rescheduled.
+    return () => subscription.unsubscribe();
   });
 }
 

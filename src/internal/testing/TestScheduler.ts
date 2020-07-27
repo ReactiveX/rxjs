@@ -11,6 +11,7 @@ import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../N
 import { dateTimestampProvider } from '../scheduler/dateTimestampProvider';
 import { performanceTimestampProvider } from '../scheduler/performanceTimestampProvider';
 import { requestAnimationFrameProvider } from '../scheduler/requestAnimationFrameProvider';
+import { ignoreElements, tap } from '../operators';
 
 const defaultMaxFrame: number = 750;
 
@@ -415,7 +416,53 @@ export class TestScheduler extends VirtualTimeScheduler {
     AsyncScheduler.delegate = this;
     dateTimestampProvider.delegate = this;
     performanceTimestampProvider.delegate = this;
-    requestAnimationFrameProvider.delegate = undefined; // TODO
+
+    let animationFramesHandle = 0;
+    let animationFramesQueue: Map<number, FrameRequestCallback> | undefined;
+    let animationFramesSource: Observable<never> | undefined;
+
+    requestAnimationFrameProvider.delegate = {
+      requestAnimationFrame(callback) {
+        if (!animationFramesQueue) {
+          throw new Error("repaints() was not called within run()");
+        }
+        const handle = ++animationFramesHandle;
+        animationFramesQueue.set(handle, callback);
+        return handle;
+      },
+      cancelAnimationFrame(handle) {
+        if (!animationFramesQueue) {
+          throw new Error("repaints() was not called within run()");
+        }
+        animationFramesQueue!.delete(handle);
+      }
+    };
+    const repaints = (marbles: string) => {
+      if (animationFramesSource) {
+        throw new Error('repaints() can be called only once within run()');
+      }
+      if (/[|#]/.test(marbles)) {
+        throw new Error('repaints() cannot complete or error')
+      }
+      animationFramesQueue = new Map<number, FrameRequestCallback>();
+      animationFramesSource = this.createHotObservable(marbles).pipe(
+        tap(() => {
+          const now = this.now();
+          // Capture the callbacks within the queue and clear the queue
+          // before enumerating the callbacks, as callbacks might
+          // reschedule themselves. (And, yeah, we're using a Map to represent
+          // the queue, but the values are guaranteed to be returned in
+          // insertion order, so it's all good. Trust me, I read the docs.)
+          const callbacks = Array.from(animationFramesQueue!.values());
+          animationFramesQueue!.clear();
+          for (const callback of callbacks) {
+            callback(now);
+          }
+        }),
+        ignoreElements()
+      );
+      this.expectObservable(animationFramesSource).toBe('');
+    };
 
     const helpers: RunHelpers = {
       cold: this.createColdObservable.bind(this),
@@ -424,7 +471,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       time: this.createTime.bind(this),
       expectObservable: this.expectObservable.bind(this),
       expectSubscriptions: this.expectSubscriptions.bind(this),
-      repaints: (marbles) => { /* TODO */ },
+      repaints,
     };
     try {
       const ret = callback(helpers);
