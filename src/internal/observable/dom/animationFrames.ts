@@ -1,5 +1,6 @@
 import { Observable } from '../../Observable';
 import { TimestampProvider } from "../../types";
+import { dateTimestampProvider } from 'rxjs/internal/scheduler/dateTimestampProvider';
 
 /**
  * An observable of animation frames
@@ -73,8 +74,8 @@ import { TimestampProvider } from "../../types";
  *
  * @param timestampProvider An object with a `now` method that provides a numeric timestamp
  */
-export function animationFrames(timestampProvider: TimestampProvider = Date) {
-  return timestampProvider === Date ? DEFAULT_ANIMATION_FRAMES : animationFramesFactory(timestampProvider);
+export function animationFrames(timestampProvider: TimestampProvider = dateTimestampProvider) {
+  return timestampProvider === dateTimestampProvider ? DEFAULT_ANIMATION_FRAMES : animationFramesFactory(timestampProvider);
 }
 
 /**
@@ -100,4 +101,4 @@ function animationFramesFactory(timestampProvider: TimestampProvider) {
  * In the common case, where `Date` is passed to `animationFrames` as the default,
  * we use this shared observable to reduce overhead.
  */
-const DEFAULT_ANIMATION_FRAMES = animationFramesFactory(Date);
+const DEFAULT_ANIMATION_FRAMES = animationFramesFactory(dateTimestampProvider);

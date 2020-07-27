@@ -8,6 +8,9 @@ import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeSch
 import { AsyncScheduler } from '../scheduler/AsyncScheduler';
 import { ObservableNotification } from '../types';
 import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Notification';
+import { dateTimestampProvider } from '../scheduler/dateTimestampProvider';
+import { performanceTimestampProvider } from '../scheduler/performanceTimestampProvider';
+import { requestAnimationFrameProvider } from '../scheduler/requestAnimationFrameProvider';
 
 const defaultMaxFrame: number = 750;
 
@@ -18,6 +21,7 @@ export interface RunHelpers {
   time: typeof TestScheduler.prototype.createTime;
   expectObservable: typeof TestScheduler.prototype.expectObservable;
   expectSubscriptions: typeof TestScheduler.prototype.expectSubscriptions;
+  repaints: (marbles: string) => void;
 }
 
 interface FlushableTest {
@@ -409,14 +413,18 @@ export class TestScheduler extends VirtualTimeScheduler {
     this.maxFrames = Infinity;
     this.runMode = true;
     AsyncScheduler.delegate = this;
+    dateTimestampProvider.delegate = this;
+    performanceTimestampProvider.delegate = this;
+    requestAnimationFrameProvider.delegate = undefined; // TODO
 
-    const helpers = {
+    const helpers: RunHelpers = {
       cold: this.createColdObservable.bind(this),
       hot: this.createHotObservable.bind(this),
       flush: this.flush.bind(this),
       time: this.createTime.bind(this),
       expectObservable: this.expectObservable.bind(this),
       expectSubscriptions: this.expectSubscriptions.bind(this),
+      repaints: (marbles) => { /* TODO */ },
     };
     try {
       const ret = callback(helpers);
@@ -427,6 +435,9 @@ export class TestScheduler extends VirtualTimeScheduler {
       this.maxFrames = prevMaxFrames;
       this.runMode = false;
       AsyncScheduler.delegate = undefined;
+      dateTimestampProvider.delegate = undefined;
+      performanceTimestampProvider.delegate = undefined;
+      requestAnimationFrameProvider.delegate = undefined;
     }
   }
 }

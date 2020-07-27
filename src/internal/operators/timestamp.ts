@@ -1,4 +1,5 @@
 import { OperatorFunction, TimestampProvider, Timestamp } from '../types';
+import { dateTimestampProvider } from '../scheduler/dateTimestampProvider';
 import { map } from './map';
 
 /**
@@ -32,6 +33,6 @@ import { map } from './map';
  *
  * @param timestampProvider An object with a `now()` method used to get the current timestamp.
  */
-export function timestamp<T>(timestampProvider: TimestampProvider = Date): OperatorFunction<T, Timestamp<T>> {
+export function timestamp<T>(timestampProvider: TimestampProvider = dateTimestampProvider): OperatorFunction<T, Timestamp<T>> {
   return map((value: T) => ({ value, timestamp: timestampProvider.now()}));
 }

@@ -4,6 +4,7 @@ import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
+import { dateTimestampProvider } from "./scheduler/dateTimestampProvider";
 
 /**
  * A variant of {@link Subject} that "replays" old values to new subscribers by emitting them when they first subscribe.
@@ -49,7 +50,7 @@ export class ReplaySubject<T> extends Subject<T> {
    */
   constructor(bufferSize: number = Infinity,
               windowTime: number = Infinity,
-              private timestampProvider: TimestampProvider = Date) {
+              private timestampProvider: TimestampProvider = dateTimestampProvider) {
     super();
     this._bufferSize = bufferSize < 1 ? 1 : bufferSize;
     this._windowTime = windowTime < 1 ? 1 : windowTime;
@@ -120,7 +121,7 @@ export class ReplaySubject<T> extends Subject<T> {
 
   private _getNow(): number {
     const { timestampProvider: scheduler } = this;
-    return scheduler ? scheduler.now() : Date.now();
+    return scheduler ? scheduler.now() : dateTimestampProvider.now();
   }
 
   private _trimBufferThenGetEvents(): ReplayEvent<T>[] {
