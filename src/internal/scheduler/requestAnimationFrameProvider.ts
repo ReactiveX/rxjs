@@ -1,11 +1,14 @@
-import { Subscription } from "../Subscription";
+/** @prettier */
+import { Subscription } from '../Subscription';
 
 type RequestAnimationFrameProvider = {
   schedule(callback: FrameRequestCallback): Subscription;
-  delegate: {
-    requestAnimationFrame: typeof requestAnimationFrame;
-    cancelAnimationFrame: typeof cancelAnimationFrame;
-  } | undefined;
+  delegate:
+    | {
+        requestAnimationFrame: typeof requestAnimationFrame;
+        cancelAnimationFrame: typeof cancelAnimationFrame;
+      }
+    | undefined;
 };
 
 export const requestAnimationFrameProvider: RequestAnimationFrameProvider = {
@@ -22,5 +25,5 @@ export const requestAnimationFrameProvider: RequestAnimationFrameProvider = {
     const handle = request(callback);
     return new Subscription(() => cancel(handle));
   },
-  delegate: undefined
+  delegate: undefined,
 };

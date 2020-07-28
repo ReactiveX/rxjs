@@ -1,4 +1,5 @@
-import { TimestampProvider } from "../types";
+/** @prettier */
+import { TimestampProvider } from '../types';
 
 interface PerformanceTimestampProvider extends TimestampProvider {
   delegate: TimestampProvider | undefined;
@@ -10,5 +11,5 @@ export const performanceTimestampProvider: PerformanceTimestampProvider = {
     // without being bound to the provider.
     return (performanceTimestampProvider.delegate || performance).now();
   },
-  delegate: undefined
+  delegate: undefined,
 };
