@@ -1,166 +1,112 @@
+/** @prettier */
 import { expect } from 'chai';
-import { animationFrames, Subject } from 'rxjs';
 import * as sinon from 'sinon';
-import { take, takeUntil } from 'rxjs/operators';
-import { RAFTestTools, stubRAF } from '../../helpers/test-helper';
+import { animationFrames } from 'rxjs';
+import { mergeMapTo, take, takeUntil } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
+import { observableMatcher } from '../../helpers/observableMatcher';
+import { requestAnimationFrameProvider } from 'rxjs/internal/scheduler/requestAnimationFrameProvider';
 
-describe('animationFrame', () => {
-  let raf: RAFTestTools;
-  let DateStub: sinon.SinonStub;
-  let now = 1000;
+describe('animationFrames', () => {
+  let testScheduler: TestScheduler;
 
   beforeEach(() => {
-    raf = stubRAF();
-    DateStub = sinon.stub(Date, 'now').callsFake(() => {
-      return ++now;
-    });
-  });
-
-  afterEach(() => {
-    raf.restore();
-    DateStub.restore();
+    testScheduler = new TestScheduler(observableMatcher);
   });
 
   it('should animate', function () {
-    const results: any[] = [];
-    const source$ = animationFrames();
+    testScheduler.run(({ cold, expectObservable, repaints, time }) => {
+      repaints('           ---x---x---x');
+      const mapped = cold('-m          ');
+      const tm = time('    -|          ');
+      const ta = time('    ---|        ');
+      const tb = time('    -------|    ');
+      const tc = time('    -----------|');
+      const expected = '   ---a---b---c';
+      const subs = '       ^----------!';
 
-    const subs = source$.subscribe({
-      next: ts => results.push(ts),
-      error: err => results.push(err),
-      complete: () => results.push('done'),
+      const result = mapped.pipe(mergeMapTo(animationFrames()));
+      expectObservable(result, subs).toBe(expected, {
+        a: ta - tm,
+        b: tb - tm,
+        c: tc - tm,
+      });
     });
-
-    expect(DateStub).to.have.been.calledOnce;
-
-    expect(results).to.deep.equal([]);
-
-    raf.tick();
-    expect(DateStub).to.have.been.calledTwice;
-    expect(results).to.deep.equal([1]);
-
-    raf.tick();
-    expect(DateStub).to.have.been.calledThrice;
-    expect(results).to.deep.equal([1, 2]);
-
-    raf.tick();
-    expect(results).to.deep.equal([1, 2, 3]);
-
-    // Stop the animation loop
-    subs.unsubscribe();
   });
 
   it('should use any passed timestampProvider', () => {
-    const results: any[] = [];
     let i = 0;
     const timestampProvider = {
       now: sinon.stub().callsFake(() => {
-        return [100, 200, 210, 300][i++];
-      })
+        return [50, 100, 200, 300][i++];
+      }),
     };
 
-    const source$ = animationFrames(timestampProvider);
+    testScheduler.run(({ cold, expectObservable, repaints }) => {
+      repaints('           ---x---x---x');
+      const mapped = cold('-m          ');
+      const expected = '   ---a---b---c';
+      const subs = '       ^----------!';
 
-    const subs = source$.subscribe({
-      next: ts => results.push(ts),
-      error: err => results.push(err),
-      complete: () => results.push('done'),
+      const result = mapped.pipe(mergeMapTo(animationFrames(timestampProvider)));
+      expectObservable(result, subs).toBe(expected, {
+        a: 50,
+        b: 150,
+        c: 250,
+      });
     });
-
-    expect(DateStub).not.to.have.been.called;
-    expect(timestampProvider.now).to.have.been.calledOnce;
-    expect(results).to.deep.equal([]);
-
-    raf.tick();
-    expect(DateStub).not.to.have.been.called;
-    expect(timestampProvider.now).to.have.been.calledTwice;
-    expect(results).to.deep.equal([100]);
-
-    raf.tick();
-    expect(DateStub).not.to.have.been.called;
-    expect(timestampProvider.now).to.have.been.calledThrice;
-    expect(results).to.deep.equal([100, 110]);
-
-    raf.tick();
-    expect(results).to.deep.equal([100, 110, 200]);
-
-    // Stop the animation loop
-    subs.unsubscribe();
   });
 
   it('should compose with take', () => {
-    const results: any[] = [];
-    const source$ = animationFrames();
-    expect(requestAnimationFrame).not.to.have.been.called;
+    testScheduler.run(({ cold, expectObservable, repaints, time }) => {
+      const requestSpy = sinon.spy(requestAnimationFrameProvider.delegate!, 'requestAnimationFrame');
+      const cancelSpy = sinon.spy(requestAnimationFrameProvider.delegate!, 'cancelAnimationFrame');
 
-    source$.pipe(
-      take(2),
-    ).subscribe({
-      next: ts => results.push(ts),
-      error: err => results.push(err),
-      complete: () => results.push('done'),
+      repaints('           ---x---x---x');
+      const mapped = cold('-m          ');
+      const tm = time('    -|          ');
+      const ta = time('    ---|        ');
+      const tb = time('    -------|    ');
+      const expected = '   ---a---b    ';
+
+      const result = mapped.pipe(mergeMapTo(animationFrames().pipe(take(2))));
+      expectObservable(result).toBe(expected, {
+        a: ta - tm,
+        b: tb - tm,
+      });
+
+      testScheduler.flush();
+      // Requests are made at tm and ta
+      expect(requestSpy.callCount).to.equal(2);
+      // Unsubscription effects request cancellation at tb
+      expect(cancelSpy.callCount).to.equal(1);
     });
-
-    expect(DateStub).to.have.been.calledOnce;
-    expect(requestAnimationFrame).to.have.been.calledOnce;
-
-    expect(results).to.deep.equal([]);
-
-    raf.tick();
-    expect(DateStub).to.have.been.calledTwice;
-    expect(requestAnimationFrame).to.have.been.calledTwice;
-    expect(results).to.deep.equal([1]);
-
-    raf.tick();
-    expect(DateStub).to.have.been.calledThrice;
-    // It shouldn't reschedule, because there are no more subscribers
-    // for the animation loop.
-    expect(requestAnimationFrame).to.have.been.calledTwice;
-    expect(results).to.deep.equal([1, 2, 'done']);
-
-    // Since there should be no more subscribers listening on the loop
-    // the latest animation frame should be cancelled.
-    expect(cancelAnimationFrame).to.have.been.calledOnce;
   });
 
   it('should compose with takeUntil', () => {
-    const subject = new Subject<void>();
-    const results: any[] = [];
-    const source$ = animationFrames();
-    expect(requestAnimationFrame).not.to.have.been.called;
+    testScheduler.run(({ cold, expectObservable, hot, repaints, time }) => {
+      const requestSpy = sinon.spy(requestAnimationFrameProvider.delegate!, 'requestAnimationFrame');
+      const cancelSpy = sinon.spy(requestAnimationFrameProvider.delegate!, 'cancelAnimationFrame');
 
-    source$.pipe(
-      takeUntil(subject),
-    ).subscribe({
-      next: ts => results.push(ts),
-      error: err => results.push(err),
-      complete: () => results.push('done'),
+      repaints('           ---x---x---x');
+      const mapped = cold('-m          ');
+      const tm = time('    -|          ');
+      const ta = time('    ---|        ');
+      const tb = time('    -------|    ');
+      const signal = hot(' ^--------s--');
+      const expected = '   ---a---b    ';
+
+      const result = mapped.pipe(mergeMapTo(animationFrames().pipe(takeUntil(signal))));
+      expectObservable(result).toBe(expected, {
+        a: ta - tm,
+        b: tb - tm,
+      });
+
+      testScheduler.flush();
+      // Requests are made at tm and ta and tb
+      expect(requestSpy.callCount).to.equal(3);
+      // Unsubscription effects request cancellation when signalled
+      expect(cancelSpy.callCount).to.equal(1);
     });
-
-    expect(DateStub).to.have.been.calledOnce;
-    expect(requestAnimationFrame).to.have.been.calledOnce;
-
-    expect(results).to.deep.equal([]);
-
-    raf.tick();
-    expect(DateStub).to.have.been.calledTwice;
-    expect(requestAnimationFrame).to.have.been.calledTwice;
-    expect(results).to.deep.equal([1]);
-
-    raf.tick();
-    expect(DateStub).to.have.been.calledThrice;
-    expect(requestAnimationFrame).to.have.been.calledThrice;
-    expect(results).to.deep.equal([1, 2]);
-    expect(cancelAnimationFrame).not.to.have.been.called;
-
-    // Complete the observable via `takeUntil`.
-    subject.next();
-    expect(cancelAnimationFrame).to.have.been.calledOnce;
-    expect(results).to.deep.equal([1, 2, 'done']);
-
-    raf.tick();
-    expect(DateStub).to.have.been.calledThrice;
-    expect(requestAnimationFrame).to.have.been.calledThrice;
-    expect(results).to.deep.equal([1, 2, 'done']);
   });
 });

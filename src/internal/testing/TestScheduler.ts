@@ -443,7 +443,7 @@ export class TestScheduler extends VirtualTimeScheduler {
         throw new Error('repaints() must not complete or error')
       }
       animationFramesQueue = new Map<number, FrameRequestCallback>();
-      const messages = TestScheduler.parseMarbles(marbles);
+      const messages = TestScheduler.parseMarbles(marbles, undefined, undefined, undefined, true);
       for (const message of messages) {
         this.schedule(() => {
           const now = this.now();
