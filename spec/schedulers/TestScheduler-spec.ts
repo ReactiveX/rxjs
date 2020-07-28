@@ -5,6 +5,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { Observable, NEVER, EMPTY, Subject, of, merge } from 'rxjs';
 import { delay, debounceTime, concatMap } from 'rxjs/operators';
 import { nextNotification, COMPLETE_NOTIFICATION, errorNotification } from 'rxjs/internal/Notification';
+import { requestAnimationFrameProvider } from 'rxjs/internal/scheduler/requestAnimationFrameProvider';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -498,6 +499,98 @@ describe('TestScheduler', () => {
           expectation.toBe('-q');
         });
       }).to.throw();
+    });
+
+    describe('repaints', () => {
+      it('should throw if repaints() is not called when needed', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        expect(() => testScheduler.run(() => {
+          requestAnimationFrameProvider.schedule(() => { /* pointless lint rule */ });
+        })).to.throw();
+      });
+
+      it('should throw if repaints() is called more than once', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        expect(() => testScheduler.run(({ repaints }) => {
+          repaints('--x');
+          repaints('--x');
+        })).to.throw();
+      });
+
+      it('should throw if repaints() completes', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        expect(() => testScheduler.run(({ repaints }) => {
+          repaints('--|');
+        })).to.throw();
+      });
+
+      it('should throw if repaints() errors', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        expect(() => testScheduler.run(({ repaints }) => {
+          repaints('--#');
+        })).to.throw();
+      });
+
+      it('should schedule async requests within repaints()', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(({ repaints }) => {
+          repaints('--x');
+
+          const values: string[] = [];
+          const { schedule } = requestAnimationFrameProvider;
+
+          testScheduler.schedule(() => {
+            schedule(t => values.push(`a@${t}`));
+            expect(values).to.deep.equal([]);
+          }, 0);
+          testScheduler.schedule(() => {
+            schedule(t => values.push(`b@${t}`));
+            expect(values).to.deep.equal([]);
+          }, 1);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal(['a@2', 'b@2']);
+          }, 2);
+        });
+      });
+
+      it('should schedule sync requests within repaints()', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(({ repaints }) => {
+          repaints('--x');
+
+          const values: string[] = [];
+          const { schedule } = requestAnimationFrameProvider;
+
+          testScheduler.schedule(() => {
+            schedule(t => values.push(`a@${t}`));
+            schedule(t => values.push(`b@${t}`));
+            expect(values).to.deep.equal([]);
+          }, 1);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal(['a@2', 'b@2']);
+          }, 2);
+        });
+      });
+
+      it('should support request cancellation within repaints()', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(({ repaints }) => {
+          repaints('--x');
+
+          const values: string[] = [];
+          const { schedule } = requestAnimationFrameProvider;
+
+          testScheduler.schedule(() => {
+            const subscription = schedule(t => values.push(`a@${t}`));
+            schedule(t => values.push(`b@${t}`));
+            subscription.unsubscribe();
+            expect(values).to.deep.equal([]);
+          }, 1);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal(['b@2']);
+          }, 2);
+        });
+      });
     });
   });
 });

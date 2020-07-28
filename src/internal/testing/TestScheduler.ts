@@ -11,7 +11,6 @@ import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../N
 import { dateTimestampProvider } from '../scheduler/dateTimestampProvider';
 import { performanceTimestampProvider } from '../scheduler/performanceTimestampProvider';
 import { requestAnimationFrameProvider } from '../scheduler/requestAnimationFrameProvider';
-import { ignoreElements, tap } from '../operators';
 
 const defaultMaxFrame: number = 750;
 
@@ -419,7 +418,6 @@ export class TestScheduler extends VirtualTimeScheduler {
 
     let animationFramesHandle = 0;
     let animationFramesQueue: Map<number, FrameRequestCallback> | undefined;
-    let animationFramesSource: Observable<never> | undefined;
 
     requestAnimationFrameProvider.delegate = {
       requestAnimationFrame(callback) {
@@ -434,19 +432,20 @@ export class TestScheduler extends VirtualTimeScheduler {
         if (!animationFramesQueue) {
           throw new Error("repaints() was not called within run()");
         }
-        animationFramesQueue!.delete(handle);
+        animationFramesQueue.delete(handle);
       }
     };
     const repaints = (marbles: string) => {
-      if (animationFramesSource) {
-        throw new Error('repaints() can be called only once within run()');
+      if (animationFramesQueue) {
+        throw new Error('repaints() must not be called more than once within run()');
       }
       if (/[|#]/.test(marbles)) {
-        throw new Error('repaints() cannot complete or error')
+        throw new Error('repaints() must not complete or error')
       }
       animationFramesQueue = new Map<number, FrameRequestCallback>();
-      animationFramesSource = this.createHotObservable(marbles).pipe(
-        tap(() => {
+      const messages = TestScheduler.parseMarbles(marbles);
+      for (const message of messages) {
+        this.schedule(() => {
           const now = this.now();
           // Capture the callbacks within the queue and clear the queue
           // before enumerating the callbacks, as callbacks might
@@ -458,10 +457,8 @@ export class TestScheduler extends VirtualTimeScheduler {
           for (const callback of callbacks) {
             callback(now);
           }
-        }),
-        ignoreElements()
-      );
-      this.expectObservable(animationFramesSource).toBe('');
+        }, message.frame);
+      }
     };
 
     const helpers: RunHelpers = {
