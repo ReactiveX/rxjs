@@ -76,10 +76,10 @@ describe('animationFrames', () => {
       });
 
       testScheduler.flush();
-      // Requests are made at tm and ta
+      // Requests are made at times tm and ta
       expect(requestSpy.callCount).to.equal(2);
-      // Unsubscription effects request cancellation at tb
-      expect(cancelSpy.callCount).to.equal(1);
+      // No request cancellation is effected, as unsubscription occurs before rescheduling
+      expect(cancelSpy.callCount).to.equal(0);
     });
   });
 
@@ -103,7 +103,7 @@ describe('animationFrames', () => {
       });
 
       testScheduler.flush();
-      // Requests are made at tm and ta and tb
+      // Requests are made at times tm and ta and tb
       expect(requestSpy.callCount).to.equal(3);
       // Unsubscription effects request cancellation when signalled
       expect(cancelSpy.callCount).to.equal(1);
