@@ -4,6 +4,7 @@ export interface RunHelpers {
     expectSubscriptions: typeof TestScheduler.prototype.expectSubscriptions;
     flush: typeof TestScheduler.prototype.flush;
     hot: typeof TestScheduler.prototype.createHotObservable;
+    repaints: (marbles: string) => void;
     time: typeof TestScheduler.prototype.createTime;
 }
 
