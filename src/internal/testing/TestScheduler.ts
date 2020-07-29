@@ -405,22 +405,25 @@ export class TestScheduler extends VirtualTimeScheduler {
     return testMessages;
   }
 
-  run<T>(callback: (helpers: RunHelpers) => T): T {
-    const prevFrameTimeFactor = TestScheduler.frameTimeFactor;
-    const prevMaxFrames = this.maxFrames;
+  private createAnimator() {
+    if (!this.runMode) {
+      throw new Error('animate() must only be used in run mode');
+    }
 
-    TestScheduler.frameTimeFactor = 1;
-    this.maxFrames = Infinity;
-    this.runMode = true;
-    AsyncScheduler.delegate = this;
-    dateTimestampProvider.delegate = this;
-    performanceTimestampProvider.delegate = this;
+    // The TestScheduler assigns a delegate to the provider that's used for
+    // requestAnimationFrame (rAF). The delegate works in conjunction with the
+    // animate run helper to coordinate the invocation of any rAF callbacks,
+    // that are effected within tests, with the animation frames specified by
+    // the test's author - in the marbles that are passed to the animate run
+    // helper. This allows the test's author to write deterministic tests and
+    // gives the author full control over when - or if - animation frames are
+    // 'painted'.
 
     let animationFramesHandle = 0;
     let animationFramesQueue: Map<number, FrameRequestCallback> | undefined;
 
-    requestAnimationFrameProvider.delegate = {
-      requestAnimationFrame(callback) {
+    const delegate = {
+      requestAnimationFrame(callback: FrameRequestCallback) {
         if (!animationFramesQueue) {
           throw new Error("animate() was not called within run()");
         }
@@ -428,13 +431,14 @@ export class TestScheduler extends VirtualTimeScheduler {
         animationFramesQueue.set(handle, callback);
         return handle;
       },
-      cancelAnimationFrame(handle) {
+      cancelAnimationFrame(handle: number) {
         if (!animationFramesQueue) {
           throw new Error("animate() was not called within run()");
         }
         animationFramesQueue.delete(handle);
       }
     };
+
     const animate = (marbles: string) => {
       if (animationFramesQueue) {
         throw new Error('animate() must not be called more than once within run()');
@@ -451,7 +455,7 @@ export class TestScheduler extends VirtualTimeScheduler {
           // before enumerating the callbacks, as callbacks might
           // reschedule themselves. (And, yeah, we're using a Map to represent
           // the queue, but the values are guaranteed to be returned in
-          // insertion order, so it's all good. Trust me, I read the docs.)
+          // insertion order, so it's all good. Trust me, I've read the docs.)
           const callbacks = Array.from(animationFramesQueue!.values());
           animationFramesQueue!.clear();
           for (const callback of callbacks) {
@@ -461,6 +465,23 @@ export class TestScheduler extends VirtualTimeScheduler {
       }
     };
 
+    return { animate, delegate };
+  }
+
+  run<T>(callback: (helpers: RunHelpers) => T): T {
+    const prevFrameTimeFactor = TestScheduler.frameTimeFactor;
+    const prevMaxFrames = this.maxFrames;
+
+    TestScheduler.frameTimeFactor = 1;
+    this.maxFrames = Infinity;
+    this.runMode = true;
+
+    const animator = this.createAnimator();
+    requestAnimationFrameProvider.delegate = animator.delegate;
+    dateTimestampProvider.delegate = this;
+    performanceTimestampProvider.delegate = this;
+    AsyncScheduler.delegate = this;
+
     const helpers: RunHelpers = {
       cold: this.createColdObservable.bind(this),
       hot: this.createHotObservable.bind(this),
@@ -468,7 +489,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       time: this.createTime.bind(this),
       expectObservable: this.expectObservable.bind(this),
       expectSubscriptions: this.expectSubscriptions.bind(this),
-      animate,
+      animate: animator.animate,
     };
     try {
       const ret = callback(helpers);
@@ -478,10 +499,10 @@ export class TestScheduler extends VirtualTimeScheduler {
       TestScheduler.frameTimeFactor = prevFrameTimeFactor;
       this.maxFrames = prevMaxFrames;
       this.runMode = false;
-      AsyncScheduler.delegate = undefined;
+      requestAnimationFrameProvider.delegate = undefined;
       dateTimestampProvider.delegate = undefined;
       performanceTimestampProvider.delegate = undefined;
-      requestAnimationFrameProvider.delegate = undefined;
+      AsyncScheduler.delegate = undefined;
     }
   }
 }
