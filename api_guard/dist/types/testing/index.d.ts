@@ -1,10 +1,10 @@
 export interface RunHelpers {
+    animate: (marbles: string) => void;
     cold: typeof TestScheduler.prototype.createColdObservable;
     expectObservable: typeof TestScheduler.prototype.expectObservable;
     expectSubscriptions: typeof TestScheduler.prototype.expectSubscriptions;
     flush: typeof TestScheduler.prototype.flush;
     hot: typeof TestScheduler.prototype.createHotObservable;
-    repaints: (marbles: string) => void;
     time: typeof TestScheduler.prototype.createTime;
 }
 
