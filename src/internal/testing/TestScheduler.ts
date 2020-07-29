@@ -21,7 +21,7 @@ export interface RunHelpers {
   time: typeof TestScheduler.prototype.createTime;
   expectObservable: typeof TestScheduler.prototype.expectObservable;
   expectSubscriptions: typeof TestScheduler.prototype.expectSubscriptions;
-  repaints: (marbles: string) => void;
+  animate: (marbles: string) => void;
 }
 
 interface FlushableTest {
@@ -360,7 +360,7 @@ export class TestScheduler extends VirtualTimeScheduler {
         default:
           // Might be time progression syntax, or a value literal
           if (runMode && c.match(/^[0-9]$/)) {
-            // Time progression must be preceeded by at least one space
+            // Time progression must be preceded by at least one space
             // if it's not at the beginning of the diagram
             if (i === 0 || marbles[i - 1] === ' ') {
               const buffer = marbles.slice(i);
@@ -422,7 +422,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     requestAnimationFrameProvider.delegate = {
       requestAnimationFrame(callback) {
         if (!animationFramesQueue) {
-          throw new Error("repaints() was not called within run()");
+          throw new Error("animate() was not called within run()");
         }
         const handle = ++animationFramesHandle;
         animationFramesQueue.set(handle, callback);
@@ -430,17 +430,17 @@ export class TestScheduler extends VirtualTimeScheduler {
       },
       cancelAnimationFrame(handle) {
         if (!animationFramesQueue) {
-          throw new Error("repaints() was not called within run()");
+          throw new Error("animate() was not called within run()");
         }
         animationFramesQueue.delete(handle);
       }
     };
-    const repaints = (marbles: string) => {
+    const animate = (marbles: string) => {
       if (animationFramesQueue) {
-        throw new Error('repaints() must not be called more than once within run()');
+        throw new Error('animate() must not be called more than once within run()');
       }
       if (/[|#]/.test(marbles)) {
-        throw new Error('repaints() must not complete or error')
+        throw new Error('animate() must not complete or error')
       }
       animationFramesQueue = new Map<number, FrameRequestCallback>();
       const messages = TestScheduler.parseMarbles(marbles, undefined, undefined, undefined, true);
@@ -468,7 +468,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       time: this.createTime.bind(this),
       expectObservable: this.expectObservable.bind(this),
       expectSubscriptions: this.expectSubscriptions.bind(this),
-      repaints,
+      animate,
     };
     try {
       const ret = callback(helpers);

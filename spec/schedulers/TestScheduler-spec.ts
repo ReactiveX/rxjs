@@ -501,40 +501,40 @@ describe('TestScheduler', () => {
       }).to.throw();
     });
 
-    describe('repaints', () => {
-      it('should throw if repaints() is not called when needed', () => {
+    describe('animate', () => {
+      it('should throw if animate() is not called when needed', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
         expect(() => testScheduler.run(() => {
           requestAnimationFrameProvider.schedule(() => { /* pointless lint rule */ });
         })).to.throw();
       });
 
-      it('should throw if repaints() is called more than once', () => {
+      it('should throw if animate() is called more than once', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
-        expect(() => testScheduler.run(({ repaints }) => {
-          repaints('--x');
-          repaints('--x');
+        expect(() => testScheduler.run(({ animate }) => {
+          animate('--x');
+          animate('--x');
         })).to.throw();
       });
 
-      it('should throw if repaints() completes', () => {
+      it('should throw if animate() completes', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
-        expect(() => testScheduler.run(({ repaints }) => {
-          repaints('--|');
+        expect(() => testScheduler.run(({ animate }) => {
+          animate('--|');
         })).to.throw();
       });
 
-      it('should throw if repaints() errors', () => {
+      it('should throw if animate() errors', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
-        expect(() => testScheduler.run(({ repaints }) => {
-          repaints('--#');
+        expect(() => testScheduler.run(({ animate }) => {
+          animate('--#');
         })).to.throw();
       });
 
-      it('should schedule async requests within repaints()', () => {
+      it('should schedule async requests within animate()', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
-        testScheduler.run(({ repaints }) => {
-          repaints('--x');
+        testScheduler.run(({ animate }) => {
+          animate('--x');
 
           const values: string[] = [];
           const { schedule } = requestAnimationFrameProvider;
@@ -553,10 +553,10 @@ describe('TestScheduler', () => {
         });
       });
 
-      it('should schedule sync requests within repaints()', () => {
+      it('should schedule sync requests within animate()', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
-        testScheduler.run(({ repaints }) => {
-          repaints('--x');
+        testScheduler.run(({ animate }) => {
+          animate('--x');
 
           const values: string[] = [];
           const { schedule } = requestAnimationFrameProvider;
@@ -572,10 +572,10 @@ describe('TestScheduler', () => {
         });
       });
 
-      it('should support request cancellation within repaints()', () => {
+      it('should support request cancellation within animate()', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
-        testScheduler.run(({ repaints }) => {
-          repaints('--x');
+        testScheduler.run(({ animate }) => {
+          animate('--x');
 
           const values: string[] = [];
           const { schedule } = requestAnimationFrameProvider;

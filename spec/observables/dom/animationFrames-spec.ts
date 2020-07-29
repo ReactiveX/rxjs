@@ -15,8 +15,8 @@ describe('animationFrames', () => {
   });
 
   it('should animate', function () {
-    testScheduler.run(({ cold, expectObservable, repaints, time }) => {
-      repaints('           ---x---x---x');
+    testScheduler.run(({ animate, cold, expectObservable, time }) => {
+      animate('            ---x---x---x');
       const mapped = cold('-m          ');
       const tm = time('    -|          ');
       const ta = time('    ---|        ');
@@ -42,8 +42,8 @@ describe('animationFrames', () => {
       }),
     };
 
-    testScheduler.run(({ cold, expectObservable, repaints }) => {
-      repaints('           ---x---x---x');
+    testScheduler.run(({ animate, cold, expectObservable }) => {
+      animate('            ---x---x---x');
       const mapped = cold('-m          ');
       const expected = '   ---a---b---c';
       const subs = '       ^----------!';
@@ -58,11 +58,11 @@ describe('animationFrames', () => {
   });
 
   it('should compose with take', () => {
-    testScheduler.run(({ cold, expectObservable, repaints, time }) => {
+    testScheduler.run(({ animate, cold, expectObservable, time }) => {
       const requestSpy = sinon.spy(requestAnimationFrameProvider.delegate!, 'requestAnimationFrame');
       const cancelSpy = sinon.spy(requestAnimationFrameProvider.delegate!, 'cancelAnimationFrame');
 
-      repaints('           ---x---x---x');
+      animate('            ---x---x---x');
       const mapped = cold('-m          ');
       const tm = time('    -|          ');
       const ta = time('    ---|        ');
@@ -84,11 +84,11 @@ describe('animationFrames', () => {
   });
 
   it('should compose with takeUntil', () => {
-    testScheduler.run(({ cold, expectObservable, hot, repaints, time }) => {
+    testScheduler.run(({ animate, cold, expectObservable, hot, time }) => {
       const requestSpy = sinon.spy(requestAnimationFrameProvider.delegate!, 'requestAnimationFrame');
       const cancelSpy = sinon.spy(requestAnimationFrameProvider.delegate!, 'cancelAnimationFrame');
 
-      repaints('           ---x---x---x');
+      animate('            ---x---x---x');
       const mapped = cold('-m          ');
       const tm = time('    -|          ');
       const ta = time('    ---|        ');
