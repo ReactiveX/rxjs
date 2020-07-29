@@ -468,6 +468,14 @@ export class TestScheduler extends VirtualTimeScheduler {
     return { animate, delegate };
   }
 
+  /**
+   * The `run` method performs the test in 'run mode' - in which schedulers
+   * used within the test automatically delegate to the `TestScheduler`. That
+   * is, in 'run mode' there is no need to explicitly pass a `TestScheduler`
+   * instance to observable creators or operators.
+   *
+   * @see {@link /guide/testing/marble-testing}
+   */
   run<T>(callback: (helpers: RunHelpers) => T): T {
     const prevFrameTimeFactor = TestScheduler.frameTimeFactor;
     const prevMaxFrames = this.maxFrames;
