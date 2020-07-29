@@ -109,7 +109,7 @@ export function catchError<T, O extends ObservableInput<any>>(
 ): OperatorFunction<T, T | ObservedValueOf<O>> {
   return function catchErrorOperatorFunction(source: Observable<T>): Observable<T | ObservedValueOf<O>> {
     const operator = new CatchOperator(selector);
-    const caught = lift(source, operator);
+    const caught = lift(source, operator) as Observable<T>;
     operator.caught = caught;
     return caught;
   };
