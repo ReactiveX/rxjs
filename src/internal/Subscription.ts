@@ -39,7 +39,8 @@ export class Subscription implements SubscriptionLike {
    */
   constructor(unsubscribe?: () => void) {
     if (unsubscribe) {
-      (<any> this)._unsubscribe = unsubscribe;
+      (this as any)._ctorUnsubscribe = true;
+      (this as any)._unsubscribe = unsubscribe;
     }
   }
 
@@ -56,7 +57,7 @@ export class Subscription implements SubscriptionLike {
       return;
     }
 
-    let { _parentOrParents, _unsubscribe, _subscriptions } = (<any> this);
+    let { _parentOrParents, _ctorUnsubscribe, _unsubscribe, _subscriptions } = (this as any);
 
     this.closed = true;
     this._parentOrParents = null;
@@ -74,6 +75,18 @@ export class Subscription implements SubscriptionLike {
     }
 
     if (isFunction(_unsubscribe)) {
+      // It's only possible to null _unsubscribe - to release the reference to
+      // any teardown function passed in the constructor - if the property was
+      // actually assigned in the constructor, as there are some classes that
+      // are derived from Subscriber (which derives from Subscription) that
+      // implement an _unsubscribe method as a mechanism for obtaining
+      // unsubscription notifications and some of those subscribers are
+      // recycled. Also, in some of those subscribers, _unsubscribe switches
+      // from a prototype method to an instance property - see notifyNext in
+      // RetryWhenSubscriber.
+      if (_ctorUnsubscribe) {
+        (this as any)._unsubscribe = undefined;
+      }
       try {
         _unsubscribe.call(this);
       } catch (e) {
@@ -130,7 +143,7 @@ export class Subscription implements SubscriptionLike {
   add(teardown: TeardownLogic): Subscription {
     let subscription = (<Subscription>teardown);
 
-    if (!(<any>teardown)) {
+    if (!teardown) {
       return Subscription.EMPTY;
     }
 

@@ -116,4 +116,17 @@ describe('Subscriber', () => {
     expect(subscriberUnsubscribed).to.be.true;
     expect(subscriptionUnsubscribed).to.be.true;
   });
+
+  it('should have idempotent unsubscription', () => {
+    let count = 0;
+    const subscriber = new Subscriber();
+    subscriber.add(() => ++count);
+    expect(count).to.equal(0);
+
+    subscriber.unsubscribe();
+    expect(count).to.equal(1);
+
+    subscriber.unsubscribe();
+    expect(count).to.equal(1);
+  });
 });
