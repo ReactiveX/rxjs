@@ -1,3 +1,29 @@
+# [7.0.0-beta.3](https://github.com/reactivex/rxjs/compare/7.0.0-beta.1...7.0.0-beta.3) (2020-07-30)
+
+
+### Bug Fixes
+
+* **perf:** Ensure unsubscriptions/teardowns on internal subscribers are idempotent ([#5465](https://github.com/reactivex/rxjs/issues/5465)) ([3e39749](https://github.com/reactivex/rxjs/commit/3e39749a58ca663c17f5f0354b0f27532fb6d319)), closes [#5464](https://github.com/reactivex/rxjs/issues/5464)
+* **timeout:** defer error creation until timeout occurs ([#5497](https://github.com/reactivex/rxjs/issues/5497)) ([3be9840](https://github.com/reactivex/rxjs/commit/3be98404fafd5a8de758deb4e0d103a7b60aa31e)), closes [#5491](https://github.com/reactivex/rxjs/issues/5491)
+
+
+### Code Refactoring
+
+* **perf:** Reduce memory pressure by no longer retaining outer values across the majority of operators. ([#5610](https:://github.com/reactivex/rxjs/pull/5610)) ([bff1827](https://github.com/ReactiveX/rxjs/commit/bff18272dca23938a5f5b57cec6eb8d8be5bfddf))
+* **Observable:** Update property and method types ([#5572](https://github.com/reactivex/rxjs/issues/5572)) ([144b626](https://github.com/reactivex/rxjs/commit/144b626c3905640b4adeb2b97e722912eff1b264))
+
+
+### Features
+
+* **combineLatest:** support for observable dictionaries ([#5022](https://github.com/reactivex/rxjs/issues/5022)) ([#5363](https://github.com/reactivex/rxjs/issues/5363)) ([f5278aa](https://github.com/reactivex/rxjs/commit/f5278aa89ea164caf5cf10e77d7bd00eff26fc0f))
+
+
+### BREAKING CHANGES
+
+* **Observable:** `lift` no longer exposed. It was _never_ documented that end users of the library should be creating operators using `lift`. Lift has a [variety of issues](https://github.com/ReactiveX/rxjs/issues/5431) and was always an internal implementation detail of rxjs that might have been used by a few power users in the early days when it had the most value. The value of `lift`, originally, was that subclassed `Observable`s would compose through all operators that implemented lift. The reality is that feature is not widely known, used, or supported, and it was never documented as it was very experimental when it was first added. Until the end of v7, `lift` will remain on Observable. Standard JavaScript users will notice no difference. However, TypeScript users might see complaints about `lift` not being a member of observable. To workaround this issue there are two things you can do: 1. Rewrite your operators as [outlined in the documentation](https://rxjs.dev/guide/operators), such that they return `new Observable`. or 2. cast your observable as `any` and access `lift` that way. It is recommended that operators be implemented in terms of functions that return `(sourcc: Observable<T>) => new Observable<R>(...)`, per the documentation/guide.
+
+
+
 # [7.0.0-beta.2](https://github.com/reactivex/rxjs/compare/7.0.0-beta.1...7.0.0-beta.2) (2020-07-03)
 
 

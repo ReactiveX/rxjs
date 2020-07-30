@@ -1,6 +1,6 @@
 {
   "name": "rxjs",
-  "version": "7.0.0-beta.2",
+  "version": "7.0.0-beta.3",
   "description": "Reactive Extensions for modern JavaScript",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm5/index.js",
@@ -34,7 +34,7 @@
     "publish_docs": "./publish_docs.sh",
     "test": "npm run compile && mocha --config spec/support/.mocharc.js \"dist/spec/**/*-spec.js\"",
     "test:browser": "echo \"Browser test is not working currently\" && exit -1 && npm-run-all build:spec:browser && opn spec/support/mocha-browser-runner.html",
-    "test:circular": "dependency-cruise --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm5",
+    "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm5",
     "test:systemjs": "node integration/systemjs/systemjs-compatibility-spec.js",
     "test:side-effects": "check-side-effects --test integration/side-effects/side-effects.json",
     "test:side-effects:update": "npm run test:side-effects -- --update",
