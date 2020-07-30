@@ -1,10 +1,8 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
@@ -70,7 +68,7 @@ export function distinct<T, K>(keySelector?: (value: T) => K,
 }
 
 class DistinctOperator<T, K> implements Operator<T, T> {
-  constructor(private keySelector: (value: T) => K, private flushes: Observable<any>) {
+  constructor(private keySelector?: (value: T) => K, private flushes?: Observable<any>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -83,24 +81,22 @@ class DistinctOperator<T, K> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-export class DistinctSubscriber<T, K> extends OuterSubscriber<T, T> {
+export class DistinctSubscriber<T, K> extends SimpleOuterSubscriber<T, T> {
   private values = new Set<K>();
 
-  constructor(destination: Subscriber<T>, private keySelector: (value: T) => K, flushes: Observable<any>) {
+  constructor(destination: Subscriber<T>, private keySelector?: (value: T) => K, flushes?: Observable<any>) {
     super(destination);
 
     if (flushes) {
-      this.add(subscribeToResult(this, flushes));
+      this.add(innerSubscribe(flushes, new SimpleInnerSubscriber(this)));
     }
   }
 
-  notifyNext(outerValue: T, innerValue: T,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, T>): void {
+  notifyNext(): void {
     this.values.clear();
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, T>): void {
+  notifyError(error: any): void {
     this._error(error);
   }
 
@@ -116,9 +112,9 @@ export class DistinctSubscriber<T, K> extends OuterSubscriber<T, T> {
     let key: K;
     const { destination } = this;
     try {
-      key = this.keySelector(value);
+      key = this.keySelector!(value);
     } catch (err) {
-      destination.error(err);
+      destination.error!(err);
       return;
     }
     this._finalizeNext(key, value);
@@ -128,7 +124,7 @@ export class DistinctSubscriber<T, K> extends OuterSubscriber<T, T> {
     const { values } = this;
     if (!values.has(<K>key)) {
       values.add(<K>key);
-      this.destination.next(value);
+      this.destination.next!(value);
     }
   }
 

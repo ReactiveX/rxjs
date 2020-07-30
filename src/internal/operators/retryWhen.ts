@@ -4,11 +4,8 @@ import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
-
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
@@ -43,11 +40,11 @@ class RetryWhenOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
+class RetryWhenSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
 
-  private errors: Subject<any>;
-  private retries: Observable<any>;
-  private retriesSubscription: Subscription;
+  private errors?: Subject<any>;
+  private retries?: Observable<any>;
+  private retriesSubscription?: Subscription;
 
   constructor(destination: Subscriber<R>,
               private notifier: (errors: Observable<any>) => Observable<any>,
@@ -70,10 +67,10 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
         } catch (e) {
           return super.error(e);
         }
-        retriesSubscription = subscribeToResult(this, retries);
+        retriesSubscription = innerSubscribe(retries, new SimpleInnerSubscriber(this));
       } else {
-        this.errors = null;
-        this.retriesSubscription = null;
+        this.errors = undefined;
+        this.retriesSubscription = undefined;
       }
 
       this._unsubscribeAndRecycle();
@@ -82,7 +79,7 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
       this.retries = retries;
       this.retriesSubscription = retriesSubscription;
 
-      errors.next(err);
+      errors!.next(err);
     }
   }
 
@@ -91,21 +88,19 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     const { errors, retriesSubscription } = this;
     if (errors) {
       errors.unsubscribe();
-      this.errors = null;
+      this.errors = undefined;
     }
     if (retriesSubscription) {
       retriesSubscription.unsubscribe();
-      this.retriesSubscription = null;
+      this.retriesSubscription = undefined;
     }
-    this.retries = null;
+    this.retries = undefined;
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(): void {
     const { _unsubscribe } = this;
 
-    this._unsubscribe = null;
+    this._unsubscribe = null!;
     this._unsubscribeAndRecycle();
     this._unsubscribe = _unsubscribe;
 
