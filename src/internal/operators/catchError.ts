@@ -4,7 +4,7 @@ import { Observable } from '../Observable';
 
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, subscribeToResult2, SimpleInnerSubscriber } from '../innies-and-outies';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function catchError<T, O extends ObservableInput<any>>(selector: (err: any, caught: Observable<T>) => O): OperatorFunction<T, T | ObservedValueOf<O>>;
@@ -153,7 +153,7 @@ class CatchSubscriber<T, R> extends SimpleOuterSubscriber<T, T | R> {
       this._unsubscribeAndRecycle();
       const innerSubscriber = new SimpleInnerSubscriber(this);
       this.add(innerSubscriber);
-      subscribeToResult2(result, innerSubscriber);
+      innerSubscribe(result, innerSubscriber);
     }
   }
 }

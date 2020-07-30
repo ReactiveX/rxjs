@@ -4,7 +4,7 @@ import { Subscriber } from '../Subscriber';
 
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, SimpleInnerSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /**
  * Emits the most recently emitted value from the source Observable whenever
@@ -56,7 +56,7 @@ class SampleOperator<T> implements Operator<T, T> {
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     const sampleSubscriber = new SampleSubscriber(subscriber);
     const subscription = source.subscribe(sampleSubscriber);
-    subscription.add(subscribeToResult2(this.notifier, new SimpleInnerSubscriber(sampleSubscriber)));
+    subscription.add(innerSubscribe(this.notifier, new SimpleInnerSubscriber(sampleSubscriber)));
     return subscription;
   }
 }

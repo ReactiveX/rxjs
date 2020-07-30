@@ -3,7 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
-import { ComplexOuterSubscriber, ComplexInnerSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
 /**
@@ -139,6 +139,6 @@ class WindowSubscriber<T> extends ComplexOuterSubscriber<T, any> {
       this.window.error(e);
       return;
     }
-    this.add(this.closingNotification = subscribeToResult2(closingNotifier, new ComplexInnerSubscriber(this, undefined, 0)));
+    this.add(this.closingNotification = innerSubscribe(closingNotifier, new ComplexInnerSubscriber(this, undefined, 0)));
   }
 }

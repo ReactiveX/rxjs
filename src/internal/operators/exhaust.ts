@@ -4,7 +4,7 @@ import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { ObservableInput, OperatorFunction, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, subscribeToResult2, SimpleInnerSubscriber } from '../innies-and-outies';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 export function exhaust<T>(): OperatorFunction<ObservableInput<T>, T>;
 export function exhaust<R>(): OperatorFunction<any, R>;
@@ -77,7 +77,7 @@ class SwitchFirstSubscriber<T> extends SimpleOuterSubscriber<T, T> {
 
   protected _next(value: T): void {
     if (!this.innerSubscription) {
-      this.innerSubscription = this.add(subscribeToResult2(value, new SimpleInnerSubscriber(this)));
+      this.innerSubscription = this.add(innerSubscribe(value, new SimpleInnerSubscriber(this)));
     }
   }
 

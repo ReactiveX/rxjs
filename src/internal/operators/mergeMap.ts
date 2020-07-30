@@ -6,7 +6,7 @@ import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
 import { lift } from '../util/lift';
-import { subscribeToResult2, SimpleOuterSubscriber, SimpleInnerSubscriber } from '../innies-and-outies';
+import { innerSubscribe, SimpleOuterSubscriber, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function mergeMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, concurrent?: number): OperatorFunction<T, ObservedValueOf<O>>;
@@ -131,7 +131,7 @@ export class MergeMapSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
       const innerSubscriber = new SimpleInnerSubscriber(this);
       const destination = this.destination as Subscription;
       destination.add(innerSubscriber);
-      subscribeToResult2(result, innerSubscriber);
+      innerSubscribe(result, innerSubscriber);
     } else {
       this.buffer.push(value);
     }

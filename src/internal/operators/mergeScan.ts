@@ -3,7 +3,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction } from '../types';
 import { lift } from '../util/lift';
-import { SimpleInnerSubscriber, SimpleOuterSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { SimpleInnerSubscriber, SimpleOuterSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /**
  * Applies an accumulator function over the source Observable where the
@@ -102,7 +102,7 @@ export class MergeScanSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
   private _innerSub(ish: any): void {
     const innerSubscriber = new SimpleInnerSubscriber(this);
     this.destination.add(innerSubscriber);
-    subscribeToResult2(ish, innerSubscriber);
+    innerSubscribe(ish, innerSubscriber);
   }
 
   protected _complete(): void {

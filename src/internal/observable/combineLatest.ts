@@ -3,7 +3,7 @@ import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
 import { isScheduler  } from '../util/isScheduler';
 import { isArray  } from '../util/isArray';
 import { Subscriber } from '../Subscriber';
-import { ComplexOuterSubscriber, ComplexInnerSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 import { Operator } from '../Operator';
 import { isObject } from '../util/isObject';
 import { fromArray } from './fromArray';
@@ -307,7 +307,7 @@ export class CombineLatestSubscriber<T, R> extends ComplexOuterSubscriber<T, R> 
       this.toRespond = len;
       for (let i = 0; i < len; i++) {
         const observable = observables[i];
-        this.add(subscribeToResult2(observable, new ComplexInnerSubscriber(this, observable, i)));
+        this.add(innerSubscribe(observable, new ComplexInnerSubscriber(this, observable, i)));
       }
     }
   }

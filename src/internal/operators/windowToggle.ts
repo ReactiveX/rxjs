@@ -3,7 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
-import { ComplexOuterSubscriber, ComplexInnerSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
 
@@ -90,7 +90,7 @@ class WindowToggleSubscriber<T, O> extends ComplexOuterSubscriber<T, any> {
               private openings: Observable<O>,
               private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
-    this.add(this.openSubscription = subscribeToResult2(openings, new ComplexInnerSubscriber(this, openings, 0)));
+    this.add(this.openSubscription = innerSubscribe(openings, new ComplexInnerSubscriber(this, openings, 0)));
   }
 
   protected _next(value: T) {
@@ -167,7 +167,7 @@ class WindowToggleSubscriber<T, O> extends ComplexOuterSubscriber<T, any> {
       const subscription = new Subscription();
       const context = { window, subscription };
       this.contexts.push(context);
-      const innerSubscription = subscribeToResult2(closingNotifier, new ComplexInnerSubscriber(this, context, 0));
+      const innerSubscription = innerSubscribe(closingNotifier, new ComplexInnerSubscriber(this, context, 0));
 
       if (innerSubscription!.closed) {
         this.closeWindow(this.contexts.length - 1);

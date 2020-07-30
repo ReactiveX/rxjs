@@ -7,7 +7,7 @@ import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { iterator as Symbol_iterator } from '../../internal/symbol/iterator';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, SimpleInnerSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 /** @deprecated resultSelector is no longer supported, pipe to map instead */
@@ -323,6 +323,6 @@ class ZipBufferIterator<T, R> extends SimpleOuterSubscriber<T, R> implements Loo
   }
 
   subscribe() {
-    return subscribeToResult2(this.observable, new SimpleInnerSubscriber(this));
+    return innerSubscribe(this.observable, new SimpleInnerSubscriber(this));
   }
 }

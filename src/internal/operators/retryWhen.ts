@@ -7,7 +7,7 @@ import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, subscribeToResult2, SimpleInnerSubscriber } from '../innies-and-outies';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
@@ -107,7 +107,7 @@ class RetryWhenSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
         } catch (e) {
           return super.error(e);
         }
-        retriesSubscription = subscribeToResult2(retries, new SimpleInnerSubscriber(this));
+        retriesSubscription = innerSubscribe(retries, new SimpleInnerSubscriber(this));
       } else {
         this.errors = null;
         this.retriesSubscription = null;

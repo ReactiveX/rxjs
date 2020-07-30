@@ -6,7 +6,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { TeardownLogic, ObservableInput, ObservedValueUnionFromArray } from '../types';
-import { ComplexOuterSubscriber, subscribeToResult2, ComplexInnerSubscriber } from '../innies-and-outies';
+import { ComplexOuterSubscriber, innerSubscribe, ComplexInnerSubscriber } from '../innerSubscribe';
 import { lift } from '../util/lift';
 
 export function race<A extends ObservableInput<any>[]>(observables: A): Observable<ObservedValueUnionFromArray<A>>;
@@ -100,7 +100,7 @@ export class RaceSubscriber<T> extends ComplexOuterSubscriber<T, T> {
     } else {
       for (let i = 0; i < len && !this.hasFirst; i++) {
         let observable = observables[i];
-        const subscription = subscribeToResult2(observable, new ComplexInnerSubscriber(this, observable as any, i));
+        const subscription = innerSubscribe(observable, new ComplexInnerSubscriber(this, observable as any, i));
 
         if (this.subscriptions) {
           this.subscriptions.push(subscription!);

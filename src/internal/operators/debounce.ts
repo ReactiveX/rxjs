@@ -5,7 +5,7 @@ import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
 
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, SimpleInnerSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -119,7 +119,7 @@ class DebounceSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
       this.remove(subscription);
     }
 
-    subscription = subscribeToResult2(duration, new SimpleInnerSubscriber(this));
+    subscription = innerSubscribe(duration, new SimpleInnerSubscriber(this));
     if (subscription && !subscription.closed) {
       this.add(this.durationSubscription = subscription);
     }

@@ -6,7 +6,7 @@ import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
 import { lift } from '../util/lift';
-import { SimpleInnerSubscriber, subscribeToResult2, SimpleOuterSubscriber } from '../innies-and-outies';
+import { SimpleInnerSubscriber, innerSubscribe, SimpleOuterSubscriber } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function switchMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
@@ -129,7 +129,7 @@ class SwitchMapSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
     }
     const innerSubscriber = new SimpleInnerSubscriber(this);
     this.destination.add(innerSubscriber);
-    this.innerSubscription = subscribeToResult2(result, innerSubscriber);
+    this.innerSubscription = innerSubscribe(result, innerSubscriber);
   }
 
   protected _complete(): void {

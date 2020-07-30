@@ -4,7 +4,7 @@ import { Subject } from '../Subject';
 import { Subscriber } from '../Subscriber';
 import { Operator } from '../Operator';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, subscribeToResult2, SimpleInnerSubscriber } from '../innies-and-outies';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Branch out the source Observable values as a nested Observable whenever
@@ -63,7 +63,7 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
     const windowSubscriber = new WindowSubscriber(subscriber);
     const sourceSubscription = source.subscribe(windowSubscriber);
     if (!sourceSubscription.closed) {
-      windowSubscriber.add(subscribeToResult2(this.windowBoundaries, new SimpleInnerSubscriber(windowSubscriber)));
+      windowSubscriber.add(innerSubscribe(this.windowBoundaries, new SimpleInnerSubscriber(windowSubscriber)));
     }
     return sourceSubscription;
   }

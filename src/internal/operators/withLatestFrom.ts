@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { ComplexOuterSubscriber, subscribeToResult2, ComplexInnerSubscriber } from '../innies-and-outies';
+import { ComplexOuterSubscriber, innerSubscribe, ComplexInnerSubscriber } from '../innerSubscribe';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { lift } from '../util/lift';
 
@@ -97,7 +97,7 @@ class WithLatestFromSubscriber<T, R> extends ComplexOuterSubscriber<T, R> {
   private toRespond: number[] = [];
 
   constructor(destination: Subscriber<R>,
-              private observables: Observable<any>[],
+              observables: Observable<any>[],
               private project?: (...values: any[]) => Observable<R>) {
     super(destination);
     const len = observables.length;
@@ -109,7 +109,7 @@ class WithLatestFromSubscriber<T, R> extends ComplexOuterSubscriber<T, R> {
 
     for (let i = 0; i < len; i++) {
       let observable = observables[i];
-      this.add(subscribeToResult2(observable, new ComplexInnerSubscriber(this, undefined, i)));
+      this.add(innerSubscribe(observable, new ComplexInnerSubscriber(this, undefined, i)));
     }
   }
 

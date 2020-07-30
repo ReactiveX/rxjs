@@ -5,7 +5,7 @@ import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
 
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, SimpleInnerSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /**
  * Ignores source values for a duration determined by another Observable, then
@@ -94,7 +94,7 @@ class AuditSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
       } catch (err) {
         return this.destination.error(err);
       }
-      const innerSubscription = subscribeToResult2(duration, new SimpleInnerSubscriber(this));
+      const innerSubscription = innerSubscribe(duration, new SimpleInnerSubscriber(this));
       if (!innerSubscription || innerSubscription.closed) {
         this.clearThrottle();
       } else {

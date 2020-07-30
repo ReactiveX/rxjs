@@ -6,7 +6,7 @@ import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, subscribeToResult2, SimpleInnerSubscriber } from '../innies-and-outies';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source
@@ -130,6 +130,6 @@ class RepeatWhenSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
       return super.complete();
     }
     this.retries = retries;
-    this.retriesSubscription = subscribeToResult2(retries, new SimpleInnerSubscriber(this));
+    this.retriesSubscription = innerSubscribe(retries, new SimpleInnerSubscriber(this));
   }
 }

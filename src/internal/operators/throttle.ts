@@ -6,7 +6,7 @@ import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, subscribeToResult2, SimpleInnerSubscriber } from '../innies-and-outies';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 export interface ThrottleConfig {
   leading?: boolean;
@@ -129,7 +129,7 @@ class ThrottleSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
       this.destination.error(err);
       return
     }
-    this.add(this._throttled = subscribeToResult2(result, new SimpleInnerSubscriber(this)));
+    this.add(this._throttled = innerSubscribe(result, new SimpleInnerSubscriber(this)));
   }
 
   private throttlingDone() {

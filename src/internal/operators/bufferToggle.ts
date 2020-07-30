@@ -2,7 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { ComplexOuterSubscriber, ComplexInnerSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 import { OperatorFunction, SubscribableOrPromise } from '../types';
 import { lift } from '../util/lift';
 
@@ -88,7 +88,7 @@ class BufferToggleSubscriber<T, O> extends ComplexOuterSubscriber<T, O> {
               openings: SubscribableOrPromise<O>,
               private closingSelector: (value: O) => SubscribableOrPromise<any> | void) {
     super(destination);
-    this.add(subscribeToResult2(openings, new ComplexInnerSubscriber(this, undefined, 0)))
+    this.add(innerSubscribe(openings, new ComplexInnerSubscriber(this, undefined, 0)))
   }
 
   protected _next(value: T): void {
@@ -164,7 +164,7 @@ class BufferToggleSubscriber<T, O> extends ComplexOuterSubscriber<T, O> {
     const context = { buffer, subscription };
     contexts.push(context);
 
-    const innerSubscription = subscribeToResult2(closingNotifier, new ComplexInnerSubscriber(this, context, 0));
+    const innerSubscription = innerSubscribe(closingNotifier, new ComplexInnerSubscriber(this, context, 0));
 
     if (!innerSubscription || innerSubscription.closed) {
       this.closeBuffer(context);

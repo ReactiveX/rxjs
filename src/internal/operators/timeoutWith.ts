@@ -5,7 +5,7 @@ import { Observable } from '../Observable';
 import { isValidDate } from '../util/isDate';
 import { ObservableInput, OperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, subscribeToResult2, SimpleInnerSubscriber } from '../innies-and-outies';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function timeoutWith<T, R>(due: number | Date, withObservable: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
@@ -108,7 +108,7 @@ class TimeoutWithSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
   private static dispatchTimeout<T, R>(subscriber: TimeoutWithSubscriber<T, R>): void {
     const { withObservable } = subscriber;
     subscriber._unsubscribeAndRecycle();
-    subscriber.add(subscribeToResult2(withObservable, new SimpleInnerSubscriber(subscriber)));
+    subscriber.add(innerSubscribe(withObservable, new SimpleInnerSubscriber(subscriber)));
   }
 
   private scheduleTimeout(): void {

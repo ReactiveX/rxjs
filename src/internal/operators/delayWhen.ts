@@ -2,7 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { ComplexOuterSubscriber, ComplexInnerSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
 
@@ -153,7 +153,7 @@ class DelayWhenSubscriber<T, R> extends ComplexOuterSubscriber<T, R> {
   }
 
   private tryDelay(delayNotifier: Observable<any>, value: T): void {
-    const notifierSubscription = subscribeToResult2(delayNotifier, new ComplexInnerSubscriber(this, value, 0));
+    const notifierSubscription = innerSubscribe(delayNotifier, new ComplexInnerSubscriber(this, value, 0));
 
     if (notifierSubscription && !notifierSubscription.closed) {
       const destination = this.destination as Subscription;

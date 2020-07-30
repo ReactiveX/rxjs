@@ -3,7 +3,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, SchedulerLike } from '../types';
 import { lift } from '../util/lift';
-import { SimpleInnerSubscriber, SimpleOuterSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { SimpleInnerSubscriber, SimpleOuterSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: SchedulerLike): OperatorFunction<T, R>;
@@ -146,7 +146,7 @@ export class ExpandSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
   }
 
   private subscribeToProjection(result: any): void {
-    this.destination.add(subscribeToResult2(result, new SimpleInnerSubscriber(this)));
+    this.destination.add(innerSubscribe(result, new SimpleInnerSubscriber(this)));
   }
 
   protected _complete(): void {

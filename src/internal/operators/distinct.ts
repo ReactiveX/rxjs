@@ -3,7 +3,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, subscribeToResult2, SimpleInnerSubscriber } from '../innies-and-outies';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
@@ -98,7 +98,7 @@ export class DistinctSubscriber<T, K> extends SimpleOuterSubscriber<T, T> {
     super(destination);
 
     if (flushes) {
-      this.add(subscribeToResult2(flushes, new SimpleInnerSubscriber(this)));
+      this.add(innerSubscribe(flushes, new SimpleInnerSubscriber(this)));
     }
   }
 

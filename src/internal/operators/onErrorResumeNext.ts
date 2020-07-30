@@ -5,7 +5,7 @@ import { Subscriber } from '../Subscriber';
 import { isArray } from '../util/isArray';
 import { ObservableInput, OperatorFunction } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, SimpleInnerSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext<T>(): OperatorFunction<T, T>;
@@ -159,7 +159,7 @@ class OnErrorResumeNextSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
       const innerSubscriber = new SimpleInnerSubscriber(this);
       const destination = this.destination;
       destination.add(innerSubscriber);
-      subscribeToResult2(next, innerSubscriber);
+      innerSubscribe(next, innerSubscriber);
     } else {
       this.destination.complete();
     }

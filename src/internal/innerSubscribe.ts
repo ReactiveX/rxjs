@@ -103,7 +103,7 @@ export class ComplexOuterSubscriber<T, R> extends Subscriber<T> {
   }
 }
 
-export function subscribeToResult2(result: any, innerSubscriber: Subscriber<any>): Subscription | undefined {
+export function innerSubscribe(result: any, innerSubscriber: Subscriber<any>): Subscription | undefined {
   if (innerSubscriber.closed) {
     return undefined;
   }

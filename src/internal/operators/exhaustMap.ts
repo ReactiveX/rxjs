@@ -6,7 +6,7 @@ import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, subscribeToResult2, SimpleInnerSubscriber } from '../innies-and-outies';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function exhaustMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
@@ -113,7 +113,7 @@ class ExhaustMapSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
       const innerSubscriber = new SimpleInnerSubscriber(this);
       const destination = this.destination;
       destination.add(innerSubscriber);
-      this.innerSubscription = subscribeToResult2(result, innerSubscriber);
+      this.innerSubscription = innerSubscribe(result, innerSubscriber);
     }
   }
 

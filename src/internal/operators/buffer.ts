@@ -3,7 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
-import { SimpleInnerSubscriber, SimpleOuterSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { SimpleInnerSubscriber, SimpleOuterSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /**
  * Buffers the source Observable values until `closingNotifier` emits.
@@ -70,7 +70,7 @@ class BufferSubscriber<T> extends SimpleOuterSubscriber<T, any> {
 
   constructor(destination: Subscriber<T[]>, closingNotifier: Observable<any>) {
     super(destination);
-    this.add(subscribeToResult2(closingNotifier, new SimpleInnerSubscriber(this)));
+    this.add(innerSubscribe(closingNotifier, new SimpleInnerSubscriber(this)));
   }
 
   protected _next(value: T) {

@@ -4,7 +4,7 @@ import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, subscribeToResult2, SimpleInnerSubscriber } from '../innies-and-outies';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Buffers the source Observable values, using a factory function of closing
@@ -134,7 +134,7 @@ class BufferWhenSubscriber<T> extends SimpleOuterSubscriber<T, any> {
     this.closingSubscription = closingSubscription;
     this.add(closingSubscription);
     this.subscribing = true;
-    closingSubscription.add(subscribeToResult2(closingNotifier, new SimpleInnerSubscriber(this)));
+    closingSubscription.add(innerSubscribe(closingNotifier, new SimpleInnerSubscriber(this)));
     this.subscribing = false;
   }
 }

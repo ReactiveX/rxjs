@@ -4,7 +4,7 @@ import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, TeardownLogic, ObservableInput } from '../types';
 import { Subscription } from '../Subscription';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, subscribeToResult2, SimpleInnerSubscriber } from '../innies-and-outies';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.
@@ -71,7 +71,7 @@ class SkipUntilSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
     const innerSubscriber = new SimpleInnerSubscriber(this);
     this.add(innerSubscriber);
     this.innerSubscription = innerSubscriber;
-    subscribeToResult2(notifier, innerSubscriber);
+    innerSubscribe(notifier, innerSubscriber);
   }
 
   protected _next(value: T) {

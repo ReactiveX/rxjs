@@ -5,7 +5,7 @@ import { Subscriber } from '../Subscriber';
 
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, SimpleInnerSubscriber, subscribeToResult2 } from '../innies-and-outies';
+import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /**
  * Emits the values emitted by the source Observable until a `notifier`
@@ -56,7 +56,7 @@ class TakeUntilOperator<T> implements Operator<T, T> {
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     const takeUntilSubscriber = new TakeUntilSubscriber(subscriber);
-    const notifierSubscription = subscribeToResult2(this.notifier, new SimpleInnerSubscriber(takeUntilSubscriber));
+    const notifierSubscription = innerSubscribe(this.notifier, new SimpleInnerSubscriber(takeUntilSubscriber));
     if (notifierSubscription && !takeUntilSubscriber.notifierHasNotified) {
       takeUntilSubscriber.add(notifierSubscription);
       return source.subscribe(takeUntilSubscriber);
