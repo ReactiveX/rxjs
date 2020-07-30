@@ -4,7 +4,7 @@ import { Subscriber } from './Subscriber';
 import { Observable } from './Observable';
 import { subscribeTo } from './util/subscribeTo';
 
-export interface ISimpleOuterSubscriber<T> {
+interface SimpleOuterSubscriberLike<T> {
   /**
    * A handler for inner next notifications from the inner subscription
    * @param innerValue the value nexted by the inner producer
@@ -22,7 +22,7 @@ export interface ISimpleOuterSubscriber<T> {
 }
 
 export class SimpleInnerSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: ISimpleOuterSubscriber<any>) {
+  constructor(private parent: SimpleOuterSubscriberLike<any>) {
     super();
   }
 
@@ -61,7 +61,7 @@ export class ComplexInnerSubscriber<T, R> extends Subscriber<R> {
   }
 }
 
-export class SimpleOuterSubscriber<T, R> extends Subscriber<T> implements ISimpleOuterSubscriber<R> {
+export class SimpleOuterSubscriber<T, R> extends Subscriber<T> implements SimpleOuterSubscriberLike<R> {
   notifyNext(innerValue: R): void {
     this.destination.next(innerValue);
   }
