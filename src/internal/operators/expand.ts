@@ -1,12 +1,9 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, SchedulerLike } from '../types';
 import { lift } from '../util/lift';
+import { SimpleInnerSubscriber, SimpleOuterSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: SchedulerLike): OperatorFunction<T, R>;
@@ -86,8 +83,6 @@ export class ExpandOperator<T, R> implements Operator<T, R> {
 interface DispatchArg<T, R> {
   subscriber: ExpandSubscriber<T, R>;
   result: ObservableInput<R>;
-  value: any;
-  index: number;
 }
 
 /**
@@ -95,13 +90,13 @@ interface DispatchArg<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
+export class ExpandSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
   private index: number = 0;
   private active: number = 0;
   private hasCompleted: boolean = false;
   private buffer: any[] | undefined;
 
-  constructor(destination: Subscriber<R>,
+  constructor(protected destination: Subscriber<R>,
               private project: (value: T, index: number) => ObservableInput<R>,
               private concurrent: number,
               private scheduler?: SchedulerLike) {
@@ -112,8 +107,8 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private static dispatch<T, R>(arg: DispatchArg<T, R>): void {
-    const {subscriber, result, value, index} = arg;
-    subscriber.subscribeToProjection(result, value, index);
+    const {subscriber, result} = arg;
+    subscriber.subscribeToProjection(result);
   }
 
   protected _next(value: any): void {
@@ -132,10 +127,10 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
         const { project } = this;
         const result = project(value, index);
         if (!this.scheduler) {
-          this.subscribeToProjection(result, value, index);
+          this.subscribeToProjection(result);
         } else {
-          const state: DispatchArg<T, R> = { subscriber: this, result, value, index };
-          const destination = this.destination as Subscription;
+          const state: DispatchArg<T, R> = { subscriber: this, result };
+          const destination = this.destination;
           destination.add(this.scheduler.schedule<DispatchArg<T, R>>(
             ExpandSubscriber.dispatch as any,
             0,
@@ -150,9 +145,8 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  private subscribeToProjection(result: any, value: T, index: number): void {
-    const destination = this.destination as Subscription;
-    destination.add(subscribeToResult<T, R>(this, result, value, index));
+  private subscribeToProjection(result: any): void {
+    this.destination.add(innerSubscribe(result, new SimpleInnerSubscriber(this)));
   }
 
   protected _complete(): void {
@@ -163,16 +157,12 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.unsubscribe();
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(innerValue: R): void {
     this._next(innerValue);
   }
 
-  notifyComplete(innerSub: Subscription): void {
+  notifyComplete(): void {
     const buffer = this.buffer;
-    const destination = this.destination as Subscription;
-    destination.remove(innerSub);
     this.active--;
     if (buffer && buffer.length > 0) {
       this._next(buffer.shift());

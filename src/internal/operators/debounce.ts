@@ -4,10 +4,8 @@ import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
 
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { lift } from '../util/lift';
+import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -85,7 +83,7 @@ class DebounceOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
+class DebounceSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
   private value: T | null = null;
   private hasValue: boolean = false;
   private durationSubscription: Subscription | null | undefined = null;
@@ -121,15 +119,13 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
       this.remove(subscription);
     }
 
-    subscription = subscribeToResult(this, duration);
+    subscription = innerSubscribe(duration, new SimpleInnerSubscriber(this));
     if (subscription && !subscription.closed) {
       this.add(this.durationSubscription = subscription);
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(): void {
     this.emitValue();
   }
 

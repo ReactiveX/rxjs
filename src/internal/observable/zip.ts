@@ -5,11 +5,9 @@ import { Operator } from '../Operator';
 import { ObservableInput, PartialObserver, ObservedValueOf } from '../types';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { iterator as Symbol_iterator } from '../../internal/symbol/iterator';
 import { lift } from '../util/lift';
+import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 /** @deprecated resultSelector is no longer supported, pipe to map instead */
@@ -108,7 +106,6 @@ export class ZipOperator<T, R> implements Operator<T, R> {
  * @extends {Ignored}
  */
 export class ZipSubscriber<T, R> extends Subscriber<T> {
-  private values: any;
   private resultSelector?: (...values: Array<any>) => R;
   private iterators: LookAheadIterator<any>[] = [];
   private active = 0;
@@ -118,7 +115,6 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
               values: any = Object.create(null)) {
     super(destination);
     this.resultSelector = resultSelector;
-    this.values = values;
   }
 
   protected _next(value: any) {
@@ -148,7 +144,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
       let iterator: ZipBufferIterator<any, any> = <any>iterators[i];
       if (iterator.stillUnsubscribed) {
         const destination = this.destination as Subscription;
-        destination.add(iterator.subscribe(iterator, i));
+        destination.add(iterator.subscribe());
       } else {
         this.active--; // not an observable
       }
@@ -258,7 +254,7 @@ class StaticArrayIterator<T> implements LookAheadIterator<T> {
     return this;
   }
 
-  next(value?: any): IteratorResult<T> {
+  next(): IteratorResult<T> {
     const i = this.index++;
     const array = this.array;
     return i < this.length ? { value: array[i], done: false } : { value: null, done: true };
@@ -278,7 +274,7 @@ class StaticArrayIterator<T> implements LookAheadIterator<T> {
  * @ignore
  * @extends {Ignored}
  */
-class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAheadIterator<T> {
+class ZipBufferIterator<T, R> extends SimpleOuterSubscriber<T, R> implements LookAheadIterator<T> {
   stillUnsubscribed = true;
   buffer: T[] = [];
   isComplete = false;
@@ -321,14 +317,12 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
     }
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(innerValue: any): void {
     this.buffer.push(innerValue);
     this.parent.checkIterators();
   }
 
-  subscribe(value: any, index: number) {
-    return subscribeToResult<any, any>(this, this.observable, this, index);
+  subscribe() {
+    return innerSubscribe(this.observable, new SimpleInnerSubscriber(this));
   }
 }

@@ -3,12 +3,9 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
-
 /**
  * Branch out the source Observable values as a nested Observable using a
  * factory function of closing Observables to determine when to start a new
@@ -73,7 +70,7 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
  * @ignore
  * @extends {Ignored}
  */
-class WindowSubscriber<T> extends OuterSubscriber<T, any> {
+class WindowSubscriber<T> extends ComplexOuterSubscriber<T, any> {
   private window: Subject<T> | undefined;
   private closingNotification: Subscription | undefined;
 
@@ -83,17 +80,17 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
     this.openWindow();
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
+  notifyNext(_outerValue: T, _innerValue: any,
+             _outerIndex: number,
+             innerSub: ComplexInnerSubscriber<T, any>): void {
     this.openWindow(innerSub);
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, any>): void {
+  notifyError(error: any): void {
     this._error(error);
   }
 
-  notifyComplete(innerSub: InnerSubscriber<T, any>): void {
+  notifyComplete(innerSub: ComplexInnerSubscriber<T, any>): void {
     this.openWindow(innerSub);
   }
 
@@ -119,7 +116,7 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
     }
   }
 
-  private openWindow(innerSub: InnerSubscriber<T, any> | null = null): void {
+  private openWindow(innerSub: ComplexInnerSubscriber<T, any> | null = null): void {
     if (innerSub) {
       this.remove(innerSub);
       innerSub.unsubscribe();
@@ -142,6 +139,6 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
       this.window.error(e);
       return;
     }
-    this.add(this.closingNotification = subscribeToResult(this, closingNotifier));
+    this.add(this.closingNotification = innerSubscribe(closingNotifier, new ComplexInnerSubscriber(this, undefined, 0)));
   }
 }

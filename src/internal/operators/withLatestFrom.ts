@@ -1,9 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { ComplexOuterSubscriber, innerSubscribe, ComplexInnerSubscriber } from '../innerSubscribe';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { lift } from '../util/lift';
 
@@ -94,12 +92,12 @@ class WithLatestFromOperator<T, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
+class WithLatestFromSubscriber<T, R> extends ComplexOuterSubscriber<T, R> {
   private values: any[];
   private toRespond: number[] = [];
 
   constructor(destination: Subscriber<R>,
-              private observables: Observable<any>[],
+              observables: Observable<any>[],
               private project?: (...values: any[]) => Observable<R>) {
     super(destination);
     const len = observables.length;
@@ -111,13 +109,12 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
 
     for (let i = 0; i < len; i++) {
       let observable = observables[i];
-      this.add(subscribeToResult<T, R>(this, observable, <any>observable, i));
+      this.add(innerSubscribe(observable, new ComplexInnerSubscriber(this, undefined, i)));
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(_outerValue: T, innerValue: R,
+             outerIndex: number): void {
     this.values[outerIndex] = innerValue;
     const toRespond = this.toRespond;
     if (toRespond.length > 0) {

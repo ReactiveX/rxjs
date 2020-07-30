@@ -4,12 +4,9 @@ import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
-
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source
@@ -58,7 +55,7 @@ class RepeatWhenOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
+class RepeatWhenSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
 
   private notifications: Subject<void> | null = null;
   private retries: Observable<any> | null = null;
@@ -71,14 +68,12 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(): void {
     this.sourceIsBeingSubscribedTo = true;
     this.source.subscribe(this);
   }
 
-  notifyComplete(innerSub: InnerSubscriber<T, R>): void {
+  notifyComplete(): void {
     if (this.sourceIsBeingSubscribedTo === false) {
       return super.complete();
     }
@@ -135,6 +130,6 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
       return super.complete();
     }
     this.retries = retries;
-    this.retriesSubscription = subscribeToResult(this, retries);
+    this.retriesSubscription = innerSubscribe(retries, new SimpleInnerSubscriber(this));
   }
 }

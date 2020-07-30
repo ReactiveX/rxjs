@@ -2,13 +2,11 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { subscribeToResult } from '../util/subscribeToResult';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
 import { lift } from '../util/lift';
+import { innerSubscribe, SimpleOuterSubscriber, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function mergeMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, concurrent?: number): OperatorFunction<T, ObservedValueOf<O>>;
@@ -107,13 +105,13 @@ export class MergeMapOperator<T, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-export class MergeMapSubscriber<T, R> extends OuterSubscriber<T, R> {
+export class MergeMapSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
   private hasCompleted: boolean = false;
   private buffer: T[] = [];
   private active: number = 0;
   protected index: number = 0;
 
-  constructor(destination: Subscriber<R>,
+  constructor(protected destination: Subscriber<R>,
               private project: (value: T, index: number) => ObservableInput<R>,
               private concurrent: number = Infinity) {
     super(destination);
@@ -121,30 +119,22 @@ export class MergeMapSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   protected _next(value: T): void {
     if (this.active < this.concurrent) {
-      this._tryNext(value);
+      let result: ObservableInput<R>;
+      const index = this.index++;
+      try {
+        result = this.project(value, index);
+      } catch (err) {
+        this.destination.error(err);
+        return;
+      }
+      this.active++;
+      const innerSubscriber = new SimpleInnerSubscriber(this);
+      const destination = this.destination as Subscription;
+      destination.add(innerSubscriber);
+      innerSubscribe(result, innerSubscriber);
     } else {
       this.buffer.push(value);
     }
-  }
-
-  protected _tryNext(value: T) {
-    let result: ObservableInput<R>;
-    const index = this.index++;
-    try {
-      result = this.project(value, index);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.active++;
-    this._innerSub(result, value, index);
-  }
-
-  private _innerSub(ish: ObservableInput<R>, value: T, index: number): void {
-    const innerSubscriber = new InnerSubscriber(this, value, index);
-    const destination = this.destination as Subscription;
-    destination.add(innerSubscriber);
-    subscribeToResult<T, R>(this, ish, undefined, undefined, innerSubscriber);
   }
 
   protected _complete(): void {
@@ -155,15 +145,12 @@ export class MergeMapSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.unsubscribe();
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(innerValue: R): void {
     this.destination.next(innerValue);
   }
 
-  notifyComplete(innerSub: Subscription): void {
+  notifyComplete(): void {
     const buffer = this.buffer;
-    this.remove(innerSub);
     this.active--;
     if (buffer.length > 0) {
       this._next(buffer.shift()!);

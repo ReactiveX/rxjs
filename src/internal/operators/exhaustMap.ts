@@ -2,13 +2,11 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
 import { lift } from '../util/lift';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function exhaustMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
@@ -92,53 +90,42 @@ class ExhaustMapOperator<T, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-class ExhaustMapSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private hasSubscription = false;
+class ExhaustMapSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
+  private innerSubscription?: Subscription;
   private hasCompleted = false;
   private index = 0;
 
-  constructor(destination: Subscriber<R>,
+  constructor(protected destination: Subscriber<R>,
               private project: (value: T, index: number) => ObservableInput<R>) {
     super(destination);
   }
 
   protected _next(value: T): void {
-    if (!this.hasSubscription) {
-      this.tryNext(value);
+    if (!this.innerSubscription) {
+      let result: ObservableInput<R>;
+      const index = this.index++;
+      try {
+        result = this.project(value, index);
+      } catch (err) {
+        this.destination.error(err);
+        return;
+      }
+      const innerSubscriber = new SimpleInnerSubscriber(this);
+      const destination = this.destination;
+      destination.add(innerSubscriber);
+      this.innerSubscription = innerSubscribe(result, innerSubscriber);
     }
-  }
-
-  private tryNext(value: T): void {
-    let result: ObservableInput<R>;
-    const index = this.index++;
-    try {
-      result = this.project(value, index);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.hasSubscription = true;
-    this._innerSub(result, value, index);
-  }
-
-  private _innerSub(result: ObservableInput<R>, value: T, index: number): void {
-    const innerSubscriber = new InnerSubscriber(this, value, index);
-    const destination = this.destination as Subscription;
-    destination.add(innerSubscriber);
-    subscribeToResult<T, R>(this, result, undefined, undefined, innerSubscriber);
   }
 
   protected _complete(): void {
     this.hasCompleted = true;
-    if (!this.hasSubscription) {
+    if (!this.innerSubscription) {
       this.destination.complete();
     }
     this.unsubscribe();
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(innerValue: R): void {
     this.destination.next(innerValue);
   }
 
@@ -146,11 +133,8 @@ class ExhaustMapSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.destination.error(err);
   }
 
-  notifyComplete(innerSub: Subscription): void {
-    const destination = this.destination as Subscription;
-    destination.remove(innerSub);
-
-    this.hasSubscription = false;
+  notifyComplete(): void {
+    this.innerSubscription = undefined;
     if (this.hasCompleted) {
       this.destination.complete();
     }

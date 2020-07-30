@@ -6,9 +6,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { TeardownLogic, ObservableInput, ObservedValueUnionFromArray } from '../types';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { ComplexOuterSubscriber, innerSubscribe, ComplexInnerSubscriber } from '../innerSubscribe';
 import { lift } from '../util/lift';
 
 export function race<A extends ObservableInput<any>[]>(observables: A): Observable<ObservedValueUnionFromArray<A>>;
@@ -80,7 +78,7 @@ export class RaceOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
+export class RaceSubscriber<T> extends ComplexOuterSubscriber<T, T> {
   private hasFirst: boolean = false;
   private observables: Observable<any>[] = [];
   private subscriptions: Subscription[] = [];
@@ -102,7 +100,7 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
     } else {
       for (let i = 0; i < len && !this.hasFirst; i++) {
         let observable = observables[i];
-        let subscription = subscribeToResult(this, observable, observable as any, i);
+        const subscription = innerSubscribe(observable, new ComplexInnerSubscriber(this, null, i));
 
         if (this.subscriptions) {
           this.subscriptions.push(subscription!);
@@ -113,9 +111,8 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: T,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, T>): void {
+  notifyNext(_outerValue: T, innerValue: T,
+             outerIndex: number): void {
     if (!this.hasFirst) {
       this.hasFirst = true;
 
@@ -134,13 +131,13 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
     this.destination.next(innerValue);
   }
 
-  notifyComplete(innerSub: InnerSubscriber<T, T>): void {
+  notifyComplete(innerSub: ComplexInnerSubscriber<T, T>): void {
     this.hasFirst = true;
     super.notifyComplete(innerSub);
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, T>): void {
+  notifyError(error: any): void {
     this.hasFirst = true;
-    super.notifyError(error, innerSub);
+    super.notifyError(error);
   }
 }

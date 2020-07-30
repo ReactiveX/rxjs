@@ -1,12 +1,10 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { MonoTypeOperatorFunction, TeardownLogic, ObservableInput } from '../types';
 import { Subscription } from '../Subscription';
 import { lift } from '../util/lift';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.
@@ -64,29 +62,26 @@ class SkipUntilOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
-
-  private hasValue: boolean = false;
+class SkipUntilSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
+  private isTaking = false;
   private innerSubscription: Subscription | undefined;
 
   constructor(destination: Subscriber<R>, notifier: ObservableInput<any>) {
     super(destination);
-    const innerSubscriber = new InnerSubscriber(this, undefined, undefined!);
+    const innerSubscriber = new SimpleInnerSubscriber(this);
     this.add(innerSubscriber);
     this.innerSubscription = innerSubscriber;
-    subscribeToResult(this, notifier, undefined, undefined, innerSubscriber);
+    innerSubscribe(notifier, innerSubscriber);
   }
 
   protected _next(value: T) {
-    if (this.hasValue) {
+    if (this.isTaking) {
       super._next(value);
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
-    this.hasValue = true;
+  notifyNext(): void {
+    this.isTaking = true;
     if (this.innerSubscription) {
       this.innerSubscription.unsubscribe();
     }

@@ -2,10 +2,9 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 export function exhaust<T>(): OperatorFunction<ObservableInput<T>, T>;
 export function exhaust<R>(): OperatorFunction<any, R>;
@@ -68,31 +67,29 @@ class SwitchFirstOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class SwitchFirstSubscriber<T> extends OuterSubscriber<T, T> {
-  private hasCompleted: boolean = false;
-  private hasSubscription: boolean = false;
+class SwitchFirstSubscriber<T> extends SimpleOuterSubscriber<T, T> {
+  private hasCompleted = false;
+  private innerSubscription?: Subscription;
 
   constructor(destination: Subscriber<T>) {
     super(destination);
   }
 
   protected _next(value: T): void {
-    if (!this.hasSubscription) {
-      this.hasSubscription = true;
-      this.add(subscribeToResult(this, value));
+    if (!this.innerSubscription) {
+      this.innerSubscription = this.add(innerSubscribe(value, new SimpleInnerSubscriber(this)));
     }
   }
 
   protected _complete(): void {
     this.hasCompleted = true;
-    if (!this.hasSubscription) {
+    if (!this.innerSubscription) {
       this.destination.complete();
     }
   }
 
-  notifyComplete(innerSub: Subscription): void {
-    this.remove(innerSub);
-    this.hasSubscription = false;
+  notifyComplete(): void {
+    this.innerSubscription = undefined;
     if (this.hasCompleted) {
       this.destination.complete();
     }

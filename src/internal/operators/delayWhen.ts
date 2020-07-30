@@ -2,9 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
 
@@ -96,7 +94,7 @@ class DelayWhenOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
+class DelayWhenSubscriber<T, R> extends ComplexOuterSubscriber<T, R> {
   private completed: boolean = false;
   private delayNotifierSubscriptions: Array<Subscription> = [];
   private index: number = 0;
@@ -106,19 +104,18 @@ class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, _innerValue: any,
+             _outerIndex: number, innerSub: ComplexInnerSubscriber<T, R>): void {
     this.destination.next(outerValue);
     this.removeSubscription(innerSub);
     this.tryComplete();
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, R>): void {
+  notifyError(error: any): void {
     this._error(error);
   }
 
-  notifyComplete(innerSub: InnerSubscriber<T, R>): void {
+  notifyComplete(innerSub: ComplexInnerSubscriber<T, R>): void {
     const value = this.removeSubscription(innerSub);
     if (value) {
       this.destination.next(value);
@@ -144,7 +141,7 @@ class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.unsubscribe();
   }
 
-  private removeSubscription(subscription: InnerSubscriber<T, R>): T {
+  private removeSubscription(subscription: ComplexInnerSubscriber<T, R>): T {
     subscription.unsubscribe();
 
     const subscriptionIdx = this.delayNotifierSubscriptions.indexOf(subscription);
@@ -156,7 +153,7 @@ class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private tryDelay(delayNotifier: Observable<any>, value: T): void {
-    const notifierSubscription = subscribeToResult(this, delayNotifier, value);
+    const notifierSubscription = innerSubscribe(delayNotifier, new ComplexInnerSubscriber(this, value, 0));
 
     if (notifierSubscription && !notifierSubscription.closed) {
       const destination = this.destination as Subscription;

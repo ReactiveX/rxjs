@@ -4,9 +4,8 @@ import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
 
-import { OuterSubscriber } from '../OuterSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { lift } from '../util/lift';
+import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /**
  * Ignores source values for a duration determined by another Observable, then
@@ -73,7 +72,7 @@ class AuditOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
+class AuditSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
 
   private value: T | null = null;
   private hasValue: boolean = false;
@@ -95,7 +94,7 @@ class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
       } catch (err) {
         return this.destination.error(err);
       }
-      const innerSubscription = subscribeToResult(this, duration);
+      const innerSubscription = innerSubscribe(duration, new SimpleInnerSubscriber(this));
       if (!innerSubscription || innerSubscription.closed) {
         this.clearThrottle();
       } else {
@@ -118,7 +117,7 @@ class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
+  notifyNext(): void {
     this.clearThrottle();
   }
 

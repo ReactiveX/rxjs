@@ -2,13 +2,10 @@ import { Observable } from '../Observable';
 import { from } from '../observable/from';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
 import { isArray } from '../util/isArray';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction } from '../types';
 import { lift } from '../util/lift';
+import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext<T>(): OperatorFunction<T, T>;
@@ -132,17 +129,17 @@ class OnErrorResumeNextOperator<T, R> implements Operator<T, R> {
   }
 }
 
-class OnErrorResumeNextSubscriber<T, R> extends OuterSubscriber<T, R> {
+class OnErrorResumeNextSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
   constructor(protected destination: Subscriber<T>,
               private nextSources: Array<ObservableInput<any>>) {
     super(destination);
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, any>): void {
+  notifyError(): void {
     this.subscribeToNextSource();
   }
 
-  notifyComplete(innerSub: InnerSubscriber<T, any>): void {
+  notifyComplete(): void {
     this.subscribeToNextSource();
   }
 
@@ -159,10 +156,10 @@ class OnErrorResumeNextSubscriber<T, R> extends OuterSubscriber<T, R> {
   private subscribeToNextSource(): void {
     const next = this.nextSources.shift();
     if (!!next) {
-      const innerSubscriber = new InnerSubscriber(this, undefined, undefined!);
-      const destination = this.destination as Subscription;
+      const innerSubscriber = new SimpleInnerSubscriber(this);
+      const destination = this.destination;
       destination.add(innerSubscriber);
-      subscribeToResult(this, next, undefined, undefined, innerSubscriber);
+      innerSubscribe(next, innerSubscriber);
     } else {
       this.destination.complete();
     }

@@ -3,9 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
 
@@ -84,7 +82,7 @@ interface WindowContext<T> {
  * @ignore
  * @extends {Ignored}
  */
-class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
+class WindowToggleSubscriber<T, O> extends ComplexOuterSubscriber<T, any> {
   private contexts: WindowContext<T>[] = [];
   private openSubscription: Subscription | undefined;
 
@@ -92,7 +90,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
               private openings: Observable<O>,
               private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
-    this.add(this.openSubscription = subscribeToResult(this, openings, openings as any));
+    this.add(this.openSubscription = innerSubscribe(openings, new ComplexInnerSubscriber(this, openings, 0)));
   }
 
   protected _next(value: T) {
@@ -154,9 +152,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
     }
   }
 
-  notifyNext(outerValue: any, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
+  notifyNext(outerValue: any, innerValue: any): void {
 
     if (outerValue === this.openings) {
       let closingNotifier;
@@ -171,7 +167,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
       const subscription = new Subscription();
       const context = { window, subscription };
       this.contexts.push(context);
-      const innerSubscription = subscribeToResult(this, closingNotifier, context as any);
+      const innerSubscription = innerSubscribe(closingNotifier, new ComplexInnerSubscriber(this, context, 0));
 
       if (innerSubscription!.closed) {
         this.closeWindow(this.contexts.length - 1);

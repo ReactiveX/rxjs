@@ -3,12 +3,10 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 
 import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 export interface ThrottleConfig {
   leading?: boolean;
@@ -88,7 +86,7 @@ class ThrottleOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
+class ThrottleSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
   private _throttled: Subscription | null | undefined;
   private _sendValue: T | null = null;
   private _hasValue = false;
@@ -124,19 +122,14 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private throttle(value: T): void {
-    const duration = this.tryDurationSelector(value);
-    if (!!duration) {
-      this.add(this._throttled = subscribeToResult(this, duration));
-    }
-  }
-
-  private tryDurationSelector(value: T): SubscribableOrPromise<any> | null {
+    let result: SubscribableOrPromise<any>;
     try {
-      return this.durationSelector(value);
+      result = this.durationSelector(value);
     } catch (err) {
       this.destination.error(err);
-      return null;
+      return
     }
+    this.add(this._throttled = innerSubscribe(result, new SimpleInnerSubscriber(this)));
   }
 
   private throttlingDone() {
@@ -151,9 +144,7 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(): void {
     this.throttlingDone();
   }
 

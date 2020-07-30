@@ -1,12 +1,9 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { subscribeToResult } from '../util/subscribeToResult';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
 import { ObservableInput, OperatorFunction } from '../types';
 import { lift } from '../util/lift';
+import { SimpleInnerSubscriber, SimpleOuterSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /**
  * Applies an accumulator function over the source Observable where the
@@ -70,14 +67,14 @@ export class MergeScanOperator<T, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
+export class MergeScanSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
   private hasValue: boolean = false;
   private hasCompleted: boolean = false;
   private buffer: Observable<any>[] = [];
   private active: number = 0;
   protected index: number = 0;
 
-  constructor(destination: Subscriber<R>,
+  constructor(protected destination: Subscriber<R>,
               private accumulator: (acc: R, value: T, index: number) => ObservableInput<R>,
               private acc: R,
               private concurrent: number) {
@@ -96,17 +93,16 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
         return destination.error(e);
       }
       this.active++;
-      this._innerSub(ish, value, index);
+      this._innerSub(ish);
     } else {
       this.buffer.push(value);
     }
   }
 
-  private _innerSub(ish: any, value: T, index: number): void {
-    const innerSubscriber = new InnerSubscriber(this, value, index);
-    const destination = this.destination as Subscription;
-    destination.add(innerSubscriber);
-    subscribeToResult<T, R>(this, ish, undefined, undefined, innerSubscriber);
+  private _innerSub(ish: any): void {
+    const innerSubscriber = new SimpleInnerSubscriber(this);
+    this.destination.add(innerSubscriber);
+    innerSubscribe(ish, innerSubscriber);
   }
 
   protected _complete(): void {
@@ -120,19 +116,15 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.unsubscribe();
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(innerValue: R): void {
     const { destination } = this;
     this.acc = innerValue;
     this.hasValue = true;
     destination.next(innerValue);
   }
 
-  notifyComplete(innerSub: Subscription): void {
+  notifyComplete(): void {
     const buffer = this.buffer;
-    const destination = this.destination as Subscription;
-    destination.remove(innerSub);
     this.active--;
     if (buffer.length > 0) {
       this._next(buffer.shift());

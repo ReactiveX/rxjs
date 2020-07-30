@@ -3,11 +3,9 @@ import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
 import { isScheduler  } from '../util/isScheduler';
 import { isArray  } from '../util/isArray';
 import { Subscriber } from '../Subscriber';
-import { OuterSubscriber } from '../OuterSubscriber';
+import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 import { Operator } from '../Operator';
-import { InnerSubscriber } from '../InnerSubscriber';
 import { isObject } from '../util/isObject';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { fromArray } from './fromArray';
 import { lift } from '../util/lift';
 
@@ -284,7 +282,7 @@ export class CombineLatestOperator<T, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
+export class CombineLatestSubscriber<T, R> extends ComplexOuterSubscriber<T, R> {
   private active: number = 0;
   private values: any[] = [];
   private observables: any[] = [];
@@ -309,20 +307,19 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
       this.toRespond = len;
       for (let i = 0; i < len; i++) {
         const observable = observables[i];
-        this.add(subscribeToResult(this, observable, observable, i));
+        this.add(innerSubscribe(observable, new ComplexInnerSubscriber(this, null, i)));
       }
     }
   }
 
-  notifyComplete(unused: Subscriber<R>): void {
+  notifyComplete(): void {
     if ((this.active -= 1) === 0) {
       this.destination.complete();
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(_outerValue: T, innerValue: R,
+             outerIndex: number): void {
     const values = this.values;
     const oldVal = values[outerIndex];
     const toRespond = !this.toRespond

@@ -2,13 +2,11 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
 import { lift } from '../util/lift';
+import { SimpleInnerSubscriber, innerSubscribe, SimpleOuterSubscriber } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function switchMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
@@ -107,11 +105,11 @@ class SwitchMapOperator<T, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-class SwitchMapSubscriber<T, R> extends OuterSubscriber<T, R> {
+class SwitchMapSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
   private index: number = 0;
-  private innerSubscription: Subscription | null | undefined;
+  private innerSubscription?: Subscription;
 
-  constructor(destination: Subscriber<R>,
+  constructor(protected destination: Subscriber<R>,
               private project: (value: T, index: number) => ObservableInput<R>) {
     super(destination);
   }
@@ -125,18 +123,13 @@ class SwitchMapSubscriber<T, R> extends OuterSubscriber<T, R> {
       this.destination.error(error);
       return;
     }
-    this._innerSub(result, value, index);
-  }
-
-  private _innerSub(result: ObservableInput<R>, value: T, index: number) {
     const innerSubscription = this.innerSubscription;
     if (innerSubscription) {
       innerSubscription.unsubscribe();
     }
-    const innerSubscriber = new InnerSubscriber(this, value, index);
-    const destination = this.destination as Subscription;
-    destination.add(innerSubscriber);
-    this.innerSubscription = subscribeToResult(this, result, undefined, undefined, innerSubscriber);
+    const innerSubscriber = new SimpleInnerSubscriber(this);
+    this.destination.add(innerSubscriber);
+    this.innerSubscription = innerSubscribe(result, innerSubscriber);
   }
 
   protected _complete(): void {
@@ -148,21 +141,17 @@ class SwitchMapSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   protected _unsubscribe() {
-    this.innerSubscription = null!;
+    this.innerSubscription = undefined;
   }
 
-  notifyComplete(innerSub: Subscription): void {
-    const destination = this.destination as Subscription;
-    destination.remove(innerSub);
-    this.innerSubscription = null!;
+  notifyComplete(): void {
+    this.innerSubscription = undefined;
     if (this.isStopped) {
       super._complete();
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(innerValue: R): void {
       this.destination.next(innerValue);
   }
 }

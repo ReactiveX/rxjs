@@ -2,11 +2,9 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Buffers the source Observable values, using a factory function of closing
@@ -70,7 +68,7 @@ class BufferWhenOperator<T> implements Operator<T, T[]> {
  * @ignore
  * @extends {Ignored}
  */
-class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
+class BufferWhenSubscriber<T> extends SimpleOuterSubscriber<T, any> {
   private buffer: T[] | undefined;
   private subscribing: boolean = false;
   private closingSubscription: Subscription | undefined;
@@ -98,9 +96,7 @@ class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
     this.subscribing = false;
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
+  notifyNext(): void {
     this.openBuffer();
   }
 
@@ -138,7 +134,7 @@ class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
     this.closingSubscription = closingSubscription;
     this.add(closingSubscription);
     this.subscribing = true;
-    closingSubscription.add(subscribeToResult(this, closingNotifier));
+    closingSubscription.add(innerSubscribe(closingNotifier, new SimpleInnerSubscriber(this)));
     this.subscribing = false;
   }
 }

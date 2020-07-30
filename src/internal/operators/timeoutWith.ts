@@ -3,10 +3,9 @@ import { Subscriber } from '../Subscriber';
 import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { isValidDate } from '../util/isDate';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
 import { lift } from '../util/lift';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function timeoutWith<T, R>(due: number | Date, withObservable: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
@@ -93,7 +92,7 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
+class TimeoutWithSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
 
   private action: SchedulerAction<TimeoutWithSubscriber<T, R>> | null = null;
 
@@ -108,8 +107,8 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private static dispatchTimeout<T, R>(subscriber: TimeoutWithSubscriber<T, R>): void {
     const { withObservable } = subscriber;
-    (<any> subscriber)._unsubscribeAndRecycle();
-    subscriber.add(subscribeToResult(subscriber, withObservable));
+    subscriber._unsubscribeAndRecycle();
+    subscriber.add(innerSubscribe(withObservable, new SimpleInnerSubscriber(subscriber)));
   }
 
   private scheduleTimeout(): void {
@@ -120,11 +119,11 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
       // VirtualActions are immutable, so they create and return a clone. In this
       // case, we need to set the action reference to the most recent VirtualAction,
       // to ensure that's the one we clone from next time.
-      this.action = (<SchedulerAction<TimeoutWithSubscriber<T, R>>> action.schedule(this, this.waitFor));
+      this.action = action.schedule(this, this.waitFor) as SchedulerAction<TimeoutWithSubscriber<T, R>>;
     } else {
-      this.add(this.action = (<SchedulerAction<TimeoutWithSubscriber<T, R>>> this.scheduler.schedule<TimeoutWithSubscriber<T, R>>(
+      this.add(this.action = (this.scheduler.schedule(
         TimeoutWithSubscriber.dispatchTimeout as any, this.waitFor, this
-      )));
+      ) as SchedulerAction<TimeoutWithSubscriber<T, R>>));
     }
   }
 
