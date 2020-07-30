@@ -100,7 +100,7 @@ export class RaceSubscriber<T> extends ComplexOuterSubscriber<T, T> {
     } else {
       for (let i = 0; i < len && !this.hasFirst; i++) {
         let observable = observables[i];
-        const subscription = innerSubscribe(observable, new ComplexInnerSubscriber(this, observable as any, i));
+        const subscription = innerSubscribe(observable, new ComplexInnerSubscriber(this, null, i));
 
         if (this.subscriptions) {
           this.subscriptions.push(subscription!);

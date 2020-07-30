@@ -307,7 +307,7 @@ export class CombineLatestSubscriber<T, R> extends ComplexOuterSubscriber<T, R> 
       this.toRespond = len;
       for (let i = 0; i < len; i++) {
         const observable = observables[i];
-        this.add(innerSubscribe(observable, new ComplexInnerSubscriber(this, observable, i)));
+        this.add(innerSubscribe(observable, new ComplexInnerSubscriber(this, null, i)));
       }
     }
   }
