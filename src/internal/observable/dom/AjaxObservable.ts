@@ -1,7 +1,7 @@
 /** @prettier */
 import { Observable } from '../../Observable';
 import { Subscriber } from '../../Subscriber';
-import { TeardownLogic } from '../../types';
+import { TeardownLogic, PartialObserver } from '../../types';
 import { map } from '../../operators/map';
 
 export interface AjaxRequest {
@@ -17,7 +17,7 @@ export interface AjaxRequest {
   crossDomain?: boolean;
   withCredentials?: boolean;
   createXHR?: () => XMLHttpRequest;
-  progressSubscriber?: Subscriber<any>;
+  progressSubscriber?: PartialObserver<ProgressEvent>;
   responseType?: string;
 }
 
@@ -290,91 +290,51 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private setupEvents(xhr: XMLHttpRequest, request: AjaxRequest) {
     const progressSubscriber = request.progressSubscriber;
 
-    function xhrTimeout(this: XMLHttpRequest, e: ProgressEvent): void {
-      const { subscriber, progressSubscriber, request } = <any>xhrTimeout;
-      if (progressSubscriber) {
-        progressSubscriber.error(e);
-      }
+    xhr.ontimeout = (e: ProgressEvent) => {
+      progressSubscriber?.error?.(e);
       let error;
       try {
-        error = new AjaxTimeoutError(this, request); // TODO: Make betterer.
+        error = new AjaxTimeoutError(xhr, request); // TODO: Make betterer.
       } catch (err) {
         error = err;
       }
-      subscriber.error(error);
+      this.error(error);
+    };
+
+    if (progressSubscriber) {
+      xhr.upload.onprogress = (e: ProgressEvent) => {
+        progressSubscriber.next?.(e);
+      };
     }
-    xhr.ontimeout = xhrTimeout;
-    (<any>xhrTimeout).request = request;
-    (<any>xhrTimeout).subscriber = this;
-    (<any>xhrTimeout).progressSubscriber = progressSubscriber;
-    if (xhr.upload && 'withCredentials' in xhr) {
-      if (progressSubscriber) {
-        let xhrProgress: (e: ProgressEvent) => void;
-        xhrProgress = function (e: ProgressEvent) {
-          const { progressSubscriber } = <any>xhrProgress;
-          progressSubscriber.next(e);
-        };
-        (<any>xhrProgress).progressSubscriber = progressSubscriber;
-        xhr.upload.onprogress = xhrProgress;
+
+    xhr.onerror = (e: ProgressEvent) => {
+      progressSubscriber?.error?.(e);
+      let error;
+      try {
+        error = new AjaxError('ajax error', xhr, request);
+      } catch (err) {
+        error = err;
       }
-      let xhrError: (e: any) => void;
-      xhrError = function (this: XMLHttpRequest, e: ErrorEvent) {
-        const { progressSubscriber, subscriber, request } = <any>xhrError;
-        if (progressSubscriber) {
-          progressSubscriber.error(e);
-        }
+      this.error(error);
+    };
+
+    xhr.onload = (e: ProgressEvent) => {
+      // 4xx and 5xx should error (https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
+      if (xhr.status < 400) {
+        progressSubscriber?.complete?.();
+        this.next(e);
+        this.complete();
+      } else {
+        progressSubscriber?.error?.(e);
         let error;
         try {
-          error = new AjaxError('ajax error', this, request);
+          error = new AjaxError('ajax error ' + xhr.status, xhr, request);
         } catch (err) {
           error = err;
         }
-        subscriber.error(error);
-      };
-      xhr.onerror = xhrError;
-      (<any>xhrError).request = request;
-      (<any>xhrError).subscriber = this;
-      (<any>xhrError).progressSubscriber = progressSubscriber;
-    }
-
-    function xhrLoad(this: XMLHttpRequest, e: Event) {
-      const { subscriber, progressSubscriber, request } = <any>xhrLoad;
-      if (this.readyState === 4) {
-        let status = this.status;
-        let response: any = this.responseType === 'text' ? this.response || this.responseText : this.response;
-
-        // fix status code when it is 0 (0 status is undocumented).
-        // Occurs when accessing file resources or on Android 4.1 stock browser
-        // while retrieving files from application cache.
-        if (status === 0) {
-          status = response ? 200 : 0;
-        }
-
-        // 4xx and 5xx should error (https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
-        if (status < 400) {
-          if (progressSubscriber) {
-            progressSubscriber.complete();
-          }
-          subscriber.next(e);
-          subscriber.complete();
-        } else {
-          if (progressSubscriber) {
-            progressSubscriber.error(e);
-          }
-          let error;
-          try {
-            error = new AjaxError('ajax error ' + status, this, request);
-          } catch (err) {
-            error = err;
-          }
-          subscriber.error(error);
-        }
+        this.error(error);
       }
-    }
-    xhr.onload = xhrLoad;
-    (<any>xhrLoad).subscriber = this;
-    (<any>xhrLoad).progressSubscriber = progressSubscriber;
-    (<any>xhrLoad).request = request;
+    };
   }
 
   unsubscribe() {

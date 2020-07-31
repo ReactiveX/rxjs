@@ -788,6 +788,29 @@ describe('ajax', () => {
       expect(complete).to.be.true;
     });
     
+    it('should allow partial progressSubscriber ', function() {
+      const spy = sinon.spy();
+      const progressSubscriber: any = {
+        next: spy,
+      };
+
+      ajax({
+        url: '/flibbertyJibbet',
+        progressSubscriber
+      })
+        .subscribe();
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      request.respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': JSON.stringify({})
+      }, 3);
+
+      expect(spy).to.be.calledThrice;
+    });
+
     it('should emit progress event when progressSubscriber is specified', function() {
       const spy = sinon.spy();
       const progressSubscriber = (<any>{
@@ -974,6 +997,7 @@ describe('ajax', () => {
 });
 
 class MockXMLHttpRequest {
+  public static readonly DONE = 4;
   private static requests: Array<MockXMLHttpRequest> = [];
   private static recentRequest: MockXMLHttpRequest;
 
