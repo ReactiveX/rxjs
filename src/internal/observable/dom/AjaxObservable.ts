@@ -21,43 +21,8 @@ export interface AjaxRequest {
   responseType?: string;
 }
 
-// Declare older APIs we'll check for on global scope.
-declare const XDomainRequest: any;
-declare const ActiveXObject: any;
-
 function isFormData(body: any): body is FormData {
   return typeof FormData !== 'undefined' && body instanceof FormData;
-}
-
-function getCORSRequest(): XMLHttpRequest {
-  if (typeof XMLHttpRequest === 'function') {
-    return new XMLHttpRequest();
-  } else if (typeof XDomainRequest === 'function') {
-    return new XDomainRequest();
-  } else {
-    throw new Error('CORS is not supported by your browser');
-  }
-}
-
-const ancientInternetExplorerProgIDs = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
-
-function getXMLHttpRequest(): XMLHttpRequest {
-  if (XMLHttpRequest) {
-    return new XMLHttpRequest();
-  } else if (typeof ActiveXObject === 'function') {
-    // TODO: Remove when we stop supporting IE.
-    for (const progId of ancientInternetExplorerProgIDs) {
-      try {
-        const axoXHR = new ActiveXObject(progId);
-        if (axoXHR) {
-          return axoXHR;
-        }
-      } catch (e) {
-        // Ignore and try the next one
-      }
-    }
-  }
-  throw new Error('XMLHttpRequest is not supported by your browser');
 }
 
 export interface AjaxCreationMethod {
@@ -162,9 +127,7 @@ export class AjaxObservable<T> extends Observable<T> {
 
     const request: AjaxRequest = {
       async: true,
-      createXHR: function (this: AjaxRequest) {
-        return this.crossDomain ? getCORSRequest() : getXMLHttpRequest();
-      },
+      createXHR: () => new XMLHttpRequest(),
       crossDomain: true,
       withCredentials: false,
       headers: {},
@@ -351,12 +314,8 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
           const { progressSubscriber } = <any>xhrProgress;
           progressSubscriber.next(e);
         };
-        if (typeof XDomainRequest === 'function') {
-          xhr.onprogress = xhrProgress;
-        } else {
-          xhr.upload.onprogress = xhrProgress;
-        }
         (<any>xhrProgress).progressSubscriber = progressSubscriber;
+        xhr.upload.onprogress = xhrProgress;
       }
       let xhrError: (e: any) => void;
       xhrError = function (this: XMLHttpRequest, e: ErrorEvent) {
@@ -378,19 +337,10 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       (<any>xhrError).progressSubscriber = progressSubscriber;
     }
 
-    function xhrReadyStateChange(this: XMLHttpRequest) {
-      return;
-    }
-    xhr.onreadystatechange = xhrReadyStateChange;
-    (<any>xhrReadyStateChange).subscriber = this;
-    (<any>xhrReadyStateChange).progressSubscriber = progressSubscriber;
-    (<any>xhrReadyStateChange).request = request;
-
     function xhrLoad(this: XMLHttpRequest, e: Event) {
       const { subscriber, progressSubscriber, request } = <any>xhrLoad;
       if (this.readyState === 4) {
-        // normalize IE9 bug (http://bugs.jquery.com/ticket/1450)
-        let status: number = this.status === 1223 ? 204 : this.status;
+        let status = this.status;
         let response: any = this.responseType === 'text' ? this.response || this.responseText : this.response;
 
         // fix status code when it is 0 (0 status is undocumented).

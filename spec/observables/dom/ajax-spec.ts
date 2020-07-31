@@ -40,22 +40,6 @@ describe('ajax', () => {
     expect(MockXMLHttpRequest.mostRecent.withCredentials).to.be.false;
   });
 
-  it('should try to create AXObject for XHR in old version of IE', () => {
-    const axObjectStub = sandbox.stub();
-    axObjectStub.returns(sinon.stub(new MockXMLHttpRequest()));
-    root.ActiveXObject = axObjectStub;
-    root.XMLHttpRequest = null;
-
-    const obj: AjaxRequest = {
-      url: '/',
-      method: '',
-      crossDomain: false,
-    };
-
-    ajax(obj).subscribe();
-    expect(axObjectStub).to.have.been.called;
-  });
-
   it('should raise an error if not able to create XMLHttpRequest', () => {
     root.XMLHttpRequest = null;
     root.ActiveXObject = null;
@@ -78,23 +62,6 @@ describe('ajax', () => {
 
     ajax(obj).subscribe();
     expect(MockXMLHttpRequest.mostRecent.withCredentials).to.be.true;
-  });
-
-  it('should try to create XDomainRequest for CORS if XMLHttpRequest is not available', () => {
-    const xDomainStub = sandbox.stub();
-    xDomainStub.returns(sinon.stub(new MockXMLHttpRequest()));
-    root.XDomainRequest = xDomainStub;
-    root.XMLHttpRequest = null;
-
-    const obj: AjaxRequest = {
-      url: '/',
-      method: '',
-      crossDomain: true,
-      withCredentials: true
-    };
-
-    ajax(obj).subscribe();
-    expect(xDomainStub).to.have.been.called;
   });
 
   it('should raise an error if not able to create CORS request', () => {
@@ -820,39 +787,7 @@ describe('ajax', () => {
       expect(result!.response).to.equal(expected);
       expect(complete).to.be.true;
     });
-
-    it('should succeed in IE on 204 No Content', () => {
-      const expected: null = null;
-      let result: AjaxResponse;
-      let complete = false;
-
-      root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
-
-      ajax.post('/flibbertyJibbet', expected)
-        .subscribe(x => {
-          result = x;
-        }, null, () => {
-          complete = true;
-        });
-
-      const request = MockXMLHttpRequest.mostRecent;
-
-      expect(request.method).to.equal('POST');
-      expect(request.url).to.equal('/flibbertyJibbet');
-      expect(request.requestHeaders).to.deep.equal({
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      });
-
-      //IE behavior: IE does not provide the a responseText property, so also exercise the code which handles this.
-      request.respondWith({
-          'status': 204,
-          'contentType': 'application/json'
-      });
-
-      expect(result!.response).to.equal(expected);
-      expect(complete).to.be.true;
-    });
-
+    
     it('should emit progress event when progressSubscriber is specified', function() {
       const spy = sinon.spy();
       const progressSubscriber = (<any>{
@@ -881,69 +816,6 @@ describe('ajax', () => {
 
       expect(spy).to.be.calledThrice;
     });
-
-    it('should emit progress event when progressSubscriber is specified in IE', function() {
-      const spy = sinon.spy();
-      const progressSubscriber = (<any>{
-        next: spy,
-        error: () => {
-          // noop
-        },
-        complete: () => {
-          // noop
-        }
-      });
-
-      root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
-      root.XDomainRequest = MockXMLHttpRequestInternetExplorer;
-
-      ajax({
-        url: '/flibbertyJibbet',
-        progressSubscriber
-      })
-        .subscribe();
-
-      const request = MockXMLHttpRequest.mostRecent;
-
-      request.respondWith({
-        'status': 200,
-        'contentType': 'application/json',
-        'responseText': JSON.stringify({})
-      }, 3);
-
-      expect(spy.callCount).to.equal(3);
-    });
-
-  });
-
-  it('should work fine when XMLHttpRequest onreadystatechange property is monkey patched', function() {
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'onreadystatechange', {
-      set: function (fn: (e: ProgressEvent) => any) {
-        const wrapFn = (ev: ProgressEvent) => {
-          const result = fn.call(this, ev);
-          if (result === false) {
-            ev.preventDefault();
-          }
-        };
-        this['_onreadystatechange'] = wrapFn;
-      },
-      get() {
-        return this['_onreadystatechange'];
-      },
-      configurable: true
-    });
-
-    ajax({
-      url: '/flibbertyJibbet'
-    })
-      .subscribe();
-
-    const request = MockXMLHttpRequest.mostRecent;
-    expect(() => {
-      request.onreadystatechange((<any>'onreadystatechange'));
-    }).not.throw();
-
-    delete root.XMLHttpRequest.prototype.onreadystatechange;
   });
 
   it('should work fine when XMLHttpRequest ontimeout property is monkey patched', function(done) {
@@ -1253,39 +1125,6 @@ class MockXMLHttpRequest {
 
     if (this.upload['on' + name]) {
       this.upload['on' + name](e);
-    }
-  }
-}
-
-class MockXMLHttpRequestInternetExplorer extends MockXMLHttpRequest {
-
-  private mockHttp204() {
-    this.responseType = '';
-    this.responseText = '';
-    this.response = '';
-  }
-
-  protected jsonResponseValue(response: any) {
-    if (this.status == 204) {
-      this.mockHttp204();
-      return;
-    }
-    return super.jsonResponseValue(response);
-  }
-
-  protected defaultResponseValue() {
-    if (this.status == 204) {
-      this.mockHttp204();
-      return;
-    }
-    return super.defaultResponseValue();
-  }
-
-  triggerUploadEvent(this: any, name: any, eventObj?: any): void {
-    // TODO: create a better default event
-    const e: any = eventObj || {};
-    if (this['on' + name]) {
-      this['on' + name](e);
     }
   }
 }
