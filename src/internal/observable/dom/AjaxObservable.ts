@@ -2,7 +2,6 @@
 import { Observable } from '../../Observable';
 import { Subscriber } from '../../Subscriber';
 import { TeardownLogic, PartialObserver } from '../../types';
-import { map } from '../../operators/map';
 
 export interface AjaxRequest {
   url?: string;
@@ -25,101 +24,12 @@ function isFormData(body: any): body is FormData {
   return typeof FormData !== 'undefined' && body instanceof FormData;
 }
 
-export interface AjaxCreationMethod {
-  (urlOrRequest: string | AjaxRequest): Observable<AjaxResponse>;
-  get(url: string, headers?: Object): Observable<AjaxResponse>;
-  post(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
-  put(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
-  patch(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
-  delete(url: string, headers?: Object): Observable<AjaxResponse>;
-  getJSON<T>(url: string, headers?: Object): Observable<T>;
-}
-
-export function ajaxGet(url: string, headers?: object) {
-  return new AjaxObservable<AjaxResponse>({ method: 'GET', url, headers });
-}
-
-export function ajaxPost(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
-  return new AjaxObservable<AjaxResponse>({ method: 'POST', url, body, headers });
-}
-
-export function ajaxDelete(url: string, headers?: Object): Observable<AjaxResponse> {
-  return new AjaxObservable<AjaxResponse>({ method: 'DELETE', url, headers });
-}
-
-export function ajaxPut(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
-  return new AjaxObservable<AjaxResponse>({ method: 'PUT', url, body, headers });
-}
-
-export function ajaxPatch(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
-  return new AjaxObservable<AjaxResponse>({ method: 'PATCH', url, body, headers });
-}
-
-const mapResponse = map((x: AjaxResponse) => x.response);
-
-export function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
-  return mapResponse(
-    new AjaxObservable<AjaxResponse>({
-      method: 'GET',
-      url,
-      responseType: 'json',
-      headers,
-    })
-  );
-}
-
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
 export class AjaxObservable<T> extends Observable<T> {
-  /**
-   * Creates an observable for an Ajax request with either a request object with
-   * url, headers, etc or a string for a URL.
-   *
-   * ## Example
-   * ```ts
-   * import { ajax } from 'rxjs/ajax';
-   *
-   * const source1 = ajax('/products');
-   * const source2 = ajax({ url: 'products', method: 'GET' });
-   * ```
-   *
-   * @param {string|Object} request Can be one of the following:
-   *   A string of the URL to make the Ajax call.
-   *   An object with the following properties
-   *   - url: URL of the request
-   *   - body: The body of the request
-   *   - method: Method of the request, such as GET, POST, PUT, PATCH, DELETE
-   *   - async: Whether the request is async
-   *   - headers: Optional headers
-   *   - crossDomain: true if a cross domain request, else false
-   *   - createXHR: a function to override if you need to use an alternate
-   *   XMLHttpRequest implementation.
-   *   - resultSelector: a function to use to alter the output value type of
-   *   the Observable. Gets {@link AjaxResponse} as an argument.
-   * @return {Observable} An observable sequence containing the XMLHttpRequest.
-   * @static true
-   * @name ajax
-   * @owner Observable
-   * @nocollapse
-   */
-  static create: AjaxCreationMethod = (() => {
-    const create: any = (urlOrRequest: string | AjaxRequest) => {
-      return new AjaxObservable(urlOrRequest);
-    };
-
-    create.get = ajaxGet;
-    create.post = ajaxPost;
-    create.delete = ajaxDelete;
-    create.put = ajaxPut;
-    create.patch = ajaxPatch;
-    create.getJSON = ajaxGetJSON;
-
-    return <AjaxCreationMethod>create;
-  })();
-
   private request: AjaxRequest;
 
   constructor(urlOrRequest: string | AjaxRequest) {
@@ -378,23 +288,37 @@ export type AjaxErrorNames = 'AjaxError' | 'AjaxTimeoutError';
  * @class AjaxError
  */
 export interface AjaxError extends Error {
-  /** @type {XMLHttpRequest} The XHR instance associated with the error */
+  /**
+   * The XHR instance associated with the error
+   */
   xhr: XMLHttpRequest;
 
-  /** @type {AjaxRequest} The AjaxRequest associated with the error */
+  /**
+   * The AjaxRequest associated with the error
+   */
   request: AjaxRequest;
 
-  /** @type {number} The HTTP status code */
+  /**
+   *The HTTP status code
+   */
   status: number;
 
-  /** @type {string} The responseType (e.g. 'json', 'arraybuffer', or 'xml') */
-  responseType: string;
+  /**
+   *The responseType (e.g. 'json', 'arraybuffer', or 'xml')
+   */
+  responseType: XMLHttpRequestResponseType;
 
-  /** @type {string|ArrayBuffer|Document|object|any} The response data */
+  /**
+   * The response data
+   */
   response: any;
 }
 
 export interface AjaxErrorCtor {
+  /**
+   * Internal use only. Do not manually create instances of this type.
+   * @internal
+   */
   new (message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError;
 }
 
@@ -420,6 +344,15 @@ const AjaxErrorImpl = (() => {
   return AjaxErrorImpl;
 })();
 
+/**
+ * Thrown when an error occurs during an AJAX request.
+ * This is only exported because it is useful for checking to see if an error
+ * is an `instanceof AjaxError`. DO NOT create new instances of `AjaxError` with
+ * the constructor.
+ *
+ * @class AjaxError
+ * @see ajax
+ */
 export const AjaxError: AjaxErrorCtor = AjaxErrorImpl as any;
 
 function getXHRResponse(xhr: XMLHttpRequest) {
@@ -451,6 +384,10 @@ function getXHRResponse(xhr: XMLHttpRequest) {
 export interface AjaxTimeoutError extends AjaxError {}
 
 export interface AjaxTimeoutErrorCtor {
+  /**
+   * Internal use only. Do not manually create instances of this type.
+   * @internal
+   */
   new (xhr: XMLHttpRequest, request: AjaxRequest): AjaxTimeoutError;
 }
 
@@ -465,8 +402,13 @@ const AjaxTimeoutErrorImpl = (() => {
 })();
 
 /**
- * @see {@link ajax}
+ * Thrown when an AJAX request timesout. Not to be confused with {@link TimeoutError}.
+ *
+ * This is exported only because it is useful for checking to see if errors are an
+ * `instanceof AjaxTimeoutError`. DO NOT use the constructor to create an instance of
+ * this type.
  *
  * @class AjaxTimeoutError
+ * @see ajax
  */
 export const AjaxTimeoutError: AjaxTimeoutErrorCtor = AjaxTimeoutErrorImpl as any;
