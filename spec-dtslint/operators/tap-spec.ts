@@ -11,6 +11,12 @@ it('should accept partial observer', () => {
   const c = of(1, 2, 3).pipe(tap({ complete: () => { } })); // $ExpectType Observable<number>
 });
 
+it('should not alter the type of the source', () => {
+  const a = of(1).pipe(tap({next: (x: number | string) => {}})); // $ExpectType Observable<number>
+  const b = of(1).pipe(tap((x: number | string) => {})); // $ExpectType Observable<number>
+  const c = of(1).pipe(tap((x: number | string) => {}, (e: any) => {}, () => {})); // $ExpectType Observable<number>
+})
+
 it('should not accept empty observer', () => {
   const a = of(1, 2, 3).pipe(tap({})); // $ExpectError
 });
