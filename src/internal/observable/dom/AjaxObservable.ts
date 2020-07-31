@@ -309,13 +309,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
     xhr.onerror = (e: ProgressEvent) => {
       progressSubscriber?.error?.(e);
-      let error;
-      try {
-        error = new AjaxError('ajax error', xhr, request);
-      } catch (err) {
-        error = err;
-      }
-      this.error(error);
+      this.error(new AjaxError('ajax error', xhr, request));
     };
 
     xhr.onload = (e: ProgressEvent) => {
@@ -370,7 +364,7 @@ export class AjaxResponse {
   constructor(public originalEvent: Event, public xhr: XMLHttpRequest, public request: AjaxRequest) {
     this.status = xhr.status;
     this.responseType = xhr.responseType || request.responseType!;
-    this.response = parseXhrResponse(this.responseType, xhr);
+    this.response = getXHRResponse(xhr);
   }
 }
 
@@ -412,8 +406,14 @@ const AjaxErrorImpl = (() => {
     this.xhr = xhr;
     this.request = request;
     this.status = xhr.status;
-    this.responseType = xhr.responseType || request.responseType;
-    this.response = parseXhrResponse(this.responseType, xhr);
+    this.responseType = xhr.responseType;
+    let response: any;
+    try {
+      response = getXHRResponse(xhr);
+    } catch (err) {
+      response = xhr.responseText;
+    }
+    this.response = response;
     return this;
   }
   AjaxErrorImpl.prototype = Object.create(Error.prototype);
@@ -422,28 +422,29 @@ const AjaxErrorImpl = (() => {
 
 export const AjaxError: AjaxErrorCtor = AjaxErrorImpl as any;
 
-function parseJson(xhr: XMLHttpRequest) {
-  // HACK(benlesh): TypeScript shennanigans
-  // tslint:disable-next-line:no-any XMLHttpRequest is defined to always have 'response' inferring xhr as never for the else clause.
-  if ('response' in (xhr as any)) {
-    //IE does not support json as responseType, parse it internally
-    return xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || 'null');
-  } else {
-    return JSON.parse((xhr as any).responseText || 'null');
-  }
-}
-
-function parseXhrResponse(responseType: string, xhr: XMLHttpRequest) {
-  switch (responseType) {
-    case 'json':
-      return parseJson(xhr);
-    case 'xml':
+function getXHRResponse(xhr: XMLHttpRequest) {
+  switch (xhr.responseType) {
+    case 'json': {
+      if ('response' in xhr) {
+        return xhr.response;
+      } else {
+        // IE
+        const ieXHR: any = xhr;
+        return JSON.parse(ieXHR.responseText);
+      }
+    }
+    case 'document':
       return xhr.responseXML;
     case 'text':
-    default:
-      // HACK(benlesh): TypeScript shennanigans
-      // tslint:disable-next-line:no-any XMLHttpRequest is defined to always have 'response' inferring xhr as never for the else sub-expression.
-      return 'response' in (xhr as any) ? xhr.response : xhr.responseText;
+    default: {
+      if ('response' in xhr) {
+        return xhr.response;
+      } else {
+        // IE
+        const ieXHR: any = xhr;
+        return ieXHR.responseText;
+      }
+    }
   }
 }
 

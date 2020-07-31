@@ -303,7 +303,7 @@ describe('ajax', () => {
     expect(complete).to.be.true;
   });
 
-  it('should fail if fails to parse error response', () => {
+  it('should not fail if fails to parse error response', () => {
     let error: any;
     const obj = {
       url: '/flibbertyJibbet',
@@ -326,11 +326,11 @@ describe('ajax', () => {
       'status': 404,
       'contentType': '',
       'responseType': '',
-      'responseText': 'Wee! I am text, but should be valid JSON!'
+      'responseText': 'This is not what we expected is it? But that is okay'
     });
 
-    expect(error instanceof SyntaxError).to.be.true;
-    expect(error.message).to.equal('Unexpected token W in JSON at position 0');
+    expect(error instanceof AjaxError).to.be.true;
+    expect(error.response).to.equal('This is not what we expected is it? But that is okay');
   });
 
   it('should succeed no settings', () => {
