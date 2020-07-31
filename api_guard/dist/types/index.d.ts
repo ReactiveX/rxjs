@@ -1,6 +1,9 @@
 export declare const animationFrame: AnimationFrameScheduler;
 
-export declare function animationFrames(timestampProvider?: TimestampProvider): Observable<number>;
+export declare function animationFrames(timestampProvider?: TimestampProvider): Observable<{
+    timestamp: number;
+    elapsed: number;
+}>;
 
 export declare const animationFrameScheduler: AnimationFrameScheduler;
 
