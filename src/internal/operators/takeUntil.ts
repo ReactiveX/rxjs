@@ -2,11 +2,8 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
-
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { innerSubscribe, SimpleInnerSubscriber, SimpleOuterSubscriber } from '../innerSubscribe';
 
 /**
  * Emits the values emitted by the source Observable until a `notifier`
@@ -58,7 +55,7 @@ class TakeUntilOperator<T> implements Operator<T, T> {
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     const takeUntilSubscriber = new TakeUntilSubscriber(subscriber);
-    const notifierSubscription = subscribeToResult(takeUntilSubscriber, this.notifier);
+    const notifierSubscription = innerSubscribe(this.notifier, new SimpleInnerSubscriber(takeUntilSubscriber));
     if (notifierSubscription && !takeUntilSubscriber.seenValue) {
       takeUntilSubscriber.add(notifierSubscription);
       return source.subscribe(takeUntilSubscriber);
@@ -72,16 +69,14 @@ class TakeUntilOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class TakeUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
+class TakeUntilSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
   seenValue = false;
 
   constructor(destination: Subscriber<any>, ) {
     super(destination);
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(): void {
     this.seenValue = true;
     this.complete();
   }

@@ -1,11 +1,9 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Emits the most recently emitted value from the source Observable whenever
@@ -58,7 +56,7 @@ class SampleOperator<T> implements Operator<T, T> {
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     const sampleSubscriber = new SampleSubscriber(subscriber);
     const subscription = source.subscribe(sampleSubscriber);
-    subscription.add(subscribeToResult(sampleSubscriber, this.notifier));
+    subscription.add(innerSubscribe(this.notifier, new SimpleInnerSubscriber(sampleSubscriber)));
     return subscription;
   }
 }
@@ -68,8 +66,8 @@ class SampleOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private value: T;
+class SampleSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
+  private value?: T;
   private hasValue: boolean = false;
 
   protected _next(value: T) {
@@ -77,9 +75,7 @@ class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.hasValue = true;
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(): void {
     this.emitValue();
   }
 
@@ -90,7 +86,7 @@ class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
   emitValue() {
     if (this.hasValue) {
       this.hasValue = false;
-      this.destination.next(this.value);
+      this.destination.next!(this.value!);
     }
   }
 }

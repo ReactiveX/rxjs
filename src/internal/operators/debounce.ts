@@ -3,10 +3,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
-
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Emits a value from the source Observable only after a particular time span
@@ -74,10 +71,10 @@ class DebounceOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private value: T;
-  private hasValue: boolean = false;
-  private durationSubscription: Subscription = null;
+class DebounceSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
+  private value?: T;
+  private hasValue = false;
+  private durationSubscription?: Subscription;
 
   constructor(destination: Subscriber<R>,
               private durationSelector: (value: T) => SubscribableOrPromise<any>) {
@@ -92,13 +89,13 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
         this._tryNext(value, result);
       }
     } catch (err) {
-      this.destination.error(err);
+      this.destination.error!(err);
     }
   }
 
   protected _complete(): void {
     this.emitValue();
-    this.destination.complete();
+    this.destination.complete!();
   }
 
   private _tryNext(value: T, duration: SubscribableOrPromise<any>): void {
@@ -110,15 +107,13 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
       this.remove(subscription);
     }
 
-    subscription = subscribeToResult(this, duration);
+    subscription = innerSubscribe(duration, new SimpleInnerSubscriber(this));
     if (subscription && !subscription.closed) {
       this.add(this.durationSubscription = subscription);
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(): void {
     this.emitValue();
   }
 
@@ -131,7 +126,7 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
       const value = this.value;
       const subscription = this.durationSubscription;
       if (subscription) {
-        this.durationSubscription = null;
+        this.durationSubscription = undefined;
         subscription.unsubscribe();
         this.remove(subscription);
       }
@@ -140,9 +135,9 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
       // the value to synchronously re-enter this operator
       // recursively if the duration selector Observable
       // emits synchronously
-      this.value = null;
+      this.value = undefined;
       this.hasValue = false;
-      super._next(value);
+      super._next(value!);
     }
   }
 }

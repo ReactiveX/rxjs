@@ -111,13 +111,12 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
 
     for (let i = 0; i < len; i++) {
       let observable = observables[i];
-      this.add(subscribeToResult<T, R>(this, observable, <any>observable, i));
+      this.add(subscribeToResult<T, R>(this, observable, undefined, i));
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(_outerValue: T, innerValue: R,
+             outerIndex: number): void {
     this.values[outerIndex] = innerValue;
     const toRespond = this.toRespond;
     if (toRespond.length > 0) {
@@ -138,7 +137,7 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
       if (this.project) {
         this._tryProject(args);
       } else {
-        this.destination.next(args);
+        this.destination.next!(args);
       }
     }
   }
@@ -146,11 +145,11 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
   private _tryProject(args: any[]) {
     let result: any;
     try {
-      result = this.project.apply(this, args);
+      result = this.project!.apply(this, args);
     } catch (err) {
-      this.destination.error(err);
+      this.destination.error!(err);
       return;
     }
-    this.destination.next(result);
+    this.destination.next!(result);
   }
 }

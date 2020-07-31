@@ -2,10 +2,8 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { OperatorFunction } from '../types';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Buffers the source Observable values, using a factory function of closing
@@ -70,10 +68,10 @@ class BufferWhenOperator<T> implements Operator<T, T[]> {
  * @ignore
  * @extends {Ignored}
  */
-class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
-  private buffer: T[];
+class BufferWhenSubscriber<T> extends SimpleOuterSubscriber<T, any> {
+  private buffer?: T[];
   private subscribing: boolean = false;
-  private closingSubscription: Subscription;
+  private closingSubscription?: Subscription;
 
   constructor(destination: Subscriber<T[]>, private closingSelector: () => Observable<any>) {
     super(destination);
@@ -81,26 +79,24 @@ class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
   }
 
   protected _next(value: T) {
-    this.buffer.push(value);
+    this.buffer!.push(value);
   }
 
   protected _complete() {
     const buffer = this.buffer;
     if (buffer) {
-      this.destination.next(buffer);
+      this.destination.next!(buffer);
     }
     super._complete();
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribe() {
-    this.buffer = null;
+    this.buffer = undefined;
     this.subscribing = false;
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
+  notifyNext(): void {
     this.openBuffer();
   }
 
@@ -122,7 +118,7 @@ class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
 
     const buffer = this.buffer;
     if (this.buffer) {
-      this.destination.next(buffer);
+      this.destination.next!(buffer);
     }
 
     this.buffer = [];
@@ -138,7 +134,7 @@ class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
     this.closingSubscription = closingSubscription;
     this.add(closingSubscription);
     this.subscribing = true;
-    closingSubscription.add(subscribeToResult(this, closingNotifier));
+    closingSubscription.add(innerSubscribe(closingNotifier, new SimpleInnerSubscriber(this)));
     this.subscribing = false;
   }
 }

@@ -226,8 +226,8 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
 export function combineLatest<O extends ObservableInput<any>, R>(
   ...observables: (O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike)[]
 ): Observable<R> {
-  let resultSelector: (...values: Array<any>) => R =  null;
-  let scheduler: SchedulerLike = null;
+  let resultSelector: ((...values: Array<any>) => R) | undefined =  undefined;
+  let scheduler: SchedulerLike|undefined = undefined;
 
   if (isScheduler(observables[observables.length - 1])) {
     scheduler = observables.pop() as SchedulerLike;
@@ -243,7 +243,7 @@ export function combineLatest<O extends ObservableInput<any>, R>(
     observables = observables[0] as any;
   }
 
-  return fromArray(observables, scheduler).lift(new CombineLatestOperator<ObservedValueOf<O>, R>(resultSelector));
+  return fromArray(observables, scheduler).lift(new CombineLatestOperator(resultSelector));
 }
 
 export class CombineLatestOperator<T, R> implements Operator<T, R> {
@@ -264,7 +264,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
   private active: number = 0;
   private values: any[] = [];
   private observables: any[] = [];
-  private toRespond: number;
+  private toRespond?: number;
 
   constructor(destination: Subscriber<R>, private resultSelector?: (...values: Array<any>) => R) {
     super(destination);
@@ -279,26 +279,25 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
     const observables = this.observables;
     const len = observables.length;
     if (len === 0) {
-      this.destination.complete();
+      this.destination.complete!();
     } else {
       this.active = len;
       this.toRespond = len;
       for (let i = 0; i < len; i++) {
         const observable = observables[i];
-        this.add(subscribeToResult(this, observable, observable, i));
+        this.add(subscribeToResult(this, observable, undefined, i));
       }
     }
   }
 
   notifyComplete(unused: Subscriber<R>): void {
     if ((this.active -= 1) === 0) {
-      this.destination.complete();
+      this.destination.complete!();
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(_outerValue: T, innerValue: R,
+             outerIndex: number): void {
     const values = this.values;
     const oldVal = values[outerIndex];
     const toRespond = !this.toRespond
@@ -310,7 +309,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
       if (this.resultSelector) {
         this._tryResultSelector(values);
       } else {
-        this.destination.next(values.slice());
+        this.destination.next!(values.slice());
       }
     }
   }
@@ -318,11 +317,11 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
   private _tryResultSelector(values: any[]) {
     let result: any;
     try {
-      result = this.resultSelector.apply(this, values);
+      result = this.resultSelector!.apply(this, values);
     } catch (err) {
-      this.destination.error(err);
+      this.destination.error!(err);
       return;
     }
-    this.destination.next(result);
+    this.destination.next!(result);
   }
 }

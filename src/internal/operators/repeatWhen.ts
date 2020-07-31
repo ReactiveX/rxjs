@@ -4,11 +4,8 @@ import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
-
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source
@@ -58,11 +55,11 @@ class RepeatWhenOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
+class RepeatWhenSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
 
-  private notifications: Subject<any>;
-  private retries: Observable<any>;
-  private retriesSubscription: Subscription;
+  private notifications?: Subject<any>;
+  private retries?: Observable<any>;
+  private retriesSubscription?: Subscription;
   private sourceIsBeingSubscribedTo: boolean = true;
 
   constructor(destination: Subscriber<R>,
@@ -71,14 +68,12 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(): void {
     this.sourceIsBeingSubscribedTo = true;
     this.source.subscribe(this);
   }
 
-  notifyComplete(innerSub: InnerSubscriber<T, R>): void {
+  notifyComplete(): void {
     if (this.sourceIsBeingSubscribedTo === false) {
       return super.complete();
     }
@@ -96,7 +91,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
       }
 
       this._unsubscribeAndRecycle();
-      this.notifications.next();
+      this.notifications!.next(undefined);
     }
   }
 
@@ -105,20 +100,20 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     const { notifications, retriesSubscription } = this;
     if (notifications) {
       notifications.unsubscribe();
-      this.notifications = null;
+      this.notifications = undefined;
     }
     if (retriesSubscription) {
       retriesSubscription.unsubscribe();
-      this.retriesSubscription = null;
+      this.retriesSubscription = undefined;
     }
-    this.retries = null;
+    this.retries = undefined;
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribeAndRecycle(): Subscriber<T> {
     const { _unsubscribe } = this;
 
-    this._unsubscribe = null;
+    this._unsubscribe = null!;
     super._unsubscribeAndRecycle();
     this._unsubscribe = _unsubscribe;
 
@@ -135,6 +130,6 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
       return super.complete();
     }
     this.retries = retries;
-    this.retriesSubscription = subscribeToResult(this, retries);
+    this.retriesSubscription = innerSubscribe(retries, new SimpleInnerSubscriber(this));
   }
 }
