@@ -1,3 +1,14 @@
+## [6.6.1](https://github.com/reactivex/rxjs/compare/6.6.0...6.6.1) (2020-07-31)
+
+
+### Bug Fixes
+
+* **perf:** Ensure unsubscriptions/teardowns on internal subscribers are idempotent ([#5465](https://github.com/reactivex/rxjs/issues/5465)) ([6d6a882](https://github.com/reactivex/rxjs/commit/6d6a882bc987b855205ab26c9bc2e84e67837734)), closes [#5464](https://github.com/reactivex/rxjs/issues/5464)
+* **perf:** Reduce memory pressure by no longer retaining outer values across the majority of operators. ([#5613](https:://github.com/reactivex/rxjs/pull/5613)) ([10cc8a6](https://github.com/ReactiveX/rxjs/commit/10cc8a68850e1da5e7af30fc34e84f52f65b2140))
+
+
+
+
 # [6.6.0](https://github.com/reactivex/rxjs/compare/6.5.3...6.6.0) (2020-07-02)
 
 
