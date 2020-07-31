@@ -1,6 +1,7 @@
 import { Action } from './scheduler/Action';
 import { Subscription } from './Subscription';
 import { SchedulerLike, SchedulerAction } from './types';
+import { dateTimestampProvider } from "./scheduler/dateTimestampProvider";
 
 /**
  * An execution context and a data structure to order tasks and schedule their
@@ -23,12 +24,7 @@ import { SchedulerLike, SchedulerAction } from './types';
  */
 export class Scheduler implements SchedulerLike {
 
-  /**
-   * Note: the extra arrow function wrapper is to make testing by overriding
-   * Date.now easier.
-   * @nocollapse
-   */
-  public static now: () => number = () => Date.now();
+  public static now: () => number = dateTimestampProvider.now;
 
   constructor(private SchedulerAction: typeof Action,
               now: () => number = Scheduler.now) {

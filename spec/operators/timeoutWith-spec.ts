@@ -1,4 +1,5 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { dateTimestampProvider } from '../../src/internal/scheduler/dateTimestampProvider';
 import { timeoutWith, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of } from 'rxjs';
@@ -226,7 +227,7 @@ describe('timeoutWith operator', () => {
     const e2subs: string[] = [];
     const expected = '--a--b--c--d--e--|';
 
-    const timeoutValue = new Date(Date.now() + (expected.length + 2) * 10);
+    const timeoutValue = new Date(dateTimestampProvider.now() + (expected.length + 2) * 10);
 
     const result = e1.pipe(timeoutWith(timeoutValue, e2, rxTestScheduler));
 
@@ -242,7 +243,7 @@ describe('timeoutWith operator', () => {
     const e2subs: string[] = [];
     const expected = '---a---#';
 
-    const result = e1.pipe(timeoutWith(new Date(Date.now() + 100), e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(new Date(dateTimestampProvider.now() + 100), e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

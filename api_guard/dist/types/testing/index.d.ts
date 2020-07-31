@@ -1,4 +1,5 @@
 export interface RunHelpers {
+    animate: (marbles: string) => void;
     cold: typeof TestScheduler.prototype.createColdObservable;
     expectObservable: typeof TestScheduler.prototype.expectObservable;
     expectSubscriptions: typeof TestScheduler.prototype.expectSubscriptions;

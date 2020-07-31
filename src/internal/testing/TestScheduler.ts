@@ -8,6 +8,9 @@ import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeSch
 import { AsyncScheduler } from '../scheduler/AsyncScheduler';
 import { ObservableNotification } from '../types';
 import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Notification';
+import { dateTimestampProvider } from '../scheduler/dateTimestampProvider';
+import { performanceTimestampProvider } from '../scheduler/performanceTimestampProvider';
+import { requestAnimationFrameProvider } from '../scheduler/requestAnimationFrameProvider';
 
 const defaultMaxFrame: number = 750;
 
@@ -18,6 +21,7 @@ export interface RunHelpers {
   time: typeof TestScheduler.prototype.createTime;
   expectObservable: typeof TestScheduler.prototype.expectObservable;
   expectSubscriptions: typeof TestScheduler.prototype.expectSubscriptions;
+  animate: (marbles: string) => void;
 }
 
 interface FlushableTest {
@@ -356,7 +360,7 @@ export class TestScheduler extends VirtualTimeScheduler {
         default:
           // Might be time progression syntax, or a value literal
           if (runMode && c.match(/^[0-9]$/)) {
-            // Time progression must be preceeded by at least one space
+            // Time progression must be preceded by at least one space
             // if it's not at the beginning of the diagram
             if (i === 0 || marbles[i - 1] === ' ') {
               const buffer = marbles.slice(i);
@@ -401,6 +405,77 @@ export class TestScheduler extends VirtualTimeScheduler {
     return testMessages;
   }
 
+  private createAnimator() {
+    if (!this.runMode) {
+      throw new Error('animate() must only be used in run mode');
+    }
+
+    // The TestScheduler assigns a delegate to the provider that's used for
+    // requestAnimationFrame (rAF). The delegate works in conjunction with the
+    // animate run helper to coordinate the invocation of any rAF callbacks,
+    // that are effected within tests, with the animation frames specified by
+    // the test's author - in the marbles that are passed to the animate run
+    // helper. This allows the test's author to write deterministic tests and
+    // gives the author full control over when - or if - animation frames are
+    // 'painted'.
+
+    let animationFramesHandle = 0;
+    let animationFramesQueue: Map<number, FrameRequestCallback> | undefined;
+
+    const delegate = {
+      requestAnimationFrame(callback: FrameRequestCallback) {
+        if (!animationFramesQueue) {
+          throw new Error("animate() was not called within run()");
+        }
+        const handle = ++animationFramesHandle;
+        animationFramesQueue.set(handle, callback);
+        return handle;
+      },
+      cancelAnimationFrame(handle: number) {
+        if (!animationFramesQueue) {
+          throw new Error("animate() was not called within run()");
+        }
+        animationFramesQueue.delete(handle);
+      }
+    };
+
+    const animate = (marbles: string) => {
+      if (animationFramesQueue) {
+        throw new Error('animate() must not be called more than once within run()');
+      }
+      if (/[|#]/.test(marbles)) {
+        throw new Error('animate() must not complete or error')
+      }
+      animationFramesQueue = new Map<number, FrameRequestCallback>();
+      const messages = TestScheduler.parseMarbles(marbles, undefined, undefined, undefined, true);
+      for (const message of messages) {
+        this.schedule(() => {
+          const now = this.now();
+          // Capture the callbacks within the queue and clear the queue
+          // before enumerating the callbacks, as callbacks might
+          // reschedule themselves. (And, yeah, we're using a Map to represent
+          // the queue, but the values are guaranteed to be returned in
+          // insertion order, so it's all good. Trust me, I've read the docs.)
+          const callbacks = Array.from(animationFramesQueue!.values());
+          animationFramesQueue!.clear();
+          for (const callback of callbacks) {
+            callback(now);
+          }
+        }, message.frame);
+      }
+    };
+
+    return { animate, delegate };
+  }
+
+  /**
+   * The `run` method performs the test in 'run mode' - in which schedulers
+   * used within the test automatically delegate to the `TestScheduler`. That
+   * is, in 'run mode' there is no need to explicitly pass a `TestScheduler`
+   * instance to observable creators or operators.
+   *
+   * @see {@link /guide/testing/marble-testing}
+   */
   run<T>(callback: (helpers: RunHelpers) => T): T {
     const prevFrameTimeFactor = TestScheduler.frameTimeFactor;
     const prevMaxFrames = this.maxFrames;
@@ -408,15 +483,21 @@ export class TestScheduler extends VirtualTimeScheduler {
     TestScheduler.frameTimeFactor = 1;
     this.maxFrames = Infinity;
     this.runMode = true;
+
+    const animator = this.createAnimator();
+    requestAnimationFrameProvider.delegate = animator.delegate;
+    dateTimestampProvider.delegate = this;
+    performanceTimestampProvider.delegate = this;
     AsyncScheduler.delegate = this;
 
-    const helpers = {
+    const helpers: RunHelpers = {
       cold: this.createColdObservable.bind(this),
       hot: this.createHotObservable.bind(this),
       flush: this.flush.bind(this),
       time: this.createTime.bind(this),
       expectObservable: this.expectObservable.bind(this),
       expectSubscriptions: this.expectSubscriptions.bind(this),
+      animate: animator.animate,
     };
     try {
       const ret = callback(helpers);
@@ -426,6 +507,9 @@ export class TestScheduler extends VirtualTimeScheduler {
       TestScheduler.frameTimeFactor = prevFrameTimeFactor;
       this.maxFrames = prevMaxFrames;
       this.runMode = false;
+      requestAnimationFrameProvider.delegate = undefined;
+      dateTimestampProvider.delegate = undefined;
+      performanceTimestampProvider.delegate = undefined;
       AsyncScheduler.delegate = undefined;
     }
   }

@@ -1,9 +1,8 @@
 import { Observable } from '../../Observable';
-
-// TODO: move to types.ts
-export interface TimestampProvider {
-  now(): number;
-}
+import { Subscription } from '../../Subscription';
+import { TimestampProvider } from "../../types";
+import { dateTimestampProvider } from '../../scheduler/dateTimestampProvider';
+import { requestAnimationFrameProvider } from '../../scheduler/requestAnimationFrameProvider';
 
 /**
  * An observable of animation frames
@@ -77,8 +76,8 @@ export interface TimestampProvider {
  *
  * @param timestampProvider An object with a `now` method that provides a numeric timestamp
  */
-export function animationFrames(timestampProvider: TimestampProvider = Date) {
-  return timestampProvider === Date ? DEFAULT_ANIMATION_FRAMES : animationFramesFactory(timestampProvider);
+export function animationFrames(timestampProvider: TimestampProvider = dateTimestampProvider) {
+  return timestampProvider === dateTimestampProvider ? DEFAULT_ANIMATION_FRAMES : animationFramesFactory(timestampProvider);
 }
 
 /**
@@ -86,17 +85,20 @@ export function animationFrames(timestampProvider: TimestampProvider = Date) {
  * @param timestampProvider The timestamp provider to use to create the observable
  */
 function animationFramesFactory(timestampProvider: TimestampProvider) {
+  const { schedule } = requestAnimationFrameProvider;
   return new Observable<number>(subscriber => {
-    let id: number;
     const start = timestampProvider.now();
+    let subscription: Subscription;
     const run = () => {
       subscriber.next(timestampProvider.now() - start);
       if (!subscriber.closed) {
-        id = requestAnimationFrame(run);
+        subscription = schedule(run);
       }
     };
-    id = requestAnimationFrame(run);
-    return () => cancelAnimationFrame(id);
+    subscription = schedule(run);
+    // The subscription is returned within a teardown because it is reassigned
+    // within the run callback whenever the callback is rescheduled.
+    return () => subscription.unsubscribe();
   });
 }
 
@@ -104,4 +106,4 @@ function animationFramesFactory(timestampProvider: TimestampProvider) {
  * In the common case, where `Date` is passed to `animationFrames` as the default,
  * we use this shared observable to reduce overhead.
  */
-const DEFAULT_ANIMATION_FRAMES = animationFramesFactory(Date);
+const DEFAULT_ANIMATION_FRAMES = animationFramesFactory(dateTimestampProvider);
