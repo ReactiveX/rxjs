@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, PartialObserver, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, Observer, PartialObserver, TeardownLogic } from '../types';
 import { noop } from '../util/noop';
 import { isFunction } from '../util/isFunction';
 import { lift } from '../util/lift';
@@ -14,6 +14,7 @@ export function tap<T>(next: null | undefined, error: (error: any) => void, comp
 /** @deprecated Use an observer instead of a complete callback */
 export function tap<T>(next: (value: T) => void, error: null | undefined, complete: () => void): MonoTypeOperatorFunction<T>;
 export function tap<T>(next?: (x: T) => void, error?: (e: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
+export function tap<T>(observer: Observer<T>): MonoTypeOperatorFunction<T>;
 export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
