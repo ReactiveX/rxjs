@@ -1,4 +1,173 @@
-import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
+/** @prettier */
+import { AjaxObservable, AjaxRequest, AjaxResponse } from './AjaxObservable';
+
+import { map } from '../../operators/map';
+import { Observable } from '../../Observable';
+
+export interface AjaxCreationMethod {
+  /**
+   * Perform an HTTP GET using the
+   * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) in
+   * global scope. Defaults to a `responseType` of `"json"`.
+   *
+   * ### Example
+   * ```ts
+   * import { ajax } from 'rxjs/ajax';
+   * import { map, catchError } from 'rxjs/operators';
+   * import { of } from 'rxjs';
+   *
+   * const obs$ = ajax(`https://api.github.com/users?per_page=5`).pipe(
+   *   map(userResponse => console.log('users: ', userResponse)),
+   *   catchError(error => {
+   *     console.log('error: ', error);
+   *     return of(error);
+   *   })
+   * );
+   * ```
+   */
+  (url: string): Observable<AjaxResponse>;
+
+  /**
+   * Creates an observable that will perform an AJAX request using the
+   * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) in
+   * global scope by default.
+   *
+   * This is the most configurable option, and the basis for all other AJAX calls in the library.
+   *
+   * ### Example
+   * ```ts
+   * import { ajax } from 'rxjs/ajax';
+   * import { map, catchError } from 'rxjs/operators';
+   * import { of } from 'rxjs';
+   *
+   * const obs$ = ajax({
+   *    method: 'GET',
+   *    url: `https://api.github.com/users?per_page=5`,
+   *    responseType: 'json',
+   * }).pipe(
+   *   map(userResponse => console.log('users: ', userResponse)),
+   *   catchError(error => {
+   *     console.log('error: ', error);
+   *     return of(error);
+   *   })
+   * );
+   * ```
+   */
+  (config: AjaxRequest): Observable<AjaxResponse>;
+
+  /**
+   * Performs an HTTP GET using the
+   * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) in
+   * global scope by default, and a `responseType` of `"json"`.
+   *
+   * @param url The URL to get the resource from
+   * @param headers Optional headers. Case-Insensitive.
+   */
+  get(url: string, headers?: Object): Observable<AjaxResponse>;
+
+  /**
+   * Performs an HTTP POST using the
+   * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) in
+   * global scope by default, and a `responseType` of `"json"`.
+   *
+   * Before sending the value passed to the `body` argument, it is automatically serialized
+   * based on the specified `responseType`. By default, a JavaScript object will be serialized
+   * to JSON. A `responseType` of `application/x-www-form-urlencoded` will flatten any provided
+   * dictionary object to a url-encoded string.
+   *
+   * @param url The URL to get the resource from
+   * @param body The content to send. The body is automatically serialized.
+   * @param headers Optional headers. Case-Insensitive.
+   */
+  post(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
+
+  /**
+   * Performs an HTTP PUT using the
+   * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) in
+   * global scope by default, and a `responseType` of `"json"`.
+   *
+   * Before sending the value passed to the `body` argument, it is automatically serialized
+   * based on the specified `responseType`. By default, a JavaScript object will be serialized
+   * to JSON. A `responseType` of `application/x-www-form-urlencoded` will flatten any provided
+   * dictionary object to a url-encoded string.
+   *
+   * @param url The URL to get the resource from
+   * @param body The content to send. The body is automatically serialized.
+   * @param headers Optional headers. Case-Insensitive.
+   */
+  put(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
+
+  /**
+   * Performs an HTTP PATCH using the
+   * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) in
+   * global scope by default, and a `responseType` of `"json"`.
+   *
+   * Before sending the value passed to the `body` argument, it is automatically serialized
+   * based on the specified `responseType`. By default, a JavaScript object will be serialized
+   * to JSON. A `responseType` of `application/x-www-form-urlencoded` will flatten any provided
+   * dictionary object to a url-encoded string.
+   *
+   * @param url The URL to get the resource from
+   * @param body The content to send. The body is automatically serialized.
+   * @param headers Optional headers. Case-Insensitive.
+   */
+  patch(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
+
+  /**
+   * Performs an HTTP DELETE using the
+   * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) in
+   * global scope by default, and a `responseType` of `"json"`.
+   *
+   * @param url The URL to get the resource from
+   * @param headers Optional headers. Case-Insensitive.
+   */
+  delete(url: string, headers?: Object): Observable<AjaxResponse>;
+
+  /**
+   * Performs an HTTP GET using the
+   * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) in
+   * global scope by default, and returns the hydrated JavaScript object from the
+   * response.
+   *
+   * @param url The URL to get the resource from
+   * @param headers Optional headers. Case-Insensitive.
+   */
+  getJSON<T>(url: string, headers?: Object): Observable<T>;
+}
+
+function ajaxGet(url: string, headers?: object) {
+  return ajax({ method: 'GET', url, headers });
+}
+
+function ajaxPost(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
+  return ajax({ method: 'POST', url, body, headers });
+}
+
+function ajaxDelete(url: string, headers?: Object): Observable<AjaxResponse> {
+  return ajax({ method: 'DELETE', url, headers });
+}
+
+function ajaxPut(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
+  return ajax({ method: 'PUT', url, body, headers });
+}
+
+function ajaxPatch(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
+  return ajax({ method: 'PATCH', url, body, headers });
+}
+
+const mapResponse = map((x: AjaxResponse) => x.response);
+
+function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
+  return mapResponse(
+    ajax({
+      method: 'GET',
+      url,
+      responseType: 'json',
+      headers,
+    })
+  );
+}
+
 /**
  * There is an ajax operator on the Rx object.
  *
@@ -19,7 +188,6 @@ import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
  *     return of(error);
  *   })
  * );
- *
  * ```
  *
  * ## Using ajax.getJSON() to fetch data from API.
@@ -80,4 +248,17 @@ import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
  *
  * ```
  */
-export const ajax: AjaxCreationMethod = (() => AjaxObservable.create)();
+export const ajax: AjaxCreationMethod = (() => {
+  const create: any = (urlOrRequest: string | AjaxRequest) => {
+    return new AjaxObservable(urlOrRequest);
+  };
+
+  create.get = ajaxGet;
+  create.post = ajaxPost;
+  create.delete = ajaxDelete;
+  create.put = ajaxPut;
+  create.patch = ajaxPatch;
+  create.getJSON = ajaxGetJSON;
+
+  return <AjaxCreationMethod>create;
+})();
