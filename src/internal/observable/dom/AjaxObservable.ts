@@ -226,10 +226,10 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
   next(e: Event): void {
     this.done = true;
-    const { xhr, request, destination } = this;
-    let result;
+    const destination = this.destination as Subscriber<any>;
+    let result: AjaxResponse;
     try {
-      result = new AjaxResponse(e, xhr, request);
+      result = new AjaxResponse(e, this.xhr, this.request);
     } catch (err) {
       return destination.error(err);
     }
