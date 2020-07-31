@@ -1,3 +1,4 @@
+/** @prettier */
 import { Observable } from '../../Observable';
 import { Subscriber } from '../../Subscriber';
 import { TeardownLogic } from '../../types';
@@ -89,7 +90,7 @@ export function ajaxPatch(url: string, body?: any, headers?: Object): Observable
   return new AjaxObservable<AjaxResponse>({ method: 'PATCH', url, body, headers });
 }
 
-const mapResponse = map((x: AjaxResponse, index: number) => x.response);
+const mapResponse = map((x: AjaxResponse) => x.response);
 
 export function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
   return mapResponse(
@@ -97,7 +98,7 @@ export function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
       method: 'GET',
       url,
       responseType: 'json',
-      headers
+      headers,
     })
   );
 }
@@ -115,7 +116,7 @@ export class AjaxObservable<T> extends Observable<T> {
    * ## Example
    * ```ts
    * import { ajax } from 'rxjs/ajax';
- *
+   *
    * const source1 = ajax('/products');
    * const source2 = ajax({ url: 'products', method: 'GET' });
    * ```
@@ -138,7 +139,7 @@ export class AjaxObservable<T> extends Observable<T> {
    * @name ajax
    * @owner Observable
    * @nocollapse
-  */
+   */
   static create: AjaxCreationMethod = (() => {
     const create: any = (urlOrRequest: string | AjaxRequest) => {
       return new AjaxObservable(urlOrRequest);
@@ -161,7 +162,7 @@ export class AjaxObservable<T> extends Observable<T> {
 
     const request: AjaxRequest = {
       async: true,
-      createXHR: function(this: AjaxRequest) {
+      createXHR: function (this: AjaxRequest) {
         return this.crossDomain ? getCORSRequest() : getXMLHttpRequest();
       },
       crossDomain: true,
@@ -169,7 +170,7 @@ export class AjaxObservable<T> extends Observable<T> {
       headers: {},
       method: 'GET',
       responseType: 'json',
-      timeout: 0
+      timeout: 0,
     };
 
     if (typeof urlOrRequest === 'string') {
@@ -204,7 +205,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   constructor(destination: Subscriber<T>, public request: AjaxRequest) {
     super(destination);
 
-    const headers = request.headers = request.headers || {};
+    const headers = (request.headers = request.headers || {});
 
     // force CORS if requested
     if (!request.crossDomain && !this.getHeader(headers, 'X-Requested-With')) {
@@ -213,7 +214,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
     // ensure content type is set
     let contentTypeHeader = this.getHeader(headers, 'Content-Type');
-    if (!contentTypeHeader && typeof request.body !== 'undefined' && !(isFormData(request.body))) {
+    if (!contentTypeHeader && typeof request.body !== 'undefined' && !isFormData(request.body)) {
       (headers as any)['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     }
 
@@ -238,10 +239,10 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private send(): void {
     const {
       request,
-      request: { user, method, url, async, password, headers, body }
+      request: { user, method, url, async, password, headers, body },
     } = this;
     try {
-      const xhr = this.xhr = request.createXHR!();
+      const xhr = (this.xhr = request.createXHR!());
 
       // set up the events before open XHR
       // https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
@@ -295,7 +296,9 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
     switch (contentType) {
       case 'application/x-www-form-urlencoded':
-        return Object.keys(body).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(body[key])}`).join('&');
+        return Object.keys(body)
+          .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(body[key])}`)
+          .join('&');
       case 'application/json':
         return JSON.stringify(body);
       default:
@@ -325,7 +328,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     const progressSubscriber = request.progressSubscriber;
 
     function xhrTimeout(this: XMLHttpRequest, e: ProgressEvent): void {
-      const {subscriber, progressSubscriber, request } = (<any>xhrTimeout);
+      const { subscriber, progressSubscriber, request } = <any>xhrTimeout;
       if (progressSubscriber) {
         progressSubscriber.error(e);
       }
@@ -344,8 +347,8 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     if (xhr.upload && 'withCredentials' in xhr) {
       if (progressSubscriber) {
         let xhrProgress: (e: ProgressEvent) => void;
-        xhrProgress = function(e: ProgressEvent) {
-          const { progressSubscriber } = (<any>xhrProgress);
+        xhrProgress = function (e: ProgressEvent) {
+          const { progressSubscriber } = <any>xhrProgress;
           progressSubscriber.next(e);
         };
         if (typeof XDomainRequest === 'function') {
@@ -356,8 +359,8 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
         (<any>xhrProgress).progressSubscriber = progressSubscriber;
       }
       let xhrError: (e: any) => void;
-      xhrError = function(this: XMLHttpRequest, e: ErrorEvent) {
-        const { progressSubscriber, subscriber, request } = (<any>xhrError);
+      xhrError = function (this: XMLHttpRequest, e: ErrorEvent) {
+        const { progressSubscriber, subscriber, request } = <any>xhrError;
         if (progressSubscriber) {
           progressSubscriber.error(e);
         }
@@ -375,7 +378,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       (<any>xhrError).progressSubscriber = progressSubscriber;
     }
 
-    function xhrReadyStateChange(this: XMLHttpRequest, e: Event) {
+    function xhrReadyStateChange(this: XMLHttpRequest) {
       return;
     }
     xhr.onreadystatechange = xhrReadyStateChange;
@@ -384,12 +387,11 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     (<any>xhrReadyStateChange).request = request;
 
     function xhrLoad(this: XMLHttpRequest, e: Event) {
-      const { subscriber, progressSubscriber, request } = (<any>xhrLoad);
+      const { subscriber, progressSubscriber, request } = <any>xhrLoad;
       if (this.readyState === 4) {
         // normalize IE9 bug (http://bugs.jquery.com/ticket/1450)
         let status: number = this.status === 1223 ? 204 : this.status;
-        let response: any = (this.responseType === 'text' ?  (
-          this.response || this.responseText) : this.response);
+        let response: any = this.responseType === 'text' ? this.response || this.responseText : this.response;
 
         // fix status code when it is 0 (0 status is undocumented).
         // Occurs when accessing file resources or on Android 4.1 stock browser
@@ -489,7 +491,7 @@ export interface AjaxError extends Error {
 }
 
 export interface AjaxErrorCtor {
-  new(message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError;
+  new (message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError;
 }
 
 const AjaxErrorImpl = (() => {
@@ -524,22 +526,21 @@ function parseJson(xhr: XMLHttpRequest) {
 function parseXhrResponse(responseType: string, xhr: XMLHttpRequest) {
   switch (responseType) {
     case 'json':
-        return parseJson(xhr);
-      case 'xml':
-        return xhr.responseXML;
-      case 'text':
-      default:
-          // HACK(benlesh): TypeScript shennanigans
-          // tslint:disable-next-line:no-any XMLHttpRequest is defined to always have 'response' inferring xhr as never for the else sub-expression.
-          return  ('response' in (xhr as any)) ? xhr.response : xhr.responseText;
+      return parseJson(xhr);
+    case 'xml':
+      return xhr.responseXML;
+    case 'text':
+    default:
+      // HACK(benlesh): TypeScript shennanigans
+      // tslint:disable-next-line:no-any XMLHttpRequest is defined to always have 'response' inferring xhr as never for the else sub-expression.
+      return 'response' in (xhr as any) ? xhr.response : xhr.responseText;
   }
 }
 
-export interface AjaxTimeoutError extends AjaxError {
-}
+export interface AjaxTimeoutError extends AjaxError {}
 
 export interface AjaxTimeoutErrorCtor {
-  new(xhr: XMLHttpRequest, request: AjaxRequest): AjaxTimeoutError;
+  new (xhr: XMLHttpRequest, request: AjaxRequest): AjaxTimeoutError;
 }
 
 const AjaxTimeoutErrorImpl = (() => {
