@@ -102,24 +102,23 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
     const len = observables.length;
 
     if (len === 0) {
-      this.destination.complete();
+      this.destination.complete!();
     } else {
       for (let i = 0; i < len && !this.hasFirst; i++) {
-        let observable = observables[i];
-        let subscription = subscribeToResult(this, observable, observable as any, i);
+        const observable = observables[i];
+        const subscription = subscribeToResult(this, observable, undefined, i)!;
 
         if (this.subscriptions) {
           this.subscriptions.push(subscription);
         }
         this.add(subscription);
       }
-      this.observables = null;
+      this.observables = null!;
     }
   }
 
-  notifyNext(outerValue: T, innerValue: T,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, T>): void {
+  notifyNext(_outerValue: T, innerValue: T,
+             outerIndex: number): void {
     if (!this.hasFirst) {
       this.hasFirst = true;
 
@@ -132,9 +131,9 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
         }
       }
 
-      this.subscriptions = null;
+      this.subscriptions = null!;
     }
 
-    this.destination.next(innerValue);
+    this.destination.next!(innerValue);
   }
 }

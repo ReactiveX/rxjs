@@ -3,9 +3,8 @@ import { Subscriber } from '../Subscriber';
 import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { isDate } from '../util/isDate';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
-import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { ObservableInput, OperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function timeoutWith<T, R>(due: number | Date, withObservable: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
@@ -40,7 +39,7 @@ export function timeoutWith<T, R>(due: number | Date, withObservable: Observable
  * ## Example
  * Add fallback observable
  * ```ts
- * import { intrerval } from 'rxjs';
+ * import { interval } from 'rxjs';
  * import { timeoutWith } from 'rxjs/operators';
  *
  * const seconds = interval(1000);
@@ -93,9 +92,9 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
+class TimeoutWithSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
 
-  private action: SchedulerAction<TimeoutWithSubscriber<T, R>> = null;
+  private action?: SchedulerAction<TimeoutWithSubscriber<T, R>>;
 
   constructor(destination: Subscriber<T>,
               private absoluteTimeout: boolean,
@@ -108,8 +107,8 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private static dispatchTimeout<T, R>(subscriber: TimeoutWithSubscriber<T, R>): void {
     const { withObservable } = subscriber;
-    (<any> subscriber)._unsubscribeAndRecycle();
-    subscriber.add(subscribeToResult(subscriber, withObservable));
+    subscriber._unsubscribeAndRecycle();
+    subscriber.add(innerSubscribe(withObservable, new SimpleInnerSubscriber(subscriber)));
   }
 
   private scheduleTimeout(): void {
@@ -123,7 +122,7 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
       this.action = (<SchedulerAction<TimeoutWithSubscriber<T, R>>> action.schedule(this, this.waitFor));
     } else {
       this.add(this.action = (<SchedulerAction<TimeoutWithSubscriber<T, R>>> this.scheduler.schedule<TimeoutWithSubscriber<T, R>>(
-        TimeoutWithSubscriber.dispatchTimeout, this.waitFor, this
+        TimeoutWithSubscriber.dispatchTimeout as any, this.waitFor, this
       )));
     }
   }
@@ -137,8 +136,8 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribe() {
-    this.action = null;
-    this.scheduler = null;
-    this.withObservable = null;
+    this.action = undefined;
+    this.scheduler = null!;
+    this.withObservable = null!;
   }
 }

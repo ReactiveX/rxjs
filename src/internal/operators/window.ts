@@ -2,10 +2,8 @@ import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
 import { Subject } from '../Subject';
 import { Subscriber } from '../Subscriber';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { Operator } from '../Operator';
+import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /**
  * Branch out the source Observable values as a nested Observable whenever
@@ -65,7 +63,7 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
     const windowSubscriber = new WindowSubscriber(subscriber);
     const sourceSubscription = source.subscribe(windowSubscriber);
     if (!sourceSubscription.closed) {
-      windowSubscriber.add(subscribeToResult(windowSubscriber, this.windowBoundaries));
+      windowSubscriber.add(innerSubscribe(this.windowBoundaries, new SimpleInnerSubscriber(windowSubscriber)));
     }
     return sourceSubscription;
   }
@@ -76,7 +74,7 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
  * @ignore
  * @extends {Ignored}
  */
-class WindowSubscriber<T> extends OuterSubscriber<T, any> {
+class WindowSubscriber<T> extends SimpleOuterSubscriber<T, any> {
 
   private window: Subject<T> = new Subject<T>();
 
@@ -85,17 +83,15 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
     destination.next(this.window);
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
+  notifyNext(): void {
     this.openWindow();
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, any>): void {
+  notifyError(error: any): void {
     this._error(error);
   }
 
-  notifyComplete(innerSub: InnerSubscriber<T, any>): void {
+  notifyComplete(): void {
     this._complete();
   }
 
@@ -105,17 +101,17 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
 
   protected _error(err: any): void {
     this.window.error(err);
-    this.destination.error(err);
+    this.destination.error!(err);
   }
 
   protected _complete(): void {
     this.window.complete();
-    this.destination.complete();
+    this.destination.complete!();
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribe() {
-    this.window = null;
+    this.window = null!;
   }
 
   private openWindow(): void  {
@@ -125,6 +121,6 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
     }
     const destination = this.destination;
     const newWindow = this.window = new Subject<T>();
-    destination.next(newWindow);
+    destination.next!(newWindow);
   }
 }

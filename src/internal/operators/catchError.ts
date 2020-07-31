@@ -2,10 +2,8 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
+import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
 export function catchError<T, O extends ObservableInput<any>>(selector: (err: any, caught: Observable<T>) => O): OperatorFunction<T, T | ObservedValueOf<O>>;
@@ -113,7 +111,7 @@ class CatchOperator<T, R> implements Operator<T, T | R> {
  * @ignore
  * @extends {Ignored}
  */
-class CatchSubscriber<T, R> extends OuterSubscriber<T, T | R> {
+class CatchSubscriber<T, R> extends SimpleOuterSubscriber<T, T | R> {
   constructor(destination: Subscriber<any>,
               private selector: (err: any, caught: Observable<T>) => ObservableInput<T | R>,
               private caught: Observable<T>) {
@@ -135,9 +133,9 @@ class CatchSubscriber<T, R> extends OuterSubscriber<T, T | R> {
         return;
       }
       this._unsubscribeAndRecycle();
-      const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
+      const innerSubscriber = new SimpleInnerSubscriber(this);
       this.add(innerSubscriber);
-      const innerSubscription = subscribeToResult(this, result, undefined, undefined, innerSubscriber);
+      const innerSubscription = innerSubscribe(result, innerSubscriber);
       // The returned subscription will usually be the subscriber that was
       // passed. However, interop subscribers will be wrapped and for
       // unsubscriptions to chain correctly, the wrapper needs to be added, too.
