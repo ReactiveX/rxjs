@@ -1,4 +1,4 @@
-## [6.6.1](https://github.com/reactivex/rxjs/compare/6.6.0...6.6.1) (2020-07-31)
+## [6.6.2](https://github.com/reactivex/rxjs/compare/6.6.0...6.6.2) (2020-07-31)
 
 
 ### Bug Fixes
