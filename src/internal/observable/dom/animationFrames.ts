@@ -1,7 +1,7 @@
 import { Observable } from '../../Observable';
 import { Subscription } from '../../Subscription';
 import { TimestampProvider } from "../../types";
-import { dateTimestampProvider } from '../../scheduler/dateTimestampProvider';
+import { performanceTimestampProvider } from '../../scheduler/performanceTimestampProvider';
 import { requestAnimationFrameProvider } from '../../scheduler/requestAnimationFrameProvider';
 
 /**
@@ -91,7 +91,7 @@ function animationFramesFactory(timestampProvider?: TimestampProvider) {
     // If no timestamp provider is specified, use performance.now() - as it
     // will return timestamps 'compatible' with those passed to the run
     // callback and won't be affected by NTP adjustments, etc.
-    const provider = timestampProvider || performance;
+    const provider = timestampProvider || performanceTimestampProvider;
     // Capture the start time upon subscription, as the run callback can remain
     // queued for a considerable period of time and the elapsed time should
     // represent the time elapsed since subscription - not the time since the

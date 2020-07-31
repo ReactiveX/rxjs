@@ -27,9 +27,9 @@ describe('animationFrames', () => {
 
       const result = mapped.pipe(mergeMapTo(animationFrames()));
       expectObservable(result, subs).toBe(expected, {
-        a: ta - tm,
-        b: tb - tm,
-        c: tc - tm,
+        a: { elapsed: ta - tm, timestamp: ta },
+        b: { elapsed: tb - tm, timestamp: tb },
+        c: { elapsed: tc - tm, timestamp: tc },
       });
     });
   });
@@ -50,9 +50,9 @@ describe('animationFrames', () => {
 
       const result = mapped.pipe(mergeMapTo(animationFrames(timestampProvider)));
       expectObservable(result, subs).toBe(expected, {
-        a: 50,
-        b: 150,
-        c: 250,
+        a: { elapsed: 50, timestamp: 100 },
+        b: { elapsed: 150, timestamp: 200 },
+        c: { elapsed: 250, timestamp: 300 },
       });
     });
   });
@@ -71,8 +71,8 @@ describe('animationFrames', () => {
 
       const result = mapped.pipe(mergeMapTo(animationFrames().pipe(take(2))));
       expectObservable(result).toBe(expected, {
-        a: ta - tm,
-        b: tb - tm,
+        a: { elapsed: ta - tm, timestamp: ta },
+        b: { elapsed: tb - tm, timestamp: tb },
       });
 
       testScheduler.flush();
@@ -98,8 +98,8 @@ describe('animationFrames', () => {
 
       const result = mapped.pipe(mergeMapTo(animationFrames().pipe(takeUntil(signal))));
       expectObservable(result).toBe(expected, {
-        a: ta - tm,
-        b: tb - tm,
+        a: { elapsed: ta - tm, timestamp: ta },
+        b: { elapsed: tb - tm, timestamp: tb },
       });
 
       testScheduler.flush();
