@@ -63,7 +63,7 @@ export interface AjaxCreationMethod {
    * @param url The URL to get the resource from
    * @param headers Optional headers. Case-Insensitive.
    */
-  get(url: string, headers?: Object): Observable<AjaxResponse>;
+  get(url: string, headers?: Record<string, string>): Observable<AjaxResponse>;
 
   /**
    * Performs an HTTP POST using the
@@ -79,7 +79,7 @@ export interface AjaxCreationMethod {
    * @param body The content to send. The body is automatically serialized.
    * @param headers Optional headers. Case-Insensitive.
    */
-  post(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
+  post(url: string, body?: any, headers?: Record<string, string>): Observable<AjaxResponse>;
 
   /**
    * Performs an HTTP PUT using the
@@ -95,7 +95,7 @@ export interface AjaxCreationMethod {
    * @param body The content to send. The body is automatically serialized.
    * @param headers Optional headers. Case-Insensitive.
    */
-  put(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
+  put(url: string, body?: any, headers?: Record<string, string>): Observable<AjaxResponse>;
 
   /**
    * Performs an HTTP PATCH using the
@@ -111,7 +111,7 @@ export interface AjaxCreationMethod {
    * @param body The content to send. The body is automatically serialized.
    * @param headers Optional headers. Case-Insensitive.
    */
-  patch(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
+  patch(url: string, body?: any, headers?: Record<string, string>): Observable<AjaxResponse>;
 
   /**
    * Performs an HTTP DELETE using the
@@ -121,7 +121,7 @@ export interface AjaxCreationMethod {
    * @param url The URL to get the resource from
    * @param headers Optional headers. Case-Insensitive.
    */
-  delete(url: string, headers?: Object): Observable<AjaxResponse>;
+  delete(url: string, headers?: Record<string, string>): Observable<AjaxResponse>;
 
   /**
    * Performs an HTTP GET using the
@@ -132,32 +132,32 @@ export interface AjaxCreationMethod {
    * @param url The URL to get the resource from
    * @param headers Optional headers. Case-Insensitive.
    */
-  getJSON<T>(url: string, headers?: Object): Observable<T>;
+  getJSON<T>(url: string, headers?: Record<string, string>): Observable<T>;
 }
 
-function ajaxGet(url: string, headers?: object) {
+function ajaxGet(url: string, headers?: Record<string, string>) {
   return ajax({ method: 'GET', url, headers });
 }
 
-function ajaxPost(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
+function ajaxPost(url: string, body?: any, headers?: Record<string, string>): Observable<AjaxResponse> {
   return ajax({ method: 'POST', url, body, headers });
 }
 
-function ajaxDelete(url: string, headers?: Object): Observable<AjaxResponse> {
+function ajaxDelete(url: string, headers?: Record<string, string>): Observable<AjaxResponse> {
   return ajax({ method: 'DELETE', url, headers });
 }
 
-function ajaxPut(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
+function ajaxPut(url: string, body?: any, headers?: Record<string, string>): Observable<AjaxResponse> {
   return ajax({ method: 'PUT', url, body, headers });
 }
 
-function ajaxPatch(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
+function ajaxPatch(url: string, body?: any, headers?: Record<string, string>): Observable<AjaxResponse> {
   return ajax({ method: 'PATCH', url, body, headers });
 }
 
 const mapResponse = map((x: AjaxResponse) => x.response);
 
-function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
+function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observable<T> {
   return mapResponse(
     ajax({
       method: 'GET',
@@ -249,8 +249,8 @@ function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
  * ```
  */
 export const ajax: AjaxCreationMethod = (() => {
-  const create: any = (urlOrRequest: string | AjaxRequest) => {
-    return new AjaxObservable(urlOrRequest);
+  const create = <T>(urlOrRequest: string | AjaxRequest) => {
+    return new AjaxObservable<T>(urlOrRequest);
   };
 
   create.get = ajaxGet;
@@ -260,5 +260,5 @@ export const ajax: AjaxCreationMethod = (() => {
   create.patch = ajaxPatch;
   create.getJSON = ajaxGetJSON;
 
-  return <AjaxCreationMethod>create;
+  return create;
 })();
