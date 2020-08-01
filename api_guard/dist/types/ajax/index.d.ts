@@ -3,7 +3,7 @@ export declare const ajax: AjaxCreationMethod;
 export interface AjaxError extends Error {
     request: AjaxRequest;
     response: any;
-    responseType: string;
+    responseType: XMLHttpRequestResponseType;
     status: number;
     xhr: XMLHttpRequest;
 }
@@ -19,7 +19,7 @@ export interface AjaxRequest {
     headers?: object;
     method?: string;
     password?: string;
-    progressSubscriber?: Subscriber<any>;
+    progressSubscriber?: PartialObserver<ProgressEvent>;
     responseType?: string;
     timeout?: number;
     url?: string;
