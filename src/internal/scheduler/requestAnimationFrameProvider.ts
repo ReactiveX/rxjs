@@ -3,6 +3,8 @@ import { Subscription } from '../Subscription';
 
 type RequestAnimationFrameProvider = {
   schedule(callback: FrameRequestCallback): Subscription;
+  requestAnimationFrame: typeof requestAnimationFrame;
+  cancelAnimationFrame: typeof cancelAnimationFrame;
   delegate:
     | {
         requestAnimationFrame: typeof requestAnimationFrame;
@@ -12,11 +14,11 @@ type RequestAnimationFrameProvider = {
 };
 
 export const requestAnimationFrameProvider: RequestAnimationFrameProvider = {
+  // When accessing the delegate, use the variable rather than `this` so that
+  // the function can be called without being bound to the provider.
   schedule(callback) {
     let request = requestAnimationFrame;
     let cancel: typeof cancelAnimationFrame | undefined = cancelAnimationFrame;
-    // Use the variable rather than `this` so that the function can be called
-    // without being bound to the provider.
     const { delegate } = requestAnimationFrameProvider;
     if (delegate) {
       request = delegate.requestAnimationFrame;
@@ -30,6 +32,14 @@ export const requestAnimationFrameProvider: RequestAnimationFrameProvider = {
       callback(timestamp);
     });
     return new Subscription(() => cancel?.(handle));
+  },
+  requestAnimationFrame(...args) {
+    const { delegate } = requestAnimationFrameProvider;
+    return (delegate?.requestAnimationFrame || requestAnimationFrame)(...args);
+  },
+  cancelAnimationFrame(...args) {
+    const { delegate } = requestAnimationFrameProvider;
+    return (delegate?.cancelAnimationFrame || cancelAnimationFrame)(...args);
   },
   delegate: undefined,
 };
