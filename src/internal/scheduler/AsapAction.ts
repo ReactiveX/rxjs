@@ -1,7 +1,7 @@
 import { AsyncAction } from './AsyncAction';
 import { AsapScheduler } from './AsapScheduler';
 import { SchedulerAction } from '../types';
-import { setImmediateProvider } from './setImmediateProvider';
+import { immediateProvider } from './immediateProvider';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -25,7 +25,7 @@ export class AsapAction<T> extends AsyncAction<T> {
     // If a microtask has already been scheduled, don't schedule another
     // one. If a microtask hasn't been scheduled yet, schedule one now. Return
     // the current scheduled microtask id.
-    return scheduler.scheduled || (scheduler.scheduled = setImmediateProvider.setImmediate(
+    return scheduler.scheduled || (scheduler.scheduled = immediateProvider.setImmediate(
       scheduler.flush.bind(scheduler, undefined)
     ));
   }
@@ -40,7 +40,7 @@ export class AsapAction<T> extends AsyncAction<T> {
     // set the scheduled flag to undefined so the next AsapAction will schedule
     // its own.
     if (scheduler.actions.length === 0) {
-      setImmediateProvider.clearImmediate(id);
+      immediateProvider.clearImmediate(id);
       scheduler.scheduled = undefined;
     }
     // Return undefined so the action knows to request a new async id if it's rescheduled.

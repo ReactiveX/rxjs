@@ -2,7 +2,7 @@ import { Action } from './Action';
 import { SchedulerAction } from '../types';
 import { Subscription } from '../Subscription';
 import { AsyncScheduler } from './AsyncScheduler';
-import { setIntervalProvider } from './setIntervalProvider';
+import { intervalProvider } from './intervalProvider';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -71,7 +71,7 @@ export class AsyncAction<T> extends Action<T> {
   }
 
   protected requestAsyncId(scheduler: AsyncScheduler, id?: any, delay: number = 0): any {
-    return setIntervalProvider.setInterval(scheduler.flush.bind(scheduler, this), delay);
+    return intervalProvider.setInterval(scheduler.flush.bind(scheduler, this), delay);
   }
 
   protected recycleAsyncId(scheduler: AsyncScheduler, id: any, delay: number | null = 0): any {
@@ -81,7 +81,7 @@ export class AsyncAction<T> extends Action<T> {
     }
     // Otherwise, if the action's delay time is different from the current delay,
     // or the action has been rescheduled before it's executed, clear the interval id
-    setIntervalProvider.clearInterval(id);
+    intervalProvider.clearInterval(id);
     return undefined;
   }
 

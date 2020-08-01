@@ -5,7 +5,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { Observable, NEVER, EMPTY, Subject, of, merge } from 'rxjs';
 import { delay, debounceTime, concatMap } from 'rxjs/operators';
 import { nextNotification, COMPLETE_NOTIFICATION, errorNotification } from 'rxjs/internal/Notification';
-import { requestAnimationFrameProvider } from 'rxjs/internal/scheduler/requestAnimationFrameProvider';
+import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -505,7 +505,7 @@ describe('TestScheduler', () => {
       it('should throw if animate() is not called when needed', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
         expect(() => testScheduler.run(() => {
-          requestAnimationFrameProvider.schedule(() => { /* pointless lint rule */ });
+          animationFrameProvider.schedule(() => { /* pointless lint rule */ });
         })).to.throw();
       });
 
@@ -537,7 +537,7 @@ describe('TestScheduler', () => {
           animate('--x');
 
           const values: string[] = [];
-          const { schedule } = requestAnimationFrameProvider;
+          const { schedule } = animationFrameProvider;
 
           testScheduler.schedule(() => {
             schedule(t => values.push(`a@${t}`));
@@ -559,7 +559,7 @@ describe('TestScheduler', () => {
           animate('--x');
 
           const values: string[] = [];
-          const { schedule } = requestAnimationFrameProvider;
+          const { schedule } = animationFrameProvider;
 
           testScheduler.schedule(() => {
             schedule(t => values.push(`a@${t}`));
@@ -578,7 +578,7 @@ describe('TestScheduler', () => {
           animate('--x');
 
           const values: string[] = [];
-          const { schedule } = requestAnimationFrameProvider;
+          const { schedule } = animationFrameProvider;
 
           testScheduler.schedule(() => {
             const subscription = schedule(t => values.push(`a@${t}`));

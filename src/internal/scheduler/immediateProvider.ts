@@ -5,7 +5,7 @@ const { setImmediate, clearImmediate } = Immediate;
 type SetImmediateFunction = (handler: () => void, ...args: any[]) => number;
 type ClearImmediateFunction = (handle: number) => void;
 
-type SetImmediateProvider = {
+type ImmediateProvider = {
   setImmediate: SetImmediateFunction;
   clearImmediate: ClearImmediateFunction;
   delegate:
@@ -16,15 +16,15 @@ type SetImmediateProvider = {
     | undefined;
 };
 
-export const setImmediateProvider: SetImmediateProvider = {
+export const immediateProvider: ImmediateProvider = {
   // When accessing the delegate, use the variable rather than `this` so that
   // the function can be called without being bound to the provider.
   setImmediate(...args) {
-    const { delegate } = setImmediateProvider;
+    const { delegate } = immediateProvider;
     return (delegate?.setImmediate || setImmediate)(...args);
   },
   clearImmediate(handle) {
-    const { delegate } = setImmediateProvider;
+    const { delegate } = immediateProvider;
     return (delegate?.clearImmediate || clearImmediate)(handle);
   },
   delegate: undefined,

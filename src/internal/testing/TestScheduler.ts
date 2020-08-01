@@ -10,7 +10,7 @@ import { ObservableNotification } from '../types';
 import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Notification';
 import { dateTimestampProvider } from '../scheduler/dateTimestampProvider';
 import { performanceTimestampProvider } from '../scheduler/performanceTimestampProvider';
-import { requestAnimationFrameProvider } from '../scheduler/requestAnimationFrameProvider';
+import { animationFrameProvider } from '../scheduler/animationFrameProvider';
 
 const defaultMaxFrame: number = 750;
 
@@ -485,7 +485,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     this.runMode = true;
 
     const animator = this.createAnimator();
-    requestAnimationFrameProvider.delegate = animator.delegate;
+    animationFrameProvider.delegate = animator.delegate;
     dateTimestampProvider.delegate = this;
     performanceTimestampProvider.delegate = this;
     AsyncScheduler.delegate = this;
@@ -507,7 +507,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       TestScheduler.frameTimeFactor = prevFrameTimeFactor;
       this.maxFrames = prevMaxFrames;
       this.runMode = false;
-      requestAnimationFrameProvider.delegate = undefined;
+      animationFrameProvider.delegate = undefined;
       dateTimestampProvider.delegate = undefined;
       performanceTimestampProvider.delegate = undefined;
       AsyncScheduler.delegate = undefined;

@@ -2,7 +2,7 @@ import { Observable } from '../../Observable';
 import { Subscription } from '../../Subscription';
 import { TimestampProvider } from "../../types";
 import { performanceTimestampProvider } from '../../scheduler/performanceTimestampProvider';
-import { requestAnimationFrameProvider } from '../../scheduler/requestAnimationFrameProvider';
+import { animationFrameProvider } from '../../scheduler/animationFrameProvider';
 
 /**
  * An observable of animation frames
@@ -85,7 +85,7 @@ export function animationFrames(timestampProvider?: TimestampProvider) {
  * @param timestampProvider The timestamp provider to use to create the observable
  */
 function animationFramesFactory(timestampProvider?: TimestampProvider) {
-  const { schedule } = requestAnimationFrameProvider;
+  const { schedule } = animationFrameProvider;
   return new Observable<{ timestamp: number, elapsed: number }>(subscriber => {
     let subscription: Subscription;
     // If no timestamp provider is specified, use performance.now() - as it

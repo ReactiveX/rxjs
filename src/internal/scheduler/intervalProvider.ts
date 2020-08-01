@@ -2,7 +2,7 @@
 type SetIntervalFunction = (handler: () => void, timeout?: number, ...args: any[]) => number;
 type ClearIntervalFunction = (handle: number) => void;
 
-type SetIntervalProvider = {
+type IntervalProvider = {
   setInterval: SetIntervalFunction;
   clearInterval: ClearIntervalFunction;
   delegate:
@@ -13,15 +13,15 @@ type SetIntervalProvider = {
     | undefined;
 };
 
-export const setIntervalProvider: SetIntervalProvider = {
+export const intervalProvider: IntervalProvider = {
   // When accessing the delegate, use the variable rather than `this` so that
   // the function can be called without being bound to the provider.
   setInterval(...args) {
-    const { delegate } = setIntervalProvider;
+    const { delegate } = intervalProvider;
     return (delegate?.setInterval || setInterval)(...args);
   },
   clearInterval(handle) {
-    const { delegate } = setIntervalProvider;
+    const { delegate } = intervalProvider;
     return (delegate?.clearInterval || clearInterval)(handle);
   },
   delegate: undefined,
