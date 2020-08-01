@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 import { AsyncScheduler } from 'rxjs/internal/scheduler/AsyncScheduler';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, NEVER, EMPTY, Subject, of, merge, animationFrameScheduler, asapScheduler, asyncScheduler } from 'rxjs';
-import { delay, debounceTime, concatMap, mergeMap } from 'rxjs/operators';
+import { Observable, NEVER, EMPTY, Subject, of, merge, animationFrameScheduler, asapScheduler, asyncScheduler, interval } from 'rxjs';
+import { delay, debounceTime, concatMap, mergeMap, mapTo, take } from 'rxjs/operators';
 import { nextNotification, COMPLETE_NOTIFICATION, errorNotification } from 'rxjs/internal/Notification';
 import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
 import { immediateProvider } from 'rxjs/internal/scheduler/immediateProvider';
@@ -684,7 +684,7 @@ describe('TestScheduler', () => {
     });
 
     describe('schedulers', () => {
-      it('should support all schedulers within run()', () => {
+      it('should support all schedulers', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
         testScheduler.run(({ animate, cold, expectObservable, time }) => {
           animate('            ---------x');
@@ -696,6 +696,32 @@ describe('TestScheduler', () => {
             of('b').pipe(delay(tb, asyncScheduler)),
             of('c').pipe(delay(0, asyncScheduler)),
             of('d').pipe(delay(0, asapScheduler))
+          )));
+          expectObservable(result).toBe(expected);
+        });
+      });
+
+      it('should emit asap notifications before async notifications', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(({ cold, expectObservable }) => {
+          const mapped = cold('--ab------');
+          const expected = '   ---(ba)---';
+          const result = mapped.pipe(mergeMap((value) => value === 'a'
+            ? of(value).pipe(delay(1, asyncScheduler))
+            : of(value).pipe(delay(0, asapScheduler))
+          ));
+          expectObservable(result).toBe(expected);
+        });
+      });
+
+      it('should support intervals with zero duration', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(({ cold, expectObservable }) => {
+          const mapped = cold('--m-------');
+          const expected = '   --(bbbaaa)';
+          const result = mapped.pipe(mergeMap(() => merge(
+            interval(0, asyncScheduler).pipe(mapTo('a'), take(3)),
+            interval(0, asapScheduler).pipe(mapTo('b'), take(3))
           )));
           expectObservable(result).toBe(expected);
         });

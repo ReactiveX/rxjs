@@ -476,29 +476,32 @@ export class TestScheduler extends VirtualTimeScheduler {
       due: number;
       duration: number;
       handle: number;
-      handled: number;
       handler: () => void;
+      subscription: Subscription;
       type: 'immediate' | 'interval';
     }>();
 
-    const flush = () => {
+    const run = () => {
       const now = this.now();
       const values = Array.from(map.values());
-      const due = values.filter(({ due, handled }) => due <= now && handled < now);
+      const due = values.filter(({ due }) => due <= now);
       const immediates = due.filter(({ type }) => type === 'immediate');
-      const intervals = due.filter(({ type }) => type === 'interval');
-      for (const immediate of immediates) {
-        const { handle, handler } = immediate;
-        handler();
+      if (immediates.length > 0) {
+        const { handle, handler } = immediates[0];
         map.delete(handle);
-      }
-      for (const interval of intervals) {
-        const { duration, handler } = interval;
         handler();
-        interval.handled = now;
-        interval.due = now + duration;
-        this.schedule(flush, duration);
+        return;
       }
+      const intervals = due.filter(({ type }) => type === 'interval');
+      if (intervals.length > 0) {
+        const interval = intervals[0];
+        const { duration, handler } = interval;
+        interval.due = now + duration;
+        interval.subscription = this.schedule(run, duration);
+        handler();
+        return;
+      }
+      throw new Error('Expected a due immediate or interval');
     };
 
     const immediate = {
@@ -508,15 +511,18 @@ export class TestScheduler extends VirtualTimeScheduler {
           due: this.now(),
           duration: 0,
           handle,
-          handled: -1,
           handler,
+          subscription: this.schedule(run, 0),
           type: 'immediate',
         });
-        this.schedule(flush, 0);
         return handle;
       },
       clearImmediate: (handle: number) => {
-        map.delete(handle);
+        const value = map.get(handle);
+        if (value) {
+          value.subscription.unsubscribe();
+          map.delete(handle);
+        }
       }
     };
 
@@ -527,15 +533,18 @@ export class TestScheduler extends VirtualTimeScheduler {
           due: this.now() + duration,
           duration,
           handle,
-          handled: -1,
           handler,
+          subscription: this.schedule(run, duration),
           type: 'interval',
         });
-        this.schedule(flush, duration);
         return handle;
       },
       clearInterval: (handle: number) => {
-        map.delete(handle);
+        const value = map.get(handle);
+        if (value) {
+          value.subscription.unsubscribe();
+          map.delete(handle);
+        }
       }
     };
 
