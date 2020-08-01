@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 import { AsyncScheduler } from 'rxjs/internal/scheduler/AsyncScheduler';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, NEVER, EMPTY, Subject, of, merge } from 'rxjs';
-import { delay, debounceTime, concatMap } from 'rxjs/operators';
+import { Observable, NEVER, EMPTY, Subject, of, merge, animationFrameScheduler, asapScheduler, asyncScheduler } from 'rxjs';
+import { delay, debounceTime, concatMap, mergeMap } from 'rxjs/operators';
 import { nextNotification, COMPLETE_NOTIFICATION, errorNotification } from 'rxjs/internal/Notification';
 import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
 import { immediateProvider } from 'rxjs/internal/scheduler/immediateProvider';
@@ -679,6 +679,25 @@ describe('TestScheduler', () => {
           testScheduler.schedule(() => {
             expect(values).to.deep.equal(['b@0', 'a@0']);
           }, 10);
+        });
+      });
+    });
+
+    describe('schedulers', () => {
+      it('should support all schedulers within run()', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(({ animate, cold, expectObservable, time }) => {
+          animate('            ---------x');
+          const mapped = cold('--m-------');
+          const tb = time('      -----|  ');
+          const expected = '   --(dc)-b-a';
+          const result = mapped.pipe(mergeMap(() => merge(
+            of('a').pipe(delay(0, animationFrameScheduler)),
+            of('b').pipe(delay(tb, asyncScheduler)),
+            of('c').pipe(delay(0, asyncScheduler)),
+            of('d').pipe(delay(0, asapScheduler))
+          )));
+          expectObservable(result).toBe(expected);
         });
       });
     });
