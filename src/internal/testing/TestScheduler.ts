@@ -11,6 +11,8 @@ import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../N
 import { dateTimestampProvider } from '../scheduler/dateTimestampProvider';
 import { performanceTimestampProvider } from '../scheduler/performanceTimestampProvider';
 import { animationFrameProvider } from '../scheduler/animationFrameProvider';
+import { immediateProvider } from '../scheduler/immediateProvider';
+import { intervalProvider } from '../scheduler/intervalProvider';
 
 const defaultMaxFrame: number = 750;
 
@@ -419,34 +421,34 @@ export class TestScheduler extends VirtualTimeScheduler {
     // gives the author full control over when - or if - animation frames are
     // 'painted'.
 
-    let animationFramesHandle = 0;
-    let animationFramesQueue: Map<number, FrameRequestCallback> | undefined;
+    let lastHandle = 0;
+    let map: Map<number, FrameRequestCallback> | undefined;
 
     const delegate = {
       requestAnimationFrame(callback: FrameRequestCallback) {
-        if (!animationFramesQueue) {
+        if (!map) {
           throw new Error("animate() was not called within run()");
         }
-        const handle = ++animationFramesHandle;
-        animationFramesQueue.set(handle, callback);
+        const handle = ++lastHandle;
+        map.set(handle, callback);
         return handle;
       },
       cancelAnimationFrame(handle: number) {
-        if (!animationFramesQueue) {
+        if (!map) {
           throw new Error("animate() was not called within run()");
         }
-        animationFramesQueue.delete(handle);
+        map.delete(handle);
       }
     };
 
     const animate = (marbles: string) => {
-      if (animationFramesQueue) {
+      if (map) {
         throw new Error('animate() must not be called more than once within run()');
       }
       if (/[|#]/.test(marbles)) {
         throw new Error('animate() must not complete or error')
       }
-      animationFramesQueue = new Map<number, FrameRequestCallback>();
+      map = new Map<number, FrameRequestCallback>();
       const messages = TestScheduler.parseMarbles(marbles, undefined, undefined, undefined, true);
       for (const message of messages) {
         this.schedule(() => {
@@ -456,8 +458,8 @@ export class TestScheduler extends VirtualTimeScheduler {
           // reschedule themselves. (And, yeah, we're using a Map to represent
           // the queue, but the values are guaranteed to be returned in
           // insertion order, so it's all good. Trust me, I've read the docs.)
-          const callbacks = Array.from(animationFramesQueue!.values());
-          animationFramesQueue!.clear();
+          const callbacks = Array.from(map!.values());
+          map!.clear();
           for (const callback of callbacks) {
             callback(now);
           }
@@ -466,6 +468,78 @@ export class TestScheduler extends VirtualTimeScheduler {
     };
 
     return { animate, delegate };
+  }
+
+  private createDelegates() {
+    let lastHandle = 0;
+    let map = new Map<number, {
+      due: number;
+      duration: number;
+      handle: number;
+      handled: number;
+      handler: () => void;
+      type: 'immediate' | 'interval';
+    }>();
+
+    const flush = () => {
+      const now = this.now();
+      const values = Array.from(map.values());
+      const due = values.filter(({ due, handled }) => due <= now && handled < now);
+      const immediates = due.filter(({ type }) => type === 'immediate');
+      const intervals = due.filter(({ type }) => type === 'interval');
+      for (const immediate of immediates) {
+        const { handle, handler } = immediate;
+        handler();
+        map.delete(handle);
+      }
+      for (const interval of intervals) {
+        const { duration, handler } = interval;
+        handler();
+        interval.handled = now;
+        interval.due = now + duration;
+        this.schedule(flush, duration);
+      }
+    };
+
+    const immediate = {
+      setImmediate: (handler: () => void) => {
+        const handle = ++lastHandle;
+        map.set(handle, {
+          due: this.now(),
+          duration: 0,
+          handle,
+          handled: -1,
+          handler,
+          type: 'immediate',
+        });
+        this.schedule(flush, 0);
+        return handle;
+      },
+      clearImmediate: (handle: number) => {
+        map.delete(handle);
+      }
+    };
+
+    const interval = {
+      setInterval: (handler: () => void, duration = 0) => {
+        const handle = ++lastHandle;
+        map.set(handle, {
+          due: this.now() + duration,
+          duration,
+          handle,
+          handled: -1,
+          handler,
+          type: 'interval',
+        });
+        this.schedule(flush, duration);
+        return handle;
+      },
+      clearInterval: (handle: number) => {
+        map.delete(handle);
+      }
+    };
+
+    return { immediate, interval };
   }
 
   /**
@@ -485,8 +559,12 @@ export class TestScheduler extends VirtualTimeScheduler {
     this.runMode = true;
 
     const animator = this.createAnimator();
+    const delegates = this.createDelegates();
+
     animationFrameProvider.delegate = animator.delegate;
     dateTimestampProvider.delegate = this;
+    immediateProvider.delegate = delegates.immediate;
+    intervalProvider.delegate = delegates.interval;
     performanceTimestampProvider.delegate = this;
     AsyncScheduler.delegate = this;
 
@@ -509,6 +587,8 @@ export class TestScheduler extends VirtualTimeScheduler {
       this.runMode = false;
       animationFrameProvider.delegate = undefined;
       dateTimestampProvider.delegate = undefined;
+      immediateProvider.delegate = undefined;
+      intervalProvider.delegate = undefined;
       performanceTimestampProvider.delegate = undefined;
       AsyncScheduler.delegate = undefined;
     }

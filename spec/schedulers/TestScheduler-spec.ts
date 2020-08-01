@@ -6,6 +6,8 @@ import { Observable, NEVER, EMPTY, Subject, of, merge } from 'rxjs';
 import { delay, debounceTime, concatMap } from 'rxjs/operators';
 import { nextNotification, COMPLETE_NOTIFICATION, errorNotification } from 'rxjs/internal/Notification';
 import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
+import { immediateProvider } from 'rxjs/internal/scheduler/immediateProvider';
+import { intervalProvider } from 'rxjs/internal/scheduler/intervalProvider';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -589,6 +591,94 @@ describe('TestScheduler', () => {
           testScheduler.schedule(() => {
             expect(values).to.deep.equal(['b@2']);
           }, 2);
+        });
+      });
+    });
+
+    describe('immediate and interval', () => {
+      it('should schedule immediates', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(() => {
+          const values: string[] = [];
+          const { setImmediate } = immediateProvider;
+          setImmediate(() => {
+            values.push(`a@${testScheduler.now()}`);
+          });
+          expect(values).to.deep.equal([]);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal(['a@0']);
+          }, 10);
+        });
+      });
+
+      it('should support clearing immediates', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(() => {
+          const values: string[] = [];
+          const { setImmediate, clearImmediate } = immediateProvider;
+          const handle = setImmediate(() => {
+            values.push(`a@${testScheduler.now()}`);
+          });
+          expect(values).to.deep.equal([]);
+          clearImmediate(handle);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal([]);
+          }, 10);
+        });
+      });
+
+      it('should schedule intervals', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(() => {
+          const values: string[] = [];
+          const { setInterval, clearInterval } = intervalProvider;
+          const handle = setInterval(() => {
+            values.push(`a@${testScheduler.now()}`);
+            clearInterval(handle);
+          }, 1);
+          expect(values).to.deep.equal([]);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal(['a@1']);
+          }, 10);
+        });
+      });
+
+      it('should reschedule intervals until cleared', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(() => {
+          const values: string[] = [];
+          const { setInterval, clearInterval } = intervalProvider;
+          const handle = setInterval(() => {
+            if (testScheduler.now() <= 3) {
+              values.push(`a@${testScheduler.now()}`);
+            } else {
+              clearInterval(handle);
+            }
+          }, 1);
+          expect(values).to.deep.equal([]);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal(['a@1', 'a@2', 'a@3']);
+          }, 10);
+        });
+      });
+
+      it('should schedule immediates before intervals', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(() => {
+          const values: string[] = [];
+          const { setImmediate } = immediateProvider;
+          const { setInterval, clearInterval } = intervalProvider;
+          const handle = setInterval(() => {
+            values.push(`a@${testScheduler.now()}`);
+            clearInterval(handle);
+          }, 0);
+          setImmediate(() => {
+            values.push(`b@${testScheduler.now()}`);
+          });
+          expect(values).to.deep.equal([]);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal(['b@0', 'a@0']);
+          }, 10);
         });
       });
     });
