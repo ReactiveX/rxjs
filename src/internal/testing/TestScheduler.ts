@@ -575,7 +575,6 @@ export class TestScheduler extends VirtualTimeScheduler {
     immediateProvider.delegate = delegates.immediate;
     intervalProvider.delegate = delegates.interval;
     performanceTimestampProvider.delegate = this;
-    AsyncScheduler.delegate = this;
 
     const helpers: RunHelpers = {
       cold: this.createColdObservable.bind(this),
@@ -599,7 +598,6 @@ export class TestScheduler extends VirtualTimeScheduler {
       immediateProvider.delegate = undefined;
       intervalProvider.delegate = undefined;
       performanceTimestampProvider.delegate = undefined;
-      AsyncScheduler.delegate = undefined;
     }
   }
 }

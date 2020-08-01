@@ -476,7 +476,6 @@ describe('TestScheduler', () => {
       const frameTimeFactor = TestScheduler['frameTimeFactor'];
       const maxFrames = testScheduler.maxFrames;
       const runMode = testScheduler['runMode'];
-      const delegate = AsyncScheduler.delegate;
 
       try {
         testScheduler.run(() => {
@@ -487,7 +486,6 @@ describe('TestScheduler', () => {
       expect(TestScheduler['frameTimeFactor']).to.equal(frameTimeFactor);
       expect(testScheduler.maxFrames).to.equal(maxFrames);
       expect(testScheduler['runMode']).to.equal(runMode);
-      expect(AsyncScheduler.delegate).to.equal(delegate);
     });
 
     it('should flush expectations correctly', () => {
@@ -684,7 +682,7 @@ describe('TestScheduler', () => {
     });
 
     describe('schedulers', () => {
-      it('should support all schedulers', () => {
+      it('should support animationFrame, async and asap schedulers', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
         testScheduler.run(({ animate, cold, expectObservable, time }) => {
           animate('            ---------x');

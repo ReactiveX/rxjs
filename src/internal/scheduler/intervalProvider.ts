@@ -15,7 +15,7 @@ type IntervalProvider = {
 
 export const intervalProvider: IntervalProvider = {
   // When accessing the delegate, use the variable rather than `this` so that
-  // the function can be called without being bound to the provider.
+  // the functions can be called without being bound to the provider.
   setInterval(...args) {
     const { delegate } = intervalProvider;
     return (delegate?.setInterval || setInterval)(...args);

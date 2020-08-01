@@ -18,7 +18,7 @@ type ImmediateProvider = {
 
 export const immediateProvider: ImmediateProvider = {
   // When accessing the delegate, use the variable rather than `this` so that
-  // the function can be called without being bound to the provider.
+  // the functions can be called without being bound to the provider.
   setImmediate(...args) {
     const { delegate } = immediateProvider;
     return (delegate?.setImmediate || setImmediate)(...args);
