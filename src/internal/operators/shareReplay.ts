@@ -152,28 +152,32 @@ function shareReplayOperator<T>({
   let subject: ReplaySubject<T> | undefined;
   let refCount = 0;
   let subscription: Subscription | undefined;
-  let hasError = false;
-  let isComplete = false;
 
   return function shareReplayOperation(this: Subscriber<T>, source: Observable<T>) {
     refCount++;
     let innerSub: Subscription;
-    if (!subject || hasError) {
-      hasError = false;
+    if (!subject) {
       subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler);
       innerSub = subject.subscribe(this);
       subscription = source.subscribe({
         next(value) { subject!.next(value); },
         error(err) {
-          hasError = true;
-          subject!.error(err);
+          const dest = subject;
+          subscription = undefined;
+          subject = undefined;
+          dest!.error(err);
         },
         complete() {
-          isComplete = true;
           subscription = undefined;
           subject!.complete();
         },
       });
+      // The following condition is needed because source can complete synchronously
+      // upon subscription. When that happens `subscription` is first set to `undefined`
+      // and right after is set to the "closed subscription" returned by `subscribe`
+      if (subscription.closed) {
+        subscription = undefined;
+      }
     } else {
       innerSub = subject.subscribe(this);
     }
@@ -181,7 +185,7 @@ function shareReplayOperator<T>({
     this.add(() => {
       refCount--;
       innerSub.unsubscribe();
-      if (subscription && !isComplete && useRefCount && refCount === 0) {
+      if (useRefCount && refCount === 0 && subscription) {
         subscription.unsubscribe();
         subscription = undefined;
         subject = undefined;
