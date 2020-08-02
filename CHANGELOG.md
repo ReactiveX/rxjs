@@ -1,3 +1,36 @@
+# [7.0.0-beta.4](https://github.com/reactivex/rxjs/compare/7.0.0-beta.1...7.0.0-beta.4) (2020-08-02)
+
+
+### Bug Fixes
+
+* **ajax:** Partial observers passed to `progressSubscriber` will no longer error ([25d279f](https://github.com/reactivex/rxjs/commit/25d279f0b45d07f39bfb87b19bc7e2279df8b542))
+* **ajax:** Unparsable responses will no longer prevent full AjaxError from being thrown ([605ee55](https://github.com/reactivex/rxjs/commit/605ee550e5efc266b5dc5d3a9756c7c3b3968a61))
+* **animationFrames:** emit the timestamp from the rAF's callback ([#5438](https://github.com/reactivex/rxjs/issues/5438)) ([c980ae6](https://github.com/reactivex/rxjs/commit/c980ae65ee1b585e8ed66a366eb534ac3e50c205))
+* Ensure unsubscriptions/teardowns on internal subscribers are idempotent ([#5465](https://github.com/reactivex/rxjs/issues/5465)) ([3e39749](https://github.com/reactivex/rxjs/commit/3e39749a58ca663c17f5f0354b0f27532fb6d319)), closes [#5464](https://github.com/reactivex/rxjs/issues/5464)
+* **timeout:** defer error creation until timeout occurs ([#5497](https://github.com/reactivex/rxjs/issues/5497)) ([3be9840](https://github.com/reactivex/rxjs/commit/3be98404fafd5a8de758deb4e0d103a7b60aa31e)), closes [#5491](https://github.com/reactivex/rxjs/issues/5491)
+
+
+### Code Refactoring
+
+* **ajax:** Drop support for IE10 and lower ([0eaadd6](https://github.com/reactivex/rxjs/commit/0eaadd60c716050f5e3701d513a028a9cd49085a))
+* **Observable:** Update property and method types ([#5572](https://github.com/reactivex/rxjs/issues/5572)) ([144b626](https://github.com/reactivex/rxjs/commit/144b626c3905640b4adeb2b97e722912eff1b264))
+
+
+### Features
+
+* **combineLatest:** support for observable dictionaries ([#5022](https://github.com/reactivex/rxjs/issues/5022)) ([#5363](https://github.com/reactivex/rxjs/issues/5363)) ([f5278aa](https://github.com/reactivex/rxjs/commit/f5278aa89ea164caf5cf10e77d7bd00eff26fc0f))
+* **TestScheduler:** add an animate "run mode" helper ([#5607](https://github.com/reactivex/rxjs/issues/5607)) ([edd6731](https://github.com/reactivex/rxjs/commit/edd67313814bfc32e8a5129d8049e4d4678cd35d))
+* **timeout:** One timeout to rule them all ([def1d34](https://github.com/reactivex/rxjs/commit/def1d346b43008bc413a3ac985e1611bbbf62003))
+
+
+### BREAKING CHANGES
+
+* **ajax:** In an extreme corner-case... If an error occurs, the responseType is `"json"`, we're in IE, and the `responseType` is not valid JSON, the `ajax` observable will no longer emit a syntax error, rather it will emit a full `AjaxError` with more details.
+* **ajax:** Ajax implementation drops support for IE10 and lower. This puts us in-line with other implementations and helps clean up code in this area
+* **Observable:** `lift` no longer exposed. It was _NEVER_ documented that end users of the library should be creating operators using `lift`. Lift has a [variety of issues](https://github.com/ReactiveX/rxjs/issues/5431) and was always an internal implementation detail of rxjs that might have been used by a few power users in the early days when it had the most value. The value of `lift`, originally, was that subclassed `Observable`s would compose through all operators that implemented lift. The reality is that feature is not widely known, used, or supported, and it was never documented as it was very experimental when it was first added. Until the end of v7, `lift` will remain on Observable. Standard JavaScript users will notice no difference. However, TypeScript users might see complaints about `lift` not being a member of observable. To workaround this issue there are two things you can do: 1. Rewrite your operators as [outlined in the documentation](https://rxjs.dev/guide/operators), such that they return `new Observable`. or 2. cast your observable as `any` and access `lift` that way. Method 1 is recommended if you do not want things to break when we move to version 8.
+
+
+
 # [7.0.0-beta.3](https://github.com/reactivex/rxjs/compare/7.0.0-beta.1...7.0.0-beta.3) (2020-07-30)
 
 
