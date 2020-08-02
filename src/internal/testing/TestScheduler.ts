@@ -471,6 +471,17 @@ export class TestScheduler extends VirtualTimeScheduler {
   }
 
   private createDelegates() {
+    // When in run mode, the TestScheduler provides alternate implementations
+    // of set/clearImmediate and set/clearInterval. These implementations are
+    // consumed by the scheduler implementations via the providers. This is
+    // done to effect deterministic asap and async scheduler behavior so that
+    // all of the schedulers are testable in 'run mode'. Prior to v7,
+    // delegation occurred at the scheduler level. That is, the asap and
+    // animation frame schedulers were identical in behavior to the async
+    // scheduler. Now, when in run mode, asap actions are prioritized over
+    // async actions and animation frame actions are coordinated using the
+    // animate run helper.
+
     let lastHandle = 0;
     let map = new Map<number, {
       due: number;
@@ -482,6 +493,9 @@ export class TestScheduler extends VirtualTimeScheduler {
     }>();
 
     const run = () => {
+      // Whenever a scheduled run is executed, it must run a single immediate
+      // or interval action - with immediate actions being prioritized over
+      // interval actions. 
       const now = this.now();
       const values = Array.from(map.values());
       const due = values.filter(({ due }) => due <= now);
@@ -497,6 +511,9 @@ export class TestScheduler extends VirtualTimeScheduler {
         const interval = intervals[0];
         const { duration, handler } = interval;
         interval.due = now + duration;
+        // The interval delegate must behave like setInterval, so run needs to
+        // be rescheduled. This will continue until the clearInterval delegate
+        // unsubscribes and deletes the handle from the map.
         interval.subscription = this.schedule(run, duration);
         handler();
         return;
