@@ -6,7 +6,7 @@
 
 We can test our _asynchronous_ RxJS code _synchronously_ and deterministically by virtualizing time using the TestScheduler. ASCII **marble diagrams** provide a visual way for us to represent the behavior of an Observable. We can use them to assert that a particular Observable behaves as expected, as well as to create [hot and cold Observables](https://medium.com/@benlesh/hot-vs-cold-observables-f8094ed53339) we can use as mocks.
 
-> At this time the TestScheduler can only be used to test code that uses timers, like `delay`, `debounceTime`, etc., (i.e. it uses `AsyncScheduler` with delays > 1). If the code consumes a Promise or does scheduling with `AsapScheduler`, `AnimationFrameScheduler`, etc., it cannot be reliably tested with `TestScheduler`, but instead should be tested more traditionally. See the [Known Issues](#known-issues) section for more details.
+> At this time, the TestScheduler can only be used to test code that uses RxJS schedulers - `AsyncScheduler`, etc. If the code consumes a Promise, for example, it cannot be reliably tested with `TestScheduler`, but instead should be tested more traditionally. See the [Known Issues](#known-issues) section for more details.
 
 ```ts
 import { TestScheduler } from 'rxjs/testing';
@@ -242,9 +242,9 @@ In the above situation we need the observable stream to complete so that we can 
 
 ## Known issues
 
-### RxJS code that consumes Promises or uses any of the other schedulers (e.g. AsapScheduler) cannot be directly tested
+### RxJS code that consumes Promises cannot be directly tested
 
-If you have RxJS code that uses any other form of asynchronous scheduling other than `AsyncScheduler`, e.g. Promises, `AsapScheduler`, etc. you can't reliably use marble diagrams _for that particular code_. This is because those other scheduling methods won't be virtualized or known to TestScheduler.
+If you have RxJS code that uses asynchronous scheduling - e.g. Promises, etc. - you can't reliably use marble diagrams _for that particular code_. This is because those other scheduling methods won't be virtualized or known to TestScheduler.
 
 The solution is to test that code in isolation, with the traditional asynchronous testing methods of your testing framework. The specifics depend on your testing framework of choice, but here's a pseudo-code example:
 
