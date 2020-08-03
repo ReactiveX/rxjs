@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { repeatWhen, map, mergeMap, takeUntil } from 'rxjs/operators';
+import { repeatWhen, map, mergeMap, takeUntil, takeWhile } from 'rxjs/operators';
 import { of, EMPTY, Observable, Subscriber } from 'rxjs';
 
 /** @test {repeatWhen} */
@@ -384,5 +384,26 @@ describe('repeatWhen operator', () => {
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should always teardown before starting the next cycle, even when synchronous', () => {
+    const results: any[] = [];
+    const source = new Observable<number>(subscriber => {
+      subscriber.next(1);
+      subscriber.next(2);
+      subscriber.complete();
+      return () => {
+        results.push('teardown');
+      }
+    });
+    const subscription = source.pipe(repeatWhen(completions$ => completions$.pipe(
+      takeWhile((_, i) => i < 3)
+    ))).subscribe({
+      next: value => results.push(value),
+      complete: () => results.push('complete')
+    });
+
+    expect(subscription.closed).to.be.true;
+    expect(results).to.deep.equal([1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'complete', 'teardown'])
   });
 });
