@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { retryWhen, map, mergeMap, takeUntil } from 'rxjs/operators';
-import { of, EMPTY } from 'rxjs';
+import { of, EMPTY, Observable, throwError } from 'rxjs';
 
 /** @test {retryWhen} */
 describe('retryWhen operator', () => {
@@ -328,5 +328,26 @@ describe('retryWhen operator', () => {
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should always teardown before starting the next cycle, even when synchronous', () => {
+    const results: any[] = [];
+    const source = new Observable<number>(subscriber => {
+      subscriber.next(1);
+      subscriber.next(2);
+      subscriber.error('bad');
+      return () => {
+        results.push('teardown');
+      }
+    });
+    const subscription = source.pipe(retryWhen(errors$ => errors$.pipe(
+      mergeMap((err, i) => i < 3 ? of(true) : throwError(err))
+    ))).subscribe({
+      next: value => results.push(value),
+      error: (err) => results.push(err)
+    });
+
+    expect(subscription.closed).to.be.true;
+    expect(results).to.deep.equal([1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'bad', 'teardown'])
   });
 });
