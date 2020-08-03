@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { repeat, mergeMap, map, multicast, refCount } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { of, Subject } from 'rxjs';
+import { of, Subject, Observable } from 'rxjs';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -96,19 +96,54 @@ describe('repeat operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should consider negative count as repeat indefinitely', () => {
+  it('should consider negative count as no repeat, and return EMPTY', () => {
     const e1 =  cold('--a--b--|                                    ');
-    const subs =    ['^       !                                    ',
-                   '        ^       !                            ',
-                   '                ^       !                    ',
-                   '                        ^       !            ',
-                   '                                ^       !    ',
-                   '                                        ^   !'];
     const unsub =    '                                            !';
-    const expected = '--a--b----a--b----a--b----a--b----a--b----a--';
+    const expected = '|';
 
     expectObservable(e1.pipe(repeat(-1)), unsub).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(e1.subscriptions).toBe([]);
+  });
+
+  it('should always teardown before starting the next cycle', async () => {
+    const results: any[] = [];
+    const source = new Observable<number>(subscriber => {
+      Promise.resolve().then(() => {
+        subscriber.next(1)
+        Promise.resolve().then(() => {
+          subscriber.next(2);
+          Promise.resolve().then(() => {
+            subscriber.complete();
+          });
+        });
+      });
+      return () => {
+        results.push('teardown');
+      }
+    });
+
+    await source.pipe(repeat(3)).forEach(value => results.push(value));
+  
+    expect(results).to.deep.equal([1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'teardown'])
+  });
+
+  it('should always teardown before starting the next cycle, even when synchronous', () => {
+    const results: any[] = [];
+    const source = new Observable<number>(subscriber => {
+      subscriber.next(1);
+      subscriber.next(2);
+      subscriber.complete();
+      return () => {
+        results.push('teardown');
+      }
+    });
+    const subscription = source.pipe(repeat(3)).subscribe({
+      next: value => results.push(value),
+      complete: () => results.push('complete')
+    });
+
+    expect(subscription.closed).to.be.true;
+    expect(results).to.deep.equal([1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'complete', 'teardown'])
   });
 
   it('should not complete when source never completes', () => {
