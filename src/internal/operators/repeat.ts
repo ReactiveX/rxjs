@@ -67,7 +67,8 @@ export function repeat<T>(count = Infinity): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) =>
     count <= 0
       ? EMPTY
-      : new Observable<T>((subscriber) => {
+      : lift(source, function (this: Subscriber<T>, source: Observable<T>) {
+          const subscriber = this;
           let soFar = 0;
           const subscription = new Subscription();
           let innerSub: Subscription | null;
