@@ -117,6 +117,25 @@ describe('retry operator', () => {
       });
   });
 
+  it('should always teardown before starting the next cycle, even when synchronous', () => {
+    const results: any[] = [];
+    const source = new Observable<number>(subscriber => {
+      subscriber.next(1);
+      subscriber.next(2);
+      subscriber.error('bad');
+      return () => {
+        results.push('teardown');
+      }
+    });
+    const subscription = source.pipe(retry(3)).subscribe({
+      next: value => results.push(value),
+      error: (err) => results.push(err)
+    });
+
+    expect(subscription.closed).to.be.true;
+    expect(results).to.deep.equal([1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'bad', 'teardown'])
+  });
+
   it('should retry a number of times, then call next handler without error, then retry and error', (done: MochaDone) => {
     let index = 0;
     let errors = 0;

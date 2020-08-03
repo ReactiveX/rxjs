@@ -1,9 +1,10 @@
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction } from '../types';
 import { lift } from '../util/lift';
+import { Subscription } from '../Subscription';
+import { EMPTY } from '../observable/empty';
 
 export interface RetryConfig {
   count: number;
@@ -58,62 +59,55 @@ export interface RetryConfig {
  */
 export function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
 export function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;
-export function retry<T>(configOrCount: number | RetryConfig = -1): MonoTypeOperatorFunction<T> {
+export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTypeOperatorFunction<T> {
   let config: RetryConfig;
   if (configOrCount && typeof configOrCount === 'object') {
-    config = configOrCount as RetryConfig;
+    config = configOrCount;
   } else {
     config = {
-      count: configOrCount as number
+      count: configOrCount
     };
   }
-  return (source: Observable<T>) => lift(source, new RetryOperator(config.count, !!config.resetOnSuccess, source));
-}
+  const { count, resetOnSuccess = false } = config;
 
-class RetryOperator<T> implements Operator<T, T> {
-  constructor(private count: number,
-              private resetOnSuccess: boolean,
-              private source: Observable<T>) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new RetrySubscriber(subscriber, this.count, this.resetOnSuccess, this.source));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class RetrySubscriber<T> extends Subscriber<T> {
-  private readonly initialCount: number;
-
-  constructor(destination: Subscriber<any>,
-              private count: number,
-              private resetOnSuccess: boolean,
-              private source: Observable<T>
-  ) {
-    super(destination);
-    this.initialCount = this.count;
-  }
-
-  next(value?: T): void {
-    super.next(value);
-    if (this.resetOnSuccess) {
-      this.count = this.initialCount;
-    }
-  }
-
-  error(err: any) {
-    if (!this.isStopped) {
-      const { source, count } = this;
-      if (count === 0) {
-        return super.error(err);
-      } else if (count > -1) {
-        this.count = count - 1;
+  return (source: Observable<T>) => count <= 0 ? EMPTY: lift(source, function (this: Subscriber<T>, source: Observable<T>) {
+    const subscriber = this;
+    let soFar = 0;
+    const subscription = new Subscription();
+    let innerSub: Subscription | null;
+    const subscribeNext = () => {
+      let syncUnsub = false;
+      innerSub = source.subscribe({
+        next: (value) => {
+          if (resetOnSuccess) {
+            soFar = 0;
+          }
+          subscriber.next(value);
+        },
+        error: (err) => {
+          if (soFar++ < count) {
+            if (innerSub) {
+              subscription.remove(innerSub);
+              innerSub.unsubscribe();
+              subscribeNext();
+            } else {
+              syncUnsub = true;
+            }
+          } else {
+            subscriber.error(err);
+          }
+        },
+        complete: () => subscriber.complete(),
+      });
+      if (syncUnsub) {
+        innerSub.unsubscribe();
+        innerSub = null;
+        subscribeNext();
+      } else {
+        subscription.add(innerSub);
       }
-      source.subscribe(this._unsubscribeAndRecycle());
-    }
-  }
+    };
+    subscribeNext();
+    return subscription;
+  })
 }
