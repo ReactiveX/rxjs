@@ -72,7 +72,7 @@ export function repeat<T>(count = Infinity): MonoTypeOperatorFunction<T> {
           let soFar = 0;
           const subscription = new Subscription();
           let innerSub: Subscription | null;
-          const subscribeNext = () => {
+          const subscribeForRepeat = () => {
             let syncUnsub = false;
             innerSub = source.subscribe({
               next: (value) => subscriber.next(value),
@@ -80,9 +80,9 @@ export function repeat<T>(count = Infinity): MonoTypeOperatorFunction<T> {
               complete: () => {
                 if (++soFar < count) {
                   if (innerSub) {
-                    subscription.remove(innerSub);
                     innerSub.unsubscribe();
-                    subscribeNext();
+                    innerSub = null;
+                    subscribeForRepeat();
                   } else {
                     syncUnsub = true;
                   }
@@ -94,12 +94,12 @@ export function repeat<T>(count = Infinity): MonoTypeOperatorFunction<T> {
             if (syncUnsub) {
               innerSub.unsubscribe();
               innerSub = null;
-              subscribeNext();
+              subscribeForRepeat();
             } else {
               subscription.add(innerSub);
             }
           };
-          subscribeNext();
+          subscribeForRepeat();
           return subscription;
         });
 }
