@@ -5,7 +5,7 @@ import { animationFrames } from 'rxjs';
 import { mergeMapTo, take, takeUntil } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../../helpers/observableMatcher';
-import { requestAnimationFrameProvider } from 'rxjs/internal/scheduler/requestAnimationFrameProvider';
+import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
 
 describe('animationFrames', () => {
   let testScheduler: TestScheduler;
@@ -59,8 +59,8 @@ describe('animationFrames', () => {
 
   it('should compose with take', () => {
     testScheduler.run(({ animate, cold, expectObservable, time }) => {
-      const requestSpy = sinon.spy(requestAnimationFrameProvider.delegate!, 'requestAnimationFrame');
-      const cancelSpy = sinon.spy(requestAnimationFrameProvider.delegate!, 'cancelAnimationFrame');
+      const requestSpy = sinon.spy(animationFrameProvider.delegate!, 'requestAnimationFrame');
+      const cancelSpy = sinon.spy(animationFrameProvider.delegate!, 'cancelAnimationFrame');
 
       animate('            ---x---x---x');
       const mapped = cold('-m          ');
@@ -85,8 +85,8 @@ describe('animationFrames', () => {
 
   it('should compose with takeUntil', () => {
     testScheduler.run(({ animate, cold, expectObservable, hot, time }) => {
-      const requestSpy = sinon.spy(requestAnimationFrameProvider.delegate!, 'requestAnimationFrame');
-      const cancelSpy = sinon.spy(requestAnimationFrameProvider.delegate!, 'cancelAnimationFrame');
+      const requestSpy = sinon.spy(animationFrameProvider.delegate!, 'requestAnimationFrame');
+      const cancelSpy = sinon.spy(animationFrameProvider.delegate!, 'cancelAnimationFrame');
 
       animate('            ---x---x---x');
       const mapped = cold('-m          ');

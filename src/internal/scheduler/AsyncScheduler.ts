@@ -1,11 +1,8 @@
 import { Scheduler } from '../Scheduler';
 import { Action } from './Action';
 import { AsyncAction } from './AsyncAction';
-import { SchedulerAction } from '../types';
-import { Subscription } from '../Subscription';
 
 export class AsyncScheduler extends Scheduler {
-  public static delegate?: Scheduler;
   public actions: Array<AsyncAction<any>> = [];
   /**
    * A flag to indicate whether the Scheduler is currently executing a batch of
@@ -23,23 +20,8 @@ export class AsyncScheduler extends Scheduler {
    */
   public scheduled: any = undefined;
 
-  constructor(SchedulerAction: typeof Action,
-              now: () => number = Scheduler.now) {
-    super(SchedulerAction, () => {
-      if (AsyncScheduler.delegate && AsyncScheduler.delegate !== this) {
-        return AsyncScheduler.delegate.now();
-      } else {
-        return now();
-      }
-    });
-  }
-
-  public schedule<T>(work: (this: SchedulerAction<T>, state?: T) => void, delay: number = 0, state?: T): Subscription {
-    if (AsyncScheduler.delegate && AsyncScheduler.delegate !== this) {
-      return AsyncScheduler.delegate.schedule(work, delay, state);
-    } else {
-      return super.schedule(work, delay, state);
-    }
+  constructor(SchedulerAction: typeof Action, now: () => number = Scheduler.now) {
+    super(SchedulerAction, now);
   }
 
   public flush(action: AsyncAction<any>): void {

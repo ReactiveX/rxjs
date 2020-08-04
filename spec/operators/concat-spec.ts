@@ -4,8 +4,6 @@ import { concat, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare const rxTestScheduler: TestScheduler;
-
 /** @test {concat} */
 describe('concat operator', () => {
   let testScheduler: TestScheduler;
@@ -20,7 +18,7 @@ describe('concat operator', () => {
       const e2 = cold('         --x---y--|');
       const expected = ' --a--b---x---y--|';
 
-      expectObservable(e1.pipe(concat(e2, rxTestScheduler))).toBe(expected);
+      expectObservable(e1.pipe(concat(e2, testScheduler))).toBe(expected);
     });
   });
 
@@ -347,7 +345,7 @@ describe('concat operator', () => {
       const e3subs = '   ----------^-----!';
       const expected = ' ---a---b-----c--|';
 
-      expectObservable(e1.pipe(concat(e2, e3, rxTestScheduler))).toBe(expected);
+      expectObservable(e1.pipe(concat(e2, e3, testScheduler))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
       expectSubscriptions(e3.subscriptions).toBe(e3subs);
@@ -360,7 +358,7 @@ describe('concat operator', () => {
       const e1subs = '   ^----!';
       const expected = ' ---a-|';
 
-      expectObservable(e1.pipe(concat(rxTestScheduler))).toBe(expected);
+      expectObservable(e1.pipe(concat(testScheduler))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });

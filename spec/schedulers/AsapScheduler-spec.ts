@@ -1,43 +1,66 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { asapScheduler, Subscription, SchedulerAction } from 'rxjs';
+import { asapScheduler, Subscription, SchedulerAction, merge } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
+import { observableMatcher } from '../helpers/observableMatcher';
+import { immediateProvider } from 'rxjs/internal/scheduler/immediateProvider';
+import { intervalProvider } from 'rxjs/internal/scheduler/intervalProvider';
 
 const asap = asapScheduler;
 
 /** @test {Scheduler} */
 describe('Scheduler.asap', () => {
+  let testScheduler: TestScheduler;
+
+  beforeEach(() => {
+    testScheduler = new TestScheduler(observableMatcher);
+  });
+
   it('should exist', () => {
     expect(asap).exist;
   });
 
   it('should act like the async scheduler if delay > 0', () => {
-    let actionHappened = false;
-    const sandbox = sinon.createSandbox();
-    const fakeTimer = sandbox.useFakeTimers();
-    asap.schedule(() => {
-      actionHappened = true;
-    }, 50);
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.true;
-    sandbox.restore();
+    testScheduler.run(({ cold, expectObservable, time }) => {
+      const a = cold('  a            ');
+      const ta = time(' ----|        ');
+      const b = cold('  b            ');
+      const tb = time(' --------|    ');
+      const expected = '----a---b----';
+
+      const result = merge(
+        a.pipe(delay(ta, asap)),
+        b.pipe(delay(tb, asap))
+      );
+      expectObservable(result).toBe(expected);
+    });
   });
 
   it('should cancel asap actions when delay > 0', () => {
-    let actionHappened = false;
-    const sandbox = sinon.createSandbox();
-    const fakeTimer = sandbox.useFakeTimers();
-    asap.schedule(() => {
-      actionHappened = true;
-    }, 50).unsubscribe();
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.false;
-    sandbox.restore();
+    testScheduler.run(({ cold, expectObservable, flush, time }) => {
+      const setImmediateSpy = sinon.spy(immediateProvider, 'setImmediate');
+      const setSpy = sinon.spy(intervalProvider, 'setInterval');
+      const clearSpy = sinon.spy(intervalProvider, 'clearInterval');
+
+      const a = cold('  a            ');
+      const ta = time(' ----|        ');
+      const subs = '    ^-!          ';
+      const expected = '-------------';
+
+      const result = merge(
+        a.pipe(delay(ta, asap))
+      );
+      expectObservable(result, subs).toBe(expected);
+
+      flush();
+      expect(setImmediateSpy).to.have.not.been.called;
+      expect(setSpy).to.have.been.calledOnce;
+      expect(clearSpy).to.have.been.calledOnce;
+      setImmediateSpy.restore();
+      setSpy.restore();
+      clearSpy.restore();
+    });
   });
 
   it('should reuse the interval for recursively scheduled actions with the same delay', () => {

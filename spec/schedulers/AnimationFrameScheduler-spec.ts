@@ -1,43 +1,68 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { animationFrameScheduler, Subscription } from 'rxjs';
+import { animationFrameScheduler, Subscription, merge } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
+import { observableMatcher } from '../helpers/observableMatcher';
+import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
+import { intervalProvider } from 'rxjs/internal/scheduler/intervalProvider';
 
 const animationFrame = animationFrameScheduler;
 
 /** @test {Scheduler} */
 describe('Scheduler.animationFrame', () => {
+  let testScheduler: TestScheduler;
+
+  beforeEach(() => {
+    testScheduler = new TestScheduler(observableMatcher);
+  });
+
   it('should exist', () => {
     expect(animationFrame).exist;
   });
 
   it('should act like the async scheduler if delay > 0', () => {
-    let actionHappened = false;
-    const sandbox = sinon.createSandbox();
-    const fakeTimer = sandbox.useFakeTimers();
-    animationFrame.schedule(() => {
-      actionHappened = true;
-    }, 50);
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.true;
-    sandbox.restore();
+    testScheduler.run(({ animate, cold, expectObservable, time }) => {
+      animate('         ----------x--');
+      const a = cold('  a            ');
+      const ta = time(' ----|        ');
+      const b = cold('  b            ');
+      const tb = time(' --------|    ');
+      const expected = '----a---b----';
+
+      const result = merge(
+        a.pipe(delay(ta, animationFrame)),
+        b.pipe(delay(tb, animationFrame))
+      );
+      expectObservable(result).toBe(expected);
+    });
   });
 
-  it('should cancel animationFrame actions when unsubscribed', () => {
-    let actionHappened = false;
-    const sandbox = sinon.createSandbox();
-    const fakeTimer = sandbox.useFakeTimers();
-    animationFrame.schedule(() => {
-      actionHappened = true;
-    }, 50).unsubscribe();
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.false;
-    sandbox.restore();
+  it('should cancel animationFrame actions when delay > 0', () => {
+    testScheduler.run(({ animate, cold, expectObservable, flush, time }) => {
+      const requestSpy = sinon.spy(animationFrameProvider, 'requestAnimationFrame');
+      const setSpy = sinon.spy(intervalProvider, 'setInterval');
+      const clearSpy = sinon.spy(intervalProvider, 'clearInterval');
+  
+      animate('         ----------x--');
+      const a = cold('  a            ');
+      const ta = time(' ----|        ');
+      const subs = '    ^-!          ';
+      const expected = '-------------';
+
+      const result = merge(
+        a.pipe(delay(ta, animationFrame))
+      );
+      expectObservable(result, subs).toBe(expected);
+
+      flush();
+      expect(requestSpy).to.have.not.been.called;
+      expect(setSpy).to.have.been.calledOnce;
+      expect(clearSpy).to.have.been.calledOnce;
+      requestSpy.restore();
+      setSpy.restore();
+      clearSpy.restore();
+    });
   });
 
   it('should schedule an action to happen later', (done: MochaDone) => {

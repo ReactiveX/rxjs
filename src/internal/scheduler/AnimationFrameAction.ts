@@ -1,6 +1,7 @@
 import { AsyncAction } from './AsyncAction';
 import { AnimationFrameScheduler } from './AnimationFrameScheduler';
 import { SchedulerAction } from '../types';
+import { animationFrameProvider } from './animationFrameProvider';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -24,7 +25,7 @@ export class AnimationFrameAction<T> extends AsyncAction<T> {
     // If an animation frame has already been requested, don't request another
     // one. If an animation frame hasn't been requested yet, request one. Return
     // the current animation frame request id.
-    return scheduler.scheduled || (scheduler.scheduled = requestAnimationFrame(
+    return scheduler.scheduled || (scheduler.scheduled = animationFrameProvider.requestAnimationFrame(
       () => scheduler.flush(undefined)));
   }
   protected recycleAsyncId(scheduler: AnimationFrameScheduler, id?: any, delay: number = 0): any {
@@ -38,7 +39,7 @@ export class AnimationFrameAction<T> extends AsyncAction<T> {
     // set the scheduled flag to undefined so the next AnimationFrameAction will
     // request its own.
     if (scheduler.actions.length === 0) {
-      cancelAnimationFrame(id);
+      animationFrameProvider.cancelAnimationFrame(id);
       scheduler.scheduled = undefined;
     }
     // Return undefined so the action knows to request a new async id if it's rescheduled.

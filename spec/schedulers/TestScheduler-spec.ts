@@ -1,11 +1,12 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
-import { AsyncScheduler } from 'rxjs/internal/scheduler/AsyncScheduler';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, NEVER, EMPTY, Subject, of, merge } from 'rxjs';
-import { delay, debounceTime, concatMap } from 'rxjs/operators';
+import { Observable, NEVER, EMPTY, Subject, of, merge, animationFrameScheduler, asapScheduler, asyncScheduler, interval } from 'rxjs';
+import { delay, debounceTime, concatMap, mergeMap, mapTo, take } from 'rxjs/operators';
 import { nextNotification, COMPLETE_NOTIFICATION, errorNotification } from 'rxjs/internal/Notification';
-import { requestAnimationFrameProvider } from 'rxjs/internal/scheduler/requestAnimationFrameProvider';
+import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
+import { immediateProvider } from 'rxjs/internal/scheduler/immediateProvider';
+import { intervalProvider } from 'rxjs/internal/scheduler/intervalProvider';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -474,7 +475,6 @@ describe('TestScheduler', () => {
       const frameTimeFactor = TestScheduler['frameTimeFactor'];
       const maxFrames = testScheduler.maxFrames;
       const runMode = testScheduler['runMode'];
-      const delegate = AsyncScheduler.delegate;
 
       try {
         testScheduler.run(() => {
@@ -485,7 +485,6 @@ describe('TestScheduler', () => {
       expect(TestScheduler['frameTimeFactor']).to.equal(frameTimeFactor);
       expect(testScheduler.maxFrames).to.equal(maxFrames);
       expect(testScheduler['runMode']).to.equal(runMode);
-      expect(AsyncScheduler.delegate).to.equal(delegate);
     });
 
     it('should flush expectations correctly', () => {
@@ -505,7 +504,7 @@ describe('TestScheduler', () => {
       it('should throw if animate() is not called when needed', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
         expect(() => testScheduler.run(() => {
-          requestAnimationFrameProvider.schedule(() => { /* pointless lint rule */ });
+          animationFrameProvider.schedule(() => { /* pointless lint rule */ });
         })).to.throw();
       });
 
@@ -537,7 +536,7 @@ describe('TestScheduler', () => {
           animate('--x');
 
           const values: string[] = [];
-          const { schedule } = requestAnimationFrameProvider;
+          const { schedule } = animationFrameProvider;
 
           testScheduler.schedule(() => {
             schedule(t => values.push(`a@${t}`));
@@ -559,7 +558,7 @@ describe('TestScheduler', () => {
           animate('--x');
 
           const values: string[] = [];
-          const { schedule } = requestAnimationFrameProvider;
+          const { schedule } = animationFrameProvider;
 
           testScheduler.schedule(() => {
             schedule(t => values.push(`a@${t}`));
@@ -578,7 +577,7 @@ describe('TestScheduler', () => {
           animate('--x');
 
           const values: string[] = [];
-          const { schedule } = requestAnimationFrameProvider;
+          const { schedule } = animationFrameProvider;
 
           testScheduler.schedule(() => {
             const subscription = schedule(t => values.push(`a@${t}`));
@@ -589,6 +588,139 @@ describe('TestScheduler', () => {
           testScheduler.schedule(() => {
             expect(values).to.deep.equal(['b@2']);
           }, 2);
+        });
+      });
+    });
+
+    describe('immediate and interval', () => {
+      it('should schedule immediates', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(() => {
+          const values: string[] = [];
+          const { setImmediate } = immediateProvider;
+          setImmediate(() => {
+            values.push(`a@${testScheduler.now()}`);
+          });
+          expect(values).to.deep.equal([]);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal(['a@0']);
+          }, 10);
+        });
+      });
+
+      it('should support clearing immediates', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(() => {
+          const values: string[] = [];
+          const { setImmediate, clearImmediate } = immediateProvider;
+          const handle = setImmediate(() => {
+            values.push(`a@${testScheduler.now()}`);
+          });
+          expect(values).to.deep.equal([]);
+          clearImmediate(handle);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal([]);
+          }, 10);
+        });
+      });
+
+      it('should schedule intervals', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(() => {
+          const values: string[] = [];
+          const { setInterval, clearInterval } = intervalProvider;
+          const handle = setInterval(() => {
+            values.push(`a@${testScheduler.now()}`);
+            clearInterval(handle);
+          }, 1);
+          expect(values).to.deep.equal([]);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal(['a@1']);
+          }, 10);
+        });
+      });
+
+      it('should reschedule intervals until cleared', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(() => {
+          const values: string[] = [];
+          const { setInterval, clearInterval } = intervalProvider;
+          const handle = setInterval(() => {
+            if (testScheduler.now() <= 3) {
+              values.push(`a@${testScheduler.now()}`);
+            } else {
+              clearInterval(handle);
+            }
+          }, 1);
+          expect(values).to.deep.equal([]);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal(['a@1', 'a@2', 'a@3']);
+          }, 10);
+        });
+      });
+
+      it('should schedule immediates before intervals', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(() => {
+          const values: string[] = [];
+          const { setImmediate } = immediateProvider;
+          const { setInterval, clearInterval } = intervalProvider;
+          const handle = setInterval(() => {
+            values.push(`a@${testScheduler.now()}`);
+            clearInterval(handle);
+          }, 0);
+          setImmediate(() => {
+            values.push(`b@${testScheduler.now()}`);
+          });
+          expect(values).to.deep.equal([]);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal(['b@0', 'a@0']);
+          }, 10);
+        });
+      });
+    });
+
+    describe('schedulers', () => {
+      it('should support animationFrame, async and asap schedulers', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(({ animate, cold, expectObservable, time }) => {
+          animate('            ---------x');
+          const mapped = cold('--m-------');
+          const tb = time('      -----|  ');
+          const expected = '   --(dc)-b-a';
+          const result = mapped.pipe(mergeMap(() => merge(
+            of('a').pipe(delay(0, animationFrameScheduler)),
+            of('b').pipe(delay(tb, asyncScheduler)),
+            of('c').pipe(delay(0, asyncScheduler)),
+            of('d').pipe(delay(0, asapScheduler))
+          )));
+          expectObservable(result).toBe(expected);
+        });
+      });
+
+      it('should emit asap notifications before async notifications', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(({ cold, expectObservable }) => {
+          const mapped = cold('--ab------');
+          const expected = '   ---(ba)---';
+          const result = mapped.pipe(mergeMap((value) => value === 'a'
+            ? of(value).pipe(delay(1, asyncScheduler))
+            : of(value).pipe(delay(0, asapScheduler))
+          ));
+          expectObservable(result).toBe(expected);
+        });
+      });
+
+      it('should support intervals with zero duration', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(({ cold, expectObservable }) => {
+          const mapped = cold('--m-------');
+          const expected = '   --(bbbaaa)';
+          const result = mapped.pipe(mergeMap(() => merge(
+            interval(0, asyncScheduler).pipe(mapTo('a'), take(3)),
+            interval(0, asapScheduler).pipe(mapTo('b'), take(3))
+          )));
+          expectObservable(result).toBe(expected);
         });
       });
     });

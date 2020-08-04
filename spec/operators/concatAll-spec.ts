@@ -4,8 +4,6 @@ import { concatAll, take, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-declare const rxTestScheduler: TestScheduler;
-
 /** @test {concatAll} */
 describe('concatAll operator', () => {
   let testScheduler: TestScheduler;
@@ -488,7 +486,7 @@ describe('concatAll operator', () => {
       const e3subs = '   ----------^-----!';
       const expected = ' ---a---b-----c--|';
 
-      const result = of(e1, e2, e3, rxTestScheduler).pipe(concatAll());
+      const result = of(e1, e2, e3, testScheduler).pipe(concatAll());
 
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -516,7 +514,7 @@ describe('concatAll operator', () => {
       const e1subs = '   ^----!';
       const expected = ' ---a-|';
 
-      const result = of(e1, rxTestScheduler).pipe(concatAll());
+      const result = of(e1, testScheduler).pipe(concatAll());
 
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
