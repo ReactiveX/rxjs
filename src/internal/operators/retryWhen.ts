@@ -90,7 +90,7 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
             notifier$.subscribe({
               next: () => {
                 if (innerSub) {
-                  subscribeNext();
+                  subscribeForRetryWhen();
                 } else {
                   // If we don't have an innerSub yet, that's because the inner subscription
                   // call hasn't even returned yet. We've arrived here synchronously.
@@ -107,7 +107,7 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
         return errors$;
       };
 
-      const subscribeNext = () => {
+      const subscribeForRetryWhen = () => {
         innerSub = source.subscribe({
           next: (value) => subscriber.next(value),
           error: (err) => {
@@ -129,14 +129,14 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
           // We may need to do this multiple times, so reset the flag.
           syncResub = false;
           // Resubscribe
-          subscribeNext();
+          subscribeForRetryWhen();
         } else {
           subscription.add(innerSub);
         }
       };
 
       // Start the subscription
-      subscribeNext();
+      subscribeForRetryWhen();
 
       return subscription;
     });
