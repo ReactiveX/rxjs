@@ -69,7 +69,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
           notifier$.subscribe({
             next: () => {
               if (innerSub) {
-                subscribeNext();
+                subscribeForRepeatWhen();
               } else {
                 // If we don't have an innerSub yet, that's because the inner subscription
                 // call hasn't even returned yet. We've arrived here synchronously.
@@ -91,7 +91,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
       return completions$;
     };
 
-    const subscribeNext = () => {
+    const subscribeForRepeatWhen = () => {
       isMainComplete = false;
       innerSub = source.subscribe({
         next: (value) => subscriber.next(value),
@@ -119,14 +119,14 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
         // We may need to do this multiple times, so reset the flags.
         syncResub = false;
         // Resubscribe
-        subscribeNext();
+        subscribeForRepeatWhen();
       } else {
         subscription.add(innerSub);
       }
     };
 
     // Start the subscription
-    subscribeNext();
+    subscribeForRepeatWhen();
 
     return subscription;
   });
