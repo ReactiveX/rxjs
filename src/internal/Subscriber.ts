@@ -144,17 +144,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     this.destination.complete();
     this.unsubscribe();
   }
-
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _unsubscribeAndRecycle(): Subscriber<T> {
-    const {  _parentOrParents } = this;
-    this._parentOrParents = null!;
-    this.unsubscribe();
-    this.closed = false;
-    this.isStopped = false;
-    this._parentOrParents = _parentOrParents;
-    return this;
-  }
 }
 
 /**
