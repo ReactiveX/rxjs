@@ -75,7 +75,7 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
     let soFar = 0;
     const subscription = new Subscription();
     let innerSub: Subscription | null;
-    const subscribeNext = () => {
+    const subscribeForRetry = () => {
       let syncUnsub = false;
       innerSub = source.subscribe({
         next: (value) => {
@@ -87,9 +87,9 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
         error: (err) => {
           if (soFar++ < count) {
             if (innerSub) {
-              subscription.remove(innerSub);
               innerSub.unsubscribe();
-              subscribeNext();
+              innerSub = null;
+              subscribeForRetry();
             } else {
               syncUnsub = true;
             }
@@ -102,12 +102,12 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
       if (syncUnsub) {
         innerSub.unsubscribe();
         innerSub = null;
-        subscribeNext();
+        subscribeForRetry();
       } else {
         subscription.add(innerSub);
       }
     };
-    subscribeNext();
+    subscribeForRetry();
     return subscription;
   })
 }
