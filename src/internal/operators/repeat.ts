@@ -1,9 +1,11 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
+/** @prettier */
 import { Observable } from '../Observable';
+import { Subscription } from '../Subscription';
 import { EMPTY } from '../observable/empty';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { SimpleOuterSubscriber } from '../innerSubscribe';
 import { lift } from '../util/lift';
+import { Subscriber } from '../Subscriber';
+import { MonoTypeOperatorFunction } from '../types';
 
 /**
  * Returns an Observable that will resubscribe to the source stream when the source stream completes, at most count times.
@@ -60,47 +62,44 @@ import { lift } from '../util/lift';
  * , at most count times.
  * @name repeat
  */
-export function repeat<T>(count: number = -1): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => {
-    if (count === 0) {
-      return EMPTY;
-    } else if (count < 0) {
-      return lift(source, new RepeatOperator(-1, source));
-    } else {
-      return lift(source, new RepeatOperator(count - 1, source));
-    }
-  };
-}
 
-class RepeatOperator<T> implements Operator<T, T> {
-  constructor(private count: number,
-              private source: Observable<T>) {
-  }
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new RepeatSubscriber(subscriber, this.count, this.source));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class RepeatSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<any>,
-              private count: number,
-              private source: Observable<T>) {
-    super(destination);
-  }
-  complete() {
-    if (!this.isStopped) {
-      const { source, count } = this;
-      if (count === 0) {
-        return super.complete();
-      } else if (count > -1) {
-        this.count = count - 1;
-      }
-      source.subscribe(this._unsubscribeAndRecycle());
-    }
-  }
+export function repeat<T>(count = Infinity): MonoTypeOperatorFunction<T> {
+  return (source: Observable<T>) =>
+    count <= 0
+      ? EMPTY
+      : lift(source, function (this: Subscriber<T>, source: Observable<T>) {
+          const subscriber = this;
+          let soFar = 0;
+          const subscription = new Subscription();
+          let innerSub: Subscription | null;
+          const subscribeForRepeat = () => {
+            let syncUnsub = false;
+            innerSub = source.subscribe({
+              next: (value) => subscriber.next(value),
+              error: (err) => subscriber.error(err),
+              complete: () => {
+                if (++soFar < count) {
+                  if (innerSub) {
+                    innerSub.unsubscribe();
+                    innerSub = null;
+                    subscribeForRepeat();
+                  } else {
+                    syncUnsub = true;
+                  }
+                } else {
+                  subscriber.complete();
+                }
+              },
+            });
+            if (syncUnsub) {
+              innerSub.unsubscribe();
+              innerSub = null;
+              subscribeForRepeat();
+            } else {
+              subscription.add(innerSub);
+            }
+          };
+          subscribeForRepeat();
+          return subscription;
+        });
 }
