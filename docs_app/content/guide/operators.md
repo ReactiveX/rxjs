@@ -23,9 +23,9 @@ import { map } from 'rxjs/operators';
 of(1, 2, 3).pipe(map(x => x * x)).subscribe((v) => console.log(`value: ${v}`));
 
 // Logs:
-// value: 1 
+// value: 1
 // value: 4
-// value: 9 
+// value: 9
 
 ```
 
@@ -38,7 +38,7 @@ import { first } from 'rxjs/operators';
 of(1, 2, 3).pipe(first()).subscribe((v) => console.log(`value: ${v}`));
 
 // Logs:
-// value: 1 
+// value: 1
 ```
 
 Note that `map` logically must be constructed on the fly, since it must be given the mapping function to.  By contrast, `first` could be a constant, but is nonetheless constructed on the fly.  As a general practice, all operators are constructed, whether they need arguments or not.
@@ -301,7 +301,7 @@ import { Observable } from 'rxjs';
 
 function delay(delayInMillis) {
   return (observable) => new Observable(observer => {
-    // this function will called each time this
+    // this function will be called each time this
     // Observable is subscribed to.
     const allTimerIDs = new Set();
     const subscription = observable.subscribe({
