@@ -125,7 +125,7 @@
     "compat_copy_sources": "mkdirp dist-compat && shx cp -r ./compat/ ./dist-compat/",
     "compat_generate_packages": "node .make-compat-package.js",
     "api_guardian:update": "ts-api-guardian --outDir api_guard dist/typings/index.d.ts dist/typings/ajax/index.d.ts dist/typings/fetch/index.d.ts dist/typings/operators/index.d.ts dist/typings/testing/index.d.ts dist/typings/webSocket/index.d.ts",
-    "api_guardian": "ts-api-guardian --verifyDir api_guard dist/typings/index.d.ts dist/typings/ajax/index.d.ts dist/typings/fetch/index.d.ts dist/typings/operators/index.d.ts dist/typings/testing/index.d.ts dist/types/webSocket/index.d.ts"
+    "api_guardian": "ts-api-guardian --verifyDir api_guard dist/typings/index.d.ts dist/typings/ajax/index.d.ts dist/typings/fetch/index.d.ts dist/typings/operators/index.d.ts dist/typings/testing/index.d.ts dist/typings/webSocket/index.d.ts"
   },
   "repository": {
     "type": "git",
