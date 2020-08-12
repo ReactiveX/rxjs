@@ -68,7 +68,7 @@ describe('Cons', () => {
 
   it('should support rest tuples', () => {
     let explicit: Cons<A, B[]>;
-    let inferred = explicit!; // $ExpectType [A, ...B[]]
+    let inferred = explicit!; // $ExpectType [arg: A, ...rest: B[]]
   });
 });
 
