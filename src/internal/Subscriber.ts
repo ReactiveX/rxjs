@@ -153,8 +153,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
  */
 export class SafeSubscriber<T> extends Subscriber<T> {
 
-  private _context: any;
-
   constructor(private _parentSubscriber: Subscriber<T>,
               observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
               error?: ((e?: any) => void) | null,
@@ -162,7 +160,6 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     super();
 
     let next: ((value: T) => void) | undefined;
-    let context: any = this;
 
     if (isFunction(observerOrNext)) {
       next = (<((value: T) => void)> observerOrNext);
@@ -171,15 +168,15 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       error = (<PartialObserver<T>> observerOrNext).error;
       complete = (<PartialObserver<T>> observerOrNext).complete;
       if (observerOrNext !== emptyObserver) {
-        context = Object.create(observerOrNext);
+        next = next && next.bind(observerOrNext);
+        error = error && error.bind(observerOrNext);
+        complete = complete && complete.bind(observerOrNext);
         if (isSubscription(observerOrNext)) {
           observerOrNext.add(this.unsubscribe.bind(this));
         }
-        context.unsubscribe = this.unsubscribe.bind(this);
       }
     }
 
-    this._context = context;
     this._next = next!;
     this._error = error!;
     this._complete = complete!;
@@ -230,7 +227,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     if (!this.isStopped) {
       const { _parentSubscriber } = this;
       if (this._complete) {
-        const wrappedComplete = () => this._complete.call(this._context);
+        const wrappedComplete = () => this._complete.call(this);
 
         if (!config.useDeprecatedSynchronousErrorHandling || !_parentSubscriber.syncErrorThrowable) {
           this.__tryOrUnsub(wrappedComplete);
@@ -247,7 +244,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
 
   private __tryOrUnsub(fn: Function, value?: any): void {
     try {
-      fn.call(this._context, value);
+      fn.call(this, value);
     } catch (err) {
       this.unsubscribe();
       if (config.useDeprecatedSynchronousErrorHandling) {
@@ -263,7 +260,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       throw new Error('bad call');
     }
     try {
-      fn.call(this._context, value);
+      fn.call(this, value);
     } catch (err) {
       if (config.useDeprecatedSynchronousErrorHandling) {
         parent.syncErrorValue = err;
@@ -280,7 +277,6 @@ export class SafeSubscriber<T> extends Subscriber<T> {
   /** @internal This is an internal implementation detail, do not use. */
   _unsubscribe(): void {
     const { _parentSubscriber } = this;
-    this._context = null;
     this._parentSubscriber = null!;
     _parentSubscriber.unsubscribe();
   }
