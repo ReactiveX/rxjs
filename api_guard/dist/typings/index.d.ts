@@ -316,9 +316,9 @@ export declare class Notification<T> {
 }
 
 export declare enum NotificationKind {
-    NEXT = 'N',
-    ERROR = 'E',
-    COMPLETE = 'C'
+    NEXT = "N",
+    ERROR = "E",
+    COMPLETE = "C"
 }
 
 export interface ObjectUnsubscribedError extends Error {

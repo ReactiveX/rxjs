@@ -125,7 +125,7 @@
     "compat_copy_sources": "mkdirp dist-compat && shx cp -r ./compat/ ./dist-compat/",
     "compat_generate_packages": "node .make-compat-package.js",
     "api_guardian:update": "ts-api-guardian --outDir api_guard dist/typings/index.d.ts dist/typings/ajax/index.d.ts dist/typings/fetch/index.d.ts dist/typings/operators/index.d.ts dist/typings/testing/index.d.ts dist/typings/webSocket/index.d.ts",
-    "api_guardian": "ts-api-guardian --verifyDir api_guard dist/typings/index.d.ts dist/typings/ajax/index.d.ts dist/typings/fetch/index.d.ts dist/typings/operators/index.d.ts dist/typings/testing/index.d.ts dist/types/webSocket/index.d.ts"
+    "api_guardian": "ts-api-guardian --verifyDir api_guard dist/typings/index.d.ts dist/typings/ajax/index.d.ts dist/typings/fetch/index.d.ts dist/typings/operators/index.d.ts dist/typings/testing/index.d.ts dist/typings/webSocket/index.d.ts"
   },
   "repository": {
     "type": "git",
@@ -235,7 +235,7 @@
     "rollup-plugin-node-resolve": "2.0.0",
     "rx": "latest",
     "rxjs": "^5.5.7",
-    "shx": "0.2.2",
+    "shx": "^0.3.2",
     "sinon": "4.3.0",
     "sinon-chai": "2.14.0",
     "source-map-support": "0.5.3",

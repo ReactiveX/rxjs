@@ -5,10 +5,10 @@ export declare class TestScheduler extends VirtualTimeScheduler {
     constructor(assertDeepEqual: (actual: any, expected: any) => boolean | void);
     createColdObservable<T = string>(marbles: string, values?: {
         [marble: string]: T;
-    },                               error?: any): ColdObservable<T>;
+    }, error?: any): ColdObservable<T>;
     createHotObservable<T = string>(marbles: string, values?: {
         [marble: string]: T;
-    },                              error?: any): HotObservable<T>;
+    }, error?: any): HotObservable<T>;
     createTime(marbles: string): number;
     expectObservable(observable: Observable<any>, subscriptionMarbles?: string): ({
         toBe: observableToBeFn;

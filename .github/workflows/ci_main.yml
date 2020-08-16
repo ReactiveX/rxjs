@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  pull_request:
+    types: ['opened', 'reopened', 'synchronize']
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '11', '12', '13', '14' ]
+
+    name: Node ${{ matrix.node }} build
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+    - name: install
+      run: |
+        npm install -g npm@latest
+        npm ci
+    - name: lint
+      run: npm run lint
+    - name: build
+      run: npm run build_all
+    - name: test
+      run: |
+        npm test
+        npm run test:side-effects
+    - name: dtslint
+      run: npm run dtslint
+    - name: api_guardian
+      run: npm run api_guardian
+
