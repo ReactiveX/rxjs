@@ -10,7 +10,7 @@ import { toSubscriber } from './util/toSubscriber';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
-import { values } from 'lodash';
+import { AbortError } from './util/AbortError';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -372,22 +372,25 @@ export class Observable<T> implements Subscribable<T> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor<void>((resolve, reject) => {
+      let cleanupSignalHandler: (() => void) | undefined;
+
       if (signal) {
-        signal.addEventListener(
-          'abort',
-          () => {
-            // TODO: Chrome and Firefox both use DOMException here for now
-            // This should probably be something better defined. MDN documentation
-            // says there is supposed to be an AbortError, but I haven't found any
-            // implementations in any runtimes. For now, we can document this
-            // as the users needing to check `err.name === 'AbortError'` and
-            // adjust over time.
-            const err = new Error('Abort exception');
-            err.name = 'AbortError';
-            reject(err);
-          },
-          { once: true }
-        );
+        const handler = () => {
+          // TODO: Chrome and Firefox both use DOMException here for now
+          // This should probably be something better defined. MDN documentation
+          // says there is supposed to be an AbortError, but I haven't found any
+          // implementations in any runtimes. For now, we can document this
+          // as the users needing to check `err.name === 'AbortError'` and
+          // adjust over time.
+          reject(new AbortError());
+          cleanupSignalHandler = undefined;
+        };
+
+        cleanupSignalHandler = () => {
+          signal?.removeEventListener('abort', handler);
+        };
+
+        signal.addEventListener('abort', handler, { once: true });
       }
 
       // Must be declared in a separate statement to avoid a ReferenceError when
@@ -405,8 +408,14 @@ export class Observable<T> implements Subscribable<T> {
               }
             }
           },
-          error: reject,
-          complete: resolve,
+          error: (err) => {
+            cleanupSignalHandler?.();
+            reject(err);
+          },
+          complete: () => {
+            cleanupSignalHandler?.();
+            resolve();
+          },
         },
         signal
       );
@@ -606,7 +615,7 @@ function isAbortSignal(value: any): value is AbortSignal {
  * RxJS is providing this helper method because the error that is returned in
  * @param value The error to test to see if you have an abort error.
  */
-export function isAbortError(value: any): boolean {
+export function isAbortError(value: any): value is AbortError {
   return (
     (value && value.name === 'AbortError') ||
     // It could be an abort error from an inner fetch, and Firefox and Chrome, as of this
