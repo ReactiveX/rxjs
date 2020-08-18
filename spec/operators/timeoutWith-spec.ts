@@ -1,7 +1,8 @@
 /** @prettier */
-import { timeoutWith, mergeMap } from 'rxjs/operators';
+import { expect } from 'chai';
+import { timeoutWith, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { of } from 'rxjs';
+import { of, Observable, EMPTY } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {timeoutWith} */
@@ -273,5 +274,25 @@ describe('timeoutWith operator', () => {
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
       expectSubscriptions(switchTo.subscriptions).toBe([]);
     });
+  });
+
+  // TODO: fix firehose unsubscription
+  it.skip('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      timeoutWith(0, EMPTY),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

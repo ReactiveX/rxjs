@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { tap, mergeMap } from 'rxjs/operators';
-import { Subject, of, throwError, Observer, EMPTY } from 'rxjs';
+import { tap, mergeMap, take } from 'rxjs/operators';
+import { Subject, of, throwError, Observer, EMPTY, Observable } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 /** @test {tap} */
@@ -214,5 +214,24 @@ describe('tap operator', () => {
     }));
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      tap(() => { /* noop */ }),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

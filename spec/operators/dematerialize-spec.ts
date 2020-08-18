@@ -1,5 +1,6 @@
-import { of, Notification, ObservableNotification } from 'rxjs';
-import { dematerialize, map, mergeMap, materialize } from 'rxjs/operators';
+import { expect } from 'chai';
+import { of, Notification, ObservableNotification, Observable } from 'rxjs';
+import { dematerialize, map, mergeMap, materialize, take } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 const NO_VALUES: { [key: string]: ObservableNotification<any> } = {};
@@ -173,5 +174,25 @@ describe('dematerialize operator', () => {
       dematerialize()
     );
     expectObservable(result).toBe(expected);
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      materialize(),
+      dematerialize(),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

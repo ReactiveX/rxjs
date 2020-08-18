@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { of, from } from 'rxjs';
-import { concatMapTo, mergeMap } from 'rxjs/operators';
+import { of, from, Observable } from 'rxjs';
+import { concatMapTo, mergeMap, take } from 'rxjs/operators';
 
 /** @test {concatMapTo} */
 describe('Observable.prototype.concatMapTo', () => {
@@ -355,5 +355,24 @@ describe('Observable.prototype.concatMapTo', () => {
       () => {
         done(new Error('Subscriber complete handler not supposed to be called.'));
       });
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      concatMapTo(of(0)),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

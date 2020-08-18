@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { exhaust, mergeMap } from 'rxjs/operators';
+import { exhaust, mergeMap, take } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 
 /** @test {exhaust} */
 describe('exhaust operator', () => {
@@ -211,5 +211,25 @@ describe('exhaust operator', () => {
       }, () => {
         done(new Error('should not be called'));
       });
+  });
+
+  // TODO: fix firehose unsubscription
+  it.skip('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    of(synchronousObservable).pipe(
+      exhaust(),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

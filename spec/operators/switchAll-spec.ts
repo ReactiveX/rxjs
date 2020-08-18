@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { Observable, of, NEVER, queueScheduler, Subject } from 'rxjs';
-import { map, switchAll, mergeMap } from 'rxjs/operators';
+import { map, switchAll, mergeMap, take } from 'rxjs/operators';
 
 /** @test {switch} */
 describe('switchAll', () => {
@@ -260,5 +260,24 @@ describe('switchAll', () => {
       (sub as any)._subscriptions.length
     ).to.equal(2);
     sub.unsubscribe();
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    of(synchronousObservable).pipe(
+      switchAll(),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

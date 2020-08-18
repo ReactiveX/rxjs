@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { skipLast, mergeMap } from 'rxjs/operators';
-import { range, ArgumentOutOfRangeError, of } from 'rxjs';
+import { skipLast, mergeMap, take } from 'rxjs/operators';
+import { range, ArgumentOutOfRangeError, of, Observable } from 'rxjs';
 
 /** @test {takeLast} */
 describe('skipLast operator', () => {
@@ -151,5 +151,25 @@ describe('skipLast operator', () => {
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  // TODO: fix firehose unsubscription
+  it.skip('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      skipLast(1),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

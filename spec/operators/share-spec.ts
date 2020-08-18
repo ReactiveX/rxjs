@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { share, retry, mergeMapTo, mergeMap, tap, repeat } from 'rxjs/operators';
+import { share, retry, mergeMapTo, mergeMap, tap, repeat, take } from 'rxjs/operators';
 import { Observable, EMPTY, NEVER, of } from 'rxjs';
 
 /** @test {share} */
@@ -307,5 +307,25 @@ describe('share operator', () => {
     const expected = '|';
 
     expectObservable(e1.pipe(share())).toBe(expected);
+  });
+
+  // TODO: fix firehose unsubscription
+  it.skip('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      share(),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

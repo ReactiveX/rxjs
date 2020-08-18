@@ -1,7 +1,8 @@
-import { findIndex, mergeMap, delay } from 'rxjs/operators';
+import { expect } from 'chai';
+import { findIndex, mergeMap, delay, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -164,5 +165,23 @@ describe('findIndex operator', () => {
 
     expectObservable(source.pipe(findIndex(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits, it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      findIndex(value => value === 2),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

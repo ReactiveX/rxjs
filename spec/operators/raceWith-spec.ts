@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { EMPTY, NEVER, of, timer, defer, Observable, throwError } from 'rxjs';
-import { raceWith, mergeMap, map, finalize, startWith } from 'rxjs/operators';
+import { raceWith, mergeMap, map, finalize, startWith, take } from 'rxjs/operators';
 
 /** @test {raceWith} */
 describe('raceWith operator', () => {
@@ -214,5 +214,25 @@ describe('raceWith operator', () => {
     expect(onUnsubscribe.called).to.be.false;
     subscription.unsubscribe();
     expect(onUnsubscribe.calledOnce).to.be.true;
+  });
+
+  // TODO: fix firehose unsubscription
+  it.skip('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      raceWith(of(0)),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });
