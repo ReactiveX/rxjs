@@ -14,9 +14,9 @@ export interface DispatchArg<T> {
 
 class SubscribeOnObservable<T> extends Observable<T> {
   /** @nocollapse */
-  static dispatch<T>(this: SchedulerAction<T>, arg: DispatchArg<T>): Subscription {
+  static dispatch<T>(this: SchedulerAction<T>, arg: DispatchArg<T>) {
     const { source, subscriber } = arg;
-    return this.add(source.subscribe(subscriber));
+    this.add(source.subscribe(subscriber));
   }
 
   constructor(

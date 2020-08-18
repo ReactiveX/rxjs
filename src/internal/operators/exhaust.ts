@@ -77,7 +77,7 @@ class SwitchFirstSubscriber<T> extends SimpleOuterSubscriber<T, T> {
 
   protected _next(value: T): void {
     if (!this.innerSubscription) {
-      this.innerSubscription = this.add(innerSubscribe(value, new SimpleInnerSubscriber(this)));
+      this.add(this.innerSubscription = innerSubscribe(value, new SimpleInnerSubscriber(this)));
     }
   }
 
