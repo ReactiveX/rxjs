@@ -158,8 +158,6 @@ export function catchError<T, O extends ObservableInput<any>>(
  * it is a synchronous firehose.
  */
 class CatchErrorSubscriber<T, C> extends Subscriber<T> {
-  ready = false;
-
   constructor(destination: Subscriber<T | C>, private onError: (err: any) => void) {
     super(destination);
   }
