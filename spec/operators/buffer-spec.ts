@@ -1,7 +1,8 @@
 import { buffer, mergeMap, take } from 'rxjs/operators';
-import { EMPTY, NEVER, throwError, of } from 'rxjs';
+import { EMPTY, NEVER, throwError, of, Subject } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
+import { expect } from 'chai';
 
 /** @test {buffer} */
 describe('Observable.prototype.buffer', () => {
@@ -265,5 +266,24 @@ describe('Observable.prototype.buffer', () => {
       expectObservable(a.pipe(buffer(b), take(1))).toBe(expected, expectedValues);
       expectSubscriptions(b.subscriptions).toBe(bsubs);
     });
+  });
+
+  it('should emit properly with an observable using itself as a notifier', () => {
+    const results: any[] = [];
+    const subject = new Subject<number>();
+
+    const source = subject.pipe(
+      buffer(subject)
+    ).subscribe({
+      next: value => results.push(value),
+      complete: () => results.push('complete')
+    });
+
+    subject.next(1);
+    expect(results).to.deep.equal([[1]]);
+    subject.next(2);
+    expect(results).to.deep.equal([[1], [2]]);
+    subject.complete();
+    expect(results).to.deep.equal([[1], [2], 'complete']);
   });
 });
