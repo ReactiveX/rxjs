@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { takeWhile, tap, mergeMap } from 'rxjs/operators';
 import { of, Observable, from } from 'rxjs';
+import { values } from 'lodash';
 
 /** @test {takeWhile} */
 describe('takeWhile operator', () => {
@@ -263,5 +264,23 @@ describe('takeWhile operator', () => {
       xs.pipe(takeWhile((x, i) => typeof x === 'number' && x > i))
         .subscribe(x => x); // x is still string | number
     }
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      takeWhile(value => value < 2),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

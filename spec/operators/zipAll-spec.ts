@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { zipAll, mergeMap } from 'rxjs/operators';
-import { queueScheduler, of, zip } from 'rxjs';
+import { zipAll, mergeMap, take } from 'rxjs/operators';
+import { queueScheduler, of, zip, Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -838,5 +838,24 @@ describe('zipAll operator', () => {
 
       expectObservable(source.pipe(zipAll())).toBe(expected);
     });
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    of(synchronousObservable).pipe(
+      zipAll(),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

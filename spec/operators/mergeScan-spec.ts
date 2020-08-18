@@ -1,7 +1,7 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { TestScheduler } from 'rxjs/testing';
-import { of, defer, EMPTY, NEVER, concat, throwError } from 'rxjs';
-import { mergeScan, delay, mergeMap, takeWhile, startWith } from 'rxjs/operators';
+import { of, defer, EMPTY, NEVER, concat, throwError, Observable } from 'rxjs';
+import { mergeScan, delay, mergeMap, takeWhile, startWith, take } from 'rxjs/operators';
 import { expect } from 'chai';
 
 declare const rxTestScheduler: TestScheduler;
@@ -432,5 +432,24 @@ describe('mergeScan', () => {
     }, 0)).subscribe();
 
     expect(recorded).to.deep.equal([0, 1, 2, 3]);
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      mergeScan((acc, value) => of(value), 0),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

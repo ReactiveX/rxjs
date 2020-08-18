@@ -1,7 +1,8 @@
+import { expect } from 'chai';
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { subscribeOn, mergeMap } from 'rxjs/operators';
+import { subscribeOn, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { of } from 'rxjs';
+import { of, Observable, queueScheduler } from 'rxjs';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -86,5 +87,24 @@ describe('subscribeOn operator', () => {
 
     expectObservable(e1.pipe(subscribeOn(rxTestScheduler, Infinity))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe([]);
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      subscribeOn(queueScheduler),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

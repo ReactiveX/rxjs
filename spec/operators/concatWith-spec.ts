@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { of, Observable } from 'rxjs';
-import { concatWith, mergeMap } from 'rxjs/operators';
+import { concatWith, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals, NO_SUBS } from '../helpers/test-helper';
 
@@ -337,5 +337,24 @@ describe('concat operator', () => {
       expectObservable(e1.pipe(concatWith())).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      concatWith(of(0)),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

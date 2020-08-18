@@ -1,6 +1,7 @@
-import { distinctUntilKeyChanged, mergeMap } from 'rxjs/operators';
+import { expect } from 'chai';
+import { distinctUntilKeyChanged, mergeMap, map, take } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 
 /** @test {distinctUntilKeyChanged} */
 describe('distinctUntilKeyChanged operator', () => {
@@ -222,5 +223,25 @@ describe('distinctUntilKeyChanged operator', () => {
 
     expectObservable(e1.pipe(distinctUntilKeyChanged('val', selector))).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      map(value => ({ value })),
+      distinctUntilKeyChanged('value'),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

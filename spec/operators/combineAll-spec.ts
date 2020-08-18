@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { queueScheduler, of } from 'rxjs';
-import { combineAll, mergeMap } from 'rxjs/operators';
+import { queueScheduler, of, Observable } from 'rxjs';
+import { combineAll, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -540,5 +540,24 @@ describe('combineAll operator', () => {
       expect(r.length).to.equal(0);
       done();
     });
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    of(synchronousObservable).pipe(
+      combineAll(),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

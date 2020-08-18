@@ -1,6 +1,7 @@
+import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { of } from 'rxjs';
-import { defaultIfEmpty, mergeMap } from 'rxjs/operators';
+import { of, Observable } from 'rxjs';
+import { defaultIfEmpty, mergeMap, take } from 'rxjs/operators';
 
 /** @test {defaultIfEmpty} */
 describe('Observable.prototype.defaultIfEmpty', () => {
@@ -83,5 +84,24 @@ describe('Observable.prototype.defaultIfEmpty', () => {
 
     expectObservable(e1.pipe(defaultIfEmpty('x'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      defaultIfEmpty(0),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { EMPTY, of, EmptyError, defer, throwError } from 'rxjs';
-import { throwIfEmpty, mergeMap, retry } from 'rxjs/operators';
+import { EMPTY, of, EmptyError, defer, throwError, Observable } from 'rxjs';
+import { throwIfEmpty, mergeMap, retry, take } from 'rxjs/operators';
 
 /** @test {timeout} */
 describe('throwIfEmpty', () => {
@@ -202,5 +202,24 @@ describe('throwIfEmpty', () => {
       expect(thrown).to.be.instanceof(EmptyError);
 
     });
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      throwIfEmpty(),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });

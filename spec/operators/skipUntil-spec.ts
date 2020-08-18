@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { concat, defer, of, Subject } from 'rxjs';
-import { skipUntil, mergeMap } from 'rxjs/operators';
+import { concat, defer, of, Subject, Observable } from 'rxjs';
+import { skipUntil, mergeMap, take } from 'rxjs/operators';
 import { asInteropObservable } from '../helpers/interop-helper';
 
 /** @test {skipUntil} */
@@ -289,5 +289,24 @@ describe('skipUntil', () => {
     );
     of(null).pipe(skipUntil(synchronousNotifer)).subscribe(() => { /* noop */ });
     expect(sideEffects).to.deep.equal([1]);
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    synchronousObservable.pipe(
+      skipUntil(of(0)),
+      take(3),
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 });
