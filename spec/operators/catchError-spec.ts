@@ -458,7 +458,7 @@ describe('catchError operator', () => {
   });
 
   // TODO: fix firehose unsubscription
-  it.skip('should stop listening to a synchronous observable when unsubscribed', () => {
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
     const synchronousObservable = new Observable(subscriber => {
       // This will check to see if the subscriber was closed on each loop
