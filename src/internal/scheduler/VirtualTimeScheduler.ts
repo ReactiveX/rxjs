@@ -111,7 +111,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
     }
   }
 
-  public static sortActions<T>(a: VirtualAction<T>, b: VirtualAction<T>) {
+  private static sortActions<T>(a: VirtualAction<T>, b: VirtualAction<T>) {
     if (a.delay === b.delay) {
       if (a.index === b.index) {
         return 0;

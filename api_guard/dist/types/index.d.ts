@@ -623,7 +623,6 @@ export declare class VirtualAction<T> extends AsyncAction<T> {
     protected recycleAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay?: number): any;
     protected requestAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay?: number): any;
     schedule(state?: T, delay?: number): Subscription;
-    static sortActions<T>(a: VirtualAction<T>, b: VirtualAction<T>): 1 | 0 | -1;
 }
 
 export declare class VirtualTimeScheduler extends AsyncScheduler {
