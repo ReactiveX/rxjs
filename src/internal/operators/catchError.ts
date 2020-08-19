@@ -125,9 +125,8 @@ export function catchError<T, O extends ObservableInput<any>>(
         }
       };
 
-      innerSub = source.subscribe({
-        next: (value) => subscriber.next(value),
-        error: (err) => {
+      innerSub = source.subscribe(
+        new CatchErrorSubscriber(subscriber, (err) => {
           handleError(err);
           if (handledResult) {
             if (innerSub) {
@@ -138,9 +137,8 @@ export function catchError<T, O extends ObservableInput<any>>(
               syncUnsub = true;
             }
           }
-        },
-        complete: () => subscriber.complete(),
-      });
+        })
+      );
 
       if (syncUnsub) {
         innerSub.unsubscribe();
@@ -152,4 +150,20 @@ export function catchError<T, O extends ObservableInput<any>>(
 
       return subscription;
     });
+}
+
+/**
+ * This must exist to ensure that the `closed` state of the inner subscriber is set at
+ * the proper time to ensure operators like `take` can stop the inner subscription if
+ * it is a synchronous firehose.
+ */
+class CatchErrorSubscriber<T, C> extends Subscriber<T> {
+  constructor(destination: Subscriber<T | C>, private onError: (err: any) => void) {
+    super(destination);
+  }
+
+  _error(err: any) {
+    this.onError(err);
+    this.unsubscribe();
+  }
 }
