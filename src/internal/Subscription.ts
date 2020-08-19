@@ -140,11 +140,11 @@ export class Subscription implements SubscriptionLike {
    * `remove()` to remove the passed teardown logic from the inner subscriptions
    * list.
    */
-  add(teardown: TeardownLogic): Subscription {
+  add(teardown: TeardownLogic): void {
     let subscription = (<Subscription>teardown);
 
     if (!teardown) {
-      return Subscription.EMPTY;
+      return;
     }
 
     switch (typeof teardown) {
@@ -153,10 +153,9 @@ export class Subscription implements SubscriptionLike {
       case 'object':
         if (subscription === this || subscription.closed || typeof subscription.unsubscribe !== 'function') {
           // This also covers the case where `subscription` is `Subscription.EMPTY`, which is always in `closed` state.
-          return subscription;
+          return;
         } else if (this.closed) {
           subscription.unsubscribe();
-          return subscription;
         } else if (!(subscription instanceof Subscription)) {
           const tmp = subscription;
           subscription = new Subscription();
@@ -170,14 +169,14 @@ export class Subscription implements SubscriptionLike {
 
     // Add `this` as parent of `subscription` if that's not already the case.
     let { _parentOrParents } = subscription;
-    if (_parentOrParents === null) {
+    if (_parentOrParents == null) {
       // If we don't have a parent, then set `subscription._parents` to
       // the `this`, which is the common case that we optimize for.
       subscription._parentOrParents = this;
     } else if (_parentOrParents instanceof Subscription) {
       if (_parentOrParents === this) {
         // The `subscription` already has `this` as a parent.
-        return subscription;
+        return;
       }
       // If there's already one parent, but not multiple, allocate an
       // Array to store the rest of the parent Subscriptions.
@@ -187,7 +186,7 @@ export class Subscription implements SubscriptionLike {
       _parentOrParents.push(this);
     } else {
       // The `subscription` already has `this` as a parent.
-      return subscription;
+      return;
     }
 
     // Optimize for the common case when adding the first subscription.
@@ -198,7 +197,7 @@ export class Subscription implements SubscriptionLike {
       subscriptions.push(subscription);
     }
 
-    return subscription;
+    return;
   }
 
   /**

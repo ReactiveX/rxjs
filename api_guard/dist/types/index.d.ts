@@ -548,7 +548,7 @@ export declare class Subscription implements SubscriptionLike {
     protected _parentOrParents: Subscription | Subscription[] | null;
     closed: boolean;
     constructor(unsubscribe?: () => void);
-    add(teardown: TeardownLogic): Subscription;
+    add(teardown: TeardownLogic): void;
     remove(subscription: Subscription): void;
     unsubscribe(): void;
     static EMPTY: Subscription;
