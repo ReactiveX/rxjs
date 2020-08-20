@@ -142,7 +142,7 @@ describe('Subscriber', () => {
   });
 
   it('should close, unsubscribe, and unregister all teardowns after error', () => {
-    let isUnsubscribed = false;
+    let isTornDown = false;
     const subscriber = new Subscriber({
       error: () => {
         // Mischief managed!
@@ -150,17 +150,20 @@ describe('Subscriber', () => {
         // throwing, since it will have an error handler now.
       }
     });
-    subscriber.add(() => isUnsubscribed = true);
+    subscriber.add(() => isTornDown = true);
     subscriber.error(new Error('test'));
-    expect(isUnsubscribed).to.be.true;
+    expect(isTornDown).to.be.true;
     expect(subscriber.closed).to.be.true;
     expect(getRegisteredTeardowns(subscriber).length).to.equal(0);
   });
 
   
-  it('should unregister all teardowns after complete', () => {
+  it('should teardown and unregister all teardowns after complete', () => {
+    let isTornDown = false;
     const subscriber = new Subscriber();
+    subscriber.add(() => { isTornDown = true });
     subscriber.complete();
+    expect(isTornDown).to.be.true;
     expect(getRegisteredTeardowns(subscriber).length).to.equal(0);
   });
 });

@@ -30,16 +30,16 @@ export class Subscription implements SubscriptionLike {
   public closed = false;
 
   /** If this subscription has been added to one parent, it will show up here */
-  private _singleParent?: Subscription;
+  private _singleParent: Subscription | null = null;
 
   /** If this subscription has been added to more than one parent, they will show up here. */
-  private _parents?: Subscription[];
+  private _parents: Subscription[] | null = null;
 
   /**
    * The list of registered teardowns to execute upon unsubscription. Adding and removing from this
    * list occurs in the {@link add} and {@link remove} methods.
    */
-  private _teardowns?: Exclude<TeardownLogic, void>[];
+  private _teardowns: Exclude<TeardownLogic, void>[] | null = null;
 
   /**
    * @param {function(): void} [unsubscribe] A function describing how to
@@ -65,18 +65,17 @@ export class Subscription implements SubscriptionLike {
       this.closed = true;
 
       const { _parents, _singleParent, _teardowns } = this;
-      this._parents = this._singleParent = this._teardowns = undefined;
+      this._parents = this._singleParent = this._teardowns = null;
       let { _ctorUnsubscribe, _unsubscribe } = this as any;
-      // (this as any)._unsubscribe = (this as any)._ctorUnsubscribe = undefined;
 
       // Remove this from it's parents.
       if (_singleParent) {
-        this._singleParent = undefined;
+        this._singleParent = null;
         _singleParent.remove(this);
       }
 
       if (_parents) {
-        this._parents = undefined;
+        this._parents = null;
         for (const parent of _parents) {
           parent.remove(this);
         }
@@ -158,7 +157,6 @@ export class Subscription implements SubscriptionLike {
           teardown.unsubscribe();
         }
       } else {
-        this._teardowns = this._teardowns ?? [];
         if (teardown instanceof Subscription) {
           // We don't add closed subscriptions, and we don't add the same subscription
           // twice. Subscription unsubscribe is idempotent.
@@ -167,37 +165,52 @@ export class Subscription implements SubscriptionLike {
           }
           teardown._addParent(this);
         }
+        this._teardowns = this._teardowns ?? [];
         this._teardowns.push(teardown);
       }
     }
   }
 
+  /**
+   * Checks to see if a this subscription already has a particular parent.
+   * This will signal that this subscription has already been added to the parent in question.
+   * @param parent the parent to check for
+   */
   private _hasParent(parent: Subscription) {
     return this._singleParent === parent || this._parents?.includes(parent) || false;
   }
 
+  /**
+   * Adds a parent to this subscription so it can be removed from the parent if it
+   * unsubscribes on it's own.
+   * 
+   * NOTE: THIS ASSUMES THAT {@link _hasParent} HAS ALREADY BEEN CHECKED.
+   * @param parent The parent subscription to add
+   */
   private _addParent(parent: Subscription) {
-    // If we already have one or more parents, we need
-    // to add to the list of parents.
-    if ((this._parents || this._singleParent) && this._singleParent !== parent) {
-      if (this._singleParent) {
-        // We are adding our second parent.
-        // Move the single parent over to the parents list.
-        this._parents = [this._singleParent];
-        this._singleParent = undefined;
-      }
-      if (!this._parents!.includes(parent)) {
-        this._parents!.push(parent);
-      }
+    let { _singleParent, _parents } = this;
+    if (_singleParent) {
+      // We already have one parent so we'll need to expand
+      // to use an array
+      this._parents = [_singleParent, parent];
+      this._singleParent = null;
+    } else if (_parents) {
+      // We already have more than one parent, so just add on to that array.
+      _parents.push(parent);
     } else {
+      // This is our first parent.
       this._singleParent = parent;
     }
   }
 
+  /**
+   * Called on a child when it is removed via {@link remove}.
+   * @param parent The parent to remove
+   */
   private _removeParent(parent: Subscription) {
     if (this._singleParent) {
       if (this._singleParent === parent) {
-        this._singleParent = undefined;
+        this._singleParent = null;
       }
     } else if (this._parents) {
       const index = this._parents.indexOf(parent);
