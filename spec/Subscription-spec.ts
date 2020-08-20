@@ -3,7 +3,7 @@ import { Observable, UnsubscriptionError, Subscription, merge } from 'rxjs';
 
 /** @test {Subscription} */
 describe('Subscription', () => {
-  describe('Subscription.add()', () => {
+  describe('add()', () => {
     it('should unsubscribe child subscriptions', () => {
       const main = new Subscription();
       
@@ -49,9 +49,73 @@ describe('Subscription', () => {
       });
       expect(isCalled).to.be.true;
     });
+
+    it('should unsubscribe an Unsubscribable when unsubscribed', () => {
+      let isCalled = false;
+      const main = new Subscription();
+      main.add({
+        unsubscribe() {
+          isCalled = true;
+        }
+      });
+      main.unsubscribe();
+      expect(isCalled).to.be.true;
+    });
+
+    it('should unsubscribe an Unsubscribable if it is already unsubscribed', () => {
+      let isCalled = false;
+      const main = new Subscription();
+      main.unsubscribe();
+      main.add({
+        unsubscribe() {
+          isCalled = true;
+        }
+      });
+      expect(isCalled).to.be.true;
+    });
   });
 
-  describe('Subscription.unsubscribe()', () => {
+  describe('remove()', () => {
+    it('should remove added Subscriptions', () => {
+      let isCalled = false;
+      const main = new Subscription();
+      const child = new Subscription(() => {
+        isCalled = true;
+      });
+      main.add(child);
+      main.remove(child);
+      main.unsubscribe();
+      expect(isCalled).to.be.false;
+    });
+
+    it('should remove added functions', () => {
+      let isCalled = false;
+      const main = new Subscription();
+      const teardown = () => {
+        isCalled = true;
+      };
+      main.add(teardown);
+      main.remove(teardown);
+      main.unsubscribe();
+      expect(isCalled).to.be.false;
+    });
+
+    it('should remove added unsubscribables', () => {
+      let isCalled = false;
+      const main = new Subscription();
+      const unsubscribable = {
+        unsubscribe() {
+          isCalled = true;
+        }
+      }
+      main.add(unsubscribable);
+      main.remove(unsubscribable);
+      main.unsubscribe();
+      expect(isCalled).to.be.false;
+    });
+  });
+
+  describe('unsubscribe()', () => {
     it('Should unsubscribe from all subscriptions, when some of them throw', done => {
       const tearDowns: number[] = [];
 

@@ -103,8 +103,8 @@ describe('observeOn operator', () => {
         x => {
           // see #4106 - inner subscriptions are now added to destinations
           // so the subscription will contain an ObserveOnSubscriber and a subscription for the scheduled action
-          expect(subscription._subscriptions.length).to.equal(2);
-          const actionSubscription = subscription._subscriptions[1];
+          expect(subscription._teardowns.length).to.equal(2);
+          const actionSubscription = subscription._teardowns[1];
           expect(actionSubscription.state.notification.kind).to.equal('N');
           expect(actionSubscription.state.notification.value).to.equal(x);
           results.push(x);
@@ -113,10 +113,10 @@ describe('observeOn operator', () => {
         () => {
           // now that the last nexted value is done, there should only be a complete notification scheduled
           // the consumer will have been unsubscribed via Subscriber#_parentSubscription
-          expect(subscription._subscriptions.length).to.equal(1);
-          const actionSubscription = subscription._subscriptions[0];
+          expect(subscription._teardowns.length).to.equal(1);
+          const actionSubscription = subscription._teardowns[0];
           expect(actionSubscription.state.notification.kind).to.equal('C');
-          // After completion, the entire _subscriptions list is nulled out anyhow, so we can't test much further than this.
+          // After completion, the entire _teardowns list is nulled out anyhow, so we can't test much further than this.
           expect(results).to.deep.equal([1, 2, 3]);
           done();
         }
