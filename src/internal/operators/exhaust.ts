@@ -4,8 +4,8 @@ import { operate } from '../util/lift';
 import { innerFrom } from '../observable/from';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
-export function exhaust<T>(): OperatorFunction<ObservableInput<T>, T>;
-export function exhaust<R>(): OperatorFunction<any, R>;
+export function exhaustAll<T>(): OperatorFunction<ObservableInput<T>, T>;
+export function exhaustAll<R>(): OperatorFunction<any, R>;
 
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping
@@ -28,13 +28,13 @@ export function exhaust<R>(): OperatorFunction<any, R>;
  * Run a finite timer for each click, only if there is no currently active timer
  * ```ts
  * import { fromEvent, interval } from 'rxjs';
- * import { exhaust, map, take } from 'rxjs/operators';
+ * import { exhaustAll, map, take } from 'rxjs/operators';
  *
  * const clicks = fromEvent(document, 'click');
  * const higherOrder = clicks.pipe(
  *   map((ev) => interval(1000).pipe(take(5))),
  * );
- * const result = higherOrder.pipe(exhaust());
+ * const result = higherOrder.pipe(exhaustAll());
  * result.subscribe(x => console.log(x));
  * ```
  *
@@ -49,7 +49,7 @@ export function exhaust<R>(): OperatorFunction<any, R>;
  * @return {Observable} An Observable that takes a source of Observables and propagates the first observable
  * exclusively until it completes before subscribing to the next.
  */
-export function exhaust<T>(): OperatorFunction<any, T> {
+export function exhaustAll<T>(): OperatorFunction<any, T> {
   return operate((source, subscriber) => {
     let isComplete = false;
     let innerSub: Subscription | null = null;
@@ -75,3 +75,8 @@ export function exhaust<T>(): OperatorFunction<any, T> {
     );
   });
 }
+
+/**
+ * @deprecated renamed. Use {@link exhaustAll}.
+ */
+export const exhaust = exhaustAll;
