@@ -1,6 +1,4 @@
 /** @prettier */
-import { isArray } from './util/isArray';
-import { isObject } from './util/isObject';
 import { isFunction } from './util/isFunction';
 import { UnsubscriptionError } from './util/UnsubscriptionError';
 import { SubscriptionLike, TeardownLogic } from './types';
@@ -183,7 +181,7 @@ export class Subscription implements SubscriptionLike {
   /**
    * Adds a parent to this subscription so it can be removed from the parent if it
    * unsubscribes on it's own.
-   * 
+   *
    * NOTE: THIS ASSUMES THAT {@link _hasParent} HAS ALREADY BEEN CHECKED.
    * @param parent The parent subscription to add
    */
