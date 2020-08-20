@@ -79,4 +79,4 @@ export function exhaustAll<T>(): OperatorFunction<any, T> {
 /**
  * @deprecated renamed. Use {@link exhaustAll}.
  */
-export const exhaust = exhaustAll;
+export const exhaustAll = exhaustAll;
