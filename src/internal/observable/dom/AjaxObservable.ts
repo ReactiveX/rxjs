@@ -10,7 +10,7 @@ export interface AjaxRequest {
   user?: string;
   async?: boolean;
   method?: string;
-  headers?: object;
+  headers?: Readonly<Record<string, any>>;
   timeout?: number;
   password?: string;
   hasContent?: boolean;
@@ -36,28 +36,12 @@ export class AjaxObservable<T> extends Observable<T> {
   constructor(urlOrRequest: string | AjaxRequest) {
     super();
 
-    const request: AjaxRequest = {
-      async: true,
-      createXHR: () => new XMLHttpRequest(),
-      crossDomain: true,
-      withCredentials: false,
-      headers: {},
-      method: 'GET',
-      responseType: 'json',
-      timeout: 0,
-    };
-
-    if (typeof urlOrRequest === 'string') {
-      request.url = urlOrRequest;
-    } else {
-      for (const prop in urlOrRequest) {
-        if (urlOrRequest.hasOwnProperty(prop)) {
-          (request as any)[prop] = (urlOrRequest as any)[prop];
-        }
-      }
-    }
-
-    this.request = request;
+    this.request =
+      typeof urlOrRequest === 'string'
+        ? {
+            url: urlOrRequest,
+          }
+        : urlOrRequest;
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
@@ -72,28 +56,63 @@ export class AjaxObservable<T> extends Observable<T> {
  * @extends {Ignored}
  */
 export class AjaxSubscriber<T> extends Subscriber<Event> {
-  // @ts-ignore: Property has no initializer and is not definitely assigned
   private xhr: XMLHttpRequest;
   private done: boolean = false;
+  public request: AjaxRequest;
 
-  constructor(destination: Subscriber<T>, public request: AjaxRequest) {
+  constructor(destination: Subscriber<T>, request: AjaxRequest) {
     super(destination);
 
-    const headers = (request.headers = request.headers || {});
-
-    // force CORS if requested
-    if (!request.crossDomain && !this.getHeader(headers, 'X-Requested-With')) {
-      (headers as any)['X-Requested-With'] = 'XMLHttpRequest';
+    // Normalize the headers. We're going to make them all lowercase, since
+    // Headers are case insenstive by design. This makes it easier to verify
+    // that we aren't setting or sending duplicates.
+    const headers: Record<string, any> = {};
+    const requestHeaders = request.headers;
+    if (requestHeaders) {
+      for (const key in requestHeaders) {
+        if (requestHeaders.hasOwnProperty(key)) {
+          headers[key.toLowerCase()] = requestHeaders[key];
+        }
+      }
     }
 
-    // ensure content type is set
-    let contentTypeHeader = this.getHeader(headers, 'Content-Type');
-    if (!contentTypeHeader && typeof request.body !== 'undefined' && !isFormData(request.body)) {
-      (headers as any)['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    // Set the x-requested-with header. This is a non-standard header that has
+    // come to be a defacto standard for HTTP requests sent by libraries and frameworks
+    // using XHR. However, we DO NOT want to set this if it is a CORS request. This is
+    // because sometimes this header can cause issues with CORS. To be clear,
+    // None of this is necessary, it's only being set because it's "the thing libraries do"
+    // Starting back as far as JQuery, and continuing with other libraries such as Angular 1,
+    // Axios, et al.
+    if (!request.crossDomain && !('x-requested-with' in headers)) {
+      headers['x-requested-with'] = 'XMLHttpRequest';
     }
 
-    // properly serialize body
-    request.body = this.serializeBody(request.body, this.getHeader(request.headers, 'Content-Type'));
+    // Ensure content type is set
+    if (!('content-type' in headers) && request.body !== undefined && !isFormData(request.body)) {
+      headers['content-type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    }
+
+    const body: string | undefined = this.serializeBody(request.body, headers['content-type']);
+
+    this.request = {
+      // Default values
+      async: true,
+      crossDomain: true,
+      withCredentials: false,
+      method: 'GET',
+      responseType: 'json',
+      timeout: 0,
+
+      // Override with passed user values
+      ...request,
+
+      // Set values we ensured above
+      headers,
+      body,
+    };
+
+    // Create our XHR so we can get started.
+    this.xhr = request.createXHR ? request.createXHR() : new XMLHttpRequest();
 
     this.send();
   }
@@ -105,24 +124,25 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     try {
       result = new AjaxResponse(e, this.xhr, this.request);
     } catch (err) {
-      return destination.error(err);
+      destination.error(err);
+      return;
     }
     destination.next(result);
   }
 
   private send(): void {
     const {
+      xhr,
       request,
       request: { user, method, url, async, password, headers, body },
     } = this;
     try {
-      const xhr = (this.xhr = request.createXHR!());
-
       // set up the events before open XHR
       // https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
       // You need to add the event listeners before calling open() on the request.
       // Otherwise the progress events will not fire.
       this.setupEvents(xhr, request);
+
       // open XHR
       if (user) {
         xhr.open(method!, url!, async!, user, password);
@@ -141,7 +161,11 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       }
 
       // set headers
-      this.setHeaders(xhr, headers!);
+      for (const key in headers) {
+        if (headers.hasOwnProperty(key)) {
+          xhr.setRequestHeader(key, (headers as any)[key]);
+        }
+      }
 
       // finally send the request
       if (body) {
@@ -155,9 +179,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   }
 
   private serializeBody(body: any, contentType?: string) {
-    if (!body || typeof body === 'string') {
-      return body;
-    } else if (isFormData(body)) {
+    if (!body || typeof body === 'string' || isFormData(body)) {
       return body;
     }
 
@@ -178,24 +200,6 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       default:
         return body;
     }
-  }
-
-  private setHeaders(xhr: XMLHttpRequest, headers: Object) {
-    for (let key in headers) {
-      if (headers.hasOwnProperty(key)) {
-        xhr.setRequestHeader(key, (headers as any)[key]);
-      }
-    }
-  }
-
-  private getHeader(headers: {}, headerName: string): any {
-    for (let key in headers) {
-      if (key.toLowerCase() === headerName.toLowerCase()) {
-        return (headers as any)[key];
-      }
-    }
-
-    return undefined;
   }
 
   private setupEvents(xhr: XMLHttpRequest, request: AjaxRequest) {
@@ -244,7 +248,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
   unsubscribe() {
     const { done, xhr } = this;
-    if (!done && xhr && xhr.readyState !== 4 && typeof xhr.abort === 'function') {
+    if (!done && xhr) {
       xhr.abort();
     }
     super.unsubscribe();
