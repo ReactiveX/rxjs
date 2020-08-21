@@ -1,2 +1,4 @@
-export { ajax } from '../internal/observable/dom/ajax';
-export { AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } from '../internal/observable/dom/AjaxObservable';
+export { ajax } from '../internal/ajax/ajax';
+export { AjaxError, AjaxTimeoutError } from '../internal/ajax/errors';
+export { AjaxResponse } from '../internal/ajax/AjaxResponse';
+export { AjaxRequest, AjaxConfig } from '../internal/ajax/types';
