@@ -62,23 +62,21 @@ export class Subscription implements SubscriptionLike {
     if (!this.closed) {
       this.closed = true;
 
-      const { _parents, _singleParent, _teardowns } = this;
-      this._parents = this._singleParent = this._teardowns = null;
-      let { _ctorUnsubscribe, _unsubscribe } = this as any;
-
       // Remove this from it's parents.
+
+      const { _singleParent } = this;
+      let _parents: Subscription[] | null;
       if (_singleParent) {
         this._singleParent = null;
         _singleParent.remove(this);
-      }
-
-      if (_parents) {
+      } else if ((_parents = this._parents)) {
         this._parents = null;
         for (const parent of _parents) {
           parent.remove(this);
         }
       }
 
+      const _unsubscribe = (this as any)._unsubscribe;
       if (isFunction(_unsubscribe)) {
         // It's only possible to null _unsubscribe - to release the reference to
         // any teardown function passed in the constructor - if the property was
@@ -89,7 +87,7 @@ export class Subscription implements SubscriptionLike {
         // recycled. Also, in some of those subscribers, _unsubscribe switches
         // from a prototype method to an instance property - see notifyNext in
         // RetryWhenSubscriber.
-        if (_ctorUnsubscribe) {
+        if ((this as any)._ctorUnsubscribe) {
           (this as any)._unsubscribe = undefined;
         }
         try {
@@ -99,6 +97,8 @@ export class Subscription implements SubscriptionLike {
         }
       }
 
+      const { _teardowns } = this;
+      this._teardowns = null;
       if (_teardowns) {
         for (const teardown of _teardowns) {
           try {
@@ -186,13 +186,14 @@ export class Subscription implements SubscriptionLike {
    * @param parent The parent subscription to add
    */
   private _addParent(parent: Subscription) {
-    let { _singleParent, _parents } = this;
+    const { _singleParent } = this;
+    let _parents: Subscription[] | null;
     if (_singleParent) {
       // We already have one parent so we'll need to expand
       // to use an array
       this._parents = [_singleParent, parent];
       this._singleParent = null;
-    } else if (_parents) {
+    } else if ((_parents = this._parents)) {
       // We already have more than one parent, so just add on to that array.
       _parents.push(parent);
     } else {
@@ -206,14 +207,16 @@ export class Subscription implements SubscriptionLike {
    * @param parent The parent to remove
    */
   private _removeParent(parent: Subscription) {
-    if (this._singleParent) {
-      if (this._singleParent === parent) {
+    const { _singleParent } = this;
+    let _parents: Subscription[] | null;
+    if (_singleParent) {
+      if (_singleParent === parent) {
         this._singleParent = null;
       }
-    } else if (this._parents) {
-      const index = this._parents.indexOf(parent);
+    } else if ((_parents = this._parents)) {
+      const index = _parents.indexOf(parent);
       if (index >= 0) {
-        this._parents.splice(index, 1);
+        _parents.splice(index, 1);
       }
     }
   }
