@@ -32,7 +32,7 @@ export class AnimationFrameAction<T> extends AsyncAction<T> {
     // If delay exists and is greater than 0, or if the delay is null (the
     // action wasn't rescheduled) but was originally scheduled as an async
     // action, then recycle as an async action.
-    if ((delay !== null && delay > 0) || (delay === null && this.delay > 0)) {
+    if ((delay != null && delay > 0) || (delay == null && this.delay > 0)) {
       return super.recycleAsyncId(scheduler, id, delay);
     }
     // If the scheduler queue is empty, cancel the requested animation frame and
