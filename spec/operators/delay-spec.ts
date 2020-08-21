@@ -203,7 +203,7 @@ describe('delay operator', () => {
         tap({
           next() {
             const [[subscriber]] = subscribeSpy.args;
-            counts.push(subscriber._subscriptions.length);
+            counts.push(subscriber._teardowns.length);
           },
           complete() {
             expect(counts).to.deep.equal([1, 1]);

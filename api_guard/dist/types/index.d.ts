@@ -545,11 +545,10 @@ export declare class Subscriber<T> extends Subscription implements Observer<T> {
 }
 
 export declare class Subscription implements SubscriptionLike {
-    protected _parentOrParents: Subscription | Subscription[] | null;
     closed: boolean;
     constructor(unsubscribe?: () => void);
     add(teardown: TeardownLogic): void;
-    remove(subscription: Subscription): void;
+    remove(teardown: Exclude<TeardownLogic, void>): void;
     unsubscribe(): void;
     static EMPTY: Subscription;
 }
@@ -561,7 +560,7 @@ export interface SubscriptionLike extends Unsubscribable {
 
 export declare type Tail<X extends any[]> = ((...args: X) => any) extends ((arg: any, ...rest: infer U) => any) ? U : never;
 
-export declare type TeardownLogic = Unsubscribable | Function | void;
+export declare type TeardownLogic = Subscription | Unsubscribable | Function | void;
 
 export declare function throwError(errorFactory: () => any): Observable<never>;
 export declare function throwError(error: any): Observable<never>;

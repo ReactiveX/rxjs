@@ -231,9 +231,10 @@ describe('switchAll', () => {
       oStreamControl.next(n); // creates inner
       iStream.complete();
     });
-    // Expect one child of switch(): The oStream
+    
+    // Expect one child of switchAll(): The oStream
     expect(
-      (<any>sub)._subscriptions[0]._subscriptions.length
+      (sub as any)._teardowns?.[0]._teardowns?.length
     ).to.equal(1);
     sub.unsubscribe();
   });
@@ -250,14 +251,14 @@ describe('switchAll', () => {
     [0, 1, 2, 3, 4].forEach((n) => {
       oStreamControl.next(n); // creates inner
     });
-    // Expect one child of switch(): The oStream
+    // Expect one child of switchAll(): The oStream
     expect(
-      (sub as any)._subscriptions[0]._subscriptions.length
+      (sub as any)._teardowns?.[0]._teardowns?.length
     ).to.equal(1);
     // Expect two children of subscribe(): The destination and the first inner
     // See #4106 - inner subscriptions are now added to destinations
     expect(
-      (sub as any)._subscriptions.length
+      (sub as any)._teardowns?.length
     ).to.equal(2);
     sub.unsubscribe();
   });

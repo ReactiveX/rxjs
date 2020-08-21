@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { SafeSubscriber } from 'rxjs/internal/Subscriber';
 import { Subscriber, Observable } from 'rxjs';
 import { asInteropSubscriber } from './helpers/interop-helper';
+import { getRegisteredTeardowns } from './helpers/subscription';
 
 /** @test {Subscriber} */
 describe('Subscriber', () => {
@@ -128,5 +129,41 @@ describe('Subscriber', () => {
 
     subscriber.unsubscribe();
     expect(count).to.equal(1);
+  });
+
+  it('should close, unsubscribe, and unregister all teardowns after complete', () => {
+    let isUnsubscribed = false;
+    const subscriber = new Subscriber();
+    subscriber.add(() => isUnsubscribed = true);
+    subscriber.complete();
+    expect(isUnsubscribed).to.be.true;
+    expect(subscriber.closed).to.be.true;
+    expect(getRegisteredTeardowns(subscriber).length).to.equal(0);
+  });
+
+  it('should close, unsubscribe, and unregister all teardowns after error', () => {
+    let isTornDown = false;
+    const subscriber = new Subscriber({
+      error: () => {
+        // Mischief managed!
+        // Adding this handler here to prevent the call to error from 
+        // throwing, since it will have an error handler now.
+      }
+    });
+    subscriber.add(() => isTornDown = true);
+    subscriber.error(new Error('test'));
+    expect(isTornDown).to.be.true;
+    expect(subscriber.closed).to.be.true;
+    expect(getRegisteredTeardowns(subscriber).length).to.equal(0);
+  });
+
+  
+  it('should teardown and unregister all teardowns after complete', () => {
+    let isTornDown = false;
+    const subscriber = new Subscriber();
+    subscriber.add(() => { isTornDown = true });
+    subscriber.complete();
+    expect(isTornDown).to.be.true;
+    expect(getRegisteredTeardowns(subscriber).length).to.equal(0);
   });
 });
