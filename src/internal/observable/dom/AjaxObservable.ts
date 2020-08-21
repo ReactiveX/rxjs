@@ -56,7 +56,7 @@ export class AjaxObservable<T> extends Observable<T> {
  * @extends {Ignored}
  */
 export class AjaxSubscriber<T> extends Subscriber<Event> {
-  private xhr: XMLHttpRequest;
+  private xhr?: XMLHttpRequest;
   private done: boolean = false;
   public request: AjaxRequest;
 
@@ -92,7 +92,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       headers['content-type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     }
 
-    const body: string | undefined = this.serializeBody(request.body, headers['content-type']);
+    const body: string | undefined = serializeBody(request.body, headers['content-type']);
 
     this.request = {
       // Default values
@@ -112,17 +112,20 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     };
 
     // Create our XHR so we can get started.
-    this.xhr = request.createXHR ? request.createXHR() : new XMLHttpRequest();
-
-    this.send();
+    try {
+      this.xhr = request.createXHR ? request.createXHR() : new XMLHttpRequest();
+      this.send();
+    } catch (err) {
+      this.error(err);
+    }
   }
 
-  next(e: Event): void {
+  _next(e: Event): void {
     this.done = true;
     const destination = this.destination as Subscriber<any>;
     let result: AjaxResponse;
     try {
-      result = new AjaxResponse(e, this.xhr, this.request);
+      result = new AjaxResponse(e, this.xhr!, this.request);
     } catch (err) {
       destination.error(err);
       return;
@@ -132,73 +135,47 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
   private send(): void {
     const {
-      xhr,
       request,
-      request: { user, method, url, async, password, headers, body },
+      request: { user, createXHR, method, url, async, password, headers, body },
     } = this;
-    try {
-      // set up the events before open XHR
-      // https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
-      // You need to add the event listeners before calling open() on the request.
-      // Otherwise the progress events will not fire.
-      this.setupEvents(xhr, request);
 
-      // open XHR
-      if (user) {
-        xhr.open(method!, url!, async!, user, password);
-      } else {
-        xhr.open(method!, url!, async!);
-      }
+    const xhr = (this.xhr = createXHR ? createXHR() : new XMLHttpRequest());
 
-      // timeout, responseType and withCredentials can be set once the XHR is open
-      if (async) {
-        xhr.timeout = request.timeout!;
-        xhr.responseType = request.responseType as any;
-      }
+    // set up the events before open XHR
+    // https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
+    // You need to add the event listeners before calling open() on the request.
+    // Otherwise the progress events will not fire.
+    this.setupEvents(xhr, request);
 
-      if ('withCredentials' in xhr) {
-        xhr.withCredentials = !!request.withCredentials;
-      }
-
-      // set headers
-      for (const key in headers) {
-        if (headers.hasOwnProperty(key)) {
-          xhr.setRequestHeader(key, (headers as any)[key]);
-        }
-      }
-
-      // finally send the request
-      if (body) {
-        xhr.send(body);
-      } else {
-        xhr.send();
-      }
-    } catch (err) {
-      this.error(err);
-    }
-  }
-
-  private serializeBody(body: any, contentType?: string) {
-    if (!body || typeof body === 'string' || isFormData(body)) {
-      return body;
+    // open XHR
+    if (user) {
+      xhr.open(method!, url!, async!, user, password);
+    } else {
+      xhr.open(method!, url!, async!);
     }
 
-    if (contentType) {
-      const splitIndex = contentType.indexOf(';');
-      if (splitIndex !== -1) {
-        contentType = contentType.substring(0, splitIndex);
+    // timeout, responseType and withCredentials can be set once the XHR is open
+    if (async) {
+      xhr.timeout = request.timeout!;
+      xhr.responseType = request.responseType as any;
+    }
+
+    if ('withCredentials' in xhr) {
+      xhr.withCredentials = !!request.withCredentials;
+    }
+
+    // set headers
+    for (const key in headers) {
+      if (headers.hasOwnProperty(key)) {
+        xhr.setRequestHeader(key, headers[key]);
       }
     }
 
-    switch (contentType) {
-      case 'application/x-www-form-urlencoded':
-        return Object.keys(body)
-          .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(body[key])}`)
-          .join('&');
-      case 'application/json':
-        return JSON.stringify(body);
-      default:
-        return body;
+    // finally send the request
+    if (body) {
+      xhr.send(body);
+    } else {
+      xhr.send();
     }
   }
 
@@ -414,3 +391,27 @@ const AjaxTimeoutErrorImpl = (() => {
  * @see ajax
  */
 export const AjaxTimeoutError: AjaxTimeoutErrorCtor = AjaxTimeoutErrorImpl as any;
+
+function serializeBody(body: any, contentType?: string) {
+  if (!body || typeof body === 'string' || isFormData(body)) {
+    return body;
+  }
+
+  if (contentType) {
+    const splitIndex = contentType.indexOf(';');
+    if (splitIndex !== -1) {
+      contentType = contentType.substring(0, splitIndex);
+    }
+  }
+
+  switch (contentType) {
+    case 'application/x-www-form-urlencoded':
+      return Object.keys(body)
+        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(body[key])}`)
+        .join('&');
+    case 'application/json':
+      return JSON.stringify(body);
+    default:
+      return body;
+  }
+}
