@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { ajax, AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
+import { ajax, AjaxConfig, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
 import { TestScheduler } from 'rxjs/testing';
 import { noop } from 'rxjs';
 
@@ -29,7 +29,7 @@ describe('ajax', () => {
   });
 
   it('should create default XMLHttpRequest for non CORS', () => {
-    const obj: AjaxRequest = {
+    const obj: AjaxConfig = {
       url: '/',
       method: '',
     };
@@ -42,7 +42,7 @@ describe('ajax', () => {
     root.XMLHttpRequest = null;
     root.ActiveXObject = null;
 
-    const obj: AjaxRequest = {
+    const obj: AjaxConfig = {
       url: '/',
       method: '',
     };
@@ -51,7 +51,7 @@ describe('ajax', () => {
   });
 
   it('should create XMLHttpRequest for CORS', () => {
-    const obj: AjaxRequest = {
+    const obj: AjaxConfig = {
       url: '/',
       method: '',
       crossDomain: true,
@@ -66,7 +66,7 @@ describe('ajax', () => {
     root.XMLHttpRequest = null;
     root.XDomainRequest = null;
 
-    const obj: AjaxRequest = {
+    const obj: AjaxConfig = {
       url: '/',
       method: '',
       crossDomain: true,
@@ -77,7 +77,7 @@ describe('ajax', () => {
   });
 
   it('should set headers', () => {
-    const obj: AjaxRequest = {
+    const obj: AjaxConfig = {
       url: '/talk-to-me-goose',
       headers: {
         'Content-Type': 'kenny/loggins',
@@ -121,7 +121,7 @@ describe('ajax', () => {
   });
 
   it('should not set default Content-Type header when no body is sent', () => {
-    const obj: AjaxRequest = {
+    const obj: AjaxConfig = {
       url: '/talk-to-me-goose',
       method: 'GET',
     };
@@ -162,7 +162,7 @@ describe('ajax', () => {
   it('should error if send request throws', (done: MochaDone) => {
     const expected = new Error('xhr send failure');
 
-    const obj = {
+    ajax({
       url: '/flibbertyJibbet',
       responseType: 'text',
       method: '',
@@ -173,9 +173,7 @@ describe('ajax', () => {
         };
         return ret as any;
       },
-    };
-
-    ajax(obj).subscribe(
+    }).subscribe(
       () => {
         done(new Error('should not be called'));
       },
@@ -191,15 +189,14 @@ describe('ajax', () => {
 
   it('should succeed on 200', () => {
     const expected = { foo: 'bar' };
-    let result: AjaxResponse;
+    let result: AjaxResponse<any>;
     let complete = false;
-    const obj = {
+
+    ajax({
       url: '/flibbertyJibbet',
       responseType: 'text',
       method: '',
-    };
-
-    ajax(obj).subscribe(
+    }).subscribe(
       (x: any) => {
         result = x;
       },
@@ -224,7 +221,7 @@ describe('ajax', () => {
 
   it('should fail if fails to parse response', () => {
     let error: any;
-    const obj = {
+    const obj: AjaxConfig = {
       url: '/flibbertyJibbet',
       responseType: 'json',
       method: '',
@@ -255,11 +252,8 @@ describe('ajax', () => {
 
   it('should fail on 404', () => {
     let error: any;
-    const obj = {
+    const obj: AjaxConfig = {
       url: '/flibbertyJibbet',
-      normalizeError: (e: any, xhr: any) => {
-        return xhr.response || xhr.responseText;
-      },
       responseType: 'text',
       method: '',
     };
@@ -291,13 +285,10 @@ describe('ajax', () => {
   });
 
   it('should succeed on 300', () => {
-    let result: AjaxResponse;
+    let result: AjaxResponse<any>;
     let complete = false;
-    const obj = {
+    const obj: AjaxConfig = {
       url: '/flibbertyJibbet',
-      normalizeError: (e: any, xhr: any) => {
-        return xhr.response || xhr.responseText;
-      },
       responseType: 'text',
       method: '',
     };
@@ -327,11 +318,8 @@ describe('ajax', () => {
 
   it('should not fail if fails to parse error response', () => {
     let error: any;
-    const obj = {
+    const obj: AjaxConfig = {
       url: '/flibbertyJibbet',
-      normalizeError: (e: any, xhr: any) => {
-        return xhr.response || xhr.responseText;
-      },
       responseType: 'json',
       method: '',
     };
@@ -407,7 +395,7 @@ describe('ajax', () => {
   });
 
   it('should create an asynchronous request', () => {
-    const obj: AjaxRequest = {
+    const obj: AjaxConfig = {
       url: '/flibbertyJibbet',
       responseType: 'text',
       timeout: 10,
@@ -440,7 +428,7 @@ describe('ajax', () => {
   it('should error on timeout of asynchronous request', () => {
     const rxTestScheduler = new TestScheduler(noop);
 
-    const obj: AjaxRequest = {
+    const obj: AjaxConfig = {
       url: '/flibbertyJibbet',
       responseType: 'text',
       timeout: 10,
@@ -475,7 +463,7 @@ describe('ajax', () => {
   });
 
   it('should create a synchronous request', () => {
-    const obj: AjaxRequest = {
+    const obj: AjaxConfig = {
       url: '/flibbertyJibbet',
       responseType: 'text',
       timeout: 10,
@@ -626,7 +614,7 @@ describe('ajax', () => {
     it('should error if send request throws', (done: MochaDone) => {
       const expected = new Error('xhr send failure');
 
-      const obj = {
+      const obj: AjaxConfig = {
         url: '/flibbertyJibbet',
         responseType: 'text',
         method: '',
@@ -747,7 +735,7 @@ describe('ajax', () => {
   describe('ajax.post', () => {
     it('should succeed on 200', () => {
       const expected = { foo: 'bar', hi: 'there you' };
-      let result: AjaxResponse;
+      let result: AjaxResponse<any>;
       let complete = false;
 
       ajax.post('/flibbertyJibbet', expected).subscribe(
@@ -782,7 +770,7 @@ describe('ajax', () => {
 
     it('should properly encode full URLs passed', () => {
       const expected = { test: 'https://google.com/search?q=encodeURI+vs+encodeURIComponent' };
-      let result: AjaxResponse;
+      let result: AjaxResponse<any>;
       let complete = false;
 
       ajax.post('/flibbertyJibbet', expected).subscribe(
@@ -817,7 +805,7 @@ describe('ajax', () => {
 
     it('should succeed on 204 No Content', () => {
       const expected: null = null;
-      let result: AjaxResponse;
+      let result: AjaxResponse<any>;
       let complete = false;
 
       ajax.post('/flibbertyJibbet', expected).subscribe(
@@ -924,7 +912,7 @@ describe('ajax', () => {
       configurable: true,
     });
 
-    const ajaxRequest = {
+    const ajaxRequest: AjaxConfig = {
       url: '/flibbertyJibbet',
     };
 
@@ -937,9 +925,20 @@ describe('ajax', () => {
 
     const request = MockXMLHttpRequest.mostRecent;
     try {
-      request.ontimeout(<any>'ontimeout');
+      request.ontimeout('ontimeout' as any);
     } catch (e) {
-      expect(e.message).to.equal(new AjaxTimeoutError(<any>request, ajaxRequest).message);
+      expect(e.message).to.equal(new AjaxTimeoutError(request as any, {
+        url: ajaxRequest.url,
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json;encoding=Utf-8',
+        },
+        withCredentials: false,
+        async: true,
+        timeout: 0,
+        crossDomain: false,
+        responseType: 'json'
+      }).message);
     }
     delete root.XMLHttpRequest.prototype.ontimeout;
   });
@@ -1025,34 +1024,84 @@ describe('ajax', () => {
 
   describe('ajax.patch', () => {
     it('should create an AjaxObservable with correct options', () => {
-      const body = { foo: 'bar' };
-      const headers = { first: 'first' };
-      // returns Observable, not AjaxObservable, so needs a cast
-      const { request } = <any>ajax.patch('/flibbertyJibbet', body, headers);
+      const expected = { foo: 'bar', hi: 'there you' };
+      let result: AjaxResponse<any>;
+      let complete = false;
+
+      ajax.patch('/flibbertyJibbet', expected).subscribe(
+        (x) => {
+          result = x;
+        },
+        null,
+        () => {
+          complete = true;
+        }
+      );
+
+      const request = MockXMLHttpRequest.mostRecent;
 
       expect(request.method).to.equal('PATCH');
       expect(request.url).to.equal('/flibbertyJibbet');
-      expect(request.body).to.equal(body);
-      expect(request.headers).to.equal(headers);
+      expect(request.requestHeaders).to.deep.equal({
+        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'x-requested-with': 'XMLHttpRequest',
+      });
+
+      request.respondWith({
+        status: 200,
+        contentType: 'application/json',
+        responseText: JSON.stringify(expected),
+      });
+
+      expect(request.data).to.equal('foo=bar&hi=there%20you');
+      expect(result!.response).to.deep.equal(expected);
+      expect(complete).to.be.true;
     });
   });
 
   describe('ajax error classes', () => {
     describe('AjaxError', () => {
       it('should extend Error class', () => {
-        const error = new AjaxError('Test error', new XMLHttpRequest(), {});
+        const error = new AjaxError('Test error', new XMLHttpRequest(), {
+          url: '/',
+          method: 'GET',
+          responseType: 'json',
+          headers: {},
+          withCredentials: false,
+          async: true,
+          timeout: 0,
+          crossDomain: false,
+        });
         expect(error).to.be.an.instanceOf(Error);
       });
     });
 
     describe('AjaxTimeoutError', () => {
       it('should extend Error class', () => {
-        const error = new AjaxTimeoutError(new XMLHttpRequest(), {});
+        const error = new AjaxTimeoutError(new XMLHttpRequest(), {
+          url: '/',
+          method: 'GET',
+          responseType: 'json',
+          headers: {},
+          withCredentials: false,
+          async: true,
+          timeout: 0,
+          crossDomain: false,
+        });
         expect(error).to.be.an.instanceOf(Error);
       });
 
       it('should extend AjaxError class', () => {
-        const error = new AjaxTimeoutError(new XMLHttpRequest(), {});
+        const error = new AjaxTimeoutError(new XMLHttpRequest(), {
+          url: '/',
+          method: 'GET',
+          responseType: 'json',
+          headers: {},
+          withCredentials: false,
+          async: true,
+          timeout: 0,
+          crossDomain: false,
+        });
         expect(error).to.be.an.instanceOf(AjaxError);
       });
     });
@@ -1129,7 +1178,7 @@ class MockXMLHttpRequest {
     // noop
   }
 
-  open(method: any, url: any, async: any, user: any, password: any): void {
+  open(method: any, url: any, async: any): void {
     this.method = method;
     this.url = url;
     this.async = async;

@@ -1,5 +1,21 @@
 export declare const ajax: AjaxCreationMethod;
 
+export interface AjaxConfig {
+    async?: boolean;
+    body?: any;
+    createXHR?: () => XMLHttpRequest;
+    crossDomain?: boolean;
+    headers?: Readonly<Record<string, any>>;
+    method?: string;
+    password?: string;
+    progressSubscriber?: PartialObserver<ProgressEvent>;
+    responseType?: XMLHttpRequestResponseType;
+    timeout?: number;
+    url: string;
+    user?: string;
+    withCredentials?: boolean;
+}
+
 export interface AjaxError extends Error {
     request: AjaxRequest;
     response: any;
@@ -11,30 +27,26 @@ export interface AjaxError extends Error {
 export declare const AjaxError: AjaxErrorCtor;
 
 export interface AjaxRequest {
-    async?: boolean;
+    async: boolean;
     body?: any;
-    createXHR?: () => XMLHttpRequest;
-    crossDomain?: boolean;
-    hasContent?: boolean;
-    headers?: object;
-    method?: string;
+    crossDomain: boolean;
+    headers: Readonly<Record<string, any>>;
+    method: string;
     password?: string;
-    progressSubscriber?: PartialObserver<ProgressEvent>;
-    responseType?: string;
-    timeout?: number;
-    url?: string;
+    responseType: XMLHttpRequestResponseType;
+    timeout: number;
+    url: string;
     user?: string;
-    withCredentials?: boolean;
+    withCredentials: boolean;
 }
 
-export declare class AjaxResponse {
-    originalEvent: Event;
-    request: AjaxRequest;
-    response: any;
-    responseText: string;
-    responseType: string;
-    status: number;
-    xhr: XMLHttpRequest;
+export declare class AjaxResponse<T> {
+    readonly originalEvent: Event;
+    readonly request: AjaxRequest;
+    readonly response: T;
+    readonly responseType: XMLHttpRequestResponseType;
+    readonly status: number;
+    readonly xhr: XMLHttpRequest;
     constructor(originalEvent: Event, xhr: XMLHttpRequest, request: AjaxRequest);
 }
 
