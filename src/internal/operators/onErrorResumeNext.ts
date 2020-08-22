@@ -80,7 +80,7 @@ export function onErrorResumeNext<T, A extends ObservableInput<any>[]>(
  * @name onErrorResumeNext
  */
 
-export function onErrorResumeNext<T, R>(...nextSources: ObservableInput<any>[]): OperatorFunction<T, R> {
+export function onErrorResumeNext<T>(...nextSources: ObservableInput<any>[]): OperatorFunction<T, unknown> {
   // If there is only one argument, and it is an array, we'll treat it like it is
   // and array of arguments.
   if (nextSources.length === 1 && isArray(nextSources[0])) {

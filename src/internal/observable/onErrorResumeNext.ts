@@ -3,7 +3,7 @@ import { Observable } from '../Observable';
 import { ObservableInput, ObservedValueUnionFromArray, ObservedValueOf } from '../types';
 import { EMPTY } from './empty';
 import { onErrorResumeNext as onErrorResumeNextWith } from '../operators/onErrorResumeNext';
-import { isArray } from 'util';
+import { isArray } from '../util/isArray';
 
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext(): Observable<never>;
