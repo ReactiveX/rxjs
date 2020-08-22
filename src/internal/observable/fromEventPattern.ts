@@ -32,7 +32,7 @@ export function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => a
  * After registration, every time an event that we listen to happens,
  * Observable returned by `fromEventPattern` will emit value that event handler
  * function was called with. Note that if event handler was called with more
- * then one argument, second and following arguments will not appear in the Observable.
+ * than one argument, second and following arguments will not appear in the Observable.
  *
  * If API you are using allows to unregister event handlers as well, you can pass to `fromEventPattern`
  * another function - `removeHandler` - as a second parameter. It will be injected
