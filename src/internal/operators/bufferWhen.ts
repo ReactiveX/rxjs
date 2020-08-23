@@ -75,6 +75,7 @@ class BufferWhenSubscriber<T> extends SimpleOuterSubscriber<T, any> {
 
   constructor(destination: Subscriber<T[]>, private closingSelector: () => Observable<any>) {
     super(destination);
+    this.add(this._teardown);
     this.openBuffer();
   }
 
@@ -90,8 +91,7 @@ class BufferWhenSubscriber<T> extends SimpleOuterSubscriber<T, any> {
     super._complete();
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _unsubscribe() {
+  private _teardown = () => {
     this.buffer = null!;
     this.subscribing = false;
   }

@@ -74,18 +74,19 @@ class ConnectableSubscriber<T> extends Subscriber<T> {
   constructor(protected destination: Subject<T>,
               private connectable: ConnectableObservable<T>) {
     super();
+    this.add(this._teardown);
   }
   protected _error(err: any): void {
-    this._unsubscribe();
+    this._teardown();
     super._error(err);
   }
   protected _complete(): void {
     this.connectable._isComplete = true;
-    this._unsubscribe();
+    this._teardown();
     super._complete();
   }
-  protected _unsubscribe() {
-    const connectable = <any>this.connectable;
+  private _teardown = () => {
+    const connectable = this.connectable as any;
     if (connectable) {
       this.connectable = null!;
       const connection = connectable._connection;
@@ -125,9 +126,10 @@ class RefCountSubscriber<T> extends Subscriber<T> {
   constructor(destination: Subscriber<T>,
               private connectable: ConnectableObservable<T>) {
     super(destination);
+    this.add(this._teardown);
   }
 
-  protected _unsubscribe() {
+  private _teardown = () => {
 
     const { connectable } = this;
     if (!connectable) {

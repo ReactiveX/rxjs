@@ -90,6 +90,7 @@ class WindowToggleSubscriber<T, O> extends ComplexOuterSubscriber<T, any> {
               private openings: Observable<O>,
               private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
+    this.add(this._teardown);
     this.add(this.openSubscription = innerSubscribe(openings, new ComplexInnerSubscriber(this, openings, 0)));
   }
 
@@ -137,8 +138,7 @@ class WindowToggleSubscriber<T, O> extends ComplexOuterSubscriber<T, any> {
     super._complete();
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _unsubscribe() {
+  private _teardown = () => {
     const { contexts } = this;
     this.contexts = null!;
     if (contexts) {

@@ -89,9 +89,10 @@ class RefCountSubscriber<T> extends Subscriber<T> {
   constructor(destination: Subscriber<T>,
               private connectable: ConnectableObservable<T>) {
     super(destination);
+    this.add(this._teardown);
   }
 
-  protected _unsubscribe() {
+  private _teardown = () => {
 
     const { connectable } = this;
     if (!connectable) {

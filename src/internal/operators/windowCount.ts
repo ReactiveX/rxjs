@@ -98,6 +98,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
               private windowSize: number,
               private startWindowEvery: number) {
     super(destination);
+    this.add(this._teardown);
     destination.next(this.windows[0]);
   }
 
@@ -142,7 +143,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
     this.destination.complete();
   }
 
-  protected _unsubscribe() {
+  private _teardown = () => {
     this.count = 0;
     this.windows = null!;
   }
