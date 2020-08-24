@@ -167,8 +167,10 @@ export declare function concat<O1 extends ObservableInput<any>, O2 extends Obser
 export declare function concat<A extends ObservableInput<any>[]>(...observables: A): Observable<ObservedValueUnionFromArray<A>>;
 
 export declare const config: {
+    quietBadConfig: boolean;
     Promise: PromiseConstructorLike;
     useDeprecatedSynchronousErrorHandling: boolean;
+    useDeprecatedNextContext: boolean;
 };
 
 export declare class ConnectableObservable<T> extends Observable<T> {
