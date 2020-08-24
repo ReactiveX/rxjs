@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { SafeSubscriber } from 'rxjs/internal/Subscriber';
-import { Subscriber, Observable } from 'rxjs';
+import { Subscriber, Observable, config, of } from 'rxjs';
 import { asInteropSubscriber } from './helpers/interop-helper';
 import { getRegisteredTeardowns } from './helpers/subscription';
 
@@ -157,7 +157,6 @@ describe('Subscriber', () => {
     expect(getRegisteredTeardowns(subscriber).length).to.equal(0);
   });
 
-  
   it('should teardown and unregister all teardowns after complete', () => {
     let isTornDown = false;
     const subscriber = new Subscriber();
@@ -165,5 +164,94 @@ describe('Subscriber', () => {
     subscriber.complete();
     expect(isTornDown).to.be.true;
     expect(getRegisteredTeardowns(subscriber).length).to.equal(0);
+  });
+
+  it('should NOT break this context on next methods from unfortunate consumers', () => {
+    // This is a contrived class to illustrate that we can pass another
+    // object that is "observer shaped" and not have it lose its context
+    // as it would have in v5 - v6.
+    class CustomConsumer {
+      valuesProcessed: string[] = [];
+
+      // In here, we access instance state and alter it.
+      next(value: string) {
+        if (value === 'reset') {
+          this.valuesProcessed = [];
+        } else {
+          this.valuesProcessed.push(value);
+        }
+      }
+    };
+
+    const consumer = new CustomConsumer();
+
+    of('old', 'old', 'reset', 'new', 'new').subscribe(consumer);
+
+    expect(consumer.valuesProcessed).not.to.equal(['new', 'new']);
+  });
+
+  describe('deprecated next context mode', () => {
+    beforeEach(() => {
+      config.quietBadConfig = true;
+      config.useDeprecatedNextContext = true;
+    });
+
+    afterEach(() => {
+      config.useDeprecatedNextContext = false;
+      config.quietBadConfig = false;
+    });
+
+    it('should allow changing the context of `this` in a POJO subscriber', () => {
+      const results: any[] = [];
+
+      const source = new Observable<number>(subscriber => {
+        for (let i = 0; i < 10 && !subscriber.closed; i++) {
+          subscriber.next(i);
+        }
+        subscriber.complete();
+
+        return () => {
+          results.push('teardown');
+        }
+      });
+
+      source.subscribe({
+        next: function (this: any, value) {
+          expect(this.unsubscribe).to.be.a('function');
+          results.push(value);
+          if (value === 3) {
+            this.unsubscribe();
+          }
+        },
+        complete() {
+          throw new Error('should not be called');
+        }
+      });
+
+      expect(results).to.deep.equal([0, 1, 2, 3, 'teardown'])
+    });
+
+    it('should NOT break this context on next methods from unfortunate consumers', () => {
+      // This is a contrived class to illustrate that we can pass another
+      // object that is "observer shaped"
+      class CustomConsumer {
+        valuesProcessed: string[] = [];
+  
+        // In here, we access instance state and alter it.
+        next(value: string) {
+          if (value === 'reset') {
+            this.valuesProcessed = [];
+          } else {
+            this.valuesProcessed.push(value);
+          }
+        }
+      };
+  
+      const consumer = new CustomConsumer();
+  
+      of('old', 'old', 'reset', 'new', 'new').subscribe(consumer);
+  
+      expect(consumer.valuesProcessed).not.to.equal(['new', 'new']);
+    });
   });
 });

@@ -162,15 +162,22 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     let next: ((value: T) => void) | undefined;
 
     if (isFunction(observerOrNext)) {
-      next = (<((value: T) => void)> observerOrNext);
+      next = observerOrNext;
     } else if (observerOrNext) {
-      next = (<PartialObserver<T>> observerOrNext).next;
-      error = (<PartialObserver<T>> observerOrNext).error;
-      complete = (<PartialObserver<T>> observerOrNext).complete;
+      next = observerOrNext.next;
+      error = observerOrNext.error;
+      complete = observerOrNext.complete;
       if (observerOrNext !== emptyObserver) {
-        next = next && next.bind(observerOrNext);
-        error = error && error.bind(observerOrNext);
-        complete = complete && complete.bind(observerOrNext);
+        let context: any;
+        if (config.useDeprecatedNextContext) {
+          context = Object.create(observerOrNext);
+          context.unsubscribe = this.unsubscribe.bind(this);
+        } else {
+          context = observerOrNext;
+        }
+        next = next && next.bind(context);
+        error = error && error.bind(context);
+        complete = complete && complete.bind(context);
         if (isSubscription(observerOrNext)) {
           observerOrNext.add(this.unsubscribe.bind(this));
         }
@@ -244,7 +251,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
 
   private __tryOrUnsub(fn: Function, value?: any): void {
     try {
-      fn.call(this, value);
+      fn(value);
     } catch (err) {
       this.unsubscribe();
       if (config.useDeprecatedSynchronousErrorHandling) {
@@ -260,7 +267,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       throw new Error('bad call');
     }
     try {
-      fn.call(this, value);
+      fn(value);
     } catch (err) {
       if (config.useDeprecatedSynchronousErrorHandling) {
         parent.syncErrorValue = err;
