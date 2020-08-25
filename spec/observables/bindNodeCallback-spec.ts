@@ -279,17 +279,16 @@ describe('bindNodeCallback', () => {
     expect(results2).to.deep.equal([42, 'done']);
   });
 
-  it('should not swallow post-callback errors', () => {
+  it('should emit post callback errors', () => {
     function badFunction(callback: (error: Error, answer: number) => void): void {
       callback(null as any, 42);
-      throw new Error('kaboom');
+      throw 'kaboom';
     }
-    const consoleStub = sinon.stub(console, 'warn');
-    try {
-      bindNodeCallback(badFunction)().subscribe();
-      expect(consoleStub).to.have.property('called', true);
-    } finally {
-      consoleStub.restore();
-    }
+    let receivedError: any;
+    bindNodeCallback(badFunction)().subscribe({
+      error: err => receivedError = err
+    });
+
+    expect(receivedError).to.equal('kaboom');
   });
 });
