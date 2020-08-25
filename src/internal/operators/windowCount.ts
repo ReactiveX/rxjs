@@ -1,3 +1,4 @@
+/** @prettier */
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
@@ -67,18 +68,14 @@ import { lift } from '../util/lift';
  * are Observable of values.
  * @name windowCount
  */
-export function windowCount<T>(windowSize: number,
-                               startWindowEvery: number = 0): OperatorFunction<T, Observable<T>> {
+export function windowCount<T>(windowSize: number, startWindowEvery: number = 0): OperatorFunction<T, Observable<T>> {
   return function windowCountOperatorFunction(source: Observable<T>) {
     return lift(source, new WindowCountOperator<T>(windowSize, startWindowEvery));
   };
 }
 
 class WindowCountOperator<T> implements Operator<T, Observable<T>> {
-
-  constructor(private windowSize: number,
-              private startWindowEvery: number) {
-  }
+  constructor(private windowSize: number, private startWindowEvery: number) {}
 
   call(subscriber: Subscriber<Observable<T>>, source: any): any {
     return source.subscribe(new WindowCountSubscriber(subscriber, this.windowSize, this.startWindowEvery));
@@ -91,19 +88,16 @@ class WindowCountOperator<T> implements Operator<T, Observable<T>> {
  * @extends {Ignored}
  */
 class WindowCountSubscriber<T> extends Subscriber<T> {
-  private windows: Subject<T>[] = [ new Subject<T>() ];
+  private windows: Subject<T>[] = [new Subject<T>()];
   private count: number = 0;
 
-  constructor(protected destination: Subscriber<Observable<T>>,
-              private windowSize: number,
-              private startWindowEvery: number) {
+  constructor(protected destination: Subscriber<Observable<T>>, private windowSize: number, private startWindowEvery: number) {
     super(destination);
-    this.add(this._teardown);
     destination.next(this.windows[0]);
   }
 
   protected _next(value: T) {
-    const startWindowEvery = (this.startWindowEvery > 0) ? this.startWindowEvery : this.windowSize;
+    const startWindowEvery = this.startWindowEvery > 0 ? this.startWindowEvery : this.windowSize;
     const destination = this.destination;
     const windowSize = this.windowSize;
     const windows = this.windows;
@@ -143,8 +137,11 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
     this.destination.complete();
   }
 
-  private _teardown = () => {
-    this.count = 0;
-    this.windows = null!;
+  unsubscribe() {
+    if (!this.closed) {
+      this.count = 0;
+      this.windows = null!;
+      super.unsubscribe();
+    }
   }
 }

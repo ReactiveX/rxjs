@@ -1,3 +1,4 @@
+/** @prettier */
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
 import { Subject } from '../Subject';
@@ -55,9 +56,7 @@ export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T
 }
 
 class WindowOperator<T> implements Operator<T, Observable<T>> {
-
-  constructor(private windowBoundaries: Observable<any>) {
-  }
+  constructor(private windowBoundaries: Observable<any>) {}
 
   call(subscriber: Subscriber<Observable<T>>, source: any): any {
     const windowSubscriber = new WindowSubscriber(subscriber);
@@ -75,12 +74,10 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
  * @extends {Ignored}
  */
 class WindowSubscriber<T> extends SimpleOuterSubscriber<T, any> {
-
   private window: Subject<T> = new Subject<T>();
 
   constructor(destination: Subscriber<Observable<T>>) {
     super(destination);
-    this.add(this._teardown);
     destination.next(this.window);
   }
 
@@ -110,17 +107,20 @@ class WindowSubscriber<T> extends SimpleOuterSubscriber<T, any> {
     this.destination.complete();
   }
 
-  private _teardown = () => {
-    this.window = null!;
+  unsubscribe() {
+    if (!this.closed) {
+      this.window = null!;
+      super.unsubscribe();
+    }
   }
 
-  private openWindow(): void  {
+  private openWindow(): void {
     const prevWindow = this.window;
     if (prevWindow) {
       prevWindow.complete();
     }
     const destination = this.destination;
-    const newWindow = this.window = new Subject<T>();
+    const newWindow = (this.window = new Subject<T>());
     destination.next(newWindow);
   }
 }

@@ -1,3 +1,4 @@
+/** @prettier */
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
@@ -54,21 +55,18 @@ import { lift } from '../util/lift';
  * are Observables.
  * @name windowToggle
  */
-export function windowToggle<T, O>(openings: Observable<O>,
-                                   closingSelector: (openValue: O) => Observable<any>): OperatorFunction<T, Observable<T>> {
+export function windowToggle<T, O>(
+  openings: Observable<O>,
+  closingSelector: (openValue: O) => Observable<any>
+): OperatorFunction<T, Observable<T>> {
   return (source: Observable<T>) => lift(source, new WindowToggleOperator<T, O>(openings, closingSelector));
 }
 
 class WindowToggleOperator<T, O> implements Operator<T, Observable<T>> {
-
-  constructor(private openings: Observable<O>,
-              private closingSelector: (openValue: O) => Observable<any>) {
-  }
+  constructor(private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {}
 
   call(subscriber: Subscriber<Observable<T>>, source: any): any {
-    return source.subscribe(new WindowToggleSubscriber(
-      subscriber, this.openings, this.closingSelector
-    ));
+    return source.subscribe(new WindowToggleSubscriber(subscriber, this.openings, this.closingSelector));
   }
 }
 
@@ -86,12 +84,13 @@ class WindowToggleSubscriber<T, O> extends ComplexOuterSubscriber<T, any> {
   private contexts: WindowContext<T>[] = [];
   private openSubscription: Subscription | undefined;
 
-  constructor(destination: Subscriber<Observable<T>>,
-              private openings: Observable<O>,
-              private closingSelector: (openValue: O) => Observable<any>) {
+  constructor(
+    destination: Subscriber<Observable<T>>,
+    private openings: Observable<O>,
+    private closingSelector: (openValue: O) => Observable<any>
+  ) {
     super(destination);
-    this.add(this._teardown);
-    this.add(this.openSubscription = innerSubscribe(openings, new ComplexInnerSubscriber(this, openings, 0)));
+    this.add((this.openSubscription = innerSubscribe(openings, new ComplexInnerSubscriber(this, openings, 0))));
   }
 
   protected _next(value: T) {
@@ -105,7 +104,6 @@ class WindowToggleSubscriber<T, O> extends ComplexOuterSubscriber<T, any> {
   }
 
   protected _error(err: any) {
-
     const { contexts } = this;
     this.contexts = null!;
 
@@ -138,22 +136,24 @@ class WindowToggleSubscriber<T, O> extends ComplexOuterSubscriber<T, any> {
     super._complete();
   }
 
-  private _teardown = () => {
-    const { contexts } = this;
-    this.contexts = null!;
-    if (contexts) {
-      const len = contexts.length;
-      let index = -1;
-      while (++index < len) {
-        const context = contexts[index];
-        context.window.unsubscribe();
-        context.subscription.unsubscribe();
+  unsubscribe() {
+    if (!this.closed) {
+      const { contexts } = this;
+      this.contexts = null!;
+      if (contexts) {
+        const len = contexts.length;
+        let index = -1;
+        while (++index < len) {
+          const context = contexts[index];
+          context.window.unsubscribe();
+          context.subscription.unsubscribe();
+        }
       }
+      super.unsubscribe();
     }
   }
 
   notifyNext(outerValue: any, innerValue: any): void {
-
     if (outerValue === this.openings) {
       let closingNotifier;
       try {
@@ -188,7 +188,7 @@ class WindowToggleSubscriber<T, O> extends ComplexOuterSubscriber<T, any> {
 
   notifyComplete(inner: Subscription): void {
     if (inner !== this.openSubscription) {
-      this.closeWindow(this.contexts.indexOf((<any> inner).context));
+      this.closeWindow(this.contexts.indexOf((<any>inner).context));
     }
   }
 
