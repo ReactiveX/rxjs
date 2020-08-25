@@ -124,11 +124,10 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 
   unsubscribe(): void {
-    if (this.closed) {
-      return;
+    if (!this.closed) {
+      this.isStopped = true;
+      super.unsubscribe();
     }
-    this.isStopped = true;
-    super.unsubscribe();
   }
 
   protected _next(value: T): void {
@@ -158,8 +157,6 @@ export class SafeSubscriber<T> extends Subscriber<T> {
               error?: ((e?: any) => void) | null,
               complete?: (() => void) | null) {
     super();
-    this.add(this._teardown);
-
     let next: ((value: T) => void) | undefined;
 
     if (isFunction(observerOrNext)) {
@@ -282,9 +279,12 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     return false;
   }
 
-  private _teardown = () => {
-    const { _parentSubscriber } = this;
-    this._parentSubscriber = null!;
-    _parentSubscriber.unsubscribe();
+  unsubscribe() {
+    if (!this.closed) {
+      const { _parentSubscriber } = this;
+      this._parentSubscriber = null!;
+      _parentSubscriber.unsubscribe();
+      super.unsubscribe();
+    }
   }
 }

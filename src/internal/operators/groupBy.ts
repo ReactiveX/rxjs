@@ -1,3 +1,4 @@
+/** @prettier */
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
@@ -7,11 +8,26 @@ import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
-export function groupBy<T, K extends T>(keySelector: (value: T) => value is K): OperatorFunction<T, GroupedObservable<true, K> | GroupedObservable<false, Exclude<T, K>>>;
+export function groupBy<T, K extends T>(
+  keySelector: (value: T) => value is K
+): OperatorFunction<T, GroupedObservable<true, K> | GroupedObservable<false, Exclude<T, K>>>;
 export function groupBy<T, K>(keySelector: (value: T) => K): OperatorFunction<T, GroupedObservable<K, T>>;
-export function groupBy<T, K>(keySelector: (value: T) => K, elementSelector: void, durationSelector: (grouped: GroupedObservable<K, T>) => Observable<any>): OperatorFunction<T, GroupedObservable<K, T>>;
-export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?: (value: T) => R, durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>): OperatorFunction<T, GroupedObservable<K, R>>;
-export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?: (value: T) => R, durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>, subjectSelector?: () => Subject<R>): OperatorFunction<T, GroupedObservable<K, R>>;
+export function groupBy<T, K>(
+  keySelector: (value: T) => K,
+  elementSelector: void,
+  durationSelector: (grouped: GroupedObservable<K, T>) => Observable<any>
+): OperatorFunction<T, GroupedObservable<K, T>>;
+export function groupBy<T, K, R>(
+  keySelector: (value: T) => K,
+  elementSelector?: (value: T) => R,
+  durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>
+): OperatorFunction<T, GroupedObservable<K, R>>;
+export function groupBy<T, K, R>(
+  keySelector: (value: T) => K,
+  elementSelector?: (value: T) => R,
+  durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>,
+  subjectSelector?: () => Subject<R>
+): OperatorFunction<T, GroupedObservable<K, R>>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -105,12 +121,13 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  * value.
  * @name groupBy
  */
-export function groupBy<T, K, R>(keySelector: (value: T) => K,
-                                 elementSelector?: ((value: T) => R) | void,
-                                 durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>,
-                                 subjectSelector?: () => Subject<R>): OperatorFunction<T, GroupedObservable<K, R>> {
-  return (source: Observable<T>) =>
-    lift(source, new GroupByOperator(keySelector, elementSelector, durationSelector, subjectSelector));
+export function groupBy<T, K, R>(
+  keySelector: (value: T) => K,
+  elementSelector?: ((value: T) => R) | void,
+  durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>,
+  subjectSelector?: () => Subject<R>
+): OperatorFunction<T, GroupedObservable<K, R>> {
+  return (source: Observable<T>) => lift(source, new GroupByOperator(keySelector, elementSelector, durationSelector, subjectSelector));
 }
 
 export interface RefCountSubscription {
@@ -121,16 +138,17 @@ export interface RefCountSubscription {
 }
 
 class GroupByOperator<T, K, R> implements Operator<T, GroupedObservable<K, R>> {
-  constructor(private keySelector: (value: T) => K,
-              private elementSelector?: ((value: T) => R) | void,
-              private durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>,
-              private subjectSelector?: () => Subject<R>) {
-  }
+  constructor(
+    private keySelector: (value: T) => K,
+    private elementSelector?: ((value: T) => R) | void,
+    private durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>,
+    private subjectSelector?: () => Subject<R>
+  ) {}
 
   call(subscriber: Subscriber<GroupedObservable<K, R>>, source: any): any {
-    return source.subscribe(new GroupBySubscriber(
-      subscriber, this.keySelector, this.elementSelector, this.durationSelector, this.subjectSelector
-    ));
+    return source.subscribe(
+      new GroupBySubscriber(subscriber, this.keySelector, this.elementSelector, this.durationSelector, this.subjectSelector)
+    );
   }
 }
 
@@ -144,11 +162,13 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
   public attemptedToUnsubscribe: boolean = false;
   public count: number = 0;
 
-  constructor(destination: Subscriber<GroupedObservable<K, R>>,
-              private keySelector: (value: T) => K,
-              private elementSelector?: ((value: T) => R) | void,
-              private durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>,
-              private subjectSelector?: () => Subject<R>) {
+  constructor(
+    destination: Subscriber<GroupedObservable<K, R>>,
+    private keySelector: (value: T) => K,
+    private elementSelector?: ((value: T) => R) | void,
+    private durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>,
+    private subjectSelector?: () => Subject<R>
+  ) {
     super(destination);
   }
 
@@ -250,22 +270,22 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
  * @extends {Ignored}
  */
 class GroupDurationSubscriber<K, T> extends Subscriber<T> {
-  constructor(private key: K,
-              group: Subject<T>,
-              private parent: GroupBySubscriber<any, K, T | any>) {
+  constructor(private key: K, group: Subject<T>, private parent: GroupBySubscriber<any, K, T | any>) {
     super(group);
-    this.add(this._teardown);
   }
 
   protected _next(): void {
     this.complete();
   }
 
-  private _teardown = () => {
-    const { parent, key } = this;
-    this.key = this.parent = null!;
-    if (parent) {
-      parent.removeGroup(key);
+  unsubscribe() {
+    if (!this.closed) {
+      const { parent, key } = this;
+      this.key = this.parent = null!;
+      if (parent) {
+        parent.removeGroup(key);
+      }
+      super.unsubscribe();
     }
   }
 }
@@ -280,9 +300,7 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
  */
 export class GroupedObservable<K, T> extends Observable<T> {
   /** @deprecated Do not construct this type. Internal use only */
-  constructor(public key: K,
-              private groupSubject: Subject<T>,
-              private refCountSubscription?: RefCountSubscription) {
+  constructor(public key: K, private groupSubject: Subject<T>, private refCountSubscription?: RefCountSubscription) {
     super();
   }
 
