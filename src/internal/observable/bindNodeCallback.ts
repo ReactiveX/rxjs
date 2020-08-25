@@ -1,8 +1,6 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { AsyncSubject } from '../AsyncSubject';
-import { Subscriber } from '../Subscriber';
-import { SchedulerAction, SchedulerLike } from '../types';
+import { SchedulerLike } from '../types';
 import { map } from '../operators/map';
 import { isScheduler } from '../util/isScheduler';
 import { isArray } from '../util/isArray';
