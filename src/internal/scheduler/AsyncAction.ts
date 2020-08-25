@@ -20,6 +20,7 @@ export class AsyncAction<T> extends Action<T> {
   constructor(protected scheduler: AsyncScheduler,
               protected work: (this: SchedulerAction<T>, state?: T) => void) {
     super(scheduler, work);
+    this.add(this._teardown);
   }
 
   public schedule(state?: T, delay: number = 0): Subscription {
@@ -132,8 +133,7 @@ export class AsyncAction<T> extends Action<T> {
     }
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _unsubscribe() {
+  private _teardown = () => {
 
     const id = this.id;
     const scheduler = this.scheduler;

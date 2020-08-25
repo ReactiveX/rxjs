@@ -80,6 +80,7 @@ class WindowSubscriber<T> extends SimpleOuterSubscriber<T, any> {
 
   constructor(destination: Subscriber<Observable<T>>) {
     super(destination);
+    this.add(this._teardown);
     destination.next(this.window);
   }
 
@@ -109,8 +110,7 @@ class WindowSubscriber<T> extends SimpleOuterSubscriber<T, any> {
     this.destination.complete();
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _unsubscribe() {
+  private _teardown = () => {
     this.window = null!;
   }
 

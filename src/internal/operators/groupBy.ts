@@ -251,17 +251,17 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
  */
 class GroupDurationSubscriber<K, T> extends Subscriber<T> {
   constructor(private key: K,
-              private group: Subject<T>,
+              group: Subject<T>,
               private parent: GroupBySubscriber<any, K, T | any>) {
     super(group);
+    this.add(this._teardown);
   }
 
-  protected _next(value: T): void {
+  protected _next(): void {
     this.complete();
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _unsubscribe() {
+  private _teardown = () => {
     const { parent, key } = this;
     this.key = this.parent = null!;
     if (parent) {

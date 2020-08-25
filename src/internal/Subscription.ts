@@ -40,15 +40,10 @@ export class Subscription implements SubscriptionLike {
   private _teardowns: Exclude<TeardownLogic, void>[] | null = null;
 
   /**
-   * @param {function(): void} [unsubscribe] A function describing how to
-   * perform the disposal of resources when the `unsubscribe` method is called.
+   * @param initialTeardown A function executed first as part of the teardown
+   * process that is kicked off when {@link unsubscribe} is called.
    */
-  constructor(unsubscribe?: () => void) {
-    if (unsubscribe) {
-      (this as any)._ctorUnsubscribe = true;
-      (this as any)._unsubscribe = unsubscribe;
-    }
-  }
+  constructor(private initialTeardown?: () => void) {}
 
   /**
    * Disposes the resources held by the subscription. May, for instance, cancel
@@ -76,22 +71,10 @@ export class Subscription implements SubscriptionLike {
         }
       }
 
-      const _unsubscribe = (this as any)._unsubscribe;
-      if (isFunction(_unsubscribe)) {
-        // It's only possible to null _unsubscribe - to release the reference to
-        // any teardown function passed in the constructor - if the property was
-        // actually assigned in the constructor, as there are some classes that
-        // are derived from Subscriber (which derives from Subscription) that
-        // implement an _unsubscribe method as a mechanism for obtaining
-        // unsubscription notifications and some of those subscribers are
-        // recycled. Also, in some of those subscribers, _unsubscribe switches
-        // from a prototype method to an instance property - see notifyNext in
-        // RetryWhenSubscriber.
-        if ((this as any)._ctorUnsubscribe) {
-          (this as any)._unsubscribe = undefined;
-        }
+      const { initialTeardown } = this;
+      if (isFunction(initialTeardown)) {
         try {
-          _unsubscribe.call(this);
+          initialTeardown();
         } catch (e) {
           errors = e instanceof UnsubscriptionError ? e.errors : [e];
         }

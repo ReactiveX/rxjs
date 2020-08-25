@@ -137,11 +137,8 @@ class SwitchMapSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
     if (!innerSubscription || innerSubscription.closed) {
       super._complete();
     }
-    this.unsubscribe();
-  }
-
-  protected _unsubscribe() {
     this.innerSubscription = undefined;
+    this.unsubscribe();
   }
 
   notifyComplete(): void {

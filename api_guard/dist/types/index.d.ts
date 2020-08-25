@@ -548,7 +548,7 @@ export declare class Subscriber<T> extends Subscription implements Observer<T> {
 
 export declare class Subscription implements SubscriptionLike {
     closed: boolean;
-    constructor(unsubscribe?: () => void);
+    constructor(initialTeardown?: (() => void) | undefined);
     add(teardown: TeardownLogic): void;
     remove(teardown: Exclude<TeardownLogic, void>): void;
     unsubscribe(): void;

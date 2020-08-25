@@ -158,6 +158,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
               error?: ((e?: any) => void) | null,
               complete?: (() => void) | null) {
     super();
+    this.add(this._teardown);
 
     let next: ((value: T) => void) | undefined;
 
@@ -281,8 +282,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     return false;
   }
 
-  /** @internal This is an internal implementation detail, do not use. */
-  _unsubscribe(): void {
+  private _teardown = () => {
     const { _parentSubscriber } = this;
     this._parentSubscriber = null!;
     _parentSubscriber.unsubscribe();
