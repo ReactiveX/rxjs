@@ -71,7 +71,7 @@ export class Subscription implements SubscriptionLike {
         }
       }
 
-      const initialTeardown = this.initialTeardown;
+      const { initialTeardown } = this;
       if (isFunction(initialTeardown)) {
         try {
           initialTeardown();
