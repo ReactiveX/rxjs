@@ -1,51 +1,155 @@
+/** @prettier */
 import { Observable } from '../Observable';
 import { AsyncSubject } from '../AsyncSubject';
 import { Subscriber } from '../Subscriber';
 import { SchedulerAction, SchedulerLike } from '../types';
 import { map } from '../operators/map';
-import { canReportError } from '../util/canReportError';
 import { isScheduler } from '../util/isScheduler';
 import { isArray } from '../util/isArray';
 
 /* tslint:disable:max-line-length */
 /** @deprecated resultSelector is deprecated, pipe to map instead */
-export function bindNodeCallback(callbackFunc: Function, resultSelector: Function, scheduler?: SchedulerLike): (...args: any[]) => Observable<any>;
+export function bindNodeCallback(
+  callbackFunc: Function,
+  resultSelector: Function,
+  scheduler?: SchedulerLike
+): (...args: any[]) => Observable<any>;
 
-export function bindNodeCallback<R1, R2, R3, R4>(callbackFunc: (callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
-export function bindNodeCallback<R1, R2, R3>(callbackFunc: (callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any, scheduler?: SchedulerLike): () => Observable<[R1, R2, R3]>;
-export function bindNodeCallback<R1, R2>(callbackFunc: (callback: (err: any, res1: R1, res2: R2) => any) => any, scheduler?: SchedulerLike): () => Observable<[R1, R2]>;
-export function bindNodeCallback<R1>(callbackFunc: (callback: (err: any, res1: R1) => any) => any, scheduler?: SchedulerLike): () => Observable<R1>;
+export function bindNodeCallback<R1, R2, R3, R4>(
+  callbackFunc: (callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any,
+  scheduler?: SchedulerLike
+): (...args: any[]) => Observable<any[]>;
+export function bindNodeCallback<R1, R2, R3>(
+  callbackFunc: (callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any,
+  scheduler?: SchedulerLike
+): () => Observable<[R1, R2, R3]>;
+export function bindNodeCallback<R1, R2>(
+  callbackFunc: (callback: (err: any, res1: R1, res2: R2) => any) => any,
+  scheduler?: SchedulerLike
+): () => Observable<[R1, R2]>;
+export function bindNodeCallback<R1>(
+  callbackFunc: (callback: (err: any, res1: R1) => any) => any,
+  scheduler?: SchedulerLike
+): () => Observable<R1>;
 export function bindNodeCallback(callbackFunc: (callback: (err: any) => any) => any, scheduler?: SchedulerLike): () => Observable<void>;
 
-export function bindNodeCallback<A1, R1, R2, R3, R4>(callbackFunc: (arg1: A1, callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
-export function bindNodeCallback<A1, R1, R2, R3>(callbackFunc: (arg1: A1, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any, scheduler?: SchedulerLike): (arg1: A1) => Observable<[R1, R2, R3]>;
-export function bindNodeCallback<A1, R1, R2>(callbackFunc: (arg1: A1, callback: (err: any, res1: R1, res2: R2) => any) => any, scheduler?: SchedulerLike): (arg1: A1) => Observable<[R1, R2]>;
-export function bindNodeCallback<A1, R1>(callbackFunc: (arg1: A1, callback: (err: any, res1: R1) => any) => any, scheduler?: SchedulerLike): (arg1: A1) => Observable<R1>;
-export function bindNodeCallback<A1>(callbackFunc: (arg1: A1, callback: (err: any) => any) => any, scheduler?: SchedulerLike): (arg1: A1) => Observable<void>;
+export function bindNodeCallback<A1, R1, R2, R3, R4>(
+  callbackFunc: (arg1: A1, callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any,
+  scheduler?: SchedulerLike
+): (...args: any[]) => Observable<any[]>;
+export function bindNodeCallback<A1, R1, R2, R3>(
+  callbackFunc: (arg1: A1, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1) => Observable<[R1, R2, R3]>;
+export function bindNodeCallback<A1, R1, R2>(
+  callbackFunc: (arg1: A1, callback: (err: any, res1: R1, res2: R2) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1) => Observable<[R1, R2]>;
+export function bindNodeCallback<A1, R1>(
+  callbackFunc: (arg1: A1, callback: (err: any, res1: R1) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1) => Observable<R1>;
+export function bindNodeCallback<A1>(
+  callbackFunc: (arg1: A1, callback: (err: any) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1) => Observable<void>;
 
-export function bindNodeCallback<A1, A2, R1, R2, R3, R4>(callbackFunc: (arg1: A1, arg2: A2, callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
-export function bindNodeCallback<A1, A2, R1, R2, R3>(callbackFunc: (arg1: A1, arg2: A2, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2) => Observable<[R1, R2, R3]>;
-export function bindNodeCallback<A1, A2, R1, R2>(callbackFunc: (arg1: A1, arg2: A2, callback: (err: any, res1: R1, res2: R2) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2) => Observable<[R1, R2]>;
-export function bindNodeCallback<A1, A2, R1>(callbackFunc: (arg1: A1, arg2: A2, callback: (err: any, res1: R1) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2) => Observable<R1>;
-export function bindNodeCallback<A1, A2>(callbackFunc: (arg1: A1, arg2: A2, callback: (err: any) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2) => Observable<void>;
+export function bindNodeCallback<A1, A2, R1, R2, R3, R4>(
+  callbackFunc: (arg1: A1, arg2: A2, callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any,
+  scheduler?: SchedulerLike
+): (...args: any[]) => Observable<any[]>;
+export function bindNodeCallback<A1, A2, R1, R2, R3>(
+  callbackFunc: (arg1: A1, arg2: A2, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2) => Observable<[R1, R2, R3]>;
+export function bindNodeCallback<A1, A2, R1, R2>(
+  callbackFunc: (arg1: A1, arg2: A2, callback: (err: any, res1: R1, res2: R2) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2) => Observable<[R1, R2]>;
+export function bindNodeCallback<A1, A2, R1>(
+  callbackFunc: (arg1: A1, arg2: A2, callback: (err: any, res1: R1) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2) => Observable<R1>;
+export function bindNodeCallback<A1, A2>(
+  callbackFunc: (arg1: A1, arg2: A2, callback: (err: any) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2) => Observable<void>;
 
-export function bindNodeCallback<A1, A2, A3, R1, R2, R3, R4>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
-export function bindNodeCallback<A1, A2, A3, R1, R2, R3>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3) => Observable<[R1, R2, R3]>;
-export function bindNodeCallback<A1, A2, A3, R1, R2>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any, res1: R1, res2: R2) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3) => Observable<[R1, R2]>;
-export function bindNodeCallback<A1, A2, A3, R1>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any, res1: R1) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3) => Observable<R1>;
-export function bindNodeCallback<A1, A2, A3>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3) => Observable<void>;
+export function bindNodeCallback<A1, A2, A3, R1, R2, R3, R4>(
+  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any,
+  scheduler?: SchedulerLike
+): (...args: any[]) => Observable<any[]>;
+export function bindNodeCallback<A1, A2, A3, R1, R2, R3>(
+  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2, arg3: A3) => Observable<[R1, R2, R3]>;
+export function bindNodeCallback<A1, A2, A3, R1, R2>(
+  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any, res1: R1, res2: R2) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2, arg3: A3) => Observable<[R1, R2]>;
+export function bindNodeCallback<A1, A2, A3, R1>(
+  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any, res1: R1) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2, arg3: A3) => Observable<R1>;
+export function bindNodeCallback<A1, A2, A3>(
+  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2, arg3: A3) => Observable<void>;
 
-export function bindNodeCallback<A1, A2, A3, A4, R1, R2, R3, R4>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
-export function bindNodeCallback<A1, A2, A3, A4, R1, R2, R3>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3, arg4: A4) => Observable<[R1, R2, R3]>;
-export function bindNodeCallback<A1, A2, A3, A4, R1, R2>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, callback: (err: any, res1: R1, res2: R2) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3, arg4: A4) => Observable<[R1, R2]>;
-export function bindNodeCallback<A1, A2, A3, A4, R1>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, callback: (err: any, res1: R1) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3, arg4: A4) => Observable<R1>;
-export function bindNodeCallback<A1, A2, A3, A4>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, callback: (err: any) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3, arg4: A4) => Observable<void>;
+export function bindNodeCallback<A1, A2, A3, A4, R1, R2, R3, R4>(
+  callbackFunc: (
+    arg1: A1,
+    arg2: A2,
+    arg3: A3,
+    arg4: A4,
+    callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any
+  ) => any,
+  scheduler?: SchedulerLike
+): (...args: any[]) => Observable<any[]>;
+export function bindNodeCallback<A1, A2, A3, A4, R1, R2, R3>(
+  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2, arg3: A3, arg4: A4) => Observable<[R1, R2, R3]>;
+export function bindNodeCallback<A1, A2, A3, A4, R1, R2>(
+  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, callback: (err: any, res1: R1, res2: R2) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2, arg3: A3, arg4: A4) => Observable<[R1, R2]>;
+export function bindNodeCallback<A1, A2, A3, A4, R1>(
+  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, callback: (err: any, res1: R1) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2, arg3: A3, arg4: A4) => Observable<R1>;
+export function bindNodeCallback<A1, A2, A3, A4>(
+  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, callback: (err: any) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2, arg3: A3, arg4: A4) => Observable<void>;
 
-export function bindNodeCallback<A1, A2, A3, A4, A5, R1, R2, R3, R4>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
-export function bindNodeCallback<A1, A2, A3, A4, A5, R1, R2, R3>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<[R1, R2, R3]>;
-export function bindNodeCallback<A1, A2, A3, A4, A5, R1, R2>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any, res1: R1, res2: R2) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<[R1, R2]>;
-export function bindNodeCallback<A1, A2, A3, A4, A5, R1>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any, res1: R1) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<R1>;
-export function bindNodeCallback<A1, A2, A3, A4, A5>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<void>; /* tslint:enable:max-line-length */
+export function bindNodeCallback<A1, A2, A3, A4, A5, R1, R2, R3, R4>(
+  callbackFunc: (
+    arg1: A1,
+    arg2: A2,
+    arg3: A3,
+    arg4: A4,
+    arg5: A5,
+    callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any
+  ) => any,
+  scheduler?: SchedulerLike
+): (...args: any[]) => Observable<any[]>;
+export function bindNodeCallback<A1, A2, A3, A4, A5, R1, R2, R3>(
+  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<[R1, R2, R3]>;
+export function bindNodeCallback<A1, A2, A3, A4, A5, R1, R2>(
+  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any, res1: R1, res2: R2) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<[R1, R2]>;
+export function bindNodeCallback<A1, A2, A3, A4, A5, R1>(
+  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any, res1: R1) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<R1>;
+export function bindNodeCallback<A1, A2, A3, A4, A5>(
+  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any) => any) => any,
+  scheduler?: SchedulerLike
+): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<void>; /* tslint:enable:max-line-length */
 
 export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
 /**
@@ -155,124 +259,120 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  */
 export function bindNodeCallback<T>(
   callbackFunc: Function,
-  resultSelector?: Function|SchedulerLike,
+  resultSelector?: Function | SchedulerLike,
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<T> {
-
   if (resultSelector) {
     if (isScheduler(resultSelector)) {
       scheduler = resultSelector;
     } else {
       // DEPRECATED PATH
-      return (...args: any[]) => bindNodeCallback(callbackFunc, scheduler)(...args).pipe(
-        map(args => isArray(args) ? resultSelector(...args) : resultSelector(args))
-      );
+      return (...args: any[]) =>
+        bindNodeCallback(
+          callbackFunc,
+          scheduler
+        )(...args).pipe(map((args) => (isArray(args) ? resultSelector(...args) : resultSelector(args))));
     }
   }
 
-  return function(this: any, ...args: any[]): Observable<T> {
-    const params: ParamsState<T> = {
-      subject: undefined!,
-      args,
-      callbackFunc,
-      scheduler: scheduler!,
-      context: this,
-    };
-    return new Observable<T>(subscriber => {
-      const { context } = params;
-      let { subject } = params;
+  return function (this: any, ...args: any[]): Observable<T> {
+    let results: any;
+    let hasResults = false;
+    let hasError = false;
+    let error: any;
+    return new Observable<T>((subscriber) => {
       if (!scheduler) {
-        if (!subject) {
-          subject = params.subject = new AsyncSubject<T>();
+        let isCurrentlyAsync = false;
+        let hasCompletedSynchronously = false;
+        if (hasResults) {
+          subscriber.next(results);
+          subscriber.complete();
+        } else if (hasError) {
+          subscriber.error(error);
+        } else {
           const handler = (...innerArgs: any[]) => {
             const err = innerArgs.shift();
-
-            if (err) {
-              subject.error(err);
-              return;
+            if (err != null) {
+              hasError = true;
+              error = err;
+              subscriber.error(err);
+            } else {
+              hasResults = true;
+              results = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
+              subscriber.next(results);
+              if (isCurrentlyAsync) {
+                subscriber.complete();
+              } else {
+                hasCompletedSynchronously = true;
+              }
             }
-
-            subject.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
-            subject.complete();
           };
 
           try {
-            callbackFunc.apply(context, [...args, handler]);
+            callbackFunc.apply(this, [...args, handler]);
           } catch (err) {
-            if (canReportError(subject)) {
-              subject.error(err);
-            } else {
-              console.warn(err);
-            }
+            hasError = true;
+            error = err;
+            subscriber.error(err);
+          }
+          isCurrentlyAsync = true;
+
+          if (hasCompletedSynchronously && !hasError) {
+            subscriber.complete();
           }
         }
-        return subject.subscribe(subscriber);
+        return;
       } else {
-        return scheduler.schedule<DispatchState<T>>(dispatch as any, 0, { params, subscriber, context });
+        const scheduleNext = (value: any[]) => {
+          hasResults = true;
+          results = value.length <= 1 ? value[0] : value;
+          subscriber.add(
+            scheduler!.schedule(() => {
+              subscriber.next(results);
+              subscriber.add(
+                scheduler!.schedule(() => {
+                  subscriber.complete();
+                })
+              );
+            })
+          );
+        };
+
+        const scheduleError = (err: any) => {
+          hasError = true;
+          error = err;
+          subscriber.add(
+            scheduler!.schedule(() => {
+              subscriber.error(error);
+            })
+          );
+        };
+
+        return scheduler.schedule(() => {
+          if (hasResults) {
+            scheduleNext(results);
+          } else if (hasError) {
+            scheduleError(error);
+          } else {
+            try {
+              callbackFunc.apply(this, [
+                ...args,
+                (...innerArgs: any[]) => {
+                  const err = innerArgs.shift();
+                  if (err != null) {
+                    scheduleError(err);
+                  } else {
+                    scheduleNext(innerArgs);
+                  }
+                },
+              ]);
+            } catch (err) {
+              scheduleError(err);
+              return;
+            }
+          }
+        });
       }
     });
   };
-}
-
-interface DispatchState<T> {
-  subscriber: Subscriber<T>;
-  context: any;
-  params: ParamsState<T>;
-}
-
-interface ParamsState<T> {
-  callbackFunc: Function;
-  args: any[];
-  scheduler: SchedulerLike;
-  subject: AsyncSubject<T>;
-  context: any;
-}
-
-function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchState<T>) {
-  const { params, subscriber, context } = state;
-  const { callbackFunc, args, scheduler } = params;
-  let subject = params.subject;
-
-  if (!subject) {
-    subject = params.subject = new AsyncSubject<T>();
-
-    const handler = (...innerArgs: any[]) => {
-      const err = innerArgs.shift();
-      if (err) {
-        this.add(scheduler.schedule<DispatchErrorArg<T>>(dispatchError as any, 0, { err, subject }));
-      } else {
-        const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
-        this.add(scheduler.schedule<DispatchNextArg<T>>(dispatchNext as any, 0, { value, subject }));
-      }
-    };
-
-    try {
-      callbackFunc.apply(context, [...args, handler]);
-    } catch (err) {
-      this.add(scheduler.schedule<DispatchErrorArg<T>>(dispatchError as any, 0, { err, subject }));
-    }
-  }
-
-  this.add(subject.subscribe(subscriber));
-}
-
-interface DispatchNextArg<T> {
-  subject: AsyncSubject<T>;
-  value: T;
-}
-
-function dispatchNext<T>(arg: DispatchNextArg<T>) {
-  const { value, subject } = arg;
-  subject.next(value);
-  subject.complete();
-}
-
-interface DispatchErrorArg<T> {
-  subject: AsyncSubject<T>;
-  err: any;
-}
-
-function dispatchError<T>(arg: DispatchErrorArg<T>) {
-  const { err, subject } = arg;
-  subject.error(err);
 }
