@@ -1,24 +1,21 @@
+/** @prettier */
 import { Subject } from '../Subject';
-import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { TeardownLogic } from '../types';
 import { refCount as higherOrderRefCount } from '../operators/refCount';
 
 /**
  * @class ConnectableObservable<T>
  */
 export class ConnectableObservable<T> extends Observable<T> {
-
   protected _subject: Subject<T> | undefined;
   protected _refCount: number = 0;
   protected _connection: Subscription | null | undefined;
   /** @internal */
   _isComplete = false;
 
-  constructor(public source: Observable<T>,
-              protected subjectFactory: () => Subject<T>) {
+  constructor(public source: Observable<T>, protected subjectFactory: () => Subject<T>) {
     super();
   }
 
@@ -40,8 +37,7 @@ export class ConnectableObservable<T> extends Observable<T> {
     if (!connection) {
       this._isComplete = false;
       connection = this._connection = new Subscription();
-      connection.add(this.source
-        .subscribe(new ConnectableSubscriber(this.getSubject(), this)));
+      connection.add(this.source.subscribe(new ConnectableSubscriber(this.getSubject(), this)));
       if (connection.closed) {
         this._connection = null;
         connection = Subscription.EMPTY;
@@ -66,26 +62,27 @@ export const connectableObservableDescriptor: PropertyDescriptorMap = (() => {
     _isComplete: { value: connectableProto._isComplete, writable: true },
     getSubject: { value: connectableProto.getSubject },
     connect: { value: connectableProto.connect },
-    refCount: { value: connectableProto.refCount }
+    refCount: { value: connectableProto.refCount },
   };
 })();
 
 class ConnectableSubscriber<T> extends Subscriber<T> {
-  constructor(protected destination: Subject<T>,
-              private connectable: ConnectableObservable<T>) {
+  constructor(protected destination: Subject<T>, private connectable: ConnectableObservable<T>) {
     super();
-    this.add(this._teardown);
   }
+
   protected _error(err: any): void {
     this._teardown();
     super._error(err);
   }
+
   protected _complete(): void {
     this.connectable._isComplete = true;
     this._teardown();
     super._complete();
   }
-  private _teardown = () => {
+
+  private _teardown() {
     const connectable = this.connectable as any;
     if (connectable) {
       this.connectable = null!;
@@ -96,6 +93,13 @@ class ConnectableSubscriber<T> extends Subscriber<T> {
       if (connection) {
         connection.unsubscribe();
       }
+    }
+  }
+
+  unsubscribe() {
+    if (!this.closed) {
+      this._teardown();
+      super.unsubscribe();
     }
   }
 }
