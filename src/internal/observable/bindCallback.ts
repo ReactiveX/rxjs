@@ -1,9 +1,6 @@
-import { SchedulerLike, SchedulerAction } from '../types';
+import { SchedulerLike } from '../types';
 import { Observable } from '../Observable';
-import { AsyncSubject } from '../AsyncSubject';
-import { Subscriber } from '../Subscriber';
 import { map } from '../operators/map';
-import { canReportError } from '../util/canReportError';
 import { isArray } from '../util/isArray';
 import { isScheduler } from '../util/isScheduler';
 
@@ -192,98 +189,91 @@ export function bindCallback<T>(
     }
   }
 
+  
   return function (this: any, ...args: any[]): Observable<T> {
-    const context = this;
-    let subject: AsyncSubject<T> | undefined;
-    const params = {
-      context,
-      subject: undefined,
-      callbackFunc,
-      scheduler: scheduler!,
-    };
-    return new Observable<T>(subscriber => {
+    let results: any;
+    let hasResults = false;
+    let hasError = false;
+    let error: any;
+    return new Observable<T>((subscriber) => {
       if (!scheduler) {
-        if (!subject) {
-          subject = new AsyncSubject<T>();
+        let isCurrentlyAsync = false;
+        let hasCompletedSynchronously = false;
+        if (hasResults) {
+          subscriber.next(results);
+          subscriber.complete();
+        } else if (hasError) {
+          subscriber.error(error);
+        } else {
           const handler = (...innerArgs: any[]) => {
-            subject!.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
-            subject!.complete();
+            hasResults = true;
+            results = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
+            subscriber.next(results);
+            if (isCurrentlyAsync) {
+              subscriber.complete();
+            } else {
+              hasCompletedSynchronously = true;
+            }
           };
 
           try {
-            callbackFunc.apply(context, [...args, handler]);
+            callbackFunc.apply(this, [...args, handler]);
           } catch (err) {
-            if (canReportError(subject)) {
-              subject.error(err);
-            } else {
-              console.warn(err);
-            }
+            hasError = true;
+            error = err;
+            subscriber.error(err);
+          }
+          isCurrentlyAsync = true;
+
+          if (hasCompletedSynchronously && !hasError) {
+            subscriber.complete();
           }
         }
-        return subject.subscribe(subscriber);
+        return;
       } else {
-        const state: DispatchState<T> = {
-          args, subscriber, params,
+        const scheduleNext = (value: any[]) => {
+          hasResults = true;
+          results = value.length <= 1 ? value[0] : value;
+          subscriber.add(
+            scheduler!.schedule(() => {
+              subscriber.next(results);
+              subscriber.add(
+                scheduler!.schedule(() => {
+                  subscriber.complete();
+                })
+              );
+            })
+          );
         };
-        return scheduler.schedule<DispatchState<T>>(dispatch as any, 0, state);
+
+        const scheduleError = (err: any) => {
+          hasError = true;
+          error = err;
+          subscriber.add(
+            scheduler!.schedule(() => {
+              subscriber.error(error);
+            })
+          );
+        };
+
+        return scheduler.schedule(() => {
+          if (hasResults) {
+            scheduleNext(results);
+          } else if (hasError) {
+            scheduleError(error);
+          } else {
+            try {
+              callbackFunc.apply(this, [
+                ...args,
+                (...innerArgs: any[]) => scheduleNext(innerArgs)
+              ]);
+            } catch (err) {
+              scheduleError(err);
+              return;
+            }
+          }
+        });
       }
     });
   };
-}
-
-interface DispatchState<T> {
-  args: any[];
-  subscriber: Subscriber<T>;
-  params: ParamsContext<T>;
-}
-
-interface ParamsContext<T> {
-  callbackFunc: Function;
-  scheduler: SchedulerLike;
-  context: any;
-  subject?: AsyncSubject<T>;
-}
-
-function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchState<T>) {
-  const self = this;
-  const { args, subscriber, params } = state;
-  const { callbackFunc, context, scheduler } = params;
-  let { subject } = params;
-  if (!subject) {
-    subject = params.subject = new AsyncSubject<T>();
-
-    const handler = (...innerArgs: any[]) => {
-      const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
-      this.add(scheduler.schedule<NextState<T>>(dispatchNext as any, 0, { value, subject: subject! }));
-    };
-
-    try {
-      callbackFunc.apply(context, [...args, handler]);
-    } catch (err) {
-      subject.error(err);
-    }
-  }
-
-  this.add(subject.subscribe(subscriber));
-}
-
-interface NextState<T> {
-  subject: AsyncSubject<T>;
-  value: T;
-}
-
-function dispatchNext<T>(this: SchedulerAction<NextState<T>>, state: NextState<T>) {
-  const { value, subject } = state;
-  subject.next(value);
-  subject.complete();
-}
-
-interface ErrorState<T> {
-  subject: AsyncSubject<T>;
-  err: any;
-}
-
-function dispatchError<T>(this: SchedulerAction<ErrorState<T>>, state: ErrorState<T>) {
-  const { err, subject } = state;
-  subject.error(err);
 }

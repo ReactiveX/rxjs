@@ -281,17 +281,17 @@ describe('bindCallback', () => {
     });
   });
 
-  it('should not swallow post-callback errors', () => {
+  it('should emit post-callback errors', () => {
     function badFunction(callback: (answer: number) => void): void {
       callback(42);
-      throw new Error('kaboom');
+      throw 'kaboom';
     }
-    const consoleStub = sinon.stub(console, 'warn');
-    try {
-      bindCallback(badFunction)().subscribe();
-      expect(consoleStub).to.have.property('called', true);
-    } finally {
-      consoleStub.restore();
-    }
+    let receivedError: any;
+
+    bindCallback(badFunction)().subscribe({
+      error: err => receivedError = err
+    });
+
+    expect(receivedError).to.equal('kaboom');
   });
 });
