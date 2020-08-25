@@ -5,7 +5,6 @@ import { Operator } from './Operator';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable } from './types';
-import { canReportError } from './util/canReportError';
 import { toSubscriber } from './util/toSubscriber';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
@@ -214,6 +213,14 @@ export class Observable<T> implements Subscribable<T> {
     if (operator) {
       sink.add(operator.call(sink, this.source));
     } else {
+      // If we have a source, we know this observable is the result of one of our lifted
+      // operators. We choose the trusted path of `_subscribe`. Otherwise,
+      // if we do not have a source, that means this is a user-created observable, and the
+      // subscribe function may error, so we need to wrap it in a try-catch. Likewise,
+      // if the user has chosen to use the deprecated synchronous error throwning behavior,
+      // AND the current subscriber is in a syncErrorThrowable state, meaning we're in the act
+      // of subscribing, we need to wrap the subscribe in a try-catch so we can flag
+      // synchronously thrown errors and throw them again.
       sink.add(
         this.source || (config.useDeprecatedSynchronousErrorHandling && !sink.syncErrorThrowable)
           ? this._subscribe(sink)
@@ -241,11 +248,16 @@ export class Observable<T> implements Subscribable<T> {
       if (config.useDeprecatedSynchronousErrorHandling) {
         sink.syncErrorThrown = true;
         sink.syncErrorValue = err;
-      }
-      if (canReportError(sink)) {
-        sink.error(err);
       } else {
-        console.warn(err);
+        if (canReportError(sink)) {
+          sink.error(err);
+        } else {
+          // This is hit when the user develops a poorly made observable. That means that
+          // something is calling `subscriber.error` more than once. We're currently logging
+          // this as a warning to console to let them know something is wrong.
+          // TODO: Remove this in favor of some sort of reporting handle.
+          console.warn(err);
+        }
       }
     }
   }
@@ -504,4 +516,24 @@ function getPromiseCtor(promiseCtor: PromiseConstructorLike | undefined) {
   }
 
   return promiseCtor;
+}
+
+/**
+ * Determines whether the subscriber is closed or stopped or has a
+ * destination that is closed or stopped - in which case errors will
+ * need to be reported via a different mechanism.
+ * @param subscriber the subscriber to check
+ */
+export function canReportError(subscriber: Subscriber<any>): boolean {
+  while (subscriber) {
+    const { closed, destination, isStopped } = subscriber as any;
+    if (closed || isStopped) {
+      return false;
+    } else if (destination && destination instanceof Subscriber) {
+      subscriber = destination;
+    } else {
+      subscriber = null!;
+    }
+  }
+  return true;
 }
