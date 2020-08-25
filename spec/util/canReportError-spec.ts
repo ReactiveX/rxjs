@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { noop, Subject, Subscriber } from 'rxjs';
-import { canReportError } from 'rxjs/internal/util/canReportError';
+import { noop, Subscriber } from 'rxjs';
+import { canReportError } from 'rxjs/internal/Observable';
 
 describe('canReportError', () => {
   it('should report errors to an observer if possible', () => {
@@ -12,12 +12,6 @@ describe('canReportError', () => {
     const subscriber = new Subscriber<{}>(noop, noop);
     subscriber.error(new Error('kaboom'));
     expect(canReportError(subscriber)).to.be.false;
-  });
-
-  it('should not report errors to a closed subject', () => {
-    const subject = new Subject<{}>();
-    subject.unsubscribe();
-    expect(canReportError(subject)).to.be.false;
   });
 
   it('should not report errors an observer with a stopped destination', () => {

@@ -617,7 +617,7 @@ describe('Observable', () => {
       });
 
       it('should throw synchronously', () => {
-        expect(() => throwError(new Error()).subscribe()).to.throw(Error);
+        expect(() => throwError(new Error('thrown error')).subscribe()).to.throw(Error, 'thrown error');
       });
 
       it('should rethrow if sink has syncErrorThrowable = false', () => {
