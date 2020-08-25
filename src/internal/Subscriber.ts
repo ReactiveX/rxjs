@@ -187,96 +187,59 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     this._complete = complete!;
   }
 
-  next(value?: T): void {
+  next(value: T): void {
     if (!this.isStopped && this._next) {
-      const { _parentSubscriber } = this;
-      if (!config.useDeprecatedSynchronousErrorHandling || !_parentSubscriber.syncErrorThrowable) {
-        this.__tryOrUnsub(this._next, value);
-      } else if (this.__tryOrSetError(_parentSubscriber, this._next, value)) {
-        this.unsubscribe();
+      try {
+        this._next(value);
+      } catch (err) {
+        this._throw(err);
       }
     }
   }
 
-  error(err?: any): void {
+  error(err: any): void {
     if (!this.isStopped) {
-      const { _parentSubscriber } = this;
-      const { useDeprecatedSynchronousErrorHandling } = config;
       if (this._error) {
-        if (!useDeprecatedSynchronousErrorHandling || !_parentSubscriber.syncErrorThrowable) {
-          this.__tryOrUnsub(this._error, err);
-          this.unsubscribe();
-        } else {
-          this.__tryOrSetError(_parentSubscriber, this._error, err);
-          this.unsubscribe();
+        try {
+          this._error(err);
+        } catch (err) {
+          this._throw(err);
+          return;
         }
-      } else if (!_parentSubscriber.syncErrorThrowable) {
         this.unsubscribe();
-        if (useDeprecatedSynchronousErrorHandling) {
-          throw err;
-        }
-        hostReportError(err);
       } else {
-        if (useDeprecatedSynchronousErrorHandling) {
-          _parentSubscriber.syncErrorValue = err;
-          _parentSubscriber.syncErrorThrown = true;
-        } else {
-          hostReportError(err);
-        }
-        this.unsubscribe();
+        this._throw(err);
       }
+    }
+  }
+
+  private _throw(err: any) {
+    this.unsubscribe();
+    if (config.useDeprecatedSynchronousErrorHandling) {
+      const { _parentSubscriber } = this;
+      if (_parentSubscriber?.syncErrorThrowable) {
+        _parentSubscriber.syncErrorValue = err;
+        _parentSubscriber.syncErrorThrown = true;
+      } else {
+        throw err;
+      }
+    } else {
+      hostReportError(err);
     }
   }
 
   complete(): void {
     if (!this.isStopped) {
-      const { _parentSubscriber } = this;
       if (this._complete) {
-        const wrappedComplete = () => this._complete.call(this);
-
-        if (!config.useDeprecatedSynchronousErrorHandling || !_parentSubscriber.syncErrorThrowable) {
-          this.__tryOrUnsub(wrappedComplete);
-          this.unsubscribe();
-        } else {
-          this.__tryOrSetError(_parentSubscriber, wrappedComplete);
-          this.unsubscribe();
+        try {
+          this._complete();
+        } catch (err) {
+          this._throw(err);
+          return;
         }
-      } else {
-        this.unsubscribe();
       }
-    }
-  }
-
-  private __tryOrUnsub(fn: Function, value?: any): void {
-    try {
-      fn(value);
-    } catch (err) {
       this.unsubscribe();
-      if (config.useDeprecatedSynchronousErrorHandling) {
-        throw err;
-      } else {
-        hostReportError(err);
-      }
     }
-  }
-
-  private __tryOrSetError(parent: Subscriber<T>, fn: Function, value?: any): boolean {
-    if (!config.useDeprecatedSynchronousErrorHandling) {
-      throw new Error('bad call');
-    }
-    try {
-      fn(value);
-    } catch (err) {
-      if (config.useDeprecatedSynchronousErrorHandling) {
-        parent.syncErrorValue = err;
-        parent.syncErrorThrown = true;
-        return true;
-      } else {
-        hostReportError(err);
-        return true;
-      }
-    }
-    return false;
   }
 
   unsubscribe() {

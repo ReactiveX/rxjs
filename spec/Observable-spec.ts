@@ -612,14 +612,12 @@ describe('Observable', () => {
 
     describe('if config.useDeprecatedSynchronousErrorHandling === true', () => {
       beforeEach(() => {
-        const _warn = console.warn;
-        console.warn = noop;
+        config.quietBadConfig = true;
         config.useDeprecatedSynchronousErrorHandling = true;
-        console.warn = _warn;
       });
 
       it('should throw synchronously', () => {
-        expect(() => throwError(new Error()).subscribe()).to.throw();
+        expect(() => throwError(new Error()).subscribe()).to.throw(Error);
       });
 
       it('should rethrow if sink has syncErrorThrowable = false', () => {
@@ -637,10 +635,8 @@ describe('Observable', () => {
       });
 
       afterEach(() => {
-        const _log = console.log;
-        console.log = noop;
         config.useDeprecatedSynchronousErrorHandling = false;
-        console.log = _log;
+        config.quietBadConfig = false;
       });
     });
   });
