@@ -252,10 +252,8 @@ export class Observable<T> implements Subscribable<T> {
         if (canReportError(sink)) {
           sink.error(err);
         } else {
-          // This is hit when the user develops a poorly made observable. That means that
-          // something is calling `subscriber.error` more than once. We're currently logging
-          // this as a warning to console to let them know something is wrong.
-          // TODO: Remove this in favor of some sort of reporting handle.
+          // If an error is thrown during subscribe, but our subscriber is closed, so we cannot notify via the
+          // subscription "error" channel, we are warning the developer of the problem here, via the console.
           console.warn(err);
         }
       }
