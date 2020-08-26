@@ -1,6 +1,6 @@
 /** @prettier */
 import { Subscriber } from '../Subscriber';
-import { empty as emptyObserver } from '../Observer';
+import { EMPTY_OBSERVER } from '../EMPTY_OBSERVER';
 import { PartialObserver, Observer } from '../types';
 import { isSubscription } from '../Subscription';
 
@@ -20,7 +20,7 @@ export function toSubscriber<T>(
   }
 
   if (!nextOrObserver && !error && !complete) {
-    return new Subscriber(emptyObserver);
+    return new Subscriber(EMPTY_OBSERVER);
   }
 
   return new Subscriber(nextOrObserver, error, complete);

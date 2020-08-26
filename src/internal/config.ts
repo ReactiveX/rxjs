@@ -8,6 +8,17 @@ let _enable_deoptimized_subscriber_creation = false;
  */
 export const config = {
   /**
+   * A registration point for unhandled errors from RxJS. These are errors that
+   * cannot were not handled by consuming code in the usual subscription path. For
+   * example, if you have this configured, and you subscribe to an observable without
+   * providing an error handler, errors from that subscription will end up here. This
+   * will _always_ be called asynchronously on another job in the runtime. This is because
+   * we do not want errors thrown in this user-configured handler to interfere with the
+   * behavior of the library.
+   */
+  onUnhandledError: null as ((err: any) => void) | null,
+
+  /**
    * If true, console logs for deprecation warnings will not be emitted.
    * @deprecated this will be removed in v8 when all deprecated settings are removed.
    */

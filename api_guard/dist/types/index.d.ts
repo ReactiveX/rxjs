@@ -167,6 +167,7 @@ export declare function concat<O1 extends ObservableInput<any>, O2 extends Obser
 export declare function concat<A extends ObservableInput<any>[]>(...observables: A): Observable<ObservedValueUnionFromArray<A>>;
 
 export declare const config: {
+    onUnhandledError: ((err: any) => void) | null;
     quietBadConfig: boolean;
     Promise: PromiseConstructorLike;
     useDeprecatedSynchronousErrorHandling: boolean;

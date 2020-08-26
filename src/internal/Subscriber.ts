@@ -1,9 +1,9 @@
 import { isFunction } from './util/isFunction';
-import { empty as emptyObserver } from './Observer';
+import { EMPTY_OBSERVER } from './EMPTY_OBSERVER';
 import { Observer, PartialObserver } from './types';
 import { Subscription, isSubscription } from './Subscription';
 import { config } from './config';
-import { hostReportError } from './util/hostReportError';
+import { reportUnhandledError } from './util/reportUnhandledError';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -58,11 +58,11 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
 
     switch (arguments.length) {
       case 0:
-        this.destination = emptyObserver;
+        this.destination = EMPTY_OBSERVER;
         break;
       case 1:
         if (!destinationOrNext) {
-          this.destination = emptyObserver;
+          this.destination = EMPTY_OBSERVER;
           break;
         }
         if (typeof destinationOrNext === 'object') {
@@ -165,7 +165,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       next = observerOrNext.next;
       error = observerOrNext.error;
       complete = observerOrNext.complete;
-      if (observerOrNext !== emptyObserver) {
+      if (observerOrNext !== EMPTY_OBSERVER) {
         let context: any;
         if (config.useDeprecatedNextContext) {
           context = Object.create(observerOrNext);
@@ -224,7 +224,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
         throw err;
       }
     } else {
-      hostReportError(err);
+      reportUnhandledError(err);
     }
   }
 
