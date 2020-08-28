@@ -111,44 +111,29 @@ export function catchError<T, O extends ObservableInput<any>>(
   return (source: Observable<T>) =>
     lift(source, function (this: Subscriber<T>, source: Observable<T>) {
       const subscriber = this;
-      const subscription = new Subscription();
-      let innerSub: Subscription | null = null;
-      let syncUnsub = false;
-      let handledResult: Observable<ObservedValueOf<O>>;
+      let nextSource: Observable<T> | null = null;
+      let subscription: Subscription | null = null;
 
-      const handleError = (err: any) => {
-        try {
-          handledResult = from(selector(err, catchError(selector)(source)));
-        } catch (err) {
-          subscriber.error(err);
-          return;
+      const tryNextSubscription = () => {
+        if (subscription && nextSource && !subscriber.closed) {
+          subscription = nextSource.subscribe(subscriber);
         }
       };
 
-      innerSub = source.subscribe(
+      subscription = source.subscribe(
         new CatchErrorSubscriber(subscriber, (err) => {
-          handleError(err);
-          if (handledResult) {
-            if (innerSub) {
-              innerSub.unsubscribe();
-              innerSub = null;
-              subscription.add(handledResult.subscribe(subscriber));
-            } else {
-              syncUnsub = true;
-            }
+          try {
+            nextSource = from(selector(err, catchError(selector)(source)));
+            tryNextSubscription();
+          } catch (selectorErr) {
+            subscriber.error(selectorErr);
           }
         })
       );
 
-      if (syncUnsub) {
-        innerSub.unsubscribe();
-        innerSub = null;
-        subscription.add(handledResult!.subscribe(subscriber));
-      } else {
-        subscription.add(innerSub);
-      }
+      tryNextSubscription();
 
-      return subscription;
+      return () => subscription!.unsubscribe();
     });
 }
 
