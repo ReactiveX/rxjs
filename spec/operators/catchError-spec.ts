@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { concat, defer, Observable, of, throwError, EMPTY, from } from 'rxjs';
-import { catchError, map, mergeMap, takeWhile, delay, take } from 'rxjs/operators';
+import { concat, Observable, of, throwError, EMPTY, from } from 'rxjs';
+import { catchError, map, mergeMap, delay, take, finalize } from 'rxjs/operators';
 import * as sinon from 'sinon';
 import { createObservableInputs } from '../helpers/test-helper';
 import { TestScheduler } from 'rxjs/testing';
@@ -159,31 +159,6 @@ describe('catchError operator', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
-  });
-
-  it('should stop listening to a synchronous observable when unsubscribed', () => {
-    const sideEffects: number[] = [];
-    const synchronousObservable = concat(
-      defer(() => {
-        sideEffects.push(1);
-        return of(1);
-      }),
-      defer(() => {
-        sideEffects.push(2);
-        return of(2);
-      }),
-      defer(() => {
-        sideEffects.push(3);
-        return of(3);
-      })
-    );
-
-    throwError(new Error('Some error')).pipe(
-      catchError(() => synchronousObservable),
-      takeWhile((x) => x != 2) // unsubscribe at the second side-effect
-    ).subscribe(() => { /* noop */ });
-
-    expect(sideEffects).to.deep.equal([1, 2]);
   });
 
   it('should catch error and replace it with a hot Observable', () => {
@@ -457,7 +432,6 @@ describe('catchError operator', () => {
     );
   });
 
-  // TODO: fix firehose unsubscription
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
     const synchronousObservable = new Observable(subscriber => {
@@ -477,4 +451,54 @@ describe('catchError operator', () => {
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 
+  it('should call the cleanup function of the catched observable when the source throws synchronously', () => {
+    let clean = false;
+    const testCleanup$ = new Observable(() => () => {
+      clean = true;
+    });
+
+    const subscription = throwError(new Error('Some error')).pipe(
+      catchError(() => testCleanup$),
+    ).subscribe();
+    expect(clean).to.equal(false);
+
+    subscription.unsubscribe();
+    expect(clean).to.equal(true);
+  });
+
+  it('should not alter the order of the teardown logic of the subscription chain', () => {
+    const logs: any[] = [];
+    const VALUE = 'VALUE';
+    const ERROR = 'ERROR';
+    const COMPLETE = 'COMPLETE';
+    const FINALIZED = 'FINALIZED';
+
+    const source = concat(
+      of(VALUE),
+      throwError(ERROR)
+    ).pipe(
+      finalize(() => {
+        logs.push(FINALIZED);
+      })
+    );
+
+    let hasRetried = false;
+    source.pipe(
+      catchError((err, caught) => {
+        if (hasRetried) {
+          throw err;
+        }
+        hasRetried = true;
+        return caught;
+      })
+    )
+    .subscribe(
+      (value) => { logs.push(value); },
+      (e) => { logs.push(e); },
+      () => { logs.push(COMPLETE); }
+    );
+
+    const expectedLogs = [VALUE, FINALIZED, VALUE, ERROR, FINALIZED];
+    expect(logs).to.deep.equal(expectedLogs);
+  });
 });
