@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { switchMap, mergeMap, map, takeWhile, take } from 'rxjs/operators';
-import { concat, defer, of, Observable } from 'rxjs';
+import { concat, defer, of, Observable, BehaviorSubject } from 'rxjs';
 import { asInteropObservable } from '../helpers/interop-helper';
 
 /** @test {switchMap} */
@@ -459,5 +459,20 @@ describe('switchMap', () => {
     ).subscribe(() => { /* noop */ });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
+  });
+
+  it('should unsubscribe previous inner sub when getting synchronously reentrance during subscribing the inner sub', () => {
+    const e = new BehaviorSubject(1);
+    const results: Array<number> = [];
+
+    e.pipe(
+      take(3),
+      switchMap(value => new Observable<number>(subscriber => {
+        e.next(value+1);
+        subscriber.next(value);
+      })),
+    ).subscribe(value => results.push(value));
+
+    expect(results).to.deep.equal([3]);
   });
 });
