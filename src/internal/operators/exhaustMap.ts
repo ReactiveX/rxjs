@@ -113,7 +113,8 @@ class ExhaustMapSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
       const innerSubscriber = new SimpleInnerSubscriber(this);
       const destination = this.destination;
       destination.add(innerSubscriber);
-      this.innerSubscription = innerSubscribe(result, innerSubscriber);
+      this.innerSubscription = innerSubscriber;
+      innerSubscribe(result, innerSubscriber);
     }
   }
 

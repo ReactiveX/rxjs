@@ -1,5 +1,5 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { concat, defer, Observable, of } from 'rxjs';
+import { concat, defer, Observable, of, BehaviorSubject } from 'rxjs';
 import { exhaustMap, mergeMap, takeWhile, map, take } from 'rxjs/operators';
 import { expect } from 'chai';
 import { asInteropObservable } from '../helpers/interop-helper';
@@ -450,5 +450,20 @@ describe('exhaustMap', () => {
     ).subscribe(() => { /* noop */ });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
+  });
+
+  it('should ignore subsequent synchronous reentrances during subscribing the inner sub', () => {
+    const e = new BehaviorSubject(1);
+    const results: Array<number> = [];
+
+    e.pipe(
+      take(3),
+      exhaustMap(value => new Observable<number>(subscriber => {
+        e.next(value+1);
+        subscriber.next(value);
+      })),
+    ).subscribe(value => results.push(value));
+
+    expect(results).to.deep.equal([1]);
   });
 });
