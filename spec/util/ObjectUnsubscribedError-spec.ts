@@ -10,4 +10,7 @@ describe('ObjectUnsubscribedError', () => {
   it('Should have a message', () => {
     expect(error.message).to.be.equal('object unsubscribed');
   });
+  it('Should have a stack', () => {
+    expect(error.stack).to.be.a('string');
+  });
 });

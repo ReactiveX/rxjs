@@ -10,4 +10,7 @@ describe('ArgumentOutOfRangeError', () => {
   it('Should have a message', () => {
     expect(error.message).to.be.equal('argument out of range');
   });
+  it('Should have a stack', () => {
+    expect(error.stack).to.be.a('string');
+  });
 });

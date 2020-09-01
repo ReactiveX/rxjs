@@ -2,6 +2,7 @@
 import { Observable } from '../../Observable';
 import { Subscriber } from '../../Subscriber';
 import { TeardownLogic, PartialObserver } from '../../types';
+import { createErrorClass } from '../../util/createErrorClass';
 
 export interface AjaxRequest {
   url?: string;
@@ -322,28 +323,6 @@ export interface AjaxErrorCtor {
   new (message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError;
 }
 
-const AjaxErrorImpl = (() => {
-  function AjaxErrorImpl(this: any, message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError {
-    Error.call(this);
-    this.message = message;
-    this.name = 'AjaxError';
-    this.xhr = xhr;
-    this.request = request;
-    this.status = xhr.status;
-    this.responseType = xhr.responseType;
-    let response: any;
-    try {
-      response = getXHRResponse(xhr);
-    } catch (err) {
-      response = xhr.responseText;
-    }
-    this.response = response;
-    return this;
-  }
-  AjaxErrorImpl.prototype = Object.create(Error.prototype);
-  return AjaxErrorImpl;
-})();
-
 /**
  * Thrown when an error occurs during an AJAX request.
  * This is only exported because it is useful for checking to see if an error
@@ -353,7 +332,25 @@ const AjaxErrorImpl = (() => {
  * @class AjaxError
  * @see ajax
  */
-export const AjaxError: AjaxErrorCtor = AjaxErrorImpl as any;
+export const AjaxError: AjaxErrorCtor = createErrorClass('AjaxError', function (
+  this: any,
+  message: string,
+  xhr: XMLHttpRequest,
+  request: AjaxRequest
+) {
+  this.message = message;
+  this.xhr = xhr;
+  this.request = request;
+  this.status = xhr.status;
+  this.responseType = xhr.responseType;
+  let response: any;
+  try {
+    response = getXHRResponse(xhr);
+  } catch (err) {
+    response = xhr.responseText;
+  }
+  this.response = response;
+});
 
 function getXHRResponse(xhr: XMLHttpRequest) {
   switch (xhr.responseType) {
@@ -391,6 +388,8 @@ export interface AjaxTimeoutErrorCtor {
   new (xhr: XMLHttpRequest, request: AjaxRequest): AjaxTimeoutError;
 }
 
+// NOTE: We are not using createErrorClass here, because we're deriving this from
+// the AjaxError we defined above.
 const AjaxTimeoutErrorImpl = (() => {
   function AjaxTimeoutErrorImpl(this: any, xhr: XMLHttpRequest, request: AjaxRequest) {
     AjaxError.call(this, 'ajax timeout', xhr, request);

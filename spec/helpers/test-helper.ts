@@ -61,13 +61,3 @@ export const createObservableInputs = <T>(value: T) => of(
  * Used to signify no subscriptions took place to `expectSubscriptions` assertions.
  */
 export const NO_SUBS: string[] = [];
-
-/**
- * Does a deep equality assertion. Used to set up {@link TestScheduler}, so that
- * trees of marbles can be compared.
- * @param actual The value to run the expectation against.
- * @param expected The value expected.
- */
-export function assertDeepEquals (actual: any, expected: any) {
-  expect(actual).to.deep.equal(expected);
-}

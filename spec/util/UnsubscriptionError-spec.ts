@@ -19,6 +19,7 @@ describe('UnsubscriptionError', () => {
       expect(err instanceof UnsubscriptionError).to.equal(true);
       expect(err.errors).to.deep.equal([err1, err2]);
       expect(err.name).to.equal('UnsubscriptionError');
+      expect(err.stack).to.be.a('string');
     }
   });
 });

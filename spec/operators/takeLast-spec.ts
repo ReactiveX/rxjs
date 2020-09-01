@@ -2,14 +2,14 @@ import { expect } from 'chai';
 import { takeLast, mergeMap } from 'rxjs/operators';
 import { range, ArgumentOutOfRangeError, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { assertDeepEquals } from '../helpers/test-helper';
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {takeLast} */
 describe('takeLast operator', () => {
   let rxTest: TestScheduler;
 
   beforeEach(() => {
-    rxTest = new TestScheduler(assertDeepEquals);
+    rxTest = new TestScheduler(observableMatcher);
   });
 
   it('should error for invalid arguments', () => {
