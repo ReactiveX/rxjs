@@ -85,11 +85,16 @@ export interface TimeoutErrorCtor {
  *
  * @class TimeoutError
  */
-export const TimeoutError: TimeoutErrorCtor = createErrorClass('TimeoutError', function (info: TimeoutInfo<any> | null = null) {
-  this.message = 'Timeout has occurred';
-  this.name = 'TimeoutError';
-  (this as any).info = info;
-});
+export const TimeoutError: TimeoutErrorCtor = createErrorClass(
+  (_super) =>
+    function TimeoutError(this: any, info: TimeoutInfo<any> | null = null) {
+      _super(this);
+      this.message = 'Timeout has occurred';
+      this.name = 'TimeoutError';
+      this.info = info;
+      return this;
+    }
+);
 
 /**
  * If `with` is provided, this will return an observable that will switch to a different observable if the source

@@ -1,15 +1,24 @@
 /** @prettier */
 
-export function createErrorClass<T>(name: string, setup: (this: Error, ...args: any[]) => void): T {
-  function ErrorImpl(this: Error, ...args: any[]) {
-    Error.call(this);
-    this.stack = new Error().stack;
-    this.name = name;
-    setup.apply(this, args);
-    return this;
-  }
+/**
+ * Used to create Error subclasses until the community moves away from ES5.
+ *
+ * This is because compiling from TypeScript down to ES5 has issues with subclassing Errors
+ * as well as other built-in types: https://github.com/Microsoft/TypeScript/issues/12123
+ *
+ * @param createImpl A factory function to create the actual constructor implementation. The returned
+ * function should be a named function that calls `_super` internally. The name of the function
+ * will be the name of the error.
+ */
+export function createErrorClass<T>(createImpl: (_super: any) => any): T {
+  const _super = (instance: any) => {
+    Error.call(instance);
+    instance.name = instance.constructor.name;
+    instance.stack = new Error().stack;
+  };
 
-  ErrorImpl.prototype = Object.create(Error.prototype);
-
-  return ErrorImpl as any;
+  const ctorFunc = createImpl(_super);
+  ctorFunc.prototype = Object.create(Error.prototype);
+  ctorFunc.prototype.constructor = ctorFunc;
+  return ctorFunc;
 }

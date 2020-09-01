@@ -332,25 +332,25 @@ export interface AjaxErrorCtor {
  * @class AjaxError
  * @see ajax
  */
-export const AjaxError: AjaxErrorCtor = createErrorClass('AjaxError', function (
-  this: any,
-  message: string,
-  xhr: XMLHttpRequest,
-  request: AjaxRequest
-) {
-  this.message = message;
-  this.xhr = xhr;
-  this.request = request;
-  this.status = xhr.status;
-  this.responseType = xhr.responseType;
-  let response: any;
-  try {
-    response = getXHRResponse(xhr);
-  } catch (err) {
-    response = xhr.responseText;
-  }
-  this.response = response;
-});
+export const AjaxError: AjaxErrorCtor = createErrorClass(
+  (_super) =>
+    function AjaxError(this: any, message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
+      _super(this);
+      this.message = message;
+      this.xhr = xhr;
+      this.request = request;
+      this.status = xhr.status;
+      this.responseType = xhr.responseType;
+      let response: any;
+      try {
+        response = getXHRResponse(xhr);
+      } catch (err) {
+        response = xhr.responseText;
+      }
+      this.response = response;
+      return this;
+    }
+);
 
 function getXHRResponse(xhr: XMLHttpRequest) {
   switch (xhr.responseType) {

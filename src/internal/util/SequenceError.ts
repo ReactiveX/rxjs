@@ -15,6 +15,11 @@ export interface SequenceErrorCtor {
  *
  * @class SequenceError
  */
-export const SequenceError: SequenceErrorCtor = createErrorClass('SequenceError', function (message: string) {
-  this.message = message;
-});
+export const SequenceError: SequenceErrorCtor = createErrorClass(
+  (_super) =>
+    function SequenceError(this: any, message: string) {
+      _super(this);
+      this.message = message;
+      return this;
+    }
+);
