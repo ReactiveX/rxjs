@@ -56,7 +56,10 @@ class BufferOperator<T> implements Operator<T, T[]> {
   }
 
   call(subscriber: Subscriber<T[]>, source: any): any {
-    return source.subscribe(new BufferSubscriber(subscriber, this.closingNotifier));
+    const bufferSubscriber = new BufferSubscriber(subscriber);
+    subscriber.add(source.subscribe(bufferSubscriber));
+    subscriber.add(innerSubscribe(this.closingNotifier, new SimpleInnerSubscriber(bufferSubscriber)));
+    return subscriber;
   }
 }
 
@@ -68,9 +71,8 @@ class BufferOperator<T> implements Operator<T, T[]> {
 class BufferSubscriber<T> extends SimpleOuterSubscriber<T, any> {
   private buffer: T[] = [];
 
-  constructor(destination: Subscriber<T[]>, closingNotifier: Observable<any>) {
+  constructor(destination: Subscriber<T[]>) {
     super(destination);
-    this.add(innerSubscribe(closingNotifier, new SimpleInnerSubscriber(this)));
   }
 
   protected _next(value: T) {
