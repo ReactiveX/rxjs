@@ -21,6 +21,5 @@ export const ObjectUnsubscribedError: ObjectUnsubscribedErrorCtor = createErrorC
     function ObjectUnsubscribedError(this: any) {
       _super(this);
       this.message = 'object unsubscribed';
-      return this;
     }
 );

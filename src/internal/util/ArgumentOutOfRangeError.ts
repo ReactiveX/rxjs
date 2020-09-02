@@ -22,6 +22,5 @@ export const ArgumentOutOfRangeError: ArgumentOutOfRangeErrorCtor = createErrorC
     function ArgumentOutOfRangeError(this: any) {
       _super(this);
       this.message = 'argument out of range';
-      return this;
     }
 );

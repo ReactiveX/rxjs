@@ -20,6 +20,5 @@ export const NotFoundError: NotFoundErrorCtor = createErrorClass(
     function NotFoundError(this: any, message: string) {
       _super(this);
       this.message = message;
-      return this;
     }
 );

@@ -20,5 +20,4 @@ export interface EmptyErrorCtor {
 export const EmptyError: EmptyErrorCtor = createErrorClass((_super) => function EmptyError(this: any) {
   _super(this);
   this.message = 'no elements in sequence';
-  return this;
 });

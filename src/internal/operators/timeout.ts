@@ -92,7 +92,6 @@ export const TimeoutError: TimeoutErrorCtor = createErrorClass(
       this.message = 'Timeout has occurred';
       this.name = 'TimeoutError';
       this.info = info;
-      return this;
     }
 );
 

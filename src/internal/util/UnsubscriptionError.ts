@@ -22,7 +22,6 @@ export const UnsubscriptionError: UnsubscriptionErrorCtor = createErrorClass(
 ${errors.map((err, i) => `${i + 1}) ${err.toString()}`).join('\n  ')}`
         : '';
       this.name = 'UnsubscriptionError';
-      (this as any).errors = errors;
-      return this;
+      this.errors = errors;
     }
 );

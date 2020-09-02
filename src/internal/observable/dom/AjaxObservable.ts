@@ -348,7 +348,6 @@ export const AjaxError: AjaxErrorCtor = createErrorClass(
         response = xhr.responseText;
       }
       this.response = response;
-      return this;
     }
 );
 
