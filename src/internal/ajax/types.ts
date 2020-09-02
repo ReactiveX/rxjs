@@ -149,6 +149,10 @@ export interface AjaxConfig {
    * wish to override the default `XMLHttpRequest` for some reason.
    *
    * If not provided, the `XMLHttpRequest` in global scope will be used.
+   *
+   * NOTE: This AJAX implementation relies on the built-in serialization and setting
+   * of Content-Type headers that is provided by standards-compliant XMLHttpRequest implementations,
+   * be sure any implementation you use meets that standard.
    */
   createXHR?: () => XMLHttpRequest;
 
