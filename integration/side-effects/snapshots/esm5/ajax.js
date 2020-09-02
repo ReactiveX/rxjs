@@ -68,7 +68,6 @@ var UnsubscriptionError = createErrorClass(function(_super) {
         }).join("\n  ") : "";
         this.name = "UnsubscriptionError";
         this.errors = errors;
-        return this;
     };
 });
 
@@ -633,7 +632,6 @@ var AjaxError = createErrorClass(function(_super) {
             response = xhr.responseText;
         }
         this.response = response;
-        return this;
     };
 });
 
