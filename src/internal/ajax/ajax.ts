@@ -269,10 +269,6 @@ export const ajax: AjaxCreationMethod = (() => {
   return create;
 })();
 
-function isFormData(body: any): body is FormData {
-  return typeof FormData !== 'undefined' && body instanceof FormData;
-}
-
 export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
   return new Observable<AjaxResponse<T>>((destination) => {
     let done = false;
@@ -301,12 +297,16 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       headers['x-requested-with'] = 'XMLHttpRequest';
     }
 
-    // Ensure content type is set
-    if (!('content-type' in headers) && config.body !== undefined && !isFormData(config.body)) {
-      headers['content-type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    // Examine the body and determine whether or not to serialize it
+    // and set the content-type in `headers`, if we're able.
+    let body: any;
+    try {
+      body = extractContentTypeAndMaybeSerializeBody(config.body, headers);
+    } catch (err) {
+      // We might land here because of JSON.stringify issues, like circular refrences.
+      destination.error(err);
+      return;
     }
-
-    const body: string | undefined = serializeBody(config.body, headers['content-type']);
 
     const _request: AjaxRequest = {
       // Default values
@@ -346,7 +346,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
 
         const progressSubscriber = config.progressSubscriber;
 
-        xhr.ontimeout = (e: ProgressEvent) => {
+        xhr.ontimeout = () => {
           const timeoutError = new AjaxTimeoutError(xhr, _request);
           progressSubscriber?.error?.(timeoutError);
           destination.error(timeoutError);
@@ -431,26 +431,82 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
   });
 }
 
-function serializeBody(body: any, contentType?: string) {
-  if (!body || typeof body === 'string' || isFormData(body)) {
+/**
+ * Examines the body to determine if we need to serialize it for them or not.
+ * If the body is a type that XHR handles natively, we just allow it through,
+ * otherwise, if the body is something that *we* can serialize for the user,
+ * we will serialize it, and attempt to set the `content-type` header, if it's
+ * not already set.
+ * @param body The body passed in by the user
+ * @param headers The normalized headers
+ */
+function extractContentTypeAndMaybeSerializeBody(body: any, headers: Record<string, string>) {
+  if (
+    !body ||
+    typeof body === 'string' ||
+    isFormData(body) ||
+    isURLSearchParams(body) ||
+    isArrayBuffer(body) ||
+    isFile(body) ||
+    isBlob(body) ||
+    isReadableStream(body)
+  ) {
+    // The XHR instance itself can handle serializing these, and set the content-type for us
+    // so we don't need to do that. https://xhr.spec.whatwg.org/#the-send()-method
     return body;
   }
 
-  if (contentType) {
-    const splitIndex = contentType.indexOf(';');
-    if (splitIndex !== -1) {
-      contentType = contentType.substring(0, splitIndex);
-    }
+  if (isArrayBufferView(body)) {
+    // This is a typed array (e.g. Float32Array or Uint8Array), or a DataView.
+    // XHR can handle this one too: https://fetch.spec.whatwg.org/#concept-bodyinit-extract
+    return body.buffer;
   }
 
-  switch (contentType) {
-    case 'application/x-www-form-urlencoded':
-      return Object.keys(body)
-        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(body[key])}`)
-        .join('&');
-    case 'application/json':
-      return JSON.stringify(body);
-    default:
-      return body;
+  if (typeof body === 'object') {
+    // If we have made it here, this is an object, probably a POJO, and we'll try
+    // to serialize it for them. If this doesn't work, it will throw, obviously, which
+    // is okay. The workaround for users would be to manually set the body to their own
+    // serialized string (accounting for circular refrences or whatever), then set
+    // the content-type manually as well.
+    headers['content-type'] = headers['content-type'] ?? 'application/json;charset=utf-8';
+    return JSON.stringify(body);
   }
+
+  // If we've gotten past everything above, this is something we don't quite know how to
+  // handle. Throw an error. This will be caught and emitted from the observable.
+  throw new TypeError('Unknown body type');
+}
+
+const _toString = Object.prototype.toString;
+
+function toStringCheck(obj: any, name: string): boolean {
+  return _toString.call(obj) === `[object ${name}]`;
+}
+
+function isArrayBuffer(body: any): body is ArrayBuffer {
+  return toStringCheck(body, 'ArrayBuffer');
+}
+
+function isFile(body: any): body is File {
+  return toStringCheck(body, 'File');
+}
+
+function isBlob(body: any): body is Blob {
+  return toStringCheck(body, 'Blob');
+}
+
+function isArrayBufferView(body: any): body is ArrayBufferView {
+  return typeof ArrayBuffer !== 'undefined' && ArrayBuffer.isView(body);
+}
+
+function isFormData(body: any): body is FormData {
+  return typeof FormData !== 'undefined' && body instanceof FormData;
+}
+
+function isURLSearchParams(body: any): body is URLSearchParams {
+  return typeof URLSearchParams !== 'undefined' && body instanceof URLSearchParams;
+}
+
+function isReadableStream(body: any): body is ReadableStream {
+  return typeof ReadableStream !== 'undefined' && body instanceof ReadableStream;
 }

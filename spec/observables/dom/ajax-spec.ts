@@ -4,8 +4,15 @@ import * as sinon from 'sinon';
 import { ajax, AjaxConfig, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
 import { TestScheduler } from 'rxjs/testing';
 import { noop } from 'rxjs';
+import * as nodeFormData from 'form-data';
+
+
 
 const root: any = (typeof globalThis !== 'undefined' && globalThis) || (typeof self !== 'undefined' && self) || global;
+
+if (typeof root.FormData === 'undefined') {
+  root.FormData = nodeFormData as any;  
+}
 
 /** @test {ajax} */
 describe('ajax', () => {
@@ -495,21 +502,10 @@ describe('ajax', () => {
   });
 
   describe('ajax request body', () => {
-    let rFormData: FormData;
-
-    beforeEach(() => {
-      rFormData = root.FormData;
-      root.FormData = root.FormData || class {};
-    });
-
-    afterEach(() => {
-      root.FormData = rFormData;
-    });
-
     it('can take string body', () => {
       const obj = {
         url: '/flibbertyJibbet',
-        method: '',
+        method: 'POST',
         body: 'foobar',
       };
 
@@ -523,53 +519,33 @@ describe('ajax', () => {
       const body = new root.FormData();
       const obj = {
         url: '/flibbertyJibbet',
-        method: '',
+        method: 'POST',
         body: body,
       };
 
       ajax(obj).subscribe();
 
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
-      expect(MockXMLHttpRequest.mostRecent.data).to.deep.equal(body);
+      expect(MockXMLHttpRequest.mostRecent.data).to.equal(body);
       expect(MockXMLHttpRequest.mostRecent.requestHeaders).to.deep.equal({
         'x-requested-with': 'XMLHttpRequest',
       });
     });
 
-    it('should not fail when FormData is undefined', () => {
-      root.FormData = void 0;
-
-      const obj = {
-        url: '/flibbertyJibbet',
-        method: '',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: { '🌟': '🚀' },
-      };
-
-      ajax(obj).subscribe();
-
-      expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
-    });
-
-    it('should send by form-urlencoded format', () => {
-      const body = {
+    it('should send the URLSearchParams straight through to the body', () => {
+      const body = new URLSearchParams({
         '🌟': '🚀',
-      };
+      });
       const obj = {
         url: '/flibbertyJibbet',
-        method: '',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+        method: 'POST',
         body: body,
       };
 
       ajax(obj).subscribe();
 
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
-      expect(MockXMLHttpRequest.mostRecent.data).to.equal('%F0%9F%8C%9F=%F0%9F%9A%80');
+      expect(MockXMLHttpRequest.mostRecent.data).to.equal(body);
     });
 
     it('should send by JSON', () => {
@@ -578,10 +554,7 @@ describe('ajax', () => {
       };
       const obj = {
         url: '/flibbertyJibbet',
-        method: '',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        method: 'POST',
         body: body,
       };
 
@@ -601,7 +574,7 @@ describe('ajax', () => {
         method: '',
         body: body,
         headers: {
-          'cOnTeNt-TyPe': 'application/json; charset=UTF-8',
+          'cOnTeNt-TyPe': 'application/json;charset=UTF-8',
         },
       };
 
@@ -753,7 +726,7 @@ describe('ajax', () => {
       expect(request.method).to.equal('POST');
       expect(request.url).to.equal('/flibbertyJibbet');
       expect(request.requestHeaders).to.deep.equal({
-        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'content-type': 'application/json;charset=utf-8',
         'x-requested-with': 'XMLHttpRequest',
       });
 
@@ -763,42 +736,7 @@ describe('ajax', () => {
         responseText: JSON.stringify(expected),
       });
 
-      expect(request.data).to.equal('foo=bar&hi=there%20you');
-      expect(result!.response).to.deep.equal(expected);
-      expect(complete).to.be.true;
-    });
-
-    it('should properly encode full URLs passed', () => {
-      const expected = { test: 'https://google.com/search?q=encodeURI+vs+encodeURIComponent' };
-      let result: AjaxResponse<any>;
-      let complete = false;
-
-      ajax.post('/flibbertyJibbet', expected).subscribe(
-        (x) => {
-          result = x;
-        },
-        null,
-        () => {
-          complete = true;
-        }
-      );
-
-      const request = MockXMLHttpRequest.mostRecent;
-
-      expect(request.method).to.equal('POST');
-      expect(request.url).to.equal('/flibbertyJibbet');
-      expect(request.requestHeaders).to.deep.equal({
-        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'x-requested-with': 'XMLHttpRequest',
-      });
-
-      request.respondWith({
-        status: 200,
-        contentType: 'application/json',
-        responseText: JSON.stringify(expected),
-      });
-
-      expect(request.data).to.equal('test=https%3A%2F%2Fgoogle.com%2Fsearch%3Fq%3DencodeURI%2Bvs%2BencodeURIComponent');
+      expect(request.data).to.equal(JSON.stringify(expected));
       expect(result!.response).to.deep.equal(expected);
       expect(complete).to.be.true;
     });
@@ -823,7 +761,6 @@ describe('ajax', () => {
       expect(request.method).to.equal('POST');
       expect(request.url).to.equal('/flibbertyJibbet');
       expect(request.requestHeaders).to.deep.equal({
-        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'x-requested-with': 'XMLHttpRequest',
       });
 
@@ -1043,7 +980,7 @@ describe('ajax', () => {
       expect(request.method).to.equal('PATCH');
       expect(request.url).to.equal('/flibbertyJibbet');
       expect(request.requestHeaders).to.deep.equal({
-        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'content-type': 'application/json;charset=utf-8',
         'x-requested-with': 'XMLHttpRequest',
       });
 
@@ -1053,7 +990,7 @@ describe('ajax', () => {
         responseText: JSON.stringify(expected),
       });
 
-      expect(request.data).to.equal('foo=bar&hi=there%20you');
+      expect(request.data).to.equal(JSON.stringify(expected));
       expect(result!.response).to.deep.equal(expected);
       expect(complete).to.be.true;
     });
