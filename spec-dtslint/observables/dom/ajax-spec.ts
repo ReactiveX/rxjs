@@ -5,7 +5,7 @@ it('should enforce function parameter', () => {
 });
 
 it('should accept string param', () => {
-  const o = ajax('/a'); // $ExpectType Observable<AjaxResponse>
+  const o = ajax('/a'); // $ExpectType Observable<AjaxResponse<unknown>>
 });
 
 it('should accept AjaxRequest params', () => {
@@ -14,7 +14,7 @@ it('should accept AjaxRequest params', () => {
     url: '/a',
     body: {a: 'a', b: 'b'},
   };
-  const o = ajax(ajaxRequest); // $ExpectType Observable<AjaxResponse>
+  const o = ajax(ajaxRequest); // $ExpectType Observable<AjaxResponse<unknown>>
 });
 
 describe('.getJson', () => {
