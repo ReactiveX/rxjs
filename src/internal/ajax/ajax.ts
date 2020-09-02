@@ -271,8 +271,6 @@ export const ajax: AjaxCreationMethod = (() => {
 
 export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
   return new Observable<AjaxResponse<T>>((destination) => {
-    let done = false;
-
     // Normalize the headers. We're going to make them all lowercase, since
     // Headers are case insenstive by design. This makes it easier to verify
     // that we aren't setting or sending duplicates.
@@ -368,7 +366,6 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
           if (xhr.status < 400) {
             progressSubscriber?.complete?.();
 
-            done = true;
             let response: AjaxResponse<T>;
             try {
               // This can throw in IE, because we end up needing to do a JSON.parse
@@ -424,7 +421,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     }
 
     return () => {
-      if (!done && xhr) {
+      if (xhr && xhr.readyState !== 4 /*XHR done*/) {
         xhr.abort();
       }
     };
