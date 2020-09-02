@@ -3,7 +3,8 @@ import { zipWith, mergeMap } from 'rxjs/operators';
 import { queueScheduler, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
-/** @test {zip} */
+
+/** @test {zipWith} */
 describe('zipWith', () => {
   let rxTestScheduler: TestScheduler;
 
@@ -74,19 +75,15 @@ describe('zipWith', () => {
   describe('with iterables', () => {
     it('should zip them with values', () => {
       rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-        const myIterator = <any>{
-          count: 0,
-          next: function() {
-            return { value: this.count++, done: false };
-          },
-        };
-        myIterator[Symbol.iterator] = function() {
-          return this;
-        };
+        const myIterator = (function*() {
+          for (let i = 0; i < 4; i++) {
+            yield i;
+          }
+        })();
 
         const e1 = hot('  ---a---b---c---d---|');
-        const e1subs = '  ^------------------!';
-        const expected = '---w---x---y---z---|';
+        const e1subs = '  ^--------------!';
+        const expected = '---w---x---y---(z|)';
 
         const values = {
           w: ['a', 0],
@@ -100,33 +97,11 @@ describe('zipWith', () => {
       });
     });
 
-    it('should only call `next` as needed', () => {
-      let nextCalled = 0;
-      const myIterator = <any>{
-        count: 0,
-        next: function() {
-          nextCalled++;
-          return { value: this.count++, done: false };
-        },
-      };
-      myIterator[Symbol.iterator] = function() {
-        return this;
-      };
-
-      of(1, 2, 3)
-        .pipe(zipWith(myIterator))
-        .subscribe();
-
-      // since zip will call `next()` in advance, total calls when
-      // zipped with 3 other values should be 4.
-      expect(nextCalled).to.equal(4);
-    });
-
-    it('should work with never observable and empty iterable', () => {
+    it('should complete instantly for an empty iterable', () => {
       rxTestScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
         const a = cold('  -');
-        const asubs = '   ^';
-        const expected = '-';
+        const asubs = '   (^!)';
+        const expected = '|';
         const b: string[] = [];
 
         expectObservable(a.pipe(zipWith(b))).toBe(expected);
@@ -158,12 +133,12 @@ describe('zipWith', () => {
       });
     });
 
-    it('should work with non-empty observable and empty iterable', () => {
+    it('should complete instantly with non-empty observable and empty iterable', () => {
       rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
         const a = hot('   ---^----a--|');
-        const asubs = '   ^-------!';
+        const asubs = '      (^!)';
         const b: string[] = [];
-        const expected = '--------|';
+        const expected = '   |';
 
         expectObservable(a.pipe(zipWith(b))).toBe(expected);
         expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -190,18 +165,6 @@ describe('zipWith', () => {
         const b = [2];
 
         expectObservable(a.pipe(zipWith(b))).toBe(expected, { x: ['1', 2] });
-        expectSubscriptions(a.subscriptions).toBe(asubs);
-      });
-    });
-
-    it('should work with non-empty observable and empty iterable', () => {
-      rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-        const a = hot('---^----#');
-        const asubs = '   ^----!';
-        const expected = '-----#';
-        const b: string[] = [];
-
-        expectObservable(a.pipe(zipWith(b))).toBe(expected);
         expectSubscriptions(a.subscriptions).toBe(asubs);
       });
     });

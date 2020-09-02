@@ -101,19 +101,15 @@ describe('zipAll operator', () => {
   describe('with iterables', () => {
     it('should zip them with values', () => {
       rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-        const myIterator = {
-          count: 0,
-          next() {
-            return { value: this.count++, done: false };
-          },
-          [Symbol.iterator]() {
-            return this;
-          },
-        };
+        const myIterator = (function* () {
+          for (let i = 0; i < 4; i++) {
+            yield i;
+          }
+        })();
 
         const e1 = hot('  ---a---b---c---d---|');
-        const e1subs = '  ^------------------!';
-        const expected = '---w---x---y---z---|';
+        const e1subs = '  ^--------------!';
+        const expected = '---w---x---y---(z|)';
 
         const values = {
           w: ['a', 0],
@@ -127,32 +123,12 @@ describe('zipAll operator', () => {
       });
     });
 
-    it('should only call `next` as needed', () => {
-      let nextCalled = 0;
-      const myIterator = {
-        count: 0,
-        next() {
-          nextCalled++;
-          return { value: this.count++, done: false };
-        },
-        [Symbol.iterator]() {
-          return this;
-        },
-      };
-
-      of(of(1, 2, 3), myIterator).pipe(zipAll()).subscribe();
-
-      // since zip will call `next()` in advance, total calls when
-      // zipped with 3 other values should be 4.
-      expect(nextCalled).to.equal(4);
-    });
-
-    it('should work with never observable and empty iterable', () => {
+    it('should complete instantly with never observable and empty iterable', () => {
       rxTestScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
         const a = cold('  -');
-        const asubs = '   ^';
+        const asubs = '   (^!)';
         const b: string[] = [];
-        const expected = '-';
+        const expected = '|';
 
         expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
         expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -186,9 +162,9 @@ describe('zipAll operator', () => {
     it('should work with non-empty observable and empty iterable', () => {
       rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
         const a = hot('---^----a--|');
-        const asubs = '   ^-------!';
+        const asubs = '   (^!)';
         const b: string[] = [];
-        const expected = '--------|';
+        const expected = '|';
 
         expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
         expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -215,18 +191,6 @@ describe('zipAll operator', () => {
         const expected = '-----(x|)';
 
         expectObservable(of(a, b).pipe(zipAll<string | number>())).toBe(expected, { x: ['1', 2] });
-        expectSubscriptions(a.subscriptions).toBe(asubs);
-      });
-    });
-
-    it('should work with non-empty observable and empty iterable', () => {
-      rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-        const a = hot('---^----#');
-        const asubs = '   ^----!';
-        const b: string[] = [];
-        const expected = '-----#';
-
-        expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
         expectSubscriptions(a.subscriptions).toBe(asubs);
       });
     });

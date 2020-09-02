@@ -2,8 +2,6 @@ import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { queueScheduler as rxQueueScheduler, zip, from, of } from 'rxjs';
 
-declare const Symbol: any;
-
 const queueScheduler = rxQueueScheduler;
 
 /** @test {zip} */
@@ -76,18 +74,15 @@ describe('static zip', () => {
 
   describe('with iterables', () => {
     it('should zip them with values', () => {
-      const myIterator = <any>{
-        count: 0,
-        next: function () {
-          return { value: this.count++, done: false };
+      const myIterator = (function *() {
+        for (let i = 0; i < 4; i++) {
+          yield i;
         }
-      };
-
-      myIterator[Symbol.iterator] = function () { return this; };
+      })();
 
       const e1 =   hot('---a---b---c---d---|');
-      const e1subs =   '^                  !';
-      const expected = '---w---x---y---z---|';
+      const e1subs =   '^              !';
+      const expected = '---w---x---y---(z|)';
 
       const values = {
         w: ['a', 0],
@@ -98,37 +93,6 @@ describe('static zip', () => {
 
       expectObservable(zip(e1, myIterator)).toBe(expected, values);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
-
-    it('should only call `next` as needed', () => {
-      let nextCalled = 0;
-      const myIterator = <any>{
-        count: 0,
-        next() {
-          nextCalled++;
-          return { value: this.count++, done: false };
-        }
-      };
-      myIterator[Symbol.iterator] = function() {
-        return this;
-      };
-
-      zip(of(1, 2, 3), myIterator)
-        .subscribe();
-
-      // since zip will call `next()` in advance, total calls when
-      // zipped with 3 other values should be 4.
-      expect(nextCalled).to.equal(4);
-    });
-
-    it('should work with never observable and empty iterable', () => {
-      const a = cold(  '-');
-      const asubs =    '^';
-      const b: number[] = [];
-      const expected = '-';
-
-      expectObservable(zip(a, b)).toBe(expected);
-      expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
     it('should work with empty observable and empty iterable', () => {
@@ -151,11 +115,11 @@ describe('static zip', () => {
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
-    it('should work with non-empty observable and empty iterable', () => {
+    it('should complete instantly if given an empty iterable', () => {
       const a = hot('---^----a--|');
-      const asubs =    '^       !';
+      const asubs =    '(^!)';
       const b: number[] = [];
-      const expected = '--------|';
+      const expected = '|';
 
       expectObservable(zip(a, b)).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -178,16 +142,6 @@ describe('static zip', () => {
       const expected = '-----(x|)';
 
       expectObservable(zip(a, b)).toBe(expected, { x: ['1', 2] });
-      expectSubscriptions(a.subscriptions).toBe(asubs);
-    });
-
-    it('should work with non-empty observable and empty iterable', () => {
-      const a = hot('---^----#');
-      const asubs =    '^    !';
-      const b: number[] = [];
-      const expected = '-----#';
-
-      expectObservable(zip(a, b)).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
@@ -574,4 +528,18 @@ describe('static zip', () => {
       expect(vals).to.deep.equal(r[i++]);
     }, null, done);
   });
+
+  it('should be able to zip all iterables', () => {
+    const results: any[] = [];
+    zip('abc', '123', 'xyz').subscribe({
+      next: value => results.push(value),
+      complete: () => results.push('complete')
+    });
+    expect(results).to.deep.equal([
+      ['a','1','x'],
+      ['b','2','y'],
+      ['c','3','z'],
+      'complete'
+    ]);
+  })
 });
