@@ -201,7 +201,7 @@ export type ObservedValuesFromArray<X> = ObservedValueUnionFromArray<X>;
  * of `[string, number]`.
  */
 export type ObservedValueTupleFromArray<X> =
-  X extends Array<ObservableInput<any>>
+  X extends readonly ObservableInput<any>[]
     ? { [K in keyof X]: ObservedValueOf<X[K]> }
     : never;
 
