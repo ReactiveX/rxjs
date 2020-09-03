@@ -1,7 +1,8 @@
 import { zip as zipStatic } from '../observable/zip';
 import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueTupleFromArray, Cons } from '../types';
-import { stankyLift } from '../util/lift';
+import { lift } from '../util/lift';
+import { Subscriber } from '../Subscriber'
 
 /* tslint:disable:max-line-length */
 /** @deprecated Deprecated use {@link zipWith} */
@@ -37,13 +38,11 @@ export function zip<T, TOther, R>(array: Array<ObservableInput<TOther>>, project
 /**
  * @deprecated Deprecated. Use {@link zipWith}.
  */
-export function zip<T, R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): OperatorFunction<T, R> {
-  return function zipOperatorFunction(source: Observable<T>) {
-    return stankyLift(
-      source,
-      zipStatic<R>(source, ...observables)
-    );
-  };
+export function zip<T, R>(...sources: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): OperatorFunction<T, R> {
+  return (source: Observable<T>) => lift(source, function (this: Subscriber<any>, source: Observable<T>) {
+    const args = [source, ...sources];
+    return zipStatic(...args).subscribe(this);
+  })
 }
 
 /**
