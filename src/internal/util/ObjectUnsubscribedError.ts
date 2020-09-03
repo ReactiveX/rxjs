@@ -1,22 +1,11 @@
-export interface ObjectUnsubscribedError extends Error {
-}
+/** @prettier */
+import { createErrorClass } from './createErrorClass';
+
+export interface ObjectUnsubscribedError extends Error {}
 
 export interface ObjectUnsubscribedErrorCtor {
-  new(): ObjectUnsubscribedError;
+  new (): ObjectUnsubscribedError;
 }
-
-const ObjectUnsubscribedErrorImpl = (() => {
-  function ObjectUnsubscribedErrorImpl(this: Error) {
-    Error.call(this);
-    this.message = 'object unsubscribed';
-    this.name = 'ObjectUnsubscribedError';
-    return this;
-  }
-
-  ObjectUnsubscribedErrorImpl.prototype = Object.create(Error.prototype);
-
-  return ObjectUnsubscribedErrorImpl;
-})();
 
 /**
  * An error thrown when an action is invalid because the object has been
@@ -27,4 +16,10 @@ const ObjectUnsubscribedErrorImpl = (() => {
  *
  * @class ObjectUnsubscribedError
  */
-export const ObjectUnsubscribedError: ObjectUnsubscribedErrorCtor = ObjectUnsubscribedErrorImpl as any;
+export const ObjectUnsubscribedError: ObjectUnsubscribedErrorCtor = createErrorClass(
+  (_super) =>
+    function ObjectUnsubscribedError(this: any) {
+      _super(this);
+      this.message = 'object unsubscribed';
+    }
+);

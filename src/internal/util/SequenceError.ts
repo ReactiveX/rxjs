@@ -1,22 +1,11 @@
-export interface SequenceError extends Error {
-}
+/** @prettier */
+import { createErrorClass } from './createErrorClass';
+
+export interface SequenceError extends Error {}
 
 export interface SequenceErrorCtor {
-  new(message: string): SequenceError;
+  new (message: string): SequenceError;
 }
-
-const SequenceErrorImpl = (() => {
-  function SequenceErrorImpl(this: Error, message: string) {
-    Error.call(this);
-    this.message = message;
-    this.name = 'SequenceError';
-    return this;
-  }
-
-  SequenceErrorImpl.prototype = Object.create(Error.prototype);
-
-  return SequenceErrorImpl;
-})();
 
 /**
  * An error thrown when something is wrong with the sequence of
@@ -26,4 +15,10 @@ const SequenceErrorImpl = (() => {
  *
  * @class SequenceError
  */
-export const SequenceError: SequenceErrorCtor = SequenceErrorImpl as any;
+export const SequenceError: SequenceErrorCtor = createErrorClass(
+  (_super) =>
+    function SequenceError(this: any, message: string) {
+      _super(this);
+      this.message = message;
+    }
+);

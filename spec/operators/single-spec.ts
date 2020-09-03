@@ -2,14 +2,14 @@ import { expect } from 'chai';
 import { single, mergeMap, tap } from 'rxjs/operators';
 import { of, EmptyError, SequenceError, NotFoundError, Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { assertDeepEquals } from '../helpers/test-helper';
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {single} */
 describe('single operator', () => {
   let rxTest: TestScheduler;
 
   beforeEach(() => {
-    rxTest = new TestScheduler(assertDeepEquals);
+    rxTest = new TestScheduler(observableMatcher);
   });
 
   it('should raise error from empty predicate if observable emits multiple time', () => {

@@ -1,22 +1,11 @@
-export interface NotFoundError extends Error {
-}
+/** @prettier */
+import { createErrorClass } from './createErrorClass';
+
+export interface NotFoundError extends Error {}
 
 export interface NotFoundErrorCtor {
-  new(message: string): NotFoundError;
+  new (message: string): NotFoundError;
 }
-
-const NotFoundErrorImpl = (() => {
-  function NotFoundErrorImpl(this: Error, message: string) {
-    Error.call(this);
-    this.message = message;
-    this.name = 'NotFoundError';
-    return this;
-  }
-
-  NotFoundErrorImpl.prototype = Object.create(Error.prototype);
-
-  return NotFoundErrorImpl;
-})();
 
 /**
  * An error thrown when a value or values are missing from an
@@ -26,4 +15,10 @@ const NotFoundErrorImpl = (() => {
  *
  * @class NotFoundError
  */
-export const NotFoundError: NotFoundErrorCtor = NotFoundErrorImpl as any;
+export const NotFoundError: NotFoundErrorCtor = createErrorClass(
+  (_super) =>
+    function NotFoundError(this: any, message: string) {
+      _super(this);
+      this.message = message;
+    }
+);

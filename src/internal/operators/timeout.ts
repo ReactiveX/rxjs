@@ -7,6 +7,7 @@ import { Subscription } from '../Subscription';
 import { lift } from '../util/lift';
 import { Observable } from '../Observable';
 import { from } from '../observable/from';
+import { createErrorClass } from '../util/createErrorClass';
 
 export interface TimeoutConfig<T, R = T, M = unknown> {
   /**
@@ -72,20 +73,6 @@ export interface TimeoutErrorCtor {
   new <T = unknown, M = unknown>(info?: TimeoutInfo<T, M>): TimeoutError<T, M>;
 }
 
-const TimeoutErrorImpl = (() => {
-  function TimeoutErrorImpl(this: any, info: TimeoutInfo<any> | null = null) {
-    Error.call(this);
-    this.message = 'Timeout has occurred';
-    this.name = 'TimeoutError';
-    this.info = info;
-    return this;
-  }
-
-  TimeoutErrorImpl.prototype = Object.create(Error.prototype);
-
-  return TimeoutErrorImpl;
-})();
-
 /**
  * An error thrown by the {@link operators/timeout} operator.
  *
@@ -98,7 +85,15 @@ const TimeoutErrorImpl = (() => {
  *
  * @class TimeoutError
  */
-export const TimeoutError: TimeoutErrorCtor = TimeoutErrorImpl as any;
+export const TimeoutError: TimeoutErrorCtor = createErrorClass(
+  (_super) =>
+    function TimeoutError(this: any, info: TimeoutInfo<any> | null = null) {
+      _super(this);
+      this.message = 'Timeout has occurred';
+      this.name = 'TimeoutError';
+      this.info = info;
+    }
+);
 
 /**
  * If `with` is provided, this will return an observable that will switch to a different observable if the source
