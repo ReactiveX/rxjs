@@ -80,15 +80,9 @@ range(1, 200)
 
 ## Building/Testing
 
-- `npm run build_all` - builds everything
-- `npm test` - runs tests
-- `npm run test_no_cache` - run test with `ts-node` set to false
-
-## Performance Tests
-
-Run `npm run build_perf` or `npm run perf` to run the performance tests with `protractor`.
-
-Run `npm run perf_micro [operator]` to run micro performance test benchmarking operator.
+- `npm run compile` build everything
+- `npm test` run tests
+- `npm run dtslint` run dtslint tests
 
 ## Adding documentation
 
