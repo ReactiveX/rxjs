@@ -5,7 +5,7 @@ import { map, retry, take, repeat, takeWhile } from 'rxjs/operators';
 
 declare const __root__: any;
 
-/** @test {webSocket} */
+/** @test {webSocket}  */
 describe('webSocket', () => {
   let __ws: any;
 
