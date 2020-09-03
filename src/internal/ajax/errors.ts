@@ -1,8 +1,7 @@
 /** @prettier */
 import { AjaxRequest } from './types';
 import { getXHRResponse } from './getXHRResponse';
-
-export type AjaxErrorNames = 'AjaxError' | 'AjaxTimeoutError';
+import { createErrorClass } from '../util/createErrorClass';
 
 /**
  * A normalized AJAX error.
@@ -46,30 +45,6 @@ export interface AjaxErrorCtor {
   new (message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError;
 }
 
-const AjaxErrorImpl = (() => {
-  function AjaxErrorImpl(this: any, message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError {
-    Error.call(this);
-    this.message = message;
-    this.name = 'AjaxError';
-    this.xhr = xhr;
-    this.request = request;
-    this.status = xhr.status;
-    this.responseType = xhr.responseType;
-    let response: any;
-    try {
-      // This can throw in IE, because we have to do a JSON.parse of
-      // the response in some cases to get the expected response property.
-      response = getXHRResponse(xhr);
-    } catch (err) {
-      response = xhr.responseText;
-    }
-    this.response = response;
-    return this;
-  }
-  AjaxErrorImpl.prototype = Object.create(Error.prototype);
-  return AjaxErrorImpl;
-})();
-
 /**
  * Thrown when an error occurs during an AJAX request.
  * This is only exported because it is useful for checking to see if an error
@@ -79,7 +54,26 @@ const AjaxErrorImpl = (() => {
  * @class AjaxError
  * @see ajax
  */
-export const AjaxError: AjaxErrorCtor = AjaxErrorImpl as any;
+export const AjaxError: AjaxErrorCtor = createErrorClass(
+  (_super) =>
+    function AjaxError(this: any, message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
+      this.message = message;
+      this.name = 'AjaxError';
+      this.xhr = xhr;
+      this.request = request;
+      this.status = xhr.status;
+      this.responseType = xhr.responseType;
+      let response: any;
+      try {
+        // This can throw in IE, because we have to do a JSON.parse of
+        // the response in some cases to get the expected response property.
+        response = getXHRResponse(xhr);
+      } catch (err) {
+        response = xhr.responseText;
+      }
+      this.response = response;
+    }
+);
 
 export interface AjaxTimeoutError extends AjaxError {}
 
