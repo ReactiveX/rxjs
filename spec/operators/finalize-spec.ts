@@ -222,4 +222,16 @@ describe('finalize operator', () => {
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
+  
+  it('should finalize in the proper order', () => {
+    const results: any[] = [];
+    of(1).pipe(
+      finalize(() => results.push(1)),
+      finalize(() => results.push(2)),
+      finalize(() => results.push(3)),
+      finalize(() => results.push(4)),
+    ).subscribe();
+
+    expect(results).to.deep.equal([1, 2, 3, 4]);
+  });
 });

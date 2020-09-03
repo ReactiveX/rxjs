@@ -436,13 +436,9 @@ export declare function of<T, U>(value1: T, value2: U): Observable<T | U>;
 export declare function of<T, U, V>(value1: T, value2: U, value3: V): Observable<T | U | V>;
 export declare function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<A>>;
 
-export declare function onErrorResumeNext<R>(v: ObservableInput<R>): Observable<R>;
-export declare function onErrorResumeNext<T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<R>;
-export declare function onErrorResumeNext<T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<R>;
-export declare function onErrorResumeNext<T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<R>;
-export declare function onErrorResumeNext<T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<R>;
-export declare function onErrorResumeNext<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R>;
-export declare function onErrorResumeNext<R>(array: ObservableInput<any>[]): Observable<R>;
+export declare function onErrorResumeNext(): Observable<never>;
+export declare function onErrorResumeNext<O extends ObservableInput<any>>(arrayOfSources: O[]): Observable<ObservedValueOf<O>>;
+export declare function onErrorResumeNext<A extends ObservableInput<any>[]>(...sources: A): Observable<ObservedValueUnionFromArray<A>>;
 
 export interface Operator<T, R> {
     call(subscriber: Subscriber<R>, source: any): TeardownLogic;
