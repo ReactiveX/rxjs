@@ -1,6 +1,6 @@
 {
   "name": "rxjs",
-  "version": "7.0.0-beta.4",
+  "version": "7.0.0-beta.5",
   "description": "Reactive Extensions for modern JavaScript",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm5/index.js",
@@ -23,6 +23,7 @@
     "*.{js,css,md}": "prettier --write"
   },
   "scripts": {
+    "changelog": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s",
     "commitmsg": "validate-commit-msg",
     "build:spec:browser": "echo \"Browser test is not working currently\" && exit -1 && webpack --config spec/support/webpack.mocha.config.js",
     "lint_spec": "tslint -c tslint.json -p spec/tsconfig.json \"spec/**/*.ts\"",

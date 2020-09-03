@@ -1,3 +1,77 @@
+# [7.0.0-beta.5](https://github.com/reactivex/rxjs/compare/7.0.0-beta.4...7.0.0-beta.5) (2020-09-03)
+
+
+### Bug Fixes
+
+* **ajax:** Allow XHR to perform body serialization and set content-type where possible ([d8657ed](https://github.com/reactivex/rxjs/commit/d8657ede8d9620ac2a7d61557e1f1d0e89b0b52a)), closes [#2837](https://github.com/reactivex/rxjs/issues/2837)
+* **ajax:** Do not mutate headers passed as arguments ([0d66ba4](https://github.com/reactivex/rxjs/commit/0d66ba458f07fba51cfc73440d01ef453c24cda7)), closes [#2801](https://github.com/reactivex/rxjs/issues/2801)
+* **bindCallback:** now emits errors that happen after callback ([2bddd31](https://github.com/reactivex/rxjs/commit/2bddd317fad962ad375de4a04dd528b02479ec5b))
+* **bindNodeCallback:** now emits errors that happen after callback ([edc28cf](https://github.com/reactivex/rxjs/commit/edc28cfd13ba3d7fadc24ea3c20ec8ca5a19064d))
+* **buffer:** Ensure notifier is subscribed after source ([#5654](https://github.com/reactivex/rxjs/issues/5654)) ([c088b0e](https://github.com/reactivex/rxjs/commit/c088b0eca904ab835b23df629d472003d6a82561)), closes [#2195](https://github.com/reactivex/rxjs/issues/2195) [#1754](https://github.com/reactivex/rxjs/issues/1754)
+* **catchError:** ensure proper handling of async return for synchronous source error handling ([#5627](https://github.com/reactivex/rxjs/issues/5627)) ([1b29d4b](https://github.com/reactivex/rxjs/commit/1b29d4b6d42e3d6b649f9f2c4bb718f343233d83)), closes [#5115](https://github.com/reactivex/rxjs/issues/5115)
+* **catchError:** inner synchronous observables will properly terminate ([#5655](https://github.com/reactivex/rxjs/issues/5655)) ([d3fd2fb](https://github.com/reactivex/rxjs/commit/d3fd2fb2bd619b79d0c4afebc3c10299afbca262))
+* **errors:** Custom RxJS errors now all have a call stack ([#5686](https://github.com/reactivex/rxjs/issues/5686)) ([9bb046c](https://github.com/reactivex/rxjs/commit/9bb046c744cc1f9438a805849b655946e5793936)), closes [#4250](https://github.com/reactivex/rxjs/issues/4250)
+* **onErrorResumeNext:** observables always finalized before moving to next source ([#5650](https://github.com/reactivex/rxjs/issues/5650)) ([ff68ad2](https://github.com/reactivex/rxjs/commit/ff68ad2caa3d275a23416984fab5570d3fed9458))
+* **package.json:** change homepage setting to official docs site. ([#5669](https://github.com/reactivex/rxjs/issues/5669)) ([e57c402](https://github.com/reactivex/rxjs/commit/e57c402b29288f61fe886b00e51817730bcb320b))
+* **repeat:** Ensure teardown happens between repeated synchronous obs… ([#5620](https://github.com/reactivex/rxjs/issues/5620)) ([0ca8a65](https://github.com/reactivex/rxjs/commit/0ca8a65b73aea93172366ca67207b53e3e3e77a8))
+* **repeatWhen:** Ensure teardown happens between repeat subscriptions ([#5625](https://github.com/reactivex/rxjs/issues/5625)) ([98356f4](https://github.com/reactivex/rxjs/commit/98356f4ebefdba1f5a14edbd96de1592694a01a8))
+* **retry:** Ensure teardown happens before resubscription with synchronous observables ([6f90597](https://github.com/reactivex/rxjs/commit/6f90597e51e038dabd8397b9f066ab4e3d344a5b)), closes [#5620](https://github.com/reactivex/rxjs/issues/5620)
+* **retryWhen:** Ensure subscription tears down between retries ([#5623](https://github.com/reactivex/rxjs/issues/5623)) ([6752af7](https://github.com/reactivex/rxjs/commit/6752af7c1839baf3cd7ed9d024499de61a2477e9))
+* **throttleTime:** ensure the spacing between throttles is always at least the throttled amount ([#5687](https://github.com/reactivex/rxjs/issues/5687)) ([ea84fc4](https://github.com/reactivex/rxjs/commit/ea84fc4dce84e32598701f79d9449be00a05352c)), closes [#3712](https://github.com/reactivex/rxjs/issues/3712) [#4864](https://github.com/reactivex/rxjs/issues/4864) [#2727](https://github.com/reactivex/rxjs/issues/2727) [#4727](https://github.com/reactivex/rxjs/issues/4727) [#4429](https://github.com/reactivex/rxjs/issues/4429)
+* **zip:** zip operators and functions are now able to zip all iterable sources ([#5688](https://github.com/reactivex/rxjs/issues/5688)) ([02c3a1b](https://github.com/reactivex/rxjs/commit/02c3a1b70c0e96b784a3c5c214c0f89c5ebdd696)), closes [#4304](https://github.com/reactivex/rxjs/issues/4304)
+* `switchMap` and `exhaustMap` behave correctly with re-entrant code. ([c289688](https://github.com/reactivex/rxjs/commit/c289688f5e1f33ec21306b4d2f5539dd19f963f2))
+* **webSocket:** close websocket connection attempt on unsubscribe ([e1a671c](https://github.com/reactivex/rxjs/commit/e1a671cbd7f5a6ce547ed9ee6ce98c22264500f4)), closes [#4446](https://github.com/reactivex/rxjs/issues/4446)
+
+
+### Code Refactoring
+
+* **ajax:** Use simple Observable ([17b9add](https://github.com/reactivex/rxjs/commit/17b9add03a90aec6e708a87c0fc387745f0b9df6))
+* **Subscriber:** remove _unsubscribeAndRecycle ([d879c3f](https://github.com/reactivex/rxjs/commit/d879c3f3ae4b1de5660d1613bb8b300e7194d581))
+* **VirtualTimeScheduler:** remove sortActions from public API ([#5657](https://github.com/reactivex/rxjs/issues/5657)) ([a468f88](https://github.com/reactivex/rxjs/commit/a468f881c8c02195b089889486d1a94fab2771e0))
+
+
+### Features
+
+* **combineLatest:** add N-args signature for observable inputs ([#5488](https://github.com/reactivex/rxjs/issues/5488)) ([fcc47e7](https://github.com/reactivex/rxjs/commit/fcc47e75a4c811199c5071144172f4d06ffc7c70))
+* **Subscription:** `add` no longer returns unnecessary Subscription reference ([#5656](https://github.com/reactivex/rxjs/issues/5656)) ([4de604e](https://github.com/reactivex/rxjs/commit/4de604ea66261f597af11918aec53cd94590b30f))
+* **Subscription:** `remove` will now remove any teardown by reference ([#5659](https://github.com/reactivex/rxjs/issues/5659)) ([1531152](https://github.com/reactivex/rxjs/commit/15311529fa1b880ed469b6c253cd0be7ff2f98a1))
+* **throwError:** now accepts a factory to create the error ([#5647](https://github.com/reactivex/rxjs/issues/5647)) ([dad270a](https://github.com/reactivex/rxjs/commit/dad270afcf496de74b4392024191715d7dbef4f5)), closes [#5617](https://github.com/reactivex/rxjs/issues/5617)
+* **useDeprecatedNextContext:** Puts deprecated next context behavior behind a flag ([dfdef5d](https://github.com/reactivex/rxjs/commit/dfdef5dcaf52363be59359786aef8bc733197b43))
+* support schedulers within run ([#5619](https://github.com/reactivex/rxjs/issues/5619)) ([c63de0d](https://github.com/reactivex/rxjs/commit/c63de0d380a923987aab587720473fad1d205d71))
+
+
+### Performance Improvements
+
+* **SafeSubscriber:** avoid using `Object.create` ([40a9e77](https://github.com/reactivex/rxjs/commit/40a9e77fe3d75df9161ad0093f54750b70f57245))
+
+
+### BREAKING CHANGES
+
+* **ajax:** 
+  * `ajax` body serialization will now use default XHR behavior in all cases. If the body is a `Blob`, `ArrayBuffer`, any array buffer view (like a byte sequence, e.g. `Uint8Array`, etc), `FormData`, `URLSearchParams`, `string`, or `ReadableStream`, default handling is use. If the `body` is otherwise `typeof` `"object"`, then it will be converted to JSON via `JSON.stringify`, and the `Content-Type` header will be set to `application/json;charset=utf-8`. All other types will emit an error.
+  * The `Content-Type` header passed to `ajax` configuration no longer has any effect on the serialization behavior of the AJAX request.
+  * For TypeScript users, `AjaxRequest` is no longer the type that should be explicitly used to create an `ajax`. It is now `AjaxConfig`, although the two types are compatible, only `AjaxConfig` has `progressSubscriber` and `createXHR`.
+
+
+* **zip:** `zip` operators will no longer iterate provided iterables "as needed", instead the iterables will be treated as push-streams just like they would be everywhere else in RxJS. This means that passing an endless iterable will result in the thread locking up, as it will endlessly try to read from that iterable. This puts us in-line with all other Rx implementations. To work around this, it is probably best to use `map` or some combination of `map` and `zip`. For example, `zip(source$, iterator)` could be `source$.pipe(map(value => [value, iterator.next().value]))`.
+
+* **Subscription:** `add` no longer returns an unnecessary Subscription reference. This was done to prevent confusion caused by a legacy behavior. You can now add and remove functions and Subscriptions as teardowns to and from a `Subscription` using `add` and `remove` directly. Before this, `remove` only accepted subscriptions.
+
+* **RxJS Error types** Tests that are written with naive expectations against errors may fail now that errors have a proper `stack` property. In some testing frameworks, a deep equality check on two error instances will check the values in `stack`, which could be different.
+
+* **Undocumented Behaviors/APIs Removed**:
+  * `unsubscribe` no longer available via the `this` context of observer functions. To reenable, set `config.useDeprecatedNextContext = true` on the rxjs `config` found at `import { config } from 'rxjs';`. Note that enabling this will result in a performance penalty for all consumer subscriptions.
+  * Leaked implementation detail `_unsubscribeAndRecycle` of `Subscriber` has been removed. Just use new `Subscription` objects
+  * Removed an undocumented behavior where passing a negative count argument to `retry` would result in an observable that repeats forever.
+  * An undocumented behavior where passing a negative count argument to `repeat` would result in an observable that repeats forever.
+  * The static `sortActions` method on `VirtualTimeScheduler` is no longer publicly exposed by our TS types.
+
+* **throwError:** In an extreme corner case for usage, `throwError` is no longer able to emit a function as an error directly. If you need to push a function as an error, you will have to use the factory function to return the function like so: `throwError(() => functionToEmit)`, in other words `throwError(() => () => console.log('called later'))`.
+
+
+
+
+
 # [7.0.0-beta.4](https://github.com/reactivex/rxjs/compare/7.0.0-beta.1...7.0.0-beta.4) (2020-08-02)
 
 
