@@ -226,11 +226,11 @@ describe('throttleTime operator', () => {
 
     it('should emit the last throttled value when complete', () => {
       rxTest.run(({ hot, time, expectObservable, expectSubscriptions }) => {
-        const e1 = hot('  -a-xy-----b--x--cxx|');
-        const e1subs = '  ^------------------!';
-        const t = time('   ----|              ');
+        const e1 = hot('  -a-xy-----b--x--cxx-|');
+        const e1subs = '  ^-------------------!';
+        const t = time('   ----|               ');
         //                 ----|---|----|---|---|
-        const expected = '-----y--------x---x---|';
+        const expected = '-----y--------x---x-|';
 
         const result = e1.pipe(throttleTime(t, rxTest, { leading: false, trailing: true }));
 
