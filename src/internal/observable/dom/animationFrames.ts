@@ -87,7 +87,7 @@ export function animationFrames(timestampProvider?: TimestampProvider) {
 function animationFramesFactory(timestampProvider?: TimestampProvider) {
   const { schedule } = animationFrameProvider;
   return new Observable<{ timestamp: number, elapsed: number }>(subscriber => {
-    let subscription: Subscription;
+    const subscription = new Subscription();
     // If no timestamp provider is specified, use performance.now() - as it
     // will return timestamps 'compatible' with those passed to the run
     // callback and won't be affected by NTP adjustments, etc.
@@ -111,13 +111,11 @@ function animationFramesFactory(timestampProvider?: TimestampProvider) {
         elapsed: now - start
       });
       if (!subscriber.closed) {
-        subscription = schedule(run);
+        subscription.add(schedule(run));
       }
     };
-    subscription = schedule(run);
-    // The subscription is returned within a teardown because it is reassigned
-    // within the run callback whenever the callback is rescheduled.
-    return () => subscription.unsubscribe();
+    subscription.add(schedule(run));
+    return subscription;
   });
 }
 
