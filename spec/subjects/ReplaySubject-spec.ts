@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { values } from 'lodash';
 import { ReplaySubject, Subject, of } from 'rxjs';
 import { mergeMapTo, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
