@@ -116,7 +116,7 @@
 
 ### Code Refactoring
 
-* **perf:** Reduce memory pressure by no longer retaining outer values across the majority of operators. ([#5610](https:://github.com/reactivex/rxjs/pull/5610)) ([bff1827](https://github.com/ReactiveX/rxjs/commit/bff18272dca23938a5f5b57cec6eb8d8be5bfddf))
+* **perf:** Reduce memory pressure by no longer retaining outer values across the majority of operators. ([#5610](https://github.com/reactivex/rxjs/pull/5610)) ([bff1827](https://github.com/ReactiveX/rxjs/commit/bff18272dca23938a5f5b57cec6eb8d8be5bfddf))
 * **Observable:** Update property and method types ([#5572](https://github.com/reactivex/rxjs/issues/5572)) ([144b626](https://github.com/reactivex/rxjs/commit/144b626c3905640b4adeb2b97e722912eff1b264))
 
 
