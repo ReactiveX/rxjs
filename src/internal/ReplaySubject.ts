@@ -35,21 +35,23 @@ export class ReplaySubject<T> extends Subject<T> {
   }
 
   private nextInfiniteTimeWindow(value: T): void {
-    const _events = this._events;
-    _events.push(value);
-    // Since this method is invoked in every next() call than the buffer
-    // can overgrow the max size only by one item
-    if (_events.length > this._bufferSize) {
-      _events.shift();
+    if (!this.isStopped) {
+      const _events = this._events;
+      _events.push(value);
+      // Since this method is invoked in every next() call than the buffer
+      // can overgrow the max size only by one item
+      if (_events.length > this._bufferSize) {
+        _events.shift();
+      }
     }
-
     super.next(value);
   }
 
   private nextTimeWindow(value: T): void {
-    this._events.push(new ReplayEvent(this._getNow(), value));
-    this._trimBufferThenGetEvents();
-
+    if (!this.isStopped) {
+      this._events.push(new ReplayEvent(this._getNow(), value));
+      this._trimBufferThenGetEvents();
+    }
     super.next(value);
   }
 
