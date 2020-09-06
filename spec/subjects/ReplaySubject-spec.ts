@@ -351,4 +351,32 @@ describe('ReplaySubject', () => {
 
     expect(results).to.deep.equal([3, 4, 5, 'done']);
   });
+
+  it('should not buffer nexted values after complete', () => {
+    const results: (number | string)[] = [];
+    const subject = new ReplaySubject<number>();
+    subject.next(1);
+    subject.next(2);
+    subject.complete();
+    subject.next(3);
+    subject.subscribe({
+      next: value => results.push(value),
+      complete: () => results.push('C'),
+    });
+    expect(results).to.deep.equal([1, 2, 'C']);
+  });
+
+  it('should not buffer nexted values after error', () => {
+    const results: (number | string)[] = [];
+    const subject = new ReplaySubject<number>();
+    subject.next(1);
+    subject.next(2);
+    subject.error(new Error('Boom!'));
+    subject.next(3);
+    subject.subscribe({
+      next: value => results.push(value),
+      error: () => results.push('E'),
+    });
+    expect(results).to.deep.equal([1, 2, 'E']);
+  });
 });
