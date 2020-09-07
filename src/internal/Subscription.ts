@@ -170,15 +170,14 @@ export class Subscription implements SubscriptionLike {
    */
   private _addParent(parent: Subscription) {
     const { _singleParent } = this;
-    let _parents: Subscription[] | null;
     if (_singleParent) {
       // We already have one parent so we'll need to expand
       // to use an array
       this._parents = [_singleParent, parent];
       this._singleParent = null;
-    } else if ((_parents = this._parents)) {
+    } else if (this._parents) {
       // We already have more than one parent, so just add on to that array.
-      _parents.push(parent);
+      this._parents.push(parent);
     } else {
       // This is our first parent.
       this._singleParent = parent;
