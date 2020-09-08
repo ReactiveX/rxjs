@@ -532,7 +532,7 @@ export declare type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<ne
 
 export declare class Subscriber<T> extends Subscription implements Observer<T> {
     protected destination: Observer<any> | Subscriber<any>;
-    protected isStopped: boolean; syncErrorThrowable: boolean; syncErrorThrown: boolean; syncErrorValue: any;
+    protected isStopped: boolean;
     constructor(destinationOrNext?: PartialObserver<any> | ((value: T) => void) | null, error?: ((e?: any) => void) | null, complete?: (() => void) | null);
     protected _complete(): void;
     protected _error(err: any): void;
