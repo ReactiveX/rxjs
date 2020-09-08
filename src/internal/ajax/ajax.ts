@@ -295,6 +295,21 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       headers['x-requested-with'] = 'XMLHttpRequest';
     }
 
+    // Allow users to provide their XSRF cookie name and the name of a custom header to use to
+    // send the cookie. This
+    if (config.withCredentials && config.xsrfCookieName && config.xsrfHeaderName) {
+      try {
+        const match = document.cookie.match(new RegExp(`(^|;\\s*)(${name})=([^;]*)`));
+        if (match) {
+          headers[config.xsrfHeaderName] = match[3];
+        }
+      } catch (err) {
+        if (err instanceof ReferenceError && err.message.includes('document')) {
+          throw new TypeError('xsrfCookieName and xsrfHeaderName used in non-browser environment');
+        }
+      }
+    }
+
     // Examine the body and determine whether or not to serialize it
     // and set the content-type in `headers`, if we're able.
     let body: any;

@@ -134,6 +134,16 @@ export interface AjaxConfig {
   withCredentials?: boolean;
 
   /**
+   * The name of your site's XSRF cookie.
+   */
+  xsrfCookieName?: string;
+
+  /**
+   * The name of a custom header that you can use to send your XSRF cookie.
+   */
+  xsrfHeaderName?: string;
+
+  /**
    * Can be set to change the response type.
    * Valid values are `"arraybuffer"`, `"blob"`, `"document"`, `"json"`, and `"text"`.
    * Note that the type of `"document"` (such as an XML document) is ignored if the global context is
