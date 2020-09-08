@@ -14,6 +14,8 @@ export interface AjaxConfig {
     url: string;
     user?: string;
     withCredentials?: boolean;
+    xsrfCookieName?: string;
+    xsrfHeaderName?: string;
 }
 
 export interface AjaxError extends Error {
