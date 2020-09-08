@@ -9,6 +9,7 @@ import { toSubscriber } from './util/toSubscriber';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
+import { reportUnhandledError } from './util/reportUnhandledError';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -253,8 +254,8 @@ export class Observable<T> implements Subscribable<T> {
           sink.error(err);
         } else {
           // If an error is thrown during subscribe, but our subscriber is closed, so we cannot notify via the
-          // subscription "error" channel, we are warning the developer of the problem here, via the console.
-          console.warn(err);
+          // subscription "error" channel, it is an unhandled error and we need to report it appropriately.
+          reportUnhandledError(err);
         }
       }
     }

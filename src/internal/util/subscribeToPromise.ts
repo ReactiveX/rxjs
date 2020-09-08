@@ -1,5 +1,5 @@
 import { Subscriber } from '../Subscriber';
-import { hostReportError } from './hostReportError';
+import { reportUnhandledError } from './reportUnhandledError';
 
 export const subscribeToPromise = <T>(promise: PromiseLike<T>) => (subscriber: Subscriber<T>) => {
   promise.then(
@@ -11,6 +11,6 @@ export const subscribeToPromise = <T>(promise: PromiseLike<T>) => (subscriber: S
     },
     (err: any) => subscriber.error(err)
   )
-  .then(null, hostReportError);
+  .then(null, reportUnhandledError);
   return subscriber;
 };
