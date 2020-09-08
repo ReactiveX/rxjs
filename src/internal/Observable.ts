@@ -208,37 +208,25 @@ export class Observable<T> implements Subscribable<T> {
     error?: ((error: any) => void) | null,
     complete?: (() => void) | null
   ): Subscription {
-    const { operator } = this;
-    const sink = toSubscriber(observerOrNext, error, complete);
+    const subscriber = toSubscriber(observerOrNext, error, complete);
 
-    if (operator) {
-      sink.add(operator.call(sink, this.source));
-    } else {
-      // If we have a source, we know this observable is the result of one of our lifted
-      // operators. We choose the trusted path of `_subscribe`. Otherwise,
-      // if we do not have a source, that means this is a user-created observable, and the
-      // subscribe function may error, so we need to wrap it in a try-catch. Likewise,
-      // if the user has chosen to use the deprecated synchronous error throwning behavior,
-      // AND the current subscriber is in a syncErrorThrowable state, meaning we're in the act
-      // of subscribing, we need to wrap the subscribe in a try-catch so we can flag
-      // synchronously thrown errors and throw them again.
-      sink.add(
-        this.source || (config.useDeprecatedSynchronousErrorHandling && !sink.syncErrorThrowable)
-          ? this._subscribe(sink)
-          : this._trySubscribe(sink)
-      );
-    }
+    // If we have an operator, it's the result of a lift, and we let the lift
+    // mechanism do the subscription for us in the operator call. Otherwise,
+    // if we have a source, it's a trusted observable we own, and we can call
+    // the _subscribe without wrapping it in a try/catch. If we are supposed to
+    // use the deprecated sync error handling, then we don't need the try/catch either
+    // otherwise, it may be from a user-made observable instance, and we want to
+    // wrap it in a try/catch so we can handle errors appropriately.
+    const { operator, source } = this;
+    subscriber.add(
+      operator
+        ? operator.call(subscriber, source)
+        : source || config.useDeprecatedSynchronousErrorHandling
+        ? this._subscribe(subscriber)
+        : this._trySubscribe(subscriber)
+    );
 
-    if (config.useDeprecatedSynchronousErrorHandling) {
-      if (sink.syncErrorThrowable) {
-        sink.syncErrorThrowable = false;
-        if (sink.syncErrorThrown) {
-          throw sink.syncErrorValue;
-        }
-      }
-    }
-
-    return sink;
+    return subscriber;
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
@@ -247,8 +235,7 @@ export class Observable<T> implements Subscribable<T> {
       return this._subscribe(sink);
     } catch (err) {
       if (config.useDeprecatedSynchronousErrorHandling) {
-        sink.syncErrorThrown = true;
-        sink.syncErrorValue = err;
+        throw err;
       } else {
         if (canReportError(sink)) {
           sink.error(err);
@@ -346,8 +333,7 @@ export class Observable<T> implements Subscribable<T> {
 
   /** @internal This is an internal implementation detail, do not use. */
   protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
-    const { source } = this;
-    return source && source.subscribe(subscriber);
+    return this.source?.subscribe(subscriber);
   }
 
   /**
@@ -450,11 +436,7 @@ export class Observable<T> implements Subscribable<T> {
    * ```
    */
   pipe(...operations: OperatorFunction<any, any>[]): Observable<any> {
-    if (operations.length === 0) {
-      return this as any;
-    }
-
-    return pipeFromArray(operations)(this);
+    return operations.length ? pipeFromArray(operations)(this) : this;
   }
 
   /* tslint:disable:max-line-length */
@@ -506,15 +488,7 @@ export class Observable<T> implements Subscribable<T> {
  * @param promiseCtor The optional promise constructor to passed by consuming code
  */
 function getPromiseCtor(promiseCtor: PromiseConstructorLike | undefined) {
-  if (!promiseCtor) {
-    promiseCtor = config.Promise || Promise;
-  }
-
-  if (!promiseCtor) {
-    throw new Error('no Promise impl found');
-  }
-
-  return promiseCtor;
+  return promiseCtor ?? config.Promise ?? Promise;
 }
 
 /**
