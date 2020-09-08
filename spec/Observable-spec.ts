@@ -620,7 +620,7 @@ describe('Observable', () => {
         expect(() => throwError(new Error('thrown error')).subscribe()).to.throw(Error, 'thrown error');
       });
 
-      it('should rethrow if sink has syncErrorThrowable = false', () => {
+      it('should rethrow if next handler throws', () => {
         const observable = new Observable((observer) => {
           observer.next(1);
         });
