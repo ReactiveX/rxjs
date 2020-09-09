@@ -297,11 +297,12 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     }
 
     // Allow users to provide their XSRF cookie name and the name of a custom header to use to
-    // send the cookie. This
-    if ((config.withCredentials || isSameOrigin(config.url)) && config.xsrfCookieName && config.xsrfHeaderName) {
-      const xsrfCookie = readCookie(config.xsrfCookieName);
+    // send the cookie.
+    const { url, withCredentials, xsrfCookieName, xsrfHeaderName } = config;
+    if ((withCredentials || isSameOrigin(url)) && xsrfCookieName && xsrfHeaderName) {
+      const xsrfCookie = readCookie(xsrfCookieName);
       if (xsrfCookie) {
-        headers[config.xsrfHeaderName] = xsrfCookie;
+        headers[xsrfHeaderName] = xsrfCookie;
       }
     }
 
@@ -518,12 +519,22 @@ function isReadableStream(body: any): body is ReadableStream {
   return typeof ReadableStream !== 'undefined' && body instanceof ReadableStream;
 }
 
+function isDocumentNotDefinedError(err: Error): boolean {
+  return err instanceof ReferenceError && err.message.includes('document');
+}
+
+function isInvalidURLError(err: Error): boolean {
+  return err instanceof TypeError && err.message.includes('Invalid URL');
+}
+
 function isSameOrigin(url: string): boolean {
   try {
     return new URL(url).origin === new URL(document.location.href).origin;
   } catch (err) {
     // Indicates this is a non-standard browsing env.
-    if (err instanceof ReferenceError && err.message.includes('document')) { return false; }
+    if (isDocumentNotDefinedError(err) || isInvalidURLError(err)) {
+      return false;
+    }
     throw err;
   }
 }
@@ -533,7 +544,9 @@ function readCookie(name: string): string {
     return document.cookie.match(new RegExp(`(^|;\\s*)(${name})=([^;]*)`))?.pop() ?? '';
   } catch (err) {
     // Indicates this is a non-standard browsing env.
-    if (err instanceof ReferenceError && err.message.includes('document')) { return ''; }
+    if (isDocumentNotDefinedError(err)) {
+      return '';
+    }
     throw err;
   }
 }
