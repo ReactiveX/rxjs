@@ -523,16 +523,12 @@ function isDocumentNotDefinedError(err: Error): boolean {
   return err instanceof ReferenceError && err.message.includes('document');
 }
 
-function isInvalidURLError(err: Error): boolean {
-  return err instanceof TypeError && err.message.includes('Invalid URL');
-}
-
 function isSameOrigin(url: string): boolean {
   try {
-    return new URL(url).origin === new URL(document.location.href).origin;
+    return new URL(url, document.location.href).origin === new URL(document.location.href).origin;
   } catch (err) {
     // Indicates this is a non-standard browsing env.
-    if (isDocumentNotDefinedError(err) || isInvalidURLError(err)) {
+    if (isDocumentNotDefinedError(err)) {
       return false;
     }
     throw err;
