@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { isFunction } from '../util/isFunction';
 import { Subscriber } from '../Subscriber';
-import { map } from '../operators/map';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 
 export interface NodeStyleEventEmitter {
   addListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
@@ -186,7 +186,7 @@ export function fromEvent<T>(
   if (resultSelector) {
     // DEPRECATED PATH
     return fromEvent<T>(target, eventName, options as EventListenerOptions | undefined).pipe(
-      map(args => Array.isArray(args) ? resultSelector!(...args) : resultSelector!(args))
+      mapOneOrManyArgs(resultSelector)
     );
   }
 

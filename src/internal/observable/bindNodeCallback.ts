@@ -1,8 +1,8 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { SchedulerLike } from '../types';
-import { map } from '../operators/map';
 import { isScheduler } from '../util/isScheduler';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 
 /* tslint:disable:max-line-length */
 /** @deprecated resultSelector is deprecated, pipe to map instead */
@@ -264,11 +264,7 @@ export function bindNodeCallback<T>(
       scheduler = resultSelector;
     } else {
       // DEPRECATED PATH
-      return (...args: any[]) =>
-        bindNodeCallback(
-          callbackFunc,
-          scheduler
-        )(...args).pipe(map((args) => (Array.isArray(args) ? resultSelector(...args) : resultSelector(args))));
+      return (...args: any[]) => bindNodeCallback(callbackFunc, scheduler)(...args).pipe(mapOneOrManyArgs(resultSelector as any));
     }
   }
 
