@@ -1,3 +1,4 @@
+/** @prettier */
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
@@ -18,131 +19,155 @@ export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T
 /* tslint:enable:max-line-length */
 
 /**
- * Perform a side effect for every emission on the source Observable, but return
- * an Observable that is identical to the source.
+ * Used to perform side-effects for notifications from the source observable
  *
- * <span class="informal">Intercepts each emission on the source and runs a
- * function, but returns an output which is identical to the source as long as errors don't occur.</span>
+ * <span class="informal">Used when you want to affect outside state with a notification without altering the notification</span>
  *
  * ![](tap.png)
  *
- * Returns a mirrored Observable of the source Observable, but modified so that
- * the provided Observer is called to perform a side effect for every value,
- * error, and completion emitted by the source. Any errors that are thrown in
- * the aforementioned Observer or handlers are safely sent down the error path
- * of the output Observable.
+ * Tap is designed to allow the developer a designated place to perform side effects. While you _could_ perform side-effects
+ * inside of a `map` or a `mergeMap`, that would make their mapping functions impure, which isn't always a big deal, but will
+ * make it so you can't do things like memoize those functions. The `tap` operator is designed solely for such side-effects to
+ * help you remove side-effects from other operations.
  *
- * This operator is useful for debugging your Observables for the correct values
- * or performing other side effects.
+ * For any notification, next, error, or complete, `tap` will call the appropriate callback you have provided to it, via a function
+ * reference, or a partial observer, then pass that notification down the stream.
  *
- * Note: this is different to a `subscribe` on the Observable. If the Observable
- * returned by `tap` is not subscribed, the side effects specified by the
- * Observer will never happen. `tap` therefore simply spies on existing
- * execution, it does not trigger an execution to happen like `subscribe` does.
+ * The observable returned by `tap` is an exact mirror of the source, with one exception: Any error that occurs -- synchronously -- in a handler
+ * provided to `tap` will be emitted as an error from the returned observable.
+ *
+ * > Be careful! You can mutate objects as they pass through the `tap` operator's handlers.
+ *
+ * The most common use of `tap` is actually for debugging. You can place a `tap(console.log)` anywhere
+ * in your observable `pipe`, log out the notifications as they are emitted by the source returned by the previous
+ * operation.
  *
  * ## Example
- * Map every click to the clientX position of that click, while also logging the click event
+ * Check a random number before it is handled. Below is an observable that will use a random number between 0 and 1,
+ * and emit "big" or "small" depending on the size of that number. But we wanted to log what the original number
+ * was, so we have added a `tap(console.log)`.
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
+ * import { of } from 'rxjs';
  * import { tap, map } from 'rxjs/operators';
  *
- * const clicks = fromEvent(document, 'click');
- * const positions = clicks.pipe(
- *   tap(ev => console.log(ev)),
- *   map(ev => ev.clientX),
- * );
- * positions.subscribe(x => console.log(x));
+ * of(Math.random()).pipe(
+ *   tap(console.log),
+ *   map(n => n > 0.5 ? 'big' : 'small')
+ * ).subscribe(console.log);
  * ```
  *
- * @see {@link map}
+ * ## Example
+ * Using `tap` to analyze a value and force an error. Below is an observable where in our system we only
+ * want to emit numbers 3 or less we get from another source. We can force our observable to error
+ * using `tap`.
+ *
+ * ```ts
+ * import { of } from 'rxjs':
+ * import { tap } from 'rxjs/operators';
+ *
+ * const source = of(1, 2, 3, 4, 5)
+ *
+ * source.pipe(
+ *  tap(n => {
+ *    if (n > 3) {
+ *      throw new TypeError(`Value ${n} is greater than 3`)
+ *    }
+ *  })
+ * )
+ * .subscribe(console.log);
+ * ```
+ *
+ * ## Example
+ * We want to know when an observable completes before moving on to the next observable. The system
+ * below will emit a random series of `"X"` characters from 3 different observables in sequence. The
+ * only way we know when one observable completes and moves to the next one, in this case, is because
+ * we have added a `tap` with the side-effect of logging to console.
+ *
+ * ```ts
+ * import { of, interval } from 'rxjs';
+ * import { tap, concatMap, take } from 'rxjs';
+ *
+ *
+ * of(1, 2, 3).pipe(
+ *  concatMap(n => interval.pipe(
+ *    take(Math.round(Math.random() * 10)),
+ *    map(() => 'X'),
+ *    tap({
+ *      complete: () => console.log(`Done with ${n}`)
+ *    })
+ *  ))
+ * )
+ * .subscribe(console.log);
+ * ```
+ *
+ * @see {@link finalize}
  * @see {@link Observable#subscribe}
  *
- * @param {Observer|function} [nextOrObserver] A normal Observer object or a
- * callback for `next`.
- * @param {function} [error] Callback for errors in the source.
- * @param {function} [complete] Callback for the completion of the source.
- * @return {Observable} An Observable identical to the source, but runs the
- * specified Observer or callback(s) for each item.
- * @name tap
+ * @param nextOrObserver A next handler or partial observer
+ * @param error An error handler
+ * @param complete A completion handler
  */
-export function tap<T>(nextOrObserver?: PartialObserver<T> | ((x: T) => void) | null,
-                       error?: ((e: any) => void) | null,
-                       complete?: (() => void) | null): MonoTypeOperatorFunction<T> {
-  return function tapOperatorFunction(source: Observable<T>): Observable<T> {
-    return lift(source, new TapOperator(nextOrObserver, error, complete));
+export function tap<T>(
+  nextOrObserver?: PartialObserver<T> | ((x: T) => void) | null,
+  error?: ((e: any) => void) | null,
+  complete?: (() => void) | null
+): MonoTypeOperatorFunction<T> {
+  return (source: Observable<T>): Observable<T> => {
+    return lift(source, function (this: Subscriber<T>, source: Observable<T>) {
+      return source.subscribe(new TapSubscriber(this, nextOrObserver, error, complete));
+    });
   };
 }
 
-class TapOperator<T> implements Operator<T, T> {
-  constructor(private nextOrObserver?: PartialObserver<T> | ((x: T) => void) | null,
-              private error?: ((e: any) => void) | null,
-              private complete?: (() => void) | null) {
-  }
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new TapSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-
 class TapSubscriber<T> extends Subscriber<T> {
-  private _context: any;
+  private _tapNext: (value: T) => void = noop;
 
-  private _tapNext: ((value: T) => void) = noop;
+  private _tapError: (err: any) => void = noop;
 
-  private _tapError: ((err: any) => void) = noop;
+  private _tapComplete: () => void = noop;
 
-  private _tapComplete: (() => void) = noop;
-
-  constructor(destination: Subscriber<T>,
-              observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
-              error?: ((e?: any) => void) | null,
-              complete?: (() => void) | null) {
-      super(destination);
+  constructor(
+    destination: Subscriber<T>,
+    observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
+    error?: ((e?: any) => void) | null,
+    complete?: (() => void) | null
+  ) {
+    super(destination);
+    if (!observerOrNext || typeof observerOrNext === 'function') {
+      // If `observerOrNext` is falsy or a function, then we know that we're dealing
+      // with up to three callbacks.
+      this._tapNext = observerOrNext?.bind(this) || noop;
       this._tapError = error || noop;
       this._tapComplete = complete || noop;
-      if (isFunction(observerOrNext)) {
-        this._context = this;
-        this._tapNext = observerOrNext;
-      } else if (observerOrNext) {
-        this._context = observerOrNext;
-        this._tapNext = observerOrNext.next || noop;
-        this._tapError = observerOrNext.error || noop;
-        this._tapComplete = observerOrNext.complete || noop;
-      }
+    } else if (observerOrNext && typeof observerOrNext === 'object') {
+      // If it's an object, we'll assume it is a partial observer.
+      const { next, error, complete } = observerOrNext;
+      this._tapNext = next?.bind(observerOrNext) || noop;
+      this._tapError = error?.bind(observerOrNext) || noop;
+      this._tapComplete = complete?.bind(observerOrNext) || noop;
     }
+  }
 
   _next(value: T) {
-    try {
-      this._tapNext.call(this._context, value);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.destination.next(value);
+    this._notify(this._tapNext, value) && super._next(value);
   }
 
   _error(err: any) {
-    try {
-      this._tapError.call(this._context, err);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.destination.error(err);
+    this._notify(this._tapError, err) && super._error(err);
   }
 
   _complete() {
+    this._notify(this._tapComplete) && super._complete();
+  }
+
+  private _notify(fn: any, arg?: any) {
     try {
-      this._tapComplete.call(this._context, );
+      fn(arg);
     } catch (err) {
       this.destination.error(err);
-      return;
+      return false;
     }
-    return this.destination.complete();
+    return true;
   }
 }

@@ -26,7 +26,7 @@
     "changelog": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s",
     "commitmsg": "validate-commit-msg",
     "build:spec:browser": "echo \"Browser test is not working currently\" && exit -1 && webpack --config spec/support/webpack.mocha.config.js",
-    "lint_spec": "tslint -c tslint.json -p spec/tsconfig.json \"spec/**/*.ts\"",
+    "lint_spec": "tslint -c spec/tslint.json -p spec/tsconfig.json \"spec/**/*.ts\"",
     "lint_src": "tslint -c tslint.json -p src/tsconfig.base.json \"src/**/*.ts\"",
     "lint": "npm-run-all --parallel lint_*",
     "dtslint": "tsc -b ./src/tsconfig.types.json && tslint -c spec-dtslint/tslint.json -p spec-dtslint/tsconfig.json \"spec-dtslint/**/*.ts\"",
