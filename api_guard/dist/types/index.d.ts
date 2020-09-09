@@ -560,7 +560,7 @@ export interface SubscriptionLike extends Unsubscribable {
 
 export declare type Tail<X extends any[]> = ((...args: X) => any) extends ((arg: any, ...rest: infer U) => any) ? U : never;
 
-export declare type TeardownLogic = Subscription | Unsubscribable | Function | void;
+export declare type TeardownLogic = Subscription | Unsubscribable | (() => void) | void;
 
 export declare function throwError(errorFactory: () => any): Observable<never>;
 export declare function throwError(error: any): Observable<never>;
