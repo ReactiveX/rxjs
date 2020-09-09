@@ -4,6 +4,7 @@ import { Observable } from '../Observable';
 import { AjaxConfig, AjaxRequest } from './types';
 import { AjaxResponse } from './AjaxResponse';
 import { AjaxTimeoutError, AjaxError } from './errors';
+import { read } from 'fs';
 
 export interface AjaxCreationMethod {
   /**
@@ -297,16 +298,10 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
 
     // Allow users to provide their XSRF cookie name and the name of a custom header to use to
     // send the cookie. This
-    if (config.withCredentials && config.xsrfCookieName && config.xsrfHeaderName) {
-      try {
-        const match = document.cookie.match(new RegExp(`(^|;\\s*)(${name})=([^;]*)`));
-        if (match) {
-          headers[config.xsrfHeaderName] = match[3];
-        }
-      } catch (err) {
-        if (err instanceof ReferenceError && err.message.includes('document')) {
-          throw new TypeError('xsrfCookieName and xsrfHeaderName used in non-browser environment');
-        }
+    if ((config.withCredentials || isSameOrigin(config.url)) && config.xsrfCookieName && config.xsrfHeaderName) {
+      const xsrfCookie = readCookie(config.xsrfCookieName);
+      if (xsrfCookie) {
+        headers[config.xsrfHeaderName] = xsrfCookie;
       }
     }
 
@@ -521,4 +516,24 @@ function isURLSearchParams(body: any): body is URLSearchParams {
 
 function isReadableStream(body: any): body is ReadableStream {
   return typeof ReadableStream !== 'undefined' && body instanceof ReadableStream;
+}
+
+function isSameOrigin(url: string): boolean {
+  try {
+    return new URL(url).origin === new URL(document.location.href).origin;
+  } catch (err) {
+    // Indicates this is a non-standard browsing env.
+    if (err instanceof ReferenceError && err.message.includes('document')) { return false; }
+    throw err;
+  }
+}
+
+function readCookie(name: string): string {
+  try {
+    return document.cookie.match(new RegExp(`(^|;\\s*)(${name})=([^;]*)`))?.pop() ?? '';
+  } catch (err) {
+    // Indicates this is a non-standard browsing env.
+    if (err instanceof ReferenceError && err.message.includes('document')) { return ''; }
+    throw err;
+  }
 }
