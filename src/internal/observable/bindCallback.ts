@@ -1,7 +1,6 @@
 import { SchedulerLike } from '../types';
 import { Observable } from '../Observable';
 import { map } from '../operators/map';
-import { isArray } from '../util/isArray';
 import { isScheduler } from '../util/isScheduler';
 
 // tslint:disable:max-line-length
@@ -184,7 +183,7 @@ export function bindCallback<T>(
     } else {
       // DEPRECATED PATH
       return (...args: any[]) => bindCallback(callbackFunc, scheduler)(...args).pipe(
-        map((args) => isArray(args) ? resultSelector(...args) : resultSelector(args)),
+        map((args) => Array.isArray(args) ? resultSelector(...args) : resultSelector(args)),
       );
     }
   }

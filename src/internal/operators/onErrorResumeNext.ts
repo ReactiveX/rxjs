@@ -1,7 +1,6 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { isArray } from '../util/isArray';
 import { ObservableInput, OperatorFunction, ObservedValueOf, ObservedValueUnionFromArray, MonoTypeOperatorFunction } from '../types';
 import { lift } from '../util/lift';
 import { from } from '../observable/from';
@@ -83,7 +82,7 @@ export function onErrorResumeNext<T, A extends ObservableInput<any>[]>(
 export function onErrorResumeNext<T>(...nextSources: ObservableInput<any>[]): OperatorFunction<T, unknown> {
   // If there is only one argument, and it is an array, we'll treat it like it is
   // and array of arguments.
-  if (nextSources.length === 1 && isArray(nextSources[0])) {
+  if (nextSources.length === 1 && Array.isArray(nextSources[0])) {
     nextSources = nextSources[0];
   }
 

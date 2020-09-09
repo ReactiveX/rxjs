@@ -3,7 +3,6 @@ import { Observable } from '../Observable';
 import { SchedulerLike } from '../types';
 import { map } from '../operators/map';
 import { isScheduler } from '../util/isScheduler';
-import { isArray } from '../util/isArray';
 
 /* tslint:disable:max-line-length */
 /** @deprecated resultSelector is deprecated, pipe to map instead */
@@ -269,7 +268,7 @@ export function bindNodeCallback<T>(
         bindNodeCallback(
           callbackFunc,
           scheduler
-        )(...args).pipe(map((args) => (isArray(args) ? resultSelector(...args) : resultSelector(args))));
+        )(...args).pipe(map((args) => (Array.isArray(args) ? resultSelector(...args) : resultSelector(args))));
     }
   }
 

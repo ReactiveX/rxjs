@@ -3,7 +3,6 @@ import { Observable } from '../Observable';
 import { ObservableInput, ObservedValueUnionFromArray, ObservedValueOf } from '../types';
 import { EMPTY } from './empty';
 import { onErrorResumeNext as onErrorResumeNextWith } from '../operators/onErrorResumeNext';
-import { isArray } from '../util/isArray';
 
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext(): Observable<never>;
@@ -72,7 +71,7 @@ export function onErrorResumeNext<A extends ObservableInput<any>[]>(...sources: 
  * ignoring all errors, such that any error causes it to move on to the next source.
  */
 export function onErrorResumeNext(...sources: ObservableInput<any>[]): Observable<any> {
-  if (sources.length === 1 && isArray(sources)) {
+  if (sources.length === 1 && Array.isArray(sources)) {
     sources = sources[0] as any;
   }
   return onErrorResumeNextWith(sources)(EMPTY);

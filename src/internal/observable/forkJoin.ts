@@ -1,6 +1,5 @@
 import { Observable } from '../Observable';
 import { ObservableInput, ObservedValueUnionFromArray, ObservedValueOf, SubscribableOrPromise } from '../types';
-import { isArray } from '../util/isArray';
 import { map } from '../operators/map';
 import { isObject } from '../util/isObject';
 import { from } from './from';
@@ -143,7 +142,7 @@ export function forkJoin(
 ): Observable<any> {
   if (sources.length === 1) {
     const first = sources[0];
-    if (isArray(first)) {
+    if (Array.isArray(first)) {
       return forkJoinInternal(first, null);
     }
     if (isObject(first) && Object.getPrototypeOf(first) === Object.prototype) {
@@ -155,7 +154,7 @@ export function forkJoin(
   // DEPRECATED PATHS BELOW HERE
   if (typeof sources[sources.length - 1] === 'function') {
     const resultSelector = sources.pop() as Function;
-    sources = (sources.length === 1 && isArray(sources[0])) ? sources[0] : sources;
+    sources = (sources.length === 1 && Array.isArray(sources[0])) ? sources[0] : sources;
     return forkJoinInternal(sources, null).pipe(
       map((args: any[]) => resultSelector(...args))
     );

@@ -1,5 +1,4 @@
 import { Observable } from '../Observable';
-import { isArray } from '../util/isArray';
 import { isFunction } from '../util/isFunction';
 import { Subscriber } from '../Subscriber';
 import { map } from '../operators/map';
@@ -187,7 +186,7 @@ export function fromEvent<T>(
   if (resultSelector) {
     // DEPRECATED PATH
     return fromEvent<T>(target, eventName, options as EventListenerOptions | undefined).pipe(
-      map(args => isArray(args) ? resultSelector!(...args) : resultSelector!(args))
+      map(args => Array.isArray(args) ? resultSelector!(...args) : resultSelector!(args))
     );
   }
 

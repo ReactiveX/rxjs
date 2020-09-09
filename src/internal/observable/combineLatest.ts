@@ -1,7 +1,6 @@
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueTupleFromArray } from '../types';
 import { isScheduler  } from '../util/isScheduler';
-import { isArray  } from '../util/isArray';
 import { Subscriber } from '../Subscriber';
 import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 import { Operator } from '../Operator';
@@ -253,7 +252,7 @@ export function combineLatest<O extends ObservableInput<any>, R>(
 
   if (observables.length === 1) {
     const first = observables[0] as any;
-    if (isArray(first)) {
+    if (Array.isArray(first)) {
       // if the first and only other argument besides the resultSelector is an array
       // assume it's been called with `combineLatest([obs1, obs2, obs3], resultSelector)`
       observables = first;

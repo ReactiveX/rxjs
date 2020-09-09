@@ -1,9 +1,7 @@
 import { Observable } from '../Observable';
-import { isArray } from '../util/isArray';
 import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, ObservedValueUnionFromArray } from '../types';
-import { race as raceStatic, RaceOperator } from '../observable/race';
-import { fromArray } from '../observable/fromArray';
-import { lift, stankyLift } from '../util/lift';
+import { race as raceStatic } from '../observable/race';
+import { stankyLift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 /** @deprecated Deprecated use {@link raceWith} */
@@ -26,7 +24,7 @@ export function race<T, R>(...observables: Array<Observable<any> | Array<Observa
 export function race<T, R>(...observables: ObservableInput<R>[]): OperatorFunction<T, (T|R)[]> {
   // if the only argument is an array, it was most likely called with
   // `pair([obs1, obs2, ...])`
-  if (observables.length === 1 && isArray(observables[0])) {
+  if (observables.length === 1 && Array.isArray(observables[0])) {
     observables = observables[0];
   }
 

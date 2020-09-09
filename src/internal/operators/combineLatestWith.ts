@@ -1,10 +1,8 @@
-
-import { isArray } from '../util/isArray';
 import { CombineLatestOperator } from '../observable/combineLatest';
 import { from } from '../observable/from';
 import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueTupleFromArray, Cons } from '../types';
-import { lift, stankyLift } from '../util/lift';
+import { stankyLift } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 /** @deprecated use {@link combineLatestWith} */
@@ -50,7 +48,7 @@ export function combineLatest<T, R>(...observables: Array<ObservableInput<any> |
 
   // if the first and only other argument besides the resultSelector is an array
   // assume it's been called with `combineLatest([obs1, obs2, obs3], project)`
-  if (observables.length === 1 && isArray(observables[0])) {
+  if (observables.length === 1 && Array.isArray(observables[0])) {
     observables = (<any>observables[0]).slice();
   }
 
