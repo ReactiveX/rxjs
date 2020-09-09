@@ -519,10 +519,6 @@ function isReadableStream(body: any): body is ReadableStream {
   return typeof ReadableStream !== 'undefined' && body instanceof ReadableStream;
 }
 
-function isDocumentNotDefinedError(err: Error): boolean {
-  return err instanceof ReferenceError && err.message.includes('document');
-}
-
 function isSameOrigin(url: string): boolean {
   try {
     return new URL(url, globalThis?.document.location.href).origin === new URL(globalThis?.document.location.href).origin;
