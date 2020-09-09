@@ -525,24 +525,13 @@ function isDocumentNotDefinedError(err: Error): boolean {
 
 function isSameOrigin(url: string): boolean {
   try {
-    return new URL(url, document.location.href).origin === new URL(document.location.href).origin;
+    return new URL(url, globalThis?.document.location.href).origin === new URL(globalThis?.document.location.href).origin;
   } catch (err) {
-    // Indicates this is a non-standard browsing env.
-    if (isDocumentNotDefinedError(err)) {
-      return false;
-    }
-    throw err;
+    // Invalid URL...
+    return false;
   }
 }
 
 function readCookie(name: string): string {
-  try {
-    return document.cookie.match(new RegExp(`(^|;\\s*)(${name})=([^;]*)`))?.pop() ?? '';
-  } catch (err) {
-    // Indicates this is a non-standard browsing env.
-    if (isDocumentNotDefinedError(err)) {
-      return '';
-    }
-    throw err;
-  }
+  return globalThis?.document.cookie.match(new RegExp(`(^|;\\s*)(${name})=([^;]*)`))?.pop() ?? '';
 }
