@@ -54,5 +54,5 @@ export function combineAll<R>(project: (...values: Array<any>) => R): OperatorFu
  * @name combineAll
  */
 export function combineAll<T, R>(project?: (...values: Array<any>) => R): OperatorFunction<T, R> {
-  return (source: Observable<T>) => lift(source, new CombineLatestOperator(project));
+  return (source: Observable<T>) => lift(source, new CombineLatestOperator(project, null));
 }

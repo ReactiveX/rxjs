@@ -1,8 +1,7 @@
 import { Observable } from '../Observable';
-import { isArray } from '../util/isArray';
 import { isFunction } from '../util/isFunction';
 import { NodeEventHandler } from './fromEvent';
-import { map } from '../operators/map';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 
 /* tslint:disable:max-line-length */
 export function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => any, removeHandler?: (handler: NodeEventHandler, signal?: any) => void): Observable<T>;
@@ -145,7 +144,7 @@ export function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => a
   if (resultSelector) {
     // DEPRECATED PATH
     return fromEventPattern<T>(addHandler, removeHandler).pipe(
-      map(args => isArray(args) ? resultSelector(...args) : resultSelector(args))
+      mapOneOrManyArgs(resultSelector)
     );
   }
 

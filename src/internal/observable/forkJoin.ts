@@ -1,8 +1,7 @@
 import { Observable } from '../Observable';
 import { ObservableInput, ObservedValueUnionFromArray, ObservedValueOf, SubscribableOrPromise } from '../types';
-import { isArray } from '../util/isArray';
 import { map } from '../operators/map';
-import { isObject } from '../util/isObject';
+import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { from } from './from';
 
 /* tslint:disable:max-line-length */
@@ -131,7 +130,7 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * @see {@link combineLatest}
  * @see {@link zip}
  *
- * @param {...ObservableInput} sources Any number of Observables provided either as an array or as an arguments
+ * @param {...ObservableInput} args Any number of Observables provided either as an array or as an arguments
  * passed directly to the operator.
  * @param {function} [project] Function that takes values emitted by input Observables and returns value
  * that will appear in resulting Observable instead of default array.
@@ -139,29 +138,23 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * or value from project function.
  */
 export function forkJoin(
-  ...sources: any[]
+  ...args: any[]
 ): Observable<any> {
-  if (sources.length === 1) {
-    const first = sources[0];
-    if (isArray(first)) {
-      return forkJoinInternal(first, null);
-    }
-    if (isObject(first) && Object.getPrototypeOf(first) === Object.prototype) {
-      const keys = Object.keys(first);
-      return forkJoinInternal(keys.map(key => first[key]), keys);
-    }
+  let resultSelector: ((...args: any[]) => any) | undefined;
+  if (typeof args[args.length - 1] === 'function') {
+    resultSelector = args.pop();
   }
 
-  // DEPRECATED PATHS BELOW HERE
-  if (typeof sources[sources.length - 1] === 'function') {
-    const resultSelector = sources.pop() as Function;
-    sources = (sources.length === 1 && isArray(sources[0])) ? sources[0] : sources;
-    return forkJoinInternal(sources, null).pipe(
-      map((args: any[]) => resultSelector(...args))
+  const { args: sources, keys } = argsArgArrayOrObject(args);
+
+  if (resultSelector) {
+    // deprecated path.
+    return forkJoinInternal(sources, keys).pipe(
+      map((values: any[]) => resultSelector!(...values))
     );
   }
 
-  return forkJoinInternal(sources, null);
+  return forkJoinInternal(sources, keys);
 }
 
 function forkJoinInternal(sources: ObservableInput<any>[], keys: string[] | null): Observable<any> {
