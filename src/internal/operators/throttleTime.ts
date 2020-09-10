@@ -1,11 +1,10 @@
 /** @prettier */
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { asyncScheduler } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { ThrottleConfig, defaultThrottleConfig } from './throttle';
-import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { lift } from '../util/lift';
 
 /**
