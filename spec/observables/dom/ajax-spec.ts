@@ -115,13 +115,13 @@ describe('ajax', () => {
 
   describe('ajax XSRF cookie in custom header', () => {
     beforeEach(() => {
-      globalThis.document = {
+      (global as any).document = {
         cookie: 'foo=bar',
       } as Document;
     });
 
     afterEach(() => {
-      delete (globalThis as {document?: Document}).document; 
+      delete (global as any).document; 
     });
 
     it('should send the cookie with a custom header to the same domain', () => {
@@ -178,7 +178,7 @@ describe('ajax', () => {
     });
 
     it('should not send the cookie if "document" is not defined', () => {
-      delete (globalThis as {document?: Document}).document;
+      delete (global as any).document;
 
       const obj: AjaxConfig = {
         url: '/some/path',
