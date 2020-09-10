@@ -22,8 +22,8 @@ export function race<T, R>(...observables: Array<Observable<any> | Array<Observa
  * @return {Observable} An Observable that mirrors the output of the first Observable to emit an item.
  * @deprecated Deprecated use {@link raceWith}
  */
-export function race<T, R>(...args: any[]): OperatorFunction<T, R> {
-  return raceWith(...argsOrArgArray(args)) as OperatorFunction<T, R>;
+export function race<T, R>(...args: any[]): OperatorFunction<T, unknown> {
+  return raceWith(...argsOrArgArray(args));
 }
 
 /**

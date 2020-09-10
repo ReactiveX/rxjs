@@ -172,11 +172,11 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * Observable that delivers the same values the callback would deliver.
  * @name bindCallback
  */
-export function bindCallback<T, R>(
+export function bindCallback(
   callbackFunc: any,
   resultSelector?: any,
   scheduler?: SchedulerLike
-): (...args: any[]) => Observable<T | R> {
+): (...args: any[]) => Observable<unknown> {
   if (resultSelector) {
     if (isScheduler(resultSelector)) {
       scheduler = resultSelector;
@@ -190,12 +190,12 @@ export function bindCallback<T, R>(
   }
 
   
-  return function (this: any, ...args: any[]): Observable<T> {
+  return function (this: any, ...args: any[]) {
     let results: any;
     let hasResults = false;
     let hasError = false;
     let error: any;
-    return new Observable<T>((subscriber) => {
+    return new Observable((subscriber) => {
       if (!scheduler) {
         let isCurrentlyAsync = false;
         let hasCompletedSynchronously = false;
