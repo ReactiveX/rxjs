@@ -1,3 +1,4 @@
+/** @prettier */
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
@@ -9,11 +10,22 @@ import { lift } from '../util/lift';
 import { innerSubscribe, SimpleOuterSubscriber, SimpleInnerSubscriber } from '../innerSubscribe';
 
 /* tslint:disable:max-line-length */
-export function mergeMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, concurrent?: number): OperatorFunction<T, ObservedValueOf<O>>;
+export function mergeMap<T, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O,
+  concurrent?: number
+): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector no longer supported, use inner map instead */
-export function mergeMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined, concurrent?: number): OperatorFunction<T, ObservedValueOf<O>>;
+export function mergeMap<T, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O,
+  resultSelector: undefined,
+  concurrent?: number
+): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector no longer supported, use inner map instead */
-export function mergeMap<T, R, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R, concurrent?: number): OperatorFunction<T, R>;
+export function mergeMap<T, R, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O,
+  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
+  concurrent?: number
+): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -74,89 +86,121 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
   resultSelector?: ((outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R) | number,
   concurrent: number = Infinity
-): OperatorFunction<T, ObservedValueOf<O>|R> {
+): OperatorFunction<T, ObservedValueOf<O> | R> {
   if (typeof resultSelector === 'function') {
     // DEPRECATED PATH
-    return (source: Observable<T>) => source.pipe(
-      mergeMap((a, i) => from(project(a, i)).pipe(
-        map((b: any, ii: number) => resultSelector(a, b, i, ii)),
-      ), concurrent)
-    );
+    return (source: Observable<T>) =>
+      source.pipe(mergeMap((a, i) => from(project(a, i)).pipe(map((b: any, ii: number) => resultSelector(a, b, i, ii))), concurrent));
   } else if (typeof resultSelector === 'number') {
     concurrent = resultSelector;
   }
-  return (source: Observable<T>) => lift(source, new MergeMapOperator(project, concurrent));
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<ObservedValueOf<O>>, source: Observable<T>) {
+      const subscriber = this;
+      // Whether or not the outer subscription is complete
+      let isComplete = false;
+      // The number of active inner subscriptions
+      let active = 0;
+      // The index of the value from source (used for projection)
+      let index = 0;
+      // The buffered values from the source (used for concurrency)
+      let buffer: T[] = [];
+
+      /**
+       * Attempts to start an inner subscription from a buffered value,
+       * so long as we don't have more active inner subscriptions than
+       * the concurrency limit allows.
+       */
+      const doInnerSub = () => {
+        while (active < concurrent && buffer.length > 0) {
+          const value = buffer.shift()!;
+
+          // Get the inner source from the projection function
+          let innerSource: Observable<ObservedValueOf<O>>;
+          try {
+            innerSource = from(project(value, index++));
+          } catch (err) {
+            subscriber.error(err);
+            return;
+          }
+
+          // Subscribe to the inner source
+          active++;
+          let innerSubs: Subscription;
+          subscriber.add(
+            (innerSubs = innerSource.subscribe(
+              new MergeMapSubscriber(
+                subscriber,
+                (innerValue) => {
+                  // INNER SOURCE NEXT
+                  // We got a value from the inner source, emit it from the result.
+                  subscriber.next(innerValue);
+                },
+                () => {
+                  // INNER SOURCE COMPLETE
+                  // Decrement the active count to ensure that the next time
+                  // we try to call `doInnerSub`, the number is accurate.
+                  active--;
+                  if (buffer.length > 0) {
+                    // If we have more values in the buffer, try to process those
+                    // Note that this call will increment `active` ahead of the
+                    // next conditional, if there were any more inner subscriptions
+                    // to start.
+                    doInnerSub();
+                  }
+                  if (isComplete && active === 0) {
+                    // If the outer is complete, and there are no more active,
+                    // then we can complete the resulting observable subscription
+                    subscriber.complete();
+                  }
+                  // Make sure to teardown the inner subscription ASAP.
+                  innerSubs?.unsubscribe();
+                }
+              )
+            ))
+          );
+        }
+      };
+
+      let outerSubs: Subscription;
+      outerSubs = source.subscribe(
+        new MergeMapSubscriber(
+          subscriber,
+          (value) => {
+            // OUTER SOURCE NEXT
+            // Push the value onto the buffer. We have no idea what the concurrency limit
+            // is and we don't care. Just buffer it and then call `doInnerSub()` to try to
+            // process what is in the buffer.
+            buffer.push(value);
+            doInnerSub();
+          },
+          () => {
+            // OUTER SOURCE COMPLETE
+            // We don't necessarily stop here. If have any pending inner subscriptions
+            // we need to wait for those to be done first. That includes buffered inners
+            // that we haven't even subscribed to yet.
+            isComplete = true;
+            if (active === 0 && buffer.length === 0) {
+              // Nothing is active, and nothing in the buffer, with no hope of getting any more
+              // we can complete the result
+              subscriber.complete();
+            }
+            // Be sure to teardown the outer subscription ASAP, in any case.
+            outerSubs?.unsubscribe();
+          }
+        )
+      );
+    });
 }
 
-export class MergeMapOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => ObservableInput<R>,
-              private concurrent: number = Infinity) {
-  }
-
-  call(observer: Subscriber<R>, source: any): any {
-    return source.subscribe(new MergeMapSubscriber(
-      observer, this.project, this.concurrent
-    ));
-  }
-}
+// TODO(benlesh): This may end up being so common that we can centralize on one Subscriber for a few operators.
 
 /**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
+ * A simple overridden Subscriber, used in both inner and outer subscriptions
  */
-export class MergeMapSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
-  private hasCompleted: boolean = false;
-  private buffer: T[] = [];
-  private active: number = 0;
-  protected index: number = 0;
-
-  constructor(protected destination: Subscriber<R>,
-              private project: (value: T, index: number) => ObservableInput<R>,
-              private concurrent: number = Infinity) {
+class MergeMapSubscriber<T> extends Subscriber<T> {
+  constructor(destination: Subscriber<any>, protected _next: (value: T) => void, protected _complete: () => void) {
     super(destination);
-  }
-
-  protected _next(value: T): void {
-    if (this.active < this.concurrent) {
-      let result: ObservableInput<R>;
-      const index = this.index++;
-      try {
-        result = this.project(value, index);
-      } catch (err) {
-        this.destination.error(err);
-        return;
-      }
-      this.active++;
-      const innerSubscriber = new SimpleInnerSubscriber(this);
-      const destination = this.destination as Subscription;
-      destination.add(innerSubscriber);
-      innerSubscribe(result, innerSubscriber);
-    } else {
-      this.buffer.push(value);
-    }
-  }
-
-  protected _complete(): void {
-    this.hasCompleted = true;
-    if (this.active === 0 && this.buffer.length === 0) {
-      this.destination.complete();
-    }
-    this.unsubscribe();
-  }
-
-  notifyNext(innerValue: R): void {
-    this.destination.next(innerValue);
-  }
-
-  notifyComplete(): void {
-    const buffer = this.buffer;
-    this.active--;
-    if (buffer.length > 0) {
-      this._next(buffer.shift()!);
-    } else if (this.active === 0 && this.hasCompleted) {
-      this.destination.complete();
-    }
   }
 }
 
