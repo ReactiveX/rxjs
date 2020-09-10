@@ -53,6 +53,9 @@ describe('bufferTime operator', () => {
       const e1 = hot('  ---a---b---c---d---e---f---g-----|   ');
       const subs = '    ^--------------------------------!   ';
       const t = time('  ----------|                          ');
+      //                       ----------|
+      //                               ----------|
+      //                                       ----------|
       const expected = '-------w-------x-------y---------(z|)';
       const values = {
         w: ['a', 'b'],
@@ -73,6 +76,7 @@ describe('bufferTime operator', () => {
       const e1 = hot('  ---a---b---c---d---e---f---g-----|   ');
       const subs = '    ^--------------------------------!   ';
       const t = time('  ----------|                          ');
+      //                          ---------|---------|---------|
       const expected = '----------w--------x---------y---(z|)';
       const values = {
         w: ['a', 'b'],
@@ -110,8 +114,7 @@ describe('bufferTime operator', () => {
     });
   });
 
-  it('should emit buffers that have been created at intervals and close after the specified delay ' +
-  'or when the buffer is full', () => {
+  it('should emit buffers that have been created at intervals and close after the specified delay or when the buffer is full', () => {
     testScheduler.run(({ hot, time, expectObservable }) => {
       const e1 = hot('  ---a---b---c----d----e----f----g----h----i----(k|)');
       //                --------------------*--------------------*----  start interval
@@ -297,18 +300,17 @@ describe('bufferTime operator', () => {
     });
   });
 
-  it('should emit buffers that have been created at intervals and close after ' +
-  'the specified delay with errors', () => {
+  it('should emit buffers that have been created at intervals and close after the specified delay with errors', () => {
     testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  ---a---b---c----d----e----f----g----h----i--#');
-      //                --------------------*--------------------*----  start interval
-      //                ---------------------|                          timespans
-      //                                    ---------------------|
-      //                                                         -----|
-      const e1subs = '  ^-------------------------------------------!';
-      const t = time('  ---------------------|                       ');
+      const e1 = hot('       ---a---b---c----d----e----f----g----h----i--#');
+      //                     --------------------|-------------------|-------------------| interval
+      //                     ---------------------|
+      //                                         ---------------------|
+      //                                                             ---------------------| timespan
+      const e1subs = '       ^-------------------------------------------!';
+      const t = time('       ---------------------|                       ');
       const interval = time('                --------------------|   ');
-      const expected = '---------------------x-------------------y--#';
+      const expected = '     ---------------------x-------------------y--#';
       const values = {
         x: ['a', 'b', 'c', 'd', 'e'],
         y: ['e', 'f', 'g', 'h', 'i']
