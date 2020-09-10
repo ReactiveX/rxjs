@@ -521,9 +521,11 @@ function isReadableStream(body: any): body is ReadableStream {
 
 function readCookie(name: string): string {
   try {
-    return globalThis.document?.cookie.match(new RegExp(`(^|;\\s*)(${name})=([^;]*)`))?.pop() ?? '';
+    return document?.cookie.match(new RegExp(`(^|;\\s*)(${name})=([^;]*)`))?.pop() ?? '';
   } catch (err) {
-    if (err instanceof ReferenceError) { return ''; }
+    if (err instanceof ReferenceError) {
+      return '';
+    }
     throw err;
   }
 }
