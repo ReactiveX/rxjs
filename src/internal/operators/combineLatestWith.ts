@@ -1,9 +1,10 @@
-/** @prettier */
-import { CombineLatestOperator } from '../observable/combineLatest';
-import { from } from '../observable/from';
+
+import { combineLatestInit } from '../observable/combineLatest';
 import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueTupleFromArray, Cons } from '../types';
-import { stankyLift } from '../util/lift';
+import { lift } from '../util/lift';
+import { Subscriber } from '../Subscriber';
+import { map } from './map';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 
 /* tslint:disable:max-line-length */
@@ -86,7 +87,15 @@ export function combineLatest<T, R>(...args: (ObservableInput<any> | ((...values
     project = args.pop() as (...values: any[]) => R;
   }
 
-  return (source: Observable<T>) => stankyLift(source, from([source, ...argsOrArgArray(args)]), new CombineLatestOperator(project, null));
+  return (source: Observable<T>) => {
+    const result = lift(source, function(this: Subscriber<any>, source: Observable<T>) {
+      return combineLatestInit([source, ...argsOrArgArray(args)])(this);
+    });
+
+    return project ?  result.pipe(
+      map((args) => !Array.isArray(args) || args.length === 1 ? project!(args) : project!(...args))
+    ) as any : result;
+  };
 }
 
 /**

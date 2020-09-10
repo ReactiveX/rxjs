@@ -2,14 +2,13 @@
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueTupleFromArray } from '../types';
 import { isScheduler } from '../util/isScheduler';
-import { Subscriber } from '../Subscriber';
-import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
-import { Operator } from '../Operator';
-import { fromArray } from './fromArray';
-import { lift } from '../util/lift';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
-
-const NONE = {};
+import { Subscriber } from '../Subscriber';
+import { isObject } from '../util/isObject';
+import { from } from './from';
+import { identity } from '../util/identity';
+import { map } from '../operators/map';
+import { Subscription } from '../Subscription';
 
 /* tslint:disable:max-line-length */
 
@@ -496,7 +495,7 @@ export function combineLatest<T, K extends keyof T>(sourcesObject: T): Observabl
  */
 export function combineLatest<O extends ObservableInput<any>, R>(
   ...args: (O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike)[]
-): Observable<R> {
+): Observable<R> | Observable<ObservedValueOf<O>[]> {
   let resultSelector: ((...values: Array<any>) => R) | undefined = undefined;
   let scheduler: SchedulerLike | undefined = undefined;
 
@@ -510,87 +509,89 @@ export function combineLatest<O extends ObservableInput<any>, R>(
 
   const { args: observables, keys } = argsArgArrayOrObject(args);
 
-  return lift(fromArray(observables, scheduler), new CombineLatestOperator(resultSelector, keys));
-}
+  const result = new Observable<ObservedValueOf<O>[]>(
+    combineLatestInit(
+      observables as ObservableInput<ObservedValueOf<O>>[],
+      scheduler,
+      keys
+        ? // A handler for scrubbing the array of args into a dictionary.
+          (args: any[]) => {
+            const value: any = {};
+            for (let i = 0; i < args.length; i++) {
+              value[keys![i]] = args[i];
+            }
+            return value;
+          }
+        : // A passthrough to just return the array
+          identity
+    )
+  );
 
-export class CombineLatestOperator<T, R> implements Operator<T, R> {
-  constructor(private resultSelector: ((...values: Array<any>) => R) | undefined, private keys: Array<string> | null) {}
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new CombineLatestSubscriber(subscriber, this.resultSelector, this.keys));
+  if (resultSelector) {
+    return result.pipe(map((args) => (!Array.isArray(args) || args.length === 1 ? resultSelector!(args) : resultSelector!(...args))));
   }
+
+  return result;
 }
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-export class CombineLatestSubscriber<T, R> extends ComplexOuterSubscriber<T, R> {
-  private active: number = 0;
-  private values: any[] = [];
-  private observables: any[] = [];
-  private toRespond: number | undefined;
-
-  constructor(
-    destination: Subscriber<R>,
-    private resultSelector: ((...values: Array<any>) => R) | undefined,
-    private keys: Array<string> | null
-  ) {
+class CombineLatestSubscriber<T> extends Subscriber<T> {
+  constructor(destination: Subscriber<T>, protected _next: (value: T) => void, protected shouldComplete: () => boolean) {
     super(destination);
   }
 
-  protected _next(observable: any) {
-    this.values.push(NONE);
-    this.observables.push(observable);
-  }
-
   protected _complete() {
-    const observables = this.observables;
-    const len = observables.length;
-    if (len === 0) {
-      this.destination.complete();
+    if (this.shouldComplete()) {
+      super._complete();
     } else {
-      this.active = len;
-      this.toRespond = len;
-      for (let i = 0; i < len; i++) {
-        const observable = observables[i];
-        this.add(innerSubscribe(observable, new ComplexInnerSubscriber(this, null, i)));
+      this.unsubscribe();
+    }
+  }
+}
+
+export function combineLatestInit(
+  observables: ObservableInput<any>[],
+  scheduler: SchedulerLike | undefined = undefined,
+  valueTransform: (values: any[]) => any = identity
+) {
+  return (subscriber: Subscriber<any>) => {
+    const primarySubscribe = () => {
+      const { length } = observables;
+      const values = new Array(length);
+      let active = length;
+      const hasValues = observables.map(() => false);
+      let init = true;
+      const emit = () => subscriber.next(valueTransform(values.slice()));
+      for (let i = 0; i < length; i++) {
+        const subscribe = () => {
+          const source = from(observables[i] as ObservableInput<any>, scheduler as any);
+          source.subscribe(
+            new CombineLatestSubscriber(
+              subscriber,
+              (value) => {
+                values[i] = value;
+                if (init) {
+                  hasValues[i] = true;
+                  init = hasValues.some((x) => !x);
+                }
+                if (!init) {
+                  emit();
+                }
+              },
+              () => --active === 0
+            )
+          );
+        };
+        maybeSchedule(scheduler, subscribe, subscriber);
       }
-    }
-  }
+    };
+    maybeSchedule(scheduler, primarySubscribe, subscriber);
+  };
+}
 
-  notifyComplete(): void {
-    if ((this.active -= 1) === 0) {
-      this.destination.complete();
-    }
-  }
-
-  notifyNext(_outerValue: T, innerValue: R, outerIndex: number): void {
-    const values = this.values;
-    const oldVal = values[outerIndex];
-    const toRespond = !this.toRespond ? 0 : oldVal === NONE ? --this.toRespond : this.toRespond;
-    values[outerIndex] = innerValue;
-
-    if (toRespond === 0) {
-      if (this.resultSelector) {
-        this._tryResultSelector(values);
-      } else {
-        this.destination.next(
-          this.keys ? this.keys.reduce((result, key, i) => (((result as any)[key] = values[i]), result), {}) : values.slice()
-        );
-      }
-    }
-  }
-
-  private _tryResultSelector(values: any[]) {
-    let result: any;
-    try {
-      result = this.resultSelector!.apply(this, values);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.destination.next(result);
+function maybeSchedule(scheduler: SchedulerLike | undefined, execute: () => void, subscription: Subscription) {
+  if (scheduler) {
+    subscription.add(scheduler.schedule(execute));
+  } else {
+    execute();
   }
 }
