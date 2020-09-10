@@ -113,6 +113,106 @@ describe('ajax', () => {
     });
   });
 
+  describe('ajax XSRF cookie in custom header', () => {
+    beforeEach(() => {
+      globalThis.document = {
+        cookie: 'foo=bar',
+      } as Document;
+    });
+
+    afterEach(() => {
+      delete (globalThis as {document?: Document}).document; 
+    });
+
+    it('should send the cookie with a custom header to the same domain', () => {
+      const obj: AjaxConfig = {
+        url: '/some/path',
+        xsrfCookieName: 'foo',
+        xsrfHeaderName: 'Custom-Header-Name',
+      };
+
+      ajax(obj).subscribe();
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      expect(request.url).to.equal('/some/path');
+      expect(request.requestHeaders).to.deep.equal({
+        'Custom-Header-Name': 'bar',
+        'x-requested-with': 'XMLHttpRequest',
+      });
+    });
+
+    it('should send the cookie cross-domain with a custom header when withCredentials is set', () => {
+      const obj: AjaxConfig = {
+        url: 'https://some.subresouce.net/some/page',
+        xsrfCookieName: 'foo',
+        xsrfHeaderName: 'Custom-Header-Name',
+        crossDomain: true,
+        withCredentials: true,
+      };
+
+      ajax(obj).subscribe();
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      expect(request.url).to.equal('https://some.subresouce.net/some/page');
+      expect(request.requestHeaders).to.deep.equal({
+        'Custom-Header-Name': 'bar',
+      });
+    });
+
+    it('should not send the cookie cross-domain with a custom header when withCredentials is not set', () => {
+      const obj: AjaxConfig = {
+        url: 'https://some.subresouce.net/some/page',
+        xsrfCookieName: 'foo',
+        xsrfHeaderName: 'Custom-Header-Name',
+        crossDomain: true,
+      };
+
+      ajax(obj).subscribe();
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      expect(request.url).to.equal('https://some.subresouce.net/some/page');
+      expect(request.requestHeaders).to.deep.equal({});
+    });
+
+    it('should not send the cookie if "document" is not defined', () => {
+      delete (globalThis as {document?: Document}).document;
+
+      const obj: AjaxConfig = {
+        url: '/some/path',
+        xsrfCookieName: 'foo',
+        xsrfHeaderName: 'Custom-Header-Name',
+      };
+
+      ajax(obj).subscribe();
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      expect(request.url).to.equal('/some/path');
+      expect(request.requestHeaders).to.deep.equal({
+        'x-requested-with': 'XMLHttpRequest',
+      });
+    });
+
+    it('should not send the cookie if there is no xsrfHeaderName option', () => {
+      const obj: AjaxConfig = {
+        url: '/some/page',
+        xsrfCookieName: 'foo',
+      };
+
+      ajax(obj).subscribe();
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      expect(request.url).to.equal('/some/page');
+      expect(request.requestHeaders).to.deep.equal({
+        'x-requested-with': 'XMLHttpRequest',
+      });
+    });
+  });
+
   it('should set the X-Requested-With if crossDomain is false', () => {
     ajax({
       url: '/test/monkey',

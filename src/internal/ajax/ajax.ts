@@ -298,8 +298,8 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
 
     // Allow users to provide their XSRF cookie name and the name of a custom header to use to
     // send the cookie.
-    const { url, withCredentials, xsrfCookieName, xsrfHeaderName } = config;
-    if ((withCredentials || isSameOrigin(url)) && xsrfCookieName && xsrfHeaderName) {
+    const { withCredentials, xsrfCookieName, xsrfHeaderName } = config;
+    if ((withCredentials || !config.crossDomain) && xsrfCookieName && xsrfHeaderName) {
       const xsrfCookie = readCookie(xsrfCookieName);
       if (xsrfCookie) {
         headers[xsrfHeaderName] = xsrfCookie;
@@ -519,15 +519,6 @@ function isReadableStream(body: any): body is ReadableStream {
   return typeof ReadableStream !== 'undefined' && body instanceof ReadableStream;
 }
 
-function isSameOrigin(url: string): boolean {
-  try {
-    return new URL(url, globalThis?.document.location.href).origin === new URL(globalThis?.document.location.href).origin;
-  } catch (err) {
-    // Invalid URL...
-    return false;
-  }
-}
-
 function readCookie(name: string): string {
-  return globalThis?.document.cookie.match(new RegExp(`(^|;\\s*)(${name})=([^;]*)`))?.pop() ?? '';
+  return globalThis.document?.cookie.match(new RegExp(`(^|;\\s*)(${name})=([^;]*)`))?.pop() ?? '';
 }
