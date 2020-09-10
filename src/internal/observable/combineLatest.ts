@@ -9,6 +9,7 @@ import { from } from './from';
 import { identity } from '../util/identity';
 import { map } from '../operators/map';
 import { Subscription } from '../Subscription';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 
 /* tslint:disable:max-line-length */
 
@@ -528,12 +529,18 @@ export function combineLatest<O extends ObservableInput<any>, R>(
   );
 
   if (resultSelector) {
-    return result.pipe(map((args) => (!Array.isArray(args) || args.length === 1 ? resultSelector!(args) : resultSelector!(...args))));
+    // Deprecated path: If there's a result selector, just use a map for them.
+    return result.pipe(mapOneOrManyArgs(resultSelector));
   }
 
   return result;
 }
 
+/**
+ * Because of the current architecture, we need to use a subclassed Subscriber in order to ensure
+ * inner firehose observables can teardown in the event of a `take` or the like.
+ * @internal
+ */
 class CombineLatestSubscriber<T> extends Subscriber<T> {
   constructor(destination: Subscriber<T>, protected _next: (value: T) => void, protected shouldComplete: () => boolean) {
     super(destination);
@@ -554,13 +561,22 @@ export function combineLatestInit(
   valueTransform: (values: any[]) => any = identity
 ) {
   return (subscriber: Subscriber<any>) => {
+    // The outer subscription. We're capturing this in a function
+    // because we may have to schedule it.
     const primarySubscribe = () => {
       const { length } = observables;
+      // A store for the values each observable has emitted so far. We match observable to value on index.
       const values = new Array(length);
+      // The number of currently active subscriptions, as they complete, we decrement this number to see if
+      // we are all done combining values, so we can complete the result.
       let active = length;
+      // A temporary array to help figure out if we have gotten at least one value from each observable.
       const hasValues = observables.map(() => false);
-      let init = true;
+      let waitingForFirstValues = true;
+      // Called when we're ready to emit a set of values. Note that we copy the values array to prevent mutation.
       const emit = () => subscriber.next(valueTransform(values.slice()));
+      // The loop to kick off subscription. We're keying everything on index `i` to relate the observables passed
+      // in to the slot in the output array or the key in the array of keys in the output dictionary.
       for (let i = 0; i < length; i++) {
         const subscribe = () => {
           const source = from(observables[i] as ObservableInput<any>, scheduler as any);
@@ -569,11 +585,11 @@ export function combineLatestInit(
               subscriber,
               (value) => {
                 values[i] = value;
-                if (init) {
+                if (waitingForFirstValues) {
                   hasValues[i] = true;
-                  init = hasValues.some((x) => !x);
+                  waitingForFirstValues = !hasValues.every(identity);
                 }
-                if (!init) {
+                if (!waitingForFirstValues) {
                   emit();
                 }
               },
@@ -588,6 +604,10 @@ export function combineLatestInit(
   };
 }
 
+/**
+ * A small utility to handle the couple of locations where we want to schedule if a scheduler was provided,
+ * but we don't if there was no scheduler.
+ */
 function maybeSchedule(scheduler: SchedulerLike | undefined, execute: () => void, subscription: Subscription) {
   if (scheduler) {
     subscription.add(scheduler.schedule(execute));
