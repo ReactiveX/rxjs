@@ -3,8 +3,8 @@ import { Observable } from '../Observable';
 import { OperatorFunction, ObservableInput } from '../types';
 import { toArray } from './toArray';
 import { concatMap } from './concatMap';
-import { map } from './map';
 import { identity } from '../util/identity';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 
 export function combineAll<T>(): OperatorFunction<ObservableInput<T>, T[]>;
 export function combineAll<T>(): OperatorFunction<any, T[]>;
@@ -49,17 +49,16 @@ export function combineAll<R>(project: (...values: Array<any>) => R): OperatorFu
  * ```
  *
  * @see {@link combineLatest}
+ * @see {@link combineLatestWith}
  * @see {@link mergeAll}
  *
- * @param {function(...values: Array<any>)} An optional function to map the most recent values from each inner Observable into a new result.
+ * @param project optional function to map the most recent values from each inner Observable into a new result.
  * Takes each of the most recent values from each collected inner Observable as arguments, in order.
- * @return {Observable<T>}
- * @name combineAll
  */
 export function combineAll<T, R>(project?: (...values: Array<any>) => R): OperatorFunction<ObservableInput<T>, R|T[]> {
   return (source: Observable<ObservableInput<T>>) => source.pipe(
     toArray(),
     concatMap((sources) => combineLatest(sources)),
-    project ? map((args) => args.length === 1 ? project(args) : project(...args)) : identity as any
+    project ? mapOneOrManyArgs(project) : identity as any
   );
 }
