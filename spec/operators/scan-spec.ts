@@ -42,6 +42,16 @@ describe('scan operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should provide the proper index if seed is skipped', () => {
+    const expected = [1, 2];
+    of(3, 3, 3).pipe(
+      scan((_: any, __, i) => {
+        expect(i).to.equal(expected.shift());
+        return null;
+      })
+    ).subscribe();
+  });
+
   it('should scan with a seed of undefined', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
     const e1subs =      '^                    !';
