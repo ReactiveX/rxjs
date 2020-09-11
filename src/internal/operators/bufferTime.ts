@@ -86,14 +86,14 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
     scheduler = otherArgs.pop() as SchedulerLike;
   }
 
-  const bufferCreationInterval = (otherArgs[0] as number) || null;
+  const bufferCreationInterval = (otherArgs[0] as number) ?? null;
   const maxBufferSize = (otherArgs[1] as number) || Infinity;
 
   return function bufferTimeOperatorFunction(source: Observable<T>) {
     return lift(source, function (this: Subscriber<T[]>, source: Observable<T>) {
       const subscriber = this;
       // The active buffers, their related subscriptions, and removal functions.
-      let bufferRecords: { buffer: T[]; subs: Subscription; remove: () => void }[] = [];
+      let bufferRecords: { buffer: T[]; subs: Subscription; remove: () => void }[] | null = [];
       // If true, it means that every time we emit a buffer, we want to start a new buffer
       // this is only really used for when *just* the buffer time span is passed.
       let restartOnEmit = false;
@@ -118,28 +118,30 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
        * that will emit the buffer (if it's not unsubscribed before then).
        */
       const startBuffer = () => {
-        const subs = new Subscription();
-        subscriber.add(subs);
-        const buffer: T[] = [];
-        const record = {
-          buffer,
-          subs,
-          remove() {
-            this.subs.unsubscribe();
-            if (bufferRecords) {
-              const index = bufferRecords.indexOf(this);
-              if (0 <= index) {
-                bufferRecords.splice(index, 1);
+        if (bufferRecords) {
+          const subs = new Subscription();
+          subscriber.add(subs);
+          const buffer: T[] = [];
+          const record = {
+            buffer,
+            subs,
+            remove() {
+              this.subs.unsubscribe();
+              if (bufferRecords) {
+                const index = bufferRecords.indexOf(this);
+                if (0 <= index) {
+                  bufferRecords.splice(index, 1);
+                }
               }
-            }
-          },
-        };
-        bufferRecords.push(record);
-        subs.add(
-          scheduler.schedule(() => {
-            emit(record);
-          }, bufferTimeSpan)
-        );
+            },
+          };
+          bufferRecords.push(record);
+          subs.add(
+            scheduler.schedule(() => {
+              emit(record);
+            }, bufferTimeSpan)
+          );
+        }
       };
 
       if (bufferCreationInterval !== null && bufferCreationInterval >= 0) {
@@ -149,7 +151,9 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
         subscriber.add(
           scheduler.schedule(function () {
             startBuffer();
-            subscriber.add(this.schedule(null, bufferCreationInterval));
+            if (!this.closed) {
+              subscriber.add(this.schedule(null, bufferCreationInterval));
+            }
           }, bufferCreationInterval)
         );
         startBuffer();
@@ -158,38 +162,39 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
         startBuffer();
       }
 
-      source.subscribe(
-        new BufferTimeSubscriber(
-          subscriber,
-          (value) => {
-            // Copy the records, so if we need to remove one we
-            // don't mutate the array. It's hard, but not impossible to
-            // set up a buffer time that could mutate the array and
-            // cause issues here.
-            const recordsCopy = bufferRecords.slice();
-            for (let i = 0; i < recordsCopy.length; i++) {
-              // Loop over all buffers and
-              const record = recordsCopy[i];
-              const { buffer } = record;
-              buffer.push(value);
-              // If the buffer is over the max size, we need to emit it.
-              if (maxBufferSize <= buffer.length) {
-                emit(record);
-              }
+      const bufferTimeSubscriber = new BufferTimeSubscriber(
+        subscriber,
+        (value) => {
+          // Copy the records, so if we need to remove one we
+          // don't mutate the array. It's hard, but not impossible to
+          // set up a buffer time that could mutate the array and
+          // cause issues here.
+          const recordsCopy = bufferRecords!.slice();
+          for (let i = 0; i < recordsCopy.length; i++) {
+            // Loop over all buffers and
+            const record = recordsCopy[i];
+            const { buffer } = record;
+            buffer.push(value);
+            // If the buffer is over the max size, we need to emit it.
+            if (maxBufferSize <= buffer.length) {
+              emit(record);
             }
-          },
-          () => {
-            // The source completed, emit all of the active
-            // buffers we have before we complete.
-            for (const record of bufferRecords) {
-              record.remove();
-              subscriber.next(record.buffer);
-            }
-            // Free up memory.
-            bufferRecords = null!;
           }
-        )
+        },
+        () => {
+          // The source completed, emit all of the active
+          // buffers we have before we complete.
+          for (const record of bufferRecords!) {
+            record.remove();
+            subscriber.next(record.buffer);
+          }
+          // Free up memory.
+          bufferRecords = null;
+          bufferTimeSubscriber?.unsubscribe();
+        }
       );
+
+      source.subscribe(bufferTimeSubscriber);
     });
   };
 }

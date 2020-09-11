@@ -1,7 +1,8 @@
-import { of, throwError, interval } from 'rxjs';
+import { of, throwError, interval, scheduled, asapScheduler } from 'rxjs';
 import { bufferTime, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
+import { expect } from 'chai';
 
 /** @test {bufferTime} */
 describe('bufferTime operator', () => {
@@ -68,6 +69,37 @@ describe('bufferTime operator', () => {
 
       expectObservable(result).toBe(expected, values);
       expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should handle situations with a creation interval of zero', (done) => {
+    // This is an odd scenario, and I can't imagine who is weird enough to want this, but here
+    // it is. Someone scheduling buffers to open and close on microtasks, with values emitted on microtasks
+    // NOTE: Trying this with a completely synchronous scheduler (like queueScheduler, which is
+    // async relative to what it is scheduling, but synchronous relative to its container) will
+    // cause your thread to lock up. Don't be weird. This test is just to prove behavior.
+    const source = scheduled([0, 1, 2, 3, 4], asapScheduler);
+    const results: any[] = [];
+    source.pipe(
+      bufferTime(0, 0, asapScheduler),
+    )
+    .subscribe({
+      next: value => results.push(value),
+      complete: () => {
+        expect(results).to.deep.equal([
+          // It opens one on 0 and closes it on 0
+          [],
+          // It opens one on 0, emits on 0, and closes on 0 (x 5)
+          [0],
+          [1],
+          [2],
+          [3],
+          [4],
+          // It opens one on 0, and then completes on 0, leaving us with an empty array.
+          []
+        ]);
+        done();
+      }
     });
   });
 
