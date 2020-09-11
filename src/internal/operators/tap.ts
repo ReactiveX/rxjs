@@ -115,59 +115,69 @@ export function tap<T>(
 ): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>): Observable<T> => {
     return lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      return source.subscribe(new TapSubscriber(this, nextOrObserver, error, complete));
+      const subscriber = this;
+      let onNext: (value: T) => void;
+      /**
+       * A helper to ensure that errors thrown in handlers get
+       * caught and sent do the consumer as an error notification.
+       */
+      const wrap = (fn: any) => (arg?: any) => {
+        try {
+          fn(arg);
+        } catch (err) {
+          subscriber.error(err);
+        }
+      };
+      let onError = wrap(error ?? noop);
+      let onComplete = wrap(complete ?? noop);
+
+      /**
+       * A helper used to bind the proper context to the handlers in question.
+       */
+      const bindOrNoop = (fn: any, context: any) => fn?.bind(context) ?? noop;
+
+      if (!nextOrObserver || typeof nextOrObserver === 'function') {
+        // We have callback functions (or maybe nothing?)
+
+        // Bind the next observer to the subscriber. This is an undocumented legacy behavior
+        // We want to deprecate, but it technically allows for users to call `this.unsubscribe()`
+        // in the next callback. Again, this is a deprecated, undocumented behavior and we
+        // do not want to allow this in upcoming versions.
+        onNext = wrap(bindOrNoop(nextOrObserver, subscriber));
+      } else {
+        // We recieved a partial observer.
+        const { next, error, complete } = nextOrObserver;
+        onNext = wrap(bindOrNoop(next, nextOrObserver));
+        onError = wrap(bindOrNoop(error, nextOrObserver));
+        onComplete = wrap(bindOrNoop(complete, nextOrObserver));
+      }
+      return source.subscribe(new TapSubscriber(this, onNext, onError, onComplete));
     });
   };
 }
 
 class TapSubscriber<T> extends Subscriber<T> {
-  private _tapNext: (value: T) => void = noop;
-
-  private _tapError: (err: any) => void = noop;
-
-  private _tapComplete: () => void = noop;
-
   constructor(
     destination: Subscriber<T>,
-    observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
-    error?: ((e?: any) => void) | null,
-    complete?: (() => void) | null
+    private onNext: (value: T) => void,
+    private onError: (err: any) => void,
+    private onComplete: () => void
   ) {
     super(destination);
-    if (!observerOrNext || typeof observerOrNext === 'function') {
-      // If `observerOrNext` is falsy or a function, then we know that we're dealing
-      // with up to three callbacks.
-      this._tapNext = observerOrNext?.bind(this) || noop;
-      this._tapError = error || noop;
-      this._tapComplete = complete || noop;
-    } else if (observerOrNext && typeof observerOrNext === 'object') {
-      // If it's an object, we'll assume it is a partial observer.
-      const { next, error, complete } = observerOrNext;
-      this._tapNext = next?.bind(observerOrNext) || noop;
-      this._tapError = error?.bind(observerOrNext) || noop;
-      this._tapComplete = complete?.bind(observerOrNext) || noop;
-    }
   }
 
-  _next(value: T) {
-    this._notify(this._tapNext, value) && super._next(value);
+  protected _next(value: T) {
+    this.onNext(value);
+    super._next(value);
   }
 
-  _error(err: any) {
-    this._notify(this._tapError, err) && super._error(err);
+  protected _error(err: any) {
+    this.onError(err);
+    super._error(err);
   }
 
-  _complete() {
-    this._notify(this._tapComplete) && super._complete();
-  }
-
-  private _notify(fn: any, arg?: any) {
-    try {
-      fn(arg);
-    } catch (err) {
-      this.destination.error(err);
-      return false;
-    }
-    return true;
+  protected _complete() {
+    this.onComplete();
+    super._complete();
   }
 }
