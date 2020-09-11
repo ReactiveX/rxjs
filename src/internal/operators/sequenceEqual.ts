@@ -164,7 +164,7 @@ interface SequenceState<T> {
  */
 function createState<T>(): SequenceState<T> {
   return {
-    buffer: [] as T[],
+    buffer: [],
     complete: false,
   };
 }
