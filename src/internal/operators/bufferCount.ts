@@ -1,3 +1,4 @@
+/** @prettier */
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
@@ -60,99 +61,73 @@ import { lift } from '../util/lift';
  */
 export function bufferCount<T>(bufferSize: number, startBufferEvery: number | null = null): OperatorFunction<T, T[]> {
   return function bufferCountOperatorFunction(source: Observable<T>) {
-    return lift(source, new BufferCountOperator<T>(bufferSize, startBufferEvery));
+    return lift(source, function (this: Subscriber<T[]>, source: Observable<T>) {
+      const subscriber = this;
+      // A list of all buffers currently tracked.
+      let buffers: T[][] = [];
+      // A counter, used when a `startBufferEvery` value is supplied.
+      let count = 0;
+
+      source.subscribe(
+        new BufferCountSubscriber(
+          subscriber,
+          (value: T) => {
+            // If we have a `startBufferEvery`, and it's time,
+            // OR if we don't have a `startBufferEvery`, and there's not a buffer yet,
+            // Add a buffer.
+            if ((startBufferEvery && count++ % startBufferEvery === 0) || (!startBufferEvery && buffers.length === 0)) {
+              buffers.push([]);
+            }
+
+            // Push the value onto each buffer we are currently tracking,
+            // and figure out if any of the buffers have reached the `bufferSize`.
+            let filled: T[][] | null = null;
+            for (const buffer of buffers) {
+              buffer.push(value);
+              if (buffer.length === bufferSize) {
+                filled = filled ?? [];
+                filled.push(buffer);
+              }
+            }
+
+            if (filled) {
+              // If we found some buffers that are filled,
+              // Remove them from the internal buffers list and emit them.
+              // Make sure to remove them first, so we don't accidentally add to them
+              // as we're emitting them.
+              for (const buffer of filled) {
+                const index = buffers.indexOf(buffer);
+                if (0 <= index) {
+                  buffers.splice(index, 1);
+                }
+                subscriber.next(buffer);
+              }
+            }
+          },
+          () => {
+            // The source has completed, emit all of the buffers we have
+            // collected, and clear them out of our buffers array.
+            while (buffers.length > 0) {
+              subscriber.next(buffers.shift()!);
+            }
+            buffers = null!;
+            // Notify the consumer that we're complete.
+            subscriber.complete();
+          }
+        )
+      );
+    });
   };
 }
 
-class BufferCountOperator<T> implements Operator<T, T[]> {
-  private subscriberClass: any;
-
-  constructor(private bufferSize: number, private startBufferEvery: number | null) {
-    if (!startBufferEvery || bufferSize === startBufferEvery) {
-      this.subscriberClass = BufferCountSubscriber;
-    } else {
-      this.subscriberClass = BufferSkipCountSubscriber;
-    }
-  }
-
-  call(subscriber: Subscriber<T[]>, source: any): TeardownLogic {
-    return source.subscribe(new this.subscriberClass(subscriber, this.bufferSize, this.startBufferEvery));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
+// TODO: This is probably similar to the subscriber from `bufferTime`. https://github.com/ReactiveX/rxjs/pull/5712
 class BufferCountSubscriber<T> extends Subscriber<T> {
-  private buffer: T[] = [];
-
-  constructor(destination: Subscriber<T[]>, private bufferSize: number) {
+  constructor(destination: Subscriber<any>, protected _next: (value: T) => void, protected onBeforeComplete: () => void) {
     super(destination);
   }
 
-  protected _next(value: T): void {
-    const buffer = this.buffer;
-
-    buffer.push(value);
-
-    if (buffer.length == this.bufferSize) {
-      this.destination.next(buffer);
-      this.buffer = [];
-    }
-  }
-
-  protected _complete(): void {
-    const buffer = this.buffer;
-    if (buffer.length > 0) {
-      this.destination.next(buffer);
-    }
+  _complete() {
+    this.onBeforeComplete();
     super._complete();
   }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class BufferSkipCountSubscriber<T> extends Subscriber<T> {
-  private buffers: Array<T[]> = [];
-  private count: number = 0;
-
-  constructor(destination: Subscriber<T[]>, private bufferSize: number, private startBufferEvery: number) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    const { bufferSize, startBufferEvery, buffers, count } = this;
-
-    this.count++;
-    if (count % startBufferEvery === 0) {
-      buffers.push([]);
-    }
-
-    for (let i = buffers.length; i--; ) {
-      const buffer = buffers[i];
-      buffer.push(value);
-      if (buffer.length === bufferSize) {
-        buffers.splice(i, 1);
-        this.destination.next(buffer);
-      }
-    }
-  }
-
-  protected _complete(): void {
-    const { buffers, destination } = this;
-
-    while (buffers.length > 0) {
-      let buffer = buffers.shift()!;
-      if (buffer.length > 0) {
-        destination.next(buffer);
-      }
-    }
-    super._complete();
-  }
-
 }
