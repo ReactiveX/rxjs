@@ -2,14 +2,14 @@
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueTupleFromArray } from '../types';
 import { isScheduler } from '../util/isScheduler';
-import { Subscriber } from '../Subscriber';
-import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
-import { Operator } from '../Operator';
-import { fromArray } from './fromArray';
-import { lift } from '../util/lift';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
-
-const NONE = {};
+import { Subscriber } from '../Subscriber';
+import { isObject } from '../util/isObject';
+import { from } from './from';
+import { identity } from '../util/identity';
+import { map } from '../operators/map';
+import { Subscription } from '../Subscription';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 
 /* tslint:disable:max-line-length */
 
@@ -496,7 +496,7 @@ export function combineLatest<T, K extends keyof T>(sourcesObject: T): Observabl
  */
 export function combineLatest<O extends ObservableInput<any>, R>(
   ...args: (O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike)[]
-): Observable<R> {
+): Observable<R> | Observable<ObservedValueOf<O>[]> {
   let resultSelector: ((...values: Array<any>) => R) | undefined = undefined;
   let scheduler: SchedulerLike | undefined = undefined;
 
@@ -510,87 +510,108 @@ export function combineLatest<O extends ObservableInput<any>, R>(
 
   const { args: observables, keys } = argsArgArrayOrObject(args);
 
-  return lift(fromArray(observables, scheduler), new CombineLatestOperator(resultSelector, keys));
-}
+  const result = new Observable<ObservedValueOf<O>[]>(
+    combineLatestInit(
+      observables as ObservableInput<ObservedValueOf<O>>[],
+      scheduler,
+      keys
+        ? // A handler for scrubbing the array of args into a dictionary.
+          (args: any[]) => {
+            const value: any = {};
+            for (let i = 0; i < args.length; i++) {
+              value[keys![i]] = args[i];
+            }
+            return value;
+          }
+        : // A passthrough to just return the array
+          identity
+    )
+  );
 
-export class CombineLatestOperator<T, R> implements Operator<T, R> {
-  constructor(private resultSelector: ((...values: Array<any>) => R) | undefined, private keys: Array<string> | null) {}
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new CombineLatestSubscriber(subscriber, this.resultSelector, this.keys));
+  if (resultSelector) {
+    // Deprecated path: If there's a result selector, just use a map for them.
+    return result.pipe(mapOneOrManyArgs(resultSelector));
   }
+
+  return result;
 }
 
 /**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
+ * Because of the current architecture, we need to use a subclassed Subscriber in order to ensure
+ * inner firehose observables can teardown in the event of a `take` or the like.
+ * @internal
  */
-export class CombineLatestSubscriber<T, R> extends ComplexOuterSubscriber<T, R> {
-  private active: number = 0;
-  private values: any[] = [];
-  private observables: any[] = [];
-  private toRespond: number | undefined;
-
-  constructor(
-    destination: Subscriber<R>,
-    private resultSelector: ((...values: Array<any>) => R) | undefined,
-    private keys: Array<string> | null
-  ) {
+class CombineLatestSubscriber<T> extends Subscriber<T> {
+  constructor(destination: Subscriber<T>, protected _next: (value: T) => void, protected shouldComplete: () => boolean) {
     super(destination);
   }
 
-  protected _next(observable: any) {
-    this.values.push(NONE);
-    this.observables.push(observable);
-  }
-
   protected _complete() {
-    const observables = this.observables;
-    const len = observables.length;
-    if (len === 0) {
-      this.destination.complete();
+    if (this.shouldComplete()) {
+      super._complete();
     } else {
-      this.active = len;
-      this.toRespond = len;
-      for (let i = 0; i < len; i++) {
-        const observable = observables[i];
-        this.add(innerSubscribe(observable, new ComplexInnerSubscriber(this, null, i)));
+      this.unsubscribe();
+    }
+  }
+}
+
+export function combineLatestInit(
+  observables: ObservableInput<any>[],
+  scheduler: SchedulerLike | undefined = undefined,
+  valueTransform: (values: any[]) => any = identity
+) {
+  return (subscriber: Subscriber<any>) => {
+    // The outer subscription. We're capturing this in a function
+    // because we may have to schedule it.
+    const primarySubscribe = () => {
+      const { length } = observables;
+      // A store for the values each observable has emitted so far. We match observable to value on index.
+      const values = new Array(length);
+      // The number of currently active subscriptions, as they complete, we decrement this number to see if
+      // we are all done combining values, so we can complete the result.
+      let active = length;
+      // A temporary array to help figure out if we have gotten at least one value from each observable.
+      const hasValues = observables.map(() => false);
+      let waitingForFirstValues = true;
+      // Called when we're ready to emit a set of values. Note that we copy the values array to prevent mutation.
+      const emit = () => subscriber.next(valueTransform(values.slice()));
+      // The loop to kick off subscription. We're keying everything on index `i` to relate the observables passed
+      // in to the slot in the output array or the key in the array of keys in the output dictionary.
+      for (let i = 0; i < length; i++) {
+        const subscribe = () => {
+          const source = from(observables[i] as ObservableInput<any>, scheduler as any);
+          source.subscribe(
+            new CombineLatestSubscriber(
+              subscriber,
+              (value) => {
+                values[i] = value;
+                if (waitingForFirstValues) {
+                  hasValues[i] = true;
+                  waitingForFirstValues = !hasValues.every(identity);
+                }
+                if (!waitingForFirstValues) {
+                  emit();
+                }
+              },
+              () => --active === 0
+            )
+          );
+        };
+        maybeSchedule(scheduler, subscribe, subscriber);
       }
-    }
-  }
+    };
+    maybeSchedule(scheduler, primarySubscribe, subscriber);
+  };
+}
 
-  notifyComplete(): void {
-    if ((this.active -= 1) === 0) {
-      this.destination.complete();
-    }
-  }
-
-  notifyNext(_outerValue: T, innerValue: R, outerIndex: number): void {
-    const values = this.values;
-    const oldVal = values[outerIndex];
-    const toRespond = !this.toRespond ? 0 : oldVal === NONE ? --this.toRespond : this.toRespond;
-    values[outerIndex] = innerValue;
-
-    if (toRespond === 0) {
-      if (this.resultSelector) {
-        this._tryResultSelector(values);
-      } else {
-        this.destination.next(
-          this.keys ? this.keys.reduce((result, key, i) => (((result as any)[key] = values[i]), result), {}) : values.slice()
-        );
-      }
-    }
-  }
-
-  private _tryResultSelector(values: any[]) {
-    let result: any;
-    try {
-      result = this.resultSelector!.apply(this, values);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.destination.next(result);
+/**
+ * A small utility to handle the couple of locations where we want to schedule if a scheduler was provided,
+ * but we don't if there was no scheduler.
+ */
+function maybeSchedule(scheduler: SchedulerLike | undefined, execute: () => void, subscription: Subscription) {
+  if (scheduler) {
+    subscription.add(scheduler.schedule(execute));
+  } else {
+    execute();
   }
 }
