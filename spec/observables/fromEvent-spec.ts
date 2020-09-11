@@ -392,4 +392,28 @@ describe('fromEvent', () => {
     }).to.not.throw(TypeError);
   });
 
+  it('should allow to subscribe to lazy targets', () => {
+    let onHandler;
+    let offHandler;
+
+    const event$ = fromEvent(() => target as any, 'click')
+    const target = {
+      addEventListener: (a: string, b: EventListener) => {
+        onHandler = b;
+      },
+      removeEventListener: (a: string, b: EventListener) => {
+        offHandler = b;
+      }
+    };
+
+    const subscription = event$
+      .subscribe(() => {
+        //noop
+       });
+
+    subscription.unsubscribe();
+
+    expect(typeof onHandler).to.equal('function');
+    expect(offHandler).to.equal(onHandler);
+  })
 });

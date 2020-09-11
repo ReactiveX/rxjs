@@ -30,7 +30,7 @@ export interface HasEventTargetAddRemove<E> {
 
 export type EventTargetLike<T> = HasEventTargetAddRemove<T> | NodeStyleEventEmitter | NodeCompatibleEventEmitter | JQueryStyleEventEmitter;
 
-export type FromEventTarget<T> = EventTargetLike<T> | ArrayLike<EventTargetLike<T>>;
+export type FromEventTarget<T> = EventTargetLike<T> | ArrayLike<EventTargetLike<T>> | (() => EventTargetLike<T>) | (() => ArrayLike<EventTargetLike<T>>);
 
 export interface EventListenerOptions {
   capture?: boolean;
@@ -62,7 +62,9 @@ export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, opti
  * ![](fromEvent.png)
  *
  * `fromEvent` accepts as a first argument event target, which is an object with methods
- * for registering event handler functions. As a second argument it takes string that indicates
+ * for registering event handler functions. Alternatively a function returning an event target
+ * can be provided, to account for event targets not existing yet when creating an observable
+ * but will exist when subscribing to it. As a second argument it takes string that indicates
  * type of event we want to listen for. `fromEvent` supports selected types of event targets,
  * which are described in detail below. If your event target does not match any of the ones listed,
  * you should use {@link fromEventPattern}, which can be used on arbitrary APIs.
@@ -198,7 +200,8 @@ export function fromEvent<T>(
         subscriber.next(e);
       }
     }
-    setupSubscription(target, eventName, handler, subscriber, options as EventListenerOptions);
+    const eventTarget = isFunction(target) ? target() : target
+    setupSubscription(eventTarget, eventName, handler, subscriber, options as EventListenerOptions);
   });
 }
 
