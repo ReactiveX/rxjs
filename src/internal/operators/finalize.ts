@@ -1,7 +1,6 @@
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction } from '../types';
 import { lift } from '../util/lift';
 
 /**
@@ -60,16 +59,8 @@ import { lift } from '../util/lift';
  * @name finally
  */
 export function finalize<T>(callback: () => void): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => lift(source, new FinallyOperator(callback));
-}
-
-class FinallyOperator<T> implements Operator<T, T> {
-  constructor(private callback: () => void) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    const subscription = source.subscribe(subscriber);
-    subscription.add(this.callback);
-    return subscription;
-  }
+  return (source: Observable<T>) => lift(source, function (this: Subscriber<T>, source: Observable<T>) {
+    source.subscribe(this);
+    this.add(callback);
+  });
 }
