@@ -7,6 +7,7 @@ import { Subscription } from '../Subscription';
 import { isScheduler } from '../util/isScheduler';
 import { OperatorFunction, SchedulerAction, SchedulerLike } from '../types';
 import { lift } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
@@ -162,9 +163,9 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
         startBuffer();
       }
 
-      const bufferTimeSubscriber = new BufferTimeSubscriber(
+      const bufferTimeSubscriber = new OperatorSubscriber(
         subscriber,
-        (value) => {
+        (value: T) => {
           // Copy the records, so if we need to remove one we
           // don't mutate the array. It's hard, but not impossible to
           // set up a buffer time that could mutate the array and
@@ -181,6 +182,7 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
             }
           }
         },
+        undefined,
         () => {
           // The source completed, emit all of the active
           // buffers we have before we complete.
@@ -191,21 +193,12 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
           // Free up memory.
           bufferRecords = null;
           bufferTimeSubscriber?.unsubscribe();
+          subscriber.complete();
+          subscriber.unsubscribe();
         }
       );
 
       source.subscribe(bufferTimeSubscriber);
     });
   };
-}
-
-class BufferTimeSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<T[]>, protected _next: (value: T) => void, protected onBeforeComplete: () => void) {
-    super(destination);
-  }
-
-  _complete() {
-    this.onBeforeComplete();
-    super._complete();
-  }
 }
