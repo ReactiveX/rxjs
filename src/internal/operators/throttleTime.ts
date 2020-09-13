@@ -1,11 +1,10 @@
 /** @prettier */
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { asyncScheduler } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { ThrottleConfig, defaultThrottleConfig } from './throttle';
-import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { lift } from '../util/lift';
 
 /**
@@ -88,107 +87,114 @@ import { lift } from '../util/lift';
 export function throttleTime<T>(
   duration: number,
   scheduler: SchedulerLike = asyncScheduler,
-  config: ThrottleConfig = defaultThrottleConfig
+  { leading = false, trailing = false }: ThrottleConfig = defaultThrottleConfig
 ): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => lift(source, new ThrottleTimeOperator(duration, scheduler, !!config.leading, !!config.trailing));
-}
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
+      const subscriber = this;
+      // Whether or not we have received a trailing value
+      let hasTrailingValue = false;
+      // The trailing value we have received
+      let trailingValue: T | null = null;
+      // The subscription for the scheduled throttle job.
+      // If this is null, no throttle is currently scheduled.
+      let throttleSubs: Subscription | null = null;
+      // Whether or not the source has completed.
+      let isComplete = false;
 
-class ThrottleTimeOperator<T> implements Operator<T, T> {
-  constructor(private duration: number, private scheduler: SchedulerLike, private leading: boolean, private trailing: boolean) {}
+      /**
+       * Executed when the throttled time completes.
+       */
+      const throttleJob = () => {
+        // Clear the throttle subs, we check this to see if there's
+        // A throttle scheduled already.
+        throttleSubs = null;
+        if (trailing && hasTrailingValue) {
+          // If we have the trailing behavior, and we have a trailing value
+          // then emit the trailing value. Emitting will start another throttle
+          // peroid.
+          hasTrailingValue = false;
+          emit(trailingValue!);
+          trailingValue = null;
+        }
+        if (isComplete) {
+          subscriber.complete();
+        }
+      };
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new ThrottleTimeSubscriber(subscriber, this.duration, this.scheduler, this.leading, this.trailing));
-  }
+      /**
+       * Does the work of scheduling the throttle job.
+       */
+      const startThrottle = () => subscriber.add((throttleSubs = scheduler.schedule(throttleJob, duration)));
+
+      /**
+       * Sets the trailing value if we have that behavior.
+       */
+      const setTrailing = (value: T) => {
+        if (trailing) {
+          hasTrailingValue = true;
+          trailingValue = value;
+        }
+      };
+
+      /**
+       * Emits the value, and if the source is not complete,
+       * it will schedule another throttle period.
+       */
+      const emit = (value: T) => {
+        subscriber.next(value);
+        if (!isComplete) {
+          startThrottle();
+        }
+      };
+
+      source.subscribe(
+        new ThrottleTimeSubscriber(
+          subscriber,
+          (value) => {
+            // We got a new value
+            if (throttleSubs) {
+              // We're already throttled, set the trailing value if we have to.
+              setTrailing(value);
+            } else {
+              // We are not throttled yet.
+              if (leading) {
+                // If we have the leading behavior, emit right away and start
+                // a new throttle period.
+                emit(value);
+              } else {
+                // If we do not have the leading behavior,
+                // set the trailing value and start a new throttle peroid.
+                // If they don't have the leading behavior, we'll just assume
+                // they have the trailing behavior here. We need to record the value
+                // So it comes out after the throttle period. If they don't have
+                // either behavior that is just weird. Not adding extra code for that.
+                setTrailing(value);
+                startThrottle();
+              }
+            }
+          },
+          () => {
+            // The source completed
+            isComplete = true;
+            // If we're trailing, and we're in a throttle period and have a trailing value,
+            // wait for the throttle period to end before we actually complete.
+            // Otherwise, returning `true` here completes the result right away.
+            return !trailing || !throttleSubs || !hasTrailingValue;
+          }
+        )
+      );
+    });
 }
 
 class ThrottleTimeSubscriber<T> extends Subscriber<T> {
-  private throttled: Subscription | null = null;
-  private trailingValue: T | null = null;
-  private hasTrailingValue = false;
-  private isComplete = false;
-
-  constructor(
-    destination: Subscriber<T>,
-    private duration: number,
-    private scheduler: SchedulerLike,
-    private leading: boolean,
-    private trailing: boolean
-  ) {
+  constructor(destination: Subscriber<T>, protected _next: (value: T) => void, protected shouldComplete: () => boolean) {
     super(destination);
   }
 
-  protected _next(value: T) {
-    const { destination } = this;
-    if (this.throttled) {
-      // There is already a throttle timer going,
-      // we don't emit in this case.
-      if (this.trailing) {
-        // Update the trailing value, so that when the
-        // throttle executes, it has a trailing value to emit.
-        this.trailingValue = value;
-        this.hasTrailingValue = true;
-      }
-    } else {
-      if (this.leading) {
-        // With the leading behavior, if we're not
-        // throttled we can emit the value right away,
-        // but then we have to start the throttle.
-        destination.next(value);
-      } else if (this.trailing) {
-        // We're NOT leading, but we are trailing, then
-        // we need to set the trailing value so once the throttle
-        // is done we can emit it. We don't do this if we're leading
-        // as well, because that would result in a double emission.
-        this.trailingValue = value;
-        this.hasTrailingValue = true;
-      }
-
-      this.throttle();
+  _complete() {
+    if (this.shouldComplete()) {
+      super._complete();
     }
-  }
-
-  /**
-   * Schedules the throttle delay.
-   */
-  private throttle() {
-    const { destination } = this;
-    (destination as Subscription).add(
-      (this.throttled = this.scheduler.schedule(() => {
-        this.throttled = null;
-        const { trailing, trailingValue, hasTrailingValue } = this;
-        if (trailing && hasTrailingValue) {
-          // We're trailing, so emit the trailing value if
-          // we have one.
-          this.hasTrailingValue = false;
-          this.trailingValue = null;
-          destination.next(trailingValue);
-
-          // If we have emitted a value, though, we need
-          // to make sure that we throttle to keep the emitted
-          // values spaced out by the given throttle.
-          this.throttle();
-        }
-
-        if (this.isComplete) {
-          // The source completed, we can't get any more values
-          // so we can complete, which will tear everything down.
-          destination.complete();
-        }
-      }, this.duration))
-    );
-  }
-
-  protected _complete() {
-    this.isComplete = true;
-    const { trailing, throttled, hasTrailingValue, destination } = this;
-    // If we're not throttled, we close because there's clearly nothing we're waiting for.
-    // If we're not using trailing values, we can close, because there couldn't be an trailing values
-    // trapped that we want to emit. And even if we are using trailing values, if the source
-    // completes, and we don't have a trailing value yet, we can complete because it cannot
-    // possibly provide one at that poin.
-    if (!throttled || !trailing || !hasTrailingValue) {
-      destination.complete();
-    }
-    this.unsubscribe();
   }
 }
