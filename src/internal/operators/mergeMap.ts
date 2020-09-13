@@ -8,6 +8,7 @@ import { map } from './map';
 import { from } from '../observable/from';
 import { lift } from '../util/lift';
 import { innerSubscribe, SimpleOuterSubscriber, SimpleInnerSubscriber } from '../innerSubscribe';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
 export function mergeMap<T, O extends ObservableInput<any>>(
@@ -129,13 +130,14 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
           let innerSubs: Subscription;
           subscriber.add(
             (innerSubs = innerSource.subscribe(
-              new MergeMapSubscriber(
+              new OperatorSubscriber(
                 subscriber,
                 (innerValue) => {
                   // INNER SOURCE NEXT
                   // We got a value from the inner source, emit it from the result.
                   subscriber.next(innerValue);
                 },
+                undefined,
                 () => {
                   // INNER SOURCE COMPLETE
                   // Decrement the active count to ensure that the next time
@@ -164,7 +166,7 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
 
       let outerSubs: Subscription;
       outerSubs = source.subscribe(
-        new MergeMapSubscriber(
+        new OperatorSubscriber(
           subscriber,
           (value) => {
             // OUTER SOURCE NEXT
@@ -174,6 +176,7 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
             buffer.push(value);
             doInnerSub();
           },
+          undefined,
           () => {
             // OUTER SOURCE COMPLETE
             // We don't necessarily stop here. If have any pending inner subscriptions
@@ -191,17 +194,6 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
         )
       );
     });
-}
-
-// TODO(benlesh): This may end up being so common that we can centralize on one Subscriber for a few operators.
-
-/**
- * A simple overridden Subscriber, used in both inner and outer subscriptions
- */
-class MergeMapSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<any>, protected _next: (value: T) => void, protected _complete: () => void) {
-    super(destination);
-  }
 }
 
 /**
