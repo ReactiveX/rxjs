@@ -87,12 +87,11 @@ import { lift } from '../util/lift';
 export function throttleTime<T>(
   duration: number,
   scheduler: SchedulerLike = asyncScheduler,
-  config: ThrottleConfig = defaultThrottleConfig
+  { leading = false, trailing = false }: ThrottleConfig = defaultThrottleConfig
 ): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) =>
     lift(source, function (this: Subscriber<T>, source: Observable<T>) {
       const subscriber = this;
-      const { leading = false, trailing = false } = config;
       // Whether or not we have received a trailing value
       let hasTrailingValue = false;
       // The trailing value we have received
