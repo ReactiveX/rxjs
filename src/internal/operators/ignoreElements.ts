@@ -1,8 +1,10 @@
+/** @prettier */
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { noop } from '../util/noop';
 
 /**
  * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.
@@ -37,24 +39,9 @@ import { lift } from '../util/lift';
  * @name ignoreElements
  */
 export function ignoreElements(): OperatorFunction<any, never> {
-  return function ignoreElementsOperatorFunction(source: Observable<any>) {
-    return lift(source, new IgnoreElementsOperator());
-  };
-}
-
-class IgnoreElementsOperator<T, R> implements Operator<T, R> {
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new IgnoreElementsSubscriber(subscriber));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class IgnoreElementsSubscriber<T> extends Subscriber<T> {
-  protected _next(unused: T): void {
-    // Do nothing
-  }
+  return (source: Observable<any>) =>
+    lift(source, function (this: Subscriber<never>, source: Observable<any>) {
+      const subscriber = this;
+      source.subscribe(new OperatorSubscriber(subscriber, noop));
+    });
 }
