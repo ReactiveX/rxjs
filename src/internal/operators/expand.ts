@@ -1,13 +1,22 @@
+/** @prettier */
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, SchedulerLike } from '../types';
 import { lift } from '../util/lift';
-import { SimpleInnerSubscriber, SimpleOuterSubscriber, innerSubscribe } from '../innerSubscribe';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { from } from '../observable/from';
 
 /* tslint:disable:max-line-length */
-export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: SchedulerLike): OperatorFunction<T, R>;
-export function expand<T>(project: (value: T, index: number) => ObservableInput<T>, concurrent?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function expand<T, R>(
+  project: (value: T, index: number) => ObservableInput<R>,
+  concurrent?: number,
+  scheduler?: SchedulerLike
+): OperatorFunction<T, R>;
+export function expand<T>(
+  project: (value: T, index: number) => ObservableInput<T>,
+  concurrent?: number,
+  scheduler?: SchedulerLike
+): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -61,114 +70,54 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  * from this transformation.
  * @name expand
  */
-export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>,
-                             concurrent: number = Infinity,
-                             scheduler?: SchedulerLike): OperatorFunction<T, R> {
+export function expand<T, R>(
+  project: (value: T, index: number) => ObservableInput<R>,
+  concurrent = Infinity,
+  scheduler?: SchedulerLike
+): OperatorFunction<T, R> {
   concurrent = (concurrent || 0) < 1 ? Infinity : concurrent;
 
-  return (source: Observable<T>) => lift(source, new ExpandOperator(project, concurrent, scheduler));
-}
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<any>, source: Observable<T>) {
+      const subscriber = this;
+      let active = 0;
+      const buffer: T[] = [];
+      let index = 0;
+      let isComplete = false;
 
-export class ExpandOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => ObservableInput<R>,
-              private concurrent: number,
-              private scheduler?: SchedulerLike) {
-  }
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new ExpandSubscriber(subscriber, this.project, this.concurrent, this.scheduler));
-  }
-}
-
-interface DispatchArg<T, R> {
-  subscriber: ExpandSubscriber<T, R>;
-  result: ObservableInput<R>;
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-export class ExpandSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
-  private index: number = 0;
-  private active: number = 0;
-  private hasCompleted: boolean = false;
-  private buffer: any[] | undefined;
-
-  constructor(protected destination: Subscriber<R>,
-              private project: (value: T, index: number) => ObservableInput<R>,
-              private concurrent: number,
-              private scheduler?: SchedulerLike) {
-    super(destination);
-    if (concurrent < Infinity) {
-      this.buffer = [];
-    }
-  }
-
-  private static dispatch<T, R>(arg: DispatchArg<T, R>): void {
-    const {subscriber, result} = arg;
-    subscriber.subscribeToProjection(result);
-  }
-
-  protected _next(value: any): void {
-    const destination = this.destination;
-
-    if (destination.closed) {
-      this._complete();
-      return;
-    }
-
-    const index = this.index++;
-    if (this.active < this.concurrent) {
-      destination.next(value);
-      try {
-        this.active++;
-        const { project } = this;
-        const result = project(value, index);
-        if (!this.scheduler) {
-          this.subscribeToProjection(result);
-        } else {
-          const state: DispatchArg<T, R> = { subscriber: this, result };
-          const destination = this.destination;
-          destination.add(this.scheduler.schedule<DispatchArg<T, R>>(
-            ExpandSubscriber.dispatch as any,
-            0,
-            state
-          ));
+      const trySub = () => {
+        while (0 < buffer.length && active < concurrent) {
+          const value = buffer.shift()!;
+          subscriber.next(value);
+          let inner: Observable<any>;
+          try {
+            inner = from(project(value, index++));
+          } catch (err) {
+            subscriber.error(err);
+            return;
+          }
+          active++;
+          const doSub = () => {
+            inner.subscribe(
+              new OperatorSubscriber(subscriber, next, undefined, () => {
+                --active === 0 && isComplete && buffer.length === 0 ? subscriber.complete() : trySub();
+              })
+            );
+          };
+          scheduler ? subscriber.add(scheduler.schedule(doSub)) : doSub();
         }
-      } catch (e) {
-        destination.error(e);
-      }
-    } else {
-      this.buffer!.push(value);
-    }
-  }
+      };
 
-  private subscribeToProjection(result: any): void {
-    this.destination.add(innerSubscribe(result, new SimpleInnerSubscriber(this)));
-  }
+      const next = (value: T) => {
+        buffer.push(value);
+        trySub();
+      };
 
-  protected _complete(): void {
-    this.hasCompleted = true;
-    if (this.hasCompleted && this.active === 0) {
-      this.destination.complete();
-    }
-    this.unsubscribe();
-  }
-
-  notifyNext(innerValue: R): void {
-    this._next(innerValue);
-  }
-
-  notifyComplete(): void {
-    const buffer = this.buffer;
-    this.active--;
-    if (buffer && buffer.length > 0) {
-      this._next(buffer.shift());
-    }
-    if (this.hasCompleted && this.active === 0) {
-      this.destination.complete();
-    }
-  }
+      source.subscribe(
+        new OperatorSubscriber(subscriber, next, undefined, () => {
+          isComplete = true;
+          active === 0 && subscriber.complete();
+        })
+      );
+    });
 }

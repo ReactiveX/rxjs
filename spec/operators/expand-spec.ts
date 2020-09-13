@@ -7,7 +7,7 @@ import { Subscribable, EMPTY, Observable, of, Observer, asapScheduler, asyncSche
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {expand} */
-describe('expand operator', () => {
+describe('expand', () => {
   it('should recursively map-and-flatten each item to an Observable', () => {
     const e1 =    hot('--x----|  ', {x: 1});
     const e1subs =    '^      !  ';
