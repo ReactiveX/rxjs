@@ -147,50 +147,17 @@ export function groupBy<T, K, R>(
       groupBySubscriber = new GroupBySubscriber(
         subscriber,
         (value: T) => {
-          let key: K;
-          try {
-            key = keySelector(value);
-          } catch (err) {
-            groupBySubscriber.error(err);
-            return;
-          }
-
-          let element: R;
-          if (elementSelector) {
-            try {
-              element = elementSelector(value);
-            } catch (err) {
-              groupBySubscriber.error(err);
-              return;
-            }
-          } else {
-            element = value as any;
-          }
+          const key = keySelector(value);
+          const element = elementSelector ? elementSelector(value) : value;
 
           let group = groups.get(key);
           if (!group) {
-            if (subjectSelector) {
-              try {
-                group = subjectSelector();
-              } catch (err) {
-                groupBySubscriber.error(err);
-                return;
-              }
-            } else {
-              group = new Subject<any>();
-            }
-
+            group = subjectSelector ? subjectSelector() : new Subject<any>();
             groups.set(key, group);
             const grouped = createGroupedObservable(key, group);
             subscriber.next(grouped);
             if (durationSelector) {
-              let duration: any;
-              try {
-                duration = durationSelector(grouped);
-              } catch (err) {
-                groupBySubscriber.error(err);
-                return;
-              }
+              const duration = durationSelector(grouped);
               const durationSubscriber = new GroupDurationSubscriber(
                 group,
                 () => {
@@ -232,11 +199,20 @@ class GroupBySubscriber<T> extends Subscriber<T> {
 
   constructor(
     destination: Subscriber<any>,
-    protected _next: (value: T) => void,
+    protected onNext: (value: T) => void,
     protected _error: (err: any) => void,
     protected _complete: () => void
   ) {
     super(destination);
+  }
+
+  // TODO: Unify this pattern elsewhere to reduce try-catching.
+  protected _next(value: T) {
+    try {
+      this.onNext(value);
+    } catch (err) {
+      this._error(err);
+    }
   }
 
   unsubscribe() {
