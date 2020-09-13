@@ -4,7 +4,6 @@ import { Observable } from '../Observable';
 import { AjaxConfig, AjaxRequest } from './types';
 import { AjaxResponse } from './AjaxResponse';
 import { AjaxTimeoutError, AjaxError } from './errors';
-import { read } from 'fs';
 
 export interface AjaxCreationMethod {
   /**
