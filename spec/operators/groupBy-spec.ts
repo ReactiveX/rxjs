@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { groupBy, delay, tap, map, take, mergeMap, materialize, skip } from 'rxjs/operators';
+import { groupBy, delay, tap, map, take, mergeMap, materialize, skip, ignoreElements } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { ReplaySubject, of, GroupedObservable, Observable, Operator, Observer } from 'rxjs';
+import { ReplaySubject, of, Observable, Operator, Observer, interval, Subject } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { createNotification } from 'rxjs/internal/Notification';
 
@@ -216,7 +216,7 @@ describe('groupBy operator', () => {
       groupBy((val: string) => val.toLowerCase().trim()),
       tap((group: any) => {
         expect(group.key).to.equal('foo');
-        expect(group instanceof GroupedObservable).to.be.true;
+        expect(group instanceof Observable).to.be.true;
       }),
       map((group: any) => { return group.key; })
     );
@@ -1371,54 +1371,35 @@ describe('groupBy operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should return inner that does not throw when faulty outer is unsubscribed early',
-  () => {
-    const values = {
-      a: '  foo',
-      b: ' FoO ',
-      d: 'foO ',
-      i: 'FOO ',
-      l: '    fOo    '
+  it('should not error for late subscribed inners if outer is unsubscribed before inners are subscribed', () => {
+    const source = hot('-----^----a----b-----a------b----a----b---#');
+    // Unsubscribe before the error happens.
+    const unsub =           '                   !';
+    // Used to hold two subjects we're going to use to subscribe to our groups
+    const subjects: Record<string, Subject<string>> = {
+      a: new Subject(),
+      b: new Subject()
     };
-    const e1 = hot('-1--2--^-a-b---d---------i-----l-#', values);
-    const unsub =         '      !';
-    const expectedSubs =  '^     !';
-    const expected =      '--g----';
-    const innerSub =      '                                ^';
-    const g =                                             '-';
-
-    const expectedGroups = {
-      g: TestScheduler.parseMarbles(g, values)
-    };
-
-    const innerSubscriptionFrame = TestScheduler
-      .parseMarblesAsSubscriptions(innerSub)
-      .subscribedFrame;
-
-    const source = e1.pipe(
-      groupBy(
-        (val: string) => val.toLowerCase().trim(),
-        (val: string) => val,
-        (group: any) => group.pipe(skip(7))
-      ),
-      map((group: any) => {
-        const arr: any[] = [];
-
-        rxTestScheduler.schedule(() => {
-          group.pipe(
-            phonyMarbelize()
-          ).subscribe((value: any) => {
-            arr.push(value);
-          });
-        }, innerSubscriptionFrame - rxTestScheduler.frame);
-
-        return arr;
-      })
+    const result = source.pipe(
+      groupBy(char => char),
+      tap({
+        // The real test is here, schedule each group to be subscribed to
+        // long after the source errors and long after the unsubscription happens.
+        next: group => {
+          rxTestScheduler.schedule(
+            () => group.subscribe(subjects[group.key]), 1000
+          );
+        }
+      }),
+      // We don't are about what the outer is emitting
+      ignoreElements()
     );
-
-    expectObservable(source, unsub).toBe(expected, expectedGroups);
-    expectSubscriptions(e1.subscriptions).toBe(expectedSubs);
-  });
+    // Just to get the test going.
+    expectObservable(result, unsub).toBe('-');
+    // Our two groups should error immediately upon subscription.
+    expectObservable(subjects.a).toBe('-');
+    expectObservable(subjects.b).toBe('-');
+  })
 
   it('should not break lift() composability', (done: MochaDone) => {
     class MyCustomObservable<T> extends Observable<T> {
