@@ -292,7 +292,7 @@ export declare function take<T>(count: number): MonoTypeOperatorFunction<T>;
 
 export declare function takeLast<T>(count: number): MonoTypeOperatorFunction<T>;
 
-export declare function takeUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T>;
+export declare function takeUntil<T>(notifier: ObservableInput<any>): MonoTypeOperatorFunction<T>;
 
 export declare function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
 export declare function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S, inclusive: false): OperatorFunction<T, S>;
@@ -306,7 +306,7 @@ export declare function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFu
 
 export declare function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<any>, config?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
-export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, config?: ThrottleConfig): MonoTypeOperatorFunction<T>;
+export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
 export declare function throwIfEmpty<T>(errorFactory?: (() => any)): MonoTypeOperatorFunction<T>;
 
