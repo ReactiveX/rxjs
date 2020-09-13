@@ -1,13 +1,11 @@
 import { Observable } from '../Observable';
-import { isArray } from '../util/isArray';
 import { from } from './from';
-import { fromArray } from './fromArray';
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { TeardownLogic, ObservableInput, ObservedValueUnionFromArray } from '../types';
+import { ObservableInput, ObservedValueUnionFromArray } from '../types';
 import { ComplexOuterSubscriber, innerSubscribe, ComplexInnerSubscriber } from '../innerSubscribe';
 import { lift } from '../util/lift';
+import { argsOrArgArray } from "../util/argsOrArgArray";
 
 export function race<A extends ObservableInput<any>[]>(observables: A): Observable<ObservedValueUnionFromArray<A>>;
 export function race<A extends ObservableInput<any>[]>(...observables: A): Observable<ObservedValueUnionFromArray<A>>;
@@ -56,21 +54,11 @@ export function race<A extends ObservableInput<any>[]>(...observables: A): Obser
 export function race<T>(...observables: (ObservableInput<T> | ObservableInput<T>[])[]): Observable<any> {
   // if the only argument is an array, it was most likely called with
   // `race([obs1, obs2, ...])`
-  if (observables.length === 1) {
-    if (isArray(observables[0])) {
-      observables = observables[0] as ObservableInput<T>[];
-    } else {
-      return from(observables[0] as ObservableInput<T>);
-    }
-  }
+  observables = argsOrArgArray(observables);
 
-  return lift(fromArray(observables, undefined), new RaceOperator<T>());
-}
-
-export class RaceOperator<T> implements Operator<T, T> {
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new RaceSubscriber(subscriber));
-  }
+  return observables.length === 1 ? from(observables[0]) : lift(from(observables), function (this: Subscriber<T>, source: Observable<any>) {
+    return source.subscribe(new RaceSubscriber(this));
+  });
 }
 
 /**

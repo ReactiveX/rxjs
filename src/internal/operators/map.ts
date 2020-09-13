@@ -1,4 +1,3 @@
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
@@ -43,49 +42,39 @@ import { lift } from '../util/lift';
  * @name map
  */
 export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any): OperatorFunction<T, R> {
+
   return function mapOperation(source: Observable<T>): Observable<R> {
     if (typeof project !== 'function') {
       throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
     }
-    return lift(source, new MapOperator(project, thisArg));
+    return lift(source, function (this: Subscriber<R>, source: Observable<T>) {
+      const subscriber = this;
+      // The index of the value from the source. Used with projection.
+      let index = 0;
+      source.subscribe(new MapSubscriber(subscriber, (value: T) => {
+        // Try the projection, and catch any errors so we can send them to the consumer
+        // as an error notification.
+        let result: R;
+        try {
+          // Call with the `thisArg`. At some point we want to get rid of this,
+          // as `fn.bind()` is more explicit and easier to read, however... as a
+          // note, if no `thisArg` is passed, the `this` context will be `undefined`,
+          // as no other default makes sense.
+          result = project.call(thisArg, value, index++)
+        } catch (err) {
+          // Notify the consumer of the error.
+          subscriber.error(err);
+          return;
+        }
+        // Success! Send the projected result to the consumer
+        subscriber.next(result);
+      }))
+    });
   };
 }
 
-export class MapOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => R, private thisArg: any) {
-  }
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class MapSubscriber<T, R> extends Subscriber<T> {
-  count: number = 0;
-  private thisArg: any;
-
-  constructor(destination: Subscriber<R>,
-              private project: (value: T, index: number) => R,
-              thisArg: any) {
+class MapSubscriber<T> extends Subscriber<T> {
+  constructor(destination: Subscriber<any>, protected _next: (value: T) => void) {
     super(destination);
-    this.thisArg = thisArg || this;
-  }
-
-  // NOTE: This looks unoptimized, but it's actually purposefully NOT
-  // using try/catch optimizations.
-  protected _next(value: T) {
-    let result: R;
-    try {
-      result = this.project.call(this.thisArg, value, this.count++);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.destination.next(result);
   }
 }

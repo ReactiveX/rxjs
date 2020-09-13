@@ -1,7 +1,7 @@
 /** @prettier */
 import { isFunction } from './util/isFunction';
 import { UnsubscriptionError } from './util/UnsubscriptionError';
-import { SubscriptionLike, TeardownLogic } from './types';
+import { SubscriptionLike, TeardownLogic, Unsubscribable } from './types';
 
 /**
  * Represents a disposable resource, such as the execution of an Observable. A
@@ -27,11 +27,7 @@ export class Subscription implements SubscriptionLike {
    */
   public closed = false;
 
-  /** If this subscription has been added to one parent, it will show up here */
-  private _singleParent: Subscription | null = null;
-
-  /** If this subscription has been added to more than one parent, they will show up here. */
-  private _parents: Subscription[] | null = null;
+  private _parentage: Subscription[] | Subscription | null = null;
 
   /**
    * The list of registered teardowns to execute upon unsubscription. Adding and removing from this
@@ -58,17 +54,13 @@ export class Subscription implements SubscriptionLike {
       this.closed = true;
 
       // Remove this from it's parents.
-
-      const { _singleParent } = this;
-      let _parents: Subscription[] | null;
-      if (_singleParent) {
-        this._singleParent = null;
-        _singleParent.remove(this);
-      } else if ((_parents = this._parents)) {
-        this._parents = null;
-        for (const parent of _parents) {
+      const { _parentage } = this;
+      if (Array.isArray(_parentage)) {
+        for (const parent of _parentage) {
           parent.remove(this);
         }
+      } else {
+        _parentage?.remove(this);
       }
 
       const { initialTeardown } = this;
@@ -81,15 +73,11 @@ export class Subscription implements SubscriptionLike {
       }
 
       const { _teardowns } = this;
-      this._teardowns = null;
       if (_teardowns) {
+        this._teardowns = null;
         for (const teardown of _teardowns) {
           try {
-            if (typeof teardown === 'function') {
-              teardown();
-            } else {
-              teardown.unsubscribe();
-            }
+            execTeardown(teardown);
           } catch (err) {
             errors = errors ?? [];
             if (err instanceof UnsubscriptionError) {
@@ -132,11 +120,7 @@ export class Subscription implements SubscriptionLike {
       if (this.closed) {
         // If this subscription is already closed,
         // execute whatever teardown is handed to it automatically.
-        if (typeof teardown === 'function') {
-          teardown();
-        } else {
-          teardown.unsubscribe();
-        }
+        execTeardown(teardown);
       } else {
         if (teardown instanceof Subscription) {
           // We don't add closed subscriptions, and we don't add the same subscription
@@ -146,8 +130,7 @@ export class Subscription implements SubscriptionLike {
           }
           teardown._addParent(this);
         }
-        this._teardowns = this._teardowns ?? [];
-        this._teardowns.push(teardown);
+        (this._teardowns = this._teardowns ?? []).push(teardown);
       }
     }
   }
@@ -158,7 +141,8 @@ export class Subscription implements SubscriptionLike {
    * @param parent the parent to check for
    */
   private _hasParent(parent: Subscription) {
-    return this._singleParent === parent || this._parents?.includes(parent) || false;
+    const { _parentage } = this;
+    return _parentage === parent || (Array.isArray(_parentage) && _parentage.includes(parent));
   }
 
   /**
@@ -169,20 +153,8 @@ export class Subscription implements SubscriptionLike {
    * @param parent The parent subscription to add
    */
   private _addParent(parent: Subscription) {
-    const { _singleParent } = this;
-    let _parents: Subscription[] | null;
-    if (_singleParent) {
-      // We already have one parent so we'll need to expand
-      // to use an array
-      this._parents = [_singleParent, parent];
-      this._singleParent = null;
-    } else if ((_parents = this._parents)) {
-      // We already have more than one parent, so just add on to that array.
-      _parents.push(parent);
-    } else {
-      // This is our first parent.
-      this._singleParent = parent;
-    }
+    const { _parentage } = this;
+    this._parentage = Array.isArray(_parentage) ? (_parentage.push(parent), _parentage) : _parentage ? [_parentage, parent] : parent;
   }
 
   /**
@@ -190,16 +162,13 @@ export class Subscription implements SubscriptionLike {
    * @param parent The parent to remove
    */
   private _removeParent(parent: Subscription) {
-    const { _singleParent } = this;
-    let _parents: Subscription[] | null;
-    if (_singleParent) {
-      if (_singleParent === parent) {
-        this._singleParent = null;
-      }
-    } else if ((_parents = this._parents)) {
-      const index = _parents.indexOf(parent);
-      if (index >= 0) {
-        _parents.splice(index, 1);
+    const { _parentage } = this;
+    if (_parentage === parent) {
+      this._parentage = null;
+    } else if (Array.isArray(_parentage)) {
+      const index = _parentage.indexOf(parent);
+      if (0 <= index) {
+        _parentage.splice(index, 1);
       }
     }
   }
@@ -242,4 +211,12 @@ export function isSubscription(value: any): value is Subscription {
       typeof value.add === 'function' &&
       typeof value.unsubscribe === 'function')
   );
+}
+
+function execTeardown(teardown: Unsubscribable | (() => void)) {
+  if (typeof teardown === 'function') {
+    teardown();
+  } else {
+    teardown.unsubscribe();
+  }
 }

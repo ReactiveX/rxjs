@@ -1,9 +1,8 @@
-import { Operator } from '../Operator';
+/** @prettier */
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
 
-import { Observer, OperatorFunction } from '../types';
+import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
 
 /**
@@ -62,113 +61,117 @@ import { lift } from '../util/lift';
  * the values emitted by both observables were equal in sequence.
  * @name sequenceEqual
  */
-export function sequenceEqual<T>(compareTo: Observable<T>,
-                                 comparator?: (a: T, b: T) => boolean): OperatorFunction<T, boolean> {
-  return (source: Observable<T>) => lift(source, new SequenceEqualOperator(compareTo, comparator));
-}
+export function sequenceEqual<T>(
+  compareTo: Observable<T>,
+  comparator: (a: T, b: T) => boolean = (a, b) => a === b
+): OperatorFunction<T, boolean> {
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<boolean>, source: Observable<T>) {
+      const subscriber = this;
+      // The state for the source observable
+      const aState = createState<T>();
+      // The state for the compareTo observable;
+      const bState = createState<T>();
 
-export class SequenceEqualOperator<T> implements Operator<T, boolean> {
-  constructor(private compareTo: Observable<T>,
-              private comparator?: (a: T, b: T) => boolean) {
-  }
+      /** A utility to emit and complete */
+      const emit = (isEqual: boolean) => {
+        subscriber.next(isEqual);
+        subscriber.complete();
+      };
 
-  call(subscriber: Subscriber<boolean>, source: any): any {
-    return source.subscribe(new SequenceEqualSubscriber(subscriber, this.compareTo, this.comparator));
-  }
+      /**
+       * Creates a subscriber that subscribes to one of the sources, and compares its collected
+       * state -- `selfState` -- to the other source's collected state -- `otherState`. This
+       * is used for both streams.
+       */
+      const createSubscriber = (selfState: SequenceState<T>, otherState: SequenceState<T>) => {
+        const sequenceEqualSubscriber = new SequenceEqualSubscriber(
+          subscriber,
+          (a: T) => {
+            const { buffer, complete } = otherState;
+            if (buffer.length === 0) {
+              // If there's no values in the other buffer...
+              if (complete) {
+                // ... and the other stream is complete, we know
+                // this isn't a match, because we got one more value.
+                emit(false);
+              } else {
+                // Otherwise, we push onto our buffer, so when the other
+                // stream emits, it can pull this value off our buffer and check it
+                // at the appropriate time.
+                selfState.buffer.push(a);
+              }
+            } else {
+              // If the other stream *does* have values in it's buffer,
+              // pull the oldest one off so we can compare it to what we
+              // just got.
+              const b = buffer.shift()!;
+
+              // Call the comparator. It's a user function, so we have to
+              // capture the error appropriately.
+              let result: boolean;
+              try {
+                result = comparator(a, b);
+              } catch (err) {
+                subscriber.error(err);
+                return;
+              }
+
+              if (!result) {
+                // If it wasn't a match, emit `false` and complete.
+                emit(false);
+              }
+            }
+          },
+          () => {
+            // Or observable completed
+            selfState.complete = true;
+            const { complete, buffer } = otherState;
+            if (complete) {
+              // If the other observable is also complete, and there's
+              // still stuff left in their buffer, it doesn't match, if their
+              // buffer is empty, then it does match. This is because we can't
+              // possibly get more values here anymore.
+              emit(buffer.length === 0);
+            }
+            // Be sure to clean up our stream as soon as possible if we can.
+            sequenceEqualSubscriber?.unsubscribe();
+          }
+        );
+
+        return sequenceEqualSubscriber;
+      };
+
+      // Subscribe to each source.
+      source.subscribe(createSubscriber(aState, bState));
+      compareTo.subscribe(createSubscriber(bState, aState));
+    });
 }
 
 /**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
+ * A simple structure for the data used to test each sequence
  */
-export class SequenceEqualSubscriber<T, R> extends Subscriber<T> {
-  private _a: T[] = [];
-  private _b: T[] = [];
-  private _oneComplete = false;
-
-  constructor(destination: Observer<R>,
-              private compareTo: Observable<T>,
-              private comparator?: (a: T, b: T) => boolean) {
-    super(destination);
-    (this.destination as Subscription).add(compareTo.subscribe(new SequenceEqualCompareToSubscriber(destination, this)));
-  }
-
-  protected _next(value: T): void {
-    if (this._oneComplete && this._b.length === 0) {
-      this.emit(false);
-    } else {
-      this._a.push(value);
-      this.checkValues();
-    }
-  }
-
-  public _complete(): void {
-    if (this._oneComplete) {
-      this.emit(this._a.length === 0 && this._b.length === 0);
-    } else {
-      this._oneComplete = true;
-    }
-    this.unsubscribe();
-  }
-
-  checkValues() {
-    const { _a, _b, comparator } = this;
-    while (_a.length > 0 && _b.length > 0) {
-      let a = _a.shift()!;
-      let b = _b.shift()!;
-      let areEqual = false;
-      try {
-        areEqual = comparator ? comparator(a, b) : a === b;
-      } catch (e) {
-        this.destination.error(e);
-      }
-      if (!areEqual) {
-        this.emit(false);
-      }
-    }
-  }
-
-  emit(value: boolean) {
-    const { destination } = this;
-    destination.next(value);
-    destination.complete();
-  }
-
-  nextB(value: T) {
-    if (this._oneComplete && this._a.length === 0) {
-      this.emit(false);
-    } else {
-      this._b.push(value);
-      this.checkValues();
-    }
-  }
-
-  completeB() {
-    if (this._oneComplete) {
-      this.emit(this._a.length === 0 && this._b.length === 0);
-    } else {
-      this._oneComplete = true;
-    }
-  }
+interface SequenceState<T> {
+  /** A temporary store for arrived values before they are checked */
+  buffer: T[];
+  /** Whether or not the sequence source has completed. */
+  complete: boolean;
 }
 
-class SequenceEqualCompareToSubscriber<T, R> extends Subscriber<T> {
-  constructor(destination: Observer<R>, private parent: SequenceEqualSubscriber<T, R>) {
+/**
+ * Creates a simple structure that is used to represent
+ * data used to test each sequence.
+ */
+function createState<T>(): SequenceState<T> {
+  return {
+    buffer: [],
+    complete: false,
+  };
+}
+
+// TODO: Combine with other implementations that are identical.
+class SequenceEqualSubscriber<T> extends Subscriber<T> {
+  constructor(destination: Subscriber<any>, protected _next: (value: T) => void, protected _complete: () => void) {
     super(destination);
-  }
-
-  protected _next(value: T): void {
-    this.parent.nextB(value);
-  }
-
-  protected _error(err: any): void {
-    this.parent.error(err);
-    this.unsubscribe();
-  }
-
-  protected _complete(): void {
-    this.parent.completeB();
-    this.unsubscribe();
   }
 }

@@ -620,7 +620,7 @@ describe('Observable', () => {
         expect(() => throwError(new Error('thrown error')).subscribe()).to.throw(Error, 'thrown error');
       });
 
-      it('should rethrow if sink has syncErrorThrowable = false', () => {
+      it('should rethrow if next handler throws', () => {
         const observable = new Observable((observer) => {
           observer.next(1);
         });
@@ -991,19 +991,21 @@ describe('Observable.lift', () => {
     );
   });
 
-  it('should not swallow internal errors', () => {
-    const consoleStub = sinon.stub(console, 'warn');
-    try {
-      let source = new Observable<number>((observer) => observer.next(42));
-      for (let i = 0; i < 10000; ++i) {
-        let base = source;
-        source = new Observable<number>((observer) => base.subscribe(observer));
+  it('should not swallow internal errors', (done) => {
+    config.onUnhandledError = (err) => {
+      expect(err).to.equal('bad');
+      config.onUnhandledError = null;
+      done();
+    };
+    
+    new Observable(subscriber => {
+      subscriber.error('test');
+      throw 'bad';
+    }).subscribe({
+      error: err => {
+        expect(err).to.equal('test');
       }
-      source.subscribe();
-      expect(consoleStub).to.have.property('called', true);
-    } finally {
-      consoleStub.restore();
-    }
+    });
   });
 
   // TODO: Stop skipping this until a later refactor (probably in version 8)

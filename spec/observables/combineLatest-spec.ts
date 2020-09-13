@@ -39,16 +39,17 @@ describe('static combineLatest', () => {
       [3, 8],
     ];
 
+    const actual: [number, number][] = [];
     //type definition need to be updated
     combineLatest(a, b, queueScheduler).subscribe(
       (vals) => {
-        expect(vals).to.deep.equal(r.shift());
+        actual.push(vals);
       },
       () => {
         done(new Error('should not be called'));
       },
       () => {
-        expect(r.length).to.equal(0);
+        expect(actual).to.deep.equal(r);
         done();
       }
     );

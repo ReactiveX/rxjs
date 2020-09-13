@@ -1,9 +1,9 @@
 import { isFunction } from './util/isFunction';
-import { empty as emptyObserver } from './Observer';
+import { EMPTY_OBSERVER } from './EMPTY_OBSERVER';
 import { Observer, PartialObserver } from './types';
 import { Subscription, isSubscription } from './Subscription';
 import { config } from './config';
-import { hostReportError } from './util/hostReportError';
+import { reportUnhandledError } from './util/reportUnhandledError';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -31,14 +31,8 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   static create<T>(next?: (x?: T) => void,
                    error?: (e?: any) => void,
                    complete?: () => void): Subscriber<T> {
-    const subscriber = new Subscriber(next, error, complete);
-    subscriber.syncErrorThrowable = false;
-    return subscriber;
+    return new Subscriber(next, error, complete);
   }
-
-  /** @internal */ syncErrorValue: any = null;
-  /** @internal */ syncErrorThrown: boolean = false;
-  /** @internal */ syncErrorThrowable: boolean = false;
 
   protected isStopped: boolean = false;
   protected destination: Observer<any> | Subscriber<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
@@ -58,26 +52,23 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
 
     switch (arguments.length) {
       case 0:
-        this.destination = emptyObserver;
+        this.destination = EMPTY_OBSERVER;
         break;
       case 1:
         if (!destinationOrNext) {
-          this.destination = emptyObserver;
+          this.destination = EMPTY_OBSERVER;
           break;
         }
         if (typeof destinationOrNext === 'object') {
           if (destinationOrNext instanceof Subscriber) {
-            this.syncErrorThrowable = destinationOrNext.syncErrorThrowable;
             this.destination = destinationOrNext;
             destinationOrNext.add(this);
           } else {
-            this.syncErrorThrowable = true;
             this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
           }
           break;
         }
       default:
-        this.syncErrorThrowable = true;
         this.destination = new SafeSubscriber<T>(this, <((value: T) => void)> destinationOrNext, error, complete);
         break;
     }
@@ -165,7 +156,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       next = observerOrNext.next;
       error = observerOrNext.error;
       complete = observerOrNext.complete;
-      if (observerOrNext !== emptyObserver) {
+      if (observerOrNext !== EMPTY_OBSERVER) {
         let context: any;
         if (config.useDeprecatedNextContext) {
           context = Object.create(observerOrNext);
@@ -173,9 +164,9 @@ export class SafeSubscriber<T> extends Subscriber<T> {
         } else {
           context = observerOrNext;
         }
-        next = next && next.bind(context);
-        error = error && error.bind(context);
-        complete = complete && complete.bind(context);
+        next = next?.bind(context);
+        error = error?.bind(context);
+        complete = complete?.bind(context);
         if (isSubscription(observerOrNext)) {
           observerOrNext.add(this.unsubscribe.bind(this));
         }
@@ -216,15 +207,9 @@ export class SafeSubscriber<T> extends Subscriber<T> {
   private _throw(err: any) {
     this.unsubscribe();
     if (config.useDeprecatedSynchronousErrorHandling) {
-      const { _parentSubscriber } = this;
-      if (_parentSubscriber?.syncErrorThrowable) {
-        _parentSubscriber.syncErrorValue = err;
-        _parentSubscriber.syncErrorThrown = true;
-      } else {
-        throw err;
-      }
+      throw err;
     } else {
-      hostReportError(err);
+      reportUnhandledError(err);
     }
   }
 

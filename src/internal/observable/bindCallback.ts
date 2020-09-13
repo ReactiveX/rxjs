@@ -1,8 +1,7 @@
 import { SchedulerLike } from '../types';
 import { Observable } from '../Observable';
-import { map } from '../operators/map';
-import { isArray } from '../util/isArray';
 import { isScheduler } from '../util/isScheduler';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 
 // tslint:disable:max-line-length
 /** @deprecated resultSelector is no longer supported, use a mapping function. */
@@ -173,29 +172,30 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * Observable that delivers the same values the callback would deliver.
  * @name bindCallback
  */
-export function bindCallback<T>(
-  callbackFunc: Function,
-  resultSelector?: Function|SchedulerLike,
+export function bindCallback(
+  callbackFunc: any,
+  resultSelector?: any,
   scheduler?: SchedulerLike
-): (...args: any[]) => Observable<T> {
+): (...args: any[]) => Observable<unknown> {
   if (resultSelector) {
     if (isScheduler(resultSelector)) {
       scheduler = resultSelector;
     } else {
-      // DEPRECATED PATH
-      return (...args: any[]) => bindCallback(callbackFunc, scheduler)(...args).pipe(
-        map((args) => isArray(args) ? resultSelector(...args) : resultSelector(args)),
+      // Deprecated path (Returning Observable<R>)
+      // TODO: Fix these internal typings.
+      return (...args: any[]) => (bindCallback(callbackFunc, scheduler) as any)(...args).pipe(
+        mapOneOrManyArgs(resultSelector),
       );
     }
   }
 
   
-  return function (this: any, ...args: any[]): Observable<T> {
+  return function (this: any, ...args: any[]) {
     let results: any;
     let hasResults = false;
     let hasError = false;
     let error: any;
-    return new Observable<T>((subscriber) => {
+    return new Observable((subscriber) => {
       if (!scheduler) {
         let isCurrentlyAsync = false;
         let hasCompletedSynchronously = false;

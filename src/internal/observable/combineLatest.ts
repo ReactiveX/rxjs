@@ -1,71 +1,269 @@
+/** @prettier */
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueTupleFromArray } from '../types';
-import { isScheduler  } from '../util/isScheduler';
-import { isArray  } from '../util/isArray';
+import { isScheduler } from '../util/isScheduler';
+import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { Subscriber } from '../Subscriber';
-import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
-import { Operator } from '../Operator';
 import { isObject } from '../util/isObject';
-import { fromArray } from './fromArray';
-import { lift } from '../util/lift';
-
-const NONE = {};
+import { from } from './from';
+import { identity } from '../util/identity';
+import { map } from '../operators/map';
+import { Subscription } from '../Subscription';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 
 /* tslint:disable:max-line-length */
 
 // If called with a single array, it "auto-spreads" the array, with result selector
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O1 extends ObservableInput<any>, R>(sources: [O1], resultSelector: (v1: ObservedValueOf<O1>) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<O1 extends ObservableInput<any>, R>(
+  sources: [O1],
+  resultSelector: (v1: ObservedValueOf<O1>) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, R>(sources: [O1, O2], resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, R>(
+  sources: [O1, O2],
+  resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, R>(sources: [O1, O2, O3], resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, R>(
+  sources: [O1, O2, O3],
+  resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, R>(sources: [O1, O2, O3, O4], resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  R
+>(
+  sources: [O1, O2, O3, O4],
+  resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, R>(sources: [O1, O2, O3, O4, O5], resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>, v5: ObservedValueOf<O5>) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>,
+  R
+>(
+  sources: [O1, O2, O3, O4, O5],
+  resultSelector: (
+    v1: ObservedValueOf<O1>,
+    v2: ObservedValueOf<O2>,
+    v3: ObservedValueOf<O3>,
+    v4: ObservedValueOf<O4>,
+    v5: ObservedValueOf<O5>
+  ) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, O6 extends ObservableInput<any>, R>(sources: [O1, O2, O3, O4, O5, O6], resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>, v5: ObservedValueOf<O5>, v6: ObservedValueOf<O6>) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>,
+  O6 extends ObservableInput<any>,
+  R
+>(
+  sources: [O1, O2, O3, O4, O5, O6],
+  resultSelector: (
+    v1: ObservedValueOf<O1>,
+    v2: ObservedValueOf<O2>,
+    v3: ObservedValueOf<O3>,
+    v4: ObservedValueOf<O4>,
+    v5: ObservedValueOf<O5>,
+    v6: ObservedValueOf<O6>
+  ) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O extends ObservableInput<any>, R>(sources: O[], resultSelector: (...args: ObservedValueOf<O>[]) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<O extends ObservableInput<any>, R>(
+  sources: O[],
+  resultSelector: (...args: ObservedValueOf<O>[]) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 
 // standard call, but with a result selector
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O1 extends ObservableInput<any>, R>(v1: O1, resultSelector: (v1: ObservedValueOf<O1>) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<O1 extends ObservableInput<any>, R>(
+  v1: O1,
+  resultSelector: (v1: ObservedValueOf<O1>) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, R>(v1: O1, v2: O2, resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, R>(
+  v1: O1,
+  v2: O2,
+  resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, R>(v1: O1, v2: O2, v3: O3, resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, R>(
+  v1: O1,
+  v2: O2,
+  v3: O3,
+  resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, R>(v1: O1, v2: O2, v3: O3, v4: O4, resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  R
+>(
+  v1: O1,
+  v2: O2,
+  v3: O3,
+  v4: O4,
+  resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, R>(v1: O1, v2: O2, v3: O3, v4: O4, v5: O5, resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>, v5: ObservedValueOf<O5>) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>,
+  R
+>(
+  v1: O1,
+  v2: O2,
+  v3: O3,
+  v4: O4,
+  v5: O5,
+  resultSelector: (
+    v1: ObservedValueOf<O1>,
+    v2: ObservedValueOf<O2>,
+    v3: ObservedValueOf<O3>,
+    v4: ObservedValueOf<O4>,
+    v5: ObservedValueOf<O5>
+  ) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, O6 extends ObservableInput<any>, R>(v1: O1, v2: O2, v3: O3, v4: O4, v5: O5, v6: O6, resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>, v5: ObservedValueOf<O5>, v6: ObservedValueOf<O6>) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>,
+  O6 extends ObservableInput<any>,
+  R
+>(
+  v1: O1,
+  v2: O2,
+  v3: O3,
+  v4: O4,
+  v5: O5,
+  v6: O6,
+  resultSelector: (
+    v1: ObservedValueOf<O1>,
+    v2: ObservedValueOf<O2>,
+    v3: ObservedValueOf<O3>,
+    v4: ObservedValueOf<O4>,
+    v5: ObservedValueOf<O5>,
+    v6: ObservedValueOf<O6>
+  ) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 
 // With a scheduler (deprecated)
 /** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
 export function combineLatest<O1 extends ObservableInput<any>>(sources: [O1], scheduler: SchedulerLike): Observable<[ObservedValueOf<O1>]>;
 /** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>>(sources: [O1, O2], scheduler: SchedulerLike): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>]>;
+export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>>(
+  sources: [O1, O2],
+  scheduler: SchedulerLike
+): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>]>;
 /** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(sources: [O1, O2, O3], scheduler: SchedulerLike): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>]>;
+export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(
+  sources: [O1, O2, O3],
+  scheduler: SchedulerLike
+): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>]>;
 /** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>>(sources: [O1, O2, O3, O4], scheduler: SchedulerLike): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>]>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>
+>(
+  sources: [O1, O2, O3, O4],
+  scheduler: SchedulerLike
+): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>]>;
 /** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>>(sources: [O1, O2, O3, O4, O5], scheduler: SchedulerLike): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>]>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>
+>(
+  sources: [O1, O2, O3, O4, O5],
+  scheduler: SchedulerLike
+): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>]>;
 /** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, O6 extends ObservableInput<any>>(sources: [O1, O2, O3, O4, O5, O6], scheduler: SchedulerLike): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>, ObservedValueOf<O6>]>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>,
+  O6 extends ObservableInput<any>
+>(
+  sources: [O1, O2, O3, O4, O5, O6],
+  scheduler: SchedulerLike
+): Observable<
+  [ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>, ObservedValueOf<O6>]
+>;
 /** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
 export function combineLatest<O extends ObservableInput<any>>(sources: O[], scheduler: SchedulerLike): Observable<ObservedValueOf<O>[]>;
 
 // Best case
 export function combineLatest<O1 extends ObservableInput<any>>(sources: [O1]): Observable<[ObservedValueOf<O1>]>;
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>>(sources: [O1, O2]): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>]>;
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(sources: [O1, O2, O3]): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>]>;
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>>(sources: [O1, O2, O3, O4]): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>]>;
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>>(sources: [O1, O2, O3, O4, O5]): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>]>;
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, O6 extends ObservableInput<any>>(sources: [O1, O2, O3, O4, O5, O6]): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>, ObservedValueOf<O6>]>;
+export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>>(
+  sources: [O1, O2]
+): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>]>;
+export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(
+  sources: [O1, O2, O3]
+): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>]>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>
+>(sources: [O1, O2, O3, O4]): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>]>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>
+>(
+  sources: [O1, O2, O3, O4, O5]
+): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>]>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>,
+  O6 extends ObservableInput<any>
+>(
+  sources: [O1, O2, O3, O4, O5, O6]
+): Observable<
+  [ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>, ObservedValueOf<O6>]
+>;
 export function combineLatest<O extends ObservableInput<any>>(sources: O[]): Observable<ObservedValueOf<O>[]>;
 export function combineLatest<O extends readonly ObservableInput<any>[]>(sources: O): Observable<ObservedValueTupleFromArray<O>>;
 
@@ -73,33 +271,93 @@ export function combineLatest<O extends readonly ObservableInput<any>[]>(sources
 /** @deprecated Pass arguments in a single array instead `combineLatest([a, b, c])` */
 export function combineLatest<O1 extends ObservableInput<any>>(v1: O1, scheduler?: SchedulerLike): Observable<[ObservedValueOf<O1>]>;
 /** @deprecated Pass arguments in a single array instead `combineLatest([a, b, c])` */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>>(v1: O1, v2: O2, scheduler?: SchedulerLike): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>]>;
+export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>>(
+  v1: O1,
+  v2: O2,
+  scheduler?: SchedulerLike
+): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>]>;
 /** @deprecated Pass arguments in a single array instead `combineLatest([a, b, c])` */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, scheduler?: SchedulerLike): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>]>;
+export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(
+  v1: O1,
+  v2: O2,
+  v3: O3,
+  scheduler?: SchedulerLike
+): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>]>;
 /** @deprecated Pass arguments in a single array instead `combineLatest([a, b, c])` */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, v4: O4, scheduler?: SchedulerLike): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>]>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>
+>(
+  v1: O1,
+  v2: O2,
+  v3: O3,
+  v4: O4,
+  scheduler?: SchedulerLike
+): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>]>;
 /** @deprecated Pass arguments in a single array instead `combineLatest([a, b, c])` */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, v4: O4, v5: O5, scheduler?: SchedulerLike): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>]>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>
+>(
+  v1: O1,
+  v2: O2,
+  v3: O3,
+  v4: O4,
+  v5: O5,
+  scheduler?: SchedulerLike
+): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>]>;
 /** @deprecated Pass arguments in a single array instead `combineLatest([a, b, c])` */
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, O6 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, v4: O4, v5: O5, v6: O6, scheduler?: SchedulerLike): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>, ObservedValueOf<O6>]>;
+export function combineLatest<
+  O1 extends ObservableInput<any>,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>,
+  O6 extends ObservableInput<any>
+>(
+  v1: O1,
+  v2: O2,
+  v3: O3,
+  v4: O4,
+  v5: O5,
+  v6: O6,
+  scheduler?: SchedulerLike
+): Observable<
+  [ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>, ObservedValueOf<O6>]
+>;
 
 /** @deprecated Pass arguments in a single array instead `combineLatest([a, b, c])` */
 export function combineLatest<O extends ObservableInput<any>>(...observables: O[]): Observable<any[]>;
 
 /** @deprecated Pass arguments in a single array instead `combineLatest([a, b, c])` */
-export function combineLatest<O extends ObservableInput<any>, R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R>;
+export function combineLatest<O extends ObservableInput<any>, R>(
+  ...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>
+): Observable<R>;
 
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O extends ObservableInput<any>, R>(array: O[], resultSelector: (...values: ObservedValueOf<O>[]) => R, scheduler?: SchedulerLike): Observable<R>;
+export function combineLatest<O extends ObservableInput<any>, R>(
+  array: O[],
+  resultSelector: (...values: ObservedValueOf<O>[]) => R,
+  scheduler?: SchedulerLike
+): Observable<R>;
 
 /** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
 export function combineLatest<O extends ObservableInput<any>>(...observables: Array<O | SchedulerLike>): Observable<any[]>;
 
 /** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
-export function combineLatest<O extends ObservableInput<any>, R>(...observables: Array<O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike>): Observable<R>;
+export function combineLatest<O extends ObservableInput<any>, R>(
+  ...observables: Array<O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike>
+): Observable<R>;
 
 /** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
-export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R) | SchedulerLike>): Observable<R>;
+export function combineLatest<R>(
+  ...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R) | SchedulerLike>
+): Observable<R>;
 
 // combineLatest({})
 export function combineLatest(sourcesObject: {}): Observable<never>;
@@ -167,7 +425,7 @@ export function combineLatest<T, K extends keyof T>(sourcesObject: T): Observabl
  * ```
  * ### Combine a dictionary of Observables
  * ```ts
-* import { combineLatest, of } from 'rxjs';
+ * import { combineLatest, of } from 'rxjs';
  * import { delay, startWith } from 'rxjs/operators';
  *
  * const observables = {
@@ -237,116 +495,123 @@ export function combineLatest<T, K extends keyof T>(sourcesObject: T): Observabl
  * each input Observable.
  */
 export function combineLatest<O extends ObservableInput<any>, R>(
-  ...observables: (O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike)[]
-): Observable<R> {
-  let resultSelector: ((...values: Array<any>) => R) | undefined =  undefined;
+  ...args: (O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike)[]
+): Observable<R> | Observable<ObservedValueOf<O>[]> {
+  let resultSelector: ((...values: Array<any>) => R) | undefined = undefined;
   let scheduler: SchedulerLike | undefined = undefined;
-  let keys: Array<string> | undefined = undefined;
 
-  if (isScheduler(observables[observables.length - 1])) {
-    scheduler = observables.pop() as SchedulerLike;
+  if (isScheduler(args[args.length - 1])) {
+    scheduler = args.pop() as SchedulerLike;
   }
 
-  if (typeof observables[observables.length - 1] === 'function') {
-    resultSelector = observables.pop() as (...values: Array<any>) => R;
+  if (typeof args[args.length - 1] === 'function') {
+    resultSelector = args.pop() as (...values: Array<any>) => R;
   }
 
-  if (observables.length === 1) {
-    const first = observables[0] as any;
-    if (isArray(first)) {
-      // if the first and only other argument besides the resultSelector is an array
-      // assume it's been called with `combineLatest([obs1, obs2, obs3], resultSelector)`
-      observables = first;
-    }
-    // if the first and only argument is an object, assume it's been called with
-    // `combineLatest({})`
-    if (isObject(first) && Object.getPrototypeOf(first) === Object.prototype) {
-      keys = Object.keys(first);
-      observables = keys.map(key => first[key]);
-    }
+  const { args: observables, keys } = argsArgArrayOrObject(args);
+
+  const result = new Observable<ObservedValueOf<O>[]>(
+    combineLatestInit(
+      observables as ObservableInput<ObservedValueOf<O>>[],
+      scheduler,
+      keys
+        ? // A handler for scrubbing the array of args into a dictionary.
+          (args: any[]) => {
+            const value: any = {};
+            for (let i = 0; i < args.length; i++) {
+              value[keys![i]] = args[i];
+            }
+            return value;
+          }
+        : // A passthrough to just return the array
+          identity
+    )
+  );
+
+  if (resultSelector) {
+    // Deprecated path: If there's a result selector, just use a map for them.
+    return result.pipe(mapOneOrManyArgs(resultSelector));
   }
 
-  return lift(fromArray(observables, scheduler), new CombineLatestOperator<ObservedValueOf<O>, R>(resultSelector, keys));
-}
-
-export class CombineLatestOperator<T, R> implements Operator<T, R> {
-  constructor(private resultSelector?: (...values: Array<any>) => R, private keys?: Array<string>) {
-  }
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new CombineLatestSubscriber(subscriber, this.resultSelector, this.keys));
-  }
+  return result;
 }
 
 /**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
+ * Because of the current architecture, we need to use a subclassed Subscriber in order to ensure
+ * inner firehose observables can teardown in the event of a `take` or the like.
+ * @internal
  */
-export class CombineLatestSubscriber<T, R> extends ComplexOuterSubscriber<T, R> {
-  private active: number = 0;
-  private values: any[] = [];
-  private observables: any[] = [];
-  private toRespond: number | undefined;
-
-  constructor(destination: Subscriber<R>, private resultSelector?: (...values: Array<any>) => R, private keys?: Array<string>) {
+class CombineLatestSubscriber<T> extends Subscriber<T> {
+  constructor(destination: Subscriber<T>, protected _next: (value: T) => void, protected shouldComplete: () => boolean) {
     super(destination);
   }
 
-  protected _next(observable: any) {
-    this.values.push(NONE);
-    this.observables.push(observable);
-  }
-
   protected _complete() {
-    const observables = this.observables;
-    const len = observables.length;
-    if (len === 0) {
-      this.destination.complete();
+    if (this.shouldComplete()) {
+      super._complete();
     } else {
-      this.active = len;
-      this.toRespond = len;
-      for (let i = 0; i < len; i++) {
-        const observable = observables[i];
-        this.add(innerSubscribe(observable, new ComplexInnerSubscriber(this, null, i)));
+      this.unsubscribe();
+    }
+  }
+}
+
+export function combineLatestInit(
+  observables: ObservableInput<any>[],
+  scheduler: SchedulerLike | undefined = undefined,
+  valueTransform: (values: any[]) => any = identity
+) {
+  return (subscriber: Subscriber<any>) => {
+    // The outer subscription. We're capturing this in a function
+    // because we may have to schedule it.
+    const primarySubscribe = () => {
+      const { length } = observables;
+      // A store for the values each observable has emitted so far. We match observable to value on index.
+      const values = new Array(length);
+      // The number of currently active subscriptions, as they complete, we decrement this number to see if
+      // we are all done combining values, so we can complete the result.
+      let active = length;
+      // A temporary array to help figure out if we have gotten at least one value from each observable.
+      const hasValues = observables.map(() => false);
+      let waitingForFirstValues = true;
+      // Called when we're ready to emit a set of values. Note that we copy the values array to prevent mutation.
+      const emit = () => subscriber.next(valueTransform(values.slice()));
+      // The loop to kick off subscription. We're keying everything on index `i` to relate the observables passed
+      // in to the slot in the output array or the key in the array of keys in the output dictionary.
+      for (let i = 0; i < length; i++) {
+        const subscribe = () => {
+          const source = from(observables[i] as ObservableInput<any>, scheduler as any);
+          source.subscribe(
+            new CombineLatestSubscriber(
+              subscriber,
+              (value) => {
+                values[i] = value;
+                if (waitingForFirstValues) {
+                  hasValues[i] = true;
+                  waitingForFirstValues = !hasValues.every(identity);
+                }
+                if (!waitingForFirstValues) {
+                  emit();
+                }
+              },
+              () => --active === 0
+            )
+          );
+        };
+        maybeSchedule(scheduler, subscribe, subscriber);
       }
-    }
-  }
+    };
+    maybeSchedule(scheduler, primarySubscribe, subscriber);
+  };
+}
 
-  notifyComplete(): void {
-    if ((this.active -= 1) === 0) {
-      this.destination.complete();
-    }
-  }
-
-  notifyNext(_outerValue: T, innerValue: R,
-             outerIndex: number): void {
-    const values = this.values;
-    const oldVal = values[outerIndex];
-    const toRespond = !this.toRespond
-      ? 0
-      : oldVal === NONE ? --this.toRespond : this.toRespond;
-    values[outerIndex] = innerValue;
-
-    if (toRespond === 0) {
-      if (this.resultSelector) {
-        this._tryResultSelector(values);
-      } else {
-        this.destination.next(this.keys ?
-          this.keys.reduce((result, key, i) => ((result as any)[key] = values[i], result), {}) :
-          values.slice());
-      }
-    }
-  }
-
-  private _tryResultSelector(values: any[]) {
-    let result: any;
-    try {
-      result = this.resultSelector!.apply(this, values);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.destination.next(result);
+/**
+ * A small utility to handle the couple of locations where we want to schedule if a scheduler was provided,
+ * but we don't if there was no scheduler.
+ */
+function maybeSchedule(scheduler: SchedulerLike | undefined, execute: () => void, subscription: Subscription) {
+  if (scheduler) {
+    subscription.add(scheduler.schedule(execute));
+  } else {
+    execute();
   }
 }
