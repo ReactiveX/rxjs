@@ -127,7 +127,7 @@ export function groupBy<T, K, R>(
     lift(source, function (this: Subscriber<GroupedObservable<K, R>>, source: Observable<T>) {
       const subscriber = this;
       const groups = new Map<K, Subject<any>>();
-      let groupBySubscriber: GroupBySubscriber2<any>;
+      let groupBySubscriber: GroupBySubscriber<any>;
 
       function createGroupedObservable<K, T>(key: K, groupSubject: Subject<any>) {
         const result: any = new Observable<T>((goSubscriber) => {
@@ -144,7 +144,7 @@ export function groupBy<T, K, R>(
         return result;
       }
 
-      groupBySubscriber = new GroupBySubscriber2(
+      groupBySubscriber = new GroupBySubscriber(
         subscriber,
         (value: T) => {
           let key: K;
@@ -226,7 +226,7 @@ export interface RefCountSubscription {
   attemptedToUnsubscribe: boolean;
 }
 
-class GroupBySubscriber2<T> extends Subscriber<T> {
+class GroupBySubscriber<T> extends Subscriber<T> {
   count = 0;
   unsubAttempted = false;
 
