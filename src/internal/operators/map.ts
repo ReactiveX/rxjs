@@ -1,3 +1,4 @@
+/** @prettier */
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
@@ -43,14 +44,15 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @name map
  */
 export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any): OperatorFunction<T, R> {
-  return function mapOperation(source: Observable<T>): Observable<R> {
-    return lift(source, function (this: Subscriber<R>, source: Observable<T>) {
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<R>, source: Observable<T>) {
       const subscriber = this;
       // The index of the value from the source. Used with projection.
       let index = 0;
-      source.subscribe(new OperatorSubscriber(subscriber, (value: T) => {
-        subscriber.next(project.call(thisArg, value, index++));
-      }))
+      source.subscribe(
+        new OperatorSubscriber(subscriber, (value: T) => {
+          subscriber.next(project.call(thisArg, value, index++));
+        })
+      );
     });
-  };
 }
