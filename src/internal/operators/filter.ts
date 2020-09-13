@@ -1,8 +1,8 @@
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { OperatorFunction, MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
 import { lift } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
 export function filter<T, S extends T>(predicate: (value: T, index: number) => value is S,
@@ -57,47 +57,14 @@ export function filter<T>(predicate: (value: T, index: number) => boolean,
 export function filter<T>(predicate: (value: T, index: number) => boolean,
                           thisArg?: any): MonoTypeOperatorFunction<T> {
   return function filterOperatorFunction(source: Observable<T>): Observable<T> {
-    return lift(source, new FilterOperator(predicate, thisArg));
+    return lift(source, function (this: Subscriber<T>, source: Observable<T>) {
+      const subscriber = this;
+      let index = 0;
+      return source.subscribe(new OperatorSubscriber(subscriber, (value) => {
+        if (predicate.call(thisArg, value, index++)) {
+          subscriber.next(value);
+        }
+      }))
+    });
   };
-}
-
-class FilterOperator<T> implements Operator<T, T> {
-  constructor(private predicate: (value: T, index: number) => boolean,
-              private thisArg?: any) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class FilterSubscriber<T> extends Subscriber<T> {
-
-  count: number = 0;
-
-  constructor(destination: Subscriber<T>,
-              private predicate: (value: T, index: number) => boolean,
-              private thisArg: any) {
-    super(destination);
-  }
-
-  // the try catch block below is left specifically for
-  // optimization and perf reasons. a tryCatcher is not necessary here.
-  protected _next(value: T) {
-    let result: any;
-    try {
-      result = this.predicate.call(this.thisArg, value, this.count++);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    if (result) {
-      this.destination.next(value);
-    }
-  }
 }
