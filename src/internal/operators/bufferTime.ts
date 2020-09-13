@@ -90,8 +90,8 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
   const bufferCreationInterval = (otherArgs[0] as number) ?? null;
   const maxBufferSize = (otherArgs[1] as number) || Infinity;
 
-  return function bufferTimeOperatorFunction(source: Observable<T>) {
-    return lift(source, function (this: Subscriber<T[]>, source: Observable<T>) {
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<T[]>, source: Observable<T>) {
       const subscriber = this;
       // The active buffers, their related subscriptions, and removal functions.
       let bufferRecords: { buffer: T[]; subs: Subscription; remove: () => void }[] | null = [];
@@ -200,5 +200,4 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
 
       source.subscribe(bufferTimeSubscriber);
     });
-  };
 }

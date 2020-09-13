@@ -4,7 +4,7 @@ import { of, Observable } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {windowTime} */
-describe('windowTime operator', () => {
+describe('windowTime', () => {
   let rxTestScheduler: TestScheduler;
 
   beforeEach(() => {
@@ -32,19 +32,26 @@ describe('windowTime operator', () => {
     });
   });
 
+  // NOTE: This test and behavior were broken in 5.x and 6.x, to where
+  // Not passing a creationInterval would not cause new windows to open
+  // when old ones closed.
   it('should close windows after max count is reached', () => {
     rxTestScheduler.run(({ hot, time, cold, expectObservable, expectSubscriptions }) => {
       const source = hot('--1--2--^--a--b--c--d--e--f--g-----|');
       const subs =               '^--------------------------!';
       const timeSpan = time(     '----------|');
-      //  10 frames              0---------1---------2------|
-      const expected =           'x---------y---------z------|';
-      const x = cold(            '---a--(b|)                  ');
-      const y = cold(                      '--d--(e|)         ');
-      const z = cold(                                '-g-----|');
-      const values = { x, y, z };
+      //                          ----------|
+      //                                 ----------|
+      //                                       ----------|
+      //                                             ---------
+      const expected =           'w-----x-----y-----z--------|';
+      const w = cold(            '---a--(b|)                  ');
+      const x = cold(                  '---c--(d|)            ');
+      const y = cold(                        '---e--(f|)      ');
+      const z = cold(                              '---g-----|')
+      const values = { w, x, y, z };
 
-      const result = source.pipe(windowTime(timeSpan, null as any, 2, rxTestScheduler));
+      const result = source.pipe(windowTime(timeSpan, null, 2, rxTestScheduler));
 
       expectObservable(result).toBe(expected, values);
       expectSubscriptions(source.subscriptions).toBe(subs);
