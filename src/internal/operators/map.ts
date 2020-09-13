@@ -2,6 +2,7 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Applies a given `project` function to each value emitted by the source
@@ -42,39 +43,14 @@ import { lift } from '../util/lift';
  * @name map
  */
 export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any): OperatorFunction<T, R> {
-
   return function mapOperation(source: Observable<T>): Observable<R> {
-    if (typeof project !== 'function') {
-      throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
-    }
     return lift(source, function (this: Subscriber<R>, source: Observable<T>) {
       const subscriber = this;
       // The index of the value from the source. Used with projection.
       let index = 0;
-      source.subscribe(new MapSubscriber(subscriber, (value: T) => {
-        // Try the projection, and catch any errors so we can send them to the consumer
-        // as an error notification.
-        let result: R;
-        try {
-          // Call with the `thisArg`. At some point we want to get rid of this,
-          // as `fn.bind()` is more explicit and easier to read, however... as a
-          // note, if no `thisArg` is passed, the `this` context will be `undefined`,
-          // as no other default makes sense.
-          result = project.call(thisArg, value, index++)
-        } catch (err) {
-          // Notify the consumer of the error.
-          subscriber.error(err);
-          return;
-        }
-        // Success! Send the projected result to the consumer
-        subscriber.next(result);
+      source.subscribe(new OperatorSubscriber(subscriber, (value: T) => {
+        subscriber.next(project.call(thisArg, value, index++));
       }))
     });
   };
-}
-
-class MapSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<any>, protected _next: (value: T) => void) {
-    super(destination);
-  }
 }

@@ -1,11 +1,10 @@
 import { expect } from 'chai';
 import { map, tap, mergeMap, take } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { of, Observable } from 'rxjs';
+import { of, Observable, identity } from 'rxjs';
 
 // function shortcuts
 const addDrama = function (x: number | string) { return x + '!'; };
-const identity = function <T>(x: T) { return x; };
 
 /** @test {map} */
 describe('map operator', () => {
@@ -29,12 +28,6 @@ describe('map operator', () => {
 
     expectObservable(r).toBe(expected, {y: '42!'});
     expectSubscriptions(a.subscriptions).toBe(asubs);
-  });
-
-  it('should throw an error if not passed a function', () => {
-    expect(() => {
-      of(1, 2, 3).pipe(map(<any>'potato'));
-    }).to.throw(TypeError, 'argument is not a function. Are you looking for `mapTo()`?');
   });
 
   it('should map multiple values', () => {
