@@ -1,8 +1,9 @@
-import { Operator } from '../Operator';
+/** @prettier */
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 export function mapTo<R>(value: R): OperatorFunction<any, R>;
 /** @deprecated remove in v8. Use mapTo<R>(value: R): OperatorFunction<any, R> signature instead **/
@@ -40,37 +41,9 @@ export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
  * @name mapTo
  */
 export function mapTo<R>(value: R): OperatorFunction<any, R> {
-  return (source: Observable<any>) => lift(source, new MapToOperator(value));
-}
-
-class MapToOperator<T, R> implements Operator<T, R> {
-
-  value: R;
-
-  constructor(value: R) {
-    this.value = value;
-  }
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new MapToSubscriber(subscriber, this.value));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class MapToSubscriber<T, R> extends Subscriber<T> {
-
-  value: R;
-
-  constructor(destination: Subscriber<R>, value: R) {
-    super(destination);
-    this.value = value;
-  }
-
-  protected _next(x: T) {
-    this.destination.next(this.value);
-  }
+  return (source: Observable<any>) =>
+    lift(source, function (this: Subscriber<R>, source: Observable<any>) {
+      const subscriber = this;
+      source.subscribe(new OperatorSubscriber(subscriber, () => subscriber.next(value)));
+    });
 }
