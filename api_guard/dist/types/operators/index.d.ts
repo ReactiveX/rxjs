@@ -306,7 +306,7 @@ export declare function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFu
 
 export declare function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<any>, config?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
-export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, config?: ThrottleConfig): MonoTypeOperatorFunction<T>;
+export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
 export declare function throwIfEmpty<T>(errorFactory?: (() => any)): MonoTypeOperatorFunction<T>;
 
