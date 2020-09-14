@@ -8,6 +8,7 @@ import { lift } from '../util/lift';
 import { Observable } from '../Observable';
 import { from } from '../observable/from';
 import { createErrorClass } from '../util/createErrorClass';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 export interface TimeoutConfig<T, R = T, M = unknown> {
   /**
@@ -332,62 +333,71 @@ export function timeout<T, R, M>(
 
     return lift(source, function (this: Subscriber<T | R>, source: Observable<T>) {
       const subscriber = this;
-      const subscription = new Subscription();
-      let innerSub: Subscription;
-      let timerSubscription: Subscription | null = null;
+      // This subscription encapsulates our subscription to the
+      // source for this operator. We're capturing it separately,
+      // because if there is a `with` observable to fail over to,
+      // we want to unsubscribe from our original subscription, and
+      // hand of the subscription to that one.
+      let originalSourceSubscription: Subscription;
+      // The subscription for our timeout timer. This changes
+      // every time get get a new value.
+      let timerSubscription: Subscription;
+      // A bit of state we pass to our with and error factories to
+      // tell what the last value we saw was.
       let lastValue: T | null = null;
+      // A bit of state we pass to the with and error factories to
+      // tell how many values we have seen so far.
       let seen = 0;
       const startTimer = (delay: number) => {
-        subscription.add(
+        subscriber.add(
           (timerSubscription = scheduler!.schedule(() => {
             let withObservable: Observable<R>;
-            const info: TimeoutInfo<T, M> = {
-              meta,
-              lastValue,
-              seen,
-            };
             try {
-              withObservable = from(_with!(info));
+              withObservable = from(
+                _with!({
+                  meta,
+                  lastValue,
+                  seen,
+                })
+              );
             } catch (err) {
               subscriber.error(err);
               return;
             }
-            innerSub.unsubscribe();
-            subscription.add(withObservable.subscribe(subscriber));
+            originalSourceSubscription.unsubscribe();
+            withObservable.subscribe(subscriber);
           }, delay))
         );
       };
 
-      subscription.add(
-        (innerSub = source.subscribe({
-          next: (value) => {
-            timerSubscription?.unsubscribe();
-            timerSubscription = null;
-            seen++;
-            lastValue = value;
-            if (each != null && each > 0) {
-              startTimer(each);
+      subscriber.add(
+        (originalSourceSubscription = source.subscribe(
+          new OperatorSubscriber(
+            subscriber,
+            (value) => {
+              // clear the timer so we can emit and start another one.
+              timerSubscription.unsubscribe();
+              seen++;
+              // Emit
+              subscriber.next((lastValue = value));
+              each && each > 0 && startTimer(each);
+            },
+            undefined,
+            undefined,
+            () => {
+              // Be sure not to hold the last value in memory after unsubscription
+              // it could be quite large.
+              lastValue = null;
             }
-            subscriber.next(value);
-          },
-          error: (err) => subscriber.error(err),
-          complete: () => subscriber.complete(),
-        }))
+          )
+        ))
       );
 
-      let firstTimer: number;
-      if (first != null) {
-        if (typeof first === 'number') {
-          firstTimer = first;
-        } else {
-          firstTimer = +first - scheduler!.now();
-        }
-      } else {
-        firstTimer = each!;
-      }
-      startTimer(firstTimer);
-
-      return subscription;
+      // Intentionally terse code.
+      // If `first` was provided, and it's a number, then use it.
+      // If `first` was provided and it's not a number, it's a Date, and we get the difference between it and "now".
+      // If `first` was not provided at all, then our first timer will be the value from `each`.
+      startTimer(first != null ? (typeof first === 'number' ? first : +first - scheduler!.now()) : each!);
     });
   };
 }
