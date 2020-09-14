@@ -2,7 +2,13 @@
 import { Subscriber } from '../Subscriber';
 
 export class OperatorSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<any>, onNext?: (value: T) => void, onError?: (err: any) => void, onComplete?: () => void) {
+  constructor(
+    destination: Subscriber<any>,
+    onNext?: (value: T) => void,
+    onError?: (err: any) => void,
+    onComplete?: () => void,
+    private onUnsubscribe?: () => void
+  ) {
     super(destination);
     if (onNext) {
       this._next = function (value: T) {
@@ -25,5 +31,10 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
         this.unsubscribe();
       };
     }
+  }
+
+  unsubscribe() {
+    !this.closed && this.onUnsubscribe?.();
+    super.unsubscribe();
   }
 }

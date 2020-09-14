@@ -1,12 +1,13 @@
 /** @prettier */
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
-import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
-import { OperatorFunction } from '../types';
+import { ObservableInput, OperatorFunction } from '../types';
 import { lift } from '../util/lift';
+import { from } from '../observable/from';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { noop } from '../util/noop';
 
 /**
  * Branch out the source Observable values as a nested Observable starting from
@@ -56,152 +57,97 @@ import { lift } from '../util/lift';
  * @name windowToggle
  */
 export function windowToggle<T, O>(
-  openings: Observable<O>,
-  closingSelector: (openValue: O) => Observable<any>
+  openings: ObservableInput<O>,
+  closingSelector: (openValue: O) => ObservableInput<any>
 ): OperatorFunction<T, Observable<T>> {
-  return (source: Observable<T>) => lift(source, new WindowToggleOperator<T, O>(openings, closingSelector));
-}
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<Observable<T>>, source: Observable<T>) {
+      const subscriber = this;
+      const windows: Subject<T>[] = [];
 
-class WindowToggleOperator<T, O> implements Operator<T, Observable<T>> {
-  constructor(private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {}
-
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
-    return source.subscribe(new WindowToggleSubscriber(subscriber, this.openings, this.closingSelector));
-  }
-}
-
-interface WindowContext<T> {
-  window: Subject<T>;
-  subscription: Subscription;
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class WindowToggleSubscriber<T, O> extends ComplexOuterSubscriber<T, any> {
-  private contexts: WindowContext<T>[] = [];
-  private openSubscription: Subscription | undefined;
-
-  constructor(
-    destination: Subscriber<Observable<T>>,
-    private openings: Observable<O>,
-    private closingSelector: (openValue: O) => Observable<any>
-  ) {
-    super(destination);
-    this.add((this.openSubscription = innerSubscribe(openings, new ComplexInnerSubscriber(this, openings, 0))));
-  }
-
-  protected _next(value: T) {
-    const { contexts } = this;
-    if (contexts) {
-      const len = contexts.length;
-      for (let i = 0; i < len; i++) {
-        contexts[i].window.next(value);
-      }
-    }
-  }
-
-  protected _error(err: any) {
-    const { contexts } = this;
-    this.contexts = null!;
-
-    if (contexts) {
-      const len = contexts.length;
-      let index = -1;
-
-      while (++index < len) {
-        const context = contexts[index];
-        context.window.error(err);
-        context.subscription.unsubscribe();
-      }
-    }
-
-    super._error(err);
-  }
-
-  protected _complete() {
-    const { contexts } = this;
-    this.contexts = null!;
-    if (contexts) {
-      const len = contexts.length;
-      let index = -1;
-      while (++index < len) {
-        const context = contexts[index];
-        context.window.complete();
-        context.subscription.unsubscribe();
-      }
-    }
-    super._complete();
-  }
-
-  unsubscribe() {
-    if (!this.closed) {
-      const { contexts } = this;
-      this.contexts = null!;
-      if (contexts) {
-        const len = contexts.length;
-        let index = -1;
-        while (++index < len) {
-          const context = contexts[index];
-          context.window.unsubscribe();
-          context.subscription.unsubscribe();
+      const remove = (window: Subject<T>) => {
+        const index = windows.indexOf(window);
+        if (0 <= index) {
+          windows.splice(index, 1);
         }
-      }
-      super.unsubscribe();
-    }
-  }
+      };
 
-  notifyNext(outerValue: any, innerValue: any): void {
-    if (outerValue === this.openings) {
-      let closingNotifier;
+      const handleError = (err: any) => {
+        while (0 < windows.length) {
+          windows.shift()!.error(err);
+        }
+        subscriber.error(err);
+      };
+
+      let openNotifier: Observable<O>;
       try {
-        const { closingSelector } = this;
-        closingNotifier = closingSelector(innerValue);
-      } catch (e) {
-        return this.error(e);
+        openNotifier = from(openings);
+      } catch (err) {
+        subscriber.error(err);
+        return;
       }
+      openNotifier.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (openValue) => {
+            const window = new Subject<T>();
+            windows.push(window);
+            const closingSubscription = new Subscription();
+            const closeWindow = () => {
+              remove(window);
+              window.complete();
+              closingSubscription.unsubscribe();
+            };
+            const closingSubscriber = new OperatorSubscriber(subscriber, closeWindow, handleError, closeWindow);
 
-      const window = new Subject<T>();
-      const subscription = new Subscription();
-      const context = { window, subscription };
-      this.contexts.push(context);
-      const innerSubscription = innerSubscribe(closingNotifier, new ComplexInnerSubscriber(this, context, 0));
+            let closingNotifier: Observable<any>;
+            try {
+              closingNotifier = from(closingSelector(openValue));
+            } catch (err) {
+              handleError(err);
+              return;
+            }
 
-      if (innerSubscription!.closed) {
-        this.closeWindow(this.contexts.length - 1);
-      } else {
-        (<any>innerSubscription).context = context;
-        subscription.add(innerSubscription);
-      }
+            subscriber.next(window.asObservable());
 
-      this.destination.next(window);
-    } else {
-      this.closeWindow(this.contexts.indexOf(outerValue));
-    }
-  }
+            closingSubscription.add(closingNotifier.subscribe(closingSubscriber));
+          },
+          undefined,
+          noop
+        )
+      );
 
-  notifyError(err: any): void {
-    this.error(err);
-  }
-
-  notifyComplete(inner: Subscription): void {
-    if (inner !== this.openSubscription) {
-      this.closeWindow(this.contexts.indexOf((<any>inner).context));
-    }
-  }
-
-  private closeWindow(index: number): void {
-    if (index === -1) {
-      return;
-    }
-
-    const { contexts } = this;
-    const context = contexts[index];
-    const { window, subscription } = context;
-    contexts.splice(index, 1);
-    window.complete();
-    subscription.unsubscribe();
-  }
+      // Subcribe to the source to get things started.
+      source.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (value: T) => {
+            // Copy the windows array before we emit to
+            // make sure we don't have issues with reentrant code.
+            const windowsCopy = windows.slice();
+            for (const window of windowsCopy) {
+              window.next(value);
+            }
+          },
+          handleError,
+          () => {
+            // Complete all of our windows before we complete.
+            while (0 < windows.length) {
+              windows.shift()!.complete();
+            }
+            subscriber.complete();
+          },
+          () => {
+            // Add this teardown so that all window subjects are
+            // disposed of. This way, if a user tries to subscribe
+            // to a window *after* the outer subscription has been unsubscribed,
+            // they will get an error, instead of waiting forever to
+            // see if a value arrives.
+            while (0 < windows.length) {
+              windows.shift()!.unsubscribe();
+            }
+          }
+        )
+      );
+    });
 }
