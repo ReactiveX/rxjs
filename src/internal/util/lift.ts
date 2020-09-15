@@ -1,6 +1,8 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { TeardownLogic } from '../types';
 
 /**
  * A utility to lift observables. Will also error if an observable is passed that does not
@@ -21,6 +23,25 @@ export function lift<T, R>(source: Observable<T>, operator?: Operator<T, R>): Ob
     return source.lift(operator);
   }
   throw new TypeError('Unable to lift unknown Observable type');
+}
+
+/**
+ * A lightweight wrapper to deal with sitations where there may be try/catching at the
+ * time of the subscription (and not just via notifications).
+ * @param source The source observable to lift
+ * @param wrappedOperator The lightweight operator function to wrap.
+ */
+export function wrappedLift<T, R>(
+  source: Observable<T>,
+  wrappedOperator: (subscriber: Subscriber<R>, liftedSource: Observable<T>) => TeardownLogic
+): Observable<R> {
+  return lift(source, function (this: Subscriber<R>, liftedSource: Observable<T>) {
+    try {
+      wrappedOperator(this, liftedSource);
+    } catch (err) {
+      this.error(err);
+    }
+  });
 }
 
 // TODO: Figure out proper typing for what we're doing below at some point.
