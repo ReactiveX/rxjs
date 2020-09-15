@@ -180,7 +180,7 @@ export declare function mergeMapTo<T, R, O extends ObservableInput<any>>(innerOb
 export declare function mergeScan<T, R>(accumulator: (acc: R, value: T, index: number) => ObservableInput<R>, seed: R, concurrent?: number): OperatorFunction<T, R>;
 
 export declare function mergeWith<T>(): OperatorFunction<T, T>;
-export declare function mergeWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, (T | ObservedValueUnionFromArray<A>)>;
+export declare function mergeWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, T | ObservedValueUnionFromArray<A>>;
 
 export declare function min<T>(comparer?: (x: T, y: T) => number): MonoTypeOperatorFunction<T>;
 

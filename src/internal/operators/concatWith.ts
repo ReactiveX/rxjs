@@ -1,7 +1,11 @@
 import { concat as concatStatic } from '../observable/concat';
 import { Observable } from '../Observable';
-import { ObservableInput, OperatorFunction, ObservedValueUnionFromArray } from '../types';
-import { stankyLift } from '../util/lift';
+import { ObservableInput, OperatorFunction, ObservedValueUnionFromArray, MonoTypeOperatorFunction, SchedulerLike } from '../types';
+import { lift } from '../util/lift';
+import { Subscriber } from '../Subscriber';
+import { concatAll } from './concatAll';
+import { fromArray } from '../observable/fromArray';
+import { isScheduler } from '../util/isScheduler';
 
 export function concatWith<T>(): OperatorFunction<T, T>;
 export function concatWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, ObservedValueUnionFromArray<A> | T>;
@@ -45,8 +49,41 @@ export function concatWith<T, A extends ObservableInput<any>[]>(...otherSources:
  * @param otherSources Other observable sources to subscribe to, in sequence, after the original source is complete.
  */
 export function concatWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, ObservedValueUnionFromArray<A> | T> {
-  return (source: Observable<T>) => stankyLift(
+  return concat(...otherSources);
+}
+
+/** @deprecated remove in v8. Use {@link concatWith} */
+export function concat<T>(scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+/** @deprecated remove in v8. Use {@link concatWith} */
+export function concat<T, T2>(v2: ObservableInput<T2>, scheduler?: SchedulerLike): OperatorFunction<T, T | T2>;
+/** @deprecated remove in v8. Use {@link concatWith} */
+export function concat<T, T2, T3>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, scheduler?: SchedulerLike): OperatorFunction<T, T | T2 | T3>;
+/** @deprecated remove in v8. Use {@link concatWith} */
+export function concat<T, T2, T3, T4>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, scheduler?: SchedulerLike): OperatorFunction<T, T | T2 | T3 | T4>;
+/** @deprecated remove in v8. Use {@link concatWith} */
+export function concat<T, T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, scheduler?: SchedulerLike): OperatorFunction<T, T | T2 | T3 | T4 | T5>;
+/** @deprecated remove in v8. Use {@link concatWith} */
+export function concat<T, T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, scheduler?: SchedulerLike): OperatorFunction<T, T | T2 | T3 | T4 | T5 | T6>;
+/** @deprecated remove in v8. Use {@link concatWith} */
+export function concat<T>(...observables: Array<ObservableInput<T> | SchedulerLike>): MonoTypeOperatorFunction<T>;
+/** @deprecated remove in v8. Use {@link concatWith} */
+export function concat<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike>): OperatorFunction<T, R>;
+
+
+/**
+ * @deprecated remove in v8. Use {@link concatWith}
+ */
+export function concat<T, R>(...args: any[]): OperatorFunction<T, R> {
+  let scheduler: SchedulerLike | undefined;
+
+  if (isScheduler(args[args.length - 1])) {
+    scheduler = args.pop() as SchedulerLike;
+  }
+
+  return (source: Observable<T>) => lift(
     source,
-    concatStatic(source, ...otherSources)
+    function (this: Subscriber<any>, source: Observable<T>) {
+      concatAll()(fromArray([source, ...args], scheduler)).subscribe(this);
+    }
   );
 }
