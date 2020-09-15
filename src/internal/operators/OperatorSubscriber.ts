@@ -15,7 +15,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
         try {
           onNext?.(value);
         } catch (err) {
-          this._error(err);
+          this.error(err);
         }
       };
     }
