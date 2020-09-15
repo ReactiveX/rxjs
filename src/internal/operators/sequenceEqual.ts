@@ -4,6 +4,7 @@ import { Subscriber } from '../Subscriber';
 
 import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Compares all values of two observables in sequence using an optional comparator function
@@ -85,55 +86,35 @@ export function sequenceEqual<T>(
        * is used for both streams.
        */
       const createSubscriber = (selfState: SequenceState<T>, otherState: SequenceState<T>) => {
-        const sequenceEqualSubscriber = new SequenceEqualSubscriber(
+        const sequenceEqualSubscriber = new OperatorSubscriber(
           subscriber,
           (a: T) => {
             const { buffer, complete } = otherState;
             if (buffer.length === 0) {
-              // If there's no values in the other buffer...
-              if (complete) {
-                // ... and the other stream is complete, we know
-                // this isn't a match, because we got one more value.
-                emit(false);
-              } else {
-                // Otherwise, we push onto our buffer, so when the other
-                // stream emits, it can pull this value off our buffer and check it
-                // at the appropriate time.
-                selfState.buffer.push(a);
-              }
+              // If there's no values in the other buffer
+              // and the other stream is complete, we know
+              // this isn't a match, because we got one more value.
+              // Otherwise, we push onto our buffer, so when the other
+              // stream emits, it can pull this value off our buffer and check it
+              // at the appropriate time.
+              complete ? emit(false) : selfState.buffer.push(a);
             } else {
               // If the other stream *does* have values in it's buffer,
               // pull the oldest one off so we can compare it to what we
-              // just got.
-              const b = buffer.shift()!;
-
-              // Call the comparator. It's a user function, so we have to
-              // capture the error appropriately.
-              let result: boolean;
-              try {
-                result = comparator(a, b);
-              } catch (err) {
-                subscriber.error(err);
-                return;
-              }
-
-              if (!result) {
-                // If it wasn't a match, emit `false` and complete.
-                emit(false);
-              }
+              // just got. If it wasn't a match, emit `false` and complete.
+              !comparator(a, buffer.shift()!) && emit(false);
             }
           },
+          undefined,
           () => {
             // Or observable completed
             selfState.complete = true;
             const { complete, buffer } = otherState;
-            if (complete) {
-              // If the other observable is also complete, and there's
-              // still stuff left in their buffer, it doesn't match, if their
-              // buffer is empty, then it does match. This is because we can't
-              // possibly get more values here anymore.
-              emit(buffer.length === 0);
-            }
+            // If the other observable is also complete, and there's
+            // still stuff left in their buffer, it doesn't match, if their
+            // buffer is empty, then it does match. This is because we can't
+            // possibly get more values here anymore.
+            complete && emit(buffer.length === 0);
             // Be sure to clean up our stream as soon as possible if we can.
             sequenceEqualSubscriber?.unsubscribe();
           }
@@ -167,11 +148,4 @@ function createState<T>(): SequenceState<T> {
     buffer: [],
     complete: false,
   };
-}
-
-// TODO: Combine with other implementations that are identical.
-class SequenceEqualSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<any>, protected _next: (value: T) => void, protected _complete: () => void) {
-    super(destination);
-  }
 }
