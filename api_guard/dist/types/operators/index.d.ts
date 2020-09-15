@@ -12,7 +12,7 @@ export declare function bufferTime<T>(bufferTimeSpan: number, bufferCreationInte
 
 export declare function bufferToggle<T, O>(openings: SubscribableOrPromise<O>, closingSelector: (value: O) => SubscribableOrPromise<any>): OperatorFunction<T, T[]>;
 
-export declare function bufferWhen<T>(closingSelector: () => Observable<any>): OperatorFunction<T, T[]>;
+export declare function bufferWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, T[]>;
 
 export declare function catchError<T, O extends ObservableInput<any>>(selector: (err: any, caught: Observable<T>) => O): OperatorFunction<T, T | ObservedValueOf<O>>;
 
@@ -336,7 +336,7 @@ export declare function windowTime<T>(windowTimeSpan: number, windowCreationInte
 
 export declare function windowToggle<T, O>(openings: ObservableInput<O>, closingSelector: (openValue: O) => ObservableInput<any>): OperatorFunction<T, Observable<T>>;
 
-export declare function windowWhen<T>(closingSelector: () => Observable<any>): OperatorFunction<T, Observable<T>>;
+export declare function windowWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, Observable<T>>;
 
 export declare function withLatestFrom<T, R>(project: (v1: T) => R): OperatorFunction<T, R>;
 export declare function withLatestFrom<T, O2 extends ObservableInput<any>, R>(source2: O2, project: (v1: T, v2: ObservedValueOf<O2>) => R): OperatorFunction<T, R>;

@@ -3,9 +3,11 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { OperatorFunction } from '../types';
+import { ObservableInput, OperatorFunction } from '../types';
 import { lift } from '../util/lift';
 import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { from } from '../observable/from';
 
 /**
  * Buffers the source Observable values, using a factory function of closing
@@ -48,10 +50,55 @@ import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '..
  * @return {Observable<T[]>} An observable of arrays of buffered values.
  * @name bufferWhen
  */
-export function bufferWhen<T>(closingSelector: () => Observable<any>): OperatorFunction<T, T[]> {
-  return function (source: Observable<T>) {
-    return lift(source, new BufferWhenOperator(closingSelector));
-  };
+export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, T[]> {
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<T[]>, source: Observable<T>) {
+      const subscriber = this;
+      let buffer: T[] | null = null;
+      let closingSubscriber: Subscriber<T> | null = null;
+      let isComplete = false;
+
+      const openBuffer = () => {
+        closingSubscriber?.unsubscribe();
+
+        const b = buffer;
+        buffer = [];
+        b && subscriber.next(b);
+
+        let closingNotifier: Observable<any>;
+        try {
+          closingNotifier = from(closingSelector());
+        } catch (err) {
+          subscriber.error(err);
+          return;
+        }
+
+        closingNotifier.subscribe(
+          (closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, undefined, () => {
+            isComplete ? subscriber.complete() : openBuffer();
+          }))
+        );
+      };
+
+      openBuffer();
+
+      source.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (value) => buffer?.push(value),
+          undefined,
+          () => {
+            isComplete = true;
+            buffer && subscriber.next(buffer);
+            subscriber.complete();
+          },
+          () => {
+            buffer = null!;
+            closingSubscriber = null!;
+          }
+        )
+      );
+    });
 }
 
 class BufferWhenOperator<T> implements Operator<T, T[]> {
