@@ -275,10 +275,8 @@ export declare function generate<S>(initialState: S, condition: ConditionFunc<S>
 export declare function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
 export declare function generate<T, S>(options: GenerateOptions<T, S>): Observable<T>;
 
-export declare class GroupedObservable<K, T> extends Observable<T> {
-    key: K;
-    constructor(key: K, groupSubject: Subject<T>, refCountSubscription?: RefCountSubscription | undefined);
-    _subscribe(subscriber: Subscriber<T>): Subscription;
+export interface GroupedObservable<K, T> extends Observable<T> {
+    readonly key: K;
 }
 
 export declare type Head<X extends any[]> = ((...args: X) => any) extends ((arg: infer U, ...rest: any[]) => any) ? U : never;
