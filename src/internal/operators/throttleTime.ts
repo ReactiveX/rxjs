@@ -6,6 +6,7 @@ import { Observable } from '../Observable';
 import { ThrottleConfig, defaultThrottleConfig } from './throttle';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { lift } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source
@@ -143,13 +144,11 @@ export function throttleTime<T>(
        */
       const emit = (value: T) => {
         subscriber.next(value);
-        if (!isComplete) {
-          startThrottle();
-        }
+        !isComplete && startThrottle();
       };
 
       source.subscribe(
-        new ThrottleTimeSubscriber(
+        new OperatorSubscriber(
           subscriber,
           (value) => {
             // We got a new value
@@ -174,27 +173,16 @@ export function throttleTime<T>(
               }
             }
           },
+          undefined,
           () => {
             // The source completed
             isComplete = true;
             // If we're trailing, and we're in a throttle period and have a trailing value,
             // wait for the throttle period to end before we actually complete.
             // Otherwise, returning `true` here completes the result right away.
-            return !trailing || !throttleSubs || !hasTrailingValue;
+            (!trailing || !throttleSubs || !hasTrailingValue) && subscriber.complete();
           }
         )
       );
     });
-}
-
-class ThrottleTimeSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<T>, protected _next: (value: T) => void, protected shouldComplete: () => boolean) {
-    super(destination);
-  }
-
-  _complete() {
-    if (this.shouldComplete()) {
-      super._complete();
-    }
-  }
 }
