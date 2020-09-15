@@ -106,6 +106,12 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
       let buffer: T[] = [];
 
       /**
+       * Called to check to see if we can complete, and completes the result if
+       * nothing is active.
+       */
+      const checkComplete = () => isComplete && !active && subscriber.complete();
+
+      /**
        * Attempts to start an inner subscription from a buffered value,
        * so long as we don't have more active inner subscriptions than
        * the concurrency limit allows.
@@ -114,50 +120,31 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
         while (active < concurrent && buffer.length > 0) {
           const value = buffer.shift()!;
 
-          // Get the inner source from the projection function
-          let innerSource: Observable<ObservedValueOf<O>>;
-          try {
-            innerSource = from(project(value, index++));
-          } catch (err) {
-            subscriber.error(err);
-            return;
-          }
-
           // Subscribe to the inner source
           active++;
-          let innerSubs: Subscription;
           subscriber.add(
-            (innerSubs = innerSource.subscribe(
+            from(project(value, index++)).subscribe(
               new OperatorSubscriber(
                 subscriber,
-                (innerValue) => {
-                  // INNER SOURCE NEXT
-                  // We got a value from the inner source, emit it from the result.
-                  subscriber.next(innerValue);
-                },
+                // INNER SOURCE NEXT
+                // We got a value from the inner source, emit it from the result.
+                (innerValue) => subscriber.next(innerValue),
                 undefined,
                 () => {
                   // INNER SOURCE COMPLETE
                   // Decrement the active count to ensure that the next time
                   // we try to call `doInnerSub`, the number is accurate.
                   active--;
-                  if (buffer.length > 0) {
-                    // If we have more values in the buffer, try to process those
-                    // Note that this call will increment `active` ahead of the
-                    // next conditional, if there were any more inner subscriptions
-                    // to start.
-                    doInnerSub();
-                  }
-                  if (isComplete && active === 0) {
-                    // If the outer is complete, and there are no more active,
-                    // then we can complete the resulting observable subscription
-                    subscriber.complete();
-                  }
-                  // Make sure to teardown the inner subscription ASAP.
-                  innerSubs?.unsubscribe();
+                  // If we have more values in the buffer, try to process those
+                  // Note that this call will increment `active` ahead of the
+                  // next conditional, if there were any more inner subscriptions
+                  // to start.
+                  buffer.length && doInnerSub();
+                  // Check to see if we can complete, and complete if so.
+                  checkComplete();
                 }
               )
-            ))
+            )
           );
         }
       };
@@ -181,11 +168,9 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
             // we need to wait for those to be done first. That includes buffered inners
             // that we haven't even subscribed to yet.
             isComplete = true;
-            if (active === 0 && buffer.length === 0) {
-              // Nothing is active, and nothing in the buffer, with no hope of getting any more
-              // we can complete the result
-              subscriber.complete();
-            }
+            // If nothing is active, and nothing in the buffer, with no hope of getting any more
+            // we can complete the result
+            checkComplete();
             // Be sure to teardown the outer subscription ASAP, in any case.
             outerSubs?.unsubscribe();
           }
