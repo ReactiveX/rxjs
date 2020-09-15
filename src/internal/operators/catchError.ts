@@ -6,6 +6,7 @@ import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { lift } from '../util/lift';
 import { Subscription } from '../Subscription';
 import { from } from '../observable/from';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
 export function catchError<T, O extends ObservableInput<any>>(
@@ -116,54 +117,46 @@ export function catchError<T, O extends ObservableInput<any>>(
       let syncUnsub = false;
       let handledResult: Observable<ObservedValueOf<O>>;
 
-      const handleError = (err: any) => {
-        try {
-          handledResult = from(selector(err, catchError(selector)(source)));
-        } catch (err) {
-          subscriber.error(err);
-          return;
-        }
-      };
-
       innerSub = source.subscribe(
-        new CatchErrorSubscriber(subscriber, (err) => {
-          handleError(err);
-          if (handledResult) {
-            if (innerSub) {
-              innerSub.unsubscribe();
-              innerSub = null;
-              subscription.add(handledResult.subscribe(subscriber));
-            } else {
-              syncUnsub = true;
-            }
+        new OperatorSubscriber(subscriber, undefined, (err) => {
+          // NOTE: The try/catch is here instead of OperatorSubscriber because
+          // this is the only operator that requires a try/catch in the error handler
+          // adding it to OperatorSubscriber would add that weight to to something
+          // used by all other operators just to make this one operator smaller.
+          try {
+            handledResult = from(selector(err, catchError(selector)(source)));
+          } catch (err) {
+            subscriber.error(err);
+            return;
+          }
+
+          if (innerSub) {
+            innerSub.unsubscribe();
+            innerSub = null;
+            subscription.add(handledResult.subscribe(subscriber));
+          } else {
+            // We don't have an innerSub yet, that means the error was synchronous
+            // because the subscribe call hasn't returned yet.
+            syncUnsub = true;
           }
         })
       );
 
       if (syncUnsub) {
+        // We have a synchronous error, we need to make sure to
+        // teardown right away. This ensures that `finalize` is called
+        // at the right time, and that teardown occurs at the expected
+        // time between the source error and the subscription to the
+        // next observable.
         innerSub.unsubscribe();
         innerSub = null;
         subscription.add(handledResult!.subscribe(subscriber));
       } else {
+        // Everything was fine after subscription, add it to our
+        // parent subscription.
         subscription.add(innerSub);
       }
 
       return subscription;
     });
-}
-
-/**
- * This must exist to ensure that the `closed` state of the inner subscriber is set at
- * the proper time to ensure operators like `take` can stop the inner subscription if
- * it is a synchronous firehose.
- */
-class CatchErrorSubscriber<T, C> extends Subscriber<T> {
-  constructor(destination: Subscriber<T | C>, private onError: (err: any) => void) {
-    super(destination);
-  }
-
-  _error(err: any) {
-    this.onError(err);
-    this.unsubscribe();
-  }
 }
