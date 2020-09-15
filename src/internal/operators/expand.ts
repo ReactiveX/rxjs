@@ -81,7 +81,7 @@ export function expand<T, R>(
     lift(source, function (this: Subscriber<any>, source: Observable<T>) {
       const subscriber = this;
       let active = 0;
-      const buffer: T[] = [];
+      const buffer: (T | R)[] = [];
       let index = 0;
       let isComplete = false;
 
@@ -89,13 +89,8 @@ export function expand<T, R>(
         while (0 < buffer.length && active < concurrent) {
           const value = buffer.shift()!;
           subscriber.next(value);
-          let inner: Observable<any>;
-          try {
-            inner = from(project(value, index++));
-          } catch (err) {
-            subscriber.error(err);
-            return;
-          }
+          // TODO: Correct the types here. `project` could be R or T.
+          const inner = from(project(value as any, index++));
           active++;
           const doSub = () => {
             inner.subscribe(
@@ -108,7 +103,7 @@ export function expand<T, R>(
         }
       };
 
-      const next = (value: T) => {
+      const next = (value: T | R) => {
         buffer.push(value);
         trySub();
       };
