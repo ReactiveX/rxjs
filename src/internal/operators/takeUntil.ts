@@ -1,11 +1,9 @@
-import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 
 
-import { MonoTypeOperatorFunction, TeardownLogic, ObservableInput } from '../types';
+import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 import { noop } from '../util/noop';

@@ -2,9 +2,8 @@
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**

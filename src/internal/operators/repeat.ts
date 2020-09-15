@@ -2,7 +2,6 @@
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { EMPTY } from '../observable/empty';
-import { SimpleOuterSubscriber } from '../innerSubscribe';
 import { lift } from '../util/lift';
 import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction } from '../types';
