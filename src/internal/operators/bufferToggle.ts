@@ -1,9 +1,8 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { OperatorFunction, SubscribableOrPromise } from '../types';
-import { lift } from '../util/lift';
+import { wrappedLift } from '../util/lift';
 import { from } from '../observable/from';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
@@ -58,8 +57,7 @@ export function bufferToggle<T, O>(
   closingSelector: (value: O) => SubscribableOrPromise<any>
 ): OperatorFunction<T, T[]> {
   return function bufferToggleOperatorFunction(source: Observable<T>) {
-    return lift(source, function (this: Subscriber<T[]>, source: Observable<T>) {
-      const subscriber = this;
+    return wrappedLift(source, (subscriber, liftedSource) => {
       const buffers: T[][] = [];
 
       const remove = (buffer: T[]) => {
@@ -70,15 +68,7 @@ export function bufferToggle<T, O>(
       };
 
       // Subscribe to the openings notifier first
-      let openNotifier: Observable<O>;
-      try {
-        openNotifier = from(openings);
-      } catch (err) {
-        subscriber.error(err);
-        return;
-      }
-
-      openNotifier.subscribe(
+      from(openings).subscribe(
         new OperatorSubscriber(
           subscriber,
           (openValue) => {
@@ -98,24 +88,15 @@ export function bufferToggle<T, O>(
               closingSubscription.unsubscribe();
             };
 
-            // Get our closing notifier using the open value.
-            let closingNotifier: Observable<any>;
-            try {
-              closingNotifier = from(closingSelector(openValue));
-            } catch (err) {
-              subscriber.error(err);
-              return;
-            }
-
             // The line below will add the subscription to the parent subscriber *and* the closing subscription.
-            closingSubscription.add(closingNotifier.subscribe(new OperatorSubscriber(subscriber, emit, undefined, emit)));
+            closingSubscription.add(from(closingSelector(openValue)).subscribe(new OperatorSubscriber(subscriber, emit, undefined, emit)));
           },
           undefined,
           noop
         )
       );
 
-      source.subscribe(
+      liftedSource.subscribe(
         new OperatorSubscriber(
           subscriber,
           (value) => {
