@@ -80,16 +80,10 @@ export function throttle<T>(
         trailing && send();
       };
 
-      const throttle = (value: T) => {
-        let result: Observable<any>;
-        try {
-          result = from(durationSelector(value));
-        } catch (err) {
-          subscriber.error(err);
-          return;
-        }
-        subscriber.add((throttled = result.subscribe(new OperatorSubscriber(subscriber, throttlingDone, undefined, throttlingDone))));
-      };
+      const throttle = (value: T) =>
+        (throttled = from(durationSelector(value)).subscribe(
+          new OperatorSubscriber(subscriber, throttlingDone, undefined, throttlingDone)
+        ));
 
       const send = () => {
         if (hasValue) {
