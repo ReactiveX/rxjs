@@ -3,9 +3,8 @@ import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
 import { Subject } from '../Subject';
 import { Subscriber } from '../Subscriber';
-import { Operator } from '../Operator';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Branch out the source Observable values as a nested Observable whenever
@@ -50,77 +49,37 @@ import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '..
  * @name window
  */
 export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T, Observable<T>> {
-  return function windowOperatorFunction(source: Observable<T>) {
-    return lift(source, new WindowOperator(windowBoundaries));
-  };
-}
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<Observable<T>>, source: Observable<T>) {
+      const subscriber = this;
+      let window = new Subject<T>();
 
-class WindowOperator<T> implements Operator<T, Observable<T>> {
-  constructor(private windowBoundaries: Observable<any>) {}
+      subscriber.next(window.asObservable());
 
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
-    const windowSubscriber = new WindowSubscriber(subscriber);
-    const sourceSubscription = source.subscribe(windowSubscriber);
-    if (!sourceSubscription.closed) {
-      windowSubscriber.add(innerSubscribe(this.windowBoundaries, new SimpleInnerSubscriber(windowSubscriber)));
-    }
-    return sourceSubscription;
-  }
-}
+      const windowSubscribe = (source: Observable<any>, next: (value: any) => void) =>
+        source.subscribe(
+          new OperatorSubscriber(
+            subscriber,
+            next,
+            (err: any) => {
+              window.error(err);
+              subscriber.error(err);
+            },
+            () => {
+              window.complete();
+              subscriber.complete();
+            },
+            () => {
+              window?.unsubscribe();
+              window = null!;
+            }
+          )
+        );
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class WindowSubscriber<T> extends SimpleOuterSubscriber<T, any> {
-  private window: Subject<T> = new Subject<T>();
-
-  constructor(destination: Subscriber<Observable<T>>) {
-    super(destination);
-    destination.next(this.window);
-  }
-
-  notifyNext(): void {
-    this.openWindow();
-  }
-
-  notifyError(error: any): void {
-    this._error(error);
-  }
-
-  notifyComplete(): void {
-    this._complete();
-  }
-
-  protected _next(value: T): void {
-    this.window.next(value);
-  }
-
-  protected _error(err: any): void {
-    this.window.error(err);
-    this.destination.error(err);
-  }
-
-  protected _complete(): void {
-    this.window.complete();
-    this.destination.complete();
-  }
-
-  unsubscribe() {
-    if (!this.closed) {
-      this.window = null!;
-      super.unsubscribe();
-    }
-  }
-
-  private openWindow(): void {
-    const prevWindow = this.window;
-    if (prevWindow) {
-      prevWindow.complete();
-    }
-    const destination = this.destination;
-    const newWindow = (this.window = new Subject<T>());
-    destination.next(newWindow);
-  }
+      windowSubscribe(source, (value) => window.next(value));
+      windowSubscribe(windowBoundaries, () => {
+        window.complete();
+        subscriber.next((window = new Subject()));
+      });
+    });
 }
