@@ -1,11 +1,8 @@
 /** @prettier */
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { Subscription } from '../Subscription';
 import { ObservableInput, OperatorFunction } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 
@@ -99,85 +96,4 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
         )
       );
     });
-}
-
-class BufferWhenOperator<T> implements Operator<T, T[]> {
-  constructor(private closingSelector: () => Observable<any>) {}
-
-  call(subscriber: Subscriber<T[]>, source: any): any {
-    return source.subscribe(new BufferWhenSubscriber(subscriber, this.closingSelector));
-  }
-}
-
-class BufferWhenSubscriber<T> extends SimpleOuterSubscriber<T, any> {
-  private buffer: T[] | undefined;
-  private subscribing: boolean = false;
-  private closingSubscription: Subscription | undefined;
-
-  constructor(destination: Subscriber<T[]>, private closingSelector: () => Observable<any>) {
-    super(destination);
-    this.openBuffer();
-  }
-
-  protected _next(value: T) {
-    this.buffer!.push(value);
-  }
-
-  protected _complete() {
-    const buffer = this.buffer;
-    if (buffer) {
-      this.destination.next(buffer);
-    }
-    super._complete();
-  }
-
-  unsubscribe() {
-    if (!this.closed) {
-      this.buffer = null!;
-      this.subscribing = false;
-      super.unsubscribe();
-    }
-  }
-
-  notifyNext(): void {
-    this.openBuffer();
-  }
-
-  notifyComplete(): void {
-    if (this.subscribing) {
-      this.complete();
-    } else {
-      this.openBuffer();
-    }
-  }
-
-  openBuffer() {
-    let { closingSubscription } = this;
-
-    if (closingSubscription) {
-      this.remove(closingSubscription);
-      closingSubscription.unsubscribe();
-    }
-
-    const buffer = this.buffer;
-    if (this.buffer) {
-      this.destination.next(buffer);
-    }
-
-    this.buffer = [];
-
-    let closingNotifier;
-    try {
-      const { closingSelector } = this;
-      closingNotifier = closingSelector();
-    } catch (err) {
-      return this.error(err);
-    }
-    closingSubscription = new Subscription();
-    this.closingSubscription = closingSubscription;
-    this.add(closingSubscription);
-    this.subscribing = true;
-    closingSubscription.add(innerSubscribe(closingNotifier, new SimpleInnerSubscriber(this)));
-    this.subscribing = false;
-  }
 }
