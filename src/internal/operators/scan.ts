@@ -3,6 +3,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 export function scan<V, A = V>(accumulator: (acc: A | V, value: V, index: number) => A): OperatorFunction<V, V | A>;
 export function scan<V, A>(accumulator: (acc: A, value: V, index: number) => A, seed: A): OperatorFunction<V, A>;
@@ -103,35 +104,11 @@ export function scan<V, A, S>(accumulator: (acc: V | A | S, value: V, index: num
       let state: any = hasSeed ? seed! : null!;
       let index = 0;
       source.subscribe(
-        new ScanSubscriber(subscriber, (value) => {
+        new OperatorSubscriber(subscriber, (value) => {
           const i = index++;
-          if (!hasState) {
-            // If a seed was not passed, we use the first value from the source
-            // as the initial state. That means we also pass it through, and the
-            // accumulator (reducer) does not get executed.
-            hasState = true;
-            state = value;
-          } else {
-            // Otherwise, if we have a seed, or we already have state, we try
-            // to execute the accumulator, and we handle the error appropriately.
-            try {
-              state = accumulator(state, value, i);
-            } catch (err) {
-              // An error occurred in the user-provided function, forward it
-              // to the consumer via error notification.
-              subscriber.error(err);
-              return;
-            }
-          }
-          subscriber.next(state);
+          subscriber.next((state = hasState ? accumulator(state, value, i) : ((hasState = true), value)));
         })
       );
     });
   };
-}
-
-class ScanSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<any>, protected _next: (value: T) => void) {
-    super(destination);
-  }
 }
