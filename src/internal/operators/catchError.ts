@@ -119,17 +119,7 @@ export function catchError<T, O extends ObservableInput<any>>(
 
       innerSub = source.subscribe(
         new OperatorSubscriber(subscriber, undefined, (err) => {
-          // NOTE: The try/catch is here instead of OperatorSubscriber because
-          // this is the only operator that requires a try/catch in the error handler
-          // adding it to OperatorSubscriber would add that weight to to something
-          // used by all other operators just to make this one operator smaller.
-          try {
-            handledResult = from(selector(err, catchError(selector)(source)));
-          } catch (err) {
-            subscriber.error(err);
-            return;
-          }
-
+          handledResult = from(selector(err, catchError(selector)(source)));
           if (innerSub) {
             innerSub.unsubscribe();
             innerSub = null;
