@@ -202,6 +202,8 @@ export class Subscription implements SubscriptionLike {
   }
 }
 
+export const EMPTY_SUBSCRIPTION = Subscription.EMPTY;
+
 export function isSubscription(value: any): value is Subscription {
   return (
     value instanceof Subscription ||
