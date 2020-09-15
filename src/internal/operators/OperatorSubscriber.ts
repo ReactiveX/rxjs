@@ -21,13 +21,21 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
     }
     if (onError) {
       this._error = function (err) {
-        onError(err);
+        try {
+          onError(err);
+        } catch (err) {
+          this.destination.error(err);
+        }
         this.unsubscribe();
       };
     }
     if (onComplete) {
       this._complete = function () {
-        onComplete();
+        try {
+          onComplete();
+        } catch (err) {
+          this.destination.error(err);
+        }
         this.unsubscribe();
       };
     }
