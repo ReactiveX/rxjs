@@ -1,10 +1,11 @@
-import { Operator } from '../Operator';
+/** @prettier */
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, TeardownLogic, ObservableInput } from '../types';
-import { Subscription } from '../Subscription';
+import { MonoTypeOperatorFunction } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { from } from '../observable/from';
+import { noop } from '../util/noop';
 
 /**
  * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.
@@ -45,49 +46,30 @@ import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '..
  * @name skipUntil
  */
 export function skipUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => lift(source, new SkipUntilOperator(notifier));
-}
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
+      const subscriber = this;
+      let taking = false;
 
-class SkipUntilOperator<T> implements Operator<T, T> {
-  constructor(private notifier: Observable<any>) {
-  }
+      let skipNotifier: Observable<any>;
+      try {
+        skipNotifier = from(notifier);
+      } catch (err) {
+        subscriber.error(err);
+        return;
+      }
+      const skipSubscriber = new OperatorSubscriber(
+        subscriber,
+        () => {
+          skipSubscriber?.unsubscribe();
+          taking = true;
+        },
+        undefined,
+        noop
+      );
 
-  call(destination: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new SkipUntilSubscriber(destination, this.notifier));
-  }
-}
+      skipNotifier.subscribe(skipSubscriber);
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SkipUntilSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
-  private isTaking = false;
-  private innerSubscription: Subscription | undefined;
-
-  constructor(destination: Subscriber<R>, notifier: ObservableInput<any>) {
-    super(destination);
-    const innerSubscriber = new SimpleInnerSubscriber(this);
-    this.add(innerSubscriber);
-    this.innerSubscription = innerSubscriber;
-    innerSubscribe(notifier, innerSubscriber);
-  }
-
-  protected _next(value: T) {
-    if (this.isTaking) {
-      super._next(value);
-    }
-  }
-
-  notifyNext(): void {
-    this.isTaking = true;
-    if (this.innerSubscription) {
-      this.innerSubscription.unsubscribe();
-    }
-  }
-
-  notifyComplete() {
-    /* do nothing */
-  }
+      source.subscribe(new OperatorSubscriber(subscriber, (value) => taking && subscriber.next(value)));
+    });
 }
