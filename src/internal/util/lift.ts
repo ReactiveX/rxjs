@@ -70,6 +70,6 @@ export function stankyLift(source: Observable<any>, liftedSource: Observable<any
   throw new TypeError('Unable to lift unknown Observable type');
 }
 
-function hasLift(source: any): source is { lift: InstanceType<typeof Observable>['lift'] } {
+export function hasLift(source: any): source is { lift: InstanceType<typeof Observable>['lift'] } {
   return source && typeof source.lift === 'function';
 }
