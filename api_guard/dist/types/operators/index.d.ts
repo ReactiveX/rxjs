@@ -308,7 +308,7 @@ export declare function throttle<T>(durationSelector: (value: T) => Subscribable
 
 export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
-export declare function throwIfEmpty<T>(errorFactory?: (() => any)): MonoTypeOperatorFunction<T>;
+export declare function throwIfEmpty<T>(errorFactory?: () => any): MonoTypeOperatorFunction<T>;
 
 export declare function timeInterval<T>(scheduler?: SchedulerLike): OperatorFunction<T, TimeInterval<T>>;
 

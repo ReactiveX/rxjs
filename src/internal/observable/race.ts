@@ -1,11 +1,11 @@
+/** @prettier */
 import { Observable } from '../Observable';
 import { from } from './from';
-import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { ObservableInput, ObservedValueUnionFromArray } from '../types';
-import { ComplexOuterSubscriber, innerSubscribe, ComplexInnerSubscriber } from '../innerSubscribe';
-import { lift } from '../util/lift';
-import { argsOrArgArray } from "../util/argsOrArgArray";
+import { argsOrArgArray } from '../util/argsOrArgArray';
+import { OperatorSubscriber } from '../operators/OperatorSubscriber';
+import { Subscriber } from '../Subscriber';
 
 export function race<A extends ObservableInput<any>[]>(observables: A): Observable<ObservedValueUnionFromArray<A>>;
 export function race<A extends ObservableInput<any>[]>(...observables: A): Observable<ObservedValueUnionFromArray<A>>;
@@ -51,81 +51,41 @@ export function race<A extends ObservableInput<any>[]>(...observables: A): Obser
  * @param {...Observables} ...observables sources used to race for which Observable emits first.
  * @return {Observable} an Observable that mirrors the output of the first Observable to emit an item.
  */
-export function race<T>(...observables: (ObservableInput<T> | ObservableInput<T>[])[]): Observable<any> {
-  // if the only argument is an array, it was most likely called with
-  // `race([obs1, obs2, ...])`
-  observables = argsOrArgArray(observables);
-
-  return observables.length === 1 ? from(observables[0]) : lift(from(observables), function (this: Subscriber<T>, source: Observable<any>) {
-    return source.subscribe(new RaceSubscriber(this));
-  });
+export function race<T>(...sources: (ObservableInput<T> | ObservableInput<T>[])[]): Observable<any> {
+  sources = argsOrArgArray(sources);
+  // If only one source was passed, just return it. Otherwise return the race.
+  return sources.length === 1 ? from(sources[0]) : new Observable<T>(raceInit(sources as ObservableInput<T>[]));
 }
 
 /**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
+ * An observable initializer function for both the static version and the
+ * operator version of race.
+ * @param sources The sources to race
  */
-export class RaceSubscriber<T> extends ComplexOuterSubscriber<T, T> {
-  private hasFirst: boolean = false;
-  private observables: Observable<any>[] = [];
-  private subscriptions: Subscription[] = [];
+export function raceInit<T>(sources: ObservableInput<T>[]) {
+  return (subscriber: Subscriber<T>) => {
+    let subscriptions: Subscription[] = [];
 
-  constructor(destination: Subscriber<T>) {
-    super(destination);
-  }
-
-  protected _next(observable: any): void {
-    this.observables.push(observable);
-  }
-
-  protected _complete() {
-    const observables = this.observables;
-    const len = observables.length;
-
-    if (len === 0) {
-      this.destination.complete();
-    } else {
-      for (let i = 0; i < len && !this.hasFirst; i++) {
-        let observable = observables[i];
-        const subscription = innerSubscribe(observable, new ComplexInnerSubscriber(this, null, i));
-
-        if (this.subscriptions) {
-          this.subscriptions.push(subscription!);
-        }
-        this.add(subscription);
-      }
-      this.observables = null!;
+    // Subscribe to all of the sources. Note that we are checking `subscriptions` here
+    // Is is an array of all actively "racing" subscriptions, and it is `null` after the
+    // race has been won. So, if we have racer that synchronously "wins", this loop will
+    // stop before it subscribes to any more.
+    for (let i = 0; subscriptions && !subscriber.closed && i < sources.length; i++) {
+      subscriptions.push(
+        from(sources[i] as ObservableInput<T>).subscribe(
+          new OperatorSubscriber(subscriber, (value) => {
+            if (subscriptions) {
+              // We're still racing, but we won! So unsubscribe
+              // all other subscriptions that we have, except this one.
+              for (let s = 0; s < subscriptions.length; s++) {
+                s !== i && subscriptions[s].unsubscribe();
+              }
+              subscriptions = null!;
+            }
+            subscriber.next(value);
+          })
+        )
+      );
     }
-  }
-
-  notifyNext(_outerValue: T, innerValue: T,
-             outerIndex: number): void {
-    if (!this.hasFirst) {
-      this.hasFirst = true;
-
-      for (let i = 0; i < this.subscriptions.length; i++) {
-        if (i !== outerIndex) {
-          let subscription = this.subscriptions[i];
-
-          subscription.unsubscribe();
-          this.remove(subscription);
-        }
-      }
-
-      this.subscriptions = null!;
-    }
-
-    this.destination.next(innerValue);
-  }
-
-  notifyComplete(innerSub: ComplexInnerSubscriber<T, T>): void {
-    this.hasFirst = true;
-    super.notifyComplete(innerSub);
-  }
-
-  notifyError(error: any): void {
-    this.hasFirst = true;
-    super.notifyError(error);
-  }
+  };
 }

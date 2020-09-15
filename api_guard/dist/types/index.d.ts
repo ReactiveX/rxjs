@@ -197,14 +197,14 @@ export declare const config: {
 };
 
 export declare class ConnectableObservable<T> extends Observable<T> {
-    protected _connection: Subscription | null | undefined;
-    _isComplete: boolean;
+    protected _connection: Subscription | null;
     protected _refCount: number;
-    protected _subject: Subject<T> | undefined;
+    protected _subject: Subject<T> | null;
     source: Observable<T>;
     protected subjectFactory: () => Subject<T>;
     constructor(source: Observable<T>, subjectFactory: () => Subject<T>);
-    _subscribe(subscriber: Subscriber<T>): Subscription;
+    protected _subscribe(subscriber: Subscriber<T>): Subscription;
+    protected _teardown(): void;
     connect(): Subscription;
     protected getSubject(): Subject<T>;
     refCount(): Observable<T>;
