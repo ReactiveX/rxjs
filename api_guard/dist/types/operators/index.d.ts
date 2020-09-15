@@ -260,7 +260,7 @@ export declare function single<T>(predicate?: (value: T, index: number, source: 
 
 export declare function skip<T>(count: number): MonoTypeOperatorFunction<T>;
 
-export declare function skipLast<T>(count: number): MonoTypeOperatorFunction<T>;
+export declare function skipLast<T>(skipCount: number): MonoTypeOperatorFunction<T>;
 
 export declare function skipUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T>;
 
@@ -304,7 +304,7 @@ export declare function tap<T>(next: (value: T) => void, error: null | undefined
 export declare function tap<T>(next?: (x: T) => void, error?: (e: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
 export declare function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T>;
 
-export declare function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<any>, config?: ThrottleConfig): MonoTypeOperatorFunction<T>;
+export declare function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<any>, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
 export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
@@ -332,9 +332,9 @@ export declare function windowCount<T>(windowSize: number, startWindowEvery?: nu
 
 export declare function windowTime<T>(windowTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export declare function windowTime<T>(windowTimeSpan: number, windowCreationInterval: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
-export declare function windowTime<T>(windowTimeSpan: number, windowCreationInterval: number, maxWindowSize: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
+export declare function windowTime<T>(windowTimeSpan: number, windowCreationInterval: number | null | void, maxWindowSize: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 
-export declare function windowToggle<T, O>(openings: Observable<O>, closingSelector: (openValue: O) => Observable<any>): OperatorFunction<T, Observable<T>>;
+export declare function windowToggle<T, O>(openings: ObservableInput<O>, closingSelector: (openValue: O) => ObservableInput<any>): OperatorFunction<T, Observable<T>>;
 
 export declare function windowWhen<T>(closingSelector: () => Observable<any>): OperatorFunction<T, Observable<T>>;
 
