@@ -1,8 +1,7 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { wrappedLift } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 import { noop } from '../util/noop';
@@ -47,17 +46,9 @@ import { noop } from '../util/noop';
  */
 export function skipUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
+    wrappedLift(source, (subscriber, liftedSource) => {
       let taking = false;
 
-      let skipNotifier: Observable<any>;
-      try {
-        skipNotifier = from(notifier);
-      } catch (err) {
-        subscriber.error(err);
-        return;
-      }
       const skipSubscriber = new OperatorSubscriber(
         subscriber,
         () => {
@@ -68,8 +59,8 @@ export function skipUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunctio
         noop
       );
 
-      skipNotifier.subscribe(skipSubscriber);
+      from(notifier).subscribe(skipSubscriber);
 
-      source.subscribe(new OperatorSubscriber(subscriber, (value) => taking && subscriber.next(value)));
+      liftedSource.subscribe(new OperatorSubscriber(subscriber, (value) => taking && subscriber.next(value)));
     });
 }
