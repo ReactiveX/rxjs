@@ -1,7 +1,6 @@
 /** @pretter */
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
-import { Observer, OperatorFunction } from '../types';
+import { OperatorFunction } from '../types';
 import { Subscriber } from '../Subscriber';
 import { lift } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';

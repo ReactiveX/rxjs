@@ -1,13 +1,11 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
 import { lift } from '../util/lift';
-import { innerSubscribe, SimpleOuterSubscriber, SimpleInnerSubscriber } from '../innerSubscribe';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */

@@ -1,8 +1,7 @@
 /** @prettier */
-import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { Observer, OperatorFunction } from '../types';
+import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
