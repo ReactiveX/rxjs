@@ -8,6 +8,7 @@ import { isScheduler } from '../util/isScheduler';
 import { OperatorFunction, SchedulerLike } from '../types';
 import { lift } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
+import { arrRemove } from '../util/arrRemove';
 
 export function windowTime<T>(windowTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(
@@ -143,12 +144,7 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
             seen: 0,
             remove() {
               this.subs.unsubscribe();
-              if (windowRecords) {
-                const index = windowRecords.indexOf(this);
-                if (0 <= index) {
-                  windowRecords.splice(index, 1);
-                }
-              }
+              windowRecords && arrRemove(windowRecords, this);
             },
           };
           windowRecords.push(record);

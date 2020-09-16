@@ -2,6 +2,7 @@
 import { isFunction } from './util/isFunction';
 import { UnsubscriptionError } from './util/UnsubscriptionError';
 import { SubscriptionLike, TeardownLogic, Unsubscribable } from './types';
+import { arrRemove } from './util/arrRemove';
 
 /**
  * Represents a disposable resource, such as the execution of an Observable. A
@@ -166,10 +167,7 @@ export class Subscription implements SubscriptionLike {
     if (_parentage === parent) {
       this._parentage = null;
     } else if (Array.isArray(_parentage)) {
-      const index = _parentage.indexOf(parent);
-      if (0 <= index) {
-        _parentage.splice(index, 1);
-      }
+      arrRemove(_parentage, parent);
     }
   }
 
@@ -189,12 +187,7 @@ export class Subscription implements SubscriptionLike {
    */
   remove(teardown: Exclude<TeardownLogic, void>): void {
     const { _teardowns } = this;
-    if (_teardowns) {
-      const index = _teardowns.indexOf(teardown);
-      if (index >= 0) {
-        _teardowns.splice(index, 1);
-      }
-    }
+    _teardowns && arrRemove(_teardowns, teardown);
 
     if (teardown instanceof Subscription) {
       teardown._removeParent(this);

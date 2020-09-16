@@ -4,6 +4,7 @@ import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
 import { lift } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
+import { arrRemove } from '../util/arrRemove';
 
 /**
  * Buffers the source Observable values until the size hits the maximum
@@ -102,10 +103,7 @@ export function bufferCount<T>(bufferSize: number, startBufferEvery: number | nu
               // `bufferSize`. Emit them, and remove them from our
               // buffers list.
               for (const buffer of toEmit) {
-                const index = buffers.indexOf(buffer);
-                if (0 <= index) {
-                  buffers.splice(index, 1);
-                }
+                arrRemove(buffers, buffer);
                 subscriber.next(buffer);
               }
             }

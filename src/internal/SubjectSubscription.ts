@@ -1,6 +1,7 @@
 import { Subject } from './Subject';
 import { Observer } from './types';
 import { Subscription } from './Subscription';
+import { arrRemove } from './util/arrRemove';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -30,10 +31,6 @@ export class SubjectSubscription<T> extends Subscription {
       return;
     }
 
-    const subscriberIndex = observers.indexOf(this.subscriber);
-
-    if (subscriberIndex !== -1) {
-      observers.splice(subscriberIndex, 1);
-    }
+    arrRemove(observers, this.subscriber);
   }
 }

@@ -8,6 +8,7 @@ import { lift } from '../util/lift';
 import { from } from '../observable/from';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
+import { arrRemove } from '../util/arrRemove';
 
 /**
  * Branch out the source Observable values as a nested Observable starting from
@@ -65,13 +66,6 @@ export function windowToggle<T, O>(
       const subscriber = this;
       const windows: Subject<T>[] = [];
 
-      const remove = (window: Subject<T>) => {
-        const index = windows.indexOf(window);
-        if (0 <= index) {
-          windows.splice(index, 1);
-        }
-      };
-
       const handleError = (err: any) => {
         while (0 < windows.length) {
           windows.shift()!.error(err);
@@ -94,7 +88,7 @@ export function windowToggle<T, O>(
             windows.push(window);
             const closingSubscription = new Subscription();
             const closeWindow = () => {
-              remove(window);
+              arrRemove(windows, window);
               window.complete();
               closingSubscription.unsubscribe();
             };

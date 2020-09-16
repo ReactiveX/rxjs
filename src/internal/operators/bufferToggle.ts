@@ -6,6 +6,7 @@ import { wrappedLift } from '../util/lift';
 import { from } from '../observable/from';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
+import { arrRemove } from '../util/arrRemove';
 
 /**
  * Buffers the source Observable values starting from an emission from
@@ -60,13 +61,6 @@ export function bufferToggle<T, O>(
     return wrappedLift(source, (subscriber, liftedSource) => {
       const buffers: T[][] = [];
 
-      const remove = (buffer: T[]) => {
-        const index = buffers.indexOf(buffer);
-        if (0 <= index) {
-          buffers.splice(index, 1);
-        }
-      };
-
       // Subscribe to the openings notifier first
       from(openings).subscribe(
         new OperatorSubscriber(
@@ -82,9 +76,8 @@ export function bufferToggle<T, O>(
             // if the closing notifier completes without value.
             // TODO: We probably want to not have closing notifiers emit!!
             const emit = () => {
-              const b = buffer;
-              remove(b);
-              subscriber.next(b);
+              arrRemove(buffers, buffer);
+              subscriber.next(buffer);
               closingSubscription.unsubscribe();
             };
 

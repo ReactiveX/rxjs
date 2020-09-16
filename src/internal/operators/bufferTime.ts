@@ -8,6 +8,7 @@ import { isScheduler } from '../util/isScheduler';
 import { OperatorFunction, SchedulerAction, SchedulerLike } from '../types';
 import { lift } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
+import { arrRemove } from '../util/arrRemove';
 
 /* tslint:disable:max-line-length */
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
@@ -128,12 +129,7 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
             subs,
             remove() {
               this.subs.unsubscribe();
-              if (bufferRecords) {
-                const index = bufferRecords.indexOf(this);
-                if (0 <= index) {
-                  bufferRecords.splice(index, 1);
-                }
-              }
+              bufferRecords && arrRemove(bufferRecords, this);
             },
           };
           bufferRecords.push(record);
