@@ -237,13 +237,9 @@ export class Observable<T> implements Subscribable<T> {
       if (config.useDeprecatedSynchronousErrorHandling) {
         throw err;
       } else {
-        if (canReportError(sink)) {
-          sink.error(err);
-        } else {
-          // If an error is thrown during subscribe, but our subscriber is closed, so we cannot notify via the
-          // subscription "error" channel, it is an unhandled error and we need to report it appropriately.
-          reportUnhandledError(err);
-        }
+        // If an error is thrown during subscribe, but our subscriber is closed, so we cannot notify via the
+        // subscription "error" channel, it is an unhandled error and we need to report it appropriately.
+        canReportError(sink) ? sink.error(err) : reportUnhandledError(err);
       }
     }
   }
@@ -320,9 +316,7 @@ export class Observable<T> implements Subscribable<T> {
             next(value);
           } catch (err) {
             reject(err);
-            if (subscription) {
-              subscription.unsubscribe();
-            }
+            subscription?.unsubscribe();
           }
         },
         reject,
@@ -500,13 +494,9 @@ function getPromiseCtor(promiseCtor: PromiseConstructorLike | undefined) {
 export function canReportError(subscriber: Subscriber<any>): boolean {
   while (subscriber) {
     const { closed, destination, isStopped } = subscriber as any;
-    if (closed || isStopped) {
-      return false;
-    } else if (destination && destination instanceof Subscriber) {
-      subscriber = destination;
-    } else {
-      subscriber = null!;
-    }
+    return closed || isStopped
+      ? false
+      : (destination && destination instanceof Subscriber ? (subscriber = destination) : (subscriber = null!), true);
   }
   return true;
 }
