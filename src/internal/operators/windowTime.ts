@@ -144,7 +144,7 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
             seen: 0,
             remove() {
               this.subs.unsubscribe();
-              windowRecords && arrRemove(windowRecords, this);
+              arrRemove(windowRecords, this);
             },
           };
           windowRecords.push(record);

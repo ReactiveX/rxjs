@@ -3,8 +3,8 @@ import { TimestampProvider } from './types';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
-import { SubjectSubscription } from './SubjectSubscription';
 import { dateTimestampProvider } from "./scheduler/dateTimestampProvider";
+import { arrRemove } from './util/arrRemove';
 
 /**
  * A variant of {@link Subject} that "replays" old values to new subscribers by emitting them when they first subscribe.
@@ -99,7 +99,7 @@ export class ReplaySubject<T> extends Subject<T> {
       subscription = Subscription.EMPTY;
     } else {
       this.observers.push(subscriber);
-      subscription = new SubjectSubscription(this, subscriber);
+      subscription = new Subscription(() => arrRemove(this.observers, subscriber));
     }
 
     if (_infiniteTimeWindow) {

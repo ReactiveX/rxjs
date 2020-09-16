@@ -129,7 +129,7 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
             subs,
             remove() {
               this.subs.unsubscribe();
-              bufferRecords && arrRemove(bufferRecords, this);
+              arrRemove(bufferRecords, this);
             },
           };
           bufferRecords.push(record);

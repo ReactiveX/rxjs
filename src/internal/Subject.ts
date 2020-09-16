@@ -5,7 +5,7 @@ import { Subscriber } from './Subscriber';
 import { Subscription, EMPTY_SUBSCRIPTION } from './Subscription';
 import { Observer, SubscriptionLike, TeardownLogic } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
-import { SubjectSubscription } from './SubjectSubscription';
+import { arrRemove } from './util/arrRemove';
 
 /**
  * A Subject is a special type of Observable that allows values to be
@@ -105,7 +105,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
       ? (subscriber.error(thrownError), EMPTY_SUBSCRIPTION)
       : isStopped
       ? (subscriber.complete(), EMPTY_SUBSCRIPTION)
-      : (observers.push(subscriber), new SubjectSubscription(this, subscriber));
+      : (observers.push(subscriber), new Subscription(() => arrRemove(this.observers, subscriber)));
   }
 
   /**
