@@ -494,9 +494,10 @@ function getPromiseCtor(promiseCtor: PromiseConstructorLike | undefined) {
 export function canReportError(subscriber: Subscriber<any>): boolean {
   while (subscriber) {
     const { closed, destination, isStopped } = subscriber as any;
-    return closed || isStopped
-      ? false
-      : (destination && destination instanceof Subscriber ? (subscriber = destination) : (subscriber = null!), true);
+    if (closed || isStopped) {
+      return false;
+    }
+    subscriber = destination && destination instanceof Subscriber ? destination : null!;
   }
   return true;
 }
