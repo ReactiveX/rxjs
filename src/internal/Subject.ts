@@ -46,10 +46,14 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     return subject as any;
   }
 
-  next(value: T) {
+  protected throwIfClosed() {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
+  }
+
+  next(value: T) {
+    this.throwIfClosed();
     if (!this.isStopped) {
       const copy = this.observers.slice();
       for (const observer of copy) {
@@ -59,25 +63,25 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   error(err: any) {
-    if (this.closed) {
-      throw new ObjectUnsubscribedError();
-    }
-    this.hasError = this.isStopped = true;
-    this.thrownError = err;
-    const { observers } = this;
-    while (observers.length) {
-      observers.shift()!.error(err);
+    this.throwIfClosed();
+    if (!this.isStopped) {
+      this.hasError = this.isStopped = true;
+      this.thrownError = err;
+      const { observers } = this;
+      while (observers.length) {
+        observers.shift()!.error(err);
+      }
     }
   }
 
   complete() {
-    if (this.closed) {
-      throw new ObjectUnsubscribedError();
-    }
-    this.isStopped = true;
-    const { observers } = this;
-    while (observers.length) {
-      observers.shift()!.complete();
+    this.throwIfClosed();
+    if (!this.isStopped) {
+      this.isStopped = true;
+      const { observers } = this;
+      while (observers.length) {
+        observers.shift()!.complete();
+      }
     }
   }
 
@@ -87,27 +91,33 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
-  _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
-    if (this.closed) {
-      throw new ObjectUnsubscribedError();
-    }
+  protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
+    this.throwIfClosed();
     return super._trySubscribe(subscriber);
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
-  _subscribe(subscriber: Subscriber<T>): Subscription {
-    const { closed, hasError, thrownError, isStopped, observers } = this;
-    if (closed) {
-      throw new ObjectUnsubscribedError();
-    }
+  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+    this.throwIfClosed();
+    this.checkFinalizedStatuses(subscriber);
+    return this._innerSubscribe(subscriber);
+  }
 
-    return hasError
-      ? (subscriber.error(thrownError), EMPTY_SUBSCRIPTION)
-      : isStopped
-      ? (subscriber.complete(), EMPTY_SUBSCRIPTION)
+  protected _innerSubscribe(subscriber: Subscriber<any>) {
+    const { hasError, isStopped, observers } = this;
+    return hasError || isStopped
+      ? EMPTY_SUBSCRIPTION
       : (observers.push(subscriber), new Subscription(() => arrRemove(this.observers, subscriber)));
   }
 
+  protected checkFinalizedStatuses(subscriber: Subscriber<any>) {
+    const { hasError, thrownError, isStopped } = this;
+    if (hasError) {
+      subscriber.error(thrownError);
+    } else if (isStopped) {
+      subscriber.complete();
+    }
+  }
   /**
    * Creates a new Observable with this Subject as the source. You can do this
    * to create customize Observer-side logic of the Subject and conceal it from

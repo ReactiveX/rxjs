@@ -10,40 +10,28 @@ import { Subscription } from './Subscription';
  */
 export class AsyncSubject<T> extends Subject<T> {
   private value: T | null = null;
-  private hasNext: boolean = false;
-  private hasCompleted: boolean = false;
+  private hasValue = false;
 
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _subscribe(subscriber: Subscriber<any>): Subscription {
-    if (this.hasError) {
-      subscriber.error(this.thrownError);
-      return Subscription.EMPTY;
-    } else if (this.hasCompleted && this.hasNext) {
-      subscriber.next(this.value);
+  protected checkFinalizedStatuses(subscriber: Subscriber<T>) {
+    const { hasError, hasValue, value, thrownError, isStopped } = this;
+    if (hasError) {
+      subscriber.error(thrownError);
+    } else if (isStopped) {
+      hasValue && subscriber.next(value!);
       subscriber.complete();
-      return Subscription.EMPTY;
     }
-    return super._subscribe(subscriber);
   }
 
   next(value: T): void {
-    if (!this.hasCompleted) {
+    if (!this.isStopped) {
       this.value = value;
-      this.hasNext = true;
-    }
-  }
-
-  error(error: any): void {
-    if (!this.hasCompleted) {
-      super.error(error);
+      this.hasValue = true;
     }
   }
 
   complete(): void {
-    this.hasCompleted = true;
-    if (this.hasNext) {
-      super.next(this.value!);
-    }
+    const { hasValue, value } = this;
+    hasValue && super.next(value!);
     super.complete();
   }
 }
