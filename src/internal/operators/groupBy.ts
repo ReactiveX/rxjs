@@ -2,7 +2,7 @@
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
-import { OperatorFunction } from '../types';
+import { Observer, OperatorFunction } from '../types';
 import { lift } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
@@ -130,6 +130,12 @@ export function groupBy<T, K, R>(
       // A lookup for the groups that we have so far.
       const groups = new Map<K, Subject<any>>();
 
+      // Used for notifying all groups and the subscriber in the same way.
+      const notify = (cb: (group: Observer<any>) => void) => {
+        groups.forEach(cb);
+        cb(subscriber);
+      };
+
       // Capturing a reference to this, because we need a handle to it
       // in `createGroupedObservable` below. This is what we use to
       // subscribe to our source observable. This sometimes needs to be unsubscribed
@@ -145,8 +151,7 @@ export function groupBy<T, K, R>(
           let group = groups.get(key);
           if (!group) {
             // Create our group subject
-            group = subjectSelector ? subjectSelector() : new Subject<any>();
-            groups.set(key, group);
+            groups.set(key, (group = subjectSelector ? subjectSelector() : new Subject<any>()));
 
             // Emit the grouped observable. Note that we can't do a simple `asObservable()` here,
             // because the grouped observable has special semantics around reference counting
@@ -155,10 +160,6 @@ export function groupBy<T, K, R>(
             subscriber.next(grouped);
 
             if (durationSelector) {
-              // A duration selector was provided, get the duration notifier
-              // and subscribe to it.
-              const durationNotifier = durationSelector(grouped);
-
               const durationSubscriber = new OperatorSubscriber(
                 // Providing the group here ensures that it is disposed of -- via `unsubscribe` --
                 // wnen the duration subscription is torn down. That is important, because then
@@ -179,23 +180,17 @@ export function groupBy<T, K, R>(
               );
 
               // Start our duration notifier.
-              groupBySourceSubscriber.add(durationNotifier.subscribe(durationSubscriber));
+              groupBySourceSubscriber.add(durationSelector(grouped).subscribe(durationSubscriber));
             }
           }
 
           // Send the value to our group.
           group.next(elementSelector ? elementSelector(value) : value);
         },
-        (err) => {
-          // Error from the source.
-          groups.forEach((group) => group.error(err));
-          subscriber.error(err);
-        },
-        () => {
-          // Source completes.
-          groups.forEach((group) => group.complete());
-          subscriber.complete();
-        },
+        // Error from the source.
+        (err) => notify((consumer) => consumer.error(err)),
+        // Source completes.
+        () => notify((consumer) => consumer.complete()),
         // Free up memory.
         // When the source subscription is _finally_ torn down, release the subjects and keys
         // in our groups Map, they may be quite large and we don't want to keep them around if we
@@ -220,9 +215,9 @@ export function groupBy<T, K, R>(
             // We can kill the subscription to our source if we now have no more
             // active groups subscribed, and a teardown was already attempted on
             // the source.
-            if (--groupBySourceSubscriber.activeGroups === 0 && groupBySourceSubscriber.teardownAttempted) {
+            --groupBySourceSubscriber.activeGroups === 0 &&
+              groupBySourceSubscriber.teardownAttempted &&
               groupBySourceSubscriber.unsubscribe();
-            }
           };
         });
         result.key = key;
@@ -251,9 +246,7 @@ class GroupBySubscriber<T> extends OperatorSubscriber<T> {
     // We only kill our subscription to the source if we have
     // no active groups. As stated above, consider this scenario:
     // source$.pipe(groupBy(fn), take(2)).
-    if (this.activeGroups === 0) {
-      super.unsubscribe();
-    }
+    this.activeGroups === 0 && super.unsubscribe();
   }
 }
 
