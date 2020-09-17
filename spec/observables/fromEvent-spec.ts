@@ -3,7 +3,6 @@ import { expectObservable } from '../helpers/marble-testing';
 import { fromEvent, NEVER, timer } from 'rxjs';
 import { mapTo, take, concat } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import sinon = require('sinon');
 
 declare const rxTestScheduler: TestScheduler;
 
