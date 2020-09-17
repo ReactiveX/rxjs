@@ -301,30 +301,22 @@ export function timeout<T>(each: number, scheduler?: SchedulerLike): MonoTypeOpe
  *
  * ![](timeout.png)
  */
-export function timeout<T, R, M>(
-  dueOrConfig: number | Date | TimeoutConfig<T, R, M>,
-  scheduler?: SchedulerLike
-): OperatorFunction<T, T | R> {
+export function timeout<T, R, M>(config: number | Date | TimeoutConfig<T, R, M>, schedulerArg?: SchedulerLike): OperatorFunction<T, T | R> {
   return (source: Observable<T>) => {
-    let first: number | Date | undefined;
-    let each: number | undefined = undefined;
-    let _with: ((info: TimeoutInfo<T, M>) => ObservableInput<R>) | undefined = undefined;
-    let meta: any = null;
-    scheduler = scheduler ?? asyncScheduler;
-
-    if (isValidDate(dueOrConfig)) {
-      first = dueOrConfig;
-    } else if (typeof dueOrConfig === 'number') {
-      each = dueOrConfig;
-    } else {
-      first = dueOrConfig.first;
-      each = dueOrConfig.each;
-      _with = dueOrConfig.with;
-      scheduler = dueOrConfig.scheduler || asyncScheduler;
-      meta = dueOrConfig.meta ?? null;
-    }
-
-    _with = _with ?? timeoutErrorFactory;
+    // Intentionally terse code.
+    // If the first argument is a valid `Date`, then we use it as the `first` config.
+    // Otherwise, if the first argument is a `number`, then we use it as the `each` config.
+    // Otherwise, it can be assumed the first argument is the configuration object itself, and
+    // we destructure that into what we're going to use, setting important defaults as we do.
+    // NOTE: The default for `scheduler` will be the `scheduler` argument if it exists, or
+    // it will default to the `asyncScheduler`.
+    const { first, each, with: _with = timeoutErrorFactory, scheduler = schedulerArg ?? asyncScheduler, meta = null! } = (isValidDate(
+      config
+    )
+      ? { first: config }
+      : typeof config === 'number'
+      ? { each: config }
+      : config) as TimeoutConfig<T, R, M>;
 
     if (first == null && each == null) {
       // Ensure timeout was provided at runtime.
