@@ -21,16 +21,15 @@ export declare const async: AsyncScheduler;
 export declare const asyncScheduler: AsyncScheduler;
 
 export declare class AsyncSubject<T> extends Subject<T> {
-    _subscribe(subscriber: Subscriber<any>): Subscription;
+    protected checkFinalizedStatuses(subscriber: Subscriber<T>): void;
     complete(): void;
-    error(error: any): void;
     next(value: T): void;
 }
 
 export declare class BehaviorSubject<T> extends Subject<T> {
     get value(): T;
     constructor(_value: T);
-    _subscribe(subscriber: Subscriber<T>): Subscription;
+    protected _subscribe(subscriber: Subscriber<T>): Subscription;
     getValue(): T;
     next(value: T): void;
 }
@@ -496,7 +495,8 @@ export declare function range(start?: number, count?: number, scheduler?: Schedu
 
 export declare class ReplaySubject<T> extends Subject<T> {
     constructor(bufferSize?: number, windowTime?: number, timestampProvider?: TimestampProvider);
-    _subscribe(subscriber: Subscriber<T>): Subscription;
+    protected _subscribe(subscriber: Subscriber<T>): Subscription;
+    next(value: T): void;
 }
 
 export declare function scheduled<T>(input: ObservableInput<T>, scheduler: SchedulerLike): Observable<T>;
@@ -528,13 +528,16 @@ export declare class Subject<T> extends Observable<T> implements SubscriptionLik
     observers: Observer<T>[];
     thrownError: any;
     constructor();
-    _subscribe(subscriber: Subscriber<T>): Subscription;
-    _trySubscribe(subscriber: Subscriber<T>): TeardownLogic;
+    protected _innerSubscribe(subscriber: Subscriber<any>): Subscription;
+    protected _subscribe(subscriber: Subscriber<T>): Subscription;
+    protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic;
     asObservable(): Observable<T>;
+    protected checkFinalizedStatuses(subscriber: Subscriber<any>): void;
     complete(): void;
     error(err: any): void;
     lift<R>(operator: Operator<T, R>): Observable<R>;
     next(value: T): void;
+    protected throwIfClosed(): void;
     unsubscribe(): void;
     static create: Function;
 }
