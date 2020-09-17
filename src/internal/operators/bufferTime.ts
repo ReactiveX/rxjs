@@ -1,14 +1,13 @@
 /** @prettier */
-import { Operator } from '../Operator';
-import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { isScheduler } from '../util/isScheduler';
-import { OperatorFunction, SchedulerAction, SchedulerLike } from '../types';
+import { OperatorFunction, SchedulerLike } from '../types';
 import { lift } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { arrRemove } from '../util/arrRemove';
+import { asyncScheduler } from '../scheduler/async';
 
 /* tslint:disable:max-line-length */
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
@@ -82,12 +81,7 @@ export function bufferTime<T>(
  * @name bufferTime
  */
 export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): OperatorFunction<T, T[]> {
-  let scheduler: SchedulerLike = async;
-
-  if (isScheduler(otherArgs[otherArgs.length - 1])) {
-    scheduler = otherArgs.pop() as SchedulerLike;
-  }
-
+  const scheduler = isScheduler(otherArgs[otherArgs.length - 1]) ? (otherArgs.pop() as SchedulerLike) : asyncScheduler;
   const bufferCreationInterval = (otherArgs[0] as number) ?? null;
   const maxBufferSize = (otherArgs[1] as number) || Infinity;
 
@@ -95,7 +89,7 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
     lift(source, function (this: Subscriber<T[]>, source: Observable<T>) {
       const subscriber = this;
       // The active buffers, their related subscriptions, and removal functions.
-      let bufferRecords: { buffer: T[]; subs: Subscription; remove: () => void }[] | null = [];
+      let bufferRecords: { buffer: T[]; subs: Subscription }[] | null = [];
       // If true, it means that every time we emit a buffer, we want to start a new buffer
       // this is only really used for when *just* the buffer time span is passed.
       let restartOnEmit = false;
@@ -106,12 +100,12 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
        * does not alter the buffer. Also checks to see if a new buffer needs to be started
        * after the emit.
        */
-      const emit = (record: { buffer: T[]; subs: Subscription; remove: () => void }) => {
-        record.remove();
-        subscriber.next(record.buffer);
-        if (restartOnEmit) {
-          startBuffer();
-        }
+      const emit = (record: { buffer: T[]; subs: Subscription }) => {
+        const { buffer, subs } = record;
+        subs.unsubscribe();
+        arrRemove(bufferRecords, record);
+        subscriber.next(buffer);
+        restartOnEmit && startBuffer();
       };
 
       /**
@@ -127,37 +121,25 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
           const record = {
             buffer,
             subs,
-            remove() {
-              this.subs.unsubscribe();
-              arrRemove(bufferRecords, this);
-            },
           };
           bufferRecords.push(record);
-          subs.add(
-            scheduler.schedule(() => {
-              emit(record);
-            }, bufferTimeSpan)
-          );
+          subs.add(scheduler.schedule(() => emit(record), bufferTimeSpan));
         }
       };
 
-      if (bufferCreationInterval !== null && bufferCreationInterval >= 0) {
-        // The user passed both a bufferTimeSpan (required), and a creation interval
-        // That means we need to start new buffers on the interval, and those buffers need
-        // to wait the required time span before emitting.
-        subscriber.add(
-          scheduler.schedule(function () {
-            startBuffer();
-            if (!this.closed) {
-              subscriber.add(this.schedule(null, bufferCreationInterval));
-            }
-          }, bufferCreationInterval)
-        );
-        startBuffer();
-      } else {
-        restartOnEmit = true;
-        startBuffer();
-      }
+      bufferCreationInterval !== null && bufferCreationInterval >= 0
+        ? // The user passed both a bufferTimeSpan (required), and a creation interval
+          // That means we need to start new buffers on the interval, and those buffers need
+          // to wait the required time span before emitting.
+          subscriber.add(
+            scheduler.schedule(function () {
+              startBuffer();
+              !this.closed && subscriber.add(this.schedule(null, bufferCreationInterval));
+            }, bufferCreationInterval)
+          )
+        : (restartOnEmit = true);
+
+      startBuffer();
 
       const bufferTimeSubscriber = new OperatorSubscriber(
         subscriber,
@@ -167,31 +149,27 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
           // set up a buffer time that could mutate the array and
           // cause issues here.
           const recordsCopy = bufferRecords!.slice();
-          for (let i = 0; i < recordsCopy.length; i++) {
+          for (const record of recordsCopy) {
             // Loop over all buffers and
-            const record = recordsCopy[i];
             const { buffer } = record;
             buffer.push(value);
             // If the buffer is over the max size, we need to emit it.
-            if (maxBufferSize <= buffer.length) {
-              emit(record);
-            }
+            maxBufferSize <= buffer.length && emit(record);
           }
         },
         undefined,
         () => {
           // The source completed, emit all of the active
           // buffers we have before we complete.
-          for (const record of bufferRecords!) {
-            record.remove();
-            subscriber.next(record.buffer);
+          while (bufferRecords?.length) {
+            subscriber.next(bufferRecords.shift()!.buffer);
           }
-          // Free up memory.
-          bufferRecords = null;
           bufferTimeSubscriber?.unsubscribe();
           subscriber.complete();
           subscriber.unsubscribe();
-        }
+        },
+        // Clean up
+        () => (bufferRecords = null)
       );
 
       source.subscribe(bufferTimeSubscriber);
