@@ -120,10 +120,11 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
       // This is only really used for when *just* the time span is passed.
       let restartOnClose = false;
 
-      const closeWindow = (record: { window: Subject<T>; subs: Subscription; remove: () => void }) => {
-        const { window } = record;
+      const closeWindow = (record: { window: Subject<T>; subs: Subscription }) => {
+        const { window, subs } = record;
         window.complete();
-        record.remove();
+        subs.unsubscribe();
+        arrRemove(windowRecords, record);
         if (restartOnClose) {
           startWindow();
         }
@@ -142,10 +143,6 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
             window,
             subs,
             seen: 0,
-            remove() {
-              this.subs.unsubscribe();
-              arrRemove(windowRecords, this);
-            },
           };
           windowRecords.push(record);
           subscriber.next(window.asObservable());
@@ -192,8 +189,7 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
         subscriber,
         (value: T) => {
           loop((record) => {
-            const { window } = record;
-            window.next(value);
+            record.window.next(value);
             // If the window is over the max size, we need to close it.
             maxWindowSize <= ++record.seen && closeWindow(record);
           });
@@ -218,5 +214,4 @@ interface WindowRecord<T> {
   seen: number;
   window: Subject<T>;
   subs: Subscription;
-  remove: () => void;
 }
