@@ -5,7 +5,7 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { isScheduler } from '../util/isScheduler';
-import { OperatorFunction, SchedulerLike } from '../types';
+import { Observer, OperatorFunction, SchedulerLike } from '../types';
 import { lift } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { arrRemove } from '../util/arrRemove';
@@ -102,12 +102,7 @@ export function windowTime<T>(
  * @returnAn observable of windows, which in turn are Observables.
  */
 export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): OperatorFunction<T, Observable<T>> {
-  let scheduler: SchedulerLike = asyncScheduler;
-
-  if (isScheduler(otherArgs[otherArgs.length - 1])) {
-    scheduler = otherArgs.pop() as SchedulerLike;
-  }
-
+  const scheduler = isScheduler(otherArgs[otherArgs.length - 1]) ? (otherArgs.pop() as SchedulerLike) : asyncScheduler;
   const windowCreationInterval = (otherArgs[0] as number) ?? null;
   const maxWindowSize = (otherArgs[1] as number) || Infinity;
 
@@ -125,9 +120,7 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
         window.complete();
         subs.unsubscribe();
         arrRemove(windowRecords, record);
-        if (restartOnClose) {
-          startWindow();
-        }
+        restartOnClose && startWindow();
       };
 
       /**
@@ -150,21 +143,18 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
         }
       };
 
-      if (windowCreationInterval !== null && windowCreationInterval >= 0) {
-        // The user passed both a windowTimeSpan (required), and a creation interval
-        // That means we need to start new window on the interval, and those windows need
-        // to wait the required time span before completing.
-        subscriber.add(
-          scheduler.schedule(function () {
-            startWindow();
-            if (!this.closed) {
-              subscriber.add(this.schedule(null, windowCreationInterval));
-            }
-          }, windowCreationInterval)
-        );
-      } else {
-        restartOnClose = true;
-      }
+      windowCreationInterval !== null && windowCreationInterval >= 0
+        ? // The user passed both a windowTimeSpan (required), and a creation interval
+          // That means we need to start new window on the interval, and those windows need
+          // to wait the required time span before completing.
+          subscriber.add(
+            scheduler.schedule(function () {
+              startWindow();
+              !this.closed && subscriber.add(this.schedule(null, windowCreationInterval));
+            }, windowCreationInterval)
+          )
+        : (restartOnClose = true);
+
       startWindow();
 
       /**
@@ -173,14 +163,15 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
        * The reason we copy the array is that reentrant code could mutate the array while
        * we are iterating over it.
        */
-      const loop = (cb: (record: WindowRecord<T>) => void) => {
-        windowRecords!.slice().forEach(cb);
-      };
+      const loop = (cb: (record: WindowRecord<T>) => void) => windowRecords!.slice().forEach(cb);
 
       /**
-       * Called when the source completes or errors to teardown and clean up.
+       * Used to notify all of the windows and the subscriber in the same way
+       * in the error and complete handlers.
        */
-      const cleanup = () => {
+      const terminate = (cb: (consumer: Observer<any>) => void) => {
+        loop(({ window }) => cb(window));
+        cb(subscriber);
         windowRecords = null!;
         subscriber.unsubscribe();
       };
@@ -194,16 +185,8 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
             maxWindowSize <= ++record.seen && closeWindow(record);
           });
         },
-        (err) => {
-          loop(({ window }) => window.error(err));
-          subscriber.error(err);
-          cleanup();
-        },
-        () => {
-          loop(({ window }) => window.complete());
-          subscriber.complete();
-          cleanup();
-        }
+        (err) => terminate((consumer) => consumer.error(err)),
+        () => terminate((consumer) => consumer.complete())
       );
 
       source.subscribe(windowTimeSubscriber);
