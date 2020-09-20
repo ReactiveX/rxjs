@@ -299,7 +299,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     // send the cookie.
     const { withCredentials, xsrfCookieName, xsrfHeaderName } = config;
     if ((withCredentials || !config.crossDomain) && xsrfCookieName && xsrfHeaderName) {
-      const xsrfCookie = readCookie(xsrfCookieName);
+      const xsrfCookie = document?.cookie.match(new RegExp(`(^|;\\s*)(${xsrfCookieName})=([^;]*)`))?.pop() ?? '';
       if (xsrfCookie) {
         headers[xsrfHeaderName] = xsrfCookie;
       }
@@ -516,15 +516,4 @@ function isURLSearchParams(body: any): body is URLSearchParams {
 
 function isReadableStream(body: any): body is ReadableStream {
   return typeof ReadableStream !== 'undefined' && body instanceof ReadableStream;
-}
-
-function readCookie(name: string): string {
-  try {
-    return document?.cookie.match(new RegExp(`(^|;\\s*)(${name})=([^;]*)`))?.pop() ?? '';
-  } catch (err) {
-    if (err instanceof ReferenceError) {
-      return '';
-    }
-    throw err;
-  }
 }

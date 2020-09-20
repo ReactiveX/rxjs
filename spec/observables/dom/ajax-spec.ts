@@ -177,25 +177,6 @@ describe('ajax', () => {
       expect(request.requestHeaders).to.deep.equal({});
     });
 
-    it('should not send the cookie if "document" is not defined', () => {
-      delete (global as any).document;
-
-      const obj: AjaxConfig = {
-        url: '/some/path',
-        xsrfCookieName: 'foo',
-        xsrfHeaderName: 'Custom-Header-Name',
-      };
-
-      ajax(obj).subscribe();
-
-      const request = MockXMLHttpRequest.mostRecent;
-
-      expect(request.url).to.equal('/some/path');
-      expect(request.requestHeaders).to.deep.equal({
-        'x-requested-with': 'XMLHttpRequest',
-      });
-    });
-
     it('should not send the cookie if there is no xsrfHeaderName option', () => {
       const obj: AjaxConfig = {
         url: '/some/page',
