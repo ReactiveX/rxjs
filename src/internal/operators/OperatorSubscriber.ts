@@ -13,7 +13,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
     if (onNext) {
       this._next = function (value: T) {
         try {
-          onNext?.(value);
+          onNext(value);
         } catch (err) {
           this.error(err);
         }
