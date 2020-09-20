@@ -75,7 +75,8 @@ export function materialize<T>(): OperatorFunction<T, Notification<T> & Observab
             subscriber.complete();
           },
           () => {
-            subscriber.next(Notification.createComplete()), subscriber.complete();
+            subscriber.next(Notification.createComplete());
+            subscriber.complete();
           }
         )
       );
