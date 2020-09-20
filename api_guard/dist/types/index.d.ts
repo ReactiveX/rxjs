@@ -190,7 +190,6 @@ export declare function concat<A extends ObservableInput<any>[]>(...observables:
 
 export declare const config: {
     onUnhandledError: ((err: any) => void) | null;
-    quietBadConfig: boolean;
     Promise: PromiseConstructorLike;
     useDeprecatedSynchronousErrorHandling: boolean;
     useDeprecatedNextContext: boolean;
