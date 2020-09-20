@@ -53,7 +53,6 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
       const subscriber = this;
       let buffer: T[] | null = null;
       let closingSubscriber: Subscriber<T> | null = null;
-      let isComplete = false;
 
       const openBuffer = () => {
         closingSubscriber?.unsubscribe();
@@ -70,11 +69,7 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
           return;
         }
 
-        closingNotifier.subscribe(
-          (closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, undefined, () => {
-            isComplete ? subscriber.complete() : openBuffer();
-          }))
-        );
+        closingNotifier.subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, undefined, () => openBuffer())));
       };
 
       openBuffer();
@@ -85,14 +80,10 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
           (value) => buffer?.push(value),
           undefined,
           () => {
-            isComplete = true;
             buffer && subscriber.next(buffer);
             subscriber.complete();
           },
-          () => {
-            buffer = null!;
-            closingSubscriber = null!;
-          }
+          () => (buffer = closingSubscriber = null!)
         )
       );
     });
