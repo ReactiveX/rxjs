@@ -52,34 +52,46 @@ export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T
   return (source: Observable<T>) =>
     lift(source, function (this: Subscriber<Observable<T>>, source: Observable<T>) {
       const subscriber = this;
-      let window = new Subject<T>();
+      let windowSubject = new Subject<T>();
 
-      subscriber.next(window.asObservable());
+      subscriber.next(windowSubject.asObservable());
 
+      /**
+       * Subscribes to one of our two observables in this operator in the same way,
+       * only allowing for different behaviors with the next handler.
+       * @param source The observable to subscribe to.
+       * @param next The next handler to use with the subscription
+       */
       const windowSubscribe = (source: Observable<any>, next: (value: any) => void) =>
         source.subscribe(
           new OperatorSubscriber(
             subscriber,
             next,
             (err: any) => {
-              window.error(err);
+              windowSubject.error(err);
               subscriber.error(err);
             },
             () => {
-              window.complete();
+              windowSubject.complete();
               subscriber.complete();
-            },
-            () => {
-              window?.unsubscribe();
-              window = null!;
             }
           )
         );
 
-      windowSubscribe(source, (value) => window.next(value));
+      // Subscribe to our source
+      windowSubscribe(source, (value) => windowSubject.next(value));
+      // Subscribe to the window boundaries.
       windowSubscribe(windowBoundaries, () => {
-        window.complete();
-        subscriber.next((window = new Subject()));
+        windowSubject.complete();
+        subscriber.next((windowSubject = new Subject()));
       });
+
+      // Additional teardown. Note that other teardown and post-subscription logic
+      // is encapsulated in the act of a Subscriber subscribing to the observable
+      // during the subscribe call. We can return additional teardown here.
+      return () => {
+        windowSubject.unsubscribe();
+        windowSubject = null!;
+      };
     });
 }
