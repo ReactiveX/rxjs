@@ -21,7 +21,7 @@ export declare const async: AsyncScheduler;
 export declare const asyncScheduler: AsyncScheduler;
 
 export declare class AsyncSubject<T> extends Subject<T> {
-    protected checkFinalizedStatuses(subscriber: Subscriber<T>): void;
+    protected _checkFinalizedStatuses(subscriber: Subscriber<T>): void;
     complete(): void;
     next(value: T): void;
 }
@@ -528,11 +528,11 @@ export declare class Subject<T> extends Observable<T> implements SubscriptionLik
     observers: Observer<T>[];
     thrownError: any;
     constructor();
+    protected _checkFinalizedStatuses(subscriber: Subscriber<any>): void;
     protected _innerSubscribe(subscriber: Subscriber<any>): Subscription;
     protected _subscribe(subscriber: Subscriber<T>): Subscription;
     protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic;
     asObservable(): Observable<T>;
-    protected checkFinalizedStatuses(subscriber: Subscriber<any>): void;
     complete(): void;
     error(err: any): void;
     lift<R>(operator: Operator<T, R>): Observable<R>;
