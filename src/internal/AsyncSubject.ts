@@ -1,3 +1,4 @@
+/** @prettier */
 import { Subject } from './Subject';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
@@ -11,6 +12,7 @@ import { Subscription } from './Subscription';
 export class AsyncSubject<T> extends Subject<T> {
   private value: T | null = null;
   private hasValue = false;
+  private isComplete = false;
 
   protected checkFinalizedStatuses(subscriber: Subscriber<T>) {
     const { hasError, hasValue, value, thrownError, isStopped } = this;
@@ -30,8 +32,11 @@ export class AsyncSubject<T> extends Subject<T> {
   }
 
   complete(): void {
-    const { hasValue, value } = this;
-    hasValue && super.next(value!);
-    super.complete();
+    const { hasValue, value, isComplete } = this;
+    if (!isComplete) {
+      this.isComplete = true;
+      hasValue && super.next(value!);
+      super.complete();
+    }
   }
 }
