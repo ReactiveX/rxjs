@@ -155,15 +155,26 @@ export class Notification<T> {
    */
   toObservable(): Observable<T> {
     const { kind, value, error } = this;
-    return kind === 'N'
-      ? of(value!)
-      : kind === 'E'
-      ? throwError(error)
-      : kind === 'C'
-      ? EMPTY
-      : (() => {
-          throw new TypeError(`Unexpected notification kind ${kind}`);
-        })();
+    // Select the observable to return by `kind`
+    const result =
+      kind === 'N'
+        ? // Next kind. Return an observable of that value.
+          of(value!)
+        : //
+        kind === 'E'
+        ? // Error kind. Return an observable that emits the error.
+          throwError(error)
+        : //
+        kind === 'C'
+        ? // Completion kind. Kind is "C", return an observable that just completes.
+          EMPTY
+        : // Unknown kind, return falsy, so we error below.
+          0;
+    if (!result) {
+      // We might think about removing this check, as the
+      throw new TypeError(`Unexpected notification kind ${kind}`);
+    }
+    return result;
   }
 
   private static completeNotification = new Notification('C') as Notification<never> & CompleteNotification;
