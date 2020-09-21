@@ -192,13 +192,11 @@ describe('Subscriber', () => {
 
   describe('deprecated next context mode', () => {
     beforeEach(() => {
-      config.quietBadConfig = true;
       config.useDeprecatedNextContext = true;
     });
 
     afterEach(() => {
       config.useDeprecatedNextContext = false;
-      config.quietBadConfig = false;
     });
 
     it('should allow changing the context of `this` in a POJO subscriber', () => {
