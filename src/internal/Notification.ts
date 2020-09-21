@@ -171,7 +171,9 @@ export class Notification<T> {
         : // Unknown kind, return falsy, so we error below.
           0;
     if (!result) {
-      // We might think about removing this check, as the
+      // TODO: consider removing this check. The only way to cause this would be to
+      // use the Notification constructor directly in a way that is not type-safe.
+      // and direct use of the Notification constructor is deprecated.
       throw new TypeError(`Unexpected notification kind ${kind}`);
     }
     return result;
