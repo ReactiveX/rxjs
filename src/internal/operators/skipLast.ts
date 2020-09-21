@@ -42,6 +42,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @name skipLast
  */
 export function skipLast<T>(skipCount: number): MonoTypeOperatorFunction<T> {
+  // For skipCounts less than or equal to zero, we are just mirroring the source.
   return (source: Observable<T>) => skipCount <= 0 ? source : lift(source, function (this: Subscriber<T>, source: Observable<T>) {
     const subscriber = this;
     // A ring buffer to hold the values while we wait to see

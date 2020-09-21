@@ -81,7 +81,7 @@ export class ReplaySubject<T> extends Subject<T> {
       subscriber.next(copy[i] as T);
     }
 
-    this.checkFinalizedStatuses(subscriber);
+    this._checkFinalizedStatuses(subscriber);
 
     return subscription;
   }
