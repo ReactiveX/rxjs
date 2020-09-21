@@ -99,7 +99,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   /** @deprecated This is an internal implementation detail, do not use. */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
     this.throwIfClosed();
-    this.checkFinalizedStatuses(subscriber);
+    this._checkFinalizedStatuses(subscriber);
     return this._innerSubscribe(subscriber);
   }
 
@@ -110,7 +110,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
       : (observers.push(subscriber), new Subscription(() => arrRemove(this.observers, subscriber)));
   }
 
-  protected checkFinalizedStatuses(subscriber: Subscriber<any>) {
+  protected _checkFinalizedStatuses(subscriber: Subscriber<any>) {
     const { hasError, thrownError, isStopped } = this;
     if (hasError) {
       subscriber.error(thrownError);

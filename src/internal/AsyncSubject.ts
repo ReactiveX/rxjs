@@ -14,7 +14,7 @@ export class AsyncSubject<T> extends Subject<T> {
   private hasValue = false;
   private isComplete = false;
 
-  protected checkFinalizedStatuses(subscriber: Subscriber<T>) {
+  protected _checkFinalizedStatuses(subscriber: Subscriber<T>) {
     const { hasError, hasValue, value, thrownError, isStopped } = this;
     if (hasError) {
       subscriber.error(thrownError);
