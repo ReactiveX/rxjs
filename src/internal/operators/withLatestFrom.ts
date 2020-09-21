@@ -161,7 +161,7 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R> {
       // An array of whether or not the other sources have emitted. Matched with them by index.
       // TODO: At somepoint, we should investigate the performance implications here, and look
       // into using a `Set()` and checking the `size` to see if we're ready.
-      let hasValue: Record<string, any> = inputs.map(() => false);
+      let hasValue = inputs.map(() => false);
       // Flipped true when we have at least one value from all other sources and
       // we are ready to start emitting values.
       let ready = false;
