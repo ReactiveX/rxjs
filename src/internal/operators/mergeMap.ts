@@ -109,13 +109,7 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
        * Called to check to see if we can complete, and completes the result if
        * nothing is active.
        */
-      const checkComplete = () => {
-        if (isComplete && !active) {
-          subscriber.complete();
-          // Ensure any buffered values are released.
-          buffer = null!;
-        }
-      };
+      const checkComplete = () => isComplete && !active && subscriber.complete();
 
       /**
        * Attempts to start an inner subscription from a buffered value,
@@ -182,6 +176,13 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
           }
         )
       );
+
+      // Additional teardown. Called when the destination is torn down.
+      // Other teardown is registered implicitly above during subscription.
+      return () => {
+        // Release buffered values
+        buffer = null!;
+      };
     });
 }
 
