@@ -93,37 +93,69 @@ export function delayWhen<T>(
   return (source: Observable<T>) =>
     lift(source, function (this: Subscriber<T>, source: Observable<T>) {
       const subscriber = this;
+      // An index to give to the projection function.
       let index = 0;
+      // Whether or not the source has completed.
       let isComplete = false;
+      // Tracks the number of actively delayed values we have.
       let active = 0;
+
+      /**
+       * Checks to see if we can complete the result and completes it, if so.
+       */
+      const checkComplete = () => isComplete && !active && subscriber.complete();
+
       const outerSubscriber = new OperatorSubscriber(
         subscriber,
         (value: T) => {
-          const durationNotifier = delayDurationSelector(value, index++);
-          active++;
+          // Closed bit to guard reentrancy and
+          // synchronous next/complete (which both make the same calls right now)
           let closed = false;
+
+          /**
+           * Notifies the consumer of the value.
+           */
           const notify = () => {
+            // Notify the consumer.
             subscriber.next(value);
+
+            // Ensure our inner subscription is cleaned up
+            // as soon as possible. Once the first `next` fires,
+            // we have no more use for this subscription.
             durationSubscriber?.unsubscribe();
-            !closed && ((closed = true), --active === 0) && isComplete && subscriber.complete();
+
+            if (!closed) {
+              active--;
+              closed = true;
+              checkComplete();
+            }
           };
+
           const durationSubscriber = new OperatorSubscriber(
             subscriber,
             notify,
+            // Errors are sent to consumer.
             undefined,
             // TODO(benlesh): I'm inclined to say this is _incorrect_ behavior.
             // A completion should not be a notification. Note the deprecation above
             notify
           );
-          durationNotifier.subscribe(durationSubscriber);
+
+          active++;
+          delayDurationSelector(value, index++).subscribe(durationSubscriber);
         },
+        // Errors are passed through to consumer.
         undefined,
         () => {
           isComplete = true;
-          active === 0 && subscriber.complete();
+          checkComplete();
+          // Ensure the subscription to source is torn down as soon
+          // as possible. Otherwise it will hang until the final delay
+          // fires.
           outerSubscriber?.unsubscribe();
         }
       );
+
       source.subscribe(outerSubscriber);
     });
 }
