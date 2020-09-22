@@ -80,39 +80,75 @@ export function expand<T, R>(
   return (source: Observable<T>) =>
     lift(source, function (this: Subscriber<any>, source: Observable<T>) {
       const subscriber = this;
+      // The number of active subscriptions.
       let active = 0;
-      const buffer: (T | R)[] = [];
+      // The buffered values that we will subscribe to.
+      let buffer: (T | R)[] = [];
+      // An index to pass to the projection function.
       let index = 0;
+      // Whether or not the source has completed.
       let isComplete = false;
 
+      /**
+       * Emits the given value, then projects it into an inner observable which
+       * is then subscribed to for the expansion.
+       * @param value the value to emit and start the expansion with
+       */
+      const emitAndExpand = (value: T | R) => {
+        subscriber.next(value);
+        // Doing the `from` and `project` here so that it is caught by the
+        // try/catch in our OperatorSubscriber. Otherwise, if we were to inline
+        // this in `doSub` below, if it is called with a scheduler, errors thrown
+        // would be out-of-band with the try/catch and we would have to do the
+        // try catching manually there. While this does mean we have to potentially
+        // keep a larger allocation (the observable) in memory, the tradeoff is it
+        // keeps the size down.
+        // TODO: Correct the types here. `project` could be R or T.
+        const inner = from(project(value as any, index++));
+        active++;
+        const doSub = () => {
+          inner.subscribe(
+            new OperatorSubscriber(subscriber, next, undefined, () => {
+              --active === 0 && isComplete && !buffer.length ? subscriber.complete() : trySub();
+            })
+          );
+        };
+
+        scheduler ? subscriber.add(scheduler.schedule(doSub)) : doSub();
+      };
+
+      /**
+       * Tries to dequeue a value from the buffer, if there is one, and
+       * process it.
+       */
       const trySub = () => {
+        // It seems like here we could just make the assumption that we've arrived here because
+        // we need to start one more expansion because one has just completed. However, it's
+        // possible, due to scheduling, that multiple inner subscriptions could complete and we
+        // could need to start more than one inner subscription from our buffer. Hence the loop.
         while (0 < buffer.length && active < concurrent) {
-          const value = buffer.shift()!;
-          subscriber.next(value);
-          // TODO: Correct the types here. `project` could be R or T.
-          const inner = from(project(value as any, index++));
-          active++;
-          const doSub = () => {
-            inner.subscribe(
-              new OperatorSubscriber(subscriber, next, undefined, () => {
-                --active === 0 && isComplete && buffer.length === 0 ? subscriber.complete() : trySub();
-              })
-            );
-          };
-          scheduler ? subscriber.add(scheduler.schedule(doSub)) : doSub();
+          emitAndExpand(buffer.shift()!);
         }
       };
 
-      const next = (value: T | R) => {
-        buffer.push(value);
-        trySub();
-      };
+      /**
+       * Handle the next value. Captured here because this is called "recursively" by both incoming
+       * values from the source, and values emitted by the expanded inner subscriptions.
+       * @param value The value to process
+       */
+      const next = (value: T | R) => (active < concurrent ? emitAndExpand(value) : buffer.push(value));
 
+      // subscribe to our source.
       source.subscribe(
         new OperatorSubscriber(subscriber, next, undefined, () => {
           isComplete = true;
           active === 0 && subscriber.complete();
         })
       );
+
+      return () => {
+        // Release buffered values.
+        buffer = null!;
+      };
     });
 }
