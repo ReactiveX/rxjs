@@ -172,24 +172,34 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
       const terminate = (cb: (consumer: Observer<any>) => void) => {
         loop(({ window }) => cb(window));
         cb(subscriber);
-        windowRecords = null!;
         subscriber.unsubscribe();
       };
 
-      const windowTimeSubscriber = new OperatorSubscriber(
-        subscriber,
-        (value: T) => {
-          loop((record) => {
-            record.window.next(value);
-            // If the window is over the max size, we need to close it.
-            maxWindowSize <= ++record.seen && closeWindow(record);
-          });
-        },
-        (err) => terminate((consumer) => consumer.error(err)),
-        () => terminate((consumer) => consumer.complete())
+      source.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (value: T) => {
+            // Notify all windows of the value.
+            loop((record) => {
+              record.window.next(value);
+              // If the window is over the max size, we need to close it.
+              maxWindowSize <= ++record.seen && closeWindow(record);
+            });
+          },
+          // Notify the windows and the downstream subscriber of the error and clean up.
+          (err) => terminate((consumer) => consumer.error(err)),
+          // Complete the windows and the downstream subscriber and clean up.
+          () => terminate((consumer) => consumer.complete())
+        )
       );
 
-      source.subscribe(windowTimeSubscriber);
+      // Additional teardown. This will be called when the
+      // destination tears down. Other teardowns are registered implicitly
+      // above via subscription.
+      return () => {
+        // Ensure that the buffer is released.
+        windowRecords = null!;
+      };
     });
 }
 
