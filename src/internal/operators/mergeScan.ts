@@ -81,40 +81,50 @@ export function mergeScan<T, R>(
         }
       };
 
-      const nextSourceValue = (value: T) => {
-        // If we're under our concurrency limit, go ahead and
-        // call the accumulator and subscribe to the result.
-        if (active < concurrent) {
-          active++;
-          from(accumulator(state!, value, index++)).subscribe(
-            new OperatorSubscriber(
-              subscriber,
-              (innerValue) => {
-                hasState = true;
-                // Intentially terse. Set the state, then emit it.
-                subscriber.next((state = innerValue));
-              },
-              // Errors are passed to the destination.
-              undefined,
-              () => {
-                // The inner completed, decrement the number of actives.
-                active--;
-                // If we have anything in the buffer, process it, otherwise check to see if we can complete.
-                buffer.length ? nextSourceValue(buffer.shift()!) : checkComplete();
-              }
-            )
-          );
-        } else {
-          // We're over our concurrency limit, push it onto the buffer to be
-          // process later when one of our inners completes.
-          buffer.push(value);
+      const doInnerSub = (value: T) => {
+        active++;
+        from(accumulator(state!, value, index++)).subscribe(
+          new OperatorSubscriber(
+            subscriber,
+            (innerValue) => {
+              hasState = true;
+              // Intentially terse. Set the state, then emit it.
+              subscriber.next((state = innerValue));
+            },
+            // Errors are passed to the destination.
+            undefined,
+
+            // TODO: Much of this code is duplicated from mergeMap. Perhaps
+            // look into a way to unify this.
+
+            () => {
+              // INNER SOURCE COMPLETE
+              // Decrement the active count to ensure that the next time
+              // we try to call `doInnerSub`, the number is accurate.
+              active--;
+              // If we have more values in the buffer, try to process those
+              // Note that this call will increment `active` ahead of the
+              // next conditional, if there were any more inner subscriptions
+              // to start.
+              buffer.length && tryInnerSub();
+              // Check to see if we can complete, and complete if so.
+              checkComplete();
+            }
+          )
+        );
+      };
+
+      const tryInnerSub = () => {
+        while (buffer.length && active < concurrent) {
+          doInnerSub(buffer.shift()!);
         }
       };
 
       source.subscribe(
         new OperatorSubscriber(
           subscriber,
-          nextSourceValue,
+          // If we're under our concurrency limit, just start the inner subscription, otherwise buffer and wait.
+          (value) => (active < concurrent ? doInnerSub(value) : buffer.push(value)),
           // Errors are passed through
           undefined,
           () => {
