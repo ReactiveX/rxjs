@@ -372,7 +372,8 @@ export function timeout<T, R, M>(config: number | Date | TimeoutConfig<T, R, M>,
               seen++;
               // Emit
               subscriber.next((lastValue = value));
-              each && each > 0 && startTimer(each);
+              // null | undefined are both < 0. Thanks, JavaScript.
+              each! > 0 && startTimer(each!);
             },
             undefined,
             undefined,
