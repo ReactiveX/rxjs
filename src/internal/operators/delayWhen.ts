@@ -105,57 +105,55 @@ export function delayWhen<T>(
        */
       const checkComplete = () => isComplete && !active && subscriber.complete();
 
-      const outerSubscriber = new OperatorSubscriber(
-        subscriber,
-        (value: T) => {
-          // Closed bit to guard reentrancy and
-          // synchronous next/complete (which both make the same calls right now)
-          let closed = false;
+      source.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (value: T) => {
+            // Closed bit to guard reentrancy and
+            // synchronous next/complete (which both make the same calls right now)
+            let closed = false;
 
-          /**
-           * Notifies the consumer of the value.
-           */
-          const notify = () => {
-            // Notify the consumer.
-            subscriber.next(value);
+            /**
+             * Notifies the consumer of the value.
+             */
+            const notify = () => {
+              // Notify the consumer.
+              subscriber.next(value);
 
-            // Ensure our inner subscription is cleaned up
-            // as soon as possible. Once the first `next` fires,
-            // we have no more use for this subscription.
-            durationSubscriber?.unsubscribe();
+              // Ensure our inner subscription is cleaned up
+              // as soon as possible. Once the first `next` fires,
+              // we have no more use for this subscription.
+              durationSubscriber?.unsubscribe();
 
-            if (!closed) {
-              active--;
-              closed = true;
-              checkComplete();
-            }
-          };
+              if (!closed) {
+                active--;
+                closed = true;
+                checkComplete();
+              }
+            };
 
-          const durationSubscriber = new OperatorSubscriber(
-            subscriber,
-            notify,
-            // Errors are sent to consumer.
-            undefined,
-            // TODO(benlesh): I'm inclined to say this is _incorrect_ behavior.
-            // A completion should not be a notification. Note the deprecation above
-            notify
-          );
+            // We have to capture our duration subscriber so we can unsubscribe from
+            // it on the first next notification it gives us.
+            const durationSubscriber = new OperatorSubscriber(
+              subscriber,
+              notify,
+              // Errors are sent to consumer.
+              undefined,
+              // TODO(benlesh): I'm inclined to say this is _incorrect_ behavior.
+              // A completion should not be a notification. Note the deprecation above
+              notify
+            );
 
-          active++;
-          delayDurationSelector(value, index++).subscribe(durationSubscriber);
-        },
-        // Errors are passed through to consumer.
-        undefined,
-        () => {
-          isComplete = true;
-          checkComplete();
-          // Ensure the subscription to source is torn down as soon
-          // as possible. Otherwise it will hang until the final delay
-          // fires.
-          outerSubscriber?.unsubscribe();
-        }
+            active++;
+            delayDurationSelector(value, index++).subscribe(durationSubscriber);
+          },
+          // Errors are passed through to consumer.
+          undefined,
+          () => {
+            isComplete = true;
+            checkComplete();
+          }
+        )
       );
-
-      source.subscribe(outerSubscriber);
     });
 }
