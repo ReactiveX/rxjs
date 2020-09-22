@@ -55,15 +55,15 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
   return (source: Observable<T>) =>
     lift(source, function (this: Subscriber<Observable<T>>, source: Observable<T>) {
       const subscriber = this;
-      let window: Subject<T>;
-      let closingSubscriber: Subscriber<any>;
+      let window: Subject<T> | null;
+      let closingSubscriber: Subscriber<any> | undefined;
 
       /**
        * When we get an error, we have to notify both the
        * destiation subscriber and the window.
        */
       const handleError = (err: any) => {
-        window.error(err);
+        window!.error(err);
         subscriber.error(err);
       };
 
@@ -108,17 +108,18 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
       source.subscribe(
         new OperatorSubscriber(
           subscriber,
-          (value) => window.next(value),
+          (value) => window!.next(value),
           handleError,
           () => {
             // The source completed, close the window and complete.
-            window.complete();
+            window!.complete();
             subscriber.complete();
           },
           () => {
             // Be sure to clean up our closing subscription
             // when this tears down.
             closingSubscriber?.unsubscribe();
+            window = null!;
           }
         )
       );
