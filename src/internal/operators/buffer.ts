@@ -49,13 +49,23 @@ export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T,
     lift(source, function (this: Subscriber<T[]>, source: Observable<T>) {
       const subscriber = this;
       let buffer: T[] = [];
+
+      // Subscribe to our source.
       source.subscribe(new OperatorSubscriber(subscriber, (value) => buffer.push(value)));
+
+      // Subscribe to the closing notifier.
       closingNotifier.subscribe(
         new OperatorSubscriber(subscriber, () => {
+          // Start a new buffer and emit the previous one.
           const b = buffer;
           buffer = [];
           subscriber.next(b);
         })
       );
+
+      return () => {
+        // Ensure buffered values are released on teardown.
+        buffer = null!;
+      };
     });
 }
