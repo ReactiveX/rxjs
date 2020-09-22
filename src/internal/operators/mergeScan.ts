@@ -94,6 +94,7 @@ export function mergeScan<T, R>(
                 // Intentially terse. Set the state, then emit it.
                 subscriber.next((state = innerValue));
               },
+              // Errors are passed to the destination.
               undefined,
               () => {
                 // The inner completed, decrement the number of actives.
@@ -111,11 +112,24 @@ export function mergeScan<T, R>(
       };
 
       source.subscribe(
-        new OperatorSubscriber(subscriber, nextSourceValue, undefined, () => {
-          // Outer completed, make a note of it, and check to see if we can complete everything.
-          isComplete = true;
-          checkComplete();
-        })
+        new OperatorSubscriber(
+          subscriber,
+          nextSourceValue,
+          // Errors are passed through
+          undefined,
+          () => {
+            // Outer completed, make a note of it, and check to see if we can complete everything.
+            isComplete = true;
+            checkComplete();
+          }
+        )
       );
+
+      // Additional teardown (for when the destination is torn down).
+      // Other teardown is added implicitly via subscription above.
+      return () => {
+        // Ensure buffered values are released.
+        buffer = null!;
+      };
     });
 }
