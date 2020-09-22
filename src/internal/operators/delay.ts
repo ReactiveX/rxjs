@@ -118,6 +118,7 @@ export function delay<T>(delay: number | Date, scheduler: SchedulerLike = asyncS
               );
             }
           },
+          // Allow errors to pass through.
           undefined,
           () => {
             isComplete = true;
@@ -125,5 +126,12 @@ export function delay<T>(delay: number | Date, scheduler: SchedulerLike = asyncS
           }
         )
       );
+
+      // Additional teardown. The other teardown is set up
+      // implicitly by subscribing with Subscribers.
+      return () => {
+        // Release the buffered values.
+        absoluteTimeValues = null!;
+      };
     });
 }
