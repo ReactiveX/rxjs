@@ -49,8 +49,12 @@ export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any
       const subscriber = this;
       // The index of the value from the source. Used with projection.
       let index = 0;
+      // Subscribe to the source, all errors and completions are sent along
+      // to the consumer.
       source.subscribe(
         new OperatorSubscriber(subscriber, (value: T) => {
+          // Call the projection function with the appropriate this context,
+          // and send the resulting value to the consumer.
           subscriber.next(project.call(thisArg, value, index++));
         })
       );
