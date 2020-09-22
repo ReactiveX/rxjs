@@ -92,7 +92,6 @@ export function windowToggle<T, O>(
               window.complete();
               closingSubscription.unsubscribe();
             };
-            const closingSubscriber = new OperatorSubscriber(subscriber, closeWindow, handleError, closeWindow);
 
             let closingNotifier: Observable<any>;
             try {
@@ -104,7 +103,7 @@ export function windowToggle<T, O>(
 
             subscriber.next(window.asObservable());
 
-            closingSubscription.add(closingNotifier.subscribe(closingSubscriber));
+            closingSubscription.add(closingNotifier.subscribe(new OperatorSubscriber(subscriber, closeWindow, handleError, closeWindow)));
           },
           undefined,
           noop
