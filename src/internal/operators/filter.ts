@@ -58,15 +58,11 @@ export function filter<T>(predicate: (value: T, index: number) => boolean, thisA
 
     // Subscribe to the source, all errors and completions are
     // forwarded to the consumer.
-    return source.subscribe(
-      new OperatorSubscriber(subscriber, (value) => {
-        // Call the predicate with the appropriate `this` context,
-        // if the predicate returns `true`, then send the value
-        // to the consumer.
-        if (predicate.call(thisArg, value, index++)) {
-          subscriber.next(value);
-        }
-      })
+    source.subscribe(
+      // Call the predicate with the appropriate `this` context,
+      // if the predicate returns `true`, then send the value
+      // to the consumer.
+      new OperatorSubscriber(subscriber, (value) => predicate.call(thisArg, value, index++) && subscriber.next(value))
     );
   });
 }

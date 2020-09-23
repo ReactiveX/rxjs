@@ -149,7 +149,8 @@ export function tap<T>(
       onError = error ? wrap(error.bind(nextOrObserver)) : noop;
       onComplete = complete ? wrap(complete.bind(nextOrObserver)) : noop;
     }
-    return source.subscribe(new TapSubscriber(subscriber, onNext, onError, onComplete));
+
+    source.subscribe(new TapSubscriber(subscriber, onNext, onError, onComplete));
   });
 }
 

@@ -78,7 +78,9 @@ export function zip<T, TOther, R>(
  * @deprecated Deprecated. Use {@link zipWith}.
  */
 export function zip<T, R>(...sources: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): OperatorFunction<T, any> {
-  return operate((source, subscriber) => zipStatic(source, ...sources).subscribe(subscriber));
+  return operate((source, subscriber) => {
+    zipStatic(source, ...sources).subscribe(subscriber);
+  });
 }
 
 /**

@@ -106,12 +106,10 @@ export function refCount<T>(): MonoTypeOperatorFunction<T> {
       subscriber.unsubscribe();
     });
 
-    const subscription = source.subscribe(refCounter);
+    source.subscribe(refCounter);
 
     if (!refCounter.closed) {
       connection = (source as ConnectableObservable<T>).connect();
     }
-
-    return subscription;
   });
 }
