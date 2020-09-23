@@ -3,6 +3,7 @@ import { MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { Subscription } from '../Subscription';
 import { EMPTY } from '../observable/empty';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 export interface RetryConfig {
   count: number;
@@ -72,41 +73,39 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
     ? () => EMPTY
     : operate((source, subscriber) => {
         let soFar = 0;
-        const subscription = new Subscription();
         let innerSub: Subscription | null;
         const subscribeForRetry = () => {
           let syncUnsub = false;
-          innerSub = source.subscribe({
-            next: (value) => {
-              if (resetOnSuccess) {
-                soFar = 0;
-              }
-              subscriber.next(value);
-            },
-            error: (err) => {
-              if (soFar++ < count) {
-                if (innerSub) {
-                  innerSub.unsubscribe();
-                  innerSub = null;
-                  subscribeForRetry();
-                } else {
-                  syncUnsub = true;
+          innerSub = source.subscribe(
+            new OperatorSubscriber(
+              subscriber,
+              (value) => {
+                if (resetOnSuccess) {
+                  soFar = 0;
                 }
-              } else {
-                subscriber.error(err);
+                subscriber.next(value);
+              },
+              (err) => {
+                if (soFar++ < count) {
+                  if (innerSub) {
+                    innerSub.unsubscribe();
+                    innerSub = null;
+                    subscribeForRetry();
+                  } else {
+                    syncUnsub = true;
+                  }
+                } else {
+                  subscriber.error(err);
+                }
               }
-            },
-            complete: () => subscriber.complete(),
-          });
+            )
+          );
           if (syncUnsub) {
             innerSub.unsubscribe();
             innerSub = null;
             subscribeForRetry();
-          } else {
-            subscription.add(innerSub);
           }
         };
         subscribeForRetry();
-        return subscription;
       });
 }
