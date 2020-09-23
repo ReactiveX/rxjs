@@ -1,7 +1,6 @@
 /** @prettier */
 import { Subject } from './Subject';
 import { Subscriber } from './Subscriber';
-import { Subscription } from './Subscription';
 
 /**
  * A variant of Subject that only emits a value when it completes. It will emit

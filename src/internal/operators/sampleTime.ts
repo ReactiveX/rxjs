@@ -1,9 +1,6 @@
 /** @prettier */
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { asyncScheduler } from '../scheduler/async';
-import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike } from '../types';
-import { lift } from '../util/lift';
+import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { sample } from './sample';
 import { interval } from '../observable/interval';
 

@@ -1,6 +1,5 @@
 /** @prettier */
 import { Subject } from '../Subject';
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { ConnectableObservable } from '../observable/ConnectableObservable';

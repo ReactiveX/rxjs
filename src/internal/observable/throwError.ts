@@ -1,7 +1,6 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { SchedulerLike } from '../types';
-import { Subscriber } from '../Subscriber';
 
 /**
  * Creates an observable that will create an error instance and push it to the consumer as an error

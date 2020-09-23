@@ -1,6 +1,5 @@
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueUnionFromArray } from '../types';
-import { of } from './of';
 import { concatAll } from '../operators/concatAll';
 import { isScheduler } from '../util/isScheduler';
 import { fromArray } from './fromArray';
