@@ -363,7 +363,7 @@ export function timeout<T, R, M>(config: number | Date | TimeoutConfig<T, R, M>,
           subscriber,
           (value) => {
             // clear the timer so we can emit and start another one.
-            timerSubscription.unsubscribe();
+              timerSubscription?.unsubscribe();
             seen++;
             // Emit
             subscriber.next((lastValue = value));
@@ -373,6 +373,9 @@ export function timeout<T, R, M>(config: number | Date | TimeoutConfig<T, R, M>,
           undefined,
           undefined,
           () => {
+              if (!timerSubscription?.closed) {
+                timerSubscription?.unsubscribe();
+              }
             // Be sure not to hold the last value in memory after unsubscription
             // it could be quite large.
             lastValue = null;
