@@ -531,13 +531,13 @@ export declare class Subject<T> extends Observable<T> implements SubscriptionLik
     protected _checkFinalizedStatuses(subscriber: Subscriber<any>): void;
     protected _innerSubscribe(subscriber: Subscriber<any>): Subscription;
     protected _subscribe(subscriber: Subscriber<T>): Subscription;
+    protected _throwIfClosed(): void;
     protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic;
     asObservable(): Observable<T>;
     complete(): void;
     error(err: any): void;
     lift<R>(operator: Operator<T, R>): Observable<R>;
     next(value: T): void;
-    protected throwIfClosed(): void;
     unsubscribe(): void;
     static create: Function;
 }
