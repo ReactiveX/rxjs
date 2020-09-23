@@ -163,7 +163,6 @@ export class SafeSubscriber<T> extends Subscriber<T> {
 function handleError(err: any) {
   if (config.useDeprecatedSynchronousErrorHandling) {
     throw err;
-  } else {
-    reportUnhandledError(err);
   }
+  reportUnhandledError(err);
 }
