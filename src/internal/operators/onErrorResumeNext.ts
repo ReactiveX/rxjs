@@ -1,10 +1,11 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf, ObservedValueUnionFromArray, MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { from } from '../observable/from';
 import { argsOrArgArray } from '../util/argsOrArgArray';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { noop } from '../util/noop';
 
 export function onErrorResumeNext<T>(): MonoTypeOperatorFunction<T>;
 export function onErrorResumeNext<T, O extends ObservableInput<any>>(arrayOfSources: O[]): OperatorFunction<T, T | ObservedValueOf<O>>;
@@ -100,7 +101,7 @@ export function onErrorResumeNext<T>(...nextSources: ObservableInput<any>[]): Op
           // The `closed` property of upstream Subscribers synchronously, that
           // would result in situation were we could not stop a synchronous firehose
           // with something like `take(3)`.
-          const innerSub = new OnErrorResumeNextSubscriber(subscriber);
+          const innerSub = new OperatorSubscriber(subscriber, undefined, noop, noop);
           subscriber.add(nextSource.subscribe(innerSub));
           innerSub.add(subscribeNext);
         } else {
@@ -110,17 +111,5 @@ export function onErrorResumeNext<T>(...nextSources: ObservableInput<any>[]): Op
     };
 
     subscribeNext();
-
-    return subscriber;
   });
-}
-
-class OnErrorResumeNextSubscriber extends Subscriber<any> {
-  _error() {
-    this.unsubscribe();
-  }
-
-  _complete() {
-    this.unsubscribe();
-  }
 }
