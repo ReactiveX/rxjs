@@ -1,6 +1,4 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, PartialObserver } from '../types';
 import { isFunction } from '../util/isFunction';
 import { operate } from '../util/lift';
