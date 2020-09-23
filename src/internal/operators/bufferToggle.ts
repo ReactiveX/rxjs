@@ -56,7 +56,7 @@ export function bufferToggle<T, O>(
   openings: SubscribableOrPromise<O>,
   closingSelector: (value: O) => SubscribableOrPromise<any>
 ): OperatorFunction<T, T[]> {
-  return operate((liftedSource, subscriber) => {
+  return operate((source, subscriber) => {
     const buffers: T[][] = [];
 
     // Subscribe to the openings notifier first
@@ -87,7 +87,7 @@ export function bufferToggle<T, O>(
       )
     );
 
-    liftedSource.subscribe(
+    source.subscribe(
       new OperatorSubscriber(
         subscriber,
         (value) => {
