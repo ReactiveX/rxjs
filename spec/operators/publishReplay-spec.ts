@@ -438,8 +438,7 @@ describe('publishReplay operator', () => {
     const source = cold('--1-2---3-4---|');
     const published = source.pipe(publishReplay(1, Infinity, selector));
 
-    // The exception is thrown outside Rx chain (not as an error notification).
-    expect(() => published.subscribe()).to.throw(error);
+    expectObservable(published).toBe('#', undefined, "It's broken");
   });
 
   it('should emit an error when the selector returns an Observable that emits an error', () => {
