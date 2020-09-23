@@ -30,7 +30,7 @@ export class BehaviorSubject<T> extends Subject<T> {
     if (hasError) {
       throw thrownError;
     }
-    this.throwIfClosed();
+    this._throwIfClosed();
     return _value;
   }
 

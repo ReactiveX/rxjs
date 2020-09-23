@@ -68,7 +68,7 @@ export class ReplaySubject<T> extends Subject<T> {
 
   /** @deprecated Remove in v8. This is an internal implementation detail, do not use. */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
-    this.throwIfClosed();
+    this._throwIfClosed();
     this.trimBuffer();
 
     const subscription = this._innerSubscribe(subscriber);

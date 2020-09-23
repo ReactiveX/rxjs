@@ -46,14 +46,14 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     return subject as any;
   }
 
-  protected throwIfClosed() {
+  protected _throwIfClosed() {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
   }
 
   next(value: T) {
-    this.throwIfClosed();
+    this._throwIfClosed();
     if (!this.isStopped) {
       const copy = this.observers.slice();
       for (const observer of copy) {
@@ -63,7 +63,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   error(err: any) {
-    this.throwIfClosed();
+    this._throwIfClosed();
     if (!this.isStopped) {
       this.hasError = this.isStopped = true;
       this.thrownError = err;
@@ -75,7 +75,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   complete() {
-    this.throwIfClosed();
+    this._throwIfClosed();
     if (!this.isStopped) {
       this.isStopped = true;
       const { observers } = this;
@@ -92,13 +92,13 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   /** @deprecated This is an internal implementation detail, do not use. */
   protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
-    this.throwIfClosed();
+    this._throwIfClosed();
     return super._trySubscribe(subscriber);
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
-    this.throwIfClosed();
+    this._throwIfClosed();
     this._checkFinalizedStatuses(subscriber);
     return this._innerSubscribe(subscriber);
   }
