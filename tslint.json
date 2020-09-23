@@ -4,6 +4,7 @@
   // This is really just a list of what is wrong in our codebase,
   // We should remove all of these over time.
   "rules": {
+    "no-unused-declaration": [true, { "declarations": false, "imports": true }],
     "no-unused-expression": [true, "allow-fast-null-checks"],
     "ordered-imports": [false],
     "interface-name": [false],
