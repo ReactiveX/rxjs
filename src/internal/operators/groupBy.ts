@@ -199,7 +199,7 @@ export function groupBy<T, K, R>(
       );
 
       // Subscribe to the source
-      return source.subscribe(groupBySourceSubscriber);
+      source.subscribe(groupBySourceSubscriber);
 
       /**
        * Creates the actual grouped observable returned.
