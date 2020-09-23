@@ -1,6 +1,6 @@
 {
   "name": "rxjs",
-  "version": "7.0.0-beta.5",
+  "version": "7.0.0-beta.6",
   "description": "Reactive Extensions for modern JavaScript",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm5/index.js",
@@ -31,7 +31,6 @@
     "lint": "npm-run-all --parallel lint_*",
     "dtslint": "tsc -b ./src/tsconfig.types.json && tslint -c spec-dtslint/tslint.json -p spec-dtslint/tsconfig.json \"spec-dtslint/**/*.ts\"",
     "prepublishOnly": "npm run build:package && npm run lint && npm run test && npm run test:circular && npm run dtslint && npm run test:side-effects && npm run api_guardian",
-    "postpublish": "./docs_app/scripts/publish-docs.sh",
     "publish_docs": "./publish_docs.sh",
     "test": "npm run compile && mocha --config spec/support/.mocharc.js \"dist/spec/**/*-spec.js\"",
     "test:browser": "echo \"Browser test is not working currently\" && exit -1 && npm-run-all build:spec:browser && opn spec/support/mocha-browser-runner.html",
