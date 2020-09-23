@@ -1,6 +1,5 @@
 /** @prettier */
 import { isFunction } from './util/isFunction';
-import { EMPTY_OBSERVER } from './EMPTY_OBSERVER';
 import { Observer, PartialObserver } from './types';
 import { isSubscription, Subscription } from './Subscription';
 import { config } from './config';
@@ -129,13 +128,13 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     complete?: (() => void) | null
   ) {
     super();
-    let next: ((value: T) => void) | undefined;
-
-    if (isFunction(observerOrNext)) {
-      next = observerOrNext;
-    } else if (observerOrNext) {
-      ({ next, error, complete } = observerOrNext);
-      if (observerOrNext !== EMPTY_OBSERVER) {
+    this.destination = EMPTY_OBSERVER;
+    if ((observerOrNext || error || complete) && observerOrNext !== EMPTY_OBSERVER) {
+      let next: ((value: T) => void) | undefined;
+      if (isFunction(observerOrNext)) {
+        next = observerOrNext;
+      } else if (observerOrNext) {
+        ({ next, error, complete } = observerOrNext);
         let context: any;
         if (this && config.useDeprecatedNextContext) {
           // This is a deprecated path that made `this.unsubscribe()` available in
@@ -150,13 +149,13 @@ export class SafeSubscriber<T> extends Subscriber<T> {
         error = error?.bind(context);
         complete = complete?.bind(context);
       }
-    }
 
-    this.destination = {
-      next: next || noop,
-      error: error || handleError,
-      complete: complete || noop,
-    };
+      this.destination = {
+        next: next || noop,
+        error: error || handleError,
+        complete: complete || noop,
+      };
+    }
   }
 }
 
@@ -166,3 +165,15 @@ function handleError(err: any) {
   }
   reportUnhandledError(err);
 }
+
+/**
+ * The observer used as a stub for subscriptions where the user did not
+ * pass any arguments to `subscribe`. Comes with the default error handling
+ * behavior.
+ */
+export const EMPTY_OBSERVER: Readonly<Observer<any>> = {
+  closed: true,
+  next: noop,
+  error: handleError,
+  complete: noop,
+};
