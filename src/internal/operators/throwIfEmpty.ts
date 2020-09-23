@@ -1,9 +1,8 @@
 /** @prettier */
 import { EmptyError } from '../util/EmptyError';
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { TeardownLogic, MonoTypeOperatorFunction } from '../types';
+import { MonoTypeOperatorFunction } from '../types';
 import { lift } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 

@@ -5,7 +5,7 @@ import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction } from '../types';
-import { lift, wrappedLift } from '../util/lift';
+import { wrappedLift } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**

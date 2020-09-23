@@ -1,5 +1,4 @@
 /** @prettier */
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';

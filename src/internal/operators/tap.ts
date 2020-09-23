@@ -1,10 +1,8 @@
 /** @prettier */
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, PartialObserver, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, PartialObserver } from '../types';
 import { noop } from '../util/noop';
-import { isFunction } from '../util/isFunction';
 import { lift } from '../util/lift';
 
 /* tslint:disable:max-line-length */

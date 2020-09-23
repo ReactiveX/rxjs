@@ -1,4 +1,3 @@
-import { concat as concatStatic } from '../observable/concat';
 import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueUnionFromArray, MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { lift } from '../util/lift';

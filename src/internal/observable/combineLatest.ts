@@ -4,10 +4,8 @@ import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueTupleFrom
 import { isScheduler } from '../util/isScheduler';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { Subscriber } from '../Subscriber';
-import { isObject } from '../util/isObject';
 import { from } from './from';
 import { identity } from '../util/identity';
-import { map } from '../operators/map';
 import { Subscription } from '../Subscription';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 
