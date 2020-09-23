@@ -552,9 +552,9 @@ export interface Subscribable<T> {
 export declare type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | InteropObservable<T>;
 
 export declare class Subscriber<T> extends Subscription implements Observer<T> {
-    protected destination: Observer<any> | Subscriber<any>;
+    protected destination: Subscriber<any> | Observer<any>;
     protected isStopped: boolean;
-    constructor(destinationOrNext?: PartialObserver<any> | ((value: T) => void) | null, error?: ((e?: any) => void) | null, complete?: (() => void) | null);
+    constructor(destination?: Subscriber<any> | Observer<any>);
     protected _complete(): void;
     protected _error(err: any): void;
     protected _next(value: T): void;
