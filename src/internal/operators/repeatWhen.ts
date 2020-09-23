@@ -41,7 +41,6 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
   return (source: Observable<T>) =>
     lift(source, function (this: Subscriber<T>, source: Observable<T>) {
       const subscriber = this;
-      const subscription = new Subscription();
       let innerSub: Subscription | null;
       let syncResub = false;
       let completions$: Subject<void>;
@@ -62,27 +61,25 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
 
           // If the call to `notifier` throws, it will be caught by the OperatorSubscriber
           // In the main subscription -- in `subscribeForRepeatWhen`.
-          subscription.add(
-            notifier(completions$).subscribe(
-              new OperatorSubscriber(
-                subscriber,
-                () => {
-                  if (innerSub) {
-                    subscribeForRepeatWhen();
-                  } else {
-                    // If we don't have an innerSub yet, that's because the inner subscription
-                    // call hasn't even returned yet. We've arrived here synchronously.
-                    // So we flag that we want to resub, such that we can ensure teardown
-                    // happens before we resubscribe.
-                    syncResub = true;
-                  }
-                },
-                undefined,
-                () => {
-                  isNotifierComplete = true;
-                  checkComplete();
+          notifier(completions$).subscribe(
+            new OperatorSubscriber(
+              subscriber,
+              () => {
+                if (innerSub) {
+                  subscribeForRepeatWhen();
+                } else {
+                  // If we don't have an innerSub yet, that's because the inner subscription
+                  // call hasn't even returned yet. We've arrived here synchronously.
+                  // So we flag that we want to resub, such that we can ensure teardown
+                  // happens before we resubscribe.
+                  syncResub = true;
                 }
-              )
+              },
+              undefined,
+              () => {
+                isNotifierComplete = true;
+                checkComplete();
+              }
             )
           );
         }
@@ -118,14 +115,10 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
           syncResub = false;
           // Resubscribe
           subscribeForRepeatWhen();
-        } else {
-          subscription.add(innerSub);
         }
       };
 
       // Start the subscription
       subscribeForRepeatWhen();
-
-      return subscription;
     });
 }
