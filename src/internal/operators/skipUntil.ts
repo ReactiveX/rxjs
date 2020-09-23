@@ -1,7 +1,7 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction } from '../types';
-import { wrappedLift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 import { noop } from '../util/noop';
@@ -45,22 +45,21 @@ import { noop } from '../util/noop';
  * @name skipUntil
  */
 export function skipUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    wrappedLift(source, (subscriber, liftedSource) => {
-      let taking = false;
+  return operate((source, subscriber) => {
+    let taking = false;
 
-      const skipSubscriber = new OperatorSubscriber(
-        subscriber,
-        () => {
-          skipSubscriber?.unsubscribe();
-          taking = true;
-        },
-        undefined,
-        noop
-      );
+    const skipSubscriber = new OperatorSubscriber(
+      subscriber,
+      () => {
+        skipSubscriber?.unsubscribe();
+        taking = true;
+      },
+      undefined,
+      noop
+    );
 
-      from(notifier).subscribe(skipSubscriber);
+    from(notifier).subscribe(skipSubscriber);
 
-      liftedSource.subscribe(new OperatorSubscriber(subscriber, (value) => taking && subscriber.next(value)));
-    });
+    source.subscribe(new OperatorSubscriber(subscriber, (value) => taking && subscriber.next(value)));
+  });
 }
