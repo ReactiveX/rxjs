@@ -128,12 +128,23 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     complete?: (() => void) | null
   ) {
     super();
+
+    // If we don't have arguments, or the observer passed is already EMPTY_OBSERVER,
+    // use EMPTY_OBSERVER. This is just to save a little on object allocations.
     this.destination = EMPTY_OBSERVER;
     if ((observerOrNext || error || complete) && observerOrNext !== EMPTY_OBSERVER) {
+      // We've got either functions or an observer to deal with
+      // let's figure that out here.
+
       let next: ((value: T) => void) | undefined;
       if (isFunction(observerOrNext)) {
         next = observerOrNext;
       } else if (observerOrNext) {
+        // Even if it's an observer, we have to pull the handlers off and
+        // capture the owner object as the context. That is because we're
+        // going to put them all in a new destination with ensured methods
+        // for `next`, `error`, and `complete`. That's part of what makes this
+        // the "Safe" Subscriber.
         ({ next, error, complete } = observerOrNext);
         let context: any;
         if (this && config.useDeprecatedNextContext) {
@@ -150,16 +161,25 @@ export class SafeSubscriber<T> extends Subscriber<T> {
         complete = complete?.bind(context);
       }
 
+      // Once we set the destination, the superclass `Subscriber` will
+      // do it's magic in the `_next`, `_error`, and `_complete` methods.
       this.destination = {
         next: next || noop,
-        error: error || handleError,
+        error: error || defaultErrorHandler,
         complete: complete || noop,
       };
     }
   }
 }
 
-function handleError(err: any) {
+/**
+ * An error handler used when no error handler was supplied
+ * to the SafeSubscriber -- meaning no error handler was supplied
+ * do the `subscribe` call on our observable.
+ * @param err The error to handle
+ */
+function defaultErrorHandler(err: any) {
+  // TODO: Remove in v8.
   if (config.useDeprecatedSynchronousErrorHandling) {
     throw err;
   }
@@ -174,6 +194,6 @@ function handleError(err: any) {
 export const EMPTY_OBSERVER: Readonly<Observer<any>> = {
   closed: true,
   next: noop,
-  error: handleError,
+  error: defaultErrorHandler,
   complete: noop,
 };
