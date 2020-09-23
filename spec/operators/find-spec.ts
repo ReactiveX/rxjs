@@ -24,12 +24,6 @@ describe('find operator', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should throw if not provided a function', () => {
-    expect(() => {
-      of('yut', 'yee', 'sam').pipe(find('yee' as any));
-    }).to.throw(TypeError, 'predicate is not a function');
-  });
-
   it('should not emit if source does not emit', () => {
     const source = hot('-');
     const subs =       '^';

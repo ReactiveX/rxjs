@@ -1,8 +1,7 @@
+/** @prettier */
 import { Subject } from './Subject';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
-import { SubscriptionLike } from './types';
-import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 
 /**
  * A variant of Subject that requires an initial value and emits its current
@@ -11,7 +10,6 @@ import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
  * @class BehaviorSubject<T>
  */
 export class BehaviorSubject<T> extends Subject<T> {
-
   constructor(private _value: T) {
     super();
   }
@@ -21,25 +19,22 @@ export class BehaviorSubject<T> extends Subject<T> {
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
-  _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription {
     const subscription = super._subscribe(subscriber);
-    if (subscription && !(<SubscriptionLike>subscription).closed) {
-      subscriber.next(this._value);
-    }
+    !subscription.closed && subscriber.next(this._value);
     return subscription;
   }
 
   getValue(): T {
-    if (this.hasError) {
-      throw this.thrownError;
-    } else if (this.closed) {
-      throw new ObjectUnsubscribedError();
-    } else {
-      return this._value;
+    const { hasError, thrownError, _value } = this;
+    if (hasError) {
+      throw thrownError;
     }
+    this._throwIfClosed();
+    return _value;
   }
 
   next(value: T): void {
-    super.next(this._value = value);
+    super.next((this._value = value));
   }
 }

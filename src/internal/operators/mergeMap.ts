@@ -1,13 +1,12 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
 import { lift } from '../util/lift';
-import { innerSubscribe, SimpleOuterSubscriber, SimpleInnerSubscriber } from '../innerSubscribe';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
 export function mergeMap<T, O extends ObservableInput<any>>(
@@ -107,101 +106,89 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
       let buffer: T[] = [];
 
       /**
+       * Called to check to see if we can complete, and completes the result if
+       * nothing is active.
+       */
+      const checkComplete = () => isComplete && !active && subscriber.complete();
+
+      /**
        * Attempts to start an inner subscription from a buffered value,
        * so long as we don't have more active inner subscriptions than
        * the concurrency limit allows.
        */
-      const doInnerSub = () => {
+      const tryInnerSub = () => {
         while (active < concurrent && buffer.length > 0) {
-          const value = buffer.shift()!;
-
-          // Get the inner source from the projection function
-          let innerSource: Observable<ObservedValueOf<O>>;
-          try {
-            innerSource = from(project(value, index++));
-          } catch (err) {
-            subscriber.error(err);
-            return;
-          }
-
-          // Subscribe to the inner source
-          active++;
-          let innerSubs: Subscription;
-          subscriber.add(
-            (innerSubs = innerSource.subscribe(
-              new MergeMapSubscriber(
-                subscriber,
-                (innerValue) => {
-                  // INNER SOURCE NEXT
-                  // We got a value from the inner source, emit it from the result.
-                  subscriber.next(innerValue);
-                },
-                () => {
-                  // INNER SOURCE COMPLETE
-                  // Decrement the active count to ensure that the next time
-                  // we try to call `doInnerSub`, the number is accurate.
-                  active--;
-                  if (buffer.length > 0) {
-                    // If we have more values in the buffer, try to process those
-                    // Note that this call will increment `active` ahead of the
-                    // next conditional, if there were any more inner subscriptions
-                    // to start.
-                    doInnerSub();
-                  }
-                  if (isComplete && active === 0) {
-                    // If the outer is complete, and there are no more active,
-                    // then we can complete the resulting observable subscription
-                    subscriber.complete();
-                  }
-                  // Make sure to teardown the inner subscription ASAP.
-                  innerSubs?.unsubscribe();
-                }
-              )
-            ))
-          );
+          doInnerSub(buffer.shift()!);
         }
+      };
+
+      /**
+       * Creates an inner observable and subscribes to it with the
+       * given outer value.
+       * @param value the value to process
+       */
+      const doInnerSub = (value: T) => {
+        // Subscribe to the inner source
+        active++;
+        subscriber.add(
+          from(project(value, index++)).subscribe(
+            new OperatorSubscriber(
+              subscriber,
+              // INNER SOURCE NEXT
+              // We got a value from the inner source, emit it from the result.
+              (innerValue) => subscriber.next(innerValue),
+              // Errors are sent to the consumer.
+              undefined,
+              () => {
+                // INNER SOURCE COMPLETE
+                // Decrement the active count to ensure that the next time
+                // we try to call `doInnerSub`, the number is accurate.
+                active--;
+                // If we have more values in the buffer, try to process those
+                // Note that this call will increment `active` ahead of the
+                // next conditional, if there were any more inner subscriptions
+                // to start.
+                buffer.length && tryInnerSub();
+                // Check to see if we can complete, and complete if so.
+                checkComplete();
+              }
+            )
+          )
+        );
       };
 
       let outerSubs: Subscription;
       outerSubs = source.subscribe(
-        new MergeMapSubscriber(
+        new OperatorSubscriber(
           subscriber,
-          (value) => {
-            // OUTER SOURCE NEXT
-            // Push the value onto the buffer. We have no idea what the concurrency limit
-            // is and we don't care. Just buffer it and then call `doInnerSub()` to try to
-            // process what is in the buffer.
-            buffer.push(value);
-            doInnerSub();
-          },
+          // OUTER SOURCE NEXT
+          // If we are under our concurrency limit, start the inner subscription with the value
+          // right away. Otherwise, push it onto the buffer and wait.
+          (value) => (active < concurrent ? doInnerSub(value) : buffer.push(value)),
+          // Let errors pass through.
+          undefined,
           () => {
             // OUTER SOURCE COMPLETE
             // We don't necessarily stop here. If have any pending inner subscriptions
             // we need to wait for those to be done first. That includes buffered inners
             // that we haven't even subscribed to yet.
             isComplete = true;
-            if (active === 0 && buffer.length === 0) {
-              // Nothing is active, and nothing in the buffer, with no hope of getting any more
-              // we can complete the result
-              subscriber.complete();
-            }
+            // If nothing is active, and nothing in the buffer, with no hope of getting any more
+            // we can complete the result
+            checkComplete();
             // Be sure to teardown the outer subscription ASAP, in any case.
             outerSubs?.unsubscribe();
           }
         )
       );
+
+      // Additional teardown. Called when the destination is torn down.
+      // Other teardown is registered implicitly above during subscription.
+      return () => {
+        // Release buffered values
+        buffer = null!;
+      };
     });
-}
-
-// TODO(benlesh): This may end up being so common that we can centralize on one Subscriber for a few operators.
-
-/**
- * A simple overridden Subscriber, used in both inner and outer subscriptions
- */
-class MergeMapSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<any>, protected _next: (value: T) => void, protected _complete: () => void) {
-    super(destination);
-  }
 }
 
 /**

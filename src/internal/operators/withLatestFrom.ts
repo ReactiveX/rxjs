@@ -1,22 +1,103 @@
-import { Operator } from '../Operator';
+/** @prettier */
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { ComplexOuterSubscriber, innerSubscribe, ComplexInnerSubscriber } from '../innerSubscribe';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { lift } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { from } from '../observable/from';
+import { identity } from '../util/identity';
+import { noop } from '../util/noop';
 
 /* tslint:disable:max-line-length */
 export function withLatestFrom<T, R>(project: (v1: T) => R): OperatorFunction<T, R>;
-export function withLatestFrom<T, O2 extends ObservableInput<any>, R>(source2: O2, project: (v1: T, v2: ObservedValueOf<O2>) => R): OperatorFunction<T, R>;
-export function withLatestFrom<T, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, R>(v2: O2, v3: O3, project: (v1: T, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>) => R): OperatorFunction<T, R>;
-export function withLatestFrom<T, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, R>(v2: O2, v3: O3, v4: O4, project: (v1: T, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>) => R): OperatorFunction<T, R>;
-export function withLatestFrom<T, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, R>(v2: O2, v3: O3, v4: O4, v5: O5, project: (v1: T, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>, v5: ObservedValueOf<O5>) => R): OperatorFunction<T, R>;
-export function withLatestFrom<T, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, O6 extends ObservableInput<any>, R>(v2: O2, v3: O3, v4: O4, v5: O5, v6: O6, project: (v1: T, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>, v5: ObservedValueOf<O5>, v6: ObservedValueOf<O6>) => R): OperatorFunction<T, R>;
+export function withLatestFrom<T, O2 extends ObservableInput<any>, R>(
+  source2: O2,
+  project: (v1: T, v2: ObservedValueOf<O2>) => R
+): OperatorFunction<T, R>;
+export function withLatestFrom<T, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, R>(
+  v2: O2,
+  v3: O3,
+  project: (v1: T, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>) => R
+): OperatorFunction<T, R>;
+export function withLatestFrom<T, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, R>(
+  v2: O2,
+  v3: O3,
+  v4: O4,
+  project: (v1: T, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>) => R
+): OperatorFunction<T, R>;
+export function withLatestFrom<
+  T,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>,
+  R
+>(
+  v2: O2,
+  v3: O3,
+  v4: O4,
+  v5: O5,
+  project: (v1: T, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>, v5: ObservedValueOf<O5>) => R
+): OperatorFunction<T, R>;
+export function withLatestFrom<
+  T,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>,
+  O6 extends ObservableInput<any>,
+  R
+>(
+  v2: O2,
+  v3: O3,
+  v4: O4,
+  v5: O5,
+  v6: O6,
+  project: (
+    v1: T,
+    v2: ObservedValueOf<O2>,
+    v3: ObservedValueOf<O3>,
+    v4: ObservedValueOf<O4>,
+    v5: ObservedValueOf<O5>,
+    v6: ObservedValueOf<O6>
+  ) => R
+): OperatorFunction<T, R>;
 export function withLatestFrom<T, O2 extends ObservableInput<any>>(source2: O2): OperatorFunction<T, [T, ObservedValueOf<O2>]>;
-export function withLatestFrom<T, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(v2: O2, v3: O3): OperatorFunction<T, [T, ObservedValueOf<O2>, ObservedValueOf<O3>]>;
-export function withLatestFrom<T, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>>(v2: O2, v3: O3, v4: O4): OperatorFunction<T, [T, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>]>;
-export function withLatestFrom<T, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>>(v2: O2, v3: O3, v4: O4, v5: O5): OperatorFunction<T, [T, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>]>;
-export function withLatestFrom<T, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, O6 extends ObservableInput<any>>(v2: O2, v3: O3, v4: O4, v5: O5, v6: O6): OperatorFunction<T, [T, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>, ObservedValueOf<O6>]>;
+export function withLatestFrom<T, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(
+  v2: O2,
+  v3: O3
+): OperatorFunction<T, [T, ObservedValueOf<O2>, ObservedValueOf<O3>]>;
+export function withLatestFrom<T, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>>(
+  v2: O2,
+  v3: O3,
+  v4: O4
+): OperatorFunction<T, [T, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>]>;
+export function withLatestFrom<
+  T,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>
+>(
+  v2: O2,
+  v3: O3,
+  v4: O4,
+  v5: O5
+): OperatorFunction<T, [T, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>]>;
+export function withLatestFrom<
+  T,
+  O2 extends ObservableInput<any>,
+  O3 extends ObservableInput<any>,
+  O4 extends ObservableInput<any>,
+  O5 extends ObservableInput<any>,
+  O6 extends ObservableInput<any>
+>(
+  v2: O2,
+  v3: O3,
+  v4: O4,
+  v5: O5,
+  v6: O6
+): OperatorFunction<T, [T, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>, ObservedValueOf<O6>]>;
 export function withLatestFrom<T, R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): OperatorFunction<T, R>;
 export function withLatestFrom<T, R>(array: ObservableInput<any>[]): OperatorFunction<T, R>;
 export function withLatestFrom<T, R>(array: ObservableInput<any>[], project: (...values: Array<any>) => R): OperatorFunction<T, R>;
@@ -66,88 +147,68 @@ export function withLatestFrom<T, R>(array: ObservableInput<any>[], project: (..
  * each input Observable.
  * @name withLatestFrom
  */
-export function withLatestFrom<T, R>(...args: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): OperatorFunction<T, R> {
+export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R> {
   return (source: Observable<T>) => {
-    let project: any;
-    if (typeof args[args.length - 1] === 'function') {
-      project = args.pop();
+    let project: (...values: any[]) => R;
+    if (typeof inputs[inputs.length - 1] === 'function') {
+      project = inputs.pop();
     }
-    const observables = <Observable<any>[]>args;
-    return lift(source, new WithLatestFromOperator(observables, project));
+
+    return lift(source, function (this: Subscriber<R | T[]>, source: Observable<T>) {
+      const subscriber = this;
+      const len = inputs.length;
+      const otherValues = new Array(len);
+      // An array of whether or not the other sources have emitted. Matched with them by index.
+      // TODO: At somepoint, we should investigate the performance implications here, and look
+      // into using a `Set()` and checking the `size` to see if we're ready.
+      let hasValue = inputs.map(() => false);
+      // Flipped true when we have at least one value from all other sources and
+      // we are ready to start emitting values.
+      let ready = false;
+
+      // Source subscription
+      source.subscribe(
+        new OperatorSubscriber(subscriber, (value) => {
+          if (ready) {
+            // We have at least one value from the other sources. Go ahead and emit.
+            const values = [value, ...otherValues];
+            subscriber.next(project ? project(...values) : values);
+          }
+        })
+      );
+
+      // Other sources
+      for (let i = 0; i < len; i++) {
+        const input = inputs[i];
+        let otherSource: Observable<any>;
+        try {
+          otherSource = from(input);
+        } catch (err) {
+          subscriber.error(err);
+          return;
+        }
+        otherSource.subscribe(
+          new OperatorSubscriber(
+            subscriber,
+            (value) => {
+              otherValues[i] = value;
+              if (!ready && !hasValue[i]) {
+                // If we're not ready yet, flag to show this observable has emitted.
+                hasValue[i] = true;
+                // Intentionally terse code.
+                // If all of our other observables have emitted, set `ready` to `true`,
+                // so we know we can start emitting values, then clean up the `hasValue` array,
+                // because we don't need it anymore.
+                (ready = hasValue.every(identity)) && (hasValue = null!);
+              }
+            },
+            undefined,
+            // Completing one of the other sources has
+            // no bearing on the completion of our result.
+            noop
+          )
+        );
+      }
+    });
   };
-}
-
-class WithLatestFromOperator<T, R> implements Operator<T, R> {
-  constructor(private observables: Observable<any>[],
-              private project?: (...values: any[]) => Observable<R>) {
-  }
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new WithLatestFromSubscriber(subscriber, this.observables, this.project));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class WithLatestFromSubscriber<T, R> extends ComplexOuterSubscriber<T, R> {
-  private values: any[];
-  private toRespond: number[] = [];
-
-  constructor(destination: Subscriber<R>,
-              observables: Observable<any>[],
-              private project?: (...values: any[]) => Observable<R>) {
-    super(destination);
-    const len = observables.length;
-    this.values = new Array(len);
-
-    for (let i = 0; i < len; i++) {
-      this.toRespond.push(i);
-    }
-
-    for (let i = 0; i < len; i++) {
-      let observable = observables[i];
-      this.add(innerSubscribe(observable, new ComplexInnerSubscriber(this, undefined, i)));
-    }
-  }
-
-  notifyNext(_outerValue: T, innerValue: R,
-             outerIndex: number): void {
-    this.values[outerIndex] = innerValue;
-    const toRespond = this.toRespond;
-    if (toRespond.length > 0) {
-      const found = toRespond.indexOf(outerIndex);
-      if (found !== -1) {
-        toRespond.splice(found, 1);
-      }
-    }
-  }
-
-  notifyComplete() {
-    // noop
-  }
-
-  protected _next(value: T) {
-    if (this.toRespond.length === 0) {
-      const args = [value, ...this.values];
-      if (this.project) {
-        this._tryProject(args);
-      } else {
-        this.destination.next(args);
-      }
-    }
-  }
-
-  private _tryProject(args: any[]) {
-    let result: any;
-    try {
-      result = this.project!.apply(this, args);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.destination.next(result);
-  }
 }

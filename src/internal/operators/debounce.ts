@@ -1,11 +1,11 @@
-import { Operator } from '../Operator';
+/** @prettier */
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, SubscribableOrPromise } from '../types';
 
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { from } from '../observable/from';
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -66,90 +66,57 @@ import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '..
  * @name debounce
  */
 export function debounce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => lift(source, new DebounceOperator(durationSelector));
-}
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
+      const subscriber = this;
+      let hasValue = false;
+      let lastValue: T | null = null;
+      // The subscriber/subscription for the current debounce, if there is one.
+      let durationSubscriber: Subscriber<any> | null = null;
 
-class DebounceOperator<T> implements Operator<T, T> {
-  constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>) {
-  }
+      const emit = () => {
+        // Unsubscribe any current debounce subscription we have,
+        // we only cared about the first notification from it, and we
+        // want to clean that subscription up as soon as possible.
+        durationSubscriber?.unsubscribe();
+        durationSubscriber = null;
+        if (hasValue) {
+          // We have a value! Free up memory first, then emit the value.
+          hasValue = false;
+          const value = lastValue!;
+          lastValue = null;
+          subscriber.next(value);
+        }
+      };
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new DebounceSubscriber(subscriber, this.durationSelector));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class DebounceSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
-  private value: T | null = null;
-  private hasValue: boolean = false;
-  private durationSubscription: Subscription | null | undefined = null;
-
-  constructor(destination: Subscriber<R>,
-              private durationSelector: (value: T) => SubscribableOrPromise<any>) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    try {
-      const result = this.durationSelector.call(this, value);
-
-      if (result) {
-        this._tryNext(value, result);
-      }
-    } catch (err) {
-      this.destination.error(err);
-    }
-  }
-
-  protected _complete(): void {
-    this.emitValue();
-    this.destination.complete();
-  }
-
-  private _tryNext(value: T, duration: SubscribableOrPromise<any>): void {
-    let subscription = this.durationSubscription;
-    this.value = value;
-    this.hasValue = true;
-    if (subscription) {
-      subscription.unsubscribe();
-      this.remove(subscription);
-    }
-
-    subscription = innerSubscribe(duration, new SimpleInnerSubscriber(this));
-    if (subscription && !subscription.closed) {
-      this.add(this.durationSubscription = subscription);
-    }
-  }
-
-  notifyNext(): void {
-    this.emitValue();
-  }
-
-  notifyComplete(): void {
-    this.emitValue();
-  }
-
-  emitValue(): void {
-    if (this.hasValue) {
-      const value = this.value;
-      const subscription = this.durationSubscription;
-      if (subscription) {
-        this.durationSubscription = null;
-        subscription.unsubscribe();
-        this.remove(subscription);
-      }
-      // This must be done *before* passing the value
-      // along to the destination because it's possible for
-      // the value to synchronously re-enter this operator
-      // recursively if the duration selector Observable
-      // emits synchronously
-      this.value = null;
-      this.hasValue = false;
-      super._next(value!);
-    }
-  }
+      source.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (value: T) => {
+            // Cancel any pending debounce duration. We don't
+            // need to null it out here yet tho, because we're just going
+            // to create another one in a few lines.
+            durationSubscriber?.unsubscribe();
+            hasValue = true;
+            lastValue = value;
+            // Capture our duration subscriber, so we can unsubscribe it when we're notified
+            // and we're going to emit the value.
+            durationSubscriber = new OperatorSubscriber(subscriber, emit, undefined, emit);
+            // Subscribe to the duration.
+            from(durationSelector(value)).subscribe(durationSubscriber);
+          },
+          undefined,
+          () => {
+            // Source completed.
+            // Emit any pending debounced values then complete
+            emit();
+            subscriber.complete();
+          },
+          () => {
+            // Teardown.
+            lastValue = durationSubscriber = null;
+          }
+        )
+      );
+    });
 }

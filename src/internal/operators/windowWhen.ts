@@ -1,11 +1,12 @@
-import { Operator } from '../Operator';
+/** @prettier */
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
-import { Subscription } from '../Subscription';
-import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
-import { OperatorFunction } from '../types';
+import { ObservableInput, OperatorFunction } from '../types';
 import { lift } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { from } from '../observable/from';
+
 /**
  * Branch out the source Observable values as a nested Observable using a
  * factory function of closing Observables to determine when to start a new
@@ -50,95 +51,77 @@ import { lift } from '../util/lift';
  * are Observables.
  * @name windowWhen
  */
-export function windowWhen<T>(closingSelector: () => Observable<any>): OperatorFunction<T, Observable<T>> {
-  return function windowWhenOperatorFunction(source: Observable<T>) {
-    return lift(source, new WindowOperator<T>(closingSelector));
-  };
-}
+export function windowWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, Observable<T>> {
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<Observable<T>>, source: Observable<T>) {
+      const subscriber = this;
+      let window: Subject<T> | null;
+      let closingSubscriber: Subscriber<any> | undefined;
 
-class WindowOperator<T> implements Operator<T, Observable<T>> {
-  constructor(private closingSelector: () => Observable<any>) {
-  }
+      /**
+       * When we get an error, we have to notify both the
+       * destiation subscriber and the window.
+       */
+      const handleError = (err: any) => {
+        window!.error(err);
+        subscriber.error(err);
+      };
 
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
-    return source.subscribe(new WindowSubscriber(subscriber, this.closingSelector));
-  }
-}
+      /**
+       * Called every time we need to open a window.
+       * Recursive, as it will start the closing notifier, which
+       * inevitably *should* call openWindow -- but may not if
+       * it is a "never" observable.
+       */
+      const openWindow = () => {
+        // We need to clean up our closing subscription,
+        // we only cared about the first next or complete notification.
+        closingSubscriber?.unsubscribe();
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class WindowSubscriber<T> extends ComplexOuterSubscriber<T, any> {
-  private window: Subject<T> | undefined;
-  private closingNotification: Subscription | undefined;
+        // Close our window before starting a new one.
+        window?.complete();
 
-  constructor(protected destination: Subscriber<Observable<T>>,
-              private closingSelector: () => Observable<any>) {
-    super(destination);
-    this.openWindow();
-  }
+        // Start the new window.
+        window = new Subject<T>();
+        subscriber.next(window.asObservable());
 
-  notifyNext(_outerValue: T, _innerValue: any,
-             _outerIndex: number,
-             innerSub: ComplexInnerSubscriber<T, any>): void {
-    this.openWindow(innerSub);
-  }
+        // Get our closing notifier.
+        let closingNotifier: Observable<any>;
+        try {
+          closingNotifier = from(closingSelector());
+        } catch (err) {
+          handleError(err);
+          return;
+        }
 
-  notifyError(error: any): void {
-    this._error(error);
-  }
+        // Subscribe to the closing notifier, be sure
+        // to capture the subscriber (aka Subscription)
+        // so we can clean it up when we close the window
+        // and open a new one.
+        closingNotifier.subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openWindow, handleError, openWindow)));
+      };
 
-  notifyComplete(innerSub: ComplexInnerSubscriber<T, any>): void {
-    this.openWindow(innerSub);
-  }
+      // Start the first window.
+      openWindow();
 
-  protected _next(value: T): void {
-    this.window!.next(value);
-  }
-
-  protected _error(err: any): void {
-    this.window!.error(err);
-    this.destination.error(err);
-    this.unsubscribeClosingNotification();
-  }
-
-  protected _complete(): void {
-    this.window!.complete();
-    this.destination.complete();
-    this.unsubscribeClosingNotification();
-  }
-
-  private unsubscribeClosingNotification(): void {
-    if (this.closingNotification) {
-      this.closingNotification.unsubscribe();
-    }
-  }
-
-  private openWindow(innerSub: ComplexInnerSubscriber<T, any> | null = null): void {
-    if (innerSub) {
-      this.remove(innerSub);
-      innerSub.unsubscribe();
-    }
-
-    const prevWindow = this.window;
-    if (prevWindow) {
-      prevWindow.complete();
-    }
-
-    const window = this.window = new Subject<T>();
-    this.destination.next(window);
-
-    let closingNotifier;
-    try {
-      const { closingSelector } = this;
-      closingNotifier = closingSelector();
-    } catch (e) {
-      this.destination.error(e);
-      this.window.error(e);
-      return;
-    }
-    this.add(this.closingNotification = innerSubscribe(closingNotifier, new ComplexInnerSubscriber(this, undefined, 0)));
-  }
+      // Subscribe to the source
+      source.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (value) => window!.next(value),
+          handleError,
+          () => {
+            // The source completed, close the window and complete.
+            window!.complete();
+            subscriber.complete();
+          },
+          () => {
+            // Be sure to clean up our closing subscription
+            // when this tears down.
+            closingSubscriber?.unsubscribe();
+            window = null!;
+          }
+        )
+      );
+    });
 }

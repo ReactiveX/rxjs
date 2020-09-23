@@ -1,9 +1,10 @@
-import { Operator } from '../Operator';
+/** @prettier */
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Notification } from '../Notification';
 import { OperatorFunction, ObservableNotification } from '../types';
 import { lift } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Represents all of the notifications from the source Observable as `next`
@@ -60,40 +61,24 @@ import { lift } from '../util/lift';
  * will not be available on the emitted values at that time.
  */
 export function materialize<T>(): OperatorFunction<T, Notification<T> & ObservableNotification<T>> {
-  return function materializeOperatorFunction(source: Observable<T>) {
-    return lift(source, new MaterializeOperator<T>());
-  };
-}
-
-class MaterializeOperator<T> implements Operator<T, Notification<T> & ObservableNotification<T>> {
-  call(subscriber: Subscriber<Notification<T> & ObservableNotification<T>>, source: any): any {
-    return source.subscribe(new MaterializeSubscriber(subscriber));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class MaterializeSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<Notification<T>>) {
-    super(destination);
-  }
-
-  protected _next(value: T) {
-    this.destination.next(Notification.createNext(value));
-  }
-
-  protected _error(err: any) {
-    const destination = this.destination;
-    destination.next(Notification.createError(err));
-    destination.complete();
-  }
-
-  protected _complete() {
-    const destination = this.destination;
-    destination.next(Notification.createComplete());
-    destination.complete();
-  }
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<Notification<T>>, source: Observable<T>) {
+      const subscriber = this;
+      source.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (value) => {
+            subscriber.next(Notification.createNext(value));
+          },
+          (err) => {
+            subscriber.next(Notification.createError(err));
+            subscriber.complete();
+          },
+          () => {
+            subscriber.next(Notification.createComplete());
+            subscriber.complete();
+          }
+        )
+      );
+    });
 }

@@ -1,10 +1,11 @@
+/** @prettier */
 import { Operator } from './Operator';
 import { Observable } from './Observable';
 import { Subscriber } from './Subscriber';
-import { Subscription } from './Subscription';
+import { Subscription, EMPTY_SUBSCRIPTION } from './Subscription';
 import { Observer, SubscriptionLike, TeardownLogic } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
-import { SubjectSubscription } from './SubjectSubscription';
+import { arrRemove } from './util/arrRemove';
 
 /**
  * A Subject is a special type of Observable that allows values to be
@@ -32,7 +33,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
    */
   static create: Function = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
     return new AnonymousSubject<T>(destination, source);
-  }
+  };
 
   constructor() {
     // NOTE: This must be here to obscure Observable's constructor.
@@ -41,85 +42,82 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   lift<R>(operator: Operator<T, R>): Observable<R> {
     const subject = new AnonymousSubject(this, this);
-    subject.operator = <any>operator;
-    return <any>subject;
+    subject.operator = operator as any;
+    return subject as any;
   }
 
-  next(value: T) {
+  protected _throwIfClosed() {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
+  }
+
+  next(value: T) {
+    this._throwIfClosed();
     if (!this.isStopped) {
-      const { observers } = this;
-      const len = observers.length;
-      const copy = observers.slice();
-      for (let i = 0; i < len; i++) {
-        copy[i].next(value!);
+      const copy = this.observers.slice();
+      for (const observer of copy) {
+        observer.next(value);
       }
     }
   }
 
   error(err: any) {
-    if (this.closed) {
-      throw new ObjectUnsubscribedError();
+    this._throwIfClosed();
+    if (!this.isStopped) {
+      this.hasError = this.isStopped = true;
+      this.thrownError = err;
+      const { observers } = this;
+      while (observers.length) {
+        observers.shift()!.error(err);
+      }
     }
-    this.hasError = true;
-    this.thrownError = err;
-    this.isStopped = true;
-    const { observers } = this;
-    const len = observers.length;
-    const copy = observers.slice();
-    for (let i = 0; i < len; i++) {
-      copy[i].error(err);
-    }
-    this.observers.length = 0;
   }
 
   complete() {
-    if (this.closed) {
-      throw new ObjectUnsubscribedError();
+    this._throwIfClosed();
+    if (!this.isStopped) {
+      this.isStopped = true;
+      const { observers } = this;
+      while (observers.length) {
+        observers.shift()!.complete();
+      }
     }
-    this.isStopped = true;
-    const { observers } = this;
-    const len = observers.length;
-    const copy = observers.slice();
-    for (let i = 0; i < len; i++) {
-      copy[i].complete();
-    }
-    this.observers.length = 0;
   }
 
   unsubscribe() {
-    this.isStopped = true;
-    this.closed = true;
+    this.isStopped = this.closed = true;
     this.observers = null!;
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
-  _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
-    if (this.closed) {
-      throw new ObjectUnsubscribedError();
-    } else {
-      return super._trySubscribe(subscriber);
-    }
+  protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
+    this._throwIfClosed();
+    return super._trySubscribe(subscriber);
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
-  _subscribe(subscriber: Subscriber<T>): Subscription {
-    if (this.closed) {
-      throw new ObjectUnsubscribedError();
-    } else if (this.hasError) {
-      subscriber.error(this.thrownError);
-      return Subscription.EMPTY;
-    } else if (this.isStopped) {
-      subscriber.complete();
-      return Subscription.EMPTY;
-    } else {
-      this.observers.push(subscriber);
-      return new SubjectSubscription(this, subscriber);
-    }
+  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+    this._throwIfClosed();
+    this._checkFinalizedStatuses(subscriber);
+    return this._innerSubscribe(subscriber);
   }
 
+  protected _innerSubscribe(subscriber: Subscriber<any>) {
+    const { hasError, isStopped, observers } = this;
+    return hasError || isStopped
+      ? EMPTY_SUBSCRIPTION
+      : (observers.push(subscriber), new Subscription(() => arrRemove(this.observers, subscriber)));
+  }
+
+  protected _checkFinalizedStatuses(subscriber: Subscriber<any>) {
+    const { hasError, thrownError, isStopped } = this;
+    if (hasError) {
+      subscriber.error(thrownError);
+    } else if (isStopped) {
+      subscriber.complete();
+    }
+  }
   /**
    * Creates a new Observable with this Subject as the source. You can do this
    * to create customize Observer-side logic of the Subject and conceal it from
@@ -127,8 +125,8 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
    * @return {Observable} Observable that the Subject casts to
    */
   asObservable(): Observable<T> {
-    const observable = new Observable<T>();
-    (<any>observable).source = this;
+    const observable: any = new Observable<T>();
+    observable.source = this;
     return observable;
   }
 }
@@ -143,33 +141,19 @@ export class AnonymousSubject<T> extends Subject<T> {
   }
 
   next(value: T) {
-    const { destination } = this;
-    if (destination && destination.next) {
-      destination.next(value);
-    }
+    this.destination?.next?.(value);
   }
 
   error(err: any) {
-    const { destination } = this;
-    if (destination && destination.error) {
-      this.destination!.error(err);
-    }
+    this.destination?.error?.(err);
   }
 
   complete() {
-    const { destination } = this;
-    if (destination && destination.complete) {
-      this.destination!.complete();
-    }
+    this.destination?.complete?.();
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>): Subscription {
-    const { source } = this;
-    if (source) {
-      return this.source!.subscribe(subscriber);
-    } else {
-      return Subscription.EMPTY;
-    }
+    return this.source?.subscribe(subscriber) ?? EMPTY_SUBSCRIPTION;
   }
 }

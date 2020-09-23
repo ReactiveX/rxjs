@@ -1,19 +1,26 @@
-import { Operator } from '../Operator';
+/** @prettier */
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
-export function exhaustMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
+export function exhaustMap<T, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O
+): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector is no longer supported. Use inner map instead. */
-export function exhaustMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;
+export function exhaustMap<T, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O,
+  resultSelector: undefined
+): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector is no longer supported. Use inner map instead. */
-export function exhaustMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
+export function exhaustMap<T, I, R>(
+  project: (value: T, index: number) => ObservableInput<I>,
+  resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
+): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -62,82 +69,37 @@ export function exhaustMap<T, I, R>(project: (value: T, index: number) => Observ
  */
 export function exhaustMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
-  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
-): OperatorFunction<T, ObservedValueOf<O>|R> {
+  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
+): OperatorFunction<T, ObservedValueOf<O> | R> {
   if (resultSelector) {
     // DEPRECATED PATH
-    return (source: Observable<T>) => source.pipe(
-      exhaustMap((a, i) => from(project(a, i)).pipe(
-        map((b: any, ii: any) => resultSelector(a, b, i, ii)),
-      )),
-    );
+    return (source: Observable<T>) =>
+      source.pipe(exhaustMap((a, i) => from(project(a, i)).pipe(map((b: any, ii: any) => resultSelector(a, b, i, ii)))));
   }
   return (source: Observable<T>) =>
-    lift(source, new ExhaustMapOperator(project));
-}
-
-class ExhaustMapOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => ObservableInput<R>) {
-  }
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new ExhaustMapSubscriber(subscriber, this.project));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class ExhaustMapSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
-  private innerSubscription?: Subscription;
-  private hasCompleted = false;
-  private index = 0;
-
-  constructor(protected destination: Subscriber<R>,
-              private project: (value: T, index: number) => ObservableInput<R>) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    if (!this.innerSubscription) {
-      let result: ObservableInput<R>;
-      const index = this.index++;
-      try {
-        result = this.project(value, index);
-      } catch (err) {
-        this.destination.error(err);
-        return;
-      }
-      const innerSubscriber = new SimpleInnerSubscriber(this);
-      const destination = this.destination;
-      destination.add(innerSubscriber);
-      this.innerSubscription = innerSubscriber;
-      innerSubscribe(result, innerSubscriber);
-    }
-  }
-
-  protected _complete(): void {
-    this.hasCompleted = true;
-    if (!this.innerSubscription) {
-      this.destination.complete();
-    }
-    this.unsubscribe();
-  }
-
-  notifyNext(innerValue: R): void {
-    this.destination.next(innerValue);
-  }
-
-  notifyError(err: any): void {
-    this.destination.error(err);
-  }
-
-  notifyComplete(): void {
-    this.innerSubscription = undefined;
-    if (this.hasCompleted) {
-      this.destination.complete();
-    }
-  }
+    lift(source, function (this: Subscriber<ObservedValueOf<O>>, source: Observable<T>) {
+      const subscriber = this;
+      let index = 0;
+      let innerSub: Subscriber<T> | null = null;
+      let isComplete = false;
+      source.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (outerValue) => {
+            if (!innerSub) {
+              innerSub = new OperatorSubscriber(subscriber, undefined, undefined, () => {
+                innerSub = null;
+                isComplete && subscriber.complete();
+              });
+              from(project(outerValue, index++)).subscribe(innerSub);
+            }
+          },
+          undefined,
+          () => {
+            isComplete = true;
+            !innerSub && subscriber.complete();
+          }
+        )
+      );
+    });
 }

@@ -1,10 +1,10 @@
-import { Operator } from '../Operator';
+/** @prettier */
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Emits the most recently emitted value from the source Observable whenever
@@ -46,47 +46,25 @@ import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '..
  * @name sample
  */
 export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => lift(source, new SampleOperator(notifier));
-}
-
-class SampleOperator<T> implements Operator<T, T> {
-  constructor(private notifier: Observable<any>) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    const sampleSubscriber = new SampleSubscriber(subscriber);
-    const subscription = source.subscribe(sampleSubscriber);
-    subscription.add(innerSubscribe(this.notifier, new SimpleInnerSubscriber(sampleSubscriber)));
-    return subscription;
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SampleSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
-  private value: T | undefined;
-  private hasValue: boolean = false;
-
-  protected _next(value: T) {
-    this.value = value;
-    this.hasValue = true;
-  }
-
-  notifyNext(): void {
-    this.emitValue();
-  }
-
-  notifyComplete(): void {
-    this.emitValue();
-  }
-
-  emitValue() {
-    if (this.hasValue) {
-      this.hasValue = false;
-      this.destination.next(this.value);
-    }
-  }
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
+      const subscriber = this;
+      let hasValue = false;
+      let lastValue: T | null = null;
+      source.subscribe(
+        new OperatorSubscriber(subscriber, (value) => {
+          hasValue = true;
+          lastValue = value;
+        })
+      );
+      const emit = () => {
+        if (hasValue) {
+          hasValue = false;
+          const value = lastValue!;
+          lastValue = null;
+          subscriber.next(value);
+        }
+      };
+      notifier.subscribe(new OperatorSubscriber(subscriber, emit, undefined, emit));
+    });
 }

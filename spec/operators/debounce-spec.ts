@@ -258,9 +258,9 @@ describe('debounce operator', () => {
     const e1subs =   '^                                    !';
     const expected = '---------a---------b---------c-------#';
     const selector = [cold(  '-x-y-'),
-                    cold(           '--x-y-'),
-                    cold(                    '---x-y-'),
-                    cold(                              '----x-y-')];
+                      cold(           '--x-y-'),
+                      cold(                    '---x-y-'),
+                      cold(                              '----x-y-')];
     const selectorSubs =
                   ['        ^!                            ',
                    '                 ^ !                  ',

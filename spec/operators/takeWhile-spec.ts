@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { takeWhile, tap, mergeMap } from 'rxjs/operators';
 import { of, Observable, from } from 'rxjs';
-import { values } from 'lodash';
 
 /** @test {takeWhile} */
 describe('takeWhile operator', () => {

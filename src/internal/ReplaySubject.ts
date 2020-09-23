@@ -1,10 +1,9 @@
+/** @prettier */
 import { Subject } from './Subject';
 import { TimestampProvider } from './types';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
-import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
-import { SubjectSubscription } from './SubjectSubscription';
-import { dateTimestampProvider } from "./scheduler/dateTimestampProvider";
+import { dateTimestampProvider } from './scheduler/dateTimestampProvider';
 
 /**
  * A variant of {@link Subject} that "replays" old values to new subscribers by emitting them when they first subscribe.
@@ -37,10 +36,8 @@ import { dateTimestampProvider } from "./scheduler/dateTimestampProvider";
  * {@see shareReplay}
  */
 export class ReplaySubject<T> extends Subject<T> {
-  private _events: (ReplayEvent<T> | T)[] = [];
-  private _bufferSize: number;
-  private _windowTime: number;
-  private _infiniteTimeWindow: boolean = false;
+  private buffer: (T | number)[] = [];
+  private infiniteTimeWindow = true;
 
   /**
    * @param bufferSize The size of the buffer to replay on subscription
@@ -48,117 +45,67 @@ export class ReplaySubject<T> extends Subject<T> {
    * @param timestampProvider An object with a `now()` method that provides the current timestamp. This is used to
    * calculate the amount of time something has been buffered.
    */
-  constructor(bufferSize: number = Infinity,
-              windowTime: number = Infinity,
-              private timestampProvider: TimestampProvider = dateTimestampProvider) {
+  constructor(
+    private bufferSize = Infinity,
+    private windowTime = Infinity,
+    private timestampProvider: TimestampProvider = dateTimestampProvider
+  ) {
     super();
-    this._bufferSize = bufferSize < 1 ? 1 : bufferSize;
-    this._windowTime = windowTime < 1 ? 1 : windowTime;
-
-    if (windowTime === Infinity) {
-      this._infiniteTimeWindow = true;
-      /** @override */
-      this.next = this.nextInfiniteTimeWindow;
-    } else {
-      this.next = this.nextTimeWindow;
-    }
+    this.infiniteTimeWindow = windowTime === Infinity;
+    this.bufferSize = Math.max(1, bufferSize);
+    this.windowTime = Math.max(1, windowTime);
   }
 
-  private nextInfiniteTimeWindow(value: T): void {
-    if (!this.isStopped) {
-      const _events = this._events;
-      _events.push(value);
-      // Since this method is invoked in every next() call than the buffer
-      // can overgrow the max size only by one item
-      if (_events.length > this._bufferSize) {
-        _events.shift();
-      }
+  next(value: T): void {
+    const { isStopped, buffer, infiniteTimeWindow, timestampProvider, windowTime } = this;
+    if (!isStopped) {
+      buffer.push(value);
+      !infiniteTimeWindow && buffer.push(timestampProvider.now() + windowTime);
     }
-    super.next(value);
-  }
-
-  private nextTimeWindow(value: T): void {
-    if (!this.isStopped) {
-      this._events.push({ time: this._getNow(), value });
-      this._trimBufferThenGetEvents();
-    }
+    this.trimBuffer();
     super.next(value);
   }
 
   /** @deprecated Remove in v8. This is an internal implementation detail, do not use. */
-  _subscribe(subscriber: Subscriber<T>): Subscription {
-    // When `_infiniteTimeWindow === true` then the buffer is already trimmed
-    const _infiniteTimeWindow = this._infiniteTimeWindow;
-    const _events = _infiniteTimeWindow ? this._events : this._trimBufferThenGetEvents();
-    const len = _events.length;
-    let subscription: Subscription;
+  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+    this._throwIfClosed();
+    this.trimBuffer();
 
-    if (this.closed) {
-      throw new ObjectUnsubscribedError();
-    } else if (this.isStopped || this.hasError) {
-      subscription = Subscription.EMPTY;
-    } else {
-      this.observers.push(subscriber);
-      subscription = new SubjectSubscription(this, subscriber);
+    const subscription = this._innerSubscribe(subscriber);
+
+    const { infiniteTimeWindow, buffer } = this;
+    // We use a copy here, so reentrant code does not mutate our array while we're
+    // emitting it to a new subscriber.
+    const copy = buffer.slice();
+    for (let i = 0; i < copy.length && !subscriber.closed; i += infiniteTimeWindow ? 1 : 2) {
+      subscriber.next(copy[i] as T);
     }
 
-    if (_infiniteTimeWindow) {
-      for (let i = 0; i < len && !subscriber.closed; i++) {
-        subscriber.next(<T>_events[i]);
-      }
-    } else {
-      for (let i = 0; i < len && !subscriber.closed; i++) {
-        subscriber.next((<ReplayEvent<T>>_events[i]).value);
-      }
-    }
-
-    if (this.hasError) {
-      subscriber.error(this.thrownError);
-    } else if (this.isStopped) {
-      subscriber.complete();
-    }
+    this._checkFinalizedStatuses(subscriber);
 
     return subscription;
   }
 
-  private _getNow(): number {
-    const { timestampProvider: scheduler } = this;
-    return scheduler ? scheduler.now() : dateTimestampProvider.now();
-  }
+  private trimBuffer() {
+    const { bufferSize, timestampProvider, buffer, infiniteTimeWindow } = this;
+    // If we don't have an infinite buffer size, and we're over the length,
+    // use splice to truncate the old buffer values off. Note that we have to
+    // double the size for instances where we're not using an infinite time window
+    // because we're storing the values and the timestamps in the same array.
+    const adjustedBufferSize = (infiniteTimeWindow ? 1 : 2) * bufferSize;
+    bufferSize < Infinity && adjustedBufferSize < buffer.length && buffer.splice(0, buffer.length - adjustedBufferSize);
 
-  private _trimBufferThenGetEvents(): ReplayEvent<T>[] {
-    const now = this._getNow();
-    const _bufferSize = this._bufferSize;
-    const _windowTime = this._windowTime;
-    const _events = <ReplayEvent<T>[]>this._events;
-
-    const eventsCount = _events.length;
-    let spliceCount = 0;
-
-    // Trim events that fall out of the time window.
-    // Start at the front of the list. Break early once
-    // we encounter an event that falls within the window.
-    while (spliceCount < eventsCount) {
-      if ((now - _events[spliceCount].time) < _windowTime) {
-        break;
+    // Now, if we're not in an infinite time window, remove all values where the time is
+    // older than what is allowed.
+    if (!infiniteTimeWindow) {
+      const now = timestampProvider.now();
+      let last = 0;
+      // Search the array for the first timestamp that isn't expired and
+      // truncate the buffer up to that point.
+      for (let i = 1; i < buffer.length && (buffer[i] as number) <= now; i += 2) {
+        last = i;
       }
-      spliceCount++;
+      last && buffer.splice(0, last + 1);
     }
-
-    if (eventsCount > _bufferSize) {
-      spliceCount = Math.max(spliceCount, eventsCount - _bufferSize);
-    }
-
-    if (spliceCount > 0) {
-      _events.splice(0, spliceCount);
-    }
-
-    return _events;
   }
-
-}
-
-interface ReplayEvent<T> {
-  time: number;
-  value: T;
 }

@@ -1,11 +1,12 @@
-import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 
 
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '../innerSubscribe';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { from } from '../observable/from';
+import { noop } from '../util/noop';
 
 /**
  * Emits the values emitted by the source Observable until a `notifier`
@@ -46,43 +47,10 @@ import { SimpleOuterSubscriber, SimpleInnerSubscriber, innerSubscribe } from '..
  * Observable until such time as `notifier` emits its first value.
  * @name takeUntil
  */
-export function takeUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => lift(source, new TakeUntilOperator(notifier));
-}
-
-class TakeUntilOperator<T> implements Operator<T, T> {
-  constructor(private notifier: Observable<any>) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    const takeUntilSubscriber = new TakeUntilSubscriber(subscriber);
-    const notifierSubscription = innerSubscribe(this.notifier, new SimpleInnerSubscriber(takeUntilSubscriber));
-    if (notifierSubscription && !takeUntilSubscriber.notifierHasNotified) {
-      takeUntilSubscriber.add(notifierSubscription);
-      return source.subscribe(takeUntilSubscriber);
-    }
-    return takeUntilSubscriber;
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class TakeUntilSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
-  notifierHasNotified = false;
-
-  constructor(destination: Subscriber<any>, ) {
-    super(destination);
-  }
-
-  notifyNext(): void {
-    this.notifierHasNotified = true;
-    this.complete();
-  }
-
-  notifyComplete(): void {
-    // noop
-  }
+export function takeUntil<T>(notifier: ObservableInput<any>): MonoTypeOperatorFunction<T> {
+  return (source: Observable<T>) => lift(source, function (this: Subscriber<T>, source: Observable<T>) {
+    const subscriber = this;
+    from(notifier).subscribe(new OperatorSubscriber(subscriber, () => subscriber.complete(), undefined, noop));
+    !subscriber.closed && source.subscribe(subscriber);
+  });
 }

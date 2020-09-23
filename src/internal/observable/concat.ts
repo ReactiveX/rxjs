@@ -2,6 +2,8 @@ import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueUnionFromArray } from '../types';
 import { of } from './of';
 import { concatAll } from '../operators/concatAll';
+import { isScheduler } from '../util/isScheduler';
+import { fromArray } from './fromArray';
 
 /* tslint:disable:max-line-length */
 /** @deprecated remove in v8. Passing a scheduler to concat is deprecated, please use {@link scheduled} and {@link concatAll} `scheduled([o1, o2], scheduler).pipe(concatAll())` */
@@ -125,7 +127,12 @@ export function concat<A extends ObservableInput<any>[]>(...observables: A): Obs
  * @param scheduler An optional {@link SchedulerLike} to schedule each
  * Observable subscription on.
  */
-export function concat<O extends ObservableInput<any>>(...observables: Array<O | SchedulerLike>): Observable<ObservedValueOf<O>> {
-  // The cast with `as` below is due to the SchedulerLike, once this is removed, it will no longer be a problem.
-  return concatAll<ObservedValueOf<O>>()(of(...observables) as Observable<ObservedValueOf<O>>);
+export function concat(...args: any[]): Observable<unknown> {
+  let scheduler: SchedulerLike | undefined;
+
+  if (isScheduler(args[args.length - 1])) {
+    scheduler = args.pop() as SchedulerLike;
+  }
+
+  return concatAll()(fromArray(args, scheduler));
 }

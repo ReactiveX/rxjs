@@ -1,10 +1,12 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
+/** @prettier */
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
 import { OperatorFunction, SubscribableOrPromise } from '../types';
-import { lift } from '../util/lift';
+import { wrappedLift } from '../util/lift';
+import { from } from '../observable/from';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { noop } from '../util/noop';
+import { arrRemove } from '../util/arrRemove';
 
 /**
  * Buffers the source Observable values starting from an emission from
@@ -56,123 +58,56 @@ export function bufferToggle<T, O>(
   closingSelector: (value: O) => SubscribableOrPromise<any>
 ): OperatorFunction<T, T[]> {
   return function bufferToggleOperatorFunction(source: Observable<T>) {
-    return lift(source, new BufferToggleOperator<T, O>(openings, closingSelector));
+    return wrappedLift(source, (subscriber, liftedSource) => {
+      const buffers: T[][] = [];
+
+      // Subscribe to the openings notifier first
+      from(openings).subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (openValue) => {
+            const buffer: T[] = [];
+            buffers.push(buffer);
+            // We use this composite subscription, so that
+            // when the closing notifier emits, we can tear it down.
+            const closingSubscription = new Subscription();
+
+            // This is captured here, because we emit on both next or
+            // if the closing notifier completes without value.
+            // TODO: We probably want to not have closing notifiers emit!!
+            const emit = () => {
+              arrRemove(buffers, buffer);
+              subscriber.next(buffer);
+              closingSubscription.unsubscribe();
+            };
+
+            // The line below will add the subscription to the parent subscriber *and* the closing subscription.
+            closingSubscription.add(from(closingSelector(openValue)).subscribe(new OperatorSubscriber(subscriber, emit, undefined, emit)));
+          },
+          undefined,
+          noop
+        )
+      );
+
+      liftedSource.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (value) => {
+            // Value from our source. Add it to all pending buffers.
+            for (const buffer of buffers) {
+              buffer.push(value);
+            }
+          },
+          undefined,
+          () => {
+            // Source complete. Emit all pending buffers.
+            while (buffers.length > 0) {
+              subscriber.next(buffers.shift()!);
+            }
+            subscriber.complete();
+          }
+        )
+      );
+    });
   };
-}
-
-class BufferToggleOperator<T, O> implements Operator<T, T[]> {
-
-  constructor(private openings: SubscribableOrPromise<O>,
-              private closingSelector: (value: O) => SubscribableOrPromise<any>) {
-  }
-
-  call(subscriber: Subscriber<T[]>, source: any): any {
-    return source.subscribe(new BufferToggleSubscriber(subscriber, this.openings, this.closingSelector));
-  }
-}
-
-interface BufferContext<T> {
-  buffer: T[];
-  subscription: Subscription;
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class BufferToggleSubscriber<T, O> extends ComplexOuterSubscriber<T, O> {
-  private contexts: Array<BufferContext<T>> = [];
-
-  constructor(destination: Subscriber<T[]>,
-              openings: SubscribableOrPromise<O>,
-              private closingSelector: (value: O) => SubscribableOrPromise<any> | void) {
-    super(destination);
-    this.add(innerSubscribe(openings, new ComplexInnerSubscriber(this, undefined, 0)))
-  }
-
-  protected _next(value: T): void {
-    const contexts = this.contexts;
-    const len = contexts.length;
-    for (let i = 0; i < len; i++) {
-      contexts[i].buffer.push(value);
-    }
-  }
-
-  protected _error(err: any): void {
-    const contexts = this.contexts;
-    while (contexts.length > 0) {
-      const context = contexts.shift()!;
-      context.subscription.unsubscribe();
-      context.buffer = null!;
-      context.subscription = null!;
-    }
-    this.contexts = null!;
-    super._error(err);
-  }
-
-  protected _complete(): void {
-    const contexts = this.contexts;
-    while (contexts.length > 0) {
-      const context = contexts.shift()!;
-      this.destination.next(context.buffer);
-      context.subscription.unsubscribe();
-      context.buffer = null!;
-      context.subscription = null!;
-    }
-    this.contexts = null!;
-    super._complete();
-  }
-
-  notifyNext(outerValue: any, innerValue: O): void {
-    outerValue ? this.closeBuffer(outerValue) : this.openBuffer(innerValue);
-  }
-
-  notifyComplete(innerSub: ComplexInnerSubscriber<T, O>): void {
-    this.closeBuffer((<any> innerSub).context);
-  }
-
-  private openBuffer(value: O): void {
-    try {
-      const closingSelector = this.closingSelector;
-      const closingNotifier = closingSelector.call(this, value);
-      if (closingNotifier) {
-        this.trySubscribe(closingNotifier);
-      }
-    } catch (err) {
-      this._error(err);
-    }
-  }
-
-  private closeBuffer(context: BufferContext<T>): void {
-    const contexts = this.contexts;
-
-    if (contexts && context) {
-      const { buffer, subscription } = context;
-      this.destination.next(buffer);
-      contexts.splice(contexts.indexOf(context), 1);
-      this.remove(subscription);
-      subscription.unsubscribe();
-    }
-  }
-
-  private trySubscribe(closingNotifier: any): void {
-    const contexts = this.contexts;
-
-    const buffer: Array<T> = [];
-    const subscription = new Subscription();
-    const context = { buffer, subscription };
-    contexts.push(context);
-
-    const innerSubscription = innerSubscribe(closingNotifier, new ComplexInnerSubscriber(this, context, 0));
-
-    if (!innerSubscription || innerSubscription.closed) {
-      this.closeBuffer(context);
-    } else {
-      (<any> innerSubscription).context = context;
-
-      this.add(innerSubscription);
-      subscription.add(innerSubscription);
-    }
-  }
 }

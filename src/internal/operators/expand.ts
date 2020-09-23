@@ -1,13 +1,22 @@
+/** @prettier */
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, SchedulerLike } from '../types';
 import { lift } from '../util/lift';
-import { SimpleInnerSubscriber, SimpleOuterSubscriber, innerSubscribe } from '../innerSubscribe';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { from } from '../observable/from';
 
 /* tslint:disable:max-line-length */
-export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: SchedulerLike): OperatorFunction<T, R>;
-export function expand<T>(project: (value: T, index: number) => ObservableInput<T>, concurrent?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function expand<T, R>(
+  project: (value: T, index: number) => ObservableInput<R>,
+  concurrent?: number,
+  scheduler?: SchedulerLike
+): OperatorFunction<T, R>;
+export function expand<T>(
+  project: (value: T, index: number) => ObservableInput<T>,
+  concurrent?: number,
+  scheduler?: SchedulerLike
+): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -61,114 +70,85 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  * from this transformation.
  * @name expand
  */
-export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>,
-                             concurrent: number = Infinity,
-                             scheduler?: SchedulerLike): OperatorFunction<T, R> {
+export function expand<T, R>(
+  project: (value: T, index: number) => ObservableInput<R>,
+  concurrent = Infinity,
+  scheduler?: SchedulerLike
+): OperatorFunction<T, R> {
   concurrent = (concurrent || 0) < 1 ? Infinity : concurrent;
 
-  return (source: Observable<T>) => lift(source, new ExpandOperator(project, concurrent, scheduler));
-}
+  return (source: Observable<T>) =>
+    lift(source, function (this: Subscriber<any>, source: Observable<T>) {
+      const subscriber = this;
+      // The number of active subscriptions.
+      let active = 0;
+      // The buffered values that we will subscribe to.
+      let buffer: (T | R)[] = [];
+      // An index to pass to the projection function.
+      let index = 0;
+      // Whether or not the source has completed.
+      let isComplete = false;
 
-export class ExpandOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => ObservableInput<R>,
-              private concurrent: number,
-              private scheduler?: SchedulerLike) {
-  }
+      /**
+       * Emits the given value, then projects it into an inner observable which
+       * is then subscribed to for the expansion.
+       * @param value the value to emit and start the expansion with
+       */
+      const emitAndExpand = (value: T | R) => {
+        subscriber.next(value);
+        // Doing the `from` and `project` here so that it is caught by the
+        // try/catch in our OperatorSubscriber. Otherwise, if we were to inline
+        // this in `doSub` below, if it is called with a scheduler, errors thrown
+        // would be out-of-band with the try/catch and we would have to do the
+        // try catching manually there. While this does mean we have to potentially
+        // keep a larger allocation (the observable) in memory, the tradeoff is it
+        // keeps the size down.
+        // TODO: Correct the types here. `project` could be R or T.
+        const inner = from(project(value as any, index++));
+        active++;
+        const doSub = () => {
+          inner.subscribe(
+            new OperatorSubscriber(subscriber, next, undefined, () => {
+              --active === 0 && isComplete && !buffer.length ? subscriber.complete() : trySub();
+            })
+          );
+        };
 
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new ExpandSubscriber(subscriber, this.project, this.concurrent, this.scheduler));
-  }
-}
+        scheduler ? subscriber.add(scheduler.schedule(doSub)) : doSub();
+      };
 
-interface DispatchArg<T, R> {
-  subscriber: ExpandSubscriber<T, R>;
-  result: ObservableInput<R>;
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-export class ExpandSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
-  private index: number = 0;
-  private active: number = 0;
-  private hasCompleted: boolean = false;
-  private buffer: any[] | undefined;
-
-  constructor(protected destination: Subscriber<R>,
-              private project: (value: T, index: number) => ObservableInput<R>,
-              private concurrent: number,
-              private scheduler?: SchedulerLike) {
-    super(destination);
-    if (concurrent < Infinity) {
-      this.buffer = [];
-    }
-  }
-
-  private static dispatch<T, R>(arg: DispatchArg<T, R>): void {
-    const {subscriber, result} = arg;
-    subscriber.subscribeToProjection(result);
-  }
-
-  protected _next(value: any): void {
-    const destination = this.destination;
-
-    if (destination.closed) {
-      this._complete();
-      return;
-    }
-
-    const index = this.index++;
-    if (this.active < this.concurrent) {
-      destination.next(value);
-      try {
-        this.active++;
-        const { project } = this;
-        const result = project(value, index);
-        if (!this.scheduler) {
-          this.subscribeToProjection(result);
-        } else {
-          const state: DispatchArg<T, R> = { subscriber: this, result };
-          const destination = this.destination;
-          destination.add(this.scheduler.schedule<DispatchArg<T, R>>(
-            ExpandSubscriber.dispatch as any,
-            0,
-            state
-          ));
+      /**
+       * Tries to dequeue a value from the buffer, if there is one, and
+       * process it.
+       */
+      const trySub = () => {
+        // It seems like here we could just make the assumption that we've arrived here because
+        // we need to start one more expansion because one has just completed. However, it's
+        // possible, due to scheduling, that multiple inner subscriptions could complete and we
+        // could need to start more than one inner subscription from our buffer. Hence the loop.
+        while (0 < buffer.length && active < concurrent) {
+          emitAndExpand(buffer.shift()!);
         }
-      } catch (e) {
-        destination.error(e);
-      }
-    } else {
-      this.buffer!.push(value);
-    }
-  }
+      };
 
-  private subscribeToProjection(result: any): void {
-    this.destination.add(innerSubscribe(result, new SimpleInnerSubscriber(this)));
-  }
+      /**
+       * Handle the next value. Captured here because this is called "recursively" by both incoming
+       * values from the source, and values emitted by the expanded inner subscriptions.
+       * @param value The value to process
+       */
+      const next = (value: T | R) => (active < concurrent ? emitAndExpand(value) : buffer.push(value));
 
-  protected _complete(): void {
-    this.hasCompleted = true;
-    if (this.hasCompleted && this.active === 0) {
-      this.destination.complete();
-    }
-    this.unsubscribe();
-  }
+      // subscribe to our source.
+      source.subscribe(
+        new OperatorSubscriber(subscriber, next, undefined, () => {
+          isComplete = true;
+          active === 0 && subscriber.complete();
+        })
+      );
 
-  notifyNext(innerValue: R): void {
-    this._next(innerValue);
-  }
-
-  notifyComplete(): void {
-    const buffer = this.buffer;
-    this.active--;
-    if (buffer && buffer.length > 0) {
-      this._next(buffer.shift());
-    }
-    if (this.hasCompleted && this.active === 0) {
-      this.destination.complete();
-    }
-  }
+      return () => {
+        // Release buffered values.
+        buffer = null!;
+      };
+    });
 }

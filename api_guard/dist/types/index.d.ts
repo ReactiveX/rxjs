@@ -21,16 +21,15 @@ export declare const async: AsyncScheduler;
 export declare const asyncScheduler: AsyncScheduler;
 
 export declare class AsyncSubject<T> extends Subject<T> {
-    _subscribe(subscriber: Subscriber<any>): Subscription;
+    protected _checkFinalizedStatuses(subscriber: Subscriber<T>): void;
     complete(): void;
-    error(error: any): void;
     next(value: T): void;
 }
 
 export declare class BehaviorSubject<T> extends Subject<T> {
     get value(): T;
     constructor(_value: T);
-    _subscribe(subscriber: Subscriber<T>): Subscription;
+    protected _subscribe(subscriber: Subscriber<T>): Subscription;
     getValue(): T;
     next(value: T): void;
 }
@@ -196,14 +195,14 @@ export declare const config: {
 };
 
 export declare class ConnectableObservable<T> extends Observable<T> {
-    protected _connection: Subscription | null | undefined;
-    _isComplete: boolean;
+    protected _connection: Subscription | null;
     protected _refCount: number;
-    protected _subject: Subject<T> | undefined;
+    protected _subject: Subject<T> | null;
     source: Observable<T>;
     protected subjectFactory: () => Subject<T>;
     constructor(source: Observable<T>, subjectFactory: () => Subject<T>);
-    _subscribe(subscriber: Subscriber<T>): Subscription;
+    protected _subscribe(subscriber: Subscriber<T>): Subscription;
+    protected _teardown(): void;
     connect(): Subscription;
     protected getSubject(): Subject<T>;
     refCount(): Observable<T>;
@@ -274,10 +273,8 @@ export declare function generate<S>(initialState: S, condition: ConditionFunc<S>
 export declare function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
 export declare function generate<T, S>(options: GenerateOptions<T, S>): Observable<T>;
 
-export declare class GroupedObservable<K, T> extends Observable<T> {
-    key: K;
-    constructor(key: K, groupSubject: Subject<T>, refCountSubscription?: RefCountSubscription | undefined);
-    _subscribe(subscriber: Subscriber<T>): Subscription;
+export interface GroupedObservable<K, T> extends Observable<T> {
+    readonly key: K;
 }
 
 export declare type Head<X extends any[]> = ((...args: X) => any) extends ((arg: infer U, ...rest: any[]) => any) ? U : never;
@@ -309,17 +306,17 @@ export declare function merge<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: Obs
 export declare function merge<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4 | T5 | T6>;
 export declare function merge<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, concurrent: number, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4 | T5 | T6>;
 export declare function merge<T>(v1: ObservableInput<T>): Observable<T>;
-export declare function merge<T>(v1: ObservableInput<T>, concurrent?: number): Observable<T>;
+export declare function merge<T>(v1: ObservableInput<T>, concurrent: number): Observable<T>;
 export declare function merge<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>): Observable<T | T2>;
-export declare function merge<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>, concurrent?: number): Observable<T | T2>;
+export declare function merge<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>, concurrent: number): Observable<T | T2>;
 export declare function merge<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<T | T2 | T3>;
-export declare function merge<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, concurrent?: number): Observable<T | T2 | T3>;
+export declare function merge<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, concurrent: number): Observable<T | T2 | T3>;
 export declare function merge<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<T | T2 | T3 | T4>;
-export declare function merge<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, concurrent?: number): Observable<T | T2 | T3 | T4>;
+export declare function merge<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, concurrent: number): Observable<T | T2 | T3 | T4>;
 export declare function merge<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<T | T2 | T3 | T4 | T5>;
-export declare function merge<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, concurrent?: number): Observable<T | T2 | T3 | T4 | T5>;
+export declare function merge<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, concurrent: number): Observable<T | T2 | T3 | T4 | T5>;
 export declare function merge<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<T | T2 | T3 | T4 | T5 | T6>;
-export declare function merge<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, concurrent?: number): Observable<T | T2 | T3 | T4 | T5 | T6>;
+export declare function merge<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, concurrent: number): Observable<T | T2 | T3 | T4 | T5 | T6>;
 export declare function merge<T>(...observables: (ObservableInput<T> | number)[]): Observable<T>;
 export declare function merge<T>(...observables: (ObservableInput<T> | SchedulerLike | number)[]): Observable<T>;
 export declare function merge<T, R>(...observables: (ObservableInput<any> | number)[]): Observable<R>;
@@ -497,7 +494,8 @@ export declare function range(start?: number, count?: number, scheduler?: Schedu
 
 export declare class ReplaySubject<T> extends Subject<T> {
     constructor(bufferSize?: number, windowTime?: number, timestampProvider?: TimestampProvider);
-    _subscribe(subscriber: Subscriber<T>): Subscription;
+    protected _subscribe(subscriber: Subscriber<T>): Subscription;
+    next(value: T): void;
 }
 
 export declare function scheduled<T>(input: ObservableInput<T>, scheduler: SchedulerLike): Observable<T>;
@@ -529,8 +527,11 @@ export declare class Subject<T> extends Observable<T> implements SubscriptionLik
     observers: Observer<T>[];
     thrownError: any;
     constructor();
-    _subscribe(subscriber: Subscriber<T>): Subscription;
-    _trySubscribe(subscriber: Subscriber<T>): TeardownLogic;
+    protected _checkFinalizedStatuses(subscriber: Subscriber<any>): void;
+    protected _innerSubscribe(subscriber: Subscriber<any>): Subscription;
+    protected _subscribe(subscriber: Subscriber<T>): Subscription;
+    protected _throwIfClosed(): void;
+    protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic;
     asObservable(): Observable<T>;
     complete(): void;
     error(err: any): void;
