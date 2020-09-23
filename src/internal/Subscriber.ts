@@ -2,9 +2,10 @@
 import { isFunction } from './util/isFunction';
 import { EMPTY_OBSERVER } from './EMPTY_OBSERVER';
 import { Observer, PartialObserver } from './types';
-import { Subscription, isSubscription } from './Subscription';
+import { Subscription } from './Subscription';
 import { config } from './config';
 import { reportUnhandledError } from './util/reportUnhandledError';
+import { noop } from './util/noop';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -155,12 +156,13 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     if (isFunction(observerOrNext)) {
       next = observerOrNext;
     } else if (observerOrNext) {
-      next = observerOrNext.next;
-      error = observerOrNext.error;
-      complete = observerOrNext.complete;
+      ({ next, error, complete } = observerOrNext);
       if (observerOrNext !== EMPTY_OBSERVER) {
         let context: any;
-        if (config.useDeprecatedNextContext) {
+        if (this && config.useDeprecatedNextContext) {
+          // This is a deprecated path that made `this.unsubscribe()` available in
+          // next handler functions passed to subscribe. This only exists behind a flag
+          // now, as it is *very* slow.
           context = Object.create(observerOrNext);
           context.unsubscribe = this.unsubscribe.bind(this);
         } else {
@@ -169,64 +171,14 @@ export class SafeSubscriber<T> extends Subscriber<T> {
         next = next?.bind(context);
         error = error?.bind(context);
         complete = complete?.bind(context);
-        if (isSubscription(observerOrNext)) {
-          observerOrNext.add(this.unsubscribe.bind(this));
-        }
       }
     }
 
-    this._next = next!;
-    this._error = error!;
-    this._complete = complete!;
-  }
-
-  next(value: T): void {
-    if (!this.isStopped && this._next) {
-      try {
-        this._next(value);
-      } catch (err) {
-        this._throw(err);
-      }
-    }
-  }
-
-  error(err: any): void {
-    if (!this.isStopped) {
-      if (this._error) {
-        try {
-          this._error(err);
-        } catch (err) {
-          this._throw(err);
-          return;
-        }
-        this.unsubscribe();
-      } else {
-        this._throw(err);
-      }
-    }
-  }
-
-  private _throw(err: any) {
-    this.unsubscribe();
-    if (config.useDeprecatedSynchronousErrorHandling) {
-      throw err;
-    } else {
-      reportUnhandledError(err);
-    }
-  }
-
-  complete(): void {
-    if (!this.isStopped) {
-      if (this._complete) {
-        try {
-          this._complete();
-        } catch (err) {
-          this._throw(err);
-          return;
-        }
-      }
-      this.unsubscribe();
-    }
+    this.destination = {
+      next: next || noop,
+      error: error || handleError,
+      complete: complete || noop,
+    };
   }
 
   unsubscribe() {
@@ -236,5 +188,13 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       _parentSubscriber.unsubscribe();
       super.unsubscribe();
     }
+  }
+}
+
+function handleError(err: any) {
+  if (config.useDeprecatedSynchronousErrorHandling) {
+    throw err;
+  } else {
+    reportUnhandledError(err);
   }
 }
