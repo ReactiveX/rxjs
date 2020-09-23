@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { expectObservable } from '../helpers/marble-testing';
 import { generate, Subscriber } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { SafeSubscriber } from 'rxjs/internal/Subscriber';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -55,7 +56,7 @@ describe('generate', () => {
   it('should stop producing when unsubscribed', () => {
     const source = generate(1, x => x < 4, x => x + 1);
     let count = 0;
-    const subscriber = new Subscriber<number>(
+    const subscriber = new SafeSubscriber<number>(
       x => {
         count++;
         if (x == 2) {
