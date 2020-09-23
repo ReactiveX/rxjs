@@ -1,3 +1,23 @@
+# [7.0.0-beta.7](https://github.com/reactivex/rxjs/compare/7.0.0-beta.5...7.0.0-beta.7) (2020-09-23)
+
+
+### Bug Fixes
+
+* **multicast:** and other publish variants will handle errors thrown in a selector appropriately ([bde8eda](https://github.com/reactivex/rxjs/commit/bde8eda09310463b05c5ec7d8a1dd1bafe9dba6f))
+
+
+### Code Refactoring
+
+* **tap:** reduce the size of the implementation ([1222d5a](https://github.com/reactivex/rxjs/commit/1222d5a68faa9d3f3c9ad8f8d5db1440971502bd))
+* **Subscriber:** Massively untangle Subscriber and SafeSubscriber ([07902ca](https://github.com/reactivex/rxjs/commit/07902ca99ee828521ce238826f10b55e25fbf554))
+
+
+### BREAKING CHANGES
+
+* **Subscriber:** `new Subscriber` no longer takes 0-3 arguments. To create a `Subscriber` with 0-3 arguments, use `Subscriber.create`. However, please note that there is little to no reason that you should be creating `Subscriber` references directly, and `Subscriber.create` and `new Subscriber` are both deprecated.
+
+
+
 # [7.0.0-beta.6](https://github.com/reactivex/rxjs/compare/7.0.0-beta.5...7.0.0-beta.6) (2020-09-23)
 
 
