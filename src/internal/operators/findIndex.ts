@@ -1,7 +1,7 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { createFind } from './find';
 /**
  * Emits only the index of the first value emitted by the source Observable that
@@ -46,5 +46,5 @@ export function findIndex<T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
   thisArg?: any
 ): OperatorFunction<T, number> {
-  return (source: Observable<T>) => lift(source, createFind(predicate, thisArg, 'index'));
+  return operate(createFind(predicate, thisArg, 'index'));
 }

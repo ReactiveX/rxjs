@@ -1,12 +1,11 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { lift } from '../util/lift';
 import { Subscription } from '../Subscription';
 import { from } from '../observable/from';
 import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 export function catchError<T, O extends ObservableInput<any>>(
@@ -109,44 +108,35 @@ export function catchError<T, O extends ObservableInput<any>>(
 export function catchError<T, O extends ObservableInput<any>>(
   selector: (err: any, caught: Observable<T>) => O
 ): OperatorFunction<T, T | ObservedValueOf<O>> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      const subscription = new Subscription();
-      let innerSub: Subscription | null = null;
-      let syncUnsub = false;
-      let handledResult: Observable<ObservedValueOf<O>>;
+  return operate((source, subscriber) => {
+    let innerSub: Subscription | null = null;
+    let syncUnsub = false;
+    let handledResult: Observable<ObservedValueOf<O>>;
 
-      innerSub = source.subscribe(
-        new OperatorSubscriber(subscriber, undefined, (err) => {
-          handledResult = from(selector(err, catchError(selector)(source)));
-          if (innerSub) {
-            innerSub.unsubscribe();
-            innerSub = null;
-            subscription.add(handledResult.subscribe(subscriber));
-          } else {
-            // We don't have an innerSub yet, that means the error was synchronous
-            // because the subscribe call hasn't returned yet.
-            syncUnsub = true;
-          }
-        })
-      );
+    innerSub = source.subscribe(
+      new OperatorSubscriber(subscriber, undefined, (err) => {
+        handledResult = from(selector(err, catchError(selector)(source)));
+        if (innerSub) {
+          innerSub.unsubscribe();
+          innerSub = null;
+          handledResult.subscribe(subscriber);
+        } else {
+          // We don't have an innerSub yet, that means the error was synchronous
+          // because the subscribe call hasn't returned yet.
+          syncUnsub = true;
+        }
+      })
+    );
 
-      if (syncUnsub) {
-        // We have a synchronous error, we need to make sure to
-        // teardown right away. This ensures that `finalize` is called
-        // at the right time, and that teardown occurs at the expected
-        // time between the source error and the subscription to the
-        // next observable.
-        innerSub.unsubscribe();
-        innerSub = null;
-        subscription.add(handledResult!.subscribe(subscriber));
-      } else {
-        // Everything was fine after subscription, add it to our
-        // parent subscription.
-        subscription.add(innerSub);
-      }
-
-      return subscription;
-    });
+    if (syncUnsub) {
+      // We have a synchronous error, we need to make sure to
+      // teardown right away. This ensures that `finalize` is called
+      // at the right time, and that teardown occurs at the expected
+      // time between the source error and the subscription to the
+      // next observable.
+      innerSub.unsubscribe();
+      innerSub = null;
+      handledResult!.subscribe(subscriber);
+    }
+  });
 }

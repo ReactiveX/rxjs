@@ -1,9 +1,7 @@
 /** @prettier */
 import { EmptyError } from '../util/EmptyError';
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -37,22 +35,20 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * value.
  */
 export function throwIfEmpty<T>(errorFactory: () => any = defaultErrorFactory): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      let hasValue = false;
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value) => {
-            hasValue = true;
-            subscriber.next(value);
-          },
-          undefined,
-          () => (hasValue ? subscriber.complete() : subscriber.error(errorFactory()))
-        )
-      );
-    });
+  return operate((source, subscriber) => {
+    let hasValue = false;
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => {
+          hasValue = true;
+          subscriber.next(value);
+        },
+        undefined,
+        () => (hasValue ? subscriber.complete() : subscriber.error(errorFactory()))
+      )
+    );
+  });
 }
 
 function defaultErrorFactory() {

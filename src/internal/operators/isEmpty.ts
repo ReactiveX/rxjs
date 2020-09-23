@@ -1,8 +1,6 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -70,22 +68,20 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  */
 
 export function isEmpty<T>(): OperatorFunction<T, boolean> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<boolean>, source: Observable<any>) {
-      const subscriber = this;
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          () => {
-            subscriber.next(false);
-            subscriber.complete();
-          },
-          undefined,
-          () => {
-            subscriber.next(true);
-            subscriber.complete();
-          }
-        )
-      );
-    });
+  return operate((source, subscriber) => {
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        () => {
+          subscriber.next(false);
+          subscriber.complete();
+        },
+        undefined,
+        () => {
+          subscriber.next(true);
+          subscriber.complete();
+        }
+      )
+    );
+  });
 }

@@ -1,9 +1,8 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -71,64 +70,62 @@ import { OperatorSubscriber } from './OperatorSubscriber';
 export function windowCount<T>(windowSize: number, startWindowEvery: number = 0): OperatorFunction<T, Observable<T>> {
   const startEvery = startWindowEvery > 0 ? startWindowEvery : windowSize;
 
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<Observable<T>>, source: Observable<T>) {
-      const subscriber = this;
-      let windows = [new Subject<T>()];
-      let starts: number[] = [];
-      let count = 0;
+  return operate((source, subscriber) => {
+    let windows = [new Subject<T>()];
+    let starts: number[] = [];
+    let count = 0;
 
-      // Open the first window.
-      subscriber.next(windows[0].asObservable());
+    // Open the first window.
+    subscriber.next(windows[0].asObservable());
 
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value: T) => {
-            // Emit the value through all current windows.
-            // We don't need to create a new window yet, we
-            // do that as soon as we close one.
-            for (const window of windows) {
-              window.next(value);
-            }
-            // Here we're using the size of the window array to figure
-            // out if the oldest window has emitted enough values. We can do this
-            // because the size of the window array is a function of the values
-            // seen by the subscription. If it's time to close it, we complete
-            // it and remove it.
-            const c = count - windowSize + 1;
-            if (c >= 0 && c % startEvery === 0) {
-              windows.shift()!.complete();
-            }
-
-            // Look to see if the next count tells us it's time to open a new window.
-            // TODO: We need to figure out if this really makes sense. We're technically
-            // emitting windows *before* we have a value to emit them for. It's probably
-            // more expected that we should be emitting the window when the start
-            // count is reached -- not before.
-            if (++count % startEvery === 0) {
-              const window = new Subject<T>();
-              windows.push(window);
-              subscriber.next(window.asObservable());
-            }
-          },
-          (err) => {
-            while (windows.length > 0) {
-              windows.shift()!.error(err);
-            }
-            subscriber.error(err);
-          },
-          () => {
-            while (windows.length > 0) {
-              windows.shift()!.complete();
-            }
-            subscriber.complete();
-          },
-          () => {
-            starts = null!;
-            windows = null!;
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value: T) => {
+          // Emit the value through all current windows.
+          // We don't need to create a new window yet, we
+          // do that as soon as we close one.
+          for (const window of windows) {
+            window.next(value);
           }
-        )
-      );
-    });
+          // Here we're using the size of the window array to figure
+          // out if the oldest window has emitted enough values. We can do this
+          // because the size of the window array is a function of the values
+          // seen by the subscription. If it's time to close it, we complete
+          // it and remove it.
+          const c = count - windowSize + 1;
+          if (c >= 0 && c % startEvery === 0) {
+            windows.shift()!.complete();
+          }
+
+          // Look to see if the next count tells us it's time to open a new window.
+          // TODO: We need to figure out if this really makes sense. We're technically
+          // emitting windows *before* we have a value to emit them for. It's probably
+          // more expected that we should be emitting the window when the start
+          // count is reached -- not before.
+          if (++count % startEvery === 0) {
+            const window = new Subject<T>();
+            windows.push(window);
+            subscriber.next(window.asObservable());
+          }
+        },
+        (err) => {
+          while (windows.length > 0) {
+            windows.shift()!.error(err);
+          }
+          subscriber.error(err);
+        },
+        () => {
+          while (windows.length > 0) {
+            windows.shift()!.complete();
+          }
+          subscriber.complete();
+        },
+        () => {
+          starts = null!;
+          windows = null!;
+        }
+      )
+    );
+  });
 }

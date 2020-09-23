@@ -1,8 +1,6 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
 import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
@@ -54,23 +52,21 @@ export function filter<T>(predicate: (value: T, index: number) => boolean, thisA
  * in the `predicate` function.
  */
 export function filter<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      // An index passed to our predicate function on each call.
-      let index = 0;
+  return operate((source, subscriber) => {
+    // An index passed to our predicate function on each call.
+    let index = 0;
 
-      // Subscribe to the source, all errors and completions are
-      // forwarded to the consumer.
-      return source.subscribe(
-        new OperatorSubscriber(subscriber, (value) => {
-          // Call the predicate with the appropriate `this` context,
-          // if the predicate returns `true`, then send the value
-          // to the consumer.
-          if (predicate.call(thisArg, value, index++)) {
-            subscriber.next(value);
-          }
-        })
-      );
-    });
+    // Subscribe to the source, all errors and completions are
+    // forwarded to the consumer.
+    return source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        // Call the predicate with the appropriate `this` context,
+        // if the predicate returns `true`, then send the value
+        // to the consumer.
+        if (predicate.call(thisArg, value, index++)) {
+          subscriber.next(value);
+        }
+      })
+    );
+  });
 }

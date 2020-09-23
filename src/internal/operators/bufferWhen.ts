@@ -2,7 +2,7 @@
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 
@@ -48,43 +48,41 @@ import { from } from '../observable/from';
  * @name bufferWhen
  */
 export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, T[]> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T[]>, source: Observable<T>) {
-      const subscriber = this;
-      let buffer: T[] | null = null;
-      let closingSubscriber: Subscriber<T> | null = null;
+  return operate((source, subscriber) => {
+    let buffer: T[] | null = null;
+    let closingSubscriber: Subscriber<T> | null = null;
 
-      const openBuffer = () => {
-        closingSubscriber?.unsubscribe();
+    const openBuffer = () => {
+      closingSubscriber?.unsubscribe();
 
-        const b = buffer;
-        buffer = [];
-        b && subscriber.next(b);
+      const b = buffer;
+      buffer = [];
+      b && subscriber.next(b);
 
-        let closingNotifier: Observable<any>;
-        try {
-          closingNotifier = from(closingSelector());
-        } catch (err) {
-          subscriber.error(err);
-          return;
-        }
+      let closingNotifier: Observable<any>;
+      try {
+        closingNotifier = from(closingSelector());
+      } catch (err) {
+        subscriber.error(err);
+        return;
+      }
 
-        closingNotifier.subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, undefined, () => openBuffer())));
-      };
+      closingNotifier.subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, undefined, () => openBuffer())));
+    };
 
-      openBuffer();
+    openBuffer();
 
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value) => buffer?.push(value),
-          undefined,
-          () => {
-            buffer && subscriber.next(buffer);
-            subscriber.complete();
-          },
-          () => (buffer = closingSubscriber = null!)
-        )
-      );
-    });
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => buffer?.push(value),
+        undefined,
+        () => {
+          buffer && subscriber.next(buffer);
+          subscriber.complete();
+        },
+        () => (buffer = closingSubscriber = null!)
+      )
+    );
+  });
 }

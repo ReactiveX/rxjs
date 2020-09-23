@@ -1,9 +1,9 @@
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, ObservedValueUnionFromArray } from '../types';
 import { raceInit } from '../observable/race';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { argsOrArgArray } from "../util/argsOrArgArray";
-import { Subscriber } from '../Subscriber';
+import { identity } from '../util/identity';
 
 /* tslint:disable:max-line-length */
 /** @deprecated Deprecated use {@link raceWith} */
@@ -58,7 +58,7 @@ export function race<T>(...args: any[]): OperatorFunction<T, unknown> {
 export function raceWith<T, A extends ObservableInput<any>[]>(
   ...otherSources: A
 ): OperatorFunction<T, T | ObservedValueUnionFromArray<A>> {
-  return (source: Observable<T>) => (!otherSources.length) ? source : lift(source, function(this: Subscriber<any>, source: Observable<T>) {
-    return raceInit([source, ...otherSources])(this);
+  return !otherSources.length ? identity : operate((source, subscriber) => {
+    raceInit([source, ...otherSources])(subscriber);
   });
 }

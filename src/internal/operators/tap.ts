@@ -1,9 +1,8 @@
 /** @prettier */
 import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, PartialObserver } from '../types';
 import { noop } from '../util/noop';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 
 /* tslint:disable:max-line-length */
 /** @deprecated Use an observer instead of a complete callback */
@@ -111,50 +110,47 @@ export function tap<T>(
   error?: ((e: any) => void) | null,
   complete?: (() => void) | null
 ): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>): Observable<T> => {
-    return lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      let onNext: (value: T) => void;
-      let onError: (err: any) => void;
-      let onComplete: () => void;
+  return operate((source, subscriber) => {
+    let onNext: (value: T) => void;
+    let onError: (err: any) => void;
+    let onComplete: () => void;
 
-      /**
-       * A helper to ensure that errors thrown in handlers get
-       * caught and sent do the consumer as an error notification.
-       */
-      const wrap = (fn: any) => (arg?: any) => {
-        try {
-          fn(arg);
-        } catch (err) {
-          subscriber.error(err);
-        }
-      };
-
-      if (!nextOrObserver || typeof nextOrObserver === 'function') {
-        // We have callback functions (or maybe nothing?)
-
-        // Bind the next observer to the subscriber. This is an undocumented legacy behavior
-        // We want to deprecate, but it technically allows for users to call `this.unsubscribe()`
-        // in the next callback. Again, this is a deprecated, undocumented behavior and we
-        // do not want to allow this in upcoming versions.
-        onNext = nextOrObserver ? wrap(nextOrObserver.bind(subscriber)) : noop;
-
-        // We don't need to bind the other two callbacks if they exist. There is nothing
-        // relevant on the subscriber to call during an error or complete callback, as
-        // it is about to unsubscribe.
-        onError = error ? wrap(error) : noop;
-        onComplete = complete ? wrap(complete) : noop;
-      } else {
-        // We recieved a partial observer. Make sure the handlers are bound to their
-        // original parent, and wrap them with the appropriate error handling.
-        const { next, error, complete } = nextOrObserver;
-        onNext = next ? wrap(next.bind(nextOrObserver)) : noop;
-        onError = error ? wrap(error.bind(nextOrObserver)) : noop;
-        onComplete = complete ? wrap(complete.bind(nextOrObserver)) : noop;
+    /**
+     * A helper to ensure that errors thrown in handlers get
+     * caught and sent do the consumer as an error notification.
+     */
+    const wrap = (fn: any) => (arg?: any) => {
+      try {
+        fn(arg);
+      } catch (err) {
+        subscriber.error(err);
       }
-      return source.subscribe(new TapSubscriber(this, onNext, onError, onComplete));
-    });
-  };
+    };
+
+    if (!nextOrObserver || typeof nextOrObserver === 'function') {
+      // We have callback functions (or maybe nothing?)
+
+      // Bind the next observer to the subscriber. This is an undocumented legacy behavior
+      // We want to deprecate, but it technically allows for users to call `this.unsubscribe()`
+      // in the next callback. Again, this is a deprecated, undocumented behavior and we
+      // do not want to allow this in upcoming versions.
+      onNext = nextOrObserver ? wrap(nextOrObserver.bind(subscriber)) : noop;
+
+      // We don't need to bind the other two callbacks if they exist. There is nothing
+      // relevant on the subscriber to call during an error or complete callback, as
+      // it is about to unsubscribe.
+      onError = error ? wrap(error) : noop;
+      onComplete = complete ? wrap(complete) : noop;
+    } else {
+      // We recieved a partial observer. Make sure the handlers are bound to their
+      // original parent, and wrap them with the appropriate error handling.
+      const { next, error, complete } = nextOrObserver;
+      onNext = next ? wrap(next.bind(nextOrObserver)) : noop;
+      onError = error ? wrap(error.bind(nextOrObserver)) : noop;
+      onComplete = complete ? wrap(complete.bind(nextOrObserver)) : noop;
+    }
+    return source.subscribe(new TapSubscriber(subscriber, onNext, onError, onComplete));
+  });
 }
 
 class TapSubscriber<T> extends Subscriber<T> {

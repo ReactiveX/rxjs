@@ -1,10 +1,8 @@
 /** @prettier */
 import { asyncScheduler } from '../scheduler/async';
 import { isValidDate } from '../util/isDate';
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -57,81 +55,79 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  */
 export function delay<T>(delay: number | Date, scheduler: SchedulerLike = asyncScheduler): MonoTypeOperatorFunction<T> {
   // TODO: Properly handle negative delays and dates in the past.
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      const isAbsoluteDelay = isValidDate(delay);
-      // If the source is complete
-      let isComplete = false;
-      // The number of active delays in progress.
-      let active = 0;
-      // For absolute time delay, we collect the values in this array and emit
-      // them when the delay fires.
-      let absoluteTimeValues: T[] | null = isAbsoluteDelay ? [] : null;
+  return operate((source, subscriber) => {
+    const isAbsoluteDelay = isValidDate(delay);
+    // If the source is complete
+    let isComplete = false;
+    // The number of active delays in progress.
+    let active = 0;
+    // For absolute time delay, we collect the values in this array and emit
+    // them when the delay fires.
+    let absoluteTimeValues: T[] | null = isAbsoluteDelay ? [] : null;
 
-      /**
-       * Used to check to see if we should complete the resulting
-       * subscription after delays finish or when the source completes.
-       * We don't want to complete when the source completes if we
-       * have delays in flight.
-       */
-      const checkComplete = () => isComplete && !active && !absoluteTimeValues?.length && subscriber.complete();
+    /**
+     * Used to check to see if we should complete the resulting
+     * subscription after delays finish or when the source completes.
+     * We don't want to complete when the source completes if we
+     * have delays in flight.
+     */
+    const checkComplete = () => isComplete && !active && !absoluteTimeValues?.length && subscriber.complete();
 
-      if (isAbsoluteDelay) {
-        // A date was passed. We only do one delay, so let's get it
-        // scheduled right away.
-        active++;
-        subscriber.add(
-          scheduler.schedule(() => {
-            active--;
-            if (absoluteTimeValues) {
-              const values = absoluteTimeValues;
-              absoluteTimeValues = null;
-              for (const value of values) {
-                subscriber.next(value);
-              }
+    if (isAbsoluteDelay) {
+      // A date was passed. We only do one delay, so let's get it
+      // scheduled right away.
+      active++;
+      subscriber.add(
+        scheduler.schedule(() => {
+          active--;
+          if (absoluteTimeValues) {
+            const values = absoluteTimeValues;
+            absoluteTimeValues = null;
+            for (const value of values) {
+              subscriber.next(value);
             }
-            checkComplete();
-          }, +delay - scheduler.now())
-        );
-      }
-
-      // Subscribe to the source
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value) => {
-            if (isAbsoluteDelay) {
-              // If we're dealing with an absolute time (via Date) delay, then before
-              // the delay fires, the `absoluteTimeValues` array will be present, and
-              // we want to add them to that. Otherwise, if it's `null`, that is because
-              // the delay has already fired.
-              absoluteTimeValues ? absoluteTimeValues.push(value) : subscriber.next(value);
-            } else {
-              active++;
-              subscriber.add(
-                scheduler.schedule(() => {
-                  active--;
-                  subscriber.next(value);
-                  checkComplete();
-                }, delay as number)
-              );
-            }
-          },
-          // Allow errors to pass through.
-          undefined,
-          () => {
-            isComplete = true;
-            checkComplete();
           }
-        )
+          checkComplete();
+        }, +delay - scheduler.now())
       );
+    }
 
-      // Additional teardown. The other teardown is set up
-      // implicitly by subscribing with Subscribers.
-      return () => {
-        // Release the buffered values.
-        absoluteTimeValues = null!;
-      };
-    });
+    // Subscribe to the source
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => {
+          if (isAbsoluteDelay) {
+            // If we're dealing with an absolute time (via Date) delay, then before
+            // the delay fires, the `absoluteTimeValues` array will be present, and
+            // we want to add them to that. Otherwise, if it's `null`, that is because
+            // the delay has already fired.
+            absoluteTimeValues ? absoluteTimeValues.push(value) : subscriber.next(value);
+          } else {
+            active++;
+            subscriber.add(
+              scheduler.schedule(() => {
+                active--;
+                subscriber.next(value);
+                checkComplete();
+              }, delay as number)
+            );
+          }
+        },
+        // Allow errors to pass through.
+        undefined,
+        () => {
+          isComplete = true;
+          checkComplete();
+        }
+      )
+    );
+
+    // Additional teardown. The other teardown is set up
+    // implicitly by subscribing with Subscribers.
+    return () => {
+      // Release the buffered values.
+      absoluteTimeValues = null!;
+    };
+  });
 }

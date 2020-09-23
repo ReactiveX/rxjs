@@ -2,8 +2,7 @@
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { EMPTY } from '../observable/empty';
-import { lift } from '../util/lift';
-import { Subscriber } from '../Subscriber';
+import { operate } from '../util/lift';
 import { MonoTypeOperatorFunction } from '../types';
 
 /**
@@ -63,42 +62,40 @@ import { MonoTypeOperatorFunction } from '../types';
  */
 
 export function repeat<T>(count = Infinity): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    count <= 0
-      ? EMPTY
-      : lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-          const subscriber = this;
-          let soFar = 0;
-          const subscription = new Subscription();
-          let innerSub: Subscription | null;
-          const subscribeForRepeat = () => {
-            let syncUnsub = false;
-            innerSub = source.subscribe({
-              next: (value) => subscriber.next(value),
-              error: (err) => subscriber.error(err),
-              complete: () => {
-                if (++soFar < count) {
-                  if (innerSub) {
-                    innerSub.unsubscribe();
-                    innerSub = null;
-                    subscribeForRepeat();
-                  } else {
-                    syncUnsub = true;
-                  }
+  return count <= 0
+    ? () => EMPTY
+    : operate((source, subscriber) => {
+        let soFar = 0;
+        const subscription = new Subscription();
+        let innerSub: Subscription | null;
+        const subscribeForRepeat = () => {
+          let syncUnsub = false;
+          innerSub = source.subscribe({
+            next: (value) => subscriber.next(value),
+            error: (err) => subscriber.error(err),
+            complete: () => {
+              if (++soFar < count) {
+                if (innerSub) {
+                  innerSub.unsubscribe();
+                  innerSub = null;
+                  subscribeForRepeat();
                 } else {
-                  subscriber.complete();
+                  syncUnsub = true;
                 }
-              },
-            });
-            if (syncUnsub) {
-              innerSub.unsubscribe();
-              innerSub = null;
-              subscribeForRepeat();
-            } else {
-              subscription.add(innerSub);
-            }
-          };
-          subscribeForRepeat();
-          return subscription;
-        });
+              } else {
+                subscriber.complete();
+              }
+            },
+          });
+          if (syncUnsub) {
+            innerSub.unsubscribe();
+            innerSub = null;
+            subscribeForRepeat();
+          } else {
+            subscription.add(innerSub);
+          }
+        };
+        subscribeForRepeat();
+        return subscription;
+      });
 }

@@ -1,8 +1,6 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
@@ -66,24 +64,22 @@ export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, key
  */
 export function distinctUntilChanged<T, K>(compare?: (a: K, b: K) => boolean, keySelector?: (x: T) => K): MonoTypeOperatorFunction<T> {
   compare = compare ?? defaultCompare;
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      let prev: any;
-      let first = true;
-      source.subscribe(
-        new OperatorSubscriber(subscriber, (value) => {
-          // WARNING: Intentionally terse code for library size.
-          // If this is the first value, set the previous value state, the `1` is to allow it to move to the next
-          // part of the terse conditional. Then we capture `prev` to pass to `compare`, but set `prev` to the result of
-          // either the `keySelector` -- if provided -- or the `value`, *then* it will execute the `compare`.
-          // If `compare` returns truthy, it will move on to call `subscriber.next()`.
-          ((first && ((prev = value), 1)) || !compare!(prev, (prev = keySelector ? keySelector(value) : (value as any)))) &&
-            subscriber.next(value);
-          first = false;
-        })
-      );
-    });
+  return operate((source, subscriber) => {
+    let prev: any;
+    let first = true;
+    source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        // WARNING: Intentionally terse code for library size.
+        // If this is the first value, set the previous value state, the `1` is to allow it to move to the next
+        // part of the terse conditional. Then we capture `prev` to pass to `compare`, but set `prev` to the result of
+        // either the `keySelector` -- if provided -- or the `value`, *then* it will execute the `compare`.
+        // If `compare` returns truthy, it will move on to call `subscriber.next()`.
+        ((first && ((prev = value), 1)) || !compare!(prev, (prev = keySelector ? keySelector(value) : (value as any)))) &&
+          subscriber.next(value);
+        first = false;
+      })
+    );
+  });
 }
 
 function defaultCompare(a: any, b: any) {

@@ -1,8 +1,6 @@
 /** @prettier */
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -58,16 +56,14 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * but with provided scheduler.
  */
 export function observeOn<T>(scheduler: SchedulerLike, delay: number = 0): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value) => subscriber.add(scheduler.schedule(() => subscriber.next(value), delay)),
-          (err) => subscriber.add(scheduler.schedule(() => subscriber.error(err), delay)),
-          () => subscriber.add(scheduler.schedule(() => subscriber.complete(), delay))
-        )
-      );
-    });
+  return operate((source, subscriber) => {
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => subscriber.add(scheduler.schedule(() => subscriber.next(value), delay)),
+        (err) => subscriber.add(scheduler.schedule(() => subscriber.error(err), delay)),
+        () => subscriber.add(scheduler.schedule(() => subscriber.complete(), delay))
+      )
+    );
+  });
 }

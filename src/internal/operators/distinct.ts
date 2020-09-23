@@ -1,8 +1,7 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
 
@@ -74,20 +73,18 @@ import { noop } from '../util/noop';
  * @name distinct
  */
 export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      const distinctKeys = new Set();
-      source.subscribe(
-        new OperatorSubscriber(subscriber, (value) => {
-          const key = keySelector ? keySelector(value) : value;
-          if (!distinctKeys.has(key)) {
-            distinctKeys.add(key);
-            subscriber.next(value);
-          }
-        })
-      );
+  return operate((source, subscriber) => {
+    const distinctKeys = new Set();
+    source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        const key = keySelector ? keySelector(value) : value;
+        if (!distinctKeys.has(key)) {
+          distinctKeys.add(key);
+          subscriber.next(value);
+        }
+      })
+    );
 
-      flushes?.subscribe(new OperatorSubscriber(subscriber, () => distinctKeys.clear(), undefined, noop));
-    });
+    flushes?.subscribe(new OperatorSubscriber(subscriber, () => distinctKeys.clear(), undefined, noop));
+  });
 }

@@ -1,8 +1,7 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -45,27 +44,25 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @name buffer
  */
 export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T[]>, source: Observable<T>) {
-      const subscriber = this;
-      let buffer: T[] = [];
+  return operate((source, subscriber) => {
+    let buffer: T[] = [];
 
-      // Subscribe to our source.
-      source.subscribe(new OperatorSubscriber(subscriber, (value) => buffer.push(value)));
+    // Subscribe to our source.
+    source.subscribe(new OperatorSubscriber(subscriber, (value) => buffer.push(value)));
 
-      // Subscribe to the closing notifier.
-      closingNotifier.subscribe(
-        new OperatorSubscriber(subscriber, () => {
-          // Start a new buffer and emit the previous one.
-          const b = buffer;
-          buffer = [];
-          subscriber.next(b);
-        })
-      );
+    // Subscribe to the closing notifier.
+    closingNotifier.subscribe(
+      new OperatorSubscriber(subscriber, () => {
+        // Start a new buffer and emit the previous one.
+        const b = buffer;
+        buffer = [];
+        subscriber.next(b);
+      })
+    );
 
-      return () => {
-        // Ensure buffered values are released on teardown.
-        buffer = null!;
-      };
-    });
+    return () => {
+      // Ensure buffered values are released on teardown.
+      buffer = null!;
+    };
+  });
 }

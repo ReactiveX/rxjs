@@ -2,8 +2,7 @@
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
 import { Subject } from '../Subject';
-import { Subscriber } from '../Subscriber';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -49,49 +48,47 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @name window
  */
 export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T, Observable<T>> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<Observable<T>>, source: Observable<T>) {
-      const subscriber = this;
-      let windowSubject = new Subject<T>();
+  return operate((source, subscriber) => {
+    let windowSubject = new Subject<T>();
 
-      subscriber.next(windowSubject.asObservable());
+    subscriber.next(windowSubject.asObservable());
 
-      /**
-       * Subscribes to one of our two observables in this operator in the same way,
-       * only allowing for different behaviors with the next handler.
-       * @param source The observable to subscribe to.
-       * @param next The next handler to use with the subscription
-       */
-      const windowSubscribe = (source: Observable<any>, next: (value: any) => void) =>
-        source.subscribe(
-          new OperatorSubscriber(
-            subscriber,
-            next,
-            (err: any) => {
-              windowSubject.error(err);
-              subscriber.error(err);
-            },
-            () => {
-              windowSubject.complete();
-              subscriber.complete();
-            }
-          )
-        );
+    /**
+     * Subscribes to one of our two observables in this operator in the same way,
+     * only allowing for different behaviors with the next handler.
+     * @param source The observable to subscribe to.
+     * @param next The next handler to use with the subscription
+     */
+    const windowSubscribe = (source: Observable<any>, next: (value: any) => void) =>
+      source.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          next,
+          (err: any) => {
+            windowSubject.error(err);
+            subscriber.error(err);
+          },
+          () => {
+            windowSubject.complete();
+            subscriber.complete();
+          }
+        )
+      );
 
-      // Subscribe to our source
-      windowSubscribe(source, (value) => windowSubject.next(value));
-      // Subscribe to the window boundaries.
-      windowSubscribe(windowBoundaries, () => {
-        windowSubject.complete();
-        subscriber.next((windowSubject = new Subject()));
-      });
-
-      // Additional teardown. Note that other teardown and post-subscription logic
-      // is encapsulated in the act of a Subscriber subscribing to the observable
-      // during the subscribe call. We can return additional teardown here.
-      return () => {
-        windowSubject.unsubscribe();
-        windowSubject = null!;
-      };
+    // Subscribe to our source
+    windowSubscribe(source, (value) => windowSubject.next(value));
+    // Subscribe to the window boundaries.
+    windowSubscribe(windowBoundaries, () => {
+      windowSubject.complete();
+      subscriber.next((windowSubject = new Subject()));
     });
+
+    // Additional teardown. Note that other teardown and post-subscription logic
+    // is encapsulated in the act of a Subscriber subscribing to the observable
+    // during the subscribe call. We can return additional teardown here.
+    return () => {
+      windowSubject.unsubscribe();
+      windowSubject = null!;
+    };
+  });
 }

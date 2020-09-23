@@ -1,9 +1,7 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
 import { EMPTY } from '../observable/empty';
-import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -48,28 +46,26 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * values emitted by the source Observable.
  */
 export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    count <= 0
-      ? EMPTY
-      : lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-          const subscriber = this;
-          let buffer: T[] = [];
-          source.subscribe(
-            new OperatorSubscriber(
-              subscriber,
-              (value) => {
-                buffer.push(value);
-                count < buffer.length && buffer.shift();
-              },
-              undefined,
-              () => {
-                while (buffer.length) {
-                  subscriber.next(buffer.shift()!);
-                }
-                subscriber.complete();
-                buffer = null!;
+  return count <= 0
+    ? () => EMPTY
+    : operate((source, subscriber) => {
+        let buffer: T[] = [];
+        source.subscribe(
+          new OperatorSubscriber(
+            subscriber,
+            (value) => {
+              buffer.push(value);
+              count < buffer.length && buffer.shift();
+            },
+            undefined,
+            () => {
+              while (buffer.length) {
+                subscriber.next(buffer.shift()!);
               }
-            )
-          );
-        });
+              subscriber.complete();
+              buffer = null!;
+            }
+          )
+        );
+      });
 }

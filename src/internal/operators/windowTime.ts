@@ -1,12 +1,11 @@
 /** @prettier */
 import { Subject } from '../Subject';
 import { asyncScheduler } from '../scheduler/async';
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { isScheduler } from '../util/isScheduler';
 import { Observer, OperatorFunction, SchedulerLike } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { arrRemove } from '../util/arrRemove';
 
@@ -106,101 +105,99 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
   const windowCreationInterval = (otherArgs[0] as number) ?? null;
   const maxWindowSize = (otherArgs[1] as number) || Infinity;
 
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<Observable<T>>, source: Observable<T>) {
-      const subscriber = this;
-      // The active windows, their related subscriptions, and removal functions.
-      let windowRecords: WindowRecord<T>[] | null = [];
-      // If true, it means that every time we close a window, we want to start a new window.
-      // This is only really used for when *just* the time span is passed.
-      let restartOnClose = false;
+  return operate((source, subscriber) => {
+    // The active windows, their related subscriptions, and removal functions.
+    let windowRecords: WindowRecord<T>[] | null = [];
+    // If true, it means that every time we close a window, we want to start a new window.
+    // This is only really used for when *just* the time span is passed.
+    let restartOnClose = false;
 
-      const closeWindow = (record: { window: Subject<T>; subs: Subscription }) => {
-        const { window, subs } = record;
-        window.complete();
-        subs.unsubscribe();
-        arrRemove(windowRecords, record);
-        restartOnClose && startWindow();
-      };
+    const closeWindow = (record: { window: Subject<T>; subs: Subscription }) => {
+      const { window, subs } = record;
+      window.complete();
+      subs.unsubscribe();
+      arrRemove(windowRecords, record);
+      restartOnClose && startWindow();
+    };
 
-      /**
-       * Called every time we start a new window. This also does
-       * the work of scheduling the job to close the window.
-       */
-      const startWindow = () => {
-        if (windowRecords) {
-          const subs = new Subscription();
-          subscriber.add(subs);
-          const window = new Subject<T>();
-          const record = {
-            window,
-            subs,
-            seen: 0,
-          };
-          windowRecords.push(record);
-          subscriber.next(window.asObservable());
-          subs.add(scheduler.schedule(() => closeWindow(record), windowTimeSpan));
-        }
-      };
+    /**
+     * Called every time we start a new window. This also does
+     * the work of scheduling the job to close the window.
+     */
+    const startWindow = () => {
+      if (windowRecords) {
+        const subs = new Subscription();
+        subscriber.add(subs);
+        const window = new Subject<T>();
+        const record = {
+          window,
+          subs,
+          seen: 0,
+        };
+        windowRecords.push(record);
+        subscriber.next(window.asObservable());
+        subs.add(scheduler.schedule(() => closeWindow(record), windowTimeSpan));
+      }
+    };
 
-      windowCreationInterval !== null && windowCreationInterval >= 0
-        ? // The user passed both a windowTimeSpan (required), and a creation interval
-          // That means we need to start new window on the interval, and those windows need
-          // to wait the required time span before completing.
-          subscriber.add(
-            scheduler.schedule(function () {
-              startWindow();
-              !this.closed && subscriber.add(this.schedule(null, windowCreationInterval));
-            }, windowCreationInterval)
-          )
-        : (restartOnClose = true);
-
-      startWindow();
-
-      /**
-       * We need to loop over a copy of the window records several times in this operator.
-       * This is to save bytes over the wire more than anything.
-       * The reason we copy the array is that reentrant code could mutate the array while
-       * we are iterating over it.
-       */
-      const loop = (cb: (record: WindowRecord<T>) => void) => windowRecords!.slice().forEach(cb);
-
-      /**
-       * Used to notify all of the windows and the subscriber in the same way
-       * in the error and complete handlers.
-       */
-      const terminate = (cb: (consumer: Observer<any>) => void) => {
-        loop(({ window }) => cb(window));
-        cb(subscriber);
-        subscriber.unsubscribe();
-      };
-
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value: T) => {
-            // Notify all windows of the value.
-            loop((record) => {
-              record.window.next(value);
-              // If the window is over the max size, we need to close it.
-              maxWindowSize <= ++record.seen && closeWindow(record);
-            });
-          },
-          // Notify the windows and the downstream subscriber of the error and clean up.
-          (err) => terminate((consumer) => consumer.error(err)),
-          // Complete the windows and the downstream subscriber and clean up.
-          () => terminate((consumer) => consumer.complete())
+    windowCreationInterval !== null && windowCreationInterval >= 0
+      ? // The user passed both a windowTimeSpan (required), and a creation interval
+        // That means we need to start new window on the interval, and those windows need
+        // to wait the required time span before completing.
+        subscriber.add(
+          scheduler.schedule(function () {
+            startWindow();
+            !this.closed && subscriber.add(this.schedule(null, windowCreationInterval));
+          }, windowCreationInterval)
         )
-      );
+      : (restartOnClose = true);
 
-      // Additional teardown. This will be called when the
-      // destination tears down. Other teardowns are registered implicitly
-      // above via subscription.
-      return () => {
-        // Ensure that the buffer is released.
-        windowRecords = null!;
-      };
-    });
+    startWindow();
+
+    /**
+     * We need to loop over a copy of the window records several times in this operator.
+     * This is to save bytes over the wire more than anything.
+     * The reason we copy the array is that reentrant code could mutate the array while
+     * we are iterating over it.
+     */
+    const loop = (cb: (record: WindowRecord<T>) => void) => windowRecords!.slice().forEach(cb);
+
+    /**
+     * Used to notify all of the windows and the subscriber in the same way
+     * in the error and complete handlers.
+     */
+    const terminate = (cb: (consumer: Observer<any>) => void) => {
+      loop(({ window }) => cb(window));
+      cb(subscriber);
+      subscriber.unsubscribe();
+    };
+
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value: T) => {
+          // Notify all windows of the value.
+          loop((record) => {
+            record.window.next(value);
+            // If the window is over the max size, we need to close it.
+            maxWindowSize <= ++record.seen && closeWindow(record);
+          });
+        },
+        // Notify the windows and the downstream subscriber of the error and clean up.
+        (err) => terminate((consumer) => consumer.error(err)),
+        // Complete the windows and the downstream subscriber and clean up.
+        () => terminate((consumer) => consumer.complete())
+      )
+    );
+
+    // Additional teardown. This will be called when the
+    // destination tears down. Other teardowns are registered implicitly
+    // above via subscription.
+    return () => {
+      // Ensure that the buffer is released.
+      windowRecords = null!;
+    };
+  });
 }
 
 interface WindowRecord<T> {

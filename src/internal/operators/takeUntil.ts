@@ -1,9 +1,6 @@
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
-
-
+/** @prettier */
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 import { noop } from '../util/noop';
@@ -48,8 +45,7 @@ import { noop } from '../util/noop';
  * @name takeUntil
  */
 export function takeUntil<T>(notifier: ObservableInput<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-    const subscriber = this;
+  return operate((source, subscriber) => {
     from(notifier).subscribe(new OperatorSubscriber(subscriber, () => subscriber.complete(), undefined, noop));
     !subscriber.closed && source.subscribe(subscriber);
   });

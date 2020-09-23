@@ -2,7 +2,7 @@
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 export function find<T, S extends T>(
@@ -55,7 +55,7 @@ export function find<T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
   thisArg?: any
 ): OperatorFunction<T, T | undefined> {
-  return (source: Observable<T>) => lift(source, createFind(predicate, thisArg, 'value'));
+  return operate(createFind(predicate, thisArg, 'value'));
 }
 
 export function createFind<T>(
@@ -64,8 +64,7 @@ export function createFind<T>(
   emit: 'value' | 'index'
 ) {
   const findIndex = emit === 'index';
-  return function (this: Subscriber<any>, source: Observable<T>) {
-    const subscriber = this;
+  return (source: Observable<T>, subscriber: Subscriber<any>) => {
     let index = 0;
     source.subscribe(
       new OperatorSubscriber(

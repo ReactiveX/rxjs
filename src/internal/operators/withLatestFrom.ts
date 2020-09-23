@@ -1,8 +1,7 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 import { identity } from '../util/identity';
@@ -147,68 +146,65 @@ export function withLatestFrom<T, R>(array: ObservableInput<any>[], project: (..
  * each input Observable.
  * @name withLatestFrom
  */
-export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R> {
-  return (source: Observable<T>) => {
-    let project: (...values: any[]) => R;
-    if (typeof inputs[inputs.length - 1] === 'function') {
-      project = inputs.pop();
-    }
+export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | any[]> {
+  let project: (...values: any[]) => R;
+  if (typeof inputs[inputs.length - 1] === 'function') {
+    project = inputs.pop();
+  }
 
-    return lift(source, function (this: Subscriber<R | T[]>, source: Observable<T>) {
-      const subscriber = this;
-      const len = inputs.length;
-      const otherValues = new Array(len);
-      // An array of whether or not the other sources have emitted. Matched with them by index.
-      // TODO: At somepoint, we should investigate the performance implications here, and look
-      // into using a `Set()` and checking the `size` to see if we're ready.
-      let hasValue = inputs.map(() => false);
-      // Flipped true when we have at least one value from all other sources and
-      // we are ready to start emitting values.
-      let ready = false;
+  return operate((source, subscriber) => {
+    const len = inputs.length;
+    const otherValues = new Array(len);
+    // An array of whether or not the other sources have emitted. Matched with them by index.
+    // TODO: At somepoint, we should investigate the performance implications here, and look
+    // into using a `Set()` and checking the `size` to see if we're ready.
+    let hasValue = inputs.map(() => false);
+    // Flipped true when we have at least one value from all other sources and
+    // we are ready to start emitting values.
+    let ready = false;
 
-      // Source subscription
-      source.subscribe(
-        new OperatorSubscriber(subscriber, (value) => {
-          if (ready) {
-            // We have at least one value from the other sources. Go ahead and emit.
-            const values = [value, ...otherValues];
-            subscriber.next(project ? project(...values) : values);
-          }
-        })
-      );
-
-      // Other sources
-      for (let i = 0; i < len; i++) {
-        const input = inputs[i];
-        let otherSource: Observable<any>;
-        try {
-          otherSource = from(input);
-        } catch (err) {
-          subscriber.error(err);
-          return;
+    // Source subscription
+    source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        if (ready) {
+          // We have at least one value from the other sources. Go ahead and emit.
+          const values = [value, ...otherValues];
+          subscriber.next(project ? project(...values) : values);
         }
-        otherSource.subscribe(
-          new OperatorSubscriber(
-            subscriber,
-            (value) => {
-              otherValues[i] = value;
-              if (!ready && !hasValue[i]) {
-                // If we're not ready yet, flag to show this observable has emitted.
-                hasValue[i] = true;
-                // Intentionally terse code.
-                // If all of our other observables have emitted, set `ready` to `true`,
-                // so we know we can start emitting values, then clean up the `hasValue` array,
-                // because we don't need it anymore.
-                (ready = hasValue.every(identity)) && (hasValue = null!);
-              }
-            },
-            undefined,
-            // Completing one of the other sources has
-            // no bearing on the completion of our result.
-            noop
-          )
-        );
+      })
+    );
+
+    // Other sources
+    for (let i = 0; i < len; i++) {
+      const input = inputs[i];
+      let otherSource: Observable<any>;
+      try {
+        otherSource = from(input);
+      } catch (err) {
+        subscriber.error(err);
+        return;
       }
-    });
-  };
+      otherSource.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (value) => {
+            otherValues[i] = value;
+            if (!ready && !hasValue[i]) {
+              // If we're not ready yet, flag to show this observable has emitted.
+              hasValue[i] = true;
+              // Intentionally terse code.
+              // If all of our other observables have emitted, set `ready` to `true`,
+              // so we know we can start emitting values, then clean up the `hasValue` array,
+              // because we don't need it anymore.
+              (ready = hasValue.every(identity)) && (hasValue = null!);
+            }
+          },
+          undefined,
+          // Completing one of the other sources has
+          // no bearing on the completion of our result.
+          noop
+        )
+      );
+    }
+  });
 }
