@@ -1,3 +1,4 @@
+/** @prettier */
 import { isFunction } from './util/isFunction';
 import { EMPTY_OBSERVER } from './EMPTY_OBSERVER';
 import { Observer, PartialObserver } from './types';
@@ -28,9 +29,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * Observer represented by the given arguments.
    * @nocollapse
    */
-  static create<T>(next?: (x?: T) => void,
-                   error?: (e?: any) => void,
-                   complete?: () => void): Subscriber<T> {
+  static create<T>(next?: (x?: T) => void, error?: (e?: any) => void, complete?: () => void): Subscriber<T> {
     return new Subscriber(next, error, complete);
   }
 
@@ -45,9 +44,11 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @param {function(): void} [complete] The `complete` callback of an
    * Observer.
    */
-  constructor(destinationOrNext?: PartialObserver<any> | ((value: T) => void) | null,
-              error?: ((e?: any) => void) | null,
-              complete?: (() => void) | null) {
+  constructor(
+    destinationOrNext?: PartialObserver<any> | ((value: T) => void) | null,
+    error?: ((e?: any) => void) | null,
+    complete?: (() => void) | null
+  ) {
     super();
 
     switch (arguments.length) {
@@ -64,12 +65,12 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
             this.destination = destinationOrNext;
             destinationOrNext.add(this);
           } else {
-            this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
+            this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>>destinationOrNext);
           }
           break;
         }
       default:
-        this.destination = new SafeSubscriber<T>(this, <((value: T) => void)> destinationOrNext, error, complete);
+        this.destination = new SafeSubscriber<T>(this, <(value: T) => void>destinationOrNext, error, complete);
         break;
     }
   }
@@ -142,11 +143,12 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
  * @extends {Ignored}
  */
 export class SafeSubscriber<T> extends Subscriber<T> {
-
-  constructor(private _parentSubscriber: Subscriber<T>,
-              observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
-              error?: ((e?: any) => void) | null,
-              complete?: (() => void) | null) {
+  constructor(
+    private _parentSubscriber: Subscriber<T>,
+    observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
+    error?: ((e?: any) => void) | null,
+    complete?: (() => void) | null
+  ) {
     super();
     let next: ((value: T) => void) | undefined;
 
