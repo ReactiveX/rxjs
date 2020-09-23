@@ -1,8 +1,7 @@
 /** @prettier */
-import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { OperatorFunction, SubscribableOrPromise } from '../types';
-import { wrappedLift } from '../util/lift';
+import { operate } from '../util/lift';
 import { from } from '../observable/from';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
@@ -57,57 +56,55 @@ export function bufferToggle<T, O>(
   openings: SubscribableOrPromise<O>,
   closingSelector: (value: O) => SubscribableOrPromise<any>
 ): OperatorFunction<T, T[]> {
-  return function bufferToggleOperatorFunction(source: Observable<T>) {
-    return wrappedLift(source, (subscriber, liftedSource) => {
-      const buffers: T[][] = [];
+  return operate((liftedSource, subscriber) => {
+    const buffers: T[][] = [];
 
-      // Subscribe to the openings notifier first
-      from(openings).subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (openValue) => {
-            const buffer: T[] = [];
-            buffers.push(buffer);
-            // We use this composite subscription, so that
-            // when the closing notifier emits, we can tear it down.
-            const closingSubscription = new Subscription();
+    // Subscribe to the openings notifier first
+    from(openings).subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (openValue) => {
+          const buffer: T[] = [];
+          buffers.push(buffer);
+          // We use this composite subscription, so that
+          // when the closing notifier emits, we can tear it down.
+          const closingSubscription = new Subscription();
 
-            // This is captured here, because we emit on both next or
-            // if the closing notifier completes without value.
-            // TODO: We probably want to not have closing notifiers emit!!
-            const emit = () => {
-              arrRemove(buffers, buffer);
-              subscriber.next(buffer);
-              closingSubscription.unsubscribe();
-            };
+          // This is captured here, because we emit on both next or
+          // if the closing notifier completes without value.
+          // TODO: We probably want to not have closing notifiers emit!!
+          const emit = () => {
+            arrRemove(buffers, buffer);
+            subscriber.next(buffer);
+            closingSubscription.unsubscribe();
+          };
 
-            // The line below will add the subscription to the parent subscriber *and* the closing subscription.
-            closingSubscription.add(from(closingSelector(openValue)).subscribe(new OperatorSubscriber(subscriber, emit, undefined, emit)));
-          },
-          undefined,
-          noop
-        )
-      );
+          // The line below will add the subscription to the parent subscriber *and* the closing subscription.
+          closingSubscription.add(from(closingSelector(openValue)).subscribe(new OperatorSubscriber(subscriber, emit, undefined, emit)));
+        },
+        undefined,
+        noop
+      )
+    );
 
-      liftedSource.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value) => {
-            // Value from our source. Add it to all pending buffers.
-            for (const buffer of buffers) {
-              buffer.push(value);
-            }
-          },
-          undefined,
-          () => {
-            // Source complete. Emit all pending buffers.
-            while (buffers.length > 0) {
-              subscriber.next(buffers.shift()!);
-            }
-            subscriber.complete();
+    liftedSource.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => {
+          // Value from our source. Add it to all pending buffers.
+          for (const buffer of buffers) {
+            buffer.push(value);
           }
-        )
-      );
-    });
-  };
+        },
+        undefined,
+        () => {
+          // Source complete. Emit all pending buffers.
+          while (buffers.length > 0) {
+            subscriber.next(buffers.shift()!);
+          }
+          subscriber.complete();
+        }
+      )
+    );
+  });
 }
