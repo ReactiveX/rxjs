@@ -63,7 +63,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
 export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) =>
     wrappedLift(source, (subscriber: Subscriber<T>, source: Observable<T>) => {
-      const subscription = new Subscription();
       let innerSub: Subscription | null;
       let syncResub = false;
       let errors$: Subject<any>;
@@ -73,16 +72,14 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
           new OperatorSubscriber(subscriber, undefined, (err) => {
             if (!errors$) {
               errors$ = new Subject();
-              subscription.add(
-                notifier(errors$).subscribe(
-                  new OperatorSubscriber(subscriber, () =>
-                    // If we have an innerSub, this was an asynchronous call, kick off the retry.
-                    // Otherwise, if we don't have an innerSub yet, that's because the inner subscription
-                    // call hasn't even returned yet. We've arrived here synchronously.
-                    // So we flag that we want to resub, such that we can ensure teardown
-                    // happens before we resubscribe.
-                    innerSub ? subscribeForRetryWhen() : (syncResub = true)
-                  )
+              notifier(errors$).subscribe(
+                new OperatorSubscriber(subscriber, () =>
+                  // If we have an innerSub, this was an asynchronous call, kick off the retry.
+                  // Otherwise, if we don't have an innerSub yet, that's because the inner subscription
+                  // call hasn't even returned yet. We've arrived here synchronously.
+                  // So we flag that we want to resub, such that we can ensure teardown
+                  // happens before we resubscribe.
+                  innerSub ? subscribeForRetryWhen() : (syncResub = true)
                 )
               );
             }
@@ -104,14 +101,10 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
           syncResub = false;
           // Resubscribe
           subscribeForRetryWhen();
-        } else {
-          subscription.add(innerSub);
         }
       };
 
       // Start the subscription
       subscribeForRetryWhen();
-
-      return subscription;
     });
 }
