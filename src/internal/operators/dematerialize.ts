@@ -52,7 +52,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * embedded in Notification objects emitted by the source Observable.
  */
 export function dematerialize<N extends ObservableNotification<any>>(): OperatorFunction<N, ValueFromNotification<N>> {
-  return operate((source, subscriber) =>
-    source.subscribe(new OperatorSubscriber(subscriber, (notification) => observeNotification(notification, subscriber)))
-  );
+  return operate((source, subscriber) => {
+    source.subscribe(new OperatorSubscriber(subscriber, (notification) => observeNotification(notification, subscriber)));
+  });
 }

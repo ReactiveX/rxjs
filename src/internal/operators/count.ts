@@ -67,7 +67,7 @@ export function count<T>(predicate?: (value: T, index: number, source: Observabl
     let index = 0;
     let count = 0;
 
-    return source.subscribe(
+    source.subscribe(
       new OperatorSubscriber(
         subscriber,
         (value) => (!predicate || predicate(value, index++, source)) && count++,

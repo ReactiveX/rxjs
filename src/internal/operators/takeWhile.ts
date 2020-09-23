@@ -53,7 +53,7 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
 export function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive = false): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     let index = 0;
-    return source.subscribe(
+    source.subscribe(
       new OperatorSubscriber(subscriber, (value) => {
         const result = predicate(value, index++);
         (result || inclusive) && subscriber.next(value);

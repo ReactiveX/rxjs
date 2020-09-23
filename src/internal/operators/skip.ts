@@ -15,10 +15,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
 export function skip<T>(count: number): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     let seen = 0;
-    return source.subscribe(
-      new OperatorSubscriber(subscriber, (value) => {
-        count === seen ? subscriber.next(value) : seen++;
-      })
-    );
+    source.subscribe(new OperatorSubscriber(subscriber, (value) => (count === seen ? subscriber.next(value) : seen++)));
   });
 }
