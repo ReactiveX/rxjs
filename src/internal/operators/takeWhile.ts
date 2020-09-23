@@ -1,8 +1,6 @@
 /** @prettier */
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 export function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
@@ -53,16 +51,14 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
  * @name takeWhile
  */
 export function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive = false): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      let index = 0;
-      return source.subscribe(
-        new OperatorSubscriber(subscriber, (value) => {
-          const result = predicate(value, index++);
-          (result || inclusive) && subscriber.next(value);
-          !result && subscriber.complete();
-        })
-      );
-    });
+  return operate((source, subscriber) => {
+    let index = 0;
+    return source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        const result = predicate(value, index++);
+        (result || inclusive) && subscriber.next(value);
+        !result && subscriber.complete();
+      })
+    );
+  });
 }

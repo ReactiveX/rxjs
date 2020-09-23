@@ -1,8 +1,7 @@
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
+/** @prettier */
 import { Subscription } from '../Subscription';
 import { ObservableInput, OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { from } from '../observable/from';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
@@ -53,20 +52,28 @@ export function exhaust<R>(): OperatorFunction<any, R>;
  * @name exhaust
  */
 export function exhaust<T>(): OperatorFunction<any, T> {
-  return (source: Observable<ObservableInput<T>>) => lift(source, function (this: Subscriber<T>, source: Observable<ObservableInput<T>>) {
-    const subscriber = this;
+  return operate((source, subscriber) => {
     let isComplete = false;
     let innerSub: Subscription | null = null;
-    source.subscribe(new OperatorSubscriber(subscriber, inner => {
-      if (!innerSub) {
-        innerSub = from(inner).subscribe(new OperatorSubscriber(subscriber, undefined, undefined, () => {
-          innerSub = null;
-          isComplete && subscriber.complete();
-        }))
-      }
-    }, undefined, () => {
-      isComplete = true;
-      !innerSub && subscriber.complete();
-    }))
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (inner) => {
+          if (!innerSub) {
+            innerSub = from(inner).subscribe(
+              new OperatorSubscriber(subscriber, undefined, undefined, () => {
+                innerSub = null;
+                isComplete && subscriber.complete();
+              })
+            );
+          }
+        },
+        undefined,
+        () => {
+          isComplete = true;
+          !innerSub && subscriber.complete();
+        }
+      )
+    );
   });
 }

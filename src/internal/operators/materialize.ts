@@ -1,9 +1,7 @@
 /** @prettier */
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { Notification } from '../Notification';
 import { OperatorFunction, ObservableNotification } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -61,24 +59,22 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * will not be available on the emitted values at that time.
  */
 export function materialize<T>(): OperatorFunction<T, Notification<T> & ObservableNotification<T>> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<Notification<T>>, source: Observable<T>) {
-      const subscriber = this;
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value) => {
-            subscriber.next(Notification.createNext(value));
-          },
-          (err) => {
-            subscriber.next(Notification.createError(err));
-            subscriber.complete();
-          },
-          () => {
-            subscriber.next(Notification.createComplete());
-            subscriber.complete();
-          }
-        )
-      );
-    });
+  return operate((source, subscriber) => {
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => {
+          subscriber.next(Notification.createNext(value));
+        },
+        (err) => {
+          subscriber.next(Notification.createError(err));
+          subscriber.complete();
+        },
+        () => {
+          subscriber.next(Notification.createComplete());
+          subscriber.complete();
+        }
+      )
+    );
+  });
 }

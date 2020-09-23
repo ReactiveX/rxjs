@@ -1,9 +1,8 @@
+import { ConnectableObservable } from '../observable/ConnectableObservable';
 /** @prettier */
-import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../types';
-import { ConnectableObservable } from '../observable/ConnectableObservable';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -60,61 +59,59 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @see {@link publish}
  */
 export function refCount<T>(): MonoTypeOperatorFunction<T> {
-  return ((source: ConnectableObservable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: ConnectableObservable<T>) {
-      const subscriber = this;
-      let connection: Subscription | null = null;
+  return operate((source, subscriber) => {
+    let connection: Subscription | null = null;
 
-      (source as any)._refCount++;
+    (source as any)._refCount++;
 
-      const refCounter = new OperatorSubscriber(subscriber, undefined, undefined, undefined, () => {
-        if (!source || (source as any)._refCount <= 0 || 0 < --(source as any)._refCount) {
-          connection = null;
-          return;
-        }
-
-        ///
-        // Compare the local RefCountSubscriber's connection Subscription to the
-        // connection Subscription on the shared ConnectableObservable. In cases
-        // where the ConnectableObservable source synchronously emits values, and
-        // the RefCountSubscriber's downstream Observers synchronously unsubscribe,
-        // execution continues to here before the RefCountOperator has a chance to
-        // supply the RefCountSubscriber with the shared connection Subscription.
-        // For example:
-        // ```
-        // range(0, 10).pipe(
-        //   publish(),
-        //   refCount(),
-        //   take(5),
-        // )
-        // .subscribe();
-        // ```
-        // In order to account for this case, RefCountSubscriber should only dispose
-        // the ConnectableObservable's shared connection Subscription if the
-        // connection Subscription exists, *and* either:
-        //   a. RefCountSubscriber doesn't have a reference to the shared connection
-        //      Subscription yet, or,
-        //   b. RefCountSubscriber's connection Subscription reference is identical
-        //      to the shared connection Subscription
-        ///
-
-        const sharedConnection = (<any>source)._connection;
-        const conn = connection;
+    const refCounter = new OperatorSubscriber(subscriber, undefined, undefined, undefined, () => {
+      if (!source || (source as any)._refCount <= 0 || 0 < --(source as any)._refCount) {
         connection = null;
-
-        if (sharedConnection && (!conn || sharedConnection === conn)) {
-          sharedConnection.unsubscribe();
-        }
-
-        subscriber.unsubscribe();
-      });
-
-      const subscription = source.subscribe(refCounter);
-
-      if (!refCounter.closed) {
-        connection = source.connect();
+        return;
       }
 
-      return subscription;
-    })) as MonoTypeOperatorFunction<T>;
+      ///
+      // Compare the local RefCountSubscriber's connection Subscription to the
+      // connection Subscription on the shared ConnectableObservable. In cases
+      // where the ConnectableObservable source synchronously emits values, and
+      // the RefCountSubscriber's downstream Observers synchronously unsubscribe,
+      // execution continues to here before the RefCountOperator has a chance to
+      // supply the RefCountSubscriber with the shared connection Subscription.
+      // For example:
+      // ```
+      // range(0, 10).pipe(
+      //   publish(),
+      //   refCount(),
+      //   take(5),
+      // )
+      // .subscribe();
+      // ```
+      // In order to account for this case, RefCountSubscriber should only dispose
+      // the ConnectableObservable's shared connection Subscription if the
+      // connection Subscription exists, *and* either:
+      //   a. RefCountSubscriber doesn't have a reference to the shared connection
+      //      Subscription yet, or,
+      //   b. RefCountSubscriber's connection Subscription reference is identical
+      //      to the shared connection Subscription
+      ///
+
+      const sharedConnection = (<any>source)._connection;
+      const conn = connection;
+      connection = null;
+
+      if (sharedConnection && (!conn || sharedConnection === conn)) {
+        sharedConnection.unsubscribe();
+      }
+
+      subscriber.unsubscribe();
+    });
+
+    const subscription = source.subscribe(refCounter);
+
+    if (!refCounter.closed) {
+      connection = (source as ConnectableObservable<T>).connect();
+    }
+
+    return subscription;
+  });
 }

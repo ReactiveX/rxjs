@@ -2,9 +2,8 @@
 import { asyncScheduler } from '../scheduler/async';
 import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ObservableInput } from '../types';
 import { isValidDate } from '../util/isDate';
-import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { Observable } from '../Observable';
 import { from } from '../observable/from';
 import { createErrorClass } from '../util/createErrorClass';
@@ -302,97 +301,92 @@ export function timeout<T>(each: number, scheduler?: SchedulerLike): MonoTypeOpe
  * ![](timeout.png)
  */
 export function timeout<T, R, M>(config: number | Date | TimeoutConfig<T, R, M>, schedulerArg?: SchedulerLike): OperatorFunction<T, T | R> {
-  return (source: Observable<T>) => {
-    // Intentionally terse code.
-    // If the first argument is a valid `Date`, then we use it as the `first` config.
-    // Otherwise, if the first argument is a `number`, then we use it as the `each` config.
-    // Otherwise, it can be assumed the first argument is the configuration object itself, and
-    // we destructure that into what we're going to use, setting important defaults as we do.
-    // NOTE: The default for `scheduler` will be the `scheduler` argument if it exists, or
-    // it will default to the `asyncScheduler`.
-    const { first, each, with: _with = timeoutErrorFactory, scheduler = schedulerArg ?? asyncScheduler, meta = null! } = (isValidDate(
-      config
-    )
-      ? { first: config }
-      : typeof config === 'number'
-      ? { each: config }
-      : config) as TimeoutConfig<T, R, M>;
+  // Intentionally terse code.
+  // If the first argument is a valid `Date`, then we use it as the `first` config.
+  // Otherwise, if the first argument is a `number`, then we use it as the `each` config.
+  // Otherwise, it can be assumed the first argument is the configuration object itself, and
+  // we destructure that into what we're going to use, setting important defaults as we do.
+  // NOTE: The default for `scheduler` will be the `scheduler` argument if it exists, or
+  // it will default to the `asyncScheduler`.
+  const { first, each, with: _with = timeoutErrorFactory, scheduler = schedulerArg ?? asyncScheduler, meta = null! } = (isValidDate(config)
+    ? { first: config }
+    : typeof config === 'number'
+    ? { each: config }
+    : config) as TimeoutConfig<T, R, M>;
 
-    if (first == null && each == null) {
-      // Ensure timeout was provided at runtime.
-      throw new TypeError('No timeout provided.');
-    }
+  if (first == null && each == null) {
+    // Ensure timeout was provided at runtime.
+    throw new TypeError('No timeout provided.');
+  }
 
-    return lift(source, function (this: Subscriber<T | R>, source: Observable<T>) {
-      const subscriber = this;
-      // This subscription encapsulates our subscription to the
-      // source for this operator. We're capturing it separately,
-      // because if there is a `with` observable to fail over to,
-      // we want to unsubscribe from our original subscription, and
-      // hand of the subscription to that one.
-      let originalSourceSubscription: Subscription;
-      // The subscription for our timeout timer. This changes
-      // every time get get a new value.
-      let timerSubscription: Subscription;
-      // A bit of state we pass to our with and error factories to
-      // tell what the last value we saw was.
-      let lastValue: T | null = null;
-      // A bit of state we pass to the with and error factories to
-      // tell how many values we have seen so far.
-      let seen = 0;
-      const startTimer = (delay: number) => {
-        subscriber.add(
-          (timerSubscription = scheduler!.schedule(() => {
-            let withObservable: Observable<R>;
-            try {
-              withObservable = from(
-                _with!({
-                  meta,
-                  lastValue,
-                  seen,
-                })
-              );
-            } catch (err) {
-              subscriber.error(err);
-              return;
-            }
-            originalSourceSubscription.unsubscribe();
-            withObservable.subscribe(subscriber);
-          }, delay))
-        );
-      };
-
+  return operate((source, subscriber) => {
+    // This subscription encapsulates our subscription to the
+    // source for this operator. We're capturing it separately,
+    // because if there is a `with` observable to fail over to,
+    // we want to unsubscribe from our original subscription, and
+    // hand of the subscription to that one.
+    let originalSourceSubscription: Subscription;
+    // The subscription for our timeout timer. This changes
+    // every time get get a new value.
+    let timerSubscription: Subscription;
+    // A bit of state we pass to our with and error factories to
+    // tell what the last value we saw was.
+    let lastValue: T | null = null;
+    // A bit of state we pass to the with and error factories to
+    // tell how many values we have seen so far.
+    let seen = 0;
+    const startTimer = (delay: number) => {
       subscriber.add(
-        (originalSourceSubscription = source.subscribe(
-          new OperatorSubscriber(
-            subscriber,
-            (value) => {
-              // clear the timer so we can emit and start another one.
-              timerSubscription.unsubscribe();
-              seen++;
-              // Emit
-              subscriber.next((lastValue = value));
-              // null | undefined are both < 0. Thanks, JavaScript.
-              each! > 0 && startTimer(each!);
-            },
-            undefined,
-            undefined,
-            () => {
-              // Be sure not to hold the last value in memory after unsubscription
-              // it could be quite large.
-              lastValue = null;
-            }
-          )
-        ))
+        (timerSubscription = scheduler!.schedule(() => {
+          let withObservable: Observable<R>;
+          try {
+            withObservable = from(
+              _with!({
+                meta,
+                lastValue,
+                seen,
+              })
+            );
+          } catch (err) {
+            subscriber.error(err);
+            return;
+          }
+          originalSourceSubscription.unsubscribe();
+          withObservable.subscribe(subscriber);
+        }, delay))
       );
+    };
 
-      // Intentionally terse code.
-      // If `first` was provided, and it's a number, then use it.
-      // If `first` was provided and it's not a number, it's a Date, and we get the difference between it and "now".
-      // If `first` was not provided at all, then our first timer will be the value from `each`.
-      startTimer(first != null ? (typeof first === 'number' ? first : +first - scheduler!.now()) : each!);
-    });
-  };
+    subscriber.add(
+      (originalSourceSubscription = source.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (value) => {
+            // clear the timer so we can emit and start another one.
+            timerSubscription.unsubscribe();
+            seen++;
+            // Emit
+            subscriber.next((lastValue = value));
+            // null | undefined are both < 0. Thanks, JavaScript.
+            each! > 0 && startTimer(each!);
+          },
+          undefined,
+          undefined,
+          () => {
+            // Be sure not to hold the last value in memory after unsubscription
+            // it could be quite large.
+            lastValue = null;
+          }
+        )
+      ))
+    );
+
+    // Intentionally terse code.
+    // If `first` was provided, and it's a number, then use it.
+    // If `first` was provided and it's not a number, it's a Date, and we get the difference between it and "now".
+    // If `first` was not provided at all, then our first timer will be the value from `each`.
+    startTimer(first != null ? (typeof first === 'number' ? first : +first - scheduler!.now()) : each!);
+  });
 }
 
 /**

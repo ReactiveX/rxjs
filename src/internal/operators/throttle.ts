@@ -1,10 +1,8 @@
 /** @prettier */
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction, SubscribableOrPromise } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 
@@ -67,39 +65,35 @@ export function throttle<T>(
   durationSelector: (value: T) => SubscribableOrPromise<any>,
   { leading, trailing }: ThrottleConfig = defaultThrottleConfig
 ): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      let hasValue = false;
-      let sendValue: T | null = null;
-      let throttled: Subscription | null = null;
+  return operate((source, subscriber) => {
+    let hasValue = false;
+    let sendValue: T | null = null;
+    let throttled: Subscription | null = null;
 
-      const throttlingDone = () => {
-        throttled?.unsubscribe();
-        throttled = null;
-        trailing && send();
-      };
+    const throttlingDone = () => {
+      throttled?.unsubscribe();
+      throttled = null;
+      trailing && send();
+    };
 
-      const throttle = (value: T) =>
-        (throttled = from(durationSelector(value)).subscribe(
-          new OperatorSubscriber(subscriber, throttlingDone, undefined, throttlingDone)
-        ));
+    const throttle = (value: T) =>
+      (throttled = from(durationSelector(value)).subscribe(new OperatorSubscriber(subscriber, throttlingDone, undefined, throttlingDone)));
 
-      const send = () => {
-        if (hasValue) {
-          subscriber.next(sendValue!);
-          throttle(sendValue!);
-        }
-        hasValue = false;
-        sendValue = null;
-      };
+    const send = () => {
+      if (hasValue) {
+        subscriber.next(sendValue!);
+        throttle(sendValue!);
+      }
+      hasValue = false;
+      sendValue = null;
+    };
 
-      source.subscribe(
-        new OperatorSubscriber(subscriber, (value) => {
-          hasValue = true;
-          sendValue = value;
-          !throttled && (leading ? send() : throttle(value));
-        })
-      );
-    });
+    source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        hasValue = true;
+        sendValue = value;
+        !throttled && (leading ? send() : throttle(value));
+      })
+    );
+  });
 }

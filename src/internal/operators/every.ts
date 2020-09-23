@@ -1,8 +1,7 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -34,25 +33,23 @@ export function every<T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
   thisArg?: any
 ): OperatorFunction<T, boolean> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<boolean>, source: Observable<T>) {
-      const subscriber = this;
-      let index = 0;
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value) => {
-            if (!predicate.call(thisArg, value, index, source)) {
-              subscriber.next(false);
-              subscriber.complete();
-            }
-          },
-          undefined,
-          () => {
-            subscriber.next(true);
+  return operate((source, subscriber) => {
+    let index = 0;
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => {
+          if (!predicate.call(thisArg, value, index, source)) {
+            subscriber.next(false);
             subscriber.complete();
           }
-        )
-      );
-    });
+        },
+        undefined,
+        () => {
+          subscriber.next(true);
+          subscriber.complete();
+        }
+      )
+    );
+  });
 }

@@ -1,8 +1,6 @@
 /** @prettier */
-import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, SchedulerLike, ObservedValueUnionFromArray } from '../types';
-import { lift } from '../util/lift';
-import { Subscriber } from '../Subscriber';
+import { operate } from '../util/lift';
 import { isScheduler } from '../util/isScheduler';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { fromArray } from '../observable/fromArray';
@@ -136,10 +134,9 @@ export function merge<T, R>(...args: Array<ObservableInput<any> | SchedulerLike 
 
   args = argsOrArgArray(args);
 
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<any>, source: Observable<T>) {
-      mergeAll(concurrent)(fromArray([source, ...(args as ObservableInput<T>[])], scheduler)).subscribe(this);
-    });
+  return operate((source, subscriber) => {
+    mergeAll(concurrent)(fromArray([source, ...(args as ObservableInput<T>[])], scheduler)).subscribe(subscriber as any);
+  });
 }
 
 export function mergeWith<T>(): OperatorFunction<T, T>;

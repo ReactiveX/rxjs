@@ -1,8 +1,6 @@
 /** @prettier */
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -48,18 +46,16 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @name pairwise
  */
 export function pairwise<T>(): OperatorFunction<T, [T, T]> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<[T, T]>, source: Observable<T>) {
-      const subscriber = this;
-      let prev: T;
-      let hasPrev = false;
-      source.subscribe(
-        new OperatorSubscriber(subscriber, (value) => {
-          const p = prev;
-          prev = value;
-          hasPrev && subscriber.next([p, value]);
-          hasPrev = true;
-        })
-      );
-    });
+  return operate((source, subscriber) => {
+    let prev: T;
+    let hasPrev = false;
+    source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        const p = prev;
+        prev = value;
+        hasPrev && subscriber.next([p, value]);
+        hasPrev = true;
+      })
+    );
+  });
 }

@@ -1,9 +1,8 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 
 import { MonoTypeOperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -46,25 +45,23 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @name sample
  */
 export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      let hasValue = false;
-      let lastValue: T | null = null;
-      source.subscribe(
-        new OperatorSubscriber(subscriber, (value) => {
-          hasValue = true;
-          lastValue = value;
-        })
-      );
-      const emit = () => {
-        if (hasValue) {
-          hasValue = false;
-          const value = lastValue!;
-          lastValue = null;
-          subscriber.next(value);
-        }
-      };
-      notifier.subscribe(new OperatorSubscriber(subscriber, emit, undefined, emit));
-    });
+  return operate((source, subscriber) => {
+    let hasValue = false;
+    let lastValue: T | null = null;
+    source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        hasValue = true;
+        lastValue = value;
+      })
+    );
+    const emit = () => {
+      if (hasValue) {
+        hasValue = false;
+        const value = lastValue!;
+        lastValue = null;
+        subscriber.next(value);
+      }
+    };
+    notifier.subscribe(new OperatorSubscriber(subscriber, emit, undefined, emit));
+  });
 }

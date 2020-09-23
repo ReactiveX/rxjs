@@ -1,8 +1,6 @@
 /** @prettier */
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 export function scan<V, A = V>(accumulator: (acc: A | V, value: V, index: number) => A): OperatorFunction<V, V | A>;
@@ -97,35 +95,32 @@ export function scan<V, A, S>(accumulator: (acc: V | A | S, value: V, index: num
   // means they didn't provide anything or if they literally provided `undefined`
   const hasSeed = arguments.length >= 2;
 
-  return (source: Observable<V>) => {
-    return lift(source, function (this: Subscriber<any>, source: Observable<V>) {
-      const subscriber = this;
-      // Whether or not we have state yet. This will only be
-      // false before the first value arrives if we didn't get
-      // a seed value.
-      let hasState = hasSeed;
-      // The state that we're tracking, starting with the seed,
-      // if there is one, and then updated by the return value
-      // from the accumulator on each emission.
-      let state: any = seed;
-      // An index to pass to the accumulator function.
-      let index = 0;
+  return operate((source, subscriber) => {
+    // Whether or not we have state yet. This will only be
+    // false before the first value arrives if we didn't get
+    // a seed value.
+    let hasState = hasSeed;
+    // The state that we're tracking, starting with the seed,
+    // if there is one, and then updated by the return value
+    // from the accumulator on each emission.
+    let state: any = seed;
+    // An index to pass to the accumulator function.
+    let index = 0;
 
-      // Subscribe to our source. All errors and completions are passed through.
-      source.subscribe(
-        new OperatorSubscriber(subscriber, (value) => {
-          const i = index++;
-          // Set the state and send it to the consumer.
-          subscriber.next(
-            (state = hasState
-              ? // We already have state, so we can get the new state from the accumulator
-                accumulator(state, value, i)
-              : // We didn't have state yet, a seed value was not provided, so
-                // we set the state to the first value, and mark that we have state now
-                ((hasState = true), value))
-          );
-        })
-      );
-    });
-  };
+    // Subscribe to our source. All errors and completions are passed through.
+    source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        const i = index++;
+        // Set the state and send it to the consumer.
+        subscriber.next(
+          (state = hasState
+            ? // We already have state, so we can get the new state from the accumulator
+              accumulator(state, value, i)
+            : // We didn't have state yet, a seed value was not provided, so
+              // we set the state to the first value, and mark that we have state now
+              ((hasState = true), value))
+        );
+      })
+    );
+  });
 }

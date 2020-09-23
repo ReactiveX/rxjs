@@ -1,11 +1,10 @@
 import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { EmptyError } from '../util/EmptyError';
 
 import { MonoTypeOperatorFunction } from '../types';
 import { SequenceError } from '../util/SequenceError';
 import { NotFoundError } from '../util/NotFoundError';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -91,8 +90,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
 export function single<T>(
   predicate?: (value: T, index: number, source: Observable<T>) => boolean
 ): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-    const subscriber = this;
+  return operate((source, subscriber) => {
     let hasValue = false;
     let singleValue: T;
     let seenValue = false;

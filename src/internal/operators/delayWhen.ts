@@ -1,8 +1,7 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { concat } from '../observable/concat';
 import { take } from './take';
@@ -90,70 +89,68 @@ export function delayWhen<T>(
       concat(subscriptionDelay.pipe(take(1), ignoreElements()), source.pipe(delayWhen(delayDurationSelector)));
   }
 
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      // An index to give to the projection function.
-      let index = 0;
-      // Whether or not the source has completed.
-      let isComplete = false;
-      // Tracks the number of actively delayed values we have.
-      let active = 0;
+  return operate((source, subscriber) => {
+    // An index to give to the projection function.
+    let index = 0;
+    // Whether or not the source has completed.
+    let isComplete = false;
+    // Tracks the number of actively delayed values we have.
+    let active = 0;
 
-      /**
-       * Checks to see if we can complete the result and completes it, if so.
-       */
-      const checkComplete = () => isComplete && !active && subscriber.complete();
+    /**
+     * Checks to see if we can complete the result and completes it, if so.
+     */
+    const checkComplete = () => isComplete && !active && subscriber.complete();
 
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value: T) => {
-            // Closed bit to guard reentrancy and
-            // synchronous next/complete (which both make the same calls right now)
-            let closed = false;
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value: T) => {
+          // Closed bit to guard reentrancy and
+          // synchronous next/complete (which both make the same calls right now)
+          let closed = false;
 
-            /**
-             * Notifies the consumer of the value.
-             */
-            const notify = () => {
-              // Notify the consumer.
-              subscriber.next(value);
+          /**
+           * Notifies the consumer of the value.
+           */
+          const notify = () => {
+            // Notify the consumer.
+            subscriber.next(value);
 
-              // Ensure our inner subscription is cleaned up
-              // as soon as possible. Once the first `next` fires,
-              // we have no more use for this subscription.
-              durationSubscriber?.unsubscribe();
+            // Ensure our inner subscription is cleaned up
+            // as soon as possible. Once the first `next` fires,
+            // we have no more use for this subscription.
+            durationSubscriber?.unsubscribe();
 
-              if (!closed) {
-                active--;
-                closed = true;
-                checkComplete();
-              }
-            };
+            if (!closed) {
+              active--;
+              closed = true;
+              checkComplete();
+            }
+          };
 
-            // We have to capture our duration subscriber so we can unsubscribe from
-            // it on the first next notification it gives us.
-            const durationSubscriber = new OperatorSubscriber(
-              subscriber,
-              notify,
-              // Errors are sent to consumer.
-              undefined,
-              // TODO(benlesh): I'm inclined to say this is _incorrect_ behavior.
-              // A completion should not be a notification. Note the deprecation above
-              notify
-            );
+          // We have to capture our duration subscriber so we can unsubscribe from
+          // it on the first next notification it gives us.
+          const durationSubscriber = new OperatorSubscriber(
+            subscriber,
+            notify,
+            // Errors are sent to consumer.
+            undefined,
+            // TODO(benlesh): I'm inclined to say this is _incorrect_ behavior.
+            // A completion should not be a notification. Note the deprecation above
+            notify
+          );
 
-            active++;
-            delayDurationSelector(value, index++).subscribe(durationSubscriber);
-          },
-          // Errors are passed through to consumer.
-          undefined,
-          () => {
-            isComplete = true;
-            checkComplete();
-          }
-        )
-      );
-    });
+          active++;
+          delayDurationSelector(value, index++).subscribe(durationSubscriber);
+        },
+        // Errors are passed through to consumer.
+        undefined,
+        () => {
+          isComplete = true;
+          checkComplete();
+        }
+      )
+    );
+  });
 }

@@ -1,8 +1,7 @@
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
+/** @prettier */
 import { observeNotification } from '../Notification';
 import { OperatorFunction, ObservableNotification, ValueFromNotification } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -53,10 +52,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * embedded in Notification objects emitted by the source Observable.
  */
 export function dematerialize<N extends ObservableNotification<any>>(): OperatorFunction<N, ValueFromNotification<N>> {
-  return (source: Observable<N>) => {
-    return lift(source, function (this: Subscriber<ValueFromNotification<N>>, source: Observable<N>) {
-      const subscriber = this;
-      return source.subscribe(new OperatorSubscriber(subscriber, (notification) => observeNotification(notification, subscriber)))
-    });
-  };
+  return operate((source, subscriber) =>
+    source.subscribe(new OperatorSubscriber(subscriber, (notification) => observeNotification(notification, subscriber)))
+  );
 }

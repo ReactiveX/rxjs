@@ -1,8 +1,6 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 export function mapTo<R>(value: R): OperatorFunction<any, R>;
@@ -41,16 +39,14 @@ export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
  * @name mapTo
  */
 export function mapTo<R>(value: R): OperatorFunction<any, R> {
-  return (source: Observable<any>) =>
-    lift(source, function (this: Subscriber<R>, source: Observable<any>) {
-      const subscriber = this;
-      // Subscribe to the source. All errors and completions are forwarded to the consumer
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          // On every value from the source, send the `mapTo` value to the consumer.
-          () => subscriber.next(value)
-        )
-      );
-    });
+  return operate((source, subscriber) => {
+    // Subscribe to the source. All errors and completions are forwarded to the consumer
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        // On every value from the source, send the `mapTo` value to the consumer.
+        () => subscriber.next(value)
+      )
+    );
+  });
 }

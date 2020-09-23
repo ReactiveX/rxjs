@@ -3,7 +3,7 @@ import { ReplaySubject } from '../ReplaySubject';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { Subscriber } from '../Subscriber';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 
 export interface ShareReplayConfig {
   bufferSize?: number;
@@ -140,7 +140,7 @@ export function shareReplay<T>(
       scheduler
     };
   }
-  return (source: Observable<T>) => lift(source, shareReplayOperator(config));
+  return operate(shareReplayOperator(config));
 }
 
 function shareReplayOperator<T>({
@@ -153,12 +153,12 @@ function shareReplayOperator<T>({
   let refCount = 0;
   let subscription: Subscription | undefined;
 
-  return function shareReplayOperation(this: Subscriber<T>, source: Observable<T>) {
+  return (source: Observable<T>, subscriber: Subscriber<T>) => {
     refCount++;
     let innerSub: Subscription;
     if (!subject) {
       subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler);
-      innerSub = subject.subscribe(this);
+      innerSub = subject.subscribe(subscriber);
       subscription = source.subscribe({
         next(value) { subject!.next(value); },
         error(err) {
@@ -179,10 +179,10 @@ function shareReplayOperator<T>({
         subscription = undefined;
       }
     } else {
-      innerSub = subject.subscribe(this);
+      innerSub = subject.subscribe(subscriber);
     }
 
-    this.add(() => {
+    subscriber.add(() => {
       refCount--;
       innerSub.unsubscribe();
       if (useRefCount && refCount === 0 && subscription) {

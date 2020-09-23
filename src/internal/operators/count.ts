@@ -1,8 +1,7 @@
-/** @pretter */
+/** @prettier */
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
-import { Subscriber } from '../Subscriber';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 /**
  * Counts the number of emissions on the source and emits that number when the
@@ -64,15 +63,20 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  */
 
 export function count<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, number> {
-  return (source: Observable<T>) => lift(source, function (this: Subscriber<number>, source: Observable<T>) {
-    const subscriber = this;
+  return operate((source, subscriber) => {
     let index = 0;
     let count = 0;
-    return source.subscribe(new OperatorSubscriber(subscriber, (value) =>
-      (!predicate || predicate(value, index++, source)) && count++
-    , undefined, () => {
-      subscriber.next(count);
-      subscriber.complete();
-    }))
+
+    return source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => (!predicate || predicate(value, index++, source)) && count++,
+        undefined,
+        () => {
+          subscriber.next(count);
+          subscriber.complete();
+        }
+      )
+    );
   });
 }

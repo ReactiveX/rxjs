@@ -1,8 +1,6 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -15,14 +13,12 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @name skip
  */
 export function skip<T>(count: number): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      let seen = 0;
-      return source.subscribe(
-        new OperatorSubscriber(subscriber, (value) => {
-          count === seen ? subscriber.next(value) : seen++;
-        })
-      );
-    });
+  return operate((source, subscriber) => {
+    let seen = 0;
+    return source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        count === seen ? subscriber.next(value) : seen++;
+      })
+    );
+  });
 }

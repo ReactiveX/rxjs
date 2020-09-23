@@ -1,8 +1,6 @@
 /** @prettier */
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
@@ -45,25 +43,23 @@ export function defaultIfEmpty<T, R = T>(defaultValue?: R): OperatorFunction<T, 
  * @name defaultIfEmpty
  */
 export function defaultIfEmpty<T, R>(defaultValue: R | null = null): OperatorFunction<T, T | R> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T | R>, source: Observable<T>) {
-      const subscriber = this;
-      let hasValue = false;
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value) => {
-            hasValue = true;
-            subscriber.next(value);
-          },
-          undefined,
-          () => {
-            if (!hasValue) {
-              subscriber.next(defaultValue!);
-            }
-            subscriber.complete();
+  return operate((source, subscriber) => {
+    let hasValue = false;
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => {
+          hasValue = true;
+          subscriber.next(value);
+        },
+        undefined,
+        () => {
+          if (!hasValue) {
+            subscriber.next(defaultValue!);
           }
-        )
-      );
-    });
+          subscriber.complete();
+        }
+      )
+    );
+  });
 }

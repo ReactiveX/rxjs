@@ -4,7 +4,7 @@ import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
@@ -76,30 +76,28 @@ export function exhaustMap<T, R, O extends ObservableInput<any>>(
     return (source: Observable<T>) =>
       source.pipe(exhaustMap((a, i) => from(project(a, i)).pipe(map((b: any, ii: any) => resultSelector(a, b, i, ii)))));
   }
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<ObservedValueOf<O>>, source: Observable<T>) {
-      const subscriber = this;
-      let index = 0;
-      let innerSub: Subscriber<T> | null = null;
-      let isComplete = false;
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (outerValue) => {
-            if (!innerSub) {
-              innerSub = new OperatorSubscriber(subscriber, undefined, undefined, () => {
-                innerSub = null;
-                isComplete && subscriber.complete();
-              });
-              from(project(outerValue, index++)).subscribe(innerSub);
-            }
-          },
-          undefined,
-          () => {
-            isComplete = true;
-            !innerSub && subscriber.complete();
+  return operate((source, subscriber) => {
+    let index = 0;
+    let innerSub: Subscriber<T> | null = null;
+    let isComplete = false;
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (outerValue) => {
+          if (!innerSub) {
+            innerSub = new OperatorSubscriber(subscriber, undefined, undefined, () => {
+              innerSub = null;
+              isComplete && subscriber.complete();
+            });
+            from(project(outerValue, index++)).subscribe(innerSub);
           }
-        )
-      );
-    });
+        },
+        undefined,
+        () => {
+          isComplete = true;
+          !innerSub && subscriber.complete();
+        }
+      )
+    );
+  });
 }

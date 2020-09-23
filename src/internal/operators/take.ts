@@ -1,9 +1,7 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction } from '../types';
 import { EMPTY } from '../observable/empty';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -51,22 +49,20 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * if the source emits fewer than `count` values.
  */
 export function take<T>(count: number): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    count <= 0
-      ? EMPTY
-      : lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-          const subscriber = this;
-          let seen = 0;
-          return source.subscribe(
-            new OperatorSubscriber(subscriber, (value) => {
-              if (++seen <= count) {
-                subscriber.next(value);
-                // We have to do <= here, because re-entrant code will increment `seen` twice.
-                if (count <= seen) {
-                  subscriber.complete();
-                }
+  return count <= 0
+    ? () => EMPTY
+    : operate((source, subscriber) => {
+        let seen = 0;
+        return source.subscribe(
+          new OperatorSubscriber(subscriber, (value) => {
+            if (++seen <= count) {
+              subscriber.next(value);
+              // We have to do <= here, because re-entrant code will increment `seen` twice.
+              if (count <= seen) {
+                subscriber.complete();
               }
-            })
-          );
-        });
+            }
+          })
+        );
+      });
 }

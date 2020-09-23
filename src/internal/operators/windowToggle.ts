@@ -1,10 +1,9 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 import { ObservableInput, OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { from } from '../observable/from';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
@@ -61,86 +60,84 @@ export function windowToggle<T, O>(
   openings: ObservableInput<O>,
   closingSelector: (openValue: O) => ObservableInput<any>
 ): OperatorFunction<T, Observable<T>> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<Observable<T>>, source: Observable<T>) {
-      const subscriber = this;
-      const windows: Subject<T>[] = [];
+  return operate((source, subscriber) => {
+    const windows: Subject<T>[] = [];
 
-      const handleError = (err: any) => {
-        while (0 < windows.length) {
-          windows.shift()!.error(err);
-        }
-        subscriber.error(err);
-      };
-
-      let openNotifier: Observable<O>;
-      try {
-        openNotifier = from(openings);
-      } catch (err) {
-        subscriber.error(err);
-        return;
+    const handleError = (err: any) => {
+      while (0 < windows.length) {
+        windows.shift()!.error(err);
       }
-      openNotifier.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (openValue) => {
-            const window = new Subject<T>();
-            windows.push(window);
-            const closingSubscription = new Subscription();
-            const closeWindow = () => {
-              arrRemove(windows, window);
-              window.complete();
-              closingSubscription.unsubscribe();
-            };
+      subscriber.error(err);
+    };
 
-            let closingNotifier: Observable<any>;
-            try {
-              closingNotifier = from(closingSelector(openValue));
-            } catch (err) {
-              handleError(err);
-              return;
-            }
+    let openNotifier: Observable<O>;
+    try {
+      openNotifier = from(openings);
+    } catch (err) {
+      subscriber.error(err);
+      return;
+    }
+    openNotifier.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (openValue) => {
+          const window = new Subject<T>();
+          windows.push(window);
+          const closingSubscription = new Subscription();
+          const closeWindow = () => {
+            arrRemove(windows, window);
+            window.complete();
+            closingSubscription.unsubscribe();
+          };
 
-            subscriber.next(window.asObservable());
-
-            closingSubscription.add(closingNotifier.subscribe(new OperatorSubscriber(subscriber, closeWindow, handleError, closeWindow)));
-          },
-          undefined,
-          noop
-        )
-      );
-
-      // Subcribe to the source to get things started.
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value: T) => {
-            // Copy the windows array before we emit to
-            // make sure we don't have issues with reentrant code.
-            const windowsCopy = windows.slice();
-            for (const window of windowsCopy) {
-              window.next(value);
-            }
-          },
-          handleError,
-          () => {
-            // Complete all of our windows before we complete.
-            while (0 < windows.length) {
-              windows.shift()!.complete();
-            }
-            subscriber.complete();
-          },
-          () => {
-            // Add this teardown so that all window subjects are
-            // disposed of. This way, if a user tries to subscribe
-            // to a window *after* the outer subscription has been unsubscribed,
-            // they will get an error, instead of waiting forever to
-            // see if a value arrives.
-            while (0 < windows.length) {
-              windows.shift()!.unsubscribe();
-            }
+          let closingNotifier: Observable<any>;
+          try {
+            closingNotifier = from(closingSelector(openValue));
+          } catch (err) {
+            handleError(err);
+            return;
           }
-        )
-      );
-    });
+
+          subscriber.next(window.asObservable());
+
+          closingSubscription.add(closingNotifier.subscribe(new OperatorSubscriber(subscriber, closeWindow, handleError, closeWindow)));
+        },
+        undefined,
+        noop
+      )
+    );
+
+    // Subcribe to the source to get things started.
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value: T) => {
+          // Copy the windows array before we emit to
+          // make sure we don't have issues with reentrant code.
+          const windowsCopy = windows.slice();
+          for (const window of windowsCopy) {
+            window.next(value);
+          }
+        },
+        handleError,
+        () => {
+          // Complete all of our windows before we complete.
+          while (0 < windows.length) {
+            windows.shift()!.complete();
+          }
+          subscriber.complete();
+        },
+        () => {
+          // Add this teardown so that all window subjects are
+          // disposed of. This way, if a user tries to subscribe
+          // to a window *after* the outer subscription has been unsubscribed,
+          // they will get an error, instead of waiting forever to
+          // see if a value arrives.
+          while (0 < windows.length) {
+            windows.shift()!.unsubscribe();
+          }
+        }
+      )
+    );
+  });
 }

@@ -1,8 +1,6 @@
 /** @prettier */
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
 
@@ -39,9 +37,7 @@ import { noop } from '../util/noop';
  * @name ignoreElements
  */
 export function ignoreElements(): OperatorFunction<any, never> {
-  return (source: Observable<any>) =>
-    lift(source, function (this: Subscriber<never>, source: Observable<any>) {
-      const subscriber = this;
-      source.subscribe(new OperatorSubscriber(subscriber, noop));
-    });
+  return operate((source, subscriber) => {
+    source.subscribe(new OperatorSubscriber(subscriber, noop));
+  });
 }

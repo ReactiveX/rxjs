@@ -1,9 +1,8 @@
 /** @prettier */
-import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction, SubscribableOrPromise } from '../types';
 
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 
@@ -66,57 +65,55 @@ import { from } from '../observable/from';
  * @name debounce
  */
 export function debounce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      let hasValue = false;
-      let lastValue: T | null = null;
-      // The subscriber/subscription for the current debounce, if there is one.
-      let durationSubscriber: Subscriber<any> | null = null;
+  return operate((source, subscriber) => {
+    let hasValue = false;
+    let lastValue: T | null = null;
+    // The subscriber/subscription for the current debounce, if there is one.
+    let durationSubscriber: Subscriber<any> | null = null;
 
-      const emit = () => {
-        // Unsubscribe any current debounce subscription we have,
-        // we only cared about the first notification from it, and we
-        // want to clean that subscription up as soon as possible.
-        durationSubscriber?.unsubscribe();
-        durationSubscriber = null;
-        if (hasValue) {
-          // We have a value! Free up memory first, then emit the value.
-          hasValue = false;
-          const value = lastValue!;
-          lastValue = null;
-          subscriber.next(value);
+    const emit = () => {
+      // Unsubscribe any current debounce subscription we have,
+      // we only cared about the first notification from it, and we
+      // want to clean that subscription up as soon as possible.
+      durationSubscriber?.unsubscribe();
+      durationSubscriber = null;
+      if (hasValue) {
+        // We have a value! Free up memory first, then emit the value.
+        hasValue = false;
+        const value = lastValue!;
+        lastValue = null;
+        subscriber.next(value);
+      }
+    };
+
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value: T) => {
+          // Cancel any pending debounce duration. We don't
+          // need to null it out here yet tho, because we're just going
+          // to create another one in a few lines.
+          durationSubscriber?.unsubscribe();
+          hasValue = true;
+          lastValue = value;
+          // Capture our duration subscriber, so we can unsubscribe it when we're notified
+          // and we're going to emit the value.
+          durationSubscriber = new OperatorSubscriber(subscriber, emit, undefined, emit);
+          // Subscribe to the duration.
+          from(durationSelector(value)).subscribe(durationSubscriber);
+        },
+        undefined,
+        () => {
+          // Source completed.
+          // Emit any pending debounced values then complete
+          emit();
+          subscriber.complete();
+        },
+        () => {
+          // Teardown.
+          lastValue = durationSubscriber = null;
         }
-      };
-
-      source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value: T) => {
-            // Cancel any pending debounce duration. We don't
-            // need to null it out here yet tho, because we're just going
-            // to create another one in a few lines.
-            durationSubscriber?.unsubscribe();
-            hasValue = true;
-            lastValue = value;
-            // Capture our duration subscriber, so we can unsubscribe it when we're notified
-            // and we're going to emit the value.
-            durationSubscriber = new OperatorSubscriber(subscriber, emit, undefined, emit);
-            // Subscribe to the duration.
-            from(durationSelector(value)).subscribe(durationSubscriber);
-          },
-          undefined,
-          () => {
-            // Source completed.
-            // Emit any pending debounced values then complete
-            emit();
-            subscriber.complete();
-          },
-          () => {
-            // Teardown.
-            lastValue = durationSubscriber = null;
-          }
-        )
-      );
-    });
+      )
+    );
+  });
 }
