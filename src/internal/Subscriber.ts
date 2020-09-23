@@ -2,7 +2,7 @@
 import { isFunction } from './util/isFunction';
 import { EMPTY_OBSERVER } from './EMPTY_OBSERVER';
 import { Observer, PartialObserver } from './types';
-import { Subscription } from './Subscription';
+import { isSubscription, Subscription } from './Subscription';
 import { config } from './config';
 import { reportUnhandledError } from './util/reportUnhandledError';
 import { noop } from './util/noop';
@@ -21,58 +21,37 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   /**
    * A static factory for a Subscriber, given a (potentially partial) definition
    * of an Observer.
-   * @param {function(x: ?T): void} [next] The `next` callback of an Observer.
-   * @param {function(e: ?any): void} [error] The `error` callback of an
+   * @param next The `next` callback of an Observer.
+   * @param error The `error` callback of an
    * Observer.
-   * @param {function(): void} [complete] The `complete` callback of an
+   * @param complete The `complete` callback of an
    * Observer.
-   * @return {Subscriber<T>} A Subscriber wrapping the (partially defined)
+   * @return A Subscriber wrapping the (partially defined)
    * Observer represented by the given arguments.
    * @nocollapse
+   * @deprecated Do not use. Will be removed in v8. There is no replacement for this method, and there is no reason to be creating instances of `Subscriber` directly. If you have a specific use case, please file an issue.
    */
   static create<T>(next?: (x?: T) => void, error?: (e?: any) => void, complete?: () => void): Subscriber<T> {
-    return new Subscriber(next, error, complete);
+    return new SafeSubscriber(next, error, complete);
   }
 
   protected isStopped: boolean = false;
-  protected destination: Observer<any> | Subscriber<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
+  protected destination: Subscriber<any> | Observer<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
 
   /**
-   * @param {Observer|function(value: T): void} [destinationOrNext] A partially
-   * defined Observer or a `next` callback function.
-   * @param {function(e: ?any): void} [error] The `error` callback of an
-   * Observer.
-   * @param {function(): void} [complete] The `complete` callback of an
-   * Observer.
+   * @deprecated Do not use directly. There is no reason to directly create an instance of Subscriber. This type is exported for typings reasons.
    */
-  constructor(
-    destinationOrNext?: PartialObserver<any> | ((value: T) => void) | null,
-    error?: ((e?: any) => void) | null,
-    complete?: (() => void) | null
-  ) {
+  constructor(destination?: Subscriber<any> | Observer<any>) {
     super();
-
-    switch (arguments.length) {
-      case 0:
-        this.destination = EMPTY_OBSERVER;
-        break;
-      case 1:
-        if (!destinationOrNext) {
-          this.destination = EMPTY_OBSERVER;
-          break;
-        }
-        if (typeof destinationOrNext === 'object') {
-          if (destinationOrNext instanceof Subscriber) {
-            this.destination = destinationOrNext;
-            destinationOrNext.add(this);
-          } else {
-            this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>>destinationOrNext);
-          }
-          break;
-        }
-      default:
-        this.destination = new SafeSubscriber<T>(this, <(value: T) => void>destinationOrNext, error, complete);
-        break;
+    if (destination) {
+      this.destination = destination;
+      // Automatically chain subscriptions together here.
+      // if destination is a Subscription, then it is a Subscriber.
+      if (isSubscription(destination)) {
+        destination.add(this);
+      }
+    } else {
+      this.destination = EMPTY_OBSERVER;
     }
   }
 
@@ -145,7 +124,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
  */
 export class SafeSubscriber<T> extends Subscriber<T> {
   constructor(
-    private _parentSubscriber: Subscriber<T>,
     observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
     error?: ((e?: any) => void) | null,
     complete?: (() => void) | null
@@ -164,7 +142,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
           // next handler functions passed to subscribe. This only exists behind a flag
           // now, as it is *very* slow.
           context = Object.create(observerOrNext);
-          context.unsubscribe = this.unsubscribe.bind(this);
+          context.unsubscribe = () => this.unsubscribe();
         } else {
           context = observerOrNext;
         }
@@ -179,15 +157,6 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       error: error || handleError,
       complete: complete || noop,
     };
-  }
-
-  unsubscribe() {
-    if (!this.closed) {
-      const { _parentSubscriber } = this;
-      this._parentSubscriber = null!;
-      _parentSubscriber.unsubscribe();
-      super.unsubscribe();
-    }
   }
 }
 
