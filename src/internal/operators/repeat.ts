@@ -4,6 +4,7 @@ import { Subscription } from '../Subscription';
 import { EMPTY } from '../observable/empty';
 import { operate } from '../util/lift';
 import { MonoTypeOperatorFunction } from '../types';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Returns an Observable that will resubscribe to the source stream when the source stream completes, at most count times.
@@ -66,14 +67,11 @@ export function repeat<T>(count = Infinity): MonoTypeOperatorFunction<T> {
     ? () => EMPTY
     : operate((source, subscriber) => {
         let soFar = 0;
-        const subscription = new Subscription();
         let innerSub: Subscription | null;
         const subscribeForRepeat = () => {
           let syncUnsub = false;
-          innerSub = source.subscribe({
-            next: (value) => subscriber.next(value),
-            error: (err) => subscriber.error(err),
-            complete: () => {
+          innerSub = source.subscribe(
+            new OperatorSubscriber(subscriber, undefined, undefined, () => {
               if (++soFar < count) {
                 if (innerSub) {
                   innerSub.unsubscribe();
@@ -85,17 +83,15 @@ export function repeat<T>(count = Infinity): MonoTypeOperatorFunction<T> {
               } else {
                 subscriber.complete();
               }
-            },
-          });
+            })
+          );
+
           if (syncUnsub) {
             innerSub.unsubscribe();
             innerSub = null;
             subscribeForRepeat();
-          } else {
-            subscription.add(innerSub);
           }
         };
         subscribeForRepeat();
-        return subscription;
       });
 }
