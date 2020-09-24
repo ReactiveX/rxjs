@@ -1,7 +1,7 @@
 # Scheduler Argument
 
 To limit the API surface of some operators, but also prepare for a [major refactoring in V8](https://github.com/ReactiveX/rxjs/pull/4583), we
-agreed on deprecating the `scheduler` argument from many operators. It solely deprecates those methods where this argument is barely used. So `time` related
+agreed on deprecating the `scheduler` argument from many operators. It solely deprecates those methods where this argument is rarely used. So `time` related
 operators, like [`interval`](https://rxjs.dev/api/index/function/interval) are not affected by this deprecation.
 
 To support this transition the [scheduled creation function](/api/index/function/scheduled) was added.
@@ -20,7 +20,7 @@ To support this transition the [scheduled creation function](/api/index/function
 - [concat](/api/index/function/concat)
 - [startWith](/api/operators/startWith)
 - [endWith](/api/operators/endWith)
-- [combineLates](/api/index/function/combineLatest)
+- [combineLatest](/api/index/function/combineLatest)
 
 ## How to Refactor
 
@@ -39,10 +39,10 @@ import { of, asyncScheduler, scheduled } from 'rxjs';
 // Deprecated approach
 of([1,2,3], asyncScheduler).subscribe(x => console.log(x));
 // suggested approach
-scheduled(of([1,2,3]), asyncScheduler).subscribe(x => console.log(x));
+scheduled([1,2,3], asyncScheduler).subscribe(x => console.log(x));
 ```
 
-### Refactoring of `merge`, `concat`, `startWith` and `endWith`
+### Refactoring of `merge`, `concat`, `combineLatest`, `startWith` and `endWith`
 
 In case you used to pass a scheduler argument to one of these operators you probably had code like this:
 
@@ -70,19 +70,18 @@ scheduled(
 ).subscribe(x => console.log(x));
 ```
 
-You can apply this pattern to refactor deprecated usage of `concat`, `startWith` and `endWith` but do notice that you want to use [mergeAll](/api/operators/mergeAll) to refactor the deprecated usage of `merge`.
+You can apply this pattern to refactor deprecated usage of `concat`, `startWith` and `endWith` but do notice that you will want to use [mergeAll](/api/operators/mergeAll) to refactor the deprecated usage of `merge`.
 
-### Refactoring `combineLatest`
-
-Unfortunately, there's no point in using `scheduled` with `combineLatest`. You rather want to leverage [`subscribeOn`](/api/operators/subscribeOn) or [`observeOn`](/api/operators/observeOn) depending on your goals. 
+With `combineLatest`, you will want to use [combineAll](/api/operators/combineAll)
 
 E.g. code that used to look like this:
 
 ```ts
-import { combineLatest, timer, asyncScheduler } from 'rxjs'; 
+import { combineLatest, of, asyncScheduler } from 'rxjs';
 
 combineLatest(
-  [timer(0, 1000), timer(500, 500)],
+  of('hello '),
+  of('World'),
   asyncScheduler
 ).subscribe(console.log)
 ```
@@ -90,12 +89,13 @@ combineLatest(
 would become:
 
 ```ts
-import { combineLatest, timer, asyncScheduler } from 'rxjs'; 
-import { subscribeOn } from 'rxjs/operators'
+import { scheduled, of, asyncScheduler } from 'rxjs';
+import { combineAll } from 'rxjs/operators'
 
-combineLatest(
-  [timer(0, 1000), timer(500, 500)],
+scheduled(
+  [of('hello '), of('World')],
+  asyncScheduler
 ).pipe(
-  subscribeOn(asyncScheduler)
-).subscribe(console.log)
+  combineAll()
+).subscribe(x => console.log(x));
 ```
