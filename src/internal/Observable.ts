@@ -9,6 +9,7 @@ import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
 import { reportUnhandledError } from './util/reportUnhandledError';
+import { isFunction } from './util/isFunction';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -502,7 +503,7 @@ export function canReportError(subscriber: Subscriber<any>): boolean {
 }
 
 function isObserver<T>(value: any): value is Observer<T> {
-  return value && typeof value.next === 'function' && typeof value.error === 'function' && typeof value.complete === 'function';
+  return value && isFunction(value.next) && isFunction(value.error) && isFunction(value.complete);
 }
 
 function isSubscriber<T>(value: any): value is Subscriber<T> {

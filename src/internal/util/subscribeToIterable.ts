@@ -1,5 +1,7 @@
+/** @prettier */
 import { Subscriber } from '../Subscriber';
 import { iterator as Symbol_iterator } from '../symbol/iterator';
+import { isFunction } from './isFunction';
 
 export const subscribeToIterable = <T>(iterable: Iterable<T>) => (subscriber: Subscriber<T>) => {
   const iterator = (iterable as any)[Symbol_iterator]();
@@ -23,7 +25,7 @@ export const subscribeToIterable = <T>(iterable: Iterable<T>) => (subscriber: Su
   } while (true);
 
   // Finalize the iterator if it happens to be a Generator
-  if (typeof iterator.return === 'function') {
+  if (isFunction(iterator.return)) {
     subscriber.add(() => {
       if (iterator.return) {
         iterator.return();

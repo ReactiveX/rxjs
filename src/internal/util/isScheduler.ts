@@ -1,5 +1,6 @@
 import { SchedulerLike } from '../types';
+import { isFunction } from './isFunction';
 
 export function isScheduler(value: any): value is SchedulerLike {
-  return value && typeof value.schedule === 'function';
+  return value && isFunction(value.schedule);
 }

@@ -1,6 +1,8 @@
 /** @prettier */
 import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
 import { SchedulerLike } from '../types';
+import { isFunction } from '../util/isFunction';
 
 /**
  * Creates an observable that will create an error instance and push it to the consumer as an error
@@ -119,15 +121,7 @@ export function throwError(error: any): Observable<never>;
 export function throwError(errorOrErrorFactory: any, scheduler: SchedulerLike): Observable<never>;
 
 export function throwError(errorOrErrorFactory: any, scheduler?: SchedulerLike): Observable<never> {
-  if (!scheduler) {
-    return new Observable((subscriber) =>
-      subscriber.error(typeof errorOrErrorFactory === 'function' ? errorOrErrorFactory() : errorOrErrorFactory)
-    );
-  } else {
-    return new Observable((subscriber) =>
-      scheduler.schedule(() => {
-        subscriber.error(typeof errorOrErrorFactory === 'function' ? errorOrErrorFactory() : errorOrErrorFactory);
-      })
-    );
-  }
+  const errorFactory = isFunction(errorOrErrorFactory) ? errorOrErrorFactory : () => errorOrErrorFactory;
+  const init = (subscriber: Subscriber<never>) => subscriber.error(errorFactory());
+  return new Observable(scheduler ? (subscriber) => scheduler.schedule(init as any, 0, subscriber) : init);
 }

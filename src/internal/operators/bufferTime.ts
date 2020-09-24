@@ -1,11 +1,11 @@
 /** @prettier */
 import { Subscription } from '../Subscription';
-import { isScheduler } from '../util/isScheduler';
 import { OperatorFunction, SchedulerLike } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { arrRemove } from '../util/arrRemove';
 import { asyncScheduler } from '../scheduler/async';
+import { popScheduler } from '../util/args';
 
 /* tslint:disable:max-line-length */
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
@@ -79,7 +79,7 @@ export function bufferTime<T>(
  * @name bufferTime
  */
 export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): OperatorFunction<T, T[]> {
-  const scheduler = isScheduler(otherArgs[otherArgs.length - 1]) ? (otherArgs.pop() as SchedulerLike) : asyncScheduler;
+  const scheduler = popScheduler(otherArgs) ?? asyncScheduler;
   const bufferCreationInterval = (otherArgs[0] as number) ?? null;
   const maxBufferSize = (otherArgs[1] as number) || Infinity;
 

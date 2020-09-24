@@ -1,12 +1,12 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike } from '../types';
-import { isScheduler } from '../util/isScheduler';
 import { mergeAll } from '../operators/mergeAll';
 import { fromArray } from './fromArray';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { from } from './from';
 import { EMPTY } from './empty';
+import { popNumber, popScheduler } from '../util/args';
 
 /* tslint:disable:max-line-length */
 /** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
@@ -229,19 +229,9 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  * @owner Observable
  */
 export function merge(...args: (ObservableInput<any> | SchedulerLike | number)[]): Observable<unknown> {
-  let concurrent = Infinity;
-  let scheduler: SchedulerLike | undefined = undefined;
-
-  if (isScheduler(args[args.length - 1])) {
-    scheduler = args.pop() as SchedulerLike;
-  }
-
-  if (typeof args[args.length - 1] === 'number') {
-    concurrent = args.pop() as number;
-  }
-
+  const scheduler = popScheduler(args);
+  const concurrent = popNumber(args, Infinity);
   args = argsOrArgArray(args);
-
   return !args.length
     ? // No source provided
       EMPTY

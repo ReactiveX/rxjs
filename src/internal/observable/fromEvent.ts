@@ -225,13 +225,13 @@ export function fromEvent<T>(
 }
 
 function isNodeStyleEventEmitter(sourceObj: any): sourceObj is NodeStyleEventEmitter {
-  return sourceObj && typeof sourceObj.addListener === 'function' && typeof sourceObj.removeListener === 'function';
+  return isFunction(sourceObj.addListener) && isFunction(sourceObj.removeListener);
 }
 
 function isJQueryStyleEventEmitter(sourceObj: any): sourceObj is JQueryStyleEventEmitter {
-  return sourceObj && typeof sourceObj.on === 'function' && typeof sourceObj.off === 'function';
+  return isFunction(sourceObj.on) && isFunction(sourceObj.off);
 }
 
 function isEventTarget(sourceObj: any): sourceObj is HasEventTargetAddRemove<any> {
-  return sourceObj && typeof sourceObj.addEventListener === 'function' && typeof sourceObj.removeEventListener === 'function';
+  return isFunction(sourceObj.addEventListener) && isFunction(sourceObj.removeEventListener);
 }

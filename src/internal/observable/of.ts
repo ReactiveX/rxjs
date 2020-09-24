@@ -1,8 +1,8 @@
 import { SchedulerLike, ValueFromArray } from '../types';
-import { isScheduler } from '../util/isScheduler';
 import { fromArray } from './fromArray';
 import { Observable } from '../Observable';
 import { scheduleArray } from '../scheduled/scheduleArray';
+import { popScheduler } from '../util/args';
 
 /* tslint:disable:max-line-length */
 /** @deprecated The scheduler argument is deprecated, use scheduled. Details: https://rxjs.dev/deprecations/scheduler-argument */
@@ -97,11 +97,6 @@ export function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<
  */
 
 export function of<T>(...args: Array<T | SchedulerLike>): Observable<T> {
-  let scheduler = args[args.length - 1] as SchedulerLike;
-  if (isScheduler(scheduler)) {
-    args.pop();
-    return scheduleArray(args as T[], scheduler);
-  } else {
-    return fromArray(args as T[]);
-  }
+  const scheduler = popScheduler(args);
+  return scheduler ? scheduleArray(args as T[], scheduler) : fromArray(args as T[]);
 }

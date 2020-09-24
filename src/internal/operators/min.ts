@@ -1,5 +1,7 @@
+/** @prettier */
 import { reduce } from './reduce';
 import { MonoTypeOperatorFunction } from '../types';
+import { isFunction } from '../util/isFunction';
 
 /**
  * The Min operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
@@ -45,8 +47,5 @@ import { MonoTypeOperatorFunction } from '../types';
  * @name min
  */
 export function min<T>(comparer?: (x: T, y: T) => number): MonoTypeOperatorFunction<T> {
-  const min: (x: T, y: T) => T = (typeof comparer === 'function')
-    ? (x, y) => comparer(x, y) < 0 ? x : y
-    : (x, y) => x < y ? x : y;
-  return reduce(min);
+  return reduce(isFunction(comparer) ? (x, y) => (comparer(x, y) < 0 ? x : y) : (x, y) => (x < y ? x : y));
 }

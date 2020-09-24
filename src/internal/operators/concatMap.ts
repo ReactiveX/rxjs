@@ -1,12 +1,22 @@
+/** @prettier */
 import { mergeMap } from './mergeMap';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
+import { isFunction } from '../util/isFunction';
 
 /* tslint:disable:max-line-length */
-export function concatMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) =>  O): OperatorFunction<T, ObservedValueOf<O>>;
+export function concatMap<T, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O
+): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector no longer supported, use inner map instead */
-export function concatMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;
+export function concatMap<T, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O,
+  resultSelector: undefined
+): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector no longer supported, use inner map instead */
-export function concatMap<T, R, O extends ObservableInput<any>>(project: (value: T, index: number) =>  O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
+export function concatMap<T, R, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O,
+  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
+): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -71,9 +81,6 @@ export function concatMap<T, R, O extends ObservableInput<any>>(project: (value:
 export function concatMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
   resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
-): OperatorFunction<T, ObservedValueOf<O>|R> {
-  if (typeof resultSelector === 'function') {
-    return mergeMap(project, resultSelector, 1);
-  }
-  return mergeMap(project, 1);
+): OperatorFunction<T, ObservedValueOf<O> | R> {
+  return isFunction(resultSelector) ? mergeMap(project, resultSelector, 1) : mergeMap(project, 1);
 }

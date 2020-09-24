@@ -4,6 +4,7 @@ import { Observable } from '../Observable';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { OperatorFunction, UnaryFunction, ObservedValueOf, ObservableInput } from '../types';
 import { hasLift, operate } from '../util/lift';
+import { isFunction } from '../util/isFunction';
 
 /* tslint:disable:max-line-length */
 export function multicast<T>(subject: Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
@@ -40,9 +41,9 @@ export function multicast<T, R>(
   subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
   selector?: (source: Observable<T>) => Observable<R>
 ): OperatorFunction<T, R> {
-  const subjectFactory = typeof subjectOrSubjectFactory === 'function' ? subjectOrSubjectFactory : () => subjectOrSubjectFactory;
+  const subjectFactory = isFunction(subjectOrSubjectFactory) ? subjectOrSubjectFactory : () => subjectOrSubjectFactory;
 
-  if (typeof selector === 'function') {
+  if (isFunction(selector)) {
     return operate((source, subscriber) => {
       const subject = subjectFactory();
       // Intentionally terse code: Subscribe to the result of the selector,
