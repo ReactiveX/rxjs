@@ -95,15 +95,20 @@ export function throttle<T>(
     source.subscribe(
       new OperatorSubscriber(
         subscriber,
+        // Regarding the presence of throttled.closed in the following
+        // conditions, if a synchronous duration selector is specified - weird,
+        // but legal - an already-closed subscription will be assigned to
+        // throttled, so the subscription's closed property needs to be checked,
+        // too.
         (value) => {
           hasValue = true;
           sendValue = value;
-          !throttled && (leading ? send() : throttle(value));
+          !(throttled && !throttled.closed) && (leading ? send() : throttle(value));
         },
         undefined,
         () => {
           isComplete = true;
-          !(trailing && hasValue && throttled) && subscriber.complete();
+          !(trailing && hasValue && throttled && !throttled.closed) && subscriber.complete();
         }
       )
     );
