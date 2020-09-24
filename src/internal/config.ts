@@ -1,5 +1,7 @@
 /** @prettier */
 
+import { Subscriber } from './Subscriber';
+
 /**
  * The global configuration object for RxJS, used to configure things
  * like what Promise constructor should used to create Promises
@@ -15,6 +17,20 @@ export const config = {
    * behavior of the library.
    */
   onUnhandledError: null as ((err: any) => void) | null,
+
+  /**
+   * A registration point for notifications that cannot be sent to subscribers because they
+   * have completed, errored or have been explicitly unsubscribed. By default, next, complete
+   * and error notifications sent to stopped subscribers are noops. However, sometimes callers
+   * might want a different behavior. For example, with sources that attempt to report errors
+   * to stopped subscribers, a caller can configure RxJS to throw an unhandled error instead.
+   * This will _always_ be called asynchronously on another job in the runtime. This is because
+   * we do not want errors thrown in this user-configured handler to interfere with the
+   * behavior of the library.
+   */
+  onStoppedNotification: undefined as
+    | ((notification: { kind: 'N'; value: any } | { kind: 'E'; error: any } | { kind: 'C' }, subscriber: Subscriber<any>) => void)
+    | undefined,
 
   /**
    * The promise constructor used by default for methods such as
