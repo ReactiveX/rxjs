@@ -1,9 +1,8 @@
 /** @prettier */
-import { Subscription } from '../Subscription';
 import { asyncScheduler } from '../scheduler/async';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { debounce } from './debounce';
+import { timer } from '../observable/timer';
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -64,57 +63,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @name debounceTime
  */
 export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyncScheduler): MonoTypeOperatorFunction<T> {
-  return operate((source, subscriber) => {
-    // Used to note that we have a value. This is mostly for the
-    // completion phase. There we have to check to see if we have a value
-    // waiting, and emit it if we do.
-    let hasValue = false;
-    // The last value that has arrived via `next`.
-    let lastValue: T | null = null;
-    // The subscription for our debounce period.
-    let debounceSubscription: Subscription | null = null;
-
-    /**
-     * Emits the last value seen and clears it.
-     */
-    const emitLastValue = () => {
-      hasValue = false;
-      const value = lastValue!;
-      lastValue = null;
-      subscriber.next(value);
-    };
-
-    source.subscribe(
-      new OperatorSubscriber(
-        subscriber,
-        (value) => {
-          // Cancel the previous debounce period, because
-          // we are going to start a new one.
-          debounceSubscription?.unsubscribe();
-          // Record the value
-          hasValue = true;
-          lastValue = value;
-          // Start a new debounce period. Notice that we are capturing
-          // the subscription for it here so we can cancel it if we have to.
-          subscriber.add(
-            (debounceSubscription = scheduler.schedule(() => {
-              // Release the subscription for the debounce.
-              debounceSubscription = null;
-              // We don't need to check to see if we have a value here,
-              // we can just emit it, because we can't possibly get
-              // here if we didn't already get a value.
-              emitLastValue();
-            }, dueTime))
-          );
-        },
-        // Let errors pass through
-        undefined,
-        () => {
-          // If we have a value waiting, emit it.
-          hasValue && emitLastValue();
-          subscriber.complete();
-        }
-      )
-    );
-  });
+  const duration = timer(dueTime, scheduler);
+  return debounce(() => duration);
 }
