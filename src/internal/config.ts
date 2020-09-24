@@ -2,7 +2,7 @@
 
 /**
  * The global configuration object for RxJS, used to configure things
- * like what Promise contructor should used to create Promises
+ * like what Promise constructor should used to create Promises
  */
 export const config = {
   /**
@@ -24,7 +24,7 @@ export const config = {
    * Promise constructor. If you need a Promise implementation other than native promises,
    * please polyfill/patch Promises as you see appropriate.
    */
-  Promise: undefined! as PromiseConstructorLike,
+  Promise: undefined as PromiseConstructorLike | undefined,
 
   /**
    * If true, turns on synchronous error rethrowing, which is a deprecated behavior
