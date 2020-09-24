@@ -1,10 +1,8 @@
 /** @prettier */
-import { Subscription } from '../Subscription';
 import { asyncScheduler } from '../scheduler/async';
-import { ThrottleConfig, defaultThrottleConfig } from './throttle';
+import { ThrottleConfig, defaultThrottleConfig, throttle } from './throttle';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { timer } from '../observable/timer';
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source
@@ -88,97 +86,6 @@ export function throttleTime<T>(
   scheduler: SchedulerLike = asyncScheduler,
   { leading = false, trailing = false }: ThrottleConfig = defaultThrottleConfig
 ): MonoTypeOperatorFunction<T> {
-  return operate((source, subscriber) => {
-    // Whether or not we have received a trailing value
-    let hasTrailingValue = false;
-    // The trailing value we have received
-    let trailingValue: T | null = null;
-    // The subscription for the scheduled throttle job.
-    // If this is null, no throttle is currently scheduled.
-    let throttleSubs: Subscription | null = null;
-    // Whether or not the source has completed.
-    let isComplete = false;
-
-    /**
-     * Executed when the throttled time completes.
-     */
-    const throttleJob = () => {
-      // Clear the throttle subs, we check this to see if there's
-      // A throttle scheduled already.
-      throttleSubs = null;
-      if (trailing && hasTrailingValue) {
-        // If we have the trailing behavior, and we have a trailing value
-        // then emit the trailing value. Emitting will start another throttle
-        // peroid.
-        hasTrailingValue = false;
-        emit(trailingValue!);
-        trailingValue = null;
-      }
-      if (isComplete) {
-        subscriber.complete();
-      }
-    };
-
-    /**
-     * Does the work of scheduling the throttle job.
-     */
-    const startThrottle = () => subscriber.add((throttleSubs = scheduler.schedule(throttleJob, duration)));
-
-    /**
-     * Sets the trailing value if we have that behavior.
-     */
-    const setTrailing = (value: T) => {
-      if (trailing) {
-        hasTrailingValue = true;
-        trailingValue = value;
-      }
-    };
-
-    /**
-     * Emits the value, and if the source is not complete,
-     * it will schedule another throttle period.
-     */
-    const emit = (value: T) => {
-      subscriber.next(value);
-      !isComplete && startThrottle();
-    };
-
-    source.subscribe(
-      new OperatorSubscriber(
-        subscriber,
-        (value) => {
-          // We got a new value
-          if (throttleSubs) {
-            // We're already throttled, set the trailing value if we have to.
-            setTrailing(value);
-          } else {
-            // We are not throttled yet.
-            if (leading) {
-              // If we have the leading behavior, emit right away and start
-              // a new throttle period.
-              emit(value);
-            } else {
-              // If we do not have the leading behavior,
-              // set the trailing value and start a new throttle peroid.
-              // If they don't have the leading behavior, we'll just assume
-              // they have the trailing behavior here. We need to record the value
-              // So it comes out after the throttle period. If they don't have
-              // either behavior that is just weird. Not adding extra code for that.
-              setTrailing(value);
-              startThrottle();
-            }
-          }
-        },
-        undefined,
-        () => {
-          // The source completed
-          isComplete = true;
-          // If we're trailing, and we're in a throttle period and have a trailing value,
-          // wait for the throttle period to end before we actually complete.
-          // Otherwise, returning `true` here completes the result right away.
-          (!trailing || !throttleSubs || !hasTrailingValue) && subscriber.complete();
-        }
-      )
-    );
-  });
+  const d = timer(duration, scheduler);
+  return throttle(() => d, { leading, trailing });
 }
