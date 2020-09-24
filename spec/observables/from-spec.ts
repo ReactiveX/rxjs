@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { asyncScheduler, of, from, Observer, observable, Subject } from 'rxjs';
+import { asyncScheduler, of, from, Observer, observable, Subject, noop } from 'rxjs';
 import { first, concatMap, delay } from 'rxjs/operators';
 
 // tslint:disable:no-any
@@ -149,7 +149,8 @@ describe('from', () => {
         );
       expect(nextInvoked).to.equal(false);
     });
-    it(`should accept a function`, (done) => {
+
+    it(`should accept a function that implements [Symbol.observable]`, (done) => {
       const subject = new Subject<any>();
       const handler: any = (arg: any) => subject.next(arg);
       handler[observable] = () => subject;
@@ -170,5 +171,17 @@ describe('from', () => {
       );
       handler('x');
     });
+
+    it('should accept a thennable that happens to have a subscribe method', (done) => {
+      // There was an issue with our old `isPromise` check that caused this to fail
+      const input = Promise.resolve('test');
+      (input as any).subscribe = noop;
+      from(input).subscribe({
+        next: x => {
+          expect(x).to.equal('test');
+          done();
+        }
+      })
+    })
   }
 });
