@@ -1,10 +1,10 @@
 /** @prettier */
 import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, SchedulerLike, ObservedValueUnionFromArray } from '../types';
 import { operate } from '../util/lift';
-import { isScheduler } from '../util/isScheduler';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { fromArray } from '../observable/fromArray';
 import { mergeAll } from './mergeAll';
+import { popNumber, popScheduler } from '../util/args';
 
 /** @deprecated use {@link mergeWith} */
 export function merge<T>(): MonoTypeOperatorFunction<T>;
@@ -121,17 +121,8 @@ export function merge<T, R>(...observables: Array<ObservableInput<any> | Schedul
  * @deprecated use {@link mergeWith} or static {@link merge}
  */
 export function merge<T, R>(...args: Array<ObservableInput<any> | SchedulerLike | number | undefined>): OperatorFunction<T, R> {
-  let concurrent = Infinity;
-  let scheduler: SchedulerLike | undefined = undefined;
-
-  if (isScheduler(args[args.length - 1])) {
-    scheduler = args.pop() as SchedulerLike;
-  }
-
-  if (typeof args[args.length - 1] === 'number') {
-    concurrent = args.pop() as number;
-  }
-
+  const scheduler = popScheduler(args);
+  const concurrent = popNumber(args, Infinity);
   args = argsOrArgArray(args);
 
   return operate((source, subscriber) => {

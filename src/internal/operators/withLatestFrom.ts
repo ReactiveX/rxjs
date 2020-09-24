@@ -6,6 +6,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 import { identity } from '../util/identity';
 import { noop } from '../util/noop';
+import { popResultSelector } from '../util/args';
 
 /* tslint:disable:max-line-length */
 export function withLatestFrom<T, R>(project: (v1: T) => R): OperatorFunction<T, R>;
@@ -147,10 +148,7 @@ export function withLatestFrom<T, R>(array: ObservableInput<any>[], project: (..
  * @name withLatestFrom
  */
 export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | any[]> {
-  let project: (...values: any[]) => R;
-  if (typeof inputs[inputs.length - 1] === 'function') {
-    project = inputs.pop();
-  }
+  const project = popResultSelector(inputs) as ((...args: any[]) => R) | undefined;
 
   return operate((source, subscriber) => {
     const len = inputs.length;

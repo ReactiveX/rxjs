@@ -4,6 +4,7 @@ import { Observable } from './Observable';
 import { EMPTY } from './observable/empty';
 import { of } from './observable/of';
 import { throwError } from './observable/throwError';
+import { isFunction } from './util/isFunction';
 
 // TODO: When this enum is removed, replace it with a type alias. See #4556.
 /**
@@ -140,7 +141,7 @@ export class Notification<T> {
    */
   accept(observer: PartialObserver<T>): void;
   accept(nextOrObserver: PartialObserver<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) {
-    return typeof (nextOrObserver as any)?.next === 'function'
+    return isFunction((nextOrObserver as any)?.next)
       ? this.observe(nextOrObserver as PartialObserver<T>)
       : this.do(nextOrObserver as (value: T) => void, error as any, complete as any);
   }

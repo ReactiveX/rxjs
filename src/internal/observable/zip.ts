@@ -5,6 +5,7 @@ import { from } from './from';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { EMPTY } from './empty';
 import { OperatorSubscriber } from '../operators/OperatorSubscriber';
+import { popResultSelector } from '../util/args';
 
 /* tslint:disable:max-line-length */
 /** @deprecated resultSelector is no longer supported, pipe to map instead */
@@ -180,10 +181,7 @@ export function zip<R>(...observables: Array<ObservableInput<any> | ((...values:
 export function zip<O extends ObservableInput<any>, R>(
   ...sources: Array<O | ((...values: ObservedValueOf<O>[]) => R)>
 ): Observable<ObservedValueOf<O>[] | R> {
-  let resultSelector: ((...ys: Array<any>) => R) | undefined = undefined;
-  if (typeof sources[sources.length - 1] === 'function') {
-    resultSelector = sources.pop() as typeof resultSelector;
-  }
+  const resultSelector = popResultSelector(sources);
 
   sources = argsOrArgArray(sources);
 

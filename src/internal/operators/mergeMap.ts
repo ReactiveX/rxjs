@@ -5,6 +5,7 @@ import { map } from './map';
 import { from } from '../observable/from';
 import { operate } from '../util/lift';
 import { mergeInternals } from './mergeInternals';
+import { isFunction } from '../util/isFunction';
 
 /* tslint:disable:max-line-length */
 export function mergeMap<T, O extends ObservableInput<any>>(
@@ -84,7 +85,7 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
   resultSelector?: ((outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R) | number,
   concurrent: number = Infinity
 ): OperatorFunction<T, ObservedValueOf<O> | R> {
-  if (typeof resultSelector === 'function') {
+  if (isFunction(resultSelector)) {
     // DEPRECATED PATH
     return (source: Observable<T>) =>
       source.pipe(mergeMap((a, i) => from(project(a, i)).pipe(map((b: any, ii: number) => resultSelector(a, b, i, ii))), concurrent));

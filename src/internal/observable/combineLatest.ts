@@ -1,13 +1,13 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueTupleFromArray } from '../types';
-import { isScheduler } from '../util/isScheduler';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { Subscriber } from '../Subscriber';
 import { from } from './from';
 import { identity } from '../util/identity';
 import { Subscription } from '../Subscription';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
+import { popResultSelector, popScheduler } from '../util/args';
 
 /* tslint:disable:max-line-length */
 
@@ -492,19 +492,9 @@ export function combineLatest<T, K extends keyof T>(sourcesObject: T): Observabl
  * values from each input Observable, or an array of the most recent values from
  * each input Observable.
  */
-export function combineLatest<O extends ObservableInput<any>, R>(
-  ...args: (O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike)[]
-): Observable<R> | Observable<ObservedValueOf<O>[]> {
-  let resultSelector: ((...values: Array<any>) => R) | undefined = undefined;
-  let scheduler: SchedulerLike | undefined = undefined;
-
-  if (isScheduler(args[args.length - 1])) {
-    scheduler = args.pop() as SchedulerLike;
-  }
-
-  if (typeof args[args.length - 1] === 'function') {
-    resultSelector = args.pop() as (...values: Array<any>) => R;
-  }
+export function combineLatest<O extends ObservableInput<any>, R>(...args: any[]): Observable<R> | Observable<ObservedValueOf<O>[]> {
+  const scheduler = popScheduler(args);
+  const resultSelector = popResultSelector(args);
 
   const { args: observables, keys } = argsArgArrayOrObject(args);
 
@@ -528,7 +518,7 @@ export function combineLatest<O extends ObservableInput<any>, R>(
 
   if (resultSelector) {
     // Deprecated path: If there's a result selector, just use a map for them.
-    return result.pipe(mapOneOrManyArgs(resultSelector));
+    return result.pipe(mapOneOrManyArgs(resultSelector)) as Observable<R>;
   }
 
   return result;

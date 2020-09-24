@@ -3,11 +3,11 @@ import { Subject } from '../Subject';
 import { asyncScheduler } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { isScheduler } from '../util/isScheduler';
 import { Observer, OperatorFunction, SchedulerLike } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { arrRemove } from '../util/arrRemove';
+import { popScheduler } from '../util/args';
 
 export function windowTime<T>(windowTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(
@@ -101,7 +101,7 @@ export function windowTime<T>(
  * @returnAn observable of windows, which in turn are Observables.
  */
 export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): OperatorFunction<T, Observable<T>> {
-  const scheduler = isScheduler(otherArgs[otherArgs.length - 1]) ? (otherArgs.pop() as SchedulerLike) : asyncScheduler;
+  const scheduler = popScheduler(otherArgs) ?? asyncScheduler;
   const windowCreationInterval = (otherArgs[0] as number) ?? null;
   const maxWindowSize = (otherArgs[1] as number) || Infinity;
 

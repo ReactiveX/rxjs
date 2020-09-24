@@ -200,16 +200,12 @@ export const EMPTY_SUBSCRIPTION = Subscription.EMPTY;
 export function isSubscription(value: any): value is Subscription {
   return (
     value instanceof Subscription ||
-    (value &&
-      'closed' in value &&
-      typeof value.remove === 'function' &&
-      typeof value.add === 'function' &&
-      typeof value.unsubscribe === 'function')
+    (value && 'closed' in value && isFunction(value.remove) && isFunction(value.add) && isFunction(value.unsubscribe))
   );
 }
 
 function execTeardown(teardown: Unsubscribable | (() => void)) {
-  if (typeof teardown === 'function') {
+  if (isFunction(teardown)) {
     teardown();
   } else {
     teardown.unsubscribe();

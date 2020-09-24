@@ -1,8 +1,8 @@
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueUnionFromArray } from '../types';
 import { concatAll } from '../operators/concatAll';
-import { isScheduler } from '../util/isScheduler';
 import { fromArray } from './fromArray';
+import { popScheduler } from '../util/args';
 
 /* tslint:disable:max-line-length */
 /** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
@@ -127,11 +127,5 @@ export function concat<A extends ObservableInput<any>[]>(...observables: A): Obs
  * Observable subscription on.
  */
 export function concat(...args: any[]): Observable<unknown> {
-  let scheduler: SchedulerLike | undefined;
-
-  if (isScheduler(args[args.length - 1])) {
-    scheduler = args.pop() as SchedulerLike;
-  }
-
-  return concatAll()(fromArray(args, scheduler));
+  return concatAll()(fromArray(args, popScheduler(args)));
 }

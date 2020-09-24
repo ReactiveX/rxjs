@@ -1,3 +1,4 @@
+/** @prettier */
 import { scheduleObservable } from './scheduleObservable';
 import { schedulePromise } from './schedulePromise';
 import { scheduleArray } from './scheduleArray';
@@ -9,6 +10,7 @@ import { isIterable } from '../util/isIterable';
 import { ObservableInput, SchedulerLike } from '../types';
 import { Observable } from '../Observable';
 import { scheduleAsyncIterable } from './scheduleAsyncIterable';
+import { isFunction } from '../util/isFunction';
 
 /**
  * Converts from a common {@link ObservableInput} type to an observable where subscription and emissions
@@ -29,11 +31,11 @@ export function scheduled<T>(input: ObservableInput<T>, scheduler: SchedulerLike
       return schedulePromise(input, scheduler);
     } else if (isArrayLike(input)) {
       return scheduleArray(input, scheduler);
-    }  else if (isIterable(input) || typeof input === 'string') {
+    } else if (isIterable(input) || typeof input === 'string') {
       return scheduleIterable(input, scheduler);
-    } else if (Symbol && Symbol.asyncIterator && typeof (input as any)[Symbol.asyncIterator] === 'function') {
+    } else if (isFunction((input as any)[Symbol.asyncIterator])) {
       return scheduleAsyncIterable(input as any, scheduler);
     }
   }
-  throw new TypeError((input !== null && typeof input || input) + ' is not observable');
+  throw new TypeError(((input !== null && typeof input) || input) + ' is not observable');
 }

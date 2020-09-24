@@ -3,6 +3,7 @@ import { ObservableInput, ObservedValueUnionFromArray, ObservedValueOf, Subscrib
 import { map } from '../operators/map';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { from } from './from';
+import { popResultSelector } from '../util/args';
 
 /* tslint:disable:max-line-length */
 
@@ -140,10 +141,7 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
 export function forkJoin(
   ...args: any[]
 ): Observable<any> {
-  let resultSelector: ((...args: any[]) => any) | undefined;
-  if (typeof args[args.length - 1] === 'function') {
-    resultSelector = args.pop();
-  }
+  const resultSelector = popResultSelector(args);
 
   const { args: sources, keys } = argsArgArrayOrObject(args);
 

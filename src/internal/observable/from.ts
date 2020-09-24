@@ -14,6 +14,7 @@ import { subscribeToAsyncIterable } from '../util/subscribeToAsyncIterable';
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
 import { scheduled } from '../scheduled/scheduled';
+import { isFunction } from '../util/isFunction';
 
 export function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>>;
 /** @deprecated The scheduler argument is deprecated, use scheduled. Details: https://rxjs.dev/deprecations/scheduler-argument */
@@ -130,17 +131,16 @@ export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): O
 }
 
 function subscribeTo<T>(result: ObservableInput<T>): (subscriber: Subscriber<T>) => Subscription | void {
-  if (result && typeof (result as any)[Symbol_observable] === 'function') {
+  if (isFunction((result as any)[Symbol_observable])) {
     return subscribeToObservable(result as any);
   } else if (isArrayLike(result)) {
     return subscribeToArray(result);
   } else if (isPromise(result)) {
     return subscribeToPromise(result);
-  } else if (result && typeof (result as any)[Symbol_iterator] === 'function') {
+  } else if (isFunction((result as any)[Symbol_iterator])) {
     return subscribeToIterable(result as any);
   } else if (
-    Symbol && Symbol.asyncIterator &&
-    !!result && typeof (result as any)[Symbol.asyncIterator] === 'function'
+    Symbol && Symbol.asyncIterator && isFunction((result as any)[Symbol.asyncIterator])
   ) {
     return subscribeToAsyncIterable(result as any);
   } else {

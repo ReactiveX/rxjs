@@ -1,6 +1,7 @@
 import { OperatorFunction, ObservedValueOf } from '../../internal/types';
 import { mergeMap } from './mergeMap';
 import { ObservableInput } from '../types';
+import { isFunction } from '../util/isFunction';
 
 /* tslint:disable:max-line-length */
 export function mergeMapTo<O extends ObservableInput<any>>(innerObservable: O, concurrent?: number): OperatorFunction<any, ObservedValueOf<O>>;
@@ -52,7 +53,7 @@ export function mergeMapTo<T, R, O extends ObservableInput<any>>(
   resultSelector?: ((outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R) | number,
   concurrent: number = Infinity
 ): OperatorFunction<T, ObservedValueOf<O>|R> {
-  if (typeof resultSelector === 'function') {
+  if (isFunction(resultSelector)) {
     return mergeMap(() => innerObservable, resultSelector, concurrent);
   }
   if (typeof resultSelector === 'number') {
