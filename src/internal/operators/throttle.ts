@@ -69,11 +69,15 @@ export function throttle<T>(
     let hasValue = false;
     let sendValue: T | null = null;
     let throttled: Subscription | null = null;
+    let isComplete = false;
 
     const throttlingDone = () => {
       throttled?.unsubscribe();
       throttled = null;
-      trailing && send();
+      if (trailing) {
+        send();
+        isComplete && subscriber.complete();
+      }
     };
 
     const throttle = (value: T) =>
@@ -82,18 +86,26 @@ export function throttle<T>(
     const send = () => {
       if (hasValue) {
         subscriber.next(sendValue!);
-        throttle(sendValue!);
+        !isComplete && throttle(sendValue!);
       }
       hasValue = false;
       sendValue = null;
     };
 
     source.subscribe(
-      new OperatorSubscriber(subscriber, (value) => {
-        hasValue = true;
-        sendValue = value;
-        !throttled && (leading ? send() : throttle(value));
-      })
+      new OperatorSubscriber(
+        subscriber,
+        (value) => {
+          hasValue = true;
+          sendValue = value;
+          !throttled && (leading ? send() : throttle(value));
+        },
+        undefined,
+        () => {
+          isComplete = true;
+          !(trailing && hasValue && throttled) && subscriber.complete();
+        }
+      )
     );
   });
 }
