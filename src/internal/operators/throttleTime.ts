@@ -84,8 +84,8 @@ import { timer } from '../observable/timer';
 export function throttleTime<T>(
   duration: number,
   scheduler: SchedulerLike = asyncScheduler,
-  { leading = false, trailing = false }: ThrottleConfig = defaultThrottleConfig
+  config = defaultThrottleConfig
 ): MonoTypeOperatorFunction<T> {
-  const d = timer(duration, scheduler);
-  return throttle(() => d, { leading, trailing });
+  const duration$ = timer(duration, scheduler);
+  return throttle(() => duration$, config);
 }
