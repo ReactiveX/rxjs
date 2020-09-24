@@ -62,7 +62,9 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @return {void}
    */
   next(value?: T): void {
-    if (!this.isStopped) {
+    if (this.isStopped) {
+      handleStoppedNotification({ kind: 'N', value }, this);
+    } else {
       this._next(value!);
     }
   }
@@ -74,10 +76,12 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @param {any} [err] The `error` exception.
    * @return {void}
    */
-  error(err?: any): void {
-    if (!this.isStopped) {
+  error(error?: any): void {
+    if (this.isStopped) {
+      handleStoppedNotification({ kind: 'E', error }, this);
+    } else {
       this.isStopped = true;
-      this._error(err);
+      this._error(error);
     }
   }
 
@@ -88,7 +92,9 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @return {void}
    */
   complete(): void {
-    if (!this.isStopped) {
+    if (this.isStopped) {
+      handleStoppedNotification({ kind: 'C' }, this);
+    } else {
       this.isStopped = true;
       this._complete();
     }
@@ -179,6 +185,18 @@ function defaultErrorHandler(err: any) {
     throw err;
   }
   reportUnhandledError(err);
+}
+
+/**
+ * A handler for notifications that cannot be sent to a stopped subscriber.
+ * @param notification The notification being sent
+ * @param subscriber The stopped subscriber
+ */
+function handleStoppedNotification(
+  notification: { kind: 'N'; value: any } | { kind: 'E'; error: any } | { kind: 'C' },
+  subscriber: Subscriber<any>
+) {
+  config.onStoppedNotification?.(notification, subscriber);
 }
 
 /**
