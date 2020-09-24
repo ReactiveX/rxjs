@@ -196,7 +196,7 @@ function handleStoppedNotification(
   notification: { kind: 'N'; value: any } | { kind: 'E'; error: any } | { kind: 'C' },
   subscriber: Subscriber<any>
 ) {
-  config.onStoppedNotification?.(notification, subscriber);
+  setTimeout(() => config.onStoppedNotification?.(notification, subscriber));
 }
 
 /**
