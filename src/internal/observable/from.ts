@@ -16,7 +16,7 @@ import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
 import { scheduled } from '../scheduled/scheduled';
 
 export function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>>;
-/** @deprecated use {@link scheduled} instead. */
+/** @deprecated The scheduler argument is deprecated, use scheduled. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function from<O extends ObservableInput<any>>(input: O, scheduler: SchedulerLike): Observable<ObservedValueOf<O>>;
 
 /**
@@ -149,4 +149,4 @@ function subscribeTo<T>(result: ObservableInput<T>): (subscriber: Subscriber<T>)
       + ' You can provide an Observable, Promise, Array, AsyncIterable, or Iterable.';
     throw new TypeError(msg);
   }
-};
+}
