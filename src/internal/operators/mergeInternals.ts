@@ -59,10 +59,6 @@ export function mergeInternals<T, R>(
         },
         // Errors are passed to the destination.
         undefined,
-
-        // TODO: Much of this code is duplicated from mergeMap. Perhaps
-        // look into a way to unify this.
-
         () => {
           // INNER SOURCE COMPLETE
           // Decrement the active count to ensure that the next time
