@@ -1,6 +1,6 @@
 /** @prettier */
 import { asyncScheduler } from '../scheduler/async';
-import { ThrottleConfig, defaultThrottleConfig, throttle } from './throttle';
+import { defaultThrottleConfig, throttle } from './throttle';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { timer } from '../observable/timer';
 
