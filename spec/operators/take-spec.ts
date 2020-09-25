@@ -194,4 +194,15 @@ describe('take', () => {
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
+
+  it('should complete even if the parameter is a string', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' --a-----b----c---d--|');
+      const e1subs = '  ^-------!------------';
+      const expected = '--a-----(b|)         ';
+
+      expectObservable(e1.pipe(take("2" as any))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
 });
