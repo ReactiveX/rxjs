@@ -1,8 +1,6 @@
 /** @prettier */
-import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { reduce } from './reduce';
 /**
  * Counts the number of emissions on the source and emits that number when the
  * source completes.
@@ -51,32 +49,12 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @see {@link min}
  * @see {@link reduce}
  *
- * @param {function(value: T, i: number, source: Observable<T>): boolean} [predicate] A
- * boolean function to select what values are to be counted. It is provided with
- * arguments of:
- * - `value`: the value from the source Observable.
- * - `index`: the (zero-based) "index" of the value from the source Observable.
- * - `source`: the source Observable instance itself.
- * @return {Observable} An Observable of one number that represents the count as
- * described above.
- * @name count
+ * @param predicate A function that is used to analyze the value and the index and
+ * determine whether or not to increment the count. Return `true` to increment the count,
+ * and return `false` to keep the count the same.
+ * If the predicate is not provided, every value will be counted.
  */
 
-export function count<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, number> {
-  return operate((source, subscriber) => {
-    let index = 0;
-    let count = 0;
-
-    source.subscribe(
-      new OperatorSubscriber(
-        subscriber,
-        (value) => (!predicate || predicate(value, index++, source)) && count++,
-        undefined,
-        () => {
-          subscriber.next(count);
-          subscriber.complete();
-        }
-      )
-    );
-  });
+export function count<T>(predicate?: (value: T, index: number) => boolean): OperatorFunction<T, number> {
+  return reduce((count, value, i) => (!predicate || predicate(value, i) ? count + 1 : count), 0);
 }
