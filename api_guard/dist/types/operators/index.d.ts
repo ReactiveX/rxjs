@@ -61,7 +61,7 @@ export declare function concatMapTo<T, R, O extends ObservableInput<any>>(observ
 export declare function concatWith<T>(): OperatorFunction<T, T>;
 export declare function concatWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, ObservedValueUnionFromArray<A> | T>;
 
-export declare function count<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, number>;
+export declare function count<T>(predicate?: (value: T, index: number) => boolean): OperatorFunction<T, number>;
 
 export declare function debounce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): MonoTypeOperatorFunction<T>;
 
