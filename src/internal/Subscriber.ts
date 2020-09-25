@@ -5,6 +5,7 @@ import { isSubscription, Subscription } from './Subscription';
 import { config } from './config';
 import { reportUnhandledError } from './util/reportUnhandledError';
 import { noop } from './util/noop';
+import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './Notification';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -63,7 +64,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    */
   next(value?: T): void {
     if (this.isStopped) {
-      handleStoppedNotification({ kind: 'N', value }, this);
+      handleStoppedNotification(nextNotification(value), this);
     } else {
       this._next(value!);
     }
@@ -76,12 +77,12 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @param {any} [err] The `error` exception.
    * @return {void}
    */
-  error(error?: any): void {
+  error(err?: any): void {
     if (this.isStopped) {
-      handleStoppedNotification({ kind: 'E', error }, this);
+      handleStoppedNotification(errorNotification(err), this);
     } else {
       this.isStopped = true;
-      this._error(error);
+      this._error(err);
     }
   }
 
@@ -93,7 +94,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    */
   complete(): void {
     if (this.isStopped) {
-      handleStoppedNotification({ kind: 'C' }, this);
+      handleStoppedNotification(COMPLETE_NOTIFICATION, this);
     } else {
       this.isStopped = true;
       this._complete();
