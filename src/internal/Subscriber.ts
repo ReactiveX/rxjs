@@ -5,7 +5,7 @@ import { isSubscription, Subscription } from './Subscription';
 import { config } from './config';
 import { reportUnhandledError } from './util/reportUnhandledError';
 import { noop } from './util/noop';
-import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './Notification';
+import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories';
 
 /**
  * Implements the {@link Observer} interface and extends the
