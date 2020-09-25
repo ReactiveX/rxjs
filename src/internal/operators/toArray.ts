@@ -1,13 +1,8 @@
 import { reduce } from './reduce';
 import { OperatorFunction } from '../types';
+import { operate } from '../util/lift';
 
-function toArrayReducer<T>(arr: T[], item: T, index: number): T[] {
-  if (index === 0) {
-    return [item];
-  }
-  arr.push(item);
-  return arr;
-}
+const arrReducer = (arr: any[], value: any) => (arr.push(value), arr);
 
 /**
  * Collects all source emissions and emits them as an array when the source completes.
@@ -40,5 +35,10 @@ function toArrayReducer<T>(arr: T[], item: T, index: number): T[] {
 * @name toArray
 */
 export function toArray<T>(): OperatorFunction<T, T[]> {
-  return reduce(toArrayReducer, [] as T[]);
+  // Because arrays are mutable, and we're mutating the array in this
+  // reducer process, we have to escapulate the creation of the initial
+  // array within this `operate` function.
+  return operate((source, subscriber) => {
+    reduce(arrReducer, [] as T[])(source).subscribe(subscriber)
+  });
 }
