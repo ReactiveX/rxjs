@@ -12,7 +12,7 @@ export declare function bufferTime<T>(bufferTimeSpan: number, bufferCreationInte
 
 export declare function bufferToggle<T, O>(openings: SubscribableOrPromise<O>, closingSelector: (value: O) => SubscribableOrPromise<any>): OperatorFunction<T, T[]>;
 
-export declare function bufferWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, T[]>;
+export declare function bufferWhen<T>(closingSelector: () => Observable<any>): OperatorFunction<T, T[]>;
 
 export declare function catchError<T, O extends ObservableInput<any>>(selector: (err: any, caught: Observable<T>) => O): OperatorFunction<T, T | ObservedValueOf<O>>;
 
@@ -180,7 +180,7 @@ export declare function mergeMapTo<T, R, O extends ObservableInput<any>>(innerOb
 export declare function mergeScan<T, R>(accumulator: (acc: R, value: T, index: number) => ObservableInput<R>, seed: R, concurrent?: number): OperatorFunction<T, R>;
 
 export declare function mergeWith<T>(): OperatorFunction<T, T>;
-export declare function mergeWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, T | ObservedValueUnionFromArray<A>>;
+export declare function mergeWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, (T | ObservedValueUnionFromArray<A>)>;
 
 export declare function min<T>(comparer?: (x: T, y: T) => number): MonoTypeOperatorFunction<T>;
 
@@ -260,7 +260,7 @@ export declare function single<T>(predicate?: (value: T, index: number, source: 
 
 export declare function skip<T>(count: number): MonoTypeOperatorFunction<T>;
 
-export declare function skipLast<T>(skipCount: number): MonoTypeOperatorFunction<T>;
+export declare function skipLast<T>(count: number): MonoTypeOperatorFunction<T>;
 
 export declare function skipUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T>;
 
@@ -292,7 +292,7 @@ export declare function take<T>(count: number): MonoTypeOperatorFunction<T>;
 
 export declare function takeLast<T>(count: number): MonoTypeOperatorFunction<T>;
 
-export declare function takeUntil<T>(notifier: ObservableInput<any>): MonoTypeOperatorFunction<T>;
+export declare function takeUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T>;
 
 export declare function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
 export declare function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S, inclusive: false): OperatorFunction<T, S>;
@@ -304,11 +304,11 @@ export declare function tap<T>(next: (value: T) => void, error: null | undefined
 export declare function tap<T>(next?: (x: T) => void, error?: (e: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
 export declare function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T>;
 
-export declare function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<any>, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
+export declare function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<any>, config?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
-export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, config?: import("./throttle").ThrottleConfig): MonoTypeOperatorFunction<T>;
+export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
-export declare function throwIfEmpty<T>(errorFactory?: () => any): MonoTypeOperatorFunction<T>;
+export declare function throwIfEmpty<T>(errorFactory?: (() => any)): MonoTypeOperatorFunction<T>;
 
 export declare function timeInterval<T>(scheduler?: SchedulerLike): OperatorFunction<T, TimeInterval<T>>;
 
@@ -332,11 +332,11 @@ export declare function windowCount<T>(windowSize: number, startWindowEvery?: nu
 
 export declare function windowTime<T>(windowTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export declare function windowTime<T>(windowTimeSpan: number, windowCreationInterval: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
-export declare function windowTime<T>(windowTimeSpan: number, windowCreationInterval: number | null | void, maxWindowSize: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
+export declare function windowTime<T>(windowTimeSpan: number, windowCreationInterval: number, maxWindowSize: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 
-export declare function windowToggle<T, O>(openings: ObservableInput<O>, closingSelector: (openValue: O) => ObservableInput<any>): OperatorFunction<T, Observable<T>>;
+export declare function windowToggle<T, O>(openings: Observable<O>, closingSelector: (openValue: O) => Observable<any>): OperatorFunction<T, Observable<T>>;
 
-export declare function windowWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, Observable<T>>;
+export declare function windowWhen<T>(closingSelector: () => Observable<any>): OperatorFunction<T, Observable<T>>;
 
 export declare function withLatestFrom<T, R>(project: (v1: T) => R): OperatorFunction<T, R>;
 export declare function withLatestFrom<T, O2 extends ObservableInput<any>, R>(source2: O2, project: (v1: T, v2: ObservedValueOf<O2>) => R): OperatorFunction<T, R>;
