@@ -28,9 +28,9 @@ export const config = {
    * we do not want errors thrown in this user-configured handler to interfere with the
    * behavior of the library.
    */
-  onStoppedNotification: undefined as
+  onStoppedNotification: null as
     | ((notification: { kind: 'N'; value: any } | { kind: 'E'; error: any } | { kind: 'C' }, subscriber: Subscriber<any>) => void)
-    | undefined,
+    | null,
 
   /**
    * The promise constructor used by default for methods such as
