@@ -11,6 +11,17 @@ export function partition<T, A>(
 ): [Observable<T>, Observable<T>];
 export function partition<T>(source: ObservableInput<T>, predicate: (value: T, index: number) => boolean): [Observable<T>, Observable<T>];
 
+export function partition<T, U extends T>(
+  source: ObservableInput<T>,
+  predicate: (value: T, index: number) => value is U,
+  thisArg?: any
+): [Observable<U>, Observable<T>];
+export function partition<T>(
+  source: ObservableInput<T>,
+  predicate: (value: T, index: number) => boolean,
+  thisArg?: any
+): [Observable<T>, Observable<T>];
+
 /**
  * Splits the source Observable into two, one with values that satisfy a
  * predicate, and another with values that don't satisfy the predicate.
