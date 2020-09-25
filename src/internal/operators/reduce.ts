@@ -1,15 +1,11 @@
-import { Observable } from '../Observable';
-import { scan } from './scan';
-import { takeLast } from './takeLast';
-import { defaultIfEmpty } from './defaultIfEmpty';
+/** @prettier */
+import { scanInternals } from './scanInternals';
 import { OperatorFunction } from '../types';
-import { pipe } from '../util/pipe';
+import { operate } from '../util/lift';
 
-/* tslint:disable:max-line-length */
-export function reduce<V, A = V>(accumulator: (acc: A|V, value: V, index: number) => A): OperatorFunction<V, V|A>;
+export function reduce<V, A = V>(accumulator: (acc: A | V, value: V, index: number) => A): OperatorFunction<V, V | A>;
 export function reduce<V, A>(accumulator: (acc: A, value: V, index: number) => A, seed: A): OperatorFunction<V, A>;
-export function reduce<V, A, S = A>(accumulator: (acc: A|S, value: V, index: number) => A, seed: S): OperatorFunction<V, A>;
-/* tslint:enable:max-line-length */
+export function reduce<V, A, S = A>(accumulator: (acc: A | S, value: V, index: number) => A, seed: S): OperatorFunction<V, A>;
 
 /**
  * Applies an accumulator function over the source Observable, and returns the
@@ -62,24 +58,5 @@ export function reduce<V, A, S = A>(accumulator: (acc: A|S, value: V, index: num
  * @name reduce
  */
 export function reduce<V, A>(accumulator: (acc: V | A, value: V, index: number) => A, seed?: any): OperatorFunction<V, V | A> {
-  // providing a seed of `undefined` *should* be valid and trigger
-  // hasSeed! so don't use `seed !== undefined` checks!
-  // For this reason, we have to check it here at the original call site
-  // otherwise inside Operator/Subscriber we won't know if `undefined`
-  // means they didn't provide anything or if they literally provided `undefined`
-  if (arguments.length >= 2) {
-    return function reduceOperatorFunctionWithSeed(source: Observable<V>): Observable<V | A> {
-      return pipe(
-        scan(accumulator, seed),
-        takeLast(1),
-        defaultIfEmpty(seed),
-      )(source);
-    };
-  }
-  return function reduceOperatorFunction(source: Observable<V>): Observable<V | A> {
-    return pipe(
-      scan<V, V | A>((acc, value, index) => accumulator(acc, value, index)),
-      takeLast(1),
-    )(source);
-  };
+  return operate(scanInternals(accumulator, seed, arguments.length >= 2, false, true));
 }
