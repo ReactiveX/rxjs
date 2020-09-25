@@ -1,5 +1,4 @@
 /** @prettier */
-
 import { CompleteNotification, NextNotification, ErrorNotification } from './types';
 
 /**

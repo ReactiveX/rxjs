@@ -1,5 +1,4 @@
 /** @prettier */
-
 import { PartialObserver, ObservableNotification, CompleteNotification, NextNotification, ErrorNotification } from './types';
 import { Observable } from './Observable';
 import { EMPTY } from './observable/empty';
