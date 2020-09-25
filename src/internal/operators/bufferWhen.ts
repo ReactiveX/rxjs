@@ -1,11 +1,10 @@
 /** @prettier */
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { Subscription } from '../Subscription';
-import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
+import { ObservableInput, OperatorFunction } from '../types';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { from } from '../observable/from';
 
 /**
  * Buffers the source Observable values, using a factory function of closing
@@ -48,89 +47,42 @@ import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '..
  * @return {Observable<T[]>} An observable of arrays of buffered values.
  * @name bufferWhen
  */
-export function bufferWhen<T>(closingSelector: () => Observable<any>): OperatorFunction<T, T[]> {
-  return function (source: Observable<T>) {
-    return lift(source, new BufferWhenOperator(closingSelector));
-  };
-}
+export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, T[]> {
+  return operate((source, subscriber) => {
+    let buffer: T[] | null = null;
+    let closingSubscriber: Subscriber<T> | null = null;
 
-class BufferWhenOperator<T> implements Operator<T, T[]> {
-  constructor(private closingSelector: () => Observable<any>) {}
+    const openBuffer = () => {
+      closingSubscriber?.unsubscribe();
 
-  call(subscriber: Subscriber<T[]>, source: any): any {
-    return source.subscribe(new BufferWhenSubscriber(subscriber, this.closingSelector));
-  }
-}
+      const b = buffer;
+      buffer = [];
+      b && subscriber.next(b);
 
-class BufferWhenSubscriber<T> extends SimpleOuterSubscriber<T, any> {
-  private buffer: T[] | undefined;
-  private subscribing: boolean = false;
-  private closingSubscription: Subscription | undefined;
+      let closingNotifier: Observable<any>;
+      try {
+        closingNotifier = from(closingSelector());
+      } catch (err) {
+        subscriber.error(err);
+        return;
+      }
 
-  constructor(destination: Subscriber<T[]>, private closingSelector: () => Observable<any>) {
-    super(destination);
-    this.openBuffer();
-  }
+      closingNotifier.subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, undefined, () => openBuffer())));
+    };
 
-  protected _next(value: T) {
-    this.buffer!.push(value);
-  }
+    openBuffer();
 
-  protected _complete() {
-    const buffer = this.buffer;
-    if (buffer) {
-      this.destination.next(buffer);
-    }
-    super._complete();
-  }
-
-  unsubscribe() {
-    if (!this.closed) {
-      this.buffer = null!;
-      this.subscribing = false;
-      super.unsubscribe();
-    }
-  }
-
-  notifyNext(): void {
-    this.openBuffer();
-  }
-
-  notifyComplete(): void {
-    if (this.subscribing) {
-      this.complete();
-    } else {
-      this.openBuffer();
-    }
-  }
-
-  openBuffer() {
-    let { closingSubscription } = this;
-
-    if (closingSubscription) {
-      this.remove(closingSubscription);
-      closingSubscription.unsubscribe();
-    }
-
-    const buffer = this.buffer;
-    if (this.buffer) {
-      this.destination.next(buffer);
-    }
-
-    this.buffer = [];
-
-    let closingNotifier;
-    try {
-      const { closingSelector } = this;
-      closingNotifier = closingSelector();
-    } catch (err) {
-      return this.error(err);
-    }
-    closingSubscription = new Subscription();
-    this.closingSubscription = closingSubscription;
-    this.add(closingSubscription);
-    this.subscribing = true;
-    closingSubscription.add(innerSubscribe(closingNotifier, new SimpleInnerSubscriber(this)));
-    this.subscribing = false;
-  }
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => buffer?.push(value),
+        undefined,
+        () => {
+          buffer && subscriber.next(buffer);
+          subscriber.complete();
+        },
+        () => (buffer = closingSubscriber = null!)
+      )
+    );
+  });
 }

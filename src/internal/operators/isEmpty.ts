@@ -1,8 +1,7 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
+/** @prettier */
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Emits `false` if the input Observable emits any values, or emits `true` if the
@@ -69,37 +68,20 @@ import { lift } from '../util/lift';
  */
 
 export function isEmpty<T>(): OperatorFunction<T, boolean> {
-  return (source: Observable<T>) => lift(source, new IsEmptyOperator());
-}
-
-class IsEmptyOperator implements Operator<any, boolean> {
-  call (observer: Subscriber<boolean>, source: any): any {
-    return source.subscribe(new IsEmptySubscriber(observer));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class IsEmptySubscriber extends Subscriber<any> {
-  constructor(destination: Subscriber<boolean>) {
-    super(destination);
-  }
-
-  private notifyComplete(isEmpty: boolean): void {
-    const destination = this.destination;
-
-    destination.next(isEmpty);
-    destination.complete();
-  }
-
-  protected _next(value: boolean) {
-    this.notifyComplete(false);
-  }
-
-  protected _complete() {
-    this.notifyComplete(true);
-  }
+  return operate((source, subscriber) => {
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        () => {
+          subscriber.next(false);
+          subscriber.complete();
+        },
+        undefined,
+        () => {
+          subscriber.next(true);
+          subscriber.complete();
+        }
+      )
+    );
+  });
 }

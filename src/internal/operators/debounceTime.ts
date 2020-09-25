@@ -1,10 +1,8 @@
-import { Operator } from '../Operator';
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { async } from '../scheduler/async';
-import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
-import { lift } from '../util/lift';
+/** @prettier */
+import { asyncScheduler } from '../scheduler/async';
+import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
+import { debounce } from './debounce';
+import { timer } from '../observable/timer';
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -64,74 +62,7 @@ import { lift } from '../util/lift';
  * too frequently.
  * @name debounceTime
  */
-export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => lift(source, new DebounceTimeOperator(dueTime, scheduler));
-}
-
-class DebounceTimeOperator<T> implements Operator<T, T> {
-  constructor(private dueTime: number, private scheduler: SchedulerLike) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class DebounceTimeSubscriber<T> extends Subscriber<T> {
-  private debouncedSubscription: Subscription | null = null;
-  private lastValue: T | null = null;
-  private hasValue: boolean = false;
-
-  constructor(destination: Subscriber<T>,
-              private dueTime: number,
-              private scheduler: SchedulerLike) {
-    super(destination);
-  }
-
-  protected _next(value: T) {
-    this.clearDebounce();
-    this.lastValue = value;
-    this.hasValue = true;
-    this.add(this.debouncedSubscription = this.scheduler.schedule(dispatchNext as any, this.dueTime, this));
-  }
-
-  protected _complete() {
-    this.debouncedNext();
-    this.destination.complete();
-  }
-
-  debouncedNext(): void {
-    this.clearDebounce();
-
-    if (this.hasValue) {
-      const { lastValue } = this;
-      // This must be done *before* passing the value
-      // along to the destination because it's possible for
-      // the value to synchronously re-enter this operator
-      // recursively when scheduled with things like
-      // VirtualScheduler/TestScheduler.
-      this.lastValue = null;
-      this.hasValue = false;
-      this.destination.next(lastValue);
-    }
-  }
-
-  private clearDebounce(): void {
-    const debouncedSubscription = this.debouncedSubscription;
-
-    if (debouncedSubscription !== null) {
-      this.remove(debouncedSubscription);
-      debouncedSubscription.unsubscribe();
-      this.debouncedSubscription = null;
-    }
-  }
-}
-
-function dispatchNext(subscriber: DebounceTimeSubscriber<any>) {
-  subscriber.debouncedNext();
+export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyncScheduler): MonoTypeOperatorFunction<T> {
+  const duration = timer(dueTime, scheduler);
+  return debounce(() => duration);
 }

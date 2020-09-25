@@ -1,11 +1,11 @@
 /** @prettier */
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
@@ -60,84 +60,49 @@ import { lift } from '../util/lift';
  * @name retryWhen
  */
 export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      const subscription = new Subscription();
-      let innerSub: Subscription | null;
-      let syncResub = false;
-      let errors$: Subject<any>;
+  return operate((source, subscriber) => {
+    let innerSub: Subscription | null;
+    let syncResub = false;
+    let errors$: Subject<any>;
 
-      /**
-       * Gets the subject to send errors through. If it doesn't exist,
-       * we know we need to setup the notifier.
-       */
-      const getErrorSubject = () => {
-        if (!errors$) {
-          errors$ = new Subject();
-          let notifier$: Observable<any>;
-          // The notifier is a user-provided function, so we need to do
-          // some error handling.
-          try {
-            notifier$ = notifier(errors$);
-          } catch (err) {
-            subscriber.error(err);
-            // Returning null here will cause the code below to
-            // notice there's been a problem and skip error notification.
-            return null;
+    const subscribeForRetryWhen = () => {
+      innerSub = source.subscribe(
+        new OperatorSubscriber(subscriber, undefined, (err) => {
+          if (!errors$) {
+            errors$ = new Subject();
+            notifier(errors$).subscribe(
+              new OperatorSubscriber(subscriber, () =>
+                // If we have an innerSub, this was an asynchronous call, kick off the retry.
+                // Otherwise, if we don't have an innerSub yet, that's because the inner subscription
+                // call hasn't even returned yet. We've arrived here synchronously.
+                // So we flag that we want to resub, such that we can ensure teardown
+                // happens before we resubscribe.
+                innerSub ? subscribeForRetryWhen() : (syncResub = true)
+              )
+            );
           }
-          subscription.add(
-            notifier$.subscribe({
-              next: () => {
-                if (innerSub) {
-                  subscribeForRetryWhen();
-                } else {
-                  // If we don't have an innerSub yet, that's because the inner subscription
-                  // call hasn't even returned yet. We've arrived here synchronously.
-                  // So we flag that we want to resub, such that we can ensure teardown
-                  // happens before we resubscribe.
-                  syncResub = true;
-                }
-              },
-              error: (err) => subscriber.error(err),
-              complete: () => subscriber.complete(),
-            })
-          );
-        }
-        return errors$;
-      };
+          if (errors$) {
+            // We have set up the notifier without error.
+            errors$.next(err);
+          }
+        })
+      );
 
-      const subscribeForRetryWhen = () => {
-        innerSub = source.subscribe({
-          next: (value) => subscriber.next(value),
-          error: (err) => {
-            const errors$ = getErrorSubject();
-            if (errors$) {
-              // We have set up the notifier without error.
-              errors$.next(err);
-            }
-          },
-          complete: () => subscriber.complete(),
-        });
-        if (syncResub) {
-          // Ensure that the inner subscription is torn down before
-          // moving on to the next subscription in the synchronous case.
-          // If we don't do this here, all inner subscriptions will not be
-          // torn down until the entire observable is done.
-          innerSub.unsubscribe();
-          innerSub = null;
-          // We may need to do this multiple times, so reset the flag.
-          syncResub = false;
-          // Resubscribe
-          subscribeForRetryWhen();
-        } else {
-          subscription.add(innerSub);
-        }
-      };
+      if (syncResub) {
+        // Ensure that the inner subscription is torn down before
+        // moving on to the next subscription in the synchronous case.
+        // If we don't do this here, all inner subscriptions will not be
+        // torn down until the entire observable is done.
+        innerSub.unsubscribe();
+        innerSub = null;
+        // We may need to do this multiple times, so reset the flag.
+        syncResub = false;
+        // Resubscribe
+        subscribeForRetryWhen();
+      }
+    };
 
-      // Start the subscription
-      subscribeForRetryWhen();
-
-      return subscription;
-    });
+    // Start the subscription
+    subscribeForRetryWhen();
+  });
 }

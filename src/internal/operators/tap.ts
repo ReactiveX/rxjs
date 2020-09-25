@@ -1,11 +1,9 @@
 /** @prettier */
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, PartialObserver, TeardownLogic } from '../types';
-import { noop } from '../util/noop';
+import { MonoTypeOperatorFunction, PartialObserver } from '../types';
 import { isFunction } from '../util/isFunction';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { identity } from '../util/identity';
 
 /* tslint:disable:max-line-length */
 /** @deprecated Use an observer instead of a complete callback */
@@ -104,83 +102,44 @@ export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T
  * @see {@link finalize}
  * @see {@link Observable#subscribe}
  *
- * @param nextOrObserver A next handler or partial observer
+ * @param observerOrNext A next handler or partial observer
  * @param error An error handler
  * @param complete A completion handler
  */
 export function tap<T>(
-  nextOrObserver?: PartialObserver<T> | ((x: T) => void) | null,
+  observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
   error?: ((e: any) => void) | null,
   complete?: (() => void) | null
 ): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>): Observable<T> => {
-    return lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-      const subscriber = this;
-      let onNext: (value: T) => void;
-      let onError: (err: any) => void;
-      let onComplete: () => void;
+  // We have to check to see not only if next is a function,
+  // but if error or complete were passed. This is because someone
+  // could technically call tap like `tap(null, fn)` or `tap(null, null, fn)`.
+  const tapObserver =
+    isFunction(observerOrNext) || error || complete ? { next: observerOrNext as (value: T) => void, error, complete } : observerOrNext;
 
-      /**
-       * A helper to ensure that errors thrown in handlers get
-       * caught and sent do the consumer as an error notification.
-       */
-      const wrap = (fn: any) => (arg?: any) => {
-        try {
-          fn(arg);
-        } catch (err) {
-          subscriber.error(err);
-        }
-      };
-
-      if (!nextOrObserver || typeof nextOrObserver === 'function') {
-        // We have callback functions (or maybe nothing?)
-
-        // Bind the next observer to the subscriber. This is an undocumented legacy behavior
-        // We want to deprecate, but it technically allows for users to call `this.unsubscribe()`
-        // in the next callback. Again, this is a deprecated, undocumented behavior and we
-        // do not want to allow this in upcoming versions.
-        onNext = nextOrObserver ? wrap(nextOrObserver.bind(subscriber)) : noop;
-
-        // We don't need to bind the other two callbacks if they exist. There is nothing
-        // relevant on the subscriber to call during an error or complete callback, as
-        // it is about to unsubscribe.
-        onError = error ? wrap(error) : noop;
-        onComplete = complete ? wrap(complete) : noop;
-      } else {
-        // We recieved a partial observer. Make sure the handlers are bound to their
-        // original parent, and wrap them with the appropriate error handling.
-        const { next, error, complete } = nextOrObserver;
-        onNext = next ? wrap(next.bind(nextOrObserver)) : noop;
-        onError = error ? wrap(error.bind(nextOrObserver)) : noop;
-        onComplete = complete ? wrap(complete.bind(nextOrObserver)) : noop;
-      }
-      return source.subscribe(new TapSubscriber(this, onNext, onError, onComplete));
-    });
-  };
-}
-
-class TapSubscriber<T> extends Subscriber<T> {
-  constructor(
-    destination: Subscriber<T>,
-    private onNext: (value: T) => void,
-    private onError: (err: any) => void,
-    private onComplete: () => void
-  ) {
-    super(destination);
-  }
-
-  protected _next(value: T) {
-    this.onNext(value);
-    super._next(value);
-  }
-
-  protected _error(err: any) {
-    this.onError(err);
-    super._error(err);
-  }
-
-  protected _complete() {
-    this.onComplete();
-    super._complete();
-  }
+  // TODO: Use `operate` function once this PR lands: https://github.com/ReactiveX/rxjs/pull/5742
+  return tapObserver
+    ? operate((source, subscriber) => {
+        source.subscribe(
+          new OperatorSubscriber(
+            subscriber,
+            (value) => {
+              tapObserver.next?.(value);
+              subscriber.next(value);
+            },
+            (err) => {
+              tapObserver.error?.(err);
+              subscriber.error(err);
+            },
+            () => {
+              tapObserver.complete?.();
+              subscriber.complete();
+            }
+          )
+        );
+      })
+    : // Tap was called with no valid tap observer or handler
+      // (e.g. `tap(null, null, null)` or `tap(null)` or `tap()`)
+      // so we're going to just mirror the source.
+      identity;
 }

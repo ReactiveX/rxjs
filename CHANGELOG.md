@@ -1,3 +1,55 @@
+# [7.0.0-beta.7](https://github.com/reactivex/rxjs/compare/7.0.0-beta.5...7.0.0-beta.7) (2020-09-23)
+
+
+### Bug Fixes
+
+* **multicast:** and other publish variants will handle errors thrown in a selector appropriately ([bde8eda](https://github.com/reactivex/rxjs/commit/bde8eda09310463b05c5ec7d8a1dd1bafe9dba6f))
+
+
+### Code Refactoring
+
+* **tap:** reduce the size of the implementation ([1222d5a](https://github.com/reactivex/rxjs/commit/1222d5a68faa9d3f3c9ad8f8d5db1440971502bd))
+* **Subscriber:** Massively untangle Subscriber and SafeSubscriber ([07902ca](https://github.com/reactivex/rxjs/commit/07902ca99ee828521ce238826f10b55e25fbf554))
+
+
+### BREAKING CHANGES
+
+* **Subscriber:** `new Subscriber` no longer takes 0-3 arguments. To create a `Subscriber` with 0-3 arguments, use `Subscriber.create`. However, please note that there is little to no reason that you should be creating `Subscriber` references directly, and `Subscriber.create` and `new Subscriber` are both deprecated.
+
+
+
+# [7.0.0-beta.6](https://github.com/reactivex/rxjs/compare/7.0.0-beta.5...7.0.0-beta.6) (2020-09-23)
+
+
+### Bug Fixes
+
+* **AsyncSubject:** fixed reentrancy issue in complete ([9e00f11](https://github.com/reactivex/rxjs/commit/9e00f11e992d223edf1013d0a44c7cad41b72470)), closes [/github.com/ReactiveX/rxjs/pull/5729/files/30d429cf1b791db15c04a61f6a683e189b53fb3e#r492314703](https://github.com//github.com/ReactiveX/rxjs/pull/5729/files/30d429cf1b791db15c04a61f6a683e189b53fb3e/issues/r492314703)
+* **delay:** proper handling of absolute time (`Date`) passed as an argument ([8ae89b1](https://github.com/reactivex/rxjs/commit/8ae89b19a095541eb3dfe6e6d9f26367486c435e))
+* **fromEvent:** properly teardown for ArrayLike targets ([066de74](https://github.com/reactivex/rxjs/commit/066de7408810864891b9fd16e05c6c8b4ca88087))
+* **ReplaySubject:** no longer buffers additional values after it's already stopped ([#5696](https://github.com/reactivex/rxjs/issues/5696)) ([a08232b](https://github.com/reactivex/rxjs/commit/a08232be6dcab74e94cfbb17cc5138050bcd6ddb))
+* **scan:** proper indexes when seed is not supplied ([f93fb9c](https://github.com/reactivex/rxjs/commit/f93fb9c1fb7434c97e1d156370756159c5f2b077)), closes [#4348](https://github.com/reactivex/rxjs/issues/4348) [#3879](https://github.com/reactivex/rxjs/issues/3879)
+* **windowTime:** Passing no creation interval will now properly open new window when old one closes ([cbd0ac0](https://github.com/reactivex/rxjs/commit/cbd0ac0478730ec10172b57210e7d269d1ce62a2))
+
+
+### Code Refactoring
+
+* **Massive Size Reduction:** reduced the size of all operator implementations as well as other utilities and types ([#5729](https://github.com/reactivex/rxjs/issues/5729)) ([4d3fc23](https://github.com/reactivex/rxjs/commit/fc41e13a1b9a05fc242c1369b4f597c931bd28b5))
+
+
+### Features
+
+* **onUnhandledError:** configuration point added for unhandled errors ([#5681](https://github.com/reactivex/rxjs/issues/5681)) ([3485dd5](https://github.com/reactivex/rxjs/commit/3485dd5149b731e1103d2d070e3892735cbacef1))
+* **skipLast:** counts zero or less will mirror the source ([02e113b](https://github.com/reactivex/rxjs/commit/02e113b3345a9efe8f7c29f8b9c1c0d088aaf726))
+
+
+### BREAKING CHANGES
+
+* **skipLast:** `skipLast` will no longer error when passed a negative number, rather it will simply return the source, as though `0` was passed.
+* **map:** `thisArg` will now default to `undefined`. The previous default of `MapSubscriber` never made any sense. This will only affect code that calls map with a `function` and references `this` like so: `source.pipe(map(function () { console.log(this); }))`. There wasn't anything useful about doing this, so the breakage is expected to be very minimal. If anything we're no longer leaking an implementation detail.
+* **onUnhandledError:** Errors that occur during setup of an observable subscription after the subscription has emitted an error or completed will now throw in their own call stack. Before it would call `console.warn`. This is potentially breaking in edge cases for node applications, which may be configured to terminate for unhandled exceptions. In the unlikely event this affects you, you can configure the behavior to `console.warn` in the new configuration setting like so: `import { config } from 'rxjs'; config.onUnhandledError = (err) => console.warn(err);`
+
+
+
 # [7.0.0-beta.5](https://github.com/reactivex/rxjs/compare/7.0.0-beta.4...7.0.0-beta.5) (2020-09-03)
 
 

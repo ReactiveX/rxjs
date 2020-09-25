@@ -1,19 +1,24 @@
-import { Operator } from '../Operator';
-import { Observable } from '../Observable';
+/** @prettier */
 import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { map } from './map';
 import { from } from '../observable/from';
-import { lift } from '../util/lift';
-import { SimpleInnerSubscriber, innerSubscribe, SimpleOuterSubscriber } from '../innerSubscribe';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
-export function switchMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
+export function switchMap<T, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O
+): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector is no longer supported, use inner map instead */
-export function switchMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;
+export function switchMap<T, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O,
+  resultSelector: undefined
+): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector is no longer supported, use inner map instead */
-export function switchMap<T, R, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
+export function switchMap<T, R, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O,
+  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
+): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -79,77 +84,51 @@ export function switchMap<T, R, O extends ObservableInput<any>>(project: (value:
  */
 export function switchMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
-  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
-): OperatorFunction<T, ObservedValueOf<O>|R> {
-  if (typeof resultSelector === 'function') {
-    return (source: Observable<T>) => source.pipe(
-      switchMap((a, i) => from(project(a, i)).pipe(
-        map((b, ii) => resultSelector(a, b, i, ii))
-      ))
+  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
+): OperatorFunction<T, ObservedValueOf<O> | R> {
+  return operate((source, subscriber) => {
+    let innerSubscriber: Subscriber<ObservedValueOf<O>> | null = null;
+    let index = 0;
+    // Whether or not the source subscription has completed
+    let isComplete = false;
+
+    // We only complete the result if the source is complete AND we don't have an active inner subscription.
+    // This is called both when the source completes and when the inners complete.
+    const checkComplete = () => isComplete && !innerSubscriber && subscriber.complete();
+
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => {
+          // Cancel the previous inner subscription if there was one
+          innerSubscriber?.unsubscribe();
+          let innerIndex = 0;
+          let outerIndex = index++;
+          // Start the next inner subscription
+          from(project(value, outerIndex)).subscribe(
+            (innerSubscriber = new OperatorSubscriber(
+              subscriber,
+              // When we get a new inner value, next it through. Note that this is
+              // handling the deprecate result selector here. This is because with this architecture
+              // it ends up being smaller than using the map operator.
+              (innerValue) => subscriber.next(resultSelector ? resultSelector(value, innerValue, outerIndex, innerIndex++) : innerValue),
+              undefined,
+              () => {
+                // The inner has completed. Null out the inner subcriber to
+                // free up memory and to signal that we have no inner subscription
+                // currently.
+                innerSubscriber = null!;
+                checkComplete();
+              }
+            ))
+          );
+        },
+        undefined,
+        () => {
+          isComplete = true;
+          checkComplete();
+        }
+      )
     );
-  }
-  return (source: Observable<T>) => lift(source, new SwitchMapOperator(project));
-}
-
-class SwitchMapOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => ObservableInput<R>) {
-  }
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new SwitchMapSubscriber(subscriber, this.project));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SwitchMapSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
-  private index: number = 0;
-  private innerSubscription?: Subscription;
-
-  constructor(protected destination: Subscriber<R>,
-              private project: (value: T, index: number) => ObservableInput<R>) {
-    super(destination);
-  }
-
-  protected _next(value: T) {
-    let result: ObservableInput<R>;
-    const index = this.index++;
-    try {
-      result = this.project(value, index);
-    } catch (error) {
-      this.destination.error(error);
-      return;
-    }
-    const innerSubscription = this.innerSubscription;
-    if (innerSubscription) {
-      innerSubscription.unsubscribe();
-    }
-    const innerSubscriber = new SimpleInnerSubscriber(this);
-    this.destination.add(innerSubscriber);
-    this.innerSubscription = innerSubscriber;
-    innerSubscribe(result, innerSubscriber);
-  }
-
-  protected _complete(): void {
-    const {innerSubscription} = this;
-    if (!innerSubscription || innerSubscription.closed) {
-      super._complete();
-    }
-    this.innerSubscription = undefined;
-    this.unsubscribe();
-  }
-
-  notifyComplete(): void {
-    this.innerSubscription = undefined;
-    if (this.isStopped) {
-      super._complete();
-    }
-  }
-
-  notifyNext(innerValue: R): void {
-      this.destination.next(innerValue);
-  }
+  });
 }

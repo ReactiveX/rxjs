@@ -1,15 +1,7 @@
-import { Observable } from '../Observable';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { observeNotification, COMPLETE_NOTIFICATION, nextNotification, errorNotification } from '../Notification';
-import {
-  MonoTypeOperatorFunction,
-  SchedulerAction,
-  SchedulerLike,
-  TeardownLogic,
-  ObservableNotification,
-} from '../types';
-import { lift } from '../util/lift';
+/** @prettier */
+import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  *
@@ -64,57 +56,14 @@ import { lift } from '../util/lift';
  * but with provided scheduler.
  */
 export function observeOn<T>(scheduler: SchedulerLike, delay: number = 0): MonoTypeOperatorFunction<T> {
-  return function observeOnOperatorFunction(source: Observable<T>): Observable<T> {
-    return lift(source, new ObserveOnOperator(scheduler, delay));
-  };
-}
-
-class ObserveOnOperator<T> implements Operator<T, T> {
-  constructor(private scheduler: SchedulerLike, private delay: number = 0) {}
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new ObserveOnSubscriber(subscriber, this.scheduler, this.delay));
-  }
-}
-
-class ObserveOnSubscriber<T> extends Subscriber<T> {
-  /** @nocollapse */
-  static dispatch(this: SchedulerAction<ObserveOnMessage>, arg: ObserveOnMessage) {
-    const { notification, destination } = arg;
-    observeNotification(notification, destination);
-    this.unsubscribe();
-  }
-
-  constructor(destination: Subscriber<T>, private scheduler: SchedulerLike, private delay: number = 0) {
-    super(destination);
-  }
-
-  private scheduleMessage(notification: ObservableNotification<any>): void {
-    const destination = this.destination as Subscriber<T>;
-    destination.add(
-      this.scheduler.schedule(ObserveOnSubscriber.dispatch as any, this.delay, {
-        notification,
-        destination,
-      })
+  return operate((source, subscriber) => {
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => subscriber.add(scheduler.schedule(() => subscriber.next(value), delay)),
+        (err) => subscriber.add(scheduler.schedule(() => subscriber.error(err), delay)),
+        () => subscriber.add(scheduler.schedule(() => subscriber.complete(), delay))
+      )
     );
-  }
-
-  protected _next(value: T): void {
-    this.scheduleMessage(nextNotification(value));
-  }
-
-  protected _error(error: any): void {
-    this.scheduleMessage(errorNotification(error));
-    this.unsubscribe();
-  }
-
-  protected _complete(): void {
-    this.scheduleMessage(COMPLETE_NOTIFICATION);
-    this.unsubscribe();
-  }
-}
-
-interface ObserveOnMessage {
-  notification: ObservableNotification<any>;
-  destination: Subscriber<any>;
+  });
 }

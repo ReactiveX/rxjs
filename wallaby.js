@@ -4,7 +4,7 @@ module.exports = function (wallaby) {
       'tsconfig.base.json',
       'tsconfig.json',
       'src/**/*.ts',
-      { pattern: 'spec/helpers/*.ts', instrument: false, load: true }
+      { pattern: 'spec/helpers/!(*-spec).ts', instrument: false, load: true }
     ],
 
     tests: ['spec/**/*-spec.ts'],
@@ -19,6 +19,13 @@ module.exports = function (wallaby) {
     },
 
     workers: { initial: 2, regular: 1 },
+
+    compilers: {
+      '**/*.ts?(x)': wallaby.compilers.typeScript({
+        module: 'commonjs',
+        target: 'esnext'
+      })
+    },
 
     setup: function (w) {
       if (!global._tsconfigPathsRegistered) {

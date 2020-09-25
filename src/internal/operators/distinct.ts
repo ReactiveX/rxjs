@@ -1,9 +1,9 @@
+/** @prettier */
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
-import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
+import { MonoTypeOperatorFunction } from '../types';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { noop } from '../util/noop';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
@@ -72,70 +72,19 @@ import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '..
  * @return {Observable} An Observable that emits items from the source Observable with distinct values.
  * @name distinct
  */
-export function distinct<T, K>(keySelector?: (value: T) => K,
-                               flushes?: Observable<any>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => lift(source, new DistinctOperator(keySelector, flushes));
-}
+export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: Observable<any>): MonoTypeOperatorFunction<T> {
+  return operate((source, subscriber) => {
+    const distinctKeys = new Set();
+    source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        const key = keySelector ? keySelector(value) : value;
+        if (!distinctKeys.has(key)) {
+          distinctKeys.add(key);
+          subscriber.next(value);
+        }
+      })
+    );
 
-class DistinctOperator<T, K> implements Operator<T, T> {
-  constructor(private keySelector?: (value: T) => K, private flushes?: Observable<any>) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new DistinctSubscriber(subscriber, this.keySelector, this.flushes));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-export class DistinctSubscriber<T, K> extends SimpleOuterSubscriber<T, T> {
-  private values = new Set<K>();
-
-  constructor(destination: Subscriber<T>, private keySelector?: (value: T) => K, flushes?: Observable<any>) {
-    super(destination);
-
-    if (flushes) {
-      this.add(innerSubscribe(flushes, new SimpleInnerSubscriber(this)));
-    }
-  }
-
-  notifyNext(): void {
-    this.values.clear();
-  }
-
-  notifyError(error: any): void {
-    this._error(error);
-  }
-
-  protected _next(value: T): void {
-    if (this.keySelector) {
-      this._useKeySelector(value);
-    } else {
-      this._finalizeNext(value, value);
-    }
-  }
-
-  private _useKeySelector(value: T): void {
-    let key: K;
-    const { destination } = this;
-    try {
-      key = this.keySelector!(value);
-    } catch (err) {
-      destination.error(err);
-      return;
-    }
-    this._finalizeNext(key, value);
-  }
-
-  private _finalizeNext(key: K|T, value: T) {
-    const { values } = this;
-    if (!values.has(<K>key)) {
-      values.add(<K>key);
-      this.destination.next(value);
-    }
-  }
-
+    flushes?.subscribe(new OperatorSubscriber(subscriber, () => distinctKeys.clear(), undefined, noop));
+  });
 }

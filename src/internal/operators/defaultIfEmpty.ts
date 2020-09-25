@@ -1,8 +1,7 @@
-import { Operator } from '../Operator';
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
+/** @prettier */
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
 export function defaultIfEmpty<T, R = T>(defaultValue?: R): OperatorFunction<T, T | R>;
@@ -44,40 +43,23 @@ export function defaultIfEmpty<T, R = T>(defaultValue?: R): OperatorFunction<T, 
  * @name defaultIfEmpty
  */
 export function defaultIfEmpty<T, R>(defaultValue: R | null = null): OperatorFunction<T, T | R> {
-  return (source: Observable<T>) => lift(source, new DefaultIfEmptyOperator(defaultValue)) as Observable<T | R>;
-}
-
-class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
-
-  constructor(private defaultValue: R) {
-  }
-
-  call(subscriber: Subscriber<T | R>, source: any): any {
-    return source.subscribe(new DefaultIfEmptySubscriber(subscriber, this.defaultValue));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
-  private isEmpty: boolean = true;
-
-  constructor(destination: Subscriber<T | R>, private defaultValue: R) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    this.isEmpty = false;
-    this.destination.next(value);
-  }
-
-  protected _complete(): void {
-    if (this.isEmpty) {
-      this.destination.next(this.defaultValue);
-    }
-    this.destination.complete();
-  }
+  return operate((source, subscriber) => {
+    let hasValue = false;
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => {
+          hasValue = true;
+          subscriber.next(value);
+        },
+        undefined,
+        () => {
+          if (!hasValue) {
+            subscriber.next(defaultValue!);
+          }
+          subscriber.complete();
+        }
+      )
+    );
+  });
 }

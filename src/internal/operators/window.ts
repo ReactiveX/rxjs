@@ -2,10 +2,8 @@
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
 import { Subject } from '../Subject';
-import { Subscriber } from '../Subscriber';
-import { Operator } from '../Operator';
-import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Branch out the source Observable values as a nested Observable whenever
@@ -50,77 +48,47 @@ import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '..
  * @name window
  */
 export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T, Observable<T>> {
-  return function windowOperatorFunction(source: Observable<T>) {
-    return lift(source, new WindowOperator(windowBoundaries));
-  };
-}
+  return operate((source, subscriber) => {
+    let windowSubject = new Subject<T>();
 
-class WindowOperator<T> implements Operator<T, Observable<T>> {
-  constructor(private windowBoundaries: Observable<any>) {}
+    subscriber.next(windowSubject.asObservable());
 
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
-    const windowSubscriber = new WindowSubscriber(subscriber);
-    const sourceSubscription = source.subscribe(windowSubscriber);
-    if (!sourceSubscription.closed) {
-      windowSubscriber.add(innerSubscribe(this.windowBoundaries, new SimpleInnerSubscriber(windowSubscriber)));
-    }
-    return sourceSubscription;
-  }
-}
+    /**
+     * Subscribes to one of our two observables in this operator in the same way,
+     * only allowing for different behaviors with the next handler.
+     * @param source The observable to subscribe to.
+     * @param next The next handler to use with the subscription
+     */
+    const windowSubscribe = (source: Observable<any>, next: (value: any) => void) =>
+      source.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          next,
+          (err: any) => {
+            windowSubject.error(err);
+            subscriber.error(err);
+          },
+          () => {
+            windowSubject.complete();
+            subscriber.complete();
+          }
+        )
+      );
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class WindowSubscriber<T> extends SimpleOuterSubscriber<T, any> {
-  private window: Subject<T> = new Subject<T>();
+    // Subscribe to our source
+    windowSubscribe(source, (value) => windowSubject.next(value));
+    // Subscribe to the window boundaries.
+    windowSubscribe(windowBoundaries, () => {
+      windowSubject.complete();
+      subscriber.next((windowSubject = new Subject()));
+    });
 
-  constructor(destination: Subscriber<Observable<T>>) {
-    super(destination);
-    destination.next(this.window);
-  }
-
-  notifyNext(): void {
-    this.openWindow();
-  }
-
-  notifyError(error: any): void {
-    this._error(error);
-  }
-
-  notifyComplete(): void {
-    this._complete();
-  }
-
-  protected _next(value: T): void {
-    this.window.next(value);
-  }
-
-  protected _error(err: any): void {
-    this.window.error(err);
-    this.destination.error(err);
-  }
-
-  protected _complete(): void {
-    this.window.complete();
-    this.destination.complete();
-  }
-
-  unsubscribe() {
-    if (!this.closed) {
-      this.window = null!;
-      super.unsubscribe();
-    }
-  }
-
-  private openWindow(): void {
-    const prevWindow = this.window;
-    if (prevWindow) {
-      prevWindow.complete();
-    }
-    const destination = this.destination;
-    const newWindow = (this.window = new Subject<T>());
-    destination.next(newWindow);
-  }
+    // Additional teardown. Note that other teardown and post-subscription logic
+    // is encapsulated in the act of a Subscriber subscribing to the observable
+    // during the subscribe call. We can return additional teardown here.
+    return () => {
+      windowSubject.unsubscribe();
+      windowSubject = null!;
+    };
+  });
 }

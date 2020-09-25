@@ -1,9 +1,8 @@
-import { Operator } from '../Operator';
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
+/** @prettier */
 import { ObservableInput, OperatorFunction } from '../types';
-import { lift } from '../util/lift';
-import { SimpleInnerSubscriber, SimpleOuterSubscriber, innerSubscribe } from '../innerSubscribe';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { from } from '../observable/from';
 
 /**
  * Applies an accumulator function over the source Observable where the
@@ -43,96 +42,100 @@ import { SimpleInnerSubscriber, SimpleOuterSubscriber, innerSubscribe } from '..
  * @return {Observable<R>} An observable of the accumulated values.
  * @name mergeScan
  */
-export function mergeScan<T, R>(accumulator: (acc: R, value: T, index: number) => ObservableInput<R>,
-                                seed: R,
-                                concurrent: number = Infinity): OperatorFunction<T, R> {
-  return (source: Observable<T>) => lift(source, new MergeScanOperator(accumulator, seed, concurrent));
-}
+export function mergeScan<T, R>(
+  accumulator: (acc: R, value: T, index: number) => ObservableInput<R>,
+  seed: R,
+  concurrent = Infinity
+): OperatorFunction<T, R> {
+  return operate((source, subscriber) => {
+    // Buffered values, in the event of going over our concurrency limit
+    let buffer: T[] = [];
+    // The number of active inner subscriptions.
+    let active = 0;
+    // Whether or not we have gotten any accumulated state. This is used to
+    // decide whether or not to emit in the event of an empty result.
+    let hasState = false;
+    // The accumulated state.
+    let state = seed;
+    // An index to pass to our accumulator function
+    let index = 0;
+    // Whether or not the outer source has completed.
+    let isComplete = false;
 
-export class MergeScanOperator<T, R> implements Operator<T, R> {
-  constructor(private accumulator: (acc: R, value: T, index: number) => ObservableInput<R>,
-              private seed: R,
-              private concurrent: number) {
-  }
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new MergeScanSubscriber(
-      subscriber, this.accumulator, this.seed, this.concurrent
-    ));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-export class MergeScanSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
-  private hasValue: boolean = false;
-  private hasCompleted: boolean = false;
-  private buffer: Observable<any>[] = [];
-  private active: number = 0;
-  protected index: number = 0;
-
-  constructor(protected destination: Subscriber<R>,
-              private accumulator: (acc: R, value: T, index: number) => ObservableInput<R>,
-              private acc: R,
-              private concurrent: number) {
-    super(destination);
-  }
-
-  protected _next(value: any): void {
-    if (this.active < this.concurrent) {
-      const index = this.index++;
-      const destination = this.destination;
-      let ish;
-      try {
-        const { accumulator } = this;
-        ish = accumulator(this.acc, value, index);
-      } catch (e) {
-        return destination.error(e);
+    /**
+     * Checks to see if we can complete our result or not.
+     */
+    const checkComplete = () => {
+      // If the outer has completed, and nothing is left in the buffer,
+      // and we don't have any active inner subscriptions, then we can
+      // Emit the state and complete.
+      if (isComplete && !buffer.length && !active) {
+        // TODO: This seems like it might result in a double emission, perhaps bad behavior?
+        // maybe we should change this in an upcoming major?
+        !hasState && subscriber.next(state);
+        subscriber.complete();
       }
-      this.active++;
-      this._innerSub(ish);
-    } else {
-      this.buffer.push(value);
-    }
-  }
+    };
 
-  private _innerSub(ish: any): void {
-    const innerSubscriber = new SimpleInnerSubscriber(this);
-    this.destination.add(innerSubscriber);
-    innerSubscribe(ish, innerSubscriber);
-  }
+    const doInnerSub = (value: T) => {
+      active++;
+      from(accumulator(state!, value, index++)).subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (innerValue) => {
+            hasState = true;
+            // Intentially terse. Set the state, then emit it.
+            subscriber.next((state = innerValue));
+          },
+          // Errors are passed to the destination.
+          undefined,
 
-  protected _complete(): void {
-    this.hasCompleted = true;
-    if (this.active === 0 && this.buffer.length === 0) {
-      if (this.hasValue === false) {
-        this.destination.next(this.acc);
+          // TODO: Much of this code is duplicated from mergeMap. Perhaps
+          // look into a way to unify this.
+
+          () => {
+            // INNER SOURCE COMPLETE
+            // Decrement the active count to ensure that the next time
+            // we try to call `doInnerSub`, the number is accurate.
+            active--;
+            // If we have more values in the buffer, try to process those
+            // Note that this call will increment `active` ahead of the
+            // next conditional, if there were any more inner subscriptions
+            // to start.
+            buffer.length && tryInnerSub();
+            // Check to see if we can complete, and complete if so.
+            checkComplete();
+          }
+        )
+      );
+    };
+
+    const tryInnerSub = () => {
+      while (buffer.length && active < concurrent) {
+        doInnerSub(buffer.shift()!);
       }
-      this.destination.complete();
-    }
-    this.unsubscribe();
-  }
+    };
 
-  notifyNext(innerValue: R): void {
-    const { destination } = this;
-    this.acc = innerValue;
-    this.hasValue = true;
-    destination.next(innerValue);
-  }
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        // If we're under our concurrency limit, just start the inner subscription, otherwise buffer and wait.
+        (value) => (active < concurrent ? doInnerSub(value) : buffer.push(value)),
+        // Errors are passed through
+        undefined,
+        () => {
+          // Outer completed, make a note of it, and check to see if we can complete everything.
+          isComplete = true;
+          checkComplete();
+        }
+      )
+    );
 
-  notifyComplete(): void {
-    const buffer = this.buffer;
-    this.active--;
-    if (buffer.length > 0) {
-      this._next(buffer.shift());
-    } else if (this.active === 0 && this.hasCompleted) {
-      if (this.hasValue === false) {
-        this.destination.next(this.acc);
-      }
-      this.destination.complete();
-    }
-  }
+    // Additional teardown (for when the destination is torn down).
+    // Other teardown is added implicitly via subscription above.
+    return () => {
+      // Ensure buffered values are released.
+      buffer = null!;
+    };
+  });
 }

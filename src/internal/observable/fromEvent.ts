@@ -1,7 +1,10 @@
+/** @prettier */
 import { Observable } from '../Observable';
+import { mergeMap } from '../operators/mergeMap';
+import { isArrayLike } from '../util/isArrayLike';
 import { isFunction } from '../util/isFunction';
-import { Subscriber } from '../Subscriber';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
+import { fromArray } from './fromArray';
 
 export interface NodeStyleEventEmitter {
   addListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
@@ -49,7 +52,12 @@ export function fromEvent<T>(target: FromEventTarget<T>, eventName: string): Obs
 export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, resultSelector?: (...args: any[]) => T): Observable<T>;
 export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, options?: EventListenerOptions): Observable<T>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, options: EventListenerOptions, resultSelector: (...args: any[]) => T): Observable<T>;
+export function fromEvent<T>(
+  target: FromEventTarget<T>,
+  eventName: string,
+  options: EventListenerOptions,
+  resultSelector: (...args: any[]) => T
+): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -175,9 +183,8 @@ export function fromEvent<T>(
   target: FromEventTarget<T>,
   eventName: string,
   options?: EventListenerOptions | ((...args: any[]) => T),
-  resultSelector?: ((...args: any[]) => T)
+  resultSelector?: (...args: any[]) => T
 ): Observable<T> {
-
   if (isFunction(options)) {
     // DEPRECATED PATH
     resultSelector = options;
@@ -185,48 +192,36 @@ export function fromEvent<T>(
   }
   if (resultSelector) {
     // DEPRECATED PATH
-    return fromEvent<T>(target, eventName, options as EventListenerOptions | undefined).pipe(
-      mapOneOrManyArgs(resultSelector)
-    );
+    return fromEvent<T>(target, eventName, options as EventListenerOptions | undefined).pipe(mapOneOrManyArgs(resultSelector));
   }
 
-  return new Observable<T>(subscriber => {
-    function handler(e: T) {
-      if (arguments.length > 1) {
-        subscriber.next(Array.prototype.slice.call(arguments) as any);
-      } else {
-        subscriber.next(e);
-      }
+  return new Observable<T>((subscriber) => {
+    const handler = (...args: any[]) => subscriber.next(args.length > 1 ? args : args[0]);
+
+    if (isEventTarget(target)) {
+      target.addEventListener(eventName, handler, options as EventListenerOptions);
+      return () => target.removeEventListener(eventName, handler, options as EventListenerOptions);
     }
-    setupSubscription(target, eventName, handler, subscriber, options as EventListenerOptions);
+
+    if (isJQueryStyleEventEmitter(target)) {
+      target.on(eventName, handler);
+      return () => target.off(eventName, handler);
+    }
+
+    if (isNodeStyleEventEmitter(target)) {
+      target.addListener(eventName, handler);
+      return () => target.removeListener(eventName, handler);
+    }
+
+    if (isArrayLike(target)) {
+      return (mergeMap((target: any) => fromEvent(target, eventName, options as any))(fromArray(target)) as Observable<T>).subscribe(
+        subscriber
+      );
+    }
+
+    subscriber.error(new TypeError('Invalid event target'));
+    return;
   });
-}
-
-function setupSubscription<T>(sourceObj: FromEventTarget<T>, eventName: string,
-                              handler: (...args: any[]) => void, subscriber: Subscriber<T>,
-                              options?: EventListenerOptions) {
-  let unsubscribe: (() => void) | undefined;
-  if (isEventTarget(sourceObj)) {
-    const source = sourceObj;
-    sourceObj.addEventListener(eventName, handler, options);
-    unsubscribe = () => source.removeEventListener(eventName, handler, options);
-  } else if (isJQueryStyleEventEmitter(sourceObj)) {
-    const source = sourceObj;
-    sourceObj.on(eventName, handler);
-    unsubscribe = () => source.off(eventName, handler);
-  } else if (isNodeStyleEventEmitter(sourceObj)) {
-    const source = sourceObj;
-    sourceObj.addListener(eventName, handler as NodeEventHandler);
-    unsubscribe = () => source.removeListener(eventName, handler as NodeEventHandler);
-  } else if (sourceObj && (sourceObj as any).length) {
-    for (let i = 0, len = (sourceObj as any).length; i < len; i++) {
-      setupSubscription((sourceObj as any)[i], eventName, handler, subscriber, options);
-    }
-  } else {
-    throw new TypeError('Invalid event target');
-  }
-
-  subscriber.add(unsubscribe);
 }
 
 function isNodeStyleEventEmitter(sourceObj: any): sourceObj is NodeStyleEventEmitter {

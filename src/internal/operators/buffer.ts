@@ -1,9 +1,8 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
+/** @prettier */
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
-import { SimpleInnerSubscriber, SimpleOuterSubscriber, innerSubscribe } from '../innerSubscribe';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Buffers the source Observable values until `closingNotifier` emits.
@@ -45,43 +44,25 @@ import { SimpleInnerSubscriber, SimpleOuterSubscriber, innerSubscribe } from '..
  * @name buffer
  */
 export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]> {
-  return function bufferOperatorFunction(source: Observable<T>) {
-    return lift(source, new BufferOperator<T>(closingNotifier));
-  };
-}
+  return operate((source, subscriber) => {
+    let buffer: T[] = [];
 
-class BufferOperator<T> implements Operator<T, T[]> {
+    // Subscribe to our source.
+    source.subscribe(new OperatorSubscriber(subscriber, (value) => buffer.push(value)));
 
-  constructor(private closingNotifier: Observable<any>) {
-  }
+    // Subscribe to the closing notifier.
+    closingNotifier.subscribe(
+      new OperatorSubscriber(subscriber, () => {
+        // Start a new buffer and emit the previous one.
+        const b = buffer;
+        buffer = [];
+        subscriber.next(b);
+      })
+    );
 
-  call(subscriber: Subscriber<T[]>, source: any): any {
-    const bufferSubscriber = new BufferSubscriber(subscriber);
-    subscriber.add(source.subscribe(bufferSubscriber));
-    subscriber.add(innerSubscribe(this.closingNotifier, new SimpleInnerSubscriber(bufferSubscriber)));
-    return subscriber;
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class BufferSubscriber<T> extends SimpleOuterSubscriber<T, any> {
-  private buffer: T[] = [];
-
-  constructor(destination: Subscriber<T[]>) {
-    super(destination);
-  }
-
-  protected _next(value: T) {
-    this.buffer.push(value);
-  }
-
-  notifyNext(): void {
-    const buffer = this.buffer;
-    this.buffer = [];
-    this.destination.next(buffer);
-  }
+    return () => {
+      // Ensure buffered values are released on teardown.
+      buffer = null!;
+    };
+  });
 }

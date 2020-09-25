@@ -132,11 +132,6 @@ describe('skipLast operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should throw if total is less than zero', () => {
-    expect(() => { range(0, 10).pipe(skipLast(-1)); })
-      .to.throw(ArgumentOutOfRangeError);
-  });
-
   it('should not break unsubscription chain when unsubscribed explicitly', () => {
     const e1 = hot('---^--a--b-----c--d--e--|');
     const unsub =     '         !            ';

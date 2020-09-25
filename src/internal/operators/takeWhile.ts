@@ -1,8 +1,7 @@
-import { Operator } from '../Operator';
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
-import { OperatorFunction, MonoTypeOperatorFunction, TeardownLogic } from '../types';
-import { lift } from '../util/lift';
+/** @prettier */
+import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 export function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
 export function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S, inclusive: false): OperatorFunction<T, S>;
@@ -51,60 +50,15 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
  * `predicate`, then completes.
  * @name takeWhile
  */
-export function takeWhile<T>(
-    predicate: (value: T, index: number) => boolean,
-    inclusive = false): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) =>
-             lift(source, new TakeWhileOperator(predicate, inclusive));
-}
-
-class TakeWhileOperator<T> implements Operator<T, T> {
-  constructor(
-      private predicate: (value: T, index: number) => boolean,
-      private inclusive: boolean) {}
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(
-        new TakeWhileSubscriber(subscriber, this.predicate, this.inclusive));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class TakeWhileSubscriber<T> extends Subscriber<T> {
-  private index: number = 0;
-
-  constructor(
-      destination: Subscriber<T>,
-      private predicate: (value: T, index: number) => boolean,
-      private inclusive: boolean) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    const destination = this.destination;
-    let result: boolean;
-    try {
-      result = this.predicate(value, this.index++);
-    } catch (err) {
-      destination.error(err);
-      return;
-    }
-    this.nextOrComplete(value, result);
-  }
-
-  private nextOrComplete(value: T, predicateResult: boolean): void {
-    const destination = this.destination;
-    if (Boolean(predicateResult)) {
-      destination.next(value);
-    } else {
-      if (this.inclusive) {
-        destination.next(value);
-      }
-      destination.complete();
-    }
-  }
+export function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive = false): MonoTypeOperatorFunction<T> {
+  return operate((source, subscriber) => {
+    let index = 0;
+    source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        const result = predicate(value, index++);
+        (result || inclusive) && subscriber.next(value);
+        !result && subscriber.complete();
+      })
+    );
+  });
 }

@@ -1,10 +1,11 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf, ObservedValueUnionFromArray, MonoTypeOperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { from } from '../observable/from';
 import { argsOrArgArray } from '../util/argsOrArgArray';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { noop } from '../util/noop';
 
 export function onErrorResumeNext<T>(): MonoTypeOperatorFunction<T>;
 export function onErrorResumeNext<T, O extends ObservableInput<any>>(arrayOfSources: O[]): OperatorFunction<T, T | ObservedValueOf<O>>;
@@ -83,46 +84,32 @@ export function onErrorResumeNext<T, A extends ObservableInput<any>[]>(
 export function onErrorResumeNext<T>(...nextSources: ObservableInput<any>[]): OperatorFunction<T, unknown> {
   nextSources = argsOrArgArray(nextSources);
 
-  return (source: Observable<T>) =>
-    lift(source, function (this: Subscriber<any>, source: Observable<T>) {
-      const subscriber = this;
-      const remaining = [source, ...nextSources];
-      const subscribeNext = () => {
-        if (!subscriber.closed) {
-          if (remaining.length > 0) {
-            let nextSource: Observable<any>;
-            try {
-              nextSource = from(remaining.shift()!);
-            } catch (err) {
-              subscribeNext();
-              return;
-            }
-
-            // Here we have to use one of our Subscribers, or it does not wire up
-            // The `closed` property of upstream Subscribers synchronously, that
-            // would result in situation were we could not stop a synchronous firehose
-            // with something like `take(3)`.
-            const innerSub = new OnErrorResumeNextSubscriber(subscriber);
-            subscriber.add(nextSource.subscribe(innerSub));
-            innerSub.add(subscribeNext);
-          } else {
-            subscriber.complete();
+  return operate((source, subscriber) => {
+    const remaining = [source, ...nextSources];
+    const subscribeNext = () => {
+      if (!subscriber.closed) {
+        if (remaining.length > 0) {
+          let nextSource: Observable<any>;
+          try {
+            nextSource = from(remaining.shift()!);
+          } catch (err) {
+            subscribeNext();
+            return;
           }
+
+          // Here we have to use one of our Subscribers, or it does not wire up
+          // The `closed` property of upstream Subscribers synchronously, that
+          // would result in situation were we could not stop a synchronous firehose
+          // with something like `take(3)`.
+          const innerSub = new OperatorSubscriber(subscriber, undefined, noop, noop);
+          subscriber.add(nextSource.subscribe(innerSub));
+          innerSub.add(subscribeNext);
+        } else {
+          subscriber.complete();
         }
-      };
+      }
+    };
 
-      subscribeNext();
-
-      return subscriber;
-    });
-}
-
-class OnErrorResumeNextSubscriber extends Subscriber<any> {
-  _error() {
-    this.unsubscribe();
-  }
-
-  _complete() {
-    this.unsubscribe();
-  }
+    subscribeNext();
+  });
 }

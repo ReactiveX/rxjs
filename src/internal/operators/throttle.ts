@@ -1,12 +1,10 @@
-import { Operator } from '../Operator';
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
+/** @prettier */
 import { Subscription } from '../Subscription';
 
-
-import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
-import { lift } from '../util/lift';
-import { SimpleOuterSubscriber, innerSubscribe, SimpleInnerSubscriber } from '../innerSubscribe';
+import { MonoTypeOperatorFunction, SubscribableOrPromise } from '../types';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { from } from '../observable/from';
 
 export interface ThrottleConfig {
   leading?: boolean;
@@ -15,7 +13,7 @@ export interface ThrottleConfig {
 
 export const defaultThrottleConfig: ThrottleConfig = {
   leading: true,
-  trailing: false
+  trailing: false,
 };
 
 /**
@@ -63,92 +61,51 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * limit the rate of emissions from the source.
  * @name throttle
  */
-export function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<any>,
-                            config: ThrottleConfig = defaultThrottleConfig): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => lift(source, new ThrottleOperator(durationSelector, !!config.leading, !!config.trailing));
-}
+export function throttle<T>(
+  durationSelector: (value: T) => SubscribableOrPromise<any>,
+  { leading, trailing }: ThrottleConfig = defaultThrottleConfig
+): MonoTypeOperatorFunction<T> {
+  return operate((source, subscriber) => {
+    let hasValue = false;
+    let sendValue: T | null = null;
+    let throttled: Subscription | null = null;
+    let isComplete = false;
 
-class ThrottleOperator<T> implements Operator<T, T> {
-  constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>,
-              private leading: boolean,
-              private trailing: boolean) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(
-      new ThrottleSubscriber(subscriber, this.durationSelector, this.leading, this.trailing)
-    );
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc
- * @ignore
- * @extends {Ignored}
- */
-class ThrottleSubscriber<T, R> extends SimpleOuterSubscriber<T, R> {
-  private _throttled: Subscription | null | undefined;
-  private _sendValue: T | null = null;
-  private _hasValue = false;
-
-  constructor(protected destination: Subscriber<T>,
-              private durationSelector: (value: T) => SubscribableOrPromise<number>,
-              private _leading: boolean,
-              private _trailing: boolean) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    this._hasValue = true;
-    this._sendValue = value;
-
-    if (!this._throttled) {
-      if (this._leading) {
-        this.send();
-      } else {
-        this.throttle(value);
+    const throttlingDone = () => {
+      throttled?.unsubscribe();
+      throttled = null;
+      if (trailing) {
+        send();
+        isComplete && subscriber.complete();
       }
-    }
-  }
+    };
 
-  private send() {
-    const { _hasValue, _sendValue } = this;
-    if (_hasValue) {
-      this.destination.next(_sendValue!);
-      this.throttle(_sendValue!);
-    }
-    this._hasValue = false;
-    this._sendValue = null;
-  }
+    const throttle = (value: T) =>
+      (throttled = from(durationSelector(value)).subscribe(new OperatorSubscriber(subscriber, throttlingDone, undefined, throttlingDone)));
 
-  private throttle(value: T): void {
-    let result: SubscribableOrPromise<any>;
-    try {
-      result = this.durationSelector(value);
-    } catch (err) {
-      this.destination.error(err);
-      return
-    }
-    this.add(this._throttled = innerSubscribe(result, new SimpleInnerSubscriber(this)));
-  }
+    const send = () => {
+      if (hasValue) {
+        subscriber.next(sendValue!);
+        !isComplete && throttle(sendValue!);
+      }
+      hasValue = false;
+      sendValue = null;
+    };
 
-  private throttlingDone() {
-    const { _throttled, _trailing } = this;
-    if (_throttled) {
-      _throttled.unsubscribe();
-    }
-    this._throttled = null;
-
-    if (_trailing) {
-      this.send();
-    }
-  }
-
-  notifyNext(): void {
-    this.throttlingDone();
-  }
-
-  notifyComplete(): void {
-    this.throttlingDone();
-  }
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => {
+          hasValue = true;
+          sendValue = value;
+          !throttled && (leading ? send() : throttle(value));
+        },
+        undefined,
+        () => {
+          isComplete = true;
+          !(trailing && hasValue && throttled) && subscriber.complete();
+        }
+      )
+    );
+  });
 }

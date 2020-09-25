@@ -1,10 +1,8 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
+/** @prettier */
 import { EMPTY } from '../observable/empty';
-import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
-import { lift } from '../util/lift';
+import { MonoTypeOperatorFunction } from '../types';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Emits only the last `count` values emitted by the source Observable.
@@ -48,66 +46,26 @@ import { lift } from '../util/lift';
  * values emitted by the source Observable.
  */
 export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
-  if (isNaN(count)) {
-    throw new TypeError(`'count' is not a number`);
-  }
-  if (count < 0) {
-    throw new ArgumentOutOfRangeError;
-  }
-
-  return function takeLastOperatorFunction(source: Observable<T>): Observable<T> {
-    if (count === 0) {
-      return EMPTY;
-    } else {
-      return lift(source, new TakeLastOperator(count));
-    }
-  };
-}
-
-class TakeLastOperator<T> implements Operator<T, T> {
-  constructor(private total: number) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new TakeLastSubscriber(subscriber, this.total));
-  }
-}
-
-class TakeLastSubscriber<T> extends Subscriber<T> {
-  private ring: Array<T> = new Array();
-  private count: number = 0;
-
-  constructor(destination: Subscriber<T>, private total: number) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    const ring = this.ring;
-    const total = this.total;
-    const count = this.count++;
-
-    if (ring.length < total) {
-      ring.push(value);
-    } else {
-      const index = count % total;
-      ring[index] = value;
-    }
-  }
-
-  protected _complete(): void {
-    const destination = this.destination;
-    let count = this.count;
-
-    if (count > 0) {
-      const total = this.count >= this.total ? this.total : this.count;
-      const ring  = this.ring;
-
-      for (let i = 0; i < total; i++) {
-        const idx = (count++) % total;
-        destination.next(ring[idx]);
-      }
-    }
-
-    destination.complete();
-  }
+  return count <= 0
+    ? () => EMPTY
+    : operate((source, subscriber) => {
+        let buffer: T[] = [];
+        source.subscribe(
+          new OperatorSubscriber(
+            subscriber,
+            (value) => {
+              buffer.push(value);
+              count < buffer.length && buffer.shift();
+            },
+            undefined,
+            () => {
+              while (buffer.length) {
+                subscriber.next(buffer.shift()!);
+              }
+              subscriber.complete();
+              buffer = null!;
+            }
+          )
+        );
+      });
 }

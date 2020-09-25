@@ -694,14 +694,11 @@ describe('webSocket', () => {
   });
 
   describe('node constructor', () => {
-
     it('should send and receive messages', () => {
       let messageReceived = false;
       const subject = webSocket<string>(<any>{
         url: 'ws://mysocket',
-        WebSocketCtor: (url: string, protocol: string): MockWebSocket => {
-          return new MockWebSocket(url, protocol);
-        }
+        WebSocketCtor: MockWebSocket
       });
 
       subject.next('ping');

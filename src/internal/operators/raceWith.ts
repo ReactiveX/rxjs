@@ -1,8 +1,9 @@
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, ObservedValueUnionFromArray } from '../types';
-import { race as raceStatic } from '../observable/race';
-import { stankyLift } from '../util/lift';
+import { raceInit } from '../observable/race';
+import { operate } from '../util/lift';
 import { argsOrArgArray } from "../util/argsOrArgArray";
+import { identity } from '../util/identity';
 
 /* tslint:disable:max-line-length */
 /** @deprecated Deprecated use {@link raceWith} */
@@ -22,7 +23,7 @@ export function race<T, R>(...observables: Array<Observable<any> | Array<Observa
  * @return {Observable} An Observable that mirrors the output of the first Observable to emit an item.
  * @deprecated Deprecated use {@link raceWith}
  */
-export function race<T, R>(...args: any[]): OperatorFunction<T, unknown> {
+export function race<T>(...args: any[]): OperatorFunction<T, unknown> {
   return raceWith(...argsOrArgArray(args));
 }
 
@@ -57,14 +58,7 @@ export function race<T, R>(...args: any[]): OperatorFunction<T, unknown> {
 export function raceWith<T, A extends ObservableInput<any>[]>(
   ...otherSources: A
 ): OperatorFunction<T, T | ObservedValueUnionFromArray<A>> {
-  return function raceWithOperatorFunction(source: Observable<T>) {
-    if (otherSources.length === 0) {
-      return source;
-    }
-
-    return stankyLift(
-      source,
-      raceStatic(source, ...otherSources)
-    );
-  };
+  return !otherSources.length ? identity : operate((source, subscriber) => {
+    raceInit([source, ...otherSources])(subscriber);
+  });
 }

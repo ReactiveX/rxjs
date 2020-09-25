@@ -585,34 +585,8 @@ describe('Observable', () => {
       });
     });
 
-    describe('config.useDeprecatedSynchronousErrorHandling', () => {
-      it('should log when it is set and unset', () => {
-        const _log = console.log;
-        const logCalledWith: any[][] = [];
-        console.log = (...args: any[]) => {
-          logCalledWith.push(args);
-        };
-
-        const _warn = console.warn;
-        const warnCalledWith: any[][] = [];
-        console.warn = (...args: any[]) => {
-          warnCalledWith.push(args);
-        };
-
-        config.useDeprecatedSynchronousErrorHandling = true;
-        expect(warnCalledWith.length).to.equal(1);
-
-        config.useDeprecatedSynchronousErrorHandling = false;
-        expect(logCalledWith.length).to.equal(1);
-
-        console.log = _log;
-        console.warn = _warn;
-      });
-    });
-
     describe('if config.useDeprecatedSynchronousErrorHandling === true', () => {
       beforeEach(() => {
-        config.quietBadConfig = true;
         config.useDeprecatedSynchronousErrorHandling = true;
       });
 
@@ -636,7 +610,6 @@ describe('Observable', () => {
 
       afterEach(() => {
         config.useDeprecatedSynchronousErrorHandling = false;
-        config.quietBadConfig = false;
       });
     });
   });

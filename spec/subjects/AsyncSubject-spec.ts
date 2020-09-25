@@ -191,4 +191,42 @@ describe('AsyncSubject', () => {
     subject.subscribe(observer);
     expect(observer.results).to.deep.equal([expected]);
   });
+
+  it('should not be reentrant via complete', () => {
+    const subject = new AsyncSubject<number>();
+    let calls = 0;
+    subject.subscribe({
+      next: value => {
+        calls++;
+        if (calls < 2) {
+          // if this is more than 1, we're reentrant, and that's bad.
+          subject.complete();
+        }
+      }
+    });
+
+    subject.next(1);
+    subject.complete();
+
+    expect(calls).to.equal(1);
+  });
+
+   it('should not be reentrant via next', () => {
+    const subject = new AsyncSubject<number>();
+    let calls = 0;
+    subject.subscribe({
+      next: value => {
+        calls++;
+        if (calls < 2) {
+          // if this is more than 1, we're reentrant, and that's bad.
+          subject.next(value + 1);
+        }
+      }
+    });
+
+    subject.next(1);
+    subject.complete();
+
+    expect(calls).to.equal(1);
+  });
 });

@@ -1,8 +1,7 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
-import { lift } from '../util/lift';
+/** @prettier */
+import { MonoTypeOperatorFunction } from '../types';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
 export function distinctUntilChanged<T>(compare?: (x: T, y: T) => boolean): MonoTypeOperatorFunction<T>;
@@ -63,64 +62,26 @@ export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, key
  * @return {Observable} An Observable that emits items from the source Observable with distinct values.
  * @name distinctUntilChanged
  */
-export function distinctUntilChanged<T, K>(compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => lift(source, new DistinctUntilChangedOperator<T, K>(compare, keySelector));
+export function distinctUntilChanged<T, K>(compare?: (a: K, b: K) => boolean, keySelector?: (x: T) => K): MonoTypeOperatorFunction<T> {
+  compare = compare ?? defaultCompare;
+  return operate((source, subscriber) => {
+    let prev: any;
+    let first = true;
+    source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        // WARNING: Intentionally terse code for library size.
+        // If this is the first value, set the previous value state, the `1` is to allow it to move to the next
+        // part of the terse conditional. Then we capture `prev` to pass to `compare`, but set `prev` to the result of
+        // either the `keySelector` -- if provided -- or the `value`, *then* it will execute the `compare`.
+        // If `compare` returns truthy, it will move on to call `subscriber.next()`.
+        ((first && ((prev = value), 1)) || !compare!(prev, (prev = keySelector ? keySelector(value) : (value as any)))) &&
+          subscriber.next(value);
+        first = false;
+      })
+    );
+  });
 }
 
-class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {
-  constructor(private compare?: (x: K, y: K) => boolean,
-              private keySelector?: (x: T) => K) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new DistinctUntilChangedSubscriber(subscriber, this.compare, this.keySelector));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class DistinctUntilChangedSubscriber<T, K> extends Subscriber<T> {
-  private key: K | undefined;
-  private hasKey: boolean = false;
-
-  constructor(destination: Subscriber<T>,
-              compare?: (x: K, y: K) => boolean,
-              private keySelector?: (x: T) => K) {
-    super(destination);
-    if (typeof compare === 'function') {
-      this.compare = compare;
-    }
-  }
-
-  private compare(x: any, y: any): boolean {
-    return x === y;
-  }
-
-  protected _next(value: T): void {
-    let key: any;
-    try {
-      const { keySelector } = this;
-      key = keySelector ? keySelector(value) : value;
-    } catch (err) {
-      return this.destination.error(err);
-    }
-    let result = false;
-    if (this.hasKey) {
-      try {
-        const { compare } = this;
-        result = compare(this.key, key);
-      } catch (err) {
-        return this.destination.error(err);
-      }
-    } else {
-      this.hasKey = true;
-    }
-    if (!result) {
-      this.key = key;
-      this.destination.next(value);
-    }
-  }
+function defaultCompare(a: any, b: any) {
+  return a === b;
 }

@@ -1,8 +1,7 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
-import { lift } from '../util/lift';
+/** @prettier */
+import { MonoTypeOperatorFunction } from '../types';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Returns an Observable that skips the first `count` items emitted by the source Observable.
@@ -14,33 +13,8 @@ import { lift } from '../util/lift';
  * @name skip
  */
 export function skip<T>(count: number): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => lift(source, new SkipOperator(count));
-}
-
-class SkipOperator<T> implements Operator<T, T> {
-  constructor(private total: number) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new SkipSubscriber(subscriber, this.total));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SkipSubscriber<T> extends Subscriber<T> {
-  count: number = 0;
-
-  constructor(destination: Subscriber<T>, private total: number) {
-    super(destination);
-  }
-
-  protected _next(x: T) {
-    if (++this.count > this.total) {
-      this.destination.next(x);
-    }
-  }
+  return operate((source, subscriber) => {
+    let seen = 0;
+    source.subscribe(new OperatorSubscriber(subscriber, (value) => (count === seen ? subscriber.next(value) : seen++)));
+  });
 }

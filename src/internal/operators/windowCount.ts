@@ -1,10 +1,9 @@
 /** @prettier */
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { OperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Branch out the source Observable values as a nested Observable with each
@@ -69,79 +68,64 @@ import { lift } from '../util/lift';
  * @name windowCount
  */
 export function windowCount<T>(windowSize: number, startWindowEvery: number = 0): OperatorFunction<T, Observable<T>> {
-  return function windowCountOperatorFunction(source: Observable<T>) {
-    return lift(source, new WindowCountOperator<T>(windowSize, startWindowEvery));
-  };
-}
+  const startEvery = startWindowEvery > 0 ? startWindowEvery : windowSize;
 
-class WindowCountOperator<T> implements Operator<T, Observable<T>> {
-  constructor(private windowSize: number, private startWindowEvery: number) {}
+  return operate((source, subscriber) => {
+    let windows = [new Subject<T>()];
+    let starts: number[] = [];
+    let count = 0;
 
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
-    return source.subscribe(new WindowCountSubscriber(subscriber, this.windowSize, this.startWindowEvery));
-  }
-}
+    // Open the first window.
+    subscriber.next(windows[0].asObservable());
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class WindowCountSubscriber<T> extends Subscriber<T> {
-  private windows: Subject<T>[] = [new Subject<T>()];
-  private count: number = 0;
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value: T) => {
+          // Emit the value through all current windows.
+          // We don't need to create a new window yet, we
+          // do that as soon as we close one.
+          for (const window of windows) {
+            window.next(value);
+          }
+          // Here we're using the size of the window array to figure
+          // out if the oldest window has emitted enough values. We can do this
+          // because the size of the window array is a function of the values
+          // seen by the subscription. If it's time to close it, we complete
+          // it and remove it.
+          const c = count - windowSize + 1;
+          if (c >= 0 && c % startEvery === 0) {
+            windows.shift()!.complete();
+          }
 
-  constructor(protected destination: Subscriber<Observable<T>>, private windowSize: number, private startWindowEvery: number) {
-    super(destination);
-    destination.next(this.windows[0]);
-  }
-
-  protected _next(value: T) {
-    const startWindowEvery = this.startWindowEvery > 0 ? this.startWindowEvery : this.windowSize;
-    const destination = this.destination;
-    const windowSize = this.windowSize;
-    const windows = this.windows;
-    const len = windows.length;
-
-    for (let i = 0; i < len && !this.closed; i++) {
-      windows[i].next(value);
-    }
-    const c = this.count - windowSize + 1;
-    if (c >= 0 && c % startWindowEvery === 0 && !this.closed) {
-      windows.shift()!.complete();
-    }
-    if (++this.count % startWindowEvery === 0 && !this.closed) {
-      const window = new Subject<T>();
-      windows.push(window);
-      destination.next(window);
-    }
-  }
-
-  protected _error(err: any) {
-    const windows = this.windows;
-    if (windows) {
-      while (windows.length > 0 && !this.closed) {
-        windows.shift()!.error(err);
-      }
-    }
-    this.destination.error(err);
-  }
-
-  protected _complete() {
-    const windows = this.windows;
-    if (windows) {
-      while (windows.length > 0 && !this.closed) {
-        windows.shift()!.complete();
-      }
-    }
-    this.destination.complete();
-  }
-
-  unsubscribe() {
-    if (!this.closed) {
-      this.count = 0;
-      this.windows = null!;
-      super.unsubscribe();
-    }
-  }
+          // Look to see if the next count tells us it's time to open a new window.
+          // TODO: We need to figure out if this really makes sense. We're technically
+          // emitting windows *before* we have a value to emit them for. It's probably
+          // more expected that we should be emitting the window when the start
+          // count is reached -- not before.
+          if (++count % startEvery === 0) {
+            const window = new Subject<T>();
+            windows.push(window);
+            subscriber.next(window.asObservable());
+          }
+        },
+        (err) => {
+          while (windows.length > 0) {
+            windows.shift()!.error(err);
+          }
+          subscriber.error(err);
+        },
+        () => {
+          while (windows.length > 0) {
+            windows.shift()!.complete();
+          }
+          subscriber.complete();
+        },
+        () => {
+          starts = null!;
+          windows = null!;
+        }
+      )
+    );
+  });
 }

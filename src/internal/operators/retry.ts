@@ -1,10 +1,9 @@
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
-
+/** @prettier */
 import { MonoTypeOperatorFunction } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
 import { Subscription } from '../Subscription';
 import { EMPTY } from '../observable/empty';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 export interface RetryConfig {
   count: number;
@@ -65,49 +64,48 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
     config = configOrCount;
   } else {
     config = {
-      count: configOrCount
+      count: configOrCount,
     };
   }
   const { count, resetOnSuccess = false } = config;
 
-  return (source: Observable<T>) => count <= 0 ? EMPTY: lift(source, function (this: Subscriber<T>, source: Observable<T>) {
-    const subscriber = this;
-    let soFar = 0;
-    const subscription = new Subscription();
-    let innerSub: Subscription | null;
-    const subscribeForRetry = () => {
-      let syncUnsub = false;
-      innerSub = source.subscribe({
-        next: (value) => {
-          if (resetOnSuccess) {
-            soFar = 0;
+  return count <= 0
+    ? () => EMPTY
+    : operate((source, subscriber) => {
+        let soFar = 0;
+        let innerSub: Subscription | null;
+        const subscribeForRetry = () => {
+          let syncUnsub = false;
+          innerSub = source.subscribe(
+            new OperatorSubscriber(
+              subscriber,
+              (value) => {
+                if (resetOnSuccess) {
+                  soFar = 0;
+                }
+                subscriber.next(value);
+              },
+              (err) => {
+                if (soFar++ < count) {
+                  if (innerSub) {
+                    innerSub.unsubscribe();
+                    innerSub = null;
+                    subscribeForRetry();
+                  } else {
+                    syncUnsub = true;
+                  }
+                } else {
+                  subscriber.error(err);
+                }
+              }
+            )
+          );
+          if (syncUnsub) {
+            innerSub.unsubscribe();
+            innerSub = null;
+            subscribeForRetry();
           }
-          subscriber.next(value);
-        },
-        error: (err) => {
-          if (soFar++ < count) {
-            if (innerSub) {
-              innerSub.unsubscribe();
-              innerSub = null;
-              subscribeForRetry();
-            } else {
-              syncUnsub = true;
-            }
-          } else {
-            subscriber.error(err);
-          }
-        },
-        complete: () => subscriber.complete(),
-      });
-      if (syncUnsub) {
-        innerSub.unsubscribe();
-        innerSub = null;
+        };
         subscribeForRetry();
-      } else {
-        subscription.add(innerSub);
-      }
-    };
-    subscribeForRetry();
-    return subscription;
-  })
+      });
 }

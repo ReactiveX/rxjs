@@ -1,11 +1,9 @@
-/** @prettier */
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
-import { Observable } from '../Observable';
-import { lift } from '../util/lift';
+/** @prettier */
+import { Subscription } from '../Subscription';
+import { MonoTypeOperatorFunction } from '../types';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Make a {@link ConnectableObservable} behave like a ordinary observable and automates the way
@@ -61,51 +59,14 @@ import { lift } from '../util/lift';
  * @see {@link publish}
  */
 export function refCount<T>(): MonoTypeOperatorFunction<T> {
-  return function refCountOperatorFunction(source: ConnectableObservable<T>): Observable<T> {
-    return lift(source, new RefCountOperator());
-  } as MonoTypeOperatorFunction<T>;
-}
+  return operate((source, subscriber) => {
+    let connection: Subscription | null = null;
 
-class RefCountOperator<T> implements Operator<T, T> {
-  call(subscriber: Subscriber<T>, connectable: ConnectableObservable<T>): TeardownLogic {
-    (<any>connectable)._refCount++;
+    (source as any)._refCount++;
 
-    const refCounter = new RefCountSubscriber(subscriber, connectable);
-    const subscription = connectable.subscribe(refCounter);
-
-    if (!refCounter.closed) {
-      (<any>refCounter).connection = connectable.connect();
-    }
-
-    return subscription;
-  }
-}
-
-class RefCountSubscriber<T> extends Subscriber<T> {
-  private connection: Subscription | null = null;
-
-  constructor(destination: Subscriber<T>, private connectable: ConnectableObservable<T>) {
-    super(destination);
-  }
-
-  unsubscribe() {
-    if (!this.closed) {
-      const { connectable } = this;
-      if (!connectable) {
-        this.connection = null;
-        return;
-      }
-
-      this.connectable = null!;
-      const refCount = (connectable as any)._refCount;
-      if (refCount <= 0) {
-        this.connection = null;
-        return;
-      }
-
-      (connectable as any)._refCount = refCount - 1;
-      if (refCount > 1) {
-        this.connection = null;
+    const refCounter = new OperatorSubscriber(subscriber, undefined, undefined, undefined, () => {
+      if (!source || (source as any)._refCount <= 0 || 0 < --(source as any)._refCount) {
+        connection = null;
         return;
       }
 
@@ -133,15 +94,22 @@ class RefCountSubscriber<T> extends Subscriber<T> {
       //   b. RefCountSubscriber's connection Subscription reference is identical
       //      to the shared connection Subscription
       ///
-      const { connection } = this;
-      const sharedConnection = (<any>connectable)._connection;
-      this.connection = null;
 
-      if (sharedConnection && (!connection || sharedConnection === connection)) {
+      const sharedConnection = (<any>source)._connection;
+      const conn = connection;
+      connection = null;
+
+      if (sharedConnection && (!conn || sharedConnection === conn)) {
         sharedConnection.unsubscribe();
       }
 
-      super.unsubscribe();
+      subscriber.unsubscribe();
+    });
+
+    source.subscribe(refCounter);
+
+    if (!refCounter.closed) {
+      connection = (source as ConnectableObservable<T>).connect();
     }
-  }
+  });
 }

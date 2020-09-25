@@ -5,7 +5,6 @@ import { TestMessage } from './TestMessage';
 import { SubscriptionLog } from './SubscriptionLog';
 import { Subscription } from '../Subscription';
 import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler';
-import { AsyncScheduler } from '../scheduler/AsyncScheduler';
 import { ObservableNotification } from '../types';
 import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Notification';
 import { dateTimestampProvider } from '../scheduler/dateTimestampProvider';

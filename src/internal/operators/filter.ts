@@ -1,16 +1,13 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
-import { OperatorFunction, MonoTypeOperatorFunction, TeardownLogic } from '../types';
-import { lift } from '../util/lift';
+/** @prettier */
+import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
-export function filter<T, S extends T>(predicate: (value: T, index: number) => value is S,
-                                       thisArg?: any): OperatorFunction<T, S>;
+export function filter<T, S extends T>(predicate: (value: T, index: number) => value is S, thisArg?: any): OperatorFunction<T, S>;
 // NOTE(benlesh): T|null|undefined solves the issue discussed here: https://github.com/ReactiveX/rxjs/issues/4959#issuecomment-520629091
-export function filter<T>(predicate: BooleanConstructor): OperatorFunction<T|null|undefined, NonNullable<T>>;
-export function filter<T>(predicate: (value: T, index: number) => boolean,
-                          thisArg?: any): MonoTypeOperatorFunction<T>;
+export function filter<T>(predicate: BooleanConstructor): OperatorFunction<T | null | undefined, NonNullable<T>>;
+export function filter<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -54,50 +51,18 @@ export function filter<T>(predicate: (value: T, index: number) => boolean,
  * @param thisArg An optional argument to determine the value of `this`
  * in the `predicate` function.
  */
-export function filter<T>(predicate: (value: T, index: number) => boolean,
-                          thisArg?: any): MonoTypeOperatorFunction<T> {
-  return function filterOperatorFunction(source: Observable<T>): Observable<T> {
-    return lift(source, new FilterOperator(predicate, thisArg));
-  };
-}
+export function filter<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): MonoTypeOperatorFunction<T> {
+  return operate((source, subscriber) => {
+    // An index passed to our predicate function on each call.
+    let index = 0;
 
-class FilterOperator<T> implements Operator<T, T> {
-  constructor(private predicate: (value: T, index: number) => boolean,
-              private thisArg?: any) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class FilterSubscriber<T> extends Subscriber<T> {
-
-  count: number = 0;
-
-  constructor(destination: Subscriber<T>,
-              private predicate: (value: T, index: number) => boolean,
-              private thisArg: any) {
-    super(destination);
-  }
-
-  // the try catch block below is left specifically for
-  // optimization and perf reasons. a tryCatcher is not necessary here.
-  protected _next(value: T) {
-    let result: any;
-    try {
-      result = this.predicate.call(this.thisArg, value, this.count++);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    if (result) {
-      this.destination.next(value);
-    }
-  }
+    // Subscribe to the source, all errors and completions are
+    // forwarded to the consumer.
+    source.subscribe(
+      // Call the predicate with the appropriate `this` context,
+      // if the predicate returns `true`, then send the value
+      // to the consumer.
+      new OperatorSubscriber(subscriber, (value) => predicate.call(thisArg, value, index++) && subscriber.next(value))
+    );
+  });
 }

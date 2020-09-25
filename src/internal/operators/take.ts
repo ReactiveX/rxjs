@@ -1,10 +1,8 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
-import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+/** @prettier */
+import { MonoTypeOperatorFunction } from '../types';
 import { EMPTY } from '../observable/empty';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Emits only the first `count` values emitted by the source Observable.
@@ -51,41 +49,20 @@ import { lift } from '../util/lift';
  * if the source emits fewer than `count` values.
  */
 export function take<T>(count: number): MonoTypeOperatorFunction<T> {
-  if (isNaN(count)) {
-    throw new TypeError(`'count' is not a number`);
-  }
-  if (count < 0) {
-    throw new ArgumentOutOfRangeError;
-  }
-
-  return (source: Observable<T>) => (count === 0) ? EMPTY : lift(source, new TakeOperator(count));
-}
-
-class TakeOperator<T> implements Operator<T, T> {
-  constructor(private count: number) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new TakeSubscriber(subscriber, this.count));
-  }
-}
-
-class TakeSubscriber<T> extends Subscriber<T> {
-  private _valueCount: number = 0;
-
-  constructor(destination: Subscriber<T>, private count: number) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    const total = this.count;
-    const count = ++this._valueCount;
-    if (count <= total) {
-      this.destination.next(value);
-      if (count === total) {
-        this.destination.complete();
-        this.unsubscribe();
-      }
-    }
-  }
+  return count <= 0
+    ? () => EMPTY
+    : operate((source, subscriber) => {
+        let seen = 0;
+        source.subscribe(
+          new OperatorSubscriber(subscriber, (value) => {
+            if (++seen <= count) {
+              subscriber.next(value);
+              // We have to do <= here, because re-entrant code will increment `seen` twice.
+              if (count <= seen) {
+                subscriber.complete();
+              }
+            }
+          })
+        );
+      });
 }

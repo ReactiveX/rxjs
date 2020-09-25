@@ -1,15 +1,23 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
+/** @prettier */
 import { Observable } from '../Observable';
-import { Subscription } from '../Subscription';
-import { ComplexOuterSubscriber, ComplexInnerSubscriber, innerSubscribe } from '../innerSubscribe';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
-import { lift } from '../util/lift';
+import { MonoTypeOperatorFunction } from '../types';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
+import { concat } from '../observable/concat';
+import { take } from './take';
+import { ignoreElements } from './ignoreElements';
 
 /* tslint:disable:max-line-length */
 /** @deprecated In future versions, empty notifiers will no longer re-emit the source value on the output observable. */
-export function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<never>, subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T>;
-export function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<any>, subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T>;
+export function delayWhen<T>(
+  delayDurationSelector: (value: T, index: number) => Observable<never>,
+  subscriptionDelay?: Observable<any>
+): MonoTypeOperatorFunction<T>;
+/** @deprecated In future versions, `subscriptionDelay` will no longer be supported. */
+export function delayWhen<T>(
+  delayDurationSelector: (value: T, index: number) => Observable<any>,
+  subscriptionDelay?: Observable<any>
+): MonoTypeOperatorFunction<T>;
 /* tslint:disable:max-line-length */
 
 /**
@@ -71,151 +79,78 @@ export function delayWhen<T>(delayDurationSelector: (value: T, index: number) =>
  * `delayDurationSelector`.
  * @name delayWhen
  */
-export function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<any>,
-                             subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T> {
+export function delayWhen<T>(
+  delayDurationSelector: (value: T, index: number) => Observable<any>,
+  subscriptionDelay?: Observable<any>
+): MonoTypeOperatorFunction<T> {
   if (subscriptionDelay) {
+    // DEPRECATED PATH
     return (source: Observable<T>) =>
-      lift(new SubscriptionDelayObservable(source, subscriptionDelay), new DelayWhenOperator(delayDurationSelector));
-  }
-  return (source: Observable<T>) => lift(source, new DelayWhenOperator(delayDurationSelector));
-}
-
-class DelayWhenOperator<T> implements Operator<T, T> {
-  constructor(private delayDurationSelector: (value: T, index: number) => Observable<any>) {
+      concat(subscriptionDelay.pipe(take(1), ignoreElements()), source.pipe(delayWhen(delayDurationSelector)));
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new DelayWhenSubscriber(subscriber, this.delayDurationSelector));
-  }
-}
+  return operate((source, subscriber) => {
+    // An index to give to the projection function.
+    let index = 0;
+    // Whether or not the source has completed.
+    let isComplete = false;
+    // Tracks the number of actively delayed values we have.
+    let active = 0;
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class DelayWhenSubscriber<T, R> extends ComplexOuterSubscriber<T, R> {
-  private completed: boolean = false;
-  private delayNotifierSubscriptions: Array<Subscription> = [];
-  private index: number = 0;
+    /**
+     * Checks to see if we can complete the result and completes it, if so.
+     */
+    const checkComplete = () => isComplete && !active && subscriber.complete();
 
-  constructor(destination: Subscriber<T>,
-              private delayDurationSelector: (value: T, index: number) => Observable<any>) {
-    super(destination);
-  }
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value: T) => {
+          // Closed bit to guard reentrancy and
+          // synchronous next/complete (which both make the same calls right now)
+          let closed = false;
 
-  notifyNext(outerValue: T, _innerValue: any,
-             _outerIndex: number, innerSub: ComplexInnerSubscriber<T, R>): void {
-    this.destination.next(outerValue);
-    this.removeSubscription(innerSub);
-    this.tryComplete();
-  }
+          /**
+           * Notifies the consumer of the value.
+           */
+          const notify = () => {
+            // Notify the consumer.
+            subscriber.next(value);
 
-  notifyError(error: any): void {
-    this._error(error);
-  }
+            // Ensure our inner subscription is cleaned up
+            // as soon as possible. Once the first `next` fires,
+            // we have no more use for this subscription.
+            durationSubscriber?.unsubscribe();
 
-  notifyComplete(innerSub: ComplexInnerSubscriber<T, R>): void {
-    const value = this.removeSubscription(innerSub);
-    if (value) {
-      this.destination.next(value);
-    }
-    this.tryComplete();
-  }
+            if (!closed) {
+              active--;
+              closed = true;
+              checkComplete();
+            }
+          };
 
-  protected _next(value: T): void {
-    const index = this.index++;
-    try {
-      const delayNotifier = this.delayDurationSelector(value, index);
-      if (delayNotifier) {
-        this.tryDelay(delayNotifier, value);
-      }
-    } catch (err) {
-      this.destination.error(err);
-    }
-  }
+          // We have to capture our duration subscriber so we can unsubscribe from
+          // it on the first next notification it gives us.
+          const durationSubscriber = new OperatorSubscriber(
+            subscriber,
+            notify,
+            // Errors are sent to consumer.
+            undefined,
+            // TODO(benlesh): I'm inclined to say this is _incorrect_ behavior.
+            // A completion should not be a notification. Note the deprecation above
+            notify
+          );
 
-  protected _complete(): void {
-    this.completed = true;
-    this.tryComplete();
-    this.unsubscribe();
-  }
-
-  private removeSubscription(subscription: ComplexInnerSubscriber<T, R>): T {
-    subscription.unsubscribe();
-
-    const subscriptionIdx = this.delayNotifierSubscriptions.indexOf(subscription);
-    if (subscriptionIdx !== -1) {
-      this.delayNotifierSubscriptions.splice(subscriptionIdx, 1);
-    }
-
-    return subscription.outerValue;
-  }
-
-  private tryDelay(delayNotifier: Observable<any>, value: T): void {
-    const notifierSubscription = innerSubscribe(delayNotifier, new ComplexInnerSubscriber(this, value, 0));
-
-    if (notifierSubscription && !notifierSubscription.closed) {
-      const destination = this.destination as Subscription;
-      destination.add(notifierSubscription);
-      this.delayNotifierSubscriptions.push(notifierSubscription);
-    }
-  }
-
-  private tryComplete(): void {
-    if (this.completed && this.delayNotifierSubscriptions.length === 0) {
-      this.destination.complete();
-    }
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SubscriptionDelayObservable<T> extends Observable<T> {
-  constructor(public source: Observable<T>, private subscriptionDelay: Observable<any>) {
-    super();
-  }
-
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _subscribe(subscriber: Subscriber<T>) {
-    this.subscriptionDelay.subscribe(new SubscriptionDelaySubscriber(subscriber, this.source));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SubscriptionDelaySubscriber<T> extends Subscriber<T> {
-  private sourceSubscribed: boolean = false;
-
-  constructor(private parent: Subscriber<T>, private source: Observable<T>) {
-    super();
-  }
-
-  protected _next(unused: any) {
-    this.subscribeToSource();
-  }
-
-  protected _error(err: any) {
-    this.unsubscribe();
-    this.parent.error(err);
-  }
-
-  protected _complete() {
-    this.unsubscribe();
-    this.subscribeToSource();
-  }
-
-  private subscribeToSource(): void {
-    if (!this.sourceSubscribed) {
-      this.sourceSubscribed = true;
-      this.unsubscribe();
-      this.source.subscribe(this.parent);
-    }
-  }
+          active++;
+          delayDurationSelector(value, index++).subscribe(durationSubscriber);
+        },
+        // Errors are passed through to consumer.
+        undefined,
+        () => {
+          isComplete = true;
+          checkComplete();
+        }
+      )
+    );
+  });
 }

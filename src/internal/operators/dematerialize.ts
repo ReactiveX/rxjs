@@ -1,9 +1,8 @@
-import { Operator } from '../Operator';
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
+/** @prettier */
 import { observeNotification } from '../Notification';
 import { OperatorFunction, ObservableNotification, ValueFromNotification } from '../types';
-import { lift } from '../util/lift';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Converts an Observable of {@link ObservableNotification} objects into the emissions
@@ -53,28 +52,7 @@ import { lift } from '../util/lift';
  * embedded in Notification objects emitted by the source Observable.
  */
 export function dematerialize<N extends ObservableNotification<any>>(): OperatorFunction<N, ValueFromNotification<N>> {
-  return function dematerializeOperatorFunction(source: Observable<N>) {
-    return lift(source, new DeMaterializeOperator<N>());
-  };
-}
-
-class DeMaterializeOperator<N extends ObservableNotification<any>> implements Operator<N, ValueFromNotification<N>> {
-  call(subscriber: Subscriber<any>, source: any): any {
-    return source.subscribe(new DeMaterializeSubscriber<N>(subscriber));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class DeMaterializeSubscriber<N extends ObservableNotification<any>> extends Subscriber<N> {
-  constructor(destination: Subscriber<ValueFromNotification<N>>) {
-    super(destination);
-  }
-
-  protected _next(notification: N) {
-    observeNotification(notification, this.destination);
-  }
+  return operate((source, subscriber) => {
+    source.subscribe(new OperatorSubscriber(subscriber, (notification) => observeNotification(notification, subscriber)));
+  });
 }

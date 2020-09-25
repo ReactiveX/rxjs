@@ -2,10 +2,9 @@
  * @prettier
  */
 import { Operator } from './Operator';
-import { Subscriber } from './Subscriber';
-import { Subscription } from './Subscription';
-import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable } from './types';
-import { toSubscriber } from './util/toSubscriber';
+import { SafeSubscriber, Subscriber } from './Subscriber';
+import { isSubscription, Subscription } from './Subscription';
+import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable, Observer } from './types';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
@@ -208,7 +207,7 @@ export class Observable<T> implements Subscribable<T> {
     error?: ((error: any) => void) | null,
     complete?: (() => void) | null
   ): Subscription {
-    const subscriber = toSubscriber(observerOrNext, error, complete);
+    const subscriber = isSubscriber(observerOrNext) ? observerOrNext : new SafeSubscriber(observerOrNext, error, complete);
 
     // If we have an operator, it's the result of a lift, and we let the lift
     // mechanism do the subscription for us in the operator call. Otherwise,
@@ -237,13 +236,9 @@ export class Observable<T> implements Subscribable<T> {
       if (config.useDeprecatedSynchronousErrorHandling) {
         throw err;
       } else {
-        if (canReportError(sink)) {
-          sink.error(err);
-        } else {
-          // If an error is thrown during subscribe, but our subscriber is closed, so we cannot notify via the
-          // subscription "error" channel, it is an unhandled error and we need to report it appropriately.
-          reportUnhandledError(err);
-        }
+        // If an error is thrown during subscribe, but our subscriber is closed, so we cannot notify via the
+        // subscription "error" channel, it is an unhandled error and we need to report it appropriately.
+        canReportError(sink) ? sink.error(err) : reportUnhandledError(err);
       }
     }
   }
@@ -320,9 +315,7 @@ export class Observable<T> implements Subscribable<T> {
             next(value);
           } catch (err) {
             reject(err);
-            if (subscription) {
-              subscription.unsubscribe();
-            }
+            subscription?.unsubscribe();
           }
         },
         reject,
@@ -502,11 +495,16 @@ export function canReportError(subscriber: Subscriber<any>): boolean {
     const { closed, destination, isStopped } = subscriber as any;
     if (closed || isStopped) {
       return false;
-    } else if (destination && destination instanceof Subscriber) {
-      subscriber = destination;
-    } else {
-      subscriber = null!;
     }
+    subscriber = destination && destination instanceof Subscriber ? destination : null!;
   }
   return true;
+}
+
+function isObserver<T>(value: any): value is Observer<T> {
+  return value && typeof value.next === 'function' && typeof value.error === 'function' && typeof value.complete === 'function';
+}
+
+function isSubscriber<T>(value: any): value is Subscriber<T> {
+  return (value && value instanceof Subscriber) || (isObserver(value) && isSubscription(value));
 }

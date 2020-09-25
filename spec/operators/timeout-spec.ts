@@ -179,6 +179,12 @@ describe('timeout operator', () => {
     });
   });
 
+  it('should work with synchronous observable', () => {
+    expect(() => {
+      of(1).pipe(timeout(10)).subscribe();
+    }).to.not.throw();
+  });
+
   describe('config', () => {
     it('should timeout after a specified timeout period', () => {
       rxTestScheduler.run(({ cold, expectObservable, expectSubscriptions, time }) => {
@@ -418,7 +424,7 @@ describe('timeout operator', () => {
         const expected = '     -----x-y-z-|  ';
 
         const result = source.pipe(timeout({
-          each: t, 
+          each: t,
           with: () => inner,
         }));
 
@@ -439,7 +445,7 @@ describe('timeout operator', () => {
 
         // The the current frame is zero.
         const result = source.pipe(timeout({
-          first: new Date(t), 
+          first: new Date(t),
           with: () => inner,
         }));
 
@@ -459,7 +465,7 @@ describe('timeout operator', () => {
         const expected = '    ---a---b----x-y-|  ';
 
         const result = source.pipe(timeout({
-          each: t, 
+          each: t,
           with: () => inner, }));
 
         expectObservable(result).toBe(expected);
@@ -680,8 +686,7 @@ describe('timeout operator', () => {
     });
   });
 
-  // TODO: fix firehose unsubscription
-  it.skip('should stop listening to a synchronous observable when unsubscribed', () => {
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
     const synchronousObservable = new Observable<number>(subscriber => {
       // This will check to see if the subscriber was closed on each loop

@@ -1,50 +1,6 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic, SchedulerAction } from '../types';
-import { asap as asapScheduler } from '../scheduler/asap';
-import { Subscription } from '../Subscription';
-import { isScheduler } from '../util/isScheduler';
-import { lift } from '../util/lift';
-
-export interface DispatchArg<T> {
-  source: Observable<T>;
-  subscriber: Subscriber<T>;
-}
-
-class SubscribeOnObservable<T> extends Observable<T> {
-  /** @nocollapse */
-  static dispatch<T>(this: SchedulerAction<T>, arg: DispatchArg<T>) {
-    const { source, subscriber } = arg;
-    this.add(source.subscribe(subscriber));
-  }
-
-  constructor(
-    public source: Observable<T>,
-    private delayTime: number = 0,
-    private scheduler: SchedulerLike = asapScheduler
-  ) {
-    super();
-    if (delayTime < 0) {
-      this.delayTime = 0;
-    }
-    if (!isScheduler(scheduler)) {
-      this.scheduler = asapScheduler;
-    }
-  }
-
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _subscribe(subscriber: Subscriber<T>) {
-    const delay = this.delayTime;
-    const source = this.source;
-    const scheduler = this.scheduler;
-
-    return scheduler.schedule<DispatchArg<any>>(SubscribeOnObservable.dispatch as any, delay, {
-      source,
-      subscriber,
-    });
-  }
-}
+/** @prettier */
+import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
+import { operate } from '../util/lift';
 
 /**
  * Asynchronously subscribes Observers to this Observable on the specified {@link SchedulerLike}.
@@ -106,14 +62,7 @@ class SubscribeOnObservable<T> extends Observable<T> {
  * @return The source Observable modified so that its subscriptions happen on the specified {@link SchedulerLike}.
  */
 export function subscribeOn<T>(scheduler: SchedulerLike, delay: number = 0): MonoTypeOperatorFunction<T> {
-  return function subscribeOnOperatorFunction(source: Observable<T>): Observable<T> {
-    return lift(source, new SubscribeOnOperator<T>(scheduler, delay));
-  };
-}
-
-class SubscribeOnOperator<T> implements Operator<T, T> {
-  constructor(private scheduler: SchedulerLike, private delay: number) {}
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return new SubscribeOnObservable<T>(source, this.delay, this.scheduler).subscribe(subscriber);
-  }
+  return operate((source, subscriber) => {
+    subscriber.add(scheduler.schedule(() => source.subscribe(subscriber), delay));
+  });
 }

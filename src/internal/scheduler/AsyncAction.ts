@@ -4,6 +4,7 @@ import { SchedulerAction } from '../types';
 import { Subscription } from '../Subscription';
 import { AsyncScheduler } from './AsyncScheduler';
 import { intervalProvider } from './intervalProvider';
+import { arrRemove } from '../util/arrRemove';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -132,18 +133,12 @@ export class AsyncAction<T> extends Action<T> {
   unsubscribe() {
     if (!this.closed) {
       const { id, scheduler } = this;
-      const actions = scheduler.actions;
-      const index = actions.indexOf(this);
+      const { actions } = scheduler;
 
-      this.work = null!;
-      this.state = null!;
+      this.work = this.state = this.scheduler = null!;
       this.pending = false;
-      this.scheduler = null!;
 
-      if (index !== -1) {
-        actions.splice(index, 1);
-      }
-
+      arrRemove(actions, this);
       if (id != null) {
         this.id = this.recycleAsyncId(scheduler, id, null);
       }

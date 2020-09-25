@@ -1,8 +1,8 @@
+/** @prettier */
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
-import { Observer, OperatorFunction } from '../types';
-import { Subscriber } from '../Subscriber';
-import { lift } from '../util/lift';
+import { OperatorFunction } from '../types';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 /**
  * Counts the number of emissions on the source and emits that number when the
  * source completes.
@@ -63,59 +63,20 @@ import { lift } from '../util/lift';
  */
 
 export function count<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, number> {
-  return (source: Observable<T>) => lift(source, new CountOperator(predicate, source));
-}
+  return operate((source, subscriber) => {
+    let index = 0;
+    let count = 0;
 
-class CountOperator<T> implements Operator<T, number> {
-  constructor(private predicate: ((value: T, index: number, source: Observable<T>) => boolean) | undefined,
-              private source: Observable<T>) {
-  }
-
-  call(subscriber: Subscriber<number>, source: any): any {
-    return source.subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class CountSubscriber<T> extends Subscriber<T> {
-  private count: number = 0;
-  private index: number = 0;
-
-  constructor(destination: Observer<number>,
-              private predicate: ((value: T, index: number, source: Observable<T>) => boolean) | undefined,
-              private source: Observable<T>) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    if (this.predicate) {
-      this._tryPredicate(value);
-    } else {
-      this.count++;
-    }
-  }
-
-  private _tryPredicate(value: T) {
-    let result: any;
-
-    try {
-      result = this.predicate!(value, this.index++, this.source);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-
-    if (result) {
-      this.count++;
-    }
-  }
-
-  protected _complete(): void {
-    this.destination.next(this.count);
-    this.destination.complete();
-  }
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => (!predicate || predicate(value, index++, source)) && count++,
+        undefined,
+        () => {
+          subscriber.next(count);
+          subscriber.complete();
+        }
+      )
+    );
+  });
 }

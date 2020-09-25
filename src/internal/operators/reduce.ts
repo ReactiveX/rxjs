@@ -78,7 +78,7 @@ export function reduce<V, A>(accumulator: (acc: V | A, value: V, index: number) 
   }
   return function reduceOperatorFunction(source: Observable<V>): Observable<V | A> {
     return pipe(
-      scan<V, V | A>((acc, value, index) => accumulator(acc, value, index + 1)),
+      scan<V, V | A>((acc, value, index) => accumulator(acc, value, index)),
       takeLast(1),
     )(source);
   };

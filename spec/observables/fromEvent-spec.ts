@@ -392,4 +392,49 @@ describe('fromEvent', () => {
     }).to.not.throw(TypeError);
   });
 
+  it('should handle adding events to an arraylike of targets', () => {
+    const nodeList = {
+      [0]: {
+        addEventListener(...args: any[]) {
+          this._addEventListenerArgs = args;
+        },
+        removeEventListener(...args: any[]) {
+          this._removeEventListenerArgs = args;
+        },
+        _addEventListenerArgs: null as any,
+        _removeEventListenerArgs: null as any,
+      },
+      [1]: {
+        addEventListener(...args: any[]) {
+          this._addEventListenerArgs = args;
+        },
+        removeEventListener(...args: any[]) {
+          this._removeEventListenerArgs = args;
+        },
+        _addEventListenerArgs: null as any,
+        _removeEventListenerArgs: null as any,
+      },
+      length: 2
+    };
+
+    const options = {};
+
+    const subscription = fromEvent(nodeList, 'click', options).subscribe();
+
+    expect(nodeList[0]._addEventListenerArgs[0]).to.equal('click');
+    expect(nodeList[0]._addEventListenerArgs[1]).to.be.a('function');
+    expect(nodeList[0]._addEventListenerArgs[2]).to.equal(options);
+    
+    expect(nodeList[1]._addEventListenerArgs[0]).to.equal('click');
+    expect(nodeList[1]._addEventListenerArgs[1]).to.be.a('function');
+    expect(nodeList[1]._addEventListenerArgs[2]).to.equal(options);
+
+    expect(nodeList[0]._removeEventListenerArgs).to.be.null;
+    expect(nodeList[1]._removeEventListenerArgs).to.be.null;
+
+    subscription.unsubscribe();
+    
+    expect(nodeList[0]._removeEventListenerArgs).to.deep.equal(nodeList[0]._addEventListenerArgs);
+    expect(nodeList[1]._removeEventListenerArgs).to.deep.equal(nodeList[1]._addEventListenerArgs);
+  });
 });
