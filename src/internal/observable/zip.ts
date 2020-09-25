@@ -3,6 +3,9 @@ import { Observable } from '../Observable';
 import { ObservableInput, ObservedValueOf } from '../types';
 import { Subscription } from '../Subscription';
 import { from } from './from';
+import { argsOrArgArray } from '../util/argsOrArgArray';
+import { EMPTY } from './empty';
+import { OperatorSubscriber } from '../operators/OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
 /** @deprecated resultSelector is no longer supported, pipe to map instead */
@@ -183,47 +186,38 @@ export function zip<O extends ObservableInput<any>, R>(
     resultSelector = sources.pop() as typeof resultSelector;
   }
 
-  return new Observable<ObservedValueOf<O>[]>((subscriber) => {
-    const buffers: ObservedValueOf<O>[][] = sources.map(() => []);
-    const completed = sources.map(() => false);
-    const subscription = new Subscription();
+  sources = argsOrArgArray(sources);
 
-    const tryEmit = () => {
-      if (buffers.every((buffer) => buffer.length > 0)) {
-        let result: any = buffers.map((buffer) => buffer.shift()!);
-        if (resultSelector) {
-          try {
-            result = resultSelector(...result);
-          } catch (err) {
-            subscriber.error(err);
-            return;
-          }
-        }
-        subscriber.next(result);
-        if (buffers.some((buffer, i) => buffer.length === 0 && completed[i])) {
-          subscriber.complete();
-        }
-      }
-    };
+  return sources.length
+    ? new Observable<ObservedValueOf<O>[]>((subscriber) => {
+        const buffers: ObservedValueOf<O>[][] = sources.map(() => []);
+        const completed = sources.map(() => false);
+        const subscription = new Subscription();
 
-    for (let i = 0; !subscriber.closed && i < sources.length; i++) {
-      const source = from(sources[i]);
-      subscription.add(
-        source.subscribe({
-          next: (value) => {
-            buffers[i].push(value);
-            tryEmit();
-          },
-          error: (err) => subscriber.error(err),
-          complete: () => {
-            completed[i] = true;
-            if (buffers[i].length === 0) {
-              subscriber.complete();
-            }
-          },
-        })
-      );
-    }
-    return subscription;
-  });
+        for (let i = 0; !subscriber.closed && i < sources.length; i++) {
+          const source = from(sources[i]);
+          source.subscribe(
+            new OperatorSubscriber(
+              subscriber,
+              (value) => {
+                buffers[i].push(value);
+                if (buffers.every((buffer) => buffer.length)) {
+                  let result: any = buffers.map((buffer) => buffer.shift()!);
+                  subscriber.next(resultSelector ? resultSelector(...result) : result);
+                  if (buffers.some((buffer, i) => !buffer.length && completed[i])) {
+                    subscriber.complete();
+                  }
+                }
+              },
+              undefined,
+              () => {
+                completed[i] = true;
+                !buffers[i].length && subscriber.complete();
+              }
+            )
+          );
+        }
+        return subscription;
+      })
+    : EMPTY;
 }
