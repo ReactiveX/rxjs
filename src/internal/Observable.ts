@@ -8,7 +8,6 @@ import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable, Observe
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
-import { reportUnhandledError } from './util/reportUnhandledError';
 import { isFunction } from './util/isFunction';
 
 /**
