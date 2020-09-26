@@ -66,7 +66,6 @@ export function interval(period = 0,
     subscriber.add(
       scheduler.schedule(dispatch as any, period, { subscriber, counter: 0, period })
     );
-    return subscriber;
   });
 }
 
