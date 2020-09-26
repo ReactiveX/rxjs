@@ -965,12 +965,13 @@ describe('Observable.lift', () => {
   });
 
   it('should not swallow internal errors', (done) => {
-    config.onUnhandledError = (err) => {
-      expect(err).to.equal('bad');
-      config.onUnhandledError = null;
+    config.onStoppedNotification = (notification) => {
+      expect(notification.kind).to.equal('E');
+      expect(notification).to.have.property('error', 'bad');
+      config.onStoppedNotification = null;
       done();
     };
-    
+
     new Observable(subscriber => {
       subscriber.error('test');
       throw 'bad';
