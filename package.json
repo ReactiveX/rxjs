@@ -13,12 +13,10 @@
     }
   },
   "lint-staged": {
-    "src/**/*.ts": [
-      "prettier --write"
-    ],
     "*.js": "eslint --cache --fix",
-    "*.ts": [
-      "tslint --fix"
+    "(src|spec)/**/*.ts": [
+      "tslint --fix",
+      "prettier --write"
     ],
     "*.{js,css,md}": "prettier --write"
   },
