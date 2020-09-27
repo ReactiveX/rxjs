@@ -33,7 +33,7 @@ export function scheduled<T>(input: ObservableInput<T>, scheduler: SchedulerLike
       return scheduleArray(input, scheduler);
     } else if (isIterable(input) || typeof input === 'string') {
       return scheduleIterable(input, scheduler);
-    } else if (isFunction((input as any)[Symbol.asyncIterator])) {
+    } else if (Symbol.asyncIterator && isFunction((input as any)[Symbol.asyncIterator])) {
       return scheduleAsyncIterable(input as any, scheduler);
     }
   }

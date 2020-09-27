@@ -1,3 +1,4 @@
+/** @prettier */
 import { subscribeToArray } from '../util/subscribeToArray';
 import { subscribeToPromise } from '../util/subscribeToPromise';
 import { subscribeToIterable } from '../util/subscribeToIterable';
@@ -131,22 +132,23 @@ export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): O
 }
 
 function subscribeTo<T>(result: ObservableInput<T>): (subscriber: Subscriber<T>) => Subscription | void {
-  if (isFunction((result as any)[Symbol_observable])) {
-    return subscribeToObservable(result as any);
-  } else if (isArrayLike(result)) {
-    return subscribeToArray(result);
-  } else if (isPromise(result)) {
-    return subscribeToPromise(result);
-  } else if (isFunction((result as any)[Symbol_iterator])) {
-    return subscribeToIterable(result as any);
-  } else if (
-    Symbol && Symbol.asyncIterator && isFunction((result as any)[Symbol.asyncIterator])
-  ) {
-    return subscribeToAsyncIterable(result as any);
-  } else {
-    const value = isObject(result) ? 'an invalid object' : `'${result}'`;
-    const msg = `You provided ${value} where a stream was expected.`
-      + ' You can provide an Observable, Promise, Array, AsyncIterable, or Iterable.';
-    throw new TypeError(msg);
+  if (result != null) {
+    if (isFunction((result as any)[Symbol_observable])) {
+      return subscribeToObservable(result as any);
+    } else if (isArrayLike(result)) {
+      return subscribeToArray(result);
+    } else if (isPromise(result)) {
+      return subscribeToPromise(result);
+    } else if (isFunction((result as any)[Symbol_iterator])) {
+      return subscribeToIterable(result as any);
+    } else if (Symbol.asyncIterator && isFunction((result as any)[Symbol.asyncIterator])) {
+      return subscribeToAsyncIterable(result as any);
+    }
   }
+
+  throw new TypeError(
+    `You provided ${
+      isObject(result) ? 'an invalid object' : `'${result}'`
+    } where a stream was expected.  You can provide an Observable, Promise, Array, AsyncIterable, or Iterable.`
+  );
 }
