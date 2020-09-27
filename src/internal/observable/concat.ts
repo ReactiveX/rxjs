@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueUnionFromArray } from '../types';
 import { concatAll } from '../operators/concatAll';
-import { fromArray } from './fromArray';
+import { internalFromArray } from './fromArray';
 import { popScheduler } from '../util/args';
 
 /* tslint:disable:max-line-length */
@@ -127,5 +127,5 @@ export function concat<A extends ObservableInput<any>[]>(...observables: A): Obs
  * Observable subscription on.
  */
 export function concat(...args: any[]): Observable<unknown> {
-  return concatAll()(fromArray(args, popScheduler(args)));
+  return concatAll()(internalFromArray(args, popScheduler(args)));
 }

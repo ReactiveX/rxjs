@@ -1,12 +1,8 @@
-import { Observable } from '../Observable';
+/** @prettier */
 import { SchedulerLike } from '../types';
-import { subscribeToArray } from '../util/subscribeToArray';
 import { scheduleArray } from '../scheduled/scheduleArray';
+import { fromArrayLike } from './from';
 
-export function fromArray<T>(input: ArrayLike<T>, scheduler?: SchedulerLike) {
-  if (!scheduler) {
-    return new Observable<T>(subscribeToArray(input));
-  } else {
-    return scheduleArray(input, scheduler);
-  }
+export function internalFromArray<T>(input: ArrayLike<T>, scheduler?: SchedulerLike) {
+  return scheduler ? scheduleArray(input, scheduler) : fromArrayLike(input);
 }

@@ -4,7 +4,7 @@ import { mergeMap } from '../operators/mergeMap';
 import { isArrayLike } from '../util/isArrayLike';
 import { isFunction } from '../util/isFunction';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
-import { fromArray } from './fromArray';
+import { internalFromArray } from './fromArray';
 
 export interface NodeStyleEventEmitter {
   addListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
@@ -214,9 +214,9 @@ export function fromEvent<T>(
     }
 
     if (isArrayLike(target)) {
-      return (mergeMap((target: any) => fromEvent(target, eventName, options as any))(fromArray(target)) as Observable<T>).subscribe(
-        subscriber
-      );
+      return (mergeMap((target: any) => fromEvent(target, eventName, options as any))(internalFromArray(target)) as Observable<
+        T
+      >).subscribe(subscriber);
     }
 
     subscriber.error(new TypeError('Invalid event target'));
