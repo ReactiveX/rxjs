@@ -199,6 +199,11 @@ export function zip<O extends ObservableInput<any>, R>(
         // Keyed by the same index with which the sources were passed in.
         let completed = sources.map(() => false);
 
+        // When everything is done, release the arrays above.
+        subscriber.add(() => {
+          buffers = completed = null!;
+        });
+
         // Loop over our sources and subscribe to each one. The index `i` is
         // especially important here, because we use it in closures below to
         // access the related buffers and completion properties
@@ -233,14 +238,15 @@ export function zip<O extends ObservableInput<any>, R>(
                 // can complete the result, because we can't possibly have any more
                 // values from this to zip together with the oterh values.
                 !buffers[i].length && subscriber.complete();
-              },
-              () => {
-                // Free up memory
-                buffers = completed = null!;
               }
             )
           );
         }
+
+        // When everything is done, release the arrays above.
+        return () => {
+          buffers = completed = null!;
+        };
       })
     : EMPTY;
 }
