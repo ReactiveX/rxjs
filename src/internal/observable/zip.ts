@@ -190,34 +190,57 @@ export function zip<O extends ObservableInput<any>, R>(
 
   return sources.length
     ? new Observable<ObservedValueOf<O>[]>((subscriber) => {
-        const buffers: ObservedValueOf<O>[][] = sources.map(() => []);
-        const completed = sources.map(() => false);
-        const subscription = new Subscription();
+        // A collection of buffers of values from each source.
+        // Keyed by the same index with which the sources were passed in.
+        let buffers: ObservedValueOf<O>[][] = sources.map(() => []);
 
+        // An array of flags of whether or not the sources have completed.
+        // This is used to check to see if we should complete the result.
+        // Keyed by the same index with which the sources were passed in.
+        let completed = sources.map(() => false);
+
+        // Loop over our sources and subscribe to each one. The index `i` is
+        // especially important here, because we use it in closures below to
+        // access the related buffers and completion properties
         for (let i = 0; !subscriber.closed && i < sources.length; i++) {
-          const source = from(sources[i]);
-          source.subscribe(
+          from(sources[i]).subscribe(
             new OperatorSubscriber(
               subscriber,
               (value) => {
                 buffers[i].push(value);
+                // if every buffer has at least one value in it, then we
+                // can shift out the oldest value from each buffer and emit
+                // them as an array.
                 if (buffers.every((buffer) => buffer.length)) {
                   let result: any = buffers.map((buffer) => buffer.shift()!);
+                  // Emit the array. If theres' a result selector, use that.
                   subscriber.next(resultSelector ? resultSelector(...result) : result);
+                  // If any one of the sources is both complete and has an empty buffer
+                  // then we complete the result. This is because we cannot possibly have
+                  // any more values to zip together.
                   if (buffers.some((buffer, i) => !buffer.length && completed[i])) {
                     subscriber.complete();
                   }
                 }
               },
+              // Any error is passed through the result.
               undefined,
               () => {
+                // This source completed. Mark it as complete so we can check it later
+                // if we have to.
                 completed[i] = true;
+                // But, if this complete source has nothing in its buffer, then we
+                // can complete the result, because we can't possibly have any more
+                // values from this to zip together with the oterh values.
                 !buffers[i].length && subscriber.complete();
+              },
+              () => {
+                // Free up memory
+                buffers = completed = null!;
               }
             )
           );
         }
-        return subscription;
       })
     : EMPTY;
 }
