@@ -2,7 +2,7 @@
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike } from '../types';
 import { mergeAll } from '../operators/mergeAll';
-import { fromArray } from './fromArray';
+import { internalFromArray } from './fromArray';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { from } from './from';
 import { EMPTY } from './empty';
@@ -239,5 +239,5 @@ export function merge(...args: (ObservableInput<any> | SchedulerLike | number)[]
     ? // One source? Just return it.
       from(args[0] as ObservableInput<any>)
     : // Merge all sources
-      mergeAll(concurrent)(fromArray(args as ObservableInput<any>[], scheduler));
+      mergeAll(concurrent)(internalFromArray(args as ObservableInput<any>[], scheduler));
 }

@@ -1,5 +1,5 @@
 import { SchedulerLike, ValueFromArray } from '../types';
-import { fromArray } from './fromArray';
+import { internalFromArray } from './fromArray';
 import { Observable } from '../Observable';
 import { scheduleArray } from '../scheduled/scheduleArray';
 import { popScheduler } from '../util/args';
@@ -98,5 +98,5 @@ export function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<
 
 export function of<T>(...args: Array<T | SchedulerLike>): Observable<T> {
   const scheduler = popScheduler(args);
-  return scheduler ? scheduleArray(args as T[], scheduler) : fromArray(args as T[]);
+  return scheduler ? scheduleArray(args as T[], scheduler) : internalFromArray(args as T[]);
 }

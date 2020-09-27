@@ -2,7 +2,7 @@
 import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, SchedulerLike, ObservedValueUnionFromArray } from '../types';
 import { operate } from '../util/lift';
 import { argsOrArgArray } from '../util/argsOrArgArray';
-import { fromArray } from '../observable/fromArray';
+import { internalFromArray } from '../observable/fromArray';
 import { mergeAll } from './mergeAll';
 import { popNumber, popScheduler } from '../util/args';
 
@@ -126,7 +126,7 @@ export function merge<T, R>(...args: Array<ObservableInput<any> | SchedulerLike 
   args = argsOrArgArray(args);
 
   return operate((source, subscriber) => {
-    mergeAll(concurrent)(fromArray([source, ...(args as ObservableInput<T>[])], scheduler)).subscribe(subscriber as any);
+    mergeAll(concurrent)(internalFromArray([source, ...(args as ObservableInput<T>[])], scheduler)).subscribe(subscriber as any);
   });
 }
 

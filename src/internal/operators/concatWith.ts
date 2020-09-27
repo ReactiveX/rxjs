@@ -2,7 +2,7 @@
 import { ObservableInput, OperatorFunction, ObservedValueUnionFromArray, MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { operate } from '../util/lift';
 import { concatAll } from './concatAll';
-import { fromArray } from '../observable/fromArray';
+import { internalFromArray } from '../observable/fromArray';
 import { popScheduler } from '../util/args';
 
 export function concatWith<T>(): OperatorFunction<T, T>;
@@ -99,6 +99,6 @@ export function concat<T, R>(...observables: Array<ObservableInput<any> | Schedu
 export function concat<T, R>(...args: any[]): OperatorFunction<T, R> {
   const scheduler = popScheduler(args);
   return operate((source, subscriber) => {
-    concatAll()(fromArray([source, ...args], scheduler)).subscribe(subscriber as any);
+    concatAll()(internalFromArray([source, ...args], scheduler)).subscribe(subscriber as any);
   });
 }
