@@ -160,6 +160,17 @@ describe('TestScheduler', () => {
       scheduler.flush();
       expect(expected.length).to.equal(0);
     });
+
+    it('should emit notifications at frame zero synchronously upon subscription', () => {
+      const result: string[] = [];
+      const scheduler = new TestScheduler(null!);
+      const source = scheduler.createColdObservable('(ab|)');
+      source.subscribe({
+        next: (value) => result.push(value),
+        complete: () => result.push('complete'),
+      });
+      expect(result).to.deep.equal(['a', 'b', 'complete']);
+    });
   });
 
   describe('createHotObservable()', () => {
