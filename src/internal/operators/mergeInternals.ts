@@ -68,10 +68,8 @@ export function mergeInternals<T, R>(
           // Note that this call will increment `active` ahead of the
           // next conditional, if there were any more inner subscriptions
           // to start.
-          if (buffer.length) {
-            while (buffer.length && active < concurrent) {
-              doInnerSub(buffer.shift()!);
-            }
+          while (buffer.length && active < concurrent) {
+            doInnerSub(buffer.shift()!);
           }
           // Check to see if we can complete, and complete if so.
           checkComplete();
