@@ -15,12 +15,12 @@ describe('exhaust operator', () => {
     expectObservable(e1.pipe(exhaust())).toBe(expected);
   });
 
-  it('should switch to first immediately-scheduled inner Observable', () => {
-    const e1 = cold( '(ab|)');
-    const e1subs =   '(^!)';
-    const e2 = cold( '(cd|)');
+  it('should switch to first scheduled inner Observable', () => {
+    const e1 = cold( '-(ab|)');
+    const e1subs =   '^!';
+    const e2 = cold( '-(cd|)');
     const e2subs: string[] = [];
-    const expected = '(ab|)';
+    const expected = '-(ab|)';
 
     expectObservable(of(e1, e2).pipe(exhaust())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

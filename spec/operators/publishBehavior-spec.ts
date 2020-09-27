@@ -252,10 +252,10 @@ describe('publishBehavior operator', () => {
   });
 
   it('should multicast an empty source', () => {
-    const source = cold('|');
-    const sourceSubs =  '(^!)';
+    const source = cold('-|');
+    const sourceSubs =  '^!';
     const published = source.pipe(publishBehavior('0')) as ConnectableObservable<string>;
-    const expected =    '(0|)';
+    const expected =    '0|';
 
     expectObservable(published).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -276,10 +276,10 @@ describe('publishBehavior operator', () => {
   });
 
   it('should multicast a throw source', () => {
-    const source = cold('#');
-    const sourceSubs =  '(^!)';
+    const source = cold('-#');
+    const sourceSubs =  '^!';
     const published = source.pipe(publishBehavior('0')) as ConnectableObservable<string>;
-    const expected =    '(0#)';
+    const expected =    '0#';
 
     expectObservable(published).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);

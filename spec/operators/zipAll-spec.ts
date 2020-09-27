@@ -507,11 +507,11 @@ describe('zipAll operator', () => {
 
   it('should work with empty and never', () => {
     rxTestScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const a = cold('  |');
-      const asubs = '   (^!)';
-      const b = cold('  -');
-      const bsubs = '   (^!)';
-      const expected = '|';
+      const a = cold('  -|');
+      const asubs = '   ^!';
+      const b = cold('  --');
+      const bsubs = '   ^!';
+      const expected = '-|';
 
       expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -521,11 +521,11 @@ describe('zipAll operator', () => {
 
   it('should work with empty and empty', () => {
     rxTestScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const a = cold('  |');
-      const asubs = '   (^!)';
-      const b = cold('  |');
-      const bsubs = '   (^!)';
-      const expected = '|';
+      const a = cold('  -|');
+      const asubs = '   ^!';
+      const b = cold('  -|');
+      const bsubs = '   ^!';
+      const expected = '-|';
 
       expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -535,11 +535,11 @@ describe('zipAll operator', () => {
 
   it('should work with empty and non-empty', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const a = cold('  |');
-      const asubs = '   (^!)';
+      const a = cold('  -|');
+      const asubs = '   ^!';
       const b = hot('   ---1--|');
-      const bsubs = '   (^!)';
-      const expected = '|';
+      const bsubs = '   ^!';
+      const expected = '-|';
 
       expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -605,11 +605,11 @@ describe('zipAll operator', () => {
 
   it('should work with empty and error', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const a = cold('  |');
-      const asubs = '   (^!)';
+      const a = cold('  -|');
+      const asubs = '   ^!';
       const b = hot('   ------#', undefined, 'too bad');
-      const bsubs = '   (^!)';
-      const expected = '|';
+      const bsubs = '   ^!';
+      const expected = '-|';
 
       expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -620,10 +620,10 @@ describe('zipAll operator', () => {
   it('should work with error and empty', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const a = hot('   ------#', undefined, 'too bad');
-      const asubs = '   (^!)';
-      const b = cold('  |');
-      const bsubs = '   (^!)';
-      const expected = '|';
+      const asubs = '   ^!';
+      const b = cold('  -|');
+      const bsubs = '   ^!';
+      const expected = '-|';
 
       expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -717,11 +717,11 @@ describe('zipAll operator', () => {
 
   it('should work with error and some', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const a = cold('  #');
-      const asubs = '   (^!)';
-      const b = hot('   --1--2--3--');
-      const bsubs = '   (^!)';
-      const expected = '#';
+      const a = cold('  -#');
+      const asubs = '   ^!';
+      const b = hot('   ---1--2--3--');
+      const bsubs = '   ^!';
+      const expected = '-#';
 
       expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);

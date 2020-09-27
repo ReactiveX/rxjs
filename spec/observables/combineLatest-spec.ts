@@ -131,11 +131,11 @@ describe('static combineLatest', () => {
 
   it('should work with empty and empty', () => {
     rxTestScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 = cold(' |');
-      const e1subs = '  (^!)';
-      const e2 = cold(' |');
-      const e2subs = '  (^!)';
-      const expected = '|';
+      const e1 = cold(' -|');
+      const e1subs = '  ^!';
+      const e2 = cold(' -|');
+      const e2subs = '  ^!';
+      const expected = '-|';
 
       const result = combineLatest(e1, e2, (x, y) => x + y);
 

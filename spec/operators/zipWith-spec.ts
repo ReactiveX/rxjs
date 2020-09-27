@@ -272,11 +272,11 @@ describe('zipWith', () => {
 
   it('should work with empty and never', () => {
     rxTestScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const a = cold('  |');
-      const asubs = '   (^!)';
-      const b = cold('  -');
-      const bsubs = '   (^!)';
-      const expected = '|';
+      const a = cold('  -|');
+      const asubs = '   ^!';
+      const b = cold('  --');
+      const bsubs = '   ^!';
+      const expected = '-|';
 
       expectObservable(a.pipe(zipWith(b))).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -286,11 +286,11 @@ describe('zipWith', () => {
 
   it('should work with empty and empty', () => {
     rxTestScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const a = cold('  |');
-      const asubs = '   (^!)';
-      const b = cold('  |');
-      const bsubs = '   (^!)';
-      const expected = '|';
+      const a = cold('  -|');
+      const asubs = '   ^!';
+      const b = cold('  -|');
+      const bsubs = '   ^!';
+      const expected = '-|';
 
       expectObservable(a.pipe(zipWith(b))).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -300,11 +300,11 @@ describe('zipWith', () => {
 
   it('should work with empty and non-empty', () => {
     rxTestScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
-      const a = cold('  |');
-      const asubs = '   (^!)';
+      const a = cold('  -|');
+      const asubs = '   ^!';
       const b = hot('   ---1--|');
-      const bsubs = '   (^!)';
-      const expected = '|';
+      const bsubs = '   ^!';
+      const expected = '-|';
 
       expectObservable(a.pipe(zipWith(b))).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -356,11 +356,11 @@ describe('zipWith', () => {
 
   it('should work with empty and error', () => {
     rxTestScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
-      const a = cold('  |');
-      const asubs = '   (^!)';
+      const a = cold('  -|');
+      const asubs = '   ^!';
       const b = hot('   ------#', undefined, 'too bad');
-      const bsubs = '   (^!)';
-      const expected = '|';
+      const bsubs = '   ^!';
+      const expected = '-|';
 
       expectObservable(a.pipe(zipWith(b))).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -371,10 +371,10 @@ describe('zipWith', () => {
   it('should work with error and empty', () => {
     rxTestScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
       const a = hot('   ------#', undefined, 'too bad');
-      const asubs = '   (^!)';
-      const b = cold('  |');
-      const bsubs = '   (^!)';
-      const expected = '|';
+      const asubs = '   ^!';
+      const b = cold('  -|');
+      const bsubs = '   ^!';
+      const expected = '-|';
 
       expectObservable(a.pipe(zipWith(b))).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -468,11 +468,11 @@ describe('zipWith', () => {
 
   it('should work with error and some', () => {
     rxTestScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
-      const a = cold('  #');
-      const asubs = '   (^!)';
-      const b = hot('   --1--2--3--');
-      const bsubs = '   (^!)';
-      const expected = '#';
+      const a = cold('  -#');
+      const asubs = '   ^!';
+      const b = hot('   ---1--2--3--');
+      const bsubs = '   ^!';
+      const expected = '-#';
 
       expectObservable(a.pipe(zipWith(b))).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);

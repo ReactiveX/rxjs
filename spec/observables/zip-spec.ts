@@ -339,11 +339,11 @@ describe('static zip', () => {
   });
 
   it('should work with empty and never', () => {
-    const a = cold(  '|');
-    const asubs =    '(^!)';
-    const b = cold(  '-');
-    const bsubs =    '(^!)';
-    const expected = '|';
+    const a = cold(  '-|');
+    const asubs =    '^!';
+    const b = cold(  '--');
+    const bsubs =    '^!';
+    const expected = '-|';
 
     expectObservable(zip(a, b)).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -351,11 +351,11 @@ describe('static zip', () => {
   });
 
   it('should work with empty and empty', () => {
-    const a = cold(  '|');
-    const asubs =    '(^!)';
-    const b = cold(  '|');
-    const bsubs =    '(^!)';
-    const expected = '|';
+    const a = cold(  '-|');
+    const asubs =    '^!';
+    const b = cold(  '-|');
+    const bsubs =    '^!';
+    const expected = '-|';
 
     expectObservable(zip(a, b)).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -363,11 +363,11 @@ describe('static zip', () => {
   });
 
   it('should work with empty and non-empty', () => {
-    const a = cold(  '|');
-    const asubs =    '(^!)';
+    const a = cold(  '-|');
+    const asubs =    '^!';
     const b = hot(   '---1--|');
-    const bsubs =    '(^!)';
-    const expected = '|';
+    const bsubs =    '^!';
+    const expected = '-|';
 
     expectObservable(zip(a, b)).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -411,11 +411,11 @@ describe('static zip', () => {
   });
 
   it('should work with empty and error', () => {
-    const a = cold(  '|');
-    const asubs =    '(^!)';
+    const a = cold(  '-|');
+    const asubs =    '^!';
     const b = hot(   '------#', undefined, 'too bad');
-    const bsubs =    '(^!)';
-    const expected = '|';
+    const bsubs =    '^!';
+    const expected = '-|';
 
     expectObservable(zip(a, b)).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -507,11 +507,11 @@ describe('static zip', () => {
   });
 
   it('should work with error and some', () => {
-    const a = cold(  '#');
-    const asubs =    '(^!)';
-    const b = hot(   '--1--2--3--');
-    const bsubs =    '(^!)';
-    const expected = '#';
+    const a = cold(  '-#');
+    const asubs =    '^!';
+    const b = hot(   '---1--2--3--');
+    const bsubs =    '^!';
+    const expected = '-#';
 
     expectObservable(zip(a, b)).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);

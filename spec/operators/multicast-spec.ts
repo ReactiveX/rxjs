@@ -255,10 +255,10 @@ describe('multicast operator', () => {
   });
 
   it('should multicast an empty source', () => {
-    const source = cold('|');
-    const sourceSubs =  '(^!)';
+    const source = cold('-|');
+    const sourceSubs =  '^!';
     const multicasted = source.pipe(multicast(() => new Subject<string>())) as ConnectableObservable<string>;
-    const expected =    '|';
+    const expected =    '-|';
 
     expectObservable(multicasted).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -279,10 +279,10 @@ describe('multicast operator', () => {
   });
 
   it('should multicast a throw source', () => {
-    const source = cold('#');
-    const sourceSubs =  '(^!)';
+    const source = cold('-#');
+    const sourceSubs =  '^!';
     const multicasted = source.pipe(multicast(() => new Subject<string>())) as ConnectableObservable<string>;
-    const expected =    '#';
+    const expected =    '-#';
 
     expectObservable(multicasted).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
