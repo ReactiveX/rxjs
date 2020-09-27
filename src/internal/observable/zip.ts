@@ -1,7 +1,6 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { ObservableInput, ObservedValueOf } from '../types';
-import { Subscription } from '../Subscription';
 import { from } from './from';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { EMPTY } from './empty';
