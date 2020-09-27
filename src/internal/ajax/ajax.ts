@@ -295,6 +295,16 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       headers['x-requested-with'] = 'XMLHttpRequest';
     }
 
+    // Allow users to provide their XSRF cookie name and the name of a custom header to use to
+    // send the cookie.
+    const { withCredentials, xsrfCookieName, xsrfHeaderName } = config;
+    if ((withCredentials || !config.crossDomain) && xsrfCookieName && xsrfHeaderName) {
+      const xsrfCookie = document?.cookie.match(new RegExp(`(^|;\\s*)(${xsrfCookieName})=([^;]*)`))?.pop() ?? '';
+      if (xsrfCookie) {
+        headers[xsrfHeaderName] = xsrfCookie;
+      }
+    }
+
     // Examine the body and determine whether or not to serialize it
     // and set the content-type in `headers`, if we're able.
     let body: any;
