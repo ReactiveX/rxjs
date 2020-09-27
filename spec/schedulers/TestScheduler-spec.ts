@@ -161,7 +161,7 @@ describe('TestScheduler', () => {
       expect(expected.length).to.equal(0);
     });
 
-    it.only('should emit notifications at frame zero synchronously upon subscription', () => {
+    it('should emit notifications at frame zero synchronously upon subscription', () => {
       const result: string[] = [];
       const scheduler = new TestScheduler(null!);
       const source = scheduler.createColdObservable('(ab|)');
