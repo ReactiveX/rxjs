@@ -139,11 +139,11 @@ export function innerFrom<T>(input: ObservableInput<T>) {
     if (isPromise(input)) {
       return fromPromise(input);
     }
-    if (isIterable(input)) {
-      return fromIterable(input as any);
-    }
     if (isAsyncIterable(input)) {
-      return fromAsyncIterable(input as any);
+      return fromAsyncIterable(input);
+    }
+    if (isIterable(input)) {
+      return fromIterable(input);
     }
   }
 

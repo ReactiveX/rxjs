@@ -35,11 +35,11 @@ export function scheduled<T>(input: ObservableInput<T>, scheduler: SchedulerLike
     if (isPromise(input)) {
       return schedulePromise(input, scheduler);
     }
-    if (isIterable(input)) {
-      return scheduleIterable(input, scheduler);
-    }
     if (isAsyncIterable(input)) {
       return scheduleAsyncIterable(input, scheduler);
+    }
+    if (isIterable(input)) {
+      return scheduleIterable(input, scheduler);
     }
   }
   throw createInvalidObservableTypeError(input);
