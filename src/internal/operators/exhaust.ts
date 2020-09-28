@@ -2,7 +2,7 @@
 import { Subscription } from '../Subscription';
 import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/from';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 export function exhaust<T>(): OperatorFunction<ObservableInput<T>, T>;
@@ -60,7 +60,7 @@ export function exhaust<T>(): OperatorFunction<any, T> {
         subscriber,
         (inner) => {
           if (!innerSub) {
-            innerSub = from(inner).subscribe(
+            innerSub = innerFrom(inner).subscribe(
               new OperatorSubscriber(subscriber, undefined, undefined, () => {
                 innerSub = null;
                 isComplete && subscriber.complete();

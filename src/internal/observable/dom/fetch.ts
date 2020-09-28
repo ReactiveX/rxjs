@@ -1,19 +1,17 @@
+/** @prettier */
 import { Observable } from '../../Observable';
 import { Subscription } from '../../Subscription';
-import { from } from '../../observable/from';
+import { innerFrom } from '../../observable/from';
 import { ObservableInput } from '../../types';
 
 export function fromFetch<T>(
   input: string | Request,
   init: RequestInit & {
-    selector: (response: Response) => ObservableInput<T>
+    selector: (response: Response) => ObservableInput<T>;
   }
 ): Observable<T>;
 
-export function fromFetch(
-  input: string | Request,
-  init?: RequestInit
-): Observable<Response>;
+export function fromFetch(input: string | Request, init?: RequestInit): Observable<Response>;
 
 /**
  * Uses [the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) to
@@ -97,11 +95,11 @@ export function fromFetch(
 export function fromFetch<T>(
   input: string | Request,
   initWithSelector: RequestInit & {
-    selector?: (response: Response) => ObservableInput<T>
+    selector?: (response: Response) => ObservableInput<T>;
   } = {}
 ): Observable<Response | T> {
   const { selector, ...init } = initWithSelector;
-  return new Observable<Response | T>(subscriber => {
+  return new Observable<Response | T>((subscriber) => {
     const controller = new AbortController();
     const signal = controller.signal;
     let abortable = true;
@@ -139,34 +137,38 @@ export function fromFetch<T>(
       perSubscriberInit = { signal };
     }
 
-    fetch(input, perSubscriberInit).then(response => {
-      if (selector) {
-        subscription.add(from(selector(response)).subscribe(
-          value => subscriber.next(value),
-          err => {
-            abortable = false;
-            if (!unsubscribed) {
-              // Only forward the error if it wasn't an abort.
-              subscriber.error(err);
-            }
-          },
-          () => {
-            abortable = false;
-            subscriber.complete();
-          }
-        ));
-      } else {
+    fetch(input, perSubscriberInit)
+      .then((response) => {
+        if (selector) {
+          subscription.add(
+            innerFrom(selector(response)).subscribe(
+              (value) => subscriber.next(value),
+              (err) => {
+                abortable = false;
+                if (!unsubscribed) {
+                  // Only forward the error if it wasn't an abort.
+                  subscriber.error(err);
+                }
+              },
+              () => {
+                abortable = false;
+                subscriber.complete();
+              }
+            )
+          );
+        } else {
+          abortable = false;
+          subscriber.next(response);
+          subscriber.complete();
+        }
+      })
+      .catch((err) => {
         abortable = false;
-        subscriber.next(response);
-        subscriber.complete();
-      }
-    }).catch(err => {
-      abortable = false;
-      if (!unsubscribed) {
-        // Only forward the error if it wasn't an abort.
-        subscriber.error(err);
-      }
-    });
+        if (!unsubscribed) {
+          // Only forward the error if it wasn't an abort.
+          subscriber.error(err);
+        }
+      });
 
     return subscription;
   });

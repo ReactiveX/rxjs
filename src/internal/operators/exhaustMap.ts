@@ -3,7 +3,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/from';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
@@ -74,7 +74,7 @@ export function exhaustMap<T, R, O extends ObservableInput<any>>(
   if (resultSelector) {
     // DEPRECATED PATH
     return (source: Observable<T>) =>
-      source.pipe(exhaustMap((a, i) => from(project(a, i)).pipe(map((b: any, ii: any) => resultSelector(a, b, i, ii)))));
+      source.pipe(exhaustMap((a, i) => innerFrom(project(a, i)).pipe(map((b: any, ii: any) => resultSelector(a, b, i, ii)))));
   }
   return operate((source, subscriber) => {
     let index = 0;
@@ -89,7 +89,7 @@ export function exhaustMap<T, R, O extends ObservableInput<any>>(
               innerSub = null;
               isComplete && subscriber.complete();
             });
-            from(project(outerValue, index++)).subscribe(innerSub);
+            innerFrom(project(outerValue, index++)).subscribe(innerSub);
           }
         },
         undefined,

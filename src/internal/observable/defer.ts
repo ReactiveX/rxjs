@@ -1,6 +1,7 @@
+/** @prettier */
 import { Observable } from '../Observable';
 import { ObservedValueOf, ObservableInput } from '../types';
-import { from } from './from'; // lol
+import { innerFrom } from './from';
 
 /**
  * Creates an Observable that, on subscribe, calls an Observable factory to
@@ -52,7 +53,7 @@ import { from } from './from'; // lol
  * @owner Observable
  */
 export function defer<R extends ObservableInput<any>>(observableFactory: () => R): Observable<ObservedValueOf<R>> {
-  return new Observable<ObservedValueOf<R>>(subscriber => {
+  return new Observable<ObservedValueOf<R>>((subscriber) => {
     let input: R;
     try {
       input = observableFactory();
@@ -60,7 +61,7 @@ export function defer<R extends ObservableInput<any>>(observableFactory: () => R
       subscriber.error(err);
       return undefined;
     }
-    const source = from(input);
+    const source = innerFrom(input);
     return source.subscribe(subscriber);
   });
 }

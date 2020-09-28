@@ -2,7 +2,7 @@
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/from';
 import { noop } from '../util/noop';
 
 /**
@@ -46,7 +46,7 @@ import { noop } from '../util/noop';
  */
 export function takeUntil<T>(notifier: ObservableInput<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
-    from(notifier).subscribe(new OperatorSubscriber(subscriber, () => subscriber.complete(), undefined, noop));
+    innerFrom(notifier).subscribe(new OperatorSubscriber(subscriber, () => subscriber.complete(), undefined, noop));
     !subscriber.closed && source.subscribe(subscriber);
   });
 }

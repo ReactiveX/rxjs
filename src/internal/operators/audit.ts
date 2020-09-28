@@ -3,7 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction, SubscribableOrPromise } from '../types';
 
 import { operate } from '../util/lift';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/from';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -73,7 +73,7 @@ export function audit<T>(durationSelector: (value: T) => SubscribableOrPromise<a
         hasValue = true;
         lastValue = value;
         if (!durationSubscriber) {
-          from(durationSelector(value)).subscribe(
+          innerFrom(durationSelector(value)).subscribe(
             (durationSubscriber = new OperatorSubscriber(subscriber, endDuration, undefined, endDuration))
           );
         }

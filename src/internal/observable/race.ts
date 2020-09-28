@@ -1,6 +1,6 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { from } from './from';
+import { innerFrom } from './from';
 import { Subscription } from '../Subscription';
 import { ObservableInput, ObservedValueUnionFromArray } from '../types';
 import { argsOrArgArray } from '../util/argsOrArgArray';
@@ -54,7 +54,7 @@ export function race<A extends ObservableInput<any>[]>(...observables: A): Obser
 export function race<T>(...sources: (ObservableInput<T> | ObservableInput<T>[])[]): Observable<any> {
   sources = argsOrArgArray(sources);
   // If only one source was passed, just return it. Otherwise return the race.
-  return sources.length === 1 ? from(sources[0]) : new Observable<T>(raceInit(sources as ObservableInput<T>[]));
+  return sources.length === 1 ? innerFrom(sources[0] as ObservableInput<T>) : new Observable<T>(raceInit(sources as ObservableInput<T>[]));
 }
 
 /**
@@ -72,7 +72,7 @@ export function raceInit<T>(sources: ObservableInput<T>[]) {
     // stop before it subscribes to any more.
     for (let i = 0; subscriptions && !subscriber.closed && i < sources.length; i++) {
       subscriptions.push(
-        from(sources[i] as ObservableInput<T>).subscribe(
+        innerFrom(sources[i] as ObservableInput<T>).subscribe(
           new OperatorSubscriber(subscriber, (value) => {
             if (subscriptions) {
               // We're still racing, but we won! So unsubscribe

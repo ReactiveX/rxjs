@@ -4,7 +4,7 @@ import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/from';
 
 /**
  * Buffers the source Observable values, using a factory function of closing
@@ -61,7 +61,7 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
 
       let closingNotifier: Observable<any>;
       try {
-        closingNotifier = from(closingSelector());
+        closingNotifier = innerFrom(closingSelector());
       } catch (err) {
         subscriber.error(err);
         return;

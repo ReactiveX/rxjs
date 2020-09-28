@@ -1,7 +1,7 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { ObservableInput, ObservedValueOf } from '../types';
-import { from } from './from';
+import { innerFrom } from './from';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { EMPTY } from './empty';
 import { OperatorSubscriber } from '../operators/OperatorSubscriber';
@@ -205,7 +205,7 @@ export function zip<O extends ObservableInput<any>, R>(
         // especially important here, because we use it in closures below to
         // access the related buffers and completion properties
         for (let i = 0; !subscriber.closed && i < sources.length; i++) {
-          from(sources[i]).subscribe(
+          innerFrom(sources[i]).subscribe(
             new OperatorSubscriber(
               subscriber,
               (value) => {

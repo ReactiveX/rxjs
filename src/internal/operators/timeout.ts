@@ -5,7 +5,7 @@ import { isValidDate } from '../util/isDate';
 import { Subscription } from '../Subscription';
 import { operate } from '../util/lift';
 import { Observable } from '../Observable';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/from';
 import { createErrorClass } from '../util/createErrorClass';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
@@ -340,7 +340,7 @@ export function timeout<T, R, M>(config: number | Date | TimeoutConfig<T, R, M>,
         (timerSubscription = scheduler!.schedule(() => {
           let withObservable: Observable<R>;
           try {
-            withObservable = from(
+            withObservable = innerFrom(
               _with!({
                 meta,
                 lastValue,
@@ -363,7 +363,7 @@ export function timeout<T, R, M>(config: number | Date | TimeoutConfig<T, R, M>,
           subscriber,
           (value) => {
             // clear the timer so we can emit and start another one.
-              timerSubscription?.unsubscribe();
+            timerSubscription?.unsubscribe();
             seen++;
             // Emit
             subscriber.next((lastValue = value));
@@ -373,9 +373,9 @@ export function timeout<T, R, M>(config: number | Date | TimeoutConfig<T, R, M>,
           undefined,
           undefined,
           () => {
-              if (!timerSubscription?.closed) {
-                timerSubscription?.unsubscribe();
-              }
+            if (!timerSubscription?.closed) {
+              timerSubscription?.unsubscribe();
+            }
             // Be sure not to hold the last value in memory after unsubscription
             // it could be quite large.
             lastValue = null;
