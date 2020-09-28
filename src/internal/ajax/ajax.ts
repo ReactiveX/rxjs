@@ -307,14 +307,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
 
     // Examine the body and determine whether or not to serialize it
     // and set the content-type in `headers`, if we're able.
-    let body: any;
-    try {
-      body = extractContentTypeAndMaybeSerializeBody(config.body, headers);
-    } catch (err) {
-      // We might land here because of JSON.stringify issues, like circular refrences.
-      destination.error(err);
-      return;
-    }
+    const body = extractContentTypeAndMaybeSerializeBody(config.body, headers);
 
     const _request: AjaxRequest = {
       // Default values
@@ -335,99 +328,95 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
 
     let xhr: XMLHttpRequest;
 
-    try {
-      const { url } = _request;
-      if (!url) {
-        throw new TypeError('url is required');
+    const { url } = _request;
+    if (!url) {
+      throw new TypeError('url is required');
+    }
+
+    // Create our XHR so we can get started.
+    xhr = config.createXHR ? config.createXHR() : new XMLHttpRequest();
+
+    {
+      ///////////////////////////////////////////////////
+      // set up the events before open XHR
+      // https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
+      // You need to add the event listeners before calling open() on the request.
+      // Otherwise the progress events will not fire.
+      ///////////////////////////////////////////////////
+
+      const progressSubscriber = config.progressSubscriber;
+
+      xhr.ontimeout = () => {
+        const timeoutError = new AjaxTimeoutError(xhr, _request);
+        progressSubscriber?.error?.(timeoutError);
+        destination.error(timeoutError);
+      };
+
+      if (progressSubscriber) {
+        xhr.upload.onprogress = (e: ProgressEvent) => {
+          progressSubscriber.next?.(e);
+        };
       }
 
-      // Create our XHR so we can get started.
-      xhr = config.createXHR ? config.createXHR() : new XMLHttpRequest();
+      xhr.onerror = (e: ProgressEvent) => {
+        progressSubscriber?.error?.(e);
+        destination.error(new AjaxError('ajax error', xhr, _request));
+      };
 
-      {
-        ///////////////////////////////////////////////////
-        // set up the events before open XHR
-        // https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
-        // You need to add the event listeners before calling open() on the request.
-        // Otherwise the progress events will not fire.
-        ///////////////////////////////////////////////////
+      xhr.onload = (e: ProgressEvent) => {
+        // 4xx and 5xx should error (https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
+        if (xhr.status < 400) {
+          progressSubscriber?.complete?.();
 
-        const progressSubscriber = config.progressSubscriber;
-
-        xhr.ontimeout = () => {
-          const timeoutError = new AjaxTimeoutError(xhr, _request);
-          progressSubscriber?.error?.(timeoutError);
-          destination.error(timeoutError);
-        };
-
-        if (progressSubscriber) {
-          xhr.upload.onprogress = (e: ProgressEvent) => {
-            progressSubscriber.next?.(e);
-          };
-        }
-
-        xhr.onerror = (e: ProgressEvent) => {
-          progressSubscriber?.error?.(e);
-          destination.error(new AjaxError('ajax error', xhr, _request));
-        };
-
-        xhr.onload = (e: ProgressEvent) => {
-          // 4xx and 5xx should error (https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
-          if (xhr.status < 400) {
-            progressSubscriber?.complete?.();
-
-            let response: AjaxResponse<T>;
-            try {
-              // This can throw in IE, because we end up needing to do a JSON.parse
-              // of the response in some cases to produce object we'd expect from
-              // modern browsers.
-              response = new AjaxResponse(e, xhr, _request);
-            } catch (err) {
-              destination.error(err);
-              return;
-            }
-            destination.next(response);
-            destination.complete();
-          } else {
-            progressSubscriber?.error?.(e);
-            destination.error(new AjaxError('ajax error ' + xhr.status, xhr, _request));
+          let response: AjaxResponse<T>;
+          try {
+            // This can throw in IE, because we end up needing to do a JSON.parse
+            // of the response in some cases to produce object we'd expect from
+            // modern browsers.
+            response = new AjaxResponse(e, xhr, _request);
+          } catch (err) {
+            destination.error(err);
+            return;
           }
-        };
-      }
-
-      const { user, method, async } = _request;
-      // open XHR
-      if (user) {
-        xhr.open(method, url, async, user, _request.password);
-      } else {
-        xhr.open(method, url, async);
-      }
-
-      // timeout, responseType and withCredentials can be set once the XHR is open
-      if (async) {
-        xhr.timeout = _request.timeout;
-        xhr.responseType = _request.responseType;
-      }
-
-      if ('withCredentials' in xhr) {
-        xhr.withCredentials = _request.withCredentials;
-      }
-
-      // set headers
-      for (const key in headers) {
-        if (headers.hasOwnProperty(key)) {
-          xhr.setRequestHeader(key, headers[key]);
+          destination.next(response);
+          destination.complete();
+        } else {
+          progressSubscriber?.error?.(e);
+          destination.error(new AjaxError('ajax error ' + xhr.status, xhr, _request));
         }
-      }
+      };
+    }
 
-      // finally send the request
-      if (body) {
-        xhr.send(body);
-      } else {
-        xhr.send();
+    const { user, method, async } = _request;
+    // open XHR
+    if (user) {
+      xhr.open(method, url, async, user, _request.password);
+    } else {
+      xhr.open(method, url, async);
+    }
+
+    // timeout, responseType and withCredentials can be set once the XHR is open
+    if (async) {
+      xhr.timeout = _request.timeout;
+      xhr.responseType = _request.responseType;
+    }
+
+    if ('withCredentials' in xhr) {
+      xhr.withCredentials = _request.withCredentials;
+    }
+
+    // set headers
+    for (const key in headers) {
+      if (headers.hasOwnProperty(key)) {
+        xhr.setRequestHeader(key, headers[key]);
       }
-    } catch (err) {
-      destination.error(err);
+    }
+
+    // finally send the request
+    if (body) {
+      xhr.send(body);
+    } else {
+      xhr.send();
     }
 
     return () => {
