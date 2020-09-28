@@ -1,5 +1,4 @@
 /** @prettier */
-import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
@@ -172,17 +171,12 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | 
       })
     );
 
-    // Other sources
+    // Other sources. Note that here we are not checking `subscriber.closed`,
+    // this causes all inputs to be subscribed to, even if nothing can be emitted
+    // from them. This is an important distinction because subscription constitutes
+    // a side-effect.
     for (let i = 0; i < len; i++) {
-      const input = inputs[i];
-      let otherSource: Observable<any>;
-      try {
-        otherSource = innerFrom(input);
-      } catch (err) {
-        subscriber.error(err);
-        return;
-      }
-      otherSource.subscribe(
+      innerFrom(inputs[i]).subscribe(
         new OperatorSubscriber(
           subscriber,
           (value) => {
