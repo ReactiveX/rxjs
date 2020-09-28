@@ -156,13 +156,12 @@ export function innerFrom<T>(input: ObservableInput<T>) {
  */
 function fromInteropObservable<T>(obj: any) {
   return new Observable((subscriber: Subscriber<T>) => {
-    const obs = (obj as any)[Symbol_observable]();
-    if (typeof obs.subscribe !== 'function') {
-      // Should be caught by observable subscribe function error handling.
-      throw new TypeError('Provided object does not correctly implement Symbol.observable');
-    } else {
+    const obs = obj[Symbol_observable]();
+    if (isFunction(obs.subscribe)) {
       return obs.subscribe(subscriber);
     }
+    // Should be caught by observable subscribe function error handling.
+    throw new TypeError('Provided object does not correctly implement Symbol.observable');
   });
 }
 
