@@ -210,23 +210,21 @@ function fromIterable<T>(iterable: Iterable<T>) {
   return new Observable((subscriber: Subscriber<T>) => {
     const iterator = (iterable as any)[Symbol_iterator]();
 
-    do {
-      let item: IteratorResult<T>;
-      try {
-        item = iterator.next();
-      } catch (err) {
-        subscriber.error(err);
-        return;
-      }
-      if (item.done) {
+    while (!subscriber.closed) {
+      // Note that any error thrown in the iterator here
+      // will be caught by the subscribe call in `Observable`,
+      // and sent to the consumer via `subscriber.error`.
+      const { done, value } = iterator.next();
+      if (done) {
+        // If we're done, just complete. This will set
+        // subscriber.closed to `true` and kill the loop.
+        // We don't next values from an "done" iterator result.
+        // This is to mirror the behavior of JavaScripts `for..of`.
         subscriber.complete();
-        break;
+      } else {
+        subscriber.next(value);
       }
-      subscriber.next(item.value);
-      if (subscriber.closed) {
-        break;
-      }
-    } while (true);
+    }
 
     // Finalize the iterator if it happens to be a Generator
     return () => isFunction(iterator?.return) && iterator.return();
