@@ -184,4 +184,39 @@ describe('from', () => {
       })
     })
   }
+
+  it('should appropriately handle errors from an iterator', () => {
+    const erroringIterator = (function* () {
+      for (let i = 0; i < 5; i++) {
+        if (i === 3) {
+          throw new Error('bad');
+        }
+        yield i;
+      }
+    })();
+
+    const results: any[] = [];
+
+    from(erroringIterator).subscribe({
+      next: x => results.push(x),
+      error: err => results.push(err.message)
+    });
+
+    expect(results).to.deep.equal([0, 1, 2, 'bad']);
+  });
+
+  it('should execute the finally block of a generator', () => {
+    let finallyExecuted = false;
+    const generator = (function* () {
+      try {
+        yield 'hi';
+      } finally {
+        finallyExecuted = true;
+      }
+    })();
+
+    from(generator).subscribe();
+
+    expect(finallyExecuted).to.be.true;
+  });
 });
