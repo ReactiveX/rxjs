@@ -37,27 +37,13 @@ export function using<T>(
   observableFactory: (resource: Unsubscribable | void) => ObservableInput<T> | void
 ): Observable<T> {
   return new Observable<T>((subscriber) => {
-    let resource: Unsubscribable | void;
-
-    try {
-      resource = resourceFactory();
-    } catch (err) {
-      subscriber.error(err);
-      return undefined;
-    }
-
-    let result: ObservableInput<T> | void;
-    try {
-      result = observableFactory(resource);
-    } catch (err) {
-      subscriber.error(err);
-      return undefined;
-    }
-
+    const resource = resourceFactory();
+    const result = observableFactory(resource);
     const source = result ? innerFrom(result) : EMPTY;
-    const subscription = source.subscribe(subscriber);
+    source.subscribe(subscriber);
     return () => {
-      subscription.unsubscribe();
+      // NOTE: Optional chaining did not work here.
+      // Related TS Issue: https://github.com/microsoft/TypeScript/issues/40818
       if (resource) {
         resource.unsubscribe();
       }
