@@ -86,7 +86,7 @@ export class TestScheduler extends VirtualTimeScheduler {
    * @param error The error to use for the `#` marble (if present).
    */
   createColdObservable<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): ColdObservable<T> {
-    if (marbles.indexOf('^') !== -1) {
+    if (marbles.match(/[^(]\^/)) {
       throw new Error('cold observable cannot have subscription offset "^"');
     }
     if (marbles.indexOf('!') !== -1) {
@@ -116,13 +116,15 @@ export class TestScheduler extends VirtualTimeScheduler {
   private materializeInnerObservable(observable: Observable<any>,
                                      outerFrame: number): TestMessage[] {
     const messages: TestMessage[] = [];
+    let subscribing = true;
     observable.subscribe((value) => {
-      messages.push({ frame: this.frame - outerFrame, notification: nextNotification(value) });
+      messages.push({ frame: this.frame - outerFrame, notification: nextNotification(value), subscribing });
     }, (error) => {
-      messages.push({ frame: this.frame - outerFrame, notification: errorNotification(error) });
+      messages.push({ frame: this.frame - outerFrame, notification: errorNotification(error), subscribing });
     }, () => {
-      messages.push({ frame: this.frame - outerFrame, notification: COMPLETE_NOTIFICATION });
+      messages.push({ frame: this.frame - outerFrame, notification: COMPLETE_NOTIFICATION, subscribing });
     });
+    subscribing = false;
     return messages;
   }
 
@@ -137,18 +139,20 @@ export class TestScheduler extends VirtualTimeScheduler {
     let subscription: Subscription;
 
     this.schedule(() => {
+      let subscribing = true;
       subscription = observable.subscribe(x => {
         let value = x;
         // Support Observable-of-Observables
         if (x instanceof Observable) {
           value = this.materializeInnerObservable(value, this.frame);
         }
-        actual.push({ frame: this.frame, notification: nextNotification(value) });
+        actual.push({ frame: this.frame, notification: nextNotification(value), subscribing });
       }, (error) => {
-        actual.push({ frame: this.frame, notification: errorNotification(error) });
+        actual.push({ frame: this.frame, notification: errorNotification(error), subscribing });
       }, () => {
-        actual.push({ frame: this.frame, notification: COMPLETE_NOTIFICATION });
+        actual.push({ frame: this.frame, notification: COMPLETE_NOTIFICATION, subscribing });
       });
+      subscribing = false;
     }, subscriptionFrame);
 
     if (unsubscriptionFrame !== Infinity) {
@@ -308,8 +312,13 @@ export class TestScheduler extends VirtualTimeScheduler {
     }
     const len = marbles.length;
     const testMessages: TestMessage[] = [];
-    const subIndex = runMode ? marbles.replace(/^[ ]+/, '').indexOf('^') : marbles.indexOf('^');
-    let frame = subIndex === -1 ? 0 : (subIndex * -this.frameTimeFactor);
+    const subMarbles = runMode ? marbles.replace(/^[ ]+/, '') : marbles;
+    const subIndex = subMarbles.indexOf('^');
+    // If the ^ character is the first character within a () group, it's a
+    // synchronous-within-subscribe indicator for a cold observable.
+    let frame = (subIndex === -1) || (subMarbles.charAt(subIndex - 1) === '(')
+      ? 0
+      : (subIndex * -this.frameTimeFactor);
     const getValue = typeof values !== 'object' ?
       (x: any) => x :
       (x: any) => {
@@ -320,6 +329,7 @@ export class TestScheduler extends VirtualTimeScheduler {
         return values[x];
       };
     let groupStart = -1;
+    let subscribing = false;
 
     for (let i = 0; i < len; i++) {
       let nextFrame = frame;
@@ -345,6 +355,7 @@ export class TestScheduler extends VirtualTimeScheduler {
           break;
         case ')':
           groupStart = -1;
+          subscribing = false;
           advanceFrameBy(1);
           break;
         case '|':
@@ -352,6 +363,12 @@ export class TestScheduler extends VirtualTimeScheduler {
           advanceFrameBy(1);
           break;
         case '^':
+          if (groupStart > -1) {
+            if (testMessages.length) {
+              throw new Error('the synchronous-upon-subscription marker "^" must precede all notifications');
+            }
+            subscribing = true;
+          }
           advanceFrameBy(1);
           break;
         case '#':
@@ -398,7 +415,11 @@ export class TestScheduler extends VirtualTimeScheduler {
       }
 
       if (notification) {
-        testMessages.push({ frame: groupStart > -1 ? groupStart : frame, notification });
+        testMessages.push({
+          frame: groupStart > -1 ? groupStart : frame,
+          notification,
+          subscribing
+        });
       }
 
       frame = nextFrame;

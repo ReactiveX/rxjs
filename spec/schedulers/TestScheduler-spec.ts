@@ -11,7 +11,7 @@ import { intervalProvider } from 'rxjs/internal/scheduler/intervalProvider';
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {TestScheduler} */
-describe('TestScheduler', () => {
+describe.only('TestScheduler', () => {
   it('should exist', () => {
     expect(TestScheduler).exist;
     expect(TestScheduler).to.be.a('function');
@@ -25,54 +25,54 @@ describe('TestScheduler', () => {
     it('should parse a marble string into a series of notifications and types', () => {
       const result = TestScheduler.parseMarbles('-------a---b---|', { a: 'A', b: 'B' });
       expect(result).deep.equal([
-        { frame: 70, notification: nextNotification('A') },
-        { frame: 110, notification: nextNotification('B') },
-        { frame: 150, notification: COMPLETE_NOTIFICATION }
+        { frame: 70, notification: nextNotification('A'), subscribing: false },
+        { frame: 110, notification: nextNotification('B'), subscribing: false },
+        { frame: 150, notification: COMPLETE_NOTIFICATION, subscribing: false }
       ]);
     });
 
     it('should parse a marble string, allowing spaces too', () => {
       const result = TestScheduler.parseMarbles('--a--b--|   ', { a: 'A', b: 'B' });
       expect(result).deep.equal([
-        { frame: 20, notification: nextNotification('A') },
-        { frame: 50, notification: nextNotification('B') },
-        { frame: 80, notification: COMPLETE_NOTIFICATION }
+        { frame: 20, notification: nextNotification('A'), subscribing: false },
+        { frame: 50, notification: nextNotification('B'), subscribing: false },
+        { frame: 80, notification: COMPLETE_NOTIFICATION, subscribing: false }
       ]);
     });
 
     it('should parse a marble string with a subscription point', () => {
       const result = TestScheduler.parseMarbles('---^---a---b---|', { a: 'A', b: 'B' });
       expect(result).deep.equal([
-        { frame: 40, notification: nextNotification('A') },
-        { frame: 80, notification: nextNotification('B') },
-        { frame: 120, notification: COMPLETE_NOTIFICATION }
+        { frame: 40, notification: nextNotification('A'), subscribing: false },
+        { frame: 80, notification: nextNotification('B'), subscribing: false },
+        { frame: 120, notification: COMPLETE_NOTIFICATION, subscribing: false }
       ]);
     });
 
     it('should parse a marble string with an error', () => {
       const result = TestScheduler.parseMarbles('-------a---b---#', { a: 'A', b: 'B' }, 'omg error!');
       expect(result).deep.equal([
-        { frame: 70, notification: nextNotification('A') },
-        { frame: 110, notification: nextNotification('B') },
-        { frame: 150, notification: errorNotification('omg error!') }
+        { frame: 70, notification: nextNotification('A'), subscribing: false },
+        { frame: 110, notification: nextNotification('B'), subscribing: false },
+        { frame: 150, notification: errorNotification('omg error!'), subscribing: false }
       ]);
     });
 
     it('should default in the letter for the value if no value hash was passed', () => {
       const result = TestScheduler.parseMarbles('--a--b--c--');
       expect(result).deep.equal([
-        { frame: 20, notification: nextNotification('a') },
-        { frame: 50, notification: nextNotification('b') },
-        { frame: 80, notification: nextNotification('c') },
+        { frame: 20, notification: nextNotification('a'), subscribing: false },
+        { frame: 50, notification: nextNotification('b'), subscribing: false },
+        { frame: 80, notification: nextNotification('c'), subscribing: false },
       ]);
     });
 
     it('should handle grouped values', () => {
       const result = TestScheduler.parseMarbles('---(abc)---');
       expect(result).deep.equal([
-        { frame: 30, notification: nextNotification('a') },
-        { frame: 30, notification: nextNotification('b') },
-        { frame: 30, notification: nextNotification('c') }
+        { frame: 30, notification: nextNotification('a'), subscribing: false },
+        { frame: 30, notification: nextNotification('b'), subscribing: false },
+        { frame: 30, notification: nextNotification('c'), subscribing: false }
       ]);
     });
 
@@ -80,21 +80,33 @@ describe('TestScheduler', () => {
       const runMode = true;
       const result = TestScheduler.parseMarbles('  -a - b -    c |       ', { a: 'A', b: 'B', c: 'C' }, undefined, undefined, runMode);
       expect(result).deep.equal([
-        { frame: 10, notification: nextNotification('A') },
-        { frame: 30, notification: nextNotification('B') },
-        { frame: 50, notification: nextNotification('C') },
-        { frame: 60, notification: COMPLETE_NOTIFICATION }
+        { frame: 10, notification: nextNotification('A'), subscribing: false },
+        { frame: 30, notification: nextNotification('B'), subscribing: false },
+        { frame: 50, notification: nextNotification('C'), subscribing: false },
+        { frame: 60, notification: COMPLETE_NOTIFICATION, subscribing: false }
       ]);
     });
 
-    it('should suppport time progression syntax when runMode=true', () => {
+    it('should support time progression syntax when runMode=true', () => {
       const runMode = true;
       const result = TestScheduler.parseMarbles('10.2ms a 1.2s b 1m c|', { a: 'A', b: 'B', c: 'C' }, undefined, undefined, runMode);
       expect(result).deep.equal([
-        { frame: 10.2, notification: nextNotification('A') },
-        { frame: 10.2 + 10 + (1.2 * 1000), notification: nextNotification('B') },
-        { frame: 10.2 + 10 + (1.2 * 1000) + 10 + (1000 * 60), notification: nextNotification('C') },
-        { frame: 10.2 + 10 + (1.2 * 1000) + 10 + (1000 * 60) + 10, notification: COMPLETE_NOTIFICATION }
+        { frame: 10.2, notification: nextNotification('A'), subscribing: false },
+        { frame: 10.2 + 10 + (1.2 * 1000), notification: nextNotification('B'), subscribing: false },
+        { frame: 10.2 + 10 + (1.2 * 1000) + 10 + (1000 * 60), notification: nextNotification('C'), subscribing: false },
+        { frame: 10.2 + 10 + (1.2 * 1000) + 10 + (1000 * 60) + 10, notification: COMPLETE_NOTIFICATION, subscribing: false }
+      ]);
+    });
+
+    it('should support a synchronous-within-subscribe marker', () => {
+      const runMode = true;
+      const result = TestScheduler.parseMarbles('--(^abc)--(d|)', undefined, undefined, undefined, runMode);
+      expect(result).deep.equal([
+        { frame: 20, notification: nextNotification('a'), subscribing: true },
+        { frame: 20, notification: nextNotification('b'), subscribing: true },
+        { frame: 20, notification: nextNotification('c'), subscribing: true },
+        { frame: 100, notification: nextNotification('d'), subscribing: false },
+        { frame: 100, notification: COMPLETE_NOTIFICATION, subscribing: false }
       ]);
     });
   });
@@ -161,10 +173,10 @@ describe('TestScheduler', () => {
       expect(expected.length).to.equal(0);
     });
 
-    it('should emit notifications at frame zero synchronously upon subscription', () => {
+    it('should emit notifications marked with "^" synchronously upon subscription', () => {
       const result: string[] = [];
       const scheduler = new TestScheduler(null!);
-      const source = scheduler.createColdObservable('(ab|)');
+      const source = scheduler.createColdObservable('(^ab|)');
       source.subscribe({
         next: (value) => result.push(value),
         complete: () => result.push('complete'),
@@ -252,7 +264,7 @@ describe('TestScheduler', () => {
       });
 
       it('should handle empty', () => {
-        expectObservable(EMPTY).toBe('|', {});
+        expectObservable(EMPTY).toBe('(^|)', {});
       });
 
       it('should handle never', () => {
