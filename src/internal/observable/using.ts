@@ -1,6 +1,7 @@
+/** @prettier */
 import { Observable } from '../Observable';
 import { Unsubscribable, ObservableInput } from '../types';
-import { from } from './from'; // from from from! LAWL
+import { innerFrom } from './from';
 import { EMPTY } from './empty';
 
 /**
@@ -31,9 +32,11 @@ import { EMPTY } from './empty';
  * @return {Observable<T>} An Observable that behaves the same as Observable returned by `observableFactory`, but
  * which - when completed, errored or unsubscribed - will also call `unsubscribe` on created resource object.
  */
-export function using<T>(resourceFactory: () => Unsubscribable | void,
-                         observableFactory: (resource: Unsubscribable | void) => ObservableInput<T> | void): Observable<T> {
-  return new Observable<T>(subscriber => {
+export function using<T>(
+  resourceFactory: () => Unsubscribable | void,
+  observableFactory: (resource: Unsubscribable | void) => ObservableInput<T> | void
+): Observable<T> {
+  return new Observable<T>((subscriber) => {
     let resource: Unsubscribable | void;
 
     try {
@@ -51,7 +54,7 @@ export function using<T>(resourceFactory: () => Unsubscribable | void,
       return undefined;
     }
 
-    const source = result ? from(result) : EMPTY;
+    const source = result ? innerFrom(result) : EMPTY;
     const subscription = source.subscribe(subscriber);
     return () => {
       subscription.unsubscribe();

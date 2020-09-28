@@ -27,7 +27,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * import { from, fromEvent } from 'rxjs';
  * import { sequenceEqual, bufferCount, mergeMap, map } from 'rxjs/operators';
  *
- * const codes = from([
+ * const codes = innerFrom([
  *   'ArrowUp',
  *   'ArrowUp',
  *   'ArrowDown',
@@ -45,7 +45,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * const matches = keys.pipe(
  *   bufferCount(11, 1),
  *   mergeMap(
- *     last11 => from(last11).pipe(sequenceEqual(codes)),
+ *     last11 => innerFrom(last11).pipe(sequenceEqual(codes)),
  *   ),
  * );
  * matches.subscribe(matched => console.log('Successful cheat at Contra? ', matched));

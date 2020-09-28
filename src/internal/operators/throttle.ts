@@ -4,7 +4,7 @@ import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SubscribableOrPromise } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/from';
 
 export interface ThrottleConfig {
   leading?: boolean;
@@ -81,7 +81,9 @@ export function throttle<T>(
     };
 
     const throttle = (value: T) =>
-      (throttled = from(durationSelector(value)).subscribe(new OperatorSubscriber(subscriber, throttlingDone, undefined, throttlingDone)));
+      (throttled = innerFrom(durationSelector(value)).subscribe(
+        new OperatorSubscriber(subscriber, throttlingDone, undefined, throttlingDone)
+      ));
 
     const send = () => {
       if (hasValue) {

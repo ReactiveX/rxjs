@@ -3,7 +3,7 @@ import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/from';
 import { identity } from '../util/identity';
 import { noop } from '../util/noop';
 import { popResultSelector } from '../util/args';
@@ -177,7 +177,7 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | 
       const input = inputs[i];
       let otherSource: Observable<any>;
       try {
-        otherSource = from(input);
+        otherSource = innerFrom(input);
       } catch (err) {
         subscriber.error(err);
         return;

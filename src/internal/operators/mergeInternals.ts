@@ -1,6 +1,6 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/from';
 import { Subscriber } from '../Subscriber';
 import { ObservableInput } from '../types';
 import { OperatorSubscriber } from './OperatorSubscriber';
@@ -48,7 +48,7 @@ export function mergeInternals<T, R>(
 
   const doInnerSub = (value: T) => {
     active++;
-    from(project(value, index++)).subscribe(
+    innerFrom(project(value, index++)).subscribe(
       new OperatorSubscriber(
         subscriber,
         (innerValue) => {

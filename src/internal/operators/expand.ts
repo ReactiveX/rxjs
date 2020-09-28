@@ -2,7 +2,7 @@
 import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, SchedulerLike } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/from';
 
 /* tslint:disable:max-line-length */
 export function expand<T, R>(
@@ -100,7 +100,7 @@ export function expand<T, R>(
       // keep a larger allocation (the observable) in memory, the tradeoff is it
       // keeps the size down.
       // TODO: Correct the types here. `project` could be R or T.
-      const inner = from(project(value as any, index++));
+      const inner = innerFrom(project(value as any, index++));
       active++;
       const doSub = () => {
         inner.subscribe(

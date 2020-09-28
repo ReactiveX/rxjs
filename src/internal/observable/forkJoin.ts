@@ -1,11 +1,10 @@
+/** @prettier */
 import { Observable } from '../Observable';
 import { ObservableInput, ObservedValueUnionFromArray, ObservedValueOf, SubscribableOrPromise } from '../types';
 import { map } from '../operators/map';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
-import { from } from './from';
+import { innerFrom } from './from';
 import { popResultSelector } from '../util/args';
-
-/* tslint:disable:max-line-length */
 
 // forkJoin(a$, b$, c$)
 /** @deprecated Use the version that takes an array of Observables instead */
@@ -15,11 +14,29 @@ export function forkJoin<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>)
 /** @deprecated Use the version that takes an array of Observables instead */
 export function forkJoin<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<[T, T2, T3]>;
 /** @deprecated Use the version that takes an array of Observables instead */
-export function forkJoin<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<[T, T2, T3, T4]>;
+export function forkJoin<T, T2, T3, T4>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>
+): Observable<[T, T2, T3, T4]>;
 /** @deprecated Use the version that takes an array of Observables instead */
-export function forkJoin<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<[T, T2, T3, T4, T5]>;
+export function forkJoin<T, T2, T3, T4, T5>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>
+): Observable<[T, T2, T3, T4, T5]>;
 /** @deprecated Use the version that takes an array of Observables instead */
-export function forkJoin<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<[T, T2, T3, T4, T5, T6]>;
+export function forkJoin<T, T2, T3, T4, T5, T6>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+  v6: ObservableInput<T6>
+): Observable<[T, T2, T3, T4, T5, T6]>;
 
 // forkJoin([a$, b$, c$]);
 // TODO(benlesh): Uncomment for TS 3.0
@@ -27,9 +44,15 @@ export function forkJoin<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: Obse
 export function forkJoin<A>(sources: [ObservableInput<A>]): Observable<[A]>;
 export function forkJoin<A, B>(sources: [ObservableInput<A>, ObservableInput<B>]): Observable<[A, B]>;
 export function forkJoin<A, B, C>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>]): Observable<[A, B, C]>;
-export function forkJoin<A, B, C, D>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>]): Observable<[A, B, C, D]>;
-export function forkJoin<A, B, C, D, E>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>]): Observable<[A, B, C, D, E]>;
-export function forkJoin<A, B, C, D, E, F>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>, ObservableInput<F>]): Observable<[A, B, C, D, E, F]>;
+export function forkJoin<A, B, C, D>(
+  sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>]
+): Observable<[A, B, C, D]>;
+export function forkJoin<A, B, C, D, E>(
+  sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>]
+): Observable<[A, B, C, D, E]>;
+export function forkJoin<A, B, C, D, E, F>(
+  sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>, ObservableInput<F>]
+): Observable<[A, B, C, D, E, F]>;
 export function forkJoin<A extends ObservableInput<any>[]>(sources: A): Observable<ObservedValueUnionFromArray<A>[]>;
 
 // forkJoin({})
@@ -37,10 +60,9 @@ export function forkJoin(sourcesObject: {}): Observable<never>;
 export function forkJoin<T, K extends keyof T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 /** @deprecated resultSelector is deprecated, pipe to map instead */
-export function forkJoin(...args: Array<ObservableInput<any>|Function>): Observable<any>;
+export function forkJoin(...args: Array<ObservableInput<any> | Function>): Observable<any>;
 /** @deprecated Use the version that takes an array of Observables instead */
 export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
-/* tslint:enable:max-line-length */
 
 /**
  * Accepts an `Array` of {@link ObservableInput} or a dictionary `Object` of {@link ObservableInput} and returns
@@ -138,25 +160,21 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * @return {Observable} Observable emitting either an array of last values emitted by passed Observables
  * or value from project function.
  */
-export function forkJoin(
-  ...args: any[]
-): Observable<any> {
+export function forkJoin(...args: any[]): Observable<any> {
   const resultSelector = popResultSelector(args);
 
   const { args: sources, keys } = argsArgArrayOrObject(args);
 
   if (resultSelector) {
     // deprecated path.
-    return forkJoinInternal(sources, keys).pipe(
-      map((values: any[]) => resultSelector!(...values))
-    );
+    return forkJoinInternal(sources, keys).pipe(map((values: any[]) => resultSelector!(...values)));
   }
 
   return forkJoinInternal(sources, keys);
 }
 
 function forkJoinInternal(sources: ObservableInput<any>[], keys: string[] | null): Observable<any> {
-  return new Observable(subscriber => {
+  return new Observable((subscriber) => {
     const len = sources.length;
     if (len === 0) {
       subscriber.complete();
@@ -166,29 +184,29 @@ function forkJoinInternal(sources: ObservableInput<any>[], keys: string[] | null
     let completed = 0;
     let emitted = 0;
     for (let i = 0; i < len; i++) {
-      const source = from(sources[i]);
+      const source = innerFrom(sources[i]);
       let hasValue = false;
-      subscriber.add(source.subscribe({
-        next: value => {
-          if (!hasValue) {
-            hasValue = true;
-            emitted++;
-          }
-          values[i] = value;
-        },
-        error: err => subscriber.error(err),
-        complete: () => {
-          completed++;
-          if (completed === len || !hasValue) {
-            if (emitted === len) {
-              subscriber.next(keys ?
-                keys.reduce((result, key, i) => ((result as any)[key] = values[i], result), {}) :
-                values);
+      subscriber.add(
+        source.subscribe({
+          next: (value) => {
+            if (!hasValue) {
+              hasValue = true;
+              emitted++;
             }
-            subscriber.complete();
-          }
-        }
-      }));
+            values[i] = value;
+          },
+          error: (err) => subscriber.error(err),
+          complete: () => {
+            completed++;
+            if (completed === len || !hasValue) {
+              if (emitted === len) {
+                subscriber.next(keys ? keys.reduce((result, key, i) => (((result as any)[key] = values[i]), result), {}) : values);
+              }
+              subscriber.complete();
+            }
+          },
+        })
+      );
     }
   });
 }

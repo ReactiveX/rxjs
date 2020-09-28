@@ -2,7 +2,7 @@
 import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueOf, ObservedValueUnionFromArray, MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/from';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
@@ -91,7 +91,7 @@ export function onErrorResumeNext<T>(...nextSources: ObservableInput<any>[]): Op
         if (remaining.length > 0) {
           let nextSource: Observable<any>;
           try {
-            nextSource = from(remaining.shift()!);
+            nextSource = innerFrom(remaining.shift()!);
           } catch (err) {
             subscribeNext();
             return;

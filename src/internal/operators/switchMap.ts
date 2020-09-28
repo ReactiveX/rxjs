@@ -1,7 +1,7 @@
 /** @prettier */
 import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/from';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
@@ -105,7 +105,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
           let innerIndex = 0;
           let outerIndex = index++;
           // Start the next inner subscription
-          from(project(value, outerIndex)).subscribe(
+          innerFrom(project(value, outerIndex)).subscribe(
             (innerSubscriber = new OperatorSubscriber(
               subscriber,
               // When we get a new inner value, next it through. Note that this is
