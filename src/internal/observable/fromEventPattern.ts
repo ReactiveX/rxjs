@@ -1,12 +1,20 @@
+/** @prettier */
 import { Observable } from '../Observable';
 import { isFunction } from '../util/isFunction';
 import { NodeEventHandler } from './fromEvent';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 
 /* tslint:disable:max-line-length */
-export function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => any, removeHandler?: (handler: NodeEventHandler, signal?: any) => void): Observable<T>;
+export function fromEventPattern<T>(
+  addHandler: (handler: NodeEventHandler) => any,
+  removeHandler?: (handler: NodeEventHandler, signal?: any) => void
+): Observable<T>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => any, removeHandler?: (handler: NodeEventHandler, signal?: any) => void, resultSelector?: (...args: any[]) => T): Observable<T>;
+export function fromEventPattern<T>(
+  addHandler: (handler: NodeEventHandler) => any,
+  removeHandler?: (handler: NodeEventHandler, signal?: any) => void,
+  resultSelector?: (...args: any[]) => T
+): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -137,32 +145,19 @@ export function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => a
  * @owner Observable
  */
 
-export function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => any,
-                                    removeHandler?: (handler: NodeEventHandler, signal?: any) => void,
-                                    resultSelector?: (...args: any[]) => T): Observable<T | T[]> {
-
+export function fromEventPattern<T>(
+  addHandler: (handler: NodeEventHandler) => any,
+  removeHandler?: (handler: NodeEventHandler, signal?: any) => void,
+  resultSelector?: (...args: any[]) => T
+): Observable<T | T[]> {
   if (resultSelector) {
     // DEPRECATED PATH
-    return fromEventPattern<T>(addHandler, removeHandler).pipe(
-      mapOneOrManyArgs(resultSelector)
-    );
+    return fromEventPattern<T>(addHandler, removeHandler).pipe(mapOneOrManyArgs(resultSelector));
   }
 
-  return new Observable<T | T[]>(subscriber => {
+  return new Observable<T | T[]>((subscriber) => {
     const handler = (...e: T[]) => subscriber.next(e.length === 1 ? e[0] : e);
-
-    let retValue: any;
-    try {
-      retValue = addHandler(handler);
-    } catch (err) {
-      subscriber.error(err);
-      return undefined;
-    }
-
-    if (!isFunction(removeHandler)) {
-      return undefined;
-    }
-
-    return () => removeHandler(handler, retValue) ;
+    const retValue = addHandler(handler);
+    return isFunction(removeHandler) ? () => removeHandler(handler, retValue) : undefined;
   });
 }
