@@ -128,7 +128,7 @@ describe('zipAll operator', () => {
         const a = cold('  -');
         const asubs = '   (^!)';
         const b: string[] = [];
-        const expected = '|';
+        const expected = '(^|)';
 
         expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
         expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -140,7 +140,7 @@ describe('zipAll operator', () => {
         const a = cold('  |');
         const asubs = '   (^!)';
         const b: string[] = [];
-        const expected = '|';
+        const expected = '(^|)';
 
         expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
         expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -164,7 +164,7 @@ describe('zipAll operator', () => {
         const a = hot('---^----a--|');
         const asubs = '   (^!)';
         const b: string[] = [];
-        const expected = '|';
+        const expected = '(^|)';
 
         expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
         expectSubscriptions(a.subscriptions).toBe(asubs);

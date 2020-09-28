@@ -315,13 +315,13 @@ describe('windowWhen operator', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should handle a throw closing Observable', () => {
-    const e1 = hot('--a--^---b---c---d---e---f---g---h------|');
-    const e1subs =      '(^!)                                ';
-    const e2 =  cold(   '#');
-    const e2subs =      '(^!)                                ';
-    const expected =    '(x#)                                ';
-    const x = cold(     '#                                   ');
+  it.only('should handle a throw closing Observable', () => {
+    const e1 = hot('--a--^----b---c---d---e---f---g---h------|');
+    const e1subs =      '^---!                                ';
+    const e2 =  cold(   '----#');
+    const e2subs =      '^---!                                ';
+    const expected =    '(^x)#                                ';
+    const x = cold(     '----#                                ');
     const values = { x: x };
 
     const result = e1.pipe(windowWhen(() => e2));

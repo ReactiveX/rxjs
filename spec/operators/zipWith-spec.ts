@@ -101,7 +101,7 @@ describe('zipWith', () => {
       rxTestScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
         const a = cold('  -');
         const asubs = '   (^!)';
-        const expected = '|';
+        const expected = '(^|)';
         const b: string[] = [];
 
         expectObservable(a.pipe(zipWith(b))).toBe(expected);
@@ -113,7 +113,7 @@ describe('zipWith', () => {
       rxTestScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
         const a = cold('  |');
         const asubs = '   (^!)';
-        const expected = '|';
+        const expected = '(^|)';
         const b: string[] = [];
 
         expectObservable(a.pipe(zipWith(b))).toBe(expected);
@@ -138,7 +138,7 @@ describe('zipWith', () => {
         const a = hot('   ---^----a--|');
         const asubs = '      (^!)';
         const b: string[] = [];
-        const expected = '   |';
+        const expected = '   (^|)';
 
         expectObservable(a.pipe(zipWith(b))).toBe(expected);
         expectSubscriptions(a.subscriptions).toBe(asubs);

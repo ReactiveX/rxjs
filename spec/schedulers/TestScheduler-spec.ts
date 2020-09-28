@@ -11,7 +11,7 @@ import { intervalProvider } from 'rxjs/internal/scheduler/intervalProvider';
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {TestScheduler} */
-describe.only('TestScheduler', () => {
+describe('TestScheduler', () => {
   it('should exist', () => {
     expect(TestScheduler).exist;
     expect(TestScheduler).to.be.a('function');
