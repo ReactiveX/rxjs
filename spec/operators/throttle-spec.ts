@@ -105,11 +105,8 @@ describe('throttle operator', () =>  {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  // TODO: this test is not compatible with the fix for this issue:
-  // https://github.com/ReactiveX/rxjs/issues/5523
-  // Prior to that fix, cold('|') was an observable that scheduled a complete
-  // notification at zero milliseconds. That's entirely different to emitting a
-  // complete notification from _within_ the subscribe call.
+  // TODO: unskip this test once the fix in the following PR is merged
+  // https://github.com/ReactiveX/rxjs/pull/5749
   it.skip('should mirror source if durations are always empty', () =>  {
     const e1 =   hot('abcdefabcdefabcdefabcdefa|');
     const e1subs =   '^                        !';
