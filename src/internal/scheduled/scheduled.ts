@@ -39,7 +39,7 @@ export function scheduled<T>(input: ObservableInput<T>, scheduler: SchedulerLike
       return scheduleIterable(input, scheduler);
     }
     if (isAsyncIterable(input)) {
-      return scheduleAsyncIterable(input as any, scheduler);
+      return scheduleAsyncIterable(input, scheduler);
     }
   }
   throw createInvalidObservableTypeError(input);
