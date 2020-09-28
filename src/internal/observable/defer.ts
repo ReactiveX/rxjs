@@ -54,14 +54,6 @@ import { innerFrom } from './from';
  */
 export function defer<R extends ObservableInput<any>>(observableFactory: () => R): Observable<ObservedValueOf<R>> {
   return new Observable<ObservedValueOf<R>>((subscriber) => {
-    let input: R;
-    try {
-      input = observableFactory();
-    } catch (err) {
-      subscriber.error(err);
-      return undefined;
-    }
-    const source = innerFrom(input);
-    return source.subscribe(subscriber);
+    innerFrom(observableFactory()).subscribe(subscriber);
   });
 }
