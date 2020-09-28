@@ -31,13 +31,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
         try {
           onNext(value);
         } catch (err) {
-          // NOTE: At some point we may want to refactor this to send to
-          // `destination.error(err)`. Currently, this is the way it is *only* to
-          // accommodate `groupBy`, with minimal ill effects to other operators, but
-          // it does mean that additional logic is being fired at each step during
-          // an error call. Which since it is by definition an exceptional state, probably
-          // isn't a big deal. Just making a note of this here so context isn't lost.
-          this.error(err);
+          this.destination.error(err);
         }
       };
     }
