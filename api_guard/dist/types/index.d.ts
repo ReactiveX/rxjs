@@ -598,7 +598,9 @@ export interface TimeoutError<T = unknown, M = unknown> extends Error {
 
 export declare const TimeoutError: TimeoutErrorCtor;
 
-export declare function timer(dueTime?: number | Date, periodOrScheduler?: number | SchedulerLike, scheduler?: SchedulerLike): Observable<number>;
+export declare function timer(due: number | Date, scheduler?: SchedulerLike): Observable<0>;
+export declare function timer(startDue: number | Date, intervalDuration: number, scheduler?: SchedulerLike): Observable<number>;
+export declare function timer(dueTime: number | Date, unused: undefined, scheduler?: SchedulerLike): Observable<0>;
 
 export interface Timestamp<T> {
     timestamp: number;
