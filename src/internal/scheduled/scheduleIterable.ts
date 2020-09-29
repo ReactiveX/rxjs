@@ -24,26 +24,22 @@ export function scheduleIterable<T>(input: Iterable<T>, scheduler: SchedulerLike
 
         // Schedule the first iteration and emission.
         caughtSchedule(subscriber, scheduler, function () {
-          // Check to make sure teardown was not triggered
-          // by the consumer since the last iteration.
-          if (!subscriber.closed) {
-            let value: T;
-            let done: boolean | undefined;
-            // Pull the value out of the iterator
-            ({ value, done } = iterator.next());
-            if (done) {
-              // If it is "done" we just complete. This mimics the
-              // behavior of JavaScript's `for..of` consumption of
-              // iterables, which will not emit the value from an iterator
-              // result of `{ done: true: value: 'here' }`.
-              subscriber.complete();
-            } else {
-              // The iterable is not done, emit the value.
-              subscriber.next(value);
-              // Reschedule. This will cause this function to be
-              // called again on the same scheduled delay.
-              this.schedule();
-            }
+          let value: T;
+          let done: boolean | undefined;
+          // Pull the value out of the iterator
+          ({ value, done } = iterator.next());
+          if (done) {
+            // If it is "done" we just complete. This mimics the
+            // behavior of JavaScript's `for..of` consumption of
+            // iterables, which will not emit the value from an iterator
+            // result of `{ done: true: value: 'here' }`.
+            subscriber.complete();
+          } else {
+            // The iterable is not done, emit the value.
+            subscriber.next(value);
+            // Reschedule. This will cause this function to be
+            // called again on the same scheduled delay.
+            this.schedule();
           }
         });
       })
