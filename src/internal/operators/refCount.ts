@@ -15,7 +15,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * refCount has only a single subscription independently of the number of subscribers to the target
  * observable.
  *
- * Note that using the {@link share} operator is exactly the same as using the *publish* operator
+ * Note that using the {@link share} operator is exactly the same as using the `multicast(() => new Subject())` operator 
  * (making the observable hot) and the *refCount* operator in a sequence.
  *
  * ![](refCount.png)
