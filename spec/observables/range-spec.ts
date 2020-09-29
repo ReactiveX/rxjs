@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { Subscriber, asapScheduler as asap, range, of} from 'rxjs';
+import { asapScheduler as asap, range, of} from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { expectObservable } from '../helpers/marble-testing';
-import { dispatch } from 'rxjs/internal/observable/range';
 import { concatMap, delay } from 'rxjs/operators';
 
 declare const rxTestScheduler: TestScheduler;
@@ -86,49 +85,22 @@ describe('range', () => {
     expectObservable(e1).toBe(expected, values);
     expectObservable(e1).toBe(expected, values);
   });
-});
 
-describe('RangeObservable', () => {
-  describe('dispatch', () => {
-    it('should complete if index >= count', () => {
-      const o = new Subscriber();
-      const obj: Subscriber<any> = <any>sinon.stub(o);
+  it('should return empty for range(0)', () => {
+    const results: any[] = [];
+    range(0).subscribe({
+      next: value => results.push(value),
+      complete: () => results.push('done')
+    })
+    expect(results).to.deep.equal(['done'])
+  });
 
-      const state = {
-        subscriber: obj,
-        index: 10,
-        start: 0,
-        count: 9
-      };
-
-      dispatch.call({} as any, state);
-
-      expect(state.subscriber.complete).have.been.called;
-      expect(state.subscriber.next).not.have.been.called;
-    });
-
-    it('should next out another value and increment the index and start', () => {
-      const o = new Subscriber();
-      const obj: Subscriber<any> = <any>sinon.stub(o);
-
-      const state = {
-        subscriber: obj,
-        index: 1,
-        start: 5,
-        count: 9
-      };
-
-      const thisArg = {
-        schedule: sinon.spy()
-      };
-
-      dispatch.call(thisArg as any, state);
-
-      expect(state.subscriber.complete).not.have.been.called;
-      expect(state.subscriber.next).have.been.calledWith(5);
-      expect(state.start).to.equal(6);
-      expect(state.index).to.equal(2);
-      expect(thisArg.schedule).have.been.calledWith(state);
-    });
+  it('should return empty for range with a negative count', () => {
+    const results: any[] = [];
+    range(5, -5).subscribe({
+      next: value => results.push(value),
+      complete: () => results.push('done')
+    })
+    expect(results).to.deep.equal(['done'])
   });
 });
