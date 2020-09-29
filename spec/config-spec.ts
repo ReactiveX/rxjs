@@ -3,6 +3,7 @@
 import { config } from '../src/internal/config';
 import { expect } from 'chai';
 import { Observable } from 'rxjs';
+import { immediateProvider } from 'rxjs/internal/scheduler/immediateProvider';
 
 describe('config', () => {
   it('should have a Promise property that defaults to nothing', () => {
@@ -104,10 +105,10 @@ describe('config', () => {
       });
 
       expect(syncSentError).to.equal('handled');
-      // This timeout would be scheduled _after_ any error timeout that might be scheduled
-      // (But we're not scheduling that), so this is just an artificial delay to make sure the
-      // behavior sticks.
-      setTimeout(() => {
+      // When called, onUnhandledError is called on a micro task, so delay the
+      // the assertion of the expectation until after the point at which
+      // onUnhandledError would have been called.
+      immediateProvider.setImmediate(() => {
         expect(called).to.be.false;
         done();
       });
