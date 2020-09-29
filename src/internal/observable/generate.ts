@@ -1,7 +1,7 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { identity } from '../util/identity';
-import { SchedulerLike } from '../types';
+import { ObservableInput, SchedulerLike } from '../types';
 import { isScheduler } from '../util/isScheduler';
 import { defer } from './defer';
 import { scheduleIterable } from '../scheduled/scheduleIterable';
@@ -347,7 +347,13 @@ export function generate<T, S>(
   if (arguments.length == 1) {
     // If we only have one argument, we can assume it is a configuration object.
     // Note that folks not using TypeScript may trip over this.
-    ({ initialState, condition, iterate, resultSelector = identity as any, scheduler } = initialStateOrOptions as GenerateOptions<T, S>);
+    ({
+      initialState,
+      condition,
+      iterate,
+      resultSelector = identity as ResultFunc<S, T>,
+      scheduler,
+    } = initialStateOrOptions as GenerateOptions<T, S>);
   } else {
     // Deprecated arguments path. Figure out what the user
     // passed and set it here.
@@ -367,16 +373,14 @@ export function generate<T, S>(
     }
   }
 
-  // TODO: Figure out what is going on with the types here!
-
   // We use `defer` because we want to defer the creation of the iterator from the iterable.
   return defer(
-    scheduler
+    (scheduler
       ? // If a scheduler was provided, use `scheduleIterable` to ensure that iteration/generation
         // happens on the scheduler.
         () => scheduleIterable(gen(), scheduler!)
       : // Otherwise, if there's no scheduler, we can just use the generator function directly in
         // `defer` and executing it will return the generator (which is iterable).
-        (gen as any)
-  ) as any;
+        gen) as () => ObservableInput<T>
+  );
 }
