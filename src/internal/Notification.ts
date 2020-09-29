@@ -238,5 +238,3 @@ export function observeNotification<T>(notification: ObservableNotification<T>, 
   }
   kind === 'N' ? observer.next?.(value!) : kind === 'E' ? observer.error?.(error) : observer.complete?.();
 }
-
-export * from './NotificationFactories';

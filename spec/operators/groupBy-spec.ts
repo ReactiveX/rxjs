@@ -3,7 +3,7 @@ import { groupBy, delay, tap, map, take, mergeMap, materialize, skip, ignoreElem
 import { TestScheduler } from 'rxjs/testing';
 import { ReplaySubject, of, Observable, Operator, Observer, interval, Subject } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { createNotification } from 'rxjs/internal/Notification';
+import { createNotification } from 'rxjs/internal/NotificationFactories';
 
 declare const rxTestScheduler: TestScheduler;
 

@@ -6,7 +6,7 @@ import { SubscriptionLog } from './SubscriptionLog';
 import { Subscription } from '../Subscription';
 import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler';
 import { ObservableNotification } from '../types';
-import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Notification';
+import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../NotificationFactories';
 import { dateTimestampProvider } from '../scheduler/dateTimestampProvider';
 import { performanceTimestampProvider } from '../scheduler/performanceTimestampProvider';
 import { animationFrameProvider } from '../scheduler/animationFrameProvider';
