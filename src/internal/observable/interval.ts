@@ -1,10 +1,8 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { asyncScheduler } from '../scheduler/async';
-import { SchedulerAction, SchedulerLike } from '../types';
-import { isNumeric } from '../util/isNumeric';
-import { Subscriber } from '../Subscriber';
-import { isScheduler } from '../util/isScheduler';
+import { SchedulerLike } from '../types';
+import { timer } from './timer';
 
 /**
  * Creates an Observable that emits sequential numbers every specified
@@ -55,27 +53,10 @@ import { isScheduler } from '../util/isScheduler';
  * @owner Observable
  */
 export function interval(period = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number> {
-  if (!isNumeric(period) || period < 0) {
+  if (period < 0) {
+    // We cannot schedule an interval in the past.
     period = 0;
   }
 
-  if (!isScheduler(scheduler)) {
-    scheduler = asyncScheduler;
-  }
-
-  return new Observable<number>((subscriber) => {
-    subscriber.add(scheduler.schedule(dispatch as any, period, { subscriber, counter: 0, period }));
-  });
-}
-
-function dispatch(this: SchedulerAction<IntervalState>, state: IntervalState) {
-  const { subscriber, counter, period } = state;
-  subscriber.next(counter);
-  this.schedule({ subscriber, counter: counter + 1, period }, period);
-}
-
-interface IntervalState {
-  subscriber: Subscriber<number>;
-  counter: number;
-  period: number;
+  return timer(period, period, scheduler);
 }
