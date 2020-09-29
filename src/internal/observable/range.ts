@@ -3,6 +3,13 @@ import { SchedulerLike } from '../types';
 import { Observable } from '../Observable';
 import { EMPTY } from './empty';
 
+export function range(start: number, count?: number): Observable<number>;
+
+/**
+ * @deprecated To be removed in v8. Passing a scheduler is deprecated, use `range(start, count).pipe(observeOn(scheduler))` instead.
+ */
+export function range(start: number, count: number | undefined, scheduler: SchedulerLike): Observable<number>;
+
 /**
  * Creates an Observable that emits a sequence of numbers within a specified
  * range.

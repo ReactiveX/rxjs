@@ -490,7 +490,8 @@ export declare const queueScheduler: QueueScheduler;
 export declare function race<A extends ObservableInput<any>[]>(observables: A): Observable<ObservedValueUnionFromArray<A>>;
 export declare function race<A extends ObservableInput<any>[]>(...observables: A): Observable<ObservedValueUnionFromArray<A>>;
 
-export declare function range(start?: number, count?: number, scheduler?: SchedulerLike): Observable<number>;
+export declare function range(start: number, count?: number): Observable<number>;
+export declare function range(start: number, count: number | undefined, scheduler: SchedulerLike): Observable<number>;
 
 export declare class ReplaySubject<T> extends Subject<T> {
     constructor(bufferSize?: number, windowTime?: number, timestampProvider?: TimestampProvider);
