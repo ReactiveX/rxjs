@@ -1,13 +1,14 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { identity } from '../util/identity';
-import { SchedulerLike } from '../types';
+import { ObservableInput, SchedulerLike } from '../types';
 import { isScheduler } from '../util/isScheduler';
-import { caughtSchedule } from '../util/caughtSchedule';
+import { defer } from './defer';
+import { scheduleIterable } from '../scheduled/scheduleIterable';
 
-export type ConditionFunc<S> = (state: S) => boolean;
-export type IterateFunc<S> = (state: S) => S;
-export type ResultFunc<S, T> = (state: S) => T;
+type ConditionFunc<S> = (state: S) => boolean;
+type IterateFunc<S> = (state: S) => S;
+type ResultFunc<S, T> = (state: S) => T;
 
 export interface GenerateBaseOptions<S> {
   /**
@@ -344,13 +345,18 @@ export function generate<T, S>(
   // TODO: Remove this as we move away from deprecated signatures
   // and move towards a configuration object argument.
   if (arguments.length == 1) {
-    const options = initialStateOrOptions as GenerateOptions<T, S>;
-    initialState = options.initialState;
-    condition = options.condition;
-    iterate = options.iterate;
-    resultSelector = options.resultSelector || (identity as ResultFunc<S, T>);
-    scheduler = options.scheduler;
+    // If we only have one argument, we can assume it is a configuration object.
+    // Note that folks not using TypeScript may trip over this.
+    ({
+      initialState,
+      condition,
+      iterate,
+      resultSelector = identity as ResultFunc<S, T>,
+      scheduler,
+    } = initialStateOrOptions as GenerateOptions<T, S>);
   } else {
+    // Deprecated arguments path. Figure out what the user
+    // passed and set it here.
     initialState = initialStateOrOptions as S;
     if (!resultSelectorOrScheduler || isScheduler(resultSelectorOrScheduler)) {
       resultSelector = identity as ResultFunc<S, T>;
@@ -360,24 +366,21 @@ export function generate<T, S>(
     }
   }
 
-  return new Observable<T>((subscriber) => {
-    let state = initialState;
-    if (scheduler) {
-      let needIterate = false;
-      caughtSchedule(subscriber, scheduler, function () {
-        needIterate ? (state = iterate!(state)) : (needIterate = true);
-        condition && !condition(state) ? subscriber.complete() : subscriber.next(resultSelector(state));
-        this.schedule();
-      });
-    } else {
-      do {
-        if (condition && !condition(state)) {
-          subscriber.complete();
-        } else {
-          subscriber.next(resultSelector(state));
-          !subscriber.closed && (state = iterate!(state));
-        }
-      } while (!subscriber.closed);
+  // The actual generator used to "generate" values.
+  function* gen() {
+    for (let state = initialState; !condition || condition(state); state = iterate!(state)) {
+      yield resultSelector(state);
     }
-  });
+  }
+
+  // We use `defer` because we want to defer the creation of the iterator from the iterable.
+  return defer(
+    (scheduler
+      ? // If a scheduler was provided, use `scheduleIterable` to ensure that iteration/generation
+        // happens on the scheduler.
+        () => scheduleIterable(gen(), scheduler!)
+      : // Otherwise, if there's no scheduler, we can just use the generator function directly in
+        // `defer` and executing it will return the generator (which is iterable).
+        gen) as () => ObservableInput<T>
+  );
 }
