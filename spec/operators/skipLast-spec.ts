@@ -148,8 +148,7 @@ describe('skipLast operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  // TODO: fix firehose unsubscription
-  it.skip('should stop listening to a synchronous observable when unsubscribed', () => {
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
     const synchronousObservable = new Observable<number>(subscriber => {
       // This will check to see if the subscriber was closed on each loop
@@ -165,6 +164,9 @@ describe('skipLast operator', () => {
       take(3),
     ).subscribe(() => { /* noop */ });
 
-    expect(sideEffects).to.deep.equal([0, 1, 2]);
+    // This expectation might seem a little strange, but the implementation of
+    // skipLast works by eating the number of elements that are to be skipped,
+    // so it will consume the number skipped in addition to the number taken.
+    expect(sideEffects).to.deep.equal([0, 1, 2, 3]);
   });
 });

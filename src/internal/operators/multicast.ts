@@ -49,7 +49,7 @@ export function multicast<T, R>(
       // Intentionally terse code: Subscribe to the result of the selector,
       // then immediately connect the source through the subject, adding
       // that to the resulting subscription. The act of subscribing with `this`,
-      // the primary destination subscriber, will automatically add the subcription
+      // the primary destination subscriber, will automatically add the subscription
       // to the result.
       selector(subject).subscribe(subscriber).add(source.subscribe(subject));
     });
