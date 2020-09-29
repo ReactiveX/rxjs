@@ -357,31 +357,29 @@ export function timeout<T, R, M>(config: number | Date | TimeoutConfig<T, R, M>,
       );
     };
 
-    subscriber.add(
-      (originalSourceSubscription = source.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          (value) => {
-            // clear the timer so we can emit and start another one.
+    originalSourceSubscription = source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value: T) => {
+          // clear the timer so we can emit and start another one.
+          timerSubscription?.unsubscribe();
+          seen++;
+          // Emit
+          subscriber.next((lastValue = value));
+          // null | undefined are both < 0. Thanks, JavaScript.
+          each! > 0 && startTimer(each!);
+        },
+        undefined,
+        undefined,
+        () => {
+          if (!timerSubscription?.closed) {
             timerSubscription?.unsubscribe();
-            seen++;
-            // Emit
-            subscriber.next((lastValue = value));
-            // null | undefined are both < 0. Thanks, JavaScript.
-            each! > 0 && startTimer(each!);
-          },
-          undefined,
-          undefined,
-          () => {
-            if (!timerSubscription?.closed) {
-              timerSubscription?.unsubscribe();
-            }
-            // Be sure not to hold the last value in memory after unsubscription
-            // it could be quite large.
-            lastValue = null;
           }
-        )
-      ))
+          // Be sure not to hold the last value in memory after unsubscription
+          // it could be quite large.
+          lastValue = null;
+        }
+      )
     );
 
     // Intentionally terse code.
