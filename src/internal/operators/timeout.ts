@@ -7,6 +7,7 @@ import { operate } from '../util/lift';
 import { Observable } from '../Observable';
 import { innerFrom } from '../observable/from';
 import { createErrorClass } from '../util/createErrorClass';
+import { caughtSchedule } from '../util/caughtSchedule';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 export interface TimeoutConfig<T, R = T, M = unknown> {
@@ -336,24 +337,20 @@ export function timeout<T, R, M>(config: number | Date | TimeoutConfig<T, R, M>,
     // tell how many values we have seen so far.
     let seen = 0;
     const startTimer = (delay: number) => {
-      subscriber.add(
-        (timerSubscription = scheduler!.schedule(() => {
-          let withObservable: Observable<R>;
-          try {
-            withObservable = innerFrom(
-              _with!({
-                meta,
-                lastValue,
-                seen,
-              })
-            );
-          } catch (err) {
-            subscriber.error(err);
-            return;
-          }
+      timerSubscription = caughtSchedule(
+        subscriber,
+        scheduler,
+        () => {
           originalSourceSubscription.unsubscribe();
-          withObservable.subscribe(subscriber);
-        }, delay))
+          innerFrom(
+            _with!({
+              meta,
+              lastValue,
+              seen,
+            })
+          ).subscribe(subscriber);
+        },
+        delay
       );
     };
 
