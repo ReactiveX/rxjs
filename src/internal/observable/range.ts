@@ -1,5 +1,14 @@
-import { SchedulerAction, SchedulerLike } from '../types';
+/** @prettier */
+import { SchedulerLike } from '../types';
 import { Observable } from '../Observable';
+import { EMPTY } from './empty';
+
+export function range(start: number, count?: number): Observable<number>;
+
+/**
+ * @deprecated To be removed in v8. Passing a scheduler is deprecated, use `range(start, count).pipe(observeOn(scheduler))` instead.
+ */
+export function range(start: number, count: number | undefined, scheduler: SchedulerLike): Observable<number>;
 
 /**
  * Creates an Observable that emits a sequence of numbers within a specified
@@ -48,56 +57,42 @@ import { Observable } from '../Observable';
  * @name range
  * @owner Observable
  */
-export function range(start: number = 0,
-                      count?: number,
-                      scheduler?: SchedulerLike): Observable<number> {
-  return new Observable<number>(subscriber => {
-    if (count === undefined) {
-      count = start;
-      start = 0;
-    }
+export function range(start: number, count?: number, scheduler?: SchedulerLike): Observable<number> {
+  if (count == null) {
+    // If one argument was passed, it's the count, not the start.
+    count = start;
+    start = 0;
+  }
 
-    let index = 0;
-    let current = start;
+  if (count <= 0) {
+    // No count? We're going nowhere. Return EMPTY.
+    return EMPTY;
+  }
 
-    if (scheduler) {
-      return scheduler.schedule(dispatch, 0, {
-        index, count, start, subscriber
-      });
-    } else {
-      do {
-        if (index++ >= count) {
+  // Where the range should stop.
+  const end = count + start;
+
+  return new Observable(
+    scheduler
+      ? // The deprecated scheduled path.
+        (subscriber) => {
+          let n = start;
+          return scheduler.schedule(function () {
+            if (n < end) {
+              subscriber.next(n++);
+              this.schedule();
+            } else {
+              subscriber.complete();
+            }
+          });
+        }
+      : // Standard synchronous range.
+        (subscriber) => {
+          let n = start;
+          while (n < end && !subscriber.closed) {
+            subscriber.next(n++);
+          }
           subscriber.complete();
-          break;
         }
-        subscriber.next(current++);
-        if (subscriber.closed) {
-          break;
-        }
-      } while (true);
-    }
-
-    return undefined;
-  });
-}
-
-/** @internal */
-export function dispatch(this: SchedulerAction<any>, state: any) {
-  const { start, index, count, subscriber } = state;
-
-  if (index >= count) {
-    subscriber.complete();
-    return;
-  }
-
-  subscriber.next(start);
-
-  if (subscriber.closed) {
-    return;
-  }
-
-  state.index = index + 1;
-  state.start = start + 1;
-
-  this.schedule(state);
+  );
 }
