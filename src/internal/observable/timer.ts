@@ -1,50 +1,21 @@
+/** @prettier */
 import { Observable } from '../Observable';
-import { SchedulerAction, SchedulerLike } from '../types';
+import { SchedulerLike } from '../types';
 import { async as asyncScheduler } from '../scheduler/async';
 import { isScheduler } from '../util/isScheduler';
-import { Subscriber } from '../Subscriber';
 import { isValidDate } from '../util/isDate';
 
 /**
- * Creates an observable that emits incrementing numbers, starting at `0`, over time.
+ * Creates an observable that will wait for a specified time period, or exact date, before
+ * emitting the number 0.
  *
- * <span class="informal">Its like {@link index/interval}, but you can specify when
- * should the emissions start (either by delay or exact date).</span>
+ * <span class="informal">Used to emit a notification after a delay.</span>
  *
- * ![](timer.png)
+ * This observable is useful for creating delays in code, or racing against other values
+ * for ad-hoc timeouts.
  *
- * Will return an observable that emits incrementing numbers over time, starting a `0`,
- * or just a single number `0` after a specified delay or start time.
- *
- * If no scheduler is provided, {@link index/asyncScheduler} will be the assumed default.
- *
- * When the first value of `0` is emitted is determined by a calculation based off of the
- * `dueTime`:
- *
- * 1. If the `dueTime` is a *valid* `Date` object, the first emission will be after a delay
- * calculated by subtracting the current timestamp (provided by the scheduler), from the numeric
- * value of the `Date`, which will be an epoch number in milliseconds.
- * 2. If the `dueTime` is a number, the first emission will be after a delay equal to that number.
- * 3. If the result of either 1 or 2 above is negative, that is the `dueTime` is a `Date` in the
- * past, OR a negative number, the result is the first emission will be scheduled after a delay
- * of `0`.
- *
- * When subsequent values are emitted is determined by the `period` argument:
- *
- * 1. If their is no `period` argument, there will be no further emissions.
- * 2. If the `period` argument is `0`, each new emission will be scheduled with a delay of `0`.
- * 3. If the `period` argument is a postive number, each new emission will be scheduled with a
- * delay equal to that number.
- * 4. If the `period` argument is negative, there will be no further emissions.
- *
- * **Known Issues**:
- *
- * If a `scheduler` is provided that returns a timsstamp other than an epoch from `now()`, and
- * a `Date` object is passed to the `dueTime` argument, the calculation for when the first emission
- * should occur will be incorrect. In this case, it would be best to do your own calculations
- * ahead of time, and pass a `number` in as the `dueTime`.
- *
- * Once the first value is emitted, if a `period` was provided
+ * The `delay` is specified by default in milliseconds, however providing a custom scheduler could
+ * create a different behavior.
  *
  * ## Examples
  *
@@ -101,12 +72,38 @@ import { isValidDate } from '../util/isDate';
  * result.subscribe(console.log);
  * ```
  *
+ * ### Known Limitations
+ *
+ * - The {@link asyncScheduler} uses `setTimeout` which has limitations for how far in the future it can be scheduled.
+ *
+ * - If a `scheduler` is provided that returns a timestamp other than an epoch from `now()`, and
+ * a `Date` object is passed to the `dueTime` argument, the calculation for when the first emission
+ * should occur will be incorrect. In this case, it would be best to do your own calculations
+ * ahead of time, and pass a `number` in as the `dueTime`.
+ *
+ * @param due If a `number`, the amount of time in seconds to wait before emitting.
+ * If a `Date`, the exact time at which to emit.
+ * @param scheduler The scheduler to use to schedule the delay. Defaults to {@link asyncScheduler}.
+ */
+export function timer(due: number | Date, scheduler?: SchedulerLike): Observable<0>;
+
+/**
+ * Creates an observable that starts an interval after a specified delay, emitting incrementing numbers -- starting at `0` --
+ * on each interval after words.
+ *
+ * The `delay` and `intervalDuration` are specified by default in milliseconds, however providing a custom scheduler could
+ * create a different behavior.
+ *
+ * ## Example
+ *
  * ### Start an interval that starts right away
  *
  * Since {@link index/interval} waits for the passed delay before starting,
  * sometimes that's not ideal. You may want to start an interval immediately.
  * `timer` works well for this. Here we have both side-by-side so you can
  * see them in comparison.
+ *
+ * Note that this observable will never complete.
  *
  * ```ts
  * import { timer, interval } from 'rxjs';
@@ -115,70 +112,79 @@ import { isValidDate } from '../util/isDate';
  * interval(1000).subscribe(n => console.log('interval', n));
  * ```
  *
- * @see {@link index/interval}
- * @see {@link delay}
+ * ### Known Limitations
  *
- * @param dueTime The initial delay time specified as a Date object or as an integer denoting
- * milliseconds to wait before emitting the first value of `0`.
- * @param periodOrScheduler The period of time between emissions of the
- * subsequent numbers.
- * @param scheduler The {@link SchedulerLike} to use for scheduling
- * the emission of values, and providing a notion of "time".
- * @return An Observable that emits a `0` after the
- * `dueTime` and ever increasing numbers after each `period` of time
- * thereafter.
+ * - The {@link asyncScheduler} uses `setTimeout` which has limitations for how far in the future it can be scheduled.
+ *
+ * - If a `scheduler` is provided that returns a timestamp other than an epoch from `now()`, and
+ * a `Date` object is passed to the `dueTime` argument, the calculation for when the first emission
+ * should occur will be incorrect. In this case, it would be best to do your own calculations
+ * ahead of time, and pass a `number` in as the `startDue`.
+ * @param startDue If a `number`, is the time to wait before starting the interval.
+ * If a `Date`, is the exact time at which to start the interval.
+ * @param intervalDuration The delay between each value emitted in the interval. Passing a
+ * negative number here will result in immediate completion after the first value is emitted, as though
+ * no `intervalDuration` was passed at all.
+ * @param scheduler The scheduler to use to schedule the delay. Defaults to {@link asyncScheduler}.
  */
+export function timer(startDue: number | Date, intervalDuration: number, scheduler?: SchedulerLike): Observable<number>;
+
+/**
+ * @deprecated Use `timer(dueTime, scheduler?)` instead. This call pattern will be removed in version 8.
+ */
+export function timer(dueTime: number | Date, unused: undefined, scheduler?: SchedulerLike): Observable<0>;
+
 export function timer(
   dueTime: number | Date = 0,
-  periodOrScheduler?: number | SchedulerLike,
-  scheduler?: SchedulerLike
+  intervalOrScheduler?: number | SchedulerLike,
+  scheduler: SchedulerLike = asyncScheduler
 ): Observable<number> {
-  // Negative periods will complete after the due time.
-  let period = -1;
+  // Since negative intervalDuration is treated as though no
+  // interval was specified at all, we start with a negative number.
+  let intervalDuration = -1;
 
-  if (periodOrScheduler != null) {
-    if (isScheduler(periodOrScheduler)) {
-      scheduler = periodOrScheduler;
+  if (intervalOrScheduler != null) {
+    // If we have a second argument, and it's a scheduler,
+    // override the scheduler we had defaulted. Otherwise,
+    // it must be an interval.
+    if (isScheduler(intervalOrScheduler)) {
+      scheduler = intervalOrScheduler;
     } else {
-      period = periodOrScheduler;
+      // Note that this *could* be negative, in which case
+      // it's like not passing an intervalDuration at all.
+      intervalDuration = intervalOrScheduler;
     }
-  }
-
-  if (!isScheduler(scheduler)) {
-    scheduler = asyncScheduler;
   }
 
   return new Observable((subscriber) => {
     // If a valid date is passed, calculate how long to wait before
     // executing the first value... otherwise, if it's a number just schedule
     // that many milliseconds (or scheduler-specified unit size) in the future.
-    const due = Math.max(0, isValidDate(dueTime) ? +dueTime - scheduler!.now() : dueTime);
+    let due = isValidDate(dueTime) ? +dueTime - scheduler!.now() : dueTime;
 
-    return scheduler!.schedule<TimerState>(dispatch as any, due, {
-      counter: 0,
-      period,
-      subscriber,
-    });
-  });
-}
-
-interface TimerState {
-  counter: number;
-  period: number;
-  subscriber: Subscriber<number>;
-}
-
-function dispatch(this: SchedulerAction<TimerState>, state: TimerState) {
-  const { period, subscriber } = state;
-  const counter = state.counter++;
-  subscriber.next(counter);
-
-  if (!subscriber.closed) {
-    if (period < 0) {
-      // Periods scheduled with a negative number will just complete.
-      return subscriber.complete();
+    if (due < 0) {
+      // Ensure we don't schedule in the future.
+      due = 0;
     }
 
-    this.schedule(state, period);
-  }
+    // The incrementing value we emit.
+    let n = 0;
+
+    // Start the timer.
+    return scheduler.schedule(function () {
+      if (!subscriber.closed) {
+        // Emit the next value and increment.
+        subscriber.next(n++);
+
+        if (0 <= intervalDuration) {
+          // If we have a interval after the initial timer,
+          // reschedule with the period.
+          this.schedule(undefined, intervalDuration);
+        } else {
+          // We didn't have an interval. So just complete.
+          subscriber.complete();
+        }
+      }
+    }, due);
+  });
 }

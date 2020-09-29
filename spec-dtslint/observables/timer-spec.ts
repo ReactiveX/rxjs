@@ -1,11 +1,11 @@
 import { timer, animationFrameScheduler } from 'rxjs';
 
 it('should infer correctly with 1 parameter of number type', () => {
-  const a = timer(1); // $ExpectType Observable<number>
+  const a = timer(1); // $ExpectType Observable<0>
 });
 
 it('should infer correctly with 1 parameter of date type', () => {
-  const a = timer((new Date())); // $ExpectType Observable<number>
+  const a = timer((new Date())); // $ExpectType Observable<0>
 });
 
 it('should not support string parameter', () => {
@@ -17,7 +17,7 @@ it('should infer correctly with 2 parameters', () => {
 });
 
 it('should support scheduler as second parameter', () => {
-  const a = timer(1, animationFrameScheduler); // $ExpectType Observable<number>
+  const a = timer(1, animationFrameScheduler); // $ExpectType Observable<0>
 });
 
 it('should support scheduler as third parameter', () => {
