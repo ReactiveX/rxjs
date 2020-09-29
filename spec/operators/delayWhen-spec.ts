@@ -91,13 +91,13 @@ describe('delayWhen operator', () => {
     expectSubscriptions(selector.subscriptions).toBe(selectorSubs);
   });
 
-  it('should delay by selector completes if selector does not emits', () => {
+  it('should delay, but not emit if the selector never emits a notification', () => {
     const e1 =        hot('--a--b--|');
-    const expected =      '------a--(b|)';
+    const expected =      '-----------|';
     const subs =          '^       !';
-    const selector = cold(  '----|');
-    const selectorSubs = ['  ^   !',
-                          '     ^   !'];
+    const selector = cold(  '------|');
+    const selectorSubs = ['  ^     !',
+                          '     ^     !'];
 
     const result = e1.pipe(delayWhen((x: any) => selector));
 
@@ -106,21 +106,10 @@ describe('delayWhen operator', () => {
     expectSubscriptions(selector.subscriptions).toBe(selectorSubs);
     });
 
-  it('should emit if the selector completes synchronously', () => {
+  it('should not emit for async source and sync empty selector', () => {
     const e1 =        hot('a--|');
-    const expected =      'a--|';
+    const expected =      '---|';
     const subs =          '^  !';
-
-    const result = e1.pipe(delayWhen((x: any) => EMPTY));
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(subs);
-  });
-
-  it('should emit if the source completes synchronously and the selector completes synchronously', () => {
-    const e1 =        hot('(a|)');
-    const expected =      '(a|)';
-    const subs =          '(^!)';
 
     const result = e1.pipe(delayWhen((x: any) => EMPTY));
 
