@@ -6,6 +6,7 @@ import { config } from './config';
 import { reportUnhandledError } from './util/reportUnhandledError';
 import { noop } from './util/noop';
 import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories';
+import { immediateProvider } from './scheduler/immediateProvider';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -198,7 +199,7 @@ function handleStoppedNotification(
   subscriber: Subscriber<any>
 ) {
   const { onStoppedNotification } = config;
-  onStoppedNotification && setTimeout(() => onStoppedNotification(notification, subscriber));
+  onStoppedNotification && immediateProvider.setImmediate(() => onStoppedNotification(notification, subscriber));
 }
 
 /**
