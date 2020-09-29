@@ -3,6 +3,7 @@ import { Observable } from '../Observable';
 import { identity } from '../util/identity';
 import { SchedulerLike } from '../types';
 import { isScheduler } from '../util/isScheduler';
+import { caughtSchedule } from '../util/caughtSchedule';
 
 export type ConditionFunc<S> = (state: S) => boolean;
 export type IterateFunc<S> = (state: S) => S;
@@ -363,22 +364,12 @@ export function generate<T, S>(
     let state = initialState;
     if (scheduler) {
       let needIterate = false;
-      return scheduler.schedule(function () {
-        if (!subscriber.closed) {
-          try {
-            needIterate ? (state = iterate!(state)) : (needIterate = true);
-            condition && !condition(state) ? subscriber.complete() : subscriber.next(resultSelector(state));
-          } catch (err) {
-            subscriber.error(err);
-          }
-          if (!subscriber.closed) {
-            this.schedule(state);
-          }
-        }
+      caughtSchedule(subscriber, scheduler, function () {
+        needIterate ? (state = iterate!(state)) : (needIterate = true);
+        condition && !condition(state) ? subscriber.complete() : subscriber.next(resultSelector(state));
+        this.schedule();
       });
-    }
-
-    try {
+    } else {
       do {
         if (condition && !condition(state)) {
           subscriber.complete();
@@ -387,10 +378,6 @@ export function generate<T, S>(
           !subscriber.closed && (state = iterate!(state));
         }
       } while (!subscriber.closed);
-    } catch (err) {
-      subscriber.error(err);
     }
-
-    return undefined;
   });
 }
