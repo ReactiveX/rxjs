@@ -3,6 +3,7 @@ import { Observable } from '../Observable';
 import { SchedulerLike } from '../types';
 import { iterator as Symbol_iterator } from '../symbol/iterator';
 import { isFunction } from '../util/isFunction';
+import { caughtSchedule } from '../util/caughtSchedule';
 
 /**
  * Used in {@link scheduled} to create an observable from an Iterable.
@@ -22,36 +23,29 @@ export function scheduleIterable<T>(input: Iterable<T>, scheduler: SchedulerLike
         iterator = (input as any)[Symbol_iterator]();
 
         // Schedule the first iteration and emission.
-        subscriber.add(
-          scheduler.schedule(function () {
-            // Check to make sure teardown was not triggered
-            // by the consumer since the last iteration.
-            if (!subscriber.closed) {
-              let value: T;
-              let done: boolean | undefined;
-              try {
-                // Pull the value out of the iterator
-                ({ value, done } = iterator.next());
-              } catch (err) {
-                subscriber.error(err);
-                return;
-              }
-              if (done) {
-                // If it is "done" we just complete. This mimics the
-                // behavior of JavaScript's `for..of` consumption of
-                // iterables, which will not emit the value from an iterator
-                // result of `{ done: true: value: 'here' }`.
-                subscriber.complete();
-              } else {
-                // The iterable is not done, emit the value.
-                subscriber.next(value);
-                // Reschedule. This will cause this function to be
-                // called again on the same scheduled delay.
-                this.schedule();
-              }
+        caughtSchedule(subscriber, scheduler, function () {
+          // Check to make sure teardown was not triggered
+          // by the consumer since the last iteration.
+          if (!subscriber.closed) {
+            let value: T;
+            let done: boolean | undefined;
+            // Pull the value out of the iterator
+            ({ value, done } = iterator.next());
+            if (done) {
+              // If it is "done" we just complete. This mimics the
+              // behavior of JavaScript's `for..of` consumption of
+              // iterables, which will not emit the value from an iterator
+              // result of `{ done: true: value: 'here' }`.
+              subscriber.complete();
+            } else {
+              // The iterable is not done, emit the value.
+              subscriber.next(value);
+              // Reschedule. This will cause this function to be
+              // called again on the same scheduled delay.
+              this.schedule();
             }
-          })
-        );
+          }
+        });
       })
     );
 
