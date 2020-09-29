@@ -12,7 +12,7 @@ import { caughtSchedule } from '../util/caughtSchedule';
  */
 export function scheduleIterable<T>(input: Iterable<T>, scheduler: SchedulerLike) {
   return new Observable<T>((subscriber) => {
-    let iterator: Iterator<T>;
+    let iterator: Iterator<T, T>;
 
     // Schedule the initial creation of the iterator from
     // the iterable. This is so the code in the iterable is
@@ -24,10 +24,8 @@ export function scheduleIterable<T>(input: Iterable<T>, scheduler: SchedulerLike
 
         // Schedule the first iteration and emission.
         caughtSchedule(subscriber, scheduler, function () {
-          let value: T;
-          let done: boolean | undefined;
           // Pull the value out of the iterator
-          ({ value, done } = iterator.next());
+          const { value, done } = iterator.next();
           if (done) {
             // If it is "done" we just complete. This mimics the
             // behavior of JavaScript's `for..of` consumption of
