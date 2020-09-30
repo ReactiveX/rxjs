@@ -29,6 +29,38 @@ export function last<T, D = T>(
  * from the source Observable that satisfies the predicate.
  *
  * ![](last.png)
+ * 
+ * It will throw an error if the source completes without notification or one that matches the predicate. It
+ * returns the last value or if a predicate is provided last value that matches the predicate. It returns the 
+ * given default value if no notification is emitted or matches the predicate.
+ * 
+ * ## Example
+ * Last alphabet from the sequence.
+ * ```ts
+ * import { from } from 'rxjs';
+ * import { last } from 'rxjs/operators';
+ * 
+ * const source = from(['x', 'y', 'z']);
+ * const example = source.pipe(last());
+ * //output: "Last alphabet: z"
+ * example.subscribe(val => console.log(`Last alphabet: ${val}`));
+ * ```
+ * 
+ * Default value when the value in the predicate is not matched.
+ * ```ts
+ * import { from } from 'rxjs';
+ * import { last } from 'rxjs/operators';
+ * 
+ * const source = from(['x', 'y', 'z']);
+ * const example = source.pipe(last(char => char === 'a','not exist'));
+ * //output: "'a' is not exist."
+ * example.subscribe(val => console.log(`'a' is ${val}.`));
+ * ```
+ * 
+ * @see {@link skip}
+ * @see {@link skipUntil}
+ * @see {@link skipLast}
+ * @see {@link skipWhile}
  *
  * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
