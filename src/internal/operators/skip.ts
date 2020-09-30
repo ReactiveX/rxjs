@@ -9,8 +9,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ![](skip.png)
  * 
  * Skips the values until the sent notifications are equal or less than provided skip count. It raises 
- * an error if skip count is equal or more than the actual number of emits and source raises an error. An emission
- * is over when source is reached to its limit.
+ * an error if skip count is equal or more than the actual number of emits and source raises an error.
  * 
  * ## Example
  * Skip the values before the emission
