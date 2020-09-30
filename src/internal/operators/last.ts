@@ -30,8 +30,8 @@ export function last<T, D = T>(
  *
  * ![](last.png)
  * 
- * It will throw an error if the notification is sent but the source is completed. It returns the
- * last value or if a predicate is provided last value that matches the predicate. It returns the 
+ * It will throw an error if the source completes without notification or one that matches the predicate. It
+ * returns the last value or if a predicate is provided last value that matches the predicate. It returns the 
  * given default value if no notification is emitted or matches the predicate.
  * 
  * ## Example
