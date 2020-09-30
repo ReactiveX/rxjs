@@ -1,10 +1,7 @@
 /** @prettier */
-import { AsyncSubject } from '../AsyncSubject';
 import { Observable } from '../Observable';
-import { observeOn } from '../operators/observeOn';
 import { SchedulerLike } from '../types';
-import { isScheduler } from '../util/isScheduler';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
+import { bindCallbackInternals } from './bindCallbackInternals';
 
 /** @deprecated resultSelector is deprecated, pipe to map instead */
 export function bindNodeCallback(
@@ -255,98 +252,10 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  * deliver.
  * @name bindNodeCallback
  */
-export function bindNodeCallback<T>(
+export function bindNodeCallback(
   callbackFunc: Function,
   resultSelector?: Function | SchedulerLike,
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<any> {
-  if (resultSelector) {
-    if (isScheduler(resultSelector)) {
-      scheduler = resultSelector;
-    } else {
-      // DEPRECATED PATH
-      return function (this: any, ...args: any[]) {
-        return bindNodeCallback(callbackFunc, scheduler)
-          .apply(this, args)
-          .pipe(mapOneOrManyArgs(resultSelector as any));
-      };
-    }
-  }
-
-  if (scheduler) {
-    return function (this: any, ...args: any[]) {
-      return bindNodeCallback(callbackFunc).apply(this, args).pipe(observeOn(scheduler!));
-    };
-  }
-
-  // We're using AsyncSubject, because it emits when it completes,
-  // and it will play the value to all late-arriving subscribers.
-  const subject = new AsyncSubject<any>();
-
-  return function (this: any, ...args: any[]): Observable<T> {
-    // If this is true, then we haven't called our function yet.
-    let uninitialized = true;
-    return new Observable((subscriber) => {
-      const subs = subject.subscribe(subscriber);
-      if (uninitialized) {
-        uninitialized = false;
-        // We're going to execute the bound function
-        // This bit is to signal that we are hitting the callback asychronously.
-        // Because we don't have any anti-"Zalgo" gaurantees with whatever
-        // function we are handed, we use this bit to figure out whether or not
-        // we are getting hit in a callback synchronously during our call.
-        let isAsync = false;
-
-        // This is used to signal that the callback completed synchronously.
-        let isComplete = false;
-
-        // Call our function that has a callback. If at any time during this
-        // call, an error is thrown, it will be caught by the Observable
-        // subscription process and sent to the consumer.
-
-        callbackFunc.apply(
-          // Pass the appropriate `this` context.
-          this,
-          [
-            // Pass the arguments.
-            ...args,
-            // And our callback handler.
-            (err: any, ...rest: any[]) => {
-              if (err != null) {
-                subject.error(err);
-              } else {
-                // If we have one argument after the error, notify the consumer
-                // of it as a single value, otherwise, if there's more than one, pass
-                // them as an array. Note that if there are no arguments, `undefined`
-                // will be emitted.
-                subject.next(1 < rest.length ? rest : rest[0]);
-                // Flip this flag, so we know we can complete it in the synchronous
-                // case below.
-                isComplete = true;
-                // If we're not asynchronous, we need to defer the `complete` call
-                // until after the call to the function is over. This is because an
-                // error could be thrown in the function after it calls our callback,
-                // and if that is the case, if we complete here, we are unable to notify
-                // the consumer than an error occured.
-                if (isAsync) {
-                  subject.complete();
-                }
-              }
-            },
-          ]
-        );
-        // If we flipped `isComplete` during the call, we resolved synchronously,
-        // notify complete, because we skipped it in the callback to wait
-        // to make sure there were no errors during the call.
-        if (isComplete) {
-          subject.complete();
-        }
-
-        // We're no longer synchronous. If the callback is called at this point
-        // we can notify complete on the spot.
-        isAsync = true;
-      }
-      return subs;
-    });
-  };
+  return bindCallbackInternals(true, callbackFunc, resultSelector, scheduler);
 }

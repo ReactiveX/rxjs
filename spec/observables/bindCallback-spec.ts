@@ -256,30 +256,30 @@ describe('bindCallback', () => {
     expect(results2).to.deep.equal([42, 'done']);
   });
 
-  it('should not even call the callbackFn if immediately unsubscribed', () => {
-      let calls = 0;
-      function callback(datum: number, cb: Function) {
-        calls++;
-        cb(datum);
-      }
-      const boundCallback = bindCallback(callback, rxTestScheduler);
-      const results1: Array<number|string> = [];
+  it('should not even call the callbackFn if scheduled and immediately unsubscribed', () => {
+    let calls = 0;
+    function callback(datum: number, cb: Function) {
+      calls++;
+      cb(datum);
+    }
+    const boundCallback = bindCallback(callback, rxTestScheduler);
+    const results1: Array<number|string> = [];
 
-      const source = boundCallback(42);
+    const source = boundCallback(42);
 
-      const subscription = source.subscribe((x: any) => {
-        results1.push(x);
-      }, null, () => {
-        results1.push('done');
-      });
-
-      subscription.unsubscribe();
-
-      rxTestScheduler.flush();
-
-      expect(calls).to.equal(0);
+    const subscription = source.subscribe((x: any) => {
+      results1.push(x);
+    }, null, () => {
+      results1.push('done');
     });
+
+    subscription.unsubscribe();
+
+    rxTestScheduler.flush();
+
+    expect(calls).to.equal(0);
   });
+});
 
   it('should emit post-callback errors', () => {
     function badFunction(callback: (answer: number) => void): void {
