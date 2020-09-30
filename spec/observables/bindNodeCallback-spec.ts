@@ -315,5 +315,29 @@ describe('bindNodeCallback', () => {
     expect(result1).to.equal('test');
     expect(result2).to.equal('test');
     expect(calls).to.equal(1);
-  })
+  });
+
+  it('should not even call the callbackFn if scheduled and immediately unsubscribed', () => {
+    let calls = 0;
+    function callback(datum: number, cb: Function) {
+      calls++;
+      cb(null, datum);
+    }
+    const boundCallback = bindNodeCallback(callback, rxTestScheduler);
+    const results1: Array<number|string> = [];
+
+    const source = boundCallback(42);
+
+    const subscription = source.subscribe((x: any) => {
+      results1.push(x);
+    }, null, () => {
+      results1.push('done');
+    });
+
+    subscription.unsubscribe();
+
+    rxTestScheduler.flush();
+
+    expect(calls).to.equal(0);
+  });
 });
