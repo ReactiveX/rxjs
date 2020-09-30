@@ -291,4 +291,29 @@ describe('bindNodeCallback', () => {
 
     expect(receivedError).to.equal('kaboom');
   });
+
+  it('should not call the function if subscribed twice in a row before it resolves', () => {
+    let executeCallback: any;
+    let calls = 0;
+    function myFunc(callback: (error: any, result: any) => void) {
+      calls++;
+      if (calls > 1) {
+        throw new Error('too many calls to myFunc');
+      }
+      executeCallback = callback;
+    }
+
+    const source$ = bindNodeCallback(myFunc)();
+
+    let result1: any;
+    let result2: any;
+    source$.subscribe(value => result1 = value);
+    source$.subscribe(value => result2 = value);
+
+    expect(calls).to.equal(1);
+    executeCallback(null, 'test');
+    expect(result1).to.equal('test');
+    expect(result2).to.equal('test');
+    expect(calls).to.equal(1);
+  })
 });
