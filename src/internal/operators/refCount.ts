@@ -95,7 +95,7 @@ export function refCount<T>(): MonoTypeOperatorFunction<T> {
       //      to the shared connection Subscription
       ///
 
-      const sharedConnection = (<any>source)._connection;
+      const sharedConnection = (source as any)._connection;
       const conn = connection;
       connection = null;
 
