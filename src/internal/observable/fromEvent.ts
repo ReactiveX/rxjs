@@ -22,8 +22,8 @@ export interface NodeCompatibleEventEmitter {
 }
 
 export interface JQueryStyleEventEmitter {
-  on: (eventName: string, handler: Function) => void;
-  off: (eventName: string, handler: Function) => void;
+  on: (eventName: string, handler: (event: any) => any) => void;
+  off: (eventName: string, handler: (event: any) => any) => void;
 }
 
 export interface HasEventTargetAddRemove<E> {

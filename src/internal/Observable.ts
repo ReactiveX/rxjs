@@ -49,7 +49,7 @@ export class Observable<T> implements Subscribable<T> {
    * @nocollapse
    * @deprecated use new Observable() instead
    */
-  static create: Function = <T>(subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) => {
+  static create: (...args: any[]) => any = <T>(subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) => {
     return new Observable<T>(subscribe);
   };
 

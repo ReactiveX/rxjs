@@ -31,7 +31,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
    * @nocollapse
    * @deprecated Recommended you do not use, will be removed at some point in the future. Plans for replacement still under discussion.
    */
-  static create: Function = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
+  static create: (...args: any[]) => any = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
     return new AnonymousSubject<T>(destination, source);
   };
 
