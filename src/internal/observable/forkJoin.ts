@@ -60,7 +60,7 @@ export function forkJoin(sourcesObject: {}): Observable<never>;
 export function forkJoin<T, K extends keyof T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 /** @deprecated resultSelector is deprecated, pipe to map instead */
-export function forkJoin(...args: Array<ObservableInput<any> | Function>): Observable<any>;
+export function forkJoin(...args: Array<ObservableInput<any> | ((...args: any[]) => any)>): Observable<any>;
 /** @deprecated Use the version that takes an array of Observables instead */
 export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
 

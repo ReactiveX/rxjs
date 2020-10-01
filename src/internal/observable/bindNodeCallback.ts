@@ -5,8 +5,8 @@ import { bindCallbackInternals } from './bindCallbackInternals';
 
 /** @deprecated resultSelector is deprecated, pipe to map instead */
 export function bindNodeCallback(
-  callbackFunc: Function,
-  resultSelector: Function,
+  callbackFunc: (...args: any[]) => any,
+  resultSelector: (...args: any[]) => any,
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<any>;
 
@@ -146,7 +146,7 @@ export function bindNodeCallback<A1, A2, A3, A4, A5>(
   scheduler?: SchedulerLike
 ): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<void>;
 
-export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
+export function bindNodeCallback(callbackFunc: (...args: any[]) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
 /**
  * Converts a Node.js-style callback API to a function that returns an
  * Observable.
@@ -253,8 +253,8 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  * @name bindNodeCallback
  */
 export function bindNodeCallback(
-  callbackFunc: Function,
-  resultSelector?: Function | SchedulerLike,
+  callbackFunc: (...args: any[]) => any,
+  resultSelector?: ((...args: any[]) => any) | SchedulerLike,
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<any> {
   return bindCallbackInternals(true, callbackFunc, resultSelector, scheduler);
