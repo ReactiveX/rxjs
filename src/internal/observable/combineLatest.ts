@@ -359,7 +359,7 @@ export function combineLatest<R>(
 
 // combineLatest({})
 export function combineLatest(sourcesObject: {}): Observable<never>;
-export function combineLatest<T, K extends keyof T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
+export function combineLatest<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 /* tslint:enable:max-line-length */
 
@@ -504,10 +504,10 @@ export function combineLatest<O extends ObservableInput<any>, R>(...args: any[])
       scheduler,
       keys
         ? // A handler for scrubbing the array of args into a dictionary.
-          (args: any[]) => {
+          (values: any[]) => {
             const value: any = {};
-            for (let i = 0; i < args.length; i++) {
-              value[keys![i]] = args[i];
+            for (let i = 0; i < values.length; i++) {
+              value[keys![i]] = values[i];
             }
             return value;
           }

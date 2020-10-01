@@ -88,7 +88,7 @@ export interface TimeoutErrorCtor {
  */
 export const TimeoutError: TimeoutErrorCtor = createErrorClass(
   (_super) =>
-    function TimeoutError(this: any, info: TimeoutInfo<any> | null = null) {
+    function TimeoutErrorImpl(this: any, info: TimeoutInfo<any> | null = null) {
       _super(this);
       this.message = 'Timeout has occurred';
       this.name = 'TimeoutError';

@@ -26,12 +26,12 @@ export class VirtualTimeScheduler extends AsyncScheduler {
    * This creates an instance of a `VirtualTimeScheduler`. Experts only. The signature of
    * this constructor is likely to change in the long run.
    *
-   * @param SchedulerAction The type of Action to initialize when initializing actions during scheduling.
+   * @param schedulerActionCtor The type of Action to initialize when initializing actions during scheduling.
    * @param maxFrames The maximum number of frames to process before stopping. Used to prevent endless flush cycles.
    */
-  constructor(SchedulerAction: typeof AsyncAction = VirtualAction as any,
+  constructor(schedulerActionCtor: typeof AsyncAction = VirtualAction as any,
               public maxFrames: number = Infinity) {
-    super(SchedulerAction, () => this.frame);
+    super(schedulerActionCtor, () => this.frame);
   }
 
   /**

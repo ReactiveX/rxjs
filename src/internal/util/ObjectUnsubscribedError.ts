@@ -18,8 +18,9 @@ export interface ObjectUnsubscribedErrorCtor {
  */
 export const ObjectUnsubscribedError: ObjectUnsubscribedErrorCtor = createErrorClass(
   (_super) =>
-    function ObjectUnsubscribedError(this: any) {
+    function ObjectUnsubscribedErrorImpl(this: any) {
       _super(this);
+      this.name = 'ObjectUnsubscribedError';
       this.message = 'object unsubscribed';
     }
 );

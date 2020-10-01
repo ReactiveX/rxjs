@@ -56,7 +56,7 @@ export interface AjaxErrorCtor {
  */
 export const AjaxError: AjaxErrorCtor = createErrorClass(
   (_super) =>
-    function AjaxError(this: any, message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
+    function AjaxErrorImpl(this: any, message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
       this.message = message;
       this.name = 'AjaxError';
       this.xhr = xhr;
@@ -85,16 +85,6 @@ export interface AjaxTimeoutErrorCtor {
   new (xhr: XMLHttpRequest, request: AjaxRequest): AjaxTimeoutError;
 }
 
-const AjaxTimeoutErrorImpl = (() => {
-  function AjaxTimeoutErrorImpl(this: any, xhr: XMLHttpRequest, request: AjaxRequest) {
-    AjaxError.call(this, 'ajax timeout', xhr, request);
-    this.name = 'AjaxTimeoutError';
-    return this;
-  }
-  AjaxTimeoutErrorImpl.prototype = Object.create(AjaxError.prototype);
-  return AjaxTimeoutErrorImpl;
-})();
-
 /**
  * Thrown when an AJAX request timesout. Not to be confused with {@link TimeoutError}.
  *
@@ -105,4 +95,12 @@ const AjaxTimeoutErrorImpl = (() => {
  * @class AjaxTimeoutError
  * @see ajax
  */
-export const AjaxTimeoutError: AjaxTimeoutErrorCtor = AjaxTimeoutErrorImpl as any;
+export const AjaxTimeoutError: AjaxTimeoutErrorCtor = (() => {
+  function AjaxTimeoutErrorImpl(this: any, xhr: XMLHttpRequest, request: AjaxRequest) {
+    AjaxError.call(this, 'ajax timeout', xhr, request);
+    this.name = 'AjaxTimeoutError';
+    return this;
+  }
+  AjaxTimeoutErrorImpl.prototype = Object.create(AjaxError.prototype);
+  return AjaxTimeoutErrorImpl;
+})() as any;

@@ -217,7 +217,7 @@ export function groupBy<T, K, R>(
      * @param key The key of the group
      * @param groupSubject The subject that fuels the group
      */
-    function createGroupedObservable<K, T>(key: K, groupSubject: Subject<any>) {
+    function createGroupedObservable(key: K, groupSubject: Subject<any>) {
       const result: any = new Observable<T>((groupSubscriber) => {
         groupBySourceSubscriber.activeGroups++;
         const innerSub = groupSubject.subscribe(groupSubscriber);

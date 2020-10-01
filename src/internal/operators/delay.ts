@@ -45,14 +45,14 @@ import { timer } from '../observable/timer';
  * @see {@link debounceTime}
  * @see {@link delayWhen}
  *
- * @param {number|Date} delay The delay duration in milliseconds (a `number`) or
+ * @param {number|Date} due The delay duration in milliseconds (a `number`) or
  * a `Date` until which the emission of the source items is delayed.
  * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the time-shift for each item.
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified timeout or Date.
  */
-export function delay<T>(delay: number | Date, scheduler: SchedulerLike = asyncScheduler): MonoTypeOperatorFunction<T> {
-  const duration = timer(delay, scheduler);
+export function delay<T>(due: number | Date, scheduler: SchedulerLike = asyncScheduler): MonoTypeOperatorFunction<T> {
+  const duration = timer(due, scheduler);
   return delayWhen(() => duration);
 }

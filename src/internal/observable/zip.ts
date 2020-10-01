@@ -204,12 +204,12 @@ export function zip<O extends ObservableInput<any>, R>(
         // Loop over our sources and subscribe to each one. The index `i` is
         // especially important here, because we use it in closures below to
         // access the related buffers and completion properties
-        for (let i = 0; !subscriber.closed && i < sources.length; i++) {
-          innerFrom(sources[i]).subscribe(
+        for (let sourceIndex = 0; !subscriber.closed && sourceIndex < sources.length; sourceIndex++) {
+          innerFrom(sources[sourceIndex]).subscribe(
             new OperatorSubscriber(
               subscriber,
               (value) => {
-                buffers[i].push(value);
+                buffers[sourceIndex].push(value);
                 // if every buffer has at least one value in it, then we
                 // can shift out the oldest value from each buffer and emit
                 // them as an array.
@@ -230,11 +230,11 @@ export function zip<O extends ObservableInput<any>, R>(
               () => {
                 // This source completed. Mark it as complete so we can check it later
                 // if we have to.
-                completed[i] = true;
+                completed[sourceIndex] = true;
                 // But, if this complete source has nothing in its buffer, then we
                 // can complete the result, because we can't possibly have any more
                 // values from this to zip together with the oterh values.
-                !buffers[i].length && subscriber.complete();
+                !buffers[sourceIndex].length && subscriber.complete();
               }
             )
           );

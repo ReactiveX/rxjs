@@ -56,5 +56,5 @@ import { reduce } from './reduce';
  */
 
 export function count<T>(predicate?: (value: T, index: number) => boolean): OperatorFunction<T, number> {
-  return reduce((count, value, i) => (!predicate || predicate(value, i) ? count + 1 : count), 0);
+  return reduce((total, value, i) => (!predicate || predicate(value, i) ? total + 1 : total), 0);
 }

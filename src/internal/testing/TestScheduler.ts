@@ -171,8 +171,8 @@ export class TestScheduler extends VirtualTimeScheduler {
     this.flushTests.push(flushTest);
     const { runMode } = this;
     return {
-      toBe(marbles: string | string[]) {
-        const marblesArray: string[] = (typeof marbles === 'string') ? [marbles] : marbles;
+      toBe(marblesOrMarblesArray: string | string[]) {
+        const marblesArray: string[] = (typeof marblesOrMarblesArray === 'string') ? [marblesOrMarblesArray] : marblesOrMarblesArray;
         flushTest.ready = true;
         flushTest.expected = marblesArray.map(marbles =>
           TestScheduler.parseMarblesAsSubscriptions(marbles, runMode)
@@ -482,7 +482,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     // animate run helper.
 
     let lastHandle = 0;
-    const map = new Map<number, {
+    const scheduleLookup = new Map<number, {
       due: number;
       duration: number;
       handle: number;
@@ -496,24 +496,24 @@ export class TestScheduler extends VirtualTimeScheduler {
       // or interval action - with immediate actions being prioritized over
       // interval actions. 
       const now = this.now();
-      const values = Array.from(map.values());
-      const due = values.filter(({ due }) => due <= now);
-      const immediates = due.filter(({ type }) => type === 'immediate');
+      const scheduledRecords = Array.from(scheduleLookup.values());
+      const scheduledRecordsDue = scheduledRecords.filter(({ due }) => due <= now);
+      const immediates = scheduledRecordsDue.filter(({ type }) => type === 'immediate');
       if (immediates.length > 0) {
         const { handle, handler } = immediates[0];
-        map.delete(handle);
+        scheduleLookup.delete(handle);
         handler();
         return;
       }
-      const intervals = due.filter(({ type }) => type === 'interval');
-      if (intervals.length > 0) {
-        const interval = intervals[0];
-        const { duration, handler } = interval;
-        interval.due = now + duration;
+      const dueIntervals = scheduledRecordsDue.filter(({ type }) => type === 'interval');
+      if (dueIntervals.length > 0) {
+        const firstDueInterval = dueIntervals[0];
+        const { duration, handler } = firstDueInterval;
+        firstDueInterval.due = now + duration;
         // The interval delegate must behave like setInterval, so run needs to
         // be rescheduled. This will continue until the clearInterval delegate
         // unsubscribes and deletes the handle from the map.
-        interval.subscription = this.schedule(run, duration);
+        firstDueInterval.subscription = this.schedule(run, duration);
         handler();
         return;
       }
@@ -523,7 +523,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     const immediate = {
       setImmediate: (handler: () => void) => {
         const handle = ++lastHandle;
-        map.set(handle, {
+        scheduleLookup.set(handle, {
           due: this.now(),
           duration: 0,
           handle,
@@ -534,10 +534,10 @@ export class TestScheduler extends VirtualTimeScheduler {
         return handle;
       },
       clearImmediate: (handle: number) => {
-        const value = map.get(handle);
+        const value = scheduleLookup.get(handle);
         if (value) {
           value.subscription.unsubscribe();
-          map.delete(handle);
+          scheduleLookup.delete(handle);
         }
       }
     };
@@ -545,7 +545,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     const interval = {
       setInterval: (handler: () => void, duration = 0) => {
         const handle = ++lastHandle;
-        map.set(handle, {
+        scheduleLookup.set(handle, {
           due: this.now() + duration,
           duration,
           handle,
@@ -556,10 +556,10 @@ export class TestScheduler extends VirtualTimeScheduler {
         return handle;
       },
       clearInterval: (handle: number) => {
-        const value = map.get(handle);
+        const value = scheduleLookup.get(handle);
         if (value) {
           value.subscription.unsubscribe();
-          map.delete(handle);
+          scheduleLookup.delete(handle);
         }
       }
     };
