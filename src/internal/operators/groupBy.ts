@@ -125,7 +125,7 @@ export function groupBy<T, K, R>(
 ): OperatorFunction<T, GroupedObservable<K, R>> {
   return operate((source, subscriber) => {
     // A lookup for the groups that we have so far.
-    let groups = new Map<K, Subject<any>>();
+    const groups = new Map<K, Subject<any>>();
 
     // Used for notifying all groups and the subscriber in the same way.
     const notify = (cb: (group: Observer<any>) => void) => {
