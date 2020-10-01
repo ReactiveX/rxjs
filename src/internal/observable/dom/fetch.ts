@@ -106,9 +106,10 @@ export function fromFetch<T>(
     // signal from this controller is what is being passed to `fetch`.
     const controller = new AbortController();
     const { signal } = controller;
-    // This flag exists to make sure we don't `abort()` the fetch
-    // before we code is done using the response.
-    // In particular in the case where a `selector` is provided.
+    // This flag exists to make sure we don't `abort()` the fetch upon tearing down
+    // this observable after emitting a Response. Aborting in such circumstances
+    // would also abort subsequent methods - like `json()` - that could be called
+    // on the Response. Consider: `fromFetch().pipe(take(1), mergeMap(res => res.json()))`
     let abortable = true;
 
     // The initialization object passed to `fetch` as the second
