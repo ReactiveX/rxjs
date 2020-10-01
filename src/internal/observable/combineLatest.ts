@@ -545,7 +545,7 @@ class CombineLatestSubscriber<T> extends Subscriber<T> {
 
 export function combineLatestInit(
   observables: ObservableInput<any>[],
-  scheduler: SchedulerLike | undefined = undefined,
+  scheduler: SchedulerLike | undefined,
   valueTransform: (values: any[]) => any = identity
 ) {
   return (subscriber: Subscriber<any>) => {

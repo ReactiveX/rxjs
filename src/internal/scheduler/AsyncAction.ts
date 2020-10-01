@@ -117,7 +117,7 @@ export class AsyncAction<T> extends Action<T> {
 
   protected _execute(state: T, _delay: number): any {
     let errored: boolean = false;
-    let errorValue: any = undefined;
+    let errorValue: any;
     try {
       this.work(state);
     } catch (e) {

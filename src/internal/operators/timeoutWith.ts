@@ -87,7 +87,7 @@ export function timeoutWith<T, R>(
   scheduler?: SchedulerLike
 ): OperatorFunction<T, T | R> {
   let first: number | Date | undefined;
-  let each: number | undefined = undefined;
+  let each: number | undefined;
   let _with: () => ObservableInput<R>;
   scheduler = scheduler ?? async;
 
