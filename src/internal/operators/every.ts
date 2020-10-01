@@ -39,7 +39,7 @@ export function every<T>(
       new OperatorSubscriber(
         subscriber,
         (value) => {
-          if (!predicate.call(thisArg, value, index, source)) {
+          if (!predicate.call(thisArg, value, index++, source)) {
             subscriber.next(false);
             subscriber.complete();
           }
