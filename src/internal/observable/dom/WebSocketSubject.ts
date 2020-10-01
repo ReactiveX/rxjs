@@ -278,7 +278,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       }
     });
 
-    socket.onopen = (e: Event) => {
+    socket.onopen = (evt: Event) => {
       const { _socket } = this;
       if (!_socket) {
         socket!.close();
@@ -287,7 +287,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       }
       const { openObserver } = this._config;
       if (openObserver) {
-        openObserver.next(e);
+        openObserver.next(evt);
       }
 
       const queue = this.destination;
@@ -303,13 +303,13 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
             }
           }
         },
-        (e) => {
+        (err) => {
           const { closingObserver } = this._config;
           if (closingObserver) {
             closingObserver.next(undefined);
           }
-          if (e && e.code) {
-            socket!.close(e.code, e.reason);
+          if (err && err.code) {
+            socket!.close(err.code, err.reason);
           } else {
             observer.error(new TypeError(WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT));
           }

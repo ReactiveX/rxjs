@@ -56,11 +56,11 @@ export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T
     /**
      * Subscribes to one of our two observables in this operator in the same way,
      * only allowing for different behaviors with the next handler.
-     * @param source The observable to subscribe to.
+     * @param sourceOrNotifier The observable to subscribe to.
      * @param next The next handler to use with the subscription
      */
-    const windowSubscribe = (source: Observable<any>, next: (value: any) => void) =>
-      source.subscribe(
+    const windowSubscribe = (sourceOrNotifier: Observable<any>, next: (value: any) => void) =>
+      sourceOrNotifier.subscribe(
         new OperatorSubscriber(
           subscriber,
           next,

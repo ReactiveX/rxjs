@@ -45,24 +45,24 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  */
 export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]> {
   return operate((source, subscriber) => {
-    let buffer: T[] = [];
+    let currentBuffer: T[] = [];
 
     // Subscribe to our source.
-    source.subscribe(new OperatorSubscriber(subscriber, (value) => buffer.push(value)));
+    source.subscribe(new OperatorSubscriber(subscriber, (value) => currentBuffer.push(value)));
 
     // Subscribe to the closing notifier.
     closingNotifier.subscribe(
       new OperatorSubscriber(subscriber, () => {
         // Start a new buffer and emit the previous one.
-        const b = buffer;
-        buffer = [];
+        const b = currentBuffer;
+        currentBuffer = [];
         subscriber.next(b);
       })
     );
 
     return () => {
       // Ensure buffered values are released on teardown.
-      buffer = null!;
+      currentBuffer = null!;
     };
   });
 }

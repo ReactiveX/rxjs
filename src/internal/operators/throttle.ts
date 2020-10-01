@@ -80,7 +80,7 @@ export function throttle<T>(
       }
     };
 
-    const throttle = (value: T) =>
+    const startThrottle = (value: T) =>
       (throttled = innerFrom(durationSelector(value)).subscribe(
         new OperatorSubscriber(subscriber, throttlingDone, undefined, throttlingDone)
       ));
@@ -88,7 +88,7 @@ export function throttle<T>(
     const send = () => {
       if (hasValue) {
         subscriber.next(sendValue!);
-        !isComplete && throttle(sendValue!);
+        !isComplete && startThrottle(sendValue!);
       }
       hasValue = false;
       sendValue = null;
@@ -105,7 +105,7 @@ export function throttle<T>(
         (value) => {
           hasValue = true;
           sendValue = value;
-          !(throttled && !throttled.closed) && (leading ? send() : throttle(value));
+          !(throttled && !throttled.closed) && (leading ? send() : startThrottle(value));
         },
         undefined,
         () => {

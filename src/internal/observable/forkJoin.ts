@@ -57,7 +57,7 @@ export function forkJoin<A extends ObservableInput<any>[]>(sources: A): Observab
 
 // forkJoin({})
 export function forkJoin(sourcesObject: {}): Observable<never>;
-export function forkJoin<T, K extends keyof T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
+export function forkJoin<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 /** @deprecated resultSelector is deprecated, pipe to map instead */
 export function forkJoin(...args: Array<ObservableInput<any> | ((...args: any[]) => any)>): Observable<any>;
@@ -183,8 +183,8 @@ function forkJoinInternal(sources: ObservableInput<any>[], keys: string[] | null
     const values = new Array(len);
     let completed = 0;
     let emitted = 0;
-    for (let i = 0; i < len; i++) {
-      const source = innerFrom(sources[i]);
+    for (let sourceIndex = 0; sourceIndex < len; sourceIndex++) {
+      const source = innerFrom(sources[sourceIndex]);
       let hasValue = false;
       subscriber.add(
         source.subscribe({
@@ -193,7 +193,7 @@ function forkJoinInternal(sources: ObservableInput<any>[], keys: string[] | null
               hasValue = true;
               emitted++;
             }
-            values[i] = value;
+            values[sourceIndex] = value;
           },
           error: (err) => subscriber.error(err),
           complete: () => {

@@ -17,7 +17,8 @@ export interface EmptyErrorCtor {
  *
  * @class EmptyError
  */
-export const EmptyError: EmptyErrorCtor = createErrorClass((_super) => function EmptyError(this: any) {
+export const EmptyError: EmptyErrorCtor = createErrorClass((_super) => function EmptyErrorImpl(this: any) {
   _super(this);
+  this.name = 'EmptyError';
   this.message = 'no elements in sequence';
 });

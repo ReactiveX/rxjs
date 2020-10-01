@@ -435,11 +435,11 @@ export class Observable<T> implements Subscribable<T> {
 
   /* tslint:disable:max-line-length */
   /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
-  toPromise<T>(this: Observable<T>): Promise<T | undefined>;
+  toPromise(): Promise<T | undefined>;
   /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
-  toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T | undefined>;
+  toPromise(PromiseCtor: typeof Promise): Promise<T | undefined>;
   /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
-  toPromise<T>(this: Observable<T>, PromiseCtor: PromiseConstructorLike): Promise<T | undefined>;
+  toPromise(PromiseCtor: PromiseConstructorLike): Promise<T | undefined>;
   /* tslint:enable:max-line-length */
 
   /**

@@ -19,8 +19,9 @@ export interface ArgumentOutOfRangeErrorCtor {
  */
 export const ArgumentOutOfRangeError: ArgumentOutOfRangeErrorCtor = createErrorClass(
   (_super) =>
-    function ArgumentOutOfRangeError(this: any) {
+    function ArgumentOutOfRangeErrorImpl(this: any) {
       _super(this);
+      this.name = 'ArgumentOutOfRangeError';
       this.message = 'argument out of range';
     }
 );

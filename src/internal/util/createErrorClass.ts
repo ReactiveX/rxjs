@@ -7,13 +7,11 @@
  * as well as other built-in types: https://github.com/Microsoft/TypeScript/issues/12123
  *
  * @param createImpl A factory function to create the actual constructor implementation. The returned
- * function should be a named function that calls `_super` internally. The name of the function
- * will be the name of the error.
+ * function should be a named function that calls `_super` internally.
  */
 export function createErrorClass<T>(createImpl: (_super: any) => any): T {
   const _super = (instance: any) => {
     Error.call(instance);
-    instance.name = instance.constructor.name;
     instance.stack = new Error().stack;
   };
 

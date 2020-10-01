@@ -44,8 +44,8 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
       subscriber.add(
         this.scheduler.schedule(
           (state) => {
-            const { message, subscriber } = state!;
-            observeNotification(message.notification, subscriber);
+            const { message: { notification }, subscriber: destination } = state!;
+            observeNotification(notification, destination);
           },
           message.frame,
           { message, subscriber }

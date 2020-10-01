@@ -214,7 +214,7 @@ export function fromEvent<T>(
     }
 
     if (isArrayLike(target)) {
-      return (mergeMap((target: any) => fromEvent(target, eventName, options as any))(internalFromArray(target)) as Observable<
+      return (mergeMap((subTarget: any) => fromEvent(subTarget, eventName, options as any))(internalFromArray(target)) as Observable<
         T
       >).subscribe(subscriber);
     }

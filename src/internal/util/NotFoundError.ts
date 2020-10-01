@@ -17,8 +17,9 @@ export interface NotFoundErrorCtor {
  */
 export const NotFoundError: NotFoundErrorCtor = createErrorClass(
   (_super) =>
-    function NotFoundError(this: any, message: string) {
+    function NotFoundErrorImpl(this: any, message: string) {
       _super(this);
+      this.name = 'NotFoundError';
       this.message = message;
     }
 );
