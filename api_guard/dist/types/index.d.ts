@@ -34,7 +34,7 @@ export declare class BehaviorSubject<T> extends Subject<T> {
     next(value: T): void;
 }
 
-export declare function bindCallback(callbackFunc: Function, resultSelector: Function, scheduler?: SchedulerLike): (...args: any[]) => Observable<any>;
+export declare function bindCallback(callbackFunc: (...args: any[]) => any, resultSelector: (...args: any[]) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any>;
 export declare function bindCallback<R1, R2, R3, R4>(callbackFunc: (callback: (res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any, scheduler?: SchedulerLike): () => Observable<any[]>;
 export declare function bindCallback<R1, R2, R3>(callbackFunc: (callback: (res1: R1, res2: R2, res3: R3) => any) => any, scheduler?: SchedulerLike): () => Observable<[R1, R2, R3]>;
 export declare function bindCallback<R1, R2>(callbackFunc: (callback: (res1: R1, res2: R2) => any) => any, scheduler?: SchedulerLike): () => Observable<[R1, R2]>;
@@ -67,9 +67,9 @@ export declare function bindCallback<A1, A2, A3, A4, A5, R1>(callbackFunc: (arg1
 export declare function bindCallback<A1, A2, A3, A4, A5>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: () => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<void>;
 export declare function bindCallback<A, R>(callbackFunc: (...args: Array<A | ((result: R) => any)>) => any, scheduler?: SchedulerLike): (...args: A[]) => Observable<R>;
 export declare function bindCallback<A, R>(callbackFunc: (...args: Array<A | ((...results: R[]) => any)>) => any, scheduler?: SchedulerLike): (...args: A[]) => Observable<R[]>;
-export declare function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike): (...args: any[]) => Observable<any>;
+export declare function bindCallback(callbackFunc: (...args: any[]) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any>;
 
-export declare function bindNodeCallback(callbackFunc: Function, resultSelector: Function, scheduler?: SchedulerLike): (...args: any[]) => Observable<any>;
+export declare function bindNodeCallback(callbackFunc: (...args: any[]) => any, resultSelector: (...args: any[]) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any>;
 export declare function bindNodeCallback<R1, R2, R3, R4>(callbackFunc: (callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
 export declare function bindNodeCallback<R1, R2, R3>(callbackFunc: (callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any, scheduler?: SchedulerLike): () => Observable<[R1, R2, R3]>;
 export declare function bindNodeCallback<R1, R2>(callbackFunc: (callback: (err: any, res1: R1, res2: R2) => any) => any, scheduler?: SchedulerLike): () => Observable<[R1, R2]>;
@@ -100,7 +100,7 @@ export declare function bindNodeCallback<A1, A2, A3, A4, A5, R1, R2, R3>(callbac
 export declare function bindNodeCallback<A1, A2, A3, A4, A5, R1, R2>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any, res1: R1, res2: R2) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<[R1, R2]>;
 export declare function bindNodeCallback<A1, A2, A3, A4, A5, R1>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any, res1: R1) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<R1>;
 export declare function bindNodeCallback<A1, A2, A3, A4, A5>(callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any) => any) => any, scheduler?: SchedulerLike): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<void>;
-export declare function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
+export declare function bindNodeCallback(callbackFunc: (...args: any[]) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
 
 export declare function combineLatest<O1 extends ObservableInput<any>, R>(sources: [O1], resultSelector: (v1: ObservedValueOf<O1>) => R, scheduler?: SchedulerLike): Observable<R>;
 export declare function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, R>(sources: [O1, O2], resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>) => R, scheduler?: SchedulerLike): Observable<R>;
@@ -164,7 +164,7 @@ export declare function combineLatest<O extends ObservableInput<any>>(...observa
 export declare function combineLatest<O extends ObservableInput<any>, R>(...observables: Array<O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike>): Observable<R>;
 export declare function combineLatest<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R) | SchedulerLike>): Observable<R>;
 export declare function combineLatest(sourcesObject: {}): Observable<never>;
-export declare function combineLatest<T, K extends keyof T>(sourcesObject: T): Observable<{
+export declare function combineLatest<T>(sourcesObject: T): Observable<{
     [K in keyof T]: ObservedValueOf<T[K]>;
 }>;
 
@@ -208,7 +208,7 @@ export declare class ConnectableObservable<T> extends Observable<T> {
     refCount(): Observable<T>;
 }
 
-export declare type Cons<X, Y extends any[]> = ((arg: X, ...rest: Y) => any) extends ((...args: infer U) => any) ? U : never;
+export declare type Cons<X, Y extends any[]> = ((arg: X, ...rest: Y) => any) extends (...args: infer U) => any ? U : never;
 
 export declare function defer<R extends ObservableInput<any>>(observableFactory: () => R): Observable<ObservedValueOf<R>>;
 
@@ -251,10 +251,10 @@ export declare function forkJoin<A, B, C, D, E>(sources: [ObservableInput<A>, Ob
 export declare function forkJoin<A, B, C, D, E, F>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>, ObservableInput<F>]): Observable<[A, B, C, D, E, F]>;
 export declare function forkJoin<A extends ObservableInput<any>[]>(sources: A): Observable<ObservedValueUnionFromArray<A>[]>;
 export declare function forkJoin(sourcesObject: {}): Observable<never>;
-export declare function forkJoin<T, K extends keyof T>(sourcesObject: T): Observable<{
+export declare function forkJoin<T>(sourcesObject: T): Observable<{
     [K in keyof T]: ObservedValueOf<T[K]>;
 }>;
-export declare function forkJoin(...args: Array<ObservableInput<any> | Function>): Observable<any>;
+export declare function forkJoin(...args: Array<ObservableInput<any> | ((...args: any[]) => any)>): Observable<any>;
 export declare function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
 
 export declare function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>>;
@@ -277,15 +277,15 @@ export interface GroupedObservable<K, T> extends Observable<T> {
     readonly key: K;
 }
 
-export declare type Head<X extends any[]> = ((...args: X) => any) extends ((arg: infer U, ...rest: any[]) => any) ? U : never;
+export declare type Head<X extends any[]> = ((...args: X) => any) extends (arg: infer U, ...rest: any[]) => any ? U : never;
 
 export declare function identity<T>(x: T): T;
 
 export declare function iif<T = never, F = never>(condition: () => boolean, trueResult?: SubscribableOrPromise<T>, falseResult?: SubscribableOrPromise<F>): Observable<T | F>;
 
-export declare type InteropObservable<T> = {
+export interface InteropObservable<T> {
     [Symbol.observable]: () => Subscribable<T>;
-};
+}
 
 export declare function interval(period?: number, scheduler?: SchedulerLike): Observable<number>;
 
@@ -408,10 +408,10 @@ export declare class Observable<T> implements Subscribable<T> {
     subscribe(next: null | undefined, error: (error: any) => void, complete?: () => void): Subscription;
     subscribe(next: (value: T) => void, error: null | undefined, complete: () => void): Subscription;
     subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
-    toPromise<T>(this: Observable<T>): Promise<T | undefined>;
-    toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T | undefined>;
-    toPromise<T>(this: Observable<T>, PromiseCtor: PromiseConstructorLike): Promise<T | undefined>;
-    static create: Function;
+    toPromise(): Promise<T | undefined>;
+    toPromise(PromiseCtor: typeof Promise): Promise<T | undefined>;
+    toPromise(PromiseCtor: PromiseConstructorLike): Promise<T | undefined>;
+    static create: (...args: any[]) => any;
 }
 
 export declare type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T> | Iterable<T> | AsyncIterableIterator<T>;
@@ -465,7 +465,9 @@ export interface Operator<T, R> {
 export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Observable<R>> {
 }
 
-export declare function pairs<T>(obj: Object, scheduler?: SchedulerLike): Observable<[string, T]>;
+export declare function pairs<T>(obj: {
+    [s: string]: T;
+} | ArrayLike<T>, scheduler?: SchedulerLike): Observable<[string, T]>;
 
 export declare type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | CompletionObserver<T>;
 
@@ -503,7 +505,7 @@ export declare function scheduled<T>(input: ObservableInput<T>, scheduler: Sched
 
 export declare class Scheduler implements SchedulerLike {
     now: () => number;
-    constructor(SchedulerAction: typeof Action, now?: () => number);
+    constructor(schedulerActionCtor: typeof Action, now?: () => number);
     schedule<T>(work: (this: SchedulerAction<T>, state?: T) => void, delay?: number, state?: T): Subscription;
     static now: () => number;
 }
@@ -539,7 +541,7 @@ export declare class Subject<T> extends Observable<T> implements SubscriptionLik
     lift<R>(operator: Operator<T, R>): Observable<R>;
     next(value: T): void;
     unsubscribe(): void;
-    static create: Function;
+    static create: (...args: any[]) => any;
 }
 
 export interface Subscribable<T> {
@@ -580,7 +582,7 @@ export interface SubscriptionLike extends Unsubscribable {
     unsubscribe(): void;
 }
 
-export declare type Tail<X extends any[]> = ((...args: X) => any) extends ((arg: any, ...rest: infer U) => any) ? U : never;
+export declare type Tail<X extends any[]> = ((...args: X) => any) extends (arg: any, ...rest: infer U) => any ? U : never;
 
 export declare type TeardownLogic = Subscription | Unsubscribable | (() => void) | void;
 
@@ -632,9 +634,9 @@ export declare type ValueFromArray<A> = A extends Array<infer T> ? T : never;
 
 export declare type ValueFromNotification<T> = T extends {
     kind: 'N' | 'E' | 'C';
-} ? (T extends NextNotification<any> ? (T extends {
+} ? T extends NextNotification<any> ? T extends {
     value: infer V;
-} ? V : undefined) : never) : never;
+} ? V : undefined : never : never;
 
 export declare class VirtualAction<T> extends AsyncAction<T> {
     protected active: boolean;
@@ -652,7 +654,7 @@ export declare class VirtualTimeScheduler extends AsyncScheduler {
     frame: number;
     index: number;
     maxFrames: number;
-    constructor(SchedulerAction?: typeof AsyncAction, maxFrames?: number);
+    constructor(schedulerActionCtor?: typeof AsyncAction, maxFrames?: number);
     flush(): void;
     static frameTimeFactor: number;
 }
