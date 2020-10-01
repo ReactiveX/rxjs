@@ -18,10 +18,11 @@ import { arrRemove } from './util/arrRemove';
  */
 export class Subscription implements SubscriptionLike {
   /** @nocollapse */
-  public static EMPTY: Subscription = (function (empty: any) {
+  public static EMPTY = (() => {
+    const empty = new Subscription();
     empty.closed = true;
     return empty;
-  })(new Subscription());
+  })();
 
   /**
    * A flag to indicate whether this Subscription has already been unsubscribed.
