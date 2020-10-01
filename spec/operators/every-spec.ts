@@ -32,6 +32,18 @@ describe('every operator', () => {
 
   });
 
+  it('should increment index on each call to the predicate', () => {
+    const indices: number[] = [];
+    of(1, 2, 3, 4).pipe(
+      every((_, i) => {
+        indices.push(i);
+        return true;
+      })
+    ).subscribe();
+
+    expect(indices).to.deep.equal([0, 1, 2, 3]);
+  });
+
   it('should accept thisArg with array observables', () => {
     const thisArg = {};
 
