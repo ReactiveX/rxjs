@@ -42,7 +42,8 @@ export class VirtualTimeScheduler extends AsyncScheduler {
   public flush(): void {
 
     const {actions, maxFrames} = this;
-    let error: any, action: AsyncAction<any> | undefined;
+    let error: any;
+    let action: AsyncAction<any> | undefined;
 
     while ((action = actions[0]) && action.delay <= maxFrames) {
       actions.shift();
