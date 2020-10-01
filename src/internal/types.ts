@@ -1,9 +1,12 @@
+/** @prettier */
 import { Observable } from './Observable';
 import { Subscription } from './Subscription';
 
 /** OPERATOR INTERFACES */
 
-export interface UnaryFunction<T, R> { (source: T): R; }
+export interface UnaryFunction<T, R> {
+  (source: T): R;
+}
 
 export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Observable<R>> {}
 
@@ -78,7 +81,9 @@ export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T> | Itera
 /** @deprecated use {@link InteropObservable } */
 export type ObservableLike<T> = InteropObservable<T>;
 
-export type InteropObservable<T> = { [Symbol.observable]: () => Subscribable<T>; };
+export interface InteropObservable<T> {
+  [Symbol.observable]: () => Subscribable<T>;
+}
 
 /** NOTIFICATIONS */
 
@@ -186,10 +191,7 @@ export type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;
  * If you pass in `[Observable<string>, Observable<number>]` you would
  * get back a type of `string | number`.
  */
-export type ObservedValueUnionFromArray<X> =
-  X extends Array<ObservableInput<infer T>>
-    ? T
-    : never;
+export type ObservedValueUnionFromArray<X> = X extends Array<ObservableInput<infer T>> ? T : never;
 
 /** @deprecated use {@link ObservedValueUnionFromArray} */
 export type ObservedValuesFromArray<X> = ObservedValueUnionFromArray<X>;
@@ -200,37 +202,25 @@ export type ObservedValuesFromArray<X> = ObservedValueUnionFromArray<X>;
  * `[Observable<string>, Observable<number>]` you would get back a type
  * of `[string, number]`.
  */
-export type ObservedValueTupleFromArray<X> =
-  X extends readonly ObservableInput<any>[]
-    ? { [K in keyof X]: ObservedValueOf<X[K]> }
-    : never;
+export type ObservedValueTupleFromArray<X> = X extends readonly ObservableInput<any>[] ? { [K in keyof X]: ObservedValueOf<X[K]> } : never;
 
 /**
  * Constructs a new tuple with the specified type at the head.
  * If you declare `Cons<A, [B, C]>` you will get back `[A, B, C]`.
  */
-export type Cons<X, Y extends any[]> =
-  ((arg: X, ...rest: Y) => any) extends ((...args: infer U) => any)
-    ? U
-    : never;
+export type Cons<X, Y extends any[]> = ((arg: X, ...rest: Y) => any) extends (...args: infer U) => any ? U : never;
 
 /**
  * Extracts the head of a tuple.
  * If you declare `Head<[A, B, C]>` you will get back `A`.
  */
-export type Head<X extends any[]> =
-  ((...args: X) => any) extends ((arg: infer U, ...rest: any[]) => any)
-    ? U
-    : never;
+export type Head<X extends any[]> = ((...args: X) => any) extends (arg: infer U, ...rest: any[]) => any ? U : never;
 
 /**
  * Extracts the tail of a tuple.
  * If you declare `Tail<[A, B, C]>` you will get back `[B, C]`.
  */
-export type Tail<X extends any[]> =
-((...args: X) => any) extends ((arg: any, ...rest: infer U) => any)
-  ? U
-  : never;
+export type Tail<X extends any[]> = ((...args: X) => any) extends (arg: any, ...rest: infer U) => any ? U : never;
 
 /**
  * Extracts the generic value from an Array type.
@@ -242,8 +232,10 @@ export type ValueFromArray<A> = A extends Array<infer T> ? T : never;
 /**
  * Gets the value type from an {@link ObservableNotification}, if possible.
  */
-export type ValueFromNotification<T> = T extends { kind: 'N'|'E'|'C' } ?
-  (T extends NextNotification<any> ?
-    (T extends { value: infer V } ? V : undefined )
-  : never)
+export type ValueFromNotification<T> = T extends { kind: 'N' | 'E' | 'C' }
+  ? T extends NextNotification<any>
+    ? T extends { value: infer V }
+      ? V
+      : undefined
+    : never
   : never;

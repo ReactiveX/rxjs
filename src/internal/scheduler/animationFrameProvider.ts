@@ -1,7 +1,7 @@
 /** @prettier */
 import { Subscription } from '../Subscription';
 
-type AnimationFrameProvider = {
+interface AnimationFrameProvider {
   schedule(callback: FrameRequestCallback): Subscription;
   requestAnimationFrame: typeof requestAnimationFrame;
   cancelAnimationFrame: typeof cancelAnimationFrame;
@@ -11,7 +11,7 @@ type AnimationFrameProvider = {
         cancelAnimationFrame: typeof cancelAnimationFrame;
       }
     | undefined;
-};
+}
 
 export const animationFrameProvider: AnimationFrameProvider = {
   // When accessing the delegate, use the variable rather than `this` so that
