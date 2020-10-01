@@ -105,7 +105,7 @@ export declare function exhaustMap<T, O extends ObservableInput<any>>(project: (
 export declare function exhaustMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 
 export declare function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: SchedulerLike): OperatorFunction<T, R>;
-export declare function expand<T>(project: (value: T, index: number) => ObservableInput<T>, concurrent?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export declare function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent: number | undefined, scheduler: SchedulerLike): OperatorFunction<T, R>;
 
 export declare function filter<T, S extends T>(predicate: (value: T, index: number) => value is S, thisArg?: any): OperatorFunction<T, S>;
 export declare function filter<T>(predicate: BooleanConstructor): OperatorFunction<T | null | undefined, NonNullable<T>>;

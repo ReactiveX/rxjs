@@ -2,7 +2,7 @@
 import { Observable } from '../Observable';
 import { innerFrom } from '../observable/from';
 import { Subscriber } from '../Subscriber';
-import { ObservableInput } from '../types';
+import { ObservableInput, SchedulerLike } from '../types';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -13,7 +13,12 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @param project The projection function to get our inner sources
  * @param concurrent The number of concurrent inner subscriptions
  * @param onBeforeNext Additional logic to apply before nexting to our consumer
- * @param onBeforeComplete Additional logic to apply before telling the consumer we're complete.
+ * @param onBeforeComplete Additional logic to apply before telling the consumer
+ * we're complete.
+ * @param expand If `true` this will perform an "expand" strategy, which differs only
+ * in that it recurses, and the inner subscription must be schedule-able.
+ * @param innerSubScheduler A scheduler to use to schedule inner subscriptions,
+ * this is to support the expand strategy, mostly, and should be deprecated
  */
 export function mergeInternals<T, R>(
   source: Observable<T>,
@@ -21,7 +26,9 @@ export function mergeInternals<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,
   concurrent: number,
   onBeforeNext?: (innerValue: R) => void,
-  onBeforeComplete?: () => void
+  onBeforeComplete?: () => void,
+  expand?: boolean,
+  innerSubScheduler?: SchedulerLike
 ) {
   // Buffered values, in the event of going over our concurrency limit
   let buffer: T[] = [];
@@ -46,8 +53,20 @@ export function mergeInternals<T, R>(
     }
   };
 
+  // If we're under our concurrency limit, just start the inner subscription, otherwise buffer and wait.
+  const outerNext = (value: T) => (active < concurrent ? doInnerSub(value) : buffer.push(value));
+
   const doInnerSub = (value: T) => {
+    // If we're expanding, we need to emit the outer values and the inner values
+    // as the inners will "become outers" in a way as they are recursively fed
+    // back to the projection mechanism.
+    expand && subscriber.next(value as any);
+
+    // Increment the number of active subscriptions so we can track it
+    // against our concurrency limit later.
     active++;
+
+    // Start our inner subscription.
     innerFrom(project(value, index++)).subscribe(
       new OperatorSubscriber(
         subscriber,
@@ -55,7 +74,15 @@ export function mergeInternals<T, R>(
           // `mergeScan` has additional handling here. For example
           // taking the inner value and updating state.
           onBeforeNext?.(innerValue);
-          subscriber.next(innerValue);
+
+          if (expand) {
+            // If we're expanding, then just recurse back to our outer
+            // handler. It will emit the value first thing.
+            outerNext(innerValue as any);
+          } else {
+            // Otherwise, emit the inner value.
+            subscriber.next(innerValue);
+          }
         },
         // Errors are passed to the destination.
         undefined,
@@ -69,7 +96,11 @@ export function mergeInternals<T, R>(
           // next conditional, if there were any more inner subscriptions
           // to start.
           while (buffer.length && active < concurrent) {
-            doInnerSub(buffer.shift()!);
+            const value = buffer.shift()!;
+            // Particularly for `expand`, we need to check to see if a scheduler was provided
+            // for when we want to start our inner subscription. Otherwise, we just start
+            // are next inner subscription.
+            innerSubScheduler ? subscriber.add(innerSubScheduler.schedule(() => doInnerSub(value))) : doInnerSub(value);
           }
           // Check to see if we can complete, and complete if so.
           checkComplete();
@@ -82,8 +113,7 @@ export function mergeInternals<T, R>(
   source.subscribe(
     new OperatorSubscriber(
       subscriber,
-      // If we're under our concurrency limit, just start the inner subscription, otherwise buffer and wait.
-      (value) => (active < concurrent ? doInnerSub(value) : buffer.push(value)),
+      outerNext,
       // Errors are passed through
       undefined,
       () => {
