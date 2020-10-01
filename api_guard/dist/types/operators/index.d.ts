@@ -260,7 +260,7 @@ export declare function single<T>(predicate?: (value: T, index: number, source: 
 
 export declare function skip<T>(count: number): MonoTypeOperatorFunction<T>;
 
-export declare function skipLast<T>(skipCount: number): MonoTypeOperatorFunction<T>;
+export declare function skipLast<T>(count: number): MonoTypeOperatorFunction<T>;
 
 export declare function skipUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T>;
 
