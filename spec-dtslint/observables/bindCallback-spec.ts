@@ -260,12 +260,3 @@ describe('callbackFunc and 5 args' , () => {
     const o = bindCallback(fa5cb4) // $ExpectType (arg1: E, arg2: F, arg3: G, arg4: A, arg5: B) => Observable<any[]>
   });
 });
-
-describe('callbackFunc: Function type', () => {
-  const fn: Function = () => {};
-
-  it('should accept Function', () => {
-    const o = bindCallback(fn); // $ExpectType (...args: any[]) => Observable<any>
-  });
-
-});
