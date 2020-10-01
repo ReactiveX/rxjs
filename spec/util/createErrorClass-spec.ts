@@ -18,7 +18,6 @@ describe('createErrorClass', () => {
     const err = new MySpecialError(123, 'Test');
     expect(err).to.be.an.instanceOf(Error);
     expect(err).to.be.an.instanceOf(MySpecialError);
-    expect(err.name).to.equal('MySpecialError');
     expect(err.constructor).to.equal(MySpecialError);
     expect(err.stack).to.be.a('string');
     expect(err.message).to.equal('Super special error!');
