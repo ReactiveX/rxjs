@@ -44,13 +44,13 @@ export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable
     const subject = this;
     const messagesLength = subject.messages.length;
     /* tslint:disable:no-var-keyword */
-    for (var i = 0; i < messagesLength; i++) {
+    for (let i = 0; i < messagesLength; i++) {
       (() => {
-        var message = subject.messages[i];
+        const { notification, frame } = subject.messages[i];
         /* tslint:enable */
         subject.scheduler.schedule(() => {
-          observeNotification(message.notification, subject);
-        }, message.frame);
+          observeNotification(notification, subject);
+        }, frame);
       })();
     }
   }
