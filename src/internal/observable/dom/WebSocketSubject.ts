@@ -189,7 +189,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   }
 
   lift<R>(operator: Operator<T, R>): WebSocketSubject<R> {
-    const sock = new WebSocketSubject<R>(this._config as WebSocketSubjectConfig<any>, <any> this.destination);
+    const sock = new WebSocketSubject<R>(this._config as WebSocketSubjectConfig<any>, this.destination as any);
     sock.operator = operator;
     sock.source = this;
     return sock;
@@ -326,7 +326,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       ) as Subscriber<any>;
 
       if (queue && queue instanceof ReplaySubject) {
-        subscription.add((<ReplaySubject<T>>queue).subscribe(this.destination));
+        subscription.add((queue as ReplaySubject<T>).subscribe(this.destination));
       }
     };
 
