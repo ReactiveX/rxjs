@@ -36,32 +36,32 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @throws {ArgumentOutOfRangeError} When using `skipLast(i)`, it throws
  * ArgumentOutOrRangeError if `i < 0`.
  *
- * @param {number} skipCount Number of elements to skip from the end of the source Observable.
+ * @param {number} count Number of elements to skip from the end of the source Observable.
  * @returns {Observable<T>} An Observable that skips the last count values
  * emitted by the source Observable.
  * @name skipLast
  */
-export function skipLast<T>(skipCount: number): MonoTypeOperatorFunction<T> {
-  // For skipCounts less than or equal to zero, we are just mirroring the source.
-  return skipCount <= 0
+export function skipLast<T>(count: number): MonoTypeOperatorFunction<T> {
+  // For count less than or equal to zero, we are just mirroring the source.
+  return count <= 0
     ? identity
     : operate((source, subscriber) => {
         // A ring buffer to hold the values while we wait to see
         // if we can emit it or it's part of the "skipped" last values.
         // Note that it is the _same size_ as the skip count.
-        let ring: T[] = new Array(skipCount);
-        let count = 0;
+        let ring: T[] = new Array(count);
+        let counter = 0;
         source.subscribe(
           new OperatorSubscriber(
             subscriber,
             (value) => {
               // Move us to the next slot in the ring buffer.
-              const currentCount = count++;
-              if (currentCount < skipCount) {
+              const currentCount = counter++;
+              if (currentCount < count) {
                 // Fill the ring first
                 ring[currentCount] = value;
               } else {
-                const index = currentCount % skipCount;
+                const index = currentCount % count;
                 // Pull the oldest value out and emit it,
                 // then stuff the new value in it's place.
                 const oldValue = ring[index];
