@@ -482,7 +482,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     // animate run helper.
 
     let lastHandle = 0;
-    let map = new Map<number, {
+    const map = new Map<number, {
       due: number;
       duration: number;
       handle: number;

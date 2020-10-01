@@ -103,7 +103,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
           // Cancel the previous inner subscription if there was one
           innerSubscriber?.unsubscribe();
           let innerIndex = 0;
-          let outerIndex = index++;
+          const outerIndex = index++;
           // Start the next inner subscription
           innerFrom(project(value, outerIndex)).subscribe(
             (innerSubscriber = new OperatorSubscriber(

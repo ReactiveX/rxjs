@@ -214,7 +214,7 @@ export function zip<O extends ObservableInput<any>, R>(
                 // can shift out the oldest value from each buffer and emit
                 // them as an array.
                 if (buffers.every((buffer) => buffer.length)) {
-                  let result: any = buffers.map((buffer) => buffer.shift()!);
+                  const result: any = buffers.map((buffer) => buffer.shift()!);
                   // Emit the array. If theres' a result selector, use that.
                   subscriber.next(resultSelector ? resultSelector(...result) : result);
                   // If any one of the sources is both complete and has an empty buffer
