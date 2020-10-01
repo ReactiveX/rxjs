@@ -344,7 +344,7 @@ export function generate<T, S>(
 
   // TODO: Remove this as we move away from deprecated signatures
   // and move towards a configuration object argument.
-  if (arguments.length == 1) {
+  if (arguments.length === 1) {
     // If we only have one argument, we can assume it is a configuration object.
     // Note that folks not using TypeScript may trip over this.
     ({
