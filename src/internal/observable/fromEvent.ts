@@ -21,9 +21,11 @@ export interface NodeCompatibleEventEmitter {
   removeListener: (eventName: string, handler: NodeEventHandler) => void | {};
 }
 
-export interface JQueryStyleEventEmitter {
-  on: (eventName: string, handler: (event: any) => any) => void;
-  off: (eventName: string, handler: (event: any) => any) => void;
+// Use handler types like those in @types/jquery. See:
+// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/847731ba1d7fa6db6b911c0e43aa0afe596e7723/types/jquery/misc.d.ts#L6395
+export interface JQueryStyleEventEmitter<TContext, T> {
+  on: (eventName: string, handler: (this: TContext, t: T, ...args: any[]) => any) => void;
+  off: (eventName: string, handler: (this: TContext, t: T, ...args: any[]) => any) => void;
 }
 
 export interface HasEventTargetAddRemove<E> {
@@ -31,7 +33,11 @@ export interface HasEventTargetAddRemove<E> {
   removeEventListener(type: string, listener?: ((evt: E) => void) | null, options?: EventListenerOptions | boolean): void;
 }
 
-export type EventTargetLike<T> = HasEventTargetAddRemove<T> | NodeStyleEventEmitter | NodeCompatibleEventEmitter | JQueryStyleEventEmitter;
+export type EventTargetLike<T> =
+  | HasEventTargetAddRemove<T>
+  | NodeStyleEventEmitter
+  | NodeCompatibleEventEmitter
+  | JQueryStyleEventEmitter<any, T>;
 
 export type FromEventTarget<T> = EventTargetLike<T> | ArrayLike<EventTargetLike<T>>;
 
@@ -228,7 +234,7 @@ function isNodeStyleEventEmitter(sourceObj: any): sourceObj is NodeStyleEventEmi
   return isFunction(sourceObj.addListener) && isFunction(sourceObj.removeListener);
 }
 
-function isJQueryStyleEventEmitter(sourceObj: any): sourceObj is JQueryStyleEventEmitter {
+function isJQueryStyleEventEmitter(sourceObj: any): sourceObj is JQueryStyleEventEmitter<any, any> {
   return isFunction(sourceObj.on) && isFunction(sourceObj.off);
 }
 
