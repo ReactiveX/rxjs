@@ -56,6 +56,6 @@ import { from } from './from';
  * [key, value] pairs from the object.
  * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
  */
-export function pairs<T>(obj: { [s: string]: T } | ArrayLike<T>, scheduler?: SchedulerLike): Observable<[string, T]> {
+export function pairs<T>(obj: Record<string, T> | ArrayLike<T>, scheduler?: SchedulerLike): Observable<[string, T]> {
   return from(Object.entries(obj), scheduler as any);
 }
