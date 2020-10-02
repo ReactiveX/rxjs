@@ -40,9 +40,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @see {@link takeWhile}
  * @see {@link skip}
  *
- * @throws {ArgumentOutOfRangeError} When using `take(i)`, it delivers an
- * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0`.
- * @throws {TypeError} when no numeric argument is passed.
  * @param count The maximum number of `next` values to emit.
  * @return An Observable that emits only the first `count`
  * values emitted by the source Observable, or all of the values from the source
@@ -50,14 +47,20 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  */
 export function take<T>(count: number): MonoTypeOperatorFunction<T> {
   return count <= 0
-    ? () => EMPTY
+    ? // If we are taking no values, that's empty.
+      () => EMPTY
     : operate((source, subscriber) => {
         let seen = 0;
         source.subscribe(
           new OperatorSubscriber(subscriber, (value) => {
+            // Increment the number of values we have seen,
+            // then check it against the allowed count to see
+            // if we are still letting values through.
             if (++seen <= count) {
               subscriber.next(value);
-              // We have to do <= here, because re-entrant code will increment `seen` twice.
+              // If we have met or passed our allowed count,
+              // we need to complete. We have to do <= here,
+              // because re-entrant code will increment `seen` twice.
               if (count <= seen) {
                 subscriber.complete();
               }
