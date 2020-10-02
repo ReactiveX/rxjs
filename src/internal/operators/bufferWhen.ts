@@ -1,6 +1,5 @@
 /** @prettier */
 import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
@@ -49,38 +48,49 @@ import { innerFrom } from '../observable/from';
  */
 export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, T[]> {
   return operate((source, subscriber) => {
+    // The buffer we keep and emit.
     let buffer: T[] | null = null;
+    // A reference to the subscriber used to subscribe to
+    // the closing notifier. We need to hold this so we can
+    // end the subscription after the first notification.
     let closingSubscriber: Subscriber<T> | null = null;
 
+    // Ends the previous closing notifier subscription, so it
+    // terminates after the first emission, then emits
+    // the current buffer  if there is one, starts a new buffer, and starts a
+    // new closing notifier.
     const openBuffer = () => {
+      // Make sure to teardown the closing subscription, we only cared
+      // about one notification.
       closingSubscriber?.unsubscribe();
-
+      // emit the buffer if we have one, and start a new buffer.
       const b = buffer;
       buffer = [];
       b && subscriber.next(b);
 
-      let closingNotifier: Observable<any>;
-      try {
-        closingNotifier = innerFrom(closingSelector());
-      } catch (err) {
-        subscriber.error(err);
-        return;
-      }
-
-      closingNotifier.subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, undefined, () => openBuffer())));
+      // Get a new closing notifier and subscribe to it.
+      // TODO: We probably want to stop counting `completion` as a notification here.
+      innerFrom(closingSelector()).subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, undefined, openBuffer)));
     };
 
+    // Start the first buffer.
     openBuffer();
 
+    // Subscribe to our source.
     source.subscribe(
       new OperatorSubscriber(
         subscriber,
+        // Add every new value to the current buffer.
         (value) => buffer?.push(value),
+        // All errors are passed through to the consumer.
         undefined,
+        // When we complete, emit the buffer if we have one,
+        // then complete the result.
         () => {
           buffer && subscriber.next(buffer);
           subscriber.complete();
         },
+        // Release memory on teardown
         () => (buffer = closingSubscriber = null!)
       )
     );

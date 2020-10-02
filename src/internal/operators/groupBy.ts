@@ -133,6 +133,10 @@ export function groupBy<T, K, R>(
       cb(subscriber);
     };
 
+    // Used to handle errors from the source, AND errors that occur during the
+    // next call from the source.
+    const handleError = (err: any) => notify((consumer) => consumer.error(err));
+
     // Capturing a reference to this, because we need a handle to it
     // in `createGroupedObservable` below. This is what we use to
     // subscribe to our source observable. This sometimes needs to be unsubscribed
@@ -143,49 +147,59 @@ export function groupBy<T, K, R>(
     const groupBySourceSubscriber = new GroupBySubscriber(
       subscriber,
       (value: T) => {
-        const key = keySelector(value);
+        // Because we have to notify all groups of any errors that occur in here,
+        // we have to add our own try/catch to ensure that those errors are propagated.
+        // OperatorSubscriber will only send the error to the main subscriber.
+        try {
+          const key = keySelector(value);
 
-        let group = groups.get(key);
-        if (!group) {
-          // Create our group subject
-          groups.set(key, (group = subjectSelector ? subjectSelector() : new Subject<any>()));
+          let group = groups.get(key);
+          if (!group) {
+            // Create our group subject
+            groups.set(key, (group = subjectSelector ? subjectSelector() : new Subject<any>()));
 
-          // Emit the grouped observable. Note that we can't do a simple `asObservable()` here,
-          // because the grouped observable has special semantics around reference counting
-          // to ensure we don't sever our connection to the source prematurely.
-          const grouped = createGroupedObservable(key, group);
-          subscriber.next(grouped);
+            // Emit the grouped observable. Note that we can't do a simple `asObservable()` here,
+            // because the grouped observable has special semantics around reference counting
+            // to ensure we don't sever our connection to the source prematurely.
+            const grouped = createGroupedObservable(key, group);
+            subscriber.next(grouped);
 
-          if (durationSelector) {
-            const durationSubscriber = new OperatorSubscriber(
-              // Providing the group here ensures that it is disposed of -- via `unsubscribe` --
-              // wnen the duration subscription is torn down. That is important, because then
-              // if someone holds a handle to the grouped observable and tries to subscribe to it
-              // after the connection to the source has been severed, they will get an
-              // `ObjectUnsubscribedError` and know they can't possibly get any notifications.
-              group as any,
-              () => {
-                // Our duration notified! We can complete the group.
-                // The group will be removed from the map in the teardown phase.
-                group!.complete();
-                durationSubscriber?.unsubscribe();
-              },
-              undefined,
-              undefined,
-              // Teardown: Remove this group from our map.
-              () => groups.delete(key)
-            );
+            if (durationSelector) {
+              const durationSubscriber = new OperatorSubscriber(
+                // Providing the group here ensures that it is disposed of -- via `unsubscribe` --
+                // wnen the duration subscription is torn down. That is important, because then
+                // if someone holds a handle to the grouped observable and tries to subscribe to it
+                // after the connection to the source has been severed, they will get an
+                // `ObjectUnsubscribedError` and know they can't possibly get any notifications.
+                group as any,
+                () => {
+                  // Our duration notified! We can complete the group.
+                  // The group will be removed from the map in the teardown phase.
+                  group!.complete();
+                  durationSubscriber?.unsubscribe();
+                },
+                // Errors on the duration subscriber are sent to the group
+                // but only the group. They are not sent to the main subscription.
+                undefined,
+                // Completions are also sent to the group, but just the group.
+                undefined,
+                // Teardown: Remove this group from our map.
+                () => groups.delete(key)
+              );
 
-            // Start our duration notifier.
-            groupBySourceSubscriber.add(durationSelector(grouped).subscribe(durationSubscriber));
+              // Start our duration notifier.
+              groupBySourceSubscriber.add(durationSelector(grouped).subscribe(durationSubscriber));
+            }
           }
-        }
 
-        // Send the value to our group.
-        group.next(elementSelector ? elementSelector(value) : value);
+          // Send the value to our group.
+          group.next(elementSelector ? elementSelector(value) : value);
+        } catch (err) {
+          handleError(err);
+        }
       },
       // Error from the source.
-      (err) => notify((consumer) => consumer.error(err)),
+      handleError,
       // Source completes.
       () => notify((consumer) => consumer.complete()),
       // Free up memory.

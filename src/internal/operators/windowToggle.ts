@@ -70,14 +70,7 @@ export function windowToggle<T, O>(
       subscriber.error(err);
     };
 
-    let openNotifier: Observable<O>;
-    try {
-      openNotifier = innerFrom(openings);
-    } catch (err) {
-      subscriber.error(err);
-      return;
-    }
-    openNotifier.subscribe(
+    innerFrom(openings).subscribe(
       new OperatorSubscriber(
         subscriber,
         (openValue) => {
