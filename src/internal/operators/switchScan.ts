@@ -1,9 +1,7 @@
-import { Observable } from '../Observable';
+/** @prettier */
 import { ObservableInput, ObservedValueOf, OperatorFunction } from '../types';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
 import { switchMap } from './switchMap';
-import { tap } from './tap';
+import { operate } from '../util/lift';
 
 /**
  * Applies an accumulator function over the source Observable where the
@@ -17,30 +15,37 @@ import { tap } from './tap';
  *
  * @see {@link scan}
  * @see {@link mergeScan}
+ * @see {@link switchMap}
  *
- * @param {function(acc: R, value: T, index: number): Observable<R>} accumulator
+ * @param accumulator
  * The accumulator function called on each source value.
- * @param {T|R} [seed] The initial accumulation value.
- * @return {Observable<R>} An observable of the accumulated values.
- * @method switchScan
- * @owner Observable
+ * @param seed The initial accumulation value.
+ * @return An observable of the accumulated values.
  */
 export function switchScan<T, R, O extends ObservableInput<any>>(
   accumulator: (acc: R, value: T, index: number) => O,
   seed: R
 ): OperatorFunction<T, ObservedValueOf<O>> {
-  return (source: Observable<T>) => source.lift(new SwitchScanOperator(accumulator, seed));
-}
+  return operate((source, subscriber) => {
+    // The state we will keep up to date to pass into our
+    // accumulator function at each new value from the source.
+    let state: any = seed;
 
-class SwitchScanOperator<T, R, O extends ObservableInput<any>> implements Operator<T, O> {
-  constructor(private accumulator: (acc: R, value: T, index: number) => ObservableInput<O>, private seed: R) { }
+    // Use `switchMap` on our `source` to do the work of creating
+    // this operator. Note the backwards order here of `switchMap()(source)`
+    // to avoid needing to use `pipe` unnecessarily
+    switchMap(
+      // On each value from the source, call the accumulator with
+      // our previous state, the value and the index.
+      (value: T, index) => accumulator(state, value, index),
+      // Using the deprecated result selector here as a dirty trick
+      // to update our state with the flattened value.
+      (_, innerValue) => ((state = innerValue), innerValue)
+    )(source).subscribe(subscriber);
 
-  call(subscriber: Subscriber<O>, source: any): any {
-    let seed: R = this.seed;
-
-    return source.pipe(
-      switchMap((value: T, index: number) => this.accumulator(seed, value, index)),
-      tap((value: R) => seed = value),
-    ).subscribe(subscriber);
-  }
+    return () => {
+      // Release state on teardown
+      state = null!;
+    };
+  });
 }
