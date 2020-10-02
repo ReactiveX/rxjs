@@ -1,5 +1,6 @@
 import { fromEvent } from 'rxjs';
-import { B } from "../helpers";
+import { JQueryStyleEventEmitter } from '../../src/internal/observable/fromEvent';
+import { A, B } from "../helpers";
 
 declare const eventTargetSource: HTMLDocument;
 
@@ -14,13 +15,7 @@ declare const nodeCompatibleSource: {
   removeListener: (eventName: string, handler: (...args: any[]) => void) => void;
 };
 
-// Use handler types like those in @types/jquery. See:
-// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/847731ba1d7fa6db6b911c0e43aa0afe596e7723/types/jquery/misc.d.ts#L6395
-interface JQueryStyleSource<TContext, T> {
-  on: (eventName: string, handler: (this: TContext, t: T, ...args: any[]) => any) => void;
-  off: (eventName: string, handler: (this: TContext, t: T, ...args: any[]) => any) => void;
-};
-declare const jQueryStyleSource: JQueryStyleSource<any, any>;
+
 
 it('should support an event target source', () => {
   const a = fromEvent(eventTargetSource, "click"); // $ExpectType Observable<Event>
@@ -36,8 +31,8 @@ it('should support a node-compatible source', () => {
   const b = fromEvent<B>(nodeCompatibleSource, "something"); // $ExpectType Observable<B>
 });
 
-// TODO: uncomment when the fromEvent jQuery types are fixed
-// it('should support a jQuery-style source', () => {
-//   const a = fromEvent(jQueryStyleSource, "something"); // $ExpectType Observable<unknown>
-//   const b = fromEvent<B>(jQueryStyleSource, "something"); // $ExpectType Observable<B>
-// });
+declare const jQueryStyleSource: JQueryStyleEventEmitter<A, B>;
+it('should support a jQuery-style source', () => {
+  const a = fromEvent(jQueryStyleSource, "something"); // $ExpectType Observable<B>
+  const b = fromEvent<B>(jQueryStyleSource, "something"); // $ExpectType Observable<B>
+});
