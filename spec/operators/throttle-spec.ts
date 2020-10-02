@@ -360,6 +360,21 @@ describe('throttle operator', () =>  {
       expectSubscriptions(s1.subscriptions).toBe(s1Subs);
       expectSubscriptions(n1.subscriptions).toBe(n1Subs);
     });
+
+    it('should emit trailing value after throttle duration when source completes', () =>  {
+      const e1 =   hot('-a--------xy|  ');
+      const e1subs =   '^           !  ';
+      const e2 =  cold( '----|         ');
+      const e2subs =  [' ^   !         ',
+                       '          ^   !'];
+      const expected = '-a--------x---(y|)';
+
+      const result = e1.pipe(throttle(() =>  e2, { leading: true, trailing: true }));
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
   });
 
   describe('throttle(fn, { leading: false, trailing: true })', () => {
@@ -407,6 +422,53 @@ describe('throttle operator', () =>  {
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
       expectSubscriptions(duration.subscriptions).toBe(durationSubs);
     })
+
+    it('should emit trailing value after throttle duration when source completes', () =>  {
+      const e1 =   hot('-a--------x|   ');
+      const e1subs =   '^          !   ';
+      const e2 =  cold( '----|         ');
+      const e2subs =  [' ^   !         ',
+                       '     ^   !     ',
+                       '          ^   !'];
+      const expected = '-----a--------(x|)';
+
+      const result = e1.pipe(throttle(() =>  e2, { leading: false, trailing: true }));
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+
+    it('should emit the last trailing value after throttle duration when source completes', () =>  {
+      const e1 =   hot('-a--------xy|  ');
+      const e1subs =   '^           !  ';
+      const e2 =  cold( '----|         ');
+      const e2subs =  [' ^   !         ',
+                       '     ^   !     ',
+                       '          ^   !'];
+      const expected = '-----a--------(y|)';
+
+      const result = e1.pipe(throttle(() =>  e2, { leading: false, trailing: true }));
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+
+    it('should complete when source completes if no value is available', () =>  {
+      const e1 =   hot('-a-----|');
+      const e1subs =   '^      !';
+      const e2 =  cold( '----| ');
+      const e2subs =  [' ^   ! ',
+                       '     ^ !'];
+      const expected = '-----a-|';
+
+      const result = e1.pipe(throttle(() =>  e2, { leading: false, trailing: true }));
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
