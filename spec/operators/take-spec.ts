@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { take, mergeMap } from 'rxjs/operators';
-import { range, ArgumentOutOfRangeError, of, Observable, Subject } from 'rxjs';
+import { of, Observable, Subject } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -52,6 +52,17 @@ describe('take', () => {
       const expected = '   |';
 
       expectObservable(e1.pipe(take(0))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
+  it('should be empty if provided with negative value', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' --a-----b----c---d--|');
+      const expected = '|';
+      const e1subs: string[] = []; // Don't subscribe at all
+
+      expectObservable(e1.pipe(take(-42))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
