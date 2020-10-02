@@ -5,23 +5,26 @@ import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
- * Emits only the last `count` values emitted by the source Observable.
- *
- * <span class="informal">Remembers the latest `count` values, then emits those
- * only when the source completes.</span>
+ * Waits for the source to complete, then emits the last N values from the source,
+ * as specified by the `count` argument.
  *
  * ![](takeLast.png)
  *
- * `takeLast` returns an Observable that emits at most the last `count` values
- * emitted by the source Observable. If the source emits fewer than `count`
- * values then all of its values are emitted. This operator must wait until the
- * `complete` notification emission from the source in order to emit the `next`
- * values on the output Observable, because otherwise it is impossible to know
- * whether or not more values will be emitted on the source. For this reason,
- * all values are emitted synchronously, followed by the complete notification.
+ * `takeLast` results in an observable that will hold values up to `count` values in memory,
+ * until the source completes. It then pushes all values in memory to the consumer, in the
+ * order they were received from the source, then notifies the consumer that it is
+ * complete.
+ *
+ * If for some reason the source completes before the `count` supplied to `takeLast` is reached,
+ * all values received until that point are emitted, and then completion is notified.
+ *
+ * **Warning**: Using `takeLast` with an observable that never completes will result
+ * in an observable that never emits a value.
  *
  * ## Example
+ *
  * Take the last 3 values of an Observable with many values
+ *
  * ```ts
  * import { range } from 'rxjs';
  * import { takeLast } from 'rxjs/operators';
@@ -36,10 +39,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @see {@link takeWhile}
  * @see {@link skip}
  *
- * @throws {ArgumentOutOfRangeError} When using `takeLast(i)`, it delivers an
- * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0`.
- * @throws {TypeError} If the count is not provided or is not a number.
- *
  * @param count The maximum number of values to emit from the end of
  * the sequence of values emitted by the source Observable.
  * @return An Observable that emits at most the last count
@@ -49,20 +48,32 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
   return count <= 0
     ? () => EMPTY
     : operate((source, subscriber) => {
+        // This buffer will hold the values we are going to emit
+        // when the source completes. Since we only want to take the
+        // last N values, we can't emit until we're sure we're not getting
+        // any more values.
         let buffer: T[] = [];
         source.subscribe(
           new OperatorSubscriber(
             subscriber,
             (value) => {
+              // Add the most recent value onto the end of our buffer.
               buffer.push(value);
+              // If our buffer is now larger than the number of values we
+              // want to take, we remove the oldest value from the buffer.
               count < buffer.length && buffer.shift();
             },
             undefined,
             () => {
-              while (buffer.length) {
-                subscriber.next(buffer.shift()!);
+              // The source completed, we now know what are last values
+              // are, emit them in the order they were received.
+              for (const value of buffer) {
+                subscriber.next(value);
               }
               subscriber.complete();
+            },
+            () => {
+              // During teardown release the values in our buffer.
               buffer = null!;
             }
           )
