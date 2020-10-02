@@ -7,6 +7,7 @@ import { nextNotification, COMPLETE_NOTIFICATION, errorNotification } from 'rxjs
 import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
 import { immediateProvider } from 'rxjs/internal/scheduler/immediateProvider';
 import { intervalProvider } from 'rxjs/internal/scheduler/intervalProvider';
+import { timeoutProvider } from 'rxjs/internal/scheduler/timeoutProvider';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -680,22 +681,41 @@ describe('TestScheduler', () => {
         });
       });
 
-      it('should schedule immediates before intervals', () => {
+      it('should schedule timeouts', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(() => {
+          const values: string[] = [];
+          const { setTimeout } = timeoutProvider;
+          setTimeout(() => {
+            values.push(`a@${testScheduler.now()}`);
+          }, 1);
+          expect(values).to.deep.equal([]);
+          testScheduler.schedule(() => {
+            expect(values).to.deep.equal(['a@1']);
+          }, 10);
+        });
+      });
+
+      it('should schedule immediates before intervals and timeouts', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
         testScheduler.run(() => {
           const values: string[] = [];
           const { setImmediate } = immediateProvider;
           const { setInterval, clearInterval } = intervalProvider;
+          const { setTimeout } = timeoutProvider;
           const handle = setInterval(() => {
             values.push(`a@${testScheduler.now()}`);
             clearInterval(handle);
           }, 0);
-          setImmediate(() => {
+          setTimeout(() => {
             values.push(`b@${testScheduler.now()}`);
+          }, 0);
+          setImmediate(() => {
+            values.push(`c@${testScheduler.now()}`);
           });
           expect(values).to.deep.equal([]);
           testScheduler.schedule(() => {
-            expect(values).to.deep.equal(['b@0', 'a@0']);
+            expect(values).to.deep.equal(['c@0', 'a@0', 'b@0']);
           }, 10);
         });
       });

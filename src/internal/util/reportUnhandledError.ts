@@ -1,6 +1,6 @@
 /** @prettier */
 import { config } from '../config';
-import { immediateProvider } from '../scheduler/immediateProvider';
+import { timeoutProvider } from '../scheduler/timeoutProvider';
 
 /**
  * Handles an error on another job either with the user-configured {@link onUnhandledError},
@@ -12,7 +12,7 @@ import { immediateProvider } from '../scheduler/immediateProvider';
  * @param err the error to report
  */
 export function reportUnhandledError(err: any) {
-  immediateProvider.setImmediate(() => {
+  timeoutProvider.setTimeout(() => {
     const { onUnhandledError } = config;
     if (onUnhandledError) {
       // Execute the user-configured error handler.

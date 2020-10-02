@@ -12,6 +12,7 @@ import { performanceTimestampProvider } from '../scheduler/performanceTimestampP
 import { animationFrameProvider } from '../scheduler/animationFrameProvider';
 import { immediateProvider } from '../scheduler/immediateProvider';
 import { intervalProvider } from '../scheduler/intervalProvider';
+import { timeoutProvider } from '../scheduler/timeoutProvider';
 
 const defaultMaxFrame: number = 750;
 
@@ -488,19 +489,19 @@ export class TestScheduler extends VirtualTimeScheduler {
       handle: number;
       handler: () => void;
       subscription: Subscription;
-      type: 'immediate' | 'interval';
+      type: 'immediate' | 'interval' | 'timeout';
     }>();
 
     const run = () => {
       // Whenever a scheduled run is executed, it must run a single immediate
       // or interval action - with immediate actions being prioritized over
-      // interval actions.
+      // interval and timeout actions.
       const now = this.now();
       const scheduledRecords = Array.from(scheduleLookup.values());
       const scheduledRecordsDue = scheduledRecords.filter(({ due }) => due <= now);
-      const immediates = scheduledRecordsDue.filter(({ type }) => type === 'immediate');
-      if (immediates.length > 0) {
-        const { handle, handler } = immediates[0];
+      const dueImmediates = scheduledRecordsDue.filter(({ type }) => type === 'immediate');
+      if (dueImmediates.length > 0) {
+        const { handle, handler } = dueImmediates[0];
         scheduleLookup.delete(handle);
         handler();
         return;
@@ -514,6 +515,13 @@ export class TestScheduler extends VirtualTimeScheduler {
         // be rescheduled. This will continue until the clearInterval delegate
         // unsubscribes and deletes the handle from the map.
         firstDueInterval.subscription = this.schedule(run, duration);
+        handler();
+        return;
+      }
+      const dueTimeouts = scheduledRecordsDue.filter(({ type }) => type === 'timeout');
+      if (dueTimeouts.length > 0) {
+        const { handle, handler } = dueTimeouts[0];
+        scheduleLookup.delete(handle);
         handler();
         return;
       }
@@ -564,7 +572,29 @@ export class TestScheduler extends VirtualTimeScheduler {
       }
     };
 
-    return { immediate, interval };
+    const timeout = {
+      setTimeout: (handler: () => void, duration = 0) => {
+        const handle = ++lastHandle;
+        scheduleLookup.set(handle, {
+          due: this.now() + duration,
+          duration,
+          handle,
+          handler,
+          subscription: this.schedule(run, duration),
+          type: 'timeout',
+        });
+        return handle;
+      },
+      clearTimeout: (handle: number) => {
+        const value = scheduleLookup.get(handle);
+        if (value) {
+          value.subscription.unsubscribe();
+          scheduleLookup.delete(handle);
+        }
+      }
+    };
+
+    return { immediate, interval, timeout };
   }
 
   /**
@@ -590,6 +620,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     dateTimestampProvider.delegate = this;
     immediateProvider.delegate = delegates.immediate;
     intervalProvider.delegate = delegates.interval;
+    timeoutProvider.delegate = delegates.timeout;
     performanceTimestampProvider.delegate = this;
 
     const helpers: RunHelpers = {
@@ -613,6 +644,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       dateTimestampProvider.delegate = undefined;
       immediateProvider.delegate = undefined;
       intervalProvider.delegate = undefined;
+      timeoutProvider.delegate = undefined;
       performanceTimestampProvider.delegate = undefined;
     }
   }
