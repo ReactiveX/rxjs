@@ -112,15 +112,7 @@ export declare function concat<T extends readonly unknown[]>(...inputsAndSchedul
 
 export declare const config: {
     onUnhandledError: ((err: any) => void) | null;
-    onStoppedNotification: ((notification: {
-        kind: 'N';
-        value: any;
-    } | {
-        kind: 'E';
-        error: any;
-    } | {
-        kind: 'C';
-    }, subscriber: Subscriber<any>) => void) | null;
+    onStoppedNotification: ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null;
     Promise: PromiseConstructorLike | undefined;
     useDeprecatedSynchronousErrorHandling: boolean;
     useDeprecatedNextContext: boolean;
