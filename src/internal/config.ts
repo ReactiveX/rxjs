@@ -1,6 +1,6 @@
 /** @prettier */
-
 import { Subscriber } from './Subscriber';
+import { ObservableNotification } from './types';
 
 /**
  * The global configuration object for RxJS, used to configure things
@@ -28,9 +28,7 @@ export const config = {
    * we do not want errors thrown in this user-configured handler to interfere with the
    * behavior of the library.
    */
-  onStoppedNotification: null as
-    | ((notification: { kind: 'N'; value: any } | { kind: 'E'; error: any } | { kind: 'C' }, subscriber: Subscriber<any>) => void)
-    | null,
+  onStoppedNotification: null as ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null,
 
   /**
    * The promise constructor used by default for methods such as

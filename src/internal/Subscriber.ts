@@ -1,6 +1,6 @@
 /** @prettier */
 import { isFunction } from './util/isFunction';
-import { Observer, PartialObserver } from './types';
+import { Observer, PartialObserver, ObservableNotification } from './types';
 import { isSubscription, Subscription } from './Subscription';
 import { config } from './config';
 import { reportUnhandledError } from './util/reportUnhandledError';
@@ -194,10 +194,7 @@ function defaultErrorHandler(err: any) {
  * @param notification The notification being sent
  * @param subscriber The stopped subscriber
  */
-function handleStoppedNotification(
-  notification: { kind: 'N'; value: any } | { kind: 'E'; error: any } | { kind: 'C' },
-  subscriber: Subscriber<any>
-) {
+function handleStoppedNotification(notification: ObservableNotification<any>, subscriber: Subscriber<any>) {
   const { onStoppedNotification } = config;
   onStoppedNotification && timeoutProvider.setTimeout(() => onStoppedNotification(notification, subscriber));
 }
