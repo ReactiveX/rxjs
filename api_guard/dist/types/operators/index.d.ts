@@ -288,6 +288,8 @@ export declare function switchMapTo<R>(observable: ObservableInput<R>): Operator
 export declare function switchMapTo<R>(observable: ObservableInput<R>, resultSelector: undefined): OperatorFunction<any, R>;
 export declare function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 
+export declare function switchScan<T, R, O extends ObservableInput<any>>(accumulator: (acc: R, value: T, index: number) => O, seed: R): OperatorFunction<T, ObservedValueOf<O>>;
+
 export declare function take<T>(count: number): MonoTypeOperatorFunction<T>;
 
 export declare function takeLast<T>(count: number): MonoTypeOperatorFunction<T>;
