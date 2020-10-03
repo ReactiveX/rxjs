@@ -1,6 +1,7 @@
 /** @prettier */
 import { OperatorFunction } from '../types';
 import { operate } from '../util/lift';
+import { createBasicSyncOperator } from './createBasicSyncOperator';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -68,20 +69,14 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  */
 
 export function isEmpty<T>(): OperatorFunction<T, boolean> {
-  return operate((source, subscriber) => {
-    source.subscribe(
-      new OperatorSubscriber(
-        subscriber,
-        () => {
-          subscriber.next(false);
-          subscriber.complete();
-        },
-        undefined,
-        () => {
-          subscriber.next(true);
-          subscriber.complete();
-        }
-      )
-    );
-  });
+  return createBasicSyncOperator(
+    (_value, _index, subscriber) => {
+      subscriber.next(false);
+      subscriber.complete();
+    },
+    (subscriber) => {
+      subscriber.next(true);
+      subscriber.complete();
+    }
+  );
 }

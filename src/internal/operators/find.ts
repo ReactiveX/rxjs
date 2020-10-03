@@ -1,18 +1,9 @@
 /** @prettier */
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createBasicSyncOperator } from './createBasicSyncOperator';
 
-export function find<T, S extends T>(
-  predicate: (value: T, index: number, source: Observable<T>) => value is S,
-  thisArg?: any
-): OperatorFunction<T, S | undefined>;
-export function find<T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  thisArg?: any
-): OperatorFunction<T, T | undefined>;
+export function find<T, S extends T>(predicate: (value: T, index: number) => value is S, thisArg?: any): OperatorFunction<T, S | undefined>;
+export function find<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): OperatorFunction<T, T | undefined>;
 /**
  * Emits only the first value emitted by the source Observable that meets some
  * condition.
@@ -51,37 +42,29 @@ export function find<T>(
  * condition.
  * @name find
  */
-export function find<T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  thisArg?: any
-): OperatorFunction<T, T | undefined> {
-  return operate(createFind(predicate, thisArg, 'value'));
+export function find<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): OperatorFunction<T, T | undefined> {
+  return createFind(predicate, thisArg, 'value');
 }
 
+export function createFind<T>(predicate: (value: T, index: number) => boolean, thisArg: any, emit: 'value'): OperatorFunction<T, T>;
+export function createFind<T>(predicate: (value: T, index: number) => boolean, thisArg: any, emit: 'index'): OperatorFunction<T, number>;
+
 export function createFind<T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean,
+  predicate: (value: T, index: number) => boolean,
   thisArg: any,
   emit: 'value' | 'index'
-) {
+): OperatorFunction<T, T | number> {
   const findIndex = emit === 'index';
-  return (source: Observable<T>, subscriber: Subscriber<any>) => {
-    let index = 0;
-    source.subscribe(
-      new OperatorSubscriber(
-        subscriber,
-        (value) => {
-          const i = index++;
-          if (predicate.call(thisArg, value, i, source)) {
-            subscriber.next(findIndex ? i : value);
-            subscriber.complete();
-          }
-        },
-        undefined,
-        () => {
-          subscriber.next(findIndex ? -1 : undefined);
-          subscriber.complete();
-        }
-      )
-    );
-  };
+  return createBasicSyncOperator(
+    (value, i, subscriber) => {
+      if (predicate.call(thisArg, value, i)) {
+        subscriber.next(findIndex ? i : value);
+        subscriber.complete();
+      }
+    },
+    (subscriber) => {
+      subscriber.next(findIndex ? -1 : undefined);
+      subscriber.complete();
+    }
+  );
 }

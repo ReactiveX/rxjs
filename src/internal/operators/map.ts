@@ -1,7 +1,6 @@
 /** @prettier */
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createBasicSyncOperator } from './createBasicSyncOperator';
 
 /**
  * Applies a given `project` function to each value emitted by the source
@@ -42,17 +41,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @name map
  */
 export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any): OperatorFunction<T, R> {
-  return operate((source, subscriber) => {
-    // The index of the value from the source. Used with projection.
-    let index = 0;
-    // Subscribe to the source, all errors and completions are sent along
-    // to the consumer.
-    source.subscribe(
-      new OperatorSubscriber(subscriber, (value: T) => {
-        // Call the projection function with the appropriate this context,
-        // and send the resulting value to the consumer.
-        subscriber.next(project.call(thisArg, value, index++));
-      })
-    );
+  return createBasicSyncOperator((value, index, subscriber) => {
+    // Call the projection function with the appropriate this context,
+    // and send the resulting value to the consumer.
+    subscriber.next(project.call(thisArg, value, index++));
   });
 }

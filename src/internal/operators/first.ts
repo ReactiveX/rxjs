@@ -13,11 +13,11 @@ export function first<T, D = T>(
   defaultValue?: D
 ): OperatorFunction<T, T | D>;
 export function first<T, S extends T>(
-  predicate: (value: T, index: number, source: Observable<T>) => value is S,
+  predicate: (value: T, index: number) => value is S,
   defaultValue?: S
 ): OperatorFunction<T, S>;
 export function first<T, D = T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean,
+  predicate: (value: T, index: number) => boolean,
   defaultValue?: D
 ): OperatorFunction<T, T | D>;
 /* tslint:enable:max-line-length */
@@ -68,8 +68,7 @@ export function first<T, D = T>(
  * callback if the Observable completes before any `next` notification was sent.
  * This is how `first()` is different from {@link take}(1) which completes instead.
  *
- * @param {function(value: T, index: number, source: Observable<T>): boolean} [predicate]
- * An optional function called with each item to test for condition matching.
+ * @param predicate An optional function called with each item to test for condition matching.
  * @param {R} [defaultValue] The default value emitted in case no valid value
  * was found on the source.
  * @return {Observable<T|R>} An Observable of the first item that matches the
@@ -77,12 +76,12 @@ export function first<T, D = T>(
  * @name first
  */
 export function first<T, D>(
-  predicate?: ((value: T, index: number, source: Observable<T>) => boolean) | null,
+  predicate?: ((value: T, index: number) => boolean) | null,
   defaultValue?: D
 ): OperatorFunction<T, T | D> {
   const hasDefaultValue = arguments.length >= 2;
   return (source: Observable<T>) => source.pipe(
-    predicate ? filter((v, i) => predicate(v, i, source)) : identity,
+    predicate ? filter(predicate) : identity,
     take(1),
     hasDefaultValue ? defaultIfEmpty<T, D>(defaultValue) : throwIfEmpty(() => new EmptyError()),
   );

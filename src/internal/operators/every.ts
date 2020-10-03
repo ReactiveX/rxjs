@@ -1,8 +1,6 @@
 /** @prettier */
-import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createBasicSyncOperator } from './createBasicSyncOperator';
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
@@ -29,27 +27,17 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @return {Observable} An Observable of booleans that determines if all items of the source Observable meet the condition specified.
  * @name every
  */
-export function every<T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  thisArg?: any
-): OperatorFunction<T, boolean> {
-  return operate((source, subscriber) => {
-    let index = 0;
-    source.subscribe(
-      new OperatorSubscriber(
-        subscriber,
-        (value) => {
-          if (!predicate.call(thisArg, value, index++, source)) {
-            subscriber.next(false);
-            subscriber.complete();
-          }
-        },
-        undefined,
-        () => {
-          subscriber.next(true);
-          subscriber.complete();
-        }
-      )
-    );
-  });
+export function every<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): OperatorFunction<T, boolean> {
+  return createBasicSyncOperator(
+    (value, index, subscriber) => {
+      if (!predicate.call(thisArg, value, index++)) {
+        subscriber.next(false);
+        subscriber.complete();
+      }
+    },
+    (subscriber) => {
+      subscriber.next(true);
+      subscriber.complete();
+    }
+  );
 }

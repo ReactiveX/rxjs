@@ -34,7 +34,7 @@ import { createFind } from './find';
  * @see {@link first}
  * @see {@link take}
  *
- * @param {function(value: T, index: number, source: Observable<T>): boolean} predicate
+ * @param  predicate
  * A function called with each item to test for condition matching.
  * @param {any} [thisArg] An optional argument to determine the value of `this`
  * in the `predicate` function.
@@ -42,9 +42,6 @@ import { createFind } from './find';
  * matches the condition.
  * @name find
  */
-export function findIndex<T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  thisArg?: any
-): OperatorFunction<T, number> {
-  return operate(createFind(predicate, thisArg, 'index'));
+export function findIndex<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): OperatorFunction<T, number> {
+  return createFind(predicate, thisArg, 'index');
 }

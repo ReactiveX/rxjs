@@ -20,16 +20,17 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
    */
   constructor(
     destination: Subscriber<any>,
-    onNext?: (value: T) => void,
+    onNext?: (value: T, index: number, destination: Subscriber<any>) => void,
     onError?: (err: any) => void,
-    onComplete?: () => void,
+    onComplete?: (destination: Subscriber<any>) => void,
     private onUnsubscribe?: () => void
   ) {
     super(destination);
     if (onNext) {
+      let index = 0;
       this._next = function (value: T) {
         try {
-          onNext(value);
+          onNext(value, index++, destination);
         } catch (err) {
           this.destination.error(err);
         }
@@ -50,7 +51,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
     if (onComplete) {
       this._complete = function () {
         try {
-          onComplete();
+          onComplete(destination);
         } catch (err) {
           // Send any errors that occur down stream.
           this.destination.error(err);

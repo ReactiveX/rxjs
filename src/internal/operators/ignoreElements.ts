@@ -1,8 +1,7 @@
 /** @prettier */
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
+import { createBasicSyncOperator } from './createBasicSyncOperator';
 
 /**
  * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.
@@ -37,7 +36,5 @@ import { noop } from '../util/noop';
  * @name ignoreElements
  */
 export function ignoreElements(): OperatorFunction<any, never> {
-  return operate((source, subscriber) => {
-    source.subscribe(new OperatorSubscriber(subscriber, noop));
-  });
+  return createBasicSyncOperator(noop);
 }

@@ -3,6 +3,7 @@ import { MonoTypeOperatorFunction } from '../types';
 import { EMPTY } from '../observable/empty';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
+import { createBasicSyncOperator } from './createBasicSyncOperator';
 
 /**
  * Emits only the first `count` values emitted by the source Observable.
@@ -51,18 +52,14 @@ import { OperatorSubscriber } from './OperatorSubscriber';
 export function take<T>(count: number): MonoTypeOperatorFunction<T> {
   return count <= 0
     ? () => EMPTY
-    : operate((source, subscriber) => {
-        let seen = 0;
-        source.subscribe(
-          new OperatorSubscriber(subscriber, (value) => {
-            if (++seen <= count) {
-              subscriber.next(value);
-              // We have to do <= here, because re-entrant code will increment `seen` twice.
-              if (count <= seen) {
-                subscriber.complete();
-              }
-            }
-          })
-        );
+    : createBasicSyncOperator((value, index, subscriber) => {
+        const seen = index + 1;
+        if (seen <= count) {
+          subscriber.next(value);
+          // We have to do <= here, because re-entrant code will increment `seen` twice.
+          if (count <= seen) {
+            subscriber.complete();
+          }
+        }
       });
 }
