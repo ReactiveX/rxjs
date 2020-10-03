@@ -41,7 +41,6 @@ export class Observable<T> implements Subscribable<T> {
   // fight against TypeScript here so Subject can have a different static create signature
   /**
    * Creates a new cold Observable by calling the Observable constructor
-   * @static true
    * @owner Observable
    * @method create
    * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
