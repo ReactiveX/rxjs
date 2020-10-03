@@ -157,15 +157,7 @@ export class AppComponent implements OnInit {
       this.navigationService.versionInfo,
       this.navigationService.navigationViews.pipe(map(views => views['docVersions']))
     ).subscribe(([versionInfo, versions]) => {
-      // TODO(pbd): consider whether we can lookup the stable and next versions from the internet
-      const computedVersions: NavigationNode[] = [
-        { title: 'next', url: 'https://next.angular.io' },
-        { title: 'stable', url: 'https://angular.io' },
-      ];
-      if (this.deployment.mode === 'archive') {
-        computedVersions.push({ title: `v${versionInfo.major}` });
-      }
-      this.docVersions = [...computedVersions, ...versions];
+      this.docVersions = [...versions];
 
       // Find the current version - eithers title matches the current deployment mode
       // or its title matches the major version of the current version info
