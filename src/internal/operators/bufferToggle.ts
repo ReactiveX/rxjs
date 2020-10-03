@@ -50,7 +50,6 @@ import { arrRemove } from '../util/arrRemove';
  * which, when it emits, signals that the associated buffer should be emitted
  * and cleared.
  * @return {Observable<T[]>} An observable of arrays of buffered values.
- * @name bufferToggle
  */
 export function bufferToggle<T, O>(
   openings: SubscribableOrPromise<O>,

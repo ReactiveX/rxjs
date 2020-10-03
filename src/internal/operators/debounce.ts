@@ -62,7 +62,6 @@ import { innerFrom } from '../observable/from';
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified duration Observable returned by
  * `durationSelector`, and may drop some values if they occur too frequently.
- * @name debounce
  */
 export function debounce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

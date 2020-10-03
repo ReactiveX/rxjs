@@ -46,7 +46,6 @@ export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  * `innerObservable` (and optionally transformed through the deprecated `resultSelector`)
  * every time a value is emitted on the source Observable, and taking only the values
  * from the most recently projected inner Observable.
- * @name switchMapTo
  */
 export function switchMapTo<T, I, R>(
   innerObservable: ObservableInput<I>,

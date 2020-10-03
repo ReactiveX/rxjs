@@ -55,7 +55,6 @@ export function reduce<V, A, S = A>(accumulator: (acc: A | S, value: V, index: n
  * @param {A} [seed] The initial accumulation value.
  * @return {Observable<A>} An Observable that emits a single value that is the
  * result of accumulating the values emitted by the source Observable.
- * @name reduce
  */
 export function reduce<V, A>(accumulator: (acc: V | A, value: V, index: number) => A, seed?: any): OperatorFunction<V, V | A> {
   return operate(scanInternals(accumulator, seed, arguments.length >= 2, false, true));

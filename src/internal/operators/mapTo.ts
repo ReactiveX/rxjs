@@ -36,7 +36,6 @@ export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
  * @param {any} value The value to map each source value to.
  * @return {Observable} An Observable that emits the given `value` every time
  * the source Observable emits something.
- * @name mapTo
  */
 export function mapTo<R>(value: R): OperatorFunction<any, R> {
   return operate((source, subscriber) => {

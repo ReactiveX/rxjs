@@ -175,7 +175,6 @@ export function zip<R>(...observables: Array<ObservableInput<any> | ((...values:
  * @param sources
  * @return {Observable<R>}
  * @static true
- * @name zip
  */
 export function zip<O extends ObservableInput<any>, R>(
   ...sources: Array<O | ((...values: ObservedValueOf<O>[]) => R)>

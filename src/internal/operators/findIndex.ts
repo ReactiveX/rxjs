@@ -40,7 +40,6 @@ import { createFind } from './find';
  * in the `predicate` function.
  * @return {Observable} An Observable of the index of the first item that
  * matches the condition.
- * @name find
  */
 export function findIndex<T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,

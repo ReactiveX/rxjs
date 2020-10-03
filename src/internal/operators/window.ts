@@ -45,7 +45,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * previous window and starts a new window.
  * @return {Observable<Observable<T>>} An Observable of windows, which are
  * Observables emitting values of the source Observable.
- * @name window
  */
 export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T, Observable<T>> {
   return operate((source, subscriber) => {

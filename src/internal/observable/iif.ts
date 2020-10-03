@@ -88,7 +88,6 @@ import { SubscribableOrPromise } from '../types';
  * @param {Observable} [falseObservable] An Observable that will be subscribed if condition is false.
  * @return {Observable} Either first or second Observable, depending on condition.
  * @static true
- * @name iif
  */
 export function iif<T = never, F = never>(
   condition: () => boolean,

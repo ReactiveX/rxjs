@@ -34,7 +34,6 @@ import { noop } from '../util/noop';
  * ```
  * @return {Observable} An empty Observable that only calls `complete`
  * or `error`, based on which one is called by the source Observable.
- * @name ignoreElements
  */
 export function ignoreElements(): OperatorFunction<any, never> {
   return operate((source, subscriber) => {

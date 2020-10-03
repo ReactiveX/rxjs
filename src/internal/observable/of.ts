@@ -93,9 +93,7 @@ export function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<
  * @param {...T} values A comma separated list of arguments you want to be emitted
  * @return {Observable} An Observable that emits the arguments
  * described above and then completes.
- * @name of
  */
-
 export function of<T>(...args: Array<T | SchedulerLike>): Observable<T> {
   const scheduler = popScheduler(args);
   return scheduler ? scheduleArray(args as T[], scheduler) : internalFromArray(args as T[]);

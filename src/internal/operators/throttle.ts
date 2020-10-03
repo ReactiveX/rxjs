@@ -59,7 +59,6 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * to `{ leading: true, trailing: false }`.
  * @return {Observable<T>} An Observable that performs the throttle operation to
  * limit the rate of emissions from the source.
- * @name throttle
  */
 export function throttle<T>(
   durationSelector: (value: T) => SubscribableOrPromise<any>,

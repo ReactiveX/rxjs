@@ -49,7 +49,6 @@ export function exhaust<R>(): OperatorFunction<any, R>;
  *
  * @return {Observable} An Observable that takes a source of Observables and propagates the first observable
  * exclusively until it completes before subscribing to the next.
- * @name exhaust
  */
 export function exhaust<T>(): OperatorFunction<any, T> {
   return operate((source, subscriber) => {

@@ -250,7 +250,6 @@ export function bindNodeCallback(callbackFunc: (...args: any[]) => any, schedule
  * @return {function(...params: *): Observable} A function which returns the
  * Observable that delivers the same values the Node.js callback would
  * deliver.
- * @name bindNodeCallback
  */
 export function bindNodeCallback(
   callbackFunc: (...args: any[]) => any,

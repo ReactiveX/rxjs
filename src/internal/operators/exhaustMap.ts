@@ -65,7 +65,6 @@ export function exhaustMap<T, I, R>(
  * @return {Observable} An Observable containing projected Observables
  * of each item of the source, ignoring projected Observables that start before
  * their preceding Observable has completed.
- * @name exhaustMap
  */
 export function exhaustMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,

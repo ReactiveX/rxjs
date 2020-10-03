@@ -183,7 +183,6 @@ export function fromEvent<T>(
  * `target`.
  * @param {EventListenerOptions} [options] Options to pass through to addEventListener
  * @return {Observable<T>}
- * @name fromEvent
  */
 export function fromEvent<T>(
   target: FromEventTarget<T>,

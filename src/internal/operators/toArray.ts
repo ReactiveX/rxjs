@@ -32,7 +32,6 @@ const arrReducer = (arr: any[], value: any) => (arr.push(value), arr);
  *
  * ```
 * @return An array from an observable sequence.
-* @name toArray
 */
 export function toArray<T>(): OperatorFunction<T, T[]> {
   // Because arrays are mutable, and we're mutating the array in this

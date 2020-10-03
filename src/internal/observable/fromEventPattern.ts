@@ -141,7 +141,6 @@ export function fromEventPattern<T>(
  * passed to registered event handler. Alternatively it emits whatever project function returns
  * at that moment.
  * @static true
- * @name fromEventPattern
  */
 export function fromEventPattern<T>(
   addHandler: (handler: NodeEventHandler) => any,

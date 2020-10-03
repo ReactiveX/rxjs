@@ -103,7 +103,6 @@ export function catchError<T, O extends ObservableInput<any>>(
  *  is returned by the `selector` will be used to continue the observable chain.
  * @return {Observable} An observable that originates from either the source or the observable returned by the
  *  catch `selector` function.
- * @name catchError
  */
 export function catchError<T, O extends ObservableInput<any>>(
   selector: (err: any, caught: Observable<T>) => O

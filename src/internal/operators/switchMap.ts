@@ -80,7 +80,6 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
  * projection function (and the optional deprecated `resultSelector`) to each item
  * emitted by the source Observable and taking only the values from the most recently
  * projected inner Observable.
- * @name switchMap
  */
 export function switchMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,

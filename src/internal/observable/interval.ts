@@ -49,7 +49,6 @@ import { timer } from './timer';
  * @return {Observable} An Observable that emits a sequential number each time
  * interval.
  * @static true
- * @name interval
  */
 export function interval(period = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number> {
   if (period < 0) {

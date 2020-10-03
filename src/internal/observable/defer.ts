@@ -49,7 +49,6 @@ import { innerFrom } from './from';
  * @return {Observable} An Observable whose Observers' subscriptions trigger
  * an invocation of the given Observable factory function.
  * @static true
- * @name defer
  */
 export function defer<R extends ObservableInput<any>>(observableFactory: () => R): Observable<ObservedValueOf<R>> {
   return new Observable<ObservedValueOf<R>>((subscriber) => {

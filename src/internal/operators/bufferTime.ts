@@ -76,7 +76,6 @@ export function bufferTime<T>(
  * @param {SchedulerLike} [scheduler=async] The scheduler on which to schedule the
  * intervals that determine buffer boundaries.
  * @return {Observable<T[]>} An observable of arrays of buffered values.
- * @name bufferTime
  */
 export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): OperatorFunction<T, T[]> {
   const scheduler = popScheduler(otherArgs) ?? asyncScheduler;

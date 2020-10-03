@@ -115,7 +115,6 @@ export function groupBy<T, K, R>(
  * GroupedObservables, each of which corresponds to a unique key value and each
  * of which emits those items from the source Observable that share that key
  * value.
- * @name groupBy
  */
 export function groupBy<T, K, R>(
   keySelector: (value: T) => K,

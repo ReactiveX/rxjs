@@ -34,7 +34,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @param {function(notifications: Observable): Observable} notifier - Receives an Observable of notifications with
  * which a user can `complete` or `error`, aborting the repetition.
  * @return {Observable} The source Observable modified with repeat logic.
- * @name repeatWhen
  */
 export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Observable<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

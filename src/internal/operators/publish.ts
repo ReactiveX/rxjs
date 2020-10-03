@@ -55,7 +55,6 @@ export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOpera
  * as needed, without causing multiple subscriptions to the source sequence.
  * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.
  * @return A ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.
- * @name publish
  */
 export function publish<T, R>(selector?: OperatorFunction<T, R>): MonoTypeOperatorFunction<T> | OperatorFunction<T, R> {
   return selector ?
