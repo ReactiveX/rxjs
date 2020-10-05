@@ -82,6 +82,7 @@ export { subscribeOn } from '../internal/operators/subscribeOn';
 export { switchAll } from '../internal/operators/switchAll';
 export { switchMap } from '../internal/operators/switchMap';
 export { switchMapTo } from '../internal/operators/switchMapTo';
+export { switchScan } from '../internal/operators/switchScan';
 export { take } from '../internal/operators/take';
 export { takeLast } from '../internal/operators/takeLast';
 export { takeUntil } from '../internal/operators/takeUntil';

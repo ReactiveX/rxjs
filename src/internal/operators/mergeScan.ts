@@ -33,6 +33,9 @@ import { mergeInternals } from './mergeInternals';
  * // ...and so on for each click
  * ```
  *
+ * @see {@link scan}
+ * @see {@link switchScan}
+ *
  * @param {function(acc: R, value: T): Observable<R>} accumulator
  * The accumulator function called on each source value.
  * @param seed The initial accumulation value.

@@ -77,6 +77,7 @@ describe('operators/index', () => {
     expect(index.skipWhile).to.exist;
     expect(index.startWith).to.exist;
     expect(index.switchAll).to.exist;
+    expect(index.switchScan).to.exist;
     expect(index.switchMap).to.exist;
     expect(index.switchMapTo).to.exist;
     expect(index.take).to.exist;

@@ -115,6 +115,9 @@
         - label: and output the computed values as a nested Observable when the source emits a value
           children:
             - label: mergeScan
+        - label: and output the computed values as a nested Observable when the source emits a value while unsubscribing from the previous nested Observable
+          children:
+            - label: switchScan
     - label: I want to wrap its messages with metadata
       children:
         - label: that describes each notification (next, error, or complete)
