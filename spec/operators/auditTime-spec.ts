@@ -53,6 +53,8 @@ describe('auditTime operator', () => {
       });
 
     testScheduler.flush();
+
+    expect(expected.length).to.equal(0);
   });
 
   it('should delay the source if values are not emitted often enough', () => {
