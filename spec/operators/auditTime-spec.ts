@@ -16,7 +16,7 @@ describe('auditTime operator', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  -a-x-y----b---x-cx---|');
       const subs = '    ^--------------------!';
-      const expected = '------y--------x-----|';
+      const expected = '------y--------x-----(x|)';
 
       const result = e1.pipe(auditTime(5, testScheduler));
 
@@ -26,40 +26,30 @@ describe('auditTime operator', () => {
   });
 
   it('should auditTime events by 5 time units', (done: MochaDone) => {
+    const expected = 3;
     of(1, 2, 3).pipe(
       auditTime(5)
     ).subscribe((x: number) => {
-        done(new Error('should not be called'));
-      }, null, () => {
+        expect(x).to.equal(expected);
         done();
       });
   });
 
   it('should auditTime events multiple times', () => {
-    const expected = ['1-2', '2-2'];
-    concat(
-      timer(0, 10, testScheduler).pipe(
-        take(3),
-        map((x: number) => '1-' + x)
-      ),
-      timer(80, 10, testScheduler).pipe(
-        take(5),
-        map((x: number) => '2-' + x)
-      )
-    ).pipe(
-      auditTime(50, testScheduler)
-    ).subscribe((x: string) => {
-        expect(x).to.equal(expected.shift());
-      });
-
-    testScheduler.flush();
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  -012-----01234---|');
+      const subs = '    ^----------------!';
+      const expected = '------2-------4--|';
+      expectObservable(e1.pipe(auditTime(5, testScheduler))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
   });
 
   it('should delay the source if values are not emitted often enough', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  -a--------b-----c----|');
       const subs = '    ^--------------------!';
-      const expected = '------a--------b-----|';
+      const expected = '------a--------b-----(c|)';
 
       expectObservable(e1.pipe(auditTime(5, testScheduler))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -68,9 +58,9 @@ describe('auditTime operator', () => {
 
   it('should handle a busy producer emitting a regular repeating sequence', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  abcdefabcdefabcdefabcdefa|');
-      const subs = '    ^------------------------!';
-      const expected = '-----f-----f-----f-----f-|';
+      const e1 = hot('  abcdefabcdefabcdefabcdefa    |');
+      const subs = '    ^------------------------    !';
+      const expected = '-----f-----f-----f-----f-----(a|)';
 
       expectObservable(e1.pipe(auditTime(5, testScheduler))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(subs);
