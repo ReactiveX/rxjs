@@ -18,17 +18,17 @@ describe('switchScan', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should not pass seed when undefined', () => {
-    const seeds: number[] = [];
+  it('should provide the proper acculumated values', () => {
+    const accs: number[] = [];
 
     of(1, 3, 5).pipe(
       switchScan((acc, x) => {
-        seeds.push(acc);
-        return of(10).pipe(map(v => v * x + acc));
-      }, 0),
+        accs.push(acc);
+        return of(acc + x)
+      }, 100),
     ).subscribe();
 
-    expect(seeds).to.deep.equal([0, 10, 40]);
+    expect(accs).to.deep.equal([100, 101, 104]);
   });
 
   it('should unsub inner observables', () => {

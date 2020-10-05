@@ -3,6 +3,8 @@ import { ObservableInput, ObservedValueOf, OperatorFunction } from '../types';
 import { switchMap } from './switchMap';
 import { operate } from '../util/lift';
 
+// TODO: Generate a marble diagram for these docs.
+
 /**
  * Applies an accumulator function over the source Observable where the
  * accumulator function itself returns an Observable, emitting values
@@ -10,8 +12,6 @@ import { operate } from '../util/lift';
  *
  * <span class="informal">It's like {@link scan}, but only the most recent
  * Observable returned by the accumulator is merged into the outer Observable.</span>
- *
- * ![](switchScan.png)
  *
  * @see {@link scan}
  * @see {@link mergeScan}
@@ -29,7 +29,7 @@ export function switchScan<T, R, O extends ObservableInput<any>>(
   return operate((source, subscriber) => {
     // The state we will keep up to date to pass into our
     // accumulator function at each new value from the source.
-    let state: any = seed;
+    let state = seed;
 
     // Use `switchMap` on our `source` to do the work of creating
     // this operator. Note the backwards order here of `switchMap()(source)`
