@@ -56,6 +56,7 @@ export function audit<T>(durationSelector: (value: T) => SubscribableOrPromise<a
     let hasValue = false;
     let lastValue: T | null = null;
     let durationSubscriber: Subscriber<any> | null = null;
+    let isComplete = false;
 
     const endDuration = () => {
       durationSubscriber?.unsubscribe();
@@ -66,18 +67,27 @@ export function audit<T>(durationSelector: (value: T) => SubscribableOrPromise<a
         lastValue = null;
         subscriber.next(value);
       }
+      isComplete && subscriber.complete();
     };
 
     source.subscribe(
-      new OperatorSubscriber(subscriber, (value) => {
-        hasValue = true;
-        lastValue = value;
-        if (!durationSubscriber) {
-          innerFrom(durationSelector(value)).subscribe(
-            (durationSubscriber = new OperatorSubscriber(subscriber, endDuration, undefined, endDuration))
-          );
+      new OperatorSubscriber(
+        subscriber,
+        (value) => {
+          hasValue = true;
+          lastValue = value;
+          if (!durationSubscriber) {
+            innerFrom(durationSelector(value)).subscribe(
+              (durationSubscriber = new OperatorSubscriber(subscriber, endDuration, undefined, endDuration))
+            );
+          }
+        },
+        undefined,
+        () => {
+          isComplete = true;
+          (!hasValue || !durationSubscriber || durationSubscriber.closed) && subscriber.complete();
         }
-      })
+      )
     );
   });
 }
