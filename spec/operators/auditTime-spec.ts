@@ -36,23 +36,14 @@ describe('auditTime operator', () => {
   });
 
   it('should auditTime events multiple times', () => {
-    const expected = ['1-2', '2-2'];
-    concat(
-      timer(0, 10, testScheduler).pipe(
-        take(3),
-        map((x: number) => '1-' + x)
-      ),
-      timer(80, 10, testScheduler).pipe(
-        take(5),
-        map((x: number) => '2-' + x)
-      )
-    ).pipe(
-      auditTime(50, testScheduler)
-    ).subscribe((x: string) => {
-        expect(x).to.equal(expected.shift());
-      });
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  -012-----01234---|');
+      const subs = '    ^----------------!';
+      const expected = '------2-------4--|';
 
-    testScheduler.flush();
+      expectObservable(e1.pipe(auditTime(5, testScheduler))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
   });
 
   it('should delay the source if values are not emitted often enough', () => {
