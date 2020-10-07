@@ -58,8 +58,8 @@ describe('auditTime operator', () => {
 
   it('should handle a busy producer emitting a regular repeating sequence', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  abcdefabcdefabcdefabcdefa    |');
-      const subs = '    ^------------------------    !';
+      const e1 = hot('  abcdefabcdefabcdefabcdefa|');
+      const subs = '    ^------------------------!';
       const expected = '-----f-----f-----f-----f-----(a|)';
 
       expectObservable(e1.pipe(auditTime(5, testScheduler))).toBe(expected);

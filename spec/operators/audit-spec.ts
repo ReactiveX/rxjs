@@ -391,7 +391,7 @@ describe('audit operator', () => {
 
   it('should audit by promise resolves', (done: MochaDone) => {
     const e1 = interval(10).pipe(take(5));
-    const expected = [0, 1, 2, 3, 4, 5];
+    const expected = [0, 1, 2, 3, 4];
 
     e1.pipe(
       audit(() => Promise.resolve(42))
@@ -402,7 +402,7 @@ describe('audit operator', () => {
         done(new Error('should not be called'));
       },
       () => {
-        expect(expected.length).to.equal(1);
+        expect(expected.length).to.equal(0);
         done();
       }
     );
