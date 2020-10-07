@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { defer } from './defer';
 import { EMPTY } from './empty';
-import { SubscribableOrPromise } from '../types';
+import { ObservableInput } from '../types';
 
 /**
  * Decides at subscription time which Observable will actually be subscribed.
@@ -90,8 +90,8 @@ import { SubscribableOrPromise } from '../types';
  */
 export function iif<T = never, F = never>(
   condition: () => boolean,
-  trueResult: SubscribableOrPromise<T> = EMPTY,
-  falseResult: SubscribableOrPromise<F> = EMPTY
+  trueResult: ObservableInput<T> = EMPTY,
+  falseResult: ObservableInput<F> = EMPTY
 ): Observable<T|F> {
   return defer(() => condition() ? trueResult : falseResult);
 }

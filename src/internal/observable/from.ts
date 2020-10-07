@@ -123,7 +123,7 @@ export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): O
 // TODO: Use this throughout the library, rather than the `from` above, to avoid
 // the unnecessary scheduling check and reduce bundled sizes of operators that use `from`.
 // TODO: Eventually, this just becomes `from`, as we don't have the deprecated scheduled path anymore.
-export function innerFrom<T>(input: ObservableInput<T>) {
+export function innerFrom<T>(input: ObservableInput<T>): Observable<T> {
   if (input instanceof Observable) {
     return input;
   }

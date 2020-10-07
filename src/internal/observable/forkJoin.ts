@@ -1,6 +1,6 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { ObservableInput, ObservedValueUnionFromArray, ObservedValueOf, SubscribableOrPromise } from '../types';
+import { ObservableInput, ObservedValueUnionFromArray, ObservedValueOf } from '../types';
 import { map } from '../operators/map';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { innerFrom } from './from';
@@ -8,7 +8,7 @@ import { popResultSelector } from '../util/args';
 
 // forkJoin(a$, b$, c$)
 /** @deprecated Use the version that takes an array of Observables instead */
-export function forkJoin<T>(v1: SubscribableOrPromise<T>): Observable<[T]>;
+export function forkJoin<T>(v1: ObservableInput<T>): Observable<[T]>;
 /** @deprecated Use the version that takes an array of Observables instead */
 export function forkJoin<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>): Observable<[T, T2]>;
 /** @deprecated Use the version that takes an array of Observables instead */

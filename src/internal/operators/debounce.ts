@@ -1,6 +1,6 @@
 /** @prettier */
 import { Subscriber } from '../Subscriber';
-import { MonoTypeOperatorFunction, SubscribableOrPromise } from '../types';
+import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
@@ -56,14 +56,14 @@ import { innerFrom } from '../observable/from';
  * @see {@link throttle}
  * @see {@link throttleTime}
  *
- * @param {function(value: T): SubscribableOrPromise} durationSelector A function
+ * @param durationSelector A function
  * that receives a value from the source Observable, for computing the timeout
  * duration for each source value, returned as an Observable or a Promise.
- * @return {Observable} An Observable that delays the emissions of the source
+ * @return An Observable that delays the emissions of the source
  * Observable by the specified duration Observable returned by
  * `durationSelector`, and may drop some values if they occur too frequently.
  */
-export function debounce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): MonoTypeOperatorFunction<T> {
+export function debounce<T>(durationSelector: (value: T) => ObservableInput<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     let hasValue = false;
     let lastValue: T | null = null;

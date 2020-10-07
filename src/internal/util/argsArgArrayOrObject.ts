@@ -18,7 +18,7 @@ export function argsArgArrayOrObject<T, O extends Record<string, T>>(args: T[] |
     if (isPOJO(first)) {
       const keys = getKeys(first);
       return {
-        args: keys.map((key) => (first as O)[key]),
+        args: keys.map((key) => first[key]),
         keys,
       };
     }

@@ -1,6 +1,6 @@
 /** @prettier */
 import { Subscription } from '../Subscription';
-import { OperatorFunction, SubscribableOrPromise } from '../types';
+import { OperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { innerFrom } from '../observable/from';
 import { OperatorSubscriber } from './OperatorSubscriber';
@@ -43,17 +43,17 @@ import { arrRemove } from '../util/arrRemove';
  * @see {@link bufferWhen}
  * @see {@link windowToggle}
  *
- * @param {SubscribableOrPromise<O>} openings A Subscribable or Promise of notifications to start new
+ * @param openings A Subscribable or Promise of notifications to start new
  * buffers.
- * @param {function(value: O): SubscribableOrPromise} closingSelector A function that takes
+ * @param closingSelector A function that takes
  * the value emitted by the `openings` observable and returns a Subscribable or Promise,
  * which, when it emits, signals that the associated buffer should be emitted
  * and cleared.
- * @return {Observable<T[]>} An observable of arrays of buffered values.
+ * @return An observable of arrays of buffered values.
  */
 export function bufferToggle<T, O>(
-  openings: SubscribableOrPromise<O>,
-  closingSelector: (value: O) => SubscribableOrPromise<any>
+  openings: ObservableInput<O>,
+  closingSelector: (value: O) => ObservableInput<any>
 ): OperatorFunction<T, T[]> {
   return operate((source, subscriber) => {
     const buffers: T[][] = [];
