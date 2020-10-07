@@ -4,15 +4,15 @@ import { bindCallbackInternals } from './bindCallbackInternals';
 
 // tslint:disable:max-line-length
 /** @deprecated resultSelector is no longer supported, use a mapping function. */
-export function bindCallback(callbackFunc: (...args: any[]) => any, resultSelector: (...args: any[]) => any): (...args: any[]) => Observable<any>;
+export function bindCallback(callbackFunc: (...args: any[]) => void, resultSelector: (...args: any[]) => void): (...args: any[]) => Observable<any>;
 
 // args is the arguments array and we push the callback on the rest tuple since the rest parameter must be last (only item) in a parameter list
-export function bindCallback<A extends readonly unknown[], R extends readonly unknown[]>(callbackFunc: (...args: [...A, ((...res: R) => any)]) => any, schedulerLike?: SchedulerLike): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
+export function bindCallback<A extends readonly unknown[], R extends readonly unknown[]>(callbackFunc: (...args: [...A, (...res: R) => void]) => void, schedulerLike?: SchedulerLike): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
 
-export function bindCallback<A, R>(callbackFunc: (...args: Array<A | ((result: R) => any)>) => any): (...args: A[]) => Observable<R>;
-export function bindCallback<A, R>(callbackFunc: (...args: Array<A | ((...results: R[]) => any)>) => any): (...args: A[]) => Observable<R[]>;
+export function bindCallback<A, R>(callbackFunc: (...args: Array<A | ((result: R) => void)>) => void): (...args: A[]) => Observable<R>;
+export function bindCallback<A, R>(callbackFunc: (...args: Array<A | ((...results: R[]) => void)>) => void): (...args: A[]) => Observable<R[]>;
 
-export function bindCallback(callbackFunc: (...args: any[]) => any): (...args: any[]) => Observable<any>;
+export function bindCallback(callbackFunc: (...args: any[]) => void): (...args: any[]) => Observable<any>;
 
 // tslint:enable:max-line-length
 
