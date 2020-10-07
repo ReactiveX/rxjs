@@ -1,7 +1,7 @@
 /** @prettier */
 import { Subscription } from '../Subscription';
 
-import { MonoTypeOperatorFunction, SubscribableOrPromise } from '../types';
+import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { innerFrom } from '../observable/from';
@@ -52,16 +52,16 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * @see {@link sample}
  * @see {@link throttleTime}
  *
- * @param {function(value: T): SubscribableOrPromise} durationSelector A function
+ * @param durationSelector A function
  * that receives a value from the source Observable, for computing the silencing
  * duration for each source value, returned as an Observable or a Promise.
- * @param {Object} config a configuration object to define `leading` and `trailing` behavior. Defaults
+ * @param config a configuration object to define `leading` and `trailing` behavior. Defaults
  * to `{ leading: true, trailing: false }`.
- * @return {Observable<T>} An Observable that performs the throttle operation to
+ * @return An Observable that performs the throttle operation to
  * limit the rate of emissions from the source.
  */
 export function throttle<T>(
-  durationSelector: (value: T) => SubscribableOrPromise<any>,
+  durationSelector: (value: T) => ObservableInput<any>,
   { leading, trailing }: ThrottleConfig = defaultThrottleConfig
 ): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { expand, mergeMap, map, take, toArray } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { Subscribable, EMPTY, Observable, of, Observer, asapScheduler, asyncScheduler } from 'rxjs';
+import { Subscribable, EMPTY, Observable, of, Observer, asapScheduler, asyncScheduler, InteropObservable } from 'rxjs';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -359,22 +359,20 @@ describe('expand', () => {
 
   it('should recursively flatten lowercase-o observables', (done) => {
     const expected = [1, 2, 4, 8, 16];
-    const project = (x: number, index: number): Subscribable<number> => {
+    const project = (x: number): InteropObservable<number> => {
       if (x === 16) {
-        return <any>EMPTY;
+        return EMPTY as any;
       }
 
-      const ish: any = {
-        subscribe: (observer: Observer<number>) => {
+      return {
+        subscribe(observer: Observer<number>) {
           observer.next(x + x);
           observer.complete();
+        },
+        [Symbol.observable] () {
+          return this;
         }
-      };
-
-      ish[Symbol.observable] = function () {
-        return this;
-      };
-      return <Subscribable<number>> ish;
+      } as any;
     };
 
     of(1).pipe(

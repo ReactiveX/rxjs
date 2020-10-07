@@ -1,9 +1,8 @@
-import {OperatorFunction, ObservableInput} from '../types';
+import {OperatorFunction, ObservableInput, ObservedValueOf} from '../types';
 import { switchMap } from './switchMap';
 import { identity } from '../util/identity';
 
-export function switchAll<T>(): OperatorFunction<ObservableInput<T>, T>;
-export function switchAll<R>(): OperatorFunction<any, R>;
+export function switchAll<O extends ObservableInput<any>>(): OperatorFunction<O, ObservedValueOf<O>>;
 
 /**
  * Converts a higher-order Observable into a first-order Observable

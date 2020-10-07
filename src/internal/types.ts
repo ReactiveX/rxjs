@@ -65,6 +65,7 @@ export interface SubscriptionLike extends Unsubscribable {
   readonly closed: boolean;
 }
 
+/** @deprecated To be removed in v8. Do not use. Most likely you want to use `ObservableInput` */
 export type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | InteropObservable<T>;
 
 /** OBSERVABLE INTERFACES */
@@ -80,11 +81,17 @@ export interface Subscribable<T> {
   subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Unsubscribable;
 }
 
-export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T> | Iterable<T> | AsyncIterableIterator<T>;
+/**
+ * Valid types that can be converted to observables.
+ */
+export type ObservableInput<T> = Observable<T> | InteropObservable<T> | AsyncIterable<T> | PromiseLike<T> | ArrayLike<T> | Iterable<T>;
 
 /** @deprecated use {@link InteropObservable } */
 export type ObservableLike<T> = InteropObservable<T>;
 
+/**
+ * An object that implements the `Symbol.observable` interface.
+ */
 export interface InteropObservable<T> {
   [Symbol.observable]: () => Subscribable<T>;
 }
