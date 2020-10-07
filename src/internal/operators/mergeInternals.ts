@@ -13,8 +13,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @param project The projection function to get our inner sources
  * @param concurrent The number of concurrent inner subscriptions
  * @param onBeforeNext Additional logic to apply before nexting to our consumer
- * @param onBeforeComplete Additional logic to apply before telling the consumer
- * we're complete.
  * @param expand If `true` this will perform an "expand" strategy, which differs only
  * in that it recurses, and the inner subscription must be schedule-able.
  * @param innerSubScheduler A scheduler to use to schedule inner subscriptions,
@@ -26,9 +24,9 @@ export function mergeInternals<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,
   concurrent: number,
   onBeforeNext?: (innerValue: R) => void,
-  onBeforeComplete?: () => void,
   expand?: boolean,
-  innerSubScheduler?: SchedulerLike
+  innerSubScheduler?: SchedulerLike,
+  additionalTeardown?: () => void
 ) {
   // Buffered values, in the event of going over our concurrency limit
   let buffer: T[] = [];
@@ -47,8 +45,6 @@ export function mergeInternals<T, R>(
     // and we don't have any active inner subscriptions, then we can
     // Emit the state and complete.
     if (isComplete && !buffer.length && !active) {
-      // In the case of `mergeScan`, we need additional handling here.
-      onBeforeComplete?.();
       subscriber.complete();
     }
   };
@@ -129,5 +125,6 @@ export function mergeInternals<T, R>(
   return () => {
     // Ensure buffered values are released.
     buffer = null!;
+    additionalTeardown?.();
   };
 }
