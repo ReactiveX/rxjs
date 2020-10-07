@@ -16,7 +16,10 @@ export function delayWhen<T>(
 /** @deprecated In future versions, `subscriptionDelay` will no longer be supported. */
 export function delayWhen<T>(
   delayDurationSelector: (value: T, index: number) => Observable<any>,
-  subscriptionDelay?: Observable<any>
+  subscriptionDelay: Observable<any>
+): MonoTypeOperatorFunction<T>;
+export function delayWhen<T>(
+  delayDurationSelector: (value: T, index: number) => Observable<any>
 ): MonoTypeOperatorFunction<T>;
 /* tslint:disable:max-line-length */
 

@@ -40,6 +40,7 @@ describe('auditTime operator', () => {
       const e1 = hot('  -012-----01234---|');
       const subs = '    ^----------------!';
       const expected = '------2-------4--|';
+
       expectObservable(e1.pipe(auditTime(5, testScheduler))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(subs);
     });
