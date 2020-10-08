@@ -1,5 +1,4 @@
 /** @prettier */
-import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { innerFrom } from '../observable/from';
