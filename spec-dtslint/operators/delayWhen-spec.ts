@@ -31,4 +31,5 @@ it('should enforce types of subscriptiondelayWhen', () => {
 it('should deprecates', () => {
   of(1, 2, 3).pipe(delayWhen(() => NEVER)); // $ExpectDeprecation
   of(1, 2, 3).pipe(delayWhen(() => of('a', 'b', 'c'), of(0))); // $ExpectDeprecation
+  of(1, 2, 3).pipe(delayWhen(() => of('a', 'b', 'c'))); // $ExpectNoDeprecation
 });
