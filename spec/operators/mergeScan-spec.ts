@@ -197,11 +197,11 @@ describe('mergeScan', () => {
   it('should handle an empty projected Observable', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
     const e1subs =      '^                    !';
-    const expected =    '---------------------(x|)';
+    const expected =    '---------------------|';
 
     const values = { x: <string[]>[] };
 
-    const source = e1.pipe(mergeScan((acc, x) => EMPTY, []));
+    const source = e1.pipe(mergeScan(() => EMPTY, []));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -223,15 +223,11 @@ describe('mergeScan', () => {
   it('handle empty', () => {
     const e1 =  cold('|');
     const e1subs =   '(^!)';
-    const expected = '(u|)';
-
-    const values = {
-      u: <string[]>[]
-    };
+    const expected = '|';
 
     const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
 
-    expectObservable(source).toBe(expected, values);
+    expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -309,7 +305,7 @@ describe('mergeScan', () => {
   it('should emit accumulator if inner completes without value', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
     const e1subs =      '^                    !';
-    const expected =    '---------------------(x|)';
+    const expected =    '---------------------|';
 
     const source = e1.pipe(mergeScan((acc, x) => EMPTY, ['1']));
 
@@ -320,13 +316,14 @@ describe('mergeScan', () => {
   it('should emit accumulator if inner completes without value after source completes', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
     const e1subs =      '^                    !';
-    const expected =    '---------------------(x|)';
+    const expected =    '-----------------------|';
+    const inner = cold(                   '-----|');
 
     const source = e1.pipe(
-      mergeScan((acc, x) => EMPTY.pipe(delay(50, rxTestScheduler)), ['1'])
+      mergeScan(() => inner, '1')
     );
 
-    expectObservable(source).toBe(expected, {x: ['1']});
+    expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 

@@ -85,8 +85,7 @@ export function expand<T, R>(
       project,
       concurrent,
 
-      // These unused handlers are for `xScan`-type operators
-      undefined,
+      // onBeforeNext
       undefined,
 
       // Expand-specific
