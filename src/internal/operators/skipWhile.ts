@@ -9,6 +9,37 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * ![](skipWhile.png)
  *
+ * Skips all the notifications with a truthy predicate. It will not skip the notifications when the predicate is falsy.
+ * It can also be skipped using index. Once the predicate is true, it will not be called again.
+ *
+ * ## Example
+ * Using Value: Skip some super heroes
+ * ```ts
+ * import { from } from 'rxjs';
+ * import { skipWhile } from 'rxjs/operators';
+ *
+ * const source = from(['Green Arrow', 'SuperMan', 'Flash', 'SuperGirl', 'Black Canary'])
+ * // Skip the heroes until SuperGirl
+ * const example = source.pipe(skipWhile((hero) => hero !== 'SuperGirl'));
+ * // output: SuperGirl, Black Canary
+ * example.subscribe((femaleHero) => console.log(femaleHero));
+ * ```
+ * Using Index: Skip value from the array until index 5
+ * ```ts
+ * import { from } from 'rxjs';
+ * import { skipWhile } from 'rxjs/operators';
+ *
+ * const source = from([1, 2, 3, 4, 5, 6, 7, 9, 10]);
+ * const example = source.pipe(skipWhile((_, i) => i !== 5));
+ * // output: 6, 7, 9, 10
+ * example.subscribe((val) => console.log(val));
+ * ```
+ *
+ * @see {@link last}
+ * @see {@link skip}
+ * @see {@link skipUntil}
+ * @see {@link skipLast}
+ *
  * @param {Function} predicate - A function to test each item emitted from the source Observable.
  * @return {Observable<T>} An Observable that begins emitting items emitted by the source Observable when the
  * specified predicate becomes false.
