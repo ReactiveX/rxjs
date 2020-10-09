@@ -42,7 +42,7 @@ describe('firstValueFrom', () => {
     expect(finalized).to.be.true;
   });
 
-  it('should stop listening to a synchronous observable when unsubscribed', async () => {
+  it('should stop listening to a synchronous observable when resolved', async () => {
     const sideEffects: number[] = [];
     const synchronousObservable = new Observable<number>(subscriber => {
       // This will check to see if the subscriber was closed on each loop
