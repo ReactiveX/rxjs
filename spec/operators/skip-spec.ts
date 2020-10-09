@@ -56,6 +56,17 @@ describe('skip', () => {
     });
   });
 
+  it('should not skip if count is negative value', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('--a--b--c--d--e--|');
+      const subs = '       ^----------------!';
+      const expected = '   --a--b--c--d--e--|';
+
+      expectObservable(source.pipe(skip(-42))).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
   it('should allow unsubscribing explicitly and early', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const source = hot('--a--b--c--d--e--|');
