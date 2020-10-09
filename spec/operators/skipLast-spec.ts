@@ -67,6 +67,17 @@ describe('skipLast operator', () => {
     });
   });
 
+  it('should not skip any values if provided with negative value', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' --a-----b----c---d--|');
+      const e1subs = '  ^-------------------!';
+      const expected = '--a-----b----c---d--|';
+
+      expectObservable(e1.pipe(skipLast(-42))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
   it('should work with empty', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const e1 = cold(' |');
