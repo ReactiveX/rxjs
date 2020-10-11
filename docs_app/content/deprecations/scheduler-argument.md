@@ -8,7 +8,7 @@ To support this transition the [scheduled creation function](/api/index/function
 
 <div class="alert is-important">
     <span>
-        This deprecation was introduced in **RxJS 6.5** and will become breaking with **RxJS 8**.
+        This deprecation was introduced in RxJS 6.5 and will become breaking with RxJS 8.
     </span>
 </div>
 
