@@ -10,13 +10,13 @@ export function mergeMap<T, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
   concurrent?: number
 ): OperatorFunction<T, ObservedValueOf<O>>;
-/** @deprecated resultSelector no longer supported, use inner map instead */
+/** @deprecated resultSelector no longer supported, use inner map instead, Details https://rxjs.dev/deprecations/resultSelector */
 export function mergeMap<T, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
   resultSelector: undefined,
   concurrent?: number
 ): OperatorFunction<T, ObservedValueOf<O>>;
-/** @deprecated resultSelector no longer supported, use inner map instead */
+/** @deprecated resultSelector no longer supported, use inner map instead, Details https://rxjs.dev/deprecations/resultSelector */
 export function mergeMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
   resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,

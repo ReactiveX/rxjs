@@ -69,10 +69,10 @@ export interface AddEventListenerOptions extends EventListenerOptions {
 }
 
 export function fromEvent<T>(target: FromEventTarget<T>, eventName: string): Observable<T>;
-/** @deprecated resultSelector no longer supported, pipe to map instead */
+/** @deprecated resultSelector no longer supported, pipe to map instead, Details https://rxjs.dev/deprecations/resultSelector */
 export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, resultSelector?: (...args: any[]) => T): Observable<T>;
 export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, options?: EventListenerOptions): Observable<T>;
-/** @deprecated resultSelector no longer supported, pipe to map instead */
+/** @deprecated resultSelector no longer supported, pipe to map instead, Details https://rxjs.dev/deprecations/resultSelector */
 export function fromEvent<T>(
   target: FromEventTarget<T>,
   eventName: string,

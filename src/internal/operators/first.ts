@@ -34,10 +34,7 @@ export function first<T, D = T>(
  *
  * If called with no arguments, `first` emits the first value of the source
  * Observable, then completes. If called with a `predicate` function, `first`
- * emits the first value of the source that matches the specified condition. It
- * may also take a deprecated `resultSelector` function to produce the output
- * value from the input value, and a `defaultValue` to emit in case the source
- * completes before it is able to emit a valid value. Throws an error if
+ * emits the first value of the source that matches the specified condition. Throws an error if
  * `defaultValue` was not provided and a matching element is not found.
  *
  * ## Examples
