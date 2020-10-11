@@ -5,11 +5,11 @@ import { OperatorSubscriber } from './OperatorSubscriber';
 import { identity } from '../util/identity';
 
 /* tslint:disable:max-line-length */
-/** @deprecated Use an observer instead of a complete callback */
+/** @deprecated Use an observer instead of a complete callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
 export function tap<T>(next: null | undefined, error: null | undefined, complete: () => void): MonoTypeOperatorFunction<T>;
-/** @deprecated Use an observer instead of an error callback */
+/** @deprecated Use an observer instead of an error callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
 export function tap<T>(next: null | undefined, error: (error: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
-/** @deprecated Use an observer instead of a complete callback */
+/** @deprecated Use an observer instead of a complete callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
 export function tap<T>(next: (value: T) => void, error: null | undefined, complete: () => void): MonoTypeOperatorFunction<T>;
 export function tap<T>(next?: (x: T) => void, error?: (e: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
 export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T>;
