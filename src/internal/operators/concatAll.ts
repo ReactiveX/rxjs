@@ -1,6 +1,6 @@
 
 import { mergeAll } from './mergeAll';
-import { OperatorFunction, ObservableInput } from '../types';
+import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
 
 export function concatAll<T>(): OperatorFunction<ObservableInput<T>, T>;
 export function concatAll<R>(): OperatorFunction<any, R>;
@@ -61,6 +61,6 @@ export function concatAll<R>(): OperatorFunction<any, R>;
  * @return {Observable} An Observable emitting values from all the inner
  * Observables concatenated.
  */
-export function concatAll<T>(): OperatorFunction<ObservableInput<T>, T> {
-  return mergeAll<T>(1);
+export function concatAll<O extends ObservableInput<any>>(): OperatorFunction<O, ObservedValueOf<O>> {
+  return mergeAll(1);
 }
