@@ -23,7 +23,8 @@ it('should enforce types', () => {
 });
 
 it('should enforce type of openings', () => {
-  const o = of(1, 2, 3).pipe(bufferToggle('a', () => of('a', 'b', 'c'))); // $ExpectError
+  const o = of(1, 2, 3).pipe(bufferToggle('a', () => of('a', 'b', 'c'))); // $ExpectType Observable<number[]>
+  const o2 = of(1, 2, 3).pipe(bufferToggle('a', (x: number) => of('a', 'b', 'c'))); // $ExpectError
 });
 
 it('should enforce type of closingSelector', () => {
