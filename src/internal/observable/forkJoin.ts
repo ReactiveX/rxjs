@@ -1,6 +1,6 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { ObservableInput, ObservedValueUnionFromArray, ObservedValueOf, ObservedValueTupleFromArray, ObservableInputTuple } from '../types';
+import { ObservableInput, ObservedValueOf, ObservableInputTuple } from '../types';
 import { map } from '../operators/map';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { innerFrom } from './from';
