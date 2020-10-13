@@ -215,9 +215,15 @@ export type ObservedValuesFromArray<X> = ObservedValueUnionFromArray<X>;
  */
 export type ObservedValueTupleFromArray<X> = { [K in keyof X]: ObservedValueOf<X[K]> };
 
+/**
+ * Used to infer types from arguments to functions like {@link forkJoin}.
+ * So that you can have `forkJoin([Observable<A>, PromiseLike<B>]): Observable<[A, B]>` 
+ * et al.
+ */
 export type ObservableInputTuple<T> = {
   [K in keyof T]: ObservableInput<T[K]>
 }
+
 /**
  * Constructs a new tuple with the specified type at the head.
  * If you declare `Cons<A, [B, C]>` you will get back `[A, B, C]`.
