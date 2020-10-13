@@ -55,7 +55,7 @@ it('should infer of type any for more than 6 parameters', () => {
   const e = of(1, 2, 3);
   const f = of(1, 2, 3);
   const g = of(1, 2, 3);
-  const res = forkJoin(a, b, c, d, e, f, g); // $ExpectType Observable<any>
+  const res = forkJoin(a, b, c, d, e, f, g); // $ExpectType Observable<[number, string, number, number, number, number, number]>
 });
 
 describe('forkJoin({})', () => {
@@ -99,6 +99,6 @@ describe('forkJoin([])', () => {
   });
 
   it('should force user cast for array of 6+ observables', () => {
-    const res = forkJoin([of(1, 2, 3), of('a', 'b', 'c'), of(1, 2, 3), of(1, 2, 3), of(1, 2, 3), of(1, 2, 3), of(1, 2, 3)]); // $ExpectType Observable<(string | number)[]>
+    const res = forkJoin([of(1, 2, 3), of('a', 'b', 'c'), of(1, 2, 3), of(1, 2, 3), of(1, 2, 3), of(1, 2, 3), of(1, 2, 3)]); // $ExpectType Observable<[number, string, number, number, number, number, number]>
   });
 });
