@@ -1,4 +1,4 @@
-import { interval, firstValueFrom, EMPTY, EmptyError, throwError, of } from 'rxjs';
+import { interval, firstValueFrom, EMPTY, EmptyError, throwError, of, Observable } from 'rxjs';
 import { expect } from 'chai';
 import { finalize } from 'rxjs/operators';
 
@@ -40,5 +40,20 @@ describe('firstValueFrom', () => {
     const result = await firstValueFrom(source);
     expect(result).to.equal('apples');
     expect(finalized).to.be.true;
+  });
+
+  it('should stop listening to a synchronous observable when resolved', async () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = new Observable<number>(subscriber => {
+      // This will check to see if the subscriber was closed on each loop
+      // when the unsubscribe hits (from the `take`), it should be closed
+      for (let i = 0; !subscriber.closed && i < 10; i++) {
+        sideEffects.push(i);
+        subscriber.next(i);
+      }
+    });
+
+    const result = await firstValueFrom(synchronousObservable);
+    expect(sideEffects).to.deep.equal([0]);
   });
 });
