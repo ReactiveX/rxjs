@@ -44,7 +44,6 @@ import { isFunction } from '../util/isFunction';
  * @param {Function} [comparer] - Optional comparer function that it will use instead of its default to compare the
  * value of two items.
  * @return {Observable<R>} An Observable that emits item with the smallest value.
- * @name min
  */
 export function min<T>(comparer?: (x: T, y: T) => number): MonoTypeOperatorFunction<T> {
   return reduce(isFunction(comparer) ? (x, y) => (comparer(x, y) < 0 ? x : y) : (x, y) => (x < y ? x : y));

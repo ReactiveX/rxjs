@@ -169,7 +169,6 @@ export function bindCallback(callbackFunc: (...args: any[]) => any, scheduler?: 
  * callbacks.
  * @return {function(...params: *): Observable} A function which returns the
  * Observable that delivers the same values the callback would deliver.
- * @name bindCallback
  */
 export function bindCallback(
   callbackFunc: any,

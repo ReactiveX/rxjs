@@ -51,7 +51,6 @@ import { take } from './take';
  * @param {T} [defaultValue] The default value returned for missing indices.
  * @return {Observable} An Observable that emits a single item, if it is found.
  * Otherwise, will emit the default value if given. If not, then emits an error.
- * @name elementAt
  */
 export function elementAt<T>(index: number, defaultValue?: T): MonoTypeOperatorFunction<T> {
   if (index < 0) { throw new ArgumentOutOfRangeError(); }

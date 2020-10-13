@@ -40,7 +40,6 @@ export function defaultIfEmpty<T, R = T>(defaultValue?: R): OperatorFunction<T, 
  * @return {Observable} An Observable that emits either the specified
  * `defaultValue` if the source Observable emits no items, or the values emitted
  * by the source Observable.
- * @name defaultIfEmpty
  */
 export function defaultIfEmpty<T, R>(defaultValue: R | null = null): OperatorFunction<T, T | R> {
   return operate((source, subscriber) => {

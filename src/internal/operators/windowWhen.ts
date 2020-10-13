@@ -49,7 +49,6 @@ import { innerFrom } from '../observable/from';
  * `complete`) when to close the previous window and start a new one.
  * @return {Observable<Observable<T>>} An observable of windows, which in turn
  * are Observables.
- * @name windowWhen
  */
 export function windowWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, Observable<T>> {
   return operate((source, subscriber) => {

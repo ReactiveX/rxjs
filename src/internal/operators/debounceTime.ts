@@ -60,7 +60,6 @@ import { timer } from '../observable/timer';
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified `dueTime`, and may drop some values if they occur
  * too frequently.
- * @name debounceTime
  */
 export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyncScheduler): MonoTypeOperatorFunction<T> {
   const duration = timer(dueTime, scheduler);

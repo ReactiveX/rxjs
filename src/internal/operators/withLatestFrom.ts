@@ -144,7 +144,6 @@ export function withLatestFrom<T, R>(array: ObservableInput<any>[], project: (..
  * @return {Observable} An Observable of projected values from the most recent
  * values from each input Observable, or an array of the most recent values from
  * each input Observable.
- * @name withLatestFrom
  */
 export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | any[]> {
   const project = popResultSelector(inputs) as ((...args: any[]) => R) | undefined;

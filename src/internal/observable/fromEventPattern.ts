@@ -140,11 +140,7 @@ export function fromEventPattern<T>(
  * @return {Observable<T>} Observable which, when an event happens, emits first parameter
  * passed to registered event handler. Alternatively it emits whatever project function returns
  * at that moment.
- * @static true
- * @name fromEventPattern
- * @owner Observable
  */
-
 export function fromEventPattern<T>(
   addHandler: (handler: NodeEventHandler) => any,
   removeHandler?: (handler: NodeEventHandler, signal?: any) => void,

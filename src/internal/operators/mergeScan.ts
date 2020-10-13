@@ -42,7 +42,6 @@ import { mergeInternals } from './mergeInternals';
  * @param {number} [concurrent=Infinity] Maximum number of
  * input Observables being subscribed to concurrently.
  * @return {Observable<R>} An observable of the accumulated values.
- * @name mergeScan
  */
 export function mergeScan<T, R>(
   accumulator: (acc: R, value: T, index: number) => ObservableInput<R>,

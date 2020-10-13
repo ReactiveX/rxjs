@@ -42,7 +42,6 @@ import { noop } from '../util/noop';
  * source Observable.
  * @return {Observable<T>} An Observable that emits the values from the source
  * Observable until such time as `notifier` emits its first value.
- * @name takeUntil
  */
 export function takeUntil<T>(notifier: ObservableInput<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

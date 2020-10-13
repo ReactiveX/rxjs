@@ -42,7 +42,6 @@ import { noop } from '../util/noop';
  * be mirrored by the resulting Observable.
  * @return {Observable<T>} An Observable that skips items from the source Observable until the second Observable emits
  * an item, then emits the remaining items.
- * @name skipUntil
  */
 export function skipUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

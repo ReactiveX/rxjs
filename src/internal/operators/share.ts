@@ -55,7 +55,6 @@ function shareSubjectFactory() {
  * @see {@link map}
  *
  * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.
- * @name share
  */
 export function share<T>(): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => refCount()(multicast(shareSubjectFactory)(source)) as Observable<T>;

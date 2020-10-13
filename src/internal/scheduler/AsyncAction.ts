@@ -6,11 +6,6 @@ import { AsyncScheduler } from './AsyncScheduler';
 import { intervalProvider } from './intervalProvider';
 import { arrRemove } from '../util/arrRemove';
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
 export class AsyncAction<T> extends Action<T> {
   public id: any;
   public state?: T;

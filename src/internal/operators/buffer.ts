@@ -41,7 +41,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * buffer to be emitted on the output Observable.
  * @return {Observable<T[]>} An Observable of buffers, which are arrays of
  * values.
- * @name buffer
  */
 export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]> {
   return operate((source, subscriber) => {

@@ -35,7 +35,6 @@ export function multicast<T, O extends ObservableInput<any>>(
  * @return {Observable} An Observable that emits the results of invoking the selector
  * on the items emitted by a `ConnectableObservable` that shares a single subscription to
  * the underlying stream.
- * @name multicast
  */
 export function multicast<T, R>(
   subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),

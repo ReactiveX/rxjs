@@ -39,7 +39,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @param {number} skipCount Number of elements to skip from the end of the source Observable.
  * @returns {Observable<T>} An Observable that skips the last count values
  * emitted by the source Observable.
- * @name skipLast
  */
 export function skipLast<T>(skipCount: number): MonoTypeOperatorFunction<T> {
   // For skipCounts less than or equal to zero, we are just mirroring the source.

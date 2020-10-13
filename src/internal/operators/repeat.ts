@@ -58,9 +58,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * an empty Observable.
  * @return {Observable} An Observable that will resubscribe to the source stream when the source stream completes
  * , at most count times.
- * @name repeat
  */
-
 export function repeat<T>(count = Infinity): MonoTypeOperatorFunction<T> {
   return count <= 0
     ? () => EMPTY

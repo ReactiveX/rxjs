@@ -8,11 +8,6 @@ import { applyMixins } from '../util/applyMixins';
 import { Subscriber } from '../Subscriber';
 import { observeNotification } from '../Notification';
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
 export class ColdObservable<T> extends Observable<T> implements SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
   scheduler: Scheduler;

@@ -42,7 +42,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @return {Observable<T>} An Observable that emits the results of sampling the
  * values emitted by the source Observable whenever the notifier Observable
  * emits value or completes.
- * @name sample
  */
 export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

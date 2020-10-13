@@ -60,7 +60,6 @@ export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, key
  * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.
  * A return value of true indicates that it is the same, and a return value of false means they are different.
  * @return {Observable} An Observable that emits items from the source Observable with distinct values.
- * @name distinctUntilChanged
  */
 export function distinctUntilChanged<T, K>(compare?: (a: K, b: K) => boolean, keySelector?: (x: T) => K): MonoTypeOperatorFunction<T> {
   compare = compare ?? defaultCompare;

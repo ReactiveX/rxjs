@@ -54,7 +54,6 @@ import { arrRemove } from '../util/arrRemove';
  * associated window should complete.
  * @return {Observable<Observable<T>>} An observable of windows, which in turn
  * are Observables.
- * @name windowToggle
  */
 export function windowToggle<T, O>(
   openings: ObservableInput<O>,

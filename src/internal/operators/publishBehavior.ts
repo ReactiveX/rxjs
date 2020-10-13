@@ -7,7 +7,6 @@ import { UnaryFunction } from '../types';
 /**
  * @param value
  * @return {ConnectableObservable<T>}
- * @name publishBehavior
  */
 export function publishBehavior<T>(value: T):  UnaryFunction<Observable<T>, ConnectableObservable<T>> {
   return (source: Observable<T>) => multicast(new BehaviorSubject<T>(value))(source) as ConnectableObservable<T>;

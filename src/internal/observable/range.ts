@@ -53,9 +53,6 @@ export function range(start: number, count: number | undefined, scheduler: Sched
  * the emissions of the notifications.
  * @return {Observable} An Observable of numbers that emits a finite range of
  * sequential integers.
- * @static true
- * @name range
- * @owner Observable
  */
 export function range(start: number, count?: number, scheduler?: SchedulerLike): Observable<number> {
   if (count == null) {

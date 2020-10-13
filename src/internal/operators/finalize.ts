@@ -54,7 +54,6 @@ import { operate } from '../util/lift';
  *
  * @param {function} callback Function to be called when source terminates.
  * @return {Observable} An Observable that mirrors the source, but will call the specified function on termination.
- * @name finally
  */
 export function finalize<T>(callback: () => void): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

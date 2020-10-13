@@ -64,9 +64,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @see {@link index/EMPTY}
  *
  * @return {OperatorFunction<T, boolean>} An Observable of a boolean value indicating whether observable was empty or not.
- * @name isEmpty
  */
-
 export function isEmpty<T>(): OperatorFunction<T, boolean> {
   return operate((source, subscriber) => {
     source.subscribe(

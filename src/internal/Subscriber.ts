@@ -116,11 +116,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 }
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
 export class SafeSubscriber<T> extends Subscriber<T> {
   constructor(
     observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,

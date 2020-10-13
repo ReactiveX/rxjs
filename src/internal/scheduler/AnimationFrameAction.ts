@@ -3,11 +3,6 @@ import { AnimationFrameScheduler } from './AnimationFrameScheduler';
 import { SchedulerAction } from '../types';
 import { animationFrameProvider } from './animationFrameProvider';
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
 export class AnimationFrameAction<T> extends AsyncAction<T> {
 
   constructor(protected scheduler: AnimationFrameScheduler,
