@@ -237,25 +237,14 @@ export declare type FactoryOrValue<T> = T | (() => T);
 
 export declare function firstValueFrom<T>(source: Observable<T>): Promise<T>;
 
-export declare function forkJoin<T>(v1: SubscribableOrPromise<T>): Observable<[T]>;
-export declare function forkJoin<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>): Observable<[T, T2]>;
-export declare function forkJoin<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<[T, T2, T3]>;
-export declare function forkJoin<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<[T, T2, T3, T4]>;
-export declare function forkJoin<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<[T, T2, T3, T4, T5]>;
-export declare function forkJoin<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<[T, T2, T3, T4, T5, T6]>;
-export declare function forkJoin<A>(sources: [ObservableInput<A>]): Observable<[A]>;
-export declare function forkJoin<A, B>(sources: [ObservableInput<A>, ObservableInput<B>]): Observable<[A, B]>;
-export declare function forkJoin<A, B, C>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>]): Observable<[A, B, C]>;
-export declare function forkJoin<A, B, C, D>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>]): Observable<[A, B, C, D]>;
-export declare function forkJoin<A, B, C, D, E>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>]): Observable<[A, B, C, D, E]>;
-export declare function forkJoin<A, B, C, D, E, F>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>, ObservableInput<F>]): Observable<[A, B, C, D, E, F]>;
-export declare function forkJoin<A extends ObservableInput<any>[]>(sources: A): Observable<ObservedValueUnionFromArray<A>[]>;
+export declare function forkJoin(sources: []): Observable<never>;
+export declare function forkJoin<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A>;
+export declare function forkJoin<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
 export declare function forkJoin(sourcesObject: {}): Observable<never>;
 export declare function forkJoin<T>(sourcesObject: T): Observable<{
     [K in keyof T]: ObservedValueOf<T[K]>;
 }>;
 export declare function forkJoin(...args: Array<ObservableInput<any> | ((...args: any[]) => any)>): Observable<any>;
-export declare function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
 
 export declare function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>>;
 export declare function from<O extends ObservableInput<any>>(input: O, scheduler: SchedulerLike): Observable<ObservedValueOf<O>>;
@@ -281,7 +270,7 @@ export declare type Head<X extends any[]> = ((...args: X) => any) extends (arg: 
 
 export declare function identity<T>(x: T): T;
 
-export declare function iif<T = never, F = never>(condition: () => boolean, trueResult?: SubscribableOrPromise<T>, falseResult?: SubscribableOrPromise<F>): Observable<T | F>;
+export declare function iif<T = never, F = never>(condition: () => boolean, trueResult?: ObservableInput<T>, falseResult?: ObservableInput<F>): Observable<T | F>;
 
 export interface InteropObservable<T> {
     [Symbol.observable]: () => Subscribable<T>;
@@ -414,7 +403,11 @@ export declare class Observable<T> implements Subscribable<T> {
     static create: (...args: any[]) => any;
 }
 
-export declare type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T> | Iterable<T> | AsyncIterableIterator<T>;
+export declare type ObservableInput<T> = Observable<T> | InteropObservable<T> | AsyncIterable<T> | PromiseLike<T> | ArrayLike<T> | Iterable<T>;
+
+export declare type ObservableInputTuple<T> = {
+    [K in keyof T]: ObservableInput<T[K]>;
+};
 
 export declare type ObservableLike<T> = InteropObservable<T>;
 
@@ -424,9 +417,9 @@ export declare type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T 
 
 export declare type ObservedValuesFromArray<X> = ObservedValueUnionFromArray<X>;
 
-export declare type ObservedValueTupleFromArray<X> = X extends readonly ObservableInput<any>[] ? {
+export declare type ObservedValueTupleFromArray<X> = {
     [K in keyof X]: ObservedValueOf<X[K]>;
-} : never;
+};
 
 export declare type ObservedValueUnionFromArray<X> = X extends Array<ObservableInput<infer T>> ? T : never;
 

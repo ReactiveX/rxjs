@@ -1,4 +1,4 @@
-export declare function audit<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): MonoTypeOperatorFunction<T>;
+export declare function audit<T>(durationSelector: (value: T) => ObservableInput<any>): MonoTypeOperatorFunction<T>;
 
 export declare function auditTime<T>(duration: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
@@ -10,7 +10,7 @@ export declare function bufferTime<T>(bufferTimeSpan: number, scheduler?: Schedu
 export declare function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: number | null | undefined, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
 export declare function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: number | null | undefined, maxBufferSize: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
 
-export declare function bufferToggle<T, O>(openings: SubscribableOrPromise<O>, closingSelector: (value: O) => SubscribableOrPromise<any>): OperatorFunction<T, T[]>;
+export declare function bufferToggle<T, O>(openings: ObservableInput<O>, closingSelector: (value: O) => ObservableInput<any>): OperatorFunction<T, T[]>;
 
 export declare function bufferWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, T[]>;
 
@@ -63,7 +63,7 @@ export declare function concatWith<T, A extends ObservableInput<any>[]>(...other
 
 export declare function count<T>(predicate?: (value: T, index: number) => boolean): OperatorFunction<T, number>;
 
-export declare function debounce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): MonoTypeOperatorFunction<T>;
+export declare function debounce<T>(durationSelector: (value: T) => ObservableInput<any>): MonoTypeOperatorFunction<T>;
 
 export declare function debounceTime<T>(dueTime: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
@@ -169,7 +169,7 @@ export declare function merge<T, T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3
 export declare function merge<T>(...observables: Array<ObservableInput<T> | SchedulerLike | number>): MonoTypeOperatorFunction<T>;
 export declare function merge<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike | number>): OperatorFunction<T, R>;
 
-export declare function mergeAll<T>(concurrent?: number): OperatorFunction<ObservableInput<T>, T>;
+export declare function mergeAll<O extends ObservableInput<any>>(concurrent?: number): OperatorFunction<O, ObservedValueOf<O>>;
 
 export declare function mergeMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, concurrent?: number): OperatorFunction<T, ObservedValueOf<O>>;
 export declare function mergeMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined, concurrent?: number): OperatorFunction<T, ObservedValueOf<O>>;
@@ -278,8 +278,7 @@ export declare function startWith<T, A extends any[] = T[]>(...values: A): Opera
 
 export declare function subscribeOn<T>(scheduler: SchedulerLike, delay?: number): MonoTypeOperatorFunction<T>;
 
-export declare function switchAll<T>(): OperatorFunction<ObservableInput<T>, T>;
-export declare function switchAll<R>(): OperatorFunction<any, R>;
+export declare function switchAll<O extends ObservableInput<any>>(): OperatorFunction<O, ObservedValueOf<O>>;
 
 export declare function switchMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
 export declare function switchMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;
@@ -307,7 +306,7 @@ export declare function tap<T>(next: (value: T) => void, error: null | undefined
 export declare function tap<T>(next?: (x: T) => void, error?: (e: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
 export declare function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T>;
 
-export declare function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<any>, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
+export declare function throttle<T>(durationSelector: (value: T) => ObservableInput<any>, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
 export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, config?: import("./throttle").ThrottleConfig): MonoTypeOperatorFunction<T>;
 
