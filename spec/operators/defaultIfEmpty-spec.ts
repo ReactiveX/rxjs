@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { observableMatcher } from '../helpers/observableMatcher';
 import { of, Observable } from 'rxjs';
 import { defaultIfEmpty, mergeMap, take } from 'rxjs/operators';
-import { TestScheduler } from 'rxjs/internal/testing/TestScheduler';
+import { TestScheduler } from 'rxjs/testing';
 
 /** @test {defaultIfEmpty} */
 describe('defaultIfEmpty', () => {
