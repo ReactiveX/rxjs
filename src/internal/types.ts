@@ -213,8 +213,11 @@ export type ObservedValuesFromArray<X> = ObservedValueUnionFromArray<X>;
  * `[Observable<string>, Observable<number>]` you would get back a type
  * of `[string, number]`.
  */
-export type ObservedValueTupleFromArray<X> = X extends readonly ObservableInput<any>[] ? { [K in keyof X]: ObservedValueOf<X[K]> } : never;
+export type ObservedValueTupleFromArray<X> = { [K in keyof X]: ObservedValueOf<X[K]> };
 
+export type ObservableInputTuple<T> = {
+  [K in keyof T]: ObservableInput<T[K]>
+}
 /**
  * Constructs a new tuple with the specified type at the head.
  * If you declare `Cons<A, [B, C]>` you will get back `[A, B, C]`.

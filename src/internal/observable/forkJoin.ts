@@ -1,68 +1,18 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { ObservableInput, ObservedValueUnionFromArray, ObservedValueOf } from '../types';
+import { ObservableInput, ObservedValueUnionFromArray, ObservedValueOf, ObservedValueTupleFromArray, ObservableInputTuple } from '../types';
 import { map } from '../operators/map';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { innerFrom } from './from';
 import { popResultSelector } from '../util/args';
 
-// forkJoin(a$, b$, c$)
+export function forkJoin(sources: []): Observable<never>;
+export function forkJoin<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A>;
 /** @deprecated Use the version that takes an array of Observables instead */
-export function forkJoin<T>(v1: ObservableInput<T>): Observable<[T]>;
-/** @deprecated Use the version that takes an array of Observables instead */
-export function forkJoin<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>): Observable<[T, T2]>;
-/** @deprecated Use the version that takes an array of Observables instead */
-export function forkJoin<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<[T, T2, T3]>;
-/** @deprecated Use the version that takes an array of Observables instead */
-export function forkJoin<T, T2, T3, T4>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>
-): Observable<[T, T2, T3, T4]>;
-/** @deprecated Use the version that takes an array of Observables instead */
-export function forkJoin<T, T2, T3, T4, T5>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>,
-  v5: ObservableInput<T5>
-): Observable<[T, T2, T3, T4, T5]>;
-/** @deprecated Use the version that takes an array of Observables instead */
-export function forkJoin<T, T2, T3, T4, T5, T6>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>,
-  v5: ObservableInput<T5>,
-  v6: ObservableInput<T6>
-): Observable<[T, T2, T3, T4, T5, T6]>;
-
-// forkJoin([a$, b$, c$]);
-// TODO(benlesh): Uncomment for TS 3.0
-// export function forkJoin(sources: []): Observable<never>;
-export function forkJoin<A>(sources: [ObservableInput<A>]): Observable<[A]>;
-export function forkJoin<A, B>(sources: [ObservableInput<A>, ObservableInput<B>]): Observable<[A, B]>;
-export function forkJoin<A, B, C>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>]): Observable<[A, B, C]>;
-export function forkJoin<A, B, C, D>(
-  sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>]
-): Observable<[A, B, C, D]>;
-export function forkJoin<A, B, C, D, E>(
-  sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>]
-): Observable<[A, B, C, D, E]>;
-export function forkJoin<A, B, C, D, E, F>(
-  sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>, ObservableInput<F>]
-): Observable<[A, B, C, D, E, F]>;
-export function forkJoin<A extends ObservableInput<any>[]>(sources: A): Observable<ObservedValueUnionFromArray<A>[]>;
-
+export function forkJoin<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
 // forkJoin({})
 export function forkJoin(sourcesObject: {}): Observable<never>;
 export function forkJoin<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
-
-/** @deprecated resultSelector is deprecated, pipe to map instead */
-export function forkJoin(...args: Array<ObservableInput<any> | ((...args: any[]) => any)>): Observable<any>;
-/** @deprecated Use the version that takes an array of Observables instead */
-export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
 
 /**
  * Accepts an `Array` of {@link ObservableInput} or a dictionary `Object` of {@link ObservableInput} and returns
