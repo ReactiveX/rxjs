@@ -6,13 +6,21 @@ import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { innerFrom } from './from';
 import { popResultSelector } from '../util/args';
 
+// forkJoin([a, b, c])
 export function forkJoin(sources: []): Observable<never>;
 export function forkJoin<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A>;
+
+// forkJoin(a, b, c)
 /** @deprecated Use the version that takes an array of Observables instead */
 export function forkJoin<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
-// forkJoin({})
+
+// forkJoin({a, b, c})
 export function forkJoin(sourcesObject: {}): Observable<never>;
 export function forkJoin<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
+
+// forkJoin(a, b, c, resultSelector)
+/** @deprecated resultSelector is deprecated, pipe to map instead */	
+export function forkJoin(...args: Array<ObservableInput<any> | ((...args: any[]) => any)>): Observable<any>;
 
 /**
  * Accepts an `Array` of {@link ObservableInput} or a dictionary `Object` of {@link ObservableInput} and returns
