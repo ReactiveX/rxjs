@@ -35,4 +35,7 @@ jobs:
       run: npm run dtslint
     - name: api_guardian
       run: npm run api_guardian
+    - name: import
+      if: ${{ matrix.node == '14' }}
+      run: npm run test:import
 
