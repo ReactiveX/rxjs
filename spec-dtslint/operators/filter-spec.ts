@@ -43,6 +43,12 @@ it('should support Boolean as a predicate', () => {
   const o = of(1, 2, 3).pipe(filter(Boolean)); // $ExpectType Observable<number>
   const p = of(1, null, undefined).pipe(filter(Boolean)); // $ExpectType Observable<number>
   const q = of(null, undefined).pipe(filter(Boolean)); // $ExpectType Observable<never>
+  const r = of(true).pipe(filter(Boolean)); // $ExpectType Observable<true>
+  const s = of(false as const).pipe(filter(Boolean)); // $ExpectType Observable<never>
+  const t = of(0 as const, -0 as const, 1 as const).pipe(filter(Boolean)); // $ExpectType Observable<1>
+  const u = of(0 as const, -0 as const).pipe(filter(Boolean)); // $ExpectType Observable<never>
+  const v = of('' as const, "foo" as const, "bar" as const).pipe(filter(Boolean)); // $ExpectType Observable<"foo" | "bar">
+  const w = of('' as const).pipe(filter(Boolean)); // $ExpectType Observable<never>
 });
 
 // I've not been able to effect a failing dtslint test for this situation and a
