@@ -228,7 +228,7 @@ export function fromEvent<T>(
   // event registry points, and we'd rather delegate to that when possible.
   if (!add) {
     if (isArrayLike(target)) {
-      return mergeMap((target: any) => fromEvent(target, eventName, options as EventListenerOptions))(
+      return mergeMap((subTarget: any) => fromEvent(subTarget, eventName, options as EventListenerOptions))(
         internalFromArray(target)
       ) as Observable<T>;
     }
