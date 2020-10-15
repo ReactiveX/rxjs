@@ -1,6 +1,6 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueTupleFromArray } from '../types';
+import { ObservableInput, SchedulerLike, ObservedValueOf, ObservableInputTuple } from '../types';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { Subscriber } from '../Subscriber';
 import { from } from './from';
@@ -9,7 +9,17 @@ import { Subscription } from '../Subscription';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { popResultSelector, popScheduler } from '../util/args';
 
-/* tslint:disable:max-line-length */
+// combineLatest([a, b, c])
+export function combineLatest(sources: []): Observable<never>;
+export function combineLatest<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
+
+// combineLatest(a, b, c)
+/** @deprecated Use the version that takes an array of Observables instead */
+export function combineLatest<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
+
+// combineLatest({a, b, c})
+export function combineLatest(sourcesObject: {}): Observable<never>;
+export function combineLatest<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 // If called with a single array, it "auto-spreads" the array, with result selector
 /** @deprecated resultSelector no longer supported, pipe to map instead */
@@ -227,45 +237,6 @@ export function combineLatest<
 /** @deprecated The scheduler argument is deprecated, use scheduled and combineAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<O extends ObservableInput<any>>(sources: O[], scheduler: SchedulerLike): Observable<ObservedValueOf<O>[]>;
 
-// Best case
-export function combineLatest<O1 extends ObservableInput<any>>(sources: [O1]): Observable<[ObservedValueOf<O1>]>;
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>>(
-  sources: [O1, O2]
-): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>]>;
-export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(
-  sources: [O1, O2, O3]
-): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>]>;
-export function combineLatest<
-  O1 extends ObservableInput<any>,
-  O2 extends ObservableInput<any>,
-  O3 extends ObservableInput<any>,
-  O4 extends ObservableInput<any>
->(sources: [O1, O2, O3, O4]): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>]>;
-export function combineLatest<
-  O1 extends ObservableInput<any>,
-  O2 extends ObservableInput<any>,
-  O3 extends ObservableInput<any>,
-  O4 extends ObservableInput<any>,
-  O5 extends ObservableInput<any>
->(
-  sources: [O1, O2, O3, O4, O5]
-): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>]>;
-export function combineLatest<
-  O1 extends ObservableInput<any>,
-  O2 extends ObservableInput<any>,
-  O3 extends ObservableInput<any>,
-  O4 extends ObservableInput<any>,
-  O5 extends ObservableInput<any>,
-  O6 extends ObservableInput<any>
->(
-  sources: [O1, O2, O3, O4, O5, O6]
-): Observable<
-  [ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>, ObservedValueOf<O6>]
->;
-export function combineLatest<O extends ObservableInput<any>>(sources: O[]): Observable<ObservedValueOf<O>[]>;
-export function combineLatest<O extends readonly ObservableInput<any>[]>(sources: O): Observable<ObservedValueTupleFromArray<O>>;
-
-// Standard calls
 /** @deprecated Pass arguments in a single array instead `combineLatest([a, b, c])` */
 export function combineLatest<O1 extends ObservableInput<any>>(v1: O1, scheduler?: SchedulerLike): Observable<[ObservedValueOf<O1>]>;
 /** @deprecated Pass arguments in a single array instead `combineLatest([a, b, c])` */
@@ -356,12 +327,6 @@ export function combineLatest<O extends ObservableInput<any>, R>(
 export function combineLatest<R>(
   ...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R) | SchedulerLike>
 ): Observable<R>;
-
-// combineLatest({})
-export function combineLatest(sourcesObject: {}): Observable<never>;
-export function combineLatest<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
-
-/* tslint:enable:max-line-length */
 
 /**
  * Combines multiple Observables to create an Observable whose values are
