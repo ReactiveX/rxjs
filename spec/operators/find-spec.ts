@@ -131,8 +131,9 @@ describe('find operator', () => {
     const source = hot('--a--b---c-|');
     const subs =       '^    !';
     const expected =   '-------(b|)';
+    const t =               '--|';
 
-    const duration = rxTestScheduler.createTime('--|');
+    const duration = rxTestScheduler.createTime(t);
 
     expectObservable(source.pipe(
       find((value: string) => value === 'b'),

@@ -73,7 +73,7 @@ export class TestScheduler extends VirtualTimeScheduler {
   }
 
   createTime(marbles: string): number {
-    const indexOf = marbles.trim().indexOf('|');
+    const indexOf = this.runMode ? marbles.trim().indexOf('|') : marbles.indexOf('|');
     if (indexOf === -1) {
       throw new Error('marble diagram for time should have a completion marker "|"');
     }
@@ -494,7 +494,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     const run = () => {
       // Whenever a scheduled run is executed, it must run a single immediate
       // or interval action - with immediate actions being prioritized over
-      // interval actions. 
+      // interval actions.
       const now = this.now();
       const scheduledRecords = Array.from(scheduleLookup.values());
       const scheduledRecordsDue = scheduledRecords.filter(({ due }) => due <= now);
