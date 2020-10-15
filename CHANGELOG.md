@@ -1,3 +1,45 @@
+# [7.0.0-beta.8](https://github.com/reactivex/rxjs/compare/7.0.0-beta.7...7.0.0-beta.8) (2020-10-15)
+
+
+### Bug Fixes
+
+* **audit, auditTime:** audit and auditTime emit last value after source completes ([#5799](https://github.com/reactivex/rxjs/issues/5799)) ([643bc85](https://github.com/reactivex/rxjs/commit/643bc85ab17a15a5d96f8bef8f08c3987d16eb40)), closes [#5730](https://github.com/reactivex/rxjs/issues/5730)
+* No longer allow invalid "Subscribable" type as valid observable source in `from` and others. ([258dddd](https://github.com/reactivex/rxjs/commit/258dddd8a392456e7d0b5ed9a7e294044f7c2518)), closes [#4532](https://github.com/reactivex/rxjs/issues/4532)
+* **bindNodeCallback:** ensure underlying function is not called twice during subscription ([#5780](https://github.com/reactivex/rxjs/issues/5780)) ([74aa4b2](https://github.com/reactivex/rxjs/commit/74aa4b2ea6685f475329a8b8ecbcebed9adae547))
+* **delay:** Now properly handles Date and negative numbers ([#5719](https://github.com/reactivex/rxjs/issues/5719)) ([868c02b](https://github.com/reactivex/rxjs/commit/868c02b47bb6f4ec4cd1d68b5b474731c470f27e)), closes [#5232](https://github.com/reactivex/rxjs/issues/5232)
+* **delayWhen:** only deprecates when subscriptionDelay presents ([#5797](https://github.com/reactivex/rxjs/issues/5797)) ([43d1731](https://github.com/reactivex/rxjs/commit/43d17311a521234375146029aa5c4709cb221344))
+* **every:** index properly increments in predicate ([5686f83](https://github.com/reactivex/rxjs/commit/5686f838fdc3da710d3f1eed1a6381791e3cc644))
+* **firstValueFrom:** now unsubscribes from source after first value is received ([#5813](https://github.com/reactivex/rxjs/issues/5813)) ([a321516](https://github.com/reactivex/rxjs/commit/a321516908aa036fb658395a372668a986af2504)), closes [#5811](https://github.com/reactivex/rxjs/issues/5811)
+* **from:** objects that are thennable that happen to have a subscribe method will no longer error. ([789d6e3](https://github.com/reactivex/rxjs/commit/789d6e3d851d57ab3b4488381f702120fd079737))
+* **fromEvent:** now properly types JQuery event targets ([b5aa15a](https://github.com/reactivex/rxjs/commit/b5aa15a7f58377310438aa5957e1516749d36219))
+* **mergeScan:** no longer emits state again upon completion. ([#5805](https://github.com/reactivex/rxjs/issues/5805)) ([68c2894](https://github.com/reactivex/rxjs/commit/68c28943b4d2c51068fecbc359a68ca6982307bf)), closes [#5372](https://github.com/reactivex/rxjs/issues/5372)
+* **throttle:** now supports synchronous duration selectors ([55e953e](https://github.com/reactivex/rxjs/commit/55e953e1f7b915e6c9072bf14a2febd5b8431393)), closes [#5658](https://github.com/reactivex/rxjs/issues/5658)
+* **throttle:** trailing values will now emit after source completes ([d5fd69c](https://github.com/reactivex/rxjs/commit/d5fd69c123d2232335563eea95c69c07576d079d))
+* **timeout:** allows synchronous observable as a source ([84c5c0b](https://github.com/reactivex/rxjs/commit/84c5c0b9d9e0d1791ac2f066c26e462e822d73e1)), closes [#5746](https://github.com/reactivex/rxjs/issues/5746)
+* **zip:** zip now accepts an array of arguments like its counterparts ([3123b67](https://github.com/reactivex/rxjs/commit/3123b670cca9b77919845333952ef70275ed6e90))
+
+
+### Code Refactoring
+
+* **count:** Base off of `reduce`. ([98a6d09](https://github.com/reactivex/rxjs/commit/98a6d0991df2a28366ab8f34098109a67257c235))
+* **pairs:** Based off of `from` and `Object.entries` ([#5775](https://github.com/reactivex/rxjs/issues/5775)) ([d39f830](https://github.com/reactivex/rxjs/commit/d39f8309c33917cb7070c7432fcd382395e4211e))
+
+
+### Features
+
+* **ajax:** now supports passing custom XSRF cookies in a custom header ([#5702](https://github.com/reactivex/rxjs/issues/5702)) ([1a2c2e4](https://github.com/reactivex/rxjs/commit/1a2c2e49482a460778ea92c7f6a92e58cc3e87bb)), closes [#4003](https://github.com/reactivex/rxjs/issues/4003)
+* **switchScan:** add switchScan() operator ([#4442](https://github.com/reactivex/rxjs/issues/4442)) ([73fa910](https://github.com/reactivex/rxjs/commit/73fa910cb62eccbccc4b4249f9b2606095704328)), closes [#2931](https://github.com/reactivex/rxjs/issues/2931)
+
+
+### BREAKING CHANGES
+
+* **mergeScan:** `mergeScan` will no longer emit its inner state again upon completion.
+* **pairs:** `pairs` will no longer function in IE without a polyfill for `Object.entries`. `pairs` itself is also deprecated in favor of users just using `from(Object.entries(obj))`.
+* **zip:** Zipping a single array will now have a different result. This is an extreme corner-case, because it is very unlikely that anyone would want to zip an array with nothing at all. The workaround would be to wrap the array in another array `zip([[1,2,3]])`. But again, that's pretty weird.
+* **count:** No longer passes `source` observable as a third argument to the predicate. That feature was rarely used, and of limited value. The workaround is to simply close over the source inside of the function if you need to access it in there.
+
+
+
 # [7.0.0-beta.7](https://github.com/reactivex/rxjs/compare/7.0.0-beta.5...7.0.0-beta.7) (2020-09-23)
 
 
