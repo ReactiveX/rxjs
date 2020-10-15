@@ -6,6 +6,11 @@ import { isFunction } from '../util/isFunction';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { internalFromArray } from './fromArray';
 
+// These constants are used to create handler registry functions using array mapping below.
+const nodeEventEmitterMethods = ['addListener', 'removeListener'] as const;
+const eventTargetMethods = ['addEventListener', 'removeEventListener'] as const;
+const jqueryMethods = ['on', 'off'] as const;
+
 export interface NodeStyleEventEmitter {
   addListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
   removeListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
@@ -52,7 +57,6 @@ export interface AddEventListenerOptions extends EventListenerOptions {
   passive?: boolean;
 }
 
-/* tslint:disable:max-line-length */
 export function fromEvent<T>(target: FromEventTarget<T>, eventName: string): Observable<T>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
 export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, resultSelector?: (...args: any[]) => T): Observable<T>;
@@ -64,7 +68,6 @@ export function fromEvent<T>(
   options: EventListenerOptions,
   resultSelector: (...args: any[]) => T
 ): Observable<T>;
-/* tslint:enable:max-line-length */
 
 /**
  * Creates an Observable that emits events of a specific type coming from the
@@ -185,7 +188,7 @@ export function fromEvent<T>(
  * @return {Observable<T>}
  */
 export function fromEvent<T>(
-  target: FromEventTarget<T>,
+  target: any,
   eventName: string,
   options?: EventListenerOptions | ((...args: any[]) => T),
   resultSelector?: (...args: any[]) => T
@@ -200,43 +203,91 @@ export function fromEvent<T>(
     return fromEvent<T>(target, eventName, options as EventListenerOptions | undefined).pipe(mapOneOrManyArgs(resultSelector));
   }
 
-  return new Observable<T>((subscriber) => {
-    const handler = (...args: any[]) => subscriber.next(args.length > 1 ? args : args[0]);
+  // Figure out our add and remove methods. In order to do this,
+  // we are going to analyze the target in a preferred order, if
+  // the target matches a given signature, we take the two "add" and "remove"
+  // method names and apply them to a map to create opposite versions of the
+  // same function. This is because they all operate in duplicate pairs,
+  // `addListener(name, handler)`, `removeListener(name, handler)`, for example.
+  // The call only differs by method name, as to whether or not you're adding or removing.
+  const [add, remove] =
+    // If it is an EventTarget, we need to use a slightly different method than the other two patterns.
+    isEventTarget(target)
+      ? eventTargetMethods.map((methodName) => (handler: any) => target[methodName](eventName, handler, options as EventListenerOptions))
+      : // In all other cases, the call pattern is identical with the exception of the method names.
+      isNodeStyleEventEmitter(target)
+      ? nodeEventEmitterMethods.map(toCommonHandlerRegistry(target, eventName))
+      : isJQueryStyleEventEmitter(target)
+      ? jqueryMethods.map(toCommonHandlerRegistry(target, eventName))
+      : [];
 
-    if (isEventTarget(target)) {
-      target.addEventListener(eventName, handler, options as EventListenerOptions);
-      return () => target.removeEventListener(eventName, handler, options as EventListenerOptions);
-    }
-
-    if (isJQueryStyleEventEmitter(target)) {
-      target.on(eventName, handler);
-      return () => target.off(eventName, handler);
-    }
-
-    if (isNodeStyleEventEmitter(target)) {
-      target.addListener(eventName, handler);
-      return () => target.removeListener(eventName, handler);
-    }
-
+  // If add is falsy, it's because we didn't match a pattern above.
+  // Check to see if it is an ArrayLike, because if it is, we want to
+  // try to apply fromEvent to all of it's items. We do this check last,
+  // because there are may be some types that are both ArrayLike *and* implement
+  // event registry points, and we'd rather delegate to that when possible.
+  if (!add) {
     if (isArrayLike(target)) {
-      return (mergeMap((subTarget: any) => fromEvent(subTarget, eventName, options as any))(internalFromArray(target)) as Observable<
-        T
-      >).subscribe(subscriber);
+      return mergeMap((subTarget: any) => fromEvent(subTarget, eventName, options as EventListenerOptions))(
+        internalFromArray(target)
+      ) as Observable<T>;
     }
+  }
 
-    subscriber.error(new TypeError('Invalid event target'));
-    return;
+  return new Observable<T>((subscriber) => {
+    // If add is falsy and we made it here, it's because we didn't
+    // match any valid target objects above.
+    if (!add) {
+      // TODO: We should probably discuss if throwing this at subscription-time
+      // is appropriate. It seems like it would be better (and easier to debug)
+      // to throw this when `fromEvent()` is called.
+      throw new TypeError('Invalid event target');
+    }
+    // The handler we are going to register. Forwards the event object, by itself, or
+    // an array of arguments to the event handler, if there is more than one argument,
+    // to the consumer.
+    const handler = (...args: any[]) => subscriber.next(1 < args.length ? args : args[0]);
+    // Do the work of adding the handler to the target.
+    add(handler);
+    // When we teardown, we want to remove the handler and free up memory.
+    return () => remove!(handler);
   });
 }
 
-function isNodeStyleEventEmitter(sourceObj: any): sourceObj is NodeStyleEventEmitter {
-  return isFunction(sourceObj.addListener) && isFunction(sourceObj.removeListener);
+/**
+ * Used to create `add` and `remove` functions to register and unregister event handlers
+ * from a target in the most common handler pattern, where there are only two arguments.
+ * (e.g.  `on(name, fn)`, `off(name, fn)`, `addListener(name, fn)`, or `removeListener(name, fn)`)
+ * @param target The target we're calling methods on
+ * @param eventName The event name for the event we're creating register or unregister functions for
+ */
+function toCommonHandlerRegistry(target: any, eventName: string) {
+  return (methodName: string) => (handler: any) => target[methodName](eventName, handler);
 }
 
-function isJQueryStyleEventEmitter(sourceObj: any): sourceObj is JQueryStyleEventEmitter<any, any> {
-  return isFunction(sourceObj.on) && isFunction(sourceObj.off);
+/**
+ * Checks to see if the target implements the required node-style EventEmitter methods
+ * for adding and removing event handlers.
+ * @param target the object to check
+ */
+function isNodeStyleEventEmitter(target: any): target is NodeStyleEventEmitter {
+  return isFunction(target.addListener) && isFunction(target.removeListener);
 }
 
-function isEventTarget(sourceObj: any): sourceObj is HasEventTargetAddRemove<any> {
-  return isFunction(sourceObj.addEventListener) && isFunction(sourceObj.removeEventListener);
+/**
+ * Checks to see if the target implements the required jQuery-style EventEmitter methods
+ * for adding and removing event handlers.
+ * @param target the object to check
+ */
+function isJQueryStyleEventEmitter(target: any): target is JQueryStyleEventEmitter<any, any> {
+  return isFunction(target.on) && isFunction(target.off);
+}
+
+/**
+ * Checks to see if the target implements the required EventTarget methods
+ * for adding and removing event handlers.
+ * @param target the object to check
+ */
+function isEventTarget(target: any): target is HasEventTargetAddRemove<any> {
+  return isFunction(target.addEventListener) && isFunction(target.removeEventListener);
 }
