@@ -106,8 +106,9 @@ describe('Observable.prototype.first', () => {
     const source = hot('--a--b---c-|');
     const subs =       '^ !';
     const expected =   '----(a|)';
+    const t =            '--|';
 
-    const duration = rxTestScheduler.createTime('--|');
+    const duration = rxTestScheduler.createTime(t);
 
     expectObservable(source.pipe(
       first(),

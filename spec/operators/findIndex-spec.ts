@@ -131,8 +131,9 @@ describe('findIndex operator', () => {
     const source = hot('--a--b---c-|');
     const subs =       '^    !';
     const expected =   '-------(x|)';
+    const t =               '--|';
 
-    const duration = rxTestScheduler.createTime('--|');
+    const duration = rxTestScheduler.createTime(t);
 
     expectObservable(source.pipe(
       findIndex((value: string) => value === 'b'),
