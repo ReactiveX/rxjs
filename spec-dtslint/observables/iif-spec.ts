@@ -1,17 +1,25 @@
-import { iif, of } from 'rxjs';
+import { a$, b$ } from 'helpers';
+import { iif, EMPTY } from 'rxjs';
 
-it('should accept function as first parameter', () => {
-  const a = iif(() => false); // $ExpectType Observable<never>
+const randomBoolean = () => Math.random() > 0.5;
+
+it('should error for insufficient parameters', () => {
+  const r0 = iif(randomBoolean); // $ExpectError
+  const r1 = iif(randomBoolean, a$); // $ExpectError
+  const r2 = iif(randomBoolean, undefined, b$); // $ExpectError
 });
 
-it('should infer correctly with 2 parameters', () => {
-  const a = iif(() => false, of(1)); // $ExpectType Observable<number>
+it('should error for incorrect parameters', () => {
+  const r0 = iif(() => 132, a$, b$); // $ExpectError
+  const r1 = iif(randomBoolean, {}, b$); // $ExpectError
+  const r2 = iif(randomBoolean, a$, {}); // $ExpectError
 });
 
-it('should infer correctly with 3 parameters', () => {
-  const a = iif(() => false, of(1), of(2)); // $ExpectType Observable<number>
-});
-
-it('should infer correctly with 3 parameters of different types', () => {
-  const a = iif(() => false, of(1), of('a')); // $ExpectType Observable<string | number>
+it('should infer correctly', () => {
+  const r0 = iif(() => false, a$, b$); // $ExpectType Observable<B>
+  const r1 = iif(() => true, a$, b$); // $ExpectType Observable<A>
+  const r2 = iif(randomBoolean, a$, b$); // $ExpectType Observable<A | B>
+  const r3 = iif(() => false, a$, EMPTY); // $ExpectType Observable<never>
+  const r4 = iif(() => true, EMPTY, b$); // $ExpectType Observable<never>
+  const r5 = iif(randomBoolean, EMPTY, EMPTY); // $ExpectType Observable<never>
 });

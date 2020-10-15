@@ -4,7 +4,7 @@ import { expectObservable } from '../helpers/marble-testing';
 
 describe('iif', () => {
   it('should subscribe to thenSource when the conditional returns true', () => {
-    const e1 = iif(() => true, of('a'));
+    const e1 = iif(() => true, of('a'), of());
     const expected = '(a|)';
 
     expectObservable(e1).toBe(expected);
@@ -18,16 +18,16 @@ describe('iif', () => {
   });
 
   it('should complete without an elseSource when the conditional returns false', () => {
-    const e1 = iif(() => false, of('a'));
+    const e1 = iif(() => false, of('a'), of());
     const expected = '|';
 
     expectObservable(e1).toBe(expected);
   });
 
   it('should raise error when conditional throws', () => {
-    const e1 = iif(<any>(() => {
+    const e1 = iif(((): boolean => {
       throw 'error';
-    }), of('a'));
+    }), of('a'), of());
 
     const expected = '#';
 
@@ -36,7 +36,7 @@ describe('iif', () => {
 
   it('should accept resolved promise as thenSource', (done: MochaDone) => {
     const expected = 42;
-    const e1 = iif(() => true, new Promise((resolve: any) => { resolve(expected); }));
+    const e1 = iif(() => true, new Promise((resolve: any) => { resolve(expected); }), of());
 
     e1.subscribe(x => {
       expect(x).to.equal(expected);
@@ -80,7 +80,7 @@ describe('iif', () => {
 
   it('should accept rejected promise as thenSource', (done: MochaDone) => {
     const expected = 42;
-    const e1 = iif(() => true, new Promise((resolve: any, reject: any) => { reject(expected); }));
+    const e1 = iif(() => true, new Promise((resolve: any, reject: any) => { reject(expected); }), of());
 
     e1.subscribe(x => {
       done(new Error('should not be called'));
