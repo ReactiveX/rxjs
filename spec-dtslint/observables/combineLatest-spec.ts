@@ -27,7 +27,7 @@ it('should accept 6 params', () => {
 });
 
 it('should result in Observable<unknown> for 7 or more params', () => {
-  const o = combineLatest(a$, b$, c$, d$, e$, f$, g$); // $ExpectType Observable<unknown>
+  const o = combineLatest(a$, b$, c$, d$, e$, f$, g$); // $ExpectType Observable<[A, B, C, D, E, F, G]>
 });
 
 it('should accept union types', () => {
@@ -89,15 +89,15 @@ it('should accept 6 params', () => {
 });
 
 it('should have basic support for 7 or more params', () => {
-  const o = combineLatest([a$, b$, c$, d$, e$, f$, g$]); // $ExpectType Observable<(A | B | C | D | E | F | G)[]>
+  const o = combineLatest([a$, b$, c$, d$, e$, f$, g$]); // $ExpectType Observable<[A, B, C, D, E, F, G]>
 });
 
 it('should have full support for 7 or more params with readonly tuples', () => {
-  const o = combineLatest([a$, b$, c$, d$, e$, f$, g$] as const); // $ExpectType Observable<readonly [A, B, C, D, E, F, G]>
+  const o = combineLatest([a$, b$, c$, d$, e$, f$, g$] as const); // $ExpectType Observable<[A, B, C, D, E, F, G]>
 });
 
 it('should handle an array of Observables', () => {
-  const o = combineLatest([a$, a$, a$, a$, a$, a$, a$, a$, a$, a$, a$]); // $ExpectType Observable<A[]>
+  const o = combineLatest([a$, a$, a$, a$, a$, a$, a$, a$, a$, a$, a$]); // $ExpectType Observable<[A, A, A, A, A, A, A, A, A, A, A]>
 });
 
 it('should accept 1 param and a result selector', () => {
