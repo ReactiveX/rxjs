@@ -159,17 +159,6 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | 
     // we are ready to start emitting values.
     let ready = false;
 
-    // Source subscription
-    source.subscribe(
-      new OperatorSubscriber(subscriber, (value) => {
-        if (ready) {
-          // We have at least one value from the other sources. Go ahead and emit.
-          const values = [value, ...otherValues];
-          subscriber.next(project ? project(...values) : values);
-        }
-      })
-    );
-
     // Other sources. Note that here we are not checking `subscriber.closed`,
     // this causes all inputs to be subscribed to, even if nothing can be emitted
     // from them. This is an important distinction because subscription constitutes
@@ -197,5 +186,16 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | 
         )
       );
     }
+
+    // Source subscription
+    source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        if (ready) {
+          // We have at least one value from the other sources. Go ahead and emit.
+          const values = [value, ...otherValues];
+          subscriber.next(project ? project(...values) : values);
+        }
+      })
+    );
   });
 }
