@@ -16,7 +16,7 @@ describe('auditTime operator', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  -a-x-y----b---x-cx---|');
       const subs = '    ^--------------------!';
-      const expected = '------y--------x-----|';
+      const expected = '------y--------x-----(x|)';
 
       const result = e1.pipe(auditTime(5, testScheduler));
 
@@ -26,11 +26,11 @@ describe('auditTime operator', () => {
   });
 
   it('should auditTime events by 5 time units', (done: MochaDone) => {
+    const expected = 3;
     of(1, 2, 3).pipe(
       auditTime(5)
     ).subscribe((x: number) => {
-        done(new Error('should not be called'));
-      }, null, () => {
+        expect(x).to.equal(expected);
         done();
       });
   });
@@ -50,7 +50,7 @@ describe('auditTime operator', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  -a--------b-----c----|');
       const subs = '    ^--------------------!';
-      const expected = '------a--------b-----|';
+      const expected = '------a--------b-----(c|)';
 
       expectObservable(e1.pipe(auditTime(5, testScheduler))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -61,7 +61,7 @@ describe('auditTime operator', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  abcdefabcdefabcdefabcdefa|');
       const subs = '    ^------------------------!';
-      const expected = '-----f-----f-----f-----f-|';
+      const expected = '-----f-----f-----f-----f-----(a|)';
 
       expectObservable(e1.pipe(auditTime(5, testScheduler))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(subs);
