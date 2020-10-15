@@ -1,3 +1,4 @@
+import { a$, b$, c$ } from 'helpers';
 import { of, forkJoin } from 'rxjs';
 
 describe('deprecated rest args', () => {
@@ -69,10 +70,13 @@ describe('forkJoin({})', () => {
 });
 
 describe('forkJoin([])', () => {
-  // TODO(benlesh): Uncomment for TS 3.0
-  // it('should properly type empty arrays', () => {
-  //   const res = forkJoin([]); // $ExpectType Observable<never>
-  // });
+  it('should properly type empty arrays', () => {
+    const res = forkJoin([]); // $ExpectType Observable<never>
+  });
+
+    it('should properly type readonly arrays', () => {
+    const res = forkJoin([a$, b$, c$] as const); // $ExpectType Observable<[A, B, C]>
+  });
 
   it('should infer correctly for array of 1 observable', () => {
     const res = forkJoin([of(1, 2, 3)]); // $ExpectType Observable<[number]>
