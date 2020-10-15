@@ -131,7 +131,7 @@ describe('findIndex operator', () => {
     const source = hot('--a--b---c-|');
     const subs =       '^    !';
     const expected =   '-------(x|)';
-    const t =               '--|';
+    const t =               '  |';
 
     const duration = rxTestScheduler.createTime(t);
 
