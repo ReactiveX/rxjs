@@ -140,11 +140,30 @@ describe('TestScheduler', () => {
       expect(time).to.equal(50);
     });
 
+    it('should progress time with whitespace', () => {
+      const scheduler = new TestScheduler(null!);
+      const time = scheduler.createTime('     |');
+      //                                 -----|
+      expect(time).to.equal(50);
+    });
+
+    it('should progress time with mix of whitespace and dashes', () => {
+      const scheduler = new TestScheduler(null!);
+      const time = scheduler.createTime('  --|');
+      expect(time).to.equal(40);
+    });
+
     it('should throw if not given good marble input', () => {
       const scheduler = new TestScheduler(null!);
       expect(() => {
         scheduler.createTime('-a-b-#');
       }).to.throw();
+    });
+
+    it('should ignore second stop', () => {
+      const scheduler = new TestScheduler(null!);
+      const time = scheduler.createTime('-----|--|');
+      expect(time).to.equal(50);
     });
   });
 
@@ -721,6 +740,45 @@ describe('TestScheduler', () => {
             interval(0, asapScheduler).pipe(mapTo('b'), take(3))
           )));
           expectObservable(result).toBe(expected);
+        });
+      });
+    });
+
+    describe('time', () => {
+      it('should parse a simple time marble string to a number', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+
+        testScheduler.run(({ time }) => {
+          const t = time('--|');
+          expect(t).to.equal(2);
+        });
+      });
+
+      it('should ignore whitespace', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+
+        testScheduler.run(({ time }) => {
+          const t = time('  --|');
+          expect(t).to.equal(2);
+        });
+      });
+
+      it('should throw if not given good marble input', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+
+        testScheduler.run(({ time }) => {
+          expect(() => {
+            time('-a-b-#');
+          }).to.throw();
+        });
+      });
+
+      it('should ignore second stop', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+
+        testScheduler.run(({ time }) => {
+          const t = time('-----|--|');
+          expect(t).to.equal(5);
         });
       });
     });
