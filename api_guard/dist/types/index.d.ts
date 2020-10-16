@@ -198,6 +198,7 @@ export declare class ConnectableObservable<T> extends Observable<T> {
     protected _connection: Subscription | null;
     protected _refCount: number;
     protected _subject: Subject<T> | null;
+    protected _waiting: boolean;
     source: Observable<T>;
     protected subjectFactory: () => Subject<T>;
     constructor(source: Observable<T>, subjectFactory: () => Subject<T>);
@@ -205,6 +206,7 @@ export declare class ConnectableObservable<T> extends Observable<T> {
     protected _teardown(): void;
     connect(): Subscription;
     protected getSubject(): Subject<T>;
+    prepare(): Subscription;
     refCount(): Observable<T>;
 }
 
