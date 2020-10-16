@@ -159,12 +159,6 @@ describe('TestScheduler', () => {
         scheduler.createTime('-a-b-#');
       }).to.throw();
     });
-
-    it('should ignore second stop', () => {
-      const scheduler = new TestScheduler(null!);
-      const time = scheduler.createTime('-----|--|');
-      expect(time).to.equal(50);
-    });
   });
 
   describe('createColdObservable()', () => {
@@ -770,15 +764,6 @@ describe('TestScheduler', () => {
           expect(() => {
             time('-a-b-#');
           }).to.throw();
-        });
-      });
-
-      it('should ignore second stop', () => {
-        const testScheduler = new TestScheduler(assertDeepEquals);
-
-        testScheduler.run(({ time }) => {
-          const t = time('-----|--|');
-          expect(t).to.equal(5);
         });
       });
     });
