@@ -20,7 +20,6 @@ export function forkJoin<T>(sourcesObject: T): Observable<{ [K in keyof T]: Obse
 
 // forkJoin(a, b, c, resultSelector)
 /** @deprecated resultSelector is deprecated, pipe to map instead */
-
 export function forkJoin(...args: Array<ObservableInput<any> | ((...args: any[]) => any)>): Observable<any>;
 
 /**
