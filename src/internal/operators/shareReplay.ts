@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { ReplaySubject } from '../ReplaySubject';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
-import { Subscriber } from '../Subscriber';
+import { SafeSubscriber, Subscriber } from '../Subscriber';
 import { operate } from '../util/lift';
 
 export interface ShareReplayConfig {
@@ -150,45 +150,46 @@ function shareReplayOperator<T>({
 }: ShareReplayConfig) {
   let subject: ReplaySubject<T> | undefined;
   let refCount = 0;
-  let subscription: Subscription | undefined;
+  let outerSubscriber: Subscriber<T> | undefined;
 
   return (source: Observable<T>, subscriber: Subscriber<T>) => {
     refCount++;
-    let innerSub: Subscription;
+    const innerSub = new Subscription();
+    subscriber.add(() => {
+      refCount--;
+      innerSub.unsubscribe();
+      if (useRefCount && refCount === 0 && outerSubscriber) {
+        outerSubscriber.unsubscribe();
+        outerSubscriber = undefined;
+        subject = undefined;
+      }
+    });
+
     if (!subject) {
       subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler);
-      innerSub = subject.subscribe(subscriber);
-      subscription = source.subscribe({
+      innerSub.add(subject.subscribe(subscriber));
+      outerSubscriber = new SafeSubscriber<T>({
         next(value) { subject!.next(value); },
         error(err) {
           const dest = subject;
-          subscription = undefined;
+          outerSubscriber = undefined;
           subject = undefined;
           dest!.error(err);
         },
         complete() {
-          subscription = undefined;
+          outerSubscriber = undefined;
           subject!.complete();
         },
-      });
+      })
+      source.subscribe(outerSubscriber);
       // The following condition is needed because source can complete synchronously
       // upon subscription. When that happens `subscription` is first set to `undefined`
       // and right after is set to the "closed subscription" returned by `subscribe`
-      if (subscription.closed) {
-        subscription = undefined;
+      if (outerSubscriber.closed) {
+        outerSubscriber = undefined;
       }
     } else {
-      innerSub = subject.subscribe(subscriber);
+      innerSub.add(subject.subscribe(subscriber));
     }
-
-    subscriber.add(() => {
-      refCount--;
-      innerSub.unsubscribe();
-      if (useRefCount && refCount === 0 && subscription) {
-        subscription.unsubscribe();
-        subscription = undefined;
-        subject = undefined;
-      }
-    });
   };
 }

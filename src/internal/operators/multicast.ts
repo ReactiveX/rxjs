@@ -5,6 +5,7 @@ import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { OperatorFunction, UnaryFunction, ObservedValueOf, ObservableInput } from '../types';
 import { hasLift, operate } from '../util/lift';
 import { isFunction } from '../util/isFunction';
+import { SafeSubscriber } from '../Subscriber';
 
 /* tslint:disable:max-line-length */
 export function multicast<T>(subject: Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
@@ -50,7 +51,10 @@ export function multicast<T, R>(
       // that to the resulting subscription. The act of subscribing with `this`,
       // the primary destination subscriber, will automatically add the subscription
       // to the result.
-      selector(subject).subscribe(subscriber).add(source.subscribe(subject));
+      const subscription = selector(subject).subscribe(subscriber);
+      const subjectSubscriber = new SafeSubscriber(subject);
+      subscription.add(subjectSubscriber);
+      source.subscribe(subjectSubscriber);
     });
   }
 

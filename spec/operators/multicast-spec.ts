@@ -701,7 +701,6 @@ describe('multicast operator', () => {
     });
   });
 
-  // TODO: fix firehose unsubscription
   // AFAICT, it's not possible for multicast observables to support ASAP
   // unsubscription from synchronous firehose sources. The problem is that the
   // chaining of the closed 'signal' is broken by the subject. For example,
@@ -718,7 +717,7 @@ describe('multicast operator', () => {
   // That breaks the chaining of closed - i.e. even if the unsubscribe is
   // called on the subject, closing it, the SafeSubscriber's closed property
   // won't reflect that.
-  it.skip('should stop listening to a synchronous observable when unsubscribed', () => {
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
     const synchronousObservable = new Observable<number>(subscriber => {
       // This will check to see if the subscriber was closed on each loop

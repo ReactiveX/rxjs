@@ -13,6 +13,7 @@ export class ConnectableObservable<T> extends Observable<T> {
   protected _subject: Subject<T> | null = null;
   protected _refCount: number = 0;
   protected _connection: Subscription | null = null;
+  protected _waiting: boolean = false;
 
   constructor(public source: Observable<T>, protected subjectFactory: () => Subject<T>) {
     super();
@@ -37,28 +38,40 @@ export class ConnectableObservable<T> extends Observable<T> {
     _connection?.unsubscribe();
   }
 
-  connect(): Subscription {
+  /** @deprecated This is an internal implementation detail, do not use. */
+  prepare(): Subscription {
     let connection = this._connection;
     if (!connection) {
       connection = this._connection = new Subscription();
+      this._waiting = true;
+    }
+    return connection;
+  }
+
+  connect(): Subscription {
+    let connection = this._connection;
+    if (!connection || this._waiting) {
+      if (!connection) {
+        connection = this._connection = new Subscription();
+      } else {
+        this._waiting = false;
+      }
       const subject = this.getSubject();
-      connection.add(
-        this.source.subscribe(
-          new OperatorSubscriber(
-            subject as any,
-            undefined,
-            (err) => {
-              this._teardown();
-              subject.error(err);
-            },
-            () => {
-              this._teardown();
-              subject.complete();
-            },
-            () => this._teardown()
-          )
-        )
+      const subs = new OperatorSubscriber(
+        subject as any,
+        undefined,
+        (err) => {
+          this._teardown();
+          subject.error(err);
+        },
+        () => {
+          this._teardown();
+          subject.complete();
+        },
+        () => this._teardown()
       );
+      connection.add(subs);
+      this.source.subscribe(subs);
 
       if (connection.closed) {
         this._connection = null;
