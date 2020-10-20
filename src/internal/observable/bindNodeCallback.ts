@@ -16,7 +16,6 @@ export function bindNodeCallback<A extends readonly unknown[], R extends readonl
   schedulerLike?: SchedulerLike
 ): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
 
-export function bindNodeCallback(callbackFunc: (...args: any[]) => void, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
 /**
  * Converts a Node.js-style callback API to a function that returns an
  * Observable.
@@ -123,7 +122,7 @@ export function bindNodeCallback(callbackFunc: (...args: any[]) => void, schedul
  */
 export function bindNodeCallback(
   callbackFunc: (...args: any[]) => void,
-  resultSelector?: ((...args: any[]) => void) | SchedulerLike,
+  resultSelector?: ((...args: any[]) => any) | SchedulerLike,
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<any> {
   return bindCallbackInternals(true, callbackFunc, resultSelector, scheduler);
