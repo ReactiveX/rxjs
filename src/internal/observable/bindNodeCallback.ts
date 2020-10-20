@@ -6,7 +6,7 @@ import { bindCallbackInternals } from './bindCallbackInternals';
 /** @deprecated resultSelector is deprecated, pipe to map instead */
 export function bindNodeCallback(
   callbackFunc: (...args: any[]) => void,
-  resultSelector: (...args: any[]) => void,
+  resultSelector: (...args: any[]) => any,
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<any>;
 
