@@ -44,7 +44,7 @@ it('should support a user-defined type guard with an S default', () => {
 });
 
 it('should widen a user-defined type guard with a non-S default', () => {
-  const o = of('foo').pipe(first(isFooBar, false)); // $ExpectType Observable<string | boolean>
+  const o = of('foo').pipe(first(isFooBar, false)); // $ExpectType Observable<boolean | "foo" | "bar">
 });
 
 it('should support a predicate with no default', () => {
@@ -59,6 +59,10 @@ it('should support a predicate with a non-T default', () => {
   const o = of('foo').pipe(first(x => !!x, false)); // $ExpectType Observable<string | boolean>
 });
 
-it('should default D to T with a predicate', () => {
-  const o = of('foo').pipe(first<string>(x => !!x)); // $Observable<string>
-});
+it('should work properly with the Boolean constructor', () => {
+  const o1 = of('' as const).pipe(first(Boolean)); // $ExpectType Observable<never>
+  const o2 = of('', 'hi').pipe(first(Boolean)); // $ExpectType Observable<string>
+  const o3 = of('' as const, 'hi' as const).pipe(first(Boolean)); // $ExpectType Observable<"hi">
+  const o4 = of(0 as const, 'hi' as const).pipe(first(Boolean)); // $ExpectType Observable<"hi">
+  const o5 = of(0 as const, 'hi' as const, 'what' as const).pipe(first(Boolean)); // $ExpectType Observable<"hi" | "what">
+})

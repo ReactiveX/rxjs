@@ -1,26 +1,30 @@
+/** @prettier */
 import { Observable } from '../Observable';
 import { EmptyError } from '../util/EmptyError';
-import { OperatorFunction } from '../types';
+import { OperatorFunction, TruthyTypesOf } from '../types';
 import { filter } from './filter';
 import { take } from './take';
 import { defaultIfEmpty } from './defaultIfEmpty';
 import { throwIfEmpty } from './throwIfEmpty';
 import { identity } from '../util/identity';
 
-/* tslint:disable:max-line-length */
-export function first<T, D = T>(
-  predicate?: null,
-  defaultValue?: D
-): OperatorFunction<T, T | D>;
+export function first<T, D = T>(predicate?: null, defaultValue?: D): OperatorFunction<T, T | D>;
+export function first<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
+export function first<T, D>(predicate: BooleanConstructor, defaultValue: D): OperatorFunction<T, TruthyTypesOf<T> | D>;
 export function first<T, S extends T>(
   predicate: (value: T, index: number, source: Observable<T>) => value is S,
   defaultValue?: S
 ): OperatorFunction<T, S>;
+export function first<T, S extends T, D>(
+  predicate: (value: T, index: number, source: Observable<T>) => value is S,
+  defaultValue: D
+): OperatorFunction<T, S | D>;
+export function first<T, D>(predicate: (value: T, index: number, source: Observable<T>) => false, defaultValue: D): OperatorFunction<T, D>;
+export function first<T>(predicate: (value: T, index: number, source: Observable<T>) => false): OperatorFunction<T, never>;
 export function first<T, D = T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
   defaultValue?: D
 ): OperatorFunction<T, T | D>;
-/* tslint:enable:max-line-length */
 
 /**
  * Emits only the first value (or the first value that meets some condition)
@@ -80,9 +84,10 @@ export function first<T, D>(
   defaultValue?: D
 ): OperatorFunction<T, T | D> {
   const hasDefaultValue = arguments.length >= 2;
-  return (source: Observable<T>) => source.pipe(
-    predicate ? filter((v, i) => predicate(v, i, source)) : identity,
-    take(1),
-    hasDefaultValue ? defaultIfEmpty<T, D>(defaultValue) : throwIfEmpty(() => new EmptyError()),
-  );
+  return (source: Observable<T>) =>
+    source.pipe(
+      predicate ? filter((v, i) => predicate(v, i, source)) : identity,
+      take(1),
+      hasDefaultValue ? defaultIfEmpty<T, D>(defaultValue) : throwIfEmpty(() => new EmptyError())
+    );
 }

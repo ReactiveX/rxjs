@@ -1,26 +1,26 @@
+/** @prettier */
 import { Observable } from '../Observable';
 import { EmptyError } from '../util/EmptyError';
-import { OperatorFunction } from '../types';
+import { OperatorFunction, TruthyTypesOf } from '../types';
 import { filter } from './filter';
 import { takeLast } from './takeLast';
 import { throwIfEmpty } from './throwIfEmpty';
 import { defaultIfEmpty } from './defaultIfEmpty';
 import { identity } from '../util/identity';
 
-/* tslint:disable:max-line-length */
-export function last<T, D = T>(
-  predicate?: null,
-  defaultValue?: D
-): OperatorFunction<T, T | D>;
+export function last<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
+export function last<T, D>(predicate: BooleanConstructor, defaultValue: D): OperatorFunction<T, TruthyTypesOf<T> | D>;
+export function last<T, D = T>(predicate?: null, defaultValue?: D): OperatorFunction<T, T | D>;
 export function last<T, S extends T>(
   predicate: (value: T, index: number, source: Observable<T>) => value is S,
   defaultValue?: S
 ): OperatorFunction<T, S>;
+export function last<T, D>(predicate: (value: T, index: number, source: Observable<T>) => false, defaultValue: D): OperatorFunction<T, D>;
+export function last<T>(predicate: (value: T, index: number, source: Observable<T>) => false): OperatorFunction<T, never>;
 export function last<T, D = T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
   defaultValue?: D
 ): OperatorFunction<T, T | D>;
-/* tslint:enable:max-line-length */
 
 /**
  * Returns an Observable that emits only the last item emitted by the source Observable.
@@ -29,34 +29,34 @@ export function last<T, D = T>(
  * from the source Observable that satisfies the predicate.
  *
  * ![](last.png)
- * 
+ *
  * It will throw an error if the source completes without notification or one that matches the predicate. It
- * returns the last value or if a predicate is provided last value that matches the predicate. It returns the 
+ * returns the last value or if a predicate is provided last value that matches the predicate. It returns the
  * given default value if no notification is emitted or matches the predicate.
- * 
+ *
  * ## Example
  * Last alphabet from the sequence.
  * ```ts
  * import { from } from 'rxjs';
  * import { last } from 'rxjs/operators';
- * 
+ *
  * const source = from(['x', 'y', 'z']);
  * const example = source.pipe(last());
  * //output: "Last alphabet: z"
  * example.subscribe(val => console.log(`Last alphabet: ${val}`));
  * ```
- * 
+ *
  * Default value when the value in the predicate is not matched.
  * ```ts
  * import { from } from 'rxjs';
  * import { last } from 'rxjs/operators';
- * 
+ *
  * const source = from(['x', 'y', 'z']);
  * const example = source.pipe(last(char => char === 'a','not exist'));
  * //output: "'a' is not exist."
  * example.subscribe(val => console.log(`'a' is ${val}.`));
  * ```
- * 
+ *
  * @see {@link skip}
  * @see {@link skipUntil}
  * @see {@link skipLast}
@@ -76,9 +76,10 @@ export function last<T, D>(
   defaultValue?: D
 ): OperatorFunction<T, T | D> {
   const hasDefaultValue = arguments.length >= 2;
-  return (source: Observable<T>) => source.pipe(
-    predicate ? filter((v, i) => predicate(v, i, source)) : identity,
-    takeLast(1),
-    hasDefaultValue ? defaultIfEmpty<T, D>(defaultValue) : throwIfEmpty(() => new EmptyError()),
-  );
+  return (source: Observable<T>) =>
+    source.pipe(
+      predicate ? filter((v, i) => predicate(v, i, source)) : identity,
+      takeLast(1),
+      hasDefaultValue ? defaultIfEmpty<T, D>(defaultValue) : throwIfEmpty(() => new EmptyError())
+    );
 }

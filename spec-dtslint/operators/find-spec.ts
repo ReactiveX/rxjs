@@ -24,3 +24,12 @@ it('should support a predicate that takes an index', () => {
 it('should support a predicate that takes an index and the source', () => {
   const o = of('foo').pipe(find((s, index, source) => true)); // $ExpectType Observable<string | undefined>
 });
+
+it('should support Boolean properly', () => {
+  const o1 = of('' as const).pipe(find(Boolean)); // $ExpectType Observable<never>
+  const o2 = of('' as const, 'hi' as const).pipe(find(Boolean)); // $ExpectType Observable<"hi">
+  const o3 = of('' as const, 0 as const, 'test' as const, 'what' as const).pipe(find(Boolean)); // $ExpectType Observable<"test" | "what">
+  const o5 = of(false as const, null, undefined, '' as const, 0 as const, 0 as const).pipe(find(Boolean)); // $ExpectType Observable<never>
+  // Intentionally weird looking: Because `Observable<boolean>` is `Observable<true | false>` and `true` is the truthy bit.
+  const o4 = of(false, false, false, false).pipe(find(Boolean)); // $ExpectType Observable<true>
+});

@@ -1,8 +1,18 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { OperatorFunction } from '../types';
+import { OperatorFunction, TruthyTypesOf } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
+
+export function every<T, S extends T>(
+  predicate: (value: T, index: number, source: Observable<T>) => value is S,
+  thisArg?: any
+): OperatorFunction<T, S>;
+export function every<T>(predicate: BooleanConstructor, thisArg?: any): OperatorFunction<T, TruthyTypesOf<T>>;
+export function every<T>(
+  predicate: (value: T, index: number, source: Observable<T>) => boolean,
+  thisArg?: any
+): OperatorFunction<T, boolean>;
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.

@@ -1,15 +1,12 @@
 /** @prettier */
-import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
+import { OperatorFunction, MonoTypeOperatorFunction, TruthyTypesOf } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
-/* tslint:disable:max-line-length */
+export function filter<T>(predicate: (value: T, index: number) => false, thisArg?: any): OperatorFunction<T, never>;
 export function filter<T, S extends T>(predicate: (value: T, index: number) => value is S, thisArg?: any): OperatorFunction<T, S>;
-export function filter<T>(
-  predicate: BooleanConstructor
-): OperatorFunction<T, T extends null | undefined | false | 0 | -0 | 0n | '' ? never : T>;
+export function filter<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export function filter<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): MonoTypeOperatorFunction<T>;
-/* tslint:enable:max-line-length */
 
 /**
  * Filter items emitted by the source Observable by only emitting those that

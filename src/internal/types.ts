@@ -263,7 +263,7 @@ export type Tail<X extends any[]> = ((...args: X) => any) extends (arg: any, ...
  * If you have `T extends Array<any>`, and pass a `string[]` to it,
  * `ValueFromArray<T>` will return the actual type of `string`.
  */
-export type ValueFromArray<A> = A extends Array<infer T> ? T : never;
+export type ValueFromArray<A extends readonly unknown[]> = A extends Array<infer T> ? T : never;
 
 /**
  * Gets the value type from an {@link ObservableNotification}, if possible.
@@ -275,3 +275,12 @@ export type ValueFromNotification<T> = T extends { kind: 'N' | 'E' | 'C' }
       : undefined
     : never
   : never;
+
+/**
+ * A simple type to represent a gamut of "falsy" values... with a notable exception:
+ * `NaN` is "falsy" however, it is not and cannot be typed via TypeScript. See
+ * comments here: https://github.com/microsoft/TypeScript/issues/28682#issuecomment-707142417
+ */
+export type Falsy = null | undefined | false | 0 | -0 | 0n | '';
+
+export type TruthyTypesOf<T> = T extends Falsy ? never : T;

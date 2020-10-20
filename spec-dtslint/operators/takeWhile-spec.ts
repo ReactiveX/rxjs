@@ -16,3 +16,15 @@ it('should support a predicate', () => {
 it('should support a predicate with inclusive option', () => {
   const o = of('foo').pipe(takeWhile(s => true, true)); // $ExpectType Observable<string>
 });
+
+it('should properly support Boolean constructor', () => {
+  const a = of(false as const, 0 as const, -0 as const, 0n as const, '' as const, null, undefined).pipe(takeWhile(Boolean)); // $ExpectType Observable<never>
+  const b = of(false as const, 0 as const, -0 as const, 0n as const, '' as const, null, undefined).pipe(takeWhile(Boolean, true)); // $ExpectType Observable<never>
+  const c = of(false as const, 0 as const, 'hi' as const, -0 as const, 0n as const, '' as const, null, undefined).pipe(takeWhile(Boolean)); // $ExpectType Observable<false | "" | 0 | 0n | "hi" | null | undefined>
+  const d = of(false as const, 0 as const, 'hi' as const, -0 as const, 0n as const, '' as const, null, undefined).pipe(takeWhile(Boolean, true)); // $ExpectType Observable<false | "" | 0 | 0n | "hi" | null | undefined>
+});
+
+it('should properly handle predicates that always return false', () => {
+  const a = of(1, 2, 3).pipe(takeWhile(() => false as const)); // $ExpectType Observable<never>
+  const b = of(1, 2, 3).pipe(takeWhile(() => false as const, true)); // $ExpectType Observable<never>
+});

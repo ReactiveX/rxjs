@@ -36,3 +36,8 @@ it('should enforce index type of number', () => {
 it('should expect function parameter', () => {
   const a = of(1, 2, 3).pipe(every(9)); // $ExpectError
 });
+
+it('should handle the Boolean constructor', () => {
+  const a = of(0 as const, '' as const, false as const, null, undefined, -0 as const, 0n as const).pipe(every(Boolean)); // $ExpectType Observable<never>
+  const b = of(0 as const, '' as const, 'hi there' as const, false as const, null, undefined, -0 as const, 0n as const).pipe(every(Boolean)); // $ExpectType Observable<"hi there">
+})

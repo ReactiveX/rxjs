@@ -1,8 +1,13 @@
 /** @prettier */
-import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
+import { OperatorFunction, MonoTypeOperatorFunction, Falsy } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
+export function takeWhile<T>(predicate: (value: T, index: number) => false, inclusive?: boolean): OperatorFunction<T, never>;
+export function takeWhile<T>(
+  predicate: BooleanConstructor,
+  inclusive?: boolean
+): OperatorFunction<T, Exclude<T, Falsy> extends never ? never : T>;
 export function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
 export function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S, inclusive: false): OperatorFunction<T, S>;
 export function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive?: boolean): MonoTypeOperatorFunction<T>;
