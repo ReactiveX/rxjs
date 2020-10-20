@@ -109,7 +109,7 @@ export declare function expand<T, R>(project: (value: T, index: number) => Obser
 export declare function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent: number | undefined, scheduler: SchedulerLike): OperatorFunction<T, R>;
 
 export declare function filter<T, S extends T>(predicate: (value: T, index: number) => value is S, thisArg?: any): OperatorFunction<T, S>;
-export declare function filter<T>(predicate: BooleanConstructor): OperatorFunction<T | null | undefined, NonNullable<T>>;
+export declare function filter<T>(predicate: BooleanConstructor): OperatorFunction<T, T extends null | undefined | false | 0 | -0 | 0n | '' ? never : T>;
 export declare function filter<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): MonoTypeOperatorFunction<T>;
 
 export declare function finalize<T>(callback: () => void): MonoTypeOperatorFunction<T>;
