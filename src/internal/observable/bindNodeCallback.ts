@@ -5,148 +5,17 @@ import { bindCallbackInternals } from './bindCallbackInternals';
 
 /** @deprecated resultSelector is deprecated, pipe to map instead */
 export function bindNodeCallback(
-  callbackFunc: (...args: any[]) => any,
+  callbackFunc: (...args: any[]) => void,
   resultSelector: (...args: any[]) => any,
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<any>;
 
-export function bindNodeCallback<R1, R2, R3, R4>(
-  callbackFunc: (callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any,
-  scheduler?: SchedulerLike
-): (...args: any[]) => Observable<any[]>;
-export function bindNodeCallback<R1, R2, R3>(
-  callbackFunc: (callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any,
-  scheduler?: SchedulerLike
-): () => Observable<[R1, R2, R3]>;
-export function bindNodeCallback<R1, R2>(
-  callbackFunc: (callback: (err: any, res1: R1, res2: R2) => any) => any,
-  scheduler?: SchedulerLike
-): () => Observable<[R1, R2]>;
-export function bindNodeCallback<R1>(
-  callbackFunc: (callback: (err: any, res1: R1) => any) => any,
-  scheduler?: SchedulerLike
-): () => Observable<R1>;
-export function bindNodeCallback(callbackFunc: (callback: (err: any) => any) => any, scheduler?: SchedulerLike): () => Observable<void>;
+// args is the arguments array and we push the callback on the rest tuple since the rest parameter must be last (only item) in a parameter list
+export function bindNodeCallback<A extends readonly unknown[], R extends readonly unknown[]>(
+  callbackFunc: (...args: [...A, (err: any, ...res: R) => void]) => void,
+  schedulerLike?: SchedulerLike
+): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
 
-export function bindNodeCallback<A1, R1, R2, R3, R4>(
-  callbackFunc: (arg1: A1, callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any,
-  scheduler?: SchedulerLike
-): (...args: any[]) => Observable<any[]>;
-export function bindNodeCallback<A1, R1, R2, R3>(
-  callbackFunc: (arg1: A1, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1) => Observable<[R1, R2, R3]>;
-export function bindNodeCallback<A1, R1, R2>(
-  callbackFunc: (arg1: A1, callback: (err: any, res1: R1, res2: R2) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1) => Observable<[R1, R2]>;
-export function bindNodeCallback<A1, R1>(
-  callbackFunc: (arg1: A1, callback: (err: any, res1: R1) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1) => Observable<R1>;
-export function bindNodeCallback<A1>(
-  callbackFunc: (arg1: A1, callback: (err: any) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1) => Observable<void>;
-
-export function bindNodeCallback<A1, A2, R1, R2, R3, R4>(
-  callbackFunc: (arg1: A1, arg2: A2, callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any,
-  scheduler?: SchedulerLike
-): (...args: any[]) => Observable<any[]>;
-export function bindNodeCallback<A1, A2, R1, R2, R3>(
-  callbackFunc: (arg1: A1, arg2: A2, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2) => Observable<[R1, R2, R3]>;
-export function bindNodeCallback<A1, A2, R1, R2>(
-  callbackFunc: (arg1: A1, arg2: A2, callback: (err: any, res1: R1, res2: R2) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2) => Observable<[R1, R2]>;
-export function bindNodeCallback<A1, A2, R1>(
-  callbackFunc: (arg1: A1, arg2: A2, callback: (err: any, res1: R1) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2) => Observable<R1>;
-export function bindNodeCallback<A1, A2>(
-  callbackFunc: (arg1: A1, arg2: A2, callback: (err: any) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2) => Observable<void>;
-
-export function bindNodeCallback<A1, A2, A3, R1, R2, R3, R4>(
-  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any,
-  scheduler?: SchedulerLike
-): (...args: any[]) => Observable<any[]>;
-export function bindNodeCallback<A1, A2, A3, R1, R2, R3>(
-  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2, arg3: A3) => Observable<[R1, R2, R3]>;
-export function bindNodeCallback<A1, A2, A3, R1, R2>(
-  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any, res1: R1, res2: R2) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2, arg3: A3) => Observable<[R1, R2]>;
-export function bindNodeCallback<A1, A2, A3, R1>(
-  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any, res1: R1) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2, arg3: A3) => Observable<R1>;
-export function bindNodeCallback<A1, A2, A3>(
-  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2, arg3: A3) => Observable<void>;
-
-export function bindNodeCallback<A1, A2, A3, A4, R1, R2, R3, R4>(
-  callbackFunc: (
-    arg1: A1,
-    arg2: A2,
-    arg3: A3,
-    arg4: A4,
-    callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any
-  ) => any,
-  scheduler?: SchedulerLike
-): (...args: any[]) => Observable<any[]>;
-export function bindNodeCallback<A1, A2, A3, A4, R1, R2, R3>(
-  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2, arg3: A3, arg4: A4) => Observable<[R1, R2, R3]>;
-export function bindNodeCallback<A1, A2, A3, A4, R1, R2>(
-  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, callback: (err: any, res1: R1, res2: R2) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2, arg3: A3, arg4: A4) => Observable<[R1, R2]>;
-export function bindNodeCallback<A1, A2, A3, A4, R1>(
-  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, callback: (err: any, res1: R1) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2, arg3: A3, arg4: A4) => Observable<R1>;
-export function bindNodeCallback<A1, A2, A3, A4>(
-  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, callback: (err: any) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2, arg3: A3, arg4: A4) => Observable<void>;
-
-export function bindNodeCallback<A1, A2, A3, A4, A5, R1, R2, R3, R4>(
-  callbackFunc: (
-    arg1: A1,
-    arg2: A2,
-    arg3: A3,
-    arg4: A4,
-    arg5: A5,
-    callback: (err: any, res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any
-  ) => any,
-  scheduler?: SchedulerLike
-): (...args: any[]) => Observable<any[]>;
-export function bindNodeCallback<A1, A2, A3, A4, A5, R1, R2, R3>(
-  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any, res1: R1, res2: R2, res3: R3) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<[R1, R2, R3]>;
-export function bindNodeCallback<A1, A2, A3, A4, A5, R1, R2>(
-  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any, res1: R1, res2: R2) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<[R1, R2]>;
-export function bindNodeCallback<A1, A2, A3, A4, A5, R1>(
-  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any, res1: R1) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<R1>;
-export function bindNodeCallback<A1, A2, A3, A4, A5>(
-  callbackFunc: (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5, callback: (err: any) => any) => any,
-  scheduler?: SchedulerLike
-): (arg1: A1, arg2: A2, arg3: A3, arg4: A4, arg5: A5) => Observable<void>;
-
-export function bindNodeCallback(callbackFunc: (...args: any[]) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any[]>;
 /**
  * Converts a Node.js-style callback API to a function that returns an
  * Observable.
@@ -252,7 +121,7 @@ export function bindNodeCallback(callbackFunc: (...args: any[]) => any, schedule
  * deliver.
  */
 export function bindNodeCallback(
-  callbackFunc: (...args: any[]) => any,
+  callbackFunc: (...args: any[]) => void,
   resultSelector?: ((...args: any[]) => any) | SchedulerLike,
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<any> {

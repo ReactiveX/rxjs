@@ -85,11 +85,11 @@ describe('bindCallback', () => {
     });
 
     it('should set callback function context to context of returned function', () => {
-      function callback(this: any, cb: Function) {
+      function callback(this: any, cb: (arg: number) => void) {
         cb(this.datum);
       }
 
-      const boundCallback = bindCallback<number>(callback);
+      const boundCallback = bindCallback(callback);
       const results: Array<string|number> = [];
 
       boundCallback.apply({datum: 5})
@@ -168,11 +168,11 @@ describe('bindCallback', () => {
     });
 
     it('should set callback function context to context of returned function', () => {
-      function callback(this: { datum: number }, cb: Function) {
+      function callback(this: { datum: number }, cb: (num: number) => void) {
         cb(this.datum);
       }
 
-      const boundCallback = bindCallback<number>(callback, rxTestScheduler);
+      const boundCallback = bindCallback(callback, rxTestScheduler);
       const results: Array<string|number> = [];
 
       boundCallback.apply({ datum: 5 })
