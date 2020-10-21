@@ -202,7 +202,7 @@ export type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;
  * If you pass in `[Observable<string>, Observable<number>]` you would
  * get back a type of `string | number`.
  */
-export type ObservedValueUnionFromArray<X> = X extends Array<ObservableInput<infer T>> ? T : never;
+export type ObservedValueUnionFromArray<X> = X extends readonly ObservableInput<infer T>[] ? T : never;
 
 /** @deprecated use {@link ObservedValueUnionFromArray} */
 export type ObservedValuesFromArray<X> = ObservedValueUnionFromArray<X>;
@@ -217,12 +217,12 @@ export type ObservedValueTupleFromArray<X> = { [K in keyof X]: ObservedValueOf<X
 
 /**
  * Used to infer types from arguments to functions like {@link forkJoin}.
- * So that you can have `forkJoin([Observable<A>, PromiseLike<B>]): Observable<[A, B]>` 
+ * So that you can have `forkJoin([Observable<A>, PromiseLike<B>]): Observable<[A, B]>`
  * et al.
  */
 export type ObservableInputTuple<T> = {
-  [K in keyof T]: ObservableInput<T[K]>
-}
+  [K in keyof T]: ObservableInput<T[K]>;
+};
 
 /**
  * Constructs a new tuple with the specified type at the head.
@@ -259,3 +259,9 @@ export type ValueFromNotification<T> = T extends { kind: 'N' | 'E' | 'C' }
       : undefined
     : never
   : never;
+
+/**
+ * Combines two Tuples into one. For example: `Concat<[A, B], [C, D]>` is `[A, B, C, D]`.
+ * For use with functions that have a tailing SchedulerLike, or perhaps a concurrency limit and a SchedulerLike.
+ */
+export type Concat<T extends readonly unknown[], E extends readonly unknown[]> = readonly [...T, ...E];

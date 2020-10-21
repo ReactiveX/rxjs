@@ -113,6 +113,8 @@ export declare function concat<O1 extends ObservableInput<any>, O2 extends Obser
 export declare function concat<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, O6 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, v4: O4, v5: O5, v6: O6, scheduler: SchedulerLike): Observable<ObservedValueOf<O1> | ObservedValueOf<O2> | ObservedValueOf<O3> | ObservedValueOf<O4> | ObservedValueOf<O5> | ObservedValueOf<O6>>;
 export declare function concat<A extends ObservableInput<any>[]>(...observables: A): Observable<ObservedValueUnionFromArray<A>>;
 
+export declare type Concat<T extends readonly unknown[], E extends readonly unknown[]> = readonly [...T, ...E];
+
 export declare const config: {
     onUnhandledError: ((err: any) => void) | null;
     Promise: PromiseConstructorLike;
@@ -210,34 +212,14 @@ export declare function isObservable<T>(obj: any): obj is Observable<T>;
 
 export declare function lastValueFrom<T>(source: Observable<T>): Promise<T>;
 
-export declare function merge<T>(v1: ObservableInput<T>, scheduler: SchedulerLike): Observable<T>;
-export declare function merge<T>(v1: ObservableInput<T>, concurrent: number, scheduler: SchedulerLike): Observable<T>;
-export declare function merge<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>, scheduler: SchedulerLike): Observable<T | T2>;
-export declare function merge<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>, concurrent: number, scheduler: SchedulerLike): Observable<T | T2>;
-export declare function merge<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, scheduler: SchedulerLike): Observable<T | T2 | T3>;
-export declare function merge<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, concurrent: number, scheduler: SchedulerLike): Observable<T | T2 | T3>;
-export declare function merge<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4>;
-export declare function merge<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, concurrent: number, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4>;
-export declare function merge<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4 | T5>;
-export declare function merge<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, concurrent: number, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4 | T5>;
-export declare function merge<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4 | T5 | T6>;
-export declare function merge<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, concurrent: number, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4 | T5 | T6>;
-export declare function merge<T>(v1: ObservableInput<T>): Observable<T>;
-export declare function merge<T>(v1: ObservableInput<T>, concurrent: number): Observable<T>;
-export declare function merge<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>): Observable<T | T2>;
-export declare function merge<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>, concurrent: number): Observable<T | T2>;
-export declare function merge<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<T | T2 | T3>;
-export declare function merge<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, concurrent: number): Observable<T | T2 | T3>;
-export declare function merge<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<T | T2 | T3 | T4>;
-export declare function merge<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, concurrent: number): Observable<T | T2 | T3 | T4>;
-export declare function merge<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<T | T2 | T3 | T4 | T5>;
-export declare function merge<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, concurrent: number): Observable<T | T2 | T3 | T4 | T5>;
-export declare function merge<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<T | T2 | T3 | T4 | T5 | T6>;
-export declare function merge<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, concurrent: number): Observable<T | T2 | T3 | T4 | T5 | T6>;
-export declare function merge<T>(...observables: (ObservableInput<T> | number)[]): Observable<T>;
-export declare function merge<T>(...observables: (ObservableInput<T> | SchedulerLike | number)[]): Observable<T>;
-export declare function merge<T, R>(...observables: (ObservableInput<any> | number)[]): Observable<R>;
-export declare function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLike | number)[]): Observable<R>;
+export declare function merge<O extends ObservableInput<unknown>>(sources: O[], concurrent: number, scheduler: SchedulerLike): Observable<ObservedValueOf<O>>;
+export declare function merge<O extends ObservableInput<unknown>>(sources: O[], scheduler: SchedulerLike): Observable<ObservedValueOf<O>>;
+export declare function merge<O extends ObservableInput<unknown>>(sources: O[], concurrent: number): Observable<ObservedValueOf<O>>;
+export declare function merge<O extends ObservableInput<unknown>>(sources: O[]): Observable<ObservedValueOf<O>>;
+export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...sources: Sources): Observable<ObservedValueUnionFromArray<Sources>>;
+export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...sources: Concat<Sources, [number]>): Observable<ObservedValueUnionFromArray<Sources>>;
+export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...args: Concat<Sources, [SchedulerLike]>): Observable<ObservedValueUnionFromArray<Sources>>;
+export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...args: Concat<Sources, [number, SchedulerLike]>): Observable<ObservedValueUnionFromArray<Sources>>;
 
 export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> {
 }
@@ -349,7 +331,7 @@ export declare type ObservedValueTupleFromArray<X> = {
     [K in keyof X]: ObservedValueOf<X[K]>;
 };
 
-export declare type ObservedValueUnionFromArray<X> = X extends Array<ObservableInput<infer T>> ? T : never;
+export declare type ObservedValueUnionFromArray<X> = X extends readonly ObservableInput<infer T>[] ? T : never;
 
 export interface Observer<T> {
     closed?: boolean;
