@@ -108,8 +108,8 @@ describe('single array', () => {
 })
 
 describe('the unhappy path', () => {
-  // These here are unfortunate. We'll need to figure out something for this.
-  const o1 = merge(1, 2, 3, 4, 5); // $ExpectType Observable<unknown>
-  const o3 = merge(a$, 2, b$); // $ExpectType Observable<unknown>
-  const o2 = merge(a$, asapScheduler, b$); // $ExpectType Observable<unknown>
+  const o1 = merge(1, 2, 3, 4, 5); // $ExpectError
+  const o2 = merge(a$, asapScheduler, b$); // $ExpectError
+  const o3 = merge(a$, 2, b$); // $ExpectError
+  const o4 = merge(a$, 2, asapScheduler, b$); // $ExpectError
 });

@@ -259,3 +259,8 @@ export type ValueFromNotification<T> = T extends { kind: 'N' | 'E' | 'C' }
       : undefined
     : never
   : never;
+
+/**
+ * Used to help deal with rest arguments of many observable inputs that are tailed by schedulers, etc.
+ */
+export type OneOrMoreUnknownObservableInputs = readonly [ObservableInput<unknown>, ...unknown[]];

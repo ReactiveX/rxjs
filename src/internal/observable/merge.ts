@@ -1,6 +1,6 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { ObservableInput, ObservedValueOf, ObservedValueUnionFromArray, SchedulerLike } from '../types';
+import { ObservableInput, ObservedValueOf, ObservedValueUnionFromArray, SchedulerLike, OneOrMoreUnknownObservableInputs } from '../types';
 import { mergeAll } from '../operators/mergeAll';
 import { internalFromArray } from './fromArray';
 import { argsOrArgArray } from '../util/argsOrArgArray';
@@ -22,22 +22,28 @@ export function merge<O extends ObservableInput<unknown>>(sources: O[], concurre
 
 export function merge<O extends ObservableInput<unknown>>(sources: O[]): Observable<ObservedValueOf<O>>;
 
+/** @deprecated use {@link scheduled} and {@link mergeAll} (e.g. `scheduled([ob1, ob2, ob3], scheduler).pipe(mergeAll())*/
+export function merge<T>(source: ObservableInput<T>, concurrency: number, scheduler: SchedulerLike): Observable<T>;
+export function merge<T>(source: ObservableInput<T>, concurrency: number): Observable<T>;
+/** @deprecated use {@link scheduled} and {@link mergeAll} (e.g. `scheduled([ob1, ob2, ob3], scheduler).pipe(mergeAll())*/
+export function merge<T>(source: ObservableInput<T>, scheduler: SchedulerLike): Observable<T>;
+
 export function merge<Sources extends readonly ObservableInput<unknown>[]>(
   ...sources: Sources
 ): Observable<ObservedValueUnionFromArray<Sources>>;
 
-export function merge<Sources extends readonly ObservableInput<unknown>[]>(
-  ...sources: [...Sources, number]
+/** @deprecated use {@link scheduled} and {@link mergeAll} (e.g. `scheduled([ob1, ob2, ob3], scheduler).pipe(mergeAll())*/
+export function merge<Sources extends OneOrMoreUnknownObservableInputs>(
+  ...args: [...Sources, number, SchedulerLike]
 ): Observable<ObservedValueUnionFromArray<Sources>>;
 
 /** @deprecated use {@link scheduled} and {@link mergeAll} (e.g. `scheduled([ob1, ob2, ob3], scheduler).pipe(mergeAll())*/
-export function merge<Sources extends readonly ObservableInput<unknown>[]>(
+export function merge<Sources extends OneOrMoreUnknownObservableInputs>(
   ...args: [...Sources, SchedulerLike]
 ): Observable<ObservedValueUnionFromArray<Sources>>;
 
-/** @deprecated use {@link scheduled} and {@link mergeAll} (e.g. `scheduled([ob1, ob2, ob3], scheduler).pipe(mergeAll())*/
-export function merge<Sources extends readonly ObservableInput<unknown>[]>(
-  ...args: [...Sources, number, SchedulerLike]
+export function merge<Sources extends OneOrMoreUnknownObservableInputs>(
+  ...sources: [...Sources, number]
 ): Observable<ObservedValueUnionFromArray<Sources>>;
 
 /**

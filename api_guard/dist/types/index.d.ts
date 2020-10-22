@@ -214,10 +214,13 @@ export declare function merge<O extends ObservableInput<unknown>>(sources: O[], 
 export declare function merge<O extends ObservableInput<unknown>>(sources: O[], scheduler: SchedulerLike): Observable<ObservedValueOf<O>>;
 export declare function merge<O extends ObservableInput<unknown>>(sources: O[], concurrent: number): Observable<ObservedValueOf<O>>;
 export declare function merge<O extends ObservableInput<unknown>>(sources: O[]): Observable<ObservedValueOf<O>>;
+export declare function merge<T>(source: ObservableInput<T>, concurrency: number, scheduler: SchedulerLike): Observable<T>;
+export declare function merge<T>(source: ObservableInput<T>, concurrency: number): Observable<T>;
+export declare function merge<T>(source: ObservableInput<T>, scheduler: SchedulerLike): Observable<T>;
 export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...sources: Sources): Observable<ObservedValueUnionFromArray<Sources>>;
-export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...sources: [...Sources, number]): Observable<ObservedValueUnionFromArray<Sources>>;
-export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...args: [...Sources, SchedulerLike]): Observable<ObservedValueUnionFromArray<Sources>>;
-export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...args: [...Sources, number, SchedulerLike]): Observable<ObservedValueUnionFromArray<Sources>>;
+export declare function merge<Sources extends OneOrMoreUnknownObservableInputs>(...args: [...Sources, number, SchedulerLike]): Observable<ObservedValueUnionFromArray<Sources>>;
+export declare function merge<Sources extends OneOrMoreUnknownObservableInputs>(...args: [...Sources, SchedulerLike]): Observable<ObservedValueUnionFromArray<Sources>>;
+export declare function merge<Sources extends OneOrMoreUnknownObservableInputs>(...sources: [...Sources, number]): Observable<ObservedValueUnionFromArray<Sources>>;
 
 export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> {
 }
@@ -354,6 +357,8 @@ export declare function of<T>(value: T): Observable<T>;
 export declare function of<T, U>(value1: T, value2: U): Observable<T | U>;
 export declare function of<T, U, V>(value1: T, value2: U, value3: V): Observable<T | U | V>;
 export declare function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<A>>;
+
+export declare type OneOrMoreUnknownObservableInputs = readonly [ObservableInput<unknown>, ...unknown[]];
 
 export declare function onErrorResumeNext(): Observable<never>;
 export declare function onErrorResumeNext<O extends ObservableInput<any>>(arrayOfSources: O[]): Observable<ObservedValueOf<O>>;
