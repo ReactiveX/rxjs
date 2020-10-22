@@ -1,6 +1,6 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { Concat, ObservableInput, ObservedValueOf, ObservedValueUnionFromArray, SchedulerLike } from '../types';
+import { ObservableInput, ObservedValueOf, ObservedValueUnionFromArray, SchedulerLike } from '../types';
 import { mergeAll } from '../operators/mergeAll';
 import { internalFromArray } from './fromArray';
 import { argsOrArgArray } from '../util/argsOrArgArray';
@@ -27,17 +27,17 @@ export function merge<Sources extends readonly ObservableInput<unknown>[]>(
 ): Observable<ObservedValueUnionFromArray<Sources>>;
 
 export function merge<Sources extends readonly ObservableInput<unknown>[]>(
-  ...sources: Concat<Sources, [number]>
+  ...sources: [...Sources, number]
 ): Observable<ObservedValueUnionFromArray<Sources>>;
 
 /** @deprecated use {@link scheduled} and {@link mergeAll} (e.g. `scheduled([ob1, ob2, ob3], scheduler).pipe(mergeAll())*/
 export function merge<Sources extends readonly ObservableInput<unknown>[]>(
-  ...args: Concat<Sources, [SchedulerLike]>
+  ...args: [...Sources, SchedulerLike]
 ): Observable<ObservedValueUnionFromArray<Sources>>;
 
 /** @deprecated use {@link scheduled} and {@link mergeAll} (e.g. `scheduled([ob1, ob2, ob3], scheduler).pipe(mergeAll())*/
 export function merge<Sources extends readonly ObservableInput<unknown>[]>(
-  ...args: Concat<Sources, [number, SchedulerLike]>
+  ...args: [...Sources, number, SchedulerLike]
 ): Observable<ObservedValueUnionFromArray<Sources>>;
 
 /**

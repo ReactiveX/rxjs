@@ -113,8 +113,6 @@ export declare function concat<O1 extends ObservableInput<any>, O2 extends Obser
 export declare function concat<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, O6 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, v4: O4, v5: O5, v6: O6, scheduler: SchedulerLike): Observable<ObservedValueOf<O1> | ObservedValueOf<O2> | ObservedValueOf<O3> | ObservedValueOf<O4> | ObservedValueOf<O5> | ObservedValueOf<O6>>;
 export declare function concat<A extends ObservableInput<any>[]>(...observables: A): Observable<ObservedValueUnionFromArray<A>>;
 
-export declare type Concat<T extends readonly unknown[], E extends readonly unknown[]> = readonly [...T, ...E];
-
 export declare const config: {
     onUnhandledError: ((err: any) => void) | null;
     Promise: PromiseConstructorLike;
@@ -217,9 +215,9 @@ export declare function merge<O extends ObservableInput<unknown>>(sources: O[], 
 export declare function merge<O extends ObservableInput<unknown>>(sources: O[], concurrent: number): Observable<ObservedValueOf<O>>;
 export declare function merge<O extends ObservableInput<unknown>>(sources: O[]): Observable<ObservedValueOf<O>>;
 export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...sources: Sources): Observable<ObservedValueUnionFromArray<Sources>>;
-export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...sources: Concat<Sources, [number]>): Observable<ObservedValueUnionFromArray<Sources>>;
-export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...args: Concat<Sources, [SchedulerLike]>): Observable<ObservedValueUnionFromArray<Sources>>;
-export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...args: Concat<Sources, [number, SchedulerLike]>): Observable<ObservedValueUnionFromArray<Sources>>;
+export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...sources: [...Sources, number]): Observable<ObservedValueUnionFromArray<Sources>>;
+export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...args: [...Sources, SchedulerLike]): Observable<ObservedValueUnionFromArray<Sources>>;
+export declare function merge<Sources extends readonly ObservableInput<unknown>[]>(...args: [...Sources, number, SchedulerLike]): Observable<ObservedValueUnionFromArray<Sources>>;
 
 export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> {
 }

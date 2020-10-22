@@ -259,9 +259,3 @@ export type ValueFromNotification<T> = T extends { kind: 'N' | 'E' | 'C' }
       : undefined
     : never
   : never;
-
-/**
- * Combines two Tuples into one. For example: `Concat<[A, B], [C, D]>` is `[A, B, C, D]`.
- * For use with functions that have a tailing SchedulerLike, or perhaps a concurrency limit and a SchedulerLike.
- */
-export type Concat<T extends readonly unknown[], E extends readonly unknown[]> = readonly [...T, ...E];
