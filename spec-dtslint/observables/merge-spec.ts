@@ -112,4 +112,6 @@ describe('the unhappy path', () => {
   const o2 = merge(a$, asapScheduler, b$); // $ExpectError
   const o3 = merge(a$, 2, b$); // $ExpectError
   const o4 = merge(a$, 2, asapScheduler, b$); // $ExpectError
+  const o5 = merge(a$, 1, 2, 3, 4, 5); // $ExpectError
+  const o6 = merge(a$, 1, 2, 3, 4, 5, asapScheduler); // $ExpectError
 });

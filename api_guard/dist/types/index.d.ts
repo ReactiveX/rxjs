@@ -358,7 +358,7 @@ export declare function of<T, U>(value1: T, value2: U): Observable<T | U>;
 export declare function of<T, U, V>(value1: T, value2: U, value3: V): Observable<T | U | V>;
 export declare function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<A>>;
 
-export declare type OneOrMoreUnknownObservableInputs = readonly [ObservableInput<unknown>, ...unknown[]];
+export declare type OneOrMoreUnknownObservableInputs = readonly [ObservableInput<unknown>, ...ObservableInput<unknown>[]];
 
 export declare function onErrorResumeNext(): Observable<never>;
 export declare function onErrorResumeNext<O extends ObservableInput<any>>(arrayOfSources: O[]): Observable<ObservedValueOf<O>>;
