@@ -96,8 +96,7 @@ export declare function endWith<T, A, B, C, D, E>(v1: A, v2: B, v3: C, v4: D, v5
 export declare function endWith<T, A, B, C, D, E, F>(v1: A, v2: B, v3: C, v4: D, v5: E, v6: F, scheduler: SchedulerLike): OperatorFunction<T, T | A | B | C | D | E | F>;
 export declare function endWith<T, A extends any[] = T[]>(...args: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
-export declare function every<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, thisArg?: any): OperatorFunction<T, S>;
-export declare function every<T>(predicate: BooleanConstructor, thisArg?: any): OperatorFunction<T, TruthyTypesOf<T>>;
+export declare function every<T>(predicate: BooleanConstructor, thisArg?: any): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
 export declare function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): OperatorFunction<T, boolean>;
 
 export declare function exhaust<T>(): OperatorFunction<ObservableInput<T>, T>;
@@ -299,7 +298,9 @@ export declare function takeLast<T>(count: number): MonoTypeOperatorFunction<T>;
 export declare function takeUntil<T>(notifier: ObservableInput<any>): MonoTypeOperatorFunction<T>;
 
 export declare function takeWhile<T>(predicate: (value: T, index: number) => false, inclusive?: boolean): OperatorFunction<T, never>;
-export declare function takeWhile<T>(predicate: BooleanConstructor, inclusive?: boolean): OperatorFunction<T, Exclude<T, Falsy> extends never ? never : T>;
+export declare function takeWhile<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? never : T>;
+export declare function takeWhile<T>(predicate: BooleanConstructor, inclusive: false): OperatorFunction<T, Exclude<T, Falsy> extends never ? never : T>;
+export declare function takeWhile<T>(predicate: BooleanConstructor, inclusive: true): MonoTypeOperatorFunction<T>;
 export declare function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
 export declare function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S, inclusive: false): OperatorFunction<T, S>;
 export declare function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive?: boolean): MonoTypeOperatorFunction<T>;

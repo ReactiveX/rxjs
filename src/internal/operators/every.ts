@@ -1,14 +1,13 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { OperatorFunction, TruthyTypesOf } from '../types';
+import { Falsy, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
-export function every<T, S extends T>(
-  predicate: (value: T, index: number, source: Observable<T>) => value is S,
+export function every<T>(
+  predicate: BooleanConstructor,
   thisArg?: any
-): OperatorFunction<T, S>;
-export function every<T>(predicate: BooleanConstructor, thisArg?: any): OperatorFunction<T, TruthyTypesOf<T>>;
+): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
 export function every<T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
   thisArg?: any
