@@ -20,7 +20,7 @@ aliasRoot.map((alias) => path.resolve(__dirname, `../${alias}`)).forEach((alias)
 aliasRoot.forEach((alias) => {
   const pkgManifest = {
     "name": `rxjs/${alias}`,
-    "typings": `../dist/types/${alias}/index.d.ts`,
+    "types": `../dist/types/${alias}/index.d.ts`,
     "main": `../dist/cjs/${alias}/index.js`,
     "module": `../dist/esm5/${alias}/index.js`,
     "es2015": `../dist/esm/${alias}/index.js`,
