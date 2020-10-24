@@ -1,129 +1,159 @@
+/** @prettier */
 import { expect } from 'chai';
 import { elementAt, mergeMap } from 'rxjs/operators';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { TestScheduler } from 'rxjs/testing';
 import { ArgumentOutOfRangeError, of, range, Observable } from 'rxjs';
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {elementAt} */
-describe('elementAt operator', () => {
-  it('should return last element by zero-based index', () => {
-    const source = hot('--a--b--c-d---|');
-    const subs =       '^       !      ';
-    const expected =   '--------(c|)   ';
+describe('elementAt', () => {
+  let testScheduler: TestScheduler;
 
-    expectObservable((<any>source).pipe(elementAt(2))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+  beforeEach(() => {
+    testScheduler = new TestScheduler(observableMatcher);
+  });
+
+  it('should return next to last element by zero-based index', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--c-d---|');
+      const e1subs = '  ^-------!      ';
+      const expected = '--------(c|)   ';
+
+      expectObservable(e1.pipe(elementAt(2))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should return first element by zero-based index', () => {
-    const source = hot('--a--b--c--|');
-    const subs =       '^ !';
-    const expected =   '--(a|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--c--|');
+      const e1subs = '  ^-!';
+      const expected = '--(a|)';
 
-    expectObservable((<any>source).pipe(elementAt(0))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(elementAt(0))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should return non-first element by zero-based index', () => {
-    const source = hot('--a--b--c--d--e--f--|');
-    const subs =       '^          !';
-    const expected =   '-----------(d|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--c--d--e--f--|');
+      const e1subs = '  ^----------!         ';
+      const expected = '-----------(d|)      ';
 
-    expectObservable((<any>source).pipe(elementAt(3))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(elementAt(3))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should return last element by zero-based index', () => {
-    const source = hot('--a--b--c--|');
-    const subs =       '^       !';
-    const expected =   '--------(c|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--c--|');
+      const e1subs = '  ^-------!   ';
+      const expected = '--------(c|)';
 
-    expectObservable((<any>source).pipe(elementAt(2))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(elementAt(2))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should raise error if source is Empty Observable', () => {
-    const source = cold('|');
-    const subs =        '(^!)';
-    const expected =    '#';
+  it('should raise error if e1 is Empty Observable', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' |   ');
+      const e1subs = '  (^!)';
+      const expected = '#   ';
 
-    expectObservable((<any>source).pipe(elementAt(0))).toBe(expected, undefined, new ArgumentOutOfRangeError());
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(elementAt(0))).toBe(expected, undefined, new ArgumentOutOfRangeError());
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should propagate error if source is Throw Observable', () => {
-    const source = cold('#');
-    const subs =        '(^!)';
-    const expected =    '#';
+  it('should raise error if source throws', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' #   ');
+      const e1subs = '  (^!)';
+      const expected = '#   ';
 
-    expectObservable((<any>source).pipe(elementAt(0))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(elementAt(0))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should return Never if source is Never Observable', () => {
-    const source = cold('-');
-    const subs =        '^';
-    const expected =    '-';
+  it('should not complete if source never completes', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' -');
+      const expected = '-';
+      const e1subs = '  ^';
 
-    expectObservable((<any>source).pipe(elementAt(0))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(elementAt(0))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should allow unsubscribing early and explicitly', () => {
-    const source = hot('--a--b--c--|');
-    const subs =       '^     !     ';
-    const expected =   '-------     ';
-    const unsub =      '      !     ';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--c--|');
+      const e1subs = '  ^-----!     ';
+      const expected = '-------     ';
+      const unsub = '   ------!     ';
 
-    const result = (<any>source).pipe(elementAt(2));
+      const result = e1.pipe(elementAt(2));
 
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should not break unsubscription chains when result Observable is unsubscribed', () => {
-    const source = hot('--a--b--c--|');
-    const subs =       '^     !     ';
-    const expected =   '-------     ';
-    const unsub =      '      !     ';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--c--|');
+      const e1subs = '  ^-----!     ';
+      const expected = '-------     ';
+      const unsub = '   ------!     ';
 
-    const result = (<any>source).pipe(
-      mergeMap((x: any) => of(x)),
-      elementAt(2),
-      mergeMap((x: any) => of(x))
-    );
+      const result = e1.pipe(
+        mergeMap((x: any) => of(x)),
+        elementAt(2),
+        mergeMap((x: any) => of(x))
+      );
 
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should throw if index is smaller than zero', () => {
-    expect(() => { range(0, 10).pipe(elementAt(-1)); })
-      .to.throw(ArgumentOutOfRangeError);
+    expect(() => {
+      range(0, 10).pipe(elementAt(-1));
+    }).to.throw(ArgumentOutOfRangeError);
   });
 
   it('should raise error if index is out of range but does not have default value', () => {
-    const source = hot('--a--|');
-    const subs =       '^    !';
-    const expected =   '-----#';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--|');
+      const e1subs = '  ^----!';
+      const expected = '-----#';
 
-    expectObservable((<any>source).pipe(elementAt(3)))
-      .toBe(expected, null, new ArgumentOutOfRangeError());
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(elementAt(3))).toBe(expected, null, new ArgumentOutOfRangeError());
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should return default value if index is out of range', () => {
-    const source = hot('--a--|');
-    const subs =       '^    !';
-    const expected =   '-----(x|)';
-    const defaultValue = '42';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--|   ');
+      const e1subs = '  ^----!   ';
+      const expected = '-----(x|)';
+      const defaultValue = '42';
 
-    expectObservable(source.pipe(elementAt(3, defaultValue))).toBe(expected, { x: defaultValue });
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(elementAt(3, defaultValue))).toBe(expected, { x: defaultValue });
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable<number>(subscriber => {
+    const synchronousObservable = new Observable<number>((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits, it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -132,9 +162,9 @@ describe('elementAt operator', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      elementAt(2),
-    ).subscribe(() => { /* noop */ });
+    synchronousObservable.pipe(elementAt(2)).subscribe(() => {
+      /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
