@@ -2,6 +2,7 @@
 import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
+import { noop } from '../util/noop';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { innerFrom } from '../observable/from';
 
@@ -68,8 +69,7 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
       b && subscriber.next(b);
 
       // Get a new closing notifier and subscribe to it.
-      // TODO: We probably want to stop counting `completion` as a notification here.
-      innerFrom(closingSelector()).subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, undefined, openBuffer)));
+      innerFrom(closingSelector()).subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, undefined, noop)));
     };
 
     // Start the first buffer.
