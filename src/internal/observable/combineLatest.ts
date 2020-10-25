@@ -332,8 +332,6 @@ export function combineLatest<R>(
 export function combineLatest(sourcesObject: { [K in any]: never }): Observable<never>;
 export function combineLatest<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
-/* tslint:enable:max-line-length */
-
 /**
  * Combines multiple Observables to create an Observable whose values are
  * calculated from the latest values of each of its input Observables.
