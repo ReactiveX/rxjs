@@ -136,4 +136,9 @@ describe('combineLatest({})', () => {
   it('should work for the simple case', () => {
     const res = combineLatest({ foo: a$, bar: b$, baz: c$ }); // $ExpectType Observable<{ foo: A; bar: B; baz: C; }>
   });
+
+  it('should not rely upon the excess-properties behavior to identify empty objects', () => {
+    const obj = { foo: a$, bar: b$, baz: c$ };
+    const res = combineLatest(obj); // $ExpectType Observable<{ foo: A; bar: B; baz: C; }>
+  });
 });

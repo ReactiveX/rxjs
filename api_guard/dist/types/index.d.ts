@@ -43,7 +43,9 @@ export declare function bindNodeCallback<A extends readonly unknown[], R extends
 export declare function combineLatest(sources: []): Observable<never>;
 export declare function combineLatest<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
 export declare function combineLatest<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
-export declare function combineLatest(sourcesObject: {}): Observable<never>;
+export declare function combineLatest(sourcesObject: {
+    [K in any]: never;
+}): Observable<never>;
 export declare function combineLatest<T>(sourcesObject: T): Observable<{
     [K in keyof T]: ObservedValueOf<T[K]>;
 }>;
@@ -166,7 +168,9 @@ export declare function firstValueFrom<T>(source: Observable<T>): Promise<T>;
 export declare function forkJoin(sources: []): Observable<never>;
 export declare function forkJoin<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
 export declare function forkJoin<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
-export declare function forkJoin(sourcesObject: {}): Observable<never>;
+export declare function forkJoin(sourcesObject: {
+    [K in any]: never;
+}): Observable<never>;
 export declare function forkJoin<T>(sourcesObject: T): Observable<{
     [K in keyof T]: ObservedValueOf<T[K]>;
 }>;

@@ -67,6 +67,11 @@ describe('forkJoin({})', () => {
   it('should work for the simple case', () => {
     const res = forkJoin({ foo: of(1), bar: of('two'), baz: of(false) }); // $ExpectType Observable<{ foo: number; bar: string; baz: boolean; }>
   });
+
+  it('should not rely upon the excess-properties behavior to identify empty objects', () => {
+    const obj = { foo: of(1), bar: of('two'), baz: of(false) };
+    const res = forkJoin(obj); // $ExpectType Observable<{ foo: number; bar: string; baz: boolean; }>
+  });
 });
 
 describe('forkJoin([])', () => {
