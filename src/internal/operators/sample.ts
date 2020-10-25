@@ -1,8 +1,8 @@
 /** @prettier */
 import { Observable } from '../Observable';
-
 import { MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';
+import { noop } from '../util/noop';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -14,7 +14,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * ![](sample.png)
  *
- * Whenever the `notifier` Observable emits a value or completes, `sample`
+ * Whenever the `notifier` Observable emits a value, `sample`
  * looks at the source Observable and emits whichever value it has most recently
  * emitted since the previous sampling, unless the source has not emitted
  * anything since the previous sampling. The `notifier` is subscribed to as soon
@@ -41,7 +41,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * source Observable.
  * @return {Observable<T>} An Observable that emits the results of sampling the
  * values emitted by the source Observable whenever the notifier Observable
- * emits value or completes.
+ * emits value.
  */
 export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
@@ -61,6 +61,6 @@ export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T
         subscriber.next(value);
       }
     };
-    notifier.subscribe(new OperatorSubscriber(subscriber, emit, undefined, emit));
+    notifier.subscribe(new OperatorSubscriber(subscriber, emit, undefined, noop));
   });
 }
