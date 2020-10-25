@@ -43,7 +43,9 @@ export declare function bindNodeCallback<A extends readonly unknown[], R extends
 export declare function combineLatest(sources: []): Observable<never>;
 export declare function combineLatest<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
 export declare function combineLatest<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
-export declare function combineLatest(sourcesObject: {}): Observable<never>;
+export declare function combineLatest(sourcesObject: {
+    [K in any]: never;
+}): Observable<never>;
 export declare function combineLatest<T>(sourcesObject: T): Observable<{
     [K in keyof T]: ObservedValueOf<T[K]>;
 }>;
@@ -93,12 +95,6 @@ export declare function combineLatest<O extends ObservableInput<any>, R>(array: 
 export declare function combineLatest<O extends ObservableInput<any>>(...observables: Array<O | SchedulerLike>): Observable<any[]>;
 export declare function combineLatest<O extends ObservableInput<any>, R>(...observables: Array<O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike>): Observable<R>;
 export declare function combineLatest<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R) | SchedulerLike>): Observable<R>;
-export declare function combineLatest(sourcesObject: {
-    [K in any]: never;
-}): Observable<never>;
-export declare function combineLatest<T>(sourcesObject: T): Observable<{
-    [K in keyof T]: ObservedValueOf<T[K]>;
-}>;
 
 export interface CompleteNotification {
     kind: 'C';
