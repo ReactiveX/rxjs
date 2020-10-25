@@ -1,173 +1,209 @@
+/** @prettier */
 import { expect } from 'chai';
 import { of, Observable } from 'rxjs';
 import { endWith, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-
-declare const rxTestScheduler: TestScheduler;
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {endWith} */
-describe('endWith operator', () => {
-  const defaultStartValue = 'x';
+describe('endWith', () => {
+  const defaultEndValue = 'x';
+  let testScheduler: TestScheduler;
+
+  beforeEach(() => {
+    testScheduler = new TestScheduler(observableMatcher);
+  });
 
   it('should append to a cold Observable', () => {
-    const e1 =  cold('---a--b--c--|');
-    const e1subs =   '^           !';
-    const expected = '---a--b--c--(s|)';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' ---a--b--c--|   ');
+      const e1subs = '  ^-----------!   ';
+      const expected = '---a--b--c--(s|)';
 
-    expectObservable(e1.pipe(endWith('s'))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith('s'))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should append numbers to a cold Observable', () => {
-    const values = { a: 1, b: 2, c: 3, s: 4 };
-    const e1 =  cold('---a--b--c--|', values);
-    const e1subs =   '^           !';
-    const expected = '---a--b--c--(s|)';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const values = { a: 1, b: 2, c: 3, s: 4 };
+      const e1 = cold(' ---a--b--c--|   ', values);
+      const e1subs = '  ^-----------!   ';
+      const expected = '---a--b--c--(s|)';
 
-    expectObservable(e1.pipe(endWith(values.s))).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith(values.s))).toBe(expected, values);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should end an observable with given value', () => {
-    const e1 =   hot('--a--|');
-    const e1subs =   '^    !';
-    const expected = '--a--(x|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--|   ');
+      const e1subs = '  ^----!   ';
+      const expected = '--a--(x|)';
 
-    expectObservable(e1.pipe(endWith(defaultStartValue))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith(defaultEndValue))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should not end with given value if source does not complete', () => {
-    const e1 =   hot('----a-');
-    const e1subs =   '^     ';
-    const expected = '----a-';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  ----a-');
+      const e1subs = '  ^     ';
+      const expected = '----a-';
 
-    expectObservable(e1.pipe(endWith(defaultStartValue))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith(defaultEndValue))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should not end with given value if source never emits and does not completes', () => {
-    const e1 =  cold('-');
-    const e1subs =   '^';
-    const expected = '-';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' -');
+      const e1subs = '  ^';
+      const expected = '-';
 
-    expectObservable(e1.pipe(endWith(defaultStartValue))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith(defaultEndValue))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should end with given value if source does not emit but does complete', () => {
-    const e1 =   hot('---|');
-    const e1subs =   '^  !';
-    const expected = '---(x|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  ---|   ');
+      const e1subs = '  ^--!   ';
+      const expected = '---(x|)';
 
-    expectObservable(e1.pipe(endWith(defaultStartValue))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith(defaultEndValue))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should emit given value and complete immediately if source is empty', () => {
-    const e1 =  cold('|');
-    const e1subs =   '(^!)';
-    const expected = '(x|)';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' |   ');
+      const e1subs = '  (^!)';
+      const expected = '(x|)';
 
-    expectObservable(e1.pipe(endWith(defaultStartValue))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith(defaultEndValue))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should end with given value and source both if source emits single value', () => {
-    const e1 =  cold('(a|)');
-    const e1subs =   '(^!)';
-    const expected = '(ax|)';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' (a|) ');
+      const e1subs = '  (^!) ';
+      const expected = '(ax|)';
 
-    expectObservable(e1.pipe(endWith(defaultStartValue))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith(defaultEndValue))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should end with given values when given more than one value', () => {
-    const e1 =   hot('-----a--|');
-    const e1subs =   '^       !';
-    const expected = '-----a--(yz|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  -----a--|    ');
+      const e1subs = '  ^-------!    ';
+      const expected = '-----a--(yz|)';
 
-    expectObservable(e1.pipe(endWith('y', 'z'))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith('y', 'z'))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should raise error and not end with given value if source raises error', () => {
-    const e1 =   hot('--#');
-    const e1subs =   '^ !';
-    const expected = '--#';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --#');
+      const e1subs = '  ^-!';
+      const expected = '--#';
 
-    expectObservable(e1.pipe(endWith(defaultStartValue))).toBe(expected, defaultStartValue);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith(defaultEndValue))).toBe(expected, defaultEndValue);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should raise error immediately and not end with given value if source throws error immediately', () => {
-    const e1 =  cold('#');
-    const e1subs =   '(^!)';
-    const expected = '#';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' #   ');
+      const e1subs = '  (^!)';
+      const expected = '#   ';
 
-    expectObservable(e1.pipe(endWith(defaultStartValue))).toBe(expected, defaultStartValue);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith(defaultEndValue))).toBe(expected, defaultEndValue);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should allow unsubscribing explicitly and early', () => {
-    const e1 =   hot('---a--b----c--d--|');
-    const unsub =    '         !        ';
-    const e1subs =   '^        !        ';
-    const expected = '---a--b---';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  ---a--b----c--d--|');
+      const e1subs = '  ^--------!        ';
+      const expected = '---a--b---        ';
+      const unsub = '   ---------!        ';
 
-    const result = e1.pipe(endWith('s', rxTestScheduler));
+      const result = e1.pipe(endWith('s'));
 
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should not break unsubscription chains when result is unsubscribed explicitly', () => {
-    const e1 =   hot('---a--b----c--d--|');
-    const e1subs =   '^        !        ';
-    const expected = '---a--b---        ';
-    const unsub =    '         !        ';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  ---a--b----c--d--|');
+      const e1subs = '  ^--------!        ';
+      const expected = '---a--b---        ';
+      const unsub = '   ---------!        ';
 
-    const result = e1.pipe(
-      mergeMap((x: string) => of(x)),
-      endWith('s', rxTestScheduler),
-      mergeMap((x: string) => of(x))
-    );
+      const result = e1.pipe(
+        mergeMap((x: string) => of(x)),
+        endWith('s'),
+        mergeMap((x: string) => of(x))
+      );
 
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should end with empty if given value is not specified', () => {
-    const e1 =   hot('-a-|');
-    const e1subs =   '^  !';
-    const expected = '-a-|';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  -a-|');
+      const e1subs = '  ^--!';
+      const expected = '-a-|';
 
-    expectObservable(e1.pipe(endWith(rxTestScheduler))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith())).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should accept scheduler as last argument with single value', () => {
-    const e1 =   hot('--a--|');
-    const e1subs =   '^    !';
-    const expected = '--a--(x|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--|   ');
+      const e1subs = '  ^----!   ';
+      const expected = '--a--(x|)';
 
-    expectObservable(e1.pipe(endWith(defaultStartValue, rxTestScheduler))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith(defaultEndValue, testScheduler))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should accept scheduler as last argument with multiple value', () => {
-    const e1 =   hot('-----a--|');
-    const e1subs =   '^       !';
-    const expected = '-----a--(yz|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  -----a--|    ');
+      const e1subs = '  ^-------!    ';
+      const expected = '-----a--(yz|)';
 
-    expectObservable(e1.pipe(endWith('y', 'z', rxTestScheduler))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(e1.pipe(endWith('y', 'z', testScheduler))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable<number>(subscriber => {
+    const synchronousObservable = new Observable<number>((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -176,10 +212,9 @@ describe('endWith operator', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      endWith(0),
-      take(3),
-    ).subscribe(() => { /* noop */ });
+    synchronousObservable.pipe(endWith(0), take(3)).subscribe(() => {
+      /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
