@@ -18,7 +18,7 @@ export function combineLatest<A extends readonly unknown[]>(sources: readonly [.
 export function combineLatest<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
 
 // combineLatest({a, b, c})
-export function combineLatest(sourcesObject: {}): Observable<never>;
+export function combineLatest(sourcesObject: { [K in any]: never }): Observable<never>;
 export function combineLatest<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 // If called with a single array, it "auto-spreads" the array, with result selector
@@ -327,10 +327,6 @@ export function combineLatest<O extends ObservableInput<any>, R>(
 export function combineLatest<R>(
   ...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R) | SchedulerLike>
 ): Observable<R>;
-
-// combineLatest({})
-export function combineLatest(sourcesObject: { [K in any]: never }): Observable<never>;
-export function combineLatest<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 /**
  * Combines multiple Observables to create an Observable whose values are
