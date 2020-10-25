@@ -32,7 +32,7 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * value arrives, it is forwarded to the output Observable, and then the timer
  * is enabled by calling the `durationSelector` function with the source value,
  * which returns the "duration" Observable. When the duration Observable emits a
- * value or completes, the timer is disabled, and this process repeats for the
+ * value, the timer is disabled, and this process repeats for the
  * next source value.
  *
  * ## Example
@@ -70,7 +70,7 @@ export function throttle<T>(
     let throttled: Subscription | null = null;
     let isComplete = false;
 
-    const throttlingDone = () => {
+    const endThrottling = () => {
       throttled?.unsubscribe();
       throttled = null;
       if (trailing) {
@@ -79,9 +79,14 @@ export function throttle<T>(
       }
     };
 
+    const cleanupThrottling = () => {
+      throttled = null;
+      isComplete && subscriber.complete();
+    };
+
     const startThrottle = (value: T) =>
       (throttled = innerFrom(durationSelector(value)).subscribe(
-        new OperatorSubscriber(subscriber, throttlingDone, undefined, throttlingDone)
+        new OperatorSubscriber(subscriber, endThrottling, undefined, cleanupThrottling)
       ));
 
     const send = () => {
