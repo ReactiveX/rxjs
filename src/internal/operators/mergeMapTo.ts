@@ -1,6 +1,5 @@
-import { OperatorFunction, ObservedValueOf } from '../../internal/types';
+import { OperatorFunction, ObservedValueOf, ObservableInput } from '../types';
 import { mergeMap } from './mergeMap';
-import { ObservableInput } from '../types';
 import { isFunction } from '../util/isFunction';
 
 /* tslint:disable:max-line-length */

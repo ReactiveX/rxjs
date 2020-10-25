@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { EmptyError } from '../util/EmptyError';
-import { OperatorFunction } from '../../internal/types';
+import { OperatorFunction } from '../types';
 import { filter } from './filter';
 import { take } from './take';
 import { defaultIfEmpty } from './defaultIfEmpty';
