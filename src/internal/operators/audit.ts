@@ -23,7 +23,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * Initially, the timer is disabled. As soon as the first source value arrives,
  * the timer is enabled by calling the `durationSelector` function with the
  * source value, which returns the "duration" Observable. When the duration
- * Observable emits a value or completes, the timer is disabled, then the most
+ * Observable emits a value, the timer is disabled, then the most
  * recent source value is emitted on the output Observable, and this process
  * repeats for the next source value.
  *
@@ -69,6 +69,11 @@ export function audit<T>(durationSelector: (value: T) => ObservableInput<any>): 
       isComplete && subscriber.complete();
     };
 
+    const cleanupDuration = () => {
+      durationSubscriber = null;
+      isComplete && subscriber.complete();
+    };
+
     source.subscribe(
       new OperatorSubscriber(
         subscriber,
@@ -77,7 +82,7 @@ export function audit<T>(durationSelector: (value: T) => ObservableInput<any>): 
           lastValue = value;
           if (!durationSubscriber) {
             innerFrom(durationSelector(value)).subscribe(
-              (durationSubscriber = new OperatorSubscriber(subscriber, endDuration, undefined, endDuration))
+              (durationSubscriber = new OperatorSubscriber(subscriber, endDuration, undefined, cleanupDuration))
             );
           }
         },
