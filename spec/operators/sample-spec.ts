@@ -56,12 +56,12 @@ describe('sample operator', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should sample when the notifier completes', () => {
+  it('should not sample when the notifier completes', () => {
     const e1 =   hot('----a-^------b----------|');
     const e1subs =         '^                 !';
     const e2 =   hot(      '-----x-----|');
     const e2subs =         '^          !';
-    const expected =       '-----------b------|';
+    const expected =       '------------------|';
 
     expectObservable(e1.pipe(sample(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
