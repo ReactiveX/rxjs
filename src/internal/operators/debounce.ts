@@ -1,8 +1,8 @@
 /** @prettier */
 import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
-
 import { operate } from '../util/lift';
+import { noop } from '../util/noop';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { innerFrom } from '../observable/from';
 
@@ -20,7 +20,7 @@ import { innerFrom } from '../observable/from';
  * This operator keeps track of the most recent notification from the source
  * Observable, and spawns a duration Observable by calling the
  * `durationSelector` function. The notification is emitted only when the duration
- * Observable emits a notification or completes, and if no other notification was emitted on
+ * Observable emits a next notification, and if no other notification was emitted on
  * the source Observable since the duration Observable was spawned. If a new
  * notification appears before the duration Observable emits, the previous notification will
  * not be emitted and a new duration is scheduled from `durationSelector` is scheduled.
@@ -97,7 +97,7 @@ export function debounce<T>(durationSelector: (value: T) => ObservableInput<any>
           lastValue = value;
           // Capture our duration subscriber, so we can unsubscribe it when we're notified
           // and we're going to emit the value.
-          durationSubscriber = new OperatorSubscriber(subscriber, emit, undefined, emit);
+          durationSubscriber = new OperatorSubscriber(subscriber, emit, undefined, noop);
           // Subscribe to the duration.
           innerFrom(durationSelector(value)).subscribe(durationSubscriber);
         },
