@@ -20,7 +20,7 @@ describe('debounce', () => {
   it('should debounce values by a specified cold Observable', () => {
     testScheduler.run(({ cold, hot, expectObservable }) => {
       const e1 = hot('  -a--bc--d---|');
-      const e2 = cold(' --|          ');
+      const e2 = cold(' --x          ');
       const expected = '---a---c--d-|';
 
       const result = e1.pipe(debounce(() => e2));
@@ -364,11 +364,11 @@ describe('debounce', () => {
     });
   });
 
-  it('should mirror the source when given an empty selector Observable', () => {
+  it('should ignore all values except last, when given an empty selector Observable', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  --------a-x-yz---bxy---z--c--x--y--z|');
-      const e1subs = '  ^-----------------------------------!';
-      const expected = '--------a-x-yz---bxy---z--c--x--y--z|';
+      const e1 = hot('  --------a-x-yz---bxy---z--c--x--y--z|   ');
+      const e1subs = '  ^-----------------------------------!   ';
+      const expected = '------------------------------------(z|)';
 
       function selectorFunction(x: string) {
         return EMPTY;
@@ -394,20 +394,20 @@ describe('debounce', () => {
     });
   });
 
-  it('should delay element by selector observable completes when it does not emits', () => {
+  it('should not delay by selector observable completes when it does not emits', () => {
     testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  --------a--------b--------c---------|');
-      const e1subs = '  ^-----------------------------------!';
-      const expected = '---------a---------b---------c------|';
+      const e1 = hot('  --------a--------b--------c---------|   ');
+      const e1subs = '  ^-----------------------------------!   ';
+      const expected = '------------------------------------(c|)';
       const selector = [
-        cold('                  -|                           '),
-        cold('                           --|                 '),
-        cold('                                    ---|       '),
+        cold('                  -|                              '),
+        cold('                           --|                    '),
+        cold('                                    ---|          '),
       ];
       const selectorSubs = [
-        '               --------^!                           ',
-        '               -----------------^-!                 ',
-        '               --------------------------^--!       ',
+        '               --------^!                              ',
+        '               -----------------^-!                    ',
+        '               --------------------------^--!          ',
       ];
 
       expectObservable(e1.pipe(debounce(() => selector.shift()!))).toBe(expected);
@@ -418,24 +418,24 @@ describe('debounce', () => {
     });
   });
 
-  it('should debounce by selector observable completes when it does not emits', () => {
+  it('should not debounce by selector observable completes when it does not emits', () => {
     testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  ----a--b-c---------de-------------|');
-      const e1subs = '  ^---------------------------------!';
-      const expected = '-----a------c------------e--------|';
+      const e1 = hot('  ----a--b-c---------de-------------|   ');
+      const e1subs = '  ^---------------------------------!   ';
+      const expected = '----------------------------------(e|)';
       const selector = [
-        cold('              -|                             '),
-        cold('                 --|                         '),
-        cold('                   ---|                      '),
-        cold('                             ----|           '),
-        cold('                              -----|         '),
+        cold('              -|                                '),
+        cold('                 --|                            '),
+        cold('                   ---|                         '),
+        cold('                             ----|              '),
+        cold('                              -----|            '),
       ];
       const selectorSubs = [
-        '               ----^!                             ',
-        '               -------^-!                         ',
-        '               ---------^--!                      ',
-        '               -------------------^!              ',
-        '               --------------------^----!         ',
+        '               ----^!                                ',
+        '               -------^-!                            ',
+        '               ---------^--!                         ',
+        '               -------------------^!                 ',
+        '               --------------------^----!            ',
       ];
 
       expectObservable(e1.pipe(debounce(() => selector.shift()!))).toBe(expected);
