@@ -4,8 +4,8 @@ import { concatAll } from '../operators/concatAll';
 import { internalFromArray } from './fromArray';
 import { popScheduler } from '../util/args';
 
-export function concat<T extends readonly unknown[]>(...inputsAndScheduler: [...ObservableInputTuple<T>, SchedulerLike]): Observable<T[number]>;
 export function concat<T extends readonly unknown[]>(...inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
+export function concat<T extends readonly unknown[]>(...inputsAndScheduler: [...ObservableInputTuple<T>, SchedulerLike]): Observable<T[number]>;
 
 /**
  * Creates an output Observable which sequentially emits all values from the first given
