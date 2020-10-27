@@ -13,9 +13,9 @@ describe('windowToggle', () => {
     const subs =               '^                        !';
     const e2 = cold(           '----w--------w--------w--|');
     const e2subs =             '^                        !';
-    const e3 = cold(               '-----|                ');
-    //                                     -----(c|)
-    //                                              -----(c|)
+    const e3 = cold(               '-----x                ');
+    //                                     -----x
+    //                                              -----x
     const e3subs = [           '    ^    !                ', // eslint-disable-line array-bracket-spacing
                              '             ^    !       ',
                              '                      ^  !'];
@@ -121,17 +121,17 @@ describe('windowToggle', () => {
     expectSubscriptions(closings[2].obs.subscriptions).toBe(closings[2].sub);
   });
 
-  it('should emit windows using constying empty delayed closings', () => {
+  it('should emit windows using varying empty delayed closings', () => {
     const e1 = hot('--a--^---b---c---d---e---f---g---h------|   ');
     const e1subs =      '^                                  !   ';
     const e2 =     cold('--x-----------y--------z---|           ');
     const e2subs =      '^                          !           ';
     const close = [cold(  '---------------|                     '),
-      cold(                         '----|                    '),
-      cold(                                  '---------------|')];
+      cold(                           '----|                    '),
+      cold(                                    '---------------|')];
     const expected =    '--x-----------y--------z-----------|   ';
-    const x = cold(       '--b---c---d---e|                     ');
-    const y = cold(                   '--e-|                    ');
+    const x = cold(       '--b---c---d---e---f---g---h------|   ');
+    const y = cold(                   '--e---f---g---h------|   ');
     const z = cold(                            '-g---h------|   ');
     const values = { x, y, z };
 
@@ -419,8 +419,8 @@ describe('windowToggle', () => {
     const e2subs =      '^                              !    ';
     const e3 =  EMPTY;
     const expected =    '---x---------------y---------------|';
-    const x = cold(        '|');
-    const y = cold(                        '|');
+    const x = cold(        '-b---c---d---e---f---g---h------|');
+    const y = cold(                        '-f---g---h------|');
     const values = { x, y };
 
     const result = e1.pipe(windowToggle(e2, () => e3));

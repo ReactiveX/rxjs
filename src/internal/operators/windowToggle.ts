@@ -50,7 +50,7 @@ import { arrRemove } from '../util/arrRemove';
  * windows.
  * @param {function(value: O): Observable} closingSelector A function that takes
  * the value emitted by the `openings` observable and returns an Observable,
- * which, when it emits (either `next` or `complete`), signals that the
+ * which, when it emits a next notification, signals that the
  * associated window should complete.
  * @return {Observable<Observable<T>>} An observable of windows, which in turn
  * are Observables.
@@ -92,7 +92,7 @@ export function windowToggle<T, O>(
 
           subscriber.next(window.asObservable());
 
-          closingSubscription.add(closingNotifier.subscribe(new OperatorSubscriber(subscriber, closeWindow, handleError, closeWindow)));
+          closingSubscription.add(closingNotifier.subscribe(new OperatorSubscriber(subscriber, closeWindow, handleError, noop)));
         },
         undefined,
         noop
