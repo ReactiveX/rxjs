@@ -7,26 +7,15 @@ import { mergeAll } from './mergeAll';
 import { popNumber, popScheduler } from '../util/args';
 
 /** @deprecated use {@link mergeWith} or static {@link merge} */
-export function merge<T>(concurrency?: number, scheduler?: SchedulerLike): OperatorFunction<T, T>;
+export function merge<T, A extends unknown[]>(...args: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 /** @deprecated use {@link mergeWith} or static {@link merge} */
-export function merge<T>(scheduler?: SchedulerLike): OperatorFunction<T, T>;
-
-// This is necessary because of the signature that follows this one:
+export function merge<T, A extends unknown[]>(...args: [...ObservableInputTuple<A>, number?]): OperatorFunction<T, T | A[number]>;
 /** @deprecated use {@link mergeWith} or static {@link merge} */
-export function merge<T, A extends unknown>(otherSource: ObservableInput<A>): OperatorFunction<T, T | A>;
-
-// Without the preceding signature, this signature breaks inference when passed a single source:
+export function merge<T, A extends unknown[]>(...args: [...ObservableInputTuple<A>, SchedulerLike?]): OperatorFunction<T, T | A[number]>;
 /** @deprecated use {@link mergeWith} or static {@link merge} */
 export function merge<T, A extends unknown[]>(
-  ...args: [...ObservableInputTuple<A>, number, SchedulerLike]
+  ...args: [...ObservableInputTuple<A>, number?, SchedulerLike?]
 ): OperatorFunction<T, T | A[number]>;
-
-/** @deprecated use {@link mergeWith} or static {@link merge} */
-export function merge<T, A extends unknown[]>(...args: [...ObservableInputTuple<A>, number]): OperatorFunction<T, T | A[number]>;
-/** @deprecated use {@link mergeWith} or static {@link merge} */
-export function merge<T, A extends unknown[]>(...args: [...ObservableInputTuple<A>, SchedulerLike]): OperatorFunction<T, T | A[number]>;
-/** @deprecated use {@link mergeWith} or static {@link merge} */
-export function merge<T, A extends unknown[]>(...args: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 
 export function merge<T>(...args: unknown[]): OperatorFunction<T, unknown> {
   const scheduler = popScheduler(args);
