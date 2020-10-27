@@ -1,5 +1,6 @@
 import { Observable } from './Observable';
 import { Subscription } from './Subscription';
+import './symbol/observable';
 
 /** OPERATOR INTERFACES */
 
