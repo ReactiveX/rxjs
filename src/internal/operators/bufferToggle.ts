@@ -69,10 +69,7 @@ export function bufferToggle<T, O>(
           // when the closing notifier emits, we can tear it down.
           const closingSubscription = new Subscription();
 
-          // This is captured here, because we emit on both next or
-          // if the closing notifier completes without value.
-          // TODO: We probably want to not have closing notifiers emit!!
-          const emit = () => {
+          const emitBuffer = () => {
             arrRemove(buffers, buffer);
             subscriber.next(buffer);
             closingSubscription.unsubscribe();
@@ -80,7 +77,7 @@ export function bufferToggle<T, O>(
 
           // The line below will add the subscription to the parent subscriber *and* the closing subscription.
           closingSubscription.add(
-            innerFrom(closingSelector(openValue)).subscribe(new OperatorSubscriber(subscriber, emit, undefined, emit))
+            innerFrom(closingSelector(openValue)).subscribe(new OperatorSubscriber(subscriber, emitBuffer, undefined, noop))
           );
         },
         undefined,
