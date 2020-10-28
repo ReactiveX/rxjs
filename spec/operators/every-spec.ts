@@ -201,75 +201,58 @@ describe('every', () => {
   });
 
   it('should emit true if scalar source matches with predicate', () => {
-    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const values = { a: 5 };
-      const e1 = cold(' (a|)', values);
-      const e1subs = '  (^!)';
+    testScheduler.run(({ expectObservable }) => {
+      const e1 = of(5);
       const expected = '(x|)';
 
       expectObservable(e1.pipe(every(predicate))).toBe(expected, { x: true });
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
 
   it('should emit false if scalar source does not match with predicate', () => {
-    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const values = { a: 3 };
-      const e1 = cold(' (a|)', values);
-      const e1subs = '  (^!)';
+    testScheduler.run(({ expectObservable }) => {
+      const e1 = of(3);
       const expected = '(x|)';
 
       expectObservable(e1.pipe(every(predicate))).toBe(expected, { x: false });
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
 
   it('should propagate error if predicate throws on scalar source', () => {
-    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const values = { a: 3 };
-      const e1 = cold(' (a|)', values);
-      const e1subs = '  (^!)';
-      const expected = '#   ';
+    testScheduler.run(({ expectObservable }) => {
+      const e1 = of(3);
+      const expected = '#';
 
       function faultyPredicate(x: number): boolean {
         throw 'error';
       }
 
       expectObservable(e1.pipe(every(faultyPredicate))).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
 
   it('should emit true if scalar array source matches with predicate', () => {
-    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const values = { a: 5, b: 10, c: 15, d: 20 };
-      const e1 = cold(' (abcd|)', values);
-      const e1subs = '  (^!)   ';
-      const expected = '(x|)   ';
+    testScheduler.run(({ expectObservable }) => {
+      const e1 = of(5, 10, 15, 20);
+      const expected = '(x|)';
 
       expectObservable(e1.pipe(every(predicate))).toBe(expected, { x: true });
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
 
   it('should emit false if scalar array source does not match with predicate', () => {
-    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const values = { a: 5, b: 9, c: 15, d: 20 };
-      const e1 = cold(' (abcd|)', values);
-      const e1subs = '  (^!)   ';
-      const expected = '(x|)   ';
+    testScheduler.run(({ expectObservable }) => {
+      const e1 = of(5, 9, 15, 20);
+      const expected = '(x|)';
 
       expectObservable(e1.pipe(every(predicate))).toBe(expected, { x: false });
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
 
   it('should propagate error if predicate eventually throws on scalar array source', () => {
-    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const values = { a: 5, b: 10, c: 15, d: 20 };
-      const e1 = cold(' (abcd|)', values);
-      const e1subs = '  (^!)   ';
-      const expected = '#      ';
+    testScheduler.run(({ expectObservable }) => {
+      const e1 = of(5, 10, 15, 20);
+      const expected = '#';
 
       function faultyPredicate(x: number) {
         if (x === 15) {
@@ -279,7 +262,6 @@ describe('every', () => {
       }
 
       expectObservable(e1.pipe(every(faultyPredicate))).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
 
