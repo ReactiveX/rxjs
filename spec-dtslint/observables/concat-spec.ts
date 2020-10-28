@@ -55,6 +55,11 @@ it('should infer correctly with multiple types', () => {
 it('should enforce types', () => {
   const o = concat(5); // $ExpectError
   const p = concat(of(5), 6); // $ExpectError
+  const q = concat(of(5), 6, asyncScheduler); // $ExpectError
+  const r = concat(of(5), asyncScheduler, asyncScheduler); // $ExpectError
+  const s = concat(asyncScheduler, asyncScheduler); // $ExpectError
+  const t = concat(asyncScheduler, of(1)); // $ExpectError
+  const u = concat(of(1), asyncScheduler, of(1)); // $ExpectError
 });
 
 it('should support union types', () => {
