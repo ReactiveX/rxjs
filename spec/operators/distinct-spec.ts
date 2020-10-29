@@ -91,13 +91,11 @@ describe('distinct', () => {
   });
 
   it('should emit if source is scalar', () => {
-    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 = cold(' (a|)');
-      const e1subs = '  (^!)';
+    testScheduler.run(({ expectObservable }) => {
+      const e1 = of('a');
       const expected = '(a|)';
 
       expectObservable(e1.pipe(distinct())).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
 

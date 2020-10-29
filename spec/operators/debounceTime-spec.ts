@@ -21,7 +21,7 @@ describe('debounceTime', () => {
       const expected = '---a---c--d-|';
       const t = time('  --|');
 
-      expectObservable(e1.pipe(debounceTime(t, testScheduler))).toBe(expected);
+      expectObservable(e1.pipe(debounceTime(t))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -33,7 +33,7 @@ describe('debounceTime', () => {
       const expected = '------a--------b------(c|)';
       const t = time('  -----|');
 
-      expectObservable(e1.pipe(debounceTime(t, testScheduler))).toBe(expected);
+      expectObservable(e1.pipe(debounceTime(t))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -45,7 +45,7 @@ describe('debounceTime', () => {
       const expected = '---------c--------------d--|';
       const t = time('  -----|');
 
-      expectObservable(e1.pipe(debounceTime(t, testScheduler))).toBe(expected);
+      expectObservable(e1.pipe(debounceTime(t))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -57,7 +57,7 @@ describe('debounceTime', () => {
       const expected = '-----|';
       const t = time('  -|');
 
-      expectObservable(e1.pipe(debounceTime(t, testScheduler))).toBe(expected);
+      expectObservable(e1.pipe(debounceTime(t))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -69,7 +69,7 @@ describe('debounceTime', () => {
       const expected = '|';
       const t = time('  -|');
 
-      expectObservable(e1.pipe(debounceTime(t, testScheduler))).toBe(expected);
+      expectObservable(e1.pipe(debounceTime(t))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -81,7 +81,7 @@ describe('debounceTime', () => {
       const expected = '-----#';
       const t = time('  -|');
 
-      expectObservable(e1.pipe(debounceTime(t, testScheduler))).toBe(expected);
+      expectObservable(e1.pipe(debounceTime(t))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -93,7 +93,7 @@ describe('debounceTime', () => {
       const expected = '#';
       const t = time('  -|');
 
-      expectObservable(e1.pipe(debounceTime(t, testScheduler))).toBe(expected);
+      expectObservable(e1.pipe(debounceTime(t))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -106,7 +106,7 @@ describe('debounceTime', () => {
       const unsub = '   -------!       ';
       const t = time('  --|');
 
-      const result = e1.pipe(debounceTime(t, testScheduler));
+      const result = e1.pipe(debounceTime(t));
 
       expectObservable(result, unsub).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -123,7 +123,7 @@ describe('debounceTime', () => {
 
       const result = e1.pipe(
         mergeMap((x: any) => of(x)),
-        debounceTime(t, testScheduler),
+        debounceTime(t),
         mergeMap((x: any) => of(x))
       );
 
@@ -139,7 +139,7 @@ describe('debounceTime', () => {
       const expected = '---------c--------------d--';
       const t = time('  -----|');
 
-      expectObservable(e1.pipe(debounceTime(t, testScheduler))).toBe(expected);
+      expectObservable(e1.pipe(debounceTime(t))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -151,7 +151,7 @@ describe('debounceTime', () => {
       const expected = '-';
       const t = time('  -|');
 
-      expectObservable(e1.pipe(debounceTime(t, testScheduler))).toBe(expected);
+      expectObservable(e1.pipe(debounceTime(t))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -163,7 +163,7 @@ describe('debounceTime', () => {
       const expected = '-';
       const t = time('  -|');
 
-      expectObservable(e1.pipe(debounceTime(t, testScheduler))).toBe(expected);
+      expectObservable(e1.pipe(debounceTime(t))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -175,7 +175,7 @@ describe('debounceTime', () => {
       const expected = '------a--------b------#';
       const t = time('  -----|');
 
-      expectObservable(e1.pipe(debounceTime(t, testScheduler))).toBe(expected);
+      expectObservable(e1.pipe(debounceTime(t))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -187,7 +187,7 @@ describe('debounceTime', () => {
       const expected = '-------------------------(h|)';
       const t = time('  ----|');
 
-      expectObservable(e1.pipe(debounceTime(t, testScheduler))).toBe(expected);
+      expectObservable(e1.pipe(debounceTime(t))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -199,7 +199,7 @@ describe('debounceTime', () => {
       const expected = '-------------------------#';
       const t = time('  ----|');
 
-      expectObservable(e1.pipe(debounceTime(t, testScheduler))).toBe(expected);
+      expectObservable(e1.pipe(debounceTime(t))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });

@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { of, range } from 'rxjs';
 import { count, skip, take, mergeMap } from 'rxjs/operators';
-import { TestScheduler } from 'rxjs/internal/testing/TestScheduler';
+import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {count} */

@@ -132,14 +132,12 @@ describe('distinctUntilKeyChanged', () => {
   });
 
   it('should emit if source is scalar', () => {
-    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+    testScheduler.run(({ expectObservable }) => {
       const values = { a: { val: 1 } };
-      const e1 = cold(' (a|)', values);
-      const e1subs = '  (^!)';
+      const e1 = of(values.a);
       const expected = '(a|)';
 
       expectObservable(e1.pipe(distinctUntilKeyChanged('val'))).toBe(expected, values);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
 
