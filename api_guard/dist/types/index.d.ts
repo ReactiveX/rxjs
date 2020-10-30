@@ -361,7 +361,10 @@ export interface Operator<T, R> {
 export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Observable<R>> {
 }
 
-export declare function pairs<T>(obj: Record<string, T> | ArrayLike<T>, scheduler?: SchedulerLike): Observable<[string, T]>;
+export declare function pairs<T>(arr: T[], scheduler?: SchedulerLike): Observable<[string, T]>;
+export declare function pairs<O extends Record<string, unknown>>(obj: O, scheduler?: SchedulerLike): Observable<[keyof O, O[keyof O]]>;
+export declare function pairs<T>(iterable: Iterable<T>, scheduler?: SchedulerLike): Observable<[string, T]>;
+export declare function pairs(n: number | boolean | ((...args: any[]) => any) | symbol, scheduler?: SchedulerLike): Observable<[never, never]>;
 
 export declare type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | CompletionObserver<T>;
 
