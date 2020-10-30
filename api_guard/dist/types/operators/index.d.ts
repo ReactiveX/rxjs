@@ -148,26 +148,10 @@ export declare function materialize<T>(): OperatorFunction<T, Notification<T> & 
 
 export declare function max<T>(comparer?: (x: T, y: T) => number): MonoTypeOperatorFunction<T>;
 
-export declare function merge<T>(): MonoTypeOperatorFunction<T>;
-export declare function merge<T, T2>(v2: ObservableInput<T2>): OperatorFunction<T, T | T2>;
-export declare function merge<T, T2, T3>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): OperatorFunction<T, T | T2 | T3>;
-export declare function merge<T, T2, T3, T4>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): OperatorFunction<T, T | T2 | T3 | T4>;
-export declare function merge<T, T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): OperatorFunction<T, T | T2 | T3 | T4 | T5>;
-export declare function merge<T, T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): OperatorFunction<T, T | T2 | T3 | T4 | T5 | T6>;
-export declare function merge<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;
-export declare function merge<T>(concurrent: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
-export declare function merge<T, T2>(v2: ObservableInput<T2>, scheduler: SchedulerLike): OperatorFunction<T, T | T2>;
-export declare function merge<T, T2>(v2: ObservableInput<T2>, concurrent: number, scheduler?: SchedulerLike): OperatorFunction<T, T | T2>;
-export declare function merge<T, T2, T3>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, scheduler: SchedulerLike): OperatorFunction<T, T | T2 | T3>;
-export declare function merge<T, T2, T3>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, concurrent: number, scheduler?: SchedulerLike): OperatorFunction<T, T | T2 | T3>;
-export declare function merge<T, T2, T3, T4>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, scheduler: SchedulerLike): OperatorFunction<T, T | T2 | T3 | T4>;
-export declare function merge<T, T2, T3, T4>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, concurrent: number, scheduler?: SchedulerLike): OperatorFunction<T, T | T2 | T3 | T4>;
-export declare function merge<T, T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, scheduler: SchedulerLike): OperatorFunction<T, T | T2 | T3 | T4 | T5>;
-export declare function merge<T, T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, concurrent: number, scheduler?: SchedulerLike): OperatorFunction<T, T | T2 | T3 | T4 | T5>;
-export declare function merge<T, T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, scheduler: SchedulerLike): OperatorFunction<T, T | T2 | T3 | T4 | T5 | T6>;
-export declare function merge<T, T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, concurrent: number, scheduler?: SchedulerLike): OperatorFunction<T, T | T2 | T3 | T4 | T5 | T6>;
-export declare function merge<T>(...observables: Array<ObservableInput<T> | SchedulerLike | number>): MonoTypeOperatorFunction<T>;
-export declare function merge<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike | number>): OperatorFunction<T, R>;
+export declare function merge<T, A extends unknown[]>(...args: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
+export declare function merge<T, A extends unknown[]>(...args: [...ObservableInputTuple<A>, number?]): OperatorFunction<T, T | A[number]>;
+export declare function merge<T, A extends unknown[]>(...args: [...ObservableInputTuple<A>, SchedulerLike?]): OperatorFunction<T, T | A[number]>;
+export declare function merge<T, A extends unknown[]>(...args: [...ObservableInputTuple<A>, number?, SchedulerLike?]): OperatorFunction<T, T | A[number]>;
 
 export declare function mergeAll<O extends ObservableInput<any>>(concurrent?: number): OperatorFunction<O, ObservedValueOf<O>>;
 
@@ -180,8 +164,7 @@ export declare function mergeMapTo<T, R, O extends ObservableInput<unknown>>(inn
 
 export declare function mergeScan<T, R>(accumulator: (acc: R, value: T, index: number) => ObservableInput<R>, seed: R, concurrent?: number): OperatorFunction<T, R>;
 
-export declare function mergeWith<T>(): OperatorFunction<T, T>;
-export declare function mergeWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, T | ObservedValueUnionFromArray<A>>;
+export declare function mergeWith<T, A extends unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 
 export declare function min<T>(comparer?: (x: T, y: T) => number): MonoTypeOperatorFunction<T>;
 
