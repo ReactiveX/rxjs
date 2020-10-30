@@ -125,11 +125,19 @@ describe('TestScheduler', () => {
       expect(result.unsubscribedFrame).to.equal(70);
     });
 
-    it('should suppport time progression syntax when runMode=true', () => {
+    it('should support time progression syntax when runMode=true', () => {
       const runMode = true;
       const result = TestScheduler.parseMarblesAsSubscriptions('10.2ms ^ 1.2s - 1m !', runMode);
       expect(result.subscribedFrame).to.equal(10.2);
       expect(result.unsubscribedFrame).to.equal(10.2 + 10 + (1.2 * 1000) + 10 + (1000 * 60));
+    });
+
+    it('should throw if found more than one subscription point', () => {
+      expect(() => TestScheduler.parseMarblesAsSubscriptions('---^-^-!-')).to.throw();
+    });
+
+    it('should throw if found more than one unsubscription point', () => {
+      expect(() => TestScheduler.parseMarblesAsSubscriptions('---^---!-!')).to.throw();
     });
   });
 

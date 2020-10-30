@@ -243,7 +243,7 @@ export class TestScheduler extends VirtualTimeScheduler {
           break;
         case '!':
           if (unsubscriptionFrame !== Infinity) {
-            throw new Error('found a second subscription point \'^\' in a ' +
+            throw new Error('found a second unsubscription point \'!\' in a ' +
               'subscription marble diagram. There can only be one.');
           }
           unsubscriptionFrame = groupStart > -1 ? groupStart : frame;
