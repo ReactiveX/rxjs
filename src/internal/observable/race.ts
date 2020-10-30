@@ -2,13 +2,13 @@
 import { Observable } from '../Observable';
 import { innerFrom } from './from';
 import { Subscription } from '../Subscription';
-import { ObservableInput, ObservedValueUnionFromArray } from '../types';
+import { ObservableInput, ObservableInputTuple } from '../types';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { OperatorSubscriber } from '../operators/OperatorSubscriber';
 import { Subscriber } from '../Subscriber';
 
-export function race<A extends ObservableInput<any>[]>(observables: A): Observable<ObservedValueUnionFromArray<A>>;
-export function race<A extends ObservableInput<any>[]>(...observables: A): Observable<ObservedValueUnionFromArray<A>>;
+export function race<T extends readonly unknown[]>(inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
+export function race<T extends readonly unknown[]>(...inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
 
 /**
  * Returns an observable that mirrors the first source observable to emit an item.

@@ -1,4 +1,4 @@
-import { race, of } from 'rxjs';
+import { race, of, NEVER, EMPTY } from 'rxjs';
 import { a$, b, b$, c, c$, d$, e$, f$ } from '../helpers';
 
 describe('race(a, b, c)', () => {
@@ -30,3 +30,9 @@ it('should race observable inputs', () => {
 it('should race an array observable inputs', () => {
   const o = race([a$, Promise.resolve(b), [c]]); // $ExpectType Observable<A | B | C>
 });
+
+it('should handle observables that do not emit', () => {
+  const o1 = race([NEVER, a$, EMPTY, [], b$]); // $ExpectType Observable<A | B>
+  const o2 = race(NEVER, a$, EMPTY, [], b$); // $ExpectType Observable<A | B>
+});
+
