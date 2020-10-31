@@ -1,10 +1,12 @@
 /** @prettier */
 import { isFunction } from './util/isFunction';
-import { Observer, PartialObserver } from './types';
+import { Observer, PartialObserver, ObservableNotification } from './types';
 import { isSubscription, Subscription } from './Subscription';
 import { config } from './config';
 import { reportUnhandledError } from './util/reportUnhandledError';
 import { noop } from './util/noop';
+import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories';
+import { timeoutProvider } from './scheduler/timeoutProvider';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -62,7 +64,9 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @return {void}
    */
   next(value?: T): void {
-    if (!this.isStopped) {
+    if (this.isStopped) {
+      handleStoppedNotification(nextNotification(value), this);
+    } else {
       this._next(value!);
     }
   }
@@ -75,7 +79,9 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @return {void}
    */
   error(err?: any): void {
-    if (!this.isStopped) {
+    if (this.isStopped) {
+      handleStoppedNotification(errorNotification(err), this);
+    } else {
       this.isStopped = true;
       this._error(err);
     }
@@ -88,7 +94,9 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @return {void}
    */
   complete(): void {
-    if (!this.isStopped) {
+    if (this.isStopped) {
+      handleStoppedNotification(COMPLETE_NOTIFICATION, this);
+    } else {
       this.isStopped = true;
       this._complete();
     }
@@ -179,6 +187,16 @@ function defaultErrorHandler(err: any) {
     throw err;
   }
   reportUnhandledError(err);
+}
+
+/**
+ * A handler for notifications that cannot be sent to a stopped subscriber.
+ * @param notification The notification being sent
+ * @param subscriber The stopped subscriber
+ */
+function handleStoppedNotification(notification: ObservableNotification<any>, subscriber: Subscriber<any>) {
+  const { onStoppedNotification } = config;
+  onStoppedNotification && timeoutProvider.setTimeout(() => onStoppedNotification(notification, subscriber));
 }
 
 /**

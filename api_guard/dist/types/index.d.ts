@@ -112,7 +112,8 @@ export declare function concat<T extends readonly unknown[]>(...inputsAndSchedul
 
 export declare const config: {
     onUnhandledError: ((err: any) => void) | null;
-    Promise: PromiseConstructorLike;
+    onStoppedNotification: ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null;
+    Promise: PromiseConstructorLike | undefined;
     useDeprecatedSynchronousErrorHandling: boolean;
     useDeprecatedNextContext: boolean;
 };

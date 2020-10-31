@@ -8,7 +8,6 @@ import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable, Observe
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
-import { reportUnhandledError } from './util/reportUnhandledError';
 import { isFunction } from './util/isFunction';
 
 /**
@@ -235,11 +234,8 @@ export class Observable<T> implements Subscribable<T> {
     } catch (err) {
       if (config.useDeprecatedSynchronousErrorHandling) {
         throw err;
-      } else {
-        // If an error is thrown during subscribe, but our subscriber is closed, so we cannot notify via the
-        // subscription "error" channel, it is an unhandled error and we need to report it appropriately.
-        canReportError(sink) ? sink.error(err) : reportUnhandledError(err);
       }
+      sink.error(err);
     }
   }
 
@@ -482,23 +478,6 @@ export class Observable<T> implements Subscribable<T> {
  */
 function getPromiseCtor(promiseCtor: PromiseConstructorLike | undefined) {
   return promiseCtor ?? config.Promise ?? Promise;
-}
-
-/**
- * Determines whether the subscriber is closed or stopped or has a
- * destination that is closed or stopped - in which case errors will
- * need to be reported via a different mechanism.
- * @param subscriber the subscriber to check
- */
-export function canReportError(subscriber: Subscriber<any>): boolean {
-  while (subscriber) {
-    const { closed, destination, isStopped } = subscriber as any;
-    if (closed || isStopped) {
-      return false;
-    }
-    subscriber = destination && destination instanceof Subscriber ? destination : null!;
-  }
-  return true;
 }
 
 function isObserver<T>(value: any): value is Observer<T> {

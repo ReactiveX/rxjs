@@ -1,0 +1,28 @@
+/** @prettier */
+type SetTimeoutFunction = (handler: () => void, timeout?: number, ...args: any[]) => number;
+type ClearTimeoutFunction = (handle: number) => void;
+
+interface TimeoutProvider {
+  setTimeout: SetTimeoutFunction;
+  clearTimeout: ClearTimeoutFunction;
+  delegate:
+    | {
+        setTimeout: SetTimeoutFunction;
+        clearTimeout: ClearTimeoutFunction;
+      }
+    | undefined;
+}
+
+export const timeoutProvider: TimeoutProvider = {
+  // When accessing the delegate, use the variable rather than `this` so that
+  // the functions can be called without being bound to the provider.
+  setTimeout(...args) {
+    const { delegate } = timeoutProvider;
+    return (delegate?.setTimeout || setTimeout)(...args);
+  },
+  clearTimeout(handle) {
+    const { delegate } = timeoutProvider;
+    return (delegate?.clearTimeout || clearTimeout)(handle);
+  },
+  delegate: undefined,
+};

@@ -6,12 +6,13 @@ import { SubscriptionLog } from './SubscriptionLog';
 import { Subscription } from '../Subscription';
 import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler';
 import { ObservableNotification } from '../types';
-import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Notification';
+import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../NotificationFactories';
 import { dateTimestampProvider } from '../scheduler/dateTimestampProvider';
 import { performanceTimestampProvider } from '../scheduler/performanceTimestampProvider';
 import { animationFrameProvider } from '../scheduler/animationFrameProvider';
 import { immediateProvider } from '../scheduler/immediateProvider';
 import { intervalProvider } from '../scheduler/intervalProvider';
+import { timeoutProvider } from '../scheduler/timeoutProvider';
 
 const defaultMaxFrame: number = 750;
 
@@ -488,19 +489,19 @@ export class TestScheduler extends VirtualTimeScheduler {
       handle: number;
       handler: () => void;
       subscription: Subscription;
-      type: 'immediate' | 'interval';
+      type: 'immediate' | 'interval' | 'timeout';
     }>();
 
     const run = () => {
       // Whenever a scheduled run is executed, it must run a single immediate
       // or interval action - with immediate actions being prioritized over
-      // interval actions.
+      // interval and timeout actions.
       const now = this.now();
       const scheduledRecords = Array.from(scheduleLookup.values());
       const scheduledRecordsDue = scheduledRecords.filter(({ due }) => due <= now);
-      const immediates = scheduledRecordsDue.filter(({ type }) => type === 'immediate');
-      if (immediates.length > 0) {
-        const { handle, handler } = immediates[0];
+      const dueImmediates = scheduledRecordsDue.filter(({ type }) => type === 'immediate');
+      if (dueImmediates.length > 0) {
+        const { handle, handler } = dueImmediates[0];
         scheduleLookup.delete(handle);
         handler();
         return;
@@ -517,8 +518,27 @@ export class TestScheduler extends VirtualTimeScheduler {
         handler();
         return;
       }
+      const dueTimeouts = scheduledRecordsDue.filter(({ type }) => type === 'timeout');
+      if (dueTimeouts.length > 0) {
+        const { handle, handler } = dueTimeouts[0];
+        scheduleLookup.delete(handle);
+        handler();
+        return;
+      }
       throw new Error('Expected a due immediate or interval');
     };
+
+    // The following objects are the delegates that replace conventional
+    // runtime implementations with TestScheduler implementations.
+    //
+    // The immediate delegate is depended upon by the asapScheduler.
+    //
+    // The interval delegate is depended upon by the asyncScheduler.
+    //
+    // The timeout delegate is not depended upon by any scheduler, but it's
+    // included here because the onUnhandledError and onStoppedNotification
+    // configuration points use setTimeout to avoid producer interference. It's
+    // inclusion allows for the testing of these configuration points.
 
     const immediate = {
       setImmediate: (handler: () => void) => {
@@ -564,7 +584,29 @@ export class TestScheduler extends VirtualTimeScheduler {
       }
     };
 
-    return { immediate, interval };
+    const timeout = {
+      setTimeout: (handler: () => void, duration = 0) => {
+        const handle = ++lastHandle;
+        scheduleLookup.set(handle, {
+          due: this.now() + duration,
+          duration,
+          handle,
+          handler,
+          subscription: this.schedule(run, duration),
+          type: 'timeout',
+        });
+        return handle;
+      },
+      clearTimeout: (handle: number) => {
+        const value = scheduleLookup.get(handle);
+        if (value) {
+          value.subscription.unsubscribe();
+          scheduleLookup.delete(handle);
+        }
+      }
+    };
+
+    return { immediate, interval, timeout };
   }
 
   /**
@@ -590,6 +632,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     dateTimestampProvider.delegate = this;
     immediateProvider.delegate = delegates.immediate;
     intervalProvider.delegate = delegates.interval;
+    timeoutProvider.delegate = delegates.timeout;
     performanceTimestampProvider.delegate = this;
 
     const helpers: RunHelpers = {
@@ -613,6 +656,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       dateTimestampProvider.delegate = undefined;
       immediateProvider.delegate = undefined;
       intervalProvider.delegate = undefined;
+      timeoutProvider.delegate = undefined;
       performanceTimestampProvider.delegate = undefined;
     }
   }
