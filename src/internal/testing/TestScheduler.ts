@@ -528,6 +528,18 @@ export class TestScheduler extends VirtualTimeScheduler {
       throw new Error('Expected a due immediate or interval');
     };
 
+    // The following objects are the delegates that replace conventional
+    // runtime implementations with TestScheduler implementations.
+    //
+    // The immediate delegate is depended upon by the asapScheduler.
+    //
+    // The interval delegate is depended upon by the asyncScheduler.
+    //
+    // The timeout delegate is not depended upon by any scheduler, but it's
+    // included here because the onUnhandledError and onStoppedNotification
+    // configuration points use setTimeout to avoid producer interference. It's
+    // inclusion allows for the testing of these configuration points.
+
     const immediate = {
       setImmediate: (handler: () => void) => {
         const handle = ++lastHandle;
