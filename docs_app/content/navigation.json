@@ -21,44 +21,65 @@
   "TopBarNarrow": [],
   "SideNav": [
     {
-      "url": "guide/overview",
-      "title": "Overview",
-      "tooltip": "RxJS Overview",
+      "title": "Guides",
+      "tooltip": "RxJS Guides",
       "children": [
         {
-          "url": "guide/observable",
-          "title": "Observables"
-        },
-        {
-          "url": "guide/observer",
-          "title": "Observer"
-        },
-        {
-          "url": "guide/operators",
-          "title": "Operators"
-        },
-        {
-          "url": "guide/subscription",
-          "title": "Subscription"
-        },
-        {
-          "url": "guide/subject",
-          "title": "Subjects"
-        },
-        {
-          "url": "guide/scheduler",
-          "title": "Scheduler"
-        },
-        {
-          "title": "Testing",
+          "title": "Essential",
+          "tooltip": "RxJS Essential Guides",
           "children": [
+            {
+              "url": "guide/overview",
+              "title": "Overview",
+              "tooltip": "Overview about RxJS"
+            },
+            {
+              "url": "guide/observable",
+              "title": "Observables",
+              "tooltip": "About Observables"
+            },
+            {
+              "url": "guide/observer",
+              "title": "Observer",
+              "tooltip": "About Observables"
+            },
+            {
+              "url": "guide/subscription",
+              "title": "Subscription"
+            },
+            {
+              "url": "guide/operators",
+              "title": "Operators"
+            },
+            {
+              "url": "guide/marble-diagrams",
+              "title": "Marble Diagrams"
+            }
+          ]
+        },
+        {
+          "title": "Advanced",
+          "tooltip": "RxJS Advanced Guides",
+          "children": [
+            {
+              "url": "guide/subject",
+              "title": "Subjects"
+            },
+            {
+              "url": "guide/higher-order-observables",
+              "title": "Higher-Order Observables"
+            },
+            {
+              "url": "guide/custom-operators",
+              "title": "Creating Custom Operators"
+            },
             {
               "url": "guide/testing/marble-testing",
               "title": "Marble Testing"
             },
             {
-              "url": "guide/testing/internal-marble-tests",
-              "title": "Contribute tests to RxJS"
+              "url": "guide/scheduler",
+              "title": "Scheduler"
             }
           ]
         }
@@ -111,7 +132,7 @@
   "docVersions": [
     {
       "title": "v7",
-      "url": "https://next-rxjs.web.app/"
+      "url": "https://next.rxjs.dev/"
     },
     {
       "title": "v6",
