@@ -7,28 +7,36 @@ import {
   QueryList,
   ViewChild,
   ViewChildren,
-} from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
+} from "@angular/core";
+import { MatSidenav } from "@angular/material/sidenav";
 
-import { CurrentNodes, NavigationService, NavigationNode, VersionInfo } from 'app/navigation/navigation.service';
-import { DocumentService, DocumentContents } from 'app/documents/document.service';
-import { Deployment } from 'app/shared/deployment.service';
-import { LocationService } from 'app/shared/location.service';
-import { NotificationComponent } from 'app/layout/notification/notification.component';
-import { ScrollService } from 'app/shared/scroll.service';
-import { SearchBoxComponent } from 'app/search/search-box/search-box.component';
-import { SearchResults } from 'app/search/interfaces';
-import { SearchService } from 'app/search/search.service';
-import { TocService } from 'app/shared/toc.service';
+import {
+  CurrentNodes,
+  NavigationService,
+  NavigationNode,
+  VersionInfo,
+} from "app/navigation/navigation.service";
+import {
+  DocumentService,
+  DocumentContents,
+} from "app/documents/document.service";
+import { Deployment } from "app/shared/deployment.service";
+import { LocationService } from "app/shared/location.service";
+import { NotificationComponent } from "app/layout/notification/notification.component";
+import { ScrollService } from "app/shared/scroll.service";
+import { SearchBoxComponent } from "app/search/search-box/search-box.component";
+import { SearchResults } from "app/search/interfaces";
+import { SearchService } from "app/search/search.service";
+import { TocService } from "app/shared/toc.service";
 
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable } from "rxjs";
+import { first, map } from "rxjs/operators";
 
-const sideNavView = 'SideNav';
+const sideNavView = "SideNav";
 
 @Component({
-  selector: 'aio-shell',
-  templateUrl: './app.component.html',
+  selector: "aio-shell",
+  templateUrl: "./app.component.html",
 })
 export class AppComponent implements OnInit {
   currentDocument: DocumentContents;
@@ -59,11 +67,11 @@ export class AppComponent implements OnInit {
    * * `folder-...`: computed from the top level folder for an id (e.g. guide, tutorial, etc)
    * * `view-...`: computef from the navigation view (e.g. SideNav, TopBar, etc)
    */
-  @HostBinding('class')
-  hostClasses = '';
+  @HostBinding("class")
+  hostClasses = "";
 
   // Disable all Angular animations for the initial render.
-  @HostBinding('@.disabled')
+  @HostBinding("@.disabled")
   isStarting = true;
   isTransitioning = true;
   isFetching = false;
@@ -88,13 +96,13 @@ export class AppComponent implements OnInit {
     return this.isSideBySide && this.isSideNavDoc;
   }
   get mode() {
-    return this.isSideBySide ? 'side' : 'over';
+    return this.isSideBySide ? "side" : "over";
   }
 
   // Search related properties
   showSearchResults = false;
   searchResults: Observable<SearchResults>;
-  @ViewChildren('searchBox, searchResultsView', { read: ElementRef })
+  @ViewChildren("searchBox, searchResultsView", { read: ElementRef })
   searchElements: QueryList<ElementRef>;
   @ViewChild(SearchBoxComponent, { static: true })
   searchBox: SearchBoxComponent;
@@ -119,18 +127,20 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // Do not initialize the search on browsers that lack web worker support
-    if ('Worker' in window) {
+    if ("Worker" in window) {
       // Delay initialization by up to 2 seconds
-      this.searchService.initWorker('app/search/search-worker.js', 2000);
+      this.searchService.initWorker("app/search/search-worker.js", 2000);
     }
 
     this.onResize(window.innerWidth);
 
     /* No need to unsubscribe because this root component never dies */
 
-    this.documentService.currentDocument.subscribe(doc => (this.currentDocument = doc));
+    this.documentService.currentDocument.subscribe(
+      (doc) => (this.currentDocument = doc)
+    );
 
-    this.locationService.currentPath.subscribe(path => {
+    this.locationService.currentPath.subscribe((path) => {
       if (path === this.currentPath) {
         // scroll only if on same page (most likely a change to the hash)
         this.scrollService.scroll();
@@ -140,50 +150,54 @@ export class AppComponent implements OnInit {
 
         // Start progress bar if doc not rendered within brief time
         clearTimeout(this.isFetchingTimeout);
-        this.isFetchingTimeout = setTimeout(() => (this.isFetching = true), 200);
+        this.isFetchingTimeout = setTimeout(
+          () => (this.isFetching = true),
+          200
+        );
       }
     });
 
-    this.navigationService.currentNodes.subscribe(currentNodes => {
+    this.navigationService.currentNodes.subscribe((currentNodes) => {
       this.currentNodes = currentNodes;
-
     });
 
     // Compute the version picker list from the current version and the versions in the navigation map
     combineLatest(
       this.navigationService.versionInfo,
-      this.navigationService.navigationViews.pipe(map(views => views['docVersions']))
+      this.navigationService.navigationViews.pipe(
+        map((views) => views["docVersions"])
+      )
     ).subscribe(([versionInfo, versions]) => {
       // TODO(pbd): consider whether we can lookup the stable and next versions from the internet
-      const computedVersions: NavigationNode[] = [
-        { title: 'next', url: 'https://next.angular.io' },
-        { title: 'stable', url: 'https://angular.io' },
-      ];
-      if (this.deployment.mode === 'archive') {
-        computedVersions.push({ title: `v${versionInfo.major}` });
-      }
-      this.docVersions = [...computedVersions, ...versions];
+      this.docVersions = [...versions];
 
       // Find the current version - eithers title matches the current deployment mode
       // or its title matches the major version of the current version info
       this.currentDocVersion = this.docVersions.find(
-        version => version.title === this.deployment.mode || version.title === `v${versionInfo.major}`
+        (version) =>
+          version.title === this.deployment.mode ||
+          version.title === `v${versionInfo.major}`
       )!;
       this.currentDocVersion.title += ` (v${versionInfo.raw})`;
     });
 
-    this.navigationService.navigationViews.subscribe(views => {
-      this.footerNodes = views['Footer'] || [];
-      this.sideNavNodes = views['SideNav'] || [];
-      this.topMenuNodes = views['TopBar'] || [];
-      this.topMenuNarrowNodes = views['TopBarNarrow'] || this.topMenuNodes;
+    this.navigationService.navigationViews.subscribe((views) => {
+      this.footerNodes = views["Footer"] || [];
+      this.sideNavNodes = views["SideNav"] || [];
+      this.topMenuNodes = views["TopBar"] || [];
+      this.topMenuNarrowNodes = views["TopBarNarrow"] || this.topMenuNodes;
     });
 
-    this.navigationService.versionInfo.subscribe(vi => (this.versionInfo = vi));
+    this.navigationService.versionInfo.subscribe(
+      (vi) => (this.versionInfo = vi)
+    );
 
-    const hasNonEmptyToc = this.tocService.tocList.pipe(map(tocList => tocList.length > 0));
+    const hasNonEmptyToc = this.tocService.tocList.pipe(
+      map((tocList) => tocList.length > 0)
+    );
     combineLatest(hasNonEmptyToc, this.showFloatingToc).subscribe(
-      ([hasToc, showFloatingToc]) => (this.hasFloatingToc = hasToc && showFloatingToc)
+      ([hasToc, showFloatingToc]) =>
+        (this.hasFloatingToc = hasToc && showFloatingToc)
     );
 
     // Generally, we want to delay updating the shell (e.g. host classes, sidenav state) for the new
@@ -244,7 +258,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  @HostListener('window:resize', ['$event.target.innerWidth'])
+  @HostListener("window:resize", ["$event.target.innerWidth"])
   onResize(width: number) {
     this.isSideBySide = width >= this.sideBySideWidth;
     this.showFloatingToc.next(width > this.showFloatingTocWidth);
@@ -258,15 +272,31 @@ export class AppComponent implements OnInit {
     }
   }
 
-  @HostListener('click', ['$event.target', '$event.button', '$event.ctrlKey', '$event.metaKey', '$event.altKey'])
-  onClick(eventTarget: HTMLElement, button: number, ctrlKey: boolean, metaKey: boolean, altKey: boolean): boolean {
+  @HostListener("click", [
+    "$event.target",
+    "$event.button",
+    "$event.ctrlKey",
+    "$event.metaKey",
+    "$event.altKey",
+  ])
+  onClick(
+    eventTarget: HTMLElement,
+    button: number,
+    ctrlKey: boolean,
+    metaKey: boolean,
+    altKey: boolean
+  ): boolean {
     // Hide the search results if we clicked outside both the "search box" and the "search results"
-    if (!this.searchElements.some(element => element.nativeElement.contains(eventTarget))) {
+    if (
+      !this.searchElements.some((element) =>
+        element.nativeElement.contains(eventTarget)
+      )
+    ) {
       this.hideSearchResults();
     }
 
     // Show developer source view if the footer is clicked while holding the meta and alt keys
-    if (eventTarget.tagName === 'FOOTER' && metaKey && altKey) {
+    if (eventTarget.tagName === "FOOTER" && metaKey && altKey) {
       this.dtOn = !this.dtOn;
       return false;
     }
@@ -277,7 +307,12 @@ export class AppComponent implements OnInit {
       target = target.parentElement;
     }
     if (target instanceof HTMLAnchorElement) {
-      return this.locationService.handleAnchorClick(target, button, ctrlKey, metaKey);
+      return this.locationService.handleAnchorClick(
+        target,
+        button,
+        ctrlKey,
+        metaKey
+      );
     }
 
     // Allow the click to pass through
@@ -286,12 +321,12 @@ export class AppComponent implements OnInit {
 
   setPageId(id: string) {
     // Special case the home page
-    this.pageId = id === 'index' ? 'home' : id.replace('/', '-');
+    this.pageId = id === "index" ? "home" : id.replace("/", "-");
   }
 
   setFolderId(id: string) {
     // Special case the home page
-    this.folderId = id === 'index' ? 'home' : id.split('/', 1)[0];
+    this.folderId = id === "index" ? "home" : id.split("/", 1)[0];
   }
 
   notificationDismissed() {
@@ -305,14 +340,16 @@ export class AppComponent implements OnInit {
 
   updateHostClasses() {
     const mode = `mode-${this.deployment.mode}`;
-    const sideNavOpen = `sidenav-${this.sidenav.opened ? 'open' : 'closed'}`;
+    const sideNavOpen = `sidenav-${this.sidenav.opened ? "open" : "closed"}`;
     const pageClass = `page-${this.pageId}`;
     const folderClass = `folder-${this.folderId}`;
     const viewClasses = Object.keys(this.currentNodes)
-      .map(view => `view-${view}`)
-      .join(' ');
+      .map((view) => `view-${view}`)
+      .join(" ");
     const notificationClass = `aio-notification-${this.notification.showNotification}`;
-    const notificationAnimatingClass = this.notificationAnimating ? 'aio-notification-animating' : '';
+    const notificationAnimatingClass = this.notificationAnimating
+      ? "aio-notification-animating"
+      : "";
 
     this.hostClasses = [
       mode,
@@ -322,7 +359,7 @@ export class AppComponent implements OnInit {
       viewClasses,
       notificationClass,
       notificationAnimatingClass,
-    ].join(' ');
+    ].join(" ");
   }
 
   updateShell() {
@@ -351,20 +388,25 @@ export class AppComponent implements OnInit {
   }
 
   // Dynamically change height of table of contents container
-  @HostListener('window:scroll')
+  @HostListener("window:scroll")
   onScroll() {
     if (!this.tocMaxHeightOffset) {
       // Must wait until `mat-toolbar` is measurable.
       const el = this.hostElement.nativeElement as Element;
-      const headerEl = el.querySelector('.app-toolbar');
-      const footerEl = el.querySelector('footer');
+      const headerEl = el.querySelector(".app-toolbar");
+      const footerEl = el.querySelector("footer");
 
       if (headerEl && footerEl) {
-        this.tocMaxHeightOffset = headerEl.clientHeight + footerEl.clientHeight + 24; //  fudge margin
+        this.tocMaxHeightOffset =
+          headerEl.clientHeight + footerEl.clientHeight + 24; //  fudge margin
       }
     }
 
-    this.tocMaxHeight = (document.body.scrollHeight - window.pageYOffset - this.tocMaxHeightOffset).toFixed(2);
+    this.tocMaxHeight = (
+      document.body.scrollHeight -
+      window.pageYOffset -
+      this.tocMaxHeightOffset
+    ).toFixed(2);
   }
 
   // Restrain scrolling inside an element, when the cursor is over it
@@ -392,7 +434,7 @@ export class AppComponent implements OnInit {
     this.showSearchResults = false;
     const oldSearch = this.locationService.search();
     if (oldSearch.search !== undefined) {
-      this.locationService.setSearch('', { ...oldSearch, search: undefined });
+      this.locationService.setSearch("", { ...oldSearch, search: undefined });
     }
   }
 
@@ -407,13 +449,13 @@ export class AppComponent implements OnInit {
     this.showSearchResults = !!query;
   }
 
-  @HostListener('document:keyup', ['$event.key', '$event.which'])
+  @HostListener("document:keyup", ["$event.key", "$event.which"])
   onKeyUp(key: string, keyCode: number) {
     // forward slash "/"
-    if (key === '/' || keyCode === 191) {
+    if (key === "/" || keyCode === 191) {
       this.focusSearchBox();
     }
-    if (key === 'Escape' || keyCode === 27) {
+    if (key === "Escape" || keyCode === 27) {
       // escape key
       if (this.showSearchResults) {
         this.hideSearchResults();
