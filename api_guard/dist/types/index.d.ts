@@ -408,8 +408,8 @@ export declare const queue: QueueScheduler;
 
 export declare const queueScheduler: QueueScheduler;
 
-export declare function race<A extends ObservableInput<any>[]>(observables: A): Observable<ObservedValueUnionFromArray<A>>;
-export declare function race<A extends ObservableInput<any>[]>(...observables: A): Observable<ObservedValueUnionFromArray<A>>;
+export declare function race<T extends readonly unknown[]>(inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
+export declare function race<T extends readonly unknown[]>(...inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
 
 export declare function range(start: number, count?: number): Observable<number>;
 export declare function range(start: number, count: number | undefined, scheduler: SchedulerLike): Observable<number>;
