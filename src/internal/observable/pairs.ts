@@ -6,7 +6,7 @@ import { from } from './from';
 /**
  * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
  */
-export function pairs<T>(arr: T[], scheduler?: SchedulerLike): Observable<[string, T]>;
+export function pairs<T>(arr: readonly T[], scheduler?: SchedulerLike): Observable<[string, T]>;
 /**
  * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
  */
@@ -18,7 +18,10 @@ export function pairs<T>(iterable: Iterable<T>, scheduler?: SchedulerLike): Obse
 /**
  * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
  */
-export function pairs(n: number | boolean | ((...args: any[]) => any) | symbol, scheduler?: SchedulerLike): Observable<[never, never]>;
+export function pairs(
+  n: number | bigint | boolean | ((...args: any[]) => any) | symbol,
+  scheduler?: SchedulerLike
+): Observable<[never, never]>;
 
 /**
  * Convert an object into an Observable of `[key, value]` pairs.
