@@ -3,6 +3,8 @@ import { tap } from 'rxjs/operators';
 
 it('should infer correctly', () => {
   const a = of(1, 2, 3).pipe(tap()); // $ExpectType Observable<number>
+  const b = of(1, 2, 3).pipe(tap(console.log)); // $ExpectType Observable<number>
+  const c = of(1, 2, 3).pipe(tap({ next: console.log })); // $ExpectType Observable<number>
 });
 
 it('should accept partial observer', () => {
