@@ -33,35 +33,36 @@ it('should result in Observable<unknown> for 7 or more params', () => {
 it('should accept union types', () => {
   const u1: typeof a$ | typeof b$ = Math.random() > 0.5 ? a$ : b$;
   const u2: typeof c$ | typeof d$ = Math.random() > 0.5 ? c$ : d$;
-  const o = combineLatest(u1, u2); // $ExpectType Observable<[A | B, C | D]>
+  const o1 = combineLatest(u1, u2); // $ExpectType Observable<[A | B, C | D]>
+  const o2 = combineLatest(u1, u2, (a, b) => [a, b] as const); // $ExpectType Observable<readonly [A | B, C | D]>
 });
 
 it('should accept 1 param and a result selector', () => {
-  const o = combineLatest(a$, (a) => new A()); // $ExpectType Observable<A>
+  const o = combineLatest(a$, (a) => [a] as const); // $ExpectType Observable<readonly [A]>
 });
 
 it('should accept 2 params and a result selector', () => {
-  const o = combineLatest(a$, b$, (a, b) => new A()); // $ExpectType Observable<A>
+  const o = combineLatest(a$, b$, (a, b) => [a, b] as const); // $ExpectType Observable<readonly [A, B]>
 });
 
 it('should accept 3 params and a result selector', () => {
-  const o = combineLatest(a$, b$, c$, (a, b, c) => new A()); // $ExpectType Observable<A>
+  const o = combineLatest(a$, b$, c$, (a, b, c) => [a, b, c] as const); // $ExpectType Observable<readonly [A, B, C]>
 });
 
 it('should accept 4 params and a result selector', () => {
-  const o = combineLatest(a$, b$, c$, d$, (a, b, c, d) => new A()); // $ExpectType Observable<A>
+  const o = combineLatest(a$, b$, c$, d$, (a, b, c, d) => [a, b, c, d] as const); // $ExpectType Observable<readonly [A, B, C, D]>
 });
 
 it('should accept 5 params and a result selector', () => {
-  const o = combineLatest(a$, b$, c$, d$, e$, (a, b, c, d, e) => new A()); // $ExpectType Observable<A>
+  const o = combineLatest(a$, b$, c$, d$, e$, (a, b, c, d, e) => [a, b, c, d, e] as const); // $ExpectType Observable<readonly [A, B, C, D, E]>
 });
 
 it('should accept 6 params and a result selector', () => {
-  const o = combineLatest(a$, b$, c$, d$, e$, f$, (a, b, c, d, e, f) => new A()); // $ExpectType Observable<A>
+  const o = combineLatest(a$, b$, c$, d$, e$, f$, (a, b, c, d, e, f) => [a, b, c, d, e, f] as const); // $ExpectType Observable<readonly [A, B, C, D, E, F]>
 });
 
 it('should accept 7 or more params and a result selector', () => {
-  const o = combineLatest(a$, b$, c$, d$, e$, f$, g$, g$, g$, (a, b, c, d, e, f, g1, g2, g3) => new A()); // $ExpectType Observable<A>
+  const o = combineLatest(a$, b$, c$, d$, e$, f$, g$, g$, g$, (a, b, c, d, e, f, g1, g2, g3) => [a, b, c, d, e, f, g1, g2, g3] as const); // $ExpectType Observable<readonly [A, B, C, D, E, F, G, G, G]>
 });
 
 it('should accept 1 param', () => {
