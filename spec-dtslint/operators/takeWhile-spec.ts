@@ -28,5 +28,5 @@ it('should properly support Boolean constructor', () => {
 
 it('should properly handle predicates that always return false', () => {
   const a = of(1, 2, 3).pipe(takeWhile(() => false as const)); // $ExpectType Observable<never>
-  const b = of(1, 2, 3).pipe(takeWhile(() => false as const, true)); // $ExpectType Observable<never>
+  const b = of(1, 2, 3).pipe(takeWhile(() => false as const, true)); // $ExpectType Observable<number>
 });

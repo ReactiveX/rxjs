@@ -297,7 +297,8 @@ export declare function takeLast<T>(count: number): MonoTypeOperatorFunction<T>;
 
 export declare function takeUntil<T>(notifier: ObservableInput<any>): MonoTypeOperatorFunction<T>;
 
-export declare function takeWhile<T>(predicate: (value: T, index: number) => false, inclusive?: boolean): OperatorFunction<T, never>;
+export declare function takeWhile<T>(predicate: (value: T, index: number) => false, inclusive: true): MonoTypeOperatorFunction<T>;
+export declare function takeWhile<T>(predicate: (value: T, index: number) => false, inclusive?: false): OperatorFunction<T, never>;
 export declare function takeWhile<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? never : T>;
 export declare function takeWhile<T>(predicate: BooleanConstructor, inclusive: false): OperatorFunction<T, Exclude<T, Falsy> extends never ? never : T>;
 export declare function takeWhile<T>(predicate: BooleanConstructor, inclusive: true): MonoTypeOperatorFunction<T>;
