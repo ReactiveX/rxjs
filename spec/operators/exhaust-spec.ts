@@ -14,14 +14,22 @@ describe('exhaust', () => {
   });
 
   it('should handle a hot observable of hot observables', () => {
-    testScheduler.run(({ cold, hot, expectObservable }) => {
-      const x = cold('        --a---b---c--|               ');
-      const y = cold('                ---d--e---f---|      ');
-      const z = cold('                      ---g--h---i---|');
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const x = hot('   -----a---b---c--|                  ');
+      const xsubs = '   ------^---------!                  ';
+      const y = hot('   -------d--e---f---|                ');
+      const ysubs: string[] = [];
+      const z = hot('   --------------g--h---i---|         ');
+      const zsubs = '   --------------------^----!         ';
       const e1 = hot('  ------x-------y-----z-------------|', { x: x, y: y, z: z });
-      const expected = '--------a---b---c------g--h---i---|';
+      const e1subs = '  ^---------------------------------!';
+      const expected = '---------b---c-------i------------|';
 
       expectObservable(e1.pipe(exhaust())).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(x.subscriptions).toBe(xsubs);
+      expectSubscriptions(y.subscriptions).toBe(ysubs);
+      expectSubscriptions(z.subscriptions).toBe(zsubs);
     });
   });
 
