@@ -1,6 +1,6 @@
 /** @prettier */
 import { zip as zipStatic } from '../observable/zip';
-import { ObservableInput, OperatorFunction, ObservedValueTupleFromArray, Cons } from '../types';
+import { ObservableInput, ObservableInputTuple, OperatorFunction, Cons } from '../types';
 import { operate } from '../util/lift';
 
 /* tslint:disable:max-line-length */
@@ -103,8 +103,6 @@ export function zip<T, R>(...sources: Array<ObservableInput<any> | ((...values: 
  *
  * @param otherInputs other observable inputs to collate values from.
  */
-export function zipWith<T, A extends ObservableInput<any>[]>(
-  ...otherInputs: A
-): OperatorFunction<T, Cons<T, ObservedValueTupleFromArray<A>>> {
+export function zipWith<T, A extends readonly unknown[]>(...otherInputs: [...ObservableInputTuple<A>]): OperatorFunction<T, Cons<T, A>> {
   return zip(...otherInputs);
 }

@@ -27,8 +27,6 @@ export function merge<T>(...args: unknown[]): OperatorFunction<T, unknown> {
   });
 }
 
-export function mergeWith<T, A extends unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
-
 /**
  * Merge the values from all observables to an single observable result.
  *
@@ -68,6 +66,8 @@ export function mergeWith<T, A extends unknown[]>(...otherSources: [...Observabl
  * ```
  * @param otherSources the sources to combine the current source with.
  */
-export function mergeWith<T, A extends unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]> {
+export function mergeWith<T, A extends readonly unknown[]>(
+  ...otherSources: [...ObservableInputTuple<A>]
+): OperatorFunction<T, T | A[number]> {
   return merge(...otherSources);
 }
