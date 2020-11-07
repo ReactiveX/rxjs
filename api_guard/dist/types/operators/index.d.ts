@@ -36,7 +36,7 @@ export declare function combineLatest<T, R>(...observables: Array<ObservableInpu
 export declare function combineLatest<T, R>(array: ObservableInput<T>[]): OperatorFunction<T, Array<T>>;
 export declare function combineLatest<T, TOther, R>(array: ObservableInput<TOther>[], project: (v1: T, ...values: Array<TOther>) => R): OperatorFunction<T, R>;
 
-export declare function combineLatestWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, Cons<T, ObservedValueTupleFromArray<A>>>;
+export declare function combineLatestWith<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, Cons<T, A>>;
 
 export declare function concat<T>(scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 export declare function concat<T, T2>(v2: ObservableInput<T2>, scheduler?: SchedulerLike): OperatorFunction<T, T | T2>;
@@ -58,8 +58,7 @@ export declare function concatMapTo<O extends ObservableInput<any>>(observable: 
 export declare function concatMapTo<O extends ObservableInput<any>>(observable: O, resultSelector: undefined): OperatorFunction<any, ObservedValueOf<O>>;
 export declare function concatMapTo<T, R, O extends ObservableInput<any>>(observable: O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 
-export declare function concatWith<T>(): OperatorFunction<T, T>;
-export declare function concatWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, ObservedValueUnionFromArray<A> | T>;
+export declare function concatWith<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 
 export declare function count<T>(predicate?: (value: T, index: number) => boolean): OperatorFunction<T, number>;
 
@@ -164,7 +163,7 @@ export declare function mergeMapTo<T, R, O extends ObservableInput<unknown>>(inn
 
 export declare function mergeScan<T, R>(accumulator: (acc: R, value: T, index: number) => ObservableInput<R>, seed: R, concurrent?: number): OperatorFunction<T, R>;
 
-export declare function mergeWith<T, A extends unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
+export declare function mergeWith<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 
 export declare function min<T>(comparer?: (x: T, y: T) => number): MonoTypeOperatorFunction<T>;
 
@@ -208,7 +207,7 @@ export declare function race<T, R>(observables: Array<Observable<T>>): OperatorF
 export declare function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): MonoTypeOperatorFunction<T>;
 export declare function race<T, R>(...observables: Array<Observable<any> | Array<Observable<any>>>): OperatorFunction<T, R>;
 
-export declare function raceWith<T, A extends ObservableInput<any>[]>(...otherSources: A): OperatorFunction<T, T | ObservedValueUnionFromArray<A>>;
+export declare function raceWith<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 
 export declare function reduce<V, A = V>(accumulator: (acc: A | V, value: V, index: number) => A): OperatorFunction<V, V | A>;
 export declare function reduce<V, A>(accumulator: (acc: A, value: V, index: number) => A, seed: A): OperatorFunction<V, A>;
@@ -358,4 +357,4 @@ export declare function zipAll<T>(): OperatorFunction<any, T[]>;
 export declare function zipAll<T, R>(project: (...values: T[]) => R): OperatorFunction<ObservableInput<T>, R>;
 export declare function zipAll<R>(project: (...values: Array<any>) => R): OperatorFunction<any, R>;
 
-export declare function zipWith<T, A extends ObservableInput<any>[]>(...otherInputs: A): OperatorFunction<T, Cons<T, ObservedValueTupleFromArray<A>>>;
+export declare function zipWith<T, A extends readonly unknown[]>(...otherInputs: [...ObservableInputTuple<A>]): OperatorFunction<T, Cons<T, A>>;

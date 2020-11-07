@@ -132,7 +132,7 @@ export declare class ConnectableObservable<T> extends Observable<T> {
     refCount(): Observable<T>;
 }
 
-export declare type Cons<X, Y extends any[]> = ((arg: X, ...rest: Y) => any) extends (...args: infer U) => any ? U : never;
+export declare type Cons<X, Y extends readonly any[]> = ((arg: X, ...rest: Y) => any) extends (...args: infer U) => any ? U : never;
 
 export declare function defer<R extends ObservableInput<any>>(observableFactory: () => R): Observable<ObservedValueOf<R>>;
 
@@ -192,7 +192,7 @@ export interface GroupedObservable<K, T> extends Observable<T> {
     readonly key: K;
 }
 
-export declare type Head<X extends any[]> = ((...args: X) => any) extends (arg: infer U, ...rest: any[]) => any ? U : never;
+export declare type Head<X extends readonly any[]> = ((...args: X) => any) extends (arg: infer U, ...rest: readonly any[]) => any ? U : never;
 
 export declare function identity<T>(x: T): T;
 
@@ -501,7 +501,7 @@ export interface SubscriptionLike extends Unsubscribable {
     unsubscribe(): void;
 }
 
-export declare type Tail<X extends any[]> = ((...args: X) => any) extends (arg: any, ...rest: infer U) => any ? U : never;
+export declare type Tail<X extends readonly any[]> = ((...args: X) => any) extends (arg: any, ...rest: infer U) => any ? U : never;
 
 export declare type TeardownLogic = Subscription | Unsubscribable | (() => void) | void;
 
