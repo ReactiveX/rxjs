@@ -41,7 +41,7 @@
     "build:clean": "shx rm -rf ./dist",
     "build:global": "node ./tools/make-umd-bundle.js && node ./tools/make-closure-core.js",
     "build:package": "npm-run-all build:clean compile build:global && node ./tools/prepare-package.js && node ./tools/generate-alias.js",
-    "api_guardian:update": "ts-api-guardian --outDir api_guard dist/types/index.d.ts dist/types/ajax/index.d.ts dist/types/fetch/index.d.ts dist/types/operators/index.d.ts dist/types/testing/index.d.ts dist/types/webSocket/index.d.ts",
+    "api_guardian:update": "tsc -b ./src/tsconfig.types.json && ts-api-guardian --outDir api_guard dist/types/index.d.ts dist/types/ajax/index.d.ts dist/types/fetch/index.d.ts dist/types/operators/index.d.ts dist/types/testing/index.d.ts dist/types/webSocket/index.d.ts",
     "api_guardian": "ts-api-guardian --verifyDir api_guard dist/types/index.d.ts dist/types/ajax/index.d.ts dist/types/fetch/index.d.ts dist/types/operators/index.d.ts dist/types/testing/index.d.ts dist/types/webSocket/index.d.ts"
   },
   "repository": {
