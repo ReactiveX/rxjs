@@ -192,7 +192,7 @@ export interface GroupedObservable<K, T> extends Observable<T> {
     readonly key: K;
 }
 
-export declare type Head<X extends readonly any[]> = ((...args: X) => any) extends (arg: infer U, ...rest: readonly any[]) => any ? U : never;
+export declare type Head<X extends readonly any[]> = ((...args: X) => any) extends (arg: infer U, ...rest: any[]) => any ? U : never;
 
 export declare function identity<T>(x: T): T;
 
