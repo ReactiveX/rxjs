@@ -1,14 +1,13 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { ObservableInput, ObservedValueUnionFromArray, ObservedValueOf } from '../types';
+import { ObservableInputTuple } from '../types';
 import { EMPTY } from './empty';
 import { onErrorResumeNext as onErrorResumeNextWith } from '../operators/onErrorResumeNext';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 
 /* tslint:disable:max-line-length */
-export function onErrorResumeNext(): Observable<never>;
-export function onErrorResumeNext<O extends ObservableInput<any>>(arrayOfSources: O[]): Observable<ObservedValueOf<O>>;
-export function onErrorResumeNext<A extends ObservableInput<any>[]>(...sources: A): Observable<ObservedValueUnionFromArray<A>>;
+export function onErrorResumeNext<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
+export function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
 
 /* tslint:enable:max-line-length */
 
@@ -71,6 +70,8 @@ export function onErrorResumeNext<A extends ObservableInput<any>[]>(...sources: 
  * @return {Observable} An Observable that concatenates all sources, one after the other,
  * ignoring all errors, such that any error causes it to move on to the next source.
  */
-export function onErrorResumeNext(...sources: ObservableInput<any>[]): Observable<any> {
+export function onErrorResumeNext<A extends readonly unknown[]>(
+  ...sources: [[...ObservableInputTuple<A>]] | [...ObservableInputTuple<A>]
+): Observable<A[number]> {
   return onErrorResumeNextWith(argsOrArgArray(sources))(EMPTY);
 }
