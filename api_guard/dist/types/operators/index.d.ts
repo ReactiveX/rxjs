@@ -175,9 +175,8 @@ export declare function multicast<T, O extends ObservableInput<any>>(SubjectFact
 
 export declare function observeOn<T>(scheduler: SchedulerLike, delay?: number): MonoTypeOperatorFunction<T>;
 
-export declare function onErrorResumeNext<T>(): MonoTypeOperatorFunction<T>;
-export declare function onErrorResumeNext<T, O extends ObservableInput<any>>(arrayOfSources: O[]): OperatorFunction<T, T | ObservedValueOf<O>>;
-export declare function onErrorResumeNext<T, A extends ObservableInput<any>[]>(...sources: A): OperatorFunction<T, T | ObservedValueUnionFromArray<A>>;
+export declare function onErrorResumeNext<T, A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
+export declare function onErrorResumeNext<T, A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 
 export declare function pairwise<T>(): OperatorFunction<T, [T, T]>;
 

@@ -375,9 +375,8 @@ export declare function of<T, U>(value1: T, value2: U): Observable<T | U>;
 export declare function of<T, U, V>(value1: T, value2: U, value3: V): Observable<T | U | V>;
 export declare function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<A>>;
 
-export declare function onErrorResumeNext(): Observable<never>;
-export declare function onErrorResumeNext<O extends ObservableInput<any>>(arrayOfSources: O[]): Observable<ObservedValueOf<O>>;
-export declare function onErrorResumeNext<A extends ObservableInput<any>[]>(...sources: A): Observable<ObservedValueUnionFromArray<A>>;
+export declare function onErrorResumeNext<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
+export declare function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
 
 export interface Operator<T, R> {
     call(subscriber: Subscriber<R>, source: any): TeardownLogic;
