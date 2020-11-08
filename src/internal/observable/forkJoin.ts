@@ -17,10 +17,10 @@ export function forkJoin<A extends readonly unknown[], R>(
 
 // forkJoin(a, b, c)
 /** @deprecated Use the version that takes an array of Observables instead */
-export function forkJoin<A extends readonly unknown[]>(...sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
+export function forkJoin<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
 /** @deprecated resultSelector is deprecated, pipe to map instead */
 export function forkJoin<A extends readonly unknown[], R>(
-  ...sourcesAndResultSelector: readonly [...ObservableInputTuple<A>, (...values: A) => R]
+  ...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]
 ): Observable<R>;
 
 // forkJoin({a, b, c})
