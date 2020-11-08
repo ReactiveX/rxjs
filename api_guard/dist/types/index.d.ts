@@ -164,8 +164,8 @@ export declare function firstValueFrom<T>(source: Observable<T>): Promise<T>;
 export declare function forkJoin(sources: readonly []): Observable<never>;
 export declare function forkJoin<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
 export declare function forkJoin<A extends readonly unknown[], R>(sources: readonly [...ObservableInputTuple<A>], resultSelector: (...values: A) => R): Observable<R>;
-export declare function forkJoin<A extends readonly unknown[]>(...sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
-export declare function forkJoin<A extends readonly unknown[], R>(...sourcesAndResultSelector: readonly [...ObservableInputTuple<A>, (...values: A) => R]): Observable<R>;
+export declare function forkJoin<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
+export declare function forkJoin<A extends readonly unknown[], R>(...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]): Observable<R>;
 export declare function forkJoin(sourcesObject: {
     [K in any]: never;
 }): Observable<never>;
