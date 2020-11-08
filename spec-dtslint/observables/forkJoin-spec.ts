@@ -77,6 +77,7 @@ describe('forkJoin({})', () => {
 describe('forkJoin([])', () => {
   it('should properly type empty arrays', () => {
     const res = forkJoin([]); // $ExpectType Observable<never>
+    const resConst = forkJoin([] as const); // $ExpectType Observable<never>
   });
 
     it('should properly type readonly arrays', () => {
