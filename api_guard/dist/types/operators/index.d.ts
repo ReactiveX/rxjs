@@ -96,6 +96,7 @@ export declare function endWith<T, A, B, C, D, E>(v1: A, v2: B, v3: C, v4: D, v5
 export declare function endWith<T, A, B, C, D, E, F>(v1: A, v2: B, v3: C, v4: D, v5: E, v6: F, scheduler: SchedulerLike): OperatorFunction<T, T | A | B | C | D | E | F>;
 export declare function endWith<T, A extends any[] = T[]>(...args: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
+export declare function every<T>(predicate: BooleanConstructor, thisArg?: any): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
 export declare function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): OperatorFunction<T, boolean>;
 
 export declare function exhaust<T>(): OperatorFunction<ObservableInput<T>, T>;
@@ -108,19 +109,28 @@ export declare function exhaustMap<T, I, R>(project: (value: T, index: number) =
 export declare function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: SchedulerLike): OperatorFunction<T, R>;
 export declare function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent: number | undefined, scheduler: SchedulerLike): OperatorFunction<T, R>;
 
+export declare function filter<T>(predicate: (value: T, index: number) => false, thisArg?: any): OperatorFunction<T, never>;
 export declare function filter<T, S extends T>(predicate: (value: T, index: number) => value is S, thisArg?: any): OperatorFunction<T, S>;
-export declare function filter<T>(predicate: BooleanConstructor): OperatorFunction<T, T extends null | undefined | false | 0 | -0 | 0n | '' ? never : T>;
+export declare function filter<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export declare function filter<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): MonoTypeOperatorFunction<T>;
 
 export declare function finalize<T>(callback: () => void): MonoTypeOperatorFunction<T>;
 
+export declare function find<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export declare function find<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, thisArg?: any): OperatorFunction<T, S | undefined>;
 export declare function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): OperatorFunction<T, T | undefined>;
 
+export declare function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => false, thisArg?: any): OperatorFunction<T, -1>;
+export declare function findIndex<T>(predicate: BooleanConstructor, thisArg?: any): OperatorFunction<T, T extends Falsy ? -1 : number>;
 export declare function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): OperatorFunction<T, number>;
 
 export declare function first<T, D = T>(predicate?: null, defaultValue?: D): OperatorFunction<T, T | D>;
+export declare function first<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
+export declare function first<T, D>(predicate: BooleanConstructor, defaultValue: D): OperatorFunction<T, TruthyTypesOf<T> | D>;
 export declare function first<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue?: S): OperatorFunction<T, S>;
+export declare function first<T, S extends T, D>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue: D): OperatorFunction<T, S | D>;
+export declare function first<T, D>(predicate: (value: T, index: number, source: Observable<T>) => false, defaultValue: D): OperatorFunction<T, D>;
+export declare function first<T>(predicate: (value: T, index: number, source: Observable<T>) => false): OperatorFunction<T, never>;
 export declare function first<T, D = T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: D): OperatorFunction<T, T | D>;
 
 export declare const flatMap: typeof mergeMap;
@@ -135,8 +145,12 @@ export declare function ignoreElements(): OperatorFunction<any, never>;
 
 export declare function isEmpty<T>(): OperatorFunction<T, boolean>;
 
+export declare function last<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
+export declare function last<T, D>(predicate: BooleanConstructor, defaultValue: D): OperatorFunction<T, TruthyTypesOf<T> | D>;
 export declare function last<T, D = T>(predicate?: null, defaultValue?: D): OperatorFunction<T, T | D>;
 export declare function last<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue?: S): OperatorFunction<T, S>;
+export declare function last<T, D>(predicate: (value: T, index: number, source: Observable<T>) => false, defaultValue: D): OperatorFunction<T, D>;
+export declare function last<T>(predicate: (value: T, index: number, source: Observable<T>) => false): OperatorFunction<T, never>;
 export declare function last<T, D = T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: D): OperatorFunction<T, T | D>;
 
 export declare function map<T, R>(project: (value: T, index: number) => R, thisArg?: any): OperatorFunction<T, R>;
@@ -240,6 +254,8 @@ export declare function share<T>(): MonoTypeOperatorFunction<T>;
 export declare function shareReplay<T>(config: ShareReplayConfig): MonoTypeOperatorFunction<T>;
 export declare function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
+export declare function single<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
+export declare function single<T>(predicate: (value: T, index: number, source: Observable<T>) => false): OperatorFunction<T, never>;
 export declare function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
 
 export declare function skip<T>(count: number): MonoTypeOperatorFunction<T>;
@@ -248,6 +264,8 @@ export declare function skipLast<T>(skipCount: number): MonoTypeOperatorFunction
 
 export declare function skipUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T>;
 
+export declare function skipWhile<T>(predicate: BooleanConstructor): OperatorFunction<T, Extract<T, Falsy> extends never ? never : T>;
+export declare function skipWhile<T>(predicate: (value: T, index: number) => true): OperatorFunction<T, never>;
 export declare function skipWhile<T>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T>;
 
 export declare function startWith<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;
@@ -279,6 +297,11 @@ export declare function takeLast<T>(count: number): MonoTypeOperatorFunction<T>;
 
 export declare function takeUntil<T>(notifier: ObservableInput<any>): MonoTypeOperatorFunction<T>;
 
+export declare function takeWhile<T>(predicate: (value: T, index: number) => false, inclusive: true): MonoTypeOperatorFunction<T>;
+export declare function takeWhile<T>(predicate: (value: T, index: number) => false, inclusive?: false): OperatorFunction<T, never>;
+export declare function takeWhile<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? never : T>;
+export declare function takeWhile<T>(predicate: BooleanConstructor, inclusive: false): OperatorFunction<T, Exclude<T, Falsy> extends never ? never : T>;
+export declare function takeWhile<T>(predicate: BooleanConstructor, inclusive: true): MonoTypeOperatorFunction<T>;
 export declare function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
 export declare function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S, inclusive: false): OperatorFunction<T, S>;
 export declare function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive?: boolean): MonoTypeOperatorFunction<T>;

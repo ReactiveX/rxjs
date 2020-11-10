@@ -30,3 +30,12 @@ it('should enforce predicate types', () => {
 it('should enforce predicate return type', () => {
   const o = of('foo', 'bar', 'baz').pipe(findIndex(p => p)); // $ExpectError
 });
+
+it('should support Boolean constructor', () => {
+  const a = of(0 as const, -0 as const, null, undefined, false as const, '' as const).pipe(findIndex(Boolean)); // $ExpectType Observable<-1>
+  const b = of(0 as const, -0 as const, null, 'hi there' as const, undefined, false as const, '' as const).pipe(findIndex(Boolean)); // $ExpectType Observable<number>
+});
+
+it('should properly narrow an always false predicate', () => {
+  const a = of('foo', 'bar', 'baz').pipe(findIndex(() => false)); // $ExpectType Observable<-1>
+})

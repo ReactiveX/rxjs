@@ -1,10 +1,11 @@
 /** @prettier */
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { OperatorFunction } from '../types';
+import { OperatorFunction, TruthyTypesOf } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
+export function find<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export function find<T, S extends T>(
   predicate: (value: T, index: number, source: Observable<T>) => value is S,
   thisArg?: any

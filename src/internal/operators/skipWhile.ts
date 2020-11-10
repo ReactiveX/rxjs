@@ -1,7 +1,11 @@
 /** @prettier */
-import { MonoTypeOperatorFunction } from '../types';
+import { Falsy, MonoTypeOperatorFunction, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
+
+export function skipWhile<T>(predicate: BooleanConstructor): OperatorFunction<T, Extract<T, Falsy> extends never ? never : T>;
+export function skipWhile<T>(predicate: (value: T, index: number) => true): OperatorFunction<T, never>;
+export function skipWhile<T>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T>;
 
 /**
  * Returns an Observable that skips all items emitted by the source Observable as long as a specified condition holds

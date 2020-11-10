@@ -159,6 +159,8 @@ export interface ErrorObserver<T> {
 
 export declare type FactoryOrValue<T> = T | (() => T);
 
+export declare type Falsy = null | undefined | false | 0 | -0 | 0n | '';
+
 export declare function firstValueFrom<T>(source: Observable<T>): Promise<T>;
 
 export declare function forkJoin(sources: []): Observable<never>;
@@ -371,9 +373,7 @@ export declare function of<T, T2, T3, T4, T5, T6, T7, T8, T9>(a: T, b: T2, c: T3
 export declare function of(): Observable<never>;
 export declare function of<T>(): Observable<T>;
 export declare function of<T>(value: T): Observable<T>;
-export declare function of<T, U>(value1: T, value2: U): Observable<T | U>;
-export declare function of<T, U, V>(value1: T, value2: U, value3: V): Observable<T | U | V>;
-export declare function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<A>>;
+export declare function of<A extends readonly unknown[]>(...args: A): Observable<ValueFromArray<A>>;
 
 export declare function onErrorResumeNext(): Observable<never>;
 export declare function onErrorResumeNext<O extends ObservableInput<any>>(arrayOfSources: O[]): Observable<ObservedValueOf<O>>;
@@ -533,6 +533,8 @@ export interface TimestampProvider {
     now(): number;
 }
 
+export declare type TruthyTypesOf<T> = T extends Falsy ? never : T;
+
 export interface UnaryFunction<T, R> {
     (source: T): R;
 }
@@ -549,7 +551,7 @@ export declare const UnsubscriptionError: UnsubscriptionErrorCtor;
 
 export declare function using<T>(resourceFactory: () => Unsubscribable | void, observableFactory: (resource: Unsubscribable | void) => ObservableInput<T> | void): Observable<T>;
 
-export declare type ValueFromArray<A> = A extends Array<infer T> ? T : never;
+export declare type ValueFromArray<A extends readonly unknown[]> = A extends Array<infer T> ? T : never;
 
 export declare type ValueFromNotification<T> = T extends {
     kind: 'N' | 'E' | 'C';

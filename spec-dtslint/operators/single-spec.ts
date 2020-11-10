@@ -32,3 +32,12 @@ it('should enforce index type', () => {
 it('should enforce source type', () => {
   const o = of('foo').pipe(single(((value, index, source: Observable<number>) => value === 'foo'))); // $ExpectError
 });
+
+it('should handle Boolean constructor properly', () => {
+  const a = of(null, undefined, 0 as const, -0 as const, 0n as const, '' as const).pipe(single(Boolean)); // $ExpectType Observable<never>
+  const b = of(null, undefined, 0 as const, 'test' as const, -0 as const, 0n as const, '' as const).pipe(single(Boolean)); // $ExpectType Observable<"test">
+});
+
+it('should handle predicates that always return false properly', () => {
+  const a = of(1, 2, 3, 4).pipe(single(() => false as const)); // $ExpectType Observable<never>
+});

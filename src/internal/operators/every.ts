@@ -1,8 +1,17 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { OperatorFunction } from '../types';
+import { Falsy, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
+
+export function every<T>(
+  predicate: BooleanConstructor,
+  thisArg?: any
+): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
+export function every<T>(
+  predicate: (value: T, index: number, source: Observable<T>) => boolean,
+  thisArg?: any
+): OperatorFunction<T, boolean>;
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
