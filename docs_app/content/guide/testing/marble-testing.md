@@ -56,13 +56,26 @@ Although `run()` executes entirely synchronously, the helper functions inside yo
 - `expectObservable(actual: Observable<T>, subscriptionMarbles?: string).toBe(marbleDiagram: string, values?: object, error?: any)` - schedules an assertion for when the TestScheduler flushes. Give `subscriptionMarbles` as parameter to change the schedule of subscription and unsubscription. If you don't provide the `subscriptionMarbles` parameter it will subscribe at the beginning and never unsubscribe. Read below about subscription marble diagram.
 - `expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]).toBe(subscriptionMarbles: string)` - like `expectObservable` schedules an assertion for when the testScheduler flushes. Both `cold()` and `hot()` return an observable with a property `subscriptions` of type `SubscriptionLog[]`. Give `subscriptions` as parameter to `expectSubscriptions` to assert whether it matches the `subscriptionsMarbles` marble diagram given in `toBe()`. Subscription marble diagrams are slightly different than Observable marble diagrams. Read more below.
 - `flush()` - immediately starts virtual time. Not often used since `run()` will automatically flush for you when your callback returns, but in some cases you may wish to flush more than once or otherwise have more control.
+- `time()` - converts marbles into a number indicating number of frames. It can be used by operators expecting a specific timeout. It measures time based on the position of the complete (`|`) signal:
+
+    ```ts
+    testScheduler.run(helpers => {
+      const { time, cold } = helpers;
+      const source = cold('---a--b--|');
+      const t = time('        --|    ');
+      //                         --|
+      const expected = '   -----a--b|';
+      const result = e1.pipe(delay(t));
+      expectObservable(result).toBe(expected);
+    });
+    ```
 - `animate()` - specifies when requested animation frames will be 'painted'. `animate` accepts a marble diagram and each value emission in the diagram indicates when a 'paint' occurs - at which time, any queued `requestAnimationFrame` callbacks will be executed. Call `animate` at the beginning of your test and align the marble diagrams so that it's clear when the callbacks will be executed:
 
     ```ts
     testScheduler.run(helpers => {
       const { animate, cold } = helpers;
       animate('              ---x---x---x---x');
-      const requests = cold('-r-------r------')
+      const requests = cold('-r-------r------');
       /* ... */
       const expected = '     ---a-------b----';
     });
