@@ -1,6 +1,6 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { ObservableInput, SchedulerLike } from '../types';
+import { ObservableInput, ObservableInputTuple, SchedulerLike } from '../types';
 import { mergeAll } from '../operators/mergeAll';
 import { internalFromArray } from './fromArray';
 import { argsOrArgArray } from '../util/argsOrArgArray';
@@ -8,156 +8,13 @@ import { innerFrom } from './from';
 import { EMPTY } from './empty';
 import { popNumber, popScheduler } from '../util/args';
 
-/* tslint:disable:max-line-length */
+export function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>]): Observable<A[number]>;
+export function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>, number?]): Observable<A[number]>;
 /** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<T>(v1: ObservableInput<T>, scheduler: SchedulerLike): Observable<T>;
+export function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>, SchedulerLike?]): Observable<A[number]>;
 /** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<T>(v1: ObservableInput<T>, concurrent: number, scheduler: SchedulerLike): Observable<T>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>, scheduler: SchedulerLike): Observable<T | T2>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<T, T2>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  concurrent: number,
-  scheduler: SchedulerLike
-): Observable<T | T2>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<T, T2, T3>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  scheduler: SchedulerLike
-): Observable<T | T2 | T3>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<T, T2, T3>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  concurrent: number,
-  scheduler: SchedulerLike
-): Observable<T | T2 | T3>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<T, T2, T3, T4>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>,
-  scheduler: SchedulerLike
-): Observable<T | T2 | T3 | T4>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<T, T2, T3, T4>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>,
-  concurrent: number,
-  scheduler: SchedulerLike
-): Observable<T | T2 | T3 | T4>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<T, T2, T3, T4, T5>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>,
-  v5: ObservableInput<T5>,
-  scheduler: SchedulerLike
-): Observable<T | T2 | T3 | T4 | T5>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<T, T2, T3, T4, T5>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>,
-  v5: ObservableInput<T5>,
-  concurrent: number,
-  scheduler: SchedulerLike
-): Observable<T | T2 | T3 | T4 | T5>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<T, T2, T3, T4, T5, T6>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>,
-  v5: ObservableInput<T5>,
-  v6: ObservableInput<T6>,
-  scheduler: SchedulerLike
-): Observable<T | T2 | T3 | T4 | T5 | T6>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<T, T2, T3, T4, T5, T6>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>,
-  v5: ObservableInput<T5>,
-  v6: ObservableInput<T6>,
-  concurrent: number,
-  scheduler: SchedulerLike
-): Observable<T | T2 | T3 | T4 | T5 | T6>;
+export function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>, number?, SchedulerLike?]): Observable<A[number]>;
 
-export function merge<T>(v1: ObservableInput<T>): Observable<T>;
-export function merge<T>(v1: ObservableInput<T>, concurrent: number): Observable<T>;
-export function merge<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>): Observable<T | T2>;
-export function merge<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>, concurrent: number): Observable<T | T2>;
-export function merge<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<T | T2 | T3>;
-export function merge<T, T2, T3>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  concurrent: number
-): Observable<T | T2 | T3>;
-export function merge<T, T2, T3, T4>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>
-): Observable<T | T2 | T3 | T4>;
-export function merge<T, T2, T3, T4>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>,
-  concurrent: number
-): Observable<T | T2 | T3 | T4>;
-export function merge<T, T2, T3, T4, T5>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>,
-  v5: ObservableInput<T5>
-): Observable<T | T2 | T3 | T4 | T5>;
-export function merge<T, T2, T3, T4, T5>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>,
-  v5: ObservableInput<T5>,
-  concurrent: number
-): Observable<T | T2 | T3 | T4 | T5>;
-export function merge<T, T2, T3, T4, T5, T6>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>,
-  v5: ObservableInput<T5>,
-  v6: ObservableInput<T6>
-): Observable<T | T2 | T3 | T4 | T5 | T6>;
-export function merge<T, T2, T3, T4, T5, T6>(
-  v1: ObservableInput<T>,
-  v2: ObservableInput<T2>,
-  v3: ObservableInput<T3>,
-  v4: ObservableInput<T4>,
-  v5: ObservableInput<T5>,
-  v6: ObservableInput<T6>,
-  concurrent: number
-): Observable<T | T2 | T3 | T4 | T5 | T6>;
-export function merge<T>(...observables: (ObservableInput<T> | number)[]): Observable<T>;
-/** @deprecated use {@link scheduled} and {@link mergeAll} (e.g. `scheduled([ob1, ob2, ob3], scheduler).pipe(mergeAll())*/
-export function merge<T>(...observables: (ObservableInput<T> | SchedulerLike | number)[]): Observable<T>;
-export function merge<T, R>(...observables: (ObservableInput<any> | number)[]): Observable<R>;
-/** @deprecated use {@link scheduled} and {@link mergeAll} (e.g. `scheduled([ob1, ob2, ob3], scheduler).pipe(mergeAll())*/
-export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLike | number)[]): Observable<R>;
-/* tslint:enable:max-line-length */
 /**
  * Creates an output Observable which concurrently emits all values from every
  * given input Observable.
@@ -225,16 +82,16 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  * @return {Observable} an Observable that emits items that are the result of
  * every input Observable.
  */
-export function merge(...args: (ObservableInput<any> | SchedulerLike | number)[]): Observable<unknown> {
+export function merge(...args: (ObservableInput<unknown> | number | SchedulerLike)[]): Observable<unknown> {
   const scheduler = popScheduler(args);
   const concurrent = popNumber(args, Infinity);
-  args = argsOrArgArray(args);
-  return !args.length
+  const sources = argsOrArgArray(args) as ObservableInput<unknown>[];
+  return !sources.length
     ? // No source provided
       EMPTY
-    : args.length === 1
+    : sources.length === 1
     ? // One source? Just return it.
-      innerFrom(args[0] as ObservableInput<any>)
+      innerFrom(sources[0])
     : // Merge all sources
-      mergeAll(concurrent)(internalFromArray(args as ObservableInput<any>[], scheduler));
+      mergeAll(concurrent)(internalFromArray(sources, scheduler));
 }
