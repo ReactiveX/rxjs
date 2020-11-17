@@ -58,8 +58,6 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
  *
  * ## Example for refCount usage
  * ```ts
- * // Code take from https://blog.angularindepth.com/rxjs-whats-changed-with-sharereplay-65c098843e95
- * // and adapted to showcase the refCount property.
  * import { interval, Observable, defer } from 'rxjs';
  * import { shareReplay, take, tap, finalize } from 'rxjs/operators';
  *
