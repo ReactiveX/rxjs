@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, ObservedValueUnionFromArray } from '../types';
+import { MonoTypeOperatorFunction, OperatorFunction, ObservableInputTuple } from '../types';
 import { raceInit } from '../observable/race';
 import { operate } from '../util/lift';
 import { argsOrArgArray } from "../util/argsOrArgArray";
@@ -55,10 +55,10 @@ export function race<T>(...args: any[]): OperatorFunction<T, unknown> {
  * @param otherSources Sources used to race for which Observable emits first.
  */
 
-export function raceWith<T, A extends ObservableInput<any>[]>(
-  ...otherSources: A
-): OperatorFunction<T, T | ObservedValueUnionFromArray<A>> {
+export function raceWith<T, A extends readonly unknown[]>(
+  ...otherSources: [...ObservableInputTuple<A>]
+): OperatorFunction<T, T | A[number]> {
   return !otherSources.length ? identity : operate((source, subscriber) => {
-    raceInit([source, ...otherSources])(subscriber);
+    raceInit<T | A[number]>([source, ...otherSources])(subscriber);
   });
 }

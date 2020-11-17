@@ -244,19 +244,19 @@ export type ObservableInputTuple<T> = {
  * Constructs a new tuple with the specified type at the head.
  * If you declare `Cons<A, [B, C]>` you will get back `[A, B, C]`.
  */
-export type Cons<X, Y extends any[]> = ((arg: X, ...rest: Y) => any) extends (...args: infer U) => any ? U : never;
+export type Cons<X, Y extends readonly any[]> = ((arg: X, ...rest: Y) => any) extends (...args: infer U) => any ? U : never;
 
 /**
  * Extracts the head of a tuple.
  * If you declare `Head<[A, B, C]>` you will get back `A`.
  */
-export type Head<X extends any[]> = ((...args: X) => any) extends (arg: infer U, ...rest: any[]) => any ? U : never;
+export type Head<X extends readonly any[]> = ((...args: X) => any) extends (arg: infer U, ...rest: any[]) => any ? U : never;
 
 /**
  * Extracts the tail of a tuple.
  * If you declare `Tail<[A, B, C]>` you will get back `[B, C]`.
  */
-export type Tail<X extends any[]> = ((...args: X) => any) extends (arg: any, ...rest: infer U) => any ? U : never;
+export type Tail<X extends readonly any[]> = ((...args: X) => any) extends (arg: any, ...rest: infer U) => any ? U : never;
 
 /**
  * Extracts the generic value from an Array type.

@@ -1,6 +1,6 @@
 /** @prettier */
 import { combineLatestInit } from '../observable/combineLatest';
-import { ObservableInput, OperatorFunction, ObservedValueTupleFromArray, Cons } from '../types';
+import { ObservableInput, ObservableInputTuple, OperatorFunction, Cons } from '../types';
 import { operate } from '../util/lift';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
@@ -126,8 +126,8 @@ export function combineLatest<T, R>(...args: (ObservableInput<any> | ((...values
  * ```
  * @param otherSources the other sources to subscribe to.
  */
-export function combineLatestWith<T, A extends ObservableInput<any>[]>(
-  ...otherSources: A
-): OperatorFunction<T, Cons<T, ObservedValueTupleFromArray<A>>> {
+export function combineLatestWith<T, A extends readonly unknown[]>(
+  ...otherSources: [...ObservableInputTuple<A>]
+): OperatorFunction<T, Cons<T, A>> {
   return combineLatest(...otherSources);
 }

@@ -1,14 +1,9 @@
 /** @prettier */
-import { ObservableInput, OperatorFunction, ObservedValueUnionFromArray, MonoTypeOperatorFunction, SchedulerLike } from '../types';
+import { ObservableInput, ObservableInputTuple, OperatorFunction, MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { operate } from '../util/lift';
 import { concatAll } from './concatAll';
 import { internalFromArray } from '../observable/fromArray';
 import { popScheduler } from '../util/args';
-
-export function concatWith<T>(): OperatorFunction<T, T>;
-export function concatWith<T, A extends ObservableInput<any>[]>(
-  ...otherSources: A
-): OperatorFunction<T, ObservedValueUnionFromArray<A> | T>;
 
 /**
  * Emits all of the values from the source observable, then, once it completes, subscribes
@@ -48,9 +43,9 @@ export function concatWith<T, A extends ObservableInput<any>[]>(
  *
  * @param otherSources Other observable sources to subscribe to, in sequence, after the original source is complete.
  */
-export function concatWith<T, A extends ObservableInput<any>[]>(
-  ...otherSources: A
-): OperatorFunction<T, ObservedValueUnionFromArray<A> | T> {
+export function concatWith<T, A extends readonly unknown[]>(
+  ...otherSources: [...ObservableInputTuple<A>]
+): OperatorFunction<T, T | A[number]> {
   return concat(...otherSources);
 }
 
