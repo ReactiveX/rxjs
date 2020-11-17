@@ -12,46 +12,66 @@ describe('withLatestFrom', () => {
     it('should infer correctly with 2 params', () => {
       const a = of(1, 2, 3);
       const b = of('a', 'b', 'c');
-      const c = of('d', 'e', 'f');
-      const res = a.pipe(withLatestFrom(b, c)); // $ExpectType Observable<[number, string, string]>
+      const c = of(1, 2, 3);
+      const res = a.pipe(withLatestFrom(b, c)); // $ExpectType Observable<[number, string, number]>
     });
 
     it('should infer correctly with 3 params', () => {
       const a = of(1, 2, 3);
       const b = of('a', 'b', 'c');
-      const c = of('d', 'e', 'f');
+      const c = of(1, 2, 3);
       const d = of('g', 'h', 'i');
-      const res = a.pipe(withLatestFrom(b, c, d)); // $ExpectType Observable<[number, string, string, string]>
+      const res = a.pipe(withLatestFrom(b, c, d)); // $ExpectType Observable<[number, string, number, string]>
     });
 
     it('should infer correctly with 4 params', () => {
       const a = of(1, 2, 3);
       const b = of('a', 'b', 'c');
-      const c = of('d', 'e', 'f');
+      const c = of(1, 2, 3);
       const d = of('g', 'h', 'i');
-      const e = of('j', 'k', 'l');
-      const res = a.pipe(withLatestFrom(b, c, d, e)); // $ExpectType Observable<[number, string, string, string, string]>
+      const e = of(4, 5, 6);
+      const res = a.pipe(withLatestFrom(b, c, d, e)); // $ExpectType Observable<[number, string, number, string, number]>
     });
 
     it('should infer correctly with 5 params', () => {
       const a = of(1, 2, 3);
       const b = of('a', 'b', 'c');
-      const c = of('d', 'e', 'f');
+      const c = of(1, 2, 3);
       const d = of('g', 'h', 'i');
-      const e = of('j', 'k', 'l');
+      const e = of(4, 5, 6);
       const f = of('m', 'n', 'o');
-      const res = a.pipe(withLatestFrom(b, c, d, e, f)); // $ExpectType Observable<[number, string, string, string, string, string]>
+      const res = a.pipe(withLatestFrom(b, c, d, e, f)); // $ExpectType Observable<[number, string, number, string, number, string]>
     });
 
-    it('should only accept maximum params of 5', () => {
+    it('should infer correctly with 6 params', () => {
       const a = of(1, 2, 3);
       const b = of('a', 'b', 'c');
-      const c = of('d', 'e', 'f');
+      const c = of(1, 2, 3);
       const d = of('g', 'h', 'i');
-      const e = of('j', 'k', 'l');
+      const e = of(4, 5, 6);
       const f = of('m', 'n', 'o');
-      const g = of('p', 'q', 'r');
-      const res = a.pipe(withLatestFrom(b, c, d, e, f, g)); // $ExpectType Observable<unknown>
+      const g = of(7, 8, 9);
+      const res = a.pipe(withLatestFrom(b, c, d, e, f, g)); // $ExpectType Observable<[number, string, number, string, number, string, number]>
+    });
+
+    it('should allow the spreading of input params', () => {
+      const a = of(1, 2, 3);
+      const b = [a, a, a];
+      const res = a.pipe(withLatestFrom(...b)); // $ExpectType Observable<[number, ...number[]]>
+    });
+
+    it('should error with non Observable input', () => {
+      const a = of(1, 2, 3);
+      const b = of('a', 'b', 'c');
+      const c = 1;
+      const d = of('g', 'h', 'i');
+      const res = a.pipe(withLatestFrom(b, c, d)); // $ExpectError
+    });
+
+    it('should error with non Observable input at last position', () => {
+      const a = of(1, 2, 3);
+      const b = 1;
+      const res = a.pipe(withLatestFrom(b)); // $ExpectError
     });
   });
 
@@ -70,14 +90,14 @@ describe('withLatestFrom', () => {
     it('should infer correctly with 2 params', () => {
       const a = of(1, 2, 3);
       const b = of('a', 'b', 'c');
-      const c = of('d', 'e', 'f');
-      const res = a.pipe(withLatestFrom(b, c, (a, b, c) => b + c)); // $ExpectType Observable<string>
+      const c = of(1, 2, 3);
+      const res = a.pipe(withLatestFrom(b, c, (a, b, c) => c)); // $ExpectType Observable<number>
     });
 
     it('should infer correctly with 3 params', () => {
       const a = of(1, 2, 3);
       const b = of('a', 'b', 'c');
-      const c = of('d', 'e', 'f');
+      const c = of(1, 2, 3);
       const d = of('g', 'h', 'i');
       const ref = a.pipe(withLatestFrom(b, c, d, (a, b, c, d) => b + c)); // $ExpectType Observable<string>
     });
@@ -85,20 +105,64 @@ describe('withLatestFrom', () => {
     it('should infer correctly with 4 params', () => {
       const a = of(1, 2, 3);
       const b = of('a', 'b', 'c');
-      const c = of('d', 'e', 'f');
+      const c = of(1, 2, 3);
       const d = of('g', 'h', 'i');
-      const e = of('j', 'k', 'l');
+      const e = of(4, 5, 6);
       const res = a.pipe(withLatestFrom(b, c, d, e, (a, b, c, d, e) => b + c)); // $ExpectType Observable<string>
     });
 
     it('should infer correctly with 5 params', () => {
       const a = of(1, 2, 3);
       const b = of('a', 'b', 'c');
-      const c = of('d', 'e', 'f');
+      const c = of(1, 2, 3);
       const d = of('g', 'h', 'i');
-      const e = of('j', 'k', 'l');
+      const e = of(4, 5, 6);
       const f = of('m', 'n', 'o');
-      const res = a.pipe(withLatestFrom(b, c, d, e, f, (a, b, c, d, e, f) => b + c)); // $ExpectType Observable<string>
+      const res = a.pipe(withLatestFrom(b, c, d, e, f, (a, b, c, d, e, f) => c + e)); // $ExpectType Observable<number>
     });
+
+    it('should infer correctly with 6 params', () => {
+      const a = of(1, 2, 3);
+      const b = of('a', 'b', 'c');
+      const c = of(1, 2, 3);
+      const d = of('g', 'h', 'i');
+      const e = of(4, 5, 6);
+      const f = of('m', 'n', 'o');
+      const g = of(7, 8, 9);
+      const res = a.pipe(withLatestFrom(b, c, d, e, f, g, (a, b, c, d, e, f, g) => b + f)); // $ExpectType Observable<string>
+    });
+
+    it('should error with non Observable input', () => {
+      const a = of(1, 2, 3);
+      const b = of('a', 'b', 'c');
+      const c = 1;
+      const d = of('g', 'h', 'i');
+      const res = a.pipe(withLatestFrom(b, c, d, (a, b, c, d) => a + d)); // $ExpectError
+    });
+
+    it('should error with non Observable input at last position', () => {
+      const a = of(1, 2, 3);
+      const b = 1;
+      const res = a.pipe(withLatestFrom(b, (a, b) => a + b)); // $ExpectError
+    });
+
+    it('should error with incorrect number of projected params', () => {
+      const a = of(1, 2, 3);
+      const b = of('a', 'b', 'c');
+      const res = a.pipe(withLatestFrom(b, (a, b, c) => a)); // $ExpectError
+    });
+
+    /*
+     * The following test does not typecheck because the project function is missing a third parameter.
+     * If such an issue occurs in a consumer code base the fix is to specify the missing parameters.
+     * 
+     * It looks like this is a TS bug.
+     */
+    // it('should infer correct parameters with fewer arguments to project function', () => {
+    //   const a = of(1, 2, 3);
+    //   const b = of('a', 'b', 'c');
+    //   const c = of(1, 2, 3);
+    //   const res = a.pipe(withLatestFrom(b, c, (a, b) => b)); // $ExpectType Observable<string>
+    // });
   });
 });
