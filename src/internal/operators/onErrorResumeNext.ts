@@ -1,17 +1,18 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { ObservableInput, OperatorFunction, ObservedValueOf, ObservedValueUnionFromArray, MonoTypeOperatorFunction } from '../types';
+import { ObservableInputTuple, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { innerFrom } from '../observable/from';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
 
-export function onErrorResumeNext<T>(): MonoTypeOperatorFunction<T>;
-export function onErrorResumeNext<T, O extends ObservableInput<any>>(arrayOfSources: O[]): OperatorFunction<T, T | ObservedValueOf<O>>;
-export function onErrorResumeNext<T, A extends ObservableInput<any>[]>(
-  ...sources: A
-): OperatorFunction<T, T | ObservedValueUnionFromArray<A>>;
+export function onErrorResumeNext<T, A extends readonly unknown[]>(
+  sources: [...ObservableInputTuple<A>]
+): OperatorFunction<T, T | A[number]>;
+export function onErrorResumeNext<T, A extends readonly unknown[]>(
+  ...sources: [...ObservableInputTuple<A>]
+): OperatorFunction<T, T | A[number]>;
 
 /**
  * When any of the provided Observable emits an complete or error notification, it immediately subscribes to the next one
@@ -79,15 +80,17 @@ export function onErrorResumeNext<T, A extends ObservableInput<any>[]>(
  * @return {Observable} An Observable that emits values from source Observable, but - if it errors - subscribes
  * to the next passed Observable and so on, until it completes or runs out of Observables.
  */
-export function onErrorResumeNext<T>(...nextSources: ObservableInput<any>[]): OperatorFunction<T, unknown> {
-  nextSources = argsOrArgArray(nextSources);
+export function onErrorResumeNext<T, A extends readonly unknown[]>(
+  ...sources: [[...ObservableInputTuple<A>]] | [...ObservableInputTuple<A>]
+): OperatorFunction<T, T | A[number]> {
+  const nextSources = argsOrArgArray(sources);
 
   return operate((source, subscriber) => {
     const remaining = [source, ...nextSources];
     const subscribeNext = () => {
       if (!subscriber.closed) {
         if (remaining.length > 0) {
-          let nextSource: Observable<any>;
+          let nextSource: Observable<A[number]>;
           try {
             nextSource = innerFrom(remaining.shift()!);
           } catch (err) {
