@@ -87,7 +87,7 @@ export function onErrorResumeNext<T, A extends readonly unknown[]>(
   // result to be `A[number][]` - completely dropping the ObservableInput part
   // of the type. This makes no sense whatsoever. As a workaround, the type is
   // asserted explicitly.
-  const nextSources = (argsOrArgArray(sources) as unknown) as [[...ObservableInputTuple<A>]];
+  const nextSources = (argsOrArgArray(sources) as unknown) as ObservableInputTuple<A>;
 
   return operate((source, subscriber) => {
     const remaining = [source, ...nextSources];
