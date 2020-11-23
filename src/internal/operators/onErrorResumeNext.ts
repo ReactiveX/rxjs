@@ -83,7 +83,11 @@ export function onErrorResumeNext<T, A extends readonly unknown[]>(
 export function onErrorResumeNext<T, A extends readonly unknown[]>(
   ...sources: [[...ObservableInputTuple<A>]] | [...ObservableInputTuple<A>]
 ): OperatorFunction<T, T | A[number]> {
-  const nextSources = argsOrArgArray(sources);
+  // For some reason, TS 4.1 RC gets the inference wrong here and infers the
+  // result to be `A[number][]` - completely dropping the ObservableInput part
+  // of the type. This makes no sense whatsoever. As a workaround, the type is
+  // asserted explicitly.
+  const nextSources = (argsOrArgArray(sources) as unknown) as ObservableInputTuple<A>;
 
   return operate((source, subscriber) => {
     const remaining = [source, ...nextSources];
@@ -92,7 +96,7 @@ export function onErrorResumeNext<T, A extends readonly unknown[]>(
         if (remaining.length > 0) {
           let nextSource: Observable<A[number]>;
           try {
-            nextSource = innerFrom(remaining.shift()!);
+            nextSource = innerFrom<T | A[number]>(remaining.shift()!);
           } catch (err) {
             subscribeNext();
             return;
