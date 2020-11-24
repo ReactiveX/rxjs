@@ -33,6 +33,10 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
     // low as possible. If the number of hidden classes involved exceeds four,
     // the property accesses will become megamorphic and performance penalties
     // will be incurred - i.e. inline caches won't be used.
+    //
+    // The reasons for ensuring all instances have the same hidden class are
+    // further discussed in this blog post from Benedikt Meurer:
+    // https://benediktmeurer.de/2018/03/23/impact-of-polymorphism-on-component-based-frameworks-like-react/
     super(destination);
     this._next = onNext
       ? function (this: OperatorSubscriber<T>, value: T) {
