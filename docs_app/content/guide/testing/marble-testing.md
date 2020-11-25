@@ -65,7 +65,7 @@ Although `run()` executes entirely synchronously, the helper functions inside yo
       const t = time('        --|    ');
       //                         --|
       const expected = '   -----a--b|';
-      const result = e1.pipe(delay(t));
+      const result = source.pipe(delay(t));
       expectObservable(result).toBe(expected);
     });
     ```
