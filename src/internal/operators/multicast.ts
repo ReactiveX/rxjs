@@ -3,39 +3,70 @@ import { Subject } from '../Subject';
 import { Observable } from '../Observable';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { OperatorFunction, UnaryFunction, ObservedValueOf, ObservableInput } from '../types';
-import { hasLift, operate } from '../util/lift';
+import { hasLift } from '../util/lift';
 import { isFunction } from '../util/isFunction';
+import { connect } from './connect';
 
-/* tslint:disable:max-line-length */
+/**
+ * An operator that creates a {@link ConnectableObservable}, that when connected,
+ * with the `connect` method, will use the provided subject to multicast the values
+ * from the source to all consumers.
+ *
+ * @param subject The subject to multicast through.
+ * @deprecated This will be removed in version 8. Please use the {@link connectable} creation
+ * function, which creates a connectable observable. If you were using the {@link refCount} operator
+ * on the result of the `multicast` operator, then use the {@link share} operator, which is now
+ * highly configurable. `multicast(subject), refCount()` is equivalent to
+ * `share({ connector: () => subject, resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })`.
+ */
 export function multicast<T>(subject: Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
+
+/**
+ * Because this is deprecated in favor of the {@link connect} operator, and was otherwise poorly documented,
+ * rather than duplicate the effort of documenting the same behavior, please see documentation for the
+ * {@link connect} operator.
+ *
+ * @param subject The subject used to multicast.
+ * @param selector A setup function to setup the multicast
+ * @deprecated To be removed in version 8. Please use the new {@link connect} operator.
+ * `multicast(subject, fn)` is equivalent to `connect({ connector: () => subject, setup: fn })`.
+ */
 export function multicast<T, O extends ObservableInput<any>>(
   subject: Subject<T>,
   selector: (shared: Observable<T>) => O
-): UnaryFunction<Observable<T>, ConnectableObservable<ObservedValueOf<O>>>;
-export function multicast<T>(subjectFactory: (this: Observable<T>) => Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
-export function multicast<T, O extends ObservableInput<any>>(
-  SubjectFactory: (this: Observable<T>) => Subject<T>,
-  selector: (shared: Observable<T>) => O
 ): OperatorFunction<T, ObservedValueOf<O>>;
-/* tslint:enable:max-line-length */
 
 /**
- * Returns an Observable that emits the results of invoking a specified selector on items
- * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.
+ * An operator that creates a {@link ConnectableObservable}, that when connected,
+ * with the `connect` method, will use the provided subject to multicast the values
+ * from the source to all consumers.
  *
- * ![](multicast.png)
- *
- * @param {Function|Subject} subjectOrSubjectFactory - Factory function to create an intermediate subject through
- * which the source sequence's elements will be multicasted to the selector function
- * or Subject to push source elements into.
- * @param {Function} [selector] - Optional selector function that can use the multicasted source stream
- * as many times as needed, without causing multiple subscriptions to the source stream.
- * Subscribers to the given source will receive all notifications of the source from the
- * time of the subscription forward.
- * @return {Observable} An Observable that emits the results of invoking the selector
- * on the items emitted by a `ConnectableObservable` that shares a single subscription to
- * the underlying stream.
+ * @param subjectFactory A factory that will be called to create the subject. Passing a function here
+ * will cause the underlying subject to be "reset" on error, completion, or refCounted unsubscription of
+ * the source.
+ * @deprecated This will be removed in version 8. Please use the {@link connectable} creation
+ * function, which creates a connectable observable. If you were using the {@link refCount} operator
+ * on the result of the `multicast` operator, then use the {@link share} operator, which is now
+ * highly configurable. `multicast(() => new BehaviorSubject('test'))), refCount()` is equivalent to
+ * `share({ connector: () => new BehaviorSubject('test') })`.
  */
+export function multicast<T>(subjectFactory: () => Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
+
+/**
+ * Because this is deprecated in favor of the {@link connect} operator, and was otherwise poorly documented,
+ * rather than duplicate the effort of documenting the same behavior, please see documentation for the
+ * {@link connect} operator.
+ *
+ * @param subjectFactory A factory that creates the subject used to multicast.
+ * @param selector A setup function to setup the multicast
+ * @deprecated To be removed in version 8. Please use the new {@link connect} operator.
+ * `multicast(fn1, fn2)` is equivalent to `connect({ connector: fn1, setup: fn2 })`.
+ */
+export function multicast<T, O extends ObservableInput<any>>(
+  subjectFactory: () => Subject<T>,
+  selector: (shared: Observable<T>) => O
+): OperatorFunction<T, ObservedValueOf<O>>;
+
 export function multicast<T, R>(
   subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
   selector?: (source: Observable<T>) => Observable<R>
@@ -43,14 +74,12 @@ export function multicast<T, R>(
   const subjectFactory = isFunction(subjectOrSubjectFactory) ? subjectOrSubjectFactory : () => subjectOrSubjectFactory;
 
   if (isFunction(selector)) {
-    return operate((source, subscriber) => {
-      const subject = subjectFactory();
-      // Intentionally terse code: Subscribe to the result of the selector,
-      // then immediately connect the source through the subject, adding
-      // that to the resulting subscription. The act of subscribing with `this`,
-      // the primary destination subscriber, will automatically add the subscription
-      // to the result.
-      selector(subject).subscribe(subscriber).add(source.subscribe(subject));
+    // If a selector function is provided, then we're a "normal" operator that isn't
+    // going to return a ConnectableObservable. We can use `connect` to do what we
+    // need to do.
+    return connect({
+      connector: subjectFactory,
+      setup: selector,
     });
   }
 

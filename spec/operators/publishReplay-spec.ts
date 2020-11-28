@@ -430,7 +430,7 @@ describe('publishReplay operator', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
-  it('should emit an error when the selector throws an exception', () => {
+  it('should EMIT an error when the selector throws an exception', () => {
     const error = "It's broken";
     const selector = () => {
       throw error;

@@ -1,5 +1,5 @@
-import { ConnectableObservable } from '../observable/ConnectableObservable';
 /** @prettier */
+import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';
@@ -15,7 +15,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * refCount has only a single subscription independently of the number of subscribers to the target
  * observable.
  *
- * Note that using the {@link share} operator is exactly the same as using the `multicast(() => new Subject())` operator 
+ * Note that using the {@link share} operator is exactly the same as using the `multicast(() => new Subject())` operator
  * (making the observable hot) and the *refCount* operator in a sequence.
  *
  * ![](refCount.png)
@@ -54,9 +54,11 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * // Nothing happens until you call .connect() on the observable.
  * ```
  *
- * @see {@link ConnectableObservable}
- * @see {@link share}
- * @see {@link publish}
+ * @deprecated to be removed in version 8. Use the updated {@link share} operator,
+ * which now is highly configurable. How `share` is used will depend on the connectable
+ * observable you created just prior to the `refCount` operator. For examples on how
+ * to replace this, see documentation in {@link multicast}, {@link publish}, {@link publishReplay},
+ * {@link publishBehavior}, {@link publishLast} or {@link ConnectableObservable}.
  */
 export function refCount<T>(): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
