@@ -204,7 +204,7 @@ function handleStoppedNotification(notification: ObservableNotification<any>, su
  * pass any arguments to `subscribe`. Comes with the default error handling
  * behavior.
  */
-export const EMPTY_OBSERVER: Readonly<Observer<any>> = {
+export const EMPTY_OBSERVER: Readonly<Observer<any>> & { closed: true } = {
   closed: true,
   next: noop,
   error: defaultErrorHandler,
