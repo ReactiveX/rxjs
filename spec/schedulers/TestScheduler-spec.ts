@@ -393,8 +393,9 @@ describe('TestScheduler', () => {
         const expected = ' -abcdef|';
 
         expectObservable(output).toBe(expected);
-        expectSubscriptions(obs1.subscriptions).toBe('^-----!');
-        expectSubscriptions(obs2.subscriptions).toBe('^------!');
+        expectObservable(output).toEqual(cold(expected));
+        expectSubscriptions(obs1.subscriptions).toBe(['^-----!', '^-----!']);
+        expectSubscriptions(obs2.subscriptions).toBe(['^------!', '^------!']);
       });
     });
 
