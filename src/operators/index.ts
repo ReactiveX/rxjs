@@ -14,6 +14,7 @@ export { concatAll } from '../internal/operators/concatAll';
 export { concatMap } from '../internal/operators/concatMap';
 export { concatMapTo } from '../internal/operators/concatMapTo';
 export { concat, concatWith } from '../internal/operators/concatWith';
+export { connect } from '../internal/operators/connect';
 export { count } from '../internal/operators/count';
 export { debounce } from '../internal/operators/debounce';
 export { debounceTime } from '../internal/operators/debounceTime';
