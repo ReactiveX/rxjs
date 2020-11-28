@@ -60,6 +60,11 @@ export declare function concatMapTo<T, R, O extends ObservableInput<any>>(observ
 
 export declare function concatWith<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 
+export declare function connect<T, R>({ connector, setup, }: {
+    connector?: () => SubjectLike<T>;
+    setup: (shared: Observable<T>) => ObservableInput<R>;
+}): OperatorFunction<T, R>;
+
 export declare function count<T>(predicate?: (value: T, index: number) => boolean): OperatorFunction<T, number>;
 
 export declare function debounce<T>(durationSelector: (value: T) => ObservableInput<any>): MonoTypeOperatorFunction<T>;
@@ -182,9 +187,9 @@ export declare function mergeWith<T, A extends readonly unknown[]>(...otherSourc
 export declare function min<T>(comparer?: (x: T, y: T) => number): MonoTypeOperatorFunction<T>;
 
 export declare function multicast<T>(subject: Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
-export declare function multicast<T, O extends ObservableInput<any>>(subject: Subject<T>, selector: (shared: Observable<T>) => O): UnaryFunction<Observable<T>, ConnectableObservable<ObservedValueOf<O>>>;
-export declare function multicast<T>(subjectFactory: (this: Observable<T>) => Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
-export declare function multicast<T, O extends ObservableInput<any>>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
+export declare function multicast<T, O extends ObservableInput<any>>(subject: Subject<T>, selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
+export declare function multicast<T>(subjectFactory: () => Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
+export declare function multicast<T, O extends ObservableInput<any>>(subjectFactory: () => Subject<T>, selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
 
 export declare function observeOn<T>(scheduler: SchedulerLike, delay?: number): MonoTypeOperatorFunction<T>;
 
@@ -206,14 +211,14 @@ export declare function pluck<T>(...properties: string[]): OperatorFunction<T, u
 
 export declare function publish<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
 export declare function publish<T, O extends ObservableInput<any>>(selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
-export declare function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOperatorFunction<T>;
 
-export declare function publishBehavior<T>(value: T): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
+export declare function publishBehavior<T>(initialValue: T): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
 
 export declare function publishLast<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
 
-export declare function publishReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
-export declare function publishReplay<T, O extends ObservableInput<any>>(bufferSize?: number, windowTime?: number, selector?: (shared: Observable<T>) => O, scheduler?: SchedulerLike): OperatorFunction<T, ObservedValueOf<O>>;
+export declare function publishReplay<T>(bufferSize?: number, windowTime?: number, timestampProvider?: TimestampProvider): MonoTypeOperatorFunction<T>;
+export declare function publishReplay<T, O extends ObservableInput<any>>(bufferSize: number | undefined, windowTime: number | undefined, selector: OperatorFunction<T, ObservedValueOf<O>>, timestampProvider?: TimestampProvider): OperatorFunction<T, ObservedValueOf<O>>;
+export declare function publishReplay<T, O extends ObservableInput<any>>(bufferSize: number | undefined, windowTime: number | undefined, selector: undefined, timestampProvider: TimestampProvider): OperatorFunction<T, ObservedValueOf<O>>;
 
 export declare function race<T>(observables: Array<Observable<T>>): MonoTypeOperatorFunction<T>;
 export declare function race<T, R>(observables: Array<Observable<T>>): OperatorFunction<T, R>;
@@ -248,6 +253,7 @@ export declare function scan<V, A, S>(accumulator: (acc: A | S, value: V, index:
 export declare function sequenceEqual<T>(compareTo: Observable<T>, comparator?: (a: T, b: T) => boolean): OperatorFunction<T, boolean>;
 
 export declare function share<T>(): MonoTypeOperatorFunction<T>;
+export declare function share<T, R = T>(options: ShareOptions<T, R>): OperatorFunction<T, R>;
 
 export declare function shareReplay<T>(config: ShareReplayConfig): MonoTypeOperatorFunction<T>;
 export declare function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;

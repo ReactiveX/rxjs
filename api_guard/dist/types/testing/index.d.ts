@@ -20,12 +20,13 @@ export declare class TestScheduler extends VirtualTimeScheduler {
         [marble: string]: T;
     }, error?: any): HotObservable<T>;
     createTime(marbles: string): number;
-    expectObservable(observable: Observable<any>, subscriptionMarbles?: string | null): ({
-        toBe: observableToBeFn;
-    });
-    expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]): ({
+    expectObservable<T>(observable: Observable<T>, subscriptionMarbles?: string | null): {
+        toBe(marbles: string, values?: any, errorValue?: any): void;
+        toEqual: (other: Observable<T>) => void;
+    };
+    expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]): {
         toBe: subscriptionLogsToBeFn;
-    });
+    };
     flush(): void;
     run<T>(callback: (helpers: RunHelpers) => T): T;
     static frameTimeFactor: number;

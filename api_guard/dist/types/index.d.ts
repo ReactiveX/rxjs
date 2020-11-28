@@ -118,6 +118,8 @@ export declare const config: {
     useDeprecatedNextContext: boolean;
 };
 
+export declare function connectable<T>(source: ObservableInput<T>, connector?: Subject<T>): ConnectableObservableLike<T>;
+
 export declare class ConnectableObservable<T> extends Observable<T> {
     protected _connection: Subscription | null;
     protected _refCount: number;
@@ -331,7 +333,6 @@ export declare type ObservedValueTupleFromArray<X> = {
 export declare type ObservedValueUnionFromArray<X> = X extends Array<ObservableInput<infer T>> ? T : never;
 
 export interface Observer<T> {
-    closed?: boolean;
     complete: () => void;
     error: (err: any) => void;
     next: (value: T) => void;
@@ -442,12 +443,10 @@ export declare class Subject<T> extends Observable<T> implements SubscriptionLik
     static create: (...args: any[]) => any;
 }
 
+export declare type SubjectLike<T> = Observer<T> & Subscribable<T>;
+
 export interface Subscribable<T> {
-    subscribe(observer?: PartialObserver<T>): Unsubscribable;
-    subscribe(next: null | undefined, error: null | undefined, complete: () => void): Unsubscribable;
-    subscribe(next: null | undefined, error: (error: any) => void, complete?: () => void): Unsubscribable;
-    subscribe(next: (value: T) => void, error: null | undefined, complete: () => void): Unsubscribable;
-    subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Unsubscribable;
+    subscribe(observer: Observer<T>): Unsubscribable;
 }
 
 export declare type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | InteropObservable<T>;
