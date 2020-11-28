@@ -51,6 +51,7 @@ export { bindCallback } from './internal/observable/bindCallback';
 export { bindNodeCallback } from './internal/observable/bindNodeCallback';
 export { combineLatest } from './internal/observable/combineLatest';
 export { concat } from './internal/observable/concat';
+export { connectable } from './internal/observable/connectable';
 export { defer } from './internal/observable/defer';
 export { empty } from './internal/observable/empty';
 export { forkJoin } from './internal/observable/forkJoin';
