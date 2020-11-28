@@ -44,7 +44,7 @@ export function publishReplay<T>(
 export function publishReplay<T, O extends ObservableInput<any>>(
   bufferSize: number | undefined,
   windowTime: number | undefined,
-  selector: OperatorFunction<T, ObservedValueOf<O>>,
+  selector: (shared: Observable<T>) => O,
   timestampProvider?: TimestampProvider
 ): OperatorFunction<T, ObservedValueOf<O>>;
 
