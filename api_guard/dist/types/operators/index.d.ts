@@ -217,7 +217,7 @@ export declare function publishBehavior<T>(initialValue: T): UnaryFunction<Obser
 export declare function publishLast<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
 
 export declare function publishReplay<T>(bufferSize?: number, windowTime?: number, timestampProvider?: TimestampProvider): MonoTypeOperatorFunction<T>;
-export declare function publishReplay<T, O extends ObservableInput<any>>(bufferSize: number | undefined, windowTime: number | undefined, selector: OperatorFunction<T, ObservedValueOf<O>>, timestampProvider?: TimestampProvider): OperatorFunction<T, ObservedValueOf<O>>;
+export declare function publishReplay<T, O extends ObservableInput<any>>(bufferSize: number | undefined, windowTime: number | undefined, selector: (shared: Observable<T>) => O, timestampProvider?: TimestampProvider): OperatorFunction<T, ObservedValueOf<O>>;
 export declare function publishReplay<T, O extends ObservableInput<any>>(bufferSize: number | undefined, windowTime: number | undefined, selector: undefined, timestampProvider: TimestampProvider): OperatorFunction<T, ObservedValueOf<O>>;
 
 export declare function race<T>(observables: Array<Observable<T>>): MonoTypeOperatorFunction<T>;
