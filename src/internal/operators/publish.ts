@@ -1,14 +1,36 @@
+/** @prettier */
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { multicast } from './multicast';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { MonoTypeOperatorFunction, OperatorFunction, UnaryFunction, ObservableInput, ObservedValueOf } from '../types';
+import { connect } from './connect';
 
-/* tslint:disable:max-line-length */
+/**
+ * Returns a connectable observable that, when connected, will multicast
+ * all values through a single underlying {@link Subject} instance.
+ *
+ * @deprecated To be removed in version 8. If you're using `publish()` to get a connectable observable,
+ * please use the new {@link connectable} creation function. `source.pipe(publish())` is
+ * equivalent to `connectable(source, () => new Subject())`. If you're calling {@link refCount} on the result
+ * of `publish`, please use the updated {@link share} operator which is highly configurable.
+ * `source.pipe(publish(), refCount())` is equivalent to
+ * `source.pipe(share({ resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false }))`.
+ */
 export function publish<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
+
+/**
+ * Returns an observable, that when subscribed to, creates an underlying {@link Subject},
+ * provides an observable view of it to a `selector` function, takes the observable result of
+ * that selector function and subscribes to it, sending its values to the consumer, _then_ connects
+ * the subject to the original source.
+ *
+ * @param selector A function used to setup multicasting prior to automatic connection.
+ *
+ * @deprecated To be removed in version 8. Use the new {@link connect} operator.
+ * If you're using `publish(fn)`, it is equivalent to `connect({ setup: fn })`.
+ */
 export function publish<T, O extends ObservableInput<any>>(selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
-export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOperatorFunction<T>;
-/* tslint:enable:max-line-length */
 
 /**
  * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called
@@ -57,7 +79,10 @@ export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOpera
  * @return A ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.
  */
 export function publish<T, R>(selector?: OperatorFunction<T, R>): MonoTypeOperatorFunction<T> | OperatorFunction<T, R> {
-  return selector ?
-    multicast(() => new Subject<T>(), selector) :
-    multicast(new Subject<T>());
+  return selector
+    ? connect({
+        connector: () => new Subject<T>(),
+        setup: selector,
+      })
+    : multicast(new Subject<T>());
 }

@@ -1,6 +1,5 @@
 import { Observable } from '../Observable';
 import { AsyncSubject } from '../AsyncSubject';
-import { multicast } from './multicast';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { UnaryFunction } from '../types';
 
@@ -51,14 +50,17 @@ import { UnaryFunction } from '../types';
  * //    "Sub. B Complete"
  * ```
  *
- * @see {@link ConnectableObservable}
- * @see {@link publish}
- * @see {@link publishReplay}
- * @see {@link publishBehavior}
- *
- * @return {ConnectableObservable} An observable sequence that contains the elements of a
+ * @return A connectable observable sequence that contains the elements of a
  * sequence produced by multicasting the source sequence.
+ * @deprecated To be removed in version 8. If you're trying to create a connectable observable
+ * with an {@link AsyncSubject} under the hood, please use the new {@link connectable} creation function.
+ * `source.pipe(publishLast())` is equivalent to `connectable(source, () => new AsyncSubject())`.
+ * If you're using {@link refCount} on the result of `publishLast`, you can use the updated {@link share}
+ * operator, which is now highly configurable. `source.pipe(publishLast(), refCount())`
+ * is equivalent to `source.pipe(share({ connector: () => new AsyncSubject(), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false }))`.
  */
 export function publishLast<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>> {
-  return (source: Observable<T>) => multicast(new AsyncSubject<T>())(source);
+  const subject = new AsyncSubject<T>();
+  // Note that this has *never* supported a selector function like `publish` and `publishReplay`.
+  return (source) => new ConnectableObservable(source, () => subject);
 }
