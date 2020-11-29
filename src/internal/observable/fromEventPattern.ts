@@ -8,7 +8,7 @@ export function fromEventPattern<T>(
   addHandler: (handler: NodeEventHandler) => any,
   removeHandler?: (handler: NodeEventHandler, signal?: any) => void
 ): Observable<T>;
-/** @deprecated resultSelector no longer supported, pipe to map instead, Details https://rxjs.dev/deprecations/resultSelector */
+/** @deprecated resultSelector no longer supported, pipe to map instead */
 export function fromEventPattern<T>(
   addHandler: (handler: NodeEventHandler) => any,
   removeHandler?: (handler: NodeEventHandler, signal?: any) => void,

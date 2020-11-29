@@ -9,16 +9,12 @@ The same behavior can be reproduced with the `map` operator, therefore this argu
     </span>
 </div>
 
+There were two reasons for actually deprecating those parameters:
+
+1. It increases the bundle size of every operator
+2. In some scenarios values had to be retained in memory causing a general memory preassure  
 ## Operators affected by this Change
 
-- [bindCallback](/api/index/function/bindCallback)
-- [bindNodeCallback](/api/index/function/bindNodeCallback)
-- [combineLatest](/api/index/function/combineLatest)
-- [forkJoin](/api/index/function/forkJoin)
-- [fromEvent](/api/index/function/fromEvent)
-- [fromEventPattern](/api/index/function/fromEventPattern)
-- [zip](/api/index/function/zip)
-- [fromEventPattern](/api/index/function/fromEventPattern)
 - [concatMap](/api/operators/concatMap)
 - [concatMapTo](/api/operators/concatMapTo)
 - [exhaustMap](/api/operators/exhaustMap)
@@ -29,23 +25,7 @@ The same behavior can be reproduced with the `map` operator, therefore this argu
 
 ## How to Refactor
 
-Instead of using the `resultSelector` Argument, you can leverage the [`map`](/api/operators/map) operator.
-```ts
-import {of, combineLatest} from 'rxjs';
-import {map} from 'rxjs/operators';
-
-const o1$ = of([1,2,3]);
-const o2$ = of([4,5,6]);
-
-// deprecated
-combineLatest([o1$, o2$], (o1, o2) => o1+o2) 
-// suggested change
-combineLatest([o1$, o2$]).pipe(
-    map(([o1, o2]) => o1+o2);
-)
-```
-
-In case of a higher-order operator, you want to consider using `map` on the inner Observable:
+Instead of using the `resultSelector` Argument, you can leverage the [`map`](/api/operators/map) operator on the inner Observable:
 
 ```ts
 
