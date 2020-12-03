@@ -8,7 +8,7 @@ export function createInvalidObservableTypeError(input: any) {
   // TODO: We should create error codes that can be looked up, so this can be less verbose.
   return new TypeError(
     `You provided ${
-      input !== null && typeof input === 'object' ? 'an invalid object' : `'${input}'`
+      input !== null && typeof input === 'object' ? `type '${Object.getPrototypeOf(input).constructor.name}'` : `'${input}'`
     } where a stream was expected. You can provide an Observable, Promise, Array, AsyncIterable, or Iterable.`
   );
 }

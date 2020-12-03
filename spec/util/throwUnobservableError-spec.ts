@@ -23,40 +23,40 @@ describe('createInvalidObservableTypeError', () => {
   });
   it('Should handle an Array', () => {
     const error = createInvalidObservableTypeError([]);
-    expect(error.message).to.match(/^You provided an invalid object where a stream was expected./);
+    expect(error.message).to.match(/^You provided type 'Array' where a stream was expected./);
   });
   it('Should handle an object literal', () => {
     const error = createInvalidObservableTypeError({
       foo: 'bar',
       fiz: 'buz',
     });
-    expect(error.message).to.match(/^You provided an invalid object where a stream was expected./);
+    expect(error.message).to.match(/^You provided type 'Object' where a stream was expected./);
   });
 
   /** objects with constructors **/
   it('Should handle a Map', () => {
     const error = createInvalidObservableTypeError(new Map());
-    expect(error.message).to.match(/^You provided an invalid object where a stream was expected./);
+    expect(error.message).to.match(/^You provided type 'Map' where a stream was expected./);
   });
   it('Should handle a Set', () => {
     const error = createInvalidObservableTypeError(new Set());
-    expect(error.message).to.match(/^You provided an invalid object where a stream was expected./);
+    expect(error.message).to.match(/^You provided type 'Set' where a stream was expected./);
   });
   it('Should handle an Error', () => {
     const error = createInvalidObservableTypeError(new Error());
-    expect(error.message).to.match(/^You provided an invalid object where a stream was expected./);
+    expect(error.message).to.match(/^You provided type 'Error' where a stream was expected./);
   });
   it('Should handle a TypeError', () => {
     const error = createInvalidObservableTypeError(new TypeError());
-    expect(error.message).to.match(/^You provided an invalid object where a stream was expected./);
+    expect(error.message).to.match(/^You provided type 'TypeError' where a stream was expected./);
   });
   it('Should handle a Proxy', () => {
     const error = createInvalidObservableTypeError(new Proxy(new Map(), {}));
-    expect(error.message).to.match(/^You provided an invalid object where a stream was expected./);
+    expect(error.message).to.match(/^You provided type 'Map' where a stream was expected./);
   });
   it('Should handle an Observable', () => {
     const error = createInvalidObservableTypeError(from<string>('FooBar'));
-    expect(error.message).to.match(/^You provided an invalid object where a stream was expected./);
+    expect(error.message).to.match(/^You provided type 'Observable' where a stream was expected./);
   });
 
   /** everything else **/
