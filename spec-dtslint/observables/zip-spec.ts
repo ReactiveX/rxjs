@@ -29,12 +29,12 @@ it('should support arrays of observables', () => {
 
 it('should return Array<T> when given a single promise', () => {
   const a = Promise.resolve(1); // $ExpectType Promise<number>
-  const o1 = zip(a); // $ExpectType Observable<number[]>
+  const o1 = zip(a); // $ExpectType Observable<[number]>
 });
 
 it('should return Array<T> when given a single observable', () => {
   const a = of(1); // $ExpectType Observable<number>
-  const o1 = zip(a); // $ExpectType Observable<number[]>
+  const o1 = zip(a); // $ExpectType Observable<[number]>
 });
 
 it('should support union types', () => {

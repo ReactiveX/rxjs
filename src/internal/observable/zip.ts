@@ -1,147 +1,23 @@
 /** @prettier */
 import { Observable } from '../Observable';
-import { ObservableInput, ObservedValueOf } from '../types';
+import { ObservableInputTuple } from '../types';
 import { innerFrom } from './from';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { EMPTY } from './empty';
 import { OperatorSubscriber } from '../operators/OperatorSubscriber';
 import { popResultSelector } from '../util/args';
 
-/* tslint:disable:max-line-length */
+export function zip<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A>;
 /** @deprecated resultSelector is no longer supported, pipe to map instead */
-export function zip<O1 extends ObservableInput<any>, R>(v1: O1, resultSelector: (v1: ObservedValueOf<O1>) => R): Observable<R>;
-/** @deprecated resultSelector is no longer supported, pipe to map instead */
-export function zip<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, R>(
-  v1: O1,
-  v2: O2,
-  resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>) => R
+export function zip<A extends readonly unknown[], R>(
+  sources: [...ObservableInputTuple<A>],
+  resultSelector: (...values: A) => R
 ): Observable<R>;
+export function zip<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
 /** @deprecated resultSelector is no longer supported, pipe to map instead */
-export function zip<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, R>(
-  v1: O1,
-  v2: O2,
-  v3: O3,
-  resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>) => R
+export function zip<A extends readonly unknown[], R>(
+  ...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]
 ): Observable<R>;
-/** @deprecated resultSelector is no longer supported, pipe to map instead */
-export function zip<
-  O1 extends ObservableInput<any>,
-  O2 extends ObservableInput<any>,
-  O3 extends ObservableInput<any>,
-  O4 extends ObservableInput<any>,
-  R
->(
-  v1: O1,
-  v2: O2,
-  v3: O3,
-  v4: O4,
-  resultSelector: (v1: ObservedValueOf<O1>, v2: ObservedValueOf<O2>, v3: ObservedValueOf<O3>, v4: ObservedValueOf<O4>) => R
-): Observable<R>;
-/** @deprecated resultSelector is no longer supported, pipe to map instead */
-export function zip<
-  O1 extends ObservableInput<any>,
-  O2 extends ObservableInput<any>,
-  O3 extends ObservableInput<any>,
-  O4 extends ObservableInput<any>,
-  O5 extends ObservableInput<any>,
-  R
->(
-  v1: O1,
-  v2: O2,
-  v3: O3,
-  v4: O4,
-  v5: O5,
-  resultSelector: (
-    v1: ObservedValueOf<O1>,
-    v2: ObservedValueOf<O2>,
-    v3: ObservedValueOf<O3>,
-    v4: ObservedValueOf<O4>,
-    v5: ObservedValueOf<O5>
-  ) => R
-): Observable<R>;
-/** @deprecated resultSelector is no longer supported, pipe to map instead */
-export function zip<
-  O1 extends ObservableInput<any>,
-  O2 extends ObservableInput<any>,
-  O3 extends ObservableInput<any>,
-  O4 extends ObservableInput<any>,
-  O5 extends ObservableInput<any>,
-  O6 extends ObservableInput<any>,
-  R
->(
-  v1: O1,
-  v2: O2,
-  v3: O3,
-  v4: O4,
-  v5: O5,
-  v6: O6,
-  resultSelector: (
-    v1: ObservedValueOf<O1>,
-    v2: ObservedValueOf<O2>,
-    v3: ObservedValueOf<O3>,
-    v4: ObservedValueOf<O4>,
-    v5: ObservedValueOf<O5>,
-    v6: ObservedValueOf<O6>
-  ) => R
-): Observable<R>;
-
-export function zip<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>>(
-  v1: O1,
-  v2: O2
-): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>]>;
-export function zip<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(
-  v1: O1,
-  v2: O2,
-  v3: O3
-): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>]>;
-export function zip<
-  O1 extends ObservableInput<any>,
-  O2 extends ObservableInput<any>,
-  O3 extends ObservableInput<any>,
-  O4 extends ObservableInput<any>
->(v1: O1, v2: O2, v3: O3, v4: O4): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>]>;
-export function zip<
-  O1 extends ObservableInput<any>,
-  O2 extends ObservableInput<any>,
-  O3 extends ObservableInput<any>,
-  O4 extends ObservableInput<any>,
-  O5 extends ObservableInput<any>
->(
-  v1: O1,
-  v2: O2,
-  v3: O3,
-  v4: O4,
-  v5: O5
-): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>]>;
-export function zip<
-  O1 extends ObservableInput<any>,
-  O2 extends ObservableInput<any>,
-  O3 extends ObservableInput<any>,
-  O4 extends ObservableInput<any>,
-  O5 extends ObservableInput<any>,
-  O6 extends ObservableInput<any>
->(
-  v1: O1,
-  v2: O2,
-  v3: O3,
-  v4: O4,
-  v5: O5,
-  v6: O6
-): Observable<
-  [ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>, ObservedValueOf<O6>]
->;
-
-export function zip<O extends ObservableInput<any>>(array: O[]): Observable<ObservedValueOf<O>[]>;
-export function zip<R>(array: ObservableInput<any>[]): Observable<R>;
-/** @deprecated resultSelector is no longer supported, pipe to map instead */
-export function zip<O extends ObservableInput<any>, R>(array: O[], resultSelector: (...values: ObservedValueOf<O>[]) => R): Observable<R>;
-/** @deprecated resultSelector is no longer supported, pipe to map instead */
-export function zip<R>(array: ObservableInput<any>[], resultSelector: (...values: any[]) => R): Observable<R>;
-
-export function zip<O extends ObservableInput<any>>(...observables: O[]): Observable<ObservedValueOf<O>[]>;
-export function zip<O extends ObservableInput<any>, R>(...observables: Array<O | ((...values: ObservedValueOf<O>[]) => R)>): Observable<R>;
-export function zip<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R>;
-/* tslint:enable:max-line-length */
 
 /**
  * Combines multiple Observables to create an Observable whose values are calculated from the values, in order, of each
@@ -175,18 +51,16 @@ export function zip<R>(...observables: Array<ObservableInput<any> | ((...values:
  * @param sources
  * @return {Observable<R>}
  */
-export function zip<O extends ObservableInput<any>, R>(
-  ...sources: Array<O | ((...values: ObservedValueOf<O>[]) => R)>
-): Observable<ObservedValueOf<O>[] | R> {
-  const resultSelector = popResultSelector(sources);
+export function zip(...args: unknown[]): Observable<unknown> {
+  const resultSelector = popResultSelector(args);
 
-  sources = argsOrArgArray(sources);
+  const sources = argsOrArgArray(args) as Observable<unknown>[];
 
   return sources.length
-    ? new Observable<ObservedValueOf<O>[]>((subscriber) => {
+    ? new Observable<unknown[]>((subscriber) => {
         // A collection of buffers of values from each source.
         // Keyed by the same index with which the sources were passed in.
-        let buffers: ObservedValueOf<O>[][] = sources.map(() => []);
+        let buffers: unknown[][] = sources.map(() => []);
 
         // An array of flags of whether or not the sources have completed.
         // This is used to check to see if we should complete the result.
@@ -230,7 +104,7 @@ export function zip<O extends ObservableInput<any>, R>(
                 completed[sourceIndex] = true;
                 // But, if this complete source has nothing in its buffer, then we
                 // can complete the result, because we can't possibly have any more
-                // values from this to zip together with the oterh values.
+                // values from this to zip together with the other values.
                 !buffers[sourceIndex].length && subscriber.complete();
               }
             )
