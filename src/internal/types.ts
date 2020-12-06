@@ -87,7 +87,7 @@ export type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | P
 /** OBSERVABLE INTERFACES */
 
 export interface Subscribable<T> {
-  subscribe(observer: Observer<T>): Unsubscribable;
+  subscribe(observer: Partial<Observer<T>>): Unsubscribable;
 }
 
 /**
@@ -172,7 +172,7 @@ export interface Observer<T> {
   complete: () => void;
 }
 
-export type SubjectLike<T> = Observer<T> & Subscribable<T>;
+export interface SubjectLike<T> extends Observer<T>, Subscribable<T> {}
 
 /** SCHEDULER INTERFACES */
 

@@ -301,7 +301,7 @@ export declare class Observable<T> implements Subscribable<T> {
     pipe<A, B, C, D, E, F, G, H>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>): Observable<H>;
     pipe<A, B, C, D, E, F, G, H, I>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>, op9: OperatorFunction<H, I>): Observable<I>;
     pipe<A, B, C, D, E, F, G, H, I>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>, op9: OperatorFunction<H, I>, ...operations: OperatorFunction<any, any>[]): Observable<unknown>;
-    subscribe(observer?: PartialObserver<T>): Subscription;
+    subscribe(observer?: Partial<Observer<T>>): Subscription;
     subscribe(next: null | undefined, error: null | undefined, complete: () => void): Subscription;
     subscribe(next: null | undefined, error: (error: any) => void, complete?: () => void): Subscription;
     subscribe(next: (value: T) => void, error: null | undefined, complete: () => void): Subscription;
@@ -443,10 +443,11 @@ export declare class Subject<T> extends Observable<T> implements SubscriptionLik
     static create: (...args: any[]) => any;
 }
 
-export declare type SubjectLike<T> = Observer<T> & Subscribable<T>;
+export interface SubjectLike<T> extends Observer<T>, Subscribable<T> {
+}
 
 export interface Subscribable<T> {
-    subscribe(observer: Observer<T>): Unsubscribable;
+    subscribe(observer: Partial<Observer<T>>): Unsubscribable;
 }
 
 export declare type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | InteropObservable<T>;

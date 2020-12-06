@@ -7,7 +7,7 @@ import { Subscription } from '../Subscription';
 import { from } from '../observable/from';
 import { operate } from '../util/lift';
 
-interface ShareOptions<T, R> {
+export interface ShareConfig<T> {
   /**
    * The factory used to create the subject that will connect the source observable to
    * multicast consumers.
@@ -43,7 +43,7 @@ interface ShareOptions<T, R> {
 
 export function share<T>(): MonoTypeOperatorFunction<T>;
 
-export function share<T, R = T>(options: ShareOptions<T, R>): OperatorFunction<T, R>;
+export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
 
 /**
  * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one
@@ -87,7 +87,7 @@ export function share<T, R = T>(options: ShareOptions<T, R>): OperatorFunction<T
  * // ... and so on
  * ```
  */
-export function share<T, R>(options?: ShareOptions<T, R>): OperatorFunction<T, T | R> {
+export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
   options = options || {};
   const { connector = () => new Subject<T>(), resetOnComplete = true, resetOnError = true, resetOnRefCountZero = true } = options;
 
