@@ -60,10 +60,7 @@ export declare function concatMapTo<T, R, O extends ObservableInput<any>>(observ
 
 export declare function concatWith<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 
-export declare function connect<T, R>({ connector, setup, }: {
-    connector?: () => SubjectLike<T>;
-    setup: (shared: Observable<T>) => ObservableInput<R>;
-}): OperatorFunction<T, R>;
+export declare function connect<T, R>(selector: (shared: Observable<T>) => ObservableInput<R>, config?: ConnectConfig<T>): OperatorFunction<T, R>;
 
 export declare function count<T>(predicate?: (value: T, index: number) => boolean): OperatorFunction<T, number>;
 
@@ -253,7 +250,7 @@ export declare function scan<V, A, S>(accumulator: (acc: A | S, value: V, index:
 export declare function sequenceEqual<T>(compareTo: Observable<T>, comparator?: (a: T, b: T) => boolean): OperatorFunction<T, boolean>;
 
 export declare function share<T>(): MonoTypeOperatorFunction<T>;
-export declare function share<T, R = T>(options: ShareOptions<T, R>): OperatorFunction<T, R>;
+export declare function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
 
 export declare function shareReplay<T>(config: ShareReplayConfig): MonoTypeOperatorFunction<T>;
 export declare function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;

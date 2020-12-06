@@ -4,7 +4,7 @@
 import { Operator } from './Operator';
 import { SafeSubscriber, Subscriber } from './Subscriber';
 import { isSubscription, Subscription } from './Subscription';
-import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable, Observer } from './types';
+import { TeardownLogic, OperatorFunction, Subscribable, Observer } from './types';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
@@ -68,7 +68,7 @@ export class Observable<T> implements Subscribable<T> {
     return observable;
   }
 
-  subscribe(observer?: PartialObserver<T>): Subscription;
+  subscribe(observer?: Partial<Observer<T>>): Subscription;
   /** @deprecated Use an observer instead of a complete callback */
   subscribe(next: null | undefined, error: null | undefined, complete: () => void): Subscription;
   /** @deprecated Use an observer instead of an error callback */
@@ -202,7 +202,7 @@ export class Observable<T> implements Subscribable<T> {
    * @method subscribe
    */
   subscribe(
-    observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
+    observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null,
     error?: ((error: any) => void) | null,
     complete?: (() => void) | null
   ): Subscription {

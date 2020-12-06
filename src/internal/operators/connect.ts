@@ -6,13 +6,20 @@ import { from } from '../observable/from';
 import { operate } from '../util/lift';
 import { fromSubscribable } from '../observable/fromSubscribable';
 
-/**
- * The default connector function used for `connect`.
- * A factory function that will create a {@link Subject}.
- */
-function defaultConnector<T>() {
-  return new Subject<T>();
+export interface ConnectConfig<T> {
+  /**
+   * A factory function used to create the Subject through which the source
+   * is multicast. By default this creates a {@link Subject}.
+   */
+  connector: () => SubjectLike<T>;
 }
+
+/**
+ * The default configuration for `connect`.
+ */
+const DEFAULT_CONFIG: ConnectConfig<unknown> = {
+  connector: () => new Subject<unknown>(),
+};
 
 /**
  * Creates an observable by multicasting the source within a function that
@@ -25,16 +32,16 @@ function defaultConnector<T>() {
  * has returned, if the source is synchronous its internal reference count will jump from
  * 0 to 1 back to 0 and reset.
  *
- * To use `connect`, you provide a `setup` function via configuration that will give you
+ * To use `connect`, you provide a `selector` function that will give you
  * a multicast observable that is not yet connected. You then use that multicast observable
  * to create a resulting observable that, when subscribed, will set up your multicast. This is
  * generally, but not always, accomplished with {@link merge}.
  *
- * Note that using a {@link takeUntil} inside of `connect`'s `setup` _might_ mean you were looking
+ * Note that using a {@link takeUntil} inside of `connect`'s `selector` _might_ mean you were looking
  * to use the {@link takeWhile} operator instead.
  *
- * When you subscribe to the result of `connect`, the `setup` function will be called. After
- * the `setup` function returns, the observable it returns will be subscribed to, _then_ the
+ * When you subscribe to the result of `connect`, the `selector` function will be called. After
+ * the `selector` function returns, the observable it returns will be subscribed to, _then_ the
  * multicast will be connected to the source.
  *
  * ### Example
@@ -53,14 +60,12 @@ function defaultConnector<T>() {
  * });
  *
  * source$.pipe(
- *  connect({
- *    // Notice in here we're merging three subscriptions to `shared$`.
- *    setup: (shared$) => merge(
+ *  // Notice in here we're merging 3 subscriptions to `shared$`.
+ *  connect((shared$) => merge(
  *      shared$.pipe(map(n => `all ${n}`)),
  *      shared$.pipe(filter(n => n % 2 === 0), map(n => `even ${n}`)),
  *      shared$.pipe(filter(n => n % 2 === 1), map(n => `odd ${n}`)),
- *    )
- *  })
+ *  ))
  * )
  * .subscribe(console.log);
  *
@@ -83,29 +88,21 @@ function defaultConnector<T>() {
  * "odd 5"
  * ```
  *
+ * @param selector A function used to set up the multicast. Gives you a multicast observable
+ * that is not yet connected. With that, you're expected to create and return
+ * and Observable, that when subscribed to, will utilize the multicast observable.
+ * After this function is executed -- and its return value subscribed to -- the
+ * the operator will subscribe to the source, and the connection will be made.
  * @param param0 The configuration object for `connect`.
  */
-export function connect<T, R>({
-  connector = defaultConnector,
-  setup,
-}: {
-  /**
-   * A factory function used to create the Subject through which the source
-   * is multicast. By default this creates a {@link Subject}.
-   */
-  connector?: () => SubjectLike<T>;
-  /**
-   * A function used to set up the multicast. Gives you a multicast observable
-   * that is not yet connected. With that, you're expected to create and return
-   * and Observable, that when subscribed to, will utilize the multicast observable.
-   * After this function is executed -- and its return value subscribed to -- the
-   * the operator will subscribe to the source, and the connection will be made.
-   */
-  setup: (shared: Observable<T>) => ObservableInput<R>;
-}): OperatorFunction<T, R> {
+export function connect<T, R>(
+  selector: (shared: Observable<T>) => ObservableInput<R>,
+  config: ConnectConfig<T> = DEFAULT_CONFIG
+): OperatorFunction<T, R> {
+  const { connector } = config;
   return operate((source, subscriber) => {
     const subject = connector();
-    from(setup(fromSubscribable(subject))).subscribe(subscriber);
+    from(selector(fromSubscribable(subject))).subscribe(subscriber);
     subscriber.add(source.subscribe(subject));
   });
 }

@@ -58,9 +58,9 @@ export function multicast<T>(subjectFactory: () => Subject<T>): UnaryFunction<Ob
  * {@link connect} operator.
  *
  * @param subjectFactory A factory that creates the subject used to multicast.
- * @param selector A setup function to setup the multicast
+ * @param selector A function to setup the multicast and select the output.
  * @deprecated To be removed in version 8. Please use the new {@link connect} operator.
- * `multicast(fn1, fn2)` is equivalent to `connect({ connector: fn1, setup: fn2 })`.
+ * `multicast(subjectFactor, selector)` is equivalent to `connect(selector, { connector: subjectFactory })`.
  */
 export function multicast<T, O extends ObservableInput<any>>(
   subjectFactory: () => Subject<T>,
@@ -77,9 +77,8 @@ export function multicast<T, R>(
     // If a selector function is provided, then we're a "normal" operator that isn't
     // going to return a ConnectableObservable. We can use `connect` to do what we
     // need to do.
-    return connect({
+    return connect(selector, {
       connector: subjectFactory,
-      setup: selector,
     });
   }
 

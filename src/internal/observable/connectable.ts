@@ -6,7 +6,11 @@ import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
 import { defer } from './defer';
 
-export type ConnectableObservableLike<T> = Observable<T> & {
+/**
+ * An observable with a `connect` method that is used to create a subscription
+ * to an underlying source, connecting it with all consumers via a multicast.
+ */
+export interface ConnectableObservableLike<T> extends Observable<T> {
   /**
    * (Idempotent) Calling this method will connect the underlying source observable to all subscribed consumers
    * through an underlying {@link Subject}.
@@ -14,7 +18,7 @@ export type ConnectableObservableLike<T> = Observable<T> & {
    * severing notifications to all consumers.
    */
   connect(): Subscription;
-};
+}
 
 /**
  * Creates an observable that multicasts once `connect()` is called on it.

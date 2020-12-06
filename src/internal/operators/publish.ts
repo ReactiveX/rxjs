@@ -28,7 +28,7 @@ export function publish<T>(): UnaryFunction<Observable<T>, ConnectableObservable
  * @param selector A function used to setup multicasting prior to automatic connection.
  *
  * @deprecated To be removed in version 8. Use the new {@link connect} operator.
- * If you're using `publish(fn)`, it is equivalent to `connect({ setup: fn })`.
+ * If you're using `publish(fn)`, it is equivalent to `connect(fn)`.
  */
 export function publish<T, O extends ObservableInput<any>>(selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
 
@@ -79,10 +79,5 @@ export function publish<T, O extends ObservableInput<any>>(selector: (shared: Ob
  * @return A ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.
  */
 export function publish<T, R>(selector?: OperatorFunction<T, R>): MonoTypeOperatorFunction<T> | OperatorFunction<T, R> {
-  return selector
-    ? connect({
-        connector: () => new Subject<T>(),
-        setup: selector,
-      })
-    : multicast(new Subject<T>());
+  return selector ? connect(selector) : multicast(new Subject<T>());
 }

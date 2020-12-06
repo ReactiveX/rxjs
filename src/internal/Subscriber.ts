@@ -1,6 +1,6 @@
 /** @prettier */
 import { isFunction } from './util/isFunction';
-import { Observer, PartialObserver, ObservableNotification } from './types';
+import { Observer, ObservableNotification } from './types';
 import { isSubscription, Subscription } from './Subscription';
 import { config } from './config';
 import { reportUnhandledError } from './util/reportUnhandledError';
@@ -126,7 +126,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
 
 export class SafeSubscriber<T> extends Subscriber<T> {
   constructor(
-    observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
+    observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null,
     error?: ((e?: any) => void) | null,
     complete?: (() => void) | null
   ) {
