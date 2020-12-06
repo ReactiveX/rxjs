@@ -387,13 +387,16 @@ describe('TestScheduler', () => {
         expect(expectObservable).to.be.a('function');
         expect(expectSubscriptions).to.be.a('function');
 
-        const obs1 = cold('-a-c-e|');
+      const obs1 = cold('-a-c-e|');
         const obs2 = hot(' ^-b-d-f|');
         const output = merge(obs1, obs2);
         const expected = ' -abcdef|';
 
         expectObservable(output).toBe(expected);
         expectObservable(output).toEqual(cold(expected));
+        // There are two subscriptions to each of these, because we merged
+        // them together, then we subscribed to the merged result once
+        // to check `toBe` and another time to check `toEqual`.
         expectSubscriptions(obs1.subscriptions).toBe(['^-----!', '^-----!']);
         expectSubscriptions(obs2.subscriptions).toBe(['^------!', '^------!']);
       });

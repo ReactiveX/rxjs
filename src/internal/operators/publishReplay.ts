@@ -39,7 +39,7 @@ export function publishReplay<T>(
  * @param timestampProvider The timestamp provider for the underlying {@link ReplaySubject}.
  * @deprecated To be removed in version 8. Use the new {@link connect} operator.
  * `source.pipe(publishReplay(size, window, fn, scheduler))` is equivalent to
- * `const subject = new ReplaySubject(size, window, scheduler), connect({ connector: () => subject, setup: fn })`.
+ * `const subject = new ReplaySubject(size, window, scheduler), source.pipe(connect(fn, { connector: () => subject }))`.
  */
 export function publishReplay<T, O extends ObservableInput<any>>(
   bufferSize: number | undefined,

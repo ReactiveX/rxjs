@@ -63,12 +63,7 @@ describe('multicasting equivalent tests', () => {
   testEquivalents(
     'publish(fn) and connect({ setup: fn })',
     (source) => source.pipe(publish(fn)),
-    (source) =>
-      source.pipe(
-        connect({
-          setup: fn,
-        })
-      )
+    (source) => source.pipe(connect(fn))
   );
 
   testEquivalents(
@@ -76,7 +71,7 @@ describe('multicasting equivalent tests', () => {
     (source) => source.pipe(publishReplay(3, 10, fn)),
     (source) => {
       const subject = new ReplaySubject(3, 10);
-      return source.pipe(connect({ connector: () => subject, setup: fn }));
+      return source.pipe(connect(fn, { connector: () => subject }));
     }
   );
 
