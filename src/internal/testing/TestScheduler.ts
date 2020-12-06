@@ -204,7 +204,10 @@ export class TestScheduler extends VirtualTimeScheduler {
     if (typeof marbles !== 'string') {
       return new SubscriptionLog(Infinity);
     }
-    const len = marbles.length;
+    // Spreading the marbles into an array leverages ES2015's support for emoji
+    // characters when iterating strings.
+    const characters = [...marbles];
+    const len = characters.length;
     let groupStart = -1;
     let subscriptionFrame = Infinity;
     let unsubscriptionFrame = Infinity;
@@ -215,7 +218,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       const advanceFrameBy = (count: number) => {
         nextFrame += count * this.frameTimeFactor;
       };
-      const c = marbles[i];
+      const c = characters[i];
       switch (c) {
         case ' ':
           // Whitespace no longer advances time
@@ -252,10 +255,10 @@ export class TestScheduler extends VirtualTimeScheduler {
         default:
           // time progression syntax
           if (runMode && c.match(/^[0-9]$/)) {
-            // Time progression must be preceeded by at least one space
+            // Time progression must be preceded by at least one space
             // if it's not at the beginning of the diagram
-            if (i === 0 || marbles[i - 1] === ' ') {
-              const buffer = marbles.slice(i);
+            if (i === 0 || characters[i - 1] === ' ') {
+              const buffer = characters.slice(i).join('');
               const match = buffer.match(/^([0-9]+(?:\.[0-9]+)?)(ms|s|m) /);
               if (match) {
                 i += match[0].length - 1;
@@ -307,7 +310,10 @@ export class TestScheduler extends VirtualTimeScheduler {
       throw new Error('conventional marble diagrams cannot have the ' +
         'unsubscription marker "!"');
     }
-    const len = marbles.length;
+    // Spreading the marbles into an array leverages ES2015's support for emoji
+    // characters when iterating strings.
+    const characters = [...marbles];
+    const len = characters.length;
     const testMessages: TestMessage[] = [];
     const subIndex = runMode ? marbles.replace(/^[ ]+/, '').indexOf('^') : marbles.indexOf('^');
     let frame = subIndex === -1 ? 0 : (subIndex * -this.frameTimeFactor);
@@ -329,7 +335,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       };
 
       let notification: ObservableNotification<any> | undefined;
-      const c = marbles[i];
+      const c = characters[i];
       switch (c) {
         case ' ':
           // Whitespace no longer advances time
@@ -364,8 +370,8 @@ export class TestScheduler extends VirtualTimeScheduler {
           if (runMode && c.match(/^[0-9]$/)) {
             // Time progression must be preceded by at least one space
             // if it's not at the beginning of the diagram
-            if (i === 0 || marbles[i - 1] === ' ') {
-              const buffer = marbles.slice(i);
+            if (i === 0 || characters[i - 1] === ' ') {
+              const buffer = characters.slice(i).join('');
               const match = buffer.match(/^([0-9]+(?:\.[0-9]+)?)(ms|s|m) /);
               if (match) {
                 i += match[0].length - 1;
