@@ -4,6 +4,26 @@ import { SchedulerLike } from '../types';
 import { from } from './from';
 
 /**
+ * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
+ */
+export function pairs<T>(arr: readonly T[], scheduler?: SchedulerLike): Observable<[string, T]>;
+/**
+ * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
+ */
+export function pairs<O extends Record<string, unknown>>(obj: O, scheduler?: SchedulerLike): Observable<[keyof O, O[keyof O]]>;
+/**
+ * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
+ */
+export function pairs<T>(iterable: Iterable<T>, scheduler?: SchedulerLike): Observable<[string, T]>;
+/**
+ * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
+ */
+export function pairs(
+  n: number | bigint | boolean | ((...args: any[]) => any) | symbol,
+  scheduler?: SchedulerLike
+): Observable<[never, never]>;
+
+/**
  * Convert an object into an Observable of `[key, value]` pairs.
  *
  * <span class="informal">Turn entries of an object into a stream.</span>
@@ -56,6 +76,6 @@ import { from } from './from';
  * [key, value] pairs from the object.
  * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
  */
-export function pairs<T>(obj: Record<string, T> | ArrayLike<T>, scheduler?: SchedulerLike): Observable<[string, T]> {
+export function pairs(obj: any, scheduler?: SchedulerLike) {
   return from(Object.entries(obj), scheduler as any);
 }
