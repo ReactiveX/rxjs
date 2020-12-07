@@ -27,18 +27,6 @@ describe('tap operator', () => {
     expect(value).to.equal(42);
   });
 
-  it('should error with a callback', () => {
-    let err = null;
-    throwError('bad').pipe(tap(null, function (x) {
-      err = x;
-    }))
-    .subscribe(null, function (ex) {
-      expect(ex).to.equal('bad');
-    });
-
-    expect(err).to.equal('bad');
-  });
-
   it('should handle everything with an observer', (done: MochaDone) => {
     const expected = [1, 2, 3];
     const results: number[] = [];
@@ -81,18 +69,7 @@ describe('tap operator', () => {
     ).subscribe();
   });
 
-  it('should handle an error with a callback', () => {
-    let errored = false;
-    throwError('bad').pipe(tap(null, (err: any) => {
-      expect(err).to.equal('bad');
-    }))
-    .subscribe(null, (err: any) => {
-      errored = true;
-      expect(err).to.equal('bad');
-    });
 
-    expect(errored).to.be.true;
-  });
 
   it('should handle an error with observer', () => {
     let errored = false;

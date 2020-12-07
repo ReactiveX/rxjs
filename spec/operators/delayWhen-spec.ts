@@ -333,8 +333,10 @@ describe('delayWhen', () => {
 
       expectObservable(
         result.pipe(
-          tap(null, null, () => {
-            expect(indices).to.deep.equal([0, 1, 2]);
+          tap({
+            complete: () => {
+              expect(indices).to.deep.equal([0, 1, 2]);
+            },
           })
         )
       ).toBe(expected);

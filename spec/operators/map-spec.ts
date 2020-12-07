@@ -82,8 +82,10 @@ describe('map operator', () => {
     let invoked = 0;
     const r = a.pipe(
       map((x: any) => { invoked++; return x; }),
-      tap(null, null, () => {
-        expect(invoked).to.equal(0);
+      tap({
+        complete: () => {
+          expect(invoked).to.equal(0);
+        }
       })
     );
 
@@ -115,8 +117,10 @@ describe('map operator', () => {
         invoked++;
         return (parseInt(x) + 1) + (index * 10);
       }),
-      tap(null, null, () => {
-        expect(invoked).to.equal(4);
+      tap({
+        complete: () => {
+          expect(invoked).to.equal(4);
+        }
       })
     );
 
@@ -136,9 +140,11 @@ describe('map operator', () => {
         invoked++;
         return (parseInt(x) + 1) + (index * 10);
       }),
-      tap(null, null, () => {
-        expect(invoked).to.equal(4);
-      })
+        tap({
+          complete: () => {
+            expect(invoked).to.equal(4);
+          }
+        })
     );
 
     expectObservable(r).toBe(expected, values);
@@ -157,9 +163,11 @@ describe('map operator', () => {
         invoked++;
         return (parseInt(x) + 1) + (index * 10);
       }),
-      tap(null, null, () => {
-        expect(invoked).to.equal(4);
-      })
+        tap({
+          complete: () => {
+            expect(invoked).to.equal(4);
+          }
+        })
     );
 
     expectObservable(r).toBe(expected, values, 'too bad');
@@ -196,9 +204,11 @@ describe('map operator', () => {
     const r = a.pipe(
       map((x: string) => { invoked1++; return parseInt(x) * 2; }),
       map((x: number) => { invoked2++; return x / 2; }),
-      tap(null, null, () => {
-        expect(invoked1).to.equal(7);
-        expect(invoked2).to.equal(7);
+      tap({
+        complete: () => {
+          expect(invoked1).to.equal(7);
+          expect(invoked2).to.equal(7);
+        }
       })
     );
 

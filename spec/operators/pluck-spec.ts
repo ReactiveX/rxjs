@@ -129,8 +129,10 @@ describe('pluck operator', () => {
     const invoked = 0;
     const r = a.pipe(
       pluck('whatever'),
-      tap(null, null, () => {
-        expect(invoked).to.equal(0);
+      tap({
+        complete: () => {
+          expect(invoked).to.equal(0);
+        }
       })
     );
 

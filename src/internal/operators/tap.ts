@@ -6,13 +6,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
 import { identity } from '../util/identity';
 
 /* tslint:disable:max-line-length */
-/** @deprecated Use an observer instead of a complete callback */
-export function tap<T>(next: null | undefined, error: null | undefined, complete: () => void): MonoTypeOperatorFunction<T>;
-/** @deprecated Use an observer instead of an error callback */
-export function tap<T>(next: null | undefined, error: (error: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
-/** @deprecated Use an observer instead of a complete callback */
-export function tap<T>(next: (value: T) => void, error: null | undefined, complete: () => void): MonoTypeOperatorFunction<T>;
-export function tap<T>(next?: (x: T) => void, error?: (e: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
+export function tap<T>(next: (x: T) => void, error?: (e: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
 export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
@@ -107,15 +101,11 @@ export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T
  * @param complete A completion handler
  */
 export function tap<T>(
-  observerOrNext?: PartialObserver<T> | ((value: T) => void) | null,
-  error?: ((e: any) => void) | null,
+  observerOrNext: PartialObserver<T> | ((value: T) => void) | null,
+  error?: ((e: unknown) => void) | null,
   complete?: (() => void) | null
 ): MonoTypeOperatorFunction<T> {
-  // We have to check to see not only if next is a function,
-  // but if error or complete were passed. This is because someone
-  // could technically call tap like `tap(null, fn)` or `tap(null, null, fn)`.
-  const tapObserver =
-    isFunction(observerOrNext) || error || complete ? { next: observerOrNext as (value: T) => void, error, complete } : observerOrNext;
+  const tapObserver = isFunction(observerOrNext) ? { next: observerOrNext, error, complete } : observerOrNext;
 
   // TODO: Use `operate` function once this PR lands: https://github.com/ReactiveX/rxjs/pull/5742
   return tapObserver

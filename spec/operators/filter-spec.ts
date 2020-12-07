@@ -154,8 +154,10 @@ describe('filter', () => {
 
       const result = e1.pipe(
         filter(predicate),
-        tap(null, null, () => {
-          expect(invoked).to.equal(7);
+        tap({
+          complete: () => {
+            expect(invoked).to.equal(7);
+          },
         })
       );
 

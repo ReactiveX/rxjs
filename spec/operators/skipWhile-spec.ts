@@ -141,8 +141,10 @@ describe('skipWhile operator', () => {
     expectObservable(
       source.pipe(
         skipWhile(predicate),
-        tap(null, null, () => {
-          expect(invoked).to.equal(3);
+        tap({
+          complete: () => {
+            expect(invoked).to.equal(3);
+          }
         })
       )
     ).toBe(expected);
