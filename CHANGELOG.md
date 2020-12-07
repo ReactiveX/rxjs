@@ -1,3 +1,55 @@
+# [7.0.0-beta.9](https://github.com/reactivex/rxjs/compare/7.0.0-beta.8...7.0.0-beta.9) (2020-12-07)
+
+
+### Bug Fixes
+
+* **audit:** don't signal on complete ([54cb428](https://github.com/reactivex/rxjs/commit/54cb42823ceec4db469f6155de67993b67ec85be))
+* **bufferToggle:** don't signal on complete ([65686ff](https://github.com/reactivex/rxjs/commit/65686ffd23f2d5a5145f2b7c33ea739e9bb808cd))
+* **bufferWhen:** don't signal on complete ([a2ba364](https://github.com/reactivex/rxjs/commit/a2ba364ede3c69c7703795a744f57122b49eac40))
+* **debounce:** don't signal on complete ([c919c68](https://github.com/reactivex/rxjs/commit/c919c684ad63724f0b55ccc4561f847773d945c8))
+* **delayWhen:** no longer emits if duration selector is empty ([#5769](https://github.com/reactivex/rxjs/issues/5769)) ([0872341](https://github.com/reactivex/rxjs/commit/087234146760ab2c67a04f9f0b5494a93affadb7)), closes [#3665](https://github.com/reactivex/rxjs/issues/3665)
+* **forkJoin:** ensure readonly array argument `forkJoin([a$, b$, c$] as const)` result is correct ([6baec53](https://github.com/reactivex/rxjs/commit/6baec536015253ac96827f2136ede17a324c634e))
+* **iif:** No longer allow accidental undefined arguments ([#5829](https://github.com/reactivex/rxjs/issues/5829)) ([23b98b4](https://github.com/reactivex/rxjs/commit/23b98b4e61c3284c81c07a8d810e8c3ec99ddfec))
+* **sample:** don't signal on complete ([95e0b70](https://github.com/reactivex/rxjs/commit/95e0b703caaf288657c7d722b9823458280be88b))
+* **Symbol.observable:** properly defined as a `unique symbol`. ([#5874](https://github.com/reactivex/rxjs/issues/5874)) ([374138e](https://github.com/reactivex/rxjs/commit/374138e09eb7ceb6f8da556c6c11dea1ba8cdbee)), closes [#5861](https://github.com/reactivex/rxjs/issues/5861) [#4415](https://github.com/reactivex/rxjs/issues/4415)
+* **throttle:** don't signal on complete ([4af0227](https://github.com/reactivex/rxjs/commit/4af022753d6dd4e94bcfcf0cc6082bb2312a3f02))
+* **windowToggle:** don't signal on complete ([9cb56c4](https://github.com/reactivex/rxjs/commit/9cb56c45de289ef5b062f33971996bdb8414cf99)), closes [#5838](https://github.com/reactivex/rxjs/issues/5838)
+* use empty object type in combineLatest/forkJoin sigs ([#5832](https://github.com/reactivex/rxjs/issues/5832)) ([22aaaa2](https://github.com/reactivex/rxjs/commit/22aaaa2f03dc721f850d9836243773c5310e85e8))
+* **withLatestFrom:** allow synchronous source ([#5828](https://github.com/reactivex/rxjs/issues/5828)) ([adbe65e](https://github.com/reactivex/rxjs/commit/adbe65e659bbf17f6ab20a9b30fcca0e4d76af9a))
+
+
+### Features
+
+* stopped notification handler ([#5750](https://github.com/reactivex/rxjs/issues/5750)) ([cfa267b](https://github.com/reactivex/rxjs/commit/cfa267bc0916ede09c8b14aedcdb69a791055fb6))
+* support emoji in marble diagrams ([#5907](https://github.com/reactivex/rxjs/issues/5907)) ([1b4608c](https://github.com/reactivex/rxjs/commit/1b4608cea3a9db96d7a629ad5de0e100145c180e))
+* **filter:** improve type inference for filter(Boolean) ([#5831](https://github.com/reactivex/rxjs/issues/5831)) ([d2658fa](https://github.com/reactivex/rxjs/commit/d2658fa32d7a86ac1e0796c452df258fc5470f67))
+
+
+### BREAKING CHANGES
+
+* **windowToggle:** the observable returned by the windowToggle operator's
+closing selector must emit a next notification to close the window.
+Complete notifications no longer close the window.
+* **bufferToggle:** the observable returned by the bufferToggle operator's
+closing selector must emit a next notification to close the buffer.
+Complete notifications no longer close the buffer.
+* **bufferWhen:** the observable returned by the bufferWhen operator's
+closing selector must emit a next notification to close the buffer.
+Complete notifications no longer close the buffer.
+* **debounce:** the observable returned by the debounce operator's
+duration selector must emit a next notification to end the duration.
+Complete notifications no longer end the duration.
+* **throttle:** the observable returned by the throttle operator's
+duration selector must emit a next notification to end the duration.
+Complete notifications no longer end the duration.
+* **sample:** the sample operator's notifier observable must emit a next notification to effect a sample. Complete notifications no longer effect a sample.
+* **audit:** the observable returned by the audit operator's duration selector must emit a next notification to end the duration. Complete notifications no longer end the duration.
+* **Symbol.observable:** `rxjs@7` is only compatible with `@types/node@14.14.3` or higher and `symbol-observable@3.0.0` and heigher. Older versions of `@types/node` incorrectly defined `Symbol.observable` and will be in conflict with `rxjs` and `symbol-observable@3.0.0`.
+* **delayWhen:** `delayWhen` will no longer emit if the duration selector simply completes without a value. Notifiers must notify with a value, not a completion.
+* **iif:** `iif` will no longer allow result arguments that are `undefined`. This was a bad call pattern that was likely an error in most cases. If for some reason you are relying on this behavior, simply substitute `EMPTY` in place of the `undefined` argument. This ensures that the behavior was intentional and desired, rather than the result of an accidental `undefined` argument.
+
+
+
 # [7.0.0-beta.8](https://github.com/reactivex/rxjs/compare/7.0.0-beta.7...7.0.0-beta.8) (2020-10-15)
 
 
