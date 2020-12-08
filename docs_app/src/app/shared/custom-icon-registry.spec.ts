@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { CustomIconRegistry, SvgIconInfo } from './custom-icon-registry';
 
@@ -11,7 +12,8 @@ describe('CustomIconRegistry', () => {
     const svgIcons: SvgIconInfo[] = [
       { name: 'test_icon', svgSource: svgSrc }
     ];
-    const registry = new CustomIconRegistry(mockHttp, mockSanitizer, mockDocument, svgIcons);
+    const errorHandler = new ErrorHandler();
+    const registry = new CustomIconRegistry(mockHttp, mockSanitizer, mockDocument, svgIcons, errorHandler);
     let svgElement: SVGElement|undefined;
     registry.getNamedSvgIcon('test_icon').subscribe(el => svgElement = el);
     expect(svgElement).toEqual(createSvg(svgSrc));
@@ -27,8 +29,8 @@ describe('CustomIconRegistry', () => {
       { name: 'test_icon', svgSource: svgSrc }
     ];
     spyOn(MatIconRegistry.prototype, 'getNamedSvgIcon');
-
-    const registry = new CustomIconRegistry(mockHttp, mockSanitizer, mockDocument, svgIcons);
+    const errorHandler = new ErrorHandler();
+    const registry = new CustomIconRegistry(mockHttp, mockSanitizer, mockDocument, svgIcons, errorHandler);
 
     registry.getNamedSvgIcon('other_icon');
     expect(MatIconRegistry.prototype.getNamedSvgIcon).toHaveBeenCalledWith('other_icon', undefined);
