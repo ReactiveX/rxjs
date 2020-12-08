@@ -61,7 +61,7 @@ it('should infer of type any for more than 6 parameters', () => {
 
 describe('forkJoin({})', () => {
   it('should properly type empty objects', () => {
-    const res = forkJoin({}); // $ExpectType Observable<never>
+    const res = forkJoin({}); // $ExpectType Observable<{}>
   });
 
   it('should work for the simple case', () => {
@@ -75,9 +75,13 @@ describe('forkJoin({})', () => {
 });
 
 describe('forkJoin([])', () => {
+  it('should property type empty parameters', () => {
+    const res = forkJoin(); // $ExpectType Observable<never>
+  });
+
   it('should properly type empty arrays', () => {
-    const res = forkJoin([]); // $ExpectType Observable<never>
-    const resConst = forkJoin([] as const); // $ExpectType Observable<never>
+    const res = forkJoin([]); // $ExpectType Observable<[]>
+    const resConst = forkJoin([] as const); // $ExpectType Observable<[]>
   });
 
     it('should properly type readonly arrays', () => {

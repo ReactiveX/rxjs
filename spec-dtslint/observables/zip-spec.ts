@@ -32,9 +32,19 @@ it('should return Array<T> when given a single promise', () => {
   const o1 = zip(a); // $ExpectType Observable<[number]>
 });
 
+it('should return an empty array when given no source', () => {
+  const o = zip([]); // $ExpectType Observable<[]>
+  const o1 = zip(); // $ExpectType Observable<never>
+});
+
 it('should return Array<T> when given a single observable', () => {
   const a = of(1); // $ExpectType Observable<number>
   const o1 = zip(a); // $ExpectType Observable<[number]>
+});
+
+it('should support object types', () => {
+  const u = Math.random() > 0.5 ? of(123) : of('abc');
+  const o = zip({ u }); // $ExpectType Observable<{ u: string | number; }>
 });
 
 it('should support union types', () => {

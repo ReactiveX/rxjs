@@ -64,6 +64,11 @@ it('should accept 7 or more params and a result selector', () => {
   const o = combineLatest(a$, b$, c$, d$, e$, f$, g$, g$, g$, () => new A()); // $ExpectType Observable<A>
 });
 
+it('shoudd accept 0 params', () => {
+  const o = combineLatest([]); // $ExpectType Observable<[]>
+  const o1 = combineLatest(); // $ExpectType Observable<never>
+});
+
 it('should accept 1 param', () => {
   const o = combineLatest([a$]); // $ExpectType Observable<[A]>
 });
@@ -130,7 +135,7 @@ it('should accept 7 or more params and a result selector', () => {
 
 describe('combineLatest({})', () => {
   it('should properly type empty objects', () => {
-    const res = combineLatest({}); // $ExpectType Observable<never>
+    const res = combineLatest({}); // $ExpectType Observable<{}>
   });
 
   it('should work for the simple case', () => {
