@@ -131,7 +131,7 @@ export function forkJoin(...args: any[]): Observable<any> {
 
   if (args === sources && args.length === 0) {
     // deprecated path for forkJoin() without any argument
-    return (EMPTY as any) as Observable<any>;
+    return EMPTY;
   }
 
   if (resultSelector) {
