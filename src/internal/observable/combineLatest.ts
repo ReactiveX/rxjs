@@ -8,17 +8,19 @@ import { identity } from '../util/identity';
 import { Subscription } from '../Subscription';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { popResultSelector, popScheduler } from '../util/args';
+import { EMPTY } from './empty';
+import { of } from './of';
 
 // combineLatest([a, b, c])
-export function combineLatest(sources: []): Observable<never>;
 export function combineLatest<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
 
 // combineLatest(a, b, c)
+/** @deprecated Use the version that takes an empty array of Observables instead */
+export function combineLatest(): Observable<never>;
 /** @deprecated Use the version that takes an array of Observables instead */
 export function combineLatest<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
 
 // combineLatest({a, b, c})
-export function combineLatest(sourcesObject: { [K in any]: never }): Observable<never>;
 export function combineLatest<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 // If called with a single array, it "auto-spreads" the array, with result selector
@@ -462,6 +464,15 @@ export function combineLatest<O extends ObservableInput<any>, R>(...args: any[])
   const resultSelector = popResultSelector(args);
 
   const { args: observables, keys } = argsArgArrayOrObject(args);
+
+  if (args === observables && args.length === 0) {
+    // deprecated path: empty combineLatest()
+    return EMPTY;
+  }
+
+  if (observables.length === 0) {
+    return of(keys ? {} : []) as Observable<R>;
+  }
 
   const result = new Observable<ObservedValueOf<O>[]>(
     combineLatestInit(

@@ -371,6 +371,33 @@ describe('static combineLatest', () => {
     });
   });
 
+  it('should complete if source is not provided', () => {
+    rxTestScheduler.run(({ expectObservable }) => {
+      const e1 = combineLatest();
+      const expected = '|';
+
+      expectObservable(e1).toBe(expected);
+    });
+  });
+
+  it('should emit an empty array if sources array is empty', () => {
+    rxTestScheduler.run(({ expectObservable }) => {
+      const e1 = combineLatest([]);
+      const expected = '(x|)';
+
+      expectObservable(e1).toBe(expected, { x: [] });
+    });
+  });
+
+  it('should emit an empty object if sources object is empty', () => {
+    rxTestScheduler.run(({ expectObservable }) => {
+      const e1 = combineLatest({});
+      const expected = '(x|)';
+
+      expectObservable(e1).toBe(expected, { x: {} });
+    });
+  });
+
   it('should work with throw and never', () => {
     rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('---^----#', undefined, 'wokka wokka');
