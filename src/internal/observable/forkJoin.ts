@@ -5,9 +5,9 @@ import { map } from '../operators/map';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { innerFrom } from './from';
 import { popResultSelector } from '../util/args';
+import { EMPTY } from './empty';
 
 // forkJoin([a, b, c])
-export function forkJoin(sources: readonly []): Observable<never>;
 export function forkJoin<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
 /** @deprecated resultSelector is deprecated, pipe to map instead */
 export function forkJoin<A extends readonly unknown[], R>(
@@ -16,6 +16,8 @@ export function forkJoin<A extends readonly unknown[], R>(
 ): Observable<R>;
 
 // forkJoin(a, b, c)
+/** @deprecated Use the version that takes an empty array of Observables instead */
+export function forkJoin(): Observable<never>;
 /** @deprecated Use the version that takes an array of Observables instead */
 export function forkJoin<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
 /** @deprecated resultSelector is deprecated, pipe to map instead */
@@ -24,7 +26,6 @@ export function forkJoin<A extends readonly unknown[], R>(
 ): Observable<R>;
 
 // forkJoin({a, b, c})
-export function forkJoin(sourcesObject: { [K in any]: never }): Observable<never>;
 export function forkJoin<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 /**
@@ -128,6 +129,11 @@ export function forkJoin(...args: any[]): Observable<any> {
 
   const { args: sources, keys } = argsArgArrayOrObject(args);
 
+  if (args === sources && args.length === 0) {
+    // deprecated path for forkJoin() without any argument
+    return (EMPTY as any) as Observable<any>;
+  }
+
   if (resultSelector) {
     // deprecated path.
     return forkJoinInternal(sources, keys).pipe(map((values: any[]) => resultSelector!(...values)));
@@ -140,6 +146,7 @@ function forkJoinInternal(sources: ObservableInput<any>[], keys: string[] | null
   return new Observable((subscriber) => {
     const len = sources.length;
     if (len === 0) {
+      subscriber.next(keys ? {} : []);
       subscriber.complete();
       return;
     }

@@ -227,12 +227,12 @@ describe('forkJoin', () => {
       });
     });
 
-    it('should complete if sources list is empty', () => {
+    it('should emit an empty array if sources list is empty', () => {
       rxTestScheduler.run(({ expectObservable }) => {
         const e1 = forkJoin([]);
-        const expected = '|';
+        const expected = '(x|)';
 
-        expectObservable(e1).toBe(expected);
+        expectObservable(e1).toBe(expected, { x: [] });
       });
     });
 
@@ -483,12 +483,12 @@ describe('forkJoin', () => {
       });
     });
 
-    it('should complete if sources object is empty', () => {
+    it('should emit an empty object if sources object is empty', () => {
       rxTestScheduler.run(({ expectObservable }) => {
         const e1 = forkJoin({});
-        const expected = '|';
+        const expected = '(x|)';
 
-        expectObservable(e1).toBe(expected);
+        expectObservable(e1).toBe(expected, { x: {} });
       });
     });
 
