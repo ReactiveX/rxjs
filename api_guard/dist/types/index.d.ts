@@ -40,12 +40,9 @@ export declare function bindCallback<A extends readonly unknown[], R extends rea
 export declare function bindNodeCallback(callbackFunc: (...args: any[]) => void, resultSelector: (...args: any[]) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any>;
 export declare function bindNodeCallback<A extends readonly unknown[], R extends readonly unknown[]>(callbackFunc: (...args: [...A, (err: any, ...res: R) => void]) => void, schedulerLike?: SchedulerLike): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
 
-export declare function combineLatest(sources: []): Observable<never>;
 export declare function combineLatest<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
+export declare function combineLatest(): Observable<never>;
 export declare function combineLatest<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
-export declare function combineLatest(sourcesObject: {
-    [K in any]: never;
-}): Observable<never>;
 export declare function combineLatest<T>(sourcesObject: T): Observable<{
     [K in keyof T]: ObservedValueOf<T[K]>;
 }>;
@@ -163,14 +160,11 @@ export declare type Falsy = null | undefined | false | 0 | -0 | 0n | '';
 
 export declare function firstValueFrom<T>(source: Observable<T>): Promise<T>;
 
-export declare function forkJoin(sources: readonly []): Observable<never>;
 export declare function forkJoin<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
 export declare function forkJoin<A extends readonly unknown[], R>(sources: readonly [...ObservableInputTuple<A>], resultSelector: (...values: A) => R): Observable<R>;
+export declare function forkJoin(): Observable<never>;
 export declare function forkJoin<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
 export declare function forkJoin<A extends readonly unknown[], R>(...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]): Observable<R>;
-export declare function forkJoin(sourcesObject: {
-    [K in any]: never;
-}): Observable<never>;
 export declare function forkJoin<T>(sourcesObject: T): Observable<{
     [K in keyof T]: ObservedValueOf<T[K]>;
 }>;
@@ -561,5 +555,9 @@ export declare class VirtualTimeScheduler extends AsyncScheduler {
 
 export declare function zip<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A>;
 export declare function zip<A extends readonly unknown[], R>(sources: [...ObservableInputTuple<A>], resultSelector: (...values: A) => R): Observable<R>;
+export declare function zip(): Observable<never>;
 export declare function zip<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
 export declare function zip<A extends readonly unknown[], R>(...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]): Observable<R>;
+export declare function zip<T>(sourcesObject: T): Observable<{
+    [K in keyof T]: ObservedValueOf<T[K]>;
+}>;
