@@ -795,12 +795,12 @@ describe('zipAll operator', () => {
     });
   });
 
-  it('should complete when empty source', () => {
+  it('should emit an empty list when empty source', () => {
     rxTestScheduler.run(({ hot, expectObservable }) => {
       const source = hot('|');
-      const expected = '  |';
+      const expected = '(x|)';
 
-      expectObservable(source.pipe(zipAll())).toBe(expected);
+      expectObservable(source.pipe(zipAll())).toBe(expected, { x: [] });
     });
   });
 });

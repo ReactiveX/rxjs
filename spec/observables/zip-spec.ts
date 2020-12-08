@@ -1,20 +1,41 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { queueScheduler as rxQueueScheduler, zip, from, of } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
+import { observableMatcher } from '../helpers/observableMatcher';
 
 const queueScheduler = rxQueueScheduler;
 
 /** @test {zip} */
 describe('static zip', () => {
-  it('should combine a source with a second', () => {
+  let rxTestScheduler: TestScheduler;
+
+  beforeEach(() => {
+    rxTestScheduler = new TestScheduler(observableMatcher);
+  });
+
+  it('should combine a source with a second (array)', () => {
     const a =    hot('---1---2---3---');
     const asubs =    '^';
     const b =    hot('--4--5--6--7--8--');
     const bsubs =    '^';
     const expected = '---x---y---z';
 
-    expectObservable(zip(a, b))
+    expectObservable(zip([a, b]))
       .toBe(expected, { x: ['1', '4'], y: ['2', '5'], z: ['3', '6'] });
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+    expectSubscriptions(b.subscriptions).toBe(bsubs);
+  });
+
+  it('should combine a source with a second (object)', () => {
+    const a =    hot('---1---2---3---');
+    const asubs =    '^';
+    const b =    hot('--4--5--6--7--8--');
+    const bsubs =    '^';
+    const expected = '---x---y---z';
+
+    expectObservable(zip({ a, b }))
+      .toBe(expected, { x: { a: '1', b: '4' }, y: { a: '2', b: '5' }, z: { a: '3', b: '6' } });
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -527,6 +548,33 @@ describe('static zip', () => {
     zip(a, b).subscribe((vals: Array<number>) => {
       expect(vals).to.deep.equal(r[i++]);
     }, null, done);
+  });
+
+  it('should complete if source is not provided', () => {
+    rxTestScheduler.run(({ expectObservable }) => {
+      const e1 = zip();
+      const expected = '|';
+
+      expectObservable(e1).toBe(expected);
+    });
+  });
+
+  it('should emit an empty array if sources array is empty', () => {
+    rxTestScheduler.run(({ expectObservable }) => {
+      const e1 = zip([]);
+      const expected = '(x|)';
+
+      expectObservable(e1).toBe(expected, { x: [] });
+    });
+  });
+
+  it('should emit an empty object if sources object is empty', () => {
+    rxTestScheduler.run(({ expectObservable }) => {
+      const e1 = zip({});
+      const expected = '(x|)';
+
+      expectObservable(e1).toBe(expected, { x: {} });
+    });
   });
 
   it('should be able to zip all iterables', () => {
