@@ -49,7 +49,7 @@ describe('DocViewerComponent', () => {
 
     const setCurrentDoc = (newDoc: TestParentComponent['currentDoc']) => {
       
-      parentComponent.currentDoc =  newDoc; // set default with id if parameter is not defined
+      parentComponent.currentDoc =  newDoc ?? null; // Set null as the default value
       parentFixture.detectChanges();  // Run change detection to propagate the new doc to `DocViewer`.
       safeFlushAsapScheduler();  // Flush `asapScheduler` to trigger `DocViewer#render()`.
     };
