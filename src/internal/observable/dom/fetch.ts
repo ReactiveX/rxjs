@@ -87,7 +87,7 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
  * ```
  *
  * @param input The resource you would like to fetch. Can be a url or a request object.
- * @param init A configuration object for the fetch.
+ * @param initWithSelector A configuration object for the fetch.
  * [See MDN for more details](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
  * @returns An Observable, that when subscribed to performs an HTTP request using the native `fetch`
  * function. The {@link Subscription} is tied to an `AbortController` for the the fetch.
@@ -112,39 +112,32 @@ export function fromFetch<T>(
     // on the Response. Consider: `fromFetch().pipe(take(1), mergeMap(res => res.json()))`
     let abortable = true;
 
-    // The initialization object passed to `fetch` as the second
-    // argument. This ferries in important information, including our
-    // AbortSignal.
-    let perSubscriberInit: RequestInit;
-
     // If the user provided an init configuration object,
     // let's process it and chain our abort signals, if necessary.
-    if (init) {
-      // If a signal is provided, just have it teardown. It's a cancellation token, basically.
-      const { signal: outerSignal } = init;
-      if (outerSignal) {
-        if (outerSignal.aborted) {
-          controller.abort();
-        } else {
-          // We got an AbortSignal from the arguments passed into `fromFetch`.
-          // We need to wire up our AbortController to abort when this signal aborts.
-          const outerSignalHandler = () => {
-            if (!signal.aborted) {
-              controller.abort();
-            }
-          };
-          outerSignal.addEventListener('abort', outerSignalHandler);
-          subscriber.add(() => outerSignal.removeEventListener('abort', outerSignalHandler));
-        }
+    // If a signal is provided, just have it teardown. It's a cancellation token, basically.
+    const { signal: outerSignal } = init;
+    if (outerSignal) {
+      if (outerSignal.aborted) {
+        controller.abort();
+      } else {
+        // We got an AbortSignal from the arguments passed into `fromFetch`.
+        // We need to wire up our AbortController to abort when this signal aborts.
+        const outerSignalHandler = () => {
+          if (!signal.aborted) {
+            controller.abort();
+          }
+        };
+        outerSignal.addEventListener('abort', outerSignalHandler);
+        subscriber.add(() => outerSignal.removeEventListener('abort', outerSignalHandler));
       }
-      // Create a new init, so we don't accidentally mutate the
-      // passed init, or reassign it. This is because the init passed in
-      // is shared between each subscription to the result.
-      perSubscriberInit = { ...init, signal };
-    } else {
-      // No init was provided, so just make our own and provide our signal
-      perSubscriberInit = { signal };
     }
+
+    // The initialization object passed to `fetch` as the second
+    // argument. This ferries in important information, including our
+    // AbortSignal. Create a new init, so we don't accidentally mutate the
+    // passed init, or reassign it. This is because the init passed in
+    // is shared between each subscription to the result.
+    const perSubscriberInit: RequestInit = { ...init, signal };
 
     const handleError = (err: any) => {
       abortable = false;
