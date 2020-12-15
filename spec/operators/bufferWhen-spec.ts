@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { of, EMPTY, Observable } from 'rxjs';
-import { bufferWhen, mergeMap, takeWhile, take } from 'rxjs/operators';
+import { of, throwError } from 'rxjs';
+import { bufferWhen, mergeMap, takeWhile } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -198,7 +198,7 @@ describe('bufferWhen operator', () => {
       const result = e1.pipe(
         bufferWhen(() => {
           if (i === 1) {
-            throw 'error';
+            return throwError(() => 'error');
           }
           return closings[i++];
         })

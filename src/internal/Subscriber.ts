@@ -106,6 +106,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.closed) {
       this.isStopped = true;
       super.unsubscribe();
+      this.destination = NOOP_OBSERVER;
     }
   }
 
@@ -208,5 +209,15 @@ export const EMPTY_OBSERVER: Readonly<Observer<any>> & { closed: true } = {
   closed: true,
   next: noop,
   error: defaultErrorHandler,
+  complete: noop,
+};
+
+/**
+ * The observer used as a stub for subscriptions that have already been closed.
+ */
+export const NOOP_OBSERVER: Readonly<Observer<any>> & { closed: true } = {
+  closed: true,
+  next: noop,
+  error: noop,
   complete: noop,
 };
