@@ -12,6 +12,17 @@ export interface ShareReplayConfig {
 export function shareReplay<T>(config: ShareReplayConfig): MonoTypeOperatorFunction<T>;
 export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
+/*
+Definition for Docs 
+shareReplay: This operator is going to make sure that our HTTP response is going to be passed onto each new subscription instead of executing again the same HTTP request
+
+
+*/
+
+
+
+
+
 /**
  * Share source and replay specified number of emissions on subscription.
  *
