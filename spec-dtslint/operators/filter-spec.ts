@@ -53,10 +53,6 @@ it('should support Boolean as a predicate', () => {
   const x = of(false, false, false, false).pipe(filter(Boolean)); // $ExpectType Observable<true>
 });
 
-it('should narrow on always-false predicates', () => {
-  const o = of(1, 2, 3).pipe(filter(() => false)); // $ExpectType Observable<never>
-});
-
 // I've not been able to effect a failing dtslint test for this situation and a
 // conventional test won't fail because the TypeScript configuration isn't
 // sufficiently strict:
