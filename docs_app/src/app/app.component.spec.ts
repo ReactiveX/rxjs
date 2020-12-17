@@ -34,7 +34,7 @@ const sideBySideBreakPoint = 992;
 const hideToCBreakPoint = 800;
 const startedDelay = 100;
 
-describe('AppComponent', () => {
+fdescribe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
 
@@ -916,7 +916,10 @@ describe('AppComponent', () => {
   });
 
   describe('with mocked DocViewer', () => {
-    const getDocViewer = () => fixture.debugElement.query(By.css('aio-doc-viewer'));
+    const getDocViewer = () => {
+      const docViewer = fixture.debugElement.query(By.css('aio-doc-viewer'));
+      return docViewer;
+    };
     const triggerDocViewerEvent =
         (evt: 'docReady' | 'docRemoved' | 'docInserted' | 'docRendered') =>
           getDocViewer().triggerEventHandler(evt, undefined);
