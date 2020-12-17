@@ -34,7 +34,7 @@ const sideBySideBreakPoint = 992;
 const hideToCBreakPoint = 800;
 const startedDelay = 100;
 
-fdescribe('AppComponent', () => {
+describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
 
