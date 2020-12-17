@@ -75,3 +75,11 @@ it('should support inference from a generic return type of the predicate', () =>
 
   const o$ = of(1, null, {foo: 'bar'}, true, undefined, 'Nick Cage').pipe(filter(isDefined())); // $ExpectType Observable<string | number | boolean | { foo: string; }>
 });
+
+it('should support inference from a predicate that returns any', () => {
+  function isTruthy(value: any): any {
+    return !!value;
+  }
+
+  const o$ = of(1).pipe(filter(isTruthy)); // $ExpectType Observable<number>
+});
