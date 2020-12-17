@@ -9,12 +9,14 @@ import { WindowToken } from 'app/shared/window';
 describe('NotificationComponent', () => {
   let component: NotificationComponent;
   let fixture: ComponentFixture<TestComponent>;
-
+  
   function configTestingModule(now = new Date('2018-01-20')) {
+    const windowToken = new MockWindow();
+
     TestBed.configureTestingModule({
       declarations: [TestComponent, NotificationComponent],
       providers: [
-        { provide: WindowToken, useClass: MockWindow },
+        { provide: WindowToken, useValue: windowToken },
         { provide: CurrentDateToken, useValue: now },
       ],
       imports: [NoopAnimationsModule],
