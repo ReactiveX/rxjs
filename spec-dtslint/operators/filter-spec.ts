@@ -77,7 +77,7 @@ it('should support inference from a generic return type of the predicate', () =>
 });
 
 it('should support inference from a predicate that returns any', () => {
-  function isTruthy(value: any): any {
+  function isTruthy(value: number): any {
     return !!value;
   }
 
