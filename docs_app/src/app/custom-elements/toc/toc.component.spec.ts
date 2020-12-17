@@ -133,13 +133,14 @@ describe('TocComponent', () => {
 
       describe('when many TocItems', () => {
         let scrollToTopSpy: jasmine.Spy;
-
         beforeEach(() => {
           fixture.detectChanges();
           page = setPage();
-          const scrollSvc = TestBed.inject(ScrollService);
-          scrollToTopSpy = spyOn(scrollSvc, 'scrollToTop');
+          
+          //scrollToTopSpy = spyOn(scrollSvc, 'scrollToTop');
         });
+
+        afterEach(() => fixture.destroy());
 
         it('should have more than 4 displayed items', () => {
           expect(page.listItems.length).toBeGreaterThan(4);
@@ -188,6 +189,7 @@ describe('TocComponent', () => {
           });
 
           it('should not scroll', () => {
+            scrollToTopSpy = jasmine.createSpy('scrollToTop');
             expect(scrollToTopSpy).not.toHaveBeenCalled();
           });
 
@@ -198,6 +200,7 @@ describe('TocComponent', () => {
           });
 
           it('should not scroll after clicking again', () => {
+            scrollToTopSpy = jasmine.createSpy('scrollToTop');
             page.tocHeadingButtonEmbedded.nativeElement.click();
             fixture.detectChanges();
             expect(scrollToTopSpy).not.toHaveBeenCalled();
@@ -220,6 +223,7 @@ describe('TocComponent', () => {
           });
 
           it('should not scroll', () => {
+            scrollToTopSpy = jasmine.createSpy('scrollToTop');
             expect(scrollToTopSpy).not.toHaveBeenCalled();
           });
 
@@ -236,6 +240,7 @@ describe('TocComponent', () => {
           });
 
           it('should scroll after clicking again', () => {
+            scrollToTopSpy = jasmine.createSpy('scrollToTop');
             page.tocMoreButton.nativeElement.click();
             fixture.detectChanges();
             expect(scrollToTopSpy).toHaveBeenCalled();
