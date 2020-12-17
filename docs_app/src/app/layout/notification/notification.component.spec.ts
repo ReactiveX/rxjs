@@ -1,6 +1,6 @@
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CurrentDateToken } from 'app/shared/current-date';
 import { NotificationComponent } from './notification.component';
@@ -9,17 +9,19 @@ import { WindowToken } from 'app/shared/window';
 describe('NotificationComponent', () => {
   let component: NotificationComponent;
   let fixture: ComponentFixture<TestComponent>;
+ 
+  const token = {
+    localStorage: jasmine.createSpyObj('localStorage', ['getItem', 'setItem'])
+  };
   
   function configTestingModule(now = new Date('2018-01-20')) {
-    const windowToken = new MockWindow();
-
     TestBed.configureTestingModule({
       declarations: [TestComponent, NotificationComponent],
+      imports: [NoopAnimationsModule],
       providers: [
-        { provide: WindowToken, useValue: windowToken },
+        { provide: WindowToken, useValue: token },
         { provide: CurrentDateToken, useValue: now },
       ],
-      imports: [NoopAnimationsModule],
       schemas: [NO_ERRORS_SCHEMA]
     });
   }
@@ -86,19 +88,21 @@ describe('NotificationComponent', () => {
   it('should hide the notification when dismiss is called', () => {
     configTestingModule();
     createComponent();
+    const setItemSpy: jasmine.Spy = token.localStorage.setItem;
+    setItemSpy.and.returnValue(`aio-notification/1/hide`);
     expect(component.showNotification).toBe('show');
     component.dismiss();
     expect(component.showNotification).toBe('hide');
   });
 
-  it('should update localStorage key when dismiss is called', inject([WindowToken], (windowToken: { localStorage: {setItem: () => {}, getItem: () => {}}}) => {
+  it('should update localStorage key when dismiss is called', () => {
     configTestingModule();
     createComponent();
     
-    const setItemSpy: jasmine.Spy = spyOn(windowToken.localStorage, 'setItem');
+    const setItemSpy: jasmine.Spy = token.localStorage.setItem;
     component.dismiss();
     expect(setItemSpy).toHaveBeenCalledWith('aio-notification/survey-january-2018', 'hide');
-  }));
+  });
 
   it('should not show the notification if the date is after the expiry date', () => {
     configTestingModule(new Date('2018-01-23'));
@@ -106,14 +110,14 @@ describe('NotificationComponent', () => {
     expect(component.showNotification).toBe('hide');
   });
 
-  it('should not show the notification if the there is a "hide" flag in localStorage', inject([WindowToken], (windowToken: { localStorage: { setItem: () => {}, getItem: () => {}}}) => {
+  it('should not show the notification if the there is a "hide" flag in localStorage', () => {
     configTestingModule();
-    const getItemSpy: jasmine.Spy = spyOn(windowToken.localStorage, 'getItem');
+    const getItemSpy: jasmine.Spy = token.localStorage.getItem;
     getItemSpy.and.returnValue('hide');
     createComponent();
     expect(getItemSpy).toHaveBeenCalledWith('aio-notification/survey-january-2018');
     expect(component.showNotification).toBe('hide');
-  }));
+  });
 });
 
 @Component({
@@ -131,8 +135,4 @@ describe('NotificationComponent', () => {
   </aio-notification>`
 })
 class TestComponent {
-}
-
-class MockWindow {
-  localStorage = jasmine.createSpyObj('localStorage', ['getItem', 'setItem']);
 }
