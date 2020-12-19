@@ -13,22 +13,22 @@ import { Undoable } from './types';
 export class UndoableSubject<T> extends Subject<Undoable<T>> {
   _value: Undoable<T>;
 
-  constructor(
-    value: T | Undoable<T>,
-  ) {
+  constructor(value: T | Undoable<T>) {
     super();
-    this._value = this._isUndoableValue(value) ? value : {
-      past: [],
-      future: [],
-      present: value
-    };
+    this._value = this._isUndoableValue(value)
+      ? value
+      : {
+          past: [],
+          future: [],
+          present: value,
+        };
   }
 
   get value(): Undoable<T> {
     return this.getValue();
   }
 
-  protected _isUndoableValue(value: any): value is Undoable<T>{
+  protected _isUndoableValue(value: any): value is Undoable<T> {
     if (value && Array.isArray(value.past) && Array.isArray(value.future) && 'present' in value) {
       return true;
     }
@@ -54,14 +54,14 @@ export class UndoableSubject<T> extends Subject<Undoable<T>> {
   undo() {
     const { past, present, future } = this._value;
     if (!past.length) {
-      throw 'Past list are empty!';
+      throw new Error('Past list are empty!');
     }
 
     const previous = past[past.length - 1];
     const nextValue: Undoable<T> = {
       past: past.slice(0, past.length - 1),
       present: previous,
-      future: [present, ...future]
+      future: [present, ...future],
     };
     this.next(nextValue);
   }
@@ -69,24 +69,26 @@ export class UndoableSubject<T> extends Subject<Undoable<T>> {
   redo() {
     const { past, present, future } = this._value;
     if (!future.length) {
-      throw 'Future list are empty!';
+      throw new Error('Future list are empty!');
     }
 
     const [next, ...newFuture] = future;
     const nextValue: Undoable<T> = {
       past: [...past, present],
       present: next,
-      future: newFuture
+      future: newFuture,
     };
     this.next(nextValue);
   }
 
   next(value: T | Undoable<T>): void {
-    const nextValue: Undoable<T> = this._isUndoableValue(value) ? value : {
-      past: [...this._value.past, this._value.present],
-      present: value,
-      future: [],
-    };
+    const nextValue: Undoable<T> = this._isUndoableValue(value)
+      ? value
+      : {
+          past: [...this._value.past, this._value.present],
+          present: value,
+          future: [],
+        };
 
     super.next((this._value = nextValue));
   }
