@@ -9,6 +9,7 @@ export { animationFrames } from './internal/observable/dom/animationFrames';
 /* Subjects */
 export { Subject } from './internal/Subject';
 export { BehaviorSubject } from './internal/BehaviorSubject';
+export { UndoableSubject } from './internal/UndoableSubject';
 export { ReplaySubject } from './internal/ReplaySubject';
 export { AsyncSubject } from './internal/AsyncSubject';
 

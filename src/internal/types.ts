@@ -278,3 +278,9 @@ export type ValueFromNotification<T> = T extends { kind: 'N' | 'E' | 'C' }
 export type Falsy = null | undefined | false | 0 | -0 | 0n | '';
 
 export type TruthyTypesOf<T> = T extends Falsy ? never : T;
+
+export interface Undoable<T> {
+  past: Array<T>;
+  present: T;
+  future: Array<T>;
+}
