@@ -92,6 +92,7 @@ describe('NotificationComponent', () => {
     setItemSpy.and.returnValue(`aio-notification/1/hide`);
     expect(component.showNotification).toBe('show');
     component.dismiss();
+    fixture.detectChanges();
     expect(component.showNotification).toBe('hide');
   });
 
