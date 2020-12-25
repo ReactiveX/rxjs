@@ -33,13 +33,13 @@ export class Subscription implements SubscriptionLike {
 
   /**
    * The list of registered teardowns to execute upon unsubscription. Adding and removing from this
-   * list occurs in the {@link add} and {@link remove} methods.
+   * list occurs in the {@link #add} and {@link #remove} methods.
    */
   private _teardowns: Exclude<TeardownLogic, void>[] | null = null;
 
   /**
    * @param initialTeardown A function executed first as part of the teardown
-   * process that is kicked off when {@link unsubscribe} is called.
+   * process that is kicked off when {@link #unsubscribe} is called.
    */
   constructor(private initialTeardown?: () => void) {}
 
@@ -99,7 +99,7 @@ export class Subscription implements SubscriptionLike {
 
   /**
    * Adds a teardown to this subscription, so that teardown will be unsubscribed/called
-   * when this subscription is unsubscribed. If this subscription is already {@link closed},
+   * when this subscription is unsubscribed. If this subscription is already {@link #closed},
    * because it has already been unsubscribed, then whatever teardown is passed to it
    * will automatically be executed (unless the teardown itself is also a closed subscription).
    *
@@ -111,7 +111,7 @@ export class Subscription implements SubscriptionLike {
    *
    * `Subscription` instances that are added to this instance will automatically remove themselves
    * if they are unsubscribed. Functions and {@link Unsubscribable} objects that you wish to remove
-   * will need to be removed manually with {@link remove}
+   * will need to be removed manually with {@link #remove}
    *
    * @param teardown The teardown logic to add to this subscription.
    */
@@ -160,7 +160,7 @@ export class Subscription implements SubscriptionLike {
   }
 
   /**
-   * Called on a child when it is removed via {@link remove}.
+   * Called on a child when it is removed via {@link #remove}.
    * @param parent The parent to remove
    */
   private _removeParent(parent: Subscription) {
@@ -173,7 +173,7 @@ export class Subscription implements SubscriptionLike {
   }
 
   /**
-   * Removes a teardown from this subscription that was previously added with the {@link add} method.
+   * Removes a teardown from this subscription that was previously added with the {@link #add} method.
    *
    * Note that `Subscription` instances, when unsubscribed, will automatically remove themselves
    * from every other `Subscription` they have been added to. This means that using the `remove` method
