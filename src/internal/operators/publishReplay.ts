@@ -27,9 +27,9 @@ export function publishReplay<T>(
 
 /**
  * Creates an observable, that when subscribed to, will create a {@link ReplaySubject},
- * and pass an observable from it (using {@link asObservable}) to the `selector`
- * function, which then returns an observable that is subscribed to before "connecting"
- * the source to the internal `ReplaySubject`.
+ * and pass an observable from it (using [asObservable](api/index/class/Subject#asObservable)) to
+ * the `selector` function, which then returns an observable that is subscribed to before
+ * "connecting" the source to the internal `ReplaySubject`.
  *
  * Since this is deprecated, for additional details see the documentation for {@link connect}.
  *
