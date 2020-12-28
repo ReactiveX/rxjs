@@ -16,10 +16,10 @@ module.exports =
         inlineTagProcessor.inlineTagDefinitions.push(linkInlineTagDef);
       })
 
-      .config(function (getDocFromAlias, disambiguateByDeprecated, disambiguateByModule, disambiguateByNonMember) {
+      .config(function (getDocFromAlias, disambiguateByDeprecated, disambiguateByNonMember, disambiguateByModule) {
         getDocFromAlias.disambiguators = [
           disambiguateByDeprecated,
-          disambiguateByModule,
-          disambiguateByNonMember
+          disambiguateByNonMember,
+          disambiguateByModule
         ];
       });
