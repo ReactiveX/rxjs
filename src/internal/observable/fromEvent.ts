@@ -33,9 +33,21 @@ export interface JQueryStyleEventEmitter<TContext, T> {
   off: (eventName: string, handler: (this: TContext, t: T, ...args: any[]) => any) => void;
 }
 
+export interface EventListenerObject<E> {
+  handleEvent(evt: E): void;
+}
+
 export interface HasEventTargetAddRemove<E> {
-  addEventListener(type: string, listener: ((evt: E) => void) | null, options?: boolean | AddEventListenerOptions): void;
-  removeEventListener(type: string, listener?: ((evt: E) => void) | null, options?: EventListenerOptions | boolean): void;
+  addEventListener(
+    type: string,
+    listener: ((evt: E) => void) | EventListenerObject<E> | null,
+    options?: boolean | AddEventListenerOptions
+  ): void;
+  removeEventListener(
+    type: string,
+    listener: ((evt: E) => void) | EventListenerObject<E> | null,
+    options?: EventListenerOptions | boolean
+  ): void;
 }
 
 export type EventTargetLike<T> =
