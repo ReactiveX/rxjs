@@ -86,6 +86,8 @@ RxJS introduces Observables, a new Push system for JavaScript. An Observable is 
 - A **Promise** is a computation that may (or may not) eventually return a single value.
 - An **Observable** is a lazily evaluated computation that can synchronously or asynchronously return zero to (potentially) infinite values from the time it's invoked onwards.
 
+<span class="informal">For more info about what to use when converting Observables to Promises, please refer to [this guide](/deprecations/to-promise).</span>
+
 ## Observables as generalizations of functions
 
 Contrary to popular claims, Observables are not like EventEmitters nor are they like Promises for multiple values. Observables *may act* like EventEmitters in some cases, namely when they are multicasted using RxJS Subjects, but usually they don't act like EventEmitters.
