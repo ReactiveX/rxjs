@@ -25,40 +25,52 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
     onComplete?: () => void,
     private onUnsubscribe?: () => void
   ) {
+    // It's important - for performance reasons - that all of this class's
+    // members are initialized and that they are always initialized in the same
+    // order. This will ensure that all OperatorSubscriber instances have the
+    // same hidden class in V8. This, in turn, will help keep the number of
+    // hidden classes involved in property accesses within the base class as
+    // low as possible. If the number of hidden classes involved exceeds four,
+    // the property accesses will become megamorphic and performance penalties
+    // will be incurred - i.e. inline caches won't be used.
+    //
+    // The reasons for ensuring all instances have the same hidden class are
+    // further discussed in this blog post from Benedikt Meurer:
+    // https://benediktmeurer.de/2018/03/23/impact-of-polymorphism-on-component-based-frameworks-like-react/
     super(destination);
-    if (onNext) {
-      this._next = function (value: T) {
-        try {
-          onNext(value);
-        } catch (err) {
-          this.destination.error(err);
+    this._next = onNext
+      ? function (this: OperatorSubscriber<T>, value: T) {
+          try {
+            onNext(value);
+          } catch (err) {
+            this.destination.error(err);
+          }
         }
-      };
-    }
-    if (onError) {
-      this._error = function (err) {
-        try {
-          onError(err);
-        } catch (err) {
-          // Send any errors that occur down stream.
-          this.destination.error(err);
+      : super._next;
+    this._error = onError
+      ? function (this: OperatorSubscriber<T>, err: any) {
+          try {
+            onError(err);
+          } catch (err) {
+            // Send any errors that occur down stream.
+            this.destination.error(err);
+          }
+          // Ensure teardown.
+          this.unsubscribe();
         }
-        // Ensure teardown.
-        this.unsubscribe();
-      };
-    }
-    if (onComplete) {
-      this._complete = function () {
-        try {
-          onComplete();
-        } catch (err) {
-          // Send any errors that occur down stream.
-          this.destination.error(err);
+      : super._error;
+    this._complete = onComplete
+      ? function (this: OperatorSubscriber<T>) {
+          try {
+            onComplete();
+          } catch (err) {
+            // Send any errors that occur down stream.
+            this.destination.error(err);
+          }
+          // Ensure teardown.
+          this.unsubscribe();
         }
-        // Ensure teardown.
-        this.unsubscribe();
-      };
-    }
+      : super._complete;
   }
 
   unsubscribe() {
