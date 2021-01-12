@@ -69,9 +69,9 @@ export function endWith<T, A extends any[] = T[]>(...args: A): OperatorFunction<
  *
  * @param values - Items you want the modified Observable to emit last.
  *
- * @see startWith
- * @see concat
- * @see takeUntil
+ * @see {@link startWith}
+ * @see {@link concat}
+ * @see {@link takeUntil}
  */
 export function endWith<T>(...values: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => concat(source, of(...values)) as Observable<T>;

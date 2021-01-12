@@ -71,14 +71,14 @@ export function startWith<T, A extends any[] = T[]>(...values: A): OperatorFunct
  *
  * @param values Items you want the modified Observable to emit first.
  *
- * @see endWith
- * @see finalize
- * @see concat
+ * @see {@link endWith}
+ * @see {@link finalize}
+ * @see {@link concat}
  */
 export function startWith<T, D>(...values: D[]): OperatorFunction<T, T | D> {
   const scheduler = popScheduler(values);
   return operate((source, subscriber) => {
-    // Here we can't pass `undefined` as a scheduler, becuase if we did, the
+    // Here we can't pass `undefined` as a scheduler, because if we did, the
     // code inside of `concat` would be confused by the `undefined`, and treat it
     // like an invalid observable. So we have to split it two different ways.
     (scheduler ? concat(values, source, scheduler) : concat(values, source)).subscribe(subscriber);
