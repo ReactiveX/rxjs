@@ -1,77 +1,99 @@
+/** @prettier */
 import { isEmpty, mergeMap } from 'rxjs/operators';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { TestScheduler } from 'rxjs/testing';
 import { of } from 'rxjs';
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {isEmpty} */
-describe('isEmpty operator', () => {
-  it('should return true if source is empty', () => {
-    const source = hot('-----|');
-    const subs =       '^    !';
-    const expected =   '-----(T|)';
+describe('isEmpty', () => {
+  let testScheduler: TestScheduler;
 
-    expectObservable((<any>source).pipe(isEmpty())).toBe(expected, { T: true });
-    expectSubscriptions(source.subscriptions).toBe(subs);
+  beforeEach(() => {
+    testScheduler = new TestScheduler(observableMatcher);
+  });
+
+  it('should return true if source is empty', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  -----|   ');
+      const e1subs = '  ^----!   ';
+      const expected = '-----(T|)';
+
+      expectObservable(e1.pipe(isEmpty())).toBe(expected, { T: true });
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should return false if source emits element', () => {
-    const source = hot('--a--^--b--|');
-    const subs =            '^  !';
-    const expected =        '---(F|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--|');
+      const e1subs = '     ^--!   ';
+      const expected = '   ---(F|)';
 
-    expectObservable((<any>source).pipe(isEmpty())).toBe(expected, { F: false });
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(isEmpty())).toBe(expected, { F: false });
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should raise error if source raise error', () => {
-    const source = hot('--#');
-    const subs =       '^ !';
-    const expected =   '--#';
+  it('should raise error if source raises error', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --#');
+      const e1subs = '  ^-!';
+      const expected = '--#';
 
-    expectObservable((<any>source).pipe(isEmpty())).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(isEmpty())).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should not completes if source never emits', () => {
-    const source = cold('-');
-    const subs =        '^';
-    const expected =    '-';
+  it('should not complete if source never emits', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' -');
+      const e1subs = '  ^';
+      const expected = '-';
 
-    expectObservable((<any>source).pipe(isEmpty())).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(isEmpty())).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should return true if source is Observable.empty()', () => {
-    const source = cold('|');
-    const subs =        '(^!)';
-    const expected =    '(T|)';
+  it('should return true if source is empty', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' |   ');
+      const e1subs = '  (^!)';
+      const expected = '(T|)';
 
-    expectObservable((<any>source).pipe(isEmpty())).toBe(expected, { T: true });
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(isEmpty())).toBe(expected, { T: true });
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should allow unsubscribing explicitly and early', () => {
-    const source = cold('-----------a--b--|');
-    const unsub =       '      !           ';
-    const subs =        '^     !           ';
-    const expected =    '-------           ';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' -----------a--b--|');
+      const e1subs = '  ^-----!           ';
+      const expected = '-------           ';
+      const unsub = '   ------!           ';
 
-    expectObservable((<any>source).pipe(isEmpty()), unsub).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(isEmpty()), unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should not break unsubscription chains when result is unsubscribed explicitly', () => {
-    const source = cold('-----------a--b--|');
-    const subs =        '^     !           ';
-    const expected =    '-------           ';
-    const unsub =       '      !           ';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' -----------a--b--|');
+      const e1subs = '  ^-----!           ';
+      const expected = '-------           ';
+      const unsub = '   ------!           ';
 
-    const result = (<any>source).pipe(
-      mergeMap((x: string) => of(x)),
-      isEmpty(),
-      mergeMap((x: string) => of(x))
-    );
+      const result = e1.pipe(
+        mergeMap((x) => of(x)),
+        isEmpty(),
+        mergeMap((x) => of(x))
+      );
 
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 });
