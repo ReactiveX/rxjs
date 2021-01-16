@@ -1,79 +1,101 @@
+/** @prettier */
 import { ignoreElements, mergeMap } from 'rxjs/operators';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { TestScheduler } from 'rxjs/testing';
 import { of } from 'rxjs';
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {ignoreElements} */
-describe('ignoreElements operator', () => {
+describe('ignoreElements', () => {
+  let testScheduler: TestScheduler;
+
+  beforeEach(() => {
+    testScheduler = new TestScheduler(observableMatcher);
+  });
+
   it('should ignore all the elements of the source', () => {
-    const source = hot('--a--b--c--d--|');
-    const subs =       '^             !';
-    const expected =   '--------------|';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--c--d--|');
+      const e1subs = '  ^-------------!';
+      const expected = '--------------|';
 
-    expectObservable(source.pipe(ignoreElements())).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(ignoreElements())).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should allow unsubscribing early and explicitly', () => {
-    const source = hot('--a--b--c--d--|');
-    const subs =       '^      !       ';
-    const expected =   '--------       ';
-    const unsub =      '       !       ';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--c--d--|');
+      const e1subs = '  ^------!       ';
+      const expected = '--------       ';
+      const unsub = '   -------!       ';
 
-    const result = source.pipe(ignoreElements());
+      const result = e1.pipe(ignoreElements());
 
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should allow unsubscribing early and explicitly', () => {
-    const source = hot('--a--b--c--d--|');
-    const subs =       '^      !       ';
-    const expected =   '--------       ';
-    const unsub =      '       !       ';
+  it('should allow unsubscribing early and explicitly with higher order', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--c--d--|');
+      const e1subs = '  ^------!       ';
+      const expected = '--------       ';
+      const unsub = '   -------!       ';
 
-    const result = source.pipe(
-      mergeMap((x: string) => of(x)),
-      ignoreElements(),
-      mergeMap((x: string) => of(x))
-    );
+      const result = e1.pipe(
+        mergeMap((x) => of(x)),
+        ignoreElements(),
+        mergeMap((x) => of(x))
+      );
 
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should propagate errors from the source', () => {
-    const source = hot('--a--#');
-    const subs =       '^    !';
-    const expected =   '-----#';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--#');
+      const e1subs = '  ^----!';
+      const expected = '-----#';
 
-    expectObservable(source.pipe(ignoreElements())).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(ignoreElements())).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should support Observable.empty', () => {
-    const source = cold('|');
-    const subs =        '(^!)';
-    const expected =    '|';
+  it('should handle empty', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' |   ');
+      const e1subs = '  (^!)';
+      const expected = '|   ';
 
-    expectObservable(source.pipe(ignoreElements())).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(ignoreElements())).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should support Observable.never', () => {
-    const source = cold('-');
-    const subs =        '^';
-    const expected =    '-';
+  it('should handle never', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' -');
+      const e1subs = '  ^';
+      const expected = '-';
 
-    expectObservable(source.pipe(ignoreElements())).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(ignoreElements())).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should support Observable.throw', () => {
-    const source = cold('#');
-    const subs =        '(^!)';
-    const expected =    '#';
+  it('should handle throw', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold('  #  ');
+      const e1subs = '  (^!)';
+      const expected = '#   ';
 
-    expectObservable(source.pipe(ignoreElements())).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(ignoreElements())).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 });
