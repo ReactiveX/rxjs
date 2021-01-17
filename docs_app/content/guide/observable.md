@@ -323,7 +323,7 @@ There are three types of values an Observable Execution can deliver:
 - "Error" notification: sends a JavaScript Error or exception.
 - "Complete" notification: does not send a value.
 
-"Next" notifications are the most important and most common type: they represent actual data being delivered to an subscriber. "Error" and "Complete" notifications may happen only once during the Observable Execution, and there can only be either one of them.
+"Next" notifications are the most important and most common type: they represent actual data being delivered to a subscriber. "Error" and "Complete" notifications may happen only once during the Observable Execution, and there can only be either one of them.
 
 These constraints are expressed best in the so-called *Observable Grammar* or *Contract*, written as a regular expression:
 
