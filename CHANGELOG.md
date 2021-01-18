@@ -1,3 +1,32 @@
+# [7.0.0-beta.10](https://github.com/reactivex/rxjs/compare/7.0.0-beta.9...7.0.0-beta.10) (2021-01-18)
+
+
+### Bug Fixes
+
+* **combineLatest:** Ensure `EMPTY` is returned if no observables are passed. ([#5963](https://github.com/reactivex/rxjs/issues/5963)) ([157c7e8](https://github.com/reactivex/rxjs/commit/157c7e8068befdfb26a9ba6ca770d38a66966ab5)), closes [#5962](https://github.com/reactivex/rxjs/issues/5962)
+* **fromEvent:** fixed HasEventTargetAddRemove to support EventTarget types ([#5945](https://github.com/reactivex/rxjs/issues/5945)) ([5f022d7](https://github.com/reactivex/rxjs/commit/5f022d784570684632e6fd5ae247fc259ee34c4b))
+
+
+### Features
+
+* **connect:** Adds new `connect` operator. ([9d53af0](https://github.com/reactivex/rxjs/commit/9d53af04103dbbb3bae40a4c511e2eebf117be09))
+* **connectable:** Adds `connectable` creation method ([f968a79](https://github.com/reactivex/rxjs/commit/f968a791c1b48f3100e925d700e8a0ecd69cc7e5))
+* **share:** Make `share` completely configurable. Also adds `SubjectLike`. ([2d600c7](https://github.com/reactivex/rxjs/commit/2d600c75c1065d862a2089dc1cd26007996b1c9d))
+* **TestScheduler:** add `expectObservable(a$).toEqual(b$)`. ([3372c72](https://github.com/reactivex/rxjs/commit/3372c72ed77a96e29a613a620e85f93bcf447920))
+
+
+### Performance Improvements
+
+* ensure same hidden class for OperatorSubscriber ([#5878](https://github.com/reactivex/rxjs/issues/5878)) ([246b449](https://github.com/reactivex/rxjs/commit/246b44902acde3a80e659f362969e6e2f8b19ef2))
+
+
+### BREAKING CHANGES
+
+* **share:** The TypeScript type `Subscribable` now only supports what is a valid return for `[Symbol.observable]()`.
+* **share:** The TypeScript type `Observer` no longer incorrectly has an optional `closed` property.
+
+
+
 # [7.0.0-beta.9](https://github.com/reactivex/rxjs/compare/7.0.0-beta.8...7.0.0-beta.9) (2020-12-07)
 
 
