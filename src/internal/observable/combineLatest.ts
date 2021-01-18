@@ -463,6 +463,13 @@ export function combineLatest<O extends ObservableInput<any>, R>(...args: any[])
 
   const { args: observables, keys } = argsArgArrayOrObject(args);
 
+  if (observables.length === 0) {
+    // If no observables are passed, or someone has passed an ampty array
+    // of observables, or even an empty object POJO, we need to just
+    // complete (EMPTY), but we have to honor the scheduler provided if any.
+    return from([], scheduler as any);
+  }
+
   const result = new Observable<ObservedValueOf<O>[]>(
     combineLatestInit(
       observables as ObservableInput<ObservedValueOf<O>>[],

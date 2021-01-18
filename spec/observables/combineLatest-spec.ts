@@ -14,6 +14,50 @@ describe('static combineLatest', () => {
     rxTestScheduler = new TestScheduler(observableMatcher);
   });
 
+  it('should return EMPTY if passed an empty array as the only argument', () => {
+    const results: string[] = [];
+    combineLatest([]).subscribe({
+      next: () => {
+        throw new Error('should not emit')
+      },
+      complete: () => {
+        results.push('done');
+      }
+    });
+
+    expect(results).to.deep.equal(['done']);
+  });
+
+  it('should return EMPTY if passed an empty POJO as the only argument', () => {
+    const results: string[] = [];
+    combineLatest({}).subscribe({
+      next: () => {
+        throw new Error('should not emit')
+      },
+      complete: () => {
+        results.push('done');
+      }
+    });
+
+    expect(results).to.deep.equal(['done']);
+  });
+  
+  it('should return EMPTY if passed an empty array and scheduler as the only argument', () => {
+    const results: string[] = [];
+    combineLatest([], rxTestScheduler).subscribe({
+      next: () => {
+        throw new Error('should not emit')
+      },
+      complete: () => {
+        results.push('done');
+      }
+    });
+
+    expect(results).to.deep.equal([]);
+    rxTestScheduler.flush();
+    expect(results).to.deep.equal(['done']);
+  });
+
   it('should combineLatest the provided observables', () => {
     rxTestScheduler.run(({ hot, expectObservable }) => {
       const firstSource = hot(' ----a----b----c----|');
