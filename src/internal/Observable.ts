@@ -211,7 +211,7 @@ export class Observable<T> implements Subscribable<T> {
     // If we have an operator, it's the result of a lift, and we let the lift
     // mechanism do the subscription for us in the operator call. Otherwise,
     // if we have a source, it's a trusted observable we own, and we can call
-    // the _subscribe without wrapping it in a try/catch. If we are supposed to
+    // the `_subscribe` without wrapping it in a try/catch. If we are supposed to
     // use the deprecated sync error handling, then we don't need the try/catch either
     // otherwise, it may be from a user-made observable instance, and we want to
     // wrap it in a try/catch so we can handle errors appropriately.
@@ -224,6 +224,20 @@ export class Observable<T> implements Subscribable<T> {
         : this._trySubscribe(subscriber)
     );
 
+    if (config.useDeprecatedSynchronousErrorHandling) {
+      // In the case of the deprecated sync error handling,
+      // we need to crawl forward through our subscriber chain and
+      // look to see if there's any synchronously thrown errors.
+      // Does this suck for perf? Yes. So stop using the deprecated sync
+      // error handling already. We're removing this in v8.
+      let dest: any = subscriber;
+      while (dest) {
+        if (dest.__syncError) {
+          throw dest.__syncError;
+        }
+        dest = dest.destination;
+      }
+    }
     return subscriber;
   }
 
@@ -232,9 +246,9 @@ export class Observable<T> implements Subscribable<T> {
     try {
       return this._subscribe(sink);
     } catch (err) {
-      if (config.useDeprecatedSynchronousErrorHandling) {
-        throw err;
-      }
+      // We don't need to return anything in this case,
+      // because it's just going to try to `add()` to a subscription
+      // above.
       sink.error(err);
     }
   }

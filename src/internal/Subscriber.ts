@@ -167,14 +167,40 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       // Once we set the destination, the superclass `Subscriber` will
       // do it's magic in the `_next`, `_error`, and `_complete` methods.
       this.destination = {
-        next: next || noop,
-        error: error || defaultErrorHandler,
-        complete: complete || noop,
+        next: next ? maybeWrapForDeprecatedSyncErrorHandling(next, this) : noop,
+        error: error ? maybeWrapForDeprecatedSyncErrorHandling(error, this) : defaultErrorHandler,
+        complete: complete ? maybeWrapForDeprecatedSyncErrorHandling(complete, this) : noop,
       };
     }
   }
 }
 
+/**
+ * Checks to see if the user has chosen to use the super gross deprecated error handling that
+ * no one should ever use, ever. If they did choose that path, we need to catch their error
+ * so we can stick it on a super-secret property and check it after the subscription is done
+ * in the `Observable` subscribe call.
+ *
+ * We have to do this, because if we simply rethrow the error, it will be caught by any upstream
+ * try/catch blocks and send back down again, basically playing ping-pong with the error until the
+ * downstream runs out of chances to rethrow and it gives up.
+ *
+ * In the general case, for non-crazy people, this just returns the handler directly.
+ *
+ * @param handler The handler to wrap
+ * @param instance The SafeSubscriber instance we're going to mark if there's an error.
+ */
+function maybeWrapForDeprecatedSyncErrorHandling(handler: (arg?: any) => void, instance: SafeSubscriber<any>) {
+  return config.useDeprecatedSynchronousErrorHandling
+    ? (arg?: any) => {
+        try {
+          handler(arg);
+        } catch (err) {
+          (instance as any).__syncError = err;
+        }
+      }
+    : handler;
+}
 /**
  * An error handler used when no error handler was supplied
  * to the SafeSubscriber -- meaning no error handler was supplied
