@@ -608,6 +608,27 @@ describe('Observable', () => {
         }).to.throw('error!');
       });
 
+
+      // From issue: https://github.com/ReactiveX/rxjs/issues/5979
+      it('should still rethrow synchronous errors from next handlers on synchronous observables', () => {
+        expect(() => {
+          of('test').pipe(
+            // Any operators here
+            map(x => x + '!!!'),
+            map(x => x + x),
+            map(x => x + x),
+            map(x => x + x),
+          ).subscribe({
+            next: () => {
+              throw new Error(
+                'hi there!'
+              )
+            }
+          })
+        }).to.throw();
+      });
+
+
       afterEach(() => {
         config.useDeprecatedSynchronousErrorHandling = false;
       });
