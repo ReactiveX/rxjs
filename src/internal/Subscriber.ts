@@ -132,46 +132,40 @@ export class SafeSubscriber<T> extends Subscriber<T> {
   ) {
     super();
 
-    // If we don't have arguments, or the observer passed is already EMPTY_OBSERVER,
-    // use EMPTY_OBSERVER. This is just to save a little on object allocations.
-    this.destination = EMPTY_OBSERVER;
-    if ((observerOrNext || error || complete) && observerOrNext !== EMPTY_OBSERVER) {
-      // We've got either functions or an observer to deal with
-      // let's figure that out here.
-
-      let next: ((value: T) => void) | undefined;
-      if (isFunction(observerOrNext)) {
-        next = observerOrNext;
-      } else if (observerOrNext) {
-        // Even if it's an observer, we have to pull the handlers off and
-        // capture the owner object as the context. That is because we're
-        // going to put them all in a new destination with ensured methods
-        // for `next`, `error`, and `complete`. That's part of what makes this
-        // the "Safe" Subscriber.
-        ({ next, error, complete } = observerOrNext);
-        let context: any;
-        if (this && config.useDeprecatedNextContext) {
-          // This is a deprecated path that made `this.unsubscribe()` available in
-          // next handler functions passed to subscribe. This only exists behind a flag
-          // now, as it is *very* slow.
-          context = Object.create(observerOrNext);
-          context.unsubscribe = () => this.unsubscribe();
-        } else {
-          context = observerOrNext;
-        }
-        next = next?.bind(context);
-        error = error?.bind(context);
-        complete = complete?.bind(context);
+    let next: ((value: T) => void) | undefined;
+    if (isFunction(observerOrNext)) {
+      // The first argument is a function, not an observer. The next
+      // two arguments *could* be observers, or they could be empty.
+      next = observerOrNext;
+    } else if (observerOrNext) {
+      // The first argument is an observer object, we have to pull the handlers
+      // off and capture the owner object as the context. That is because we're
+      // going to put them all in a new destination with ensured methods
+      // for `next`, `error`, and `complete`. That's part of what makes this
+      // the "Safe" Subscriber.
+      ({ next, error, complete } = observerOrNext);
+      let context: any;
+      if (this && config.useDeprecatedNextContext) {
+        // This is a deprecated path that made `this.unsubscribe()` available in
+        // next handler functions passed to subscribe. This only exists behind a flag
+        // now, as it is *very* slow.
+        context = Object.create(observerOrNext);
+        context.unsubscribe = () => this.unsubscribe();
+      } else {
+        context = observerOrNext;
       }
-
-      // Once we set the destination, the superclass `Subscriber` will
-      // do it's magic in the `_next`, `_error`, and `_complete` methods.
-      this.destination = {
-        next: next ? maybeWrapForDeprecatedSyncErrorHandling(next, this) : noop,
-        error: error ? maybeWrapForDeprecatedSyncErrorHandling(error, this) : defaultErrorHandler,
-        complete: complete ? maybeWrapForDeprecatedSyncErrorHandling(complete, this) : noop,
-      };
+      next = next?.bind(context);
+      error = error?.bind(context);
+      complete = complete?.bind(context);
     }
+
+    // Once we set the destination, the superclass `Subscriber` will
+    // do it's magic in the `_next`, `_error`, and `_complete` methods.
+    this.destination = {
+      next: next ? maybeWrapForDeprecatedSyncErrorHandling(next, this) : noop,
+      error: maybeWrapForDeprecatedSyncErrorHandling(error ? error : defaultErrorHandler, this),
+      complete: complete ? maybeWrapForDeprecatedSyncErrorHandling(complete, this) : noop,
+    };
   }
 }
 
