@@ -1,4 +1,3 @@
-/** @prettier */
 import { ObservableInput, ObservableInputTuple, OperatorFunction, MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { operate } from '../util/lift';
 import { concatAll } from './concatAll';

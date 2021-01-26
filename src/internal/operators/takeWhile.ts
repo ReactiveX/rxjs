@@ -1,4 +1,3 @@
-/** @prettier */
 import { OperatorFunction, MonoTypeOperatorFunction, Falsy } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';

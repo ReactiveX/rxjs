@@ -1,4 +1,3 @@
-/** @prettier */
 import { Action } from './Action';
 import { SchedulerAction } from '../types';
 import { Subscription } from '../Subscription';

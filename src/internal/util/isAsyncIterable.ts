@@ -1,4 +1,3 @@
-/** @prettier */
 import { isFunction } from './isFunction';
 
 export function isAsyncIterable<T>(obj: any): obj is AsyncIterable<T> {

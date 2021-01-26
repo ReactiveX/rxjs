@@ -1,4 +1,3 @@
-/** @prettier */
 import { SchedulerLike } from '../types';
 import { scheduleArray } from '../scheduled/scheduleArray';
 import { fromArrayLike } from './from';

@@ -1,4 +1,3 @@
-/** @prettier */
 import { mergeMap } from './mergeMap';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { isFunction } from '../util/isFunction';

@@ -1,5 +1,3 @@
-/** @prettier */
-
 const { isArray } = Array;
 
 /**

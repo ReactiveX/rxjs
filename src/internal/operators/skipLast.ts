@@ -1,4 +1,3 @@
-/** @prettier */
 import { MonoTypeOperatorFunction } from '../types';
 import { identity } from '../util/identity';
 import { operate } from '../util/lift';

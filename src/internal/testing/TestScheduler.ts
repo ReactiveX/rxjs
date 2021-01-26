@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { ColdObservable } from './ColdObservable';
 import { HotObservable } from './HotObservable';

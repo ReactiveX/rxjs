@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { OperatorFunction } from '../types';

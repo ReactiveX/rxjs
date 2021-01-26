@@ -1,4 +1,3 @@
-/** @prettier */
 type SetTimeoutFunction = (handler: () => void, timeout?: number, ...args: any[]) => number;
 type ClearTimeoutFunction = (handle: number) => void;
 

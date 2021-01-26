@@ -1,5 +1,3 @@
-/** @prettier */
-
 import { ObservableInput } from '../types';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';

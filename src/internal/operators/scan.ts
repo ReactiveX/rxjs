@@ -1,4 +1,3 @@
-/** @prettier */
 import { OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { scanInternals } from './scanInternals';

@@ -1,4 +1,3 @@
-/** @prettier */
 import { SchedulerLike } from '../types';
 import { isFunction } from './isFunction';
 import { isScheduler } from './isScheduler';

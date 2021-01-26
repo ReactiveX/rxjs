@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { Unsubscribable, ObservableInput } from '../types';
 import { innerFrom } from './from';

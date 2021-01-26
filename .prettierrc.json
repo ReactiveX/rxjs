@@ -1,6 +1,11 @@
 {
   "trailingComma": "es5",
   "singleQuote": true,
-  "requirePragma": true,
-  "printWidth": 140
+  "printWidth": 140,
+  "overrides": [{
+    "files": ["spec/**/*.ts", "spec-dtslint/**/*.ts"],
+    "options": {
+      "requirePragma": true
+    }
+  }]
 }

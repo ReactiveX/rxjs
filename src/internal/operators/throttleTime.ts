@@ -1,4 +1,3 @@
-/** @prettier */
 import { asyncScheduler } from '../scheduler/async';
 import { defaultThrottleConfig, throttle } from './throttle';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';

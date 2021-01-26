@@ -1,4 +1,3 @@
-/** @prettier */
 import { Subscription } from '../Subscription';
 import { OperatorFunction, SchedulerLike } from '../types';
 import { operate } from '../util/lift';

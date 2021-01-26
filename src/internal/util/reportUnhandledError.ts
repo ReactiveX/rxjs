@@ -1,4 +1,3 @@
-/** @prettier */
 import { config } from '../config';
 import { timeoutProvider } from '../scheduler/timeoutProvider';
 

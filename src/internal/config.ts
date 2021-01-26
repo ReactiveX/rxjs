@@ -1,4 +1,3 @@
-/** @prettier */
 import { Subscriber } from './Subscriber';
 import { ObservableNotification } from './types';
 

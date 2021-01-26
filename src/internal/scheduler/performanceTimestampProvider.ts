@@ -1,4 +1,3 @@
-/** @prettier */
 import { TimestampProvider } from '../types';
 
 interface PerformanceTimestampProvider extends TimestampProvider {

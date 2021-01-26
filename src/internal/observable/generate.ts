@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { identity } from '../util/identity';
 import { ObservableInput, SchedulerLike } from '../types';

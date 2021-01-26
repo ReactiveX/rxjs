@@ -1,4 +1,3 @@
-/** @prettier */
 /**
  * Gets what should be in the `response` property of the XHR. However,
  * since we still support the final versions of IE, we need to do a little

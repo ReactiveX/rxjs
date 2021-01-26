@@ -1,4 +1,3 @@
-/** @prettier */
 import { OperatorFunction } from '../types';
 import { reduce } from './reduce';
 /**

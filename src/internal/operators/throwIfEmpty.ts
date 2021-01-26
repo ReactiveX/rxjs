@@ -1,4 +1,3 @@
-/** @prettier */
 import { EmptyError } from '../util/EmptyError';
 import { MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';

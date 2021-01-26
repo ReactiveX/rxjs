@@ -1,5 +1,3 @@
-/** @prettier */
-
 import { AjaxRequest } from './types';
 import { getXHRResponse } from './getXHRResponse';
 

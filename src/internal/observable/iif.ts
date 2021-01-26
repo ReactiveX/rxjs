@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { defer } from './defer';
 import { ObservableInput } from '../types';

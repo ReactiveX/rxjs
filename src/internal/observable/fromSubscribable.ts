@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscribable } from '../types';

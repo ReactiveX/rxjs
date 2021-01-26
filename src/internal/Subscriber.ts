@@ -1,4 +1,3 @@
-/** @prettier */
 import { isFunction } from './util/isFunction';
 import { Observer, ObservableNotification } from './types';
 import { isSubscription, Subscription } from './Subscription';

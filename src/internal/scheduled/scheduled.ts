@@ -1,4 +1,3 @@
-/** @prettier */
 import { scheduleObservable } from './scheduleObservable';
 import { schedulePromise } from './schedulePromise';
 import { scheduleArray } from './scheduleArray';

@@ -1,4 +1,3 @@
-/** @prettier */
 import { PartialObserver } from '../types';
 
 /**

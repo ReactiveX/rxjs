@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { innerFrom } from '../observable/from';
 import { Subscriber } from '../Subscriber';

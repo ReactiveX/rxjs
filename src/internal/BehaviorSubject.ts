@@ -1,4 +1,3 @@
-/** @prettier */
 import { Subject } from './Subject';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';

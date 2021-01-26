@@ -1,4 +1,3 @@
-/** @prettier */
 import { isArrayLike } from '../util/isArrayLike';
 import { isPromise } from '../util/isPromise';
 import { iterator as Symbol_iterator } from '../symbol/iterator';

@@ -1,4 +1,3 @@
-/** @prettier */
 import { asyncScheduler } from '../scheduler/async';
 import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ObservableInput } from '../types';
 import { isValidDate } from '../util/isDate';

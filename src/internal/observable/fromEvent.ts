@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { mergeMap } from '../operators/mergeMap';
 import { isArrayLike } from '../util/isArrayLike';

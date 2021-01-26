@@ -1,4 +1,3 @@
-/** @prettier */
 import { OperatorFunction, ObservableInput, SchedulerLike } from '../types';
 import { operate } from '../util/lift';
 import { mergeInternals } from './mergeInternals';

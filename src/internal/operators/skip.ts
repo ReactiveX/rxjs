@@ -1,4 +1,3 @@
-/** @prettier */
 import { MonoTypeOperatorFunction } from '../types';
 import { filter } from './filter';
 

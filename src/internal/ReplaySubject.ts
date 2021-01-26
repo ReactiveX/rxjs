@@ -1,4 +1,3 @@
-/** @prettier */
 import { Subject } from './Subject';
 import { TimestampProvider } from './types';
 import { Subscriber } from './Subscriber';

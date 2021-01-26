@@ -1,4 +1,3 @@
-/** @prettier */
 import { ObservableInput, ObservedValueOf, OperatorFunction } from '../types';
 import { switchMap } from './switchMap';
 import { operate } from '../util/lift';

@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { EmptyError } from '../util/EmptyError';
 import { OperatorFunction, TruthyTypesOf } from '../types';

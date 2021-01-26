@@ -1,4 +1,3 @@
-/** @prettier */
 import { isFunction } from './util/isFunction';
 import { UnsubscriptionError } from './util/UnsubscriptionError';
 import { SubscriptionLike, TeardownLogic, Unsubscribable } from './types';

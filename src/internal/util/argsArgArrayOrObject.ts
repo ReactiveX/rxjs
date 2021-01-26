@@ -1,5 +1,3 @@
-/** @prettier */
-
 const { isArray } = Array;
 const { getPrototypeOf, prototype: objectProto, keys: getKeys } = Object;
 

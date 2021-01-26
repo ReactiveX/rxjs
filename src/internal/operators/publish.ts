@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { multicast } from './multicast';

@@ -1,4 +1,3 @@
-/** @prettier */
 import { Subject } from '../Subject';
 import { asyncScheduler } from '../scheduler/async';
 import { Observable } from '../Observable';
