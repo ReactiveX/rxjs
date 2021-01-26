@@ -39,5 +39,13 @@ it('should handle Boolean constructor properly', () => {
 });
 
 it('should handle predicates that always return false properly', () => {
-  const a = of(1, 2, 3, 4).pipe(single(() => false as const)); // $ExpectType Observable<never>
+  const a = of(1, 2, 3, 4).pipe(single(() => false as const)); // $ExpectType Observable<number>
+});
+
+it('should support inference from a predicate that returns any', () => {
+  function isTruthy(value: number): any {
+    return !!value;
+  }
+
+  const o$ = of(1).pipe(single(isTruthy)); // $ExpectType Observable<number>
 });

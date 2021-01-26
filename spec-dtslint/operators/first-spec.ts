@@ -65,4 +65,12 @@ it('should work properly with the Boolean constructor', () => {
   const o3 = of('' as const, 'hi' as const).pipe(first(Boolean)); // $ExpectType Observable<"hi">
   const o4 = of(0 as const, 'hi' as const).pipe(first(Boolean)); // $ExpectType Observable<"hi">
   const o5 = of(0 as const, 'hi' as const, 'what' as const).pipe(first(Boolean)); // $ExpectType Observable<"hi" | "what">
-})
+});
+
+it('should support inference from a predicate that returns any', () => {
+  function isTruthy(value: number): any {
+    return !!value;
+  }
+
+  const o$ = of(1).pipe(first(isTruthy)); // $ExpectType Observable<number>
+});

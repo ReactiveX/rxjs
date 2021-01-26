@@ -3,8 +3,6 @@ import { OperatorFunction, MonoTypeOperatorFunction, Falsy } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
-export function takeWhile<T>(predicate: (value: T, index: number) => false, inclusive: true): MonoTypeOperatorFunction<T>;
-export function takeWhile<T>(predicate: (value: T, index: number) => false, inclusive?: false): OperatorFunction<T, never>;
 export function takeWhile<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? never : T>;
 export function takeWhile<T>(
   predicate: BooleanConstructor,

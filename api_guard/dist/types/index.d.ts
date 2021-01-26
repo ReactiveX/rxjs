@@ -201,8 +201,6 @@ export declare type Head<X extends readonly any[]> = ((...args: X) => any) exten
 
 export declare function identity<T>(x: T): T;
 
-export declare function iif<T>(condition: () => true, trueResult: ObservableInput<T>, falseResult: ObservableInput<any>): Observable<T>;
-export declare function iif<F>(condition: () => false, trueResult: ObservableInput<any>, falseResult: ObservableInput<F>): Observable<F>;
 export declare function iif<T, F>(condition: () => boolean, trueResult: ObservableInput<T>, falseResult: ObservableInput<F>): Observable<T | F>;
 
 export interface InteropObservable<T> {
