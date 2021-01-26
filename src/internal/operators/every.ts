@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { Falsy, OperatorFunction } from '../types';
 import { operate } from '../util/lift';

@@ -1,4 +1,3 @@
-/** @prettier */
 type SetIntervalFunction = (handler: () => void, timeout?: number, ...args: any[]) => number;
 type ClearIntervalFunction = (handle: number) => void;
 

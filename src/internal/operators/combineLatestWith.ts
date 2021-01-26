@@ -1,4 +1,3 @@
-/** @prettier */
 import { combineLatestInit } from '../observable/combineLatest';
 import { ObservableInput, ObservableInputTuple, OperatorFunction, Cons } from '../types';
 import { operate } from '../util/lift';

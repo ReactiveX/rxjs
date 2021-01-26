@@ -1,4 +1,3 @@
-/** @prettier */
 import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';

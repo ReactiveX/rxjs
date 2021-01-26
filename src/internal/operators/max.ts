@@ -1,4 +1,3 @@
-/** @prettier */
 import { reduce } from './reduce';
 import { MonoTypeOperatorFunction } from '../types';
 import { isFunction } from '../util/isFunction';

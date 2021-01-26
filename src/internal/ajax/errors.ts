@@ -1,4 +1,3 @@
-/** @prettier */
 import { AjaxRequest } from './types';
 import { getXHRResponse } from './getXHRResponse';
 import { createErrorClass } from '../util/createErrorClass';

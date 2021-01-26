@@ -1,4 +1,3 @@
-/** @prettier */
 import { concatMap } from './concatMap';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { isFunction } from '../util/isFunction';

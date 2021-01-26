@@ -1,5 +1,3 @@
-/** @prettier */
-
 /**
  * Removes an item from an array, mutating it.
  * @param arr The array to remove the item from

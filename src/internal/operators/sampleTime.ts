@@ -1,4 +1,3 @@
-/** @prettier */
 import { asyncScheduler } from '../scheduler/async';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { sample } from './sample';

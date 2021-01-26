@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { SchedulerLike } from '../types';
 import { iterator as Symbol_iterator } from '../symbol/iterator';

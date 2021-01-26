@@ -1,4 +1,3 @@
-/** @prettier */
 import { Immediate } from '../util/Immediate';
 const { setImmediate, clearImmediate } = Immediate;
 

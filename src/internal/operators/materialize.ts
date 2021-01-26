@@ -1,4 +1,3 @@
-/** @prettier */
 import { Notification } from '../Notification';
 import { OperatorFunction, ObservableNotification } from '../types';
 import { operate } from '../util/lift';

@@ -1,4 +1,3 @@
-/** @prettier */
 import { Subscription } from '../Subscription';
 import { EMPTY } from '../observable/empty';
 import { operate } from '../util/lift';

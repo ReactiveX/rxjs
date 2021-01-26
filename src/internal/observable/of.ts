@@ -1,4 +1,3 @@
-/** @prettier */
 import { SchedulerLike, ValueFromArray } from '../types';
 import { internalFromArray } from './fromArray';
 import { Observable } from '../Observable';

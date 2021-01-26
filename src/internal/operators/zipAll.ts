@@ -1,4 +1,3 @@
-/** @prettier */
 import { OperatorFunction, ObservableInput } from '../types';
 import { zip } from '../observable/zip';
 import { joinAllInternals } from './joinAllInternals';

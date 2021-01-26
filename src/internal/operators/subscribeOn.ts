@@ -1,4 +1,3 @@
-/** @prettier */
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { operate } from '../util/lift';
 

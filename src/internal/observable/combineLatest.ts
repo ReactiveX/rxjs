@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike, ObservedValueOf, ObservableInputTuple } from '../types';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';

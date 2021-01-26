@@ -1,4 +1,3 @@
-/** @prettier */
 import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';

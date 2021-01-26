@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { ObservableInput, ObservableInputTuple, SchedulerLike } from '../types';
 import { mergeAll } from '../operators/mergeAll';

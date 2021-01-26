@@ -1,4 +1,3 @@
-/** @prettier */
 import { MonoTypeOperatorFunction } from '../types';
 import { EMPTY } from '../observable/empty';
 import { operate } from '../util/lift';

@@ -1,4 +1,3 @@
-/** @prettier */
 import { SchedulerLike } from '../types';
 import { Observable } from '../Observable';
 import { EMPTY } from './empty';

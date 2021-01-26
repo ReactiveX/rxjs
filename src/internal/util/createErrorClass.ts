@@ -1,5 +1,3 @@
-/** @prettier */
-
 /**
  * Used to create Error subclasses until the community moves away from ES5.
  *

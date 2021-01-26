@@ -1,4 +1,3 @@
-/** @prettier */
 import { map } from '../operators/map';
 import { Observable } from '../Observable';
 import { AjaxConfig, AjaxRequest } from './types';

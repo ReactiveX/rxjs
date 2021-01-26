@@ -1,4 +1,3 @@
-/** @prettier */
 import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../types';

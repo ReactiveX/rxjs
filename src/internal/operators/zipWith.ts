@@ -1,4 +1,3 @@
-/** @prettier */
 import { zip as zipStatic } from '../observable/zip';
 import { ObservableInput, ObservableInputTuple, OperatorFunction, Cons } from '../types';
 import { operate } from '../util/lift';

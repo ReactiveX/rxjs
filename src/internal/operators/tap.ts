@@ -1,4 +1,3 @@
-/** @prettier */
 import { MonoTypeOperatorFunction, PartialObserver } from '../types';
 import { isFunction } from '../util/isFunction';
 import { operate } from '../util/lift';

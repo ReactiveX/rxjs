@@ -1,4 +1,3 @@
-/** @prettier */
 import { concat } from '../observable/concat';
 import { MonoTypeOperatorFunction, OperatorFunction, SchedulerLike, ValueFromArray } from '../types';
 import { popScheduler } from '../util/args';

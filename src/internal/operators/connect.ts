@@ -1,4 +1,3 @@
-/** @prettier */
 import { OperatorFunction, ObservableInput, SubjectLike } from '../types';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';

@@ -1,4 +1,3 @@
-/** @prettier */
 import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';

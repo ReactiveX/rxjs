@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { ObservableInputTuple } from '../types';
 import { innerFrom } from './from';

@@ -1,4 +1,3 @@
-/** @prettier */
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction } from '../types';
 import { concat } from '../observable/concat';
@@ -17,9 +16,7 @@ export function delayWhen<T>(
   delayDurationSelector: (value: T, index: number) => Observable<any>,
   subscriptionDelay: Observable<any>
 ): MonoTypeOperatorFunction<T>;
-export function delayWhen<T>(
-  delayDurationSelector: (value: T, index: number) => Observable<any>
-): MonoTypeOperatorFunction<T>;
+export function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<any>): MonoTypeOperatorFunction<T>;
 
 /**
  * Delays the emission of items from the source Observable by a given time span

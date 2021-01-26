@@ -1,4 +1,3 @@
-/** @prettier */
 import { ObservableInput, ObservableInputTuple, OperatorFunction, SchedulerLike } from '../types';
 import { operate } from '../util/lift';
 import { argsOrArgArray } from '../util/argsOrArgArray';

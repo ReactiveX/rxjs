@@ -1,5 +1,3 @@
-/** @prettier */
-
 import { Subject } from '../Subject';
 
 import { MonoTypeOperatorFunction, OperatorFunction, SubjectLike } from '../types';

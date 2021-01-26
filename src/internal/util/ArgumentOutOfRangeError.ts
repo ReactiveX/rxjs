@@ -1,4 +1,3 @@
-/** @prettier */
 import { createErrorClass } from './createErrorClass';
 
 export interface ArgumentOutOfRangeError extends Error {}

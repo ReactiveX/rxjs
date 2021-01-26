@@ -1,4 +1,3 @@
-/** @prettier */
 import { createErrorClass } from './createErrorClass';
 
 export interface SequenceError extends Error {}
