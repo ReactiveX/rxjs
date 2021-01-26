@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { Observer, TeardownLogic } from '../src/internal/types';
 import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError } from 'rxjs/operators';
+import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError, concatMap, switchMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -625,9 +625,22 @@ describe('Observable', () => {
               )
             }
           })
-        }).to.throw();
+        }).to.throw('hi there!');
       });
 
+      it('should rethrow synchronous errors from flattened observables', () => {
+        expect(() => {
+          of(1)
+            .pipe(concatMap(() => throwError(new Error('Ahoy! An error!'))))
+            .subscribe(console.log);
+        }).to.throw('Ahoy! An error!');
+
+        expect(() => {
+          of(1)
+            .pipe(switchMap(() => throwError(new Error('Avast! Thar be a new error!'))))
+            .subscribe(console.log);
+        }).to.throw('Avast! Thar be a new error!');
+      })
 
       afterEach(() => {
         config.useDeprecatedSynchronousErrorHandling = false;
