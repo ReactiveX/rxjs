@@ -16,10 +16,19 @@ it('should error for incorrect parameters', () => {
 });
 
 it('should infer correctly', () => {
-  const r0 = iif(() => false, a$, b$); // $ExpectType Observable<B>
-  const r1 = iif(() => true, a$, b$); // $ExpectType Observable<A>
+  const r0 = iif(() => false, a$, b$); // $ExpectType Observable<A | B>
+  const r1 = iif(() => true, a$, b$); // $ExpectType Observable<A | B>
   const r2 = iif(randomBoolean, a$, b$); // $ExpectType Observable<A | B>
-  const r3 = iif(() => false, a$, EMPTY); // $ExpectType Observable<never>
-  const r4 = iif(() => true, EMPTY, b$); // $ExpectType Observable<never>
+  const r3 = iif(() => false, a$, EMPTY); // $ExpectType Observable<A>
+  const r4 = iif(() => true, EMPTY, b$); // $ExpectType Observable<B>
   const r5 = iif(randomBoolean, EMPTY, EMPTY); // $ExpectType Observable<never>
+});
+
+
+it('should support inference from a predicate that returns any', () => {
+  function alwaysTrueButReturnsAny(): any {
+    return true;
+  }
+
+  const o$ = iif(alwaysTrueButReturnsAny, a$, b$) // $ExpectType Observable<A | B>
 });

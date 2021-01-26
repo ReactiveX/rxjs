@@ -129,8 +129,6 @@ export declare function first<T>(predicate: BooleanConstructor): OperatorFunctio
 export declare function first<T, D>(predicate: BooleanConstructor, defaultValue: D): OperatorFunction<T, TruthyTypesOf<T> | D>;
 export declare function first<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue?: S): OperatorFunction<T, S>;
 export declare function first<T, S extends T, D>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue: D): OperatorFunction<T, S | D>;
-export declare function first<T, D>(predicate: (value: T, index: number, source: Observable<T>) => false, defaultValue: D): OperatorFunction<T, D>;
-export declare function first<T>(predicate: (value: T, index: number, source: Observable<T>) => false): OperatorFunction<T, never>;
 export declare function first<T, D = T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: D): OperatorFunction<T, T | D>;
 
 export declare const flatMap: typeof mergeMap;
@@ -149,8 +147,6 @@ export declare function last<T>(predicate: BooleanConstructor): OperatorFunction
 export declare function last<T, D>(predicate: BooleanConstructor, defaultValue: D): OperatorFunction<T, TruthyTypesOf<T> | D>;
 export declare function last<T, D = T>(predicate?: null, defaultValue?: D): OperatorFunction<T, T | D>;
 export declare function last<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue?: S): OperatorFunction<T, S>;
-export declare function last<T, D>(predicate: (value: T, index: number, source: Observable<T>) => false, defaultValue: D): OperatorFunction<T, D>;
-export declare function last<T>(predicate: (value: T, index: number, source: Observable<T>) => false): OperatorFunction<T, never>;
 export declare function last<T, D = T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: D): OperatorFunction<T, T | D>;
 
 export declare function map<T, R>(project: (value: T, index: number) => R, thisArg?: any): OperatorFunction<T, R>;
@@ -255,7 +251,6 @@ export declare function shareReplay<T>(config: ShareReplayConfig): MonoTypeOpera
 export declare function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
 export declare function single<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
-export declare function single<T>(predicate: (value: T, index: number, source: Observable<T>) => false): OperatorFunction<T, never>;
 export declare function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
 
 export declare function skip<T>(count: number): MonoTypeOperatorFunction<T>;
@@ -297,8 +292,6 @@ export declare function takeLast<T>(count: number): MonoTypeOperatorFunction<T>;
 
 export declare function takeUntil<T>(notifier: ObservableInput<any>): MonoTypeOperatorFunction<T>;
 
-export declare function takeWhile<T>(predicate: (value: T, index: number) => false, inclusive: true): MonoTypeOperatorFunction<T>;
-export declare function takeWhile<T>(predicate: (value: T, index: number) => false, inclusive?: false): OperatorFunction<T, never>;
 export declare function takeWhile<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? never : T>;
 export declare function takeWhile<T>(predicate: BooleanConstructor, inclusive: false): OperatorFunction<T, Exclude<T, Falsy> extends never ? never : T>;
 export declare function takeWhile<T>(predicate: BooleanConstructor, inclusive: true): MonoTypeOperatorFunction<T>;

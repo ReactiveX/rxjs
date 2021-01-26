@@ -2,12 +2,6 @@ import { Observable } from '../Observable';
 import { defer } from './defer';
 import { ObservableInput } from '../types';
 
-export function iif<T>(condition: () => true, trueResult: ObservableInput<T>, falseResult: ObservableInput<any>): Observable<T>;
-
-export function iif<F>(condition: () => false, trueResult: ObservableInput<any>, falseResult: ObservableInput<F>): Observable<F>;
-
-export function iif<T, F>(condition: () => boolean, trueResult: ObservableInput<T>, falseResult: ObservableInput<F>): Observable<T | F>;
-
 /**
  * Checks a boolean at subscription time, and chooses between one of two observable sources
  *

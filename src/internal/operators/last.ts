@@ -14,8 +14,6 @@ export function last<T, S extends T>(
   predicate: (value: T, index: number, source: Observable<T>) => value is S,
   defaultValue?: S
 ): OperatorFunction<T, S>;
-export function last<T, D>(predicate: (value: T, index: number, source: Observable<T>) => false, defaultValue: D): OperatorFunction<T, D>;
-export function last<T>(predicate: (value: T, index: number, source: Observable<T>) => false): OperatorFunction<T, never>;
 export function last<T, D = T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
   defaultValue?: D
