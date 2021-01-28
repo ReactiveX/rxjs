@@ -275,7 +275,7 @@ On a related note, you also can't currently assert delays of zero, even with `As
 The `TestScheduler` has been around since v5, but was actually intended for testing RxJS itself by the maintainers, rather than for use in regular user apps. Because of this, some of the default behaviors and features of the TestScheduler did not work well (or at all) for users. In v6 we introduced the `testScheduler.run(callback)` method which allowed us to provide new defaults and features in a non-breaking way, but it's still possible to use the TestScheduler outside of `testScheduler.run(callback)`. It's important to note that if you do so, there are some major differences in how it will behave.
 
 - `TestScheduler` helper methods have more verbose names, like `testScheduler.createColdObservable()` instead of `cold()`.
-- The testScheduler instance is _not_ automatically be used by operators that uses `AsyncScheduler`, e.g. `delay`, `debounceTime`, etc., so you have to explicitly pass it to them.
+- The testScheduler instance is _not_ automatically used by operators that use `AsyncScheduler`, e.g. `delay`, `debounceTime`, etc., so you have to explicitly pass it to them.
 - There is NO support for time progression syntax e.g. `-a 100ms b-|`.
 - 1 frame is 10 virtual milliseconds by default. i.e. `TestScheduler.frameTimeFactor = 10`.
 - Each whitespace `' '` equals 1 frame, same as a hyphen `'-'`.
