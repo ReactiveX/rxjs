@@ -99,18 +99,22 @@ How many virtual milliseconds one frame represents depends on the value of `Test
 - `'#'` error: An error terminating the observable. This is the observable producer signaling `error()`.
 - `[a-z0-9]` e.g. `'a'` any alphanumeric character: Represents a value being emitted by the producer signaling `next()`. Also consider that you could map this into an object or an array like this:
 
+<!-- prettier-ignore -->
   ```ts
   const expected = '400ms (a-b|)';
   const values = {
     a: 'value emitted',
-    b: 'another value emitter',
+    b: 'another value emitted',
   };
 
   expectObservable(someStreamForTesting).toBe(expected, values);
 
   // This would work also
   const expected = '400ms (0-1|)';
-  const values = ['value emitted', 'another value emitted'];
+  const values = [
+    'value emitted',
+    'another value emitted'
+  ];
 
   expectObservable(someStreamForTesting).toBe(expected, values);
   ```
@@ -126,6 +130,7 @@ When it's not the first character of the diagram it must be padded a space befor
 
 **NOTE**: You may have to subtract 1 millisecond from the time you want to progress because the alphanumeric marbles (representing an actual emitted value) _advance time 1 virtual frame_ themselves already, after they emit. This can be counter-intuitive and frustrating, but for now it is indeed correct.
 
+<!-- prettier-ignore -->
 ```ts
 const input = ' -a-b-c|';
 const expected = '-- 9ms a 9ms b 9ms (c|)';
@@ -137,7 +142,11 @@ const expected = '-- 9ms a 9ms b 9ms (c|)';
 // or
 // const expected = '-----------a 9ms b 9ms (c|)';
 
-const result = cold(input).pipe(concatMap((d) => of(d).pipe(delay(10))));
+const result = cold(input).pipe(
+  concatMap((d) => of(d).pipe(
+    delay(10)
+  ))
+);
 
 expectObservable(result).toBe(expected);
 ```
@@ -272,7 +281,7 @@ On a related note, you also can't currently assert delays of zero, even with `As
 
 ### Behavior is different outside of `testScheduler.run(callback)`
 
-The `TestScheduler` has been around since v5, but was actually intended for testing RxJS itself by the maintainers, rather than for use in regular user apps. Because of this, some of the default behaviors and features of the TestScheduler did not work well (or at all) for users. In v6 we introduced the `testScheduler.run(callback)` method which allowed us to provide new defaults and features in a non-breaking way, but it's still possible to use the TestScheduler outside of `testScheduler.run(callback)`. It's important to note that if you do so, there are some major differences in how it will behave.
+The `TestScheduler` has been around since v5, but was actually intended for testing RxJS itself by the maintainers, rather than for use in regular user apps. Because of this, some of the default behaviors and features of the TestScheduler did not work well (or at all) for users. In v6 we introduced the `testScheduler.run(callback)` method which allowed us to provide new defaults and features in a non-breaking way, but it's still possible to [use the TestScheduler outside](https://github.com/ReactiveX/rxjs/blob/7113ae4b451dd8463fae71b68edab96079d089df/docs_app/content/guide/testing/internal-marble-tests.md) of `testScheduler.run(callback)`. It's important to note that if you do so, there are some major differences in how it will behave.
 
 - `TestScheduler` helper methods have more verbose names, like `testScheduler.createColdObservable()` instead of `cold()`.
 - The testScheduler instance is _not_ automatically used by operators that use `AsyncScheduler`, e.g. `delay`, `debounceTime`, etc., so you have to explicitly pass it to them.
