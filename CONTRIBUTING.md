@@ -123,7 +123,7 @@ from the main (upstream) repository:
 
 - The documentation is auto-generated directly from the source code.
 - In short: From the source code we generate JSON documents, describing each operator, function ... and render this JSON within an Angular application
-- The folder `docs-app` contains everything you need for building and developing the docs
+- The folder `docs_app` contains everything you need for building and developing the docs
 - The [Documentation README](docs_app/README.md) will support you
 - After a PR is merged to master the docs will be published to https://rxjs.dev/
 
@@ -131,7 +131,7 @@ from the main (upstream) repository:
 
 Unit tests are located under the [spec directory](/spec). Unit tests over synchronous operators and operations
 can be written in a standard [chai](https://www.chaijs.com/) style. Unit tests written against any
-asynchronous operator should be written in [Marble Test Style outlined in detail here](doccs_app/content/guide/testing/internal-marble-tests.md).
+asynchronous operator should be written in [Marble Test Style outlined in detail here](docs_app/content/guide/testing/marble-testing.md).
 
 Each operator under test must be in its own file to cover the following cases:
 
