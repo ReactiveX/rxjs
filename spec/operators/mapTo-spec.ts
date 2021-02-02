@@ -1,98 +1,123 @@
+/** @prettier */
 import { expect } from 'chai';
 import { mapTo, mergeMap, take } from 'rxjs/operators';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { TestScheduler } from 'rxjs/testing';
 import { of, Observable } from 'rxjs';
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {mapTo} */
-describe('mapTo operator', () => {
-  it('should map multiple values', () => {
-    const a =   cold('--1--2--3--|');
-    const asubs =    '^          !';
-    const expected = '--a--a--a--|';
+describe('mapTo', () => {
+  let testScheduler: TestScheduler;
 
-    expectObservable(a.pipe(mapTo('a'))).toBe(expected);
-    expectSubscriptions(a.subscriptions).toBe(asubs);
+  beforeEach(() => {
+    testScheduler = new TestScheduler(observableMatcher);
+  });
+
+  it('should map multiple values', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' --1--2--3--|');
+      const e1subs = '  ^----------!';
+      const expected = '--a--a--a--|';
+
+      expectObservable(e1.pipe(mapTo('a'))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should map one value', () => {
-    const a =   cold('--7--|');
-    const asubs =    '^    !';
-    const expected = '--y--|';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' --7--|');
+      const e1subs = '  ^----!';
+      const expected = '--y--|';
 
-    expectObservable(a.pipe(mapTo('y'))).toBe(expected);
-    expectSubscriptions(a.subscriptions).toBe(asubs);
+      expectObservable(e1.pipe(mapTo('y'))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should allow unsubscribing explicitly and early', () => {
-    const a =   cold('--1--2--3--|');
-    const unsub =    '      !     ';
-    const asubs =    '^     !     ';
-    const expected = '--x--x-     ';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' --1--2--3--|');
+      const e1subs = '  ^-----!     ';
+      const expected = '--x--x-     ';
+      const unsub = '   ------!     ';
 
-    expectObservable(a.pipe(mapTo('x')), unsub).toBe(expected);
-    expectSubscriptions(a.subscriptions).toBe(asubs);
+      expectObservable(e1.pipe(mapTo('x')), unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should propagate errors from observable that emits only errors', () => {
-    const a =   cold('--#', undefined, 'too bad');
-    const asubs =    '^ !';
-    const expected = '--#';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' --#', undefined, 'too bad');
+      const e1subs = '  ^-!';
+      const expected = '--#';
 
-    expectObservable(a.pipe(mapTo(1))).toBe(expected, null, 'too bad');
-    expectSubscriptions(a.subscriptions).toBe(asubs);
+      expectObservable(e1.pipe(mapTo(1))).toBe(expected, null, 'too bad');
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should propagate errors from observable that emit values', () => {
-    const a =   cold('--1--2--#', undefined, 'too bad');
-    const asubs =    '^       !';
-    const expected = '--x--x--#';
+  it('should propagate errors from observable that emit values, then errors', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' --1--2--#', undefined, 'too bad');
+      const e1subs = '  ^-------!';
+      const expected = '--x--x--#';
 
-    expectObservable(a.pipe(mapTo('x'))).toBe(expected, undefined, 'too bad');
-    expectSubscriptions(a.subscriptions).toBe(asubs);
+      expectObservable(e1.pipe(mapTo('x'))).toBe(expected, undefined, 'too bad');
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should not map an empty observable', () => {
-    const a =   cold('|');
-    const asubs =    '(^!)';
-    const expected = '|';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' |   ');
+      const e1subs = '  (^!)';
+      const expected = '|   ';
 
-    expectObservable(a.pipe(mapTo(-1))).toBe(expected);
-    expectSubscriptions(a.subscriptions).toBe(asubs);
+      expectObservable(e1.pipe(mapTo(-1))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should map twice', () => {
-    const a = hot('-0----1-^-2---3--4-5--6--7-8-|');
-    const asubs =         '^                    !';
-    const expected =      '--h---h--h-h--h--h-h-|';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('-0----1-^-2---3--4-5--6--7-8-|');
+      const e1subs = '        ^--------------------!';
+      const expected = '      --h---h--h-h--h--h-h-|';
 
-    const r = a.pipe(
-      mapTo(-1),
-      mapTo('h')
-    );
+      // prettier-ignore
+      const result = e1.pipe(
+        mapTo(-1),
+        mapTo('h')
+      );
 
-    expectObservable(r).toBe(expected);
-    expectSubscriptions(a.subscriptions).toBe(asubs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should not break unsubscription chain when unsubscribed explicitly', () => {
-    const a =   cold('--1--2--3--|');
-    const unsub =    '      !     ';
-    const asubs =    '^     !     ';
-    const expected = '--x--x-     ';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' --1--2--3--|');
+      const e1subs = '  ^-----!     ';
+      const expected = '--x--x-     ';
+      const unsub = '   ------!     ';
 
-    const r = a.pipe(
-      mergeMap((x: string) => of(x)),
-      mapTo('x'),
-      mergeMap((x: string) => of(x))
-    );
+      const result = e1.pipe(
+        mergeMap((x: string) => of(x)),
+        mapTo('x'),
+        mergeMap((x: string) => of(x))
+      );
 
-    expectObservable(r, unsub).toBe(expected);
-    expectSubscriptions(a.subscriptions).toBe(asubs);
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable<number>(subscriber => {
+    const synchronousObservable = new Observable<number>((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -101,10 +126,9 @@ describe('mapTo operator', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      mapTo(0),
-      take(3),
-    ).subscribe(() => { /* noop */ });
+    synchronousObservable.pipe(mapTo(0), take(3)).subscribe(() => {
+      /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
