@@ -2,6 +2,7 @@ import { identity } from './identity';
 import { UnaryFunction } from '../types';
 
 /* tslint:disable:max-line-length */
+export function pipe(): typeof identity;
 export function pipe<T>(...fns: UnaryFunction<T, T>[]): UnaryFunction<T, T>;
 export function pipe<T, A>(fn1: UnaryFunction<T, A>, ...fns: UnaryFunction<A, A>[]): UnaryFunction<T, A>;
 export function pipe<T, A, B>(fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>, ...fns: UnaryFunction<B, B>[]): UnaryFunction<T, B>;
