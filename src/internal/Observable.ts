@@ -414,10 +414,13 @@ export class Observable<T> implements Subscribable<T> {
     op7: OperatorFunction<F, G>,
     op8: OperatorFunction<G, H>,
     op9: OperatorFunction<H, I>,
-    ...operations: OperatorFunction<any, any>[]
-  ): Observable<unknown>;
-  /* tslint:enable:max-line-length */
+    ...operations: OperatorFunction<I, I>[]
+  ): Observable<I>;
 
+  pipe<T>(...operations: OperatorFunction<T, T>[]): Observable<T>;
+  pipe(...operations: OperatorFunction<any, any>[]): Observable<unknown>;
+
+  /* tslint:enable:max-line-length */
   /**
    * Used to stitch together functional operators into a chain.
    * @method pipe
