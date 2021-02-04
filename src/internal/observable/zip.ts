@@ -7,12 +7,13 @@ import { OperatorSubscriber } from '../operators/OperatorSubscriber';
 import { popResultSelector } from '../util/args';
 
 export function zip<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A>;
+export function zip<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
+
 /** @deprecated resultSelector is no longer supported, pipe to map instead */
 export function zip<A extends readonly unknown[], R>(
   sources: [...ObservableInputTuple<A>],
   resultSelector: (...values: A) => R
 ): Observable<R>;
-export function zip<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
 /** @deprecated resultSelector is no longer supported, pipe to map instead */
 export function zip<A extends readonly unknown[], R>(
   ...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]

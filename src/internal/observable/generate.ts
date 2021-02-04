@@ -42,6 +42,91 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * Generates an observable sequence by running a state-driven loop
  * producing the sequence's elements, using the specified scheduler
  * to send out observer messages.
+ * The overload accepts options object that might contain initial state, iterate,
+ * condition and scheduler.
+ *
+ * ![](generate.png)
+ *
+ * ## Examples
+ *
+ * ### Use options object with condition function
+ *
+ * ```ts
+ * import { generate } from 'rxjs';
+ *
+ * const result = generate({
+ *   initialState: 0,
+ *   condition: x => x < 3,
+ *   iterate: x => x + 1,
+ * });
+ *
+ * result.subscribe({
+ *   next: value => console.log(value),
+ *   complete: () => console.log('complete!')
+ * });
+ *
+ * // Logs:
+ * // 0
+ * // 1
+ * // 2
+ * // "Complete!".
+ * ```
+ *
+ * @see {@link from}
+ * @see {@link Observable}
+ *
+ * @param {GenerateBaseOptions<S>} options Object that must contain initialState, iterate and might contain condition and scheduler.
+ * @returns {Observable<S>} The generated sequence.
+ */
+export function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
+
+/**
+ * Generates an observable sequence by running a state-driven loop
+ * producing the sequence's elements, using the specified scheduler
+ * to send out observer messages.
+ * The overload accepts options object that might contain initial state, iterate,
+ * condition, result selector and scheduler.
+ *
+ * ![](generate.png)
+ *
+ * ## Examples
+ *
+ * ### Use options object with condition and iterate function
+ *
+ * ```ts
+ * import { generate } from 'rxjs';
+ *
+ * const result = generate({
+ *   initialState: 0,
+ *   condition: x => x < 3,
+ *   iterate: x => x + 1,
+ *   resultSelector: x => x,
+ * });
+ *
+ * result.subscribe({
+ *   next: value => console.log(value),
+ *   complete: () => console.log('complete!')
+ * });
+ *
+ * // Logs:
+ * // 0
+ * // 1
+ * // 2
+ * // "Complete!".
+ * ```
+ *
+ * @see {@link from}
+ * @see {@link Observable}
+ *
+ * @param {GenerateOptions<T, S>} options Object that must contain initialState, iterate, resultSelector and might contain condition and scheduler.
+ * @returns {Observable<T>} The generated sequence.
+ */
+export function generate<T, S>(options: GenerateOptions<T, S>): Observable<T>;
+
+/**
+ * Generates an observable sequence by running a state-driven loop
+ * producing the sequence's elements, using the specified scheduler
+ * to send out observer messages.
  *
  * ![](generate.png)
  *
@@ -245,91 +330,6 @@ export function generate<S>(
   iterate: IterateFunc<S>,
   scheduler?: SchedulerLike
 ): Observable<S>;
-
-/**
- * Generates an observable sequence by running a state-driven loop
- * producing the sequence's elements, using the specified scheduler
- * to send out observer messages.
- * The overload accepts options object that might contain initial state, iterate,
- * condition and scheduler.
- *
- * ![](generate.png)
- *
- * ## Examples
- *
- * ### Use options object with condition function
- *
- * ```ts
- * import { generate } from 'rxjs';
- *
- * const result = generate({
- *   initialState: 0,
- *   condition: x => x < 3,
- *   iterate: x => x + 1,
- * });
- *
- * result.subscribe({
- *   next: value => console.log(value),
- *   complete: () => console.log('complete!')
- * });
- *
- * // Logs:
- * // 0
- * // 1
- * // 2
- * // "Complete!".
- * ```
- *
- * @see {@link from}
- * @see {@link Observable}
- *
- * @param {GenerateBaseOptions<S>} options Object that must contain initialState, iterate and might contain condition and scheduler.
- * @returns {Observable<S>} The generated sequence.
- */
-export function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
-
-/**
- * Generates an observable sequence by running a state-driven loop
- * producing the sequence's elements, using the specified scheduler
- * to send out observer messages.
- * The overload accepts options object that might contain initial state, iterate,
- * condition, result selector and scheduler.
- *
- * ![](generate.png)
- *
- * ## Examples
- *
- * ### Use options object with condition and iterate function
- *
- * ```ts
- * import { generate } from 'rxjs';
- *
- * const result = generate({
- *   initialState: 0,
- *   condition: x => x < 3,
- *   iterate: x => x + 1,
- *   resultSelector: x => x,
- * });
- *
- * result.subscribe({
- *   next: value => console.log(value),
- *   complete: () => console.log('complete!')
- * });
- *
- * // Logs:
- * // 0
- * // 1
- * // 2
- * // "Complete!".
- * ```
- *
- * @see {@link from}
- * @see {@link Observable}
- *
- * @param {GenerateOptions<T, S>} options Object that must contain initialState, iterate, resultSelector and might contain condition and scheduler.
- * @returns {Observable<T>} The generated sequence.
- */
-export function generate<T, S>(options: GenerateOptions<T, S>): Observable<T>;
 
 export function generate<T, S>(
   initialStateOrOptions: S | GenerateOptions<T, S>,

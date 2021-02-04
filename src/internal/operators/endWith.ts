@@ -3,6 +3,8 @@ import { concat } from '../observable/concat';
 import { of } from '../observable/of';
 import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ValueFromArray } from '../types';
 
+export function endWith<T, A extends any[] = T[]>(...args: A): OperatorFunction<T, T | ValueFromArray<A>>;
+
 /* tslint:disable:max-line-length */
 /** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function endWith<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;
@@ -18,8 +20,6 @@ export function endWith<T, A, B, C, D>(v1: A, v2: B, v3: C, v4: D, scheduler: Sc
 export function endWith<T, A, B, C, D, E>(v1: A, v2: B, v3: C, v4: D, v5: E, scheduler: SchedulerLike): OperatorFunction<T, T | A | B | C | D | E>;
 /** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function endWith<T, A, B, C, D, E, F>(v1: A, v2: B, v3: C, v4: D, v5: E, v6: F, scheduler: SchedulerLike): OperatorFunction<T, T | A | B | C | D | E | F>;
-
-export function endWith<T, A extends any[] = T[]>(...args: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
 /* tslint:enable:max-line-length */
 

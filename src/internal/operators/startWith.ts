@@ -3,6 +3,9 @@ import { MonoTypeOperatorFunction, OperatorFunction, SchedulerLike, ValueFromArr
 import { popScheduler } from '../util/args';
 import { operate } from '../util/lift';
 
+export function startWith<T>(value: T): OperatorFunction<T, T>;
+export function startWith<T, A extends any[] = T[]>(...values: A): OperatorFunction<T, ValueFromArray<A>>;
+
 /* tslint:disable:max-line-length */
 /** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function startWith<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;
@@ -33,8 +36,6 @@ export function startWith<T, D, E, F, G, H, I>(
   v6: I,
   scheduler: SchedulerLike
 ): OperatorFunction<T, T | D | E | F | G | H | I>;
-
-export function startWith<T, A extends any[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
 /**
  * Returns an observable that, at the moment of subscription, will synchronously emit all

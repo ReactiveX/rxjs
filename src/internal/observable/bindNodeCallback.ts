@@ -2,18 +2,18 @@ import { Observable } from '../Observable';
 import { SchedulerLike } from '../types';
 import { bindCallbackInternals } from './bindCallbackInternals';
 
+// args is the arguments array and we push the callback on the rest tuple since the rest parameter must be last (only item) in a parameter list
+export function bindNodeCallback<A extends readonly unknown[], R extends readonly unknown[]>(
+  callbackFunc: (...args: [...A, (err: any, ...res: R) => void]) => void,
+  schedulerLike?: SchedulerLike
+): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
+
 /** @deprecated resultSelector is deprecated, pipe to map instead */
 export function bindNodeCallback(
   callbackFunc: (...args: any[]) => void,
   resultSelector: (...args: any[]) => any,
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<any>;
-
-// args is the arguments array and we push the callback on the rest tuple since the rest parameter must be last (only item) in a parameter list
-export function bindNodeCallback<A extends readonly unknown[], R extends readonly unknown[]>(
-  callbackFunc: (...args: [...A, (err: any, ...res: R) => void]) => void,
-  schedulerLike?: SchedulerLike
-): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
 
 /**
  * Converts a Node.js-style callback API to a function that returns an
