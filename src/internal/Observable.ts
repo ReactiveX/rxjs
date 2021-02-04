@@ -70,12 +70,17 @@ export class Observable<T> implements Subscribable<T> {
 
   subscribe(observer?: Partial<Observer<T>>): Subscription;
   subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
+
   /** @deprecated Use an observer instead of a complete callback */
   subscribe(next: null | undefined, error: null | undefined, complete: () => void): Subscription;
   /** @deprecated Use an observer instead of an error callback */
   subscribe(next: null | undefined, error: (error: any) => void, complete?: () => void): Subscription;
   /** @deprecated Use an observer instead of a complete callback */
   subscribe(next: (value: T) => void, error: null | undefined, complete: () => void): Subscription;
+
+  // This is intentionally duplicated
+  // because TS resolves to the last overload of a function when doing `typeof` on it
+  subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
   /**
    * Invokes an execution of an Observable and registers Observer handlers for notifications it will emit.
    *
