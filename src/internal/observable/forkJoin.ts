@@ -9,10 +9,6 @@ import { popResultSelector } from '../util/args';
 export function forkJoin(sources: readonly []): Observable<never>;
 export function forkJoin<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
 
-// forkJoin({a, b, c})
-export function forkJoin(sourcesObject: { [K in any]: never }): Observable<never>;
-export function forkJoin<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
-
 /** @deprecated resultSelector is deprecated, pipe to map instead */
 export function forkJoin<A extends readonly unknown[], R>(
   sources: readonly [...ObservableInputTuple<A>],
@@ -26,6 +22,10 @@ export function forkJoin<A extends readonly unknown[]>(...sources: [...Observabl
 export function forkJoin<A extends readonly unknown[], R>(
   ...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]
 ): Observable<R>;
+
+// forkJoin({a, b, c})
+export function forkJoin(sourcesObject: { [K in any]: never }): Observable<never>;
+export function forkJoin<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 /**
  * Accepts an `Array` of {@link ObservableInput} or a dictionary `Object` of {@link ObservableInput} and returns
