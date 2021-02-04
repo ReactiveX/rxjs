@@ -6,7 +6,6 @@ import { popScheduler } from '../util/args';
 
 export function of(): Observable<never>;
 export function of<T>(value: T): Observable<T>;
-export function of<A extends readonly unknown[]>(...args: A): Observable<ValueFromArray<A>>;
 
 /** @deprecated The scheduler argument is deprecated, use scheduled. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function of(scheduler: SchedulerLike): Observable<never>;
@@ -69,6 +68,8 @@ export function of<T, T2, T3, T4, T5, T6, T7, T8, T9>(
 
 /** @deprecated remove in v8. Do not use generic arguments directly, allow inference or cast with `as` */
 export function of<T>(): Observable<T>;
+
+export function of<A extends readonly unknown[]>(...args: A): Observable<ValueFromArray<A>>;
 
 /**
  * Converts the arguments to an observable sequence.
