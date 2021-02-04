@@ -4,7 +4,8 @@ import { popScheduler } from '../util/args';
 import { operate } from '../util/lift';
 
 export function startWith<T>(value: T): OperatorFunction<T, T>;
-export function startWith<T, A extends any[] = T[]>(...values: A): OperatorFunction<T, ValueFromArray<A>>;
+export function startWith<T, A extends T[]>(...values: A): OperatorFunction<T, ValueFromArray<A>>;
+export function startWith<T, A extends any[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
 /* tslint:disable:max-line-length */
 /** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
