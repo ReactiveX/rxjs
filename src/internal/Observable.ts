@@ -349,16 +349,9 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /* tslint:disable:max-line-length */
-  pipe(...operations: OperatorFunction<T, T>[]): Observable<T>;
-  pipe<A>(
-    op1: OperatorFunction<T, A>,
-    ...operations: OperatorFunction<A, A>[]
-  ): Observable<A>;
-  pipe<A, B>(
-    op1: OperatorFunction<T, A>,
-    op2: OperatorFunction<A, B>,
-    ...operations: OperatorFunction<B, B>[]
-  ): Observable<B>;
+  pipe(): Observable<T>;
+  pipe<A>(op1: OperatorFunction<T, A>, ...operations: OperatorFunction<A, A>[]): Observable<A>;
+  pipe<A, B>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, ...operations: OperatorFunction<B, B>[]): Observable<B>;
   pipe<A, B, C>(
     op1: OperatorFunction<T, A>,
     op2: OperatorFunction<A, B>,
@@ -423,6 +416,7 @@ export class Observable<T> implements Subscribable<T> {
     ...operations: OperatorFunction<I, I>[]
   ): Observable<I>;
 
+  pipe(...operations: OperatorFunction<T, T>[]): Observable<T>;
   pipe(...operations: OperatorFunction<any, any>[]): Observable<unknown>;
 
   /* tslint:enable:max-line-length */
