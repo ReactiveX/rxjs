@@ -7,8 +7,8 @@ import { joinAllInternals } from './joinAllInternals';
  * it will subscribe to all inner sources, combining their values by index and emitting
  * them.
  *
- * {@see zipWith}
- * {@see zip}
+ * @see {@link zipWith}
+ * @see {@link zip}
  */
 export function zipAll<T>(): OperatorFunction<ObservableInput<T>, T[]>;
 export function zipAll<T>(): OperatorFunction<any, T[]>;

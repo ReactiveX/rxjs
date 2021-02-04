@@ -30,9 +30,9 @@ import { dateTimestampProvider } from './scheduler/dateTimestampProvider';
  * 1. `BehaviorSubject` comes "primed" with a single value upon construction.
  * 2. `ReplaySubject` will replay values, even after observing an error, where `BehaviorSubject` will not.
  *
- * {@see Subject}
- * {@see BehaviorSubject}
- * {@see shareReplay}
+ * @see {@link Subject}
+ * @see {@link BehaviorSubject}
+ * @see {@link shareReplay}
  */
 export class ReplaySubject<T> extends Subject<T> {
   private buffer: (T | number)[] = [];

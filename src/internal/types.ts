@@ -37,7 +37,7 @@ export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> {}
  *
  * Emitted by the `timestamp` operator
  *
- * {@see timestamp}
+ * @see {@link timestamp}
  */
 export interface Timestamp<T> {
   value: T;
@@ -53,7 +53,7 @@ export interface Timestamp<T> {
  *
  * Emitted by the `timeInterval` operator.
  *
- * {@see timeInterval}
+ * @see {@link timeInterval}
  */
 export interface TimeInterval<T> {
   value: T;
