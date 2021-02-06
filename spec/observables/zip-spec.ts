@@ -541,5 +541,19 @@ describe('static zip', () => {
       ['c','3','z'],
       'complete'
     ]);
-  })
+  });
+
+  it('should return EMPTY if passed an empty array as the only argument', () => {
+    const results: string[] = [];
+    zip([]).subscribe({
+      next: () => {
+        throw new Error('should not emit')
+      },
+      complete: () => {
+        results.push('done');
+      }
+    });
+
+    expect(results).to.deep.equal(['done']);
+  });
 });
