@@ -6,12 +6,10 @@ import { TestScheduler } from 'rxjs/testing';
 import { noop } from 'rxjs';
 import * as nodeFormData from 'form-data';
 
-
-
 const root: any = (typeof globalThis !== 'undefined' && globalThis) || (typeof self !== 'undefined' && self) || global;
 
 if (typeof root.FormData === 'undefined') {
-  root.FormData = nodeFormData as any;  
+  root.FormData = nodeFormData as any;
 }
 
 /** @test {ajax} */
@@ -121,7 +119,7 @@ describe('ajax', () => {
     });
 
     afterEach(() => {
-      delete (global as any).document; 
+      delete (global as any).document;
     });
 
     it('should send the cookie with a custom header to the same domain', () => {
@@ -224,23 +222,22 @@ describe('ajax', () => {
 
   it('should error if createXHR throws', () => {
     let error;
-    const obj = {
+
+    ajax({
       url: '/flibbertyJibbet',
       responseType: 'text',
       createXHR: () => {
         throw new Error('wokka wokka');
       },
-    };
-
-    ajax(<any>obj).subscribe(
+    }).subscribe(
       () => {
-        throw 'should not next';
+        throw new Error('should not next');
       },
       (err: any) => {
         error = err;
       },
       () => {
-        throw 'should not complete';
+        throw new Error('should not complete');
       }
     );
 
@@ -282,7 +279,6 @@ describe('ajax', () => {
 
     ajax({
       url: '/flibbertyJibbet',
-      responseType: 'text',
       method: '',
     }).subscribe(
       (x: any) => {
@@ -298,16 +294,16 @@ describe('ajax', () => {
 
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 200,
-      contentType: 'application/json',
+      responseType: 'json',
       responseText: JSON.stringify(expected),
     });
 
     expect(result!.xhr).exist;
-    expect(result!.response).to.deep.equal(JSON.stringify({ foo: 'bar' }));
+    expect(result!.response).to.deep.equal({ foo: 'bar' });
     expect(complete).to.be.true;
   });
 
-  it('should fail if fails to parse response', () => {
+  it('should fail if fails to parse response in older IE', () => {
     let error: any;
     const obj: AjaxConfig = {
       url: '/flibbertyJibbet',
@@ -315,22 +311,24 @@ describe('ajax', () => {
       method: '',
     };
 
+    // No `response` property on the object (for older IE).
+    MockXMLHttpRequest.noResponseProp = true;
+
     ajax(obj).subscribe(
       () => {
-        throw 'should not next';
+        throw new Error('should not next');
       },
       (err: any) => {
         error = err;
       },
       () => {
-        throw 'should not complete';
+        throw new Error('should not complete');
       }
     );
 
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 207,
-      contentType: '',
-      responseType: '',
+      responseType: 'json',
       responseText: 'Wee! I am text, but should be valid JSON!',
     });
 
@@ -348,13 +346,13 @@ describe('ajax', () => {
 
     ajax(obj).subscribe(
       () => {
-        throw 'should not next';
+        throw new Error('should not next');
       },
       (err: any) => {
         error = err;
       },
       () => {
-        throw 'should not complete';
+        throw new Error('should not complete');
       }
     );
 
@@ -362,7 +360,7 @@ describe('ajax', () => {
 
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 404,
-      contentType: 'text/plain',
+      responseType: 'text',
       responseText: 'Wee! I am text!',
     });
 
@@ -395,7 +393,7 @@ describe('ajax', () => {
 
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 300,
-      contentType: 'text/plain',
+      responseType: 'text',
       responseText: 'Wee! I am text!',
     });
 
@@ -414,20 +412,19 @@ describe('ajax', () => {
 
     ajax(obj).subscribe(
       () => {
-        throw 'should not next';
+        throw new Error('should not next');
       },
       (err: any) => {
         error = err;
       },
       () => {
-        throw 'should not complete';
+        throw new Error('should not complete');
       }
     );
 
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 404,
-      contentType: '',
-      responseType: '',
+      responseType: 'text',
       responseText: 'This is not what we expected is it? But that is okay',
     });
 
@@ -452,7 +449,7 @@ describe('ajax', () => {
     expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 200,
-      contentType: 'text/plain',
+      responseType: 'text',
       responseText: expected,
     });
   });
@@ -477,7 +474,7 @@ describe('ajax', () => {
     expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 500,
-      contentType: 'text/plain',
+      responseType: 'text',
       responseText: expected,
     });
   });
@@ -508,7 +505,7 @@ describe('ajax', () => {
 
     request.respondWith({
       status: 200,
-      contentType: 'text/plain',
+      responseType: 'text',
       responseText: 'Wee! I am text!',
     });
   });
@@ -542,7 +539,7 @@ describe('ajax', () => {
     rxTestScheduler.schedule(() => {
       request.respondWith({
         status: 200,
-        contentType: 'text/plain',
+        responseType: 'text',
         responseText: 'Wee! I am text!',
       });
     }, 1000);
@@ -558,26 +555,17 @@ describe('ajax', () => {
       async: false,
     };
 
-    ajax(obj).subscribe(
-      (x: any) => {
-        expect(x.status).to.equal(200);
-        expect(x.xhr.method).to.equal('GET');
-        expect(x.xhr.async).to.equal(false);
-        expect(x.xhr.timeout).to.be.undefined;
-        expect(x.xhr.responseType).to.equal('');
-      },
-      () => {
-        throw 'should not have been called';
-      }
-    );
+    ajax(obj).subscribe();
 
-    const request = MockXMLHttpRequest.mostRecent;
+    const mockXHR = MockXMLHttpRequest.mostRecent;
 
-    expect(request.url).to.equal('/flibbertyJibbet');
+    expect(mockXHR.url).to.equal('/flibbertyJibbet');
+    // Open was called with async `false`.
+    expect(mockXHR.async).to.be.false;
 
-    request.respondWith({
+    mockXHR.respondWith({
       status: 200,
-      contentType: 'text/plain',
+      responseType: 'text',
       responseText: 'Wee! I am text!',
     });
   });
@@ -719,7 +707,7 @@ describe('ajax', () => {
 
       request.respondWith({
         status: 200,
-        contentType: 'application/json',
+        responseType: 'json',
         responseText: JSON.stringify(expected),
       });
 
@@ -728,7 +716,6 @@ describe('ajax', () => {
     });
 
     it('should succeed on 204 No Content', () => {
-      const expected: null = null;
       let result;
       let complete = false;
 
@@ -748,11 +735,11 @@ describe('ajax', () => {
 
       request.respondWith({
         status: 204,
-        contentType: 'application/json',
-        responseText: expected,
+        responseType: '',
+        responseText: '',
       });
 
-      expect(result).to.deep.equal(expected);
+      expect(result).to.deep.equal(undefined);
       expect(complete).to.be.true;
     });
 
@@ -777,7 +764,7 @@ describe('ajax', () => {
 
       request.respondWith({
         status: 200,
-        contentType: 'application/json',
+        responseType: 'json',
         responseText: JSON.stringify(expected),
       });
 
@@ -813,7 +800,7 @@ describe('ajax', () => {
 
       request.respondWith({
         status: 200,
-        contentType: 'application/json',
+        responseType: 'json',
         responseText: JSON.stringify(expected),
       });
 
@@ -823,11 +810,10 @@ describe('ajax', () => {
     });
 
     it('should succeed on 204 No Content', () => {
-      const expected: null = null;
       let result: AjaxResponse<any>;
       let complete = false;
 
-      ajax.post('/flibbertyJibbet', expected).subscribe(
+      ajax.post('/flibbertyJibbet', undefined).subscribe(
         (x) => {
           result = x;
         },
@@ -847,12 +833,11 @@ describe('ajax', () => {
 
       request.respondWith({
         status: 204,
-        contentType: 'application/json',
-        responseType: 'json',
-        responseText: expected,
+        responseType: '',
+        responseText: '',
       });
 
-      expect(result!.response).to.equal(expected);
+      expect(result!.response).to.equal(undefined);
       expect(complete).to.be.true;
     });
 
@@ -872,13 +857,13 @@ describe('ajax', () => {
       request.respondWith(
         {
           status: 200,
-          contentType: 'application/json',
+          responseType: 'json',
           responseText: JSON.stringify({}),
         },
-        3
+        { uploadProgressTimes: 3 }
       );
 
-      expect(spy).to.be.calledThrice;
+      expect(spy).to.be.called.callCount(3);
     });
 
     it('should emit progress event when progressSubscriber is specified', function () {
@@ -903,13 +888,13 @@ describe('ajax', () => {
       request.respondWith(
         {
           status: 200,
-          contentType: 'application/json',
+          responseType: 'json',
           responseText: JSON.stringify({}),
         },
-        3
+        { uploadProgressTimes: 3 }
       );
 
-      expect(spy).to.be.calledThrice;
+      expect(spy).to.be.called.callCount(3);
     });
   });
 
@@ -945,18 +930,20 @@ describe('ajax', () => {
     try {
       request.ontimeout('ontimeout' as any);
     } catch (e) {
-      expect(e.message).to.equal(new AjaxTimeoutError(request as any, {
-        url: ajaxRequest.url,
-        method: 'GET',
-        headers: {
-          'content-type': 'application/json;encoding=Utf-8',
-        },
-        withCredentials: false,
-        async: true,
-        timeout: 0,
-        crossDomain: false,
-        responseType: 'json'
-      }).message);
+      expect(e.message).to.equal(
+        new AjaxTimeoutError(request as any, {
+          url: ajaxRequest.url,
+          method: 'GET',
+          headers: {
+            'content-type': 'application/json;encoding=Utf-8',
+          },
+          withCredentials: false,
+          async: true,
+          timeout: 0,
+          crossDomain: false,
+          responseType: 'json',
+        }).message
+      );
     }
     delete root.XMLHttpRequest.prototype.ontimeout;
   });
@@ -1067,7 +1054,7 @@ describe('ajax', () => {
 
       request.respondWith({
         status: 200,
-        contentType: 'application/json',
+        responseType: 'json',
         responseText: JSON.stringify(expected),
       });
 
@@ -1127,7 +1114,13 @@ describe('ajax', () => {
 });
 
 class MockXMLHttpRequest {
-  public static readonly DONE = 4;
+  static readonly DONE = 4;
+
+  /**
+   * Set to `true` to test IE code paths.
+   */
+  static noResponseProp = false;
+
   private static requests: Array<MockXMLHttpRequest> = [];
   private static recentRequest: MockXMLHttpRequest;
 
@@ -1140,6 +1133,7 @@ class MockXMLHttpRequest {
   }
 
   static clearRequest(): void {
+    MockXMLHttpRequest.noResponseProp = false;
     MockXMLHttpRequest.requests.length = 0;
     MockXMLHttpRequest.recentRequest = null!;
   }
@@ -1147,12 +1141,15 @@ class MockXMLHttpRequest {
   protected responseType: string = '';
   private readyState: number = 0;
 
-  private async: boolean = true;
+  /**
+   * Used to test if `open` was called with `async` true or false.
+   */
+  public async: boolean = true;
 
   protected status: any;
   // @ts-ignore: Property has no initializer and is not definitely assigned
-  protected responseText: string;
-  protected response: any;
+  protected responseText: string | undefined;
+  protected response: any = undefined;
 
   url: any;
   method: any;
@@ -1173,6 +1170,9 @@ class MockXMLHttpRequest {
   constructor() {
     MockXMLHttpRequest.recentRequest = this;
     MockXMLHttpRequest.requests.push(this);
+    if (MockXMLHttpRequest.noResponseProp) {
+      delete this['response'];
+    }
   }
 
   // @ts-ignore: Property has no initializer and is not definitely assigned
@@ -1214,45 +1214,70 @@ class MockXMLHttpRequest {
     this.requestHeaders[key] = value;
   }
 
-  protected jsonResponseValue(response: any) {
-    try {
-      this.response = JSON.parse(response.responseText);
-    } catch (err) {
-      throw new Error('unable to JSON.parse: \n' + response.responseText);
-    }
-  }
+  respondWith(
+    response: {
+      status?: number;
+      responseText?: string | undefined;
+      responseType: XMLHttpRequestResponseType;
+      total?: number;
+      loaded?: number;
+    },
+    config?: { uploadProgressTimes?: number; downloadProgressTimes?: number }
+  ): void {
+    const { uploadProgressTimes = 0, downloadProgressTimes = 0 } = config ?? {};
 
-  protected defaultResponseValue() {
-    if (this.async === false) {
-      this.response = this.responseText;
+    // Fake our upload progress first, if requested by the test.
+    if (uploadProgressTimes) {
+      this.triggerUploadEvent('loadstart', { type: 'loadstart', total: uploadProgressTimes, loaded: 0 });
+      for (let i = 1; i <= uploadProgressTimes; i++) {
+        this.triggerUploadEvent('progress', { type: 'progress', total: uploadProgressTimes, loaded: i });
+      }
+      this.triggerUploadEvent('load', { type: 'load', total: uploadProgressTimes, loaded: uploadProgressTimes });
     }
-  }
 
-  respondWith(response: any, progressTimes?: number): void {
-    if (progressTimes) {
-      for (let i = 1; i <= progressTimes; ++i) {
-        this.triggerUploadEvent('progress', { type: 'ProgressEvent', total: progressTimes, loaded: i });
+    // Fake our download progress
+    if (downloadProgressTimes) {
+      this.triggerEvent('loadstart', { type: 'loadstart', total: downloadProgressTimes, loaded: 0 });
+      for (let i = 1; i <= downloadProgressTimes; i++) {
+        this.triggerEvent('progress', { type: 'progress', total: downloadProgressTimes, loaded: i });
       }
     }
+
+    // Set the readyState to 4.
     this.readyState = 4;
+
+    // Default to OK 200.
     this.status = response.status || 200;
     this.responseText = response.responseText;
-    const responseType = response.responseType !== undefined ? response.responseType : this.responseType;
-    if (!('response' in response)) {
-      switch (responseType) {
-        case 'json':
-          this.jsonResponseValue(response);
-          break;
-        case 'text':
-          this.response = response.responseText;
-          break;
-        default:
-          this.defaultResponseValue();
-      }
+    this.responseType = response.responseType;
+
+    switch (this.responseType) {
+      case 'json':
+        try {
+          this.response = JSON.parse(response.responseText!);
+        } catch (err) {
+          // Ignore this is for testing if we get an invalid server
+          // response somehow, where responseType is "json" but the responseText
+          // is not JSON. In truth, we need to invert these tests to just use
+          // response, because `responseText` is a legacy path.
+          this.response = undefined;
+        }
+        break;
+      case 'text':
+        this.response = response.responseText;
+        break;
+      default:
+        // response remains undefined
+        break;
     }
-    // TODO: pass better event to onload.
-    this.triggerEvent('load');
-    this.triggerEvent('readystatechange');
+
+    // We're testing old IE, forget all of that response property stuff.
+    if (MockXMLHttpRequest.noResponseProp) {
+      delete this['response'];
+    }
+
+    this.triggerEvent('load', { type: 'load', total: response.total ?? 0, loaded: response.loaded ?? 0 });
+    this.triggerEvent('readystatechange', { type: 'readystatechange' });
   }
 
   triggerEvent(this: any, name: any, eventObj?: any): void {
