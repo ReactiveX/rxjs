@@ -2,7 +2,6 @@ import { Subject } from '../Subject';
 import { Observable } from '../Observable';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { OperatorFunction, UnaryFunction, ObservedValueOf, ObservableInput } from '../types';
-import { hasLift } from '../util/lift';
 import { isFunction } from '../util/isFunction';
 import { connect } from './connect';
 
@@ -81,16 +80,5 @@ export function multicast<T, R>(
     });
   }
 
-  return (source: Observable<T>) => {
-    const connectable: any = new ConnectableObservable(source, subjectFactory);
-    // If we have lift, monkey patch that here. This is done so custom observable
-    // types will compose through multicast. Otherwise the resulting observable would
-    // simply be an instance of `ConnectableObservable`.
-    if (hasLift(source)) {
-      connectable.lift = source.lift;
-    }
-    connectable.source = source;
-    connectable.subjectFactory = subjectFactory;
-    return connectable;
-  };
+  return (source: Observable<T>) => new ConnectableObservable<any>(source, subjectFactory);
 }
