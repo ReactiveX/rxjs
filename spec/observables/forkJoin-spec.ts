@@ -380,7 +380,7 @@ describe('forkJoin', () => {
       });
     });
 
-    it('should accept array of observables', () => {
+    it('should accept an object of observables', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const e1 = forkJoin({
           foo: hot('      --a--b--c--d--|'),
