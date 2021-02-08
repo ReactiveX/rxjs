@@ -6,6 +6,8 @@ export interface AjaxConfig {
     createXHR?: () => XMLHttpRequest;
     crossDomain?: boolean;
     headers?: Readonly<Record<string, any>>;
+    includeDownloadProgress?: boolean;
+    includeUploadProgress?: boolean;
     method?: string;
     password?: string;
     progressSubscriber?: PartialObserver<ProgressEvent>;
@@ -43,13 +45,20 @@ export interface AjaxRequest {
 }
 
 export declare class AjaxResponse<T> {
-    readonly originalEvent: Event;
+    readonly loaded: number;
+    readonly originalEvent: ProgressEvent;
     readonly request: AjaxRequest;
     readonly response: T;
     readonly responseType: XMLHttpRequestResponseType;
     readonly status: number;
+    readonly total: number;
+    readonly type: string;
     readonly xhr: XMLHttpRequest;
-    constructor(originalEvent: Event, xhr: XMLHttpRequest, request: AjaxRequest);
+    constructor(
+    originalEvent: ProgressEvent,
+    xhr: XMLHttpRequest,
+    request: AjaxRequest,
+    type?: string);
 }
 
 export interface AjaxTimeoutError extends AjaxError {

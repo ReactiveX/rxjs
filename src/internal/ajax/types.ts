@@ -174,4 +174,22 @@ export interface AjaxConfig {
    * the HTTP response comes back.
    */
   progressSubscriber?: PartialObserver<ProgressEvent>;
+
+  /**
+   * If `true`, will emit all download progress and load complete events as {@link AjaxProgressEvents}
+   * from the observable. The final download event will also be emitted as a {@link AjaxDownloadCompleteEvent}
+   *
+   * If both this and {@link includeUploadProgress} are `false`, then only the {@link AjaxResponse} will
+   * be emitted from the resulting observable.
+   */
+  includeDownloadProgress?: boolean;
+
+  /**
+   * If `true`, will emit all upload progress and load complete events as {@link AjaxUploadProgressEvents}
+   * from the observable. The final download event will also be emitted as a {@link AjaxDownloadCompleteEvent}
+   *
+   * If both this and {@link includeDownloadProgress} are `false`, then only the {@link AjaxResponse} will
+   * be emitted from the resulting observable.
+   */
+  includeUploadProgress?: boolean;
 }
