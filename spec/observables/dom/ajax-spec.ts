@@ -863,7 +863,7 @@ describe('ajax', () => {
         { uploadProgressTimes: 3 }
       );
 
-      expect(spy).to.be.called.callCount(3);
+      expect(spy).to.be.called.callCount(4);
     });
 
     it('should emit progress event when progressSubscriber is specified', function () {
@@ -894,7 +894,7 @@ describe('ajax', () => {
         { uploadProgressTimes: 3 }
       );
 
-      expect(spy).to.be.called.callCount(3);
+      expect(spy).to.be.called.callCount(4);
     });
   });
 
@@ -946,85 +946,6 @@ describe('ajax', () => {
       );
     }
     delete root.XMLHttpRequest.prototype.ontimeout;
-  });
-
-  it('should work fine when XMLHttpRequest onprogress property is monkey patched', function () {
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'onprogress', {
-      set: function (fn: (e: ProgressEvent) => any) {
-        const wrapFn = (ev: ProgressEvent) => {
-          const result = fn.call(this, ev);
-          if (result === false) {
-            ev.preventDefault();
-          }
-        };
-        this['_onprogress'] = wrapFn;
-      },
-      get() {
-        return this['_onprogress'];
-      },
-      configurable: true,
-    });
-
-    ajax({
-      url: '/flibbertyJibbet',
-      progressSubscriber: <any>{
-        next: () => {
-          // noop
-        },
-        error: () => {
-          // noop
-        },
-        complete: () => {
-          // noop
-        },
-      },
-    }).subscribe();
-
-    const request = MockXMLHttpRequest.mostRecent;
-
-    expect(() => {
-      (request.upload as any).onprogress(<any>'onprogress');
-    }).not.throw();
-
-    delete root.XMLHttpRequest.prototype.onprogress;
-    delete root.XMLHttpRequest.prototype.upload;
-  });
-
-  it('should work fine when XMLHttpRequest onerror property is monkey patched', function () {
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'onerror', {
-      set(fn: (e: ProgressEvent) => any) {
-        const wrapFn = (ev: ProgressEvent) => {
-          const result = fn.call(this, ev);
-          if (result === false) {
-            ev.preventDefault();
-          }
-        };
-        this['_onerror'] = wrapFn;
-      },
-      get() {
-        return this['_onerror'];
-      },
-      configurable: true,
-    });
-
-    ajax({
-      url: '/flibbertyJibbet',
-    }).subscribe({
-      error() {
-        /* expected */
-      },
-    });
-
-    const request = MockXMLHttpRequest.mostRecent;
-
-    try {
-      request.onerror(<any>'onerror');
-    } catch (e) {
-      expect(e.message).to.equal('ajax error');
-    }
-
-    delete root.XMLHttpRequest.prototype.onerror;
-    delete root.XMLHttpRequest.prototype.upload;
   });
 
   describe('ajax.patch', () => {
@@ -1111,9 +1032,358 @@ describe('ajax', () => {
       });
     });
   });
+
+  describe('with includeDownloadProgress', () => {
+    it('should emit download progress', () => {
+      const results: any[] = [];
+
+      ajax({
+        method: 'GET',
+        url: '/flibbertyJibbett',
+        includeDownloadProgress: true,
+      }).subscribe({
+        next: (value) => results.push(value),
+        complete: () => results.push('done'),
+      });
+
+      const mockXHR = MockXMLHttpRequest.mostRecent;
+      mockXHR.respondWith(
+        {
+          status: 200,
+          total: 5,
+          loaded: 5,
+          responseType: 'json',
+          responseText: JSON.stringify({ boo: 'I am a ghost' }),
+        },
+        { uploadProgressTimes: 5, downloadProgressTimes: 5 }
+      );
+
+      const request = {
+        async: true,
+        body: undefined,
+        crossDomain: true,
+        headers: {
+          'x-requested-with': 'XMLHttpRequest',
+        },
+        includeDownloadProgress: true,
+        method: 'GET',
+        responseType: '',
+        timeout: 0,
+        url: '/flibbertyJibbett',
+        withCredentials: false,
+      };
+
+      expect(results).to.deep.equal([
+        {
+          type: 'download_loadstart',
+          responseType: '',
+          response: undefined,
+          loaded: 0,
+          total: 5,
+          request,
+          status: 0,
+          xhr: mockXHR,
+          originalEvent: { type: 'loadstart', loaded: 0, total: 5 },
+        },
+        {
+          type: 'download_progress',
+          responseType: '',
+          response: undefined,
+          loaded: 1,
+          total: 5,
+          request,
+          status: 0,
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 1, total: 5 },
+        },
+        {
+          type: 'download_progress',
+          responseType: '',
+          response: undefined,
+          loaded: 2,
+          total: 5,
+          request,
+          status: 0,
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 2, total: 5 },
+        },
+        {
+          type: 'download_progress',
+          responseType: '',
+          response: undefined,
+          loaded: 3,
+          total: 5,
+          request,
+          status: 0,
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 3, total: 5 },
+        },
+        {
+          type: 'download_progress',
+          responseType: '',
+          response: undefined,
+          loaded: 4,
+          total: 5,
+          request,
+          status: 0,
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 4, total: 5 },
+        },
+        {
+          type: 'download_progress',
+          responseType: '',
+          response: undefined,
+          loaded: 5,
+          total: 5,
+          request,
+          status: 0,
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 5, total: 5 },
+        },
+        {
+          type: 'download_load',
+          loaded: 5,
+          total: 5,
+          request,
+          originalEvent: { type: 'load', loaded: 5, total: 5 },
+          xhr: mockXHR,
+          response: { boo: 'I am a ghost' },
+          responseType: 'json',
+          status: 200,
+        },
+        'done', // from completion.
+      ]);
+    });
+
+    it('should emit upload and download progress', () => {
+      const results: any[] = [];
+
+      ajax({
+        method: 'GET',
+        url: '/flibbertyJibbett',
+        includeUploadProgress: true,
+        includeDownloadProgress: true,
+      }).subscribe({
+        next: (value) => results.push(value),
+        complete: () => results.push('done'),
+      });
+
+      const mockXHR = MockXMLHttpRequest.mostRecent;
+      mockXHR.respondWith(
+        {
+          status: 200,
+          total: 5,
+          loaded: 5,
+          responseType: 'json',
+          responseText: JSON.stringify({ boo: 'I am a ghost' }),
+        },
+        { uploadProgressTimes: 5, downloadProgressTimes: 5 }
+      );
+
+      const request = {
+        async: true,
+        body: undefined,
+        crossDomain: true,
+        headers: {
+          'x-requested-with': 'XMLHttpRequest',
+        },
+        includeUploadProgress: true,
+        includeDownloadProgress: true,
+        method: 'GET',
+        responseType: '',
+        timeout: 0,
+        url: '/flibbertyJibbett',
+        withCredentials: false,
+      };
+
+      expect(results).to.deep.equal([
+        {
+          type: 'upload_loadstart',
+          loaded: 0,
+          total: 5,
+          request,
+          status: 0,
+          response: undefined,
+          responseType: '',
+          xhr: mockXHR,
+          originalEvent: { type: 'loadstart', loaded: 0, total: 5 },
+        },
+        {
+          type: 'upload_progress',
+          loaded: 1,
+          total: 5,
+          request,
+          status: 0,
+          response: undefined,
+          responseType: '',
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 1, total: 5 },
+        },
+        {
+          type: 'upload_progress',
+          loaded: 2,
+          total: 5,
+          request,
+          status: 0,
+          response: undefined,
+          responseType: '',
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 2, total: 5 },
+        },
+        {
+          type: 'upload_progress',
+          loaded: 3,
+          total: 5,
+          request,
+          status: 0,
+          response: undefined,
+          responseType: '',
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 3, total: 5 },
+        },
+        {
+          type: 'upload_progress',
+          loaded: 4,
+          total: 5,
+          request,
+          status: 0,
+          response: undefined,
+          responseType: '',
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 4, total: 5 },
+        },
+        {
+          type: 'upload_progress',
+          loaded: 5,
+          total: 5,
+          request,
+          status: 0,
+          response: undefined,
+          responseType: '',
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 5, total: 5 },
+        },
+        {
+          type: 'upload_load',
+          loaded: 5,
+          total: 5,
+          request,
+          status: 0,
+          response: undefined,
+          responseType: '',
+          xhr: mockXHR,
+          originalEvent: { type: 'load', loaded: 5, total: 5 },
+        },
+        {
+          type: 'download_loadstart',
+          responseType: '',
+          response: undefined,
+          loaded: 0,
+          total: 5,
+          request,
+          status: 0,
+          xhr: mockXHR,
+          originalEvent: { type: 'loadstart', loaded: 0, total: 5 },
+        },
+        {
+          type: 'download_progress',
+          responseType: '',
+          response: undefined,
+          loaded: 1,
+          total: 5,
+          request,
+          status: 0,
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 1, total: 5 },
+        },
+        {
+          type: 'download_progress',
+          responseType: '',
+          response: undefined,
+          loaded: 2,
+          total: 5,
+          request,
+          status: 0,
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 2, total: 5 },
+        },
+        {
+          type: 'download_progress',
+          responseType: '',
+          response: undefined,
+          loaded: 3,
+          total: 5,
+          request,
+          status: 0,
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 3, total: 5 },
+        },
+        {
+          type: 'download_progress',
+          responseType: '',
+          response: undefined,
+          loaded: 4,
+          total: 5,
+          request,
+          status: 0,
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 4, total: 5 },
+        },
+        {
+          type: 'download_progress',
+          responseType: '',
+          response: undefined,
+          loaded: 5,
+          total: 5,
+          request,
+          status: 0,
+          xhr: mockXHR,
+          originalEvent: { type: 'progress', loaded: 5, total: 5 },
+        },
+        {
+          type: 'download_load',
+          loaded: 5,
+          total: 5,
+          request,
+          originalEvent: { type: 'load', loaded: 5, total: 5 },
+          xhr: mockXHR,
+          response: { boo: 'I am a ghost' },
+          responseType: 'json',
+          status: 200,
+        },
+        'done', // from completion.
+      ]);
+    });
+  });
 });
 
-class MockXMLHttpRequest {
+// Some of the older versions of node we test on don't have EventTarget.
+class MockXHREventTarget {
+  private registry = new Map<string, Set<(e: ProgressEvent) => void>>();
+
+  addEventListener(type: string, handler: (e: ProgressEvent) => void) {
+    let handlers = this.registry.get(type);
+    if (!handlers) {
+      this.registry.set(type, (handlers = new Set()));
+    }
+    handlers.add(handler);
+  }
+
+  removeEventListener(type: string, handler: (e: ProgressEvent) => void) {
+    this.registry.get(type)?.delete(handler);
+  }
+
+  dispatchEvent(event: ProgressEvent) {
+    const { type } = event;
+    const handlers = this.registry.get(type);
+    if (handlers) {
+      for (const handler of handlers) {
+        handler(event);
+      }
+    }
+  }
+}
+class MockXMLHttpRequest extends MockXHREventTarget {
   static readonly DONE = 4;
 
   /**
@@ -1165,9 +1435,11 @@ class MockXMLHttpRequest {
   onprogress: (e: ProgressEvent) => any;
   // @ts-ignore: Property has no initializer and is not definitely assigned
   ontimeout: (e: ProgressEvent) => any;
-  upload: XMLHttpRequestUpload = <any>{};
+
+  upload: XMLHttpRequestUpload = new MockXHREventTarget() as any;
 
   constructor() {
+    super();
     MockXMLHttpRequest.recentRequest = this;
     MockXMLHttpRequest.requests.push(this);
     if (MockXMLHttpRequest.noResponseProp) {
@@ -1284,6 +1556,8 @@ class MockXMLHttpRequest {
     // TODO: create a better default event
     const e: any = eventObj || { type: name };
 
+    this.dispatchEvent({ type: name, ...eventObj });
+
     if (this['on' + name]) {
       this['on' + name](e);
     }
@@ -1292,6 +1566,8 @@ class MockXMLHttpRequest {
   triggerUploadEvent(this: any, name: any, eventObj?: any): void {
     // TODO: create a better default event
     const e: any = eventObj || {};
+
+    this.upload.dispatchEvent({ type: name, ...eventObj });
 
     if (this.upload['on' + name]) {
       this.upload['on' + name](e);

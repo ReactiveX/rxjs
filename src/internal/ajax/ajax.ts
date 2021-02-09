@@ -268,8 +268,13 @@ export const ajax: AjaxCreationMethod = (() => {
   return create;
 })();
 
+const DOWNLOAD = 'download';
+const LOADSTART = 'loadstart';
+const PROGRESS = 'progress';
+const LOAD = 'load';
+
 export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
-  return new Observable<AjaxResponse<T>>((destination) => {
+  return new Observable((destination) => {
     // Normalize the headers. We're going to make them all lowercase, since
     // Headers are case insenstive by design. This makes it easier to verify
     // that we aren't setting or sending duplicates.
@@ -315,7 +320,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       withCredentials: false,
       method: 'GET',
       timeout: 0,
-      responseType: 'json' as XMLHttpRequestResponseType,
+      responseType: '' as XMLHttpRequestResponseType,
 
       // Override with passed user values
       ...config,
@@ -343,7 +348,16 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       // Otherwise the progress events will not fire.
       ///////////////////////////////////////////////////
 
-      const progressSubscriber = config.progressSubscriber;
+      const { progressSubscriber, includeDownloadProgress = false, includeUploadProgress = false } = config;
+
+      const createResponse = (direction: 'upload' | 'download', event: ProgressEvent) =>
+        new AjaxResponse<T>(event, xhr, _request, `${direction}_${event.type}`);
+
+      const addProgressEvent = (target: any, type: string, direction: 'upload' | 'download') => {
+        target.addEventListener(type, (event: ProgressEvent) => {
+          destination.next(createResponse(direction, event));
+        });
+      };
 
       xhr.ontimeout = () => {
         const timeoutError = new AjaxTimeoutError(xhr, _request);
@@ -351,20 +365,32 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
         destination.error(timeoutError);
       };
 
-      if (progressSubscriber) {
-        xhr.upload.onprogress = (e: ProgressEvent) => {
-          progressSubscriber.next?.(e);
-        };
+      if (includeUploadProgress) {
+        [LOADSTART, PROGRESS, LOAD].forEach((type) => addProgressEvent(xhr.upload, type, 'upload'));
       }
 
-      xhr.onerror = (e: ProgressEvent) => {
-        progressSubscriber?.error?.(e);
-        destination.error(new AjaxError('ajax error', xhr, _request));
+      if (progressSubscriber) {
+        [LOADSTART, PROGRESS].forEach((type) => xhr.upload.addEventListener(type, (e: any) => progressSubscriber?.next?.(e)));
+      }
+
+      if (includeDownloadProgress) {
+        [LOADSTART, PROGRESS].forEach((type) => addProgressEvent(xhr, type, DOWNLOAD));
+      }
+
+      const emitError = (status?: number) => {
+        const msg = 'ajax error' + (status ? ' ' + status : '');
+        destination.error(new AjaxError(msg, xhr, _request));
       };
 
-      xhr.onload = (e: ProgressEvent) => {
+      xhr.addEventListener('error', (e) => {
+        progressSubscriber?.error?.(e);
+        emitError();
+      });
+
+      xhr.addEventListener(LOAD, (event) => {
+        const { status } = xhr;
         // 4xx and 5xx should error (https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
-        if (xhr.status < 400) {
+        if (status < 400) {
           progressSubscriber?.complete?.();
 
           let response: AjaxResponse<T>;
@@ -372,18 +398,19 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
             // This can throw in IE, because we end up needing to do a JSON.parse
             // of the response in some cases to produce object we'd expect from
             // modern browsers.
-            response = new AjaxResponse(e, xhr, _request);
+            response = createResponse(DOWNLOAD, event);
           } catch (err) {
             destination.error(err);
             return;
           }
+
           destination.next(response);
           destination.complete();
         } else {
-          progressSubscriber?.error?.(e);
-          destination.error(new AjaxError('ajax error ' + xhr.status, xhr, _request));
+          progressSubscriber?.error?.(event);
+          emitError(status);
         }
-      };
+      });
     }
 
     const { user, method, async } = _request;
