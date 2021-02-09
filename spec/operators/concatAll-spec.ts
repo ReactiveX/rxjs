@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { from, throwError, of, Observable } from 'rxjs';
-import { concatAll, take, mergeMap } from 'rxjs/operators';
+import { from, throwError, of, Observable, defer } from 'rxjs';
+import { concatAll, take, mergeMap, finalize, delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -57,6 +57,40 @@ describe('concatAll operator', () => {
       }
     );
   });
+
+    it('should finalize before moving to the next observable', () => {
+      const results: any[] = [];
+
+      const create = (n: number) => defer(() => {
+        results.push(`init ${n}`);
+        return of(`next ${n}`).pipe(
+          delay(100, testScheduler),
+          finalize(() => {
+            results.push(`finalized ${n}`)
+          })
+        );
+      });
+
+      of(create(1), create(2), create(3)).pipe(
+        concatAll()
+      ).subscribe({
+        next: value => results.push(value),
+      });
+
+      testScheduler.flush();
+
+      expect(results).to.deep.equal([
+        'init 1',
+        'next 1',
+        'finalized 1',
+        'init 2',
+        'next 2',
+        'finalized 2',
+        'init 3',
+        'next 3',
+        'finalized 3'
+      ]);
+    });
 
   it('should concat and raise error from promise', function(done) {
     this.timeout(2000);

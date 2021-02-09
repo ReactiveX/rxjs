@@ -28,7 +28,7 @@ export function mergeInternals<T, R>(
   additionalTeardown?: () => void
 ) {
   // Buffered values, in the event of going over our concurrency limit
-  let buffer: T[] = [];
+  const buffer: T[] = [];
   // The number of active inner subscriptions.
   let active = 0;
   // An index to pass to our accumulator function
@@ -61,6 +61,11 @@ export function mergeInternals<T, R>(
     // against our concurrency limit later.
     active++;
 
+    // A flag used to show that the inner observable completed.
+    // This is checked during finalization to see if we should
+    // move to the next item in the buffer, if there is on.
+    let innerComplete = false;
+
     // Start our inner subscription.
     innerFrom(project(value, index++)).subscribe(
       new OperatorSubscriber(
@@ -82,23 +87,41 @@ export function mergeInternals<T, R>(
         // Errors are passed to the destination.
         undefined,
         () => {
-          // INNER SOURCE COMPLETE
-          // Decrement the active count to ensure that the next time
-          // we try to call `doInnerSub`, the number is accurate.
-          active--;
-          // If we have more values in the buffer, try to process those
-          // Note that this call will increment `active` ahead of the
-          // next conditional, if there were any more inner subscriptions
-          // to start.
-          while (buffer.length && active < concurrent) {
-            const bufferedValue = buffer.shift()!;
-            // Particularly for `expand`, we need to check to see if a scheduler was provided
-            // for when we want to start our inner subscription. Otherwise, we just start
-            // are next inner subscription.
-            innerSubScheduler ? subscriber.add(innerSubScheduler.schedule(() => doInnerSub(bufferedValue))) : doInnerSub(bufferedValue);
+          // Flag that we have completed, so we know to check the buffer
+          // during finalization.
+          innerComplete = true;
+        },
+        () => {
+          // During finalization, if the inner completed (it wasn't errored or
+          // cancelled), then we want to try the next item in the buffer if
+          // there is one.
+          if (innerComplete) {
+            // We have to wrap this in a try/catch because it happens during
+            // finalization, possibly asynchronously, and we want to pass
+            // any errors that happen (like in a projection function) to
+            // the outer Subscriber.
+            try {
+              // INNER SOURCE COMPLETE
+              // Decrement the active count to ensure that the next time
+              // we try to call `doInnerSub`, the number is accurate.
+              active--;
+              // If we have more values in the buffer, try to process those
+              // Note that this call will increment `active` ahead of the
+              // next conditional, if there were any more inner subscriptions
+              // to start.
+              while (buffer.length && active < concurrent) {
+                const bufferedValue = buffer.shift()!;
+                // Particularly for `expand`, we need to check to see if a scheduler was provided
+                // for when we want to start our inner subscription. Otherwise, we just start
+                // are next inner subscription.
+                innerSubScheduler ? subscriber.add(innerSubScheduler.schedule(() => doInnerSub(bufferedValue))) : doInnerSub(bufferedValue);
+              }
+              // Check to see if we can complete, and complete if so.
+              checkComplete();
+            } catch (err) {
+              subscriber.error(err);
+            }
           }
-          // Check to see if we can complete, and complete if so.
-          checkComplete();
         }
       )
     );
@@ -122,8 +145,6 @@ export function mergeInternals<T, R>(
   // Additional teardown (for when the destination is torn down).
   // Other teardown is added implicitly via subscription above.
   return () => {
-    // Ensure buffered values are released.
-    buffer = null!;
     additionalTeardown?.();
   };
 }

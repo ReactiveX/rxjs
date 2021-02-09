@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { of, from, Observable } from 'rxjs';
-import { concatMap, mergeMap, map, take } from 'rxjs/operators';
+import { of, from, Observable, defer } from 'rxjs';
+import { concatMap, mergeMap, map, take, finalize, delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -676,6 +676,40 @@ describe('Observable.prototype.concatMap', () => {
       expectSubscriptions(g.subscriptions).toBe(gsubs);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
+  });
+  
+  it('should finalize before moving to the next observable', () => {
+    const results: any[] = [];
+
+    const create = (n: number) => defer(() => {
+      results.push(`init ${n}`);
+      return of(`next ${n}`).pipe(
+        delay(100, testScheduler),
+        finalize(() => {
+          results.push(`finalized ${n}`)
+        })
+      );
+    });
+
+    of(1, 2, 3).pipe(
+      concatMap(n => create(n))
+    ).subscribe({
+      next: value => results.push(value),
+    });
+
+    testScheduler.flush();
+
+    expect(results).to.deep.equal([
+      'init 1',
+      'next 1',
+      'finalized 1',
+      'init 2',
+      'next 2',
+      'finalized 2',
+      'init 3',
+      'next 3',
+      'finalized 3'
+    ]);
   });
 
   function arrayRepeat(value: string, times: number) {
