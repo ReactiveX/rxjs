@@ -166,12 +166,15 @@ export interface AjaxConfig {
   createXHR?: () => XMLHttpRequest;
 
   /**
-   * An observer for watching the progress of an HTTP request. Will
-   * emit progress events, and completes on the final load event, will error for
+   * An observer for watching the upload progress of an HTTP request. Will
+   * emit progress events, and completes on the final upload load event, will error for
    * any XHR error or timeout.
    *
    * This will **not** error for errored status codes. Rather, it will always _complete_ when
    * the HTTP response comes back.
+   *
+   * @deprecated If you're looking for progress events, please try {@link includeDownloadProgress} and
+   * {@link includeUploadProgress}. This will be removed in version 8.
    */
   progressSubscriber?: PartialObserver<ProgressEvent>;
 
