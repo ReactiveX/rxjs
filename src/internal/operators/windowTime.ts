@@ -90,7 +90,7 @@ export function windowTime<T>(
  * @see {@link windowWhen}
  * @see {@link bufferTime}
  *
- * @param windowTimeSpan The amount of time to fill each window.
+ * @param windowTimeSpan The amount of time, in milliseconds, to fill each window.
  * @param windowCreationInterval The interval at which to start new
  * windows.
  * @param maxWindowSize Max number of
