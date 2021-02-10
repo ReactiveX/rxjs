@@ -67,13 +67,11 @@ export function distinctUntilChanged<T, K>(compare?: (a: K, b: K) => boolean, ke
     let first = true;
     source.subscribe(
       new OperatorSubscriber(subscriber, (value) => {
-        // WARNING: Intentionally terse code for library size.
-        // If this is the first value, set the previous value state, the `1` is to allow it to move to the next
-        // part of the terse conditional. Then we capture `prev` to pass to `compare`, but set `prev` to the result of
-        // either the `keySelector` -- if provided -- or the `value`, *then* it will execute the `compare`.
-        // If `compare` returns truthy, it will move on to call `subscriber.next()`.
-        ((first && ((prev = value), 1)) || !compare!(prev, (prev = keySelector ? keySelector(value) : (value as any)))) &&
+        const key: any = keySelector ? keySelector(value) : value;
+        if (first || !compare!(prev, key)) {
           subscriber.next(value);
+        }
+        prev = key;
         first = false;
       })
     );
