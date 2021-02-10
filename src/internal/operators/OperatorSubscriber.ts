@@ -14,15 +14,15 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
    * and send to the `destination` error handler.
    * @param onComplete Handles completion notification from the subscription. Any errors that occur in
    * this handler are sent to the `destination` error handler.
-   * @param onUnsubscribe Additional teardown logic here. This will only be called on teardown if the
-   * subscriber itself is not already closed. Called before any additional teardown logic is called.
+   * @param onFinalize Additional teardown logic here. This will only be called on teardown if the
+   * subscriber itself is not already closed. This is called after all other teardown logic is executed.
    */
   constructor(
     destination: Subscriber<any>,
     onNext?: (value: T) => void,
     onError?: (err: any) => void,
     onComplete?: () => void,
-    private onUnsubscribe?: () => void
+    private onFinalize?: () => void
   ) {
     // It's important - for performance reasons - that all of this class's
     // members are initialized and that they are always initialized in the same
@@ -73,8 +73,9 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
   }
 
   unsubscribe() {
-    // Execute additional teardown if we have any and we didn't already do so.
-    !this.closed && this.onUnsubscribe?.();
+    const { closed } = this;
     super.unsubscribe();
+    // Execute additional teardown if we have any and we didn't already do so.
+    !closed && this.onFinalize?.();
   }
 }
