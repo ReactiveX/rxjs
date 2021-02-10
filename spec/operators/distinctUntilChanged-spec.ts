@@ -252,6 +252,18 @@ describe('distinctUntilChanged', () => {
     });
   });
 
+  it('should use the keySelector even for the first emit', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--|', { a: 2, b: 4 });
+      const e1subs = '  ^-------!';
+      const expected = '--a-----|';
+      const keySelector = (x: number) => x % 2;
+
+      expectObservable(e1.pipe(distinctUntilChanged(null!, keySelector))).toBe(expected, { a: 2 });
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
   it('should raise error when keySelector throws', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--c--d--e--f--|');
