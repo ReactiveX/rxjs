@@ -1,9 +1,11 @@
 import { Observable } from '../Observable';
-import { ObservableInput, ObservedValueOf, ObservableInputTuple } from '../types';
-import { map } from '../operators/map';
+import { ObservedValueOf, ObservableInputTuple } from '../types';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { innerFrom } from './from';
 import { popResultSelector } from '../util/args';
+import { OperatorSubscriber } from '../operators/OperatorSubscriber';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
+import { createObject } from '../util/createObject';
 
 // forkJoin([a, b, c])
 export function forkJoin(sources: readonly []): Observable<never>;
@@ -124,51 +126,40 @@ export function forkJoin<T>(sourcesObject: T): Observable<{ [K in keyof T]: Obse
  */
 export function forkJoin(...args: any[]): Observable<any> {
   const resultSelector = popResultSelector(args);
-
   const { args: sources, keys } = argsArgArrayOrObject(args);
-
-  if (resultSelector) {
-    // deprecated path.
-    return forkJoinInternal(sources, keys).pipe(map((values: any[]) => resultSelector!(...values)));
-  }
-
-  return forkJoinInternal(sources, keys);
-}
-
-function forkJoinInternal(sources: ObservableInput<any>[], keys: string[] | null): Observable<any> {
-  return new Observable((subscriber) => {
-    const len = sources.length;
-    if (len === 0) {
+  const result = new Observable((subscriber) => {
+    const { length } = sources;
+    if (!length) {
       subscriber.complete();
       return;
     }
-    const values = new Array(len);
-    let completed = 0;
-    let emitted = 0;
-    for (let sourceIndex = 0; sourceIndex < len; sourceIndex++) {
-      const source = innerFrom(sources[sourceIndex]);
+    const values = new Array(length);
+    let remainingCompletions = length;
+    let remainingEmissions = length;
+    for (let sourceIndex = 0; sourceIndex < length; sourceIndex++) {
       let hasValue = false;
-      subscriber.add(
-        source.subscribe({
-          next: (value) => {
+      innerFrom(sources[sourceIndex]).subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (value) => {
             if (!hasValue) {
               hasValue = true;
-              emitted++;
+              remainingEmissions--;
             }
             values[sourceIndex] = value;
           },
-          error: (err) => subscriber.error(err),
-          complete: () => {
-            completed++;
-            if (completed === len || !hasValue) {
-              if (emitted === len) {
-                subscriber.next(keys ? keys.reduce((result, key, i) => (((result as any)[key] = values[i]), result), {}) : values);
+          undefined,
+          () => {
+            if (!--remainingCompletions || !hasValue) {
+              if (!remainingEmissions) {
+                subscriber.next(keys ? createObject(keys, values) : values);
               }
               subscriber.complete();
             }
-          },
-        })
+          }
+        )
       );
     }
   });
+  return resultSelector ? result.pipe(mapOneOrManyArgs(resultSelector)) : result;
 }
