@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
 import { distinctUntilChanged, mergeMap, take } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { of, Observable, Subject } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -297,5 +297,35 @@ describe('distinctUntilChanged', () => {
     });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
+  });
+
+  // This test is to cover a corner case where someone might write
+  // synchronous, reentrant code. At the time this test was authored,
+  // the operator was written in such a way that it would allow
+  // the duplicate non-distinct values to be emitted repeatedly.
+  it('should work properly with reentrant streams', () => {
+    const subject = new Subject<number | undefined>();
+    const results: any[] = [];
+    let count = 0;
+
+    subject.pipe(distinctUntilChanged()).subscribe((n) => {
+      results.push(n);
+
+      // Protect against an infinite loop in this test.
+      // That shouldn't happen.
+      if (++count > 2) {
+        throw new Error('this should have only been hit once');
+      }
+
+      // If we reenter with the same value, it should not
+      // emit again.
+      subject.next(1);
+    });
+
+    // Start with 1.
+    subject.next(1);
+
+    // It should only have emitted one value.
+    expect(results).to.deep.equal([1]);
   });
 });
