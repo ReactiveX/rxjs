@@ -28,6 +28,7 @@ describe('operators/index', () => {
     expect(index.elementAt).to.exist;
     expect(index.every).to.exist;
     expect(index.exhaust).to.exist;
+    expect(index.exhaustAll).to.exist;
     expect(index.exhaustMap).to.exist;
     expect(index.expand).to.exist;
     expect(index.filter).to.exist;

@@ -1,6 +1,6 @@
 /** @prettier */
 import { expect } from 'chai';
-import { exhaust, mergeMap, take } from 'rxjs/operators';
+import { exhaustAll, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, Observable } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -25,7 +25,7 @@ describe('exhaust', () => {
       const e1subs = '  ^---------------------------------!';
       const expected = '---------b---c-------i------------|';
 
-      expectObservable(e1.pipe(exhaust())).toBe(expected);
+      expectObservable(e1.pipe(exhaustAll())).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(x.subscriptions).toBe(xsubs);
       expectSubscriptions(y.subscriptions).toBe(ysubs);
@@ -41,7 +41,7 @@ describe('exhaust', () => {
       const e2subs: string[] = [];
       const expected = '(ab|)';
 
-      expectObservable(of(e1, e2).pipe(exhaust())).toBe(expected);
+      expectObservable(of(e1, e2).pipe(exhaustAll())).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
@@ -53,7 +53,7 @@ describe('exhaust', () => {
       const e1subs = '  (^!)';
       const expected = '#   ';
 
-      expectObservable(e1.pipe(exhaust())).toBe(expected);
+      expectObservable(e1.pipe(exhaustAll())).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -64,7 +64,7 @@ describe('exhaust', () => {
       const e1subs = '  (^!)';
       const expected = '|   ';
 
-      expectObservable(e1.pipe(exhaust())).toBe(expected);
+      expectObservable(e1.pipe(exhaustAll())).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -75,7 +75,7 @@ describe('exhaust', () => {
       const e1subs = '  ^';
       const expected = '-';
 
-      expectObservable(e1.pipe(exhaust())).toBe(expected);
+      expectObservable(e1.pipe(exhaustAll())).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -92,7 +92,7 @@ describe('exhaust', () => {
       const e1subs = '  ^---------------------------------!';
       const expected = '--------a---b---c------g--h---i---|';
 
-      expectObservable(e1.pipe(exhaust())).toBe(expected);
+      expectObservable(e1.pipe(exhaustAll())).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(x.subscriptions).toBe(xsubs);
       expectSubscriptions(y.subscriptions).toBe(ysubs);
@@ -110,7 +110,7 @@ describe('exhaust', () => {
       const unsub = '   ----------------!            ';
       const expected = '--------a---b----            ';
 
-      expectObservable(e1.pipe(exhaust()), unsub).toBe(expected);
+      expectObservable(e1.pipe(exhaustAll()), unsub).toBe(expected);
       expectSubscriptions(x.subscriptions).toBe(xsubs);
       expectSubscriptions(y.subscriptions).toBe(ysubs);
     });
@@ -128,7 +128,7 @@ describe('exhaust', () => {
 
       const result = e1.pipe(
         mergeMap((x) => of(x)),
-        exhaust(),
+        exhaustAll(),
         mergeMap((x) => of(x))
       );
 
@@ -149,7 +149,7 @@ describe('exhaust', () => {
       const e1 = hot('  ---x---y------z----------| ', { x: x, y: y, z: z });
       const expected = '-----a---b-------f--g---h--';
 
-      expectObservable(e1.pipe(exhaust())).toBe(expected);
+      expectObservable(e1.pipe(exhaustAll())).toBe(expected);
       expectSubscriptions(x.subscriptions).toBe(xsubs);
       expectSubscriptions(y.subscriptions).toBe(ysubs);
       expectSubscriptions(z.subscriptions).toBe(zsubs);
@@ -165,7 +165,7 @@ describe('exhaust', () => {
       const e1 = hot('  ------(xy)------------|', { x: x, y: y });
       const expected = '--------a---b---c-----|';
 
-      expectObservable(e1.pipe(exhaust())).toBe(expected);
+      expectObservable(e1.pipe(exhaustAll())).toBe(expected);
       expectSubscriptions(x.subscriptions).toBe(xsubs);
       expectSubscriptions(y.subscriptions).toBe(ysubs);
     });
@@ -180,7 +180,7 @@ describe('exhaust', () => {
       const e1 = hot('  ------x-------y------|       ', { x: x, y: y });
       const expected = '--------a---#                ';
 
-      expectObservable(e1.pipe(exhaust())).toBe(expected);
+      expectObservable(e1.pipe(exhaustAll())).toBe(expected);
       expectSubscriptions(x.subscriptions).toBe(xsubs);
       expectSubscriptions(y.subscriptions).toBe(ysubs);
     });
@@ -195,7 +195,7 @@ describe('exhaust', () => {
       const e1 = hot('  ------x-------y-------#      ', { x: x, y: y });
       const expected = '--------a---b---c-----#      ';
 
-      expectObservable(e1.pipe(exhaust())).toBe(expected);
+      expectObservable(e1.pipe(exhaustAll())).toBe(expected);
       expectSubscriptions(x.subscriptions).toBe(xsubs);
       expectSubscriptions(y.subscriptions).toBe(ysubs);
     });
@@ -207,7 +207,7 @@ describe('exhaust', () => {
       const e1subs = '  ^-----!';
       const expected = '------|';
 
-      expectObservable(e1.pipe(exhaust())).toBe(expected);
+      expectObservable(e1.pipe(exhaustAll())).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -218,7 +218,7 @@ describe('exhaust', () => {
       const e1subs = '  ^';
       const expected = '-';
 
-      expectObservable(e1.pipe(exhaust())).toBe(expected);
+      expectObservable(e1.pipe(exhaustAll())).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -230,7 +230,7 @@ describe('exhaust', () => {
       const e1 = hot('  ------x---------------|', { x: x });
       const expected = '--------a---b---c-----|';
 
-      expectObservable(e1.pipe(exhaust())).toBe(expected);
+      expectObservable(e1.pipe(exhaustAll())).toBe(expected);
       expectSubscriptions(x.subscriptions).toBe(xsubs);
     });
   });
@@ -239,7 +239,7 @@ describe('exhaust', () => {
     const expected = [1];
 
     of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3))
-      .pipe(exhaust())
+      .pipe(exhaustAll())
       .subscribe(
         (x) => {
           expect(x).to.equal(expected.shift());
@@ -254,7 +254,7 @@ describe('exhaust', () => {
 
   it('should handle an observable of promises, where one rejects', (done) => {
     of(Promise.reject(2), Promise.resolve(1))
-      .pipe(exhaust<never | number>())
+      .pipe(exhaustAll<never | number>())
       .subscribe(
         (x) => {
           done(new Error('should not be called'));
@@ -281,7 +281,7 @@ describe('exhaust', () => {
     });
 
     of(synchronousObservable)
-      .pipe(exhaust(), take(3))
+      .pipe(exhaustAll(), take(3))
       .subscribe(() => {
         /* noop */
       });
