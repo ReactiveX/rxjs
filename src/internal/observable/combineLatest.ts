@@ -7,6 +7,7 @@ import { identity } from '../util/identity';
 import { Subscription } from '../Subscription';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { popResultSelector, popScheduler } from '../util/args';
+import { createObject } from '../util/createObject';
 
 // combineLatest([a, b, c])
 export function combineLatest(sources: []): Observable<never>;
@@ -475,24 +476,13 @@ export function combineLatest<O extends ObservableInput<any>, R>(...args: any[])
       scheduler,
       keys
         ? // A handler for scrubbing the array of args into a dictionary.
-          (values: any[]) => {
-            const value: any = {};
-            for (let i = 0; i < values.length; i++) {
-              value[keys![i]] = values[i];
-            }
-            return value;
-          }
+          (values) => createObject(keys, values)
         : // A passthrough to just return the array
           identity
     )
   );
 
-  if (resultSelector) {
-    // Deprecated path: If there's a result selector, just use a map for them.
-    return result.pipe(mapOneOrManyArgs(resultSelector)) as Observable<R>;
-  }
-
-  return result;
+  return resultSelector ? (result.pipe(mapOneOrManyArgs(resultSelector)) as Observable<R>) : result;
 }
 
 /**
