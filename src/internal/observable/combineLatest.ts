@@ -8,6 +8,7 @@ import { Subscription } from '../Subscription';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { popResultSelector, popScheduler } from '../util/args';
 import { createObject } from '../util/createObject';
+import { OperatorSubscriber } from '../operators/OperatorSubscriber';
 
 // combineLatest([a, b, c])
 export function combineLatest(sources: []): Observable<never>;
@@ -485,25 +486,6 @@ export function combineLatest<O extends ObservableInput<any>, R>(...args: any[])
   return resultSelector ? (result.pipe(mapOneOrManyArgs(resultSelector)) as Observable<R>) : result;
 }
 
-/**
- * Because of the current architecture, we need to use a subclassed Subscriber in order to ensure
- * inner firehose observables can teardown in the event of a `take` or the like.
- * @internal
- */
-class CombineLatestSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<T>, protected _next: (value: T) => void, protected shouldComplete: () => boolean) {
-    super(destination);
-  }
-
-  protected _complete() {
-    if (this.shouldComplete()) {
-      super._complete();
-    } else {
-      this.unsubscribe();
-    }
-  }
-}
-
 export function combineLatestInit(
   observables: ObservableInput<any>[],
   scheduler?: SchedulerLike,
@@ -512,44 +494,61 @@ export function combineLatestInit(
   return (subscriber: Subscriber<any>) => {
     // The outer subscription. We're capturing this in a function
     // because we may have to schedule it.
-    const primarySubscribe = () => {
-      const { length } = observables;
-      // A store for the values each observable has emitted so far. We match observable to value on index.
-      const values = new Array(length);
-      // The number of currently active subscriptions, as they complete, we decrement this number to see if
-      // we are all done combining values, so we can complete the result.
-      let active = length;
-      // A temporary array to help figure out if we have gotten at least one value from each observable.
-      const hasValues = observables.map(() => false);
-      let waitingForFirstValues = true;
-      // Called when we're ready to emit a set of values. Note that we copy the values array to prevent mutation.
-      const emit = () => subscriber.next(valueTransform(values.slice()));
-      // The loop to kick off subscription. We're keying everything on index `i` to relate the observables passed
-      // in to the slot in the output array or the key in the array of keys in the output dictionary.
-      for (let i = 0; i < length; i++) {
-        const subscribe = () => {
-          const source = from(observables[i] as ObservableInput<any>, scheduler as any);
-          source.subscribe(
-            new CombineLatestSubscriber(
-              subscriber,
-              (value) => {
-                values[i] = value;
-                if (waitingForFirstValues) {
-                  hasValues[i] = true;
-                  waitingForFirstValues = !hasValues.every(identity);
-                }
-                if (!waitingForFirstValues) {
-                  emit();
-                }
-              },
-              () => --active === 0
-            )
+    maybeSchedule(
+      scheduler,
+      () => {
+        const { length } = observables;
+        // A store for the values each observable has emitted so far. We match observable to value on index.
+        const values = new Array(length);
+        // The number of currently active subscriptions, as they complete, we decrement this number to see if
+        // we are all done combining values, so we can complete the result.
+        let active = length;
+        // The number of inner sources that still haven't emitted the first value
+        // We need to track this because all sources need to emit one value in order
+        // to start emitting values.
+        let remainingFirstValues = length;
+        // The loop to kick off subscription. We're keying everything on index `i` to relate the observables passed
+        // in to the slot in the output array or the key in the array of keys in the output dictionary.
+        for (let i = 0; i < length; i++) {
+          maybeSchedule(
+            scheduler,
+            () => {
+              const source = from(observables[i], scheduler as any);
+              let hasFirstValue = false;
+              source.subscribe(
+                new OperatorSubscriber(
+                  subscriber,
+                  (value) => {
+                    // When we get a value, record it in our set of values.
+                    values[i] = value;
+                    if (!hasFirstValue) {
+                      // If this is our first value, record that.
+                      hasFirstValue = true;
+                      remainingFirstValues--;
+                    }
+                    if (!remainingFirstValues) {
+                      // We're not waiting for any more
+                      // first values, so we can emit!
+                      subscriber.next(valueTransform(values.slice()));
+                    }
+                  },
+                  undefined,
+                  () => {
+                    if (!--active) {
+                      // We only complete the result if we have no more active
+                      // inner observables.
+                      subscriber.complete();
+                    }
+                  }
+                )
+              );
+            },
+            subscriber
           );
-        };
-        maybeSchedule(scheduler, subscribe, subscriber);
-      }
-    };
-    maybeSchedule(scheduler, primarySubscribe, subscriber);
+        }
+      },
+      subscriber
+    );
   };
 }
 
