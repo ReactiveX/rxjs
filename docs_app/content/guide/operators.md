@@ -1,12 +1,12 @@
 # RxJS Operators
 
-RxJS is mostly useful for its *operators*, even though the Observable is the foundation. Operators are the essential pieces that allow complex asynchronous code to be easily composed in a declarative manner.
+RxJS is mostly useful for its _operators_, even though the Observable is the foundation. Operators are the essential pieces that allow complex asynchronous code to be easily composed in a declarative manner.
 
 ## What are operators?
 
 Operators are **functions**. There are two kinds of operators:
 
-**Pipeable Operators** are the kind that can be piped to Observables  using the syntax `observableInstance.pipe(operator())`. These  include, [`filter(...)`](/api/operators/filter),  and  [`mergeMap(...)`](/api/operators/mergeMap). When called, they do not *change* the existing Observable instance. Instead, they return a *new* Observable, whose subscription logic is based on the first Observable.
+**Pipeable Operators** are the kind that can be piped to Observables using the syntax `observableInstance.pipe(operator())`. These include, [`filter(...)`](/api/operators/filter), and [`mergeMap(...)`](/api/operators/mergeMap). When called, they do not _change_ the existing Observable instance. Instead, they return a _new_ Observable, whose subscription logic is based on the first Observable.
 
 <span class="informal">A Pipeable Operator is a function that takes an Observable as its input and returns another Observable. It is a pure operation: the previous Observable stays unmodified.</span>
 
@@ -20,44 +20,41 @@ For example, the operator called [`map`](/api/operators/map) is analogous to the
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-of(1, 2, 3).pipe(map(x => x * x)).subscribe((v) => console.log(`value: ${v}`));
+of(1, 2, 3)
+  .pipe(map((x) => x * x))
+  .subscribe((v) => console.log(`value: ${v}`));
 
 // Logs:
 // value: 1
 // value: 4
 // value: 9
-
 ```
 
-will emit `1`, `4`, `9`.  Another useful operator is [`first`](/api/operators/first):
+will emit `1`, `4`, `9`. Another useful operator is [`first`](/api/operators/first):
 
 ```ts
 import { of } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-of(1, 2, 3).pipe(first()).subscribe((v) => console.log(`value: ${v}`));
+of(1, 2, 3)
+  .pipe(first())
+  .subscribe((v) => console.log(`value: ${v}`));
 
 // Logs:
 // value: 1
 ```
 
-Note that `map` logically must be constructed on the fly, since it must be given the mapping function to.  By contrast, `first` could be a constant, but is nonetheless constructed on the fly.  As a general practice, all operators are constructed, whether they need arguments or not.
+Note that `map` logically must be constructed on the fly, since it must be given the mapping function to. By contrast, `first` could be a constant, but is nonetheless constructed on the fly. As a general practice, all operators are constructed, whether they need arguments or not.
 
 ## Piping
 
-Pipeable operators are functions, so they *could* be used like ordinary functions: `op()(obs)` — but in practice, there tend to be many of them convolved together, and quickly become unreadable: `op4()(op3()(op2()(op1()(obs))))`. For that reason, Observables have a method called `.pipe()` that accomplishes the same thing while being much easier to read:
+Pipeable operators are functions, so they _could_ be used like ordinary functions: `op()(obs)` — but in practice, there tend to be many of them convolved together, and quickly become unreadable: `op4()(op3()(op2()(op1()(obs))))`. For that reason, Observables have a method called `.pipe()` that accomplishes the same thing while being much easier to read:
 
 ```ts
-obs.pipe(
-  op1(),
-  op2(),
-  op3(),
-  op4()
-)
+obs.pipe(op1(), op2(), op3(), op4());
 ```
 
 As a stylistic matter, `op()(obs)` is never used, even if there is only one operator; `obs.pipe(op())` is universally preferred.
-
 
 ## Creation Operators
 
@@ -73,41 +70,36 @@ const observable = interval(1000 /* number of milliseconds */);
 
 See the list of [all static creation operators here](#creation-operators-list).
 
-
 ## Higher-order Observables
 
-Observables most commonly emit ordinary values like strings and numbers, but surprisingly often, it is necessary to handle Observables *of* Observables, so-called higher-order Observables.  For example, imagine you had an Observable emitting strings that were the URLs of files you wanted to see.  The code might look like this:
+Observables most commonly emit ordinary values like strings and numbers, but surprisingly often, it is necessary to handle Observables _of_ Observables, so-called higher-order Observables. For example, imagine you had an Observable emitting strings that were the URLs of files you wanted to see. The code might look like this:
+
+```ts
+const fileObservable = urlObservable.pipe(map((url) => http.get(url)));
+```
+
+`http.get()` returns an Observable (of string or string arrays probably) for each individual URL. Now you have an Observable _of_ Observables, a higher-order Observable.
+
+But how do you work with a higher-order Observable? Typically, by _flattening_: by (somehow) converting a higher-order Observable into an ordinary Observable. For example:
 
 ```ts
 const fileObservable = urlObservable.pipe(
-   map(url => http.get(url)),
+  map((url) => http.get(url)),
+  concatAll()
 );
 ```
 
-`http.get()` returns an Observable (of string or string arrays probably) for each individual URL.  Now you have an Observable *of* Observables, a higher-order Observable.
+The [`concatAll()`](/api/operators/concatAll) operator subscribes to each "inner" Observable that comes out of the "outer" Observable, and copies all the emitted values until that Observable completes, and goes on to the next one. All of the values are in that way concatenated. Other useful flattening operators (called [_join operators_](#join-operators)) are
 
-But how do you work with a higher-order Observable? Typically, by _flattening_: by (somehow) converting a higher-order Observable into an ordinary Observable.  For example:
-
-```ts
-const fileObservable = urlObservable.pipe(
-   map(url => http.get(url)),
-   concatAll(),
-);
-```
-
-The [`concatAll()`](/api/operators/concatAll) operator subscribes to each "inner" Observable that comes out of the "outer" Observable, and copies all the emitted values until that Observable completes, and goes on to the next one.  All of the values are in that way concatenated.  Other useful flattening operators (called [*join operators*](#join-operators)) are
-
-* [`mergeAll()`](/api/operators/mergeAll) — subscribes to each inner Observable as it arrives, then emits each value as it arrives
-* [`switchAll()`](/api/operators/switchAll) — subscribes to the first inner Observable when it arrives, and emits each value as it arrives, but when the next inner Observable arrives, unsubscribes to the previous one, and subscribes to the new one.
-* [`exhaust()`](/api/operators/exhaust) — subscribes to the first inner Observable when it arrives, and emits each value as it arrives, discarding all newly arriving inner Observables until that first one completes, then waits for the next inner Observable.
+- [`mergeAll()`](/api/operators/mergeAll) — subscribes to each inner Observable as it arrives, then emits each value as it arrives
+- [`switchAll()`](/api/operators/switchAll) — subscribes to the first inner Observable when it arrives, and emits each value as it arrives, but when the next inner Observable arrives, unsubscribes to the previous one, and subscribes to the new one.
+- [`exhaust()`](/api/operators/exhaust) — subscribes to the first inner Observable when it arrives, and emits each value as it arrives, discarding all newly arriving inner Observables until that first one completes, then waits for the next inner Observable.
 
 Just as many array libraries combine [`map()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) and [`flat()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat) (or `flatten()`) into a single [`flatMap()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap), there are mapping equivalents of all the RxJS flattening operators [`concatMap()`](/api/operators/concatMap), [`mergeMap()`](/api/operators/mergeMap), [`switchMap()`](/api/operators/switchMap), and [`exhaustMap()`](/api/operators/exhaustMap).
 
-
-
 ## Marble diagrams
 
-To explain how operators work, textual descriptions are often not enough. Many operators are related to time, they may for instance delay, sample, throttle, or debounce value emissions in different ways. Diagrams are often a better tool for that. *Marble Diagrams* are visual representations of how operators work, and include the input Observable(s), the operator and its parameters, and the output Observable.
+To explain how operators work, textual descriptions are often not enough. Many operators are related to time, they may for instance delay, sample, throttle, or debounce value emissions in different ways. Diagrams are often a better tool for that. _Marble Diagrams_ are visual representations of how operators work, and include the input Observable(s), the operator and its parameters, and the output Observable.
 
 <span class="informal">In a marble diagram, time flows to the right, and the diagram describes how values ("marbles") are emitted on the Observable execution.</span>
 
@@ -142,6 +134,7 @@ For a complete overview, see the [references page](/api).
 - [`iif`](/api/index/function/iif)
 
 ### <a id="join-creation-operators"></a>Join Creation Operators
+
 These are Observable creation operators that also have join functionality -- emitting values of multiple source Observables.
 
 - [`combineLatest`](/api/index/function/combineLatest)
@@ -213,6 +206,7 @@ These are Observable creation operators that also have join functionality -- emi
 - [`throttleTime`](/api/operators/throttleTime)
 
 ### <a id="join-operators"></a>Join Operators
+
 Also see the [Join Creation Operators](#join-creation-operators) section above.
 
 - [`combineAll`](/api/operators/combineAll)
@@ -268,8 +262,6 @@ Also see the [Join Creation Operators](#join-creation-operators) section above.
 - [`min`](/api/operators/min)
 - [`reduce`](/api/operators/reduce)
 
-
-
 ## Creating custom operators
 
 ### Use the `pipe()` function to make new operators
@@ -284,8 +276,8 @@ import { filter, map } from 'rxjs/operators';
 
 function discardOddDoubleEven() {
   return pipe(
-    filter(v => ! (v % 2)),
-    map(v => v + v),
+    filter((v) => !(v % 2)),
+    map((v) => v + v)
   );
 }
 ```
@@ -296,41 +288,60 @@ function discardOddDoubleEven() {
 
 It is more complicated, but if you have to write an operator that cannot be made from a combination of existing operators (a rare occurrance), you can write an operator from scratch using the Observable constructor, like this:
 
-
 ```ts
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
-function delay(delayInMillis) {
-  return (observable) => new Observable(observer => {
-    // this function will be called each time this
-    // Observable is subscribed to.
-    const allTimerIDs = new Set();
-    const subscription = observable.subscribe({
-      next(value) {
-        const timerID = setTimeout(() => {
-          observer.next(value);
-          allTimerIDs.delete(timerID);
-        }, delayInMillis);
-        allTimerIDs.add(timerID);
-      },
-      error(err) {
-        observer.error(err);
-      },
-      complete() {
-        observer.complete();
-      }
-    });
-    // the return value is the teardown function,
-    // which will be invoked when the new
-    // Observable is unsubscribed from.
-    return () => {
-      subscription.unsubscribe();
-      allTimerIDs.forEach(timerID => {
-        clearTimeout(timerID);
+function delay<T>(delayInMillis: number) {
+  return (observable: Observable<T>) =>
+    new Observable<T>((subscriber) => {
+      // this function will be called each time this
+      // Observable is subscribed to.
+      const allTimerIDs = new Set();
+      let hasCompleted = false;
+      const subscription = observable.subscribe({
+        next(value) {
+          // Start a timer to delay the next value
+          // from being pushed.
+          const timerID = setTimeout(() => {
+            subscriber.next(value);
+            // after we push the value, we need to clean up the timer timerID
+            allTimerIDs.delete(timerID);
+            // If the source has completed, and there are no more timers running,
+            // we can complete the resulting observable.
+            if (hasCompleted && allTimerIDs.size === 0) {
+              subscriber.complete();
+            }
+          }, delayInMillis);
+
+          allTimerIDs.add(timerID);
+        },
+        error(err) {
+          // We need to make sure we're propagating our errors through.
+          subscriber.error(err);
+        },
+        complete() {
+          hasCompleted = true;
+          // If we still have timers running, we don't want to yet.
+          if (allTimerIDs.size === 0) {
+            subscriber.complete();
+          }
+        },
       });
-    }
-  });
+
+      // Return the teardown logic. This will be invoked when
+      // the result errors, completes, or is unsubscribed.
+      return () => {
+        subscription.unsubscribe();
+        // Clean up our timers.
+        for (const timerID of allTimerIDs) {
+          clearTimeout(timerID);
+        }
+      };
+    });
 }
+
+// Try it out!
+of(1, 2, 3).pipe(delay(1000)).subscribe(console.log);
 ```
 
 Note that you must
@@ -340,4 +351,3 @@ Note that you must
 3. return that teardown function from the function passed to the Observable constructor.
 
 Of course, this is only an example; the `delay()` operator [already exists](/api/operators/delay).
-
