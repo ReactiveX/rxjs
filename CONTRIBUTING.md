@@ -26,8 +26,8 @@ Contents
 ---
 
 - Related documents
-  - [Creating Operators](doc/operator-creation.md)
-  - [Writing Marble Tests](doc/writing-marble-tests.md)
+  - [Creating Operators](docs_app/content/guide/operators.md#creating-custom-operators)
+  - [Writing Marble Tests](docs_app/content/guide/testing/marble-testing.md)
 
 ---
 
