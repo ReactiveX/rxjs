@@ -319,4 +319,26 @@ describe('shareReplay operator', () => {
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 
+  const FinalizationRegistry = (global as any).FinalizationRegistry;
+  if (FinalizationRegistry) {
+
+    it('should not leak the subscriber for sync sources', (done) => {
+      const registry = new FinalizationRegistry((value: any) => {
+        expect(value).to.equal('callback');
+        done();
+      });
+      let callback: (() => void) | undefined = () => { /* noop */ };
+      registry.register(callback, 'callback');
+
+      const shared = of(42).pipe(shareReplay(1));
+      shared.subscribe(callback);
+
+      callback = undefined;
+      global.gc();
+    });
+
+  } else {
+    console.warn(`No support for FinalizationRegistry in Node ${process.version}`);
+  }
+
 });
