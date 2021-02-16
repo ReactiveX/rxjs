@@ -291,10 +291,10 @@ It is more complicated, but if you have to write an operator that cannot be made
 ```ts
 import { Observable, of } from 'rxjs';
 
-function delay(delayInMillis) {
-  return (observable) =>
-    new Observable((subscriber) => {
-      // this function will called each time this
+function delay<T>(delayInMillis: number) {
+  return (observable: Observable<T>) =>
+    new Observable<T>((subscriber) => {
+      // this function will be called each time this
       // Observable is subscribed to.
       const allTimerIDs = new Set();
       let hasCompleted = false;
