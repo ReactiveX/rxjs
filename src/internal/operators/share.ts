@@ -1,6 +1,6 @@
 import { Subject } from '../Subject';
 
-import { MonoTypeOperatorFunction, OperatorFunction, SubjectLike } from '../types';
+import { MonoTypeOperatorFunction, OperatorFunction, SubjectLike, Unsubscribable } from '../types';
 import { Subscription } from '../Subscription';
 import { from } from '../observable/from';
 import { operate } from '../util/lift';
@@ -106,7 +106,7 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
       subject = connector!();
     }
 
-    const castSubscription = subject.subscribe(subscriber);
+    let castSubscription: Unsubscribable | null = subject.subscribe(subscriber);
 
     if (!connection) {
       connection = from(source).subscribe({
@@ -132,7 +132,8 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
 
     return () => {
       refCount--;
-      castSubscription.unsubscribe();
+      castSubscription!.unsubscribe();
+      castSubscription = null;
       if (!refCount && resetOnRefCountZero && !hasErrored && !hasCompleted) {
         const conn = connection;
         reset();
