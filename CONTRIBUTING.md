@@ -27,7 +27,7 @@ Contents
 
 - Related documents
   - [Creating Operators](doc/operator-creation.md)
-  - [Writing Marble Tests](doc/writing-marble-tests.md)
+  - [Writing Marble Tests](docs_app/content/guide/testing/marble-testing.md)
 
 ---
 
