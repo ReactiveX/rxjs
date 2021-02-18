@@ -23,6 +23,6 @@ jobs:
       run: |
         npm install -g npm@latest
         npm ci
-        npm install --no-save typescript@latest
+        npm install --no-save typescript@latest tslib@latest @types/node@latest
         npm run compile
 
