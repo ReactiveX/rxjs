@@ -1,8 +1,8 @@
-import { Observable } from "../Observable";
-import { ReplaySubject } from "../ReplaySubject";
-import { Subscription } from "../Subscription";
-import { MonoTypeOperatorFunction, SchedulerLike } from "../types";
-import { Subscriber } from "../Subscriber";
+import { Observable } from '../Observable';
+import { ReplaySubject } from '../ReplaySubject';
+import { Subscription } from '../Subscription';
+import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
+import { Subscriber } from '../Subscriber';
 
 export interface ShareReplayConfig {
   bufferSize?: number;
@@ -70,7 +70,7 @@ export function shareReplay<T>(
   scheduler?: SchedulerLike
 ): MonoTypeOperatorFunction<T> {
   let config: ShareReplayConfig;
-  if (configOrBufferSize && typeof configOrBufferSize === "object") {
+  if (configOrBufferSize && typeof configOrBufferSize === 'object') {
     config = configOrBufferSize as ShareReplayConfig;
   } else {
     config = {
