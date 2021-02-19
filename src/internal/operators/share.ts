@@ -95,6 +95,8 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
   let hasCompleted = false;
   let hasErrored = false;
 
+  // Used to reset the internal state to a "cold"
+  // state, as though it had never been subscribed to.
   const reset = () => {
     connection = subject = null;
     hasCompleted = hasErrored = false;
@@ -102,17 +104,21 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
 
   return operate((source, subscriber) => {
     refCount++;
-    if (!subject) {
-      subject = connector!();
-    }
 
-    const castSubscription = subject.subscribe(subscriber);
+    // Create the subject if we don't have one yet.
+    subject = subject ?? connector();
+
+    // The following line adds the subscription to the subscriber passed.
+    // Basically, `subscriber === subject.subscribe(subscriber)` is `true`.
+    subject.subscribe(subscriber);
 
     if (!connection) {
       connection = from(source).subscribe({
         next: (value) => subject!.next(value),
         error: (err) => {
           hasErrored = true;
+          // We need to capture the subject before
+          // we reset (if we need to reset).
           const dest = subject!;
           if (resetOnError) {
             reset();
@@ -122,6 +128,8 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
         complete: () => {
           hasCompleted = true;
           const dest = subject!;
+          // We need to capture the subject before
+          // we reset (if we need to reset).
           if (resetOnComplete) {
             reset();
           }
@@ -130,10 +138,16 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
       });
     }
 
+    // This is also added to `subscriber`, technically.
     return () => {
       refCount--;
-      castSubscription.unsubscribe();
-      if (!refCount && resetOnRefCountZero && !hasErrored && !hasCompleted) {
+
+      // If we're resetting on refCount === 0, and it's 0, we only want to do
+      // that on "unsubscribe", really. Resetting on error or completion is a different
+      // configuration.
+      if (resetOnRefCountZero && !refCount && !hasErrored && !hasCompleted) {
+        // We need to capture the connection before
+        // we reset (if we need to reset).
         const conn = connection;
         reset();
         conn?.unsubscribe();
