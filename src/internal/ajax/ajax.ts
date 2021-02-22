@@ -350,19 +350,51 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
 
       const { progressSubscriber, includeDownloadProgress = false, includeUploadProgress = false } = config;
 
+      /**
+       * Wires up an event handler that will emit an error when fired. Used
+       * for timeout and abort events.
+       * @param type The type of event we're treating as an error
+       * @param errorFactory A function that creates the type of error to emit.
+       */
+      const addErrorEvent = (type: string, errorFactory: () => any) => {
+        xhr.addEventListener(type, () => {
+          const error = errorFactory();
+          progressSubscriber?.error?.(error);
+          destination.error(error);
+        });
+      };
+
+      // If the request times out, handle errors appropriately.
+      addErrorEvent('timeout', () => new AjaxTimeoutError(xhr, _request));
+
+      // If the request aborts (due to a network disconnection or the like), handle
+      // it as an error.
+      addErrorEvent('abort', () => new AjaxError('aborted', xhr, _request));
+
+      /**
+       * Creates a response object to emit to the consumer.
+       * @param direction the direction related to the event. Prefixes the event `type` in the response
+       * object. So "upload_" for events related to uploading, and "download_" for events related to
+       * downloading.
+       * @param event the actual event object.
+       */
       const createResponse = (direction: 'upload' | 'download', event: ProgressEvent) =>
         new AjaxResponse<T>(event, xhr, _request, `${direction}_${event.type}`);
 
+      /**
+       * Wires up an event handler that emits a Response object to the consumer, used for
+       * all events that emit responses, loadstart, progress, and load.
+       * Note that download load handling is a bit different below, because it has
+       * more logic it needs to run.
+       * @param target The target, either the XHR itself or the Upload object.
+       * @param type The type of event to wire up
+       * @param direction The "direction", used to prefix the response object that is
+       * emitted to the consumer. (e.g. "upload_" or "download_")
+       */
       const addProgressEvent = (target: any, type: string, direction: 'upload' | 'download') => {
         target.addEventListener(type, (event: ProgressEvent) => {
           destination.next(createResponse(direction, event));
         });
-      };
-
-      xhr.ontimeout = () => {
-        const timeoutError = new AjaxTimeoutError(xhr, _request);
-        progressSubscriber?.error?.(timeoutError);
-        destination.error(timeoutError);
       };
 
       if (includeUploadProgress) {
