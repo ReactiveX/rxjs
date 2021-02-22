@@ -104,12 +104,12 @@ describe('bindNodeCallback', () => {
       const nextSpy = sinon.spy();
       const throwSpy = sinon.spy();
       const completeSpy = sinon.spy();
-      let timeout: number;
+      let timeout: ReturnType<typeof setTimeout>;
       function callback(datum: number, cb: (err: any, n: number) => void) {
         // Need to cb async in order for the unsub to trigger
         timeout = setTimeout(() => {
           cb(null, datum);
-        });
+        }, 0);
       }
       const subscription = bindNodeCallback(callback)(42)
         .subscribe(nextSpy, throwSpy, completeSpy);
