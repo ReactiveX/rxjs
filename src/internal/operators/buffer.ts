@@ -1,6 +1,7 @@
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
 import { operate } from '../util/lift';
+import { noop } from '../util/noop';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -50,12 +51,19 @@ export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T,
 
     // Subscribe to the closing notifier.
     closingNotifier.subscribe(
-      new OperatorSubscriber(subscriber, () => {
-        // Start a new buffer and emit the previous one.
-        const b = currentBuffer;
-        currentBuffer = [];
-        subscriber.next(b);
-      })
+      new OperatorSubscriber(
+        subscriber,
+        () => {
+          // Start a new buffer and emit the previous one.
+          const b = currentBuffer;
+          currentBuffer = [];
+          subscriber.next(b);
+        },
+        // Pass all errors to the consumer.
+        undefined,
+        // Closing notifier should not complete the resulting observable.
+        noop
+      )
     );
 
     return () => {
