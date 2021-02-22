@@ -106,7 +106,7 @@ describe('bindCallback', () => {
       const nextSpy = sinon.spy();
       const throwSpy = sinon.spy();
       const completeSpy = sinon.spy();
-      let timeout: number;
+      let timeout: ReturnType<typeof setTimeout>;
       function callback(datum: number, cb: Function) {
         // Need to cb async in order for the unsub to trigger
         timeout = setTimeout(() => {
