@@ -111,7 +111,7 @@ describe('bindCallback', () => {
         // Need to cb async in order for the unsub to trigger
         timeout = setTimeout(() => {
           cb(datum);
-        });
+        }, 0);
       }
       const subscription = bindCallback(callback)(42)
         .subscribe(nextSpy, throwSpy, completeSpy);
