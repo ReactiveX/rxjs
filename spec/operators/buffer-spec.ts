@@ -49,7 +49,7 @@ describe('Observable.prototype.buffer', () => {
     testScheduler.run(({ hot, expectObservable }) => {
       const a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
       const b = EMPTY;
-      const expected = '|';
+      const expected = '     --------------------------------|';
       expectObservable(a.pipe(buffer(b))).toBe(expected);
     });
   });
@@ -67,7 +67,7 @@ describe('Observable.prototype.buffer', () => {
     testScheduler.run(({ expectObservable }) => {
       const a = NEVER;
       const b = EMPTY;
-      const expected = '|';
+      const expected = '-';
       expectObservable(a.pipe(buffer(b))).toBe(expected);
     });
   });
@@ -139,9 +139,9 @@ describe('Observable.prototype.buffer', () => {
     // Buffshoulder Boundaries onCompletedBoundaries (RxJS 4)
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
-      const subs = '         ^----------------!               ';
+      const subs = '         ^-------------------------------!';
       const b = hot('--------^--a-------b---cd|               ');
-      const expected = '     ---a-------b---cd|               ';
+      const expected = '     ---a-------b---cd---------------|';
       const expectedValues = {
         a: ['3'],
         b: ['4', '5'],
