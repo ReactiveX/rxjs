@@ -17,12 +17,12 @@ import { exec, rm } from 'shelljs';
 import { promisify } from 'util';
 import * as fs from 'fs';
 
-import * as rx_export_src from '../../src/index.js';
-import * as operators_export_src from '../../src/operators/index.js';
+import * as rx_export_src from 'rxjs';
+import * as operators_export_src from 'rxjs/operators';
 
 const writeFileAsync = promisify(fs.writeFile);
 const projectRoot = process.cwd();
-const { version } = require(path.join(projectRoot, 'package.json'));
+const { version } = JSON.parse(fs.readFileSync(path.join(projectRoot, 'package.json'), 'utf-8'));
 
 const execPromise = (cmd: string, cwd = projectRoot) =>
   new Promise((resolve, reject) =>
@@ -34,22 +34,6 @@ const execPromise = (cmd: string, cwd = projectRoot) =>
       }
     }));
 
-enum IMPORT_TYPE {
-  COMMONJS = 'commonjs'
-}
-
-const prepareFixture = async (pkgPath: string, fixturePath: string) => {
-  rm('-rf', path.join(fixturePath, 'node_modules'));
-  rm('-rf', path.join(fixturePath, 'rx.json'));
-  rm('-rf', path.join(fixturePath, 'operators.json'));
-
-  // create snapShot from existing src's export site
-  writeFileAsync(path.join(fixturePath, 'rx.json'), JSON.stringify(Object.keys(rx_export_src)));
-  writeFileAsync(path.join(fixturePath, 'operators.json'), JSON.stringify(Object.keys(operators_export_src)));
-
-  await execPromise(`npm install ${pkgPath} --no-save`, fixturePath);
-};
-
 const main = async () => {
   // create local pkgs
   await execPromise('npm run build:package');
@@ -57,14 +41,17 @@ const main = async () => {
 
   const pkgPath = path.join(projectRoot, `rxjs-${version}.tgz`);
 
-  // install local pkg to each fixture path, run test scripts
-  for (const key in IMPORT_TYPE) {
-    const value = (IMPORT_TYPE as any)[key];
-    const fixturePath = path.join(__dirname, 'fixtures', value);
-
-    await prepareFixture(pkgPath, fixturePath);
-    await execPromise('npm test', fixturePath);
-  }
+  
+  rm('-rf', path.join(__dirname, 'node_modules'));
+  rm('-rf', path.join(__dirname, 'rx.json'));
+  rm('-rf', path.join(__dirname, 'operators.json'));
+  
+  // create snapShot from existing src's export site
+  writeFileAsync(path.join(__dirname, 'rx.json'), JSON.stringify(Object.keys(rx_export_src)));
+  writeFileAsync(path.join(__dirname, 'operators.json'), JSON.stringify(Object.keys(operators_export_src)));
+  
+  await execPromise(`npm install ${pkgPath} --no-save`, __dirname);
+  await execPromise('npm test', __dirname);
 };
 
 main().catch((err) => {
