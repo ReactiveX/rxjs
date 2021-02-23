@@ -286,7 +286,7 @@ export declare function tap<T>(next?: ((value: T) => void) | null, error?: ((err
 
 export declare function throttle<T>(durationSelector: (value: T) => ObservableInput<any>, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
-export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, config?: import("./throttle").ThrottleConfig): MonoTypeOperatorFunction<T>;
+export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, config?: import("./throttle.js").ThrottleConfig): MonoTypeOperatorFunction<T>;
 
 export declare function throwIfEmpty<T>(errorFactory?: () => any): MonoTypeOperatorFunction<T>;
 
