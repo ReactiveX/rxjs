@@ -3,6 +3,7 @@ import { OperatorFunction } from '../types';
 import { Subject } from '../Subject';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
+import { noop } from '../util/noop';
 
 /**
  * Branch out the source Observable values as a nested Observable whenever
@@ -47,45 +48,46 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  */
 export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T, Observable<T>> {
   return operate((source, subscriber) => {
-    let windowSubject = new Subject<T>();
+    let windowSubject: Subject<T> = new Subject<T>();
 
     subscriber.next(windowSubject.asObservable());
 
-    /**
-     * Subscribes to one of our two observables in this operator in the same way,
-     * only allowing for different behaviors with the next handler.
-     * @param sourceOrNotifier The observable to subscribe to.
-     * @param next The next handler to use with the subscription
-     */
-    const windowSubscribe = (sourceOrNotifier: Observable<any>, next: (value: any) => void) =>
-      sourceOrNotifier.subscribe(
-        new OperatorSubscriber(
-          subscriber,
-          next,
-          (err: any) => {
-            windowSubject.error(err);
-            subscriber.error(err);
-          },
-          () => {
-            windowSubject.complete();
-            subscriber.complete();
-          }
-        )
-      );
+    const errorHandler = (err: any) => {
+      windowSubject.error(err);
+      subscriber.error(err);
+    };
 
     // Subscribe to our source
-    windowSubscribe(source, (value) => windowSubject.next(value));
-    // Subscribe to the window boundaries.
-    windowSubscribe(windowBoundaries, () => {
-      windowSubject.complete();
-      subscriber.next((windowSubject = new Subject()));
-    });
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => windowSubject?.next(value),
+        errorHandler,
+        () => {
+          windowSubject.complete();
+          subscriber.complete();
+        }
+      )
+    );
 
-    // Additional teardown. Note that other teardown and post-subscription logic
-    // is encapsulated in the act of a Subscriber subscribing to the observable
-    // during the subscribe call. We can return additional teardown here.
+    // Subscribe to the window boundaries.
+    windowBoundaries.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        () => {
+          windowSubject.complete();
+          subscriber.next((windowSubject = new Subject()));
+        },
+        errorHandler,
+        noop
+      )
+    );
+
     return () => {
-      windowSubject.unsubscribe();
+      // Unsubscribing the subject ensures that anyone who has captured
+      // a reference to this window that tries to use it after it can
+      // no longer get values from the source will get an ObjectUnsubscribedError.
+      windowSubject?.unsubscribe();
       windowSubject = null!;
     };
   });
