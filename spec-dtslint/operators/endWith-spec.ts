@@ -1,6 +1,6 @@
 import { of, asyncScheduler } from 'rxjs';
 import { endWith } from 'rxjs/operators';
-import { A, B, a, b, c, d, e, f, g, h } from '../helpers';
+import { A, B, a, b, c, d, e, f, g, h } from '../helpers.js';
 
 it('should support a scheduler', () => {
   const r = of(a).pipe(endWith(asyncScheduler)); // $ExpectType Observable<A>

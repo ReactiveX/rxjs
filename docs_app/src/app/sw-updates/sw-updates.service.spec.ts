@@ -4,7 +4,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { Subject } from 'rxjs';
 
 import { Logger } from 'app/shared/logger.service';
-import { SwUpdatesService } from './sw-updates.service';
+import { SwUpdatesService } from './sw-updates.service.js';
 
 
 describe('SwUpdatesService', () => {

@@ -1,6 +1,6 @@
 /** @prettier */
 
-import { config } from '../src/internal/config';
+import { config } from '../src/internal/config.js';
 import { expect } from 'chai';
 import { Observable } from 'rxjs';
 import { timeoutProvider } from 'rxjs/internal/scheduler/timeoutProvider';

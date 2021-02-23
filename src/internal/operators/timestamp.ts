@@ -1,6 +1,6 @@
 import { OperatorFunction, TimestampProvider, Timestamp } from '../types';
-import { dateTimestampProvider } from '../scheduler/dateTimestampProvider';
-import { map } from './map';
+import { dateTimestampProvider } from '../scheduler/dateTimestampProvider.js';
+import { map } from './map.js';
 
 /**
  * Attaches a timestamp to each item emitted by an observable indicating when it was emitted

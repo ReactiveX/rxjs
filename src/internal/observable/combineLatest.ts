@@ -1,14 +1,14 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { ObservableInput, SchedulerLike, ObservedValueOf, ObservableInputTuple } from '../types';
-import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
-import { Subscriber } from '../Subscriber';
-import { from } from './from';
-import { identity } from '../util/identity';
-import { Subscription } from '../Subscription';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
-import { popResultSelector, popScheduler } from '../util/args';
-import { createObject } from '../util/createObject';
-import { OperatorSubscriber } from '../operators/OperatorSubscriber';
+import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject.js';
+import { Subscriber } from '../Subscriber.js';
+import { from } from './from.js';
+import { identity } from '../util/identity.js';
+import { Subscription } from '../Subscription.js';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
+import { popResultSelector, popScheduler } from '../util/args.js';
+import { createObject } from '../util/createObject.js';
+import { OperatorSubscriber } from '../operators/OperatorSubscriber.js';
 
 // combineLatest([a, b, c])
 export function combineLatest(sources: []): Observable<never>;

@@ -8,8 +8,8 @@ import {
 import { Component, OnDestroy } from '@angular/core';
 import { ScrollService } from 'app/shared/scroll.service';
 import { Observable } from 'rxjs';
-import { OperatorTreeNode } from './interfaces';
-import { OperatorDecisionTreeService } from './operator-decision-tree.service';
+import { OperatorTreeNode } from './interfaces.js';
+import { OperatorDecisionTreeService } from './operator-decision-tree.service.js';
 
 @Component({
   selector: 'aio-operator-decision-tree',

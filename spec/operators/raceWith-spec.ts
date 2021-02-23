@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 import { EMPTY, NEVER, of, timer, defer, Observable, throwError } from 'rxjs';
 import { raceWith, mergeMap, map, finalize, startWith, take } from 'rxjs/operators';
 

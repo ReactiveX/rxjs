@@ -1,5 +1,5 @@
-import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
+import { Subscriber } from '../Subscriber.js';
+import { Subscription } from '../Subscription.js';
 import { SchedulerAction, SchedulerLike } from '../types';
 
 export function caughtSchedule(

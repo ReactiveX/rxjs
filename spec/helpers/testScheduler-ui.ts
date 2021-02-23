@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import * as chai from 'chai';
 import * as sinonChai from 'sinon-chai';
-import * as marble from './marble-testing';
+import * as marble from './marble-testing.js';
 import { TestScheduler } from 'rxjs/testing';
 
 //tslint:disable:no-var-requires no-require-imports

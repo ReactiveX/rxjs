@@ -1,5 +1,5 @@
 import { using } from 'rxjs';
-import { a$, b$ } from '../helpers';
+import { a$, b$ } from '../helpers.js';
 
 it('should infer with a simple factory', () => {
   const o = using(() => {}, () => a$); // $ExpectType Observable<A>

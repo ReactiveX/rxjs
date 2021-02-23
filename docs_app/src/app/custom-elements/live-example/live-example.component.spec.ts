@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { Component, DebugElement } from '@angular/core';
 import { Location } from '@angular/common';
 
-import { LiveExampleComponent, EmbeddedStackblitzComponent } from './live-example.component';
+import { LiveExampleComponent, EmbeddedStackblitzComponent } from './live-example.component.js';
 
 const defaultTestPath = '/test';
 

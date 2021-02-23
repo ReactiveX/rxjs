@@ -1,8 +1,8 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { ObservableInputTuple } from '../types';
-import { EMPTY } from './empty';
-import { onErrorResumeNext as onErrorResumeNextWith } from '../operators/onErrorResumeNext';
-import { argsOrArgArray } from '../util/argsOrArgArray';
+import { EMPTY } from './empty.js';
+import { onErrorResumeNext as onErrorResumeNextWith } from '../operators/onErrorResumeNext.js';
+import { argsOrArgArray } from '../util/argsOrArgArray.js';
 
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A[number]>;

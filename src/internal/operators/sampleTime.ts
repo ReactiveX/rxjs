@@ -1,7 +1,7 @@
-import { asyncScheduler } from '../scheduler/async';
+import { asyncScheduler } from '../scheduler/async.js';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
-import { sample } from './sample';
-import { interval } from '../observable/interval';
+import { sample } from './sample.js';
+import { interval } from '../observable/interval.js';
 
 /**
  * Emits the most recently emitted value from the source Observable within

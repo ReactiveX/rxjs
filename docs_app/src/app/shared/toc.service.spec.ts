@@ -4,7 +4,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 
 import { ScrollItem, ScrollSpyInfo, ScrollSpyService } from 'app/shared/scroll-spy.service';
-import { TocItem, TocService } from './toc.service';
+import { TocItem, TocService } from './toc.service.js';
 
 describe('TocService', () => {
   let injector: ReflectiveInjector;

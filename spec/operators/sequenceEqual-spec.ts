@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing.js';
 import { sequenceEqual } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 

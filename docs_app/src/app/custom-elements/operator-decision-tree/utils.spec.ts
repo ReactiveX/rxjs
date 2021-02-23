@@ -1,4 +1,4 @@
-import { isInitialDecision, treeIsErrorFree, nodeHasOptions } from './utils';
+import { isInitialDecision, treeIsErrorFree, nodeHasOptions } from './utils.js';
 
 describe('isInitialDecision', () => {
   describe('when it is an initial decision', () => {

@@ -1,6 +1,6 @@
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /**
  *

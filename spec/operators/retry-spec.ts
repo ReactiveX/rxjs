@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 import { retry, map, take, mergeMap, concat, multicast, refCount } from 'rxjs/operators';
 import { Observable, Observer, defer, range, of, throwError, Subject } from 'rxjs';
 

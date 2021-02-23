@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 import { onErrorResumeNext, take, finalize } from 'rxjs/operators';
 import { concat, throwError, of, Observable } from 'rxjs';
-import { asInteropObservable } from '../helpers/interop-helper';
+import { asInteropObservable } from '../helpers/interop-helper.js';
 
 describe('onErrorResumeNext operator', () => {
   it('should continue observable sequence with next observable', () => {

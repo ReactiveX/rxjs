@@ -1,4 +1,4 @@
-import { FirebaseRedirector } from './FirebaseRedirector';
+import { FirebaseRedirector } from './FirebaseRedirector.js';
 
 describe('FirebaseRedirector', () => {
   it('should replace with the first matching redirect', () => {

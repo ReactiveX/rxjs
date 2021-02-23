@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { Logger } from 'app/shared/logger.service';
-import { ElementsLoader } from './elements-loader';
+import { ElementsLoader } from './elements-loader.js';
 
 @Component({
   selector: 'aio-lazy-ce',

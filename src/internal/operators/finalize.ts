@@ -1,5 +1,5 @@
 import { MonoTypeOperatorFunction } from '../types';
-import { operate } from '../util/lift';
+import { operate } from '../util/lift.js';
 
 /**
  * Returns an Observable that mirrors the source Observable, but will call a specified function when

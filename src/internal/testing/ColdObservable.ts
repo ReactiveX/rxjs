@@ -1,12 +1,12 @@
-import { Observable } from '../Observable';
-import { Subscription } from '../Subscription';
-import { Scheduler } from '../Scheduler';
-import { TestMessage } from './TestMessage';
-import { SubscriptionLog } from './SubscriptionLog';
-import { SubscriptionLoggable } from './SubscriptionLoggable';
-import { applyMixins } from '../util/applyMixins';
-import { Subscriber } from '../Subscriber';
-import { observeNotification } from '../Notification';
+import { Observable } from '../Observable.js';
+import { Subscription } from '../Subscription.js';
+import { Scheduler } from '../Scheduler.js';
+import { TestMessage } from './TestMessage.js';
+import { SubscriptionLog } from './SubscriptionLog.js';
+import { SubscriptionLoggable } from './SubscriptionLoggable.js';
+import { applyMixins } from '../util/applyMixins.js';
+import { Subscriber } from '../Subscriber.js';
+import { observeNotification } from '../Notification.js';
 
 export class ColdObservable<T> extends Observable<T> implements SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
@@ -39,7 +39,10 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
       subscriber.add(
         this.scheduler.schedule(
           (state) => {
-            const { message: { notification }, subscriber: destination } = state!;
+            const {
+              message: { notification },
+              subscriber: destination,
+            } = state!;
             observeNotification(notification, destination);
           },
           message.frame,

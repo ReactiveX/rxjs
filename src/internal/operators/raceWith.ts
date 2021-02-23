@@ -1,7 +1,7 @@
 import { OperatorFunction, ObservableInputTuple } from '../types';
-import { raceInit } from '../observable/race';
-import { operate } from '../util/lift';
-import { identity } from '../util/identity';
+import { raceInit } from '../observable/race.js';
+import { operate } from '../util/lift.js';
+import { identity } from '../util/identity.js';
 
 /**
  * Creates an Observable that mirrors the first source Observable to emit a next,

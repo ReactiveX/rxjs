@@ -1,8 +1,8 @@
 import { MonoTypeOperatorFunction, Observer } from '../types';
-import { isFunction } from '../util/isFunction';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
-import { identity } from '../util/identity';
+import { isFunction } from '../util/isFunction.js';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
+import { identity } from '../util/identity.js';
 
 export function tap<T>(observer?: Partial<Observer<T>>): MonoTypeOperatorFunction<T>;
 export function tap<T>(next: (value: T) => void): MonoTypeOperatorFunction<T>;

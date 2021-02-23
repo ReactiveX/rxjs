@@ -1,11 +1,18 @@
 import { OperatorFunction, ObservedValueOf, ObservableInput } from '../types';
-import { mergeMap } from './mergeMap';
-import { isFunction } from '../util/isFunction';
+import { mergeMap } from './mergeMap.js';
+import { isFunction } from '../util/isFunction.js';
 
 /* tslint:disable:max-line-length */
-export function mergeMapTo<O extends ObservableInput<unknown>>(innerObservable: O, concurrent?: number): OperatorFunction<any, ObservedValueOf<O>>;
+export function mergeMapTo<O extends ObservableInput<unknown>>(
+  innerObservable: O,
+  concurrent?: number
+): OperatorFunction<any, ObservedValueOf<O>>;
 /** @deprecated */
-export function mergeMapTo<T, R, O extends ObservableInput<unknown>>(innerObservable: O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R, concurrent?: number): OperatorFunction<T, R>;
+export function mergeMapTo<T, R, O extends ObservableInput<unknown>>(
+  innerObservable: O,
+  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
+  concurrent?: number
+): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**

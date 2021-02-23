@@ -1,6 +1,6 @@
-import { Observable } from '../Observable';
-import { AsyncSubject } from '../AsyncSubject';
-import { ConnectableObservable } from '../observable/ConnectableObservable';
+import { Observable } from '../Observable.js';
+import { AsyncSubject } from '../AsyncSubject.js';
+import { ConnectableObservable } from '../observable/ConnectableObservable.js';
 import { UnaryFunction } from '../types';
 
 /**

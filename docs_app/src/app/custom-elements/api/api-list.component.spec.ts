@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs';
 
-import { ApiListComponent } from './api-list.component';
-import { ApiItem, ApiSection, ApiService } from './api.service';
+import { ApiListComponent } from './api-list.component.js';
+import { ApiItem, ApiSection, ApiService } from './api.service.js';
 import { LocationService } from 'app/shared/location.service';
 import { Logger } from 'app/shared/logger.service';
 import { MockLogger } from 'testing/logger.service';
-import { ApiListModule } from './api-list.module';
+import { ApiListModule } from './api-list.module.js';
 
 describe('ApiListComponent', () => {
   let component: ApiListComponent;

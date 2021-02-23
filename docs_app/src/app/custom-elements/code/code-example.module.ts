@@ -1,8 +1,8 @@
 import { NgModule, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CodeExampleComponent } from './code-example.component';
-import { CodeModule } from './code.module';
-import { WithCustomElementComponent } from '../element-registry';
+import { CodeExampleComponent } from './code-example.component.js';
+import { CodeModule } from './code.module.js';
+import { WithCustomElementComponent } from '../element-registry.js';
 
 @NgModule({
   imports: [ CommonModule, CodeModule ],

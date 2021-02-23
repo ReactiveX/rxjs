@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { skipLast, mergeMap, take } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {skipLast} */
 describe('skipLast operator', () => {

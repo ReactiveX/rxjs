@@ -1,11 +1,11 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { ObservableInput, ObservableInputTuple, SchedulerLike } from '../types';
-import { mergeAll } from '../operators/mergeAll';
-import { internalFromArray } from './fromArray';
-import { argsOrArgArray } from '../util/argsOrArgArray';
-import { innerFrom } from './from';
-import { EMPTY } from './empty';
-import { popNumber, popScheduler } from '../util/args';
+import { mergeAll } from '../operators/mergeAll.js';
+import { internalFromArray } from './fromArray.js';
+import { argsOrArgArray } from '../util/argsOrArgArray.js';
+import { innerFrom } from './from.js';
+import { EMPTY } from './empty.js';
+import { popNumber, popScheduler } from '../util/args.js';
 
 export function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>]): Observable<A[number]>;
 export function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>, number?]): Observable<A[number]>;

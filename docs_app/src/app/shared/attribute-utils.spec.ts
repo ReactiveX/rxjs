@@ -1,6 +1,6 @@
 import { ElementRef } from '@angular/core';
 
-import { AttrMap, getAttrs, getAttrValue, getBoolFromAttribute, boolFromValue } from './attribute-utils';
+import { AttrMap, getAttrs, getAttrValue, getBoolFromAttribute, boolFromValue } from './attribute-utils.js';
 
 describe('Attribute Utilities', () => {
   let testEl: HTMLElement;

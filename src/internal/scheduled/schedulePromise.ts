@@ -1,4 +1,4 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { SchedulerLike } from '../types';
 
 export function schedulePromise<T>(input: PromiseLike<T>, scheduler: SchedulerLike) {

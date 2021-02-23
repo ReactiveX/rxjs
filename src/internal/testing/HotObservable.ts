@@ -1,12 +1,12 @@
-import { Subject } from '../Subject';
-import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { Scheduler } from '../Scheduler';
-import { TestMessage } from './TestMessage';
-import { SubscriptionLog } from './SubscriptionLog';
-import { SubscriptionLoggable } from './SubscriptionLoggable';
-import { applyMixins } from '../util/applyMixins';
-import { observeNotification } from '../Notification';
+import { Subject } from '../Subject.js';
+import { Subscriber } from '../Subscriber.js';
+import { Subscription } from '../Subscription.js';
+import { Scheduler } from '../Scheduler.js';
+import { TestMessage } from './TestMessage.js';
+import { SubscriptionLog } from './SubscriptionLog.js';
+import { SubscriptionLoggable } from './SubscriptionLoggable.js';
+import { applyMixins } from '../util/applyMixins.js';
+import { observeNotification } from '../Notification.js';
 
 export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];

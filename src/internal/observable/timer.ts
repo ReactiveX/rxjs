@@ -1,8 +1,8 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { SchedulerLike } from '../types';
-import { async as asyncScheduler } from '../scheduler/async';
-import { isScheduler } from '../util/isScheduler';
-import { isValidDate } from '../util/isDate';
+import { async as asyncScheduler } from '../scheduler/async.js';
+import { isScheduler } from '../util/isScheduler.js';
+import { isValidDate } from '../util/isDate.js';
 
 /**
  * Creates an observable that will wait for a specified time period, or exact date, before

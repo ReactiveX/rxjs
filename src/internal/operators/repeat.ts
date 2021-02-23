@@ -1,8 +1,8 @@
-import { Subscription } from '../Subscription';
-import { EMPTY } from '../observable/empty';
-import { operate } from '../util/lift';
+import { Subscription } from '../Subscription.js';
+import { EMPTY } from '../observable/empty.js';
+import { operate } from '../util/lift.js';
 import { MonoTypeOperatorFunction } from '../types';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /**
  * Returns an Observable that will resubscribe to the source stream when the source stream completes, at most count times.

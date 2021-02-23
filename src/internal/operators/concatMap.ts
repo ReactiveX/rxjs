@@ -1,6 +1,6 @@
-import { mergeMap } from './mergeMap';
+import { mergeMap } from './mergeMap.js';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { isFunction } from '../util/isFunction';
+import { isFunction } from '../util/isFunction.js';
 
 /* tslint:disable:max-line-length */
 export function concatMap<T, O extends ObservableInput<any>>(

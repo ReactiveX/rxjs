@@ -2,7 +2,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SearchResult } from 'app/search/interfaces';
-import { SearchResultsComponent } from './search-results.component';
+import { SearchResultsComponent } from './search-results.component.js';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;

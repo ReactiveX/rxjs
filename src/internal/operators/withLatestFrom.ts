@@ -1,10 +1,10 @@
 import { OperatorFunction, ObservableInputTuple } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
-import { innerFrom } from '../observable/from';
-import { identity } from '../util/identity';
-import { noop } from '../util/noop';
-import { popResultSelector } from '../util/args';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
+import { innerFrom } from '../observable/from.js';
+import { identity } from '../util/identity.js';
+import { noop } from '../util/noop.js';
+import { popResultSelector } from '../util/args.js';
 
 export function withLatestFrom<T, O extends unknown[]>(...inputs: [...ObservableInputTuple<O>]): OperatorFunction<T, [T, ...O]>;
 

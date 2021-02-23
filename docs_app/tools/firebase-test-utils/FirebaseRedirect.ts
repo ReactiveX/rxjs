@@ -1,5 +1,5 @@
 import * as XRegExp from 'xregexp';
-import { FirebaseGlob } from './FirebaseGlob';
+import { FirebaseGlob } from './FirebaseGlob.js';
 
 export class FirebaseRedirect {
   glob = new FirebaseGlob(this.source);

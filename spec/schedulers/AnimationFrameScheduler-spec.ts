@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { animationFrameScheduler, Subscription, merge } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
 import { intervalProvider } from 'rxjs/internal/scheduler/intervalProvider';
 

@@ -1,7 +1,7 @@
-import { EMPTY } from '../observable/empty';
+import { EMPTY } from '../observable/empty.js';
 import { MonoTypeOperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /**
  * Waits for the source to complete, then emits the last N values from the source,
@@ -9,7 +9,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * ![](takeLast.png)
  *
- * `takeLast` results in an observable that will hold values up to `count` values in memory,
+ * "takeLast` results in an observable that will hold values up to `count" values in memory,
  * until the source completes. It then pushes all values in memory to the consumer, in the
  * order they were received from the source, then notifies the consumer that it is
  * complete.

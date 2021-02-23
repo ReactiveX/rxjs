@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Observable, partition, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 
 /** @test {partition} */
 describe('Observable.prototype.partition', () => {

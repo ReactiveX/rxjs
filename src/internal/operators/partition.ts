@@ -1,6 +1,6 @@
-import { not } from '../util/not';
-import { filter } from './filter';
-import { Observable } from '../Observable';
+import { not } from '../util/not.js';
+import { filter } from './filter.js';
+import { Observable } from '../Observable.js';
 import { UnaryFunction } from '../types';
 
 /**
@@ -49,10 +49,10 @@ import { UnaryFunction } from '../types';
  * the predicate.
  * @deprecated use `partition` static creation function instead
  */
-export function partition<T>(predicate: (value: T, index: number) => boolean,
-                             thisArg?: any): UnaryFunction<Observable<T>, [Observable<T>, Observable<T>]> {
-  return (source: Observable<T>) => [
-    filter(predicate, thisArg)(source),
-    filter(not(predicate, thisArg))(source)
-  ] as [Observable<T>, Observable<T>];
+export function partition<T>(
+  predicate: (value: T, index: number) => boolean,
+  thisArg?: any
+): UnaryFunction<Observable<T>, [Observable<T>, Observable<T>]> {
+  return (source: Observable<T>) =>
+    [filter(predicate, thisArg)(source), filter(not(predicate, thisArg))(source)] as [Observable<T>, Observable<T>];
 }

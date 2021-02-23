@@ -1,6 +1,6 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { SchedulerLike } from '../types';
-import { from } from './from';
+import { from } from './from.js';
 
 /**
  * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.

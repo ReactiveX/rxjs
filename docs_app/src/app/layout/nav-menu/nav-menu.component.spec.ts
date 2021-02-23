@@ -1,4 +1,4 @@
-import { NavMenuComponent } from './nav-menu.component';
+import { NavMenuComponent } from './nav-menu.component.js';
 import { NavigationNode } from 'app/navigation/navigation.service';
 
 // Testing the component class behaviors, independent of its template

@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { SafeSubscriber } from 'rxjs/internal/Subscriber';
 import { Subscriber, Observable, config, of, Observer } from 'rxjs';
-import { asInteropSubscriber } from './helpers/interop-helper';
-import { getRegisteredTeardowns } from './helpers/subscription';
+import { asInteropSubscriber } from './helpers/interop-helper.js';
+import { getRegisteredTeardowns } from './helpers/subscription.js';
 
 /** @test {Subscriber} */
 describe('SafeSubscriber', () => {

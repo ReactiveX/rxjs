@@ -1,4 +1,4 @@
-import { distinctUntilChanged } from './distinctUntilChanged';
+import { distinctUntilChanged } from './distinctUntilChanged.js';
 import { MonoTypeOperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
@@ -75,6 +75,9 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  * @return A function that returns an Observable that emits items from the
  * source Observable with distinct values based on the key specified.
  */
-export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare?: (x: T[K], y: T[K]) => boolean): MonoTypeOperatorFunction<T> {
-  return distinctUntilChanged((x: T, y: T) => compare ? compare(x[key], y[key]) : x[key] === y[key]);
+export function distinctUntilKeyChanged<T, K extends keyof T>(
+  key: K,
+  compare?: (x: T[K], y: T[K]) => boolean
+): MonoTypeOperatorFunction<T> {
+  return distinctUntilChanged((x: T, y: T) => (compare ? compare(x[key], y[key]) : x[key] === y[key]));
 }

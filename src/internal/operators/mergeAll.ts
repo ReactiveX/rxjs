@@ -1,5 +1,5 @@
-import { mergeMap } from './mergeMap';
-import { identity } from '../util/identity';
+import { mergeMap } from './mergeMap.js';
+import { identity } from '../util/identity.js';
 import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
 
 /**

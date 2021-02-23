@@ -1,6 +1,6 @@
-import { async } from '../scheduler/async';
-import { audit } from './audit';
-import { timer } from '../observable/timer';
+import { async } from '../scheduler/async.js';
+import { audit } from './audit.js';
+import { timer } from '../observable/timer.js';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 
 /**

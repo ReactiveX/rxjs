@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
 import { throwError } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {throwError} */
 describe('throwError', () => {

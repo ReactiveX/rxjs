@@ -1,11 +1,11 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { ObservedValueOf, ObservableInputTuple, ObservableInput } from '../types';
-import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
-import { innerFrom } from './from';
-import { popResultSelector } from '../util/args';
-import { OperatorSubscriber } from '../operators/OperatorSubscriber';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
-import { createObject } from '../util/createObject';
+import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject.js';
+import { innerFrom } from './from.js';
+import { popResultSelector } from '../util/args.js';
+import { OperatorSubscriber } from '../operators/OperatorSubscriber.js';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
+import { createObject } from '../util/createObject.js';
 
 export function forkJoin(scheduler: null | undefined): Observable<never>;
 

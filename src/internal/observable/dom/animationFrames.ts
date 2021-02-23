@@ -1,8 +1,8 @@
-import { Observable } from '../../Observable';
-import { Subscription } from '../../Subscription';
-import { TimestampProvider } from "../../types";
-import { performanceTimestampProvider } from '../../scheduler/performanceTimestampProvider';
-import { animationFrameProvider } from '../../scheduler/animationFrameProvider';
+import { Observable } from '../../Observable.js';
+import { Subscription } from '../../Subscription.js';
+import { TimestampProvider } from '../../types';
+import { performanceTimestampProvider } from '../../scheduler/performanceTimestampProvider.js';
+import { animationFrameProvider } from '../../scheduler/animationFrameProvider.js';
 
 /**
  * An observable of animation frames
@@ -86,7 +86,7 @@ export function animationFrames(timestampProvider?: TimestampProvider) {
  */
 function animationFramesFactory(timestampProvider?: TimestampProvider) {
   const { schedule } = animationFrameProvider;
-  return new Observable<{ timestamp: number, elapsed: number }>(subscriber => {
+  return new Observable<{ timestamp: number; elapsed: number }>((subscriber) => {
     const subscription = new Subscription();
     // If no timestamp provider is specified, use performance.now() - as it
     // will return timestamps 'compatible' with those passed to the run
@@ -108,7 +108,7 @@ function animationFramesFactory(timestampProvider?: TimestampProvider) {
       const now = provider.now();
       subscriber.next({
         timestamp: timestampProvider ? now : timestamp,
-        elapsed: now - start
+        elapsed: now - start,
       });
       if (!subscriber.closed) {
         subscription.add(schedule(run));

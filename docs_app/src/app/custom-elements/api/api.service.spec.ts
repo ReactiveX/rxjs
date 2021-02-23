@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { Logger } from 'app/shared/logger.service';
 
-import { ApiService } from './api.service';
+import { ApiService } from './api.service.js';
 
 describe('ApiService', () => {
 

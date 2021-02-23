@@ -1,8 +1,8 @@
-import { not } from '../util/not';
-import { filter } from '../operators/filter';
+import { not } from '../util/not.js';
+import { filter } from '../operators/filter.js';
 import { ObservableInput } from '../types';
-import { Observable } from '../Observable';
-import { innerFrom } from './from';
+import { Observable } from '../Observable.js';
+import { innerFrom } from './from.js';
 
 export function partition<T, U extends T, A>(
   source: ObservableInput<T>,

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { Contributor } from './contributors.model';
+import { Contributor } from './contributors.model.js';
 import { CONTENT_URL_PREFIX } from 'app/documents/document.service';
 
 @Component({

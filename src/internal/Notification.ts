@@ -1,9 +1,9 @@
 import { PartialObserver, ObservableNotification, CompleteNotification, NextNotification, ErrorNotification } from './types';
-import { Observable } from './Observable';
-import { EMPTY } from './observable/empty';
-import { of } from './observable/of';
-import { throwError } from './observable/throwError';
-import { isFunction } from './util/isFunction';
+import { Observable } from './Observable.js';
+import { EMPTY } from './observable/empty.js';
+import { of } from './observable/of.js';
+import { throwError } from './observable/throwError.js';
+import { isFunction } from './util/isFunction.js';
 
 // TODO: When this enum is removed, replace it with a type alias. See #4556.
 /**

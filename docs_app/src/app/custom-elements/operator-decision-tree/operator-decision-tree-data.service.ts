@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { OperatorDecisionTree } from './interfaces';
+import { OperatorDecisionTree } from './interfaces.js';
 
 @Injectable()
 export class OperatorDecisionTreeDataService {

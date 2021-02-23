@@ -1,6 +1,6 @@
 import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
-import { switchMap } from './switchMap';
-import { identity } from '../util/identity';
+import { switchMap } from './switchMap.js';
+import { identity } from '../util/identity.js';
 
 /**
  * Converts a higher-order Observable into a first-order Observable

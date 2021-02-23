@@ -1,5 +1,5 @@
 import { ErrorHandler, Inject, Injectable } from '@angular/core';
-import { WindowToken } from './window';
+import { WindowToken } from './window.js';
 
 /**
  * Extend the default error handling to report errors to an external service - e.g Google Analytics.

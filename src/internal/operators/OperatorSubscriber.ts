@@ -1,4 +1,4 @@
-import { Subscriber } from '../Subscriber';
+import { Subscriber } from '../Subscriber.js';
 
 /**
  * A generic helper for allowing operators to be created with a Subscriber and

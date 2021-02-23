@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { distinctUntilKeyChanged, mergeMap, map, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, Observable } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {distinctUntilKeyChanged} */
 describe('distinctUntilKeyChanged', () => {

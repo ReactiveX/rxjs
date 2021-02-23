@@ -2,9 +2,9 @@ import { ReflectiveInjector } from '@angular/core';
 
 import { of } from 'rxjs';
 
-import { ContributorGroup } from './contributors.model';
-import { ContributorListComponent } from './contributor-list.component';
-import { ContributorService } from './contributor.service';
+import { ContributorGroup } from './contributors.model.js';
+import { ContributorListComponent } from './contributor-list.component.js';
+import { ContributorService } from './contributor.service.js';
 import { LocationService } from 'app/shared/location.service';
 
 // Testing the component class behaviors, independent of its template

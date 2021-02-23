@@ -1,6 +1,6 @@
 /* tslint:disable component-selector */
 import { Component, HostBinding, ElementRef, ViewChild, Input, AfterViewInit } from '@angular/core';
-import { CodeComponent } from './code.component';
+import { CodeComponent } from './code.component.js';
 
 /**
  * An embeddable code block that displays nicely formatted code.

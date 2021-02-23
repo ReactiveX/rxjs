@@ -1,10 +1,10 @@
-import { Subject } from '../Subject';
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { refCount as higherOrderRefCount } from '../operators/refCount';
-import { OperatorSubscriber } from '../operators/OperatorSubscriber';
-import { hasLift } from '../util/lift';
+import { Subject } from '../Subject.js';
+import { Observable } from '../Observable.js';
+import { Subscriber } from '../Subscriber.js';
+import { Subscription } from '../Subscription.js';
+import { refCount as higherOrderRefCount } from '../operators/refCount.js';
+import { OperatorSubscriber } from '../operators/OperatorSubscriber.js';
+import { hasLift } from '../util/lift.js';
 
 /**
  * @class ConnectableObservable<T>

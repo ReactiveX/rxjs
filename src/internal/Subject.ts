@@ -1,10 +1,10 @@
-import { Operator } from './Operator';
-import { Observable } from './Observable';
-import { Subscriber } from './Subscriber';
-import { Subscription, EMPTY_SUBSCRIPTION } from './Subscription';
+import { Operator } from './Operator.js';
+import { Observable } from './Observable.js';
+import { Subscriber } from './Subscriber.js';
+import { Subscription, EMPTY_SUBSCRIPTION } from './Subscription.js';
 import { Observer, SubscriptionLike, TeardownLogic } from './types';
-import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
-import { arrRemove } from './util/arrRemove';
+import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError.js';
+import { arrRemove } from './util/arrRemove.js';
 
 /**
  * A Subject is a special type of Observable that allows values to be

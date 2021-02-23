@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { multicast, tap, mergeMapTo, takeLast, mergeMap, refCount, retry, repeat, switchMap, map, take } from 'rxjs/operators';
 import { Subject, ReplaySubject, of, ConnectableObservable, zip, concat, Subscription, Observable, from } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing.js';
 
 declare const rxTestScheduler: TestScheduler;
 

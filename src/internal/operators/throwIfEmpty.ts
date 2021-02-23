@@ -1,7 +1,7 @@
-import { EmptyError } from '../util/EmptyError';
+import { EmptyError } from '../util/EmptyError.js';
 import { MonoTypeOperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /**
  * If the source observable completes without emitting a value, it will emit

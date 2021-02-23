@@ -1,10 +1,10 @@
 /** @prettier */
 import { expect } from 'chai';
-import { lowerCaseO } from '../helpers/test-helper';
+import { lowerCaseO } from '../helpers/test-helper.js';
 import { withLatestFrom, mergeMap, delay } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {withLatestFrom} */
 describe('withLatestFrom', () => {

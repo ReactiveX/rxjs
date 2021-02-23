@@ -1,6 +1,6 @@
 import { combineLatest } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {combineLatest} */
 describe('combineLatest', () => {

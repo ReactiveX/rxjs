@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { single, mergeMap, tap } from 'rxjs/operators';
 import { of, EmptyError, SequenceError, NotFoundError, Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {single} */
 describe('single operator', () => {

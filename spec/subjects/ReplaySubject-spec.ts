@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { ReplaySubject, Subject, of } from 'rxjs';
 import { mergeMapTo, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {ReplaySubject} */
 describe('ReplaySubject', () => {

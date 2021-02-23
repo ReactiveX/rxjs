@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
-import { SubscriptionLog } from '../../src/internal/testing/SubscriptionLog';
-import { ColdObservable } from '../../src/internal/testing/ColdObservable';
-import { HotObservable } from '../../src/internal/testing/HotObservable';
-import { observableToBeFn, subscriptionLogsToBeFn } from '../../src/internal/testing/TestScheduler';
+import { SubscriptionLog } from '../../src/internal/testing/SubscriptionLog.js';
+import { ColdObservable } from '../../src/internal/testing/ColdObservable.js';
+import { HotObservable } from '../../src/internal/testing/HotObservable.js';
+import { observableToBeFn, subscriptionLogsToBeFn } from '../../src/internal/testing/TestScheduler.js';
 
 declare const global: any;
 

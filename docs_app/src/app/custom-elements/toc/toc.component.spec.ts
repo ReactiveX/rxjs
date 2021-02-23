@@ -5,7 +5,7 @@ import { asapScheduler as asap, BehaviorSubject } from 'rxjs';
 
 import { ScrollService } from 'app/shared/scroll.service';
 import { TocItem, TocService } from 'app/shared/toc.service';
-import { TocComponent } from './toc.component';
+import { TocComponent } from './toc.component.js';
 
 describe('TocComponent', () => {
   let tocComponentDe: DebugElement;

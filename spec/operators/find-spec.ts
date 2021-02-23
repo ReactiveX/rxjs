@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { find, mergeMap, delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 import { of, Observable, from } from 'rxjs';
 
 /** @test {find} */

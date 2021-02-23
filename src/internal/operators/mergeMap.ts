@@ -1,9 +1,9 @@
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { map } from './map';
-import { innerFrom } from '../observable/from';
-import { operate } from '../util/lift';
-import { mergeInternals } from './mergeInternals';
-import { isFunction } from '../util/isFunction';
+import { map } from './map.js';
+import { innerFrom } from '../observable/from.js';
+import { operate } from '../util/lift.js';
+import { mergeInternals } from './mergeInternals.js';
+import { isFunction } from '../util/isFunction.js';
 
 /* tslint:disable:max-line-length */
 export function mergeMap<T, O extends ObservableInput<any>>(

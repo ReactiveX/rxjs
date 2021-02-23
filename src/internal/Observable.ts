@@ -1,14 +1,14 @@
 /**
  * @prettier
  */
-import { Operator } from './Operator';
-import { SafeSubscriber, Subscriber } from './Subscriber';
-import { isSubscription, Subscription } from './Subscription';
+import { Operator } from './Operator.js';
+import { SafeSubscriber, Subscriber } from './Subscriber.js';
+import { isSubscription, Subscription } from './Subscription.js';
 import { TeardownLogic, OperatorFunction, Subscribable, Observer } from './types';
-import { observable as Symbol_observable } from './symbol/observable';
-import { pipeFromArray } from './util/pipe';
-import { config } from './config';
-import { isFunction } from './util/isFunction';
+import { observable as Symbol_observable } from './symbol/observable.js';
+import { pipeFromArray } from './util/pipe.js';
+import { config } from './config.js';
+import { isFunction } from './util/isFunction.js';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block

@@ -1,4 +1,4 @@
-import { FirebaseGlob } from './FirebaseGlob';
+import { FirebaseGlob } from './FirebaseGlob.js';
 describe('FirebaseGlob', () => {
 
   describe('test', () => {

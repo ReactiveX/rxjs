@@ -2,9 +2,9 @@
 import { expect } from 'chai';
 import { finalize, map, share, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 import { of, timer, interval, NEVER, Observable } from 'rxjs';
-import { asInteropObservable } from '../helpers/interop-helper';
+import { asInteropObservable } from '../helpers/interop-helper.js';
 
 /** @test {finalize} */
 describe('finalize', () => {

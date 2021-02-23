@@ -1,6 +1,6 @@
-import { zip as zipStatic } from '../observable/zip';
+import { zip as zipStatic } from '../observable/zip.js';
 import { ObservableInput, ObservableInputTuple, OperatorFunction, Cons } from '../types';
-import { operate } from '../util/lift';
+import { operate } from '../util/lift.js';
 
 /** @deprecated Deprecated use {@link zipWith} */
 export function zip<T, A extends readonly unknown[]>(otherInputs: [...ObservableInputTuple<A>]): OperatorFunction<T, Cons<T, A>>;

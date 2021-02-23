@@ -1,5 +1,5 @@
 import { ObservableInputTuple, OperatorFunction, Cons } from '../types';
-import { combineLatest } from './combineLatest';
+import { combineLatest } from './combineLatest.js';
 
 /**
  * Create an observable that combines the latest values from all passed observables and the source

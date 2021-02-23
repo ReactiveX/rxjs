@@ -1,5 +1,5 @@
-import { Observable } from '../Observable';
-import { noop } from '../util/noop';
+import { Observable } from '../Observable.js';
+import { noop } from '../util/noop.js';
 
 /**
  * An Observable that emits no items to the Observer and never completes.
@@ -36,6 +36,6 @@ export const NEVER = new Observable<never>(noop);
 /**
  * @deprecated Deprecated in favor of using {@link NEVER} constant.
  */
-export function never () {
+export function never() {
   return NEVER;
 }

@@ -1,7 +1,7 @@
 /* @prettier */
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { SchedulerLike } from '../types';
-import { bindCallbackInternals } from './bindCallbackInternals';
+import { bindCallbackInternals } from './bindCallbackInternals.js';
 
 /** @deprecated resultSelector is deprecated, pipe to map instead */
 export function bindNodeCallback(

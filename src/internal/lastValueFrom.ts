@@ -1,5 +1,5 @@
-import { Observable } from './Observable';
-import { EmptyError } from './util/EmptyError';
+import { Observable } from './Observable.js';
+import { EmptyError } from './util/EmptyError.js';
 
 /**
  * Converts an observable to a promise by subscribing to the observable,
@@ -46,7 +46,7 @@ export function lastValueFrom<T>(source: Observable<T>) {
     let _hasValue = false;
     let _value: T;
     source.subscribe({
-      next: value => {
+      next: (value) => {
         _value = value;
         _hasValue = true;
       },

@@ -1,4 +1,4 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { SchedulerLike } from '../types';
 
 /**
@@ -25,7 +25,7 @@ import { SchedulerLike } from '../types';
  * // Complete!
  * ```
  */
-export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
+export const EMPTY = new Observable<never>((subscriber) => subscriber.complete());
 
 /**
  * Creates an Observable that emits no items to the Observer and immediately
@@ -89,5 +89,5 @@ export function empty(scheduler?: SchedulerLike) {
 }
 
 function emptyScheduled(scheduler: SchedulerLike) {
-  return new Observable<never>(subscriber => scheduler.schedule(() => subscriber.complete()));
+  return new Observable<never>((subscriber) => scheduler.schedule(() => subscriber.complete()));
 }

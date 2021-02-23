@@ -1,6 +1,6 @@
-import { OperatorSubscriber } from '../../operators/OperatorSubscriber';
-import { Observable } from '../../Observable';
-import { innerFrom } from '../../observable/from';
+import { OperatorSubscriber } from '../../operators/OperatorSubscriber.js';
+import { Observable } from '../../Observable.js';
+import { innerFrom } from '../../observable/from.js';
 import { ObservableInput } from '../../types';
 
 export function fromFetch<T>(

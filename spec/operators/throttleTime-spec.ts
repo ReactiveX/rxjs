@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { throttleTime, take, map, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, concat, timer } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {throttleTime} */
 describe('throttleTime operator', () => {

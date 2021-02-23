@@ -1,9 +1,9 @@
-import { Subject, AnonymousSubject } from '../../Subject';
-import { Subscriber } from '../../Subscriber';
-import { Observable } from '../../Observable';
-import { Subscription } from '../../Subscription';
-import { Operator } from '../../Operator';
-import { ReplaySubject } from '../../ReplaySubject';
+import { Subject, AnonymousSubject } from '../../Subject.js';
+import { Subscriber } from '../../Subscriber.js';
+import { Observable } from '../../Observable.js';
+import { Subscription } from '../../Subscription.js';
+import { Operator } from '../../Operator.js';
+import { ReplaySubject } from '../../ReplaySubject.js';
 import { Observer, NextObserver } from '../../types';
 
 /**
@@ -134,7 +134,7 @@ export interface WebSocketSubjectConfig<T> {
    * WebSocket impl in Node (WebSocket is a DOM API), or for mocking a WebSocket
    * for testing purposes
    */
-  WebSocketCtor?: { new(url: string, protocols?: string|string[]): WebSocket };
+  WebSocketCtor?: { new (url: string, protocols?: string | string[]): WebSocket };
   /** Sets the `binaryType` property of the underlying WebSocket. */
   binaryType?: 'blob' | 'arraybuffer';
 }
@@ -151,7 +151,6 @@ const WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT =
 export type WebSocketMessage = string | ArrayBuffer | Blob | ArrayBufferView;
 
 export class WebSocketSubject<T> extends AnonymousSubject<T> {
-
   // @ts-ignore: Property has no initializer and is not definitely assigned
   private _config: WebSocketSubjectConfig<T>;
 
@@ -167,7 +166,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       this.destination = destination;
       this.source = urlConfigOrSource as Observable<T>;
     } else {
-      const config = this._config = { ...DEFAULT_WEBSOCKET_CONFIG };
+      const config = (this._config = { ...DEFAULT_WEBSOCKET_CONFIG });
       this._output = new Subject<T>();
       if (typeof urlConfigOrSource === 'string') {
         config.url = urlConfigOrSource;
@@ -230,17 +229,19 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
         observer.error(err);
       }
 
-      const subscription = self.subscribe(x => {
-        try {
-          if (messageFilter(x)) {
-            observer.next(x);
+      const subscription = self.subscribe(
+        (x) => {
+          try {
+            if (messageFilter(x)) {
+              observer.next(x);
+            }
+          } catch (err) {
+            observer.error(err);
           }
-        } catch (err) {
-          observer.error(err);
-        }
-      },
-        err => observer.error(err),
-        () => observer.complete());
+        },
+        (err) => observer.error(err),
+        () => observer.complete()
+      );
 
       return () => {
         try {
@@ -259,9 +260,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
     let socket: WebSocket | null = null;
     try {
-      socket = protocol ?
-        new WebSocketCtor!(url, protocol) :
-        new WebSocketCtor!(url);
+      socket = protocol ? new WebSocketCtor!(url, protocol) : new WebSocketCtor!(url);
       this._socket = socket;
       if (binaryType) {
         this._socket.binaryType = binaryType;
@@ -298,7 +297,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
             try {
               const { serializer } = this._config;
               socket!.send(serializer!(x!));
-              } catch (e) {
+            } catch (e) {
               this.destination!.error(e);
             }
           }

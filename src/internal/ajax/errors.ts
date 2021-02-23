@@ -1,6 +1,6 @@
 import { AjaxRequest } from './types';
-import { getXHRResponse } from './getXHRResponse';
-import { createErrorClass } from '../util/createErrorClass';
+import { getXHRResponse } from './getXHRResponse.js';
+import { createErrorClass } from '../util/createErrorClass.js';
 
 /**
  * A normalized AJAX error.

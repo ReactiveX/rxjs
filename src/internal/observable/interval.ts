@@ -1,7 +1,7 @@
-import { Observable } from '../Observable';
-import { asyncScheduler } from '../scheduler/async';
+import { Observable } from '../Observable.js';
+import { asyncScheduler } from '../scheduler/async.js';
 import { SchedulerLike } from '../types';
-import { timer } from './timer';
+import { timer } from './timer.js';
 
 /**
  * Creates an Observable that emits sequential numbers every specified

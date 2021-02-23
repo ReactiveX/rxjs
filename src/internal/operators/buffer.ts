@@ -1,8 +1,8 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { noop } from '../util/noop';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift.js';
+import { noop } from '../util/noop.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /**
  * Buffers the source Observable values until `closingNotifier` emits.

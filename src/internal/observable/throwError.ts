@@ -1,7 +1,7 @@
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable.js';
+import { Subscriber } from '../Subscriber.js';
 import { SchedulerLike } from '../types';
-import { isFunction } from '../util/isFunction';
+import { isFunction } from '../util/isFunction.js';
 
 /**
  * Creates an observable that will create an error instance and push it to the consumer as an error

@@ -1,8 +1,8 @@
 import { ObservableInputTuple, OperatorFunction, SchedulerLike } from '../types';
-import { operate } from '../util/lift';
-import { concatAll } from './concatAll';
-import { internalFromArray } from '../observable/fromArray';
-import { popScheduler } from '../util/args';
+import { operate } from '../util/lift.js';
+import { concatAll } from './concatAll.js';
+import { internalFromArray } from '../observable/fromArray.js';
+import { popScheduler } from '../util/args.js';
 
 /** @deprecated remove in v8. Use {@link concatWith} */
 export function concat<T, A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;

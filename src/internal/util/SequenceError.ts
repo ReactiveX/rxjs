@@ -1,4 +1,4 @@
-import { createErrorClass } from './createErrorClass';
+import { createErrorClass } from './createErrorClass.js';
 
 export interface SequenceError extends Error {}
 

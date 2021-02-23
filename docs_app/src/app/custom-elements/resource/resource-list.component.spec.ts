@@ -3,10 +3,10 @@ import { PlatformLocation } from '@angular/common';
 
 import { of } from 'rxjs';
 
-import { ResourceListComponent } from './resource-list.component';
-import { ResourceService } from './resource.service';
+import { ResourceListComponent } from './resource-list.component.js';
+import { ResourceService } from './resource.service.js';
 
-import { Category } from './resource.model';
+import { Category } from './resource.model.js';
 
 // Testing the component class behaviors, independent of its template
 // Let e2e tests verify how it displays.

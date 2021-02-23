@@ -1,5 +1,5 @@
 import { ObservableInputTuple, OperatorFunction } from '../types';
-import { merge } from './merge';
+import { merge } from './merge.js';
 
 /**
  * Merge the values from all observables to an single observable result.

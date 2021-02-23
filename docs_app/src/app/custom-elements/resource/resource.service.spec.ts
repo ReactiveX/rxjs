@@ -2,8 +2,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { ResourceService } from './resource.service';
-import { Category } from './resource.model';
+import { ResourceService } from './resource.service.js';
+import { Category } from './resource.model.js';
 
 describe('ResourceService', () => {
 

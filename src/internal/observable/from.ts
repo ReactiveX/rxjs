@@ -1,18 +1,18 @@
-import { isArrayLike } from '../util/isArrayLike';
-import { isPromise } from '../util/isPromise';
-import { observable as Symbol_observable } from '../symbol/observable';
-import { Subscriber } from '../Subscriber';
+import { isArrayLike } from '../util/isArrayLike.js';
+import { isPromise } from '../util/isPromise.js';
+import { observable as Symbol_observable } from '../symbol/observable.js';
+import { Subscriber } from '../Subscriber.js';
 
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { ObservableInput, SchedulerLike, ObservedValueOf, ReadableStreamLike } from '../types';
-import { scheduled } from '../scheduled/scheduled';
-import { isFunction } from '../util/isFunction';
-import { reportUnhandledError } from '../util/reportUnhandledError';
-import { isInteropObservable } from '../util/isInteropObservable';
-import { isAsyncIterable } from '../util/isAsyncIterable';
-import { createInvalidObservableTypeError } from '../util/throwUnobservableError';
-import { isIterable } from '../util/isIterable';
-import { isReadableStreamLike, readableStreamLikeToAsyncGenerator } from '../util/isReadableStreamLike';
+import { scheduled } from '../scheduled/scheduled.js';
+import { isFunction } from '../util/isFunction.js';
+import { reportUnhandledError } from '../util/reportUnhandledError.js';
+import { isInteropObservable } from '../util/isInteropObservable.js';
+import { isAsyncIterable } from '../util/isAsyncIterable.js';
+import { createInvalidObservableTypeError } from '../util/throwUnobservableError.js';
+import { isIterable } from '../util/isIterable.js';
+import { isReadableStreamLike, readableStreamLikeToAsyncGenerator } from '../util/isReadableStreamLike.js';
 
 export function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>>;
 /** @deprecated The scheduler argument is deprecated, use scheduled. Details: https://rxjs.dev/deprecations/scheduler-argument */

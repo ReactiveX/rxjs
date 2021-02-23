@@ -1,12 +1,12 @@
 import { ObservableInputTuple, OperatorFunction } from '../types';
-import { concat } from './concat';
+import { concat } from './concat.js';
 
 /**
  * Emits all of the values from the source observable, then, once it completes, subscribes
  * to each observable source provided, one at a time, emitting all of their values, and not subscribing
  * to the next one until it completes.
  *
- * `concat(a$, b$, c$)` is the same as `a$.pipe(concatWith(b$, c$))`.
+ * "concat(a$, b$, c$)` is the same as `a$.pipe(concatWith(b$, c$))".
  *
  * ## Example
  *

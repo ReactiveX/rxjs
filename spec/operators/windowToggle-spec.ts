@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { Observable, NEVER, of, ObjectUnsubscribedError, EMPTY } from 'rxjs';
 import { windowToggle, tap, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {windowToggle} */
 describe('windowToggle', () => {

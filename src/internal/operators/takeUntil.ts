@@ -1,8 +1,8 @@
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
-import { innerFrom } from '../observable/from';
-import { noop } from '../util/noop';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
+import { innerFrom } from '../observable/from.js';
+import { noop } from '../util/noop.js';
 
 /**
  * Emits the values emitted by the source Observable until a `notifier`

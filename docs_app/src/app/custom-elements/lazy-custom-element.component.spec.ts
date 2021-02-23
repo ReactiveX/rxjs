@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Logger } from 'app/shared/logger.service';
 import { MockLogger } from 'testing/logger.service';
-import { LazyCustomElementComponent } from './lazy-custom-element.component';
-import { ElementsLoader } from './elements-loader';
+import { LazyCustomElementComponent } from './lazy-custom-element.component.js';
+import { ElementsLoader } from './elements-loader.js';
 
 describe('LazyCustomElementComponent', () => {
   let mockElementsLoader: jasmine.SpyObj<ElementsLoader>;

@@ -1,10 +1,9 @@
-import { AsyncAction } from './AsyncAction';
-import { Subscription } from '../Subscription';
-import { AsyncScheduler } from './AsyncScheduler';
+import { AsyncAction } from './AsyncAction.js';
+import { Subscription } from '../Subscription.js';
+import { AsyncScheduler } from './AsyncScheduler.js';
 import { SchedulerAction } from '../types';
 
 export class VirtualTimeScheduler extends AsyncScheduler {
-
   /** @deprecated remove in v8. `frameTimeFactor` is not used in VirtualTimeScheduler directly. */
   static frameTimeFactor = 10;
 
@@ -29,8 +28,7 @@ export class VirtualTimeScheduler extends AsyncScheduler {
    * @param schedulerActionCtor The type of Action to initialize when initializing actions during scheduling.
    * @param maxFrames The maximum number of frames to process before stopping. Used to prevent endless flush cycles.
    */
-  constructor(schedulerActionCtor: typeof AsyncAction = VirtualAction as any,
-              public maxFrames: number = Infinity) {
+  constructor(schedulerActionCtor: typeof AsyncAction = VirtualAction as any, public maxFrames: number = Infinity) {
     super(schedulerActionCtor, () => this.frame);
   }
 
@@ -40,8 +38,7 @@ export class VirtualTimeScheduler extends AsyncScheduler {
    * @return {void}
    */
   public flush(): void {
-
-    const {actions, maxFrames} = this;
+    const { actions, maxFrames } = this;
     let error: any;
     let action: AsyncAction<any> | undefined;
 
@@ -49,13 +46,13 @@ export class VirtualTimeScheduler extends AsyncScheduler {
       actions.shift();
       this.frame = action.delay;
 
-      if (error = action.execute(action.state, action.delay)) {
+      if ((error = action.execute(action.state, action.delay))) {
         break;
       }
     }
 
     if (error) {
-      while (action = actions.shift()) {
+      while ((action = actions.shift())) {
         action.unsubscribe();
       }
       throw error;
@@ -64,12 +61,13 @@ export class VirtualTimeScheduler extends AsyncScheduler {
 }
 
 export class VirtualAction<T> extends AsyncAction<T> {
-
   protected active: boolean = true;
 
-  constructor(protected scheduler: VirtualTimeScheduler,
-              protected work: (this: SchedulerAction<T>, state?: T) => void,
-              protected index: number = scheduler.index += 1) {
+  constructor(
+    protected scheduler: VirtualTimeScheduler,
+    protected work: (this: SchedulerAction<T>, state?: T) => void,
+    protected index: number = (scheduler.index += 1)
+  ) {
     super(scheduler, work);
     this.index = scheduler.index = index;
   }
@@ -96,7 +94,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
 
   protected requestAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): any {
     this.delay = scheduler.frame + delay;
-    const {actions} = scheduler;
+    const { actions } = scheduler;
     actions.push(this);
     (actions as Array<VirtualAction<T>>).sort(VirtualAction.sortActions);
     return true;

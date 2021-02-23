@@ -1,5 +1,5 @@
-import { ApiListNode, FlattenedApiList } from './interfaces';
-import { isStable } from './helpers';
+import { ApiListNode, FlattenedApiList } from './interfaces.js';
+import { isStable } from './helpers.js';
 
 /**
  * Flattens API List from the docs generation into a map with relavant properties.

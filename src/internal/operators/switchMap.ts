@@ -1,8 +1,8 @@
-import { Subscriber } from '../Subscriber';
+import { Subscriber } from '../Subscriber.js';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { innerFrom } from '../observable/from';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { innerFrom } from '../observable/from.js';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /* tslint:disable:max-line-length */
 export function switchMap<T, O extends ObservableInput<any>>(

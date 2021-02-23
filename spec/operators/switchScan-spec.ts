@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { concat, defer, Observable, of } from 'rxjs';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 import { switchScan, map, mergeMap, takeWhile } from 'rxjs/operators';
 
 /** @test {switchScan} */

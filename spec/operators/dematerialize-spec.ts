@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { of, Notification, ObservableNotification, Observable } from 'rxjs';
 import { dematerialize, map, mergeMap, materialize, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {dematerialize} */
 describe('dematerialize', () => {

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { expectObservable } from '../helpers/marble-testing';
+import { expectObservable } from '../helpers/marble-testing.js';
 
 import { fromEventPattern, noop, NEVER, timer } from 'rxjs';
 import { mapTo, take, concat } from 'rxjs/operators';

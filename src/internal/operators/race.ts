@@ -1,6 +1,6 @@
 import { ObservableInputTuple, OperatorFunction } from '../types';
-import { argsOrArgArray } from '../util/argsOrArgArray';
-import { raceWith } from './raceWith';
+import { argsOrArgArray } from '../util/argsOrArgArray.js';
+import { raceWith } from './raceWith.js';
 
 /** @deprecated Deprecated use {@link raceWith} */
 export function race<T, A extends readonly unknown[]>(otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;

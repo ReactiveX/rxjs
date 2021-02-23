@@ -1,7 +1,7 @@
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable.js';
+import { Subscriber } from '../Subscriber.js';
 import { OperatorFunction } from '../types';
-import { isFunction } from './isFunction';
+import { isFunction } from './isFunction.js';
 
 /**
  * Used to determine if an object is an Observable with a lift function.

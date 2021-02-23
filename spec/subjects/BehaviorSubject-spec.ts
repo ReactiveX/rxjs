@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import { hot, expectObservable } from '../helpers/marble-testing';
+import { hot, expectObservable } from '../helpers/marble-testing.js';
 import { BehaviorSubject, Subject, ObjectUnsubscribedError, of } from 'rxjs';
 import { tap, mergeMapTo } from 'rxjs/operators';
-import { asInteropSubject } from '../helpers/interop-helper';
+import { asInteropSubject } from '../helpers/interop-helper.js';
 
 /** @test {BehaviorSubject} */
 describe('BehaviorSubject', () => {

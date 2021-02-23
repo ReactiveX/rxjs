@@ -4,8 +4,8 @@ import { Logger } from 'app/shared/logger.service';
 import { MockLogger } from 'testing/logger.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { CodeTabsComponent } from './code-tabs.component';
-import { CodeTabsModule } from './code-tabs.module';
+import { CodeTabsComponent } from './code-tabs.component.js';
+import { CodeTabsModule } from './code-tabs.module.js';
 
 describe('CodeTabsComponent', () => {
   let fixture: ComponentFixture<HostComponent>;

@@ -1,7 +1,7 @@
-import { isFunction } from './util/isFunction';
-import { UnsubscriptionError } from './util/UnsubscriptionError';
+import { isFunction } from './util/isFunction.js';
+import { UnsubscriptionError } from './util/UnsubscriptionError.js';
 import { SubscriptionLike, TeardownLogic, Unsubscribable } from './types';
-import { arrRemove } from './util/arrRemove';
+import { arrRemove } from './util/arrRemove.js';
 
 /**
  * Represents a disposable resource, such as the execution of an Observable. A

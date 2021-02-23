@@ -1,9 +1,9 @@
 import { OperatorFunction, ObservableInput, ObservedValueOf, SubjectLike } from '../types';
-import { Observable } from '../Observable';
-import { Subject } from '../Subject';
-import { from } from '../observable/from';
-import { operate } from '../util/lift';
-import { fromSubscribable } from '../observable/fromSubscribable';
+import { Observable } from '../Observable.js';
+import { Subject } from '../Subject.js';
+import { from } from '../observable/from.js';
+import { operate } from '../util/lift.js';
+import { fromSubscribable } from '../observable/fromSubscribable.js';
 
 export interface ConnectConfig<T> {
   /**

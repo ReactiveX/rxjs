@@ -1,8 +1,8 @@
 import { SchedulerLike, ValueFromArray } from '../types';
-import { internalFromArray } from './fromArray';
-import { Observable } from '../Observable';
-import { scheduleArray } from '../scheduled/scheduleArray';
-import { popScheduler } from '../util/args';
+import { internalFromArray } from './fromArray.js';
+import { Observable } from '../Observable.js';
+import { scheduleArray } from '../scheduled/scheduleArray.js';
+import { popScheduler } from '../util/args.js';
 
 // Devs are more likely to pass null or undefined than they are a scheduler
 // without accompanying values. To make things easier for (naughty) devs who

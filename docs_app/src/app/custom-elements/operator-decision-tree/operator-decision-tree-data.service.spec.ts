@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { OperatorDecisionTreeDataService } from './operator-decision-tree-data.service';
+import { OperatorDecisionTreeDataService } from './operator-decision-tree-data.service.js';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { treeStub } from './fixtures';
+import { treeStub } from './fixtures.js';
 
 describe('OperatorDecisionTreeDataService', () => {
   let service: OperatorDecisionTreeDataService;

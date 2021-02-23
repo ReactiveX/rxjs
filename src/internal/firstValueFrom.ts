@@ -1,6 +1,6 @@
-import { Observable } from './Observable';
-import { EmptyError } from './util/EmptyError';
-import { SafeSubscriber } from './Subscriber';
+import { Observable } from './Observable.js';
+import { EmptyError } from './util/EmptyError.js';
+import { SafeSubscriber } from './Subscriber.js';
 
 /**
  * Converts an observable to a promise by subscribing to the observable,
@@ -45,7 +45,7 @@ import { SafeSubscriber } from './Subscriber';
 export function firstValueFrom<T>(source: Observable<T>) {
   return new Promise<T>((resolve, reject) => {
     const subscriber = new SafeSubscriber<T>({
-      next: value => {
+      next: (value) => {
         resolve(value);
         subscriber.unsubscribe();
       },

@@ -1,6 +1,6 @@
 import { ObservableInput, OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { mergeInternals } from './mergeInternals';
+import { operate } from '../util/lift.js';
+import { mergeInternals } from './mergeInternals.js';
 
 /**
  * Applies an accumulator function over the source Observable where the

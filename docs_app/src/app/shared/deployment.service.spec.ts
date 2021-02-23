@@ -2,7 +2,7 @@ import { ReflectiveInjector } from '@angular/core';
 import { environment } from 'environments/environment';
 import { LocationService } from 'app/shared/location.service';
 import { MockLocationService } from 'testing/location.service';
-import { Deployment } from './deployment.service';
+import { Deployment } from './deployment.service.js';
 
 describe('Deployment service', () => {
   describe('mode', () => {

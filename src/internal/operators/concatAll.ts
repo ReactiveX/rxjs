@@ -1,4 +1,4 @@
-import { mergeAll } from './mergeAll';
+import { mergeAll } from './mergeAll.js';
 import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
 
 /**

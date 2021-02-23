@@ -1,7 +1,7 @@
 import { NgModule, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CurrentLocationComponent } from './current-location.component';
-import { WithCustomElementComponent } from '../element-registry';
+import { CurrentLocationComponent } from './current-location.component.js';
+import { WithCustomElementComponent } from '../element-registry.js';
 
 @NgModule({
   imports: [ CommonModule ],

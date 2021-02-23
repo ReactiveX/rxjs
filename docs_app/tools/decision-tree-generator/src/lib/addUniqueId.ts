@@ -1,5 +1,5 @@
-import { TreeNode, TreeNodeRaw } from './interfaces';
-import { generateUniqueId } from './generateUniqueId';
+import { TreeNode, TreeNodeRaw } from './interfaces.js';
+import { generateUniqueId } from './generateUniqueId.js';
 
 /**
  * Recursively walks the tree and adds unique ids.

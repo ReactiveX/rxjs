@@ -1,6 +1,6 @@
-import { reduce } from './reduce';
+import { reduce } from './reduce.js';
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
+import { operate } from '../util/lift.js';
 
 const arrReducer = (arr: any[], value: any) => (arr.push(value), arr);
 
@@ -39,6 +39,6 @@ export function toArray<T>(): OperatorFunction<T, T[]> {
   // reducer process, we have to escapulate the creation of the initial
   // array within this `operate` function.
   return operate((source, subscriber) => {
-    reduce(arrReducer, [] as T[])(source).subscribe(subscriber)
+    reduce(arrReducer, [] as T[])(source).subscribe(subscriber);
   });
 }

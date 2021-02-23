@@ -1,8 +1,8 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { SchedulerLike } from '../types';
-import { iterator as Symbol_iterator } from '../symbol/iterator';
-import { isFunction } from '../util/isFunction';
-import { caughtSchedule } from '../util/caughtSchedule';
+import { iterator as Symbol_iterator } from '../symbol/iterator.js';
+import { isFunction } from '../util/isFunction.js';
+import { caughtSchedule } from '../util/caughtSchedule.js';
 
 /**
  * Used in {@link scheduled} to create an observable from an Iterable.

@@ -1,9 +1,9 @@
-import { Action } from './Action';
+import { Action } from './Action.js';
 import { SchedulerAction } from '../types';
-import { Subscription } from '../Subscription';
-import { AsyncScheduler } from './AsyncScheduler';
-import { intervalProvider } from './intervalProvider';
-import { arrRemove } from '../util/arrRemove';
+import { Subscription } from '../Subscription.js';
+import { AsyncScheduler } from './AsyncScheduler.js';
+import { intervalProvider } from './intervalProvider.js';
+import { arrRemove } from '../util/arrRemove.js';
 
 export class AsyncAction<T> extends Action<T> {
   public id: any;

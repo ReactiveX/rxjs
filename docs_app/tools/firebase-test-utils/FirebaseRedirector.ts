@@ -1,4 +1,4 @@
-import { FirebaseRedirect } from './FirebaseRedirect';
+import { FirebaseRedirect } from './FirebaseRedirect.js';
 
 export interface FirebaseRedirectConfig {
   source: string;

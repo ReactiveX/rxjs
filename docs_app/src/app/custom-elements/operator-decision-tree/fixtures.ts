@@ -2,7 +2,7 @@ import {
   OperatorDecisionTree,
   OperatorTreeNode,
   OperatorTreeNodeWithOptions
-} from './interfaces';
+} from './interfaces.js';
 
 export const treeNodeStubWithOptionsA: OperatorTreeNodeWithOptions = {
   id: 'treeNodeStubWithOptionsA',

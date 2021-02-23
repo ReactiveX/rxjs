@@ -1,6 +1,6 @@
 /** @prettier */
 import { expect } from 'chai';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 import { first, mergeMap, delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, from, Observable, Subject, EmptyError } from 'rxjs';

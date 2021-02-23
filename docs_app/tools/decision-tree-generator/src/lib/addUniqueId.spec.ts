@@ -1,6 +1,6 @@
-import { addUniqueId } from './addUniqueId';
-import { TreeNode } from './interfaces';
-import { mockRawTreeNodes } from './fixtures';
+import { addUniqueId } from './addUniqueId.js';
+import { TreeNode } from './interfaces.js';
+import { mockRawTreeNodes } from './fixtures.js';
 
 describe('addUniqueId', () => {
   describe('when called with three raw nodes', () => {

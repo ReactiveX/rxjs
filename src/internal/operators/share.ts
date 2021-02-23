@@ -1,8 +1,8 @@
-import { Subject } from '../Subject';
+import { Subject } from '../Subject.js';
 import { MonoTypeOperatorFunction, OperatorFunction, SubjectLike } from '../types';
-import { SafeSubscriber } from '../Subscriber';
-import { from } from '../observable/from';
-import { operate } from '../util/lift';
+import { SafeSubscriber } from '../Subscriber.js';
+import { from } from '../observable/from.js';
+import { operate } from '../util/lift.js';
 
 export interface ShareConfig<T> {
   /**

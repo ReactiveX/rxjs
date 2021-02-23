@@ -1,6 +1,6 @@
-import { switchMap } from './switchMap';
+import { switchMap } from './switchMap.js';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { isFunction } from '../util/isFunction';
+import { isFunction } from '../util/isFunction.js';
 
 /* tslint:disable:max-line-length */
 export function switchMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<any, ObservedValueOf<O>>;

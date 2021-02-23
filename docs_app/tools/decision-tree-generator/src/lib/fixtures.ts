@@ -1,4 +1,4 @@
-import { TreeNodeRaw, FlattenedApiList, ApiListNode } from './interfaces';
+import { TreeNodeRaw, FlattenedApiList, ApiListNode } from './interfaces.js';
 
 export const mockRawTreeNodes: TreeNodeRaw[] = [
   {

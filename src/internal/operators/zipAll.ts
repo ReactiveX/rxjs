@@ -1,6 +1,6 @@
 import { OperatorFunction, ObservableInput } from '../types';
-import { zip } from '../observable/zip';
-import { joinAllInternals } from './joinAllInternals';
+import { zip } from '../observable/zip.js';
+import { joinAllInternals } from './joinAllInternals.js';
 
 /**
  * Collects all observable inner sources from the source, once the source completes,

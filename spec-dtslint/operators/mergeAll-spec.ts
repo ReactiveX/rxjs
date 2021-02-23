@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { mergeAll } from 'rxjs/operators';
-import { a$, b$ } from '../helpers';
+import { a$, b$ } from '../helpers.js';
 
 it('should infer correctly with sources of same type', () => {
   const o = of(a$, a$).pipe(mergeAll()); // $ExpectType Observable<A>

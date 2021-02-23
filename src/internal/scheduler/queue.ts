@@ -1,5 +1,5 @@
-import { QueueAction } from './QueueAction';
-import { QueueScheduler } from './QueueScheduler';
+import { QueueAction } from './QueueAction.js';
+import { QueueScheduler } from './QueueScheduler.js';
 
 /**
  *

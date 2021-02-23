@@ -1,12 +1,12 @@
-import { Observable } from '../Observable';
-import { Subject } from '../Subject';
-import { Subscription } from '../Subscription';
+import { Observable } from '../Observable.js';
+import { Subject } from '../Subject.js';
+import { Subscription } from '../Subscription.js';
 import { ObservableInput, OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { innerFrom } from '../observable/from';
-import { OperatorSubscriber } from './OperatorSubscriber';
-import { noop } from '../util/noop';
-import { arrRemove } from '../util/arrRemove';
+import { operate } from '../util/lift.js';
+import { innerFrom } from '../observable/from.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
+import { noop } from '../util/noop.js';
+import { arrRemove } from '../util/arrRemove.js';
 
 /**
  * Branch out the source Observable values as a nested Observable starting from

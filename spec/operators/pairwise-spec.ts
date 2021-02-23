@@ -1,4 +1,4 @@
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 import { pairwise, take } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { expect } from 'chai';

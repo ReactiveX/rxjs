@@ -1,11 +1,11 @@
-import { isFunction } from './util/isFunction';
+import { isFunction } from './util/isFunction.js';
 import { Observer, ObservableNotification } from './types';
-import { isSubscription, Subscription } from './Subscription';
-import { config } from './config';
-import { reportUnhandledError } from './util/reportUnhandledError';
-import { noop } from './util/noop';
-import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories';
-import { timeoutProvider } from './scheduler/timeoutProvider';
+import { isSubscription, Subscription } from './Subscription.js';
+import { config } from './config.js';
+import { reportUnhandledError } from './util/reportUnhandledError.js';
+import { noop } from './util/noop.js';
+import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories.js';
+import { timeoutProvider } from './scheduler/timeoutProvider.js';
 
 /**
  * Implements the {@link Observer} interface and extends the

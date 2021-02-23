@@ -1,4 +1,4 @@
-import { exhaustAll } from './exhaustAll';
+import { exhaustAll } from './exhaustAll.js';
 
 /**
  * @deprecated renamed. Use {@link exhaustAll}.

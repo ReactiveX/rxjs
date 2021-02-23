@@ -1,7 +1,7 @@
 import { ReflectiveInjector, NgZone } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { SearchService } from './search.service';
+import { SearchService } from './search.service.js';
 import { WebWorkerClient } from 'app/shared/web-worker';
 
 describe('SearchService', () => {

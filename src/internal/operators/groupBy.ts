@@ -1,8 +1,8 @@
-import { Observable } from '../Observable';
-import { Subject } from '../Subject';
+import { Observable } from '../Observable.js';
+import { Subject } from '../Subject.js';
 import { Observer, OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 export function groupBy<T, K extends T>(
   keySelector: (value: T) => value is K

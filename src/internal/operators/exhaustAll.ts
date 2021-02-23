@@ -1,8 +1,8 @@
-import { Subscription } from '../Subscription';
+import { Subscription } from '../Subscription.js';
 import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
-import { operate } from '../util/lift';
-import { innerFrom } from '../observable/from';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift.js';
+import { innerFrom } from '../observable/from.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping

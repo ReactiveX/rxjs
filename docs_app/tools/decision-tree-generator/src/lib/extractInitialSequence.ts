@@ -1,4 +1,4 @@
-import { TreeNode } from './interfaces';
+import { TreeNode } from './interfaces.js';
 
 /**
  * Strip out initial sequence and add to tree

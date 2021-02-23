@@ -4,8 +4,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AsyncSubject, Observable, of } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 
-import { DocumentContents } from './document-contents';
-export { DocumentContents } from './document-contents';
+import { DocumentContents } from './document-contents.js';
+export { DocumentContents } from './document-contents.js';
 
 import { LocationService } from 'app/shared/location.service';
 import { Logger } from 'app/shared/logger.service';

@@ -1,10 +1,10 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { MonoTypeOperatorFunction } from '../types';
-import { concat } from '../observable/concat';
-import { take } from './take';
-import { ignoreElements } from './ignoreElements';
-import { mapTo } from './mapTo';
-import { mergeMap } from './mergeMap';
+import { concat } from '../observable/concat.js';
+import { take } from './take.js';
+import { ignoreElements } from './ignoreElements.js';
+import { mapTo } from './mapTo.js';
+import { mergeMap } from './mergeMap.js';
 
 /** @deprecated In future versions, empty notifiers will no longer re-emit the source value on the output observable. */
 export function delayWhen<T>(

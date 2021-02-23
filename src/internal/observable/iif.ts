@@ -1,5 +1,5 @@
-import { Observable } from '../Observable';
-import { defer } from './defer';
+import { Observable } from '../Observable.js';
+import { defer } from './defer.js';
 import { ObservableInput } from '../types';
 
 /**

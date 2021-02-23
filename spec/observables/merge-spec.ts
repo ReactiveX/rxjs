@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { lowerCaseO } from '../helpers/test-helper';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { lowerCaseO } from '../helpers/test-helper.js';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 import { TestScheduler } from 'rxjs/testing';
 import { merge, of, Observable, defer, asyncScheduler } from 'rxjs';
 import { delay } from 'rxjs/operators';

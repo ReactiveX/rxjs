@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { max, mergeMap, skip, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, range } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {max} */
 describe('max', () => {
@@ -120,7 +120,7 @@ describe('max', () => {
     });
   });
 
-  it('should max a range() source observable', (done: MochaDone) => {
+  it('should max a range() source observable', (done: Mocha.Done) => {
     range(1, 10000)
       .pipe(max())
       .subscribe(
@@ -136,7 +136,7 @@ describe('max', () => {
       );
   });
 
-  it('should max a range().pipe(skip(1)) source observable', (done: MochaDone) => {
+  it('should max a range().pipe(skip(1)) source observable', (done: Mocha.Done) => {
     range(1, 10)
       .pipe(skip(1), max())
       .subscribe(
@@ -152,7 +152,7 @@ describe('max', () => {
       );
   });
 
-  it('should max a range().pipe(take(1)) source observable', (done: MochaDone) => {
+  it('should max a range().pipe(take(1)) source observable', (done: Mocha.Done) => {
     range(1, 10)
       .pipe(take(1), max())
       .subscribe(

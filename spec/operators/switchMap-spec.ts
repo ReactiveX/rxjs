@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 import { switchMap, mergeMap, map, takeWhile, take } from 'rxjs/operators';
 import { concat, defer, of, Observable, BehaviorSubject } from 'rxjs';
-import { asInteropObservable } from '../helpers/interop-helper';
+import { asInteropObservable } from '../helpers/interop-helper.js';
 
 /** @test {switchMap} */
 describe('switchMap', () => {

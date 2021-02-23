@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import { animationFrames } from 'rxjs';
 import { mergeMapTo, take, takeUntil } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../../helpers/observableMatcher';
+import { observableMatcher } from '../../helpers/observableMatcher.js';
 import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
 
 describe('animationFrames', () => {

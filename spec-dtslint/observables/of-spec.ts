@@ -1,5 +1,5 @@
 import { of, animationFrameScheduler, queueScheduler } from 'rxjs';
-import { A, a, b, c, d, e, f, g, h, i, j } from '../helpers';
+import { A, a, b, c, d, e, f, g, h, i, j } from '../helpers.js';
 
 it('should infer never with 0 params', () => {
   const res = of(); // $ExpectType Observable<never>

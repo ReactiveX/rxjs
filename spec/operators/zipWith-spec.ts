@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { zipWith, mergeMap } from 'rxjs/operators';
 import { queueScheduler, of, scheduled } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {zipWith} */
 describe('zipWith', () => {

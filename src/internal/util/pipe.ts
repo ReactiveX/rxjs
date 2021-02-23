@@ -1,4 +1,4 @@
-import { identity } from './identity';
+import { identity } from './identity.js';
 import { UnaryFunction } from '../types';
 
 /* tslint:disable:max-line-length */

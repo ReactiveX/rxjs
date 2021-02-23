@@ -1,6 +1,6 @@
-import { Subject } from './Subject';
-import { Subscriber } from './Subscriber';
-import { Subscription } from './Subscription';
+import { Subject } from './Subject.js';
+import { Subscriber } from './Subscriber.js';
+import { Subscription } from './Subscription.js';
 
 /**
  * A variant of Subject that requires an initial value and emits its current

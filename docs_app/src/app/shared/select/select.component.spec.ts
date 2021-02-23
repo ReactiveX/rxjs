@@ -1,7 +1,7 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SelectComponent, Option } from './select.component';
+import { SelectComponent, Option } from './select.component.js';
 
 const options = [
   { title: 'Option A', value: 'option-a' },

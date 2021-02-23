@@ -3,7 +3,7 @@ import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CurrentDateToken } from 'app/shared/current-date';
-import { NotificationComponent } from './notification.component';
+import { NotificationComponent } from './notification.component.js';
 import { WindowToken } from 'app/shared/window';
 
 describe('NotificationComponent', () => {

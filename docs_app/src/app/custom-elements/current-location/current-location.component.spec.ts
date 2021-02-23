@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LocationService } from 'app/shared/location.service';
 import { MockLocationService } from 'testing/location.service';
-import { CurrentLocationComponent } from './current-location.component';
+import { CurrentLocationComponent } from './current-location.component.js';
 
 
 describe('CurrentLocationComponent', () => {

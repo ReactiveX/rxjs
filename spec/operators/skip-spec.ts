@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { skip, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 import { of, Observable } from 'rxjs';
 
 /** @test {skip} */

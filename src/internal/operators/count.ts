@@ -1,5 +1,5 @@
 import { OperatorFunction } from '../types';
-import { reduce } from './reduce';
+import { reduce } from './reduce.js';
 /**
  * Counts the number of emissions on the source and emits that number when the
  * source completes.

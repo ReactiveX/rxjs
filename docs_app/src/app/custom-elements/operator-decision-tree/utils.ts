@@ -1,4 +1,4 @@
-import { OperatorTreeNodeWithOptions } from './interfaces';
+import { OperatorTreeNodeWithOptions } from './interfaces.js';
 
 export function isInitialDecision(previousBranchIds: string[]): boolean {
   return (

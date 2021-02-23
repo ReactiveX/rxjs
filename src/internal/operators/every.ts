@@ -1,7 +1,7 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { Falsy, OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 export function every<T>(
   predicate: BooleanConstructor,

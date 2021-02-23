@@ -17,8 +17,8 @@ import { exec, rm } from 'shelljs';
 import { promisify } from 'util';
 import * as fs from 'fs';
 
-import * as rx_export_src from '../../src/index';
-import * as operators_export_src from '../../src/operators/index';
+import * as rx_export_src from '../../src/index.js';
+import * as operators_export_src from '../../src/operators/index.js';
 
 const writeFileAsync = promisify(fs.writeFile);
 const projectRoot = process.cwd();

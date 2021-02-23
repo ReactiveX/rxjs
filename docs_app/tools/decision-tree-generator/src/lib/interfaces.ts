@@ -1,4 +1,4 @@
-import { Omit } from './helpers';
+import { Omit } from './helpers.js';
 
 export type DocType =
   | 'all'

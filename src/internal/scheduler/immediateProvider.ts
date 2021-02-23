@@ -1,4 +1,4 @@
-import { Immediate } from '../util/Immediate';
+import { Immediate } from '../util/Immediate.js';
 const { setImmediate, clearImmediate } = Immediate;
 
 type SetImmediateFunction = (handler: () => void, ...args: any[]) => number;

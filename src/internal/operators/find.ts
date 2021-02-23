@@ -1,8 +1,8 @@
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable.js';
+import { Subscriber } from '../Subscriber.js';
 import { OperatorFunction, TruthyTypesOf } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 export function find<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export function find<T, S extends T, A>(

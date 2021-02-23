@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { parse } from 'yamljs';
-import { ApiListNode, build, flattenApiList, TreeNodeRaw } from './src/lib';
+import { ApiListNode, build, flattenApiList, TreeNodeRaw } from './src/lib.js';
 const generatedBase = resolve(`${__dirname}/../../src/generated/docs`);
 const outFilename = `${generatedBase}/app/decision-tree-data.json`;
 const yamlContent = readFileSync(`${__dirname}/src/tree.yml`, 'utf8');

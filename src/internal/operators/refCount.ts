@@ -1,8 +1,8 @@
-import { ConnectableObservable } from '../observable/ConnectableObservable';
-import { Subscription } from '../Subscription';
+import { ConnectableObservable } from '../observable/ConnectableObservable.js';
+import { Subscription } from '../Subscription.js';
 import { MonoTypeOperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /**
  * Make a {@link ConnectableObservable} behave like a ordinary observable and automates the way

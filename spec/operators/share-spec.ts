@@ -1,9 +1,9 @@
 import { expect } from 'chai';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 import { share, retry, mergeMapTo, mergeMap, tap, repeat, take, takeUntil, takeWhile, materialize, map, startWith, withLatestFrom } from 'rxjs/operators';
 import { Observable, EMPTY, NEVER, of, Subject, defer } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 import sinon = require('sinon');
 
 /** @test {share} */

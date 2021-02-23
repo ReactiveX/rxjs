@@ -1,6 +1,6 @@
-import { scanInternals } from './scanInternals';
+import { scanInternals } from './scanInternals.js';
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
+import { operate } from '../util/lift.js';
 
 export function reduce<V, A = V>(accumulator: (acc: A | V, value: V, index: number) => A): OperatorFunction<V, V | A>;
 export function reduce<V, A>(accumulator: (acc: A, value: V, index: number) => A, seed: A): OperatorFunction<V, A>;

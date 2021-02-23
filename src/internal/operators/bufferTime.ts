@@ -1,10 +1,10 @@
-import { Subscription } from '../Subscription';
+import { Subscription } from '../Subscription.js';
 import { OperatorFunction, SchedulerLike } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
-import { arrRemove } from '../util/arrRemove';
-import { asyncScheduler } from '../scheduler/async';
-import { popScheduler } from '../util/args';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
+import { arrRemove } from '../util/arrRemove.js';
+import { asyncScheduler } from '../scheduler/async.js';
+import { popScheduler } from '../util/args.js';
 
 /* tslint:disable:max-line-length */
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;

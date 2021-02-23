@@ -1,6 +1,6 @@
 /** @prettier */
 import { onErrorResumeNext } from 'rxjs';
-import { a$, b$, c$, d$, e$, f$, g$, h$, i$, j$ } from '../helpers';
+import { a$, b$, c$, d$, e$, f$, g$, h$, i$, j$ } from '../helpers.js';
 
 it('should infer correctly', () => {
   const o1 = onErrorResumeNext(); // $ExpectType Observable<never>

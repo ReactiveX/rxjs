@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-import { NavItemComponent } from './nav-item.component';
+import { NavItemComponent } from './nav-item.component.js';
 import { NavigationNode } from 'app/navigation/navigation.model';
 
 describe('NavItemComponent', () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 import { pluck, map, tap, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 

@@ -1,10 +1,10 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { ObservableInputTuple, OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { innerFrom } from '../observable/from';
-import { argsOrArgArray } from '../util/argsOrArgArray';
-import { OperatorSubscriber } from './OperatorSubscriber';
-import { noop } from '../util/noop';
+import { operate } from '../util/lift.js';
+import { innerFrom } from '../observable/from.js';
+import { argsOrArgArray } from '../util/argsOrArgArray.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
+import { noop } from '../util/noop.js';
 
 export function onErrorResumeNext<T, A extends readonly unknown[]>(
   sources: [...ObservableInputTuple<A>]

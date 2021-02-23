@@ -1,10 +1,10 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { Subscription } from '../Subscription';
-import { innerFrom } from '../observable/from';
-import { OperatorSubscriber } from './OperatorSubscriber';
-import { operate } from '../util/lift';
+import { Subscription } from '../Subscription.js';
+import { innerFrom } from '../observable/from.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
+import { operate } from '../util/lift.js';
 
 /* tslint:disable:max-line-length */
 export function catchError<T, O extends ObservableInput<any>>(

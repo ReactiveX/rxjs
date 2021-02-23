@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { expectObservable } from '../helpers/marble-testing';
+import { expectObservable } from '../helpers/marble-testing.js';
 import { TestScheduler } from 'rxjs/testing';
 import { pairs } from 'rxjs';
 

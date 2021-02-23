@@ -1,6 +1,6 @@
 
 import { onErrorResumeNext, of } from 'rxjs';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 import { finalize } from 'rxjs/operators';
 import { expect } from 'chai';
 

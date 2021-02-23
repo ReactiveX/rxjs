@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { iif, of } from 'rxjs';
-import { expectObservable } from '../helpers/marble-testing';
+import { expectObservable } from '../helpers/marble-testing.js';
 
 describe('iif', () => {
   it('should subscribe to thenSource when the conditional returns true', () => {

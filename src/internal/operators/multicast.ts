@@ -1,9 +1,9 @@
-import { Subject } from '../Subject';
-import { Observable } from '../Observable';
-import { ConnectableObservable } from '../observable/ConnectableObservable';
+import { Subject } from '../Subject.js';
+import { Observable } from '../Observable.js';
+import { ConnectableObservable } from '../observable/ConnectableObservable.js';
 import { OperatorFunction, UnaryFunction, ObservedValueOf, ObservableInput } from '../types';
-import { isFunction } from '../util/isFunction';
-import { connect } from './connect';
+import { isFunction } from '../util/isFunction.js';
+import { connect } from './connect.js';
 
 /**
  * An operator that creates a {@link ConnectableObservable}, that when connected,

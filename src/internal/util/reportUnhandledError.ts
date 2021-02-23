@@ -1,5 +1,5 @@
-import { config } from '../config';
-import { timeoutProvider } from '../scheduler/timeoutProvider';
+import { config } from '../config.js';
+import { timeoutProvider } from '../scheduler/timeoutProvider.js';
 
 /**
  * Handles an error on another job either with the user-configured {@link onUnhandledError},

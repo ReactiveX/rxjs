@@ -41,7 +41,7 @@ import { CustomElementsModule } from 'app/custom-elements/custom-elements.module
 import { SharedModule } from 'app/shared/shared.module';
 import { SwUpdatesModule } from 'app/sw-updates/sw-updates.module';
 
-import {environment} from '../environments/environment';
+import {environment} from '../environments/environment.js';
 
 // These are the hardcoded inline svg sources to be used by the `<mat-icon>` component.
 // tslint:disable: max-line-length

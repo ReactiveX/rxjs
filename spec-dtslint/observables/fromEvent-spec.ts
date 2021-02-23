@@ -1,6 +1,6 @@
 import { fromEvent } from 'rxjs';
-import { JQueryStyleEventEmitter } from '../../src/internal/observable/fromEvent';
-import { A, B } from '../helpers';
+import { JQueryStyleEventEmitter } from '../../src/internal/observable/fromEvent.js';
+import { A, B } from '../helpers.js';
 
 declare const eventTargetSource: EventTarget;
 

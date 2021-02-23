@@ -1,15 +1,15 @@
-import { Observable } from '../Observable';
-import { Subject } from '../Subject';
-import { Subscription } from '../Subscription';
+import { Observable } from '../Observable.js';
+import { Subject } from '../Subject.js';
+import { Subscription } from '../Subscription.js';
 
 import { MonoTypeOperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source
  * Observable calls `complete`, this method will emit to the Observable returned from `notifier`. If that Observable
- * calls `complete` or `error`, then this method will call `complete` or `error` on the child subscription. Otherwise
+ * calls "complete` or `error`, then this method will call `complete` or `error" on the child subscription. Otherwise
  * this method will resubscribe to the source Observable.
  *
  * ![](repeatWhen.png)

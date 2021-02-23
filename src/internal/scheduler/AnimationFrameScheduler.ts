@@ -1,20 +1,19 @@
-import { AsyncAction } from './AsyncAction';
-import { AsyncScheduler } from './AsyncScheduler';
+import { AsyncAction } from './AsyncAction.js';
+import { AsyncScheduler } from './AsyncScheduler.js';
 
 export class AnimationFrameScheduler extends AsyncScheduler {
   public flush(action?: AsyncAction<any>): void {
-
     this.active = true;
     this.scheduled = undefined;
 
-    const {actions} = this;
+    const { actions } = this;
     let error: any;
     let index = -1;
     action = action || actions.shift()!;
     const count = actions.length;
 
     do {
-      if (error = action.execute(action.state, action.delay)) {
+      if ((error = action.execute(action.state, action.delay))) {
         break;
       }
     } while (++index < count && (action = actions.shift()));

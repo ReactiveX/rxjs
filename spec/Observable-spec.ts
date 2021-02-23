@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { Observer, TeardownLogic } from '../src/internal/types';
+import { Observer, TeardownLogic } from '../src/internal/types'
 import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty } from 'rxjs';
 import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError, concatMap, switchMap, publish, publishLast, publishBehavior, share} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from './helpers/observableMatcher';
+import { observableMatcher } from './helpers/observableMatcher.js';
 
 function expectFullObserver(val: any) {
   expect(val).to.be.a('object');

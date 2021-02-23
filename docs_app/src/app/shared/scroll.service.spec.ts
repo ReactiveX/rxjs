@@ -4,7 +4,7 @@ import { DOCUMENT } from '@angular/common';
 import { MockLocationStrategy, SpyLocation } from '@angular/common/testing';
 import { fakeAsync, tick } from '@angular/core/testing';
 
-import { ScrollService, topMargin } from './scroll.service';
+import { ScrollService, topMargin } from './scroll.service.js';
 
 describe('ScrollService', () => {
   const topOfPageElem = {} as Element;

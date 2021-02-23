@@ -1,8 +1,8 @@
-import { Observable } from '../Observable';
-import { ReplaySubject } from '../ReplaySubject';
-import { multicast } from './multicast';
+import { Observable } from '../Observable.js';
+import { ReplaySubject } from '../ReplaySubject.js';
+import { multicast } from './multicast.js';
 import { MonoTypeOperatorFunction, OperatorFunction, TimestampProvider, ObservableInput, ObservedValueOf } from '../types';
-import { isFunction } from '../util/isFunction';
+import { isFunction } from '../util/isFunction.js';
 
 /**
  * Creates a {@link ConnectableObservable} that uses a {@link ReplaySubject}

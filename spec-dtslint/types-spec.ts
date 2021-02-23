@@ -7,7 +7,7 @@ import {
   Head,
   Tail
 } from 'rxjs';
-import { A, B, C } from './helpers';
+import { A, B, C } from './helpers.js';
 
 describe('ObservedValueOf', () => {
   it('should infer from an observable', () => {

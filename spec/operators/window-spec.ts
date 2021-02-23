@@ -2,7 +2,7 @@
 import { window, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { EMPTY, of, Observable } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {window} */
 describe('window', () => {

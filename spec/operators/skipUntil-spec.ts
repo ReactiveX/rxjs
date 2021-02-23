@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 import { concat, defer, of, Subject, Observable } from 'rxjs';
 import { skipUntil, mergeMap, take } from 'rxjs/operators';
-import { asInteropObservable } from '../helpers/interop-helper';
+import { asInteropObservable } from '../helpers/interop-helper.js';
 
 /** @test {skipUntil} */
 describe('skipUntil', () => {

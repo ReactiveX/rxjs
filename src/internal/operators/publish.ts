@@ -1,9 +1,9 @@
-import { Observable } from '../Observable';
-import { Subject } from '../Subject';
-import { multicast } from './multicast';
-import { ConnectableObservable } from '../observable/ConnectableObservable';
+import { Observable } from '../Observable.js';
+import { Subject } from '../Subject.js';
+import { multicast } from './multicast.js';
+import { ConnectableObservable } from '../observable/ConnectableObservable.js';
 import { MonoTypeOperatorFunction, OperatorFunction, UnaryFunction, ObservableInput, ObservedValueOf } from '../types';
-import { connect } from './connect';
+import { connect } from './connect.js';
 
 /**
  * Returns a connectable observable that, when connected, will multicast

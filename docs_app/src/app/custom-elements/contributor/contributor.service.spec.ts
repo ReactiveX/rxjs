@@ -2,8 +2,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { ContributorService } from './contributor.service';
-import { ContributorGroup } from './contributors.model';
+import { ContributorService } from './contributor.service.js';
+import { ContributorGroup } from './contributors.model.js';
 
 describe('ContributorService', () => {
 

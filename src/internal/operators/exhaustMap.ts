@@ -1,10 +1,10 @@
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable.js';
+import { Subscriber } from '../Subscriber.js';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { map } from './map';
-import { innerFrom } from '../observable/from';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { map } from './map.js';
+import { innerFrom } from '../observable/from.js';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /* tslint:disable:max-line-length */
 export function exhaustMap<T, O extends ObservableInput<any>>(

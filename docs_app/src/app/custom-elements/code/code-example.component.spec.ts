@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CodeExampleComponent } from './code-example.component';
-import { CodeExampleModule } from './code-example.module';
+import { CodeExampleComponent } from './code-example.component.js';
+import { CodeExampleModule } from './code-example.module.js';
 import { Logger } from 'app/shared/logger.service';
 import { MockLogger } from 'testing/logger.service';
 

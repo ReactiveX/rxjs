@@ -4,7 +4,7 @@ import { timeInterval, map, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, Observable } from 'rxjs';
 import { TimeInterval } from 'rxjs/internal/operators/timeInterval';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {timeInterval} */
 describe('timeInterval', () => {

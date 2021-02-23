@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ContributorGroup } from './contributors.model';
-import { ContributorService } from './contributor.service';
+import { ContributorGroup } from './contributors.model.js';
+import { ContributorService } from './contributor.service.js';
 import { LocationService } from 'app/shared/location.service';
 
 @Component({

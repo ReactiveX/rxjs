@@ -4,7 +4,7 @@ import {
   FlattenedApiList,
   FlattenedApiNode,
   TreeNode
-} from './interfaces';
+} from './interfaces.js';
 
 /**
  * Recursively walks the tree and pulls relevant information from the API list.

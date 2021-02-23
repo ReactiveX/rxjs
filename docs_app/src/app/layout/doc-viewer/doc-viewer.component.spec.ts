@@ -13,7 +13,7 @@ MockTitle, MockTocService, ObservableWithSubscriptionSpies,
 TestDocViewerComponent, TestModule, TestParentComponent, MockElementsLoader
 } from 'testing/doc-viewer-utils';
 import { MockLogger } from 'testing/logger.service';
-import { DocViewerComponent, NO_ANIMATIONS } from './doc-viewer.component';
+import { DocViewerComponent, NO_ANIMATIONS } from './doc-viewer.component.js';
 
 describe('DocViewerComponent', () => {
   let parentFixture: ComponentFixture<TestParentComponent>;

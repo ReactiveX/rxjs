@@ -1,7 +1,7 @@
-import { decisionTreeReducer } from './decisionTreeReducer';
-import { mockFlatApiList, mockRawTreeNodes } from './fixtures';
-import { addUniqueId } from './addUniqueId';
-import { rawNodesWithMethodCount } from './helpers';
+import { decisionTreeReducer } from './decisionTreeReducer.js';
+import { mockFlatApiList, mockRawTreeNodes } from './fixtures.js';
+import { addUniqueId } from './addUniqueId.js';
+import { rawNodesWithMethodCount } from './helpers.js';
 
 describe('decisionTreeReducer', () => {
   const tree = decisionTreeReducer(addUniqueId(mockRawTreeNodes), mockFlatApiList);

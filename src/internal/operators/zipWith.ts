@@ -1,5 +1,5 @@
 import { ObservableInputTuple, OperatorFunction, Cons } from '../types';
-import { zip } from './zip';
+import { zip } from './zip.js';
 
 /**
  * Subscribes to the source, and the observable inputs provided as arguments, and combines their values, by index, into arrays.

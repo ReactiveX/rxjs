@@ -3,8 +3,8 @@ import { expect } from 'chai';
 import { of, Subject } from 'rxjs';
 import { debounceTime, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
-import { VirtualTimeScheduler } from '../../src/internal/scheduler/VirtualTimeScheduler';
+import { observableMatcher } from '../helpers/observableMatcher.js';
+import { VirtualTimeScheduler } from '../../src/internal/scheduler/VirtualTimeScheduler.js';
 
 /** @test {debounceTime} */
 describe('debounceTime', () => {

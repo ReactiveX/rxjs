@@ -1,7 +1,7 @@
-import { asyncScheduler } from '../scheduler/async';
-import { defaultThrottleConfig, throttle } from './throttle';
+import { asyncScheduler } from '../scheduler/async.js';
+import { defaultThrottleConfig, throttle } from './throttle.js';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
-import { timer } from '../observable/timer';
+import { timer } from '../observable/timer.js';
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source

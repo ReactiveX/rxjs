@@ -7,9 +7,9 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ScrollService } from 'app/shared/scroll.service';
 import { BehaviorSubject } from 'rxjs';
-import { treeNodeStubNoOptions, treeNodeStubWithOptionsA } from './fixtures';
-import { OperatorDecisionTreeComponent } from './operator-decision-tree.component';
-import { OperatorDecisionTreeService } from './operator-decision-tree.service';
+import { treeNodeStubNoOptions, treeNodeStubWithOptionsA } from './fixtures.js';
+import { OperatorDecisionTreeComponent } from './operator-decision-tree.component.js';
+import { OperatorDecisionTreeService } from './operator-decision-tree.service.js';
 
 const operatorDecisionTreeServiceStub = {
   currentSentence$: new BehaviorSubject('Conditioner is better'),

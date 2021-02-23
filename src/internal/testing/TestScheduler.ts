@@ -1,18 +1,18 @@
-import { Observable } from '../Observable';
-import { ColdObservable } from './ColdObservable';
-import { HotObservable } from './HotObservable';
-import { TestMessage } from './TestMessage';
-import { SubscriptionLog } from './SubscriptionLog';
-import { Subscription } from '../Subscription';
-import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler';
+import { Observable } from '../Observable.js';
+import { ColdObservable } from './ColdObservable.js';
+import { HotObservable } from './HotObservable.js';
+import { TestMessage } from './TestMessage.js';
+import { SubscriptionLog } from './SubscriptionLog.js';
+import { Subscription } from '../Subscription.js';
+import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler.js';
 import { ObservableNotification } from '../types';
-import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../NotificationFactories';
-import { dateTimestampProvider } from '../scheduler/dateTimestampProvider';
-import { performanceTimestampProvider } from '../scheduler/performanceTimestampProvider';
-import { animationFrameProvider } from '../scheduler/animationFrameProvider';
-import { immediateProvider } from '../scheduler/immediateProvider';
-import { intervalProvider } from '../scheduler/intervalProvider';
-import { timeoutProvider } from '../scheduler/timeoutProvider';
+import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../NotificationFactories.js';
+import { dateTimestampProvider } from '../scheduler/dateTimestampProvider.js';
+import { performanceTimestampProvider } from '../scheduler/performanceTimestampProvider.js';
+import { animationFrameProvider } from '../scheduler/animationFrameProvider.js';
+import { immediateProvider } from '../scheduler/immediateProvider.js';
+import { intervalProvider } from '../scheduler/intervalProvider.js';
+import { timeoutProvider } from '../scheduler/timeoutProvider.js';
 
 const defaultMaxFrame: number = 750;
 

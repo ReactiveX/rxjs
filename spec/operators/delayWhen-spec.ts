@@ -2,7 +2,7 @@
 import { of, EMPTY } from 'rxjs';
 import { delayWhen, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 import { expect } from 'chai';
 
 /** @test {delayWhen} */

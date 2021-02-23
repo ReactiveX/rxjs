@@ -1,9 +1,9 @@
-import { Subscription } from '../Subscription';
+import { Subscription } from '../Subscription.js';
 
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
-import { innerFrom } from '../observable/from';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
+import { innerFrom } from '../observable/from.js';
 
 export interface ThrottleConfig {
   leading?: boolean;

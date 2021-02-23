@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { WindowToken } from 'app/shared/window';
 import { AppModule } from 'app/app.module';
 
-import { ReportingErrorHandler } from './reporting-error-handler';
+import { ReportingErrorHandler } from './reporting-error-handler.js';
 
 describe('ReportingErrorHandler service', () => {
   let handler: ReportingErrorHandler;

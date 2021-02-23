@@ -1,7 +1,7 @@
-import { Notification } from '../Notification';
+import { Notification } from '../Notification.js';
 import { OperatorFunction, ObservableNotification } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /**
  * Represents all of the notifications from the source Observable as `next`

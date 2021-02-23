@@ -2,7 +2,7 @@
 import { windowWhen, mergeMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {windowWhen} */
 describe('windowWhen', () => {

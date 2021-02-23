@@ -1,10 +1,10 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { ObservableInputTuple } from '../types';
-import { innerFrom } from './from';
-import { argsOrArgArray } from '../util/argsOrArgArray';
-import { EMPTY } from './empty';
-import { OperatorSubscriber } from '../operators/OperatorSubscriber';
-import { popResultSelector } from '../util/args';
+import { innerFrom } from './from.js';
+import { argsOrArgArray } from '../util/argsOrArgArray.js';
+import { EMPTY } from './empty.js';
+import { OperatorSubscriber } from '../operators/OperatorSubscriber.js';
+import { popResultSelector } from '../util/args.js';
 
 export function zip<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A>;
 /** @deprecated resultSelector is no longer supported, pipe to map instead, Details https://rxjs.dev/deprecations/resultSelector */

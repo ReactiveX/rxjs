@@ -1,5 +1,5 @@
 import { ErrorHandler, ReflectiveInjector } from '@angular/core';
-import { Logger } from './logger.service';
+import { Logger } from './logger.service.js';
 
 describe('logger service', () => {
   let logSpy: jasmine.Spy;

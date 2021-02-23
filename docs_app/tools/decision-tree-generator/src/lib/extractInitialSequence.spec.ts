@@ -1,6 +1,6 @@
-import { extractInitialSequence } from './extractInitialSequence';
-import { addUniqueId } from './addUniqueId';
-import { mockRawTreeNodes } from './fixtures';
+import { extractInitialSequence } from './extractInitialSequence.js';
+import { addUniqueId } from './addUniqueId.js';
+import { mockRawTreeNodes } from './fixtures.js';
 
 const tree = addUniqueId(mockRawTreeNodes);
 const initialSequence = extractInitialSequence(tree);

@@ -1,7 +1,7 @@
 import { MonoTypeOperatorFunction } from '../types';
-import { identity } from '../util/identity';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { identity } from '../util/identity.js';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /**
  * Returns a result {@link Observable} that emits all values pushed by the source observable if they
@@ -9,7 +9,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * 1. It will always emit the first value from the source.
  * 2. For all subsequent values pushed by the source, they will be compared to the previously emitted values
- *    using the provided `comparator` or an `===` equality check.
+ *    using the provided "comparator` or an `===" equality check.
  * 3. If the value pushed by the source is determined to be unequal by this check, that value is emitted and
  *    becomes the new "previously emitted value" internally.
  *

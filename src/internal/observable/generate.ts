@@ -1,9 +1,9 @@
-import { Observable } from '../Observable';
-import { identity } from '../util/identity';
+import { Observable } from '../Observable.js';
+import { identity } from '../util/identity.js';
 import { ObservableInput, SchedulerLike } from '../types';
-import { isScheduler } from '../util/isScheduler';
-import { defer } from './defer';
-import { scheduleIterable } from '../scheduled/scheduleIterable';
+import { isScheduler } from '../util/isScheduler.js';
+import { defer } from './defer.js';
+import { scheduleIterable } from '../scheduled/scheduleIterable.js';
 
 type ConditionFunc<S> = (state: S) => boolean;
 type IterateFunc<S> = (state: S) => S;

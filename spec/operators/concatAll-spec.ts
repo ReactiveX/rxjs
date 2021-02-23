@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { from, throwError, of, Observable, defer } from 'rxjs';
 import { concatAll, take, mergeMap, finalize, delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {concatAll} */
 describe('concatAll operator', () => {

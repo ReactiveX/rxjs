@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { TestBed, fakeAsync, flushMicrotasks } from '@angular/core/testing';
 
-import { ElementsLoader } from './elements-loader';
-import { ELEMENT_MODULE_LOAD_CALLBACKS_TOKEN, WithCustomElementComponent } from './element-registry';
+import { ElementsLoader } from './elements-loader.js';
+import { ELEMENT_MODULE_LOAD_CALLBACKS_TOKEN, WithCustomElementComponent } from './element-registry.js';
 
 
 interface Deferred {

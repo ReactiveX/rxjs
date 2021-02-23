@@ -1,4 +1,4 @@
-import { mergeMap } from './mergeMap';
+import { mergeMap } from './mergeMap.js';
 
 /**
  * @deprecated renamed. Use {@link mergeMap}.

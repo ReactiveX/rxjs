@@ -10,8 +10,8 @@ import { By } from '@angular/platform-browser';
 import { of, timer } from 'rxjs';
 import { first, mapTo } from 'rxjs/operators';
 
-import { AppComponent } from './app.component';
-import { AppModule } from './app.module';
+import { AppComponent } from './app.component.js';
+import { AppModule } from './app.module.js';
 import { DocumentService } from 'app/documents/document.service';
 import { DocViewerComponent } from 'app/layout/doc-viewer/doc-viewer.component';
 import { Deployment } from 'app/shared/deployment.service';
@@ -28,7 +28,7 @@ import { SearchResultsComponent } from 'app/shared/search-results/search-results
 import { SearchService } from 'app/search/search.service';
 import { SelectComponent } from 'app/shared/select/select.component';
 import { TocItem, TocService } from 'app/shared/toc.service';
-import { ElementsLoader } from './custom-elements/elements-loader';
+import { ElementsLoader } from './custom-elements/elements-loader.js';
 
 const sideBySideBreakPoint = 992;
 const hideToCBreakPoint = 800;

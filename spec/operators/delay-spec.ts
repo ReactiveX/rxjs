@@ -4,7 +4,7 @@ import { delay, repeatWhen, skip, take, tap, mergeMap, ignoreElements } from 'rx
 import { TestScheduler } from 'rxjs/testing';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {delay} */
 describe('delay', () => {

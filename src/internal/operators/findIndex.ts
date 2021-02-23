@@ -1,7 +1,7 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { Falsy, OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { createFind } from './find';
+import { operate } from '../util/lift.js';
+import { createFind } from './find.js';
 
 export function findIndex<T>(predicate: BooleanConstructor, thisArg?: any): OperatorFunction<T, T extends Falsy ? -1 : number>;
 export function findIndex<T, A>(

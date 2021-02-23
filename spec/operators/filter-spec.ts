@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { filter, tap, map, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, Observable, from } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {filter} */
 describe('filter', () => {

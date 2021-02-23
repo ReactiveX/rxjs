@@ -1,8 +1,8 @@
 import { MonoTypeOperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { Subscription } from '../Subscription';
-import { EMPTY } from '../observable/empty';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift.js';
+import { Subscription } from '../Subscription.js';
+import { EMPTY } from '../observable/empty.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 export interface RetryConfig {
   count: number;

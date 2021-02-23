@@ -1,5 +1,5 @@
 import { race, of, NEVER, EMPTY } from 'rxjs';
-import { a$, b, b$, c, c$, d$, e$, f$ } from '../helpers';
+import { a$, b, b$, c, c$, d$, e$, f$ } from '../helpers.js';
 
 describe('race(a, b, c)', () => {
   it('should support N arguments of different types', () => {

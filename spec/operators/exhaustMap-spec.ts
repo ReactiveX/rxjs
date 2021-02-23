@@ -3,8 +3,8 @@ import { TestScheduler } from 'rxjs/testing';
 import { concat, defer, Observable, of, BehaviorSubject } from 'rxjs';
 import { exhaustMap, mergeMap, takeWhile, map, take } from 'rxjs/operators';
 import { expect } from 'chai';
-import { asInteropObservable } from '../helpers/interop-helper';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { asInteropObservable } from '../helpers/interop-helper.js';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {exhaustMap} */
 describe('exhaustMap', () => {

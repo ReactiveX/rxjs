@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { defer, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {defer} */
 describe('defer', () => {
@@ -132,7 +132,7 @@ describe('defer', () => {
       const source = hot('--a--b--c--|');
       const sourceSubs = '^-----!     ';
       const expected = '  --a--b-     ';
-      const unsub =      '------!     ';
+      const unsub = '------!     ';
 
       const e1 = defer(() => source);
 

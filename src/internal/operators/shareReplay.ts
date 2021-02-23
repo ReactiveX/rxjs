@@ -1,6 +1,6 @@
-import { ReplaySubject } from '../ReplaySubject';
+import { ReplaySubject } from '../ReplaySubject.js';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
-import { share } from './share';
+import { share } from './share.js';
 
 export interface ShareReplayConfig {
   bufferSize?: number;
@@ -138,6 +138,6 @@ export function shareReplay<T>(
     connector: () => new ReplaySubject(bufferSize, windowTime, scheduler),
     resetOnError: true,
     resetOnComplete: false,
-    resetOnRefCountZero: refCount
+    resetOnRefCountZero: refCount,
   });
 }

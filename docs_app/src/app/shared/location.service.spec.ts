@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 
 import { GaService } from 'app/shared/ga.service';
 import { SwUpdatesService } from 'app/sw-updates/sw-updates.service';
-import { LocationService } from './location.service';
+import { LocationService } from './location.service.js';
 
 describe('LocationService', () => {
   let injector: ReflectiveInjector;

@@ -1,4 +1,4 @@
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { of, EMPTY } from 'rxjs';
 

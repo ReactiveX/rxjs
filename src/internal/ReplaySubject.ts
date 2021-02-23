@@ -1,8 +1,8 @@
-import { Subject } from './Subject';
+import { Subject } from './Subject.js';
 import { TimestampProvider } from './types';
-import { Subscriber } from './Subscriber';
-import { Subscription } from './Subscription';
-import { dateTimestampProvider } from './scheduler/dateTimestampProvider';
+import { Subscriber } from './Subscriber.js';
+import { Subscription } from './Subscription.js';
+import { dateTimestampProvider } from './scheduler/dateTimestampProvider.js';
 
 /**
  * A variant of {@link Subject} that "replays" old values to new subscribers by emitting them when they first subscribe.

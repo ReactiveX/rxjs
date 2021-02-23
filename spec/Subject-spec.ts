@@ -3,7 +3,7 @@ import { Subject, ObjectUnsubscribedError, Observable, AsyncSubject, Observer, o
 import { AnonymousSubject } from 'rxjs/internal/Subject';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from './helpers/observableMatcher';
+import { observableMatcher } from './helpers/observableMatcher.js';
 
 /** @test {Subject} */
 describe('Subject', () => {

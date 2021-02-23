@@ -1,7 +1,7 @@
 /* @prettier */
 import { SchedulerLike } from '../types';
-import { Observable } from '../Observable';
-import { bindCallbackInternals } from './bindCallbackInternals';
+import { Observable } from '../Observable.js';
+import { bindCallbackInternals } from './bindCallbackInternals.js';
 
 // tslint:disable:max-line-length
 /** @deprecated resultSelector is no longer supported, use a mapping function. */

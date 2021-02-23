@@ -4,8 +4,8 @@ import { ReadTypeScriptModules } from 'dgeni-packages/typescript/processors/read
 import * as path from 'path';
 import 'jasmine';
 
-import * as testPackage from '../../helpers/test-package';
-import { markAliases } from './markAliases';
+import * as testPackage from '../../helpers/test-package.js';
+import { markAliases } from './markAliases.js';
 
 describe('markAliases processor', () => {
   let dgeni: Dgeni;

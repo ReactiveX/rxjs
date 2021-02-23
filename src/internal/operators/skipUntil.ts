@@ -1,9 +1,9 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { MonoTypeOperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
-import { innerFrom } from '../observable/from';
-import { noop } from '../util/noop';
+import { operate } from '../util/lift.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
+import { innerFrom } from '../observable/from.js';
+import { noop } from '../util/noop.js';
 
 /**
  * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.

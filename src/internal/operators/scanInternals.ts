@@ -1,6 +1,6 @@
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { Observable } from '../Observable.js';
+import { Subscriber } from '../Subscriber.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /**
  * A basic scan operation. This is used for `scan` and `reduce`.

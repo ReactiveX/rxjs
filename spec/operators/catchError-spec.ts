@@ -2,10 +2,10 @@ import { expect } from 'chai';
 import { concat, defer, Observable, of, throwError, EMPTY, from } from 'rxjs';
 import { catchError, map, mergeMap, takeWhile, delay, take } from 'rxjs/operators';
 import * as sinon from 'sinon';
-import { createObservableInputs } from '../helpers/test-helper';
+import { createObservableInputs } from '../helpers/test-helper.js';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
-import { asInteropObservable } from '../helpers/interop-helper';
+import { observableMatcher } from '../helpers/observableMatcher.js';
+import { asInteropObservable } from '../helpers/interop-helper.js';
 
 /** @test {catch} */
 describe('catchError operator', () => {

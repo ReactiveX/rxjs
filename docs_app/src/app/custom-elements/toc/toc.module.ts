@@ -1,8 +1,8 @@
 import { NgModule, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { WithCustomElementComponent } from '../element-registry';
-import { TocComponent } from './toc.component';
+import { WithCustomElementComponent } from '../element-registry.js';
+import { TocComponent } from './toc.component.js';
 
 @NgModule({
   imports: [ CommonModule, MatIconModule ],

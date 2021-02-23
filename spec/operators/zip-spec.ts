@@ -1,7 +1,7 @@
 /** @prettier */
 import { zip } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {zip} */
 describe('zip', () => {

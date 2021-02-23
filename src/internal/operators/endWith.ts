@@ -1,7 +1,7 @@
 /** prettier */
-import { Observable } from '../Observable';
-import { concat } from '../observable/concat';
-import { of } from '../observable/of';
+import { Observable } from '../Observable.js';
+import { concat } from '../observable/concat.js';
+import { of } from '../observable/of.js';
 import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ValueFromArray } from '../types';
 
 /** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */

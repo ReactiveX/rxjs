@@ -6,9 +6,9 @@ import {
   treeNodeStubWithOptionsA,
   treeNodeStubWithOptionsB,
   treeStub
-} from './fixtures';
-import { OperatorDecisionTreeDataService } from './operator-decision-tree-data.service';
-import { OperatorDecisionTreeService } from './operator-decision-tree.service';
+} from './fixtures.js';
+import { OperatorDecisionTreeDataService } from './operator-decision-tree-data.service.js';
+import { OperatorDecisionTreeService } from './operator-decision-tree.service.js';
 
 describe('OperatorDecisionTreeService', () => {
   let service: OperatorDecisionTreeService;

@@ -1,5 +1,5 @@
 import { MonoTypeOperatorFunction } from '../types';
-import { filter } from './filter';
+import { filter } from './filter.js';
 
 /**
  * Returns an Observable that skips the first `count` items emitted by the source Observable.

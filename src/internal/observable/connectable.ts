@@ -1,8 +1,8 @@
 import { ObservableInput } from '../types';
-import { Subject } from '../Subject';
-import { Subscription } from '../Subscription';
-import { Observable } from '../Observable';
-import { defer } from './defer';
+import { Subject } from '../Subject.js';
+import { Subscription } from '../Subscription.js';
+import { Observable } from '../Observable.js';
+import { defer } from './defer.js';
 
 /**
  * An observable with a `connect` method that is used to create a subscription

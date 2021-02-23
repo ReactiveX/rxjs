@@ -1,9 +1,9 @@
-import { Subscriber } from '../Subscriber';
+import { Subscriber } from '../Subscriber.js';
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 
-import { operate } from '../util/lift';
-import { innerFrom } from '../observable/from';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../util/lift.js';
+import { innerFrom } from '../observable/from.js';
+import { OperatorSubscriber } from './OperatorSubscriber.js';
 
 /**
  * Ignores source values for a duration determined by another Observable, then

@@ -1,10 +1,10 @@
-import { Observable } from '../Observable';
+import { Observable } from '../Observable.js';
 import { ObservableInput, OperatorFunction } from '../types';
-import { identity } from '../util/identity';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
-import { pipe } from '../util/pipe';
-import { mergeMap } from './mergeMap';
-import { toArray } from './toArray';
+import { identity } from '../util/identity.js';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
+import { pipe } from '../util/pipe.js';
+import { mergeMap } from './mergeMap.js';
+import { toArray } from './toArray.js';
 
 /**
  * Collects all of the inner sources from source observable. Then, once the

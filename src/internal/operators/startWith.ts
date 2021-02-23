@@ -1,7 +1,7 @@
-import { concat } from '../observable/concat';
+import { concat } from '../observable/concat.js';
 import { OperatorFunction, SchedulerLike, ValueFromArray } from '../types';
-import { popScheduler } from '../util/args';
-import { operate } from '../util/lift';
+import { popScheduler } from '../util/args.js';
+import { operate } from '../util/lift.js';
 
 // Devs are more likely to pass null or undefined than they are a scheduler
 // without accompanying values. To make things easier for (naughty) devs who

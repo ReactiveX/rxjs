@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { NEVER, timer, of, EMPTY, concat, Subject, Observable } from 'rxjs';
 import { debounce, mergeMap, mapTo, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {debounce} */
 describe('debounce', () => {

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { map, tap, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, Observable, identity } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 // function shortcuts
 const addDrama = (x: number | string) => x + '!';

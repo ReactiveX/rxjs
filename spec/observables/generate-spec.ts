@@ -1,6 +1,6 @@
 import { TestScheduler } from 'rxjs/testing';
 import { expect } from 'chai';
-import { expectObservable } from '../helpers/marble-testing';
+import { expectObservable } from '../helpers/marble-testing.js';
 import { generate, Subscriber } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { SafeSubscriber } from 'rxjs/internal/Subscriber';

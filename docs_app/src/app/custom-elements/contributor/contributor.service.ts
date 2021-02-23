@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { ConnectableObservable, Observable } from 'rxjs';
 import { map, publishLast } from 'rxjs/operators';
 
-import { Contributor, ContributorGroup } from './contributors.model';
+import { Contributor, ContributorGroup } from './contributors.model.js';
 
 // TODO(andrewjs): Look into changing this so that we don't import the service just to get the const
 import { CONTENT_URL_PREFIX } from 'app/documents/document.service';

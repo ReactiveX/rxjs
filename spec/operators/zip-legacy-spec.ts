@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { zip } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /**
  * zip legacy still supports a mapping function, but it's deprecated

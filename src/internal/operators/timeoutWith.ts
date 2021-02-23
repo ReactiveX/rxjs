@@ -1,7 +1,7 @@
-import { async } from '../scheduler/async';
-import { isValidDate } from '../util/isDate';
+import { async } from '../scheduler/async.js';
+import { isValidDate } from '../util/isDate.js';
 import { ObservableInput, OperatorFunction, SchedulerLike } from '../types';
-import { timeout } from './timeout';
+import { timeout } from './timeout.js';
 
 /**
  * If the time of the Date object passed arrives before the first value arrives from the source, it will unsubscribe

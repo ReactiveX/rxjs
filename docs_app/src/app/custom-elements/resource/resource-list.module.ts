@@ -1,8 +1,8 @@
 import { NgModule, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ResourceListComponent } from './resource-list.component';
-import { ResourceService } from './resource.service';
-import { WithCustomElementComponent } from '../element-registry';
+import { ResourceListComponent } from './resource-list.component.js';
+import { ResourceService } from './resource.service.js';
+import { WithCustomElementComponent } from '../element-registry.js';
 
 @NgModule({
   imports: [ CommonModule ],

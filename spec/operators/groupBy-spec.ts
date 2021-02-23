@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { groupBy, delay, tap, map, take, mergeMap, materialize, skip, ignoreElements } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { ReplaySubject, of, Observable, Operator, Observer, interval, Subject } from 'rxjs';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing.js';
 import { createNotification } from 'rxjs/internal/NotificationFactories';
 
 declare const rxTestScheduler: TestScheduler;

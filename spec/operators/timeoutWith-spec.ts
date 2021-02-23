@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { timeoutWith, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, Observable, EMPTY } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {timeoutWith} */
 describe('timeoutWith operator', () => {
@@ -34,7 +34,7 @@ describe('timeoutWith operator', () => {
     rxTestScheduler.run(({ cold, time, expectObservable, expectSubscriptions }) => {
       const source = cold('  -');
       const sourceSubs = '   ^---------!           ';
-      const t = time('       ----------|')
+      const t = time('       ----------|');
       const switchTo = cold('          --x--y--z--|');
       const switchToSubs = ' ----------^----------!';
       const expected = '     ------------x--y--z--|';
@@ -51,7 +51,7 @@ describe('timeoutWith operator', () => {
   it('should timeout after a specified period between emit then subscribe to the passed observable when source emits', () => {
     rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
       const source = hot('  ---a---b------c---|');
-      const t = time('             ----|       ')
+      const t = time('             ----|       ');
       const sourceSubs = '  ^----------!       ';
       const switchTo = cold('          -x-y-|  ');
       const switchToSubs = '-----------^----!  ';
@@ -68,7 +68,7 @@ describe('timeoutWith operator', () => {
   it('should allow unsubscribing explicitly and early', () => {
     rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
       const source = hot('  ---a---b-----c----|');
-      const t = time('             ----|       ')
+      const t = time('             ----|       ');
       const sourceSubs = '  ^----------!       ';
       const switchTo = cold('          -x---y| ');
       const switchToSubs = '-----------^--!    ';
@@ -108,7 +108,7 @@ describe('timeoutWith operator', () => {
   it('should not subscribe to withObservable after explicit unsubscription', () => {
     rxTestScheduler.run(({ cold, time, expectObservable, expectSubscriptions }) => {
       const source = cold('---a------b------');
-      const t = time('     -----|           ')
+      const t = time('     -----|           ');
       const sourceSubs = ' ^----!           ';
       const switchTo = cold('   i---j---|   ');
       const expected = '   ---a--           ';
@@ -129,7 +129,7 @@ describe('timeoutWith operator', () => {
   it('should timeout after a specified period then subscribe to the passed observable when source is empty', () => {
     rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
       const source = hot('  -------------|      ');
-      const t = time('      ----------|         ')
+      const t = time('      ----------|         ');
       const sourceSubs = '  ^---------!         ';
       const switchTo = cold('         ----x----|');
       const switchToSubs = '----------^--------!';
@@ -180,7 +180,7 @@ describe('timeoutWith operator', () => {
   it('should timeout after a specified period between emit then never completes if other source emits but not complete', () => {
     rxTestScheduler.run(({ hot, cold, time, expectObservable, expectSubscriptions }) => {
       const source = hot('  -------------|      ');
-      const t = time('      -----------|        ')
+      const t = time('      -----------|        ');
       const sourceSubs = '  ^----------!        ';
       const switchTo = cold('          ----x----');
       const switchToSubs = '-----------^--------';
@@ -278,7 +278,7 @@ describe('timeoutWith operator', () => {
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable<number>(subscriber => {
+    const synchronousObservable = new Observable<number>((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -287,10 +287,9 @@ describe('timeoutWith operator', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      timeoutWith(0, EMPTY),
-      take(3),
-    ).subscribe(() => { /* noop */ });
+    synchronousObservable.pipe(timeoutWith(0, EMPTY), take(3)).subscribe(() => {
+      /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });

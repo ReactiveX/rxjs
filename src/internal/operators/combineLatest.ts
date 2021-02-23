@@ -1,10 +1,10 @@
-import { combineLatestInit } from '../observable/combineLatest';
+import { combineLatestInit } from '../observable/combineLatest.js';
 import { ObservableInput, ObservableInputTuple, OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { argsOrArgArray } from '../util/argsOrArgArray';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
-import { pipe } from '../util/pipe';
-import { popResultSelector } from '../util/args';
+import { operate } from '../util/lift.js';
+import { argsOrArgArray } from '../util/argsOrArgArray.js';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
+import { pipe } from '../util/pipe.js';
+import { popResultSelector } from '../util/args.js';
 
 /** @deprecated use {@link combineLatestWith} */
 export function combineLatest<T, A extends readonly unknown[], R>(

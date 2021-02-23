@@ -1,9 +1,9 @@
-import { Observable } from '../Observable';
-import { async } from '../scheduler/async';
+import { Observable } from '../Observable.js';
+import { async } from '../scheduler/async.js';
 import { SchedulerLike, OperatorFunction } from '../types';
-import { scan } from './scan';
-import { defer } from '../observable/defer';
-import { map } from './map';
+import { scan } from './scan.js';
+import { defer } from '../observable/defer.js';
+import { map } from './map.js';
 
 /**
  *
@@ -51,16 +51,18 @@ import { map } from './map';
  * value and interval.
  */
 export function timeInterval<T>(scheduler: SchedulerLike = async): OperatorFunction<T, TimeInterval<T>> {
-  return (source: Observable<T>) => defer(() => {
-    return source.pipe(
-      // TODO(benlesh): correct these typings.
-      scan(
-        ({ current }, value) => ({ value, current: scheduler.now(), last: current }),
-        { current: scheduler.now(), value: undefined,  last: undefined } as any
-      ) as OperatorFunction<T, any>,
-      map<any, TimeInterval<T>>(({ current, last, value }) => new TimeInterval(value, current - last)),
-    );
-  });
+  return (source: Observable<T>) =>
+    defer(() => {
+      return source.pipe(
+        // TODO(benlesh): correct these typings.
+        scan(({ current }, value) => ({ value, current: scheduler.now(), last: current }), {
+          current: scheduler.now(),
+          value: undefined,
+          last: undefined,
+        } as any) as OperatorFunction<T, any>,
+        map<any, TimeInterval<T>>(({ current, last, value }) => new TimeInterval(value, current - last))
+      );
+    });
 }
 
 // TODO(benlesh): make this an interface, export the interface, but not the implemented class,

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { asapScheduler as asap, range, of} from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { expectObservable } from '../helpers/marble-testing';
+import { expectObservable } from '../helpers/marble-testing.js';
 import { concatMap, delay } from 'rxjs/operators';
 
 declare const rxTestScheduler: TestScheduler;

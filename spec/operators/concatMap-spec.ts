@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { of, from, Observable, defer } from 'rxjs';
 import { concatMap, mergeMap, map, take, finalize, delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {concatMap} */
 describe('Observable.prototype.concatMap', () => {
