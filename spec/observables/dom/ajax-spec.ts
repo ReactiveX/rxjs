@@ -898,56 +898,6 @@ describe('ajax', () => {
     });
   });
 
-  it('should work fine when XMLHttpRequest ontimeout property is monkey patched', function (done) {
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'ontimeout', {
-      set(fn: (e: ProgressEvent) => any) {
-        const wrapFn = (ev: ProgressEvent) => {
-          const result = fn.call(this, ev);
-          if (result === false) {
-            ev.preventDefault();
-          }
-        };
-        this['_ontimeout'] = wrapFn;
-      },
-      get() {
-        return this['_ontimeout'];
-      },
-      configurable: true,
-    });
-
-    const ajaxRequest: AjaxConfig = {
-      url: '/flibbertyJibbet',
-    };
-
-    ajax(ajaxRequest).subscribe({
-      error(err) {
-        expect(err.name).to.equal('AjaxTimeoutError');
-        done();
-      },
-    });
-
-    const request = MockXMLHttpRequest.mostRecent;
-    try {
-      request.ontimeout('ontimeout' as any);
-    } catch (e) {
-      expect(e.message).to.equal(
-        new AjaxTimeoutError(request as any, {
-          url: ajaxRequest.url,
-          method: 'GET',
-          headers: {
-            'content-type': 'application/json;encoding=Utf-8',
-          },
-          withCredentials: false,
-          async: true,
-          timeout: 0,
-          crossDomain: false,
-          responseType: 'json',
-        }).message
-      );
-    }
-    delete root.XMLHttpRequest.prototype.ontimeout;
-  });
-
   describe('ajax.patch', () => {
     it('should create an AjaxObservable with correct options', () => {
       const expected = { foo: 'bar', hi: 'there you' };
@@ -1031,6 +981,29 @@ describe('ajax', () => {
         expect(error).to.be.an.instanceOf(AjaxError);
       });
     });
+  });
+
+  it('should error if aborted early', () => {
+    let thrown: any = null;
+
+    ajax({
+      method: 'GET',
+      url: '/flibbertyJibbett',
+    }).subscribe({
+      next: () => {
+        throw new Error('should not be called');
+      },
+      error: (err) => {
+        thrown = err;
+      },
+    });
+
+    const mockXHR = MockXMLHttpRequest.mostRecent;
+    expect(thrown).to.be.null;
+
+    mockXHR.triggerEvent('abort', { type: 'abort' });
+    expect(thrown).to.be.an.instanceOf(AjaxError);
+    expect(thrown.message).to.equal('aborted');
   });
 
   describe('with includeDownloadProgress', () => {
