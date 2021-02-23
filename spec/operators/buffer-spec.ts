@@ -27,6 +27,27 @@ describe('Observable.prototype.buffer', () => {
     });
   });
 
+  it('should emit all buffered values if the source completes before the closingNotifier does', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const source = hot('---^---a---b---c---d---e--f----|');
+      const sourceSubs = '   ^---------------------------!';
+      const closer = hot('---^-------------B----------------');
+      const closerSubs = '   ^---------------------------!';
+      const expected = '     --------------x-------------(F|)';
+
+      const result = source.pipe(buffer(closer));
+
+      const expectedValues = {
+        x: ['a', 'b', 'c'],
+        F: ['d', 'e', 'f'],
+      };
+
+      expectObservable(result).toBe(expected, expectedValues);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectSubscriptions(closer.subscriptions).toBe(closerSubs);
+    });
+  });
+
   it('should work with empty and empty selector', () => {
     testScheduler.run(({ expectObservable }) => {
       const a = EMPTY;
