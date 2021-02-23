@@ -29,7 +29,7 @@ describe('auditTime', () => {
     });
   });
 
-  it('should auditTime events by 5 time units', (done: MochaDone) => {
+  it('should auditTime events by 5 time units', (done: Mocha.Done) => {
     const expected = 3;
     of(1, 2, 3)
       .pipe(auditTime(5))

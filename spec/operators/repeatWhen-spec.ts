@@ -34,7 +34,7 @@ describe('repeatWhen operator', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should repeat when notified via returned notifier on complete', (done: MochaDone) => {
+  it('should repeat when notified via returned notifier on complete', (done: Mocha.Done) => {
     let retried = false;
     const expected = [1, 2, 1, 2];
     let i = 0;
@@ -62,7 +62,7 @@ describe('repeatWhen operator', () => {
     }
   });
 
-  it('should not repeat when applying an empty notifier', (done: MochaDone) => {
+  it('should not repeat when applying an empty notifier', (done: Mocha.Done) => {
     const expected = [1, 2];
     const nexted: number[] = [];
     of(1, 2).pipe(

@@ -35,7 +35,7 @@ describe('groupBy operator', () => {
     return out;
   }
 
-  it('should group values', (done: MochaDone) => {
+  it('should group values', (done: Mocha.Done) => {
     const expectedGroups = [
       { key: 1, values: [1, 3] },
       { key: 0, values: [2] }
@@ -53,7 +53,7 @@ describe('groupBy operator', () => {
       }, null, done);
   });
 
-  it('should group values with an element selector', (done: MochaDone) => {
+  it('should group values with an element selector', (done: Mocha.Done) => {
     const expectedGroups = [
       { key: 1, values: ['1!', '3!'] },
       { key: 0, values: ['2!'] }
@@ -99,7 +99,7 @@ describe('groupBy operator', () => {
       expect(resultingGroups).to.deep.equal(expectedGroups);
   });
 
-  it('should group values with a subject selector', (done: MochaDone) => {
+  it('should group values with a subject selector', (done: Mocha.Done) => {
     const expectedGroups = [
       { key: 1, values: [3] },
       { key: 0, values: [2] }
@@ -1401,7 +1401,7 @@ describe('groupBy operator', () => {
     expectObservable(subjects.b).toBe('-');
   })
 
-  it('should not break lift() composability', (done: MochaDone) => {
+  it('should not break lift() composability', (done: Mocha.Done) => {
     class MyCustomObservable<T> extends Observable<T> {
       lift<R>(operator: Operator<T, R>): Observable<R> {
         const observable = new MyCustomObservable<R>();

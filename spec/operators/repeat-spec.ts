@@ -264,7 +264,7 @@ describe('repeat operator', () => {
     expectObservable(e1.pipe(repeat(2))).toBe(expected);
   });
 
-  it('should repeat a synchronous source (multicasted and refCounted) multiple times', (done: MochaDone) => {
+  it('should repeat a synchronous source (multicasted and refCounted) multiple times', (done: Mocha.Done) => {
     const expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
 
     of(1, 2, 3).pipe(

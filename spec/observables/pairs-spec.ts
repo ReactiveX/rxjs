@@ -17,7 +17,7 @@ describe('pairs', () => {
     expectObservable(e1).toBe(expected, values);
   });
 
-  it('should create an observable without scheduler', (done: MochaDone) => {
+  it('should create an observable without scheduler', (done: Mocha.Done) => {
     let expected = [
       ['a', 1],
       ['b', 2],

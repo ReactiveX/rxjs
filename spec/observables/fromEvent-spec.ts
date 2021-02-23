@@ -217,7 +217,7 @@ describe('fromEvent', () => {
     expect(offOptions).to.equal(expectedOptions);
   });
 
-  it('should pass through events that occur', (done: MochaDone) => {
+  it('should pass through events that occur', (done: Mocha.Done) => {
     let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
@@ -240,7 +240,7 @@ describe('fromEvent', () => {
     send('test');
   });
 
-  it('should pass through events that occur and use the selector if provided', (done: MochaDone) => {
+  it('should pass through events that occur and use the selector if provided', (done: Mocha.Done) => {
     let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
@@ -267,7 +267,7 @@ describe('fromEvent', () => {
     send('test');
   });
 
-  it('should not fail if no event arguments are passed and the selector does not return', (done: MochaDone) => {
+  it('should not fail if no event arguments are passed and the selector does not return', (done: Mocha.Done) => {
     let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
@@ -294,7 +294,7 @@ describe('fromEvent', () => {
     send();
   });
 
-  it('should return a value from the selector if no event arguments are passed', (done: MochaDone) => {
+  it('should return a value from the selector if no event arguments are passed', (done: Mocha.Done) => {
     let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
@@ -321,7 +321,7 @@ describe('fromEvent', () => {
     send();
   });
 
-  it('should pass multiple arguments to selector from event emitter', (done: MochaDone) => {
+  it('should pass multiple arguments to selector from event emitter', (done: Mocha.Done) => {
     let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
@@ -348,7 +348,7 @@ describe('fromEvent', () => {
     send(1, 2, 3);
   });
 
-  it('should emit multiple arguments from event as an array', (done: MochaDone) => {
+  it('should emit multiple arguments from event as an array', (done: Mocha.Done) => {
     let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
@@ -371,7 +371,7 @@ describe('fromEvent', () => {
     send(1, 2, 3);
   });
 
-  it('should not throw an exception calling toString on obj with a null prototype', (done: MochaDone) => {
+  it('should not throw an exception calling toString on obj with a null prototype', (done: Mocha.Done) => {
     // NOTE: Can not test with Object.create(null) or `class Foo extends null`
     // due to TypeScript bug. https://github.com/Microsoft/TypeScript/issues/1108
     class NullProtoEventTarget {

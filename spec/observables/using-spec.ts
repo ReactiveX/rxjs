@@ -20,7 +20,7 @@ describe('using', () => {
     }
   });
 
-  it('should accept factory returns promise resolves', (done: MochaDone) => {
+  it('should accept factory returns promise resolves', (done: Mocha.Done) => {
     const expected = 42;
 
     let disposed = false;
@@ -37,7 +37,7 @@ describe('using', () => {
     });
   });
 
-  it('should accept factory returns promise rejects', (done: MochaDone) => {
+  it('should accept factory returns promise rejects', (done: Mocha.Done) => {
     const expected = 42;
 
     let disposed = false;
@@ -55,7 +55,7 @@ describe('using', () => {
     });
   });
 
-  it('should raise error when resource factory throws', (done: MochaDone) => {
+  it('should raise error when resource factory throws', (done: Mocha.Done) => {
     const expectedError = 'expected';
     const error = 'error';
 
@@ -78,7 +78,7 @@ describe('using', () => {
     });
   });
 
-  it('should raise error when observable factory throws', (done: MochaDone) => {
+  it('should raise error when observable factory throws', (done: Mocha.Done) => {
     const error = 'error';
     let disposed = false;
 

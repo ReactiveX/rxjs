@@ -206,7 +206,7 @@ describe('static race', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should support a single ObservableInput argument', (done: MochaDone) => {
+  it('should support a single ObservableInput argument', (done: Mocha.Done) => {
     const source = race(Promise.resolve(42));
     source.subscribe(value => {
       expect(value).to.equal(42);

@@ -18,7 +18,7 @@ describe('retry operator', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should retry a number of times, without error, then complete', (done: MochaDone) => {
+  it('should retry a number of times, without error, then complete', (done: Mocha.Done) => {
     let errors = 0;
     const retries = 2;
     Observable.create((observer: Observer<number>) => {
@@ -42,7 +42,7 @@ describe('retry operator', () => {
         }, done);
   });
 
-  it('should retry a number of times, then call error handler', (done: MochaDone) => {
+  it('should retry a number of times, then call error handler', (done: Mocha.Done) => {
     let errors = 0;
     const retries = 2;
     Observable.create((observer: Observer<number>) => {
@@ -66,7 +66,7 @@ describe('retry operator', () => {
         });
   });
 
-  it('should retry a number of times, then call error handler (with resetOnSuccess)', (done: MochaDone) => {
+  it('should retry a number of times, then call error handler (with resetOnSuccess)', (done: Mocha.Done) => {
     let errors = 0;
     const retries = 2;
     Observable.create((observer: Observer<number>) => {
@@ -90,7 +90,7 @@ describe('retry operator', () => {
       });
   });
 
-  it('should retry a number of times, then call next handler without error, then retry and complete', (done: MochaDone) => {
+  it('should retry a number of times, then call next handler without error, then retry and complete', (done: Mocha.Done) => {
     let index = 0;
     let errors = 0;
     const retries = 2;
@@ -136,7 +136,7 @@ describe('retry operator', () => {
     expect(results).to.deep.equal([1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'bad', 'teardown'])
   });
 
-  it('should retry a number of times, then call next handler without error, then retry and error', (done: MochaDone) => {
+  it('should retry a number of times, then call next handler without error, then retry and error', (done: Mocha.Done) => {
     let index = 0;
     let errors = 0;
     const retries = 2;
@@ -163,7 +163,7 @@ describe('retry operator', () => {
       });
   });
 
-  it('should retry until successful completion', (done: MochaDone) => {
+  it('should retry until successful completion', (done: Mocha.Done) => {
     let errors = 0;
     const retries = 10;
     Observable.create((observer: Observer<number>) => {
@@ -289,7 +289,7 @@ describe('retry operator', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should retry a synchronous source (multicasted and refCounted) multiple times', (done: MochaDone) => {
+  it('should retry a synchronous source (multicasted and refCounted) multiple times', (done: Mocha.Done) => {
     const expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
 
     of(1, 2, 3).pipe(

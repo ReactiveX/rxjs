@@ -361,7 +361,7 @@ describe('bufferWhen operator', () => {
   // closing Observables, because doing such would constantly recreate a new
   // buffer in a synchronous infinite loop until the stack overflows. This also
   // happens with buffer in RxJS 4.
-  it('should NOT handle synchronous inner', (done: MochaDone) => {
+  it('should NOT handle synchronous inner', (done: Mocha.Done) => {
     const source = of(1, 2, 3, 4, 5, 6, 7, 8, 9);
     const closing = of(1);
     const TOO_MANY_INVOCATIONS = 30;

@@ -416,7 +416,7 @@ describe('bufferToggle operator', () => {
     });
   });
 
-  it('should accept openings resolved promise', (done: MochaDone) => {
+  it('should accept openings resolved promise', (done: Mocha.Done) => {
     const e1 = concat(
       timer(10).pipe(mapTo(1)),
       timer(100).pipe(mapTo(2)),
@@ -440,7 +440,7 @@ describe('bufferToggle operator', () => {
     });
   });
 
-  it('should accept openings rejected promise', (done: MochaDone) => {
+  it('should accept openings rejected promise', (done: Mocha.Done) => {
     const e1 = concat(of(1),
       timer(10).pipe(mapTo(2)),
       timer(10).pipe(mapTo(3)),
@@ -463,7 +463,7 @@ describe('bufferToggle operator', () => {
     });
   });
 
-  it('should accept closing selector that returns a resolved promise', (done: MochaDone) => {
+  it('should accept closing selector that returns a resolved promise', (done: Mocha.Done) => {
     const e1 = concat(of(1),
       timer(10).pipe(mapTo(2)),
       timer(10).pipe(mapTo(3)),
@@ -482,7 +482,7 @@ describe('bufferToggle operator', () => {
       });
   });
 
-  it('should accept closing selector that returns a rejected promise', (done: MochaDone) => {
+  it('should accept closing selector that returns a rejected promise', (done: Mocha.Done) => {
     const e1 = concat(of(1),
       timer(10).pipe(mapTo(2)),
       timer(10).pipe(mapTo(3)),

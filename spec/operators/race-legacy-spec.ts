@@ -164,7 +164,7 @@ describe('race operator', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should allow observable emits immediately', (done: MochaDone) => {
+  it('should allow observable emits immediately', (done: Mocha.Done) => {
     const e1 = of(true);
     const e2 = timer(200).pipe(map(_ => false));
 

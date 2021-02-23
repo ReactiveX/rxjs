@@ -13,7 +13,7 @@ describe('Subject', () => {
     rxTestScheduler = new TestScheduler(observableMatcher);
   });
 
-  it('should allow next with undefined or any when created with no type', (done: MochaDone) => {
+  it('should allow next with undefined or any when created with no type', (done: Mocha.Done) => {
     const subject = new Subject();
     subject.subscribe(
       (x) => {
@@ -29,7 +29,7 @@ describe('Subject', () => {
     subject.complete();
   });
 
-  it('should allow empty next when created with void type', (done: MochaDone) => {
+  it('should allow empty next when created with void type', (done: Mocha.Done) => {
     const subject = new Subject<void>();
     subject.subscribe(
       (x) => {
@@ -43,7 +43,7 @@ describe('Subject', () => {
     subject.complete();
   });
 
-  it('should pump values right on through itself', (done: MochaDone) => {
+  it('should pump values right on through itself', (done: Mocha.Done) => {
     const subject = new Subject<string>();
     const expected = ['foo', 'bar'];
 
@@ -60,7 +60,7 @@ describe('Subject', () => {
     subject.complete();
   });
 
-  it('should pump values to multiple subscribers', (done: MochaDone) => {
+  it('should pump values to multiple subscribers', (done: Mocha.Done) => {
     const subject = new Subject<string>();
     const expected = ['foo', 'bar'];
 
@@ -397,7 +397,7 @@ describe('Subject', () => {
     expect(results3).to.deep.equal([]);
   });
 
-  it('should not allow values to be nexted after it is unsubscribed', (done: MochaDone) => {
+  it('should not allow values to be nexted after it is unsubscribed', (done: Mocha.Done) => {
     const subject = new Subject<string>();
     const expected = ['foo'];
 
@@ -411,7 +411,7 @@ describe('Subject', () => {
     done();
   });
 
-  it('should clean out unsubscribed subscribers', (done: MochaDone) => {
+  it('should clean out unsubscribed subscribers', (done: Mocha.Done) => {
     const subject = new Subject();
 
     const sub1 = subject.subscribe(function (x) {
@@ -530,7 +530,7 @@ describe('Subject', () => {
     expect(outputComplete).to.be.true;
   });
 
-  it('should be an Observer which can be given to Observable.subscribe', (done: MochaDone) => {
+  it('should be an Observer which can be given to Observable.subscribe', (done: Mocha.Done) => {
     const source = of(1, 2, 3, 4, 5);
     const subject = new Subject<number>();
     const expected = [1, 2, 3, 4, 5];
@@ -550,7 +550,7 @@ describe('Subject', () => {
     source.subscribe(subject);
   });
 
-  it('should be usable as an Observer of a finite delayed Observable', (done: MochaDone) => {
+  it('should be usable as an Observer of a finite delayed Observable', (done: Mocha.Done) => {
     const source = of(1, 2, 3).pipe(delay(50));
     const subject = new Subject<number>();
 

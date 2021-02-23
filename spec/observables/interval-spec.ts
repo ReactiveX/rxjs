@@ -43,7 +43,7 @@ describe('interval', () => {
     expectObservable(e1).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
   });
 
-  it('should emit values until unsubscribed', (done: MochaDone) => {
+  it('should emit values until unsubscribed', (done: Mocha.Done) => {
     const values: number[] = [];
     const expected = [0, 1, 2, 3, 4, 5, 6];
     const e1 = interval(5);
@@ -61,7 +61,7 @@ describe('interval', () => {
     });
   });
 
-  it('should create an observable emitting periodically with the AsapScheduler', (done: MochaDone) => {
+  it('should create an observable emitting periodically with the AsapScheduler', (done: Mocha.Done) => {
     const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     const period = 10;
@@ -88,7 +88,7 @@ describe('interval', () => {
     }
   });
 
-  it('should create an observable emitting periodically with the QueueScheduler', (done: MochaDone) => {
+  it('should create an observable emitting periodically with the QueueScheduler', (done: Mocha.Done) => {
     const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     const period = 10;
@@ -115,7 +115,7 @@ describe('interval', () => {
     }
   });
 
-  it('should create an observable emitting periodically with the AnimationFrameScheduler', (done: MochaDone) => {
+  it('should create an observable emitting periodically with the AnimationFrameScheduler', (done: Mocha.Done) => {
     const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     const period = 10;

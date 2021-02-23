@@ -59,7 +59,7 @@ describe('fromEventPattern', () => {
     expect(call).calledWith(sinon.match.any, expected);
   });
 
-  it('should send errors in addHandler down the error path', (done: MochaDone) => {
+  it('should send errors in addHandler down the error path', (done: Mocha.Done) => {
     fromEventPattern((h: any) => {
       throw 'bad';
     }, noop).subscribe(
@@ -70,7 +70,7 @@ describe('fromEventPattern', () => {
       }, () => done(new Error('should not be called')));
   });
 
-  it('should accept a selector that maps outgoing values', (done: MochaDone) => {
+  it('should accept a selector that maps outgoing values', (done: Mocha.Done) => {
     let target: any;
     const trigger = function (...args: any[]) {
       if (target) {
@@ -100,7 +100,7 @@ describe('fromEventPattern', () => {
     trigger('test', 'me');
   });
 
-  it('should send errors in the selector down the error path', (done: MochaDone) => {
+  it('should send errors in the selector down the error path', (done: Mocha.Done) => {
     let target: any;
     const trigger = (value: any) => {
       if (target) {

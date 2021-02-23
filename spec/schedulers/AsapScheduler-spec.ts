@@ -118,7 +118,7 @@ describe('Scheduler.asap', () => {
     sandbox.restore();
   });
 
-  it('should schedule an action to happen later', (done: MochaDone) => {
+  it('should schedule an action to happen later', (done: Mocha.Done) => {
     let actionHappened = false;
     asap.schedule(() => {
       actionHappened = true;
@@ -129,7 +129,7 @@ describe('Scheduler.asap', () => {
     }
   });
 
-  it('should execute recursively scheduled actions in separate asynchronous contexts', (done: MochaDone) => {
+  it('should execute recursively scheduled actions in separate asynchronous contexts', (done: Mocha.Done) => {
     let syncExec1 = true;
     let syncExec2 = true;
     asap.schedule(function (index) {
@@ -151,7 +151,7 @@ describe('Scheduler.asap', () => {
     }, 0, 0);
   });
 
-  it('should cancel the setImmediate if all scheduled actions unsubscribe before it executes', (done: MochaDone) => {
+  it('should cancel the setImmediate if all scheduled actions unsubscribe before it executes', (done: Mocha.Done) => {
     let asapExec1 = false;
     let asapExec2 = false;
     const action1 = asap.schedule(() => { asapExec1 = true; });
@@ -169,7 +169,7 @@ describe('Scheduler.asap', () => {
     });
   });
 
-  it('should execute the rest of the scheduled actions if the first action is canceled', (done: MochaDone) => {
+  it('should execute the rest of the scheduled actions if the first action is canceled', (done: Mocha.Done) => {
     let actionHappened = false;
     let secondSubscription: Subscription | null = null;
 
@@ -194,7 +194,7 @@ describe('Scheduler.asap', () => {
     }
   });
 
-  it('should not execute rescheduled actions when flushing', (done: MochaDone) => {
+  it('should not execute rescheduled actions when flushing', (done: Mocha.Done) => {
     let flushCount = 0;
     let scheduledIndices: number[] = [];
 

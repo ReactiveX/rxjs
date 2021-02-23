@@ -33,7 +33,7 @@ describe('Scheduler.queue', () => {
     expect(call2).to.be.true;
   });
 
-  it('should schedule things in the future too', (done: MochaDone) => {
+  it('should schedule things in the future too', (done: Mocha.Done) => {
     let called = false;
     queue.schedule(() => {
       called = true;
@@ -49,7 +49,7 @@ describe('Scheduler.queue', () => {
     }, 100);
   });
 
-  it('should be reusable after an error is thrown during execution', (done: MochaDone) => {
+  it('should be reusable after an error is thrown during execution', (done: Mocha.Done) => {
     const results: number[] = [];
 
     expect(() => {

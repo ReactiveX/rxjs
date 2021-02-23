@@ -33,7 +33,7 @@ describe('retryWhen operator', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should retry when notified via returned notifier on thrown error', (done: MochaDone) => {
+  it('should retry when notified via returned notifier on thrown error', (done: Mocha.Done) => {
     let retried = false;
     const expected = [1, 2, 1, 2];
     let i = 0;
@@ -61,7 +61,7 @@ describe('retryWhen operator', () => {
       });
   });
 
-  it('should retry when notified and complete on returned completion', (done: MochaDone) => {
+  it('should retry when notified and complete on returned completion', (done: Mocha.Done) => {
     const expected = [1, 2, 1, 2];
     of(1, 2, 3).pipe(
       map((n: number) => {
