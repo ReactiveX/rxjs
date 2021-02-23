@@ -106,13 +106,13 @@ describe('window operator', () => {
 
   it('should be able to split a never Observable into timely empty windows', () => {
     const source =    hot('^--------');
-    const sourceSubs =    '^       !';
+    const sourceSubs =    '^        ';
     const closings = cold('--x--x--|');
     const closingSubs =   '^       !';
-    const expected =      'a-b--c--|';
+    const expected =      'a-b--c---';
     const a =        cold('--|      ');
     const b =        cold(  '---|   ');
-    const c =        cold(     '---|');
+    const c =        cold(     '----');
     const expectedValues = { a: a, b: b, c: c };
 
     const result = source.pipe(window(closings));
@@ -234,13 +234,13 @@ describe('window operator', () => {
 
   it('should complete the resulting Observable when window closings completes', () => {
     const source = hot('-1-2-^3-4-5-6-7-8-9-|');
-    const subs =            '^           !   ';
+    const subs =            '^              !';
     const closings = hot('---^---x---x---|   ');
     const closingSubs =     '^           !   ';
-    const expected =        'a---b---c---|   ';
+    const expected =        'a---b---c------|';
     const a = cold(         '-3-4|           ');
     const b = cold(             '-5-6|       ');
-    const c = cold(                 '-7-8|   ');
+    const c = cold(                 '-7-8-9-|');
     const expectedValues = { a: a, b: b, c: c };
 
     const result = source.pipe(window(closings));
