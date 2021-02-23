@@ -7,29 +7,48 @@
   "es2015": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
   "sideEffects": false,
+  "type": "module",
   "exports": {
     ".": {
-      "node": "./dist/cjs/index.js",
+      "node": {
+        "require": "./dist/cjs/index.js",
+        "import": "./dist/esm/index.js"
+      },
       "default": "./dist/esm5/index.js"
     },
     "./ajax": {
-      "node": "./dist/cjs/ajax/index.js",
+      "node": {
+        "require": "./dist/cjs/ajax/index.js",
+        "import": "./dist/esm/ajax/index.js"
+      },
       "default": "./dist/esm5/ajax/index.js"
     },
     "./fetch": {
-      "node": "./dist/cjs/fetch/index.js",
+      "node": {
+        "require": "./dist/cjs/fetch/index.js",
+        "import": "./dist/esm/fetch/index.js"
+      },
       "default": "./dist/esm5/fetch/index.js"
     },
     "./operators": {
-      "node": "./dist/cjs/operators/index.js",
+      "node": {
+        "require": "./dist/cjs/operators/index.js",
+        "import": "./dist/esm/operators/index.js"
+      },
       "default": "./dist/esm5/operators/index.js"
     },
     "./testing": {
-      "node": "./dist/cjs/testing/index.js",
+      "node": {
+        "require": "./dist/cjs/testing/index.js",
+        "import": "./dist/esm/testing/index.js"
+      },
       "default": "./dist/esm5/testing/index.js"
     },
     "./webSocket": {
-      "node": "./dist/cjs/webSocket/index.js",
+      "node": {
+        "require": "./dist/cjs/webSocket/index.js",
+        "import": "./dist/esm/webSocket/index.js"
+      },
       "default": "./dist/esm5/webSocket/index.js"
     },
     "./package.json": "./package.json"
@@ -174,7 +193,7 @@
     "source-map-support": "0.5.3",
     "systemjs": "^0.21.0",
     "ts-api-guardian": "^0.5.0",
-    "ts-node": "^9.0.0",
+    "ts-node": "^9.1.1",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-etc": "1.9.2",
