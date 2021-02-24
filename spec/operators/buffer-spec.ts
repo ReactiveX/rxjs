@@ -28,7 +28,7 @@ describe('Observable.prototype.buffer', () => {
     });
   });
 
-  it('should not emit a final buffer if the closingNotifier is already complete', () => {
+  it('should emit a final buffer if the closingNotifier is already complete', () => {
     testScheduler.run(({ hot, expectObservable }) => {
       const a = hot('   -a-b-c-d-e-f-g-h-i-|');
       const b = hot('   -----B-----B--|');
