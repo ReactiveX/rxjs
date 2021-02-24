@@ -1,3 +1,13 @@
+## [6.6.4](https://github.com/reactivex/rxjs/compare/6.6.0...6.6.4) (2021-02-24)
+
+
+### Bug Fixes
+
+* **ReplaySubject:** don't buffer next if stopped ([#5696](https://github.com/reactivex/rxjs/issues/5696)) ([47d9e33](https://github.com/reactivex/rxjs/commit/47d9e33780b9e27f20f48ea2a1db59ea899e6e8d))
+* Ensure unsubscriptions/teardowns on internal subscribers are idempotent ([#5465](https://github.com/reactivex/rxjs/issues/5465)) ([6d6a882](https://github.com/reactivex/rxjs/commit/6d6a882bc987b855205ab26c9bc2e84e67837734)), closes [#5464](https://github.com/reactivex/rxjs/issues/5464)
+
+
+
 ## [6.6.3](https://github.com/reactivex/rxjs/compare/6.6.0...6.6.3) (2020-09-06)
 
 
