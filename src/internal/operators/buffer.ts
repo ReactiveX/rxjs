@@ -44,8 +44,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  */
 export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]> {
   return operate((source, subscriber) => {
-    // The current buffered values. If this is null, it's because the
-    // closingNotifier has completed before the source.
+    // The current buffered values.
     let currentBuffer: T[] = [];
 
     // Subscribe to our source.
