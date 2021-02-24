@@ -1,13 +1,21 @@
+/* @prettier */
 import { SchedulerLike } from '../types';
 import { Observable } from '../Observable';
 import { bindCallbackInternals } from './bindCallbackInternals';
 
 // tslint:disable:max-line-length
 /** @deprecated resultSelector is no longer supported, use a mapping function. */
-export function bindCallback(callbackFunc: (...args: any[]) => void, resultSelector: (...args: any[]) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any>;
+export function bindCallback(
+  callbackFunc: (...args: any[]) => void,
+  resultSelector: (...args: any[]) => any,
+  scheduler?: SchedulerLike
+): (...args: any[]) => Observable<any>;
 
 // args is the arguments array and we push the callback on the rest tuple since the rest parameter must be last (only item) in a parameter list
-export function bindCallback<A extends readonly unknown[], R extends readonly unknown[]>(callbackFunc: (...args: [...A, (...res: R) => void]) => void, schedulerLike?: SchedulerLike): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
+export function bindCallback<A extends readonly unknown[], R extends readonly unknown[]>(
+  callbackFunc: (...args: [...A, (...res: R) => void]) => void,
+  schedulerLike?: SchedulerLike
+): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
 
 // tslint:enable:max-line-length
 
@@ -133,8 +141,9 @@ export function bindCallback<A extends readonly unknown[], R extends readonly un
  * Observable that delivers the same values the callback would deliver.
  */
 export function bindCallback(
+  // Need to use `any` here instead of `(...args: any[]) => void` because of TypeScript 4.2:
   callbackFunc: any,
-  resultSelector?: any,
+  resultSelector?: ((...args: any[]) => any) | SchedulerLike,
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<unknown> {
   return bindCallbackInternals(false, callbackFunc, resultSelector, scheduler);
