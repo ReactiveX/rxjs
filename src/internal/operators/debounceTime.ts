@@ -1,7 +1,8 @@
 import { asyncScheduler } from '../scheduler/async';
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
-import { debounce } from './debounce';
-import { timer } from '../observable/timer';
+import { Subscription } from '../Subscription';
+import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike } from '../types';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -61,6 +62,60 @@ import { timer } from '../observable/timer';
  * too frequently.
  */
 export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyncScheduler): MonoTypeOperatorFunction<T> {
-  const duration = timer(dueTime, scheduler);
-  return debounce(() => duration);
+  return operate((source, subscriber) => {
+    let activeTask: Subscription | null = null;
+    let lastValue: T | null = null;
+    let lastTime: number | null = null;
+
+    const emit = () => {
+      if (activeTask) {
+        // We have a value! Free up memory first, then emit the value.
+        activeTask.unsubscribe();
+        activeTask = null;
+        const value = lastValue!;
+        lastValue = null;
+        subscriber.next(value);
+      }
+    };
+    function emitWhenIdle(this: SchedulerAction<unknown>) {
+      // This is called `dueTime` after the first value
+      // but we might have received new values during this window!
+
+      const targetTime = lastTime! + dueTime;
+      const now = scheduler.now();
+      if (now < targetTime) {
+        // On that case, re-schedule to the new target
+        activeTask = this.schedule(undefined, targetTime - now);
+        return;
+      }
+
+      emit();
+    }
+
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value: T) => {
+          lastValue = value;
+          lastTime = scheduler.now();
+
+          // Only set up a task if it's not already up
+          if (!activeTask) {
+            activeTask = scheduler.schedule(emitWhenIdle, dueTime);
+          }
+        },
+        undefined,
+        () => {
+          // Source completed.
+          // Emit any pending debounced values then complete
+          emit();
+          subscriber.complete();
+        },
+        () => {
+          // Teardown.
+          lastValue = activeTask = null;
+        }
+      )
+    );
+  });
 }
