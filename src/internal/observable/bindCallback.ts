@@ -2,6 +2,7 @@
 import { SchedulerLike } from '../types';
 import { Observable } from '../Observable';
 import { bindCallbackInternals } from './bindCallbackInternals';
+import { TS_IncompatibleSignature } from '../util/workarounds';
 
 // tslint:disable:max-line-length
 /** @deprecated resultSelector is no longer supported, use a mapping function. */
@@ -141,8 +142,7 @@ export function bindCallback<A extends readonly unknown[], R extends readonly un
  * Observable that delivers the same values the callback would deliver.
  */
 export function bindCallback(
-  // Need to use `any` here instead of `(...args: any[]) => void` because of TypeScript 4.2:
-  callbackFunc: any,
+  callbackFunc: TS_IncompatibleSignature,
   resultSelector?: ((...args: any[]) => any) | SchedulerLike,
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<unknown> {
