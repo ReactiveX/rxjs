@@ -56,8 +56,14 @@ export interface ShareReplayConfig {
  * @method shareReplay
  * @owner Observable
  */
-export function shareReplay<T>(config: ShareReplayConfig): MonoTypeOperatorFunction<T>;
-export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function shareReplay<T>(
+  config: ShareReplayConfig
+): MonoTypeOperatorFunction<T>;
+export function shareReplay<T>(
+  bufferSize?: number,
+  windowTime?: number,
+  scheduler?: SchedulerLike
+): MonoTypeOperatorFunction<T>;
 export function shareReplay<T>(
   configOrBufferSize?: ShareReplayConfig | number,
   windowTime?: number,
@@ -71,7 +77,7 @@ export function shareReplay<T>(
       bufferSize: configOrBufferSize as number | undefined,
       windowTime,
       refCount: false,
-      scheduler
+      scheduler,
     };
   }
   return (source: Observable<T>) => source.lift(shareReplayOperator(config));
@@ -81,7 +87,7 @@ function shareReplayOperator<T>({
   bufferSize = Number.POSITIVE_INFINITY,
   windowTime = Number.POSITIVE_INFINITY,
   refCount: useRefCount,
-  scheduler
+  scheduler,
 }: ShareReplayConfig) {
   let subject: ReplaySubject<T> | undefined;
   let refCount = 0;
@@ -89,7 +95,10 @@ function shareReplayOperator<T>({
   let hasError = false;
   let isComplete = false;
 
-  return function shareReplayOperation(this: Subscriber<T>, source: Observable<T>) {
+  return function shareReplayOperation(
+    this: Subscriber<T>,
+    source: Observable<T>
+  ) {
     refCount++;
     let innerSub: Subscription;
     if (!subject || hasError) {
@@ -97,7 +106,9 @@ function shareReplayOperator<T>({
       subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler);
       innerSub = subject.subscribe(this);
       subscription = source.subscribe({
-        next(value) { subject.next(value); },
+        next(value) {
+          subject.next(value);
+        },
         error(err) {
           hasError = true;
           subject.error(err);
@@ -108,6 +119,14 @@ function shareReplayOperator<T>({
           subject.complete();
         },
       });
+
+      // Here we need to check to see if the source synchronously completed. Although
+      // we're setting `subscription = undefined` in the completion handler, if the source
+      // is synchronous, that will happen *before* subscription is set by the return of
+      // the `subscribe` call.
+      if (isComplete) {
+        subscription = undefined;
+      }
     } else {
       innerSub = subject.subscribe(this);
     }
@@ -115,6 +134,7 @@ function shareReplayOperator<T>({
     this.add(() => {
       refCount--;
       innerSub.unsubscribe();
+      innerSub = undefined;
       if (subscription && !isComplete && useRefCount && refCount === 0) {
         subscription.unsubscribe();
         subscription = undefined;
