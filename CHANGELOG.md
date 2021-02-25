@@ -1,3 +1,11 @@
+## [6.6.5](https://github.com/reactivex/rxjs/compare/6.6.0...6.6.5) (2021-02-25)
+
+
+### Bug Fixes
+
+* **shareReplay:** handle possible memory leaks ([#5932](https://github.com/reactivex/rxjs/issues/5932)) ([6f7d88b](https://github.com/reactivex/rxjs/commit/6f7d88b4da97bd9ea5ac759c5b469cc525f3d450))
+
+
 ## [6.6.4](https://github.com/reactivex/rxjs/compare/6.6.0...6.6.4) (2021-02-24)
 
 
