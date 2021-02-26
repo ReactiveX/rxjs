@@ -78,7 +78,9 @@ describe('ajax', () => {
       withCredentials: true,
     };
 
-    ajax(obj).subscribe(null, (err) => expect(err).to.exist);
+    ajax(obj).subscribe({
+      error: (err) => expect(err).to.exist,
+    });
   });
 
   it('should set headers', () => {
@@ -294,7 +296,6 @@ describe('ajax', () => {
 
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 200,
-      responseType: 'json',
       responseText: JSON.stringify(expected),
     });
 
@@ -307,7 +308,6 @@ describe('ajax', () => {
     let error: any;
     const obj: AjaxConfig = {
       url: '/flibbertyJibbet',
-      responseType: 'json',
       method: '',
     };
 
@@ -328,7 +328,6 @@ describe('ajax', () => {
 
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 207,
-      responseType: 'json',
       responseText: 'Wee! I am text, but should be valid JSON!',
     });
 
@@ -360,7 +359,6 @@ describe('ajax', () => {
 
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 404,
-      responseType: 'text',
       responseText: 'Wee! I am text!',
     });
 
@@ -393,7 +391,6 @@ describe('ajax', () => {
 
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 300,
-      responseType: 'text',
       responseText: 'Wee! I am text!',
     });
 
@@ -424,7 +421,6 @@ describe('ajax', () => {
 
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 404,
-      responseType: 'text',
       responseText: 'This is not what we expected is it? But that is okay',
     });
 
@@ -449,7 +445,6 @@ describe('ajax', () => {
     expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 200,
-      responseType: 'text',
       responseText: expected,
     });
   });
@@ -474,7 +469,6 @@ describe('ajax', () => {
     expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 500,
-      responseType: 'text',
       responseText: expected,
     });
   });
@@ -505,7 +499,6 @@ describe('ajax', () => {
 
     request.respondWith({
       status: 200,
-      responseType: 'text',
       responseText: 'Wee! I am text!',
     });
   });
@@ -539,7 +532,6 @@ describe('ajax', () => {
     rxTestScheduler.schedule(() => {
       request.respondWith({
         status: 200,
-        responseType: 'text',
         responseText: 'Wee! I am text!',
       });
     }, 1000);
@@ -565,7 +557,6 @@ describe('ajax', () => {
 
     mockXHR.respondWith({
       status: 200,
-      responseType: 'text',
       responseText: 'Wee! I am text!',
     });
   });
@@ -707,7 +698,6 @@ describe('ajax', () => {
 
       request.respondWith({
         status: 200,
-        responseType: 'json',
         responseText: JSON.stringify(expected),
       });
 
@@ -735,7 +725,6 @@ describe('ajax', () => {
 
       request.respondWith({
         status: 204,
-        responseType: '',
         responseText: '',
       });
 
@@ -764,7 +753,6 @@ describe('ajax', () => {
 
       request.respondWith({
         status: 200,
-        responseType: 'json',
         responseText: JSON.stringify(expected),
       });
 
@@ -800,7 +788,6 @@ describe('ajax', () => {
 
       request.respondWith({
         status: 200,
-        responseType: 'json',
         responseText: JSON.stringify(expected),
       });
 
@@ -833,7 +820,6 @@ describe('ajax', () => {
 
       request.respondWith({
         status: 204,
-        responseType: '',
         responseText: '',
       });
 
@@ -857,7 +843,6 @@ describe('ajax', () => {
       request.respondWith(
         {
           status: 200,
-          responseType: 'json',
           responseText: JSON.stringify({}),
         },
         { uploadProgressTimes: 3 }
@@ -888,7 +873,6 @@ describe('ajax', () => {
       request.respondWith(
         {
           status: 200,
-          responseType: 'json',
           responseText: JSON.stringify({}),
         },
         { uploadProgressTimes: 3 }
@@ -925,7 +909,6 @@ describe('ajax', () => {
 
       request.respondWith({
         status: 200,
-        responseType: 'json',
         responseText: JSON.stringify(expected),
       });
 
@@ -1025,7 +1008,6 @@ describe('ajax', () => {
           status: 200,
           total: 5,
           loaded: 5,
-          responseType: 'json',
           responseText: JSON.stringify({ boo: 'I am a ghost' }),
         },
         { uploadProgressTimes: 5, downloadProgressTimes: 5 }
@@ -1147,7 +1129,6 @@ describe('ajax', () => {
           status: 200,
           total: 5,
           loaded: 5,
-          responseType: 'json',
           responseText: JSON.stringify({ boo: 'I am a ghost' }),
         },
         { uploadProgressTimes: 5, downloadProgressTimes: 5 }
@@ -1463,7 +1444,6 @@ class MockXMLHttpRequest extends MockXHREventTarget {
     response: {
       status?: number;
       responseText?: string | undefined;
-      responseType: XMLHttpRequestResponseType;
       total?: number;
       loaded?: number;
     },
@@ -1494,7 +1474,6 @@ class MockXMLHttpRequest extends MockXHREventTarget {
     // Default to OK 200.
     this.status = response.status || 200;
     this.responseText = response.responseText;
-    this.responseType = response.responseType;
 
     switch (this.responseType) {
       case 'json':
@@ -1505,14 +1484,17 @@ class MockXMLHttpRequest extends MockXHREventTarget {
           // response somehow, where responseType is "json" but the responseText
           // is not JSON. In truth, we need to invert these tests to just use
           // response, because `responseText` is a legacy path.
-          this.response = undefined;
+          this.response = null;
         }
         break;
+      case 'arraybuffer':
+      case 'document':
+      case 'blob':
+        throw new Error('Test harness does not support the responseType: ' + this.responseType);
       case 'text':
-        this.response = response.responseText;
-        break;
+      case '':
       default:
-        // response remains undefined
+        this.response = response.responseText;
         break;
     }
 
