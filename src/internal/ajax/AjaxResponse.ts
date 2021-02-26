@@ -97,14 +97,15 @@ export class AjaxResponse<T> {
     // other-header-here: some, other, values, or, whatever
     const allHeaders = xhr.getAllResponseHeaders();
     this.responseHeaders = allHeaders
-      ? Object.fromEntries(
-          // Split the header text into lines
-          allHeaders.split('\n').map((line) => {
-            // Split the lines on the first ": ". The value could technically have a ": " in it.
-            const index = line.indexOf(': ');
-            return [line.slice(0, index), line.slice(index + 2)];
-          })
-        )
+      ? // Split the header text into lines
+        allHeaders.split('\n').reduce((headers: Record<string, string>, line) => {
+          // Split the lines on the first ": " as
+          // "key: value". Note that the value could
+          // technically have a ": " in it.
+          const index = line.indexOf(': ');
+          headers[line.slice(0, index)] = line.slice(index + 2);
+          return headers;
+        }, {})
       : {};
 
     this.response = getXHRResponse(xhr);
