@@ -113,13 +113,19 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 
   protected _error(err: any): void {
-    this.destination.error(err);
-    this.unsubscribe();
+    try {
+      this.destination.error(err);
+    } finally {
+      this.unsubscribe();
+    }
   }
 
   protected _complete(): void {
-    this.destination.complete();
-    this.unsubscribe();
+    try {
+      this.destination.complete();
+    } finally {
+      this.unsubscribe();
+    }
   }
 }
 

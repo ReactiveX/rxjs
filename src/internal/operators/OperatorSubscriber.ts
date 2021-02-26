@@ -53,9 +53,10 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
           } catch (err) {
             // Send any errors that occur down stream.
             this.destination.error(err);
+          } finally {
+            // Ensure teardown.
+            this.unsubscribe();
           }
-          // Ensure teardown.
-          this.unsubscribe();
         }
       : super._error;
     this._complete = onComplete
@@ -65,9 +66,10 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
           } catch (err) {
             // Send any errors that occur down stream.
             this.destination.error(err);
+          } finally {
+            // Ensure teardown.
+            this.unsubscribe();
           }
-          // Ensure teardown.
-          this.unsubscribe();
         }
       : super._complete;
   }
