@@ -4,7 +4,7 @@ import { throttle, mergeMap, mapTo, take } from 'rxjs/operators';
 import { of, concat, timer, Observable } from 'rxjs';
 
 /** @test {throttle} */
-describe('throttle operator', () =>  {
+describe('throttle', () =>  {
   it('should immediately emit the first value in each time window', () =>  {
     const e1 =   hot('-a-xy-----b--x--cxxx-|');
     const e1subs =   '^                    !';
@@ -19,6 +19,20 @@ describe('throttle operator', () =>  {
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should handle sync source with sync notifier and trailing appropriately', () => {
+    let results: any[] = [];
+    const source = of(1).pipe(
+      throttle(() => of(1), { leading: false, trailing: true })
+    );
+
+    source.subscribe({
+      next: value => results.push(value),
+      complete: () => results.push('done')
+    });
+
+    expect(results).to.deep.equal([1, 'done'])
   });
 
   it('should simply mirror the source if values are not emitted often enough', () =>  {

@@ -90,11 +90,16 @@ export function throttle<T>(
 
     const send = () => {
       if (hasValue) {
-        subscriber.next(sendValue!);
-        !isComplete && startThrottle(sendValue!);
+        // Ensure we clear out our value and hasValue flag
+        // before we emit, otherwise reentrant code can cause
+        // issues here.
+        hasValue = false;
+        const value = sendValue!;
+        sendValue = null;
+        // Emit the value.
+        subscriber.next(value);
+        !isComplete && startThrottle(value);
       }
-      hasValue = false;
-      sendValue = null;
     };
 
     source.subscribe(
