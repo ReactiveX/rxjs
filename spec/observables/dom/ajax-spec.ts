@@ -1040,6 +1040,7 @@ describe('ajax', () => {
       expect(results).to.deep.equal([
         {
           type: 'download_loadstart',
+          responseHeaders: {},
           responseType: 'json',
           response: undefined,
           loaded: 0,
@@ -1051,6 +1052,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
+          responseHeaders: {},
           responseType: 'json',
           response: undefined,
           loaded: 1,
@@ -1062,6 +1064,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
+          responseHeaders: {},
           responseType: 'json',
           response: undefined,
           loaded: 2,
@@ -1073,6 +1076,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
+          responseHeaders: {},
           responseType: 'json',
           response: undefined,
           loaded: 3,
@@ -1084,6 +1088,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
+          responseHeaders: {},
           responseType: 'json',
           response: undefined,
           loaded: 4,
@@ -1095,6 +1100,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
+          responseHeaders: {},
           responseType: 'json',
           response: undefined,
           loaded: 5,
@@ -1112,6 +1118,7 @@ describe('ajax', () => {
           originalEvent: { type: 'load', loaded: 5, total: 5 },
           xhr: mockXHR,
           response: { boo: 'I am a ghost' },
+          responseHeaders: {},
           responseType: 'json',
           status: 200,
         },
@@ -1167,6 +1174,7 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
+          responseHeaders: {},
           responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'loadstart', loaded: 0, total: 5 },
@@ -1178,6 +1186,7 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
+          responseHeaders: {},
           responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'progress', loaded: 1, total: 5 },
@@ -1189,6 +1198,7 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
+          responseHeaders: {},
           responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'progress', loaded: 2, total: 5 },
@@ -1200,6 +1210,7 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
+          responseHeaders: {},
           responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'progress', loaded: 3, total: 5 },
@@ -1211,6 +1222,7 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
+          responseHeaders: {},
           responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'progress', loaded: 4, total: 5 },
@@ -1222,6 +1234,7 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
+          responseHeaders: {},
           responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'progress', loaded: 5, total: 5 },
@@ -1233,12 +1246,14 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
+          responseHeaders: {},
           responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'load', loaded: 5, total: 5 },
         },
         {
           type: 'download_loadstart',
+          responseHeaders: {},
           responseType: 'json',
           response: undefined,
           loaded: 0,
@@ -1250,6 +1265,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
+          responseHeaders: {},
           responseType: 'json',
           response: undefined,
           loaded: 1,
@@ -1261,6 +1277,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
+          responseHeaders: {},
           responseType: 'json',
           response: undefined,
           loaded: 2,
@@ -1272,6 +1289,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
+          responseHeaders: {},
           responseType: 'json',
           response: undefined,
           loaded: 3,
@@ -1283,6 +1301,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
+          responseHeaders: {},
           responseType: 'json',
           response: undefined,
           loaded: 4,
@@ -1294,6 +1313,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
+          responseHeaders: {},
           responseType: 'json',
           response: undefined,
           loaded: 5,
@@ -1311,12 +1331,40 @@ describe('ajax', () => {
           originalEvent: { type: 'load', loaded: 5, total: 5 },
           xhr: mockXHR,
           response: { boo: 'I am a ghost' },
+          responseHeaders: {},
           responseType: 'json',
           status: 200,
         },
         'done', // from completion.
       ]);
     });
+  });
+
+  it('should return an object that allows access to response headers', () => {
+    const sentResponseHeaders = {
+      'content-type': 'application/json',
+      'x-custom-header': 'test',
+      'x-headers-are-fun': '<whatever/> {"weird": "things"}',
+    };
+
+    ajax({
+      method: 'GET',
+      url: '/whatever',
+    }).subscribe((response) => {
+      expect(response.responseHeaders).to.deep.equal(sentResponseHeaders);
+    });
+
+    const mockXHR = MockXMLHttpRequest.mostRecent;
+
+    mockXHR.respondWith({
+      status: 200,
+      headers: sentResponseHeaders,
+      responseText: JSON.stringify({ iam: 'tired', and: 'should go to bed', but: 'I am doing open source for no good reason' }),
+    });
+
+    expect(mockXHR.getAllResponseHeaders()).to.equal(`content-type: application/json
+x-custom-header: test
+x-headers-are-fun: <whatever/> {"weird": "things"}`);
   });
 });
 
@@ -1449,9 +1497,20 @@ class MockXMLHttpRequest extends MockXHREventTarget {
     this.requestHeaders[key] = value;
   }
 
+  private _responseHeaders: any;
+
+  getAllResponseHeaders() {
+    return this._responseHeaders
+      ? Object.entries(this._responseHeaders)
+          .map((entryParts) => entryParts.join(': '))
+          .join('\n')
+      : '';
+  }
+
   respondWith(
     response: {
       status?: number;
+      headers?: any;
       responseText?: string | undefined;
       total?: number;
       loaded?: number;
@@ -1477,10 +1536,13 @@ class MockXMLHttpRequest extends MockXHREventTarget {
       }
     }
 
-    // Set the readyState to 4.
+    // Store our headers locally. This is used in `getAllResponseHeaders` mock impl.
+    this._responseHeaders = response.headers;
+
+    // Set the readyState to DONE (4)
     this.readyState = 4;
 
-    // Default to OK 200.
+    // Default to OK
     this.status = response.status || 200;
     this.responseText = response.responseText;
 

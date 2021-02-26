@@ -18,10 +18,16 @@ export class AjaxResponse<T> {
   /** The HTTP status code */
   readonly status: number;
 
-  /** The response data, if any. Note that this will automatically be converted to the proper type.*/
+  /**
+   * The response data, if any. Note that this will automatically be converted to the proper type
+   */
   readonly response: T;
 
-  /**  The responseType from the response. (For example: `""`, "arraybuffer"`, "blob"`, "document"`, "json"`, or `"text"`) */
+  /**
+   * The responseType set on the request. (For example: `""`, "arraybuffer"`, "blob"`, "document"`, "json"`, or `"text"`)
+   * @deprecated There isn't much reason to examine this. It's the same responseType set (or defaulted) on the ajax config
+   * if you really need to examine this value, you can check it on the `request` or the `xhr`.
+   */
   readonly responseType: XMLHttpRequestResponseType;
 
   /**
@@ -39,6 +45,11 @@ export class AjaxResponse<T> {
    * {@see {@link AjaxConfig}}
    */
   readonly total: number;
+
+  /**
+   * A dictionary of the response headers.
+   */
+  readonly responseHeaders: Record<string, string>;
 
   /**
    * A normalized response from an AJAX request. To get the data from the response,
@@ -76,6 +87,27 @@ export class AjaxResponse<T> {
     const { status, responseType } = xhr;
     this.status = status ?? 0;
     this.responseType = responseType ?? '';
+
+    // Parse the response headers in advance for the user. There's really
+    // not a great way to get all of them. So we need to parse the header string
+    // we get back. It comes in a simple enough format:
+    //
+    // header-name: value here
+    // content-type: application/json
+    // other-header-here: some, other, values, or, whatever
+    const allHeaders = xhr.getAllResponseHeaders();
+    this.responseHeaders = allHeaders
+      ? // Split the header text into lines
+        allHeaders.split('\n').reduce((headers: Record<string, string>, line) => {
+          // Split the lines on the first ": " as
+          // "key: value". Note that the value could
+          // technically have a ": " in it.
+          const index = line.indexOf(': ');
+          headers[line.slice(0, index)] = line.slice(index + 2);
+          return headers;
+        }, {})
+      : {};
+
     this.response = getXHRResponse(xhr);
     const { loaded, total } = originalEvent;
     this.loaded = loaded;
