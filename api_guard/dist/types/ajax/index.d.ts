@@ -49,6 +49,7 @@ export declare class AjaxResponse<T> {
     readonly originalEvent: ProgressEvent;
     readonly request: AjaxRequest;
     readonly response: T;
+    readonly responseHeaders: Record<string, string>;
     readonly responseType: XMLHttpRequestResponseType;
     readonly status: number;
     readonly total: number;
