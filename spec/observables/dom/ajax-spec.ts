@@ -421,11 +421,14 @@ describe('ajax', () => {
 
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 404,
-      responseText: 'This is not what we expected is it? But that is okay',
+      responseText: 'Unparsable as json',
     });
 
     expect(error instanceof AjaxError).to.be.true;
-    expect(error.response).to.equal('This is not what we expected is it? But that is okay');
+    // The default behavior of XHR if you get something back that you can't
+    // parse as JSON, but you have a requestType of "json" is to
+    // have `response` set to `null`.
+    expect(error.response).to.be.null;
   });
 
   it('should succeed no settings', () => {
@@ -728,7 +731,10 @@ describe('ajax', () => {
         responseText: '',
       });
 
-      expect(result).to.deep.equal(undefined);
+      // Response will get set to null by the browser XHR
+      // This is sort of arbitrarily determined by our test harness
+      // but we want to be as accurate as possible.
+      expect(result).to.be.null;
       expect(complete).to.be.true;
     });
 
@@ -823,7 +829,10 @@ describe('ajax', () => {
         responseText: '',
       });
 
-      expect(result!.response).to.equal(undefined);
+      // Since the default setting for `responseType` is "json",
+      // and our `responseText` is an empty string (which isn't parsable as JSON),
+      // response should be `null` here.
+      expect(result!.response).to.be.null;
       expect(complete).to.be.true;
     });
 
@@ -1022,7 +1031,7 @@ describe('ajax', () => {
         },
         includeDownloadProgress: true,
         method: 'GET',
-        responseType: '',
+        responseType: 'json',
         timeout: 0,
         url: '/flibbertyJibbett',
         withCredentials: false,
@@ -1031,7 +1040,7 @@ describe('ajax', () => {
       expect(results).to.deep.equal([
         {
           type: 'download_loadstart',
-          responseType: '',
+          responseType: 'json',
           response: undefined,
           loaded: 0,
           total: 5,
@@ -1042,7 +1051,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
-          responseType: '',
+          responseType: 'json',
           response: undefined,
           loaded: 1,
           total: 5,
@@ -1053,7 +1062,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
-          responseType: '',
+          responseType: 'json',
           response: undefined,
           loaded: 2,
           total: 5,
@@ -1064,7 +1073,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
-          responseType: '',
+          responseType: 'json',
           response: undefined,
           loaded: 3,
           total: 5,
@@ -1075,7 +1084,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
-          responseType: '',
+          responseType: 'json',
           response: undefined,
           loaded: 4,
           total: 5,
@@ -1086,7 +1095,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
-          responseType: '',
+          responseType: 'json',
           response: undefined,
           loaded: 5,
           total: 5,
@@ -1144,7 +1153,7 @@ describe('ajax', () => {
         includeUploadProgress: true,
         includeDownloadProgress: true,
         method: 'GET',
-        responseType: '',
+        responseType: 'json',
         timeout: 0,
         url: '/flibbertyJibbett',
         withCredentials: false,
@@ -1158,7 +1167,7 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
-          responseType: '',
+          responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'loadstart', loaded: 0, total: 5 },
         },
@@ -1169,7 +1178,7 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
-          responseType: '',
+          responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'progress', loaded: 1, total: 5 },
         },
@@ -1180,7 +1189,7 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
-          responseType: '',
+          responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'progress', loaded: 2, total: 5 },
         },
@@ -1191,7 +1200,7 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
-          responseType: '',
+          responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'progress', loaded: 3, total: 5 },
         },
@@ -1202,7 +1211,7 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
-          responseType: '',
+          responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'progress', loaded: 4, total: 5 },
         },
@@ -1213,7 +1222,7 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
-          responseType: '',
+          responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'progress', loaded: 5, total: 5 },
         },
@@ -1224,13 +1233,13 @@ describe('ajax', () => {
           request,
           status: 0,
           response: undefined,
-          responseType: '',
+          responseType: 'json',
           xhr: mockXHR,
           originalEvent: { type: 'load', loaded: 5, total: 5 },
         },
         {
           type: 'download_loadstart',
-          responseType: '',
+          responseType: 'json',
           response: undefined,
           loaded: 0,
           total: 5,
@@ -1241,7 +1250,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
-          responseType: '',
+          responseType: 'json',
           response: undefined,
           loaded: 1,
           total: 5,
@@ -1252,7 +1261,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
-          responseType: '',
+          responseType: 'json',
           response: undefined,
           loaded: 2,
           total: 5,
@@ -1263,7 +1272,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
-          responseType: '',
+          responseType: 'json',
           response: undefined,
           loaded: 3,
           total: 5,
@@ -1274,7 +1283,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
-          responseType: '',
+          responseType: 'json',
           response: undefined,
           loaded: 4,
           total: 5,
@@ -1285,7 +1294,7 @@ describe('ajax', () => {
         },
         {
           type: 'download_progress',
-          responseType: '',
+          responseType: 'json',
           response: undefined,
           loaded: 5,
           total: 5,

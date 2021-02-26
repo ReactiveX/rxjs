@@ -320,7 +320,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       withCredentials: false,
       method: 'GET',
       timeout: 0,
-      responseType: '' as XMLHttpRequestResponseType,
+      responseType: 'json' as XMLHttpRequestResponseType,
 
       // Override with passed user values
       ...config,
