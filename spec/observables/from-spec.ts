@@ -60,12 +60,9 @@ describe('from', () => {
       complete: () => {
         results.push('done');
         setTimeout(() => {
-          try {
-            expect(sideEffects).to.deep.equal([0, 1, 2]);
-            expect(results).to.deep.equal([0, 1, 2, 'done', 'finalized generator']);
-          } finally {
-            done();
-          }
+          expect(sideEffects).to.deep.equal([0, 1, 2]);
+          expect(results).to.deep.equal([0, 1, 2, 'done', 'finalized generator']);
+          done();
         });
       }
     });
@@ -103,12 +100,9 @@ describe('from', () => {
       error: () => {
         results.push('in error');
         setTimeout(() => {
-          try {
-            expect(sideEffects).to.deep.equal([0, 1, 2]);
-            expect(results).to.deep.equal([0, 1, 'in error', 'finalized generator']);
-          } finally {
-            done();
-          }
+          expect(sideEffects).to.deep.equal([0, 1, 2]);
+          expect(results).to.deep.equal([0, 1, 'in error', 'finalized generator']);
+          done();
         });
       }
     });
