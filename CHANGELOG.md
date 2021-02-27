@@ -1,3 +1,14 @@
+# [7.0.0-beta.12](https://github.com/reactivex/rxjs/compare/7.0.0-beta.11...7.0.0-beta.12) (2021-02-27)
+
+5bc8e3361 Fix/6052 ajax responseType should default to "json" (#6056)
+
+### Bug Fixes
+
+- **ajax**: `responseType` is now properly defaulted to `"json"` again. ([#6056](https://github.com/reactivex/rxjs/issues/6056)) ([5bc8e3361](https://github.com/reactivex/rxjs/commit/5bc8e3361))
+- Corner case resolved where an error thrown in a completion handler might delay teardown if it happened to be after a completing operator like `take`. ([#6062](https://github.com/reactivex/rxjs/issues/6062)) ([a2b9563](https://github.com/reactivex/rxjs/commit/a2b95631be882d2cf0fd87f43804d1ed699591d7))
+- **AsyncGenerator support**: consumed async generators are now properly finalized. ([#6062](https://github.com/reactivex/rxjs/issues/6062)) ([a2b9563](https://github.com/reactivex/rxjs/commit/a2b95631be882d2cf0fd87f43804d1ed699591d7)), closes [#5998](https://github.com/reactivex/rxjs/issues/5998)
+- **throttle:** no longer emits more than necessary in sync/sync trailing case ([#6059](https://github.com/reactivex/rxjs/issues/6059)) ([9da638a](https://github.com/reactivex/rxjs/commit/9da638a70d5abb862439ab4ee6a55368228811b0)), closes [#6058](https://github.com/reactivex/rxjs/issues/6058)
+
 # [7.0.0-beta.11](https://github.com/reactivex/rxjs/compare/7.0.0-beta.10...7.0.0-beta.11) (2021-02-24)
 
 ### Bug Fixes
