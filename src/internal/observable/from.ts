@@ -1,6 +1,5 @@
 import { isArrayLike } from '../util/isArrayLike';
 import { isPromise } from '../util/isPromise';
-import { iterator as Symbol_iterator } from '../symbol/iterator';
 import { observable as Symbol_observable } from '../symbol/observable';
 import { Subscriber } from '../Subscriber';
 
@@ -205,26 +204,13 @@ function fromPromise<T>(promise: PromiseLike<T>) {
 
 function fromIterable<T>(iterable: Iterable<T>) {
   return new Observable((subscriber: Subscriber<T>) => {
-    const iterator = (iterable as any)[Symbol_iterator]();
-
-    while (!subscriber.closed) {
-      // Note that any error thrown in the iterator here
-      // will be caught by the subscribe call in `Observable`,
-      // and sent to the consumer via `subscriber.error`.
-      const { done, value } = iterator.next();
-      if (done) {
-        // If we're done, just complete. This will set
-        // subscriber.closed to `true` and kill the loop.
-        // We don't next values from an "done" iterator result.
-        // This is to mirror the behavior of JavaScripts `for..of`.
-        subscriber.complete();
-      } else {
-        subscriber.next(value);
+    for (const value of iterable) {
+      subscriber.next(value);
+      if (subscriber.closed) {
+        return;
       }
     }
-
-    // Finalize the iterator if it happens to be a Generator
-    return () => isFunction(iterator?.return) && iterator.return();
+    subscriber.complete();
   });
 }
 
@@ -237,6 +223,11 @@ function fromAsyncIterable<T>(asyncIterable: AsyncIterable<T>) {
 async function process<T>(asyncIterable: AsyncIterable<T>, subscriber: Subscriber<T>) {
   for await (const value of asyncIterable) {
     subscriber.next(value);
+    // A side-effect may have closed our subscriber,
+    // check before the next iteration.
+    if (subscriber.closed) {
+      return;
+    }
   }
   subscriber.complete();
 }

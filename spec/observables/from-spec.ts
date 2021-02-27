@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
 import { asyncScheduler, of, from, Observer, observable, Subject, noop } from 'rxjs';
-import { first, concatMap, delay } from 'rxjs/operators';
+import { first, concatMap, delay, take, map, tap } from 'rxjs/operators';
 
 // tslint:disable:no-any
 declare const expectObservable: any;
@@ -32,6 +32,108 @@ describe('from', () => {
     };
 
     expect(r).to.throw();
+  });
+
+  it('should finalize an AsyncGenerator', (done) => {
+    const results: any[] = [];
+    const sideEffects: any[] = [];
+
+    async function* gen() {
+      try {
+        let i = 0;
+        while (true) {
+          sideEffects.push(i);
+          yield await i++;
+        }
+      } finally {
+        results.push('finalized generator');
+      }
+    }
+
+    const source = from(gen()).pipe(
+      take(3),
+    );
+
+
+    source.subscribe({
+      next: value => results.push(value),
+      complete: () => {
+        results.push('done');
+        setTimeout(() => {
+          expect(sideEffects).to.deep.equal([0, 1, 2]);
+          expect(results).to.deep.equal([0, 1, 2, 'done', 'finalized generator']);
+          done();
+        });
+      }
+    });
+  });
+
+  it('should finalize an AsyncGenerator on error', (done) => {
+    const results: any[] = [];
+    const sideEffects: any[] = [];
+
+    async function* gen() {
+      try {
+        let i = 0;
+        while (true) {
+          sideEffects.push(i);
+          yield await i++;
+        }
+      } finally {
+        results.push('finalized generator');
+      }
+    }
+
+    const source = from(gen()).pipe(
+      tap({
+        next: value => {
+          if (value === 2) {
+            throw new Error('weee');
+          }
+        }
+      }),
+    );
+
+
+    source.subscribe({
+      next: value => results.push(value),
+      error: () => {
+        results.push('in error');
+        setTimeout(() => {
+          expect(sideEffects).to.deep.equal([0, 1, 2]);
+          expect(results).to.deep.equal([0, 1, 'in error', 'finalized generator']);
+          done();
+        });
+      }
+    });
+  });
+
+  
+  it('should finalize a generator', () => {
+    const results: any[] = [];
+
+    function* gen() {
+      try {
+        let i = 0;
+        while (true) {
+          yield i++;
+        }
+      } finally {
+        results.push('finalized generator');
+      }
+    }
+
+    const source = from(gen()).pipe(
+      take(3),
+    );
+
+
+    source.subscribe({
+      next: value => results.push(value),
+      complete: () => results.push('done')
+    });
+
+    expect(results).to.deep.equal([0, 1, 2, 'done', 'finalized generator']);
   });
 
   const fakervable = <T>(...values: T[]) => ({
