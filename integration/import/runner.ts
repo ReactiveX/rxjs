@@ -41,17 +41,19 @@ const main = async () => {
 
   const pkgPath = path.join(projectRoot, `rxjs-${version}.tgz`);
 
-  
+
   rm('-rf', path.join(__dirname, 'node_modules'));
   rm('-rf', path.join(__dirname, 'rx.json'));
   rm('-rf', path.join(__dirname, 'operators.json'));
   
   // create snapShot from existing src's export site
-  writeFileAsync(path.join(__dirname, 'rx.json'), JSON.stringify(Object.keys(rx_export_src)));
-  writeFileAsync(path.join(__dirname, 'operators.json'), JSON.stringify(Object.keys(operators_export_src)));
-  
+  writeFileAsync(path.join(__dirname, 'rx.json'), JSON.stringify(Object.keys(rx_export_src).sort()));
+  writeFileAsync(path.join(__dirname, 'operators.json'), JSON.stringify(Object.keys(operators_export_src).sort()));
+
   await execPromise(`npm install ${pkgPath} --no-save`, __dirname);
-  await execPromise('npm test', __dirname);
+
+  await execPromise('npm test', path.join(__dirname, 'node'));
+  await execPromise('npm test', path.join(__dirname, 'bundle'));
 };
 
 main().catch((err) => {

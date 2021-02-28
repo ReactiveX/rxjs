@@ -1,0 +1,15 @@
+{
+  "name": "bundle-test",
+  "scripts": {
+    "setup:rollup": "npm i rollup @rollup/plugin-json @rollup/plugin-node-resolve --no-save",
+    "setup:wp4": "npm i webpack@4 webpack-cli --no-save && webpack",
+    "setup:wp5": "npm i webpack@5 webpack-cli --no-save && webpack",
+    "test:rollup:es": "rollup -c ./rollup.config.js --format es | node",
+    "test:rollup:cjs": "rollup -c ./rollup.config.js --format cjs | node",
+    "test:rollup": "npm run setup:rollup && npm run test:rollup:es && npm run test:rollup:cjs",
+    "test:wp4": "npm run setup:wp4 && node bundle.js && shx rm bundle.js",
+    "test:wp5": "npm run setup:wp5 && node bundle.js && shx rm bundle.js",
+    "test:webpack": "npm run test:wp4 && npm run test:wp5",
+    "test": "npm run test:rollup && npm run test:webpack"
+  }
+}

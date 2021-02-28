@@ -1,0 +1,9 @@
+{
+  "name": "rxjs-import-test",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "npm run test:commonjs && npm run test:esm",
+    "test:commonjs": "node ./common.cjs",
+    "test:esm": "node ./esm.mjs"
+  }
+}
