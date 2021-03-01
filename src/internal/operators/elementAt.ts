@@ -6,7 +6,7 @@ import { throwIfEmpty } from './throwIfEmpty';
 import { defaultIfEmpty } from './defaultIfEmpty';
 import { take } from './take';
 
-export function elementAt<T, D>(index: number): MonoTypeOperatorFunction<T>;
+export function elementAt<T>(index: number): MonoTypeOperatorFunction<T>;
 export function elementAt<T, D>(index: number, defaultValue: D): OperatorFunction<T, T | D>;
 
 /**
