@@ -56,6 +56,17 @@ describe('last', () => {
     });
   });
 
+  it('should allow undefined as a default value', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  -----a--a---a-|   ');
+      const e1subs = '  ^-------------!   ';
+      const expected = '--------------(U|)';
+
+      expectObservable(e1.pipe(last((value) => value === 'b', undefined))).toBe(expected, { U: undefined });
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
   it('should return last element matches with predicate', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--a--b--|   ');
