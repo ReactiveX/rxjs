@@ -85,6 +85,6 @@ export function first<T, D>(
     source.pipe(
       predicate ? filter((v, i) => predicate(v, i, source)) : identity,
       take(1),
-      hasDefaultValue ? defaultIfEmpty<T, D>(defaultValue) : throwIfEmpty(() => new EmptyError())
+      hasDefaultValue ? defaultIfEmpty(defaultValue!) : throwIfEmpty(() => new EmptyError())
     );
 }
