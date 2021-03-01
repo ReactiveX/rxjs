@@ -86,7 +86,7 @@ export declare function distinctUntilChanged<T, K>(comparator: (previous: K, cur
 export declare function distinctUntilKeyChanged<T>(key: keyof T): MonoTypeOperatorFunction<T>;
 export declare function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (x: T[K], y: T[K]) => boolean): MonoTypeOperatorFunction<T>;
 
-export declare function elementAt<T, D>(index: number): MonoTypeOperatorFunction<T>;
+export declare function elementAt<T>(index: number): MonoTypeOperatorFunction<T>;
 export declare function elementAt<T, D>(index: number, defaultValue: D): OperatorFunction<T, T | D>;
 
 export declare function endWith<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;
