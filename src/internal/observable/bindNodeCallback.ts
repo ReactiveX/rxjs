@@ -2,7 +2,6 @@
 import { Observable } from '../Observable';
 import { SchedulerLike } from '../types';
 import { bindCallbackInternals } from './bindCallbackInternals';
-import { TS_IncompatibleSignature } from '../util/workarounds';
 
 /** @deprecated resultSelector is deprecated, pipe to map instead */
 export function bindNodeCallback(
@@ -122,7 +121,7 @@ export function bindNodeCallback<A extends readonly unknown[], R extends readonl
  * deliver.
  */
 export function bindNodeCallback(
-  callbackFunc: TS_IncompatibleSignature,
+  callbackFunc: (...args: [...any[], (err: any, ...res: any) => void]) => void,
   resultSelector?: ((...args: any[]) => any) | SchedulerLike,
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<any> {
