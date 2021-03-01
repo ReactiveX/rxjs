@@ -35,6 +35,17 @@ describe('elementAt', () => {
     });
   });
 
+  it('should allow undefined as a default value', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  -----a--a---a-|   ');
+      const e1subs = '  ^-------------!   ';
+      const expected = '--------------(U|)';
+
+      expectObservable(e1.pipe(elementAt(100, undefined))).toBe(expected, { U: undefined });
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
   it('should return non-first element by zero-based index', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--c--d--e--f--|');
