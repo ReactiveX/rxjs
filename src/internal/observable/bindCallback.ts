@@ -1,5 +1,5 @@
 /* @prettier */
-import { AllButLast, OverloadedParameters, SchedulerLike, OverloadedReturnType, Last } from '../types';
+import { AllButLast, OverloadedParameters, SchedulerLike, Last } from '../types';
 import { Observable } from '../Observable';
 import { bindCallbackInternals } from './bindCallbackInternals';
 
