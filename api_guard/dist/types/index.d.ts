@@ -1,3 +1,5 @@
+export declare type AllButLast<T extends any[]> = T extends T ? T extends [...infer H, any] ? H : never : never;
+
 export declare const animationFrame: AnimationFrameScheduler;
 
 export declare function animationFrames(timestampProvider?: TimestampProvider): Observable<{
@@ -35,10 +37,10 @@ export declare class BehaviorSubject<T> extends Subject<T> {
 }
 
 export declare function bindCallback(callbackFunc: (...args: any[]) => void, resultSelector: (...args: any[]) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any>;
-export declare function bindCallback<A extends readonly unknown[], R extends readonly unknown[]>(callbackFunc: (...args: [...A, (...res: R) => void]) => void, schedulerLike?: SchedulerLike): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
+export declare function bindCallback<Fn extends (...args: any[]) => any>(callbackFunc: Fn, schedulerLike?: SchedulerLike): (...arg: AllButLast<OverloadedParameters<Fn>>) => Observable<Last<Parameters<Fn>> extends () => any ? void : Last<Parameters<Fn>> extends (arg: infer R) => any ? R : Last<Parameters<Fn>> extends (...args: infer R) => any ? R : never>;
 
 export declare function bindNodeCallback(callbackFunc: (...args: any[]) => void, resultSelector: (...args: any[]) => any, scheduler?: SchedulerLike): (...args: any[]) => Observable<any>;
-export declare function bindNodeCallback<A extends readonly unknown[], R extends readonly unknown[]>(callbackFunc: (...args: [...A, (err: any, ...res: R) => void]) => void, schedulerLike?: SchedulerLike): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
+export declare function bindNodeCallback<Fn extends (...args: any[]) => any>(callbackFunc: Fn, schedulerLike?: SchedulerLike): (...arg: AllButLast<OverloadedParameters<Fn>>) => Observable<Last<OverloadedParameters<Fn>> extends (err: any) => any ? void : Last<Parameters<Fn>> extends (err: any, arg: infer R) => any ? R : Last<Parameters<Fn>> extends (err: any, ...args: infer R) => any ? R : never>;
 
 export declare function combineLatest(sources: []): Observable<never>;
 export declare function combineLatest<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
@@ -211,6 +213,8 @@ export declare function interval(period?: number, scheduler?: SchedulerLike): Ob
 
 export declare function isObservable<T>(obj: any): obj is Observable<T>;
 
+export declare type Last<T extends any[]> = [any, ...T][T['length']];
+
 export declare function lastValueFrom<T>(source: Observable<T>): Promise<T>;
 
 export declare function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>]): Observable<A[number]>;
@@ -360,6 +364,10 @@ export interface Operator<T, R> {
 
 export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Observable<R>> {
 }
+
+export declare type OverloadedParameters<T> = OverloadedArgumentsAndReturnType<T>[0];
+
+export declare type OverloadedReturnType<T> = OverloadedArgumentsAndReturnType<T>[1];
 
 export declare function pairs<T>(arr: readonly T[], scheduler?: SchedulerLike): Observable<[string, T]>;
 export declare function pairs<O extends Record<string, unknown>>(obj: O, scheduler?: SchedulerLike): Observable<[keyof O, O[keyof O]]>;

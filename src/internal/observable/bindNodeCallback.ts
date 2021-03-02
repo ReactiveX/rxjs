@@ -1,6 +1,6 @@
 /* @prettier */
 import { Observable } from '../Observable';
-import { SchedulerLike } from '../types';
+import { SchedulerLike, AllButLast, OverloadedParameters, Last } from '../types';
 import { bindCallbackInternals } from './bindCallbackInternals';
 
 /** @deprecated resultSelector is deprecated, pipe to map instead */
@@ -10,11 +10,20 @@ export function bindNodeCallback(
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<any>;
 
-// args is the arguments array and we push the callback on the rest tuple since the rest parameter must be last (only item) in a parameter list
-export function bindNodeCallback<A extends readonly unknown[], R extends readonly unknown[]>(
-  callbackFunc: (...args: [...A, (err: any, ...res: R) => void]) => void,
+export function bindNodeCallback<Fn extends (...args: any[]) => any>(
+  callbackFunc: Fn,
   schedulerLike?: SchedulerLike
-): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
+): (
+  ...arg: AllButLast<OverloadedParameters<Fn>>
+) => Observable<
+  Last<OverloadedParameters<Fn>> extends (err: any) => any
+    ? void
+    : Last<Parameters<Fn>> extends (err: any, arg: infer R) => any
+    ? R
+    : Last<Parameters<Fn>> extends (err: any, ...args: infer R) => any
+    ? R
+    : never
+>;
 
 /**
  * Converts a Node.js-style callback API to a function that returns an

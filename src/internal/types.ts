@@ -276,3 +276,99 @@ export type ValueFromNotification<T> = T extends { kind: 'N' | 'E' | 'C' }
 export type Falsy = null | undefined | false | 0 | -0 | 0n | '';
 
 export type TruthyTypesOf<T> = T extends Falsy ? never : T;
+
+/**
+ * One of those magic types that can extract types from an
+ * overloaded function. See https://github.com/ReactiveX/rxjs/issues/5942
+ * for more details
+ */
+type OverloadedArgumentsAndReturnType<T> = T extends {
+  (...args: infer A1): infer R;
+  (...args: infer A2): infer R;
+  (...args: infer A3): infer R;
+  (...args: infer A4): infer R;
+  (...args: infer A5): infer R;
+  (...args: infer A6): infer R;
+  (...args: infer A7): infer R;
+  (...args: infer A8): infer R;
+  (...args: infer A9): infer R;
+  (...args: infer A10): infer R;
+}
+  ? [A1 | A2 | A3 | A4 | A5 | A6 | A7 | A8 | A9 | A10, R]
+  : T extends {
+      (...args: infer A1): infer R;
+      (...args: infer A2): infer R;
+      (...args: infer A3): infer R;
+      (...args: infer A4): infer R;
+      (...args: infer A5): infer R;
+      (...args: infer A6): infer R;
+      (...args: infer A7): infer R;
+      (...args: infer A8): infer R;
+      (...args: infer A9): infer R;
+    }
+  ? [A1 | A2 | A3 | A4 | A5 | A6 | A7 | A8 | A9, R]
+  : T extends {
+      (...args: infer A1): infer R;
+      (...args: infer A2): infer R;
+      (...args: infer A3): infer R;
+      (...args: infer A4): infer R;
+      (...args: infer A5): infer R;
+      (...args: infer A6): infer R;
+      (...args: infer A7): infer R;
+      (...args: infer A8): infer R;
+    }
+  ? [A1 | A2 | A3 | A4 | A5 | A6 | A7 | A8, R]
+  : T extends {
+      (...args: infer A1): infer R;
+      (...args: infer A2): infer R;
+      (...args: infer A3): infer R;
+      (...args: infer A4): infer R;
+      (...args: infer A5): infer R;
+      (...args: infer A6): infer R;
+      (...args: infer A7): infer R;
+    }
+  ? [A1 | A2 | A3 | A4 | A5 | A6 | A7, R]
+  : T extends {
+      (...args: infer A1): infer R;
+      (...args: infer A2): infer R;
+      (...args: infer A3): infer R;
+      (...args: infer A4): infer R;
+      (...args: infer A5): infer R;
+      (...args: infer A6): infer R;
+    }
+  ? [A1 | A2 | A3 | A4 | A5 | A6, R]
+  : T extends {
+      (...args: infer A1): infer R;
+      (...args: infer A2): infer R;
+      (...args: infer A3): infer R;
+      (...args: infer A4): infer R;
+      (...args: infer A5): infer R;
+    }
+  ? [A1 | A2 | A3 | A4 | A5, R]
+  : T extends {
+      (...args: infer A1): infer R;
+      (...args: infer A2): infer R;
+      (...args: infer A3): infer R;
+      (...args: infer A4): infer R;
+    }
+  ? [A1 | A2 | A3 | A4, R]
+  : T extends {
+      (...args: infer A1): infer R;
+      (...args: infer A2): infer R;
+      (...args: infer A3): infer R;
+    }
+  ? [A1 | A2 | A3, R]
+  : T extends {
+      (...args: infer A1): infer R;
+      (...args: infer A2): infer R;
+    }
+  ? [A1 | A2, R]
+  : T extends (...args: infer A) => infer R
+  ? [A, R]
+  : never;
+
+export type OverloadedParameters<T> = OverloadedArgumentsAndReturnType<T>[0];
+export type OverloadedReturnType<T> = OverloadedArgumentsAndReturnType<T>[1];
+
+export type AllButLast<T extends any[]> = T extends T ? (T extends [...(infer H), any] ? H : never) : never;
+export type Last<T extends any[]> = [any, ...T][T['length']];

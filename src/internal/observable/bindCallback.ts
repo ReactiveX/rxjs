@@ -1,5 +1,5 @@
 /* @prettier */
-import { SchedulerLike } from '../types';
+import { AllButLast, OverloadedParameters, SchedulerLike, OverloadedReturnType, Last } from '../types';
 import { Observable } from '../Observable';
 import { bindCallbackInternals } from './bindCallbackInternals';
 
@@ -11,11 +11,20 @@ export function bindCallback(
   scheduler?: SchedulerLike
 ): (...args: any[]) => Observable<any>;
 
-// args is the arguments array and we push the callback on the rest tuple since the rest parameter must be last (only item) in a parameter list
-export function bindCallback<A extends readonly unknown[], R extends readonly unknown[]>(
-  callbackFunc: (...args: [...A, (...res: R) => void]) => void,
+export function bindCallback<Fn extends (...args: any[]) => any>(
+  callbackFunc: Fn,
   schedulerLike?: SchedulerLike
-): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
+): (
+  ...arg: AllButLast<OverloadedParameters<Fn>>
+) => Observable<
+  Last<Parameters<Fn>> extends () => any
+    ? void
+    : Last<Parameters<Fn>> extends (arg: infer R) => any
+    ? R
+    : Last<Parameters<Fn>> extends (...args: infer R) => any
+    ? R
+    : never
+>;
 
 // tslint:enable:max-line-length
 
