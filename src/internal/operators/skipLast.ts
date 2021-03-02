@@ -33,7 +33,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @see {@link take}
  *
  * @throws {ArgumentOutOfRangeError} When using `skipLast(i)`, it throws
- * ArgumentOutOrRangeError if `i < 0`.
+ * ArgumentOutOfRangeError if `i < 0`.
  *
  * @param {number} skipCount Number of elements to skip from the end of the source Observable.
  * @returns {Observable<T>} An Observable that skips the last count values

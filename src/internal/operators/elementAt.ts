@@ -43,7 +43,7 @@ import { take } from './take';
  * @see {@link take}
  *
  * @throws {ArgumentOutOfRangeError} When using `elementAt(i)`, it delivers an
- * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0` or the
+ * ArgumentOutOfRangeError to the Observer's `error` callback if `i < 0` or the
  * Observable has completed before emitting the i-th `next` notification.
  *
  * @param {number} index Is the number `i` for the i-th source emission that has
@@ -53,13 +53,14 @@ import { take } from './take';
  * Otherwise, will emit the default value if given. If not, then emits an error.
  */
 export function elementAt<T>(index: number, defaultValue?: T): MonoTypeOperatorFunction<T> {
-  if (index < 0) { throw new ArgumentOutOfRangeError(); }
+  if (index < 0) {
+    throw new ArgumentOutOfRangeError();
+  }
   const hasDefaultValue = arguments.length >= 2;
-  return (source: Observable<T>) => source.pipe(
-    filter((v, i) => i === index),
-    take(1),
-    hasDefaultValue
-      ? defaultIfEmpty(defaultValue)
-      : throwIfEmpty(() => new ArgumentOutOfRangeError()),
-  );
+  return (source: Observable<T>) =>
+    source.pipe(
+      filter((v, i) => i === index),
+      take(1),
+      hasDefaultValue ? defaultIfEmpty(defaultValue) : throwIfEmpty(() => new ArgumentOutOfRangeError())
+    );
 }
