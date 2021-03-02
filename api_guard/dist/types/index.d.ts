@@ -1,4 +1,4 @@
-export declare type AllButLast<T extends any[]> = T extends T ? T extends [...infer H, any] ? H : never : never;
+export declare type AllButLast<T extends any[]> = T extends T ? (T extends [...(infer H), any] ? H : never) : never;
 
 export declare const animationFrame: AnimationFrameScheduler;
 
