@@ -68,7 +68,7 @@ export declare function debounce<T>(durationSelector: (value: T) => ObservableIn
 
 export declare function debounceTime<T>(dueTime: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
-export declare function defaultIfEmpty<T, R = T>(defaultValue?: R): OperatorFunction<T, T | R>;
+export declare function defaultIfEmpty<T, R>(defaultValue: R): OperatorFunction<T, T | R>;
 
 export declare function delay<T>(due: number | Date, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
@@ -86,7 +86,8 @@ export declare function distinctUntilChanged<T, K>(comparator: (previous: K, cur
 export declare function distinctUntilKeyChanged<T>(key: keyof T): MonoTypeOperatorFunction<T>;
 export declare function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (x: T[K], y: T[K]) => boolean): MonoTypeOperatorFunction<T>;
 
-export declare function elementAt<T>(index: number, defaultValue?: T): MonoTypeOperatorFunction<T>;
+export declare function elementAt<T>(index: number): MonoTypeOperatorFunction<T>;
+export declare function elementAt<T, D>(index: number, defaultValue: D): OperatorFunction<T, T | D>;
 
 export declare function endWith<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;
 export declare function endWith<T, A>(v1: A, scheduler: SchedulerLike): OperatorFunction<T, T | A>;

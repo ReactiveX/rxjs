@@ -2,10 +2,6 @@ import { OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
-/* tslint:disable:max-line-length */
-export function defaultIfEmpty<T, R = T>(defaultValue?: R): OperatorFunction<T, T | R>;
-/* tslint:enable:max-line-length */
-
 /**
  * Emits a given value if the source Observable completes without emitting any
  * `next` value, otherwise mirrors the source Observable.
@@ -34,13 +30,13 @@ export function defaultIfEmpty<T, R = T>(defaultValue?: R): OperatorFunction<T, 
  * @see {@link empty}
  * @see {@link last}
  *
- * @param {any} [defaultValue=null] The default value used if the source
+ * @param defaultValue The default value used if the source
  * Observable is empty.
- * @return {Observable} An Observable that emits either the specified
+ * @return An Observable that emits either the specified
  * `defaultValue` if the source Observable emits no items, or the values emitted
  * by the source Observable.
  */
-export function defaultIfEmpty<T, R>(defaultValue: R | null = null): OperatorFunction<T, T | R> {
+export function defaultIfEmpty<T, R>(defaultValue: R): OperatorFunction<T, T | R> {
   return operate((source, subscriber) => {
     let hasValue = false;
     source.subscribe(

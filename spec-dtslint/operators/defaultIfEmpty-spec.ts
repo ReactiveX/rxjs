@@ -1,8 +1,9 @@
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { defaultIfEmpty, map } from 'rxjs/operators';
 
 it('should infer correctly', () => {
-  const o = of(1, 2, 3).pipe(defaultIfEmpty()); // $ExpectType Observable<number>
+  const o = of(1, 2, 3).pipe(defaultIfEmpty()); // $ExpectError
+  const o2 = of(undefined).pipe(defaultIfEmpty(undefined)); // $ExpectType Observable<undefined>
 });
 
 it('should infer correctly with a defaultValue', () => {
@@ -11,6 +12,7 @@ it('should infer correctly with a defaultValue', () => {
 
 it('should infer correctly with a different type of defaultValue', () => {
   const o = of(1, 2, 3).pipe(defaultIfEmpty<number, string>('carbonara')); // $ExpectType Observable<string | number>
+  const o2 = of(1, 2, 3).pipe(defaultIfEmpty('carbonara')); // $ExpectType Observable<string | number>
 });
 
 it('should infer correctly with a subtype passed through parameters', () => {
@@ -20,3 +22,7 @@ it('should infer correctly with a subtype passed through parameters', () => {
 it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(defaultIfEmpty(4, 5)); // $ExpectError
 });
+
+it('should handle Observable<never> appropriately', () => {
+  const o = EMPTY.pipe(defaultIfEmpty('blah')); // $ExpectType Observable<string>
+})

@@ -1,10 +1,13 @@
 import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction } from '../types';
+import { MonoTypeOperatorFunction, OperatorFunction } from '../types';
 import { filter } from './filter';
 import { throwIfEmpty } from './throwIfEmpty';
 import { defaultIfEmpty } from './defaultIfEmpty';
 import { take } from './take';
+
+export function elementAt<T>(index: number): MonoTypeOperatorFunction<T>;
+export function elementAt<T, D>(index: number, defaultValue: D): OperatorFunction<T, T | D>;
 
 /**
  * Emits the single value at the specified `index` in a sequence of emissions
@@ -52,7 +55,7 @@ import { take } from './take';
  * @return {Observable} An Observable that emits a single item, if it is found.
  * Otherwise, will emit the default value if given. If not, then emits an error.
  */
-export function elementAt<T>(index: number, defaultValue?: T): MonoTypeOperatorFunction<T> {
+export function elementAt<T, D>(index: number, defaultValue?: D): OperatorFunction<T, T | D> {
   if (index < 0) {
     throw new ArgumentOutOfRangeError();
   }
@@ -61,6 +64,6 @@ export function elementAt<T>(index: number, defaultValue?: T): MonoTypeOperatorF
     source.pipe(
       filter((v, i) => i === index),
       take(1),
-      hasDefaultValue ? defaultIfEmpty(defaultValue) : throwIfEmpty(() => new ArgumentOutOfRangeError())
+      hasDefaultValue ? defaultIfEmpty(defaultValue!) : throwIfEmpty(() => new ArgumentOutOfRangeError())
     );
 }
