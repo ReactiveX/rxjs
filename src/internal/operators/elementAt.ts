@@ -46,7 +46,7 @@ export function elementAt<T, D>(index: number, defaultValue: D): OperatorFunctio
  * @see {@link take}
  *
  * @throws {ArgumentOutOfRangeError} When using `elementAt(i)`, it delivers an
- * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0` or the
+ * ArgumentOutOfRangeError to the Observer's `error` callback if `i < 0` or the
  * Observable has completed before emitting the i-th `next` notification.
  *
  * @param {number} index Is the number `i` for the i-th source emission that has
