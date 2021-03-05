@@ -1,22 +1,22 @@
-import { OperatorFunction, ObservableInput, SchedulerLike } from '../types';
+import { OperatorFunction, ObservableInput, ObservedValueOf, SchedulerLike } from '../types';
 import { operate } from '../util/lift';
 import { mergeInternals } from './mergeInternals';
 
 /* tslint:disable:max-line-length */
-export function expand<T, R>(
-  project: (value: T, index: number) => ObservableInput<R>,
+export function expand<T, O extends ObservableInput<unknown>>(
+  project: (value: T, index: number) => O,
   concurrent?: number,
   scheduler?: SchedulerLike
-): OperatorFunction<T, R>;
+): OperatorFunction<T, ObservedValueOf<O>>;
 /**
  * @deprecated Will be removed in v8. If you need to schedule the inner subscription,
  * use `subscribeOn` within the projection function: `expand((value) => fn(value).pipe(subscribeOn(scheduler)))`.
  */
-export function expand<T, R>(
-  project: (value: T, index: number) => ObservableInput<R>,
+export function expand<T, O extends ObservableInput<unknown>>(
+  project: (value: T, index: number) => O,
   concurrent: number | undefined,
   scheduler: SchedulerLike
-): OperatorFunction<T, R>;
+): OperatorFunction<T, ObservedValueOf<O>>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -69,11 +69,11 @@ export function expand<T, R>(
  * output Observable and merging the results of the Observables obtained
  * from this transformation.
  */
-export function expand<T, R>(
-  project: (value: T, index: number) => ObservableInput<R>,
+export function expand<T, O extends ObservableInput<unknown>>(
+  project: (value: T, index: number) => O,
   concurrent = Infinity,
   scheduler?: SchedulerLike
-): OperatorFunction<T, R> {
+): OperatorFunction<T, ObservedValueOf<O>> {
   concurrent = (concurrent || 0) < 1 ? Infinity : concurrent;
   return operate((source, subscriber) =>
     mergeInternals(
