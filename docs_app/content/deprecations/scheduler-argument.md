@@ -28,18 +28,18 @@ If you use any other operator from the list above and using the `scheduler` argu
 
 ### Refactoring of `of` and `from`
 
-`scheduled` is kinda copying the behavior of `from`. Therefore if you used `from`  with a `scheduler` argument, you can just replace them.
+`scheduled` is kinda copying the behavior of `from`. Therefore if you used `from` with a `scheduler` argument, you can just replace them.
 
 For the `of` creation function you need to this Observable with `scheduled` and instead of passing the `scheduler` argument to `of` pass it to `scheduled`.
 Following code example demonstrate this process.
 
 ```ts
-import { of, asyncScheduler, scheduled } from 'rxjs'; 
+import { of, asyncScheduler, scheduled } from 'rxjs';
 
 // Deprecated approach
-of([1,2,3], asyncScheduler).subscribe(x => console.log(x));
+of([1, 2, 3], asyncScheduler).subscribe((x) => console.log(x));
 // suggested approach
-scheduled([1,2,3], asyncScheduler).subscribe(x => console.log(x));
+scheduled([1, 2, 3], asyncScheduler).subscribe((x) => console.log(x));
 ```
 
 ### Refactoring of `merge`, `concat`, `combineLatest`, `startWith` and `endWith`
@@ -47,55 +47,41 @@ scheduled([1,2,3], asyncScheduler).subscribe(x => console.log(x));
 In case you used to pass a scheduler argument to one of these operators you probably had code like this:
 
 ```ts
-import { concat, of, asyncScheduler } from 'rxjs'; 
+import { concat, of, asyncScheduler } from 'rxjs';
 
-concat(
-  of('hello '),
-  of('World'),
-  asyncScheduler
-).subscribe(x => console.log(x));
+concat(of('hello '), of('World'), asyncScheduler).subscribe((x) => console.log(x));
 ```
 
 To work around this deprecation you can leverage the [`scheduled`](/api/index/function/scheduled) function.
 
 ```ts
-import { scheduled, of, asyncScheduler } from 'rxjs'; 
-import { concatAll } from 'rxjs/operators'
+import { scheduled, of, asyncScheduler } from 'rxjs';
+import { concatAll } from 'rxjs/operators';
 
-scheduled(
-  [of('hello '), of('World')],
-  asyncScheduler
-).pipe(
-  concatAll()
-).subscribe(x => console.log(x));
+scheduled([of('hello '), of('World')], asyncScheduler)
+  .pipe(concatAll())
+  .subscribe((x) => console.log(x));
 ```
 
 You can apply this pattern to refactor deprecated usage of `concat`, `startWith` and `endWith` but do notice that you will want to use [mergeAll](/api/operators/mergeAll) to refactor the deprecated usage of `merge`.
 
-With `combineLatest`, you will want to use [combineAll](/api/operators/combineAll)
+With `combineLatest`, you will want to use [combineLatestAll](/api/operators/combineLatestAll)
 
 E.g. code that used to look like this:
 
 ```ts
 import { combineLatest, of, asyncScheduler } from 'rxjs';
 
-combineLatest(
-  of('hello '),
-  of('World'),
-  asyncScheduler
-).subscribe(console.log)
+combineLatest(of('hello '), of('World'), asyncScheduler).subscribe(console.log);
 ```
 
 would become:
 
 ```ts
 import { scheduled, of, asyncScheduler } from 'rxjs';
-import { combineAll } from 'rxjs/operators'
+import { combineLatestAll } from 'rxjs/operators';
 
-scheduled(
-  [of('hello '), of('World')],
-  asyncScheduler
-).pipe(
-  combineAll()
-).subscribe(x => console.log(x));
+scheduled([of('hello '), of('World')], asyncScheduler)
+  .pipe(combineLatestAll())
+  .subscribe((x) => console.log(x));
 ```
