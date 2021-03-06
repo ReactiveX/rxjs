@@ -99,7 +99,8 @@ export declare function endWith<T, A, B, C, D, E, F>(v1: A, v2: B, v3: C, v4: D,
 export declare function endWith<T, A extends any[] = T[]>(...args: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
 export declare function every<T>(predicate: BooleanConstructor, thisArg?: any): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
-export declare function every<T, A = any>(predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean, thisArg?: A): OperatorFunction<T, boolean>;
+export declare function every<T, A>(predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean, thisArg: A): OperatorFunction<T, boolean>;
+export declare function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, boolean>;
 
 export declare const exhaust: typeof exhaustAll;
 
