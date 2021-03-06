@@ -4,6 +4,13 @@ import { ObservableInput } from '../types';
 import { Observable } from '../Observable';
 import { innerFrom } from './from';
 
+export function partition<T, A>(
+  source: ObservableInput<T>,
+  predicate: (this: A, value: T, index: number) => boolean,
+  thisArg: A
+): [Observable<T>, Observable<T>];
+export function partition<T>(source: ObservableInput<T>, predicate: (value: T, index: number) => boolean): [Observable<T>, Observable<T>];
+
 /**
  * Splits the source Observable into two, one with values that satisfy a
  * predicate, and another with values that don't satisfy the predicate.
@@ -55,10 +62,10 @@ import { innerFrom } from './from';
  * with values that passed the predicate, and another with values that did not
  * pass the predicate.
  */
-export function partition<T, A = any>(
+export function partition<T>(
   source: ObservableInput<T>,
-  predicate: (this: A, value: T, index: number) => boolean,
-  thisArg?: A
+  predicate: (this: any, value: T, index: number) => boolean,
+  thisArg?: any
 ): [Observable<T>, Observable<T>] {
   return [filter(predicate, thisArg)(innerFrom(source)), filter(not(predicate, thisArg))(innerFrom(source))] as [
     Observable<T>,
