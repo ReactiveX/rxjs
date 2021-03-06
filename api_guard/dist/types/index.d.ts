@@ -368,7 +368,8 @@ export declare function pairs(n: number | bigint | boolean | ((...args: any[]) =
 
 export declare type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | CompletionObserver<T>;
 
-export declare function partition<T, A = any>(source: ObservableInput<T>, predicate: (this: A, value: T, index: number) => boolean, thisArg?: A): [Observable<T>, Observable<T>];
+export declare function partition<T, A>(source: ObservableInput<T>, predicate: (this: A, value: T, index: number) => boolean, thisArg: A): [Observable<T>, Observable<T>];
+export declare function partition<T>(source: ObservableInput<T>, predicate: (value: T, index: number) => boolean): [Observable<T>, Observable<T>];
 
 export declare function pipe<T>(): UnaryFunction<T, T>;
 export declare function pipe<T, A>(fn1: UnaryFunction<T, A>): UnaryFunction<T, A>;
