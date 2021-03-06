@@ -7,9 +7,9 @@ export function every<T>(
   predicate: BooleanConstructor,
   thisArg?: any
 ): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
-export function every<T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  thisArg?: any
+export function every<T, A = any>(
+  predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
+  thisArg?: A
 ): OperatorFunction<T, boolean>;
 
 /**
