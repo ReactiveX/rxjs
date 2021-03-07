@@ -72,6 +72,12 @@ describe('forkJoin({})', () => {
     const obj = { foo: of(1), bar: of('two'), baz: of(false) };
     const res = forkJoin(obj); // $ExpectType Observable<{ foo: number; bar: string; baz: boolean; }>
   });
+
+  it('should reject non-ObservableInput values', () => {
+    const obj = { answer: 42 };
+    const res = forkJoin(obj); // $ExpectError
+
+  });
 });
 
 describe('forkJoin([])', () => {
