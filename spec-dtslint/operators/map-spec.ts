@@ -25,3 +25,11 @@ it('should enforce the projecter types', () => {
   const o = of(1, 2, 3).pipe(map((value: string) => value)); // $ExpectError
   const p = of(1, 2, 3).pipe(map((value, index: string) => value)); // $ExpectError
 });
+
+it('should support this', () => {
+  const thisArg = { limit: 2 };
+  const o = of(1, 2, 3).pipe(map(function (val) {
+    const limit = this.limit; // $ExpectType number
+    return val < limit ? val : limit;
+  }, thisArg));
+});
