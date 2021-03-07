@@ -471,11 +471,11 @@ describe('forkJoin', () => {
     it('should have same v5/v6 throwing behavior full argument of null', (done) => {
       rxTestScheduler.run(() => {
         // It doesn't throw when you pass null
-        expect(() => forkJoin(null)).not.to.throw();
+        expect(() => forkJoin(null as any)).not.to.throw();
 
         // It doesn't even throw if you subscribe to forkJoin(null).
         expect(() =>
-          forkJoin(null).subscribe({
+          forkJoin(null as any).subscribe({
             // It sends the error to the subscription.
             error: () => done(),
           })
