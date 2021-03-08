@@ -36,6 +36,9 @@ it('should support Boolean constructor', () => {
   const b = of(0 as const, -0 as const, null, 'hi there' as const, undefined, false as const, '' as const).pipe(findIndex(Boolean)); // $ExpectType Observable<number>
 });
 
-it('should properly narrow an always false predicate', () => {
-  const a = of('foo', 'bar', 'baz').pipe(findIndex(() => false)); // $ExpectType Observable<-1>
-})
+it('should support inference from a predicate that returns any', () => {
+  function isTruthy(value: number): any {
+    return !!value;
+  }
+  const a = of(1).pipe(findIndex(isTruthy)); // $ExpectType Observable<number>
+});

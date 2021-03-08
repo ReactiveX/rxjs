@@ -3,7 +3,6 @@ import { Falsy, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { createFind } from './find';
 
-export function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => false, thisArg?: any): OperatorFunction<T, -1>;
 export function findIndex<T>(predicate: BooleanConstructor, thisArg?: any): OperatorFunction<T, T extends Falsy ? -1 : number>;
 export function findIndex<T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
