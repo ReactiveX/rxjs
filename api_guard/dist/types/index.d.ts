@@ -209,7 +209,7 @@ export interface InteropObservable<T> {
 
 export declare function interval(period?: number, scheduler?: SchedulerLike): Observable<number>;
 
-export declare function isObservable<T>(obj: any): obj is Observable<T>;
+export declare function isObservable(obj: any): obj is Observable<unknown>;
 
 export declare function lastValueFrom<T>(source: Observable<T>): Promise<T>;
 
