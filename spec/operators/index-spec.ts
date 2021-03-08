@@ -12,6 +12,7 @@ describe('operators/index', () => {
     expect(index.bufferWhen).to.exist;
     expect(index.catchError).to.exist;
     expect(index.combineAll).to.exist;
+    expect(index.combineLatestAll).to.exist;
     expect(index.concatAll).to.exist;
     expect(index.concatMap).to.exist;
     expect(index.concatMapTo).to.exist;
@@ -46,6 +47,7 @@ describe('operators/index', () => {
     expect(index.max).to.exist;
     expect(index.mergeAll).to.exist;
     expect(index.mergeMap).to.exist;
+    expect(index.flatMap).to.exist;
     expect(index.mergeMap).to.exist;
     expect(index.mergeMapTo).to.exist;
     expect(index.mergeScan).to.exist;

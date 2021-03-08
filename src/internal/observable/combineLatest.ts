@@ -188,19 +188,19 @@ export function combineLatest<
 ): Observable<R>;
 
 // With a scheduler (deprecated)
-/** @deprecated The scheduler argument is deprecated, use scheduled and combineAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
+/** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<O1 extends ObservableInput<any>>(sources: [O1], scheduler: SchedulerLike): Observable<[ObservedValueOf<O1>]>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and combineAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
+/** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>>(
   sources: [O1, O2],
   scheduler: SchedulerLike
 ): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>]>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and combineAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
+/** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(
   sources: [O1, O2, O3],
   scheduler: SchedulerLike
 ): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>]>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and combineAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
+/** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<
   O1 extends ObservableInput<any>,
   O2 extends ObservableInput<any>,
@@ -210,7 +210,7 @@ export function combineLatest<
   sources: [O1, O2, O3, O4],
   scheduler: SchedulerLike
 ): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>]>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and combineAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
+/** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<
   O1 extends ObservableInput<any>,
   O2 extends ObservableInput<any>,
@@ -221,7 +221,7 @@ export function combineLatest<
   sources: [O1, O2, O3, O4, O5],
   scheduler: SchedulerLike
 ): Observable<[ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>]>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and combineAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
+/** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<
   O1 extends ObservableInput<any>,
   O2 extends ObservableInput<any>,
@@ -235,7 +235,7 @@ export function combineLatest<
 ): Observable<
   [ObservedValueOf<O1>, ObservedValueOf<O2>, ObservedValueOf<O3>, ObservedValueOf<O4>, ObservedValueOf<O5>, ObservedValueOf<O6>]
 >;
-/** @deprecated The scheduler argument is deprecated, use scheduled and combineAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
+/** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<O extends ObservableInput<any>>(sources: O[], scheduler: SchedulerLike): Observable<ObservedValueOf<O>[]>;
 
 /** @deprecated Pass arguments in a single array instead `combineLatest([a, b, c])` */
@@ -444,7 +444,7 @@ export function combineLatest<R>(
  * // BMI is 23.671253629592222
  * ```
  *
- * @see {@link combineAll}
+ * @see {@link combineLatestAll}
  * @see {@link merge}
  * @see {@link withLatestFrom}
  *

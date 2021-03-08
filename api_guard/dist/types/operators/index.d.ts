@@ -16,10 +16,7 @@ export declare function bufferWhen<T>(closingSelector: () => ObservableInput<any
 
 export declare function catchError<T, O extends ObservableInput<any>>(selector: (err: any, caught: Observable<T>) => O): OperatorFunction<T, T | ObservedValueOf<O>>;
 
-export declare function combineAll<T>(): OperatorFunction<ObservableInput<T>, T[]>;
-export declare function combineAll<T>(): OperatorFunction<any, T[]>;
-export declare function combineAll<T, R>(project: (...values: T[]) => R): OperatorFunction<ObservableInput<T>, R>;
-export declare function combineAll<R>(project: (...values: Array<any>) => R): OperatorFunction<any, R>;
+export declare const combineAll: typeof combineLatestAll;
 
 export declare function combineLatest<T, R>(project: (v1: T) => R): OperatorFunction<T, R>;
 export declare function combineLatest<T, T2, R>(v2: ObservableInput<T2>, project: (v1: T, v2: T2) => R): OperatorFunction<T, R>;
@@ -35,6 +32,11 @@ export declare function combineLatest<T, T2, T3, T4, T5, T6>(v2: ObservableInput
 export declare function combineLatest<T, R>(...observables: Array<ObservableInput<T> | ((...values: Array<T>) => R)>): OperatorFunction<T, R>;
 export declare function combineLatest<T, R>(array: ObservableInput<T>[]): OperatorFunction<T, Array<T>>;
 export declare function combineLatest<T, TOther, R>(array: ObservableInput<TOther>[], project: (v1: T, ...values: Array<TOther>) => R): OperatorFunction<T, R>;
+
+export declare function combineLatestAll<T>(): OperatorFunction<ObservableInput<T>, T[]>;
+export declare function combineLatestAll<T>(): OperatorFunction<any, T[]>;
+export declare function combineLatestAll<T, R>(project: (...values: T[]) => R): OperatorFunction<ObservableInput<T>, R>;
+export declare function combineLatestAll<R>(project: (...values: Array<any>) => R): OperatorFunction<any, R>;
 
 export declare function combineLatestWith<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, Cons<T, A>>;
 

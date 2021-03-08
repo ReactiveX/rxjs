@@ -1,4 +1,4 @@
-import {OperatorFunction, ObservableInput, ObservedValueOf} from '../types';
+import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
 import { switchMap } from './switchMap';
 import { identity } from '../util/identity';
 
@@ -51,9 +51,9 @@ export function switchAll<O extends ObservableInput<any>>(): OperatorFunction<O,
  * // ...
  * ```
  *
- * @see {@link combineAll}
+ * @see {@link combineLatestAll}
  * @see {@link concatAll}
- * @see {@link exhaust}
+ * @see {@link exhaustAll}
  * @see {@link switchMap}
  * @see {@link switchMapTo}
  * @see {@link mergeAll}
