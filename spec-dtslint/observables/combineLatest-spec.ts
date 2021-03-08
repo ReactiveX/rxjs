@@ -141,4 +141,9 @@ describe('combineLatest({})', () => {
     const obj = { foo: a$, bar: b$, baz: c$ };
     const res = combineLatest(obj); // $ExpectType Observable<{ foo: A; bar: B; baz: C; }>
   });
+
+  it('should reject non-ObservableInput values', () => {
+    const obj = { answer: 42 };
+    const res = combineLatest(obj); // $ExpectError
+  });
 });
