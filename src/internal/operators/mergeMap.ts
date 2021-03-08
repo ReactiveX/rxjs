@@ -92,8 +92,3 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
 
   return operate((source, subscriber) => mergeInternals(source, subscriber, project, concurrent));
 }
-
-/**
- * @deprecated renamed. Use {@link mergeMap}.
- */
-export const flatMap = mergeMap;
