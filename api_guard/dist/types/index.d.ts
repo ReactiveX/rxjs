@@ -526,7 +526,7 @@ export interface UnsubscriptionError extends Error {
 
 export declare const UnsubscriptionError: UnsubscriptionErrorCtor;
 
-export declare function using<T>(resourceFactory: () => Unsubscribable | void, observableFactory: (resource: Unsubscribable | void) => ObservableInput<T> | void): Observable<T>;
+export declare function using<T extends ObservableInput<any>>(resourceFactory: () => Unsubscribable | void, observableFactory: (resource: Unsubscribable | void) => T | void): Observable<ObservedValueOf<T>>;
 
 export declare type ValueFromArray<A extends readonly unknown[]> = A extends Array<infer T> ? T : never;
 
