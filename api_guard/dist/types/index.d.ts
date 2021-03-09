@@ -52,7 +52,7 @@ export declare function combineLatest<A extends readonly unknown[]>(...args: [..
 export declare function combineLatest(sourcesObject: {
     [K in any]: never;
 }): Observable<never>;
-export declare function combineLatest<T extends Record<any, ObservableInput<any>>>(sourcesObject: T): Observable<{
+export declare function combineLatest<T extends Record<string, ObservableInput<any>>>(sourcesObject: T): Observable<{
     [K in keyof T]: ObservedValueOf<T[K]>;
 }>;
 export declare function combineLatest<O extends ObservableInput<any>, R>(array: O[], resultSelector: (...values: ObservedValueOf<O>[]) => R, scheduler?: SchedulerLike): Observable<R>;
