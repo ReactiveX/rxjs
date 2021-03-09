@@ -44,7 +44,7 @@ export function combineLatest<A extends readonly unknown[]>(...args: [...Observa
 
 // combineLatest({a, b, c})
 export function combineLatest(sourcesObject: { [K in any]: never }): Observable<never>;
-export function combineLatest<T extends Record<any, ObservableInput<any>>>(
+export function combineLatest<T extends Record<string, ObservableInput<any>>>(
   sourcesObject: T
 ): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
