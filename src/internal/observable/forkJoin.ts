@@ -28,7 +28,7 @@ export function forkJoin<A extends readonly unknown[], R>(
 
 // forkJoin({a, b, c})
 export function forkJoin(sourcesObject: { [K in any]: never }): Observable<never>;
-export function forkJoin<T extends Record<any, ObservableInput<any>>>(
+export function forkJoin<T extends Record<string, ObservableInput<any>>>(
   sourcesObject: T
 ): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
