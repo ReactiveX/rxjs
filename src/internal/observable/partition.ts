@@ -2,7 +2,14 @@ import { not } from '../util/not';
 import { filter } from '../operators/filter';
 import { ObservableInput } from '../types';
 import { Observable } from '../Observable';
-import {  innerFrom } from './from';
+import { innerFrom } from './from';
+
+export function partition<T, A>(
+  source: ObservableInput<T>,
+  predicate: (this: A, value: T, index: number) => boolean,
+  thisArg: A
+): [Observable<T>, Observable<T>];
+export function partition<T>(source: ObservableInput<T>, predicate: (value: T, index: number) => boolean): [Observable<T>, Observable<T>];
 
 /**
  * Splits the source Observable into two, one with values that satisfy a
@@ -57,11 +64,11 @@ import {  innerFrom } from './from';
  */
 export function partition<T>(
   source: ObservableInput<T>,
-  predicate: (value: T, index: number) => boolean,
+  predicate: (this: any, value: T, index: number) => boolean,
   thisArg?: any
 ): [Observable<T>, Observable<T>] {
-  return [
-    filter(predicate, thisArg)(innerFrom(source)),
-    filter(not(predicate, thisArg))(innerFrom(source))
-  ] as [Observable<T>, Observable<T>];
+  return [filter(predicate, thisArg)(innerFrom(source)), filter(not(predicate, thisArg))(innerFrom(source))] as [
+    Observable<T>,
+    Observable<T>
+  ];
 }

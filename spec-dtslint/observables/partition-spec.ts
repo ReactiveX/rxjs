@@ -18,3 +18,11 @@ it('should enforce predicate types', () => {
   const p = partition(of('a', 'b', 'c'), (value: number) => true); // $ExpectError
   const q = partition(of('a', 'b', 'c'), (value, index: string) => true); // $ExpectError
 });
+
+it('should support this', () => {
+  const thisArg = { limit: 2 };
+  const a = partition(of(1, 2, 3), function (val) {
+    const limit = this.limit; // $ExpectType number
+    return val < limit;
+  }, thisArg);
+});
