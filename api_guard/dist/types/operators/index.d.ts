@@ -62,7 +62,7 @@ export declare function concatMapTo<T, R, O extends ObservableInput<any>>(observ
 
 export declare function concatWith<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 
-export declare function connect<T, R>(selector: (shared: Observable<T>) => ObservableInput<R>, config?: ConnectConfig<T>): OperatorFunction<T, R>;
+export declare function connect<T, O extends ObservableInput<unknown>>(selector: (shared: Observable<T>) => O, config?: ConnectConfig<T>): OperatorFunction<T, ObservedValueOf<O>>;
 
 export declare function count<T>(predicate?: (value: T, index: number) => boolean): OperatorFunction<T, number>;
 
