@@ -138,7 +138,8 @@ export declare function last<T, D = T>(predicate?: null, defaultValue?: D): Oper
 export declare function last<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue?: S): OperatorFunction<T, S>;
 export declare function last<T, D = T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: D): OperatorFunction<T, T | D>;
 
-export declare function map<T, R>(project: (value: T, index: number) => R, thisArg?: any): OperatorFunction<T, R>;
+export declare function map<T, R>(project: (value: T, index: number) => R): OperatorFunction<T, R>;
+export declare function map<T, R, A>(project: (this: A, value: T, index: number) => R, thisArg: A): OperatorFunction<T, R>;
 
 export declare function mapTo<R>(value: R): OperatorFunction<any, R>;
 export declare function mapTo<T, R>(value: R): OperatorFunction<T, R>;

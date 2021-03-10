@@ -2,6 +2,9 @@ import { OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
+export function map<T, R>(project: (value: T, index: number) => R): OperatorFunction<T, R>;
+export function map<T, R, A>(project: (this: A, value: T, index: number) => R, thisArg: A): OperatorFunction<T, R>;
+
 /**
  * Applies a given `project` function to each value emitted by the source
  * Observable, and emits the resulting values as an Observable.
