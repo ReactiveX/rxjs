@@ -3,6 +3,14 @@ import { OperatorFunction, SchedulerLike, ValueFromArray } from '../types';
 import { popScheduler } from '../util/args';
 import { operate } from '../util/lift';
 
+// Devs are more likely to pass null or undefined than they are a scheduler
+// without accompanying values. To make things easier for (naughty) devs who
+// use the `strictNullChecks: false` TypeScript compiler option, these
+// overloads with explicit null and undefined values are included.
+
+export function startWith<T>(value: null): OperatorFunction<T, T | null>;
+export function startWith<T>(value: undefined): OperatorFunction<T, T | undefined>;
+
 /** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function startWith<T, A extends readonly unknown[] = T[]>(
   ...valuesAndScheduler: [...A, SchedulerLike]
