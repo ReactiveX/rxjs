@@ -85,7 +85,8 @@ export declare function endWith<T, A extends unknown[] = T[]>(...args: [...A, Sc
 export declare function endWith<T, A extends unknown[] = T[]>(...args: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
 export declare function every<T>(predicate: BooleanConstructor, thisArg?: any): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
-export declare function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): OperatorFunction<T, boolean>;
+export declare function every<T, A>(predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean, thisArg: A): OperatorFunction<T, boolean>;
+export declare function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, boolean>;
 
 export declare const exhaust: typeof exhaustAll;
 
