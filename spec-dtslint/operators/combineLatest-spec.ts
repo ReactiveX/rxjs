@@ -43,7 +43,7 @@ describe('combineLatest', () => {
       const res = a.pipe(combineLatest(b, c, d, e, f)); // $ExpectType Observable<[number, string, string, string, string, string]>
     });
 
-    it('should only accept maximum params of 5', () => {
+    it('should infer correctly with 6 params', () => {
       const a = of(1, 2, 3);
       const b = of('a', 'b', 'c');
       const c = of('d', 'e', 'f');
@@ -51,7 +51,7 @@ describe('combineLatest', () => {
       const e = of('j', 'k', 'l');
       const f = of('m', 'n', 'o');
       const g = of('p', 'q', 'r');
-      const res = a.pipe(combineLatest(b, c, d, e, f, g)); // $ExpectError
+      const res = a.pipe(combineLatest(b, c, d, e, f, g)); // $ExpectType Observable<[number, string, string, string, string, string, string]>
     });
   });
 
