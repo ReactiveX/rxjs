@@ -6,14 +6,18 @@ import { mergeAll } from './mergeAll';
 import { popNumber, popScheduler } from '../util/args';
 
 /** @deprecated use {@link mergeWith} or static {@link merge} */
-export function merge<T, A extends unknown[]>(...args: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
+export function merge<T, A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 /** @deprecated use {@link mergeWith} or static {@link merge} */
-export function merge<T, A extends unknown[]>(...args: [...ObservableInputTuple<A>, number?]): OperatorFunction<T, T | A[number]>;
+export function merge<T, A extends readonly unknown[]>(
+  ...sourcesAndConcurrency: [...ObservableInputTuple<A>, number]
+): OperatorFunction<T, T | A[number]>;
 /** @deprecated use {@link mergeWith} or static {@link merge} */
-export function merge<T, A extends unknown[]>(...args: [...ObservableInputTuple<A>, SchedulerLike?]): OperatorFunction<T, T | A[number]>;
+export function merge<T, A extends readonly unknown[]>(
+  ...sourcesAndScheduler: [...ObservableInputTuple<A>, SchedulerLike]
+): OperatorFunction<T, T | A[number]>;
 /** @deprecated use {@link mergeWith} or static {@link merge} */
-export function merge<T, A extends unknown[]>(
-  ...args: [...ObservableInputTuple<A>, number?, SchedulerLike?]
+export function merge<T, A extends readonly unknown[]>(
+  ...sourcesAndConcurrencyAndScheduler: [...ObservableInputTuple<A>, number, SchedulerLike]
 ): OperatorFunction<T, T | A[number]>;
 
 export function merge<T>(...args: unknown[]): OperatorFunction<T, unknown> {
