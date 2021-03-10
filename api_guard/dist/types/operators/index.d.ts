@@ -253,6 +253,8 @@ export declare function skipWhile<T>(predicate: BooleanConstructor): OperatorFun
 export declare function skipWhile<T>(predicate: (value: T, index: number) => true): OperatorFunction<T, never>;
 export declare function skipWhile<T>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T>;
 
+export declare function startWith<T>(value: null): OperatorFunction<T, T | null>;
+export declare function startWith<T>(value: undefined): OperatorFunction<T, T | undefined>;
 export declare function startWith<T, A extends readonly unknown[] = T[]>(...valuesAndScheduler: [...A, SchedulerLike]): OperatorFunction<T, T | ValueFromArray<A>>;
 export declare function startWith<T, A extends readonly unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
