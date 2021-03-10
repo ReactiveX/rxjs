@@ -1,11 +1,13 @@
 import { Observable } from '../Observable';
-import { ObservedValueOf, ObservableInputTuple } from '../types';
+import { ObservedValueOf, ObservableInputTuple, ObservableInput } from '../types';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { innerFrom } from './from';
 import { popResultSelector } from '../util/args';
 import { OperatorSubscriber } from '../operators/OperatorSubscriber';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { createObject } from '../util/createObject';
+
+export function forkJoin(scheduler: null | undefined): Observable<never>;
 
 // forkJoin([a, b, c])
 export function forkJoin(sources: readonly []): Observable<never>;
@@ -26,7 +28,9 @@ export function forkJoin<A extends readonly unknown[], R>(
 
 // forkJoin({a, b, c})
 export function forkJoin(sourcesObject: { [K in any]: never }): Observable<never>;
-export function forkJoin<T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
+export function forkJoin<T extends Record<string, ObservableInput<any>>>(
+  sourcesObject: T
+): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 /**
  * Accepts an `Array` of {@link ObservableInput} or a dictionary `Object` of {@link ObservableInput} and returns
