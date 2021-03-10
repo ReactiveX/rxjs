@@ -1,6 +1,6 @@
 import { of, asyncScheduler } from 'rxjs';
 import { timeout } from 'rxjs/operators';
-import { A } from '../helpers';
+import { A, a$, b$, c$ } from '../helpers';
 
 it('should infer correctly', () => {
   const o = of('a', 'b', 'c').pipe(timeout(10)); // $ExpectType Observable<string>
@@ -50,6 +50,14 @@ it('Check config arguments', () => {
   const o = of('a').pipe( // $ExpectType Observable<string>
     timeout({
       first: 1000
+    })
+  );
+});
+
+it('should support a union', () => {
+  const o = a$.pipe( // $ExpectType Observable<A | B | C>
+    timeout({ 
+      with: () => Math.random() > 0.5 ? b$ : c$
     })
   );
 });

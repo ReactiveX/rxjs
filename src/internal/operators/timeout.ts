@@ -1,5 +1,5 @@
 import { asyncScheduler } from '../scheduler/async';
-import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ObservableInput } from '../types';
+import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
 import { isValidDate } from '../util/isDate';
 import { Subscription } from '../Subscription';
 import { operate } from '../util/lift';
@@ -9,7 +9,7 @@ import { createErrorClass } from '../util/createErrorClass';
 import { caughtSchedule } from '../util/caughtSchedule';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
-export interface TimeoutConfig<T, R = T, M = unknown> {
+export interface TimeoutConfig<T, O extends ObservableInput<unknown> = ObservableInput<T>, M = unknown> {
   /**
    * The time allowed between values from the source before timeout is triggered.
    */
@@ -31,7 +31,7 @@ export interface TimeoutConfig<T, R = T, M = unknown> {
    * some information about the source observable's emissions and what delay or
    * exact time triggered the timeout.
    */
-  with?: (info: TimeoutInfo<T, M>) => ObservableInput<R>;
+  with?: (info: TimeoutInfo<T, M>) => O;
 
   /**
    * Optional additional metadata you can provide to code that handles
@@ -165,9 +165,9 @@ export const TimeoutError: TimeoutErrorCtor = createErrorClass(
  * ```
  * @param config The configuration for the timeout.
  */
-export function timeout<T, R, M = unknown>(
-  config: TimeoutConfig<T, R, M> & { with: (info: TimeoutInfo<T, M>) => ObservableInput<R> }
-): OperatorFunction<T, T | R>;
+export function timeout<T, O extends ObservableInput<unknown>, M = unknown>(
+  config: TimeoutConfig<T, O, M> & { with: (info: TimeoutInfo<T, M>) => O }
+): OperatorFunction<T, T | ObservedValueOf<O>>;
 
 /**
  * Returns an observable that will error or switch to a different observable if the source does not push values
@@ -300,7 +300,10 @@ export function timeout<T>(each: number, scheduler?: SchedulerLike): MonoTypeOpe
  *
  * ![](timeout.png)
  */
-export function timeout<T, R, M>(config: number | Date | TimeoutConfig<T, R, M>, schedulerArg?: SchedulerLike): OperatorFunction<T, T | R> {
+export function timeout<T, O extends ObservableInput<any>, M>(
+  config: number | Date | TimeoutConfig<T, O, M>,
+  schedulerArg?: SchedulerLike
+): OperatorFunction<T, T | ObservedValueOf<O>> {
   // Intentionally terse code.
   // If the first argument is a valid `Date`, then we use it as the `first` config.
   // Otherwise, if the first argument is a `number`, then we use it as the `each` config.
@@ -312,7 +315,7 @@ export function timeout<T, R, M>(config: number | Date | TimeoutConfig<T, R, M>,
     ? { first: config }
     : typeof config === 'number'
     ? { each: config }
-    : config) as TimeoutConfig<T, R, M>;
+    : config) as TimeoutConfig<T, O, M>;
 
   if (first == null && each == null) {
     // Ensure timeout was provided at runtime.

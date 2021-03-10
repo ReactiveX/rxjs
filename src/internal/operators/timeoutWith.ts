@@ -107,7 +107,7 @@ export function timeoutWith<T, R>(
     throw new TypeError('No timeout provided.');
   }
 
-  return timeout<T, R>({
+  return timeout<T, ObservableInput<R>>({
     first,
     each,
     scheduler,
