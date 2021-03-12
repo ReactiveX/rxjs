@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { SafeSubscriber } from 'rxjs/internal/Subscriber';
-import { Subscriber, Observable, config, of } from 'rxjs';
+import { Subscriber, Observable, config, of, Observer } from 'rxjs';
 import { asInteropSubscriber } from './helpers/interop-helper';
 import { getRegisteredTeardowns } from './helpers/subscription';
 
@@ -242,4 +242,30 @@ describe('Subscriber', () => {
       expect(consumer.valuesProcessed).not.to.equal(['new', 'new']);
     });
   });
+
+  const FinalizationRegistry = (global as any).FinalizationRegistry;
+  if (FinalizationRegistry) {
+
+    it('should not leak the destination', (done) => {
+      let observer: Observer<number> | undefined = {
+        next() { /* noop */ },
+        error() { /* noop */ },
+        complete() { /* noop */ }
+      };
+
+      const registry = new FinalizationRegistry((value: any) => {
+        expect(value).to.equal('observer');
+        done();
+      });
+      registry.register(observer, 'observer');
+
+      const subscription = of(42).subscribe(observer);
+
+      observer = undefined;
+      global.gc();
+    });
+
+  } else {
+    console.warn(`No support for FinalizationRegistry in Node ${process.version}`);
+  }
 });
