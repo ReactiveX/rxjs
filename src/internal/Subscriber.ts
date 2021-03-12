@@ -167,9 +167,9 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     // Once we set the destination, the superclass `Subscriber` will
     // do it's magic in the `_next`, `_error`, and `_complete` methods.
     this.destination = {
-      next: next ? maybeWrapForDeprecatedSyncErrorHandling(next, this) : noop,
-      error: maybeWrapForDeprecatedSyncErrorHandling(error ? error : defaultErrorHandler, this),
-      complete: complete ? maybeWrapForDeprecatedSyncErrorHandling(complete, this) : noop,
+      next: next ? wrapForErrorHandling(next, this) : noop,
+      error: wrapForErrorHandling(error ?? defaultErrorHandler, this),
+      complete: complete ? wrapForErrorHandling(complete, this) : noop,
     };
   }
 }
@@ -189,16 +189,22 @@ export class SafeSubscriber<T> extends Subscriber<T> {
  * @param handler The handler to wrap
  * @param instance The SafeSubscriber instance we're going to mark if there's an error.
  */
-function maybeWrapForDeprecatedSyncErrorHandling(handler: (arg?: any) => void, instance: SafeSubscriber<any>) {
-  return config.useDeprecatedSynchronousErrorHandling
-    ? (arg?: any) => {
-        try {
-          handler(arg);
-        } catch (err) {
+function wrapForErrorHandling(handler: (arg?: any) => void, instance: SafeSubscriber<any>) {
+  return (...args: any[]) => {
+    try {
+      handler(...args);
+    } catch (err) {
+      if (config.useDeprecatedSynchronousErrorHandling) {
+        if ((instance as any)._syncErrorHack_isSubscribing) {
           (instance as any).__syncError = err;
+        } else {
+          throw err;
         }
+      } else {
+        reportUnhandledError(err);
       }
-    : handler;
+    }
+  };
 }
 /**
  * An error handler used when no error handler was supplied
@@ -207,11 +213,7 @@ function maybeWrapForDeprecatedSyncErrorHandling(handler: (arg?: any) => void, i
  * @param err The error to handle
  */
 function defaultErrorHandler(err: any) {
-  // TODO: Remove in v8.
-  if (config.useDeprecatedSynchronousErrorHandling) {
-    throw err;
-  }
-  reportUnhandledError(err);
+  throw err;
 }
 
 /**

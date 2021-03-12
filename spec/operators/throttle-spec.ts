@@ -381,62 +381,6 @@ describe('throttle', () => {
     });
   });
 
-  it('should throttle by promise resolves', () => {
-    testScheduler.run(() => {
-      const e1 = concat(of(1), timer(10).pipe(mapTo(2)), timer(10).pipe(mapTo(3)), timer(50).pipe(mapTo(4)));
-      const expected = [1, 2, 3, 4];
-
-      e1.pipe(
-        throttle(() => {
-          return new Promise((resolve: any) => {
-            resolve(42);
-          });
-        })
-      ).subscribe(
-        (x: number) => {
-          expect(x).to.equal(expected.shift());
-        },
-        () => {
-          throw new Error('should not be called');
-        },
-        () => {
-          expect(expected.length).to.equal(0);
-        }
-      );
-    });
-  });
-
-  it('should raise error when promise rejects', () => {
-    const e1 = concat(of(1), timer(10).pipe(mapTo(2)), timer(10).pipe(mapTo(3)), timer(50).pipe(mapTo(4)));
-    const expected = [1, 2, 3];
-    const error = new Error('error');
-
-    e1.pipe(
-      throttle((x: number) => {
-        if (x === 3) {
-          return new Promise((resolve: any, reject: any) => {
-            reject(error);
-          });
-        } else {
-          return new Promise((resolve: any) => {
-            resolve(42);
-          });
-        }
-      })
-    ).subscribe(
-      (x: number) => {
-        expect(x).to.equal(expected.shift());
-      },
-      (err: any) => {
-        expect(err).to.be.an('error', 'error');
-        expect(expected.length).to.equal(0);
-      },
-      () => {
-        throw new Error('should not be called');
-      }
-    );
-  });
-
   describe('throttle(fn, { leading: true, trailing: true })', () => {
     it('should immediately emit the first value in each time window', () => {
       testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
