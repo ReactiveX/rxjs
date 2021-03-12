@@ -323,11 +323,12 @@ describe('shareReplay operator', () => {
   if (FinalizationRegistry) {
 
     it('should not leak the subscriber for sync sources', (done) => {
+      let callback: (() => void) | undefined = () => { /* noop */ };
+
       const registry = new FinalizationRegistry((value: any) => {
         expect(value).to.equal('callback');
         done();
       });
-      let callback: (() => void) | undefined = () => { /* noop */ };
       registry.register(callback, 'callback');
 
       const shared = of(42).pipe(shareReplay(1));
