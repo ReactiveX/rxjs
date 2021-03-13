@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
 import { zipWith, mergeMap } from 'rxjs/operators';
-import { queueScheduler, of } from 'rxjs';
+import { queueScheduler, of, scheduled } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -460,8 +460,8 @@ describe('zipWith', () => {
   });
 
   it('should combine an immediately-scheduled source with an immediately-scheduled second', (done) => {
-    const a = of(1, 2, 3, queueScheduler);
-    const b = of(4, 5, 6, 7, 8, queueScheduler);
+    const a = scheduled([1, 2, 3], queueScheduler);
+    const b = scheduled([4, 5, 6, 7, 8], queueScheduler);
     const r = [
       [1, 4],
       [2, 5],
@@ -469,13 +469,12 @@ describe('zipWith', () => {
     ];
     let i = 0;
 
-    a.pipe(zipWith(b)).subscribe(
-      function (vals) {
+    a.pipe(zipWith(b)).subscribe({
+      next(vals) {
         expect(vals).to.deep.equal(r[i++]);
       },
-      null,
-      done
-    );
+      complete: done,
+    });
   });
 
   it('should not break unsubscription chain when unsubscribed explicitly', () => {
