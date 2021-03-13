@@ -13,7 +13,6 @@ import { OperatorSubscriber } from '../operators/OperatorSubscriber';
 // combineLatest([a, b, c])
 export function combineLatest(sources: []): Observable<never>;
 export function combineLatest<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
-
 /** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<A extends readonly unknown[], R>(
   sources: readonly [...ObservableInputTuple<A>],
