@@ -19,7 +19,7 @@ export function combineLatest<A extends readonly unknown[], R>(
   resultSelector: (...args: A) => R,
   scheduler: SchedulerLike
 ): Observable<R>;
-/** @deprecated resultSelector no longer supported, pipe to map instead */
+/** @deprecated resultSelector no longer supported, pipe to map instead, Details https://rxjs.dev/deprecations/resultSelector */
 export function combineLatest<A extends readonly unknown[], R>(
   sources: readonly [...ObservableInputTuple<A>],
   resultSelector: (...args: A) => R
@@ -37,7 +37,7 @@ export function combineLatest<A extends readonly unknown[]>(...sources: [...Obse
 export function combineLatest<A extends readonly unknown[], R>(
   ...args: [...ObservableInputTuple<A>, (...args: A) => R, SchedulerLike]
 ): Observable<R>;
-/** @deprecated resultSelector no longer supported, pipe to map instead */
+/** @deprecated resultSelector no longer supported, pipe to map instead, Details https://rxjs.dev/deprecations/resultSelector */
 export function combineLatest<A extends readonly unknown[], R>(...args: [...ObservableInputTuple<A>, (...args: A) => R]): Observable<R>;
 /** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>, SchedulerLike]): Observable<A>;
@@ -55,15 +55,15 @@ export function combineLatest<O extends ObservableInput<any>, R>(
   scheduler?: SchedulerLike
 ): Observable<R>;
 
-/** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
+/** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<O extends ObservableInput<any>>(...observables: Array<O | SchedulerLike>): Observable<any[]>;
 
-/** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
+/** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<O extends ObservableInput<any>, R>(
   ...observables: Array<O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike>
 ): Observable<R>;
 
-/** @deprecated Passing a scheduler here is deprecated, use {@link subscribeOn} and/or {@link observeOn} instead */
+/** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<R>(
   ...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R) | SchedulerLike>
 ): Observable<R>;
