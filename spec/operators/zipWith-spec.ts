@@ -1,6 +1,7 @@
+/** @prettier */
 import { expect } from 'chai';
 import { zipWith, mergeMap } from 'rxjs/operators';
-import { queueScheduler, of } from 'rxjs';
+import { queueScheduler, of, scheduled } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -14,11 +15,11 @@ describe('zipWith', () => {
 
   it('should combine a source with a second', () => {
     rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const a = hot('   ---1---2---3---');
+      const a = hot('   ---1---2---3-----');
       const asubs = '   ^';
       const b = hot('   --4--5--6--7--8--');
       const bsubs = '   ^';
-      const expected = '---x---y---z';
+      const expected = '---x---y---z-----';
       expectObservable(a.pipe(zipWith(b))).toBe(expected, { x: ['1', '4'], y: ['2', '5'], z: ['3', '6'] });
       expectSubscriptions(a.subscriptions).toBe(asubs);
       expectSubscriptions(b.subscriptions).toBe(bsubs);
@@ -47,35 +48,32 @@ describe('zipWith', () => {
     });
   });
 
-  it(
-    'should end once one observable nexts and zips value from completed other ' + 'observable whose buffer is empty',
-    () => {
-      rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-        const e1 = hot('  ---a--b--c--|             ');
-        const e1subs = '  ^-----------!             ';
-        const e2 = hot('  ------d----e----f|        ');
-        const e2subs = '  ^----------------!        ';
-        const e3 = hot('  --------h----i----j-------'); // doesn't complete
-        const e3subs = '  ^-----------------!       ';
-        const expected = '--------x----y----(z|)    '; // e2 buffer empty and signaled complete
-        const values = {
-          x: ['a', 'd', 'h'],
-          y: ['b', 'e', 'i'],
-          z: ['c', 'f', 'j'],
-        };
+  it('should end once one observable nexts and zips value from completed other observable whose buffer is empty', () => {
+    rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  ---a--b--c--|             ');
+      const e1subs = '  ^-----------!             ';
+      const e2 = hot('  ------d----e----f|        ');
+      const e2subs = '  ^----------------!        ';
+      const e3 = hot('  --------h----i----j-------'); // doesn't complete
+      const e3subs = '  ^-----------------!       ';
+      const expected = '--------x----y----(z|)    '; // e2 buffer empty and signaled complete
+      const values = {
+        x: ['a', 'd', 'h'],
+        y: ['b', 'e', 'i'],
+        z: ['c', 'f', 'j'],
+      };
 
-        expectObservable(e1.pipe(zipWith(e2, e3))).toBe(expected, values);
-        expectSubscriptions(e1.subscriptions).toBe(e1subs);
-        expectSubscriptions(e2.subscriptions).toBe(e2subs);
-        expectSubscriptions(e3.subscriptions).toBe(e3subs);
-      });
-    }
-  );
+      expectObservable(e1.pipe(zipWith(e2, e3))).toBe(expected, values);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectSubscriptions(e3.subscriptions).toBe(e3subs);
+    });
+  });
 
   describe('with iterables', () => {
     it('should zip them with values', () => {
       rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-        const myIterator = (function*() {
+        const myIterator = (function* () {
           for (let i = 0; i < 4; i++) {
             yield i;
           }
@@ -461,9 +459,9 @@ describe('zipWith', () => {
     });
   });
 
-  it('should combine an immediately-scheduled source with an immediately-scheduled second', done => {
-    const a = of(1, 2, 3, queueScheduler);
-    const b = of(4, 5, 6, 7, 8, queueScheduler);
+  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done) => {
+    const a = scheduled([1, 2, 3], queueScheduler);
+    const b = scheduled([4, 5, 6, 7, 8], queueScheduler);
     const r = [
       [1, 4],
       [2, 5],
@@ -471,13 +469,12 @@ describe('zipWith', () => {
     ];
     let i = 0;
 
-    a.pipe(zipWith(b)).subscribe(
-      function(vals) {
+    a.pipe(zipWith(b)).subscribe({
+      next(vals) {
         expect(vals).to.deep.equal(r[i++]);
       },
-      null,
-      done
-    );
+      complete: done,
+    });
   });
 
   it('should not break unsubscription chain when unsubscribed explicitly', () => {
@@ -490,9 +487,9 @@ describe('zipWith', () => {
       const expected = '---x---y--';
 
       const r = a.pipe(
-        mergeMap(x => of(x)),
+        mergeMap((x) => of(x)),
         zipWith(b),
-        mergeMap(x => of(x))
+        mergeMap((x) => of(x))
       );
 
       expectObservable(r, unsub).toBe(expected, { x: ['1', '4'], y: ['2', '5'] });
