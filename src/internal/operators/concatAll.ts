@@ -1,4 +1,3 @@
-
 import { mergeAll } from './mergeAll';
 import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
 
@@ -48,11 +47,11 @@ export function concatAll<R>(): OperatorFunction<any, R>;
  * // one click = 1000ms-> 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3
  * ```
  *
- * @see {@link combineAll}
+ * @see {@link combineLatestAll}
  * @see {@link concat}
  * @see {@link concatMap}
  * @see {@link concatMapTo}
- * @see {@link exhaust}
+ * @see {@link exhaustAll}
  * @see {@link mergeAll}
  * @see {@link switchAll}
  * @see {@link switchMap}

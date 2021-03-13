@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { Unsubscribable, ObservableInput } from '../types';
+import { Unsubscribable, ObservableInput, ObservedValueOf } from '../types';
 import { innerFrom } from './from';
 import { EMPTY } from './empty';
 
@@ -31,11 +31,11 @@ import { EMPTY } from './empty';
  * @return {Observable<T>} An Observable that behaves the same as Observable returned by `observableFactory`, but
  * which - when completed, errored or unsubscribed - will also call `unsubscribe` on created resource object.
  */
-export function using<T>(
+export function using<T extends ObservableInput<any>>(
   resourceFactory: () => Unsubscribable | void,
-  observableFactory: (resource: Unsubscribable | void) => ObservableInput<T> | void
-): Observable<T> {
-  return new Observable<T>((subscriber) => {
+  observableFactory: (resource: Unsubscribable | void) => T | void
+): Observable<ObservedValueOf<T>> {
+  return new Observable<ObservedValueOf<T>>((subscriber) => {
     const resource = resourceFactory();
     const result = observableFactory(resource);
     const source = result ? innerFrom(result) : EMPTY;

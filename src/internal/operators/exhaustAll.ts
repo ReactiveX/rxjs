@@ -38,7 +38,7 @@ export function exhaustAll<R>(): OperatorFunction<any, R>;
  * result.subscribe(x => console.log(x));
  * ```
  *
- * @see {@link combineAll}
+ * @see {@link combineLatestAll}
  * @see {@link concatAll}
  * @see {@link switchAll}
  * @see {@link switchMap}
@@ -75,8 +75,3 @@ export function exhaustAll<T>(): OperatorFunction<any, T> {
     );
   });
 }
-
-/**
- * @deprecated renamed. Use {@link exhaustAll}.
- */
-export const exhaust = exhaustAll;

@@ -69,11 +69,11 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   subscribe(observer?: Partial<Observer<T>>): Subscription;
-  /** @deprecated Use an observer instead of a complete callback */
+  /** @deprecated Use an observer instead of a complete callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
   subscribe(next: null | undefined, error: null | undefined, complete: () => void): Subscription;
-  /** @deprecated Use an observer instead of an error callback */
+  /** @deprecated Use an observer instead of an error callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
   subscribe(next: null | undefined, error: (error: any) => void, complete?: () => void): Subscription;
-  /** @deprecated Use an observer instead of a complete callback */
+  /** @deprecated Use an observer instead of a complete callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
   subscribe(next: (value: T) => void, error: null | undefined, complete: () => void): Subscription;
   subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
   /**
@@ -216,6 +216,12 @@ export class Observable<T> implements Subscribable<T> {
     // otherwise, it may be from a user-made observable instance, and we want to
     // wrap it in a try/catch so we can handle errors appropriately.
     const { operator, source } = this;
+
+    let dest: any = subscriber;
+    if (config.useDeprecatedSynchronousErrorHandling) {
+      dest._syncErrorHack_isSubscribing = true;
+    }
+
     subscriber.add(
       operator
         ? operator.call(subscriber, source)
@@ -225,12 +231,12 @@ export class Observable<T> implements Subscribable<T> {
     );
 
     if (config.useDeprecatedSynchronousErrorHandling) {
+      dest._syncErrorHack_isSubscribing = false;
       // In the case of the deprecated sync error handling,
       // we need to crawl forward through our subscriber chain and
       // look to see if there's any synchronously thrown errors.
       // Does this suck for perf? Yes. So stop using the deprecated sync
       // error handling already. We're removing this in v8.
-      let dest: any = subscriber;
       while (dest) {
         if (dest.__syncError) {
           throw dest.__syncError;

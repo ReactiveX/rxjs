@@ -675,6 +675,49 @@ describe('Observable', () => {
       expect(result).to.equal(source);
     });
   });
+
+  it('should not swallow internal errors', (done) => {
+    config.onStoppedNotification = (notification) => {
+      expect(notification.kind).to.equal('E');
+      expect(notification).to.have.property('error', 'bad');
+      config.onStoppedNotification = null;
+      done();
+    };
+
+    new Observable(subscriber => {
+      subscriber.error('test');
+      throw 'bad';
+    }).subscribe({
+      error: err => {
+        expect(err).to.equal('test');
+      }
+    });
+  });
+
+  // TODO: Stop skipping this until a later refactor (probably in version 8)
+  // Discussion here: https://github.com/ReactiveX/rxjs/issues/5370
+  it.skip('should emit an error for unhandled synchronous exceptions from something like a stack overflow', (done) => {
+    const source = of(4).pipe(
+      map(n => {
+        if (n === 4) {
+          throw 'four!';
+        }
+        return n;
+      }),
+      catchError((_, source) => source),
+    );
+
+    let thrownError: any = undefined;
+    try {
+      source.subscribe({
+        error: err => thrownError = err
+      });
+    } catch (err) {
+      done('Should never hit this!');
+    }
+
+    expect(thrownError).to.equal(new RangeError('Maximum call stack size exceeded'));
+  });
 });
 
 /** @test {Observable} */
@@ -1236,48 +1279,5 @@ describe('Observable.lift', () => {
         done();
       }
     );
-  });
-
-  it('should not swallow internal errors', (done) => {
-    config.onStoppedNotification = (notification) => {
-      expect(notification.kind).to.equal('E');
-      expect(notification).to.have.property('error', 'bad');
-      config.onStoppedNotification = null;
-      done();
-    };
-
-    new Observable(subscriber => {
-      subscriber.error('test');
-      throw 'bad';
-    }).subscribe({
-      error: err => {
-        expect(err).to.equal('test');
-      }
-    });
-  });
-
-  // TODO: Stop skipping this until a later refactor (probably in version 8)
-  // Discussion here: https://github.com/ReactiveX/rxjs/issues/5370
-  it.skip('should emit an error for unhandled synchronous exceptions from something like a stack overflow', (done) => {
-    const source = of(4).pipe(
-      map(n => {
-        if (n === 4) {
-          throw 'four!';
-        }
-        return n;
-      }),
-      catchError((_, source) => source),
-    );
-
-    let thrownError: any = undefined;
-    try {
-      source.subscribe({
-        error: err => thrownError = err
-      });
-    } catch (err) {
-      done('Should never hit this!');
-    }
-
-    expect(thrownError).to.equal(new RangeError('Maximum call stack size exceeded'));
   });
 });

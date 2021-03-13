@@ -35,17 +35,6 @@ describe('defaultIfEmpty', () => {
     });
   });
 
-  it('should return null if the Observable is empty and no arguments', () => {
-    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 = cold(' |');
-      const e1subs = '  (^!)';
-      const expected = '(x|)';
-
-      expectObservable(e1.pipe(defaultIfEmpty())).toBe(expected, { x: null });
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
-  });
-
   it('should return the Observable if not empty with a default value', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--|');
@@ -57,13 +46,13 @@ describe('defaultIfEmpty', () => {
     });
   });
 
-  it('should return the Observable if not empty with no default value', () => {
+  it('should allow undefined as a default value', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  --a--b--|');
+      const e1 = hot('  --------|');
       const e1subs = '  ^-------!';
-      const expected = '--a--b--|';
+      const expected = '--------(U|)';
 
-      expectObservable(e1.pipe(defaultIfEmpty())).toBe(expected);
+      expectObservable(e1.pipe(defaultIfEmpty(undefined))).toBe(expected, { U: undefined });
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });

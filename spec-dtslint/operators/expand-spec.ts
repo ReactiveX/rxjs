@@ -46,9 +46,6 @@ it('should enforce scheduler type', () => {
   const o = of(1, 2, 3).pipe(expand(value => of(1), 47, 'foo')); // $ExpectError
 });
 
-// TODO(benlesh): Fix this when TypeScript is capable of handling typing this.
-// Currently we can't type this one properly because the projection function is
-// recursively called with the values from the returned ObservableInput.
-// it('should support union types', () => {
-//   const o = of(1).pipe(expand(x => typeof x === 'string' ? of(123) : of('test'))); // $ExpectType Observable<string | number>
-// });
+it('should support union types', () => {
+  const o = of(1).pipe(expand(x => typeof x === 'string' ? of(123) : of('test'))); // $ExpectType Observable<string | number>
+});

@@ -1,4 +1,4 @@
-import { OperatorFunction, ObservableInput, SubjectLike } from '../types';
+import { OperatorFunction, ObservableInput, ObservedValueOf, SubjectLike } from '../types';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { from } from '../observable/from';
@@ -94,10 +94,10 @@ const DEFAULT_CONFIG: ConnectConfig<unknown> = {
  * the operator will subscribe to the source, and the connection will be made.
  * @param param0 The configuration object for `connect`.
  */
-export function connect<T, R>(
-  selector: (shared: Observable<T>) => ObservableInput<R>,
+export function connect<T, O extends ObservableInput<unknown>>(
+  selector: (shared: Observable<T>) => O,
   config: ConnectConfig<T> = DEFAULT_CONFIG
-): OperatorFunction<T, R> {
+): OperatorFunction<T, ObservedValueOf<O>> {
   const { connector } = config;
   return operate((source, subscriber) => {
     const subject = connector();

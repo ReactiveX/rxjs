@@ -42,9 +42,9 @@ import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
  * firstOrder.subscribe(x => console.log(x));
  * ```
  *
- * @see {@link combineAll}
+ * @see {@link combineLatestAll}
  * @see {@link concatAll}
- * @see {@link exhaust}
+ * @see {@link exhaustAll}
  * @see {@link merge}
  * @see {@link mergeMap}
  * @see {@link mergeMapTo}

@@ -209,9 +209,9 @@ These are Observable creation operators that also have join functionality -- emi
 
 Also see the [Join Creation Operators](#join-creation-operators) section above.
 
-- [`combineAll`](/api/operators/combineAll)
+- [`combineLatestAll`](/api/operators/combineLatestAll)
 - [`concatAll`](/api/operators/concatAll)
-- [`exhaust`](/api/operators/exhaust)
+- [`exhaustAll`](/api/operators/exhaustAll)
 - [`mergeAll`](/api/operators/mergeAll)
 - [`switchAll`](/api/operators/switchAll)
 - [`startWith`](/api/operators/startWith)
