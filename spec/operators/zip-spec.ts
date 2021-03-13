@@ -1,3 +1,4 @@
+/** @prettier */
 import { zip } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -17,7 +18,7 @@ describe('zip', () => {
       const expected = '---x--#';
       const b = [4, 5, 6];
 
-      const selector = function(x: string, y: number) {
+      const selector = function (x: string, y: number) {
         if (y === 5) {
           throw new Error('too bad');
         } else {
