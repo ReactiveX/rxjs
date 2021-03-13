@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Subject, ObjectUnsubscribedError, Observable, AsyncSubject, Observer, of } from 'rxjs';
+import { Subject, ObjectUnsubscribedError, Observable, AsyncSubject, Observer, of, config } from 'rxjs';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
@@ -680,6 +680,33 @@ describe('Subject', () => {
       expect(results).to.deep.equal([42, 'done']);
     });
   });
+
+  describe('error thrown scenario', () => {
+    afterEach(() => {
+      config.onUnhandledError = null;
+    });
+
+    it('should not synchronously error when nexted into', (done) => {
+      config.onUnhandledError = (err) => {
+        expect(err.message).to.equal('Boom!');
+        done();
+      };
+      
+      const source = new Subject<number>();
+      source.subscribe();
+      source.subscribe(() => {
+        throw new Error('Boom!');
+      });
+      source.subscribe();
+      try {
+        source.next(42);
+      } catch (err) {
+        // This should not happen!
+        expect(true).to.be.false;
+      }
+      expect(true).to.be.true;
+    });
+  });
 });
 
 describe('AnonymousSubject', () => {
@@ -687,7 +714,7 @@ describe('AnonymousSubject', () => {
     expect(AnonymousSubject).to.be.a('function');
   });
 
-  it('should not eager', () => {
+  it('should not be eager', () => {
     let subscribed = false;
 
     const subject = Subject.create(

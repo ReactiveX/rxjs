@@ -167,38 +167,43 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     // Once we set the destination, the superclass `Subscriber` will
     // do it's magic in the `_next`, `_error`, and `_complete` methods.
     this.destination = {
-      next: next ? maybeWrapForDeprecatedSyncErrorHandling(next, this) : noop,
-      error: maybeWrapForDeprecatedSyncErrorHandling(error ? error : defaultErrorHandler, this),
-      complete: complete ? maybeWrapForDeprecatedSyncErrorHandling(complete, this) : noop,
+      next: next ? wrapForErrorHandling(next, this) : noop,
+      error: wrapForErrorHandling(error ?? defaultErrorHandler, this),
+      complete: complete ? wrapForErrorHandling(complete, this) : noop,
     };
   }
 }
 
 /**
- * Checks to see if the user has chosen to use the super gross deprecated error handling that
- * no one should ever use, ever. If they did choose that path, we need to catch their error
- * so we can stick it on a super-secret property and check it after the subscription is done
- * in the `Observable` subscribe call.
- *
- * We have to do this, because if we simply rethrow the error, it will be caught by any upstream
- * try/catch blocks and send back down again, basically playing ping-pong with the error until the
- * downstream runs out of chances to rethrow and it gives up.
- *
- * In the general case, for non-crazy people, this just returns the handler directly.
+ * Wraps a user-provided handler (or our {@link defaultErrorHandler} in one case) to
+ * ensure that any thrown errors are caught and handled appropriately.
  *
  * @param handler The handler to wrap
  * @param instance The SafeSubscriber instance we're going to mark if there's an error.
  */
-function maybeWrapForDeprecatedSyncErrorHandling(handler: (arg?: any) => void, instance: SafeSubscriber<any>) {
-  return config.useDeprecatedSynchronousErrorHandling
-    ? (arg?: any) => {
-        try {
-          handler(arg);
-        } catch (err) {
+function wrapForErrorHandling(handler: (arg?: any) => void, instance: SafeSubscriber<any>) {
+  return (...args: any[]) => {
+    try {
+      handler(...args);
+    } catch (err) {
+      if (config.useDeprecatedSynchronousErrorHandling) {
+        // If the user has opted for "super-gross" mode, we need to check to see
+        // if we're currently subscribing. If we are, we need to mark the _syncError
+        // So that it can be rethrown in the `subscribe` call on `Observable`.
+        if ((instance as any)._syncErrorHack_isSubscribing) {
           (instance as any).__syncError = err;
+        } else {
+          // We're not currently subscribing, but we're in super-gross mode,
+          // so throw it immediately.
+          throw err;
         }
+      } else {
+        // Ideal path, we report this as an unhandled error,
+        // which is thrown on a new call stack.
+        reportUnhandledError(err);
       }
-    : handler;
+    }
+  };
 }
 /**
  * An error handler used when no error handler was supplied
@@ -207,11 +212,7 @@ function maybeWrapForDeprecatedSyncErrorHandling(handler: (arg?: any) => void, i
  * @param err The error to handle
  */
 function defaultErrorHandler(err: any) {
-  // TODO: Remove in v8.
-  if (config.useDeprecatedSynchronousErrorHandling) {
-    throw err;
-  }
-  reportUnhandledError(err);
+  throw err;
 }
 
 /**
