@@ -11,10 +11,6 @@ it('should accept partial observer', () => {
   const c = of(1, 2, 3).pipe(tap({ complete: () => { } })); // $ExpectType Observable<number>
 });
 
-it('should not accept empty observer', () => {
-  const a = of(1, 2, 3).pipe(tap({})); // $ExpectError
-});
-
 it('should enforce type for next observer function', () => {
   const a = of(1, 2, 3).pipe(tap({ next: (x: string) => { } })); // $ExpectError
 });
