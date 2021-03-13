@@ -22,7 +22,7 @@ function a<I extends string, O extends string>(input: I, output: O): UnaryFuncti
 }
 
 it('should infer unknown for no arguments', () => {
-  const o = pipe(); // $ExpectType UnaryFunction<unknown, unknown>
+  const o = pipe(); // $ExpectType <T>(x: T) => T
 });
 
 it('should infer for 1 argument', () => {
