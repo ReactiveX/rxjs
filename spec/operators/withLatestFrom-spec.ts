@@ -8,12 +8,16 @@ import { of } from 'rxjs';
 describe('withLatestFrom operator', () => {
   it('should combine events from cold observables', () => {
     const e1 =  cold('-a--b-----c-d-e-|');
+    const e1sub =    '^               !';
     const e2 =  cold('--1--2-3-4---|   ');
+    const e2sub =    '^            !';
     const expected = '----B-----C-D-E-|';
 
     const result = e1.pipe(withLatestFrom(e2, (a: string, b: string) => String(a) + String(b)));
 
     expectObservable(result).toBe(expected, { B: 'b1', C: 'c4', D: 'd4', E: 'e4' });
+    expectSubscriptions(e1.subscriptions).toBe(e1sub);
+    expectSubscriptions(e2.subscriptions).toBe(e2sub);
   });
 
   it('should merge the value with the latest values from the other observables into arrays', () => {
