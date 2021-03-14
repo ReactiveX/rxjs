@@ -254,7 +254,7 @@ describe('exhaust', () => {
 
   it('should handle an observable of promises, where one rejects', (done) => {
     of(Promise.reject(2), Promise.resolve(1))
-      .pipe(exhaustAll<never | number>())
+      .pipe(exhaustAll())
       .subscribe(
         (x) => {
           done(new Error('should not be called'));

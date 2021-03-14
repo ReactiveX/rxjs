@@ -1,11 +1,8 @@
 import { Subscription } from '../Subscription';
-import { ObservableInput, OperatorFunction } from '../types';
+import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
 import { operate } from '../util/lift';
 import { innerFrom } from '../observable/from';
 import { OperatorSubscriber } from './OperatorSubscriber';
-
-export function exhaustAll<T>(): OperatorFunction<ObservableInput<T>, T>;
-export function exhaustAll<R>(): OperatorFunction<any, R>;
 
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping
@@ -49,7 +46,7 @@ export function exhaustAll<R>(): OperatorFunction<any, R>;
  * @return {Observable} An Observable that takes a source of Observables and propagates the first observable
  * exclusively until it completes before subscribing to the next.
  */
-export function exhaustAll<T>(): OperatorFunction<any, T> {
+export function exhaustAll<O extends ObservableInput<any>>(): OperatorFunction<O, ObservedValueOf<O>> {
   return operate((source, subscriber) => {
     let isComplete = false;
     let innerSub: Subscription | null = null;
