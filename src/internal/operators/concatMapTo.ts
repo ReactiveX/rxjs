@@ -3,14 +3,14 @@ import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { isFunction } from '../util/isFunction';
 
 /* tslint:disable:max-line-length */
-export function concatMapTo<O extends ObservableInput<any>>(observable: O): OperatorFunction<any, ObservedValueOf<O>>;
+export function concatMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<any, ObservedValueOf<O>>;
 /** @deprecated resultSelector no longer supported, use inner map instead, Details https://rxjs.dev/deprecations/resultSelector */
-export function concatMapTo<O extends ObservableInput<any>>(
+export function concatMapTo<O extends ObservableInput<unknown>>(
   observable: O,
   resultSelector: undefined
 ): OperatorFunction<any, ObservedValueOf<O>>;
 /** @deprecated resultSelector no longer supported, use inner map instead, Details https://rxjs.dev/deprecations/resultSelector */
-export function concatMapTo<T, R, O extends ObservableInput<any>>(
+export function concatMapTo<T, R, O extends ObservableInput<unknown>>(
   observable: O,
   resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
 ): OperatorFunction<T, R>;
@@ -70,7 +70,7 @@ export function concatMapTo<T, R, O extends ObservableInput<any>>(
  * passed observable with itself, one after the other, for each value emitted
  * from the source.
  */
-export function concatMapTo<T, R, O extends ObservableInput<any>>(
+export function concatMapTo<T, R, O extends ObservableInput<unknown>>(
   innerObservable: O,
   resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
 ): OperatorFunction<T, ObservedValueOf<O> | R> {
