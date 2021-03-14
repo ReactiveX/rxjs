@@ -1,9 +1,6 @@
 import { mergeAll } from './mergeAll';
 import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
 
-export function concatAll<T>(): OperatorFunction<ObservableInput<T>, T>;
-export function concatAll<R>(): OperatorFunction<any, R>;
-
 /**
  * Converts a higher-order Observable into a first-order Observable by
  * concatenating the inner Observables in order.
