@@ -1,3 +1,4 @@
+/** @prettier */
 import { expect } from 'chai';
 import { zip } from 'rxjs/operators';
 import { from } from 'rxjs';
@@ -14,19 +15,18 @@ describe('zip legacy', () => {
     rxTestScheduler = new TestScheduler(observableMatcher);
   });
 
-  it('should zip the provided observables', done => {
+  it('should zip the provided observables', (done) => {
     const expected = ['a1', 'b2', 'c3'];
     let i = 0;
 
     from(['a', 'b', 'c'])
       .pipe(zip(from([1, 2, 3]), (a, b): string => a + b))
-      .subscribe(
-        function(x) {
+      .subscribe({
+        next(x) {
           expect(x).to.equal(expected[i++]);
         },
-        null,
-        done
-      );
+        complete: done,
+      });
   });
 
   it('should work with selector throws', () => {
@@ -37,7 +37,7 @@ describe('zip legacy', () => {
       const bsubs = '     ^-------!     ';
       const expected = '  ---x----#     ';
 
-      const selector = function(x: string, y: string) {
+      const selector = (x: string, y: string) => {
         if (y === '5') {
           throw new Error('too bad');
         } else {
@@ -61,7 +61,7 @@ describe('zip legacy', () => {
 
       expectObservable(
         a.pipe(
-          zip(b, function(r1, r2) {
+          zip(b, (r1, r2) => {
             return r1 + r2;
           })
         )
@@ -81,7 +81,7 @@ describe('zip legacy', () => {
 
       expectObservable(
         a.pipe(
-          zip(b, function(r1, r2) {
+          zip(b, (r1, r2) => {
             return r1 + r2;
           })
         )
@@ -101,7 +101,7 @@ describe('zip legacy', () => {
 
       expectObservable(
         a.pipe(
-          zip(b, function(r1, r2) {
+          zip(b, (r1, r2) => {
             return r1 + r2;
           })
         )
@@ -121,7 +121,7 @@ describe('zip legacy', () => {
       const expected = '  ----x---y-|  ';
 
       const observable = a.pipe(
-        zip(b, c, function(r0, r1, r2) {
+        zip(b, c, (r0, r1, r2) => {
           return [r0, r1, r2];
         })
       );
@@ -141,7 +141,7 @@ describe('zip legacy', () => {
       const expected = '  ----x---y-|  ';
 
       const observable = a.pipe(
-        zip(b, c, function(r0, r1, r2) {
+        zip(b, c, (r0, r1, r2) => {
           return [r0, r1, r2];
         })
       );
@@ -161,7 +161,7 @@ describe('zip legacy', () => {
 
       expectObservable(
         a.pipe(
-          zip(b, function(e1, e2) {
+          zip(b, (e1, e2) => {
             return e1 + e2;
           })
         )
