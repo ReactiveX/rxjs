@@ -21,13 +21,12 @@ describe('zip legacy', () => {
 
     from(['a', 'b', 'c'])
       .pipe(zip(from([1, 2, 3]), (a, b): string => a + b))
-      .subscribe(
-        function (x) {
+      .subscribe({
+        next(x) {
           expect(x).to.equal(expected[i++]);
         },
-        null,
-        done
-      );
+        complete: done,
+      });
   });
 
   it('should work with selector throws', () => {
