@@ -48,26 +48,6 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
   sourcesObject: T
 ): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
-/** @deprecated resultSelector no longer supported, pipe to map instead */
-export function combineLatest<O extends ObservableInput<any>, R>(
-  array: O[],
-  resultSelector: (...values: ObservedValueOf<O>[]) => R,
-  scheduler?: SchedulerLike
-): Observable<R>;
-
-/** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function combineLatest<O extends ObservableInput<any>>(...observables: Array<O | SchedulerLike>): Observable<any[]>;
-
-/** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function combineLatest<O extends ObservableInput<any>, R>(
-  ...observables: Array<O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike>
-): Observable<R>;
-
-/** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function combineLatest<R>(
-  ...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R) | SchedulerLike>
-): Observable<R>;
-
 /**
  * Combines multiple Observables to create an Observable whose values are
  * calculated from the latest values of each of its input Observables.
