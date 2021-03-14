@@ -45,6 +45,11 @@ it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(switchMapTo()); // $ExpectError
 });
 
+it('should enforce types of the observable parameter', () => {
+  const fn = () => {}
+  const o = of(1, 2, 3).pipe(switchMapTo(fn)); // $ExpectError
+});
+
 it('should enforce the return type', () => {
   const o = of(1, 2, 3).pipe(switchMapTo(p => p)); // $ExpectError
   const p = of(1, 2, 3).pipe(switchMapTo(4)); // $ExpectError
