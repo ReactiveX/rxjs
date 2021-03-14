@@ -4,10 +4,11 @@ import { operate } from '../util/lift';
 import { createFind } from './find';
 
 export function findIndex<T>(predicate: BooleanConstructor, thisArg?: any): OperatorFunction<T, T extends Falsy ? -1 : number>;
-export function findIndex<T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  thisArg?: any
+export function findIndex<T, A>(
+  predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
+  thisArg: A
 ): OperatorFunction<T, number>;
+export function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, number>;
 
 /**
  * Emits only the index of the first value emitted by the source Observable that
