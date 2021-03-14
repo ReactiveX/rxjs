@@ -90,8 +90,7 @@ export declare function every<T>(predicate: (value: T, index: number, source: Ob
 
 export declare const exhaust: typeof exhaustAll;
 
-export declare function exhaustAll<T>(): OperatorFunction<ObservableInput<T>, T>;
-export declare function exhaustAll<R>(): OperatorFunction<any, R>;
+export declare function exhaustAll<O extends ObservableInput<any>>(): OperatorFunction<O, ObservedValueOf<O>>;
 
 export declare function exhaustMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
 export declare function exhaustMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;
