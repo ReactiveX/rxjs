@@ -39,8 +39,7 @@ export declare function concat<T, T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v
 export declare function concat<T>(...observables: Array<ObservableInput<T> | SchedulerLike>): MonoTypeOperatorFunction<T>;
 export declare function concat<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike>): OperatorFunction<T, R>;
 
-export declare function concatAll<T>(): OperatorFunction<ObservableInput<T>, T>;
-export declare function concatAll<R>(): OperatorFunction<any, R>;
+export declare function concatAll<O extends ObservableInput<any>>(): OperatorFunction<O, ObservedValueOf<O>>;
 
 export declare function concatMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
 export declare function concatMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;
