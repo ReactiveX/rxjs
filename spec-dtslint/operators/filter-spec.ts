@@ -83,3 +83,11 @@ it('should support inference from a predicate that returns any', () => {
 
   const o$ = of(1).pipe(filter(isTruthy)); // $ExpectType Observable<number>
 });
+
+it('should support this', () => {
+  const thisArg = { limit: 5 };
+  const a = of(1, 2, 3).pipe(filter(function (val) {
+    const limit = this.limit; // $ExpectType number
+    return val < limit;
+  }, thisArg));
+});
