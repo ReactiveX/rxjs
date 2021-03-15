@@ -42,7 +42,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
           try {
             onNext(value);
           } catch (err) {
-            this.destination.error(err);
+            destination.error(err);
           }
         }
       : super._next;
@@ -52,7 +52,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
             onError(err);
           } catch (err) {
             // Send any errors that occur down stream.
-            this.destination.error(err);
+            destination.error(err);
           } finally {
             // Ensure teardown.
             this.unsubscribe();
@@ -65,7 +65,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
             onComplete();
           } catch (err) {
             // Send any errors that occur down stream.
-            this.destination.error(err);
+            destination.error(err);
           } finally {
             // Ensure teardown.
             this.unsubscribe();
