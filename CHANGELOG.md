@@ -1,3 +1,28 @@
+# [7.0.0-beta.13](https://github.com/reactivex/rxjs/compare/7.0.0-beta.12...7.0.0-beta.13) (2021-03-15)
+
+### Bug Fixes
+
+- **fromEvent:** throw if passed invalid target ([#6136](https://github.com/reactivex/rxjs/issues/6136)) ([317ba0c](https://github.com/reactivex/rxjs/commit/317ba0c9254e447385414e2c57e1d81760f88aa6)), closes [#5823](https://github.com/reactivex/rxjs/issues/5823)
+- remove misused type parameter from static pipe ([#6119](https://github.com/reactivex/rxjs/issues/6119)) ([8dc7d17](https://github.com/reactivex/rxjs/commit/8dc7d1793b4067d9eedc42b28d49ace8296672f5)), closes [#5557](https://github.com/reactivex/rxjs/issues/5557)
+- **Subscriber:** don't leak destination ([#6116](https://github.com/reactivex/rxjs/issues/6116)) ([5bba36c](https://github.com/reactivex/rxjs/commit/5bba36c6dde5b1b4b7e434104e716b233e5f402c))
+- **combineLatest:** POJO signature should match only ObservableInput values ([#6103](https://github.com/reactivex/rxjs/issues/6103)) ([d633494](https://github.com/reactivex/rxjs/commit/d633494dcdcabecda2c64ee84b8b6ceeaa2cb3d8))
+- **forkJoin:** POJO signature should match only ObservableInput values ([#6095](https://github.com/reactivex/rxjs/issues/6095)) ([566427e](https://github.com/reactivex/rxjs/commit/566427e88e597589f21b8cfb057dd13d5c61e0f2))
+- predicates that return `any` will now behave property with findIndex ([#6097](https://github.com/reactivex/rxjs/issues/6097)) ([c6f73d6](https://github.com/reactivex/rxjs/commit/c6f73d687e6b2142da4cab2a66047cc6dd123bf9))
+- remove misused type parameter from isObservable ([#6083](https://github.com/reactivex/rxjs/issues/6083)) ([f16b634](https://github.com/reactivex/rxjs/commit/f16b6341eef85009fc16de13623dc860d8d87778))
+- unhandled errors in observers correctly scheduled ([#6118](https://github.com/reactivex/rxjs/issues/6118)) ([c02ceb7](https://github.com/reactivex/rxjs/commit/c02ceb75e3de12fedbe270d5d323f508171f9cfd))
+- **defaultIfEmpty:** Allow `undefined` as an argument, require an argument ([4983760](https://github.com/reactivex/rxjs/commit/4983760b9179da27ddfcbf419ac5975cff9447c9)), closes [#6064](https://github.com/reactivex/rxjs/issues/6064)
+- **elementAt:** Allow `defaultValue` of `undefined`. ([5bc1b3e](https://github.com/reactivex/rxjs/commit/5bc1b3e22deceb5ea5f1882c0f92f061c1c4792d))
+- **first:** Allow `defaultValue` of `undefined`. ([62a6bbe](https://github.com/reactivex/rxjs/commit/62a6bbe1c3c51468c57e4e8f754c1c09da2db51b))
+- **last:** Allow `defaultValue` of `undefined`. ([ef3e721](https://github.com/reactivex/rxjs/commit/ef3e721f440132cf199f662b6a987349a0a70418))
+
+### Features
+
+- rename and alias `combineLatest` as `combineLatestAll` for consistency ([#6079](https://github.com/reactivex/rxjs/issues/6079)) ([42cee80](https://github.com/reactivex/rxjs/commit/42cee8045594779e8802b370c7244e6bbeeccaa3)), closes [#4590](https://github.com/reactivex/rxjs/issues/4590)
+
+### BREAKING CHANGES
+
+- **defaultIfEmpty:** `defaultIfEmpty` requires a value be passed. Will no longer convert `undefined` to `null` for no good reason.
+
 # [7.0.0-beta.12](https://github.com/reactivex/rxjs/compare/7.0.0-beta.11...7.0.0-beta.12) (2021-02-27)
 
 5bc8e3361 Fix/6052 ajax responseType should default to "json" (#6056)
