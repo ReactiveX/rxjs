@@ -245,15 +245,13 @@ export function fromEvent<T>(
     }
   }
 
+  // If add is falsy and we made it here, it's because we didn't
+  // match any valid target objects above.
+  if (!add) {
+    throw new TypeError('Invalid event target');
+  }
+
   return new Observable<T>((subscriber) => {
-    // If add is falsy and we made it here, it's because we didn't
-    // match any valid target objects above.
-    if (!add) {
-      // TODO: We should probably discuss if throwing this at subscription-time
-      // is appropriate. It seems like it would be better (and easier to debug)
-      // to throw this when `fromEvent()` is called.
-      throw new TypeError('Invalid event target');
-    }
     // The handler we are going to register. Forwards the event object, by itself, or
     // an array of arguments to the event handler, if there is more than one argument,
     // to the consumer.

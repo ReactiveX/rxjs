@@ -181,20 +181,15 @@ describe('fromEvent', () => {
     expect(offHandler).to.equal(onHandler);
   });
 
-  it('should error on invalid event targets', () => {
+  it('should throw if passed an invalid event target', () => {
     const obj = {
       addListener: () => {
         //noop
       }
     };
-
-    fromEvent(obj as any, 'click').subscribe({
-      error(err: any) {
-        expect(err).to.exist
-          .and.be.instanceof(Error)
-          .and.have.property('message', 'Invalid event target');
-      }
-    });
+    expect(() => {
+      fromEvent(obj as any, 'click');
+    }).to.throw(/Invalid event target/)
   });
 
   it('should pass through options to addEventListener and removeEventListener', () => {
