@@ -42,3 +42,11 @@ it('should support inference from a predicate that returns any', () => {
   }
   const a = of(1).pipe(findIndex(isTruthy)); // $ExpectType Observable<number>
 });
+
+it('should support this', () => {
+  const thisArg = { wanted: 5 };
+  const a = of(1, 2, 3).pipe(findIndex(function (val) {
+    const wanted = this.wanted; // $ExpectType number
+    return val < wanted;
+  }, thisArg));
+});
