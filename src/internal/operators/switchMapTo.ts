@@ -1,12 +1,19 @@
-import { ObservableInput, OperatorFunction } from '../types';
 import { switchMap } from './switchMap';
+import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
+import { isFunction } from '../util/isFunction';
 
 /* tslint:disable:max-line-length */
-export function switchMapTo<R>(observable: ObservableInput<R>): OperatorFunction<any, R>;
-/** @deprecated resultSelector is no longer supported. Switch to using switchMap with an inner map, Details https://rxjs.dev/deprecations/resultSelector */
-export function switchMapTo<R>(observable: ObservableInput<R>, resultSelector: undefined): OperatorFunction<any, R>;
-/** @deprecated resultSelector is no longer supported. Switch to using switchMap with an inner map, Details https://rxjs.dev/deprecations/resultSelector */
-export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
+export function switchMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<any, ObservedValueOf<O>>;
+/** @deprecated resultSelector no longer supported, use inner map instead, Details https://rxjs.dev/deprecations/resultSelector */
+export function switchMapTo<O extends ObservableInput<unknown>>(
+  observable: O,
+  resultSelector: undefined
+): OperatorFunction<any, ObservedValueOf<O>>;
+/** @deprecated resultSelector no longer supported, use inner map instead, Details https://rxjs.dev/deprecations/resultSelector */
+export function switchMapTo<T, R, O extends ObservableInput<unknown>>(
+  observable: O,
+  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
+): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -47,9 +54,9 @@ export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  * every time a value is emitted on the source Observable, and taking only the values
  * from the most recently projected inner Observable.
  */
-export function switchMapTo<T, I, R>(
-  innerObservable: ObservableInput<I>,
-  resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
-): OperatorFunction<T, I|R> {
-  return resultSelector ? switchMap(() => innerObservable, resultSelector) : switchMap(() => innerObservable);
+export function switchMapTo<T, R, O extends ObservableInput<unknown>>(
+  innerObservable: O,
+  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
+): OperatorFunction<T, ObservedValueOf<O> | R> {
+  return isFunction(resultSelector) ? switchMap(() => innerObservable, resultSelector) : switchMap(() => innerObservable);
 }

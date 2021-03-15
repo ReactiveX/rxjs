@@ -258,9 +258,9 @@ export declare function switchMap<T, O extends ObservableInput<any>>(project: (v
 export declare function switchMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;
 export declare function switchMap<T, R, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 
-export declare function switchMapTo<R>(observable: ObservableInput<R>): OperatorFunction<any, R>;
-export declare function switchMapTo<R>(observable: ObservableInput<R>, resultSelector: undefined): OperatorFunction<any, R>;
-export declare function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
+export declare function switchMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<any, ObservedValueOf<O>>;
+export declare function switchMapTo<O extends ObservableInput<unknown>>(observable: O, resultSelector: undefined): OperatorFunction<any, ObservedValueOf<O>>;
+export declare function switchMapTo<T, R, O extends ObservableInput<unknown>>(observable: O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 
 export declare function switchScan<T, R, O extends ObservableInput<any>>(accumulator: (acc: R, value: T, index: number) => O, seed: R): OperatorFunction<T, ObservedValueOf<O>>;
 
