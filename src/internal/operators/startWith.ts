@@ -1,40 +1,21 @@
 import { concat } from '../observable/concat';
-import { MonoTypeOperatorFunction, OperatorFunction, SchedulerLike, ValueFromArray } from '../types';
+import { OperatorFunction, SchedulerLike, ValueFromArray } from '../types';
 import { popScheduler } from '../util/args';
 import { operate } from '../util/lift';
 
-/* tslint:disable:max-line-length */
-/** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function startWith<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function startWith<T, D>(v1: D, scheduler: SchedulerLike): OperatorFunction<T, T | D>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function startWith<T, D, E>(v1: D, v2: E, scheduler: SchedulerLike): OperatorFunction<T, T | D | E>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function startWith<T, D, E, F>(v1: D, v2: E, v3: F, scheduler: SchedulerLike): OperatorFunction<T, T | D | E | F>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function startWith<T, D, E, F, G>(v1: D, v2: E, v3: F, v4: G, scheduler: SchedulerLike): OperatorFunction<T, T | D | E | F | G>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function startWith<T, D, E, F, G, H>(
-  v1: D,
-  v2: E,
-  v3: F,
-  v4: G,
-  v5: H,
-  scheduler: SchedulerLike
-): OperatorFunction<T, T | D | E | F | G | H>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function startWith<T, D, E, F, G, H, I>(
-  v1: D,
-  v2: E,
-  v3: F,
-  v4: G,
-  v5: H,
-  v6: I,
-  scheduler: SchedulerLike
-): OperatorFunction<T, T | D | E | F | G | H | I>;
+// Devs are more likely to pass null or undefined than they are a scheduler
+// without accompanying values. To make things easier for (naughty) devs who
+// use the `strictNullChecks: false` TypeScript compiler option, these
+// overloads with explicit null and undefined values are included.
 
-export function startWith<T, A extends any[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
+export function startWith<T>(value: null): OperatorFunction<T, T | null>;
+export function startWith<T>(value: undefined): OperatorFunction<T, T | undefined>;
+
+/** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
+export function startWith<T, A extends readonly unknown[] = T[]>(
+  ...valuesAndScheduler: [...A, SchedulerLike]
+): OperatorFunction<T, T | ValueFromArray<A>>;
+export function startWith<T, A extends readonly unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
 /**
  * Returns an observable that, at the moment of subscription, will synchronously emit all
