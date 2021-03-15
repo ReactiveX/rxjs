@@ -1,18 +1,11 @@
-import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, OperatorFunction } from '../types';
+import { ObservableInputTuple, OperatorFunction } from '../types';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { raceWith } from './raceWith';
 
-/* tslint:disable:max-line-length */
 /** @deprecated Deprecated use {@link raceWith} */
-export function race<T>(observables: Array<Observable<T>>): MonoTypeOperatorFunction<T>;
+export function race<T, A extends readonly unknown[]>(otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 /** @deprecated Deprecated use {@link raceWith} */
-export function race<T, R>(observables: Array<Observable<T>>): OperatorFunction<T, R>;
-/** @deprecated Deprecated use {@link raceWith} */
-export function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): MonoTypeOperatorFunction<T>;
-/** @deprecated Deprecated use {@link raceWith} */
-export function race<T, R>(...observables: Array<Observable<any> | Array<Observable<any>>>): OperatorFunction<T, R>;
-/* tslint:enable:max-line-length */
+export function race<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 
 /**
  * Returns an Observable that mirrors the first source Observable to emit a next,
