@@ -330,7 +330,7 @@ export declare type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | Co
 export declare function partition<T, A>(source: ObservableInput<T>, predicate: (this: A, value: T, index: number) => boolean, thisArg: A): [Observable<T>, Observable<T>];
 export declare function partition<T>(source: ObservableInput<T>, predicate: (value: T, index: number) => boolean): [Observable<T>, Observable<T>];
 
-export declare function pipe<T>(): UnaryFunction<T, T>;
+export declare function pipe(): typeof identity;
 export declare function pipe<T, A>(fn1: UnaryFunction<T, A>): UnaryFunction<T, A>;
 export declare function pipe<T, A, B>(fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>): UnaryFunction<T, B>;
 export declare function pipe<T, A, B, C>(fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>, fn3: UnaryFunction<B, C>): UnaryFunction<T, C>;
