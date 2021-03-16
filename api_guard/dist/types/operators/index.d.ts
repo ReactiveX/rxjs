@@ -280,11 +280,9 @@ export declare function takeWhile<T, S extends T>(predicate: (value: T, index: n
 export declare function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S, inclusive: false): OperatorFunction<T, S>;
 export declare function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive?: boolean): MonoTypeOperatorFunction<T>;
 
-export declare function tap<T>(next: null | undefined, error: null | undefined, complete: () => void): MonoTypeOperatorFunction<T>;
-export declare function tap<T>(next: null | undefined, error: (error: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
-export declare function tap<T>(next: (value: T) => void, error: null | undefined, complete: () => void): MonoTypeOperatorFunction<T>;
-export declare function tap<T>(next?: (x: T) => void, error?: (e: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
-export declare function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T>;
+export declare function tap<T>(observer?: Partial<Observer<T>>): MonoTypeOperatorFunction<T>;
+export declare function tap<T>(next: (value: T) => void): MonoTypeOperatorFunction<T>;
+export declare function tap<T>(next?: ((value: T) => void) | null, error?: ((error: any) => void) | null, complete?: (() => void) | null): MonoTypeOperatorFunction<T>;
 
 export declare function throttle<T>(durationSelector: (value: T) => ObservableInput<any>, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
