@@ -69,13 +69,9 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   subscribe(observer?: Partial<Observer<T>>): Subscription;
+  subscribe(next: (value: T) => void): Subscription;
   /** @deprecated Use an observer instead of a complete callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
-  subscribe(next: null | undefined, error: null | undefined, complete: () => void): Subscription;
-  /** @deprecated Use an observer instead of an error callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
-  subscribe(next: null | undefined, error: (error: any) => void, complete?: () => void): Subscription;
-  /** @deprecated Use an observer instead of a complete callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
-  subscribe(next: (value: T) => void, error: null | undefined, complete: () => void): Subscription;
-  subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
+  subscribe(next?: ((value: T) => void) | null, error?: ((error: any) => void) | null, complete?: (() => void) | null): Subscription;
   /**
    * Invokes an execution of an Observable and registers Observer handlers for notifications it will emit.
    *

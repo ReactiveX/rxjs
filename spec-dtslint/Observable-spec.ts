@@ -131,3 +131,27 @@ describe('pipe', () => {
     const o = of('foo').toPromise(); // $ExpectType Promise<string | undefined>
   });
 });
+
+describe('subscribe', () => {
+  it('should deprecate the multi-argument usage', () => {
+    const next = (value: number) => {};
+    const error = (error: any) => {};
+    const complete = () => {};
+    const o = of(42);
+    o.subscribe(); // $ExpectNoDeprecation
+    o.subscribe({ next }); // $ExpectNoDeprecation
+    o.subscribe({ next, error }); // $ExpectNoDeprecation
+    o.subscribe({ next, complete }); // $ExpectNoDeprecation
+    o.subscribe({ next, error, complete }); // $ExpectNoDeprecation
+    o.subscribe({ error }); // $ExpectNoDeprecation
+    o.subscribe({ error, complete }); // $ExpectNoDeprecation
+    o.subscribe({ complete }); // $ExpectNoDeprecation
+    o.subscribe(next); // $ExpectNoDeprecation
+    o.subscribe(null, error); // $ExpectDeprecation
+    o.subscribe(undefined, error); // $ExpectDeprecation
+    o.subscribe(null, error, complete); // $ExpectDeprecation
+    o.subscribe(undefined, error, complete); // $ExpectDeprecation
+    o.subscribe(null, null, complete); // $ExpectDeprecation
+    o.subscribe(undefined, undefined, complete); // $ExpectDeprecation
+  });
+});

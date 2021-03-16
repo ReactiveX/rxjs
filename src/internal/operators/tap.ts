@@ -5,13 +5,13 @@ import { OperatorSubscriber } from './OperatorSubscriber';
 import { identity } from '../util/identity';
 
 export function tap<T>(observer?: Partial<Observer<T>>): MonoTypeOperatorFunction<T>;
+export function tap<T>(next: (value: T) => void): MonoTypeOperatorFunction<T>;
 /** @deprecated Use an observer instead of a complete callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
-export function tap<T>(next: null | undefined, error: null | undefined, complete: () => void): MonoTypeOperatorFunction<T>;
-/** @deprecated Use an observer instead of an error callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
-export function tap<T>(next: null | undefined, error: (error: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
-/** @deprecated Use an observer instead of a complete callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
-export function tap<T>(next: (value: T) => void, error: null | undefined, complete: () => void): MonoTypeOperatorFunction<T>;
-export function tap<T>(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
+export function tap<T>(
+  next?: ((value: T) => void) | null,
+  error?: ((error: any) => void) | null,
+  complete?: (() => void) | null
+): MonoTypeOperatorFunction<T>;
 
 /**
  * Used to perform side-effects for notifications from the source observable
