@@ -4,7 +4,6 @@ import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { identity } from '../util/identity';
 
-/* tslint:disable:max-line-length */
 export function tap<T>(observer?: Partial<Observer<T>>): MonoTypeOperatorFunction<T>;
 /** @deprecated Use an observer instead of a complete callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
 export function tap<T>(next: null | undefined, error: null | undefined, complete: () => void): MonoTypeOperatorFunction<T>;
@@ -13,7 +12,6 @@ export function tap<T>(next: null | undefined, error: (error: any) => void, comp
 /** @deprecated Use an observer instead of a complete callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
 export function tap<T>(next: (value: T) => void, error: null | undefined, complete: () => void): MonoTypeOperatorFunction<T>;
 export function tap<T>(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
-/* tslint:disable:max-line-length */
 
 /**
  * Used to perform side-effects for notifications from the source observable
