@@ -183,7 +183,6 @@ These are Observable creation operators that also have join functionality -- emi
 - [`debounce`](/api/operators/debounce)
 - [`debounceTime`](/api/operators/debounceTime)
 - [`distinct`](/api/operators/distinct)
-- [`distinctKey`](../class/es6/Observable.js~Observable.html#instance-method-distinctKey)
 - [`distinctUntilChanged`](/api/operators/distinctUntilChanged)
 - [`distinctUntilKeyChanged`](/api/operators/distinctUntilKeyChanged)
 - [`elementAt`](/api/operators/elementAt)
