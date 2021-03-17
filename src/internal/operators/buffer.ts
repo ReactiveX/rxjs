@@ -39,8 +39,8 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * @param {Observable<any>} closingNotifier An Observable that signals the
  * buffer to be emitted on the output Observable.
- * @return {Observable<T[]>} An Observable of buffers, which are arrays of
- * values.
+ * @return A function that returns an Observable of buffers, which are arrays
+ * of values.
  */
 export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]> {
   return operate((source, subscriber) => {

@@ -58,7 +58,8 @@ import { operate } from '../util/lift';
  *
  * @param scheduler The {@link SchedulerLike} to perform subscription actions on.
  * @param delay A delay to pass to the scheduler to delay subscriptions
- * @return The source Observable modified so that its subscriptions happen on the specified {@link SchedulerLike}.
+ * @return A function that returns an Observable modified so that its
+ * subscriptions happen on the specified {@link SchedulerLike}.
  */
 export function subscribeOn<T>(scheduler: SchedulerLike, delay: number = 0): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

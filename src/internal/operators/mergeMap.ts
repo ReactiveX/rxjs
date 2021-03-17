@@ -73,10 +73,10 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
  * Observable.
  * @param {number} [concurrent=Infinity] Maximum number of input
  * Observables being subscribed to concurrently.
- * @return {Observable} An Observable that emits the result of applying the
- * projection function (and the optional deprecated `resultSelector`) to each item
- * emitted by the source Observable and merging the results of the Observables
- * obtained from this transformation.
+ * @return A function that returns an Observable that emits the result of
+ * applying the projection function (and the optional deprecated
+ * `resultSelector`) to each item emitted by the source Observable and merging
+ * the results of the Observables obtained from this transformation.
  */
 export function mergeMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,

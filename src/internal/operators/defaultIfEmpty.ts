@@ -32,9 +32,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * @param defaultValue The default value used if the source
  * Observable is empty.
- * @return An Observable that emits either the specified
- * `defaultValue` if the source Observable emits no items, or the values emitted
- * by the source Observable.
+ * @return A function that returns an Observable that emits either the
+ * specified `defaultValue` if the source Observable emits no items, or the
+ * values emitted by the source Observable.
  */
 export function defaultIfEmpty<T, R>(defaultValue: R): OperatorFunction<T, T | R> {
   return operate((source, subscriber) => {

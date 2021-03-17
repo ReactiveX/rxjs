@@ -43,7 +43,7 @@ import { noop } from '../util/noop';
  *
  * @param {Observable<any>} windowBoundaries An Observable that completes the
  * previous window and starts a new window.
- * @return {Observable<Observable<T>>} An Observable of windows, which are
+ * @return A function that returns an Observable of windows, which are
  * Observables emitting values of the source Observable.
  */
 export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T, Observable<T>> {

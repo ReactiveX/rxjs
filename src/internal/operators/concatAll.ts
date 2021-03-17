@@ -54,8 +54,8 @@ import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
  * @see {@link switchMap}
  * @see {@link zipAll}
  *
- * @return {Observable} An Observable emitting values from all the inner
- * Observables concatenated.
+ * @return A function that returns an Observable emitting values from all the
+ * inner Observables concatenated.
  */
 export function concatAll<O extends ObservableInput<any>>(): OperatorFunction<O, ObservedValueOf<O>> {
   return mergeAll(1);

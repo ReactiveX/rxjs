@@ -97,7 +97,8 @@ export function windowTime<T>(
  * values each window can emit before completion.
  * @param scheduler The scheduler on which to schedule the
  * intervals that determine window boundaries.
- * @return An observable of windows, which in turn are Observables.
+ * @return A function that returns an Observable of windows, which in turn are
+ * Observables.
  */
 export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): OperatorFunction<T, Observable<T>> {
   const scheduler = popScheduler(otherArgs) ?? asyncScheduler;

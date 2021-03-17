@@ -55,7 +55,10 @@ export function endWith<T, A extends unknown[] = T[]>(...args: A): OperatorFunct
  * // "interval ended by click"
  * ```
  *
- * @param values - Items you want the modified Observable to emit last.
+ * @param values Items you want the modified Observable to emit last.
+ * @return A function that returns an Observable that emits all values from the
+ * source, then synchronously emits the provided value(s) immediately after the
+ * source completes.
  *
  * @see {@link startWith}
  * @see {@link concat}

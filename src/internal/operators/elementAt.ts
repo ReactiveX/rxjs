@@ -49,8 +49,9 @@ import { take } from './take';
  * @param {number} index Is the number `i` for the i-th source emission that has
  * happened since the subscription, starting from the number `0`.
  * @param {T} [defaultValue] The default value returned for missing indices.
- * @return {Observable} An Observable that emits a single item, if it is found.
- * Otherwise, will emit the default value if given. If not, then emits an error.
+ * @return A function that returns an Observable that emits a single item, if
+ * it is found. Otherwise, it will emit the default value if given. If not, it
+ * emits an error.
  */
 export function elementAt<T, D = T>(index: number, defaultValue?: D): OperatorFunction<T, T | D> {
   if (index < 0) {

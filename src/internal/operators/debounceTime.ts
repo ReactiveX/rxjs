@@ -57,9 +57,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * source value.
  * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the timeout for each value.
- * @return {Observable} An Observable that delays the emissions of the source
- * Observable by the specified `dueTime`, and may drop some values if they occur
- * too frequently.
+ * @return A function that returns an Observable that delays the emissions of
+ * the source Observable by the specified `dueTime`, and may drop some values
+ * if they occur too frequently.
  */
 export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyncScheduler): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

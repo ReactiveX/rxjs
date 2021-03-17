@@ -64,9 +64,9 @@ export function expand<T, O extends ObservableInput<unknown>>(
  * Observables being subscribed to concurrently.
  * @param {SchedulerLike} [scheduler=null] The {@link SchedulerLike} to use for subscribing to
  * each projected inner Observable.
- * @return {Observable} An Observable that emits the source values and also
- * result of applying the projection function to each value emitted on the
- * output Observable and merging the results of the Observables obtained
+ * @return A function that returns an Observable that emits the source values
+ * and also result of applying the projection function to each value emitted on
+ * the output Observable and merging the results of the Observables obtained
  * from this transformation.
  */
 export function expand<T, O extends ObservableInput<unknown>>(

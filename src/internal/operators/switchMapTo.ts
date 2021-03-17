@@ -49,10 +49,11 @@ export function switchMapTo<T, R, O extends ObservableInput<unknown>>(
  *
  * @param {ObservableInput} innerObservable An Observable to replace each value from
  * the source Observable.
- * @return {Observable} An Observable that emits items from the given
- * `innerObservable` (and optionally transformed through the deprecated `resultSelector`)
- * every time a value is emitted on the source Observable, and taking only the values
- * from the most recently projected inner Observable.
+ * @return A function that returns an Observable that emits items from the
+ * given `innerObservable` (and optionally transformed through the deprecated
+ * `resultSelector`) every time a value is emitted on the source Observable,
+ * and taking only the values from the most recently projected inner
+ * Observable.
  */
 export function switchMapTo<T, R, O extends ObservableInput<unknown>>(
   innerObservable: O,

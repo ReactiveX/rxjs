@@ -46,8 +46,8 @@ import { innerFrom } from '../observable/from';
  * @param {function(): Observable} closingSelector A function that takes no
  * arguments and returns an Observable that signals (on either `next` or
  * `complete`) when to close the previous window and start a new one.
- * @return {Observable<Observable<T>>} An observable of windows, which in turn
- * are Observables.
+ * @return A function that returns an Observable of windows, which in turn are
+ * Observables.
  */
 export function windowWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, Observable<T>> {
   return operate((source, subscriber) => {

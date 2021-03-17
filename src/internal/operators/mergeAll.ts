@@ -55,8 +55,8 @@ import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
  *
  * @param {number} [concurrent=Infinity] Maximum number of inner
  * Observables being subscribed to concurrently.
- * @return {Observable} An Observable that emits values coming from all the
- * inner Observables emitted by the source Observable.
+ * @return A function that returns an Observable that emits values coming from
+ * all the inner Observables emitted by the source Observable.
  */
 export function mergeAll<O extends ObservableInput<any>>(concurrent: number = Infinity): OperatorFunction<O, ObservedValueOf<O>> {
   return mergeMap(identity, concurrent);

@@ -53,6 +53,11 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * // Nothing happens until you call .connect() on the observable.
  * ```
  *
+ * @return A function that returns an Observable that automates the connection
+ * to ConnectableObservable.
+ * @see {@link ConnectableObservable}
+ * @see {@link share}
+ * @see {@link publish}
  * @deprecated to be removed in version 8. Use the updated {@link share} operator,
  * which now is highly configurable. How `share` is used will depend on the connectable
  * observable you created just prior to the `refCount` operator. For examples on how

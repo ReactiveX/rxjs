@@ -29,10 +29,11 @@ const arrReducer = (arr: any[], value: any) => (arr.push(value), arr);
  * const subscribe = example.subscribe(val => console.log(val));
  *
  * // output: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
- *
  * ```
-* @return An array from an observable sequence.
-*/
+ *
+ * @return A function that returns an Observable that emits an array of items
+ * emitted by the source Observable when source completes.
+ */
 export function toArray<T>(): OperatorFunction<T, T[]> {
   // Because arrays are mutable, and we're mutating the array in this
   // reducer process, we have to escapulate the creation of the initial

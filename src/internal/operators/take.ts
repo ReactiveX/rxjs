@@ -40,9 +40,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @see {@link skip}
  *
  * @param count The maximum number of `next` values to emit.
- * @return An Observable that emits only the first `count`
- * values emitted by the source Observable, or all of the values from the source
- * if the source emits fewer than `count` values.
+ * @return A function that returns an Observable that emits only the first
+ * `count` values emitted by the source Observable, or all of the values from
+ * the source if the source emits fewer than `count` values.
  */
 export function take<T>(count: number): MonoTypeOperatorFunction<T> {
   return count <= 0

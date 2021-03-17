@@ -72,9 +72,9 @@ export function delayWhen<T>(delayDurationSelector: (value: T, index: number) =>
  * until the Observable returned from this function emits a value.
  * @param {Observable} subscriptionDelay An Observable that triggers the
  * subscription to the source Observable once it emits any value.
- * @return {Observable} An Observable that delays the emissions of the source
- * Observable by an amount of time specified by the Observable returned by
- * `delayDurationSelector`.
+ * @return A function that returns an Observable that delays the emissions of
+ * the source Observable by an amount of time specified by the Observable
+ * returned by `delayDurationSelector`.
  */
 export function delayWhen<T>(
   delayDurationSelector: (value: T, index: number) => Observable<any>,

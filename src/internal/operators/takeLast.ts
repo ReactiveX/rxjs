@@ -40,8 +40,8 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * @param count The maximum number of values to emit from the end of
  * the sequence of values emitted by the source Observable.
- * @return An Observable that emits at most the last count
- * values emitted by the source Observable.
+ * @return A function that returns an Observable that emits at most the last
+ * `count` values emitted by the source Observable.
  */
 export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
   return count <= 0

@@ -87,8 +87,8 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  * provided predicate. If no predicate is provided, will deliver a SequenceError if more
  * that one value comes from the source
  * @param {Function} predicate - A predicate function to evaluate items emitted by the source Observable.
- * @return {Observable<T>} An Observable that emits the single item emitted by the source Observable that matches
- * the predicate or `undefined` when no items match.
+ * @return A function that returns an Observable that emits the single item
+ * emitted by the source Observable that matches the predicate.
  */
 export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

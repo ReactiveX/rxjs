@@ -32,6 +32,8 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @param errorFactory A factory function called to produce the
  * error to be thrown when the source observable completes without emitting a
  * value.
+ * @return A function that returns an Observable that throws an error if the
+ * source Observable completed without emitting.
  */
 export function throwIfEmpty<T>(errorFactory: () => any = defaultErrorFactory): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

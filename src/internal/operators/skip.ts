@@ -29,7 +29,8 @@ import { filter } from './filter';
  * @see {@link skipLast}
  *
  * @param {Number} count - The number of times, items emitted by source Observable should be skipped.
- * @return {Observable} An Observable that skips values emitted by the source Observable.
+ * @return A function that returns an Observable that skips the first `count`
+ * values emitted by the source Observable.
  */
 export function skip<T>(count: number): MonoTypeOperatorFunction<T> {
   return filter((_, index) => count <= index);

@@ -50,9 +50,9 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
  * Also takes the (zero-based) index as the second argument.
  * @param {boolean} inclusive When set to `true` the value that caused
  * `predicate` to return `false` will also be emitted.
- * @return {Observable<T>} An Observable that emits the values from the source
- * Observable so long as each value satisfies the condition defined by the
- * `predicate`, then completes.
+ * @return A function that returns an Observable that emits values from the
+ * source Observable so long as each value satisfies the condition defined by
+ * the `predicate`, then completes.
  */
 export function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive = false): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

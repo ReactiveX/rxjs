@@ -43,7 +43,8 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @see {@link take}
  *
  * @param skipCount Number of elements to skip from the end of the source Observable.
- * @returns An Observable that skips the last count values emitted by the source Observable.
+ * @return A function that returns an Observable that skips the last `count`
+ * values emitted by the source Observable.
  */
 export function skipLast<T>(skipCount: number): MonoTypeOperatorFunction<T> {
   return skipCount <= 0

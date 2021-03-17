@@ -39,6 +39,8 @@ import { merge } from './merge';
  * // "dblclick"
  * ```
  * @param otherSources the sources to combine the current source with.
+ * @return A function that returns an Observable that merges the values from
+ * all given Observables.
  */
 export function mergeWith<T, A extends readonly unknown[]>(
   ...otherSources: [...ObservableInputTuple<A>]

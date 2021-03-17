@@ -50,6 +50,8 @@ export function startWith<T, A extends readonly unknown[] = T[]>(...values: A): 
  * ```
  *
  * @param values Items you want the modified Observable to emit first.
+ * @return A function that returns an Observable that synchronously emits
+ * provided values before subscribing to the source Observable.
  *
  * @see {@link endWith}
  * @see {@link finalize}

@@ -36,11 +36,11 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @see {@link sampleTime}
  * @see {@link throttle}
  *
- * @param {Observable<any>} notifier The Observable to use for sampling the
+ * @param notifier The Observable to use for sampling the
  * source Observable.
- * @return {Observable<T>} An Observable that emits the results of sampling the
- * values emitted by the source Observable whenever the notifier Observable
- * emits value.
+ * @return A function that returns an Observable that emits the results of
+ * sampling the values emitted by the source Observable whenever the notifier
+ * Observable emits value or completes.
  */
 export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

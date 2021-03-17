@@ -97,11 +97,11 @@ export function catchError<T, O extends ObservableInput<any>>(
  * @see {@link retry }
  * @see {@link retryWhen}
  *
- *  @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which
- *  is the source observable, in case you'd like to "retry" that observable by returning it again. Whatever observable
- *  is returned by the `selector` will be used to continue the observable chain.
- * @return {Observable} An observable that originates from either the source or the observable returned by the
- *  catch `selector` function.
+ * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which
+ * is the source observable, in case you'd like to "retry" that observable by returning it again. Whatever observable
+ * is returned by the `selector` will be used to continue the observable chain.
+ * @return A function that returns an Observable that originates from either
+ * the source or the Observable returned by the `selector` function.
  */
 export function catchError<T, O extends ObservableInput<any>>(
   selector: (err: any, caught: Observable<T>) => O

@@ -47,7 +47,7 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  * by the optional `scheduler`.
  * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the rate-limiting behavior.
- * @return {Observable<T>} An Observable that performs rate-limiting of
+ * @return A function that returns an Observable that performs rate-limiting of
  * emissions from the source Observable.
  */
 export function auditTime<T>(duration: number, scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {

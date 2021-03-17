@@ -75,7 +75,8 @@ export function publish<T, O extends ObservableInput<any>>(selector: (shared: Ob
  * @param {Function} [selector] - Optional selector function which can use the multicasted source sequence as many times
  * as needed, without causing multiple subscriptions to the source sequence.
  * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.
- * @return A ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.
+ * @return A function that returns a ConnectableObservable that upon connection
+ * causes the source Observable to emit items to its Observers.
  */
 export function publish<T, R>(selector?: OperatorFunction<T, R>): MonoTypeOperatorFunction<T> | OperatorFunction<T, R> {
   return selector ? connect(selector) : multicast(new Subject<T>());
