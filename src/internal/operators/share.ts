@@ -122,7 +122,7 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
       // for reentrant subscriptions to the shared observable to occur and in
       // those situations we don't want connection to be already-assigned so
       // that we don't create another connection to the source.
-      connection = new Subscriber<T>({
+      connection = new Subscriber({
         next: (value: T) => subject!.next(value),
         error: (err: any) => {
           hasErrored = true;
