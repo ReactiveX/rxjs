@@ -12,7 +12,8 @@ The same behavior can be reproduced with the `map` operator, therefore this argu
 There were two reasons for actually deprecating those parameters:
 
 1. It increases the bundle size of every operator
-2. In some scenarios values had to be retained in memory causing a general memory preassure  
+2. In some scenarios values had to be retained in memory causing a general memory preassure
+
 ## Operators affected by this Change
 
 - [concatMap](/api/operators/concatMap)
@@ -28,23 +29,16 @@ There were two reasons for actually deprecating those parameters:
 Instead of using the `resultSelector` Argument, you can leverage the [`map`](/api/operators/map) operator on the inner Observable:
 
 ```ts
-
-import {fromEvent, interval} from 'rxjs';
-import {switchMap, map} from 'rxjs/operators';
+import { fromEvent, interval } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 // deprecated
 fromEvent(document, 'click').pipe(
-    switchMap(x => interval(0, 1000), (x) => x+1)
+  switchMap(
+    (x) => interval(0, 1000),
+    (x) => x + 1
+  )
 );
 // suggested change
-fromEvent(document, 'click').pipe(
-    switchMap(x => interval(0, 1000).pipe(
-        map(x => x+1)
-    ))
-);
+fromEvent(document, 'click').pipe(switchMap((x) => interval(0, 1000).pipe(map((x) => x + 1))));
 ```
-
-
-
-
-

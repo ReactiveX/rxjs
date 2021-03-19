@@ -19,15 +19,15 @@ Since that it is recommended to either pass an Object or an Array to these opera
 We deprecated the signatures, where just pass all Observables directly as parameters to these operators.
 
 ```ts
-import {forkJoin, from} from 'rxjs';
+import { forkJoin, from } from 'rxjs';
 
-const odd$ = from([1,3,5]);
-const even$ = from([2,4,6]);
+const odd$ = from([1, 3, 5]);
+const even$ = from([2, 4, 6]);
 
 // deprecated
 forkJoin(odd$, even$);
 // suggested change
 forkJoin([odd$, even$]);
 // or
-forkJoin({odd: odd$, even: even$})
+forkJoin({ odd: odd$, even: even$ });
 ```

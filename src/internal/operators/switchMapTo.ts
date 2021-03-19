@@ -6,7 +6,10 @@ export function switchMapTo<R>(observable: ObservableInput<R>): OperatorFunction
 /** @deprecated resultSelector is no longer supported. Switch to using switchMap with an inner map, Details https://rxjs.dev/deprecations/resultSelector */
 export function switchMapTo<R>(observable: ObservableInput<R>, resultSelector: undefined): OperatorFunction<any, R>;
 /** @deprecated resultSelector is no longer supported. Switch to using switchMap with an inner map, Details https://rxjs.dev/deprecations/resultSelector */
-export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
+export function switchMapTo<T, I, R>(
+  observable: ObservableInput<I>,
+  resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
+): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -50,6 +53,6 @@ export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
 export function switchMapTo<T, I, R>(
   innerObservable: ObservableInput<I>,
   resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
-): OperatorFunction<T, I|R> {
+): OperatorFunction<T, I | R> {
   return resultSelector ? switchMap(() => innerObservable, resultSelector) : switchMap(() => innerObservable);
 }
