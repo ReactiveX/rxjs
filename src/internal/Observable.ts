@@ -89,18 +89,24 @@ export class Observable<T> implements Subscribable<T> {
    *
    * The first way is creating an object that implements {@link Observer} interface. It should have methods
    * defined by that interface, but note that it should be just a regular JavaScript object, which you can create
-   * yourself in any way you want (ES6 class, classic function constructor, object literal etc.). In particular do
+   * yourself in any way you want (ES6 class, classic function constructor, object literal etc.). In particular, do
    * not attempt to use any RxJS implementation details to create Observers - you don't need them. Remember also
    * that your object does not have to implement all methods. If you find yourself creating a method that doesn't
-   * do anything, you can simply omit it. Note however, if the `error` method is not provided, all errors will
-   * be left uncaught.
+   * do anything, you can simply omit it. Note however, if the `error` method is not provided and an error happens,
+   * it will be thrown asynchronously. Errors thrown asynchronously cannot be caught using `try`/`catch`. Instead,
+   * use the {@link onUnhandledError} configuration option or use a runtime handler (like `window.onerror` or
+   * `process.on('error)`) to be notified of unhandled errors. Because of this, it's recommended that you provide
+   * an `error` method to avoid missing thrown errors.
    *
    * The second way is to give up on Observer object altogether and simply provide callback functions in place of its methods.
    * This means you can provide three functions as arguments to `subscribe`, where the first function is equivalent
-   * of a `next` method, the second of an `error` method and the third of a `complete` method. Just as in case of Observer,
-   * if you do not need to listen for something, you can omit a function, preferably by passing `undefined` or `null`,
+   * of a `next` method, the second of an `error` method and the third of a `complete` method. Just as in case of an Observer,
+   * if you do not need to listen for something, you can omit a function by passing `undefined` or `null`,
    * since `subscribe` recognizes these functions by where they were placed in function call. When it comes
-   * to `error` function, just as before, if not provided, errors emitted by an Observable will be thrown.
+   * to the `error` function, as with an Observer, if not provided, errors emitted by an Observable will be thrown asynchronously.
+   *
+   * You can, however, subscribe with no parameters at all. This may be the case where you're not interested in terminal events
+   * and you also handled emissions internally by using operators (e.g. using `tap`).
    *
    * Whichever style of calling `subscribe` you use, in both cases it returns a Subscription object.
    * This object allows you to call `unsubscribe` on it, which in turn will stop the work that an Observable does and will clean
@@ -168,14 +174,15 @@ export class Observable<T> implements Subscribable<T> {
    * ```ts
    * import { interval } from 'rxjs';
    *
-   * const subscription = interval(1000).subscribe(
-   *   num => console.log(num),
-   *   undefined,
-   *   () => {
+   * const subscription = interval(1000).subscribe({
+   *   next(num) {
+   *     console.log(num)
+   *   },
+   *   complete() {
    *     // Will not be called, even when cancelling subscription.
    *     console.log('completed!');
    *   }
-   * );
+   * });
    *
    * setTimeout(() => {
    *   subscription.unsubscribe();
@@ -192,9 +199,9 @@ export class Observable<T> implements Subscribable<T> {
    *  or the first of three possible handlers, which is the handler for each value emitted from the subscribed
    *  Observable.
    * @param {Function} error (optional) A handler for a terminal event resulting from an error. If no error handler is provided,
-   *  the error will be thrown as unhandled.
+   *  the error will be thrown asynchronously as unhandled.
    * @param {Function} complete (optional) A handler for a terminal event resulting from successful completion.
-   * @return {ISubscription} a subscription reference to the registered handlers
+   * @return {Subscription} a subscription reference to the registered handlers
    * @method subscribe
    */
   subscribe(
