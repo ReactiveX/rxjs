@@ -100,10 +100,10 @@ export class Observable<T> implements Subscribable<T> {
    *
    * The second way is to give up on Observer object altogether and simply provide callback functions in place of its methods.
    * This means you can provide three functions as arguments to `subscribe`, where the first function is equivalent
-   * of a `next` method, the second of an `error` method and the third of a `complete` method. Just as in case of Observer,
+   * of a `next` method, the second of an `error` method and the third of a `complete` method. Just as in case of an Observer,
    * if you do not need to listen for something, you can omit a function by passing `undefined` or `null`,
    * since `subscribe` recognizes these functions by where they were placed in function call. When it comes
-   * to `error` function, just as before, if not provided, errors emitted by an Observable will be thrown asynchronously.
+   * to the `error` function, as with an Observer, if not provided, errors emitted by an Observable will be thrown asynchronously.
    *
    * You can, however, subscribe with no parameters at all. This may be the case where you're not interested in terminal events
    * and you also handled emissions internally by using operators (e.g. using `tap`).
@@ -159,7 +159,7 @@ export class Observable<T> implements Subscribable<T> {
    *     console.log('Adding: ' + value);
    *     sum = sum + value;
    *   },
-   *   (error) => console.error(error),
+   *   undefined,
    *   () => console.log('Sum equals: ' + sum)
    * );
    *
