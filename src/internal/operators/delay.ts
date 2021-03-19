@@ -41,7 +41,13 @@ import { timer } from '../observable/timer';
  * delayedClicks.subscribe(x => console.log(x));
  * ```
  *
+ * @see {@link throttleTime}
+ * @see {@link debounce}
  * @see {@link debounceTime}
+ * @see {@link sample}
+ * @see {@link sampleTime}
+ * @see {@link audit}
+ * @see {@link auditTime}
  * @see {@link delayWhen}
  *
  * @param {number|Date} due The delay duration in milliseconds (a `number`) or
