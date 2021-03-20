@@ -39,7 +39,7 @@ describe('windowWhen', () => {
     });
   });
 
-  it('should emit windows using constying cold closings', () => {
+  it('should emit windows using varying cold closings', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const closings = [
         cold('               -----------------s--|                    '),
@@ -71,7 +71,7 @@ describe('windowWhen', () => {
     });
   });
 
-  it('should emit windows using constying hot closings', () => {
+  it('should emit windows using varying hot closings', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const closings = [
         hot('            -1--^----------------s-|                   '),
@@ -103,7 +103,7 @@ describe('windowWhen', () => {
     });
   });
 
-  it('should emit windows using constying empty delayed closings', () => {
+  it('should emit windows using varying empty delayed closings', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const closings = [
         cold('             -----------------|                    '),
@@ -135,7 +135,7 @@ describe('windowWhen', () => {
     });
   });
 
-  it('should emit windows using constying cold closings, outer unsubscribed early', () => {
+  it('should emit windows using varying cold closings, outer unsubscribed early', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const closings = [
         cold('               -----------------s--|               '),
