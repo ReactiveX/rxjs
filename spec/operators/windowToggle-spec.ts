@@ -77,12 +77,12 @@ describe('windowToggle', () => {
     });
   });
 
-  it('should emit windows using constying cold closings', () => {
+  it('should emit windows using varying cold closings', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const e2 = cold('    --x-----------y--------z---|            ');
       const e2subs = '     ^--------------------------!            ';
       const close = [
-        cold('             ---------------s--|                     '),
+        cold('               ---------------s--|                   '),
         cold('                           ----(s|)                  '),
         cold('                                  ---------------(s|)'),
       ];
@@ -112,7 +112,7 @@ describe('windowToggle', () => {
     });
   });
 
-  it('should emit windows using constying hot closings', () => {
+  it('should emit windows using varying hot closings', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const e2 = cold('    --x-----------y--------z---|           ');
       const e2subs = '     ^--------------------------!           ';
@@ -174,7 +174,7 @@ describe('windowToggle', () => {
     });
   });
 
-  it('should emit windows using constying cold closings, outer unsubscribed early', () => {
+  it('should emit windows using varying cold closings, outer unsubscribed early', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const e2 = cold('    --x-----------y--------z---|              ');
       const e2subs = '     ^----------------!                        ';
