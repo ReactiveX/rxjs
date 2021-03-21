@@ -1,13 +1,16 @@
+/** @prettier */
 import { expect } from 'chai';
 import { of, EMPTY, throwError, config } from 'rxjs';
 
 /** @test {toPromise} */
 describe('Observable.toPromise', () => {
   it('should convert an Observable to a promise of its last value', (done: Mocha.Done) => {
-    of(1, 2, 3).toPromise(Promise).then(x => {
-      expect(x).to.equal(3);
-      done();
-    });
+    of(1, 2, 3)
+      .toPromise(Promise)
+      .then((x) => {
+        expect(x).to.equal(3);
+        done();
+      });
   });
 
   it('should convert an empty Observable to a promise of undefined', (done: Mocha.Done) => {
@@ -18,12 +21,17 @@ describe('Observable.toPromise', () => {
   });
 
   it('should handle errors properly', (done: Mocha.Done) => {
-    throwError('bad').toPromise(Promise).then(() => {
-      done(new Error('should not be called'));
-    }, (err: any) => {
-      expect(err).to.equal('bad');
-      done();
-    });
+    throwError('bad')
+      .toPromise(Promise)
+      .then(
+        () => {
+          done(new Error('should not be called'));
+        },
+        (err: any) => {
+          expect(err).to.equal('bad');
+          done();
+        }
+      );
   });
 
   it('should allow for global config via config.Promise', (done: Mocha.Done) => {
@@ -33,10 +41,12 @@ describe('Observable.toPromise', () => {
       return new Promise(callback as any);
     } as any;
 
-    of(42).toPromise().then(x => {
-      expect(wasCalled).to.be.true;
-      expect(x).to.equal(42);
-      done();
-    });
+    of(42)
+      .toPromise()
+      .then((x) => {
+        expect(wasCalled).to.be.true;
+        expect(x).to.equal(42);
+        done();
+      });
   });
 });
