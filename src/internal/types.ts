@@ -3,6 +3,7 @@
 
 import { Observable } from './Observable';
 import { Subscription } from './Subscription';
+import { ReadableStreamLike } from './util/isReadableStreamLike';
 
 /**
  * NOTE: This will add Symbol.observable globally for all TypeScript users,
@@ -91,7 +92,14 @@ export interface Subscribable<T> {
 /**
  * Valid types that can be converted to observables.
  */
-export type ObservableInput<T> = Observable<T> | InteropObservable<T> | AsyncIterable<T> | PromiseLike<T> | ArrayLike<T> | Iterable<T>;
+export type ObservableInput<T> =
+  | Observable<T>
+  | InteropObservable<T>
+  | AsyncIterable<T>
+  | PromiseLike<T>
+  | ArrayLike<T>
+  | Iterable<T>
+  | ReadableStreamLike<T>;
 
 /** @deprecated use {@link InteropObservable } */
 export type ObservableLike<T> = InteropObservable<T>;
