@@ -1,3 +1,4 @@
+/** @prettier */
 import { windowTime, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, Observable } from 'rxjs';
@@ -14,15 +15,15 @@ describe('windowTime', () => {
   it('should emit windows given windowTimeSpan and windowCreationInterval', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const source = hot('--1--2--^-a--b--c--d--e---f--g--h-|');
-      const subs =               '^-------------------------!';
-      //  10 frames              0---------1---------2-----|
-      //  5                      -----|
-      //  5                                -----|
-      //  5                                          -----|
-      const expected =           'x---------y---------z-----|';
-      const x = cold(            '--a--(b|)                  ');
-      const y = cold(                      '-d--e|           ');
-      const z = cold(                                '-g--h| ');
+      const subs = '              ^-------------------------!';
+      //  10 frames               0---------1---------2-----|
+      //  5                       -----|
+      //  5                                 -----|
+      //  5                                           -----|
+      const expected = '          x---------y---------z-----|';
+      const x = cold('            --a--(b|)                  ');
+      const y = cold('                      -d--e|           ');
+      const z = cold('                                -g--h| ');
       const values = { x, y, z };
 
       const result = source.pipe(windowTime(5, 10, rxTestScheduler));
@@ -38,17 +39,16 @@ describe('windowTime', () => {
   it('should close windows after max count is reached', () => {
     rxTestScheduler.run(({ hot, time, cold, expectObservable, expectSubscriptions }) => {
       const source = hot('--1--2--^--a--b--c--d--e--f--g-----|');
-      const subs =               '^--------------------------!';
-      const timeSpan = time(     '----------|');
-      //                          ----------|
+      const subs = '              ^--------------------------!';
+      const timeSpan = time('     ----------|                 ');
       //                                 ----------|
       //                                       ----------|
       //                                             ---------
-      const expected =           'w-----x-----y-----z--------|';
-      const w = cold(            '---a--(b|)                  ');
-      const x = cold(                  '---c--(d|)            ');
-      const y = cold(                        '---e--(f|)      ');
-      const z = cold(                              '---g-----|')
+      const expected = '          w-----x-----y-----z--------|';
+      const w = cold('            ---a--(b|)                  ');
+      const x = cold('                  ---c--(d|)            ');
+      const y = cold('                        ---e--(f|)      ');
+      const z = cold('                              ---g-----|');
       const values = { w, x, y, z };
 
       const result = source.pipe(windowTime(timeSpan, null, 2, rxTestScheduler));
@@ -61,13 +61,13 @@ describe('windowTime', () => {
   it('should close window after max count is reached with windowCreationInterval', () => {
     rxTestScheduler.run(({ hot, cold, expectSubscriptions, expectObservable }) => {
       const source = hot('--1--2--^-a--b--c--de-f---g--h--i-|');
-      const subs =               '^-------------------------!';
-      //  10 frames              0---------1---------2-----|
-      //  5                      -----|
-      //  5                                -----|');
-      //  5                                          -----|');
-      const expected =           'x---------y---------z-----|';
-      const x = cold('            --a--(b|)                 ');
+      const subs = '              ^-------------------------!';
+      //  10 frames               0---------1---------2-----|
+      //  5                       -----|
+      //  5                                 -----|
+      //  5                                           -----|
+      const expected = '          x---------y---------z-----|';
+      const x = cold('            --a--(b|)                  ');
       const y = cold('                      -de-(f|)         ');
       const z = cold('                                -h--i| ');
       const values = { x, y, z };
@@ -82,13 +82,15 @@ describe('windowTime', () => {
   it('should emit windows given windowTimeSpan', () => {
     rxTestScheduler.run(({ hot, cold, time, expectSubscriptions, expectObservable }) => {
       const source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
-      const subs =               '^--------------------------!';
-      const timeSpan = time(     '----------|');
-      //  10 frames            0---------1---------2------|
-      const expected =           'x---------y---------z------|';
-      const x = cold(            '---a--b--c|                 ');
-      const y = cold(                      '--d--e--f-|       ');
-      const z = cold(                                '-g--h--|');
+      const subs = '              ^--------------------------!';
+      const timeSpan = time('     ----------|                 ');
+      //  10 frames               0---------1---------2------|
+      //                                    ----------|
+      //                                              ----------|
+      const expected = '          x---------y---------z------|';
+      const x = cold('            ---a--b--c|                 ');
+      const y = cold('                      --d--e--f-|       ');
+      const z = cold('                                -g--h--|');
       const values = { x, y, z };
 
       const result = source.pipe(windowTime(timeSpan, rxTestScheduler));
@@ -101,17 +103,18 @@ describe('windowTime', () => {
   it('should emit windows given windowTimeSpan and windowCreationInterval', () => {
     rxTestScheduler.run(({ hot, time, cold, expectSubscriptions, expectObservable }) => {
       const source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
-      const subs =               '^--------------------------!';
-      const timeSpan = time(     '-----|');
-      const interval = time(               '----------|');
-      //  10 frames            0---------1---------2------|
-      //  5                     ----|
-      //  5                               ----|
-      //  5                                         ----|
-      const expected =           'x---------y---------z------|';
-      const x = cold(            '---a-|                      ');
-      const y = cold(                      '--d--(e|)         ');
-      const z = cold(                                '-g--h|  ');
+      const subs = '              ^--------------------------!';
+      //  10 frames               0---------1---------2------|
+      const interval = time('     ----------|                 ');
+      //  10                                ----------|
+      //  10                                          ----------|
+      const timeSpan = time('     -----|                      ');
+      //  5                                 ----|
+      //  5                                           ----|
+      const expected = '          x---------y---------z------|';
+      const x = cold('            ---a-|                      ');
+      const y = cold('                      --d--(e|)         ');
+      const z = cold('                                -g--h|  ');
       const values = { x, y, z };
 
       const result = source.pipe(windowTime(timeSpan, interval, rxTestScheduler));
@@ -123,10 +126,10 @@ describe('windowTime', () => {
 
   it('should return a single empty window if source is empty', () => {
     rxTestScheduler.run(({ cold, time, expectSubscriptions, expectObservable }) => {
-      const source =   cold('|');
-      const subs =          '(^!)';
-      const expected =      '(w|)';
-      const w =        cold('|');
+      const source = cold('|');
+      const subs = '       (^!)';
+      const expected = '   (w|)';
+      const w = cold('     |');
       const expectedValues = { w };
       const timeSpan = time('-----|');
       const interval = time('----------|');
@@ -140,10 +143,10 @@ describe('windowTime', () => {
 
   it('should split a Just source into a single window identical to source', () => {
     rxTestScheduler.run(({ cold, time, expectSubscriptions, expectObservable }) => {
-      const source =   cold('(a|)');
-      const subs =          '(^!)';
-      const expected =      '(w|)';
-      const w =        cold('(a|)');
+      const source = cold('(a|)');
+      const subs = '       (^!)';
+      const expected = '   (w|)';
+      const w = cold('     (a|)');
       const expectedValues = { w };
       const timeSpan = time('-----|');
       const interval = time('----------|');
@@ -157,16 +160,19 @@ describe('windowTime', () => {
 
   it('should be able to split a never Observable into timely empty windows', () => {
     rxTestScheduler.run(({ hot, cold, time, expectSubscriptions, expectObservable }) => {
-      const source =    hot('^----------');
-      const subs =          '^---------!';
-      const expected =      'a--b--c--d-';
+      const source = hot('   ^----------');
+      const subs = '         ^---------!';
       const timeSpan = time('---|');
-      const interval = time(   '---|');
-      const a =        cold('---|       ');
-      const b =        cold(   '---|    ');
-      const c =        cold(      '---| ');
-      const d =        cold(         '--');
-      const unsub =         '----------!';
+      const interval = time('---|');
+      //                        ---|
+      //                           ---|
+      //                              ---|
+      const expected = '     a--b--c--d-';
+      const a = cold('       ---|       ');
+      const b = cold('          ---|    ');
+      const c = cold('             ---| ');
+      const d = cold('                --');
+      const unsub = '        ----------!';
       const expectedValues = { a, b, c, d };
 
       const result = source.pipe(windowTime(timeSpan, interval, rxTestScheduler));
@@ -178,10 +184,10 @@ describe('windowTime', () => {
 
   it('should emit an error-only window if outer is a simple throw-Observable', () => {
     rxTestScheduler.run(({ cold, time, expectSubscriptions, expectObservable }) => {
-      const source =   cold('#');
-      const subs =          '(^!)';
-      const expected =      '(w#)';
-      const w =        cold('#');
+      const source = cold('#   ');
+      const subs = '       (^!)';
+      const expected = '   (w#)';
+      const w = cold('     #   ');
       const expectedValues = { w };
       const timeSpan = time('-----|');
       const interval = time('----------|');
@@ -196,17 +202,17 @@ describe('windowTime', () => {
   it('should handle source Observable which eventually emits an error', () => {
     rxTestScheduler.run(({ hot, cold, time, expectSubscriptions, expectObservable }) => {
       const source = hot('--1--2--^--a--b--c--d--e--f--g--h--#');
-      const subs =               '^--------------------------!';
-      const timeSpan = time(     '-----|');
-      const interval = time(               '----------|');
-      //  10 frames            0---------1---------2------|
-      //  5                     ----|
-      //  5                               ----|
-      //  5                                         ----|
-      const expected =           'x---------y---------z------#';
-      const x = cold(            '---a-|                      ');
-      const y = cold(                      '--d--(e|)         ');
-      const z = cold(                                '-g--h|  ');
+      const subs = '              ^--------------------------!';
+      const timeSpan = time('     -----|                      ');
+      const interval = time('     ----------|                 ');
+      //  10 frames               0---------1---------2------|
+      //  5                       ----|
+      //  5                                 ----|
+      //  5                                           ----|
+      const expected = '          x---------y---------z------#';
+      const x = cold('            ---a-|                      ');
+      const y = cold('                      --d--(e|)         ');
+      const z = cold('                                -g--h|  ');
       const values = { x, y, z };
 
       const result = source.pipe(windowTime(timeSpan, interval, rxTestScheduler));
@@ -219,17 +225,17 @@ describe('windowTime', () => {
   it('should emit windows given windowTimeSpan and windowCreationInterval, but outer is unsubscribed early', () => {
     rxTestScheduler.run(({ hot, cold, time, expectSubscriptions, expectObservable }) => {
       const source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
-      const subs =               '^----------!                ';
-      const timeSpan = time(     '-----|');
-      const interval = time(               '----------|');
-      //  10 frames              0---------1---------2------|
-      //  5                      ----|
-      //  5                                ----|
-      //  5                                          ----|
-      const expected =           'x---------y-                ';
-      const x = cold(            '---a-|                      ');
-      const y = cold(                      '--                ');
-      const unsub =              '-----------!                ';
+      const subs = '              ^----------!                ';
+      const timeSpan = time('     -----|                      ');
+      const interval = time('     ----------|                 ');
+      //  10 frames               0---------1---------2------|
+      //  5                       ----|
+      //  5                                 ----|
+      //  5                                           ----|
+      const expected = '          x---------y-                ';
+      const x = cold('            ---a-|                      ');
+      const y = cold('                      --                ');
+      const unsub = '             -----------!                ';
       const values = { x, y };
 
       const result = source.pipe(windowTime(timeSpan, interval, rxTestScheduler));
@@ -242,17 +248,17 @@ describe('windowTime', () => {
   it('should not break unsubscription chains when result is unsubscribed explicitly', () => {
     rxTestScheduler.run(({ hot, cold, time, expectSubscriptions, expectObservable }) => {
       const source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
-      const sourcesubs =         '^-------------!             ';
-      const timeSpan = time(     '-----|');
-      const interval = time(               '----------|');
-      //  10 frames              0---------1---------2------|
-      //  5                      ----|
-      //  5                                ----|
-      //  5                                          ----|
-      const expected =           'x---------y----             ';
-      const x = cold(            '---a-|                      ');
-      const y = cold(                      '--d--             ');
-      const unsub =              '--------------!             ';
+      const sourcesubs = '        ^-------------!             ';
+      const timeSpan = time('     -----|                      ');
+      const interval = time('     ----------|                 ');
+      //  10 frames               0---------1---------2------|
+      //  5                       ----|
+      //  5                                 ----|
+      //  5                                           ----|
+      const expected = '          x---------y----             ';
+      const x = cold('            ---a-|                      ');
+      const y = cold('                      --d--             ');
+      const unsub = '             --------------!             ';
       const values = { x, y };
 
       const result = source.pipe(
@@ -269,27 +275,20 @@ describe('windowTime', () => {
   it('should not error if maxWindowSize is hit while nexting to other windows.', () => {
     rxTestScheduler.run(({ cold, time, expectObservable }) => {
       const source = cold('                ----a---b---c---d---e---f---g---h---i---j---');
-      const windowTimeSpan = time('        ------------|');
-      const windowCreationInterval = time('--------|');
+      const windowTimeSpan = time('        ------------|                               ');
+      const windowCreationInterval = time('--------|                                   ');
       const maxWindowSize = 4;
-      const a = cold('                     ----a---b---|');
+      const a = cold('                     ----a---b---|                               ');
       //                                   ------------|
       const b = cold('                             b---c---d---(e|)');
       const c = cold('                                     ----e---f---(g|)');
-      const d = cold('                                             ----g---h---(i|)');
-      const e = cold('                                                     ----i---j--');
-      const f = cold('                                                             ---');
+      const d = cold('                                             ----g---h---(i|)    ');
+      const e = cold('                                                     ----i---j---');
+      const f = cold('                                                             ----');
       const expected = '                   a-------b-------c-------d-------e-------f---';
-      const killSub = '                    ------------------------------------------!';
-      const values = {a, b, c, d, e, f};
-      const result = source.pipe(
-        windowTime(
-          windowTimeSpan,
-          windowCreationInterval,
-          maxWindowSize,
-          rxTestScheduler
-        ),
-      );
+      const killSub = '                    ------------------------------------------! ';
+      const values = { a, b, c, d, e, f };
+      const result = source.pipe(windowTime(windowTimeSpan, windowCreationInterval, maxWindowSize, rxTestScheduler));
       expectObservable(result, killSub).toBe(expected, values);
     });
   });
