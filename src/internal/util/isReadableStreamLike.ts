@@ -1,7 +1,12 @@
 import { isFunction } from './isFunction';
 
+interface ReadableStreamDefaultReaderLike<T> {
+  read(): IteratorResult<T>;
+  releaseLock(): void;
+}
+
 export interface ReadableStreamLike<T> {
-  getReader(): ReadableStreamDefaultReader<T>;
+  getReader(): ReadableStreamDefaultReaderLike<T>;
 }
 
 export async function* readableStreamLikeToAsyncGenerator<T>(readableStream: ReadableStreamLike<T>): AsyncGenerator<T> {
