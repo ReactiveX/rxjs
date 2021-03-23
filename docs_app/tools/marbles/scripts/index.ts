@@ -1,8 +1,8 @@
-import { renderMarbleDiagram } from 'swirly-renderer-node';
+import { renderMarbleDiagram } from '@swirly/renderer-node';
 import { readdir, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
-import { parseMarbleDiagramSpec } from 'swirly-parser';
-import { DiagramStyles } from 'swirly-types';
+import { parseMarbleDiagramSpecification } from '@swirly/parser';
+import { DiagramStyles } from '@swirly/types';
 import * as SVGO from 'svgo';
 
 const styles: DiagramStyles = {
@@ -22,7 +22,7 @@ const optimizeXml = async (unoptXml: string): Promise<string> => {
 
 const renderMarble = (path: string, fileName: string): Promise<true> => {
     const file = readFileSync(join(path, fileName));
-    const diagramSpec = parseMarbleDiagramSpec(file.toString());
+    const diagramSpec = parseMarbleDiagramSpecification(file.toString());
     const { xml: unoptXml } = renderMarbleDiagram(diagramSpec, { styles });
     const optimizedSVGPromise = optimizeXml(unoptXml);
     return optimizedSVGPromise.then((svgXML) => {
