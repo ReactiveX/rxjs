@@ -34,7 +34,7 @@ describe('toArray', () => {
     });
   });
 
-  it('should be never when source is empty', () => {
+  it('should be empty when source is empty', () => {
     rxTestScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const e1 = cold(' |   ');
       const e1subs = '  (^!)';
