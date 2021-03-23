@@ -3,7 +3,6 @@
 
 import { Observable } from './Observable';
 import { Subscription } from './Subscription';
-import { ReadableStreamLike } from './util/isReadableStreamLike';
 
 /**
  * NOTE: This will add Symbol.observable globally for all TypeScript users,

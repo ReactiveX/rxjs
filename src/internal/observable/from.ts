@@ -4,7 +4,7 @@ import { observable as Symbol_observable } from '../symbol/observable';
 import { Subscriber } from '../Subscriber';
 
 import { Observable } from '../Observable';
-import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
+import { ObservableInput, SchedulerLike, ObservedValueOf, ReadableStreamLike } from '../types';
 import { scheduled } from '../scheduled/scheduled';
 import { isFunction } from '../util/isFunction';
 import { reportUnhandledError } from '../util/reportUnhandledError';
@@ -12,7 +12,7 @@ import { isInteropObservable } from '../util/isInteropObservable';
 import { isAsyncIterable } from '../util/isAsyncIterable';
 import { createInvalidObservableTypeError } from '../util/throwUnobservableError';
 import { isIterable } from '../util/isIterable';
-import { isReadableStreamLike, ReadableStreamLike, readableStreamLikeToAsyncGenerator } from '../util/isReadableStreamLike';
+import { isReadableStreamLike, readableStreamLikeToAsyncGenerator } from '../util/isReadableStreamLike';
 
 export function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>>;
 /** @deprecated The scheduler argument is deprecated, use scheduled. Details: https://rxjs.dev/deprecations/scheduler-argument */

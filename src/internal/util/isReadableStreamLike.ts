@@ -1,3 +1,4 @@
+import { ReadableStreamLike } from '../types';
 import { isFunction } from './isFunction';
 
 export async function* readableStreamLikeToAsyncGenerator<T>(readableStream: ReadableStreamLike<T>): AsyncGenerator<T> {
