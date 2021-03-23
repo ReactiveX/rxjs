@@ -1,6 +1,6 @@
 import { Subject } from '../Subject';
 import { MonoTypeOperatorFunction, OperatorFunction, SubjectLike } from '../types';
-import { Subscriber } from '../Subscriber';
+import { SafeSubscriber } from '../Subscriber';
 import { from } from '../observable/from';
 import { operate } from '../util/lift';
 
@@ -93,7 +93,7 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
   options = options || {};
   const { connector = () => new Subject<T>(), resetOnComplete = true, resetOnError = true, resetOnRefCountZero = true } = options;
 
-  let connection: Subscriber<T> | null = null;
+  let connection: SafeSubscriber<T> | null = null;
   let subject: SubjectLike<T> | null = null;
   let refCount = 0;
   let hasCompleted = false;
@@ -122,7 +122,7 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
       // for reentrant subscriptions to the shared observable to occur and in
       // those situations we don't want connection to be already-assigned so
       // that we don't create another connection to the source.
-      connection = new Subscriber({
+      connection = new SafeSubscriber({
         next: (value: T) => subject!.next(value),
         error: (err: any) => {
           hasErrored = true;
