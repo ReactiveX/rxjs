@@ -22,14 +22,6 @@ describe('Observable', () => {
     rxTestScheduler = new TestScheduler(observableMatcher);
   });
 
-  let originalConfigPromise: any;
-  before(() => (originalConfigPromise = config.Promise));
-
-  after(() => {
-    config.Promise = originalConfigPromise;
-    originalConfigPromise = null;
-  });
-
   it('should be constructed with a subscriber function', (done) => {
     const source = new Observable<number>(function (observer) {
       expectFullObserver(observer);
@@ -94,22 +86,23 @@ describe('Observable', () => {
         );
     });
 
-    it('should allow Promise to be globally configured', (done) => {
-      let wasCalled = false;
+    it('should allow Promise to be globally configured', async () => {
+      try {
+        let wasCalled = false;
 
-      config.Promise = function MyPromise(callback: any) {
-        wasCalled = true;
-        return new Promise<number>(callback);
-      } as any;
+        config.Promise = function MyPromise(callback: any) {
+          wasCalled = true;
+          return new Promise<number>(callback);
+        } as any;
 
-      of(42)
-        .forEach((x) => {
+        await of(42).forEach((x) => {
           expect(x).to.equal(42);
         })
-        .then(() => {
-          expect(wasCalled).to.be.true;
-          done();
-        });
+
+        expect(wasCalled).to.be.true;
+      } finally {
+        config.Promise = undefined;
+      }
     });
 
     it('should reject promise if nextHandler throws', (done) => {

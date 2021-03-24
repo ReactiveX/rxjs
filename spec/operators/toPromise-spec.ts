@@ -34,19 +34,19 @@ describe('Observable.toPromise', () => {
       );
   });
 
-  it('should allow for global config via config.Promise', (done: Mocha.Done) => {
-    let wasCalled = false;
-    config.Promise = function MyPromise(callback: Function) {
-      wasCalled = true;
-      return new Promise(callback as any);
-    } as any;
+  it('should allow for global config via config.Promise', async () => {
+    try {
+      let wasCalled = false;
+      config.Promise = function MyPromise(callback: Function) {
+        wasCalled = true;
+        return new Promise(callback as any);
+      } as any;
 
-    of(42)
-      .toPromise()
-      .then((x) => {
-        expect(wasCalled).to.be.true;
-        expect(x).to.equal(42);
-        done();
-      });
+      const x = await of(42).toPromise();
+      expect(wasCalled).to.be.true;
+      expect(x).to.equal(42);
+    } finally {
+      config.Promise = undefined;
+    }
   });
 });
