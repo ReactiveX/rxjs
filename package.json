@@ -30,7 +30,6 @@
     "dtslint": "tsc -b ./src/tsconfig.types.json && tslint -c spec-dtslint/tslint.json -p spec-dtslint/tsconfig.json \"spec-dtslint/**/*.ts\"",
     "prepublishOnly": "npm run build:package && npm run lint && npm run test && npm run test:circular && npm run dtslint && npm run test:side-effects && npm run api_guardian",
     "publish_docs": "./publish_docs.sh",
-    "watch": "nodemon -w \"src/\" -w \"spec/\" -e ts -x npm test",
     "test": "npm run compile && mocha --config spec/support/.mocharc.js \"dist/spec/**/*-spec.js\"",
     "test:browser": "echo \"Browser test is not working currently\" && exit -1 && npm-run-all build:spec:browser && opn spec/support/mocha-browser-runner.html",
     "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm5",
@@ -43,7 +42,9 @@
     "build:global": "node ./tools/make-umd-bundle.js && node ./tools/make-closure-core.js",
     "build:package": "npm-run-all build:clean compile build:global && node ./tools/prepare-package.js && node ./tools/generate-alias.js",
     "api_guardian:update": "tsc -b ./src/tsconfig.types.json && ts-api-guardian --outDir api_guard dist/types/index.d.ts dist/types/ajax/index.d.ts dist/types/fetch/index.d.ts dist/types/operators/index.d.ts dist/types/testing/index.d.ts dist/types/webSocket/index.d.ts",
-    "api_guardian": "ts-api-guardian --verifyDir api_guard dist/types/index.d.ts dist/types/ajax/index.d.ts dist/types/fetch/index.d.ts dist/types/operators/index.d.ts dist/types/testing/index.d.ts dist/types/webSocket/index.d.ts"
+    "api_guardian": "ts-api-guardian --verifyDir api_guard dist/types/index.d.ts dist/types/ajax/index.d.ts dist/types/fetch/index.d.ts dist/types/operators/index.d.ts dist/types/testing/index.d.ts dist/types/webSocket/index.d.ts",
+    "watch": "nodemon -w \"src/\" -w \"spec/\" -e ts -x npm test",
+    "watch:dtslint": "nodemon -w \"src/\" -w \"spec-dtslint/\" -e ts -x npm run dtslint"
   },
   "repository": {
     "type": "git",
