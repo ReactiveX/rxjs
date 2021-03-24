@@ -120,8 +120,8 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
       // We need to create a subscriber here - rather than pass an observer and
       // assign the returned subscription to connection - because it's possible
       // for reentrant subscriptions to the shared observable to occur and in
-      // those situations we don't want connection to be already-assigned so
-      // that we don't create another connection to the source.
+      // those situations we want connection to be already-assigned so that we
+      // don't create another connection to the source.
       connection = new SafeSubscriber({
         next: (value: T) => subject!.next(value),
         error: (err: any) => {
