@@ -1366,6 +1366,173 @@ describe('ajax', () => {
 x-custom-header: test
 x-headers-are-fun: <whatever/> {"weird": "things"}`);
   });
+
+  describe('with params', () => {
+    it('should allow passing of search params as a dictionary', () => {
+      ajax({
+        method: 'GET',
+        url: '/whatever',
+        params: { foo: 'bar', whatever: '123' },
+      }).subscribe();
+
+      const mockXHR = MockXMLHttpRequest.mostRecent;
+
+      mockXHR.respondWith({
+        status: 200,
+        responseText: JSON.stringify({ whatever: 'I want' }),
+      });
+
+      expect(mockXHR.url).to.equal('/whatever?foo=bar&whatever=123');
+    });
+
+    it('should allow passing of search params as an entries array', () => {
+      ajax({
+        method: 'GET',
+        url: '/whatever',
+        params: [
+          ['foo', 'bar'],
+          ['whatever', '123'],
+        ],
+      }).subscribe();
+
+      const mockXHR = MockXMLHttpRequest.mostRecent;
+
+      mockXHR.respondWith({
+        status: 200,
+        responseText: JSON.stringify({ whatever: 'I want' }),
+      });
+
+      expect(mockXHR.url).to.equal('/whatever?foo=bar&whatever=123');
+    });
+
+    it('should allow passing of search params as a string', () => {
+      ajax({
+        method: 'GET',
+        url: '/whatever',
+        params: '?foo=bar&whatever=123',
+      }).subscribe();
+
+      const mockXHR = MockXMLHttpRequest.mostRecent;
+
+      mockXHR.respondWith({
+        status: 200,
+        responseText: JSON.stringify({ whatever: 'I want' }),
+      });
+
+      expect(mockXHR.url).to.equal('/whatever?foo=bar&whatever=123');
+    });
+
+    it('should allow passing of search params as a URLSearchParams object', () => {
+      const params = new URLSearchParams();
+      params.set('foo', 'bar');
+      params.set('whatever', '123');
+      ajax({
+        method: 'GET',
+        url: '/whatever',
+        params: '?foo=bar&whatever=123',
+      }).subscribe();
+
+      const mockXHR = MockXMLHttpRequest.mostRecent;
+
+      mockXHR.respondWith({
+        status: 200,
+        responseText: JSON.stringify({ whatever: 'I want' }),
+      });
+
+      expect(mockXHR.url).to.equal('/whatever?foo=bar&whatever=123');
+    });
+
+    it('should not screw things up if there is an existing search string in the url passed', () => {
+      ajax({
+        method: 'GET',
+        url: '/whatever?jays_face=is+a+param&lol=haha',
+        params: { foo: 'bar', whatever: '123' },
+      }).subscribe();
+
+      const mockXHR = MockXMLHttpRequest.mostRecent;
+
+      mockXHR.respondWith({
+        status: 200,
+        responseText: JSON.stringify({ whatever: 'I want' }),
+      });
+
+      expect(mockXHR.url).to.equal('/whatever?jays_face=is+a+param&lol=haha&foo=bar&whatever=123');
+    });
+
+    it('should overwrite existing args from existing search strings in the url passed', () => {
+      ajax({
+        method: 'GET',
+        url: '/whatever?terminator=2&uncle_bob=huh',
+        params: { uncle_bob: '...okayyyyyyy', movie_quote: 'yes' },
+      }).subscribe();
+
+      const mockXHR = MockXMLHttpRequest.mostRecent;
+
+      mockXHR.respondWith({
+        status: 200,
+        responseText: JSON.stringify({ whatever: 'I want' }),
+      });
+
+      expect(mockXHR.url).to.equal('/whatever?terminator=2&uncle_bob=...okayyyyyyy&movie_quote=yes');
+    });
+
+    it('should properly encode values', () => {
+      ajax({
+        method: 'GET',
+        url: '/whatever',
+        params: { 'this is a weird param name': '?#* value here rofl !!!' },
+      }).subscribe();
+
+      const mockXHR = MockXMLHttpRequest.mostRecent;
+
+      mockXHR.respondWith({
+        status: 200,
+        responseText: JSON.stringify({ whatever: 'I want' }),
+      });
+
+      expect(mockXHR.url).to.equal('/whatever?this+is+a+weird+param+name=%3F%23*+value+here+rofl+%21%21%21');
+    });
+
+    it('should handle dictionaries that have numbers, booleans, and arrays of numbers, strings or booleans', () => {
+      ajax({
+        method: 'GET',
+        url: '/whatever',
+        params: { a: 123, b: true, c: ['one', 'two', 'three'], d: [1, 3, 3, 7], e: [true, false, true] },
+      }).subscribe();
+
+      const mockXHR = MockXMLHttpRequest.mostRecent;
+
+      mockXHR.respondWith({
+        status: 200,
+        responseText: JSON.stringify({ whatever: 'I want' }),
+      });
+
+      expect(mockXHR.url).to.equal('/whatever?a=123&b=true&c=one%2Ctwo%2Cthree&d=1%2C3%2C3%2C7&e=true%2Cfalse%2Ctrue');
+    });
+
+    it('should handle entries that have numbers, booleans, and arrays of numbers, strings or booleans', () => {
+      ajax({
+        method: 'GET',
+        url: '/whatever',
+        params: [
+          ['a', 123],
+          ['b', true],
+          ['c', ['one', 'two', 'three']],
+          ['d', [1, 3, 3, 7]],
+          ['e', [true, false, true]],
+        ],
+      }).subscribe();
+
+      const mockXHR = MockXMLHttpRequest.mostRecent;
+
+      mockXHR.respondWith({
+        status: 200,
+        responseText: JSON.stringify({ whatever: 'I want' }),
+      });
+
+      expect(mockXHR.url).to.equal('/whatever?a=123&b=true&c=one%2Ctwo%2Cthree&d=1%2C3%2C3%2C7&e=true%2Cfalse%2Ctrue');
+    });
+  });
 });
 
 // Some of the older versions of node we test on don't have EventTarget.
