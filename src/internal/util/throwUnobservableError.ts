@@ -7,6 +7,6 @@ export function createInvalidObservableTypeError(input: any) {
   return new TypeError(
     `You provided ${
       input !== null && typeof input === 'object' ? 'an invalid object' : `'${input}'`
-    } where a stream was expected. You can provide an Observable, Promise, Array, AsyncIterable, or Iterable.`
+    } where a stream was expected. You can provide an Observable, Promise, ReadableStream, Array, AsyncIterable, or Iterable.`
   );
 }

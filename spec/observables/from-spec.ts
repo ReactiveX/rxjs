@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
 import { asyncScheduler, of, from, Observer, observable, Subject, noop } from 'rxjs';
-import { first, concatMap, delay, take, map, tap } from 'rxjs/operators';
+import { first, concatMap, delay, take, tap } from 'rxjs/operators';
+import { ReadableStream } from 'web-streams-polyfill';
 
 // tslint:disable:no-any
 declare const expectObservable: any;
@@ -108,7 +109,7 @@ describe('from', () => {
     });
   });
 
-  
+
   it('should finalize a generator', () => {
     const results: any[] = [];
 
@@ -175,16 +176,24 @@ describe('from', () => {
   });
 
   // tslint:disable-next-line:no-any it's silly to define all of these types.
-  const sources: Array<{ name: string, value: any }> = [
-    { name: 'observable', value: of('x') },
-    { name: 'observable-like', value: fakervable('x') },
-    { name: 'observable-like-array', value: fakeArrayObservable('x') },
-    { name: 'array', value: ['x'] },
-    { name: 'promise', value: Promise.resolve('x') },
-    { name: 'iterator', value: fakerator('x') },
-    { name: 'array-like', value: { [0]: 'x', length: 1 }},
-    { name: 'string', value: 'x'},
-    { name: 'arguments', value: getArguments('x') },
+  const sources: Array<{ name: string, createValue: () => any }> = [
+    { name: 'observable', createValue: () => of('x') },
+    { name: 'observable-like', createValue: () => fakervable('x') },
+    { name: 'observable-like-array', createValue: () => fakeArrayObservable('x') },
+    { name: 'array', createValue: () => ['x'] },
+    { name: 'promise', createValue: () => Promise.resolve('x') },
+    { name: 'iterator', createValue: () => fakerator('x') },
+    { name: 'array-like', createValue: () => ({ [0]: 'x', length: 1 }) },
+    // ReadableStreams are not lazy, so we have to have this createValue() thunk
+    // so that each tests gets a new one.
+    { name: 'readable-stream-like', createValue: () => new ReadableStream({
+      pull(controller) {
+        controller.enqueue('x');
+        controller.close();
+      },
+    })},
+    { name: 'string', createValue: () => 'x'},
+    { name: 'arguments', createValue: () => getArguments('x') },
   ];
 
   if (Symbol && Symbol.asyncIterator) {
@@ -211,14 +220,14 @@ describe('from', () => {
 
     sources.push({
       name: 'async-iterator',
-      value: fakeAsyncIterator('x')
+      createValue: () => fakeAsyncIterator('x')
     });
   }
 
   for (const source of sources) {
     it(`should accept ${source.name}`, (done) => {
       let nextInvoked = false;
-      from(source.value)
+      from(source.createValue())
         .subscribe(
           (x) => {
             nextInvoked = true;
@@ -235,7 +244,7 @@ describe('from', () => {
     });
     it(`should accept ${source.name} and scheduler`, (done) => {
       let nextInvoked = false;
-      from(source.value, asyncScheduler)
+      from(source.createValue(), asyncScheduler)
         .subscribe(
           (x) => {
             nextInvoked = true;
@@ -320,5 +329,63 @@ describe('from', () => {
     from(generator).subscribe();
 
     expect(finallyExecuted).to.be.true;
+  });
+
+  it('should support ReadableStream-like objects', (done) => {
+    const input = [0, 1, 2];
+    const output: number[] = [];
+
+    const readableStream = new ReadableStream({
+      pull(controller) {
+        if (input.length > 0) {
+          controller.enqueue(input.shift());
+
+          if (input.length === 0) {
+            controller.close();
+          }
+        }
+      },
+    });
+
+    from(readableStream).subscribe({
+      next: value => {
+        output.push(value);
+        expect(readableStream.locked).to.equal(true);
+      },
+      complete: () => {
+        expect(output).to.deep.equal([0, 1, 2]);
+        expect(readableStream.locked).to.equal(false);
+        done();
+      }
+    });
+  });
+
+  it('should lock and release ReadableStream-like objects', (done) => {
+    const input = [0, 1, 2];
+    const output: number[] = [];
+
+    const readableStream = new ReadableStream({
+      pull(controller) {
+        if (input.length > 0) {
+          controller.enqueue(input.shift());
+
+          if (input.length === 0) {
+            controller.close();
+          }
+        }
+      },
+    });
+
+    from(readableStream).subscribe({
+      next: value => {
+        output.push(value);
+        expect(readableStream.locked).to.equal(true);
+      },
+      complete: () => {
+        expect(output).to.deep.equal([0, 1, 2]);
+        expect(readableStream.locked).to.equal(false);
+        done();
+      }
+    });
   });
 });

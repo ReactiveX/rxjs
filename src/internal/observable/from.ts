@@ -4,7 +4,7 @@ import { observable as Symbol_observable } from '../symbol/observable';
 import { Subscriber } from '../Subscriber';
 
 import { Observable } from '../Observable';
-import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
+import { ObservableInput, SchedulerLike, ObservedValueOf, ReadableStreamLike } from '../types';
 import { scheduled } from '../scheduled/scheduled';
 import { isFunction } from '../util/isFunction';
 import { reportUnhandledError } from '../util/reportUnhandledError';
@@ -12,6 +12,7 @@ import { isInteropObservable } from '../util/isInteropObservable';
 import { isAsyncIterable } from '../util/isAsyncIterable';
 import { createInvalidObservableTypeError } from '../util/throwUnobservableError';
 import { isIterable } from '../util/isIterable';
+import { isReadableStreamLike, readableStreamLikeToAsyncGenerator } from '../util/isReadableStreamLike';
 
 export function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>>;
 /** @deprecated The scheduler argument is deprecated, use scheduled. Details: https://rxjs.dev/deprecations/scheduler-argument */
@@ -141,6 +142,9 @@ export function innerFrom<T>(input: ObservableInput<T>): Observable<T> {
     if (isIterable(input)) {
       return fromIterable(input);
     }
+    if (isReadableStreamLike(input)) {
+      return fromReadableStreamLike(input);
+    }
   }
 
   throw createInvalidObservableTypeError(input);
@@ -218,6 +222,10 @@ function fromAsyncIterable<T>(asyncIterable: AsyncIterable<T>) {
   return new Observable((subscriber: Subscriber<T>) => {
     process(asyncIterable, subscriber).catch((err) => subscriber.error(err));
   });
+}
+
+function fromReadableStreamLike<T>(readableStream: ReadableStreamLike<T>) {
+  return fromAsyncIterable(readableStreamLikeToAsyncGenerator(readableStream));
 }
 
 async function process<T>(asyncIterable: AsyncIterable<T>, subscriber: Subscriber<T>) {

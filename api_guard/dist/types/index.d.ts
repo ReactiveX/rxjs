@@ -269,7 +269,7 @@ export declare class Observable<T> implements Subscribable<T> {
     static create: (...args: any[]) => any;
 }
 
-export declare type ObservableInput<T> = Observable<T> | InteropObservable<T> | AsyncIterable<T> | PromiseLike<T> | ArrayLike<T> | Iterable<T>;
+export declare type ObservableInput<T> = Observable<T> | InteropObservable<T> | AsyncIterable<T> | PromiseLike<T> | ArrayLike<T> | Iterable<T> | ReadableStreamLike<T>;
 
 export declare type ObservableInputTuple<T> = {
     [K in keyof T]: ObservableInput<T[K]>;
@@ -347,6 +347,10 @@ export declare function race<T extends readonly unknown[]>(...inputs: [...Observ
 
 export declare function range(start: number, count?: number): Observable<number>;
 export declare function range(start: number, count: number | undefined, scheduler: SchedulerLike): Observable<number>;
+
+export interface ReadableStreamLike<T> {
+    getReader(): ReadableStreamDefaultReaderLike<T>;
+}
 
 export declare class ReplaySubject<T> extends Subject<T> {
     constructor(bufferSize?: number, windowTime?: number, timestampProvider?: TimestampProvider);
