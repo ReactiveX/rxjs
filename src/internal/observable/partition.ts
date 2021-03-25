@@ -8,11 +8,11 @@ export function partition<T, U extends T, A>(
   source: ObservableInput<T>,
   predicate: (this: A, value: T, index: number) => value is U,
   thisArg: A
-): [Observable<U>, Observable<T>];
+): [Observable<U>, Observable<Exclude<T, U>>];
 export function partition<T, U extends T>(
   source: ObservableInput<T>,
   predicate: (value: T, index: number) => value is U
-): [Observable<U>, Observable<T>];
+): [Observable<U>, Observable<Exclude<T, U>>];
 
 export function partition<T, A>(
   source: ObservableInput<T>,
