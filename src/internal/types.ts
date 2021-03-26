@@ -1,6 +1,16 @@
 import { Observable } from './Observable';
 import { Subscription } from './Subscription';
 
+/**
+ * Note: This will add Symbol.observable globally for all TypeScript users,
+ * however, we are no longer polyfilling Symbol.observable
+ */
+declare global {
+  interface SymbolConstructor {
+    readonly observable: symbol;
+  }
+}
+
 /** OPERATOR INTERFACES */
 
 export interface UnaryFunction<T, R> { (source: T): R; }
