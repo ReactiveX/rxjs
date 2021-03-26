@@ -1,140 +1,163 @@
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+/** @prettier */
 import { TestScheduler } from 'rxjs/testing';
 import { of, defer, EMPTY, NEVER, concat, throwError, Observable } from 'rxjs';
 import { mergeScan, delay, mergeMap, takeWhile, startWith, take } from 'rxjs/operators';
 import { expect } from 'chai';
+import { observableMatcher } from '../helpers/observableMatcher';
 
-declare const rxTestScheduler: TestScheduler;
 /** @test {mergeScan} */
 describe('mergeScan', () => {
+  let testScheduler: TestScheduler;
+
+  beforeEach(() => {
+    testScheduler = new TestScheduler(observableMatcher);
+  });
+
   it('should mergeScan things', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^                    !';
-    const expected =    '---u--v--w--x--y--z--|';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--e--f--g--|');
+      const e1subs = '     ^--------------------!';
+      const expected = '   ---u--v--w--x--y--z--|';
 
-    const values = {
-      u: ['b'],
-      v: ['b', 'c'],
-      w: ['b', 'c', 'd'],
-      x: ['b', 'c', 'd', 'e'],
-      y: ['b', 'c', 'd', 'e', 'f'],
-      z: ['b', 'c', 'd', 'e', 'f', 'g']
-    };
+      const values = {
+        u: ['b'],
+        v: ['b', 'c'],
+        w: ['b', 'c', 'd'],
+        x: ['b', 'c', 'd', 'e'],
+        y: ['b', 'c', 'd', 'e', 'f'],
+        z: ['b', 'c', 'd', 'e', 'f', 'g'],
+      };
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
+      const result = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
 
-    expectObservable(source).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected, values);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should handle errors', () => {
-    const e1 = hot('--a--^--b--c--d--#');
-    const e1subs =      '^           !';
-    const expected =    '---u--v--w--#';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--#');
+      const e1subs = '     ^-----------!';
+      const expected = '   ---u--v--w--#';
 
-    const values = {
-      u: ['b'],
-      v: ['b', 'c'],
-      w: ['b', 'c', 'd']
-    };
+      const values = {
+        u: ['b'],
+        v: ['b', 'c'],
+        w: ['b', 'c', 'd'],
+      };
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
+      const result = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
 
-    expectObservable(source).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected, values);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should mergeScan values and be able to asynchronously project them', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^                    !';
-    const expected =    '-----u--v--w--x--y--z|';
+    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--e--f--g--|');
+      const e1subs = '     ^--------------------!';
+      const t = time('        --|                '); // t = 2
+      //                         --|
+      //                            --|
+      //                               --|
+      //                                  --|
+      //                                     --|
+      const expected = '   -----u--v--w--x--y--z|';
 
-    const values = {
-      u: ['b'],
-      v: ['b', 'c'],
-      w: ['b', 'c', 'd'],
-      x: ['b', 'c', 'd', 'e'],
-      y: ['b', 'c', 'd', 'e', 'f'],
-      z: ['b', 'c', 'd', 'e', 'f', 'g']
-    };
+      const values = {
+        u: ['b'],
+        v: ['b', 'c'],
+        w: ['b', 'c', 'd'],
+        x: ['b', 'c', 'd', 'e'],
+        y: ['b', 'c', 'd', 'e', 'f'],
+        z: ['b', 'c', 'd', 'e', 'f', 'g'],
+      };
 
-    const source = e1.pipe(mergeScan((acc, x) =>
-      of(acc.concat(x)).pipe(delay(20, rxTestScheduler)), [] as string[]));
+      const result = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)).pipe(delay(t)), [] as string[]));
 
-    expectObservable(source).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected, values);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should not stop ongoing async projections when source completes', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^                    !';
-    const expected =    '--------u--v--w--x--y--(z|)';
+    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--e--f--g--|     ');
+      const e1subs = '     ^--------------------!     ';
+      const t = time('        -----|'); //          acc = []; x = 'b'; acc.concat(x) = ['b']; t = 5
+      //                         -----|             acc = []; x = 'c'; acc.concat(x) = ['c']
+      //                            -----|          acc = ['b']; x = 'd'; acc.concat(x) = ['b', 'd']
+      //                               -----|       acc = ['c']; x = 'e'; acc.concat(x) = ['c', 'e']
+      //                                  -----|    acc = ['b', 'd']; x = 'f'; acc.concat(x) = ['b', 'd', 'f']
+      //                                     -----| acc = ['c', 'e']; x = 'g'; acc.concat(x) = ['c', 'e', 'g']
+      const expected = '   --------u--v--w--x--y--(z|)';
 
-    const values = {
-      u: ['b'],
-      v: ['c'],
-      w: ['b', 'd'],
-      x: ['c', 'e'],
-      y: ['b', 'd', 'f'],
-      z: ['c', 'e', 'g'],
-    };
+      const values = {
+        u: ['b'],
+        v: ['c'],
+        w: ['b', 'd'],
+        x: ['c', 'e'],
+        y: ['b', 'd', 'f'],
+        z: ['c', 'e', 'g'],
+      };
 
-    const source = e1.pipe(mergeScan((acc, x) =>
-      of(acc.concat(x)).pipe(delay(50, rxTestScheduler)), [] as string[]));
+      const result = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)).pipe(delay(t)), [] as string[]));
 
-    expectObservable(source).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected, values);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should interrupt ongoing async projections when result is unsubscribed early', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^               !     ';
-    const expected =    '--------u--v--w--     ';
+    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--e--f--g--|');
+      const e1subs = '     ^---------------!     ';
+      const t = time('        -----|'); // acc = []; x = 'b'; acc.concat(x) = ['b']; t = 5
+      //                         -----|    acc = []; x = 'c'; acc.concat(x) = ['c']
+      //                            -----| acc = ['b']; x = 'd'; acc.concat(x) = ['b', 'd']
+      const expected = '   --------u--v--w--     ';
+      const unsub = '      ----------------!     ';
 
-    const values = {
-      u: ['b'],
-      v: ['c'],
-      w: ['b', 'd'],
-      x: ['c', 'e'],
-      y: ['b', 'd', 'f'],
-      z: ['c', 'e', 'g'],
-    };
+      const values = {
+        u: ['b'],
+        v: ['c'],
+        w: ['b', 'd'],
+      };
 
-    const source = e1.pipe(mergeScan((acc, x) =>
-      of(acc.concat(x)).pipe(delay(50, rxTestScheduler)), [] as string[]));
+      const result = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)).pipe(delay(t)), [] as string[]));
 
-    expectObservable(source, e1subs).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result, unsub).toBe(expected, values);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should not break unsubscription chains when result is unsubscribed explicitly', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^               !     ';
-    const expected =    '--------u--v--w--     ';
-    const unsub =       '                !     ';
+    testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--e--f--g--|');
+      const e1subs = '     ^---------------!     ';
+      const t = time('        -----|'); // acc = []; x = 'b'; acc.concat(x) = ['b']; t = 5
+      //                         -----|    acc = []; x = 'c'; acc.concat(x) = ['c']
+      //                            -----| acc = ['b']; x = 'd'; acc.concat(x) = ['b', 'd']
+      const expected = '   --------u--v--w--     ';
+      const unsub = '      ----------------!     ';
 
-    const values = {
-      u: ['b'],
-      v: ['c'],
-      w: ['b', 'd'],
-      x: ['c', 'e'],
-      y: ['b', 'd', 'f'],
-      z: ['c', 'e', 'g'],
-    };
+      const values = {
+        u: ['b'],
+        v: ['c'],
+        w: ['b', 'd'],
+      };
 
-    const source = e1
-      .pipe(
+      const result = e1.pipe(
         mergeMap((x) => of(x)),
-        mergeScan((acc, x) =>
-          of([...acc, x]).pipe(
-            delay(50, rxTestScheduler)
-          )
-        , [] as string[]),
-        mergeMap(function (x) { return of(x); })
+        mergeScan((acc, x) => of(acc.concat(x)).pipe(delay(t)), [] as string[]),
+        mergeMap((x) => of(x))
       );
 
-    expectObservable(source, unsub).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result, unsub).toBe(expected, values);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
@@ -154,286 +177,294 @@ describe('mergeScan', () => {
       })
     );
 
-    of(null).pipe(
-      mergeScan(() => synchronousObservable, 0),
-      takeWhile((x) => x != 2) // unsubscribe at the second side-effect
-    ).subscribe(() => { /* noop */ });
+    of(null)
+      .pipe(
+        mergeScan(() => synchronousObservable, 0),
+        takeWhile((x) => x != 2) // unsubscribe at the second side-effect
+      )
+      .subscribe(() => {
+        /* noop */
+      });
 
     expect(sideEffects).to.deep.equal([1, 2]);
   });
 
   it('should handle errors in the projection function', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^        !';
-    const expected =    '---u--v--#';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--e--f--g--|');
+      const e1subs = '     ^--------!';
+      const expected = '   ---u--v--#';
 
-    const values = {
-      u: ['b'],
-      v: ['b', 'c']
-    };
+      const values = {
+        u: ['b'],
+        v: ['b', 'c'],
+      };
 
-    const source = e1.pipe(mergeScan((acc, x) => {
-      if (x === 'd') {
-        throw new Error('bad!');
-      }
-      return of(acc.concat(x));
-    }, [] as string[]));
+      const result = e1.pipe(
+        mergeScan((acc, x) => {
+          if (x === 'd') {
+            throw new Error('bad!');
+          }
+          return of(acc.concat(x));
+        }, [] as string[])
+      );
 
-    expectObservable(source).toBe(expected, values, new Error('bad!'));
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected, values, new Error('bad!'));
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should propagate errors from the projected Observable', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^  !';
-    const expected =    '---#';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--e--f--g--|');
+      const e1subs = '     ^--!';
+      const expected = '   ---#';
 
-    const source = e1.pipe(mergeScan((acc, x) => throwError(new Error('bad!')), []));
+      const result = e1.pipe(mergeScan(() => throwError(new Error('bad!')), []));
 
-    expectObservable(source).toBe(expected, undefined, new Error('bad!'));
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected, undefined, new Error('bad!'));
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should handle an empty projected Observable', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^                    !';
-    const expected =    '---------------------|';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--e--f--g--|');
+      const e1subs = '     ^--------------------!';
+      const expected = '   ---------------------|';
 
-    const values = { x: <string[]>[] };
+      const result = e1.pipe(mergeScan(() => EMPTY, []));
 
-    const source = e1.pipe(mergeScan(() => EMPTY, []));
-
-    expectObservable(source).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should handle a never projected Observable', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^                    !';
-    const expected =    '----------------------';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--e--f--g--|');
+      const e1subs = '     ^--------------------!';
+      const expected = '   ----------------------';
 
-    const values = { x: <string[]>[] };
+      const result = e1.pipe(mergeScan(() => NEVER, []));
 
-    const source = e1.pipe(mergeScan((acc, x) => NEVER, []));
-
-    expectObservable(source).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('handle empty', () => {
-    const e1 =  cold('|');
-    const e1subs =   '(^!)';
-    const expected = '|';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' |   ');
+      const e1subs = '  (^!)';
+      const expected = '|   ';
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
+      const result = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
 
-    expectObservable(source).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('handle never', () => {
-    const e1 =  cold('-');
-    const e1subs =   '^';
-    const expected = '-';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' -');
+      const e1subs = '  ^';
+      const expected = '-';
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
+      const result = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
 
-    expectObservable(source).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('handle throw', () => {
-    const e1 =  cold('#');
-    const e1subs =   '(^!)';
-    const expected = '#';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' #   ');
+      const e1subs = '  (^!)';
+      const expected = '#   ';
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
+      const result = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
 
-    expectObservable(source).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should mergeScan unsubscription', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const expected =    '---u--v--w--x--';
-    const sub =         '^             !';
-    const values = {
-      u: ['b'],
-      v: ['b', 'c'],
-      w: ['b', 'c', 'd'],
-      x: ['b', 'c', 'd', 'e'],
-      y: ['b', 'c', 'd', 'e', 'f'],
-      z: ['b', 'c', 'd', 'e', 'f', 'g']
-    };
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--e--f--g--|');
+      const e1subs = '     ^-------------!       ';
+      const expected = '   ---u--v--w--x--       ';
+      const unsub = '      --------------!       ';
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
+      const values = {
+        u: ['b'],
+        v: ['b', 'c'],
+        w: ['b', 'c', 'd'],
+        x: ['b', 'c', 'd', 'e'],
+      };
 
-    expectObservable(source, sub).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(sub);
+      const result = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), [] as string[]));
+
+      expectObservable(result, unsub).toBe(expected, values);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should mergescan projects cold Observable with single concurrency', () => {
-    const e1 =   hot('--a--b--c--|');
-    const e1subs =   '^          !';
+  it('should mergeScan projects cold Observable with single concurrency', () => {
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const inner = [
+        cold('            --d--e--f--|                      '),
+        cold('                       --g--h--i--|           '),
+        cold('                                  --j--k--l--|'),
+      ];
+      const xsubs = '   --^----------!                      ';
+      const ysubs = '   -------------^----------!           ';
+      const zsubs = '   ------------------------^----------!';
 
-    const inner = [
-      cold(          '--d--e--f--|                      '),
-      cold(                     '--g--h--i--|           '),
-      cold(                                '--j--k--l--|')
-    ];
+      const e1 = hot('  --0--1--2--|                        ');
+      const e1subs = '  ^----------!                        ';
+      const expected = '--x-d--e--f--f-g--h--i--i-j--k--l--|';
 
-    const xsubs =    '  ^          !';
-    const ysubs =    '             ^          !';
-    const zsubs =    '                        ^          !';
+      const result = e1.pipe(mergeScan((acc, x) => inner[+x].pipe(startWith(acc)), 'x', 1));
 
-    const expected = '--x-d--e--f--f-g--h--i--i-j--k--l--|';
+      expectObservable(result).toBe(expected);
 
-    let index = 0;
-    const source = e1.pipe(mergeScan((acc, x) => {
-      const value = inner[index++];
-      return value.pipe(startWith(acc));
-    }, 'x', 1));
-
-    expectObservable(source).toBe(expected);
-
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(inner[0].subscriptions).toBe(xsubs);
-    expectSubscriptions(inner[1].subscriptions).toBe(ysubs);
-    expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(inner[0].subscriptions).toBe(xsubs);
+      expectSubscriptions(inner[1].subscriptions).toBe(ysubs);
+      expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
+    });
   });
 
-  it('should emit accumulator if inner completes without value', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^                    !';
-    const expected =    '---------------------|';
+  it('should not emit accumulator if inner completes without value', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--e--f--g--|');
+      const e1subs = '     ^--------------------!';
+      const expected = '   ---------------------|';
 
-    const source = e1.pipe(mergeScan((acc, x) => EMPTY, ['1']));
+      const result = e1.pipe(mergeScan(() => EMPTY, ['1']));
 
-    expectObservable(source).toBe(expected, {x: ['1']});
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should emit accumulator if inner completes without value after source completes', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^                    !';
-    const expected =    '-----------------------|';
-    const inner = cold(                   '-----|');
+  it('should not emit accumulator if inner completes without value after source completes', () => {
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const x = cold('        -----|   ');
+      //                         -----|
+      // prettier-ignore
+      const xsubs = [
+        '                  ---^----!   ',
+        '                  ------^----!',
+      ];
+      const e1 = hot('--a--^--b--c--|  ');
+      const e1subs = '     ^--------!  ';
+      const expected = '   -----------|';
 
-    const source = e1.pipe(
-      mergeScan(() => inner, '1')
-    );
+      const result = e1.pipe(mergeScan(() => x, '1'));
 
-    expectObservable(source).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(x.subscriptions).toBe(xsubs);
+    });
   });
 
-  it('should mergescan projects hot Observable with single concurrency', () => {
-    const e1 =   hot('---a---b---c---|');
-    const e1subs =   '^              !';
+  it('should mergeScan projects hot Observable with single concurrency', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const inner = [
+        hot('           --d--e--f--|                 '),
+        hot('           ----g----h----i----|         '),
+        hot('           ------j------k-------l------|'),
+      ];
+      const xsubs = '   ---^-------!                 ';
+      const ysubs = '   -----------^-------!         ';
+      const zsubs = '   -------------------^--------!';
+      const e1 = hot('  ---0---1---2---|             ');
+      const e1subs = '  ^--------------!             ';
+      const expected = '---x-e--f--f--i----i-l------|';
 
-    const inner = [
-      hot(         '--d--e--f--|'),
-      hot(         '----g----h----i----|'),
-      hot(         '------j------k-------l------|')
-    ];
+      const result = e1.pipe(mergeScan((acc, x) => inner[+x].pipe(startWith(acc)), 'x', 1));
 
-    const xsubs =    '   ^       !';
-    const ysubs =    '           ^       !';
-    const zsubs =    '                   ^        !';
+      expectObservable(result).toBe(expected);
 
-    const expected = '---x-e--f--f--i----i-l------|';
-
-    let index = 0;
-    const source = e1.pipe(mergeScan((acc, x) => {
-      const value = inner[index++];
-      return value.pipe(startWith(acc));
-    }, 'x', 1));
-
-    expectObservable(source).toBe(expected);
-
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(inner[0].subscriptions).toBe(xsubs);
-    expectSubscriptions(inner[1].subscriptions).toBe(ysubs);
-    expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(inner[0].subscriptions).toBe(xsubs);
+      expectSubscriptions(inner[1].subscriptions).toBe(ysubs);
+      expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
+    });
   });
 
-  it('should mergescan projects cold Observable with dual concurrency', () => {
-    const e1 =   hot('----a----b----c----|');
-    const e1subs =   '^                  !';
+  it('should mergeScan projects cold Observable with dual concurrency', () => {
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const inner = [
+        cold('              ---d---e---f---|               '),
+        cold('                   ---g---h---i---|          '),
+        cold('                             ---j---k---l---|'),
+      ];
+      const xsubs = '   ----^--------------!               ';
+      const ysubs = '   ---------^--------------!          ';
+      const zsubs = '   -------------------^--------------!';
+      const e1 = hot('  ----0----1----2----|               ');
+      const e1subs = '  ^------------------!               ';
+      const expected = '----x--d-d-eg--fh--hi-j---k---l---|';
 
-    const inner = [
-      cold(            '---d---e---f---|               '),
-      cold(                 '---g---h---i---|          '),
-      cold(                           '---j---k---l---|')
-    ];
+      const result = e1.pipe(mergeScan((acc, x) => inner[+x].pipe(startWith(acc)), 'x', 2));
 
-    const xsubs =    '    ^              !';
-    const ysubs =    '         ^              !';
-    const zsubs =    '                   ^              !';
+      expectObservable(result).toBe(expected);
 
-    const expected = '----x--d-d-eg--fh--hi-j---k---l---|';
-
-    let index = 0;
-    const source = e1.pipe(mergeScan((acc, x) => {
-      const value = inner[index++];
-      return value.pipe(startWith(acc));
-    }, 'x', 2));
-
-    expectObservable(source).toBe(expected);
-
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(inner[0].subscriptions).toBe(xsubs);
-    expectSubscriptions(inner[1].subscriptions).toBe(ysubs);
-    expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(inner[0].subscriptions).toBe(xsubs);
+      expectSubscriptions(inner[1].subscriptions).toBe(ysubs);
+      expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
+    });
   });
 
-  it('should mergescan projects hot Observable with dual concurrency', () => {
-    const e1 =   hot('---a---b---c---|');
-    const e1subs =   '^              !';
+  it('should mergeScan projects hot Observable with dual concurrency', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const inner = [
+        hot('           --d--e--f-----|              '),
+        hot('           ----g----h------i----|       '),
+        hot('           ------j--------k-----l------|'),
+      ];
+      const xsubs = '   ---^----------!              ';
+      const ysubs = '   -------^-------------!       ';
+      const zsubs = '   --------------^-------------!';
+      const e1 = hot('  ---0---1---2---|             ');
+      const e1subs = '  ^--------------!             ';
+      const expected = '---x-e-efh----hki----l------|';
 
-    const inner = [
-      hot(         '--d--e--f--|'),
-      hot(         '----g----h----i----|'),
-      hot(         '------j------k-------l------|')
-    ];
+      const result = e1.pipe(mergeScan((acc, x) => inner[+x].pipe(startWith(acc)), 'x', 2));
 
-    const xsubs =    '   ^       !';
-    const ysubs =    '       ^           !';
-    const zsubs =    '           ^                !';
+      expectObservable(result).toBe(expected);
 
-    const expected = '---x-e-efh-h-ki------l------|';
-
-    let index = 0;
-    const source = e1.pipe(mergeScan((acc, x) => {
-      const value = inner[index++];
-      return value.pipe(
-        startWith(acc)
-      );
-    }, 'x', 2));
-
-    expectObservable(source).toBe(expected);
-
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(inner[0].subscriptions).toBe(xsubs);
-    expectSubscriptions(inner[1].subscriptions).toBe(ysubs);
-    expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(inner[0].subscriptions).toBe(xsubs);
+      expectSubscriptions(inner[1].subscriptions).toBe(ysubs);
+      expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
+    });
   });
 
   it('should pass current index to accumulator', () => {
     const recorded: number[] = [];
     const e1 = of('a', 'b', 'c', 'd');
 
-    e1.pipe(mergeScan((acc, x, index) => {
-      recorded.push(index);
-      return of(index);
-    }, 0)).subscribe();
+    e1.pipe(
+      mergeScan((acc, x, index) => {
+        recorded.push(index);
+        return of(index);
+      }, 0)
+    ).subscribe();
 
     expect(recorded).to.deep.equal([0, 1, 2, 3]);
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable<number>(subscriber => {
+    const synchronousObservable = new Observable<number>((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -442,10 +473,14 @@ describe('mergeScan', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      mergeScan((acc, value) => of(value), 0),
-      take(3),
-    ).subscribe(() => { /* noop */ });
+    synchronousObservable
+      .pipe(
+        mergeScan((acc, value) => of(value), 0),
+        take(3)
+      )
+      .subscribe(() => {
+        /* noop */
+      });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
