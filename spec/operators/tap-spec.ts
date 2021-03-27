@@ -45,14 +45,16 @@ describe('tap', () => {
 
   it('should error with a callback', () => {
     let err = null;
-    throwError('bad')
+    throwError(() => 'bad')
       .pipe(
         tap(null, function (x) {
           err = x;
         })
       )
-      .subscribe(null, function (ex) {
-        expect(ex).to.equal('bad');
+      .subscribe({
+        error(ex) {
+          expect(ex).to.equal('bad');
+        },
       });
 
     expect(err).to.equal('bad');
@@ -103,15 +105,17 @@ describe('tap', () => {
 
   it('should handle an error with a callback', () => {
     let errored = false;
-    throwError('bad')
+    throwError(() => 'bad')
       .pipe(
         tap(null, (err: any) => {
           expect(err).to.equal('bad');
         })
       )
-      .subscribe(null, (err: any) => {
-        errored = true;
-        expect(err).to.equal('bad');
+      .subscribe({
+        error(err: any) {
+          errored = true;
+          expect(err).to.equal('bad');
+        },
       });
 
     expect(errored).to.be.true;
@@ -119,7 +123,7 @@ describe('tap', () => {
 
   it('should handle an error with observer', () => {
     let errored = false;
-    throwError('bad')
+    throwError(() => 'bad')
       .pipe(
         tap(<any>{
           error: function (err: string) {
@@ -127,9 +131,11 @@ describe('tap', () => {
           },
         })
       )
-      .subscribe(null, function (err) {
-        errored = true;
-        expect(err).to.equal('bad');
+      .subscribe({
+        error(err) {
+          errored = true;
+          expect(err).to.equal('bad');
+        },
       });
 
     expect(errored).to.be.true;
@@ -174,13 +180,15 @@ describe('tap', () => {
           },
         })
       )
-      .subscribe(null, (err: any) => {
-        expect(err.message).to.equal('bad');
+      .subscribe({
+        error(err: any) {
+          expect(err.message).to.equal('bad');
+        },
       });
   });
 
   it('should raise error if error handler raises error', () => {
-    throwError('ops')
+    throwError(() => 'ops')
       .pipe(
         tap(<any>{
           error: (x: any) => {
@@ -188,8 +196,10 @@ describe('tap', () => {
           },
         })
       )
-      .subscribe(null, (err: any) => {
-        expect(err.message).to.equal('bad');
+      .subscribe({
+        error(err: any) {
+          expect(err.message).to.equal('bad');
+        },
       });
   });
 
@@ -200,8 +210,10 @@ describe('tap', () => {
           throw new Error('bad');
         },
       })
-    ).subscribe(null, (err: any) => {
-      expect(err.message).to.equal('bad');
+    ).subscribe({
+      error(err: any) {
+        expect(err.message).to.equal('bad');
+      },
     });
   });
 
