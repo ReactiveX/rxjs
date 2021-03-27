@@ -17,7 +17,7 @@ import { map } from './map';
  * <span class="informal">Convert an Observable that emits items into one that
  * emits indications of the amount of time elapsed between those emissions.</span>
  *
- * ![](timeinterval.png)
+ * ![](timeInterval.png)
  *
  * ## Examples
  * Emit interval between current value with the last value
@@ -51,16 +51,18 @@ import { map } from './map';
  * value and interval.
  */
 export function timeInterval<T>(scheduler: SchedulerLike = async): OperatorFunction<T, TimeInterval<T>> {
-  return (source: Observable<T>) => defer(() => {
-    return source.pipe(
-      // TODO(benlesh): correct these typings.
-      scan(
-        ({ current }, value) => ({ value, current: scheduler.now(), last: current }),
-        { current: scheduler.now(), value: undefined,  last: undefined } as any
-      ) as OperatorFunction<T, any>,
-      map<any, TimeInterval<T>>(({ current, last, value }) => new TimeInterval(value, current - last)),
-    );
-  });
+  return (source: Observable<T>) =>
+    defer(() => {
+      return source.pipe(
+        // TODO(benlesh): correct these typings.
+        scan(({ current }, value) => ({ value, current: scheduler.now(), last: current }), {
+          current: scheduler.now(),
+          value: undefined,
+          last: undefined,
+        } as any) as OperatorFunction<T, any>,
+        map<any, TimeInterval<T>>(({ current, last, value }) => new TimeInterval(value, current - last))
+      );
+    });
 }
 
 // TODO(benlesh): make this an interface, export the interface, but not the implemented class,
