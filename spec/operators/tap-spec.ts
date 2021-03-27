@@ -70,7 +70,7 @@ describe('tap', () => {
           next: (x: number) => {
             results.push(x);
           },
-          error: (err: any) => {
+          error: () => {
             done(new Error('should not be called'));
           },
           complete: () => {
@@ -91,7 +91,7 @@ describe('tap', () => {
       next: (x: any) => {
         results.push(x);
       },
-      error: (err: any) => {
+      error: () => {
         done(new Error('should not be called'));
       },
       complete: () => {
@@ -175,7 +175,7 @@ describe('tap', () => {
     of('hi')
       .pipe(
         tap(<any>{
-          next: (x: string) => {
+          next: () => {
             throw new Error('bad');
           },
         })
@@ -191,7 +191,7 @@ describe('tap', () => {
     throwError(() => 'ops')
       .pipe(
         tap(<any>{
-          error: (x: any) => {
+          error: () => {
             throw new Error('bad');
           },
         })
