@@ -1429,7 +1429,7 @@ x-headers-are-fun: <whatever/> {"weird": "things"}`);
       ajax({
         method: 'GET',
         url: '/whatever',
-        params: '?foo=bar&whatever=123',
+        params,
       }).subscribe();
 
       const mockXHR = MockXMLHttpRequest.mostRecent;

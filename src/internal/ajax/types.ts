@@ -211,6 +211,5 @@ export interface AjaxConfig {
     | string
     | URLSearchParams
     | Record<string, string | number | boolean | string[] | number[] | boolean[]>
-    | [string, string | number | boolean | string[] | number[] | boolean[]][]
-    | undefined;
+    | [string, string | number | boolean | string[] | number[] | boolean[]][];
 }
