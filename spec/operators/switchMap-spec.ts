@@ -444,4 +444,17 @@ describe('switchMap', () => {
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
+
+  it('should report invalid observable inputs via error notifications', () => {
+    const e1 =    hot('--1|');
+    const e1subs =    '^ !';
+    const expected =  '--#';
+
+    const result = e1.pipe(switchMap(() => null as any));
+
+    expectObservable(result).toBe(expected, null, new TypeError(
+      "You provided 'null' where a stream was expected. You can provide an Observable, Promise, Array, or Iterable."
+    ));
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
 });
