@@ -1,3 +1,13 @@
+## [6.6.7](https://github.com/reactivex/rxjs/compare/6.6.6...6.6.7) (2021-03-28)
+
+
+### Bug Fixes
+
+* **types:** Resolved an issue where referencing `Symbol.observable` before RxJS accessed the `symbol/observable` module internally would result in a reference error. ([#6178](https://github.com/reactivex/rxjs/issues/6178)) ([94f690b](https://github.com/reactivex/rxjs/commit/94f690b9a11ead952655e94e1ad036d1bdd0e916)), closes [#6175](https://github.com/reactivex/rxjs/issues/6175)
+* **mergeMap, concatMap, switchMap, et al**: Resolves an issue where returning an invalid `ObservableInput` would not be catchable in the observation chain. ([#6186](https://github.com/reactivex/rxjs/issues/6186)) ([4014e19](https://github.com/reactivex/rxjs/commit/4014e19bf150953248ea79c4b0b52aab17d35c85)), closes [#5344](https://github.com/reactivex/rxjs/issues/5344)
+
+
+
 ## [6.6.6](https://github.com/reactivex/rxjs/compare/6.6.0...6.6.6) (2021-02-25)
 
 
