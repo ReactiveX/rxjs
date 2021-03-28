@@ -110,5 +110,11 @@ export function innerSubscribe(result: any, innerSubscriber: Subscriber<any>): S
   if (result instanceof Observable) {
     return result.subscribe(innerSubscriber);
   }
-  return subscribeTo(result)(innerSubscriber) as Subscription;
+  let subscription: Subscription;
+  try {
+    subscription = subscribeTo(result)(innerSubscriber) as Subscription;
+  } catch (error) {
+    innerSubscriber.error(error);
+  }
+  return subscription;
 }
