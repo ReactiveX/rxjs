@@ -195,4 +195,21 @@ export interface AjaxConfig {
    * be emitted from the resulting observable.
    */
   includeUploadProgress?: boolean;
+
+  /**
+   * Query string parameters to add to the URL in the request.
+   * <em>This will require a polyfill for `URL` and `URLSearchParams` in Internet Explorer!</em>
+   *
+   * Accepts either a query string, a `URLSearchParams` object, a dictionary of key/value pairs, or an
+   * array of key/value entry tuples. (Essentially, it takes anything that `new URLSearchParams` would normally take).
+   *
+   * If, for some reason you have a query string in the `url` argument, this will append to the query string in the url,
+   * but it will also overwrite the value of any keys that are an exact match. In other words, a url of `/test?a=1&b=2`,
+   * with params of `{ b: 5, c: 6 }` will result in a url of roughly `/test?a=1&b=5&c=6`.
+   */
+  params?:
+    | string
+    | URLSearchParams
+    | Record<string, string | number | boolean | string[] | number[] | boolean[]>
+    | [string, string | number | boolean | string[] | number[] | boolean[]][];
 }

@@ -9,6 +9,7 @@ export interface AjaxConfig {
     includeDownloadProgress?: boolean;
     includeUploadProgress?: boolean;
     method?: string;
+    params?: string | URLSearchParams | Record<string, string | number | boolean | string[] | number[] | boolean[]> | [string, string | number | boolean | string[] | number[] | boolean[]][];
     password?: string;
     progressSubscriber?: PartialObserver<ProgressEvent>;
     responseType?: XMLHttpRequestResponseType;

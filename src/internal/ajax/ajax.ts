@@ -275,15 +275,53 @@ const LOAD = 'load';
 
 export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
   return new Observable((destination) => {
+    // Here we're pulling off each of the configuration arguments
+    // that we don't want to add to the request information we're
+    // passing around.
+    const { params, body: configuredBody, headers: configuredHeaders, ...remainingConfig } = config;
+
+    let { url } = remainingConfig;
+    if (!url) {
+      throw new TypeError('url is required');
+    }
+
+    if (params) {
+      let searchParams: URLSearchParams;
+      if (url.includes('?')) {
+        // If the user has passed a URL with a querystring already in it,
+        // we need to combine them. So we're going to split it. There
+        // should only be one `?` in a valid URL.
+        const parts = url.split('?');
+        if (2 < parts.length) {
+          throw new TypeError('invalid url');
+        }
+        // Add the passed params to the params already in the url provided.
+        searchParams = new URLSearchParams(parts[1]);
+        // params is converted to any because the runtime is *much* more permissive than
+        // the types are.
+        new URLSearchParams(params as any).forEach((value, key) => searchParams.set(key, value));
+        // We have to do string concatenation here, because `new URL(url)` does
+        // not like relative URLs like `/this` without a base url, which we can't
+        // specify, nor can we assume `location` will exist, because of node.
+        url = parts[0] + '?' + searchParams;
+      } else {
+        // There is no pre-existing querystring, so we can just use URLSearchParams
+        // to convert the passed params into the proper format and encodings.
+        // params is converted to any because the runtime is *much* more permissive than
+        // the types are.
+        searchParams = new URLSearchParams(params as any);
+        url = url + '?' + searchParams;
+      }
+    }
+
     // Normalize the headers. We're going to make them all lowercase, since
     // Headers are case insenstive by design. This makes it easier to verify
     // that we aren't setting or sending duplicates.
     const headers: Record<string, any> = {};
-    const requestHeaders = config.headers;
-    if (requestHeaders) {
-      for (const key in requestHeaders) {
-        if (requestHeaders.hasOwnProperty(key)) {
-          headers[key.toLowerCase()] = requestHeaders[key];
+    if (configuredHeaders) {
+      for (const key in configuredHeaders) {
+        if (configuredHeaders.hasOwnProperty(key)) {
+          headers[key.toLowerCase()] = configuredHeaders[key];
         }
       }
     }
@@ -301,8 +339,8 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
 
     // Allow users to provide their XSRF cookie name and the name of a custom header to use to
     // send the cookie.
-    const { withCredentials, xsrfCookieName, xsrfHeaderName } = config;
-    if ((withCredentials || !config.crossDomain) && xsrfCookieName && xsrfHeaderName) {
+    const { withCredentials, xsrfCookieName, xsrfHeaderName } = remainingConfig;
+    if ((withCredentials || !remainingConfig.crossDomain) && xsrfCookieName && xsrfHeaderName) {
       const xsrfCookie = document?.cookie.match(new RegExp(`(^|;\\s*)(${xsrfCookieName})=([^;]*)`))?.pop() ?? '';
       if (xsrfCookie) {
         headers[xsrfHeaderName] = xsrfCookie;
@@ -311,7 +349,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
 
     // Examine the body and determine whether or not to serialize it
     // and set the content-type in `headers`, if we're able.
-    const body = extractContentTypeAndMaybeSerializeBody(config.body, headers);
+    const body = extractContentTypeAndMaybeSerializeBody(configuredBody, headers);
 
     const _request: AjaxRequest = {
       // Default values
@@ -323,19 +361,15 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       responseType: 'json' as XMLHttpRequestResponseType,
 
       // Override with passed user values
-      ...config,
+      ...remainingConfig,
 
       // Set values we ensured above
+      url,
       headers,
       body,
     };
 
     let xhr: XMLHttpRequest;
-
-    const { url } = _request;
-    if (!url) {
-      throw new TypeError('url is required');
-    }
 
     // Create our XHR so we can get started.
     xhr = config.createXHR ? config.createXHR() : new XMLHttpRequest();
