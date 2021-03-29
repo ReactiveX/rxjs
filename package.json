@@ -7,6 +7,33 @@
   "es2015": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
   "sideEffects": false,
+  "exports": {
+    ".": {
+      "node": "./dist/cjs/index.js",
+      "default": "./dist/esm5/index.js"
+    },
+    "./ajax": {
+      "node": "./dist/cjs/ajax/index.js",
+      "default": "./dist/dist/esm5/ajax/index.js"
+    },
+    "./fetch": {
+      "node": "./dist/cjs/fetch/index.js",
+      "default": "./dist/dist/esm5/fetch/index.js"
+    },
+    "./operators": {
+      "node": "./dist/cjs/operators/index.js",
+      "default": "./dist/dist/esm5/operators/index.js"
+    },
+    "./testing": {
+      "node": "./dist/cjs/testing/index.js",
+      "default": "./dist/dist/esm5/testing/index.js"
+    },
+    "./webSocket": {
+      "node": "./dist/cjs/webSocket/index.js",
+      "default": "./dist/dist/esm5/webSocket/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
