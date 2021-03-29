@@ -136,12 +136,8 @@ describe('TocComponent', () => {
         beforeEach(() => {
           fixture.detectChanges();
           page = setPage();
-<<<<<<< HEAD
-
-=======
           const scrollSvc = TestBed.inject(ScrollService);
           scrollToTopSpy = spyOn(scrollSvc, 'scrollToTop');
->>>>>>> a14b2b11... docs(v7): Update to Angular 11
         });
 
         afterEach(() => fixture.destroy());
