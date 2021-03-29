@@ -136,8 +136,7 @@ describe('TocComponent', () => {
         beforeEach(() => {
           fixture.detectChanges();
           page = setPage();
-          
-          //scrollToTopSpy = spyOn(scrollSvc, 'scrollToTop');
+
         });
 
         afterEach(() => fixture.destroy());
