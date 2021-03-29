@@ -10,7 +10,7 @@ import { TocComponent } from './toc.component';
 describe('TocComponent', () => {
   let tocComponentDe: DebugElement;
   let tocComponent: TocComponent;
-  let tocService: TestTocService;
+  let tocService: TocService;
 
   let page: {
     listItems: DebugElement[];
@@ -48,7 +48,7 @@ describe('TocComponent', () => {
       fixture = TestBed.createComponent(HostEmbeddedTocComponent);
       tocComponentDe = fixture.debugElement.children[0];
       tocComponent = tocComponentDe.componentInstance;
-      tocService = TestBed.get(TocService);
+      tocService = TestBed.inject(TocService);
     });
 
     it('should create tocComponent', () => {
@@ -137,7 +137,8 @@ describe('TocComponent', () => {
         beforeEach(() => {
           fixture.detectChanges();
           page = setPage();
-          scrollToTopSpy = TestBed.get(ScrollService).scrollToTop;
+          const scrollSvc = TestBed.inject(ScrollService);
+          scrollToTopSpy = spyOn(scrollSvc, 'scrollToTop');
         });
 
         it('should have more than 4 displayed items', () => {
@@ -252,7 +253,7 @@ describe('TocComponent', () => {
 
       tocComponentDe = fixture.debugElement.children[0];
       tocComponent = tocComponentDe.componentInstance;
-      tocService = TestBed.get(TocService);
+      tocService = TestBed.inject(TocService);
 
       fixture.detectChanges();
       page = setPage();
@@ -286,23 +287,28 @@ describe('TocComponent', () => {
       it('should keep track of `TocService`\'s `activeItemIndex`', () => {
         expect(tocComponent.activeIndex).toBeNull();
 
-        tocService.setActiveIndex(42);
+        tocService.activeItemIndex.next(42);
+        fixture.detectChanges();
         expect(tocComponent.activeIndex).toBe(42);
 
-        tocService.setActiveIndex(null);
+        tocService.activeItemIndex.next(null);
+        fixture.detectChanges();
         expect(tocComponent.activeIndex).toBeNull();
       });
 
       it('should stop tracking `activeItemIndex` once destroyed', () => {
-        tocService.setActiveIndex(42);
+        tocService.activeItemIndex.next(42);
+        fixture.detectChanges();
         expect(tocComponent.activeIndex).toBe(42);
 
         tocComponent.ngOnDestroy();
 
-        tocService.setActiveIndex(43);
+        tocService.activeItemIndex.next(43);
+        fixture.detectChanges();
         expect(tocComponent.activeIndex).toBe(42);
 
-        tocService.setActiveIndex(null);
+        tocService.activeItemIndex.next(null);
+        fixture.detectChanges();
         expect(tocComponent.activeIndex).toBe(42);
       });
 
@@ -385,17 +391,17 @@ describe('TocComponent', () => {
         });
 
         it('when the `activeIndex` changes', () => {
-          tocService.setActiveIndex(0);
+          tocService.activeItemIndex.next(0);
           fixture.detectChanges();
 
           expect(parentScrollTop).toBe(0);
 
-          tocService.setActiveIndex(1);
+          tocService.activeItemIndex.next(1);
           fixture.detectChanges();
 
           expect(parentScrollTop).toBe(0);
 
-          tocService.setActiveIndex(page.listItems.length - 1);
+          tocService.activeItemIndex.next(page.listItems.length - 1);
           fixture.detectChanges();
 
           expect(parentScrollTop).toBeGreaterThan(0);
@@ -409,7 +415,7 @@ describe('TocComponent', () => {
 
           expect(parentScrollTop).toBe(0);
 
-          tocService.setActiveIndex(tocList.length - 1);
+          tocService.activeItemIndex.next(tocList.length - 1);
           fixture.detectChanges();
 
           expect(parentScrollTop).toBe(0);
@@ -424,7 +430,7 @@ describe('TocComponent', () => {
           const tocList = tocComponent.tocList;
           tocComponent.ngOnDestroy();
 
-          tocService.setActiveIndex(page.listItems.length - 1);
+          tocService.activeItemIndex.next(page.listItems.length - 1);
           fixture.detectChanges();
 
           expect(parentScrollTop).toBe(0);
