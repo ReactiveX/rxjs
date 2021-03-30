@@ -1,5 +1,5 @@
-import { of, throwError, interval, scheduled, asapScheduler } from 'rxjs';
-import { bufferTime, mergeMap, take } from 'rxjs/operators';
+import { of, throwError, interval, scheduled, asapScheduler, Subject } from 'rxjs';
+import { bufferTime, mergeMap, take, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 import { expect } from 'chai';
@@ -395,6 +395,22 @@ describe('bufferTime operator', () => {
       );
 
       expectObservable(source).toBe(expected, values);
+    });
+  });
+
+  it('should not mutate the buffer on reentrant next', () => {
+    testScheduler.run(({ expectObservable, time }) => {
+      const subject = new Subject<number>();
+      const t1 = time(' -|');
+      const t2 = time(' --|');
+      const expected = '--(a|)';
+      const result = subject.pipe(
+        bufferTime(t2),
+        tap(() => subject.next(2)),
+        take(1)
+      );
+      testScheduler.schedule(() => subject.next(1), t1);
+      expectObservable(result).toBe(expected, { a: [1] });
     });
   });
 });
