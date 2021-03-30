@@ -7,6 +7,33 @@
   "es2015": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
   "sideEffects": false,
+  "exports": {
+    ".": {
+      "node": "./dist/cjs/index.js",
+      "default": "./dist/esm5/index.js"
+    },
+    "./ajax": {
+      "node": "./dist/cjs/ajax/index.js",
+      "default": "./dist/dist/esm5/ajax/index.js"
+    },
+    "./fetch": {
+      "node": "./dist/cjs/fetch/index.js",
+      "default": "./dist/dist/esm5/fetch/index.js"
+    },
+    "./operators": {
+      "node": "./dist/cjs/operators/index.js",
+      "default": "./dist/dist/esm5/operators/index.js"
+    },
+    "./testing": {
+      "node": "./dist/cjs/testing/index.js",
+      "default": "./dist/dist/esm5/testing/index.js"
+    },
+    "./webSocket": {
+      "node": "./dist/cjs/webSocket/index.js",
+      "default": "./dist/dist/esm5/webSocket/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
@@ -30,6 +57,7 @@
     "prepublishOnly": "npm run build:package && npm run lint && npm run test && npm run test:circular && npm run dtslint && npm run test:side-effects && npm run api_guardian",
     "publish_docs": "./publish_docs.sh",
     "test": "npm run compile && mocha --config spec/support/.mocharc.js \"dist/spec/**/*-spec.js\"",
+    "test:esm": "node spec/module-test-spec.mjs",
     "test:browser": "echo \"Browser test is not working currently\" && exit -1 && npm-run-all build:spec:browser && opn spec/support/mocha-browser-runner.html",
     "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm5",
     "test:systemjs": "node integration/systemjs/systemjs-compatibility-spec.js",
