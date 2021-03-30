@@ -36,9 +36,5 @@ jobs:
     - name: api_guardian
       run: npm run api_guardian
     - name: import
-      if: ${{ matrix.node == '14' }}
-      run: npm run test:import
-    - name: import
       if: ${{ matrix.node == '14' || matrix.node == '15' }}
-      run: npm run test:esm
-
+      run: npm run test:import

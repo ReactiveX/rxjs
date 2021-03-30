@@ -15,12 +15,15 @@
 import * as path from 'path';
 import { exec, rm } from 'shelljs';
 import { promisify } from 'util';
+import { createHash, Hash } from 'crypto';
+import { pipeline } from 'stream';
 import * as fs from 'fs';
 
 import * as rx_export_src from 'rxjs';
 import * as operators_export_src from 'rxjs/operators';
 
 const writeFileAsync = promisify(fs.writeFile);
+const pipelineAsync = promisify(pipeline);
 const projectRoot = process.cwd();
 const { version } = JSON.parse(fs.readFileSync(path.join(projectRoot, 'package.json'), 'utf-8'));
 
@@ -34,21 +37,27 @@ const execPromise = (cmd: string, cwd = projectRoot) =>
       }
     }));
 
+export const shasum = async (path: string) => {
+  const hash = createHash('sha256')
+  await pipelineAsync(fs.createReadStream(path), hash);
+  return hash.digest('hex');
+}
+
 const main = async () => {
   // create local pkgs
   await execPromise('npm run build:package');
   await execPromise('npm pack');
-
   const pkgPath = path.join(projectRoot, `rxjs-${version}.tgz`);
 
+  console.log('shasum ' + await shasum(pkgPath))
 
   rm('-rf', path.join(__dirname, 'node_modules'));
   rm('-rf', path.join(__dirname, 'rx.json'));
   rm('-rf', path.join(__dirname, 'operators.json'));
   
   // create snapShot from existing src's export site
-  writeFileAsync(path.join(__dirname, 'rx.json'), JSON.stringify(Object.keys(rx_export_src).sort()));
-  writeFileAsync(path.join(__dirname, 'operators.json'), JSON.stringify(Object.keys(operators_export_src).sort()));
+  await writeFileAsync(path.join(__dirname, 'rx.json'), JSON.stringify(Object.keys(rx_export_src).sort()));
+  await writeFileAsync(path.join(__dirname, 'operators.json'), JSON.stringify(Object.keys(operators_export_src).sort()));
 
   await execPromise(`npm install ${pkgPath} --no-save`, __dirname);
 
