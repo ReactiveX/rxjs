@@ -1,3 +1,9 @@
+# [7.0.0-beta.15](https://github.com/reactivex/rxjs/compare/7.0.0-beta.14...7.0.0-beta.15) (2021-03-31)
+
+### Bug Fixes
+
+- **esm:** duplicate directory in export path ([#6194](https://github.com/reactivex/rxjs/issues/6194)) ([aa41462](https://github.com/reactivex/rxjs/commit/aa4146288ec6542754f41ffd260fa4d6936a4d22))
+
 # [7.0.0-beta.14](https://github.com/reactivex/rxjs/compare/7.0.0-beta.13...7.0.0-beta.14) (2021-03-30)
 
 ### Bug Fixes
