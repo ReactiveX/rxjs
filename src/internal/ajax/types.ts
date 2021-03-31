@@ -205,9 +205,9 @@ export interface AjaxConfig {
    *
    * If, for some reason you have a query string in the `url` argument, this will append to the query string in the url,
    * but it will also overwrite the value of any keys that are an exact match. In other words, a url of `/test?a=1&b=2`,
-   * with params of `{ b: 5, c: 6 }` will result in a url of roughly `/test?a=1&b=5&c=6`.
+   * with queryParams of `{ b: 5, c: 6 }` will result in a url of roughly `/test?a=1&b=5&c=6`.
    */
-  params?:
+  queryParams?:
     | string
     | URLSearchParams
     | Record<string, string | number | boolean | string[] | number[] | boolean[]>

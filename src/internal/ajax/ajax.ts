@@ -278,14 +278,14 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     // Here we're pulling off each of the configuration arguments
     // that we don't want to add to the request information we're
     // passing around.
-    const { params, body: configuredBody, headers: configuredHeaders, ...remainingConfig } = config;
+    const { queryParams, body: configuredBody, headers: configuredHeaders, ...remainingConfig } = config;
 
     let { url } = remainingConfig;
     if (!url) {
       throw new TypeError('url is required');
     }
 
-    if (params) {
+    if (queryParams) {
       let searchParams: URLSearchParams;
       if (url.includes('?')) {
         // If the user has passed a URL with a querystring already in it,
@@ -295,21 +295,21 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
         if (2 < parts.length) {
           throw new TypeError('invalid url');
         }
-        // Add the passed params to the params already in the url provided.
+        // Add the passed queryParams to the params already in the url provided.
         searchParams = new URLSearchParams(parts[1]);
-        // params is converted to any because the runtime is *much* more permissive than
+        // queryParams is converted to any because the runtime is *much* more permissive than
         // the types are.
-        new URLSearchParams(params as any).forEach((value, key) => searchParams.set(key, value));
+        new URLSearchParams(queryParams as any).forEach((value, key) => searchParams.set(key, value));
         // We have to do string concatenation here, because `new URL(url)` does
         // not like relative URLs like `/this` without a base url, which we can't
         // specify, nor can we assume `location` will exist, because of node.
         url = parts[0] + '?' + searchParams;
       } else {
         // There is no pre-existing querystring, so we can just use URLSearchParams
-        // to convert the passed params into the proper format and encodings.
-        // params is converted to any because the runtime is *much* more permissive than
+        // to convert the passed queryParams into the proper format and encodings.
+        // queryParams is converted to any because the runtime is *much* more permissive than
         // the types are.
-        searchParams = new URLSearchParams(params as any);
+        searchParams = new URLSearchParams(queryParams as any);
         url = url + '?' + searchParams;
       }
     }
