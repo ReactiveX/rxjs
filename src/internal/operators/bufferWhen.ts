@@ -68,7 +68,7 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
       b && subscriber.next(b);
 
       // Get a new closing notifier and subscribe to it.
-      innerFrom(closingSelector()).subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, undefined, noop)));
+      innerFrom(closingSelector()).subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, noop)));
     };
 
     // Start the first buffer.
@@ -80,14 +80,14 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
         subscriber,
         // Add every new value to the current buffer.
         (value) => buffer?.push(value),
-        // All errors are passed through to the consumer.
-        undefined,
         // When we complete, emit the buffer if we have one,
         // then complete the result.
         () => {
           buffer && subscriber.next(buffer);
           subscriber.complete();
         },
+        // Pass all errors through to consumer.
+        undefined,
         // Release memory on teardown
         () => (buffer = closingSubscriber = null!)
       )

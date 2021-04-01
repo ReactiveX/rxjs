@@ -62,11 +62,11 @@ export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T
       new OperatorSubscriber(
         subscriber,
         (value) => windowSubject?.next(value),
-        errorHandler,
         () => {
           windowSubject.complete();
           subscriber.complete();
-        }
+        },
+        errorHandler
       )
     );
 
@@ -78,8 +78,8 @@ export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T
           windowSubject.complete();
           subscriber.next((windowSubject = new Subject()));
         },
-        errorHandler,
-        noop
+        noop,
+        errorHandler
       )
     );
 

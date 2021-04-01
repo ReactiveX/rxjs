@@ -251,7 +251,6 @@ export function combineLatestInit(
                       subscriber.next(valueTransform(values.slice()));
                     }
                   },
-                  undefined,
                   () => {
                     if (!--active) {
                       // We only complete the result if we have no more active

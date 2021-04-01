@@ -84,6 +84,8 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
                 }
                 subscriber.next(value);
               },
+              // Completions are passed through to consumer.
+              undefined,
               (err) => {
                 if (soFar++ < count) {
                   if (innerSub) {

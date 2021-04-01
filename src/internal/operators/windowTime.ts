@@ -183,10 +183,10 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
             maxWindowSize <= ++record.seen && closeWindow(record);
           });
         },
-        // Notify the windows and the downstream subscriber of the error and clean up.
-        (err) => terminate((consumer) => consumer.error(err)),
         // Complete the windows and the downstream subscriber and clean up.
-        () => terminate((consumer) => consumer.complete())
+        () => terminate((consumer) => consumer.complete()),
+        // Notify the windows and the downstream subscriber of the error and clean up.
+        (err) => terminate((consumer) => consumer.error(err))
       )
     );
 

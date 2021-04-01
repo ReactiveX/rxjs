@@ -45,7 +45,6 @@ export function throwIfEmpty<T>(errorFactory: () => any = defaultErrorFactory): 
           hasValue = true;
           subscriber.next(value);
         },
-        undefined,
         () => (hasValue ? subscriber.complete() : subscriber.error(errorFactory()))
       )
     );

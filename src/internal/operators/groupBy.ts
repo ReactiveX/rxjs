@@ -175,10 +175,10 @@ export function groupBy<T, K, R>(
                   group!.complete();
                   durationSubscriber?.unsubscribe();
                 },
+                // Completions are also sent to the group, but just the group.
+                undefined,
                 // Errors on the duration subscriber are sent to the group
                 // but only the group. They are not sent to the main subscription.
-                undefined,
-                // Completions are also sent to the group, but just the group.
                 undefined,
                 // Teardown: Remove this group from our map.
                 () => groups.delete(key)
@@ -195,10 +195,10 @@ export function groupBy<T, K, R>(
           handleError(err);
         }
       },
-      // Error from the source.
-      handleError,
       // Source completes.
       () => notify((consumer) => consumer.complete()),
+      // Error from the source.
+      handleError,
       // Free up memory.
       // When the source subscription is _finally_ torn down, release the subjects and keys
       // in our groups Map, they may be quite large and we don't want to keep them around if we

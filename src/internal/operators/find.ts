@@ -79,7 +79,6 @@ export function createFind<T>(
             subscriber.complete();
           }
         },
-        undefined,
         () => {
           subscriber.next(findIndex ? -1 : undefined);
           subscriber.complete();

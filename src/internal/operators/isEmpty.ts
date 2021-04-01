@@ -74,7 +74,6 @@ export function isEmpty<T>(): OperatorFunction<T, boolean> {
           subscriber.next(false);
           subscriber.complete();
         },
-        undefined,
         () => {
           subscriber.next(true);
           subscriber.complete();

@@ -71,7 +71,6 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
                 syncResub = true;
               }
             },
-            undefined,
             () => {
               isNotifierComplete = true;
               checkComplete();
@@ -86,7 +85,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
       isMainComplete = false;
 
       innerSub = source.subscribe(
-        new OperatorSubscriber(subscriber, undefined, undefined, () => {
+        new OperatorSubscriber(subscriber, undefined, () => {
           isMainComplete = true;
           // Check to see if we are complete, and complete if so.
           // If we are not complete. Get the subject. This calls the `notifier` function.

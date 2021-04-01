@@ -75,11 +75,8 @@ export function bufferToggle<T, O>(
           };
 
           // The line below will add the subscription to the parent subscriber *and* the closing subscription.
-          closingSubscription.add(
-            innerFrom(closingSelector(openValue)).subscribe(new OperatorSubscriber(subscriber, emitBuffer, undefined, noop))
-          );
+          closingSubscription.add(innerFrom(closingSelector(openValue)).subscribe(new OperatorSubscriber(subscriber, emitBuffer, noop)));
         },
-        undefined,
         noop
       )
     );
@@ -93,7 +90,6 @@ export function bufferToggle<T, O>(
             buffer.push(value);
           }
         },
-        undefined,
         () => {
           // Source complete. Emit all pending buffers.
           while (buffers.length > 0) {

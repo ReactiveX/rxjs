@@ -60,8 +60,8 @@ export function observeOn<T>(scheduler: SchedulerLike, delay: number = 0): MonoT
       new OperatorSubscriber(
         subscriber,
         (value) => subscriber.add(scheduler.schedule(() => subscriber.next(value), delay)),
-        (err) => subscriber.add(scheduler.schedule(() => subscriber.error(err), delay)),
-        () => subscriber.add(scheduler.schedule(() => subscriber.complete(), delay))
+        () => subscriber.add(scheduler.schedule(() => subscriber.complete(), delay)),
+        (err) => subscriber.add(scheduler.schedule(() => subscriber.error(err), delay))
       )
     );
   });

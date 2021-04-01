@@ -154,13 +154,13 @@ export function fromFetch<T>(
               subscriber,
               // Values are passed through to the subscriber
               undefined,
-              // Error handling
-              handleError,
               // The projected response is complete.
               () => {
                 abortable = false;
                 subscriber.complete();
-              }
+              },
+              // Error handling
+              handleError
             )
           );
         } else {

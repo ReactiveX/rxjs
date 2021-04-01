@@ -53,7 +53,6 @@ export function every<T>(
             subscriber.complete();
           }
         },
-        undefined,
         () => {
           subscriber.next(true);
           subscriber.complete();

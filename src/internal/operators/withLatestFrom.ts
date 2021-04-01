@@ -88,7 +88,6 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | 
               (ready = hasValue.every(identity)) && (hasValue = null!);
             }
           },
-          undefined,
           // Completing one of the other sources has
           // no bearing on the completion of our result.
           noop
