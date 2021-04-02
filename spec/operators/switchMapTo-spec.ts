@@ -79,13 +79,12 @@ describe('switchMapTo', () => {
   it('should switch a synchronous many outer to a synchronous many inner', (done) => {
     const a = of(1, 2, 3);
     const expected = ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'];
-    a.pipe(switchMapTo(of('a', 'b', 'c'))).subscribe(
-      (x) => {
+    a.pipe(switchMapTo(of('a', 'b', 'c'))).subscribe({
+      next(x) {
         expect(x).to.equal(expected.shift());
       },
-      null,
-      done
-    );
+      complete: done,
+    });
   });
 
   it('should unsub inner observables', () => {
