@@ -16,13 +16,13 @@ export function combineLatest<A extends readonly unknown[]>(sources: readonly [.
 /** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<A extends readonly unknown[], R>(
   sources: readonly [...ObservableInputTuple<A>],
-  resultSelector: (...args: A) => R,
+  resultSelector: (...values: A) => R,
   scheduler: SchedulerLike
 ): Observable<R>;
 /** @deprecated resultSelector no longer supported, pipe to map instead, Details https://rxjs.dev/deprecations/resultSelector */
 export function combineLatest<A extends readonly unknown[], R>(
   sources: readonly [...ObservableInputTuple<A>],
-  resultSelector: (...args: A) => R
+  resultSelector: (...values: A) => R
 ): Observable<R>;
 /** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<A extends readonly unknown[]>(
@@ -35,12 +35,16 @@ export function combineLatest<A extends readonly unknown[]>(
 export function combineLatest<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
 /** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<A extends readonly unknown[], R>(
-  ...args: [...ObservableInputTuple<A>, (...args: A) => R, SchedulerLike]
+  ...sourcesAndResultSelectorAndScheduler: [...ObservableInputTuple<A>, (...values: A) => R, SchedulerLike]
 ): Observable<R>;
 /** @deprecated resultSelector no longer supported, pipe to map instead, Details https://rxjs.dev/deprecations/resultSelector */
-export function combineLatest<A extends readonly unknown[], R>(...args: [...ObservableInputTuple<A>, (...args: A) => R]): Observable<R>;
+export function combineLatest<A extends readonly unknown[], R>(
+  ...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]
+): Observable<R>;
 /** @deprecated The scheduler argument is deprecated, use scheduled and combineLatestAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function combineLatest<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>, SchedulerLike]): Observable<A>;
+export function combineLatest<A extends readonly unknown[]>(
+  ...sourcesAndScheduler: [...ObservableInputTuple<A>, SchedulerLike]
+): Observable<A>;
 
 // combineLatest({a, b, c})
 export function combineLatest(sourcesObject: { [K in any]: never }): Observable<never>;

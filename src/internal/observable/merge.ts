@@ -7,12 +7,16 @@ import { innerFrom } from './from';
 import { EMPTY } from './empty';
 import { popNumber, popScheduler } from '../util/args';
 
-export function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>]): Observable<A[number]>;
-export function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>, number?]): Observable<A[number]>;
+export function merge<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
+export function merge<A extends readonly unknown[]>(...sourcesAndConcurrency: [...ObservableInputTuple<A>, number?]): Observable<A[number]>;
 /** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>, SchedulerLike?]): Observable<A[number]>;
+export function merge<A extends readonly unknown[]>(
+  ...sourcesAndScheduler: [...ObservableInputTuple<A>, SchedulerLike?]
+): Observable<A[number]>;
 /** @deprecated The scheduler argument is deprecated, use scheduled and mergeAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>, number?, SchedulerLike?]): Observable<A[number]>;
+export function merge<A extends readonly unknown[]>(
+  ...sourcesAndConcurrencyAndScheduler: [...ObservableInputTuple<A>, number?, SchedulerLike?]
+): Observable<A[number]>;
 
 /**
  * Creates an output Observable which concurrently emits all values from every
