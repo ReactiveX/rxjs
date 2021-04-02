@@ -74,8 +74,8 @@ export declare function distinctUntilKeyChanged<T, K extends keyof T>(key: K, co
 export declare function elementAt<T, D = T>(index: number, defaultValue?: D): OperatorFunction<T, T | D>;
 
 export declare function endWith<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;
-export declare function endWith<T, A extends unknown[] = T[]>(...args: [...A, SchedulerLike]): OperatorFunction<T, T | ValueFromArray<A>>;
-export declare function endWith<T, A extends unknown[] = T[]>(...args: A): OperatorFunction<T, T | ValueFromArray<A>>;
+export declare function endWith<T, A extends unknown[] = T[]>(...valuesAndScheduler: [...A, SchedulerLike]): OperatorFunction<T, T | ValueFromArray<A>>;
+export declare function endWith<T, A extends unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
 export declare function every<T>(predicate: BooleanConstructor, thisArg?: any): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
 export declare function every<T, A>(predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean, thisArg: A): OperatorFunction<T, boolean>;
