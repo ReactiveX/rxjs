@@ -11,6 +11,12 @@ describe('firstValueFrom', () => {
     expect(finalized).to.be.true;
   });
 
+  it('should support a default value', async () => {
+    const source = EMPTY;
+    const result = await firstValueFrom(source, 0);
+    expect(result).to.equal(0);
+  });
+
   it('should error for empty observables', async () => {
     const source = EMPTY;
     let error: any = null;

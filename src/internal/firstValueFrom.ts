@@ -2,13 +2,17 @@ import { Observable } from './Observable';
 import { EmptyError } from './util/EmptyError';
 import { SafeSubscriber } from './Subscriber';
 
+export function firstValueFrom<T, D>(source: Observable<T>, defaultValue: D): Promise<T | D>;
+export function firstValueFrom<T>(source: Observable<T>): Promise<T>;
+
 /**
  * Converts an observable to a promise by subscribing to the observable,
  * and returning a promise that will resolve as soon as the first value
  * arrives from the observable. The subscription will then be closed.
  *
  * If the observable stream completes before any values were emitted, the
- * returned promise will reject with {@link EmptyError}.
+ * returned promise will reject with {@link EmptyError} or will resolve
+ * with the default value if a default was specified.
  *
  * If the observable stream emits an error, the returned promise will reject
  * with that error.
@@ -41,17 +45,23 @@ import { SafeSubscriber } from './Subscriber';
  * ```
  *
  * @param source the observable to convert to a promise
+ * @param defaultValue the value to use if the source completes without emitting a value
  */
-export function firstValueFrom<T>(source: Observable<T>) {
-  return new Promise<T>((resolve, reject) => {
+export function firstValueFrom<T, D>(source: Observable<T>, defaultValue?: D) {
+  const hasDefaultValue = arguments.length >= 2;
+  return new Promise<T | D>((resolve, reject) => {
     const subscriber = new SafeSubscriber<T>({
-      next: value => {
+      next: (value) => {
         resolve(value);
         subscriber.unsubscribe();
       },
       error: reject,
       complete: () => {
-        reject(new EmptyError());
+        if (hasDefaultValue) {
+          resolve(defaultValue!);
+        } else {
+          reject(new EmptyError());
+        }
       },
     });
     source.subscribe(subscriber);

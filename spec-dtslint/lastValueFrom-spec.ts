@@ -2,7 +2,19 @@ import { lastValueFrom } from 'rxjs';
 import { a$ } from 'helpers';
 
 describe('lastValueFrom', () => {
-  const r0 = lastValueFrom(a$); // $ExpectType Promise<A>
-  const r1 = lastValueFrom(); // $ExpectError
-  const r2 = lastValueFrom(Promise.resolve(42)); // $ExpectError
+  it('should infer the element type', () => {
+    const r = lastValueFrom(a$); // $ExpectType Promise<A>
+  });
+
+  it('should infer the element type from a default value', () => {
+    const r = lastValueFrom(a$, null); // $ExpectType Promise<A | null>
+  });
+
+  it('should require an argument', () => {
+    const r = lastValueFrom(); // $ExpectError
+  });
+
+  it('should require an observable argument', () => {
+    const r = lastValueFrom(Promise.resolve(42)); // $ExpectError
+  });
 });
