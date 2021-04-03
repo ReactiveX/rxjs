@@ -1,3 +1,4 @@
+/** @prettier */
 import { expect } from 'chai';
 import { take, mergeMap } from 'rxjs/operators';
 import { of, Observable, Subject } from 'rxjs';
@@ -36,7 +37,7 @@ describe('take', () => {
 
   it('should go on forever on never', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 =  cold('-');
+      const e1 = cold(' -');
       const e1subs = '  ^';
       const expected = '-';
 
@@ -164,7 +165,7 @@ describe('take', () => {
   });
 
   it('should unsubscribe from the source when it reaches the limit', () => {
-    const source = new Observable<number>(observer => {
+    const source = new Observable<number>((observer) => {
       expect(observer.closed).to.be.false;
       observer.next(42);
       expect(observer.closed).to.be.true;
@@ -182,7 +183,7 @@ describe('take', () => {
       },
       complete() {
         completed = true;
-      }
+      },
     });
     source.next();
     expect(completed).to.be.true;
@@ -190,7 +191,7 @@ describe('take', () => {
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable<number>(subscriber => {
+    const synchronousObservable = new Observable<number>((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -199,9 +200,9 @@ describe('take', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      take(3),
-    ).subscribe(() => { /* noop */ });
+    synchronousObservable.pipe(take(3)).subscribe(() => {
+      /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
@@ -212,7 +213,7 @@ describe('take', () => {
       const e1subs = '  ^-------!------------';
       const expected = '--a-----(b|)         ';
 
-      expectObservable(e1.pipe(take("2" as any))).toBe(expected);
+      expectObservable(e1.pipe(take('2' as any))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
