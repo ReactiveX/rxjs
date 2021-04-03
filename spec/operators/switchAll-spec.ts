@@ -1,6 +1,6 @@
 /** @prettier */
 import { expect } from 'chai';
-import { Observable, of, NEVER, queueScheduler, Subject } from 'rxjs';
+import { Observable, of, NEVER, queueScheduler, Subject, scheduled } from 'rxjs';
 import { map, switchAll, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -33,11 +33,11 @@ describe('switchAll', () => {
   });
 
   it('should switch to each immediately-scheduled inner Observable', (done) => {
-    const a = of(1, 2, 3, queueScheduler);
-    const b = of(4, 5, 6, queueScheduler);
+    const a = scheduled([1, 2, 3], queueScheduler);
+    const b = scheduled([4, 5, 6], queueScheduler);
     const r = [1, 4, 5, 6];
     let i = 0;
-    of(a, b, queueScheduler)
+    scheduled([a, b], queueScheduler)
       .pipe(switchAll())
       .subscribe({
         next(x) {
