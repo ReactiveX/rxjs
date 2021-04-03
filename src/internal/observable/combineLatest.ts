@@ -19,7 +19,6 @@ export function combineLatest<A extends readonly unknown[], R>(
   resultSelector: (...values: A) => R,
   scheduler: SchedulerLike
 ): Observable<R>;
-/** @deprecated resultSelector no longer supported, pipe to map instead, Details https://rxjs.dev/deprecations/resultSelector */
 export function combineLatest<A extends readonly unknown[], R>(
   sources: readonly [...ObservableInputTuple<A>],
   resultSelector: (...values: A) => R
@@ -37,7 +36,7 @@ export function combineLatest<A extends readonly unknown[]>(...sources: [...Obse
 export function combineLatest<A extends readonly unknown[], R>(
   ...sourcesAndResultSelectorAndScheduler: [...ObservableInputTuple<A>, (...values: A) => R, SchedulerLike]
 ): Observable<R>;
-/** @deprecated resultSelector no longer supported, pipe to map instead, Details https://rxjs.dev/deprecations/resultSelector */
+/** @deprecated Use the version that takes an array of Observables instead */
 export function combineLatest<A extends readonly unknown[], R>(
   ...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]
 ): Observable<R>;
