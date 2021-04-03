@@ -26,7 +26,7 @@ describe('bindNodeCallback', () => {
       expect(results).to.deep.equal(['undefined', 'done']);
     });
 
-    it('should support the deprecated resultSelector', () => {
+    it('should a resultSelector', () => {
       function callback(cb: (err: any, n: number) => any) {
         cb(null, 42);
       }

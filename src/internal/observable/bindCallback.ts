@@ -3,8 +3,6 @@ import { SchedulerLike } from '../types';
 import { Observable } from '../Observable';
 import { bindCallbackInternals } from './bindCallbackInternals';
 
-// tslint:disable:max-line-length
-/** @deprecated resultSelector is no longer supported, use a mapping function. */
 export function bindCallback(
   callbackFunc: (...args: any[]) => void,
   resultSelector: (...args: any[]) => any,
@@ -16,8 +14,6 @@ export function bindCallback<A extends readonly unknown[], R extends readonly un
   callbackFunc: (...args: [...A, (...res: R) => void]) => void,
   schedulerLike?: SchedulerLike
 ): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
-
-// tslint:enable:max-line-length
 
 /**
  * Converts a callback API to a function that returns an Observable.

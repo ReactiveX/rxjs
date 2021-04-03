@@ -25,7 +25,7 @@ describe('bindCallback', () => {
       expect(results).to.deep.equal(['undefined', 'done']);
     });
 
-    it('should still support deprecated resultSelector', () => {
+    it('should support a resultSelector', () => {
       function callback(datum: number, cb: Function) {
         cb(datum);
       }
@@ -46,7 +46,7 @@ describe('bindCallback', () => {
       expect(results).to.deep.equal([43, 'done']);
     });
 
-    it('should still support deprecated resultSelector if its void', () => {
+    it('should support a resultSelector if its void', () => {
       function callback(datum: number, cb: Function) {
         cb(datum);
       }
