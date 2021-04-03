@@ -39,13 +39,12 @@ describe('switchAll', () => {
     let i = 0;
     of(a, b, queueScheduler)
       .pipe(switchAll())
-      .subscribe(
-        (x) => {
+      .subscribe({
+        next(x) {
           expect(x).to.equal(r[i++]);
         },
-        null,
-        done
-      );
+        complete: done,
+      });
   });
 
   it('should unsub inner observables', () => {
@@ -76,13 +75,12 @@ describe('switchAll', () => {
     let i = 0;
     of(a, b)
       .pipe(switchAll())
-      .subscribe(
-        (x) => {
+      .subscribe({
+        next(x) {
           expect(x).to.equal(r[i++]);
         },
-        null,
-        done
-      );
+        complete: done,
+      });
   });
 
   it('should handle a hot observable of observables', () => {
@@ -259,33 +257,32 @@ describe('switchAll', () => {
 
     of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3))
       .pipe(switchAll())
-      .subscribe(
-        (x) => {
+      .subscribe({
+        next(x) {
           expect(x).to.equal(expected.shift());
         },
-        null,
-        () => {
+        complete() {
           expect(expected.length).to.equal(0);
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should handle an observable of promises, where last rejects', (done) => {
     of(Promise.resolve(1), Promise.resolve(2), Promise.reject(3))
       .pipe(switchAll())
-      .subscribe(
-        () => {
+      .subscribe({
+        next() {
           done(new Error('should not be called'));
         },
-        (err) => {
+        error(err) {
           expect(err).to.equal(3);
           done();
         },
-        () => {
+        complete() {
           done(new Error('should not be called'));
-        }
-      );
+        },
+      });
   });
 
   it('should handle an observable with Arrays in it', () => {
@@ -294,16 +291,15 @@ describe('switchAll', () => {
 
     of(NEVER, NEVER, [1, 2, 3, 4])
       .pipe(switchAll())
-      .subscribe(
-        (x) => {
+      .subscribe({
+        next(x) {
           expect(x).to.equal(expected.shift());
         },
-        null,
-        () => {
+        complete() {
           completed = true;
           expect(expected.length).to.equal(0);
-        }
-      );
+        },
+      });
 
     expect(completed).to.be.true;
   });
