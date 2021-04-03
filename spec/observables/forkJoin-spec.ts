@@ -25,7 +25,7 @@ describe('forkJoin', () => {
     });
   });
 
-  it('should support the deprecated resultSelector with an Array of ObservableInputs', () => {
+  it('should support a resultSelector with an Array of ObservableInputs', () => {
     const results: Array<number | string> = [];
     forkJoin([of(1, 2, 3), of(4, 5, 6), of(7, 8, 9)], (a: number, b: number, c: number) => a + b + c).subscribe({
       next(value) {
@@ -42,7 +42,7 @@ describe('forkJoin', () => {
     expect(results).to.deep.equal([18, 'done']);
   });
 
-  it('should support the deprecated resultSelector with a spread of ObservableInputs', () => {
+  it('should support a resultSelector with a spread of ObservableInputs', () => {
     const results: Array<number | string> = [];
     forkJoin(of(1, 2, 3), of(4, 5, 6), of(7, 8, 9), (a: number, b: number, c: number) => a + b + c).subscribe({
       next(value) {

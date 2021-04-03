@@ -12,7 +12,6 @@ export function forkJoin(scheduler: null | undefined): Observable<never>;
 // forkJoin([a, b, c])
 export function forkJoin(sources: readonly []): Observable<never>;
 export function forkJoin<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
-/** @deprecated resultSelector is deprecated, pipe to map instead */
 export function forkJoin<A extends readonly unknown[], R>(
   sources: readonly [...ObservableInputTuple<A>],
   resultSelector: (...values: A) => R
@@ -21,7 +20,7 @@ export function forkJoin<A extends readonly unknown[], R>(
 // forkJoin(a, b, c)
 /** @deprecated Use the version that takes an array of Observables instead, Details https://rxjs.dev/deprecations/array-argument */
 export function forkJoin<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
-/** @deprecated resultSelector is deprecated, pipe to map instead */
+/** @deprecated Use the version that takes an array of Observables instead, Details https://rxjs.dev/deprecations/array-argument */
 export function forkJoin<A extends readonly unknown[], R>(
   ...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]
 ): Observable<R>;
