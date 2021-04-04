@@ -11,8 +11,8 @@ const eventTargetMethods = ['addEventListener', 'removeEventListener'] as const;
 const jqueryMethods = ['on', 'off'] as const;
 
 export interface NodeStyleEventEmitter {
-  addListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
-  removeListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
+  addListener(eventName: string | symbol, handler: NodeEventHandler): this;
+  removeListener(eventName: string | symbol, handler: NodeEventHandler): this;
 }
 
 export type NodeEventHandler = (...args: any[]) => void;
@@ -21,15 +21,15 @@ export type NodeEventHandler = (...args: any[]) => void;
 // not use the same arguments or return EventEmitter values
 // such as React Native
 export interface NodeCompatibleEventEmitter {
-  addListener: (eventName: string, handler: NodeEventHandler) => void | {};
-  removeListener: (eventName: string, handler: NodeEventHandler) => void | {};
+  addListener(eventName: string, handler: NodeEventHandler): void | {};
+  removeListener(eventName: string, handler: NodeEventHandler): void | {};
 }
 
 // Use handler types like those in @types/jquery. See:
 // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/847731ba1d7fa6db6b911c0e43aa0afe596e7723/types/jquery/misc.d.ts#L6395
 export interface JQueryStyleEventEmitter<TContext, T> {
-  on: (eventName: string, handler: (this: TContext, t: T, ...args: any[]) => any) => void;
-  off: (eventName: string, handler: (this: TContext, t: T, ...args: any[]) => any) => void;
+  on(eventName: string, handler: (this: TContext, t: T, ...args: any[]) => any): void;
+  off(eventName: string, handler: (this: TContext, t: T, ...args: any[]) => any): void;
 }
 
 export interface EventListenerObject<E> {
