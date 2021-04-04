@@ -14,11 +14,19 @@ it('should support an event target source', () => {
   const a = fromEvent(eventTargetSource, "click"); // $ExpectType Observable<Event>
 });
 
+it('should support an event target source result selector', () => {
+  const a = fromEvent(eventTargetSource, "click", () => "clunk"); // $ExpectType Observable<string>
+});
+
 declare const documentSource: HTMLDocument;
 
 it('should support a document source', () => {
   const source: HasEventTargetAddRemove<Event> = documentSource;
   const a = fromEvent(documentSource, "click"); // $ExpectType Observable<Event>
+});
+
+it('should support a document source result selector', () => {
+  const a = fromEvent(documentSource, "click", () => "clunk"); // $ExpectType Observable<string>
 });
 
 // Pick the parts that will match NodeStyleEventEmitter. If this isn't done, it
@@ -28,8 +36,12 @@ declare const nodeStyleSource: Pick<typeof process, 'addListener' | 'removeListe
 
 it('should support a node-style source', () => {
   const source: NodeStyleEventEmitter = nodeStyleSource;
-  const a = fromEvent(nodeStyleSource, "something"); // $ExpectType Observable<unknown>
-  const b = fromEvent<B>(nodeStyleSource, "something"); // $ExpectType Observable<B>
+  const a = fromEvent(nodeStyleSource, "exit"); // $ExpectType Observable<unknown>
+  const b = fromEvent<B>(nodeStyleSource, "exit"); // $ExpectType Observable<B>
+});
+
+it('should support a node-style source result selector', () => {
+  const a = fromEvent(nodeStyleSource, "exit", () => "bye"); // $ExpectType Observable<string>
 });
 
 const nodeCompatibleSource = {
@@ -43,6 +55,10 @@ it('should support a node-compatible source', () => {
   const b = fromEvent<B>(nodeCompatibleSource, "something"); // $ExpectType Observable<B>
 });
 
+it('should support a node-compatible source result selector', () => {
+  const a = fromEvent(nodeCompatibleSource, "something", () => "something else"); // $ExpectType Observable<string>
+});
+
 const jQueryStyleSource = {
   on(eventName: "something", handler: (this: any, b: B) => any) {},
   off(eventName: "something", handler: (this: any, b: B) => any) {}
@@ -52,4 +68,8 @@ it('should support a jQuery-style source', () => {
   const source: JQueryStyleEventEmitter<any, any> = jQueryStyleSource;
   const a = fromEvent(jQueryStyleSource, "something"); // $ExpectType Observable<B>
   const b = fromEvent<B>(jQueryStyleSource, "something"); // $ExpectType Observable<B>
+});
+
+it('should support a jQuery-style source result selector', () => {
+  const a = fromEvent(jQueryStyleSource, "something", () => "something else"); // $ExpectType Observable<string>
 });
