@@ -107,7 +107,6 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
             singleValue = value;
           }
         },
-        undefined,
         () => {
           if (hasValue) {
             subscriber.next(singleValue);

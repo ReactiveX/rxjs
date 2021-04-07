@@ -62,7 +62,6 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
               // want to take, we remove the oldest value from the buffer.
               count < buffer.length && buffer.shift();
             },
-            undefined,
             () => {
               // The source completed, we now know what are last values
               // are, emit them in the order they were received.
@@ -71,6 +70,8 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
               }
               subscriber.complete();
             },
+            // Errors are passed through to the consumer
+            undefined,
             () => {
               // During teardown release the values in our buffer.
               buffer = null!;

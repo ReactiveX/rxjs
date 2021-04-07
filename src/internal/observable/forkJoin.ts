@@ -152,7 +152,6 @@ export function forkJoin(...args: any[]): Observable<any> {
             }
             values[sourceIndex] = value;
           },
-          undefined,
           () => {
             if (!--remainingCompletions || !hasValue) {
               if (!remainingEmissions) {

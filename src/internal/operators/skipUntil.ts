@@ -53,7 +53,6 @@ export function skipUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunctio
         skipSubscriber?.unsubscribe();
         taking = true;
       },
-      undefined,
       noop
     );
 

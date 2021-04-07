@@ -52,8 +52,6 @@ export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T,
       new OperatorSubscriber(
         subscriber,
         (value) => currentBuffer.push(value),
-        // Pass all errors to the consumer.
-        undefined,
         () => {
           subscriber.next(currentBuffer);
           subscriber.complete();
@@ -71,8 +69,6 @@ export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T,
           currentBuffer = [];
           subscriber.next(b);
         },
-        // Pass all errors to the consumer.
-        undefined,
         noop
       )
     );

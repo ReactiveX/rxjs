@@ -83,14 +83,13 @@ export function exhaustMap<T, R, O extends ObservableInput<any>>(
         subscriber,
         (outerValue) => {
           if (!innerSub) {
-            innerSub = new OperatorSubscriber(subscriber, undefined, undefined, () => {
+            innerSub = new OperatorSubscriber(subscriber, undefined, () => {
               innerSub = null;
               isComplete && subscriber.complete();
             });
             innerFrom(project(outerValue, index++)).subscribe(innerSub);
           }
         },
-        undefined,
         () => {
           isComplete = true;
           !innerSub && subscriber.complete();

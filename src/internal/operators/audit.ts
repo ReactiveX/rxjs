@@ -81,11 +81,10 @@ export function audit<T>(durationSelector: (value: T) => ObservableInput<any>): 
           lastValue = value;
           if (!durationSubscriber) {
             innerFrom(durationSelector(value)).subscribe(
-              (durationSubscriber = new OperatorSubscriber(subscriber, endDuration, undefined, cleanupDuration))
+              (durationSubscriber = new OperatorSubscriber(subscriber, endDuration, cleanupDuration))
             );
           }
         },
-        undefined,
         () => {
           isComplete = true;
           (!hasValue || !durationSubscriber || durationSubscriber.closed) && subscriber.complete();

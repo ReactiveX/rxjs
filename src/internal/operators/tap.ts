@@ -126,13 +126,13 @@ export function tap<T>(
               tapObserver.next?.(value);
               subscriber.next(value);
             },
-            (err) => {
-              tapObserver.error?.(err);
-              subscriber.error(err);
-            },
             () => {
               tapObserver.complete?.();
               subscriber.complete();
+            },
+            (err) => {
+              tapObserver.error?.(err);
+              subscriber.error(err);
             }
           )
         );

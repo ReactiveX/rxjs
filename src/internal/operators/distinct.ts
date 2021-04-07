@@ -84,6 +84,6 @@ export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: Observab
       })
     );
 
-    flushes?.subscribe(new OperatorSubscriber(subscriber, () => distinctKeys.clear(), undefined, noop));
+    flushes?.subscribe(new OperatorSubscriber(subscriber, () => distinctKeys.clear(), noop));
   });
 }

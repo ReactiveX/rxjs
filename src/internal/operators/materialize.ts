@@ -65,12 +65,12 @@ export function materialize<T>(): OperatorFunction<T, Notification<T> & Observab
         (value) => {
           subscriber.next(Notification.createNext(value));
         },
-        (err) => {
-          subscriber.next(Notification.createError(err));
-          subscriber.complete();
-        },
         () => {
           subscriber.next(Notification.createComplete());
+          subscriber.complete();
+        },
+        (err) => {
+          subscriber.next(Notification.createError(err));
           subscriber.complete();
         }
       )

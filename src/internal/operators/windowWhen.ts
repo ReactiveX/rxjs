@@ -94,7 +94,7 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
       // to capture the subscriber (aka Subscription)
       // so we can clean it up when we close the window
       // and open a new one.
-      closingNotifier.subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openWindow, handleError, openWindow)));
+      closingNotifier.subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openWindow, openWindow, handleError)));
     };
 
     // Start the first window.
@@ -105,12 +105,12 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
       new OperatorSubscriber(
         subscriber,
         (value) => window!.next(value),
-        handleError,
         () => {
           // The source completed, close the window and complete.
           window!.complete();
           subscriber.complete();
         },
+        handleError,
         () => {
           // Be sure to clean up our closing subscription
           // when this tears down.

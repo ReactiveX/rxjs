@@ -110,7 +110,6 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
               // handling the deprecate result selector here. This is because with this architecture
               // it ends up being smaller than using the map operator.
               (innerValue) => subscriber.next(resultSelector ? resultSelector(value, innerValue, outerIndex, innerIndex++) : innerValue),
-              undefined,
               () => {
                 // The inner has completed. Null out the inner subcriber to
                 // free up memory and to signal that we have no inner subscription
@@ -121,7 +120,6 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
             ))
           );
         },
-        undefined,
         () => {
           isComplete = true;
           checkComplete();

@@ -96,17 +96,18 @@ export function debounce<T>(durationSelector: (value: T) => ObservableInput<any>
           lastValue = value;
           // Capture our duration subscriber, so we can unsubscribe it when we're notified
           // and we're going to emit the value.
-          durationSubscriber = new OperatorSubscriber(subscriber, emit, undefined, noop);
+          durationSubscriber = new OperatorSubscriber(subscriber, emit, noop);
           // Subscribe to the duration.
           innerFrom(durationSelector(value)).subscribe(durationSubscriber);
         },
-        undefined,
         () => {
           // Source completed.
           // Emit any pending debounced values then complete
           emit();
           subscriber.complete();
         },
+        // Pass all errors through to consumer
+        undefined,
         () => {
           // Teardown.
           lastValue = durationSubscriber = null;

@@ -102,7 +102,6 @@ export function bufferCount<T>(bufferSize: number, startBufferEvery: number | nu
             }
           }
         },
-        undefined,
         () => {
           // When the source completes, emit all of our
           // active buffers.
@@ -111,6 +110,8 @@ export function bufferCount<T>(bufferSize: number, startBufferEvery: number | nu
           }
           subscriber.complete();
         },
+        // Pass all errors through to consumer.
+        undefined,
         () => {
           // Clean up our memory when we teardown
           buffers = null!;

@@ -67,7 +67,7 @@ export function repeat<T>(count = Infinity): MonoTypeOperatorFunction<T> {
         const subscribeForRepeat = () => {
           let syncUnsub = false;
           innerSub = source.subscribe(
-            new OperatorSubscriber(subscriber, undefined, undefined, () => {
+            new OperatorSubscriber(subscriber, undefined, () => {
               if (++soFar < count) {
                 if (innerSub) {
                   innerSub.unsubscribe();

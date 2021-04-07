@@ -84,13 +84,13 @@ export function mergeInternals<T, R>(
             subscriber.next(innerValue);
           }
         },
-        // Errors are passed to the destination.
-        undefined,
         () => {
           // Flag that we have completed, so we know to check the buffer
           // during finalization.
           innerComplete = true;
         },
+        // Errors are passed to the destination.
+        undefined,
         () => {
           // During finalization, if the inner completed (it wasn't errored or
           // cancelled), then we want to try the next item in the buffer if
@@ -129,17 +129,11 @@ export function mergeInternals<T, R>(
 
   // Subscribe to our source observable.
   source.subscribe(
-    new OperatorSubscriber(
-      subscriber,
-      outerNext,
-      // Errors are passed through
-      undefined,
-      () => {
-        // Outer completed, make a note of it, and check to see if we can complete everything.
-        isComplete = true;
-        checkComplete();
-      }
-    )
+    new OperatorSubscriber(subscriber, outerNext, () => {
+      // Outer completed, make a note of it, and check to see if we can complete everything.
+      isComplete = true;
+      checkComplete();
+    })
   );
 
   // Additional teardown (for when the destination is torn down).

@@ -104,13 +104,14 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
             activeTask = scheduler.schedule(emitWhenIdle, dueTime);
           }
         },
-        undefined,
         () => {
           // Source completed.
           // Emit any pending debounced values then complete
           emit();
           subscriber.complete();
         },
+        // Pass all errors through to consumer.
+        undefined,
         () => {
           // Teardown.
           lastValue = activeTask = null;
