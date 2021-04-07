@@ -159,7 +159,6 @@ export function fromFetch<T>(
                 abortable = false;
                 subscriber.complete();
               },
-              // Error handling
               handleError
             )
           );
