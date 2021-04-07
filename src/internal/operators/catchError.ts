@@ -112,7 +112,7 @@ export function catchError<T, O extends ObservableInput<any>>(
     let handledResult: Observable<ObservedValueOf<O>>;
 
     innerSub = source.subscribe(
-      new OperatorSubscriber(subscriber, undefined, (err) => {
+      new OperatorSubscriber(subscriber, undefined, undefined, (err) => {
         handledResult = innerFrom(selector(err, catchError(selector)(source)));
         if (innerSub) {
           innerSub.unsubscribe();

@@ -60,6 +60,6 @@ export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T
         subscriber.next(value);
       }
     };
-    notifier.subscribe(new OperatorSubscriber(subscriber, emit, undefined, noop));
+    notifier.subscribe(new OperatorSubscriber(subscriber, emit, noop));
   });
 }

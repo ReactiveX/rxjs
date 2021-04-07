@@ -66,7 +66,7 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
 
     const subscribeForRetryWhen = () => {
       innerSub = source.subscribe(
-        new OperatorSubscriber(subscriber, undefined, (err) => {
+        new OperatorSubscriber(subscriber, undefined, undefined, (err) => {
           if (!errors$) {
             errors$ = new Subject();
             notifier(errors$).subscribe(

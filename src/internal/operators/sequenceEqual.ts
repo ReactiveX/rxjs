@@ -101,7 +101,6 @@ export function sequenceEqual<T>(
             !comparator(a, buffer.shift()!) && emit(false);
           }
         },
-        undefined,
         () => {
           // Or observable completed
           selfState.complete = true;

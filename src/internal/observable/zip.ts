@@ -95,8 +95,6 @@ export function zip(...args: unknown[]): Observable<unknown> {
                   }
                 }
               },
-              // Any error is passed through the result.
-              undefined,
               () => {
                 // This source completed. Mark it as complete so we can check it later
                 // if we have to.

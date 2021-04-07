@@ -91,9 +91,8 @@ export function windowToggle<T, O>(
 
           subscriber.next(window.asObservable());
 
-          closingSubscription.add(closingNotifier.subscribe(new OperatorSubscriber(subscriber, closeWindow, handleError, noop)));
+          closingSubscription.add(closingNotifier.subscribe(new OperatorSubscriber(subscriber, closeWindow, noop, handleError)));
         },
-        undefined,
         noop
       )
     );
@@ -110,7 +109,6 @@ export function windowToggle<T, O>(
             window.next(value);
           }
         },
-        handleError,
         () => {
           // Complete all of our windows before we complete.
           while (0 < windows.length) {
@@ -118,6 +116,7 @@ export function windowToggle<T, O>(
           }
           subscriber.complete();
         },
+        handleError,
         () => {
           // Add this teardown so that all window subjects are
           // disposed of. This way, if a user tries to subscribe

@@ -151,7 +151,6 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
           maxBufferSize <= buffer.length && emit(record);
         }
       },
-      undefined,
       () => {
         // The source completed, emit all of the active
         // buffers we have before we complete.
@@ -162,6 +161,8 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
         subscriber.complete();
         subscriber.unsubscribe();
       },
+      // Pass all errors through to consumer.
+      undefined,
       // Clean up
       () => (bufferRecords = null)
     );

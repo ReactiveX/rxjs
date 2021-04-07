@@ -46,7 +46,6 @@ export function defaultIfEmpty<T, R>(defaultValue: R): OperatorFunction<T, T | R
           hasValue = true;
           subscriber.next(value);
         },
-        undefined,
         () => {
           if (!hasValue) {
             subscriber.next(defaultValue!);

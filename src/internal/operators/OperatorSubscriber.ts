@@ -20,8 +20,8 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
   constructor(
     destination: Subscriber<any>,
     onNext?: (value: T) => void,
-    onError?: (err: any) => void,
     onComplete?: () => void,
+    onError?: (err: any) => void,
     private onFinalize?: () => void
   ) {
     // It's important - for performance reasons - that all of this class's

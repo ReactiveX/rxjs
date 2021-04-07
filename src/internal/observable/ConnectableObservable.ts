@@ -66,13 +66,13 @@ export class ConnectableObservable<T> extends Observable<T> {
           new OperatorSubscriber(
             subject as any,
             undefined,
-            (err) => {
-              this._teardown();
-              subject.error(err);
-            },
             () => {
               this._teardown();
               subject.complete();
+            },
+            (err) => {
+              this._teardown();
+              subject.error(err);
             },
             () => this._teardown()
           )

@@ -49,7 +49,6 @@ export function scanInternals<V, A, S>(
           // Maybe send it to the consumer.
           emitOnNext && subscriber.next(state);
         },
-        undefined,
         // If an onComplete was given, call it, otherwise
         // just pass through the complete notification to the consumer.
         emitBeforeComplete &&

@@ -57,14 +57,13 @@ export function exhaustAll<O extends ObservableInput<any>>(): OperatorFunction<O
         (inner) => {
           if (!innerSub) {
             innerSub = innerFrom(inner).subscribe(
-              new OperatorSubscriber(subscriber, undefined, undefined, () => {
+              new OperatorSubscriber(subscriber, undefined, () => {
                 innerSub = null;
                 isComplete && subscriber.complete();
               })
             );
           }
         },
-        undefined,
         () => {
           isComplete = true;
           !innerSub && subscriber.complete();

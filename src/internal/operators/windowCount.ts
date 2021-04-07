@@ -107,17 +107,17 @@ export function windowCount<T>(windowSize: number, startWindowEvery: number = 0)
             subscriber.next(window.asObservable());
           }
         },
-        (err) => {
-          while (windows.length > 0) {
-            windows.shift()!.error(err);
-          }
-          subscriber.error(err);
-        },
         () => {
           while (windows.length > 0) {
             windows.shift()!.complete();
           }
           subscriber.complete();
+        },
+        (err) => {
+          while (windows.length > 0) {
+            windows.shift()!.error(err);
+          }
+          subscriber.error(err);
         },
         () => {
           starts = null!;
