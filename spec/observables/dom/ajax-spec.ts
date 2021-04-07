@@ -1367,12 +1367,12 @@ x-custom-header: test
 x-headers-are-fun: <whatever/> {"weird": "things"}`);
   });
 
-  describe('with params', () => {
-    it('should allow passing of search params as a dictionary', () => {
+  describe('with queryParams', () => {
+    it('should allow passing of search queryParams as a dictionary', () => {
       ajax({
         method: 'GET',
         url: '/whatever',
-        params: { foo: 'bar', whatever: '123' },
+        queryParams: { foo: 'bar', whatever: '123' },
       }).subscribe();
 
       const mockXHR = MockXMLHttpRequest.mostRecent;
@@ -1385,11 +1385,11 @@ x-headers-are-fun: <whatever/> {"weird": "things"}`);
       expect(mockXHR.url).to.equal('/whatever?foo=bar&whatever=123');
     });
 
-    it('should allow passing of search params as an entries array', () => {
+    it('should allow passing of search queryParams as an entries array', () => {
       ajax({
         method: 'GET',
         url: '/whatever',
-        params: [
+        queryParams: [
           ['foo', 'bar'],
           ['whatever', '123'],
         ],
@@ -1405,11 +1405,11 @@ x-headers-are-fun: <whatever/> {"weird": "things"}`);
       expect(mockXHR.url).to.equal('/whatever?foo=bar&whatever=123');
     });
 
-    it('should allow passing of search params as a string', () => {
+    it('should allow passing of search queryParams as a string', () => {
       ajax({
         method: 'GET',
         url: '/whatever',
-        params: '?foo=bar&whatever=123',
+        queryParams: '?foo=bar&whatever=123',
       }).subscribe();
 
       const mockXHR = MockXMLHttpRequest.mostRecent;
@@ -1422,14 +1422,14 @@ x-headers-are-fun: <whatever/> {"weird": "things"}`);
       expect(mockXHR.url).to.equal('/whatever?foo=bar&whatever=123');
     });
 
-    it('should allow passing of search params as a URLSearchParams object', () => {
-      const params = new URLSearchParams();
-      params.set('foo', 'bar');
-      params.set('whatever', '123');
+    it('should allow passing of search queryParams as a URLSearchParams object', () => {
+      const queryParams = new URLSearchParams();
+      queryParams.set('foo', 'bar');
+      queryParams.set('whatever', '123');
       ajax({
         method: 'GET',
         url: '/whatever',
-        params,
+        queryParams,
       }).subscribe();
 
       const mockXHR = MockXMLHttpRequest.mostRecent;
@@ -1446,7 +1446,7 @@ x-headers-are-fun: <whatever/> {"weird": "things"}`);
       ajax({
         method: 'GET',
         url: '/whatever?jays_face=is+a+param&lol=haha',
-        params: { foo: 'bar', whatever: '123' },
+        queryParams: { foo: 'bar', whatever: '123' },
       }).subscribe();
 
       const mockXHR = MockXMLHttpRequest.mostRecent;
@@ -1463,7 +1463,7 @@ x-headers-are-fun: <whatever/> {"weird": "things"}`);
       ajax({
         method: 'GET',
         url: '/whatever?terminator=2&uncle_bob=huh',
-        params: { uncle_bob: '...okayyyyyyy', movie_quote: 'yes' },
+        queryParams: { uncle_bob: '...okayyyyyyy', movie_quote: 'yes' },
       }).subscribe();
 
       const mockXHR = MockXMLHttpRequest.mostRecent;
@@ -1480,7 +1480,7 @@ x-headers-are-fun: <whatever/> {"weird": "things"}`);
       ajax({
         method: 'GET',
         url: '/whatever',
-        params: { 'this is a weird param name': '?#* value here rofl !!!' },
+        queryParams: { 'this is a weird param name': '?#* value here rofl !!!' },
       }).subscribe();
 
       const mockXHR = MockXMLHttpRequest.mostRecent;
@@ -1497,7 +1497,7 @@ x-headers-are-fun: <whatever/> {"weird": "things"}`);
       ajax({
         method: 'GET',
         url: '/whatever',
-        params: { a: 123, b: true, c: ['one', 'two', 'three'], d: [1, 3, 3, 7], e: [true, false, true] },
+        queryParams: { a: 123, b: true, c: ['one', 'two', 'three'], d: [1, 3, 3, 7], e: [true, false, true] },
       }).subscribe();
 
       const mockXHR = MockXMLHttpRequest.mostRecent;
@@ -1514,7 +1514,7 @@ x-headers-are-fun: <whatever/> {"weird": "things"}`);
       ajax({
         method: 'GET',
         url: '/whatever',
-        params: [
+        queryParams: [
           ['a', 123],
           ['b', true],
           ['c', ['one', 'two', 'three']],
