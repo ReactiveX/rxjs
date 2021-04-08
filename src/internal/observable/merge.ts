@@ -2,7 +2,6 @@ import { Observable } from '../Observable';
 import { ObservableInput, ObservableInputTuple, SchedulerLike } from '../types';
 import { mergeAll } from '../operators/mergeAll';
 import { internalFromArray } from './fromArray';
-import { argsOrArgArray } from '../util/argsOrArgArray';
 import { innerFrom } from './from';
 import { EMPTY } from './empty';
 import { popNumber, popScheduler } from '../util/args';
@@ -84,7 +83,7 @@ export function merge<A extends readonly unknown[]>(...args: [...ObservableInput
 export function merge(...args: (ObservableInput<unknown> | number | SchedulerLike)[]): Observable<unknown> {
   const scheduler = popScheduler(args);
   const concurrent = popNumber(args, Infinity);
-  const sources = argsOrArgArray(args) as ObservableInput<unknown>[];
+  const sources = args as ObservableInput<unknown>[];
   return !sources.length
     ? // No source provided
       EMPTY
