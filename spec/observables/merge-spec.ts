@@ -282,4 +282,10 @@ describe('merge(...observables, Scheduler, number)', () => {
 
     expect(e1Subscribed).to.be.false;
   });
+
+  it('should deem a single array argument to be an ObservableInput', () => {
+    const array = ['foo', 'bar'];
+    const expected = '(fb|)';
+    expectObservable(merge(array)).toBe(expected, { f: 'foo', b: 'bar' });
+  });
 });
