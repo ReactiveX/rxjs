@@ -49,14 +49,6 @@ export interface HasEventTargetAddRemove<E> {
   ): void;
 }
 
-export type EventTargetLike<T> =
-  | HasEventTargetAddRemove<T>
-  | NodeStyleEventEmitter
-  | NodeCompatibleEventEmitter
-  | JQueryStyleEventEmitter<any, T>;
-
-export type FromEventTarget<T> = EventTargetLike<T> | ArrayLike<EventTargetLike<T>>;
-
 export interface EventListenerOptions {
   capture?: boolean;
   passive?: boolean;
@@ -68,15 +60,54 @@ export interface AddEventListenerOptions extends EventListenerOptions {
   passive?: boolean;
 }
 
-export function fromEvent<T>(target: FromEventTarget<T>, eventName: string): Observable<T>;
-export function fromEvent<T>(target: FromEventTarget<any>, eventName: string, resultSelector: (...args: any[]) => T): Observable<T>;
-export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, options: EventListenerOptions): Observable<T>;
+export function fromEvent<T>(target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>, eventName: string): Observable<T>;
+export function fromEvent<T, R>(
+  target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
+  eventName: string,
+  resultSelector: (event: T) => R
+): Observable<R>;
 export function fromEvent<T>(
-  target: FromEventTarget<any>,
+  target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
+  eventName: string,
+  options: EventListenerOptions
+): Observable<T>;
+export function fromEvent<T, R>(
+  target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
   eventName: string,
   options: EventListenerOptions,
-  resultSelector: (...args: any[]) => T
+  resultSelector: (event: T) => R
 ): Observable<T>;
+
+/** @deprecated type parameters that cannot be inferred will be removed in v8 */
+export function fromEvent<T>(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<T>;
+export function fromEvent(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<unknown>;
+export function fromEvent<R>(
+  target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>,
+  eventName: string,
+  resultSelector: (...args: any[]) => R
+): Observable<R>;
+
+/** @deprecated type parameters that cannot be inferred will be removed in v8 */
+export function fromEvent<T>(target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>, eventName: string): Observable<T>;
+export function fromEvent(
+  target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>,
+  eventName: string
+): Observable<unknown>;
+export function fromEvent<R>(
+  target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>,
+  eventName: string,
+  resultSelector: (...args: any[]) => R
+): Observable<R>;
+
+export function fromEvent<T>(
+  target: JQueryStyleEventEmitter<any, T> | ArrayLike<JQueryStyleEventEmitter<any, T>>,
+  eventName: string
+): Observable<T>;
+export function fromEvent<T, R>(
+  target: JQueryStyleEventEmitter<any, T> | ArrayLike<JQueryStyleEventEmitter<any, T>>,
+  eventName: string,
+  resultSelector: (value: T, ...args: any[]) => R
+): Observable<R>;
 
 /**
  * Creates an Observable that emits events of a specific type coming from the
