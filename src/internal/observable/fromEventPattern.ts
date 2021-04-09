@@ -8,7 +8,6 @@ export function fromEventPattern<T>(
   addHandler: (handler: NodeEventHandler) => any,
   removeHandler?: (handler: NodeEventHandler, signal?: any) => void
 ): Observable<T>;
-/** @deprecated resultSelector no longer supported, pipe to map instead */
 export function fromEventPattern<T>(
   addHandler: (handler: NodeEventHandler) => any,
   removeHandler?: (handler: NodeEventHandler, signal?: any) => void,
@@ -146,7 +145,6 @@ export function fromEventPattern<T>(
   resultSelector?: (...args: any[]) => T
 ): Observable<T | T[]> {
   if (resultSelector) {
-    // DEPRECATED PATH
     return fromEventPattern<T>(addHandler, removeHandler).pipe(mapOneOrManyArgs(resultSelector));
   }
 
