@@ -15,13 +15,13 @@ export function of(value: undefined): Observable<undefined>;
 /** @deprecated The scheduler argument is deprecated, use scheduled. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function of(scheduler: SchedulerLike): Observable<never>;
 /** @deprecated The scheduler argument is deprecated, use scheduled. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function of<A extends readonly unknown[]>(...args: [...A, SchedulerLike]): Observable<ValueFromArray<A>>;
+export function of<A extends readonly unknown[]>(...valuesAndScheduler: [...A, SchedulerLike]): Observable<ValueFromArray<A>>;
 
 export function of(): Observable<never>;
 /** @deprecated remove in v8. Do not use generic arguments directly, allow inference or cast with `as` */
 export function of<T>(): Observable<T>;
 export function of<T>(value: T): Observable<T>;
-export function of<A extends readonly unknown[]>(...args: A): Observable<ValueFromArray<A>>;
+export function of<A extends readonly unknown[]>(...values: A): Observable<ValueFromArray<A>>;
 
 /**
  * Converts the arguments to an observable sequence.

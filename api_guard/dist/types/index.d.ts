@@ -42,13 +42,13 @@ export declare function bindNodeCallback<A extends readonly unknown[], R extends
 
 export declare function combineLatest(sources: []): Observable<never>;
 export declare function combineLatest<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
-export declare function combineLatest<A extends readonly unknown[], R>(sources: readonly [...ObservableInputTuple<A>], resultSelector: (...args: A) => R, scheduler: SchedulerLike): Observable<R>;
-export declare function combineLatest<A extends readonly unknown[], R>(sources: readonly [...ObservableInputTuple<A>], resultSelector: (...args: A) => R): Observable<R>;
+export declare function combineLatest<A extends readonly unknown[], R>(sources: readonly [...ObservableInputTuple<A>], resultSelector: (...values: A) => R, scheduler: SchedulerLike): Observable<R>;
+export declare function combineLatest<A extends readonly unknown[], R>(sources: readonly [...ObservableInputTuple<A>], resultSelector: (...values: A) => R): Observable<R>;
 export declare function combineLatest<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>], scheduler: SchedulerLike): Observable<A>;
 export declare function combineLatest<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
-export declare function combineLatest<A extends readonly unknown[], R>(...args: [...ObservableInputTuple<A>, (...args: A) => R, SchedulerLike]): Observable<R>;
-export declare function combineLatest<A extends readonly unknown[], R>(...args: [...ObservableInputTuple<A>, (...args: A) => R]): Observable<R>;
-export declare function combineLatest<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>, SchedulerLike]): Observable<A>;
+export declare function combineLatest<A extends readonly unknown[], R>(...sourcesAndResultSelectorAndScheduler: [...ObservableInputTuple<A>, (...values: A) => R, SchedulerLike]): Observable<R>;
+export declare function combineLatest<A extends readonly unknown[], R>(...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]): Observable<R>;
+export declare function combineLatest<A extends readonly unknown[]>(...sourcesAndScheduler: [...ObservableInputTuple<A>, SchedulerLike]): Observable<A>;
 export declare function combineLatest(sourcesObject: {
     [K in any]: never;
 }): Observable<never>;
@@ -174,10 +174,10 @@ export declare function isObservable(obj: any): obj is Observable<unknown>;
 
 export declare function lastValueFrom<T>(source: Observable<T>): Promise<T>;
 
-export declare function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>]): Observable<A[number]>;
-export declare function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>, number?]): Observable<A[number]>;
-export declare function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>, SchedulerLike?]): Observable<A[number]>;
-export declare function merge<A extends readonly unknown[]>(...args: [...ObservableInputTuple<A>, number?, SchedulerLike?]): Observable<A[number]>;
+export declare function merge<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
+export declare function merge<A extends readonly unknown[]>(...sourcesAndConcurrency: [...ObservableInputTuple<A>, number?]): Observable<A[number]>;
+export declare function merge<A extends readonly unknown[]>(...sourcesAndScheduler: [...ObservableInputTuple<A>, SchedulerLike?]): Observable<A[number]>;
+export declare function merge<A extends readonly unknown[]>(...sourcesAndConcurrencyAndScheduler: [...ObservableInputTuple<A>, number?, SchedulerLike?]): Observable<A[number]>;
 
 export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> {
 }
@@ -298,11 +298,11 @@ export interface Observer<T> {
 export declare function of(value: null): Observable<null>;
 export declare function of(value: undefined): Observable<undefined>;
 export declare function of(scheduler: SchedulerLike): Observable<never>;
-export declare function of<A extends readonly unknown[]>(...args: [...A, SchedulerLike]): Observable<ValueFromArray<A>>;
+export declare function of<A extends readonly unknown[]>(...valuesAndScheduler: [...A, SchedulerLike]): Observable<ValueFromArray<A>>;
 export declare function of(): Observable<never>;
 export declare function of<T>(): Observable<T>;
 export declare function of<T>(value: T): Observable<T>;
-export declare function of<A extends readonly unknown[]>(...args: A): Observable<ValueFromArray<A>>;
+export declare function of<A extends readonly unknown[]>(...values: A): Observable<ValueFromArray<A>>;
 
 export declare function onErrorResumeNext<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
 export declare function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;

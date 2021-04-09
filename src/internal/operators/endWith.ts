@@ -7,9 +7,11 @@ import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ValueFromArr
 /** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function endWith<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;
 /** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function endWith<T, A extends unknown[] = T[]>(...args: [...A, SchedulerLike]): OperatorFunction<T, T | ValueFromArray<A>>;
+export function endWith<T, A extends unknown[] = T[]>(
+  ...valuesAndScheduler: [...A, SchedulerLike]
+): OperatorFunction<T, T | ValueFromArray<A>>;
 
-export function endWith<T, A extends unknown[] = T[]>(...args: A): OperatorFunction<T, T | ValueFromArray<A>>;
+export function endWith<T, A extends unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
 /**
  * Returns an observable that will emit all values from the source, then synchronously emit
