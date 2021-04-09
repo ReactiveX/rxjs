@@ -142,9 +142,9 @@ export declare function from<O extends ObservableInput<any>>(input: O): Observab
 export declare function from<O extends ObservableInput<any>>(input: O, scheduler: SchedulerLike): Observable<ObservedValueOf<O>>;
 
 export declare function fromEvent<T>(target: FromEventTarget<T>, eventName: string): Observable<T>;
-export declare function fromEvent<T>(target: FromEventTarget<T>, eventName: string, resultSelector?: (...args: any[]) => T): Observable<T>;
-export declare function fromEvent<T>(target: FromEventTarget<T>, eventName: string, options?: EventListenerOptions): Observable<T>;
-export declare function fromEvent<T>(target: FromEventTarget<T>, eventName: string, options: EventListenerOptions, resultSelector: (...args: any[]) => T): Observable<T>;
+export declare function fromEvent<T>(target: FromEventTarget<any>, eventName: string, resultSelector: (...args: any[]) => T): Observable<T>;
+export declare function fromEvent<T>(target: FromEventTarget<T>, eventName: string, options: EventListenerOptions): Observable<T>;
+export declare function fromEvent<T>(target: FromEventTarget<any>, eventName: string, options: EventListenerOptions, resultSelector: (...args: any[]) => T): Observable<T>;
 
 export declare function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => any, removeHandler?: (handler: NodeEventHandler, signal?: any) => void): Observable<T>;
 export declare function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => any, removeHandler?: (handler: NodeEventHandler, signal?: any) => void, resultSelector?: (...args: any[]) => T): Observable<T>;

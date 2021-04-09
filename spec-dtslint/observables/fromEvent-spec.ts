@@ -1,44 +1,75 @@
 import { fromEvent } from 'rxjs';
-import { JQueryStyleEventEmitter } from '../../src/internal/observable/fromEvent';
-import { A, B } from '../helpers';
+import {
+  HasEventTargetAddRemove,
+  NodeStyleEventEmitter,
+  NodeCompatibleEventEmitter,
+  JQueryStyleEventEmitter
+} from '../../src/internal/observable/fromEvent';
+import { B } from '../helpers';
 
 declare const eventTargetSource: EventTarget;
 
 it('should support an event target source', () => {
+  const source: HasEventTargetAddRemove<Event> = eventTargetSource;
   const a = fromEvent(eventTargetSource, "click"); // $ExpectType Observable<Event>
+});
+
+it('should support an event target source result selector', () => {
+  const a = fromEvent(eventTargetSource, "click", () => "clunk"); // $ExpectType Observable<string>
 });
 
 declare const documentSource: HTMLDocument;
 
 it('should support a document source', () => {
+  const source: HasEventTargetAddRemove<Event> = documentSource;
   const a = fromEvent(documentSource, "click"); // $ExpectType Observable<Event>
 });
 
-interface NodeStyleSource {
-  addListener: (eventName: string | symbol, handler: (...args: any[]) => void) => this;
-  removeListener: (eventName: string | symbol, handler: (...args: any[]) => void) => this;
-};
-
-declare const nodeStyleSource : NodeStyleSource;
-
-it('should support a node-style source', () => {
-  const a = fromEvent(nodeStyleSource, "something"); // $ExpectType Observable<unknown>
-  const b = fromEvent<B>(nodeStyleSource, "something"); // $ExpectType Observable<B>
+it('should support a document source result selector', () => {
+  const a = fromEvent(documentSource, "click", () => "clunk"); // $ExpectType Observable<string>
 });
 
-declare const nodeCompatibleSource: {
-  addListener: (eventName: string, handler: (...args: any[]) => void) => void;
-  removeListener: (eventName: string, handler: (...args: any[]) => void) => void;
+// Pick the parts that will match NodeStyleEventEmitter. If this isn't done, it
+// will match JQueryStyleEventEmitter - because of the `on` and `off` methods -
+// despite the latter being declared last in the EventTargetLike union.
+declare const nodeStyleSource: Pick<typeof process, 'addListener' | 'removeListener'>;
+
+it('should support a node-style source', () => {
+  const source: NodeStyleEventEmitter = nodeStyleSource;
+  const a = fromEvent(nodeStyleSource, "exit"); // $ExpectType Observable<unknown>
+  const b = fromEvent<B>(nodeStyleSource, "exit"); // $ExpectType Observable<B>
+});
+
+it('should support a node-style source result selector', () => {
+  const a = fromEvent(nodeStyleSource, "exit", () => "bye"); // $ExpectType Observable<string>
+});
+
+const nodeCompatibleSource = {
+  addListener(eventName: "something", handler: () => void) {},
+  removeListener(eventName: "something", handler: () => void) {}
 };
 
 it('should support a node-compatible source', () => {
+  const source: NodeCompatibleEventEmitter = nodeCompatibleSource;
   const a = fromEvent(nodeCompatibleSource, "something"); // $ExpectType Observable<unknown>
   const b = fromEvent<B>(nodeCompatibleSource, "something"); // $ExpectType Observable<B>
 });
 
-declare const jQueryStyleSource: JQueryStyleEventEmitter<A, B>;
+it('should support a node-compatible source result selector', () => {
+  const a = fromEvent(nodeCompatibleSource, "something", () => "something else"); // $ExpectType Observable<string>
+});
+
+const jQueryStyleSource = {
+  on(eventName: "something", handler: (this: any, b: B) => any) {},
+  off(eventName: "something", handler: (this: any, b: B) => any) {}
+};
 
 it('should support a jQuery-style source', () => {
+  const source: JQueryStyleEventEmitter<any, any> = jQueryStyleSource;
   const a = fromEvent(jQueryStyleSource, "something"); // $ExpectType Observable<B>
   const b = fromEvent<B>(jQueryStyleSource, "something"); // $ExpectType Observable<B>
+});
+
+it('should support a jQuery-style source result selector', () => {
+  const a = fromEvent(jQueryStyleSource, "something", () => "something else"); // $ExpectType Observable<string>
 });
