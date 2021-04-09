@@ -16,7 +16,7 @@ describe('lastValueFrom', () => {
 
   it('should support a default value', async () => {
     const source = EMPTY;
-    const result = await lastValueFrom(source, 0);
+    const result = await lastValueFrom(source, { defaultValue: 0 });
     expect(result).to.equal(0);
   });
 

@@ -2,7 +2,11 @@ import { Observable } from './Observable';
 import { EmptyError } from './util/EmptyError';
 import { SafeSubscriber } from './Subscriber';
 
-export function firstValueFrom<T, D>(source: Observable<T>, defaultValue: D): Promise<T | D>;
+export interface FirstValueFromConfig<T> {
+  defaultValue: T;
+}
+
+export function firstValueFrom<T, D>(source: Observable<T>, config: FirstValueFromConfig<D>): Promise<T | D>;
 export function firstValueFrom<T>(source: Observable<T>): Promise<T>;
 
 /**
@@ -45,10 +49,10 @@ export function firstValueFrom<T>(source: Observable<T>): Promise<T>;
  * ```
  *
  * @param source the observable to convert to a promise
- * @param defaultValue the value to use if the source completes without emitting a value
+ * @param config a configuration object to define the `defaultValue` to use if the source completes without emitting a value
  */
-export function firstValueFrom<T, D>(source: Observable<T>, defaultValue?: D) {
-  const hasDefaultValue = arguments.length >= 2;
+export function firstValueFrom<T, D>(source: Observable<T>, config?: FirstValueFromConfig<D>) {
+  const hasConfig = arguments.length >= 2;
   return new Promise<T | D>((resolve, reject) => {
     const subscriber = new SafeSubscriber<T>({
       next: (value) => {
@@ -57,8 +61,8 @@ export function firstValueFrom<T, D>(source: Observable<T>, defaultValue?: D) {
       },
       error: reject,
       complete: () => {
-        if (hasDefaultValue) {
-          resolve(defaultValue!);
+        if (hasConfig) {
+          resolve(config!.defaultValue);
         } else {
           reject(new EmptyError());
         }

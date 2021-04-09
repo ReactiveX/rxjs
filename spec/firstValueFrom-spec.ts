@@ -13,7 +13,7 @@ describe('firstValueFrom', () => {
 
   it('should support a default value', async () => {
     const source = EMPTY;
-    const result = await firstValueFrom(source, 0);
+    const result = await firstValueFrom(source, { defaultValue: 0 });
     expect(result).to.equal(0);
   });
 
