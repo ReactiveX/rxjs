@@ -16,7 +16,6 @@ export function bindCallbackInternals(
     if (isScheduler(resultSelector)) {
       scheduler = resultSelector;
     } else {
-      // DEPRECATED PATH
       // The user provided a result selector.
       return function (this: any, ...args: any[]) {
         return (bindCallbackInternals(isNodeStyle, callbackFunc, scheduler) as any)
