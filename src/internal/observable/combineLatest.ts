@@ -36,7 +36,7 @@ export function combineLatest<A extends readonly unknown[]>(...sources: [...Obse
 export function combineLatest<A extends readonly unknown[], R>(
   ...sourcesAndResultSelectorAndScheduler: [...ObservableInputTuple<A>, (...values: A) => R, SchedulerLike]
 ): Observable<R>;
-/** @deprecated Use the version that takes an array of Observables instead */
+/** @deprecated Use the version that takes an array of Observables instead. (e.g. `combineLatest([a$, b$], (a, b) => a + b)`) */
 export function combineLatest<A extends readonly unknown[], R>(
   ...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]
 ): Observable<R>;
