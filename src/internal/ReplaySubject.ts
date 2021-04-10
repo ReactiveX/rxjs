@@ -35,8 +35,8 @@ import { dateTimestampProvider } from './scheduler/dateTimestampProvider';
  * @see {@link shareReplay}
  */
 export class ReplaySubject<T> extends Subject<T> {
-  private buffer: (T | number)[] = [];
-  private infiniteTimeWindow = true;
+  private _buffer: (T | number)[] = [];
+  private _infiniteTimeWindow = true;
 
   /**
    * @param bufferSize The size of the buffer to replay on subscription
@@ -45,38 +45,38 @@ export class ReplaySubject<T> extends Subject<T> {
    * calculate the amount of time something has been buffered.
    */
   constructor(
-    private bufferSize = Infinity,
-    private windowTime = Infinity,
-    private timestampProvider: TimestampProvider = dateTimestampProvider
+    private _bufferSize = Infinity,
+    private _windowTime = Infinity,
+    private _timestampProvider: TimestampProvider = dateTimestampProvider
   ) {
     super();
-    this.infiniteTimeWindow = windowTime === Infinity;
-    this.bufferSize = Math.max(1, bufferSize);
-    this.windowTime = Math.max(1, windowTime);
+    this._infiniteTimeWindow = _windowTime === Infinity;
+    this._bufferSize = Math.max(1, _bufferSize);
+    this._windowTime = Math.max(1, _windowTime);
   }
 
   next(value: T): void {
-    const { isStopped, buffer, infiniteTimeWindow, timestampProvider, windowTime } = this;
-    if (!isStopped) {
-      buffer.push(value);
-      !infiniteTimeWindow && buffer.push(timestampProvider.now() + windowTime);
+    const { _isStopped, _buffer, _infiniteTimeWindow, _timestampProvider, _windowTime } = this;
+    if (!_isStopped) {
+      _buffer.push(value);
+      !_infiniteTimeWindow && _buffer.push(_timestampProvider.now() + _windowTime);
     }
-    this.trimBuffer();
+    this._trimBuffer();
     super.next(value);
   }
 
-  /** @deprecated Remove in v8. This is an internal implementation detail, do not use. */
+  /** @internal */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
     this._throwIfClosed();
-    this.trimBuffer();
+    this._trimBuffer();
 
     const subscription = this._innerSubscribe(subscriber);
 
-    const { infiniteTimeWindow, buffer } = this;
+    const { _infiniteTimeWindow, _buffer } = this;
     // We use a copy here, so reentrant code does not mutate our array while we're
     // emitting it to a new subscriber.
-    const copy = buffer.slice();
-    for (let i = 0; i < copy.length && !subscriber.closed; i += infiniteTimeWindow ? 1 : 2) {
+    const copy = _buffer.slice();
+    for (let i = 0; i < copy.length && !subscriber.closed; i += _infiniteTimeWindow ? 1 : 2) {
       subscriber.next(copy[i] as T);
     }
 
@@ -85,26 +85,26 @@ export class ReplaySubject<T> extends Subject<T> {
     return subscription;
   }
 
-  private trimBuffer() {
-    const { bufferSize, timestampProvider, buffer, infiniteTimeWindow } = this;
+  private _trimBuffer() {
+    const { _bufferSize, _timestampProvider, _buffer, _infiniteTimeWindow } = this;
     // If we don't have an infinite buffer size, and we're over the length,
     // use splice to truncate the old buffer values off. Note that we have to
     // double the size for instances where we're not using an infinite time window
     // because we're storing the values and the timestamps in the same array.
-    const adjustedBufferSize = (infiniteTimeWindow ? 1 : 2) * bufferSize;
-    bufferSize < Infinity && adjustedBufferSize < buffer.length && buffer.splice(0, buffer.length - adjustedBufferSize);
+    const adjustedBufferSize = (_infiniteTimeWindow ? 1 : 2) * _bufferSize;
+    _bufferSize < Infinity && adjustedBufferSize < _buffer.length && _buffer.splice(0, _buffer.length - adjustedBufferSize);
 
     // Now, if we're not in an infinite time window, remove all values where the time is
     // older than what is allowed.
-    if (!infiniteTimeWindow) {
-      const now = timestampProvider.now();
+    if (!_infiniteTimeWindow) {
+      const now = _timestampProvider.now();
       let last = 0;
       // Search the array for the first timestamp that isn't expired and
       // truncate the buffer up to that point.
-      for (let i = 1; i < buffer.length && (buffer[i] as number) <= now; i += 2) {
+      for (let i = 1; i < _buffer.length && (_buffer[i] as number) <= now; i += 2) {
         last = i;
       }
-      last && buffer.splice(0, last + 1);
+      last && _buffer.splice(0, last + 1);
     }
   }
 }

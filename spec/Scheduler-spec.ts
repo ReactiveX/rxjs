@@ -7,7 +7,7 @@ describe('Scheduler.queue', () => {
   it('should schedule things recursively', () => {
     let call1 = false;
     let call2 = false;
-    (queue as QueueScheduler).active = false;
+    (queue as QueueScheduler)._active = false;
     queue.schedule(() => {
       call1 = true;
       queue.schedule(() => {
@@ -21,7 +21,7 @@ describe('Scheduler.queue', () => {
   it('should schedule things recursively via this.schedule', () => {
     let call1 = false;
     let call2 = false;
-    (queue as QueueScheduler).active = false;
+    (queue as QueueScheduler)._active = false;
     queue.schedule(function (state) {
       call1 = state!.call1;
       call2 = state!.call2;

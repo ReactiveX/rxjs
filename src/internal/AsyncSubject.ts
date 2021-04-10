@@ -8,32 +8,32 @@ import { Subscriber } from './Subscriber';
  * @class AsyncSubject<T>
  */
 export class AsyncSubject<T> extends Subject<T> {
-  private value: T | null = null;
-  private hasValue = false;
-  private isComplete = false;
+  private _value: T | null = null;
+  private _hasValue = false;
+  private _isComplete = false;
 
   protected _checkFinalizedStatuses(subscriber: Subscriber<T>) {
-    const { hasError, hasValue, value, thrownError, isStopped } = this;
-    if (hasError) {
-      subscriber.error(thrownError);
-    } else if (isStopped) {
-      hasValue && subscriber.next(value!);
+    const { _hasError, _hasValue, _value, _thrownError, _isStopped } = this;
+    if (_hasError) {
+      subscriber.error(_thrownError);
+    } else if (_isStopped) {
+      _hasValue && subscriber.next(_value!);
       subscriber.complete();
     }
   }
 
   next(value: T): void {
-    if (!this.isStopped) {
-      this.value = value;
-      this.hasValue = true;
+    if (!this._isStopped) {
+      this._value = value;
+      this._hasValue = true;
     }
   }
 
   complete(): void {
-    const { hasValue, value, isComplete } = this;
-    if (!isComplete) {
-      this.isComplete = true;
-      hasValue && super.next(value!);
+    const { _hasValue, _value, _isComplete } = this;
+    if (!_isComplete) {
+      this._isComplete = true;
+      _hasValue && super.next(_value!);
       super.complete();
     }
   }

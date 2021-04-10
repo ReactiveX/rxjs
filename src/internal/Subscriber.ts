@@ -35,8 +35,8 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     return new SafeSubscriber(next, error, complete);
   }
 
-  protected isStopped: boolean = false;
-  protected destination: Subscriber<any> | Observer<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
+  protected _isStopped: boolean = false;
+  protected _destination: Subscriber<any> | Observer<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
 
   /**
    * @deprecated Do not use directly. There is no reason to directly create an instance of Subscriber. This type is exported for typings reasons.
@@ -44,14 +44,14 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   constructor(destination?: Subscriber<any> | Observer<any>) {
     super();
     if (destination) {
-      this.destination = destination;
+      this._destination = destination;
       // Automatically chain subscriptions together here.
       // if destination is a Subscription, then it is a Subscriber.
       if (isSubscription(destination)) {
         destination.add(this);
       }
     } else {
-      this.destination = EMPTY_OBSERVER;
+      this._destination = EMPTY_OBSERVER;
     }
   }
 
@@ -63,7 +63,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @return {void}
    */
   next(value?: T): void {
-    if (this.isStopped) {
+    if (this._isStopped) {
       handleStoppedNotification(nextNotification(value), this);
     } else {
       this._next(value!);
@@ -78,10 +78,10 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @return {void}
    */
   error(err?: any): void {
-    if (this.isStopped) {
+    if (this._isStopped) {
       handleStoppedNotification(errorNotification(err), this);
     } else {
-      this.isStopped = true;
+      this._isStopped = true;
       this._error(err);
     }
   }
@@ -93,29 +93,29 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @return {void}
    */
   complete(): void {
-    if (this.isStopped) {
+    if (this._isStopped) {
       handleStoppedNotification(COMPLETE_NOTIFICATION, this);
     } else {
-      this.isStopped = true;
+      this._isStopped = true;
       this._complete();
     }
   }
 
   unsubscribe(): void {
     if (!this.closed) {
-      this.isStopped = true;
+      this._isStopped = true;
       super.unsubscribe();
-      this.destination = null!;
+      this._destination = null!;
     }
   }
 
   protected _next(value: T): void {
-    this.destination.next(value);
+    this._destination.next(value);
   }
 
   protected _error(err: any): void {
     try {
-      this.destination.error(err);
+      this._destination.error(err);
     } finally {
       this.unsubscribe();
     }
@@ -123,7 +123,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
 
   protected _complete(): void {
     try {
-      this.destination.complete();
+      this._destination.complete();
     } finally {
       this.unsubscribe();
     }
@@ -167,7 +167,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
 
     // Once we set the destination, the superclass `Subscriber` will
     // do it's magic in the `_next`, `_error`, and `_complete` methods.
-    this.destination = {
+    this._destination = {
       next: next ? wrapForErrorHandling(next, this) : noop,
       error: wrapForErrorHandling(error ?? defaultErrorHandler, this),
       complete: complete ? wrapForErrorHandling(complete, this) : noop,

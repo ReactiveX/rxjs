@@ -1212,7 +1212,7 @@ describe('Observable.lift', () => {
     class LogSubscriber<T> extends Subscriber<T> {
       next(value?: T): void {
         log.push('next ' + value);
-        if (!this.isStopped) {
+        if (!this._isStopped) {
           this._next(value!);
         }
       }

@@ -250,7 +250,7 @@ export class Observable<T> implements Subscribable<T> {
     return subscriber;
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal */
   protected _trySubscribe(sink: Subscriber<T>): TeardownLogic {
     try {
       return this._subscribe(sink);

@@ -4,9 +4,7 @@ import { SchedulerAction } from '../types';
 import { immediateProvider } from './immediateProvider';
 
 export class AsapAction<T> extends AsyncAction<T> {
-
-  constructor(protected scheduler: AsapScheduler,
-              protected work: (this: SchedulerAction<T>, state?: T) => void) {
+  constructor(protected scheduler: AsapScheduler, protected work: (this: SchedulerAction<T>, state?: T) => void) {
     super(scheduler, work);
   }
 
@@ -20,9 +18,7 @@ export class AsapAction<T> extends AsyncAction<T> {
     // If a microtask has already been scheduled, don't schedule another
     // one. If a microtask hasn't been scheduled yet, schedule one now. Return
     // the current scheduled microtask id.
-    return scheduler.scheduled || (scheduler.scheduled = immediateProvider.setImmediate(
-      scheduler.flush.bind(scheduler, undefined)
-    ));
+    return scheduler._scheduled || (scheduler._scheduled = immediateProvider.setImmediate(scheduler.flush.bind(scheduler, undefined)));
   }
   protected recycleAsyncId(scheduler: AsapScheduler, id?: any, delay: number = 0): any {
     // If delay exists and is greater than 0, or if the delay is null (the
@@ -36,7 +32,7 @@ export class AsapAction<T> extends AsyncAction<T> {
     // its own.
     if (scheduler.actions.length === 0) {
       immediateProvider.clearImmediate(id);
-      scheduler.scheduled = undefined;
+      scheduler._scheduled = undefined;
     }
     // Return undefined so the action knows to request a new async id if it's rescheduled.
     return undefined;
