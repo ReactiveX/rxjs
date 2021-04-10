@@ -40,6 +40,12 @@ it('should support a node-style source', () => {
   const b = fromEvent<B>(nodeStyleSource, "exit"); // $ExpectType Observable<B>
 });
 
+it('should deprecate explicit type parameters for a node-style source', () => {
+  const source: NodeStyleEventEmitter = nodeStyleSource;
+  const a = fromEvent(nodeStyleSource, "exit"); // $ExpectNoDeprecation
+  const b = fromEvent<B>(nodeStyleSource, "exit"); // $ExpectDeprecation
+});
+
 it('should support a node-style source result selector', () => {
   const a = fromEvent(nodeStyleSource, "exit", () => "bye"); // $ExpectType Observable<string>
 });
@@ -53,6 +59,12 @@ it('should support a node-compatible source', () => {
   const source: NodeCompatibleEventEmitter = nodeCompatibleSource;
   const a = fromEvent(nodeCompatibleSource, "something"); // $ExpectType Observable<unknown>
   const b = fromEvent<B>(nodeCompatibleSource, "something"); // $ExpectType Observable<B>
+});
+
+it('should deprecate explicit type parameters for a node-compatible source', () => {
+  const source: NodeCompatibleEventEmitter = nodeCompatibleSource;
+  const a = fromEvent(nodeCompatibleSource, "something"); // $ExpectNoDeprecation
+  const b = fromEvent<B>(nodeCompatibleSource, "something"); // $ExpectDeprecation
 });
 
 it('should support a node-compatible source result selector', () => {

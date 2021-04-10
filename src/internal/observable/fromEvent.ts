@@ -78,21 +78,21 @@ export function fromEvent<T, R>(
   resultSelector: (event: T) => R
 ): Observable<T>;
 
+export function fromEvent(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<unknown>;
 /** @deprecated type parameters that cannot be inferred will be removed in v8 */
 export function fromEvent<T>(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<T>;
-export function fromEvent(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<unknown>;
 export function fromEvent<R>(
   target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>,
   eventName: string,
   resultSelector: (...args: any[]) => R
 ): Observable<R>;
 
-/** @deprecated type parameters that cannot be inferred will be removed in v8 */
-export function fromEvent<T>(target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>, eventName: string): Observable<T>;
 export function fromEvent(
   target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>,
   eventName: string
 ): Observable<unknown>;
+/** @deprecated type parameters that cannot be inferred will be removed in v8 */
+export function fromEvent<T>(target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>, eventName: string): Observable<T>;
 export function fromEvent<R>(
   target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>,
   eventName: string,
