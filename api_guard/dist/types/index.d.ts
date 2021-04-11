@@ -21,7 +21,7 @@ export declare const async: AsyncScheduler;
 export declare const asyncScheduler: AsyncScheduler;
 
 export declare class AsyncSubject<T> extends Subject<T> {
-    protected _checkFinalizedStatuses(subscriber: Subscriber<T>): void;
+    _checkFinalizedStatuses(subscriber: Subscriber<T>): void;
     complete(): void;
     next(value: T): void;
 }
@@ -29,7 +29,7 @@ export declare class AsyncSubject<T> extends Subject<T> {
 export declare class BehaviorSubject<T> extends Subject<T> {
     get value(): T;
     constructor(_value: T);
-    protected _subscribe(subscriber: Subscriber<T>): Subscription;
+    _subscribe(subscriber: Subscriber<T>): Subscription;
     getValue(): T;
     next(value: T): void;
 }
@@ -88,7 +88,7 @@ export declare class ConnectableObservable<T> extends Observable<T> {
     source: Observable<T>;
     protected subjectFactory: () => Subject<T>;
     constructor(source: Observable<T>, subjectFactory: () => Subject<T>);
-    protected _subscribe(subscriber: Subscriber<T>): Subscription;
+    _subscribe(subscriber: Subscriber<T>): Subscription;
     protected _teardown(): void;
     connect(): Subscription;
     protected getSubject(): Subject<T>;
@@ -253,14 +253,14 @@ export declare const ObjectUnsubscribedError: ObjectUnsubscribedErrorCtor;
 export declare const observable: string | symbol;
 
 export declare class Observable<T> implements Subscribable<T> {
-    protected operator: Operator<any, T> | undefined;
-    protected source: Observable<any> | undefined;
+    operator: Operator<any, T> | undefined;
+    source: Observable<any> | undefined;
     constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic);
-    protected _subscribe(subscriber: Subscriber<any>): TeardownLogic;
-    protected _trySubscribe(sink: Subscriber<T>): TeardownLogic;
+    _subscribe(subscriber: Subscriber<any>): TeardownLogic;
+    _trySubscribe(sink: Subscriber<T>): TeardownLogic;
     forEach(next: (value: T) => void): Promise<void>;
     forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
-    protected lift<R>(operator?: Operator<T, R>): Observable<R>;
+    lift<R>(operator?: Operator<T, R>): Observable<R>;
     pipe(): Observable<T>;
     pipe<A>(op1: OperatorFunction<T, A>): Observable<A>;
     pipe<A, B>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>): Observable<B>;
@@ -365,8 +365,8 @@ export interface ReadableStreamLike<T> {
 }
 
 export declare class ReplaySubject<T> extends Subject<T> {
-    constructor(bufferSize?: number, windowTime?: number, timestampProvider?: TimestampProvider);
-    protected _subscribe(subscriber: Subscriber<T>): Subscription;
+    constructor(_bufferSize?: number, _windowTime?: number, _timestampProvider?: TimestampProvider);
+    _subscribe(subscriber: Subscriber<T>): Subscription;
     next(value: T): void;
 }
 
@@ -393,17 +393,17 @@ export interface SequenceError extends Error {
 export declare const SequenceError: SequenceErrorCtor;
 
 export declare class Subject<T> extends Observable<T> implements SubscriptionLike {
+    _hasError: boolean;
+    _isStopped: boolean;
+    _observers: Observer<T>[];
+    _thrownError: any;
     closed: boolean;
-    hasError: boolean;
-    isStopped: boolean;
-    observers: Observer<T>[];
-    thrownError: any;
     constructor();
-    protected _checkFinalizedStatuses(subscriber: Subscriber<any>): void;
-    protected _innerSubscribe(subscriber: Subscriber<any>): Subscription;
-    protected _subscribe(subscriber: Subscriber<T>): Subscription;
-    protected _throwIfClosed(): void;
-    protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic;
+    _checkFinalizedStatuses(subscriber: Subscriber<any>): void;
+    _innerSubscribe(subscriber: Subscriber<any>): Subscription;
+    _subscribe(subscriber: Subscriber<T>): Subscription;
+    _throwIfClosed(): void;
+    _trySubscribe(subscriber: Subscriber<T>): TeardownLogic;
     asObservable(): Observable<T>;
     complete(): void;
     error(err: any): void;
@@ -423,8 +423,8 @@ export interface Subscribable<T> {
 export declare type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | InteropObservable<T>;
 
 export declare class Subscriber<T> extends Subscription implements Observer<T> {
-    protected destination: Subscriber<any> | Observer<any>;
-    protected isStopped: boolean;
+    protected _destination: Subscriber<any> | Observer<any>;
+    protected _isStopped: boolean;
     constructor(destination?: Subscriber<any> | Observer<any>);
     protected _complete(): void;
     protected _error(err: any): void;
