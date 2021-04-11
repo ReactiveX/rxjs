@@ -68,7 +68,7 @@ import { interval } from 'rxjs';
 const observable = interval(1000 /* number of milliseconds */);
 ```
 
-See the list of [all static creation operators here](#creation-operators-list).
+See the list of all static creation operators [here](#creation-operators-list).
 
 ## Higher-order Observables
 
