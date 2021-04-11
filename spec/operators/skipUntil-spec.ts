@@ -47,13 +47,17 @@ describe('skipUntil', () => {
 
     of('a', 'b')
       .pipe(skipUntil(of('x')))
-      .subscribe(
-        (value) => values.push(value),
-        (err) => {
+      .subscribe({
+        next(value) {
+          values.push(value);
+        },
+        error(err) {
           throw err;
         },
-        () => expect(values).to.deep.equal(['a', 'b'])
-      );
+        complete() {
+          expect(values).to.deep.equal(['a', 'b']);
+        },
+      });
   });
 
   it('should raise an error if notifier throws and source is hot', () => {
