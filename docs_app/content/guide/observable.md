@@ -387,7 +387,7 @@ When `observable.subscribe` is called, the Observer gets attached to the newly c
 const subscription = observable.subscribe(x => console.log(x));
 ```
 
-The Subscription represents the ongoing execution, and has a minimal API which allows you to cancel that execution. Read more about the [`Subscription` type here](./guide/subscription). With `subscription.unsubscribe()` you can cancel the ongoing execution:
+The Subscription represents the ongoing execution, and has a minimal API which allows you to cancel that execution. Read more about the [`Subscription` type](./guide/subscription). With `subscription.unsubscribe()` you can cancel the ongoing execution:
 
 ```ts
 import { from } from 'rxjs';
