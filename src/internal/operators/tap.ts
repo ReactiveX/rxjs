@@ -58,7 +58,7 @@ export function tap<T>(
  * using `tap`.
  *
  * ```ts
- * import { of } from 'rxjs':
+ * import { of } from 'rxjs';
  * import { tap } from 'rxjs/operators';
  *
  * const source = of(1, 2, 3, 4, 5)
@@ -81,16 +81,16 @@ export function tap<T>(
  *
  * ```ts
  * import { of, interval } from 'rxjs';
- * import { tap, concatMap, take } from 'rxjs';
+ * import { tap, map, concatMap, take } from 'rxjs/operators';
  *
  *
  * of(1, 2, 3).pipe(
- *  concatMap(n => interval.pipe(
+ *  concatMap(n => interval(1000).pipe(
  *    take(Math.round(Math.random() * 10)),
  *    map(() => 'X'),
- *    tap({
+ *    tap(n => ({
  *      complete: () => console.log(`Done with ${n}`)
- *    })
+ *    }))
  *  ))
  * )
  * .subscribe(console.log);
