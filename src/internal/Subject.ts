@@ -47,7 +47,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   /** @internal */
-  protected _throwIfClosed() {
+  _throwIfClosed() {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
@@ -92,20 +92,20 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   /** @internal */
-  protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
+  _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
     this._throwIfClosed();
     return super._trySubscribe(subscriber);
   }
 
   /** @internal */
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  _subscribe(subscriber: Subscriber<T>): Subscription {
     this._throwIfClosed();
     this._checkFinalizedStatuses(subscriber);
     return this._innerSubscribe(subscriber);
   }
 
   /** @internal */
-  protected _innerSubscribe(subscriber: Subscriber<any>) {
+  _innerSubscribe(subscriber: Subscriber<any>) {
     const { _hasError, _isStopped, _observers } = this;
     return _hasError || _isStopped
       ? EMPTY_SUBSCRIPTION
@@ -113,7 +113,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   /** @internal */
-  protected _checkFinalizedStatuses(subscriber: Subscriber<any>) {
+  _checkFinalizedStatuses(subscriber: Subscriber<any>) {
     const { _hasError, _thrownError, _isStopped } = this;
     if (_hasError) {
       subscriber.error(_thrownError);
@@ -139,7 +139,11 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
  * @class AnonymousSubject<T>
  */
 export class AnonymousSubject<T> extends Subject<T> {
-  constructor(protected _destination?: Observer<T>, source?: Observable<T>) {
+  constructor(
+    /** @internal */
+    public _destination?: Observer<T>,
+    source?: Observable<T>
+  ) {
     super();
     this.source = source;
   }

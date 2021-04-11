@@ -66,7 +66,7 @@ export class ReplaySubject<T> extends Subject<T> {
   }
 
   /** @internal */
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  _subscribe(subscriber: Subscriber<T>): Subscription {
     this._throwIfClosed();
     this._trimBuffer();
 
