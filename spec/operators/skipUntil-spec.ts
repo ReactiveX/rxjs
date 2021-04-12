@@ -299,7 +299,7 @@ describe('skipUntil', () => {
         '               ^----------------!', // for the explicit subscribe some lines below
       ];
       const skip = new Subject<string>();
-      const expected = ' -----------------|';
+      const expected = '-----------------|';
 
       e1.subscribe((x: string) => {
         if (x === 'd' && !skip.closed) {
