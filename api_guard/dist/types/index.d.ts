@@ -238,7 +238,7 @@ export interface ObjectUnsubscribedError extends Error {
 
 export declare const ObjectUnsubscribedError: ObjectUnsubscribedErrorCtor;
 
-export declare const observable: string | SymbolConstructor["observable"];
+export declare const observable: string | symbol;
 
 export declare class Observable<T> implements Subscribable<T> {
     protected operator: Operator<any, T> | undefined;

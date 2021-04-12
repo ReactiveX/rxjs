@@ -4,22 +4,6 @@
 import { Observable } from './Observable';
 import { Subscription } from './Subscription';
 
-/**
- * NOTE: This will add Symbol.observable globally for all TypeScript users,
- * however, we are no longer polyfilling Symbol.observable. Note that this will be at
- * odds with older version of @types/node and symbol-observable which incorrectly define
- * `Symbol.observable` as `symbol` rather than `unique symbol`. "What about not defining
- * this non-standard symbol at all?" you might ask... Well, that ship has sailed. There are
- * dozens of libraries using this symbol now and many of them are quite popular.
- * So here we are, and it's probably my fault. Sorry, "the web", if I have hurt you,
- * the world just needed a standard way to provide interop for these types. -Ben
- */
-declare global {
-  interface SymbolConstructor {
-    readonly observable: unique symbol;
-  }
-}
-
 /** OPERATOR INTERFACES */
 
 export interface UnaryFunction<T, R> {
