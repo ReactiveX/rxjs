@@ -27,7 +27,7 @@ Contents
 
 - Related documents
   - [Creating Operators](docs_app/content/guide/operators.md#creating-custom-operators)
-  - [Writing Marble Tests](docs_app/content/guide/testing/marble-testing.md)
+  - [Writing Marble Tests](docs_app/content/guide/marble-testing.md)
 
 ---
 
@@ -131,7 +131,7 @@ from the main (upstream) repository:
 
 Unit tests are located under the [spec directory](/spec). Unit tests over synchronous operators and operations
 can be written in a standard [chai](https://www.chaijs.com/) style. Unit tests written against any
-asynchronous operator should be written in [Marble Test Style outlined in detail here](docs_app/content/guide/testing/marble-testing.md).
+asynchronous operator should be written in [Marble Test Style outlined in detail here](docs_app/content/guide/marble-testing.md).
 
 Each operator under test must be in its own file to cover the following cases:
 

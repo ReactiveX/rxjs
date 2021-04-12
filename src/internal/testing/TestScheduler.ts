@@ -644,7 +644,7 @@ export class TestScheduler extends VirtualTimeScheduler {
    * is, in 'run mode' there is no need to explicitly pass a `TestScheduler`
    * instance to observable creators or operators.
    *
-   * @see {@link /guide/testing/marble-testing}
+   * [See more](/guide/marble-testing).
    */
   run<T>(callback: (helpers: RunHelpers) => T): T {
     const prevFrameTimeFactor = TestScheduler.frameTimeFactor;
