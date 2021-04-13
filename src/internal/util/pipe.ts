@@ -1,7 +1,6 @@
 import { identity } from './identity';
 import { UnaryFunction } from '../types';
 
-/* tslint:disable:max-line-length */
 export function pipe(): typeof identity;
 export function pipe<T, A>(fn1: UnaryFunction<T, A>): UnaryFunction<T, A>;
 export function pipe<T, A, B>(fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>): UnaryFunction<T, B>;
@@ -68,8 +67,7 @@ export function pipe<T, A, B, C, D, E, F, G, H, I>(
   fn8: UnaryFunction<G, H>,
   fn9: UnaryFunction<H, I>,
   ...fns: UnaryFunction<any, any>[]
-): UnaryFunction<T, {}>;
-/* tslint:enable:max-line-length */
+): UnaryFunction<T, unknown>;
 
 export function pipe(...fns: Array<UnaryFunction<any, any>>): UnaryFunction<any, any> {
   return pipeFromArray(fns);
