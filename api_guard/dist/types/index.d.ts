@@ -52,6 +52,7 @@ export declare function combineLatest<A extends readonly unknown[]>(...sourcesAn
 export declare function combineLatest(sourcesObject: {
     [K in any]: never;
 }): Observable<never>;
+export declare function combineLatest<T extends AnyCatcher>(arg: T): Observable<unknown>;
 export declare function combineLatest<T extends Record<string, ObservableInput<any>>>(sourcesObject: T): Observable<{
     [K in keyof T]: ObservedValueOf<T[K]>;
 }>;
@@ -134,6 +135,7 @@ export declare function forkJoin<A extends readonly unknown[], R>(...sourcesAndR
 export declare function forkJoin(sourcesObject: {
     [K in any]: never;
 }): Observable<never>;
+export declare function forkJoin<T extends AnyCatcher>(arg: T): Observable<unknown>;
 export declare function forkJoin<T extends Record<string, ObservableInput<any>>>(sourcesObject: T): Observable<{
     [K in keyof T]: ObservedValueOf<T[K]>;
 }>;

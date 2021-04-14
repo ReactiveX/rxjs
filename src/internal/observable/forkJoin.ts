@@ -6,6 +6,7 @@ import { popResultSelector } from '../util/args';
 import { OperatorSubscriber } from '../operators/OperatorSubscriber';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { createObject } from '../util/createObject';
+import { AnyCatcher } from '../AnyCatcher';
 
 export function forkJoin(scheduler: null | undefined): Observable<never>;
 
@@ -27,6 +28,7 @@ export function forkJoin<A extends readonly unknown[], R>(
 
 // forkJoin({a, b, c})
 export function forkJoin(sourcesObject: { [K in any]: never }): Observable<never>;
+export function forkJoin<T extends AnyCatcher>(arg: T): Observable<unknown>;
 export function forkJoin<T extends Record<string, ObservableInput<any>>>(
   sourcesObject: T
 ): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;

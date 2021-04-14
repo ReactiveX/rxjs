@@ -9,6 +9,7 @@ import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { popResultSelector, popScheduler } from '../util/args';
 import { createObject } from '../util/createObject';
 import { OperatorSubscriber } from '../operators/OperatorSubscriber';
+import { AnyCatcher } from '../AnyCatcher';
 
 // combineLatest([a, b, c])
 export function combineLatest(sources: []): Observable<never>;
@@ -47,6 +48,7 @@ export function combineLatest<A extends readonly unknown[]>(
 
 // combineLatest({a, b, c})
 export function combineLatest(sourcesObject: { [K in any]: never }): Observable<never>;
+export function combineLatest<T extends AnyCatcher>(arg: T): Observable<unknown>;
 export function combineLatest<T extends Record<string, ObservableInput<any>>>(
   sourcesObject: T
 ): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;

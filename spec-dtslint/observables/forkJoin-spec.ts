@@ -117,4 +117,9 @@ describe('forkJoin([])', () => {
   it('should force user cast for array of 6+ observables', () => {
     const res = forkJoin([of(1, 2, 3), of('a', 'b', 'c'), of(1, 2, 3), of(1, 2, 3), of(1, 2, 3), of(1, 2, 3), of(1, 2, 3)]); // $ExpectType Observable<[number, string, number, number, number, number, number]>
   });
+
+  it('should return unknown for argument of any', () => {
+    const arg: any = null;
+    const res = forkJoin(arg); // $ExpectType Observable<unknown>
+  })
 });
