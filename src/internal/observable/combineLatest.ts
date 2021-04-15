@@ -11,6 +11,19 @@ import { createObject } from '../util/createObject';
 import { OperatorSubscriber } from '../operators/OperatorSubscriber';
 import { AnyCatcher } from '../AnyCatcher';
 
+// combineLatest(any)
+// We put this first because we need to catch cases where the user has supplied
+// _exactly `any`_ as the argument. Since `any` literally matches _anything_,
+// we don't want it to randomly hit one of the other type signatures below,
+// as we have no idea at build-time what type we should be returning when given an any.
+
+/**
+ * You have passed `any` here, we can't figure out if it is
+ * an array or an object, so you're getting `unknown`. Use better types.
+ * @param arg Something typed as `any`
+ */
+export function combineLatest<T extends AnyCatcher>(arg: T): Observable<unknown>;
+
 // combineLatest([a, b, c])
 export function combineLatest(sources: []): Observable<never>;
 export function combineLatest<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
@@ -48,12 +61,6 @@ export function combineLatest<A extends readonly unknown[]>(
 
 // combineLatest({a, b, c})
 export function combineLatest(sourcesObject: { [K in any]: never }): Observable<never>;
-/**
- * You have passed `any` here, we can't figure out if it is
- * an array or an object, so you're getting `unknown`. Use better types.
- * @param arg Something typed as `any`
- */
-export function combineLatest<T extends AnyCatcher>(arg: T): Observable<unknown>;
 export function combineLatest<T extends Record<string, ObservableInput<any>>>(
   sourcesObject: T
 ): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;

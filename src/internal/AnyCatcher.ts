@@ -6,6 +6,5 @@
  *
  * @internal
  */
-export interface AnyCatcher {
-  readonly ' @@@@@@CATCH_ANY_WITH_THIS@@@@@@': false;
-}
+declare const anyCatcherSymbol: unique symbol;
+export type AnyCatcher = typeof anyCatcherSymbol;
