@@ -1,8 +1,9 @@
 # Subscribe Arguments
 
 You might have seen that we deprecated some signatures of the `subscribe` method, which might have caused some confusion.
-The `subscribe` method itself is not deprecated. We just deprecated some of the signatures to improve readability and 
-API ergonomy. This deprecation also affects the [`tap` operator](../../api/operators/tap), as tap supports the same signature as the `subscribe` method.
+The `subscribe` method itself is not deprecated. This deprecation also affects the [`tap` operator](../../api/operators/tap), as tap supports the same signature as the `subscribe` method.
+
+This is to get ready for a future where we may allow configuration of `subscribe` via the second argument, for things like `AbortSignal` or the like (imagine `source$.subscribe(fn, { signal })`, etc). This deprecation is also because 2-3 function arguments can contribute to harder-to-read code. For example someone could name functions poorly and confuse the next reader: `source$.subscribe(doSomething, doSomethingElse, lol)` With that signature, you have to know unapparent details about `subscribe`, where using a partial observer solves that neatly: `source$.subscribe({ next: doSomething, error: doSomethingElse, complete: lol })`.
 
 <div class="alert is-important">
     <span>
@@ -13,6 +14,8 @@ API ergonomy. This deprecation also affects the [`tap` operator](../../api/opera
 In short we deprecated all signatures where you specified an anonymous `error` or `complete` callback and passed an empty function to one of the callbacks before. 
 
 ## What Signature is affected
+
+**We have deprecated all signatures of `subscribe` that take more than 1 argument.** 
 
 We deprecated signatures for just passing the `complete` callback.
 
