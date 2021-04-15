@@ -147,3 +147,8 @@ describe('combineLatest({})', () => {
     const res = combineLatest(obj); // $ExpectError
   });
 });
+
+it('should take in any and return Observable<unknown> because we do not know if it is an array or object', () => {
+  const arg: any = null;
+  const res = combineLatest(arg); // $ExpectType Observable<unknown>
+});

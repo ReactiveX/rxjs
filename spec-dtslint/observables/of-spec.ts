@@ -137,3 +137,9 @@ it('should deprecate correctly', () => {
   of(a, b, c); // $ExpectNoDeprecation
   of(a, b, c, d); // $ExpectNoDeprecation
 });
+
+it('should handle null and undefined properly', () => {
+  const a = of(undefined); // $ExpectType Observable<undefined>
+  const b = of(null); // $ExpectType Observable<null>
+  const c = [of(1), of(2), of(undefined), of(3)] as const;
+});
