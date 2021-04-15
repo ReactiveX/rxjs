@@ -16,7 +16,7 @@ import { Subscription } from './Subscription';
  */
 declare global {
   interface SymbolConstructor {
-    readonly observable: unique symbol;
+    readonly observable: symbol;
   }
 }
 
