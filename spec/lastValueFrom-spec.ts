@@ -20,6 +20,17 @@ describe('lastValueFrom', () => {
     expect(result).to.equal(0);
   });
 
+  it('should support an undefined config', async () => {
+    const source = EMPTY;
+    let error: any = null;
+    try {
+      await lastValueFrom(source, undefined as any);
+    } catch (err) {
+      error = err;
+    }
+    expect(error).to.be.an.instanceOf(EmptyError);
+  });
+
   it('should error for empty observables', async () => {
     const source = EMPTY;
     let error: any = null;

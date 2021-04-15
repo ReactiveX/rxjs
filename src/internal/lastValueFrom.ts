@@ -51,7 +51,7 @@ export function lastValueFrom<T>(source: Observable<T>): Promise<T>;
  * @param config a configuration object to define the `defaultValue` to use if the source completes without emitting a value
  */
 export function lastValueFrom<T, D>(source: Observable<T>, config?: LastValueFromConfig<D>) {
-  const hasConfig = arguments.length >= 2;
+  const hasConfig = typeof config === 'object';
   return new Promise<T | D>((resolve, reject) => {
     let _hasValue = false;
     let _value: T;
