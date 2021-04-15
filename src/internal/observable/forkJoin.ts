@@ -28,6 +28,11 @@ export function forkJoin<A extends readonly unknown[], R>(
 
 // forkJoin({a, b, c})
 export function forkJoin(sourcesObject: { [K in any]: never }): Observable<never>;
+/**
+ * You have passed `any` here, we can't figure out if it is
+ * an array or an object, so you're getting `unknown`. Use better types.
+ * @param arg Something typed as `any`
+ */
 export function forkJoin<T extends AnyCatcher>(arg: T): Observable<unknown>;
 export function forkJoin<T extends Record<string, ObservableInput<any>>>(
   sourcesObject: T

@@ -48,6 +48,11 @@ export function combineLatest<A extends readonly unknown[]>(
 
 // combineLatest({a, b, c})
 export function combineLatest(sourcesObject: { [K in any]: never }): Observable<never>;
+/**
+ * You have passed `any` here, we can't figure out if it is
+ * an array or an object, so you're getting `unknown`. Use better types.
+ * @param arg Something typed as `any`
+ */
 export function combineLatest<T extends AnyCatcher>(arg: T): Observable<unknown>;
 export function combineLatest<T extends Record<string, ObservableInput<any>>>(
   sourcesObject: T
