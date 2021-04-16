@@ -124,6 +124,7 @@ export declare type FactoryOrValue<T> = T | (() => T);
 
 export declare type Falsy = null | undefined | false | 0 | -0 | 0n | '';
 
+export declare function firstValueFrom<T, D>(source: Observable<T>, config: FirstValueFromConfig<D>): Promise<T | D>;
 export declare function firstValueFrom<T>(source: Observable<T>): Promise<T>;
 
 export declare function forkJoin<T extends AnyCatcher>(arg: T): Observable<unknown>;
@@ -182,6 +183,7 @@ export declare function interval(period?: number, scheduler?: SchedulerLike): Ob
 
 export declare function isObservable(obj: any): obj is Observable<unknown>;
 
+export declare function lastValueFrom<T, D>(source: Observable<T>, config: LastValueFromConfig<D>): Promise<T | D>;
 export declare function lastValueFrom<T>(source: Observable<T>): Promise<T>;
 
 export declare function merge<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
