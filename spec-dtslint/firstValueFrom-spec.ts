@@ -2,7 +2,19 @@ import { firstValueFrom } from 'rxjs';
 import { a$ } from 'helpers';
 
 describe('firstValueFrom', () => {
-  const r0 = firstValueFrom(a$); // $ExpectType Promise<A>
-  const r1 = firstValueFrom(); // $ExpectError
-  const r2 = firstValueFrom(Promise.resolve(42)); // $ExpectError
+  it('should infer the element type', () => {
+    const r = firstValueFrom(a$); // $ExpectType Promise<A>
+  })
+
+  it('should infer the element type from a default value', () => {
+    const r = firstValueFrom(a$, { defaultValue: null }); // $ExpectType Promise<A | null>
+  });
+
+  it('should require an argument', () => {
+    const r = firstValueFrom(); // $ExpectError
+  });
+
+  it('should require an observable argument', () => {
+    const r = firstValueFrom(Promise.resolve(42)); // $ExpectError
+  });
 });

@@ -1,13 +1,21 @@
 import { Observable } from './Observable';
 import { EmptyError } from './util/EmptyError';
 
+export interface LastValueFromConfig<T> {
+  defaultValue: T;
+}
+
+export function lastValueFrom<T, D>(source: Observable<T>, config: LastValueFromConfig<D>): Promise<T | D>;
+export function lastValueFrom<T>(source: Observable<T>): Promise<T>;
+
 /**
  * Converts an observable to a promise by subscribing to the observable,
  * waiting for it to complete, and resolving the returned promise with the
  * last value from the observed stream.
  *
  * If the observable stream completes before any values were emitted, the
- * returned promise will reject with {@link EmptyError}.
+ * returned promise will reject with {@link EmptyError} or will resolve
+ * with the default value if a default was specified.
  *
  * If the observable stream emits an error, the returned promise will reject
  * with that error.
@@ -40,13 +48,15 @@ import { EmptyError } from './util/EmptyError';
  * ```
  *
  * @param source the observable to convert to a promise
+ * @param config a configuration object to define the `defaultValue` to use if the source completes without emitting a value
  */
-export function lastValueFrom<T>(source: Observable<T>) {
-  return new Promise<T>((resolve, reject) => {
+export function lastValueFrom<T, D>(source: Observable<T>, config?: LastValueFromConfig<D>) {
+  const hasConfig = typeof config === 'object';
+  return new Promise<T | D>((resolve, reject) => {
     let _hasValue = false;
     let _value: T;
     source.subscribe({
-      next: value => {
+      next: (value) => {
         _value = value;
         _hasValue = true;
       },
@@ -54,6 +64,8 @@ export function lastValueFrom<T>(source: Observable<T>) {
       complete: () => {
         if (_hasValue) {
           resolve(_value);
+        } else if (hasConfig) {
+          resolve(config!.defaultValue);
         } else {
           reject(new EmptyError());
         }
