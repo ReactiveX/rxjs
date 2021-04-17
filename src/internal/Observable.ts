@@ -255,7 +255,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /** @internal */
-  _trySubscribe(sink: Subscriber<T>): TeardownLogic {
+  protected _trySubscribe(sink: Subscriber<T>): TeardownLogic {
     try {
       return this._subscribe(sink);
     } catch (err) {
@@ -348,7 +348,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /** @internal */
-  _subscribe(subscriber: Subscriber<any>): TeardownLogic {
+  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     return this.source?.subscribe(subscriber);
   }
 

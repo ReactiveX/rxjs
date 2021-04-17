@@ -47,7 +47,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   /** @internal */
-  _throwIfClosed() {
+  protected _throwIfClosed() {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
@@ -92,20 +92,20 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   /** @internal */
-  _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
     this._throwIfClosed();
     return super._trySubscribe(subscriber);
   }
 
   /** @internal */
-  _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription {
     this._throwIfClosed();
     this._checkFinalizedStatuses(subscriber);
     return this._innerSubscribe(subscriber);
   }
 
   /** @internal */
-  _innerSubscribe(subscriber: Subscriber<any>) {
+  protected _innerSubscribe(subscriber: Subscriber<any>) {
     const { hasError, isStopped, observers } = this;
     return hasError || isStopped
       ? EMPTY_SUBSCRIPTION
@@ -113,7 +113,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   /** @internal */
-  _checkFinalizedStatuses(subscriber: Subscriber<any>) {
+  protected _checkFinalizedStatuses(subscriber: Subscriber<any>) {
     const { hasError, thrownError, isStopped } = this;
     if (hasError) {
       subscriber.error(thrownError);
@@ -161,7 +161,7 @@ export class AnonymousSubject<T> extends Subject<T> {
   }
 
   /** @internal */
-  _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription {
     return this.source?.subscribe(subscriber) ?? EMPTY_SUBSCRIPTION;
   }
 }
