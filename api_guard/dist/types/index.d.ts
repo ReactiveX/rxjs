@@ -21,7 +21,6 @@ export declare const async: AsyncScheduler;
 export declare const asyncScheduler: AsyncScheduler;
 
 export declare class AsyncSubject<T> extends Subject<T> {
-    _checkFinalizedStatuses(subscriber: Subscriber<T>): void;
     complete(): void;
     next(value: T): void;
 }
@@ -29,7 +28,6 @@ export declare class AsyncSubject<T> extends Subject<T> {
 export declare class BehaviorSubject<T> extends Subject<T> {
     get value(): T;
     constructor(_value: T);
-    _subscribe(subscriber: Subscriber<T>): Subscription;
     getValue(): T;
     next(value: T): void;
 }
@@ -88,7 +86,6 @@ export declare class ConnectableObservable<T> extends Observable<T> {
     source: Observable<T>;
     protected subjectFactory: () => Subject<T>;
     constructor(source: Observable<T>, subjectFactory: () => Subject<T>);
-    _subscribe(subscriber: Subscriber<T>): Subscription;
     protected _teardown(): void;
     connect(): Subscription;
     protected getSubject(): Subject<T>;
@@ -256,8 +253,6 @@ export declare class Observable<T> implements Subscribable<T> {
     operator: Operator<any, T> | undefined;
     source: Observable<any> | undefined;
     constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic);
-    _subscribe(subscriber: Subscriber<any>): TeardownLogic;
-    _trySubscribe(sink: Subscriber<T>): TeardownLogic;
     forEach(next: (value: T) => void): Promise<void>;
     forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
     lift<R>(operator?: Operator<T, R>): Observable<R>;
@@ -366,7 +361,6 @@ export interface ReadableStreamLike<T> {
 
 export declare class ReplaySubject<T> extends Subject<T> {
     constructor(_bufferSize?: number, _windowTime?: number, _timestampProvider?: TimestampProvider);
-    _subscribe(subscriber: Subscriber<T>): Subscription;
     next(value: T): void;
 }
 
@@ -399,11 +393,6 @@ export declare class Subject<T> extends Observable<T> implements SubscriptionLik
     observers: Observer<T>[];
     thrownError: any;
     constructor();
-    _checkFinalizedStatuses(subscriber: Subscriber<any>): void;
-    _innerSubscribe(subscriber: Subscriber<any>): Subscription;
-    _subscribe(subscriber: Subscriber<T>): Subscription;
-    _throwIfClosed(): void;
-    _trySubscribe(subscriber: Subscriber<T>): TeardownLogic;
     asObservable(): Observable<T>;
     complete(): void;
     error(err: any): void;
