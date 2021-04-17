@@ -19,13 +19,11 @@ import { isFunction } from './util/isFunction';
 export class Observable<T> implements Subscribable<T> {
   /**
    * @deprecated This is an internal implementation detail, do not use.
-   * @internal
    */
   source: Observable<any> | undefined;
 
   /**
    * @deprecated This is an internal implementation detail, do not use.
-   * @internal
    */
   operator: Operator<any, T> | undefined;
 
@@ -66,7 +64,6 @@ export class Observable<T> implements Subscribable<T> {
    * @deprecated This is an internal implementation detail, do not use directly. If you have implemented an operator
    * using `lift`, it is recommended that you create an operator by simply returning `new Observable()` directly.
    * See "Creating new operators from scratch" section here: https://rxjs.dev/guide/operators
-   * @internal
    */
   lift<R>(operator?: Operator<T, R>): Observable<R> {
     const observable = new Observable<R>();
@@ -350,7 +347,7 @@ export class Observable<T> implements Subscribable<T> {
     }) as Promise<void>;
   }
 
-  /** @internal This is an internal implementation detail, do not use. */
+  /** @internal */
   _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     return this.source?.subscribe(subscriber);
   }
