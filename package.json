@@ -64,7 +64,7 @@
     "test:side-effects": "check-side-effects --test integration/side-effects/side-effects.json",
     "test:side-effects:update": "npm run test:side-effects -- --update",
     "test:import": "ts-node ./integration/import/runner.ts",
-    "compile": "tsc -b ./src/tsconfig.cjs.json ./src/tsconfig.cjs.spec.json ./src/tsconfig.esm.json ./src/tsconfig.esm5.json ./src/tsconfig.esm5.rollup.json ./src/tsconfig.types.json ./spec/tsconfig.json",
+    "compile": "tsc -b ./src/tsconfig.cjs.json ./src/tsconfig.cjs.spec.json ./src/tsconfig.esm.json ./src/tsconfig.esm5.json ./src/tsconfig.esm5.rollup.json ./src/tsconfig.types.json ./src/tsconfig.types.spec.json ./spec/tsconfig.json",
     "build:clean": "shx rm -rf ./dist",
     "build:global": "node ./tools/make-umd-bundle.js && node ./tools/make-closure-core.js",
     "build:package": "npm-run-all build:clean compile build:global && node ./tools/prepare-package.js && node ./tools/generate-alias.js",
