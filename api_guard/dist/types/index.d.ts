@@ -387,11 +387,11 @@ export interface SequenceError extends Error {
 export declare const SequenceError: SequenceErrorCtor;
 
 export declare class Subject<T> extends Observable<T> implements SubscriptionLike {
-    _hasError: boolean;
-    _isStopped: boolean;
-    _observers: Observer<T>[];
-    _thrownError: any;
     closed: boolean;
+    hasError: boolean;
+    isStopped: boolean;
+    observers: Observer<T>[];
+    thrownError: any;
     constructor();
     asObservable(): Observable<T>;
     complete(): void;
@@ -412,8 +412,8 @@ export interface Subscribable<T> {
 export declare type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | InteropObservable<T>;
 
 export declare class Subscriber<T> extends Subscription implements Observer<T> {
-    protected _destination: Subscriber<any> | Observer<any>;
-    protected _isStopped: boolean;
+    protected destination: Subscriber<any> | Observer<any>;
+    protected isStopped: boolean;
     constructor(destination?: Subscriber<any> | Observer<any>);
     protected _complete(): void;
     protected _error(err: any): void;
