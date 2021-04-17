@@ -39,7 +39,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     super();
   }
 
-  /** @internal */
+  /** @deprecated This is an internal implementation detail, do not use directly. */
   lift<R>(operator: Operator<T, R>): Observable<R> {
     const subject = new AnonymousSubject(this, this);
     subject.operator = operator as any;
