@@ -223,7 +223,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
    */
   multiplex(subMsg: () => any, unsubMsg: () => any, messageFilter: (value: T) => boolean) {
     const self = this;
-    return new Observable((observer: Observer<any>) => {
+    return new Observable((observer: Observer<T>) => {
       try {
         self.next(subMsg());
       } catch (err) {
