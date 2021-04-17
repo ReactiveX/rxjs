@@ -1,5 +1,5 @@
 /*
- * Note that we cannot apply the @internal tag here because the declaration
+ * Note that we cannot apply the `internal` tag here because the declaration
  * needs to survive the `stripInternal` option. Otherwise, `AnyCatcher` will
  * be `any` in the `.d.ts` files.
  */
