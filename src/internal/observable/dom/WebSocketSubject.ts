@@ -163,7 +163,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T> | Observable<T>, destination?: Observer<T>) {
     super();
     if (urlConfigOrSource instanceof Observable) {
-      this._destination = destination;
+      this.destination = destination;
       this.source = urlConfigOrSource as Observable<T>;
     } else {
       const config = (this._config = { ...DEFAULT_WEBSOCKET_CONFIG });
@@ -183,12 +183,12 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       } else if (!config.WebSocketCtor) {
         throw new Error('no WebSocket constructor can be found');
       }
-      this._destination = new ReplaySubject();
+      this.destination = new ReplaySubject();
     }
   }
 
   lift<R>(operator: Operator<T, R>): WebSocketSubject<R> {
-    const sock = new WebSocketSubject<R>(this._config as WebSocketSubjectConfig<any>, this._destination as any);
+    const sock = new WebSocketSubject<R>(this._config as WebSocketSubjectConfig<any>, this.destination as any);
     sock.operator = operator;
     sock.source = this;
     return sock;
@@ -197,7 +197,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   private _resetState() {
     this._socket = null;
     if (!this.source) {
-      this._destination = new ReplaySubject();
+      this.destination = new ReplaySubject();
     }
     this._output = new Subject<T>();
   }
@@ -289,16 +289,16 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
         openObserver.next(evt);
       }
 
-      const queue = this._destination;
+      const queue = this.destination;
 
-      this._destination = Subscriber.create<T>(
+      this.destination = Subscriber.create<T>(
         (x) => {
           if (socket!.readyState === 1) {
             try {
               const { serializer } = this._config;
               socket!.send(serializer!(x!));
             } catch (e) {
-              this._destination!.error(e);
+              this.destination!.error(e);
             }
           }
         },
@@ -325,7 +325,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       ) as Subscriber<any>;
 
       if (queue && queue instanceof ReplaySubject) {
-        subscription.add((queue as ReplaySubject<T>).subscribe(this._destination));
+        subscription.add((queue as ReplaySubject<T>).subscribe(this.destination));
       }
     };
 

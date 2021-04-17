@@ -140,8 +140,8 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
  */
 export class AnonymousSubject<T> extends Subject<T> {
   constructor(
-    /** @internal */
-    public _destination?: Observer<T>,
+    /** @deprecated Internal implementation detail, do not use. */
+    public destination?: Observer<T>,
     source?: Observable<T>
   ) {
     super();
@@ -149,15 +149,15 @@ export class AnonymousSubject<T> extends Subject<T> {
   }
 
   next(value: T) {
-    this._destination?.next?.(value);
+    this.destination?.next?.(value);
   }
 
   error(err: any) {
-    this._destination?.error?.(err);
+    this.destination?.error?.(err);
   }
 
   complete() {
-    this._destination?.complete?.();
+    this.destination?.complete?.();
   }
 
   /** @internal */
