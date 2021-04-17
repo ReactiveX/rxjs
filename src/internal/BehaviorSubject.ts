@@ -25,9 +25,9 @@ export class BehaviorSubject<T> extends Subject<T> {
   }
 
   getValue(): T {
-    const { _hasError, _thrownError, _value } = this;
-    if (_hasError) {
-      throw _thrownError;
+    const { hasError, thrownError, _value } = this;
+    if (hasError) {
+      throw thrownError;
     }
     this._throwIfClosed();
     return _value;

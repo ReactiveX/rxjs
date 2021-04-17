@@ -14,17 +14,17 @@ export class AsyncSubject<T> extends Subject<T> {
 
   /** @internal */
   _checkFinalizedStatuses(subscriber: Subscriber<T>) {
-    const { _hasError, _hasValue, _value, _thrownError, _isStopped } = this;
-    if (_hasError) {
-      subscriber.error(_thrownError);
-    } else if (_isStopped) {
+    const { hasError, _hasValue, _value, thrownError, isStopped } = this;
+    if (hasError) {
+      subscriber.error(thrownError);
+    } else if (isStopped) {
       _hasValue && subscriber.next(_value!);
       subscriber.complete();
     }
   }
 
   next(value: T): void {
-    if (!this._isStopped) {
+    if (!this.isStopped) {
       this._value = value;
       this._hasValue = true;
     }

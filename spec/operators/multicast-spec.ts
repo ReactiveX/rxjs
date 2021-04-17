@@ -741,7 +741,7 @@ describe('multicast', () => {
     });
 
     source.connect();
-    expect(subject._observers.length).to.equal(0);
+    expect(subject.observers.length).to.equal(0);
   });
 
   describe('when given a subject factory', () => {

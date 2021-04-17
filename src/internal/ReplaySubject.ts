@@ -56,8 +56,8 @@ export class ReplaySubject<T> extends Subject<T> {
   }
 
   next(value: T): void {
-    const { _isStopped, _buffer, _infiniteTimeWindow, _timestampProvider, _windowTime } = this;
-    if (!_isStopped) {
+    const { isStopped, _buffer, _infiniteTimeWindow, _timestampProvider, _windowTime } = this;
+    if (!isStopped) {
       _buffer.push(value);
       !_infiniteTimeWindow && _buffer.push(_timestampProvider.now() + _windowTime);
     }

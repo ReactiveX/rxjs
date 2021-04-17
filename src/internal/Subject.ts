@@ -15,14 +15,14 @@ import { arrRemove } from './util/arrRemove';
  */
 export class Subject<T> extends Observable<T> implements SubscriptionLike {
   closed = false;
-  /** @internal */
-  _observers: Observer<T>[] = [];
-  /** @internal */
-  _isStopped = false;
-  /** @internal */
-  _hasError = false;
-  /** @internal */
-  _thrownError: any = null;
+  /** @deprecated This is an internal implementation detail, do not use directly. */
+  observers: Observer<T>[] = [];
+  /** @deprecated This is an internal implementation detail, do not use directly. */
+  isStopped = false;
+  /** @deprecated This is an internal implementation detail, do not use directly. */
+  hasError = false;
+  /** @deprecated This is an internal implementation detail, do not use directly. */
+  thrownError: any = null;
 
   /**
    * Creates a "subject" by basically gluing an observer to an observable.
@@ -55,8 +55,8 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   next(value: T) {
     this._throwIfClosed();
-    if (!this._isStopped) {
-      const copy = this._observers.slice();
+    if (!this.isStopped) {
+      const copy = this.observers.slice();
       for (const observer of copy) {
         observer.next(value);
       }
@@ -65,30 +65,30 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   error(err: any) {
     this._throwIfClosed();
-    if (!this._isStopped) {
-      this._hasError = this._isStopped = true;
-      this._thrownError = err;
-      const { _observers } = this;
-      while (_observers.length) {
-        _observers.shift()!.error(err);
+    if (!this.isStopped) {
+      this.hasError = this.isStopped = true;
+      this.thrownError = err;
+      const { observers } = this;
+      while (observers.length) {
+        observers.shift()!.error(err);
       }
     }
   }
 
   complete() {
     this._throwIfClosed();
-    if (!this._isStopped) {
-      this._isStopped = true;
-      const { _observers } = this;
-      while (_observers.length) {
-        _observers.shift()!.complete();
+    if (!this.isStopped) {
+      this.isStopped = true;
+      const { observers } = this;
+      while (observers.length) {
+        observers.shift()!.complete();
       }
     }
   }
 
   unsubscribe() {
-    this._isStopped = this.closed = true;
-    this._observers = null!;
+    this.isStopped = this.closed = true;
+    this.observers = null!;
   }
 
   /** @internal */
@@ -106,18 +106,18 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   /** @internal */
   _innerSubscribe(subscriber: Subscriber<any>) {
-    const { _hasError, _isStopped, _observers } = this;
-    return _hasError || _isStopped
+    const { hasError, isStopped, observers } = this;
+    return hasError || isStopped
       ? EMPTY_SUBSCRIPTION
-      : (_observers.push(subscriber), new Subscription(() => arrRemove(_observers, subscriber)));
+      : (observers.push(subscriber), new Subscription(() => arrRemove(observers, subscriber)));
   }
 
   /** @internal */
   _checkFinalizedStatuses(subscriber: Subscriber<any>) {
-    const { _hasError, _thrownError, _isStopped } = this;
-    if (_hasError) {
-      subscriber.error(_thrownError);
-    } else if (_isStopped) {
+    const { hasError, thrownError, isStopped } = this;
+    if (hasError) {
+      subscriber.error(thrownError);
+    } else if (isStopped) {
       subscriber.complete();
     }
   }
