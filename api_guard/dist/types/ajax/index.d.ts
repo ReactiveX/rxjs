@@ -21,6 +21,8 @@ export interface AjaxConfig {
     xsrfHeaderName?: string;
 }
 
+export declare type AjaxDirection = 'upload' | 'download';
+
 export interface AjaxError extends Error {
     request: AjaxRequest;
     response: any;
