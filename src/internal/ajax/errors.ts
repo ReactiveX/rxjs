@@ -11,27 +11,28 @@ import { createErrorClass } from '../util/createErrorClass';
  */
 export interface AjaxError extends Error {
   /**
-   * The XHR instance associated with the error
+   * The XHR instance associated with the error.
    */
   xhr: XMLHttpRequest;
 
   /**
-   * The AjaxRequest associated with the error
+   * The AjaxRequest associated with the error.
    */
   request: AjaxRequest;
 
   /**
-   *The HTTP status code
+   * The HTTP status code, if the request has completed. If not,
+   * it is set to `0`.
    */
   status: number;
 
   /**
-   *The responseType (e.g. 'json', 'arraybuffer', or 'xml')
+   * The responseType (e.g. 'json', 'arraybuffer', or 'xml').
    */
   responseType: XMLHttpRequestResponseType;
 
   /**
-   * The response data
+   * The response data.
    */
   response: any;
 }
@@ -85,7 +86,7 @@ export interface AjaxTimeoutErrorCtor {
 }
 
 /**
- * Thrown when an AJAX request timesout. Not to be confused with {@link TimeoutError}.
+ * Thrown when an AJAX request times out. Not to be confused with {@link TimeoutError}.
  *
  * This is exported only because it is useful for checking to see if errors are an
  * `instanceof AjaxTimeoutError`. DO NOT use the constructor to create an instance of
