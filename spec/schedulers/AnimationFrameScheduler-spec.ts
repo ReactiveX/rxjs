@@ -103,12 +103,12 @@ describe('Scheduler.animationFrame', () => {
     let animationFrameExec2 = false;
     const action1 = animationFrame.schedule(() => { animationFrameExec1 = true; });
     const action2 = animationFrame.schedule(() => { animationFrameExec2 = true; });
-    expect(animationFrame.scheduled).to.exist;
+    expect(animationFrame._scheduled).to.exist;
     expect(animationFrame.actions.length).to.equal(2);
     action1.unsubscribe();
     action2.unsubscribe();
     expect(animationFrame.actions.length).to.equal(0);
-    expect(animationFrame.scheduled).to.equal(undefined);
+    expect(animationFrame._scheduled).to.equal(undefined);
     animationFrame.schedule(() => {
       expect(animationFrameExec1).to.equal(false);
       expect(animationFrameExec2).to.equal(false);

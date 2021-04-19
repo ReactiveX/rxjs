@@ -35,7 +35,9 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     return new SafeSubscriber(next, error, complete);
   }
 
+  /** @deprecated This is an internal implementation detail, do not use directly. */
   protected isStopped: boolean = false;
+  /** @deprecated This is an internal implementation detail, do not use directly. */
   protected destination: Subscriber<any> | Observer<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
 
   /**

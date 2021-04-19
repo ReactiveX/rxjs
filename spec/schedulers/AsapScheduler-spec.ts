@@ -156,12 +156,12 @@ describe('Scheduler.asap', () => {
     let asapExec2 = false;
     const action1 = asap.schedule(() => { asapExec1 = true; });
     const action2 = asap.schedule(() => { asapExec2 = true; });
-    expect(asap.scheduled).to.exist;
+    expect(asap._scheduled).to.exist;
     expect(asap.actions.length).to.equal(2);
     action1.unsubscribe();
     action2.unsubscribe();
     expect(asap.actions.length).to.equal(0);
-    expect(asap.scheduled).to.equal(undefined);
+    expect(asap._scheduled).to.equal(undefined);
     asap.schedule(() => {
       expect(asapExec1).to.equal(false);
       expect(asapExec2).to.equal(false);

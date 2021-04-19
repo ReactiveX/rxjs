@@ -37,6 +37,7 @@ export class ConnectableObservable<T> extends Observable<T> {
     }
   }
 
+  /** @internal */
   protected _subscribe(subscriber: Subscriber<T>) {
     return this.getSubject().subscribe(subscriber);
   }

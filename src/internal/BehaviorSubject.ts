@@ -17,7 +17,7 @@ export class BehaviorSubject<T> extends Subject<T> {
     return this.getValue();
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
     const subscription = super._subscribe(subscriber);
     !subscription.closed && subscriber.next(this._value);
