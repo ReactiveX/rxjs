@@ -13,6 +13,7 @@ import { getXHRResponse } from './getXHRResponse';
  * request and response data.
  *
  * @see {@link ajax}
+ * @see {@link AjaxConfig}
  */
 export class AjaxResponse<T> {
   /** The HTTP status code */
@@ -32,17 +33,15 @@ export class AjaxResponse<T> {
 
   /**
    * The total number of bytes loaded so far. To be used with {@link total} while
-   * calcating progress. (You will want to set {@link includeDownloadProgress} or {@link includeDownloadProgress})
-   *
-   * {@see {@link AjaxConfig}}
+   * calculating progress. (You will want to set {@link includeDownloadProgress} or
+   * {@link includeDownloadProgress})
    */
   readonly loaded: number;
 
   /**
    * The total number of bytes to be loaded. To be used with {@link loaded} while
-   * calcating progress. (You will want to set {@link includeDownloadProgress} or {@link includeDownloadProgress})
-   *
-   * {@see {@link AjaxConfig}}
+   * calculating progress. (You will want to set {@link includeDownloadProgress} or
+   * {@link includeDownloadProgress})
    */
   readonly total: number;
 
@@ -61,6 +60,7 @@ export class AjaxResponse<T> {
    * @param originalEvent The original event object from the XHR `onload` event.
    * @param xhr The `XMLHttpRequest` object used to make the request. This is useful for examining status code, etc.
    * @param request The request settings used to make the HTTP request.
+   * @param type The type of the event emitted by the {@link ajax} Observable
    */
   constructor(
     /**
@@ -81,8 +81,16 @@ export class AjaxResponse<T> {
      * The event type. This can be used to discern between different events
      * if you're using progress events with {@link includeDownloadProgress} or
      * {@link includeUploadProgress} settings in {@link AjaxConfig}.
+     *
+     * The event type consists of two parts: the {@link AjaxDirection} and the
+     * the event type. Merged with `_`, they form the `type` string. The
+     * direction can be an `upload` or a `download` direction, while an event can
+     * be `loadstart`, `progress` or `load`.
+     *
+     * `download_load` is the type of event when download has finished and the
+     * response is available.
      */
-    public readonly type = 'download_load'
+    public readonly type: string = 'download_load'
   ) {
     const { status, responseType } = xhr;
     this.status = status ?? 0;

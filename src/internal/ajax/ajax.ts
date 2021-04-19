@@ -1,6 +1,6 @@
 import { map } from '../operators/map';
 import { Observable } from '../Observable';
-import { AjaxConfig, AjaxRequest } from './types';
+import { AjaxConfig, AjaxRequest, AjaxDirection } from './types';
 import { AjaxResponse } from './AjaxResponse';
 import { AjaxTimeoutError, AjaxError } from './errors';
 
@@ -248,14 +248,14 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  * ```
  */
 export const ajax: AjaxCreationMethod = (() => {
-  const create = <T>(urlOrRequest: string | AjaxConfig) => {
-    const request =
-      typeof urlOrRequest === 'string'
+  const create = <T>(urlOrConfig: string | AjaxConfig) => {
+    const config: AjaxConfig =
+      typeof urlOrConfig === 'string'
         ? {
-            url: urlOrRequest,
+            url: urlOrConfig,
           }
-        : urlOrRequest;
-    return fromAjax<T>(request);
+        : urlOrConfig;
+    return fromAjax<T>(config);
   };
 
   create.get = ajaxGet;
@@ -268,6 +268,7 @@ export const ajax: AjaxCreationMethod = (() => {
   return create;
 })();
 
+const UPLOAD = 'upload';
 const DOWNLOAD = 'download';
 const LOADSTART = 'loadstart';
 const PROGRESS = 'progress';
@@ -315,7 +316,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     }
 
     // Normalize the headers. We're going to make them all lowercase, since
-    // Headers are case insenstive by design. This makes it easier to verify
+    // Headers are case insensitive by design. This makes it easier to verify
     // that we aren't setting or sending duplicates.
     const headers: Record<string, any> = {};
     if (configuredHeaders) {
@@ -327,7 +328,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     }
 
     // Set the x-requested-with header. This is a non-standard header that has
-    // come to be a defacto standard for HTTP requests sent by libraries and frameworks
+    // come to be a de facto standard for HTTP requests sent by libraries and frameworks
     // using XHR. However, we DO NOT want to set this if it is a CORS request. This is
     // because sometimes this header can cause issues with CORS. To be clear,
     // None of this is necessary, it's only being set because it's "the thing libraries do"
@@ -407,12 +408,12 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
 
       /**
        * Creates a response object to emit to the consumer.
-       * @param direction the direction related to the event. Prefixes the event `type` in the response
-       * object. So "upload_" for events related to uploading, and "download_" for events related to
-       * downloading.
+       * @param direction the direction related to the event. Prefixes the event `type` in the
+       * `AjaxResponse` object with "upload_" for events related to uploading and "download_"
+       * for events related to downloading.
        * @param event the actual event object.
        */
-      const createResponse = (direction: 'upload' | 'download', event: ProgressEvent) =>
+      const createResponse = (direction: AjaxDirection, event: ProgressEvent) =>
         new AjaxResponse<T>(event, xhr, _request, `${direction}_${event.type}`);
 
       /**
@@ -425,14 +426,14 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
        * @param direction The "direction", used to prefix the response object that is
        * emitted to the consumer. (e.g. "upload_" or "download_")
        */
-      const addProgressEvent = (target: any, type: string, direction: 'upload' | 'download') => {
+      const addProgressEvent = (target: any, type: string, direction: AjaxDirection) => {
         target.addEventListener(type, (event: ProgressEvent) => {
           destination.next(createResponse(direction, event));
         });
       };
 
       if (includeUploadProgress) {
-        [LOADSTART, PROGRESS, LOAD].forEach((type) => addProgressEvent(xhr.upload, type, 'upload'));
+        [LOADSTART, PROGRESS, LOAD].forEach((type) => addProgressEvent(xhr.upload, type, UPLOAD));
       }
 
       if (progressSubscriber) {
@@ -554,7 +555,7 @@ function extractContentTypeAndMaybeSerializeBody(body: any, headers: Record<stri
     // If we have made it here, this is an object, probably a POJO, and we'll try
     // to serialize it for them. If this doesn't work, it will throw, obviously, which
     // is okay. The workaround for users would be to manually set the body to their own
-    // serialized string (accounting for circular refrences or whatever), then set
+    // serialized string (accounting for circular references or whatever), then set
     // the content-type manually as well.
     headers['content-type'] = headers['content-type'] ?? 'application/json;charset=utf-8';
     return JSON.stringify(body);
