@@ -1,3 +1,17 @@
+# [7.0.0-rc.0](https://github.com/reactivex/rxjs/compare/7.0.0-beta.15...7.0.0-rc.0) (2021-04-19)
+
+### Bug Fixes
+
+- **symbol:** revert unique symbol in [#5874](https://github.com/reactivex/rxjs/issues/5874) ([#6224](https://github.com/reactivex/rxjs/issues/6224)) ([3c49429](https://github.com/reactivex/rxjs/commit/3c49429fadc31ebaddd143d4412907edc50e32be)), closes [#5919](https://github.com/reactivex/rxjs/issues/5919) [#6178](https://github.com/reactivex/rxjs/issues/6178) [#6175](https://github.com/reactivex/rxjs/issues/6175)
+- forkJoin/combineLatest return Observable<unknown> if passed any ([#6227](https://github.com/reactivex/rxjs/issues/6227)) ([ce0a2fa](https://github.com/reactivex/rxjs/commit/ce0a2fa975e7c08de2bbf893010f2c25c090b1ca)), closes [#6226](https://github.com/reactivex/rxjs/issues/6226)
+- **fromEvent:** match targets properly; fix result selector type ([#6208](https://github.com/reactivex/rxjs/issues/6208)) ([8412c73](https://github.com/reactivex/rxjs/commit/8412c739bb47cc45ec3f38327115301b4fcc0118))
+- **merge:** single array is not an array of sources ([#6211](https://github.com/reactivex/rxjs/issues/6211)) ([4e900dc](https://github.com/reactivex/rxjs/commit/4e900dc745b5fbd7659b104c49fb0fce4ae84707))
+- **pipe:** Ensure that `unknown` is infered for 9+ arguments. ([#6212](https://github.com/reactivex/rxjs/issues/6212)) ([6fa819b](https://github.com/reactivex/rxjs/commit/6fa819beb91ba99dadd6262d6c13f7ddfd9470c5))
+
+### Features
+
+- add (optional) defaultValue configuration to firstValueFrom and lastValueFrom ([#6204](https://github.com/reactivex/rxjs/issues/6204)) ([df51b04](https://github.com/reactivex/rxjs/commit/df51b04d7ec68a72b3a4b0d69c3bb29264c72611))
+
 # [7.0.0-beta.15](https://github.com/reactivex/rxjs/compare/7.0.0-beta.14...7.0.0-beta.15) (2021-03-31)
 
 ### Bug Fixes
