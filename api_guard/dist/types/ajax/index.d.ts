@@ -33,6 +33,8 @@ export interface AjaxError extends Error {
 
 export declare const AjaxError: AjaxErrorCtor;
 
+export declare type AjaxHttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH' | '';
+
 export interface AjaxRequest {
     async: boolean;
     body?: any;
