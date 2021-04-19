@@ -1,3 +1,9 @@
+# [7.0.0-rc.1](https://github.com/reactivex/rxjs/compare/7.0.0-rc.0...7.0.0-rc.1) (2021-04-19)
+
+### Bug Fixes
+
+- **TypeScript:** Add typesVersions definition to package.json in order to help VS Code find automatic imports. ([#6067](https://github.com/reactivex/rxjs/issues/6067)) ([659a623](https://github.com/reactivex/rxjs/commit/659a623c94bd6b210e9beb6bb6061be540b05538))
+
 # [7.0.0-rc.0](https://github.com/reactivex/rxjs/compare/7.0.0-beta.15...7.0.0-rc.0) (2021-04-19)
 
 ### Bug Fixes
