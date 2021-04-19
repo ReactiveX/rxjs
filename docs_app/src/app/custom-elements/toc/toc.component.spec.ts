@@ -477,7 +477,7 @@ class TestTocService {
   activeItemIndex = new BehaviorSubject<number | null>(null);
   setActiveIndex(index: number|null) {
     this.activeItemIndex.next(index);
-    if (asap.scheduled !== undefined) {
+    if (asap._scheduled !== undefined) {
       asap.flush();
     }
   }

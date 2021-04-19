@@ -14,14 +14,14 @@ import { arrRemove } from './util/arrRemove';
  * Subject, and you can call next to feed values as well as error and complete.
  */
 export class Subject<T> extends Observable<T> implements SubscriptionLike {
-  observers: Observer<T>[] = [];
-
   closed = false;
-
+  /** @deprecated This is an internal implementation detail, do not use directly. */
+  observers: Observer<T>[] = [];
+  /** @deprecated This is an internal implementation detail, do not use directly. */
   isStopped = false;
-
+  /** @deprecated This is an internal implementation detail, do not use directly. */
   hasError = false;
-
+  /** @deprecated This is an internal implementation detail, do not use directly. */
   thrownError: any = null;
 
   /**
@@ -39,12 +39,14 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     super();
   }
 
+  /** @deprecated This is an internal implementation detail, do not use directly. */
   lift<R>(operator: Operator<T, R>): Observable<R> {
     const subject = new AnonymousSubject(this, this);
     subject.operator = operator as any;
     return subject as any;
   }
 
+  /** @internal */
   protected _throwIfClosed() {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
@@ -89,26 +91,28 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     this.observers = null!;
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal */
   protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
     this._throwIfClosed();
     return super._trySubscribe(subscriber);
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
     this._throwIfClosed();
     this._checkFinalizedStatuses(subscriber);
     return this._innerSubscribe(subscriber);
   }
 
+  /** @internal */
   protected _innerSubscribe(subscriber: Subscriber<any>) {
     const { hasError, isStopped, observers } = this;
     return hasError || isStopped
       ? EMPTY_SUBSCRIPTION
-      : (observers.push(subscriber), new Subscription(() => arrRemove(this.observers, subscriber)));
+      : (observers.push(subscriber), new Subscription(() => arrRemove(observers, subscriber)));
   }
 
+  /** @internal */
   protected _checkFinalizedStatuses(subscriber: Subscriber<any>) {
     const { hasError, thrownError, isStopped } = this;
     if (hasError) {
@@ -117,6 +121,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
       subscriber.complete();
     }
   }
+
   /**
    * Creates a new Observable with this Subject as the source. You can do this
    * to create customize Observer-side logic of the Subject and conceal it from
@@ -134,7 +139,11 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
  * @class AnonymousSubject<T>
  */
 export class AnonymousSubject<T> extends Subject<T> {
-  constructor(protected destination?: Observer<T>, source?: Observable<T>) {
+  constructor(
+    /** @deprecated Internal implementation detail, do not use. */
+    public destination?: Observer<T>,
+    source?: Observable<T>
+  ) {
     super();
     this.source = source;
   }
@@ -151,8 +160,8 @@ export class AnonymousSubject<T> extends Subject<T> {
     this.destination?.complete?.();
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _subscribe(subscriber: Subscriber<T>): Subscription {
+  /** @internal */
+  protected _subscribe(subscriber: Subscriber<T>): Subscription {
     return this.source?.subscribe(subscriber) ?? EMPTY_SUBSCRIPTION;
   }
 }

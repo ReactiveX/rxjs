@@ -77,7 +77,7 @@ describe('interval', () => {
       },
       complete() {
         expect(asapScheduler.actions.length).to.equal(0);
-        expect(asapScheduler.scheduled).to.equal(undefined);
+        expect(asapScheduler._scheduled).to.equal(undefined);
         sandbox.restore();
         done();
       }
@@ -104,7 +104,7 @@ describe('interval', () => {
       },
       complete() {
         expect(queueScheduler.actions.length).to.equal(0);
-        expect(queueScheduler.scheduled).to.equal(undefined);
+        expect(queueScheduler._scheduled).to.equal(undefined);
         sandbox.restore();
         done();
       }
@@ -131,7 +131,7 @@ describe('interval', () => {
       },
       complete() {
         expect(animationFrameScheduler.actions.length).to.equal(0);
-        expect(animationFrameScheduler.scheduled).to.equal(undefined);
+        expect(animationFrameScheduler._scheduled).to.equal(undefined);
         sandbox.restore();
         done();
       }
