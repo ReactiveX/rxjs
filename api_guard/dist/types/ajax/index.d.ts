@@ -8,7 +8,7 @@ export interface AjaxConfig {
     headers?: Readonly<Record<string, any>>;
     includeDownloadProgress?: boolean;
     includeUploadProgress?: boolean;
-    method?: string;
+    method?: AjaxHttpMethod;
     password?: string;
     progressSubscriber?: PartialObserver<ProgressEvent>;
     queryParams?: string | URLSearchParams | Record<string, string | number | boolean | string[] | number[] | boolean[]> | [string, string | number | boolean | string[] | number[] | boolean[]][];
@@ -38,7 +38,7 @@ export interface AjaxRequest {
     body?: any;
     crossDomain: boolean;
     headers: Readonly<Record<string, any>>;
-    method: string;
+    method: AjaxHttpMethod;
     password?: string;
     responseType: XMLHttpRequestResponseType;
     timeout: number;

@@ -1,4 +1,4 @@
-import { ajax } from 'rxjs/ajax';
+import { ajax, AjaxConfig, AjaxRequest } from 'rxjs/ajax';
 
 it('should enforce function parameter', () => {
   const o = ajax(); // $ExpectError
@@ -9,7 +9,7 @@ it('should accept string param', () => {
 });
 
 it('should accept AjaxRequest params', () => {
-  const ajaxRequest = {
+  const ajaxRequest: AjaxConfig = {
     method: 'GET',
     url: '/a',
     body: {a: 'a', b: 'b'},
