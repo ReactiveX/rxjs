@@ -1,6 +1,12 @@
 import { PartialObserver } from '../types';
 
 /**
+ * Ajax HTTP Request methods
+ * Reference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+ */
+export type AjaxHttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH'
+
+/**
  * Valid Ajax direction types. Prefixes the event `type` in the
  * {@link AjaxResponse} object with "upload_" for events related
  * to uploading and "download_" for events related to downloading.
@@ -27,7 +33,7 @@ export interface AjaxRequest {
   /**
    * The HTTP method used to make the HTTP request.
    */
-  method: string;
+  method: AjaxHttpMethod;
 
   /**
    * Whether or not the request was made asynchronously.
@@ -99,7 +105,7 @@ export interface AjaxConfig {
   /**
    * The HTTP Method to use for the request. Defaults to "GET".
    */
-  method?: string;
+  method?: AjaxHttpMethod;
 
   /**
    * The HTTP headers to apply.
