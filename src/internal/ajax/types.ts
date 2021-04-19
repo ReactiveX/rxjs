@@ -3,8 +3,9 @@ import { PartialObserver } from '../types';
 /**
  * Ajax HTTP Request methods
  * Reference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+ * Uses empty string as optional type for testing.
  */
-export type AjaxHttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH'
+export type AjaxHttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH' | '';
 
 /**
  * Valid Ajax direction types. Prefixes the event `type` in the

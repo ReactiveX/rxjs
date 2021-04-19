@@ -566,7 +566,7 @@ describe('ajax', () => {
 
   describe('ajax request body', () => {
     it('can take string body', () => {
-      const obj = {
+      const obj: AjaxConfig = {
         url: '/flibbertyJibbet',
         method: 'POST',
         body: 'foobar',
@@ -580,7 +580,7 @@ describe('ajax', () => {
 
     it('can take FormData body', () => {
       const body = new root.FormData();
-      const obj = {
+      const obj: AjaxConfig = {
         url: '/flibbertyJibbet',
         method: 'POST',
         body: body,
@@ -599,7 +599,7 @@ describe('ajax', () => {
       const body = new URLSearchParams({
         '🌟': '🚀',
       });
-      const obj = {
+      const obj: AjaxConfig = {
         url: '/flibbertyJibbet',
         method: 'POST',
         body: body,
@@ -615,7 +615,7 @@ describe('ajax', () => {
       const body = {
         '🌟': '🚀',
       };
-      const obj = {
+      const obj: AjaxConfig = {
         url: '/flibbertyJibbet',
         method: 'POST',
         body: body,
@@ -632,7 +632,7 @@ describe('ajax', () => {
         hello: 'world',
       };
 
-      const requestObj = {
+      const requestObj: AjaxConfig = {
         url: '/flibbertyJibbet',
         method: '',
         body: body,
