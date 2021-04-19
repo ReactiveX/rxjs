@@ -9,6 +9,7 @@ import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
 import { isFunction } from './util/isFunction';
+import { getPromiseCtor } from './util/getPromiseCtor';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -494,17 +495,6 @@ export class Observable<T> implements Subscribable<T> {
       );
     }) as Promise<T | undefined>;
   }
-}
-
-/**
- * Decides between a passed promise constructor from consuming code,
- * A default configured promise constructor, and the native promise
- * constructor and returns it. If nothing can be found, it will throw
- * an error.
- * @param promiseCtor The optional promise constructor to passed by consuming code
- */
-function getPromiseCtor(promiseCtor: PromiseConstructorLike | undefined) {
-  return promiseCtor ?? config.Promise ?? Promise;
 }
 
 function isObserver<T>(value: any): value is Observer<T> {

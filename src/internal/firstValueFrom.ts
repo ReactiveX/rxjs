@@ -1,6 +1,7 @@
 import { Observable } from './Observable';
 import { EmptyError } from './util/EmptyError';
 import { SafeSubscriber } from './Subscriber';
+import { getPromiseCtor } from './util/getPromiseCtor';
 
 export interface FirstValueFromConfig<T> {
   defaultValue: T;
@@ -51,9 +52,11 @@ export function firstValueFrom<T>(source: Observable<T>): Promise<T>;
  * @param source the observable to convert to a promise
  * @param config a configuration object to define the `defaultValue` to use if the source completes without emitting a value
  */
-export function firstValueFrom<T, D>(source: Observable<T>, config?: FirstValueFromConfig<D>) {
+export function firstValueFrom<T, D>(source: Observable<T>, config?: FirstValueFromConfig<D>): Promise<T | D> {
   const hasConfig = typeof config === 'object';
-  return new Promise<T | D>((resolve, reject) => {
+  const promiseCtor = getPromiseCtor();
+
+  return new promiseCtor<T | D>((resolve, reject) => {
     const subscriber = new SafeSubscriber<T>({
       next: (value) => {
         resolve(value);
@@ -69,5 +72,5 @@ export function firstValueFrom<T, D>(source: Observable<T>, config?: FirstValueF
       },
     });
     source.subscribe(subscriber);
-  });
+  }) as Promise<T | D>;
 }
