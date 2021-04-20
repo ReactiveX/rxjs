@@ -3,7 +3,7 @@ export declare function webSocket<T>(urlConfigOrSource: string | WebSocketSubjec
 export declare class WebSocketSubject<T> extends AnonymousSubject<T> {
     constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T> | Observable<T>, destination?: Observer<T>);
     lift<R>(operator: Operator<T, R>): WebSocketSubject<R>;
-    multiplex(subMsg: () => any, unsubMsg: () => any, messageFilter: (value: T) => boolean): Observable<any>;
+    multiplex(subMsg: () => any, unsubMsg: () => any, messageFilter: (value: T) => boolean): Observable<T>;
     unsubscribe(): void;
 }
 
