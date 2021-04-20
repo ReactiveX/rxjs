@@ -1,3 +1,13 @@
+# [7.0.0-rc.2](https://github.com/reactivex/rxjs/compare/7.0.0-rc.1...7.0.0-rc.2) (2021-04-20)
+
+### Bug Fixes
+
+- **webSocket:** return the correct type for `WebSocketSubject` `multiplex` method([#6232](https://github.com/reactivex/rxjs/issues/6232)) ([33383b8](https://github.com/reactivex/rxjs/commit/33383b884d895fa77866362b8b00fd2e2c3597e6))
+
+### Reverts
+
+- Revert "chore: Add typesVersions to package.json (#6229)" (#6241) ([304f3a7](https://github.com/reactivex/rxjs/commit/304f3a73e67871f9b37f39675e503174d3dcc23a)), closes [#6229](https://github.com/reactivex/rxjs/issues/6229) [#6241](https://github.com/reactivex/rxjs/issues/6241)
+
 # [7.0.0-rc.1](https://github.com/reactivex/rxjs/compare/7.0.0-rc.0...7.0.0-rc.1) (2021-04-19)
 
 ### Bug Fixes
