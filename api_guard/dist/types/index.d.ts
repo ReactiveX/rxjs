@@ -69,13 +69,7 @@ export interface CompletionObserver<T> {
 export declare function concat<T extends readonly unknown[]>(...inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
 export declare function concat<T extends readonly unknown[]>(...inputsAndScheduler: [...ObservableInputTuple<T>, SchedulerLike]): Observable<T[number]>;
 
-export declare const config: {
-    onUnhandledError: ((err: any) => void) | null;
-    onStoppedNotification: ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null;
-    Promise: PromiseConstructorLike | undefined;
-    useDeprecatedSynchronousErrorHandling: boolean;
-    useDeprecatedNextContext: boolean;
-};
+export declare const config: GlobalConfig;
 
 export declare function connectable<T>(source: ObservableInput<T>, connector?: Subject<T>): ConnectableObservableLike<T>;
 
@@ -161,6 +155,14 @@ export declare function generate<T, S>(initialState: S, condition: ConditionFunc
 export declare function generate<S>(initialState: S, condition: ConditionFunc<S>, iterate: IterateFunc<S>, scheduler?: SchedulerLike): Observable<S>;
 export declare function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
 export declare function generate<T, S>(options: GenerateOptions<T, S>): Observable<T>;
+
+export interface GlobalConfig {
+    Promise: PromiseConstructorLike | undefined;
+    onStoppedNotification: ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null;
+    onUnhandledError: ((err: any) => void) | null;
+    useDeprecatedNextContext: boolean;
+    useDeprecatedSynchronousErrorHandling: boolean;
+}
 
 export interface GroupedObservable<K, T> extends Observable<T> {
     readonly key: K;
