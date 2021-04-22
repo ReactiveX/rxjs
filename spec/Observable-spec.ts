@@ -722,6 +722,48 @@ describe('Observable', () => {
         }
         expect(called).to.be.true;
       });
+      
+      it('should execute finalize in order even with a sync error', () => {
+        const results: any[] = [];
+        const badObservable = new Observable((subscriber) => {
+          subscriber.error(new Error('bad'));
+        }).pipe(
+          finalize(() => {
+            results.push(1);
+          }),
+          finalize(() => {
+            results.push(2)
+          })
+        );
+
+        try {
+          badObservable.subscribe();
+        } catch (err) {
+          // do nothing
+        }
+        expect(results).to.deep.equal([1, 2]);
+      });
+
+      it('should execute finalize in order even with a sync thrown error', () => {
+        const results: any[] = [];
+        const badObservable = new Observable(() => {
+          throw new Error('bad');
+        }).pipe(
+          finalize(() => {
+            results.push(1);
+          }),
+          finalize(() => {
+            results.push(2)
+          })
+        );
+
+        try {
+          badObservable.subscribe();
+        } catch (err) {
+          // do nothing
+        }
+        expect(results).to.deep.equal([1, 2]);
+      });
 
       afterEach(() => {
         config.useDeprecatedSynchronousErrorHandling = false;
