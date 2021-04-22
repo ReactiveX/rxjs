@@ -219,7 +219,20 @@ export class Observable<T> implements Subscribable<T> {
       this._deprecatedSyncErrorSubscribe(subscriber);
     } else {
       const { operator, source } = this;
-      subscriber.add(operator ? operator.call(subscriber, source) : source ? this._subscribe(subscriber) : this._trySubscribe(subscriber));
+      subscriber.add(
+        operator
+          ? // We're dealing with a subscription in the
+            // operator chain to one of our lifted operators.
+            operator.call(subscriber, source)
+          : source
+          ? // If `source` has a value, but `operator` does not, something that
+            // had intimate knowledge of our API, like our `Subject`, must have
+            // set it. We're going to just call `_subscribe` directly.
+            this._subscribe(subscriber)
+          : // In all other cases, we're likely wrapping a user-provided initializer
+            // function, so we need to catch errors and handle them appropriately.
+            this._trySubscribe(subscriber)
+      );
     }
     return subscriber;
   }
