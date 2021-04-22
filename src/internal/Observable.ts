@@ -215,41 +215,39 @@ export class Observable<T> implements Subscribable<T> {
   ): Subscription {
     const subscriber = isSubscriber(observerOrNext) ? observerOrNext : new SafeSubscriber(observerOrNext, error, complete);
 
-    // If we have an operator, it's the result of a lift, and we let the lift
-    // mechanism do the subscription for us in the operator call. Otherwise,
-    // if we have a source, it's a trusted observable we own, and we can call
-    // the `_subscribe` without wrapping it in a try/catch. If we are supposed to
-    // use the deprecated sync error handling, then we don't need the try/catch either
-    // otherwise, it may be from a user-made observable instance, and we want to
-    // wrap it in a try/catch so we can handle errors appropriately.
     const { operator, source } = this;
-
-    let dest: any = subscriber;
     if (config.useDeprecatedSynchronousErrorHandling) {
+      let dest: any = subscriber;
       dest._syncErrorHack_isSubscribing = true;
-    }
 
-    subscriber.add(
-      operator
-        ? operator.call(subscriber, source)
-        : source || config.useDeprecatedSynchronousErrorHandling
-        ? this._subscribe(subscriber)
-        : this._trySubscribe(subscriber)
-    );
+      if (operator) {
+        subscriber.add(operator.call(subscriber, source));
+      } else {
+        try {
+          this._subscribe(subscriber);
+        } catch (err) {
+          dest.__syncError = err;
+        }
+      }
 
-    if (config.useDeprecatedSynchronousErrorHandling) {
-      dest._syncErrorHack_isSubscribing = false;
       // In the case of the deprecated sync error handling,
       // we need to crawl forward through our subscriber chain and
       // look to see if there's any synchronously thrown errors.
       // Does this suck for perf? Yes. So stop using the deprecated sync
       // error handling already. We're removing this in v8.
       while (dest) {
-        if (dest.__syncError) {
-          throw dest.__syncError;
+        if ('__syncError' in dest) {
+          try {
+            throw dest.__syncError;
+          } finally {
+            subscriber.unsubscribe();
+          }
         }
         dest = dest.destination;
       }
+      dest._syncErrorHack_isSubscribing = false;
+    } else {
+      subscriber.add(operator ? operator.call(subscriber, source) : source ? this._subscribe(subscriber) : this._trySubscribe(subscriber));
     }
     return subscriber;
   }
