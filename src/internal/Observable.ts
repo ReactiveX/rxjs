@@ -215,41 +215,54 @@ export class Observable<T> implements Subscribable<T> {
   ): Subscription {
     const subscriber = isSubscriber(observerOrNext) ? observerOrNext : new SafeSubscriber(observerOrNext, error, complete);
 
-    const { operator, source } = this;
     if (config.useDeprecatedSynchronousErrorHandling) {
-      let dest: any = subscriber;
-      dest._syncErrorHack_isSubscribing = true;
-
-      if (operator) {
-        subscriber.add(operator.call(subscriber, source));
-      } else {
-        try {
-          this._subscribe(subscriber);
-        } catch (err) {
-          dest.__syncError = err;
-        }
-      }
-
-      // In the case of the deprecated sync error handling,
-      // we need to crawl forward through our subscriber chain and
-      // look to see if there's any synchronously thrown errors.
-      // Does this suck for perf? Yes. So stop using the deprecated sync
-      // error handling already. We're removing this in v8.
-      while (dest) {
-        if ('__syncError' in dest) {
-          try {
-            throw dest.__syncError;
-          } finally {
-            subscriber.unsubscribe();
-          }
-        }
-        dest = dest.destination;
-      }
-      dest._syncErrorHack_isSubscribing = false;
+      this._deprecatedSyncErrorSubscribe(subscriber);
     } else {
+      const { operator, source } = this;
       subscriber.add(operator ? operator.call(subscriber, source) : source ? this._subscribe(subscriber) : this._trySubscribe(subscriber));
     }
     return subscriber;
+  }
+
+  /**
+   * REMOVE THIS ENTIRE METHOD IN VERSION 8.
+   */
+  private _deprecatedSyncErrorSubscribe(subscriber: Subscriber<unknown>) {
+    let dest: any = subscriber;
+    dest._syncErrorHack_isSubscribing = true;
+    const { operator } = this;
+    if (operator) {
+      // We don't need to try/catch on operators, as they
+      // are doing their own try/catching, and will
+      // properly decorate the subscriber with `__syncError`.
+      subscriber.add(operator.call(subscriber, this.source));
+    } else {
+      try {
+        this._subscribe(subscriber);
+      } catch (err) {
+        dest.__syncError = err;
+      }
+    }
+
+    // In the case of the deprecated sync error handling,
+    // we need to crawl forward through our subscriber chain and
+    // look to see if there's any synchronously thrown errors.
+    // Does this suck for perf? Yes. So stop using the deprecated sync
+    // error handling already. We're removing this in v8.
+    while (dest) {
+      // Technically, someone could throw something falsy, like 0, or "",
+      // so we need to check to see if anything was thrown, and we know
+      // that by the mere existence of `__syncError`.
+      if ('__syncError' in dest) {
+        try {
+          throw dest.__syncError;
+        } finally {
+          subscriber.unsubscribe();
+        }
+      }
+      dest = dest.destination;
+    }
+    dest._syncErrorHack_isSubscribing = false;
   }
 
   /** @internal */
