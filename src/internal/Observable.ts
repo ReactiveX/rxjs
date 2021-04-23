@@ -215,43 +215,67 @@ export class Observable<T> implements Subscribable<T> {
   ): Subscription {
     const subscriber = isSubscriber(observerOrNext) ? observerOrNext : new SafeSubscriber(observerOrNext, error, complete);
 
-    // If we have an operator, it's the result of a lift, and we let the lift
-    // mechanism do the subscription for us in the operator call. Otherwise,
-    // if we have a source, it's a trusted observable we own, and we can call
-    // the `_subscribe` without wrapping it in a try/catch. If we are supposed to
-    // use the deprecated sync error handling, then we don't need the try/catch either
-    // otherwise, it may be from a user-made observable instance, and we want to
-    // wrap it in a try/catch so we can handle errors appropriately.
-    const { operator, source } = this;
-
-    let dest: any = subscriber;
     if (config.useDeprecatedSynchronousErrorHandling) {
-      dest._syncErrorHack_isSubscribing = true;
-    }
-
-    subscriber.add(
-      operator
-        ? operator.call(subscriber, source)
-        : source || config.useDeprecatedSynchronousErrorHandling
-        ? this._subscribe(subscriber)
-        : this._trySubscribe(subscriber)
-    );
-
-    if (config.useDeprecatedSynchronousErrorHandling) {
-      dest._syncErrorHack_isSubscribing = false;
-      // In the case of the deprecated sync error handling,
-      // we need to crawl forward through our subscriber chain and
-      // look to see if there's any synchronously thrown errors.
-      // Does this suck for perf? Yes. So stop using the deprecated sync
-      // error handling already. We're removing this in v8.
-      while (dest) {
-        if (dest.__syncError) {
-          throw dest.__syncError;
-        }
-        dest = dest.destination;
-      }
+      this._deprecatedSyncErrorSubscribe(subscriber);
+    } else {
+      const { operator, source } = this;
+      subscriber.add(
+        operator
+          ? // We're dealing with a subscription in the
+            // operator chain to one of our lifted operators.
+            operator.call(subscriber, source)
+          : source
+          ? // If `source` has a value, but `operator` does not, something that
+            // had intimate knowledge of our API, like our `Subject`, must have
+            // set it. We're going to just call `_subscribe` directly.
+            this._subscribe(subscriber)
+          : // In all other cases, we're likely wrapping a user-provided initializer
+            // function, so we need to catch errors and handle them appropriately.
+            this._trySubscribe(subscriber)
+      );
     }
     return subscriber;
+  }
+
+  /**
+   * REMOVE THIS ENTIRE METHOD IN VERSION 8.
+   */
+  private _deprecatedSyncErrorSubscribe(subscriber: Subscriber<unknown>) {
+    let dest: any = subscriber;
+    dest._syncErrorHack_isSubscribing = true;
+    const { operator } = this;
+    if (operator) {
+      // We don't need to try/catch on operators, as they
+      // are doing their own try/catching, and will
+      // properly decorate the subscriber with `__syncError`.
+      subscriber.add(operator.call(subscriber, this.source));
+    } else {
+      try {
+        this._subscribe(subscriber);
+      } catch (err) {
+        dest.__syncError = err;
+      }
+    }
+
+    // In the case of the deprecated sync error handling,
+    // we need to crawl forward through our subscriber chain and
+    // look to see if there's any synchronously thrown errors.
+    // Does this suck for perf? Yes. So stop using the deprecated sync
+    // error handling already. We're removing this in v8.
+    while (dest) {
+      // Technically, someone could throw something falsy, like 0, or "",
+      // so we need to check to see if anything was thrown, and we know
+      // that by the mere existence of `__syncError`.
+      if ('__syncError' in dest) {
+        try {
+          throw dest.__syncError;
+        } finally {
+          subscriber.unsubscribe();
+        }
+      }
+      dest = dest.destination;
+    }
+    dest._syncErrorHack_isSubscribing = false;
   }
 
   /** @internal */
