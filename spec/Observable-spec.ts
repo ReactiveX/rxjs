@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { Observer, TeardownLogic } from '../src/internal/types';
 import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError, concatMap, switchMap, publish, publishLast, publishBehavior, share} from 'rxjs/operators';
+import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError, concatMap, switchMap, publish, publishLast, publishBehavior, share, finalize} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -633,7 +633,137 @@ describe('Observable', () => {
             .pipe(switchMap(() => throwError(new Error('Avast! Thar be a new error!'))))
             .subscribe(console.log);
         }).to.throw('Avast! Thar be a new error!');
-      })
+      });
+
+      it('should teardown even with a synchronous error', () => {
+        let called = false;
+        const badObservable = new Observable((subscriber) => {
+          subscriber.add(() => {
+            called = true;
+          });
+
+          subscriber.error(new Error('bad'));
+        });
+
+        try {
+          badObservable.subscribe();
+        } catch (err) {
+          // do nothing
+        }
+        expect(called).to.be.true;
+      });
+
+      it('should teardown even with a synchronous thrown error', () => {
+        let called = false;
+        const badObservable = new Observable((subscriber) => {
+          subscriber.add(() => {
+            called = true;
+          });
+
+          throw new Error('bad');
+        });
+
+        try {
+          badObservable.subscribe();
+        } catch (err) {
+          // do nothing
+        }
+        expect(called).to.be.true;
+      });
+
+      
+      it('should handle empty string sync errors', () => {
+        const badObservable = new Observable(() => {
+          throw '';
+        });
+
+        let caught = false;
+        try {
+          badObservable.subscribe();
+        } catch (err) {
+          caught = true;
+          expect(err).to.equal('');
+        }
+        expect(caught).to.be.true;
+      });
+
+      it('should execute finalize even with a sync error', () => {
+        let called = false;
+        const badObservable = new Observable((subscriber) => {
+          subscriber.error(new Error('bad'));
+        }).pipe(
+          finalize(() => {
+            called = true;
+          })
+        );
+
+        try {
+          badObservable.subscribe();
+        } catch (err) {
+          // do nothing
+        }
+        expect(called).to.be.true;
+      });
+      
+      it('should execute finalize even with a sync thrown error', () => {
+        let called = false;
+        const badObservable = new Observable(() => {
+          throw new Error('bad');
+        }).pipe(
+          finalize(() => {
+            called = true;
+          })
+        );
+
+        try {
+          badObservable.subscribe();
+        } catch (err) {
+          // do nothing
+        }
+        expect(called).to.be.true;
+      });
+      
+      it('should execute finalize in order even with a sync error', () => {
+        const results: any[] = [];
+        const badObservable = new Observable((subscriber) => {
+          subscriber.error(new Error('bad'));
+        }).pipe(
+          finalize(() => {
+            results.push(1);
+          }),
+          finalize(() => {
+            results.push(2)
+          })
+        );
+
+        try {
+          badObservable.subscribe();
+        } catch (err) {
+          // do nothing
+        }
+        expect(results).to.deep.equal([1, 2]);
+      });
+
+      it('should execute finalize in order even with a sync thrown error', () => {
+        const results: any[] = [];
+        const badObservable = new Observable(() => {
+          throw new Error('bad');
+        }).pipe(
+          finalize(() => {
+            results.push(1);
+          }),
+          finalize(() => {
+            results.push(2)
+          })
+        );
+
+        try {
+          badObservable.subscribe();
+        } catch (err) {
+          // do nothing
+        }
+        expect(results).to.deep.equal([1, 2]);
+      });
 
       afterEach(() => {
         config.useDeprecatedSynchronousErrorHandling = false;
