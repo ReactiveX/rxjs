@@ -7,13 +7,9 @@ import { ObservableNotification } from './types';
  */
 export const config: GlobalConfig = {
   onUnhandledError: null,
-
   onStoppedNotification: null,
-
   Promise: undefined,
-
   useDeprecatedSynchronousErrorHandling: false,
-
   useDeprecatedNextContext: false,
 };
 
