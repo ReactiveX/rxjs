@@ -6,11 +6,11 @@ import { ObservableNotification } from './types';
  * like how to react on unhandled errors.
  */
 export const config: GlobalConfig = {
-  onUnhandledError: null as ((err: any) => void) | null,
+  onUnhandledError: null,
 
-  onStoppedNotification: null as ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null,
+  onStoppedNotification: null,
 
-  Promise: undefined as PromiseConstructorLike | undefined,
+  Promise: undefined,
 
   useDeprecatedSynchronousErrorHandling: false,
 
