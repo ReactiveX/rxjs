@@ -577,6 +577,40 @@ describe('Observable', () => {
           });
       });
     });
+    
+    it('should teardown even with a synchronous thrown error', () => {
+      let called = false;
+      const badObservable = new Observable((subscriber) => {
+        subscriber.add(() => {
+          called = true;
+        });
+
+        throw new Error('bad');
+      });
+
+      badObservable.subscribe({
+        error: () => { /* do nothing */ }
+      });
+
+      expect(called).to.be.true;
+    });
+
+    
+    it('should handle empty string sync errors', () => {
+      const badObservable = new Observable(() => {
+        throw '';
+      });
+
+      let caught = false;
+      badObservable.subscribe({
+        error: (err) => {
+          caught = true;
+          expect(err).to.equal('');
+        }
+      });
+      expect(caught).to.be.true;
+    });
+      
 
     describe('if config.useDeprecatedSynchronousErrorHandling === true', () => {
       beforeEach(() => {
