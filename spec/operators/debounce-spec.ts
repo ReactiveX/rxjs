@@ -446,7 +446,7 @@ describe('debounce', () => {
     });
   });
 
-  it('should delay by promise resolves', (done: MochaDone) => {
+  it('should delay by promise resolves', (done) => {
     const e1 = concat(of(1), timer(10).pipe(mapTo(2)), timer(10).pipe(mapTo(3)), timer(100).pipe(mapTo(4)));
     const expected = [1, 2, 3, 4];
 
@@ -470,7 +470,7 @@ describe('debounce', () => {
     );
   });
 
-  it('should raises error when promise rejects', (done: MochaDone) => {
+  it('should raises error when promise rejects', (done) => {
     const e1 = concat(of(1), timer(10).pipe(mapTo(2)), timer(10).pipe(mapTo(3)), timer(100).pipe(mapTo(4)));
     const expected = [1, 2];
     const error = new Error('error');

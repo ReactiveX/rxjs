@@ -90,7 +90,7 @@ describe('min', () => {
     });
   });
 
-  it('should min a range() source observable', (done: Mocha.Done) => {
+  it('should min a range() source observable', (done) => {
     (<any>range(1, 10000)).pipe(min()).subscribe(
       (value: number) => {
         expect(value).to.equal(1);
@@ -104,7 +104,7 @@ describe('min', () => {
     );
   });
 
-  it('should min a range().skip(1) source observable', (done: Mocha.Done) => {
+  it('should min a range().skip(1) source observable', (done) => {
     (<any>range(1, 10)).pipe(skip(1), min()).subscribe(
       (value: number) => {
         expect(value).to.equal(2);
@@ -118,7 +118,7 @@ describe('min', () => {
     );
   });
 
-  it('should min a range().take(1) source observable', (done: Mocha.Done) => {
+  it('should min a range().take(1) source observable', (done) => {
     (<any>range(1, 10)).pipe(take(1), min()).subscribe(
       (value: number) => {
         expect(value).to.equal(1);

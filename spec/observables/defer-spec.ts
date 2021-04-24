@@ -47,7 +47,7 @@ describe('defer', () => {
     });
   });
 
-  it('should accept factory returns promise resolves', (done: MochaDone) => {
+  it('should accept factory returns promise resolves', (done) => {
     const expected = 42;
     const e1 = defer(() => {
       return new Promise<number>((resolve: any) => {
@@ -66,7 +66,7 @@ describe('defer', () => {
     );
   });
 
-  it('should accept factory returns promise rejects', (done: MochaDone) => {
+  it('should accept factory returns promise rejects', (done) => {
     const expected = 42;
     const e1 = defer(() => {
       return new Promise<number>((resolve: any, reject: any) => {
@@ -132,7 +132,7 @@ describe('defer', () => {
       const source = hot('--a--b--c--|');
       const sourceSubs = '^-----!     ';
       const expected = '  --a--b-     ';
-      const unsub =      '------!     ';
+      const unsub = '     ------!     ';
 
       const e1 = defer(() => source);
 

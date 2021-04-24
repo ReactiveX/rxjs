@@ -17,7 +17,7 @@ describe('of', () => {
     expectObservable(e1).toBe(expected, {x: 1, y: 2, z: 3});
   });
 
-  it('should create an observable from the provided values', (done: MochaDone) => {
+  it('should create an observable from the provided values', (done) => {
     const x = { foo: 'bar' };
     const expected = [1, 'a', x];
     let i = 0;
@@ -32,7 +32,7 @@ describe('of', () => {
       });
   });
 
-  it('should emit one value', (done: MochaDone) => {
+  it('should emit one value', (done) => {
     let calls = 0;
 
     of(42).subscribe((x: number) => {
