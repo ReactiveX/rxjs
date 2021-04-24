@@ -23,7 +23,7 @@ describe('concat operator', () => {
     });
   });
 
-  it('should work properly with scalar observables', done => {
+  it('should work properly with scalar observables', (done: Mocha.Done) => {
     const results: string[] = [];
 
     const s1 = new Observable<number>(observer => {

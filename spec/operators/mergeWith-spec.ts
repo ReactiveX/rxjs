@@ -28,7 +28,7 @@ describe('merge operator', () => {
     });
   });
 
-  it('should merge a source with a second', done => {
+  it('should merge a source with a second', (done: Mocha.Done) => {
     const a = of(1, 2, 3);
     const b = of(4, 5, 6, 7, 8);
     const r = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -306,7 +306,7 @@ describe('merge operator', () => {
 });
 
 describe('mergeAll operator', () => {
-  it('should merge two observables', done => {
+  it('should merge two observables', (done: Mocha.Done) => {
     const a = of(1, 2, 3);
     const b = of(4, 5, 6, 7, 8);
     const r = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -322,7 +322,7 @@ describe('mergeAll operator', () => {
       );
   });
 
-  it('should merge two immediately-scheduled observables', done => {
+  it('should merge two immediately-scheduled observables', (done: Mocha.Done) => {
     const a = of(1, 2, 3, queueScheduler);
     const b = of(4, 5, 6, 7, 8, queueScheduler);
     const r = [1, 2, 4, 3, 5, 6, 7, 8];

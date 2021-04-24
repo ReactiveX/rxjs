@@ -106,7 +106,7 @@ describe('mergeMapTo', () => {
     });
   });
 
-  it('should map values to constant resolved promises and merge', (done) => {
+  it('should map values to constant resolved promises and merge', (done: Mocha.Done) => {
     const source = from([4, 3, 2, 1]);
 
     const results: number[] = [];
@@ -124,7 +124,7 @@ describe('mergeMapTo', () => {
     );
   });
 
-  it('should map values to constant rejected promises and merge', (done) => {
+  it('should map values to constant rejected promises and merge', (done: Mocha.Done) => {
     const source = from([4, 3, 2, 1]);
 
     source.pipe(mergeMapTo(from(Promise.reject(42)))).subscribe(

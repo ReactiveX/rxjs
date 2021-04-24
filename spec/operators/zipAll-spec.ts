@@ -41,7 +41,7 @@ describe('zipAll operator', () => {
     });
   });
 
-  it('should take all observables from the source and zip them', (done) => {
+  it('should take all observables from the source and zip them', (done: Mocha.Done) => {
     const expected = ['a1', 'b2', 'c3'];
     let i = 0;
     of(of('a', 'b', 'c'), of(1, 2, 3))
@@ -379,7 +379,7 @@ describe('zipAll operator', () => {
     });
   });
 
-  it('should zip until one child terminates', (done) => {
+  it('should zip until one child terminates', (done: Mocha.Done) => {
     const expected = ['a1', 'b2'];
     let i = 0;
     of(of('a', 'b', 'c'), of(1, 2))
@@ -728,7 +728,7 @@ describe('zipAll operator', () => {
     });
   });
 
-  it('should combine two immediately-scheduled observables', (done) => {
+  it('should combine two immediately-scheduled observables', (done: Mocha.Done) => {
     rxTestScheduler.run(() => {
       const a = scheduled([1, 2, 3], queueScheduler);
       const b = scheduled([4, 5, 6, 7, 8], queueScheduler);
@@ -750,7 +750,7 @@ describe('zipAll operator', () => {
     });
   });
 
-  it('should combine a source with an immediately-scheduled source', (done) => {
+  it('should combine a source with an immediately-scheduled source', (done: Mocha.Done) => {
     const a = scheduled([1, 2, 3], queueScheduler);
     const b = of(4, 5, 6, 7, 8);
     const r = [

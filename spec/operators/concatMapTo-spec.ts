@@ -396,7 +396,7 @@ describe('concatMapTo', () => {
       });
   });
 
-  it('should map values to constant rejected promises and concatenate', (done) => {
+  it('should map values to constant rejected promises and concatenate', (done: Mocha.Done) => {
     const source = from([4, 3, 2, 1]);
 
     source.pipe(concatMapTo(from(Promise.reject(42)))).subscribe(

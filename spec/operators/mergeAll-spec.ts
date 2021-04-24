@@ -437,7 +437,7 @@ describe('mergeAll', () => {
     });
   });
 
-  it('should merge all promises in an observable', (done) => {
+  it('should merge all promises in an observable', (done: Mocha.Done) => {
     const e1 = from([
       new Promise<string>((res) => {
         res('a');
@@ -469,7 +469,7 @@ describe('mergeAll', () => {
     );
   });
 
-  it('should raise error when promise rejects', (done) => {
+  it('should raise error when promise rejects', (done: Mocha.Done) => {
     const error = 'error';
     const e1 = from([
       new Promise<string>((res) => {
@@ -531,7 +531,7 @@ describe('mergeAll', () => {
     expect(iterable.finalized).to.be.true;
   });
 
-  it('should merge two observables', (done) => {
+  it('should merge two observables', (done: Mocha.Done) => {
     const a = of(1, 2, 3);
     const b = of(4, 5, 6, 7, 8);
     const r = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -547,7 +547,7 @@ describe('mergeAll', () => {
       );
   });
 
-  it('should merge two immediately-scheduled observables', (done) => {
+  it('should merge two immediately-scheduled observables', (done: Mocha.Done) => {
     const a = of(1, 2, 3, queueScheduler);
     const b = of(4, 5, 6, 7, 8, queueScheduler);
     const r = [1, 2, 4, 3, 5, 6, 7, 8];

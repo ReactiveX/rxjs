@@ -322,7 +322,7 @@ describe('shareReplay operator', () => {
   const FinalizationRegistry = (global as any).FinalizationRegistry;
   if (FinalizationRegistry) {
 
-    it('should not leak the subscriber for sync sources', (done) => {
+    it('should not leak the subscriber for sync sources', (done: Mocha.Done) => {
       let callback: (() => void) | undefined = () => { /* noop */ };
 
       const registry = new FinalizationRegistry((value: any) => {

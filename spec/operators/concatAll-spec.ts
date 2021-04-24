@@ -26,7 +26,7 @@ describe('concatAll operator', () => {
     });
   });
 
-  it('should concat sources from promise', function(done) {
+  it('should concat sources from promise', function(done: Mocha.Done) {
     this.timeout(2000);
     const sources = from([
       new Promise<number>(res => {
@@ -92,7 +92,7 @@ describe('concatAll operator', () => {
       ]);
     });
 
-  it('should concat and raise error from promise', function(done) {
+  it('should concat and raise error from promise', function(done: Mocha.Done) {
     this.timeout(2000);
 
     const sources = from([

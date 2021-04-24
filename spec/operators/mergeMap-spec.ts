@@ -132,7 +132,7 @@ describe('mergeMap', () => {
     });
   });
 
-  it('should map values to constant resolved promises and merge', (done) => {
+  it('should map values to constant resolved promises and merge', (done: Mocha.Done) => {
     const source = from([4, 3, 2, 1]);
     const project = () => from(Promise.resolve(42));
 
@@ -151,7 +151,7 @@ describe('mergeMap', () => {
     );
   });
 
-  it('should map values to constant rejected promises and merge', (done) => {
+  it('should map values to constant rejected promises and merge', (done: Mocha.Done) => {
     const source = from([4, 3, 2, 1]);
     const project = () => from(Promise.reject<number>(42));
 
@@ -169,7 +169,7 @@ describe('mergeMap', () => {
     );
   });
 
-  it('should map values to resolved promises and merge', (done) => {
+  it('should map values to resolved promises and merge', (done: Mocha.Done) => {
     const source = from([4, 3, 2, 1]);
     const project = (value: number, index: number) => from(Promise.resolve(value + index));
 
@@ -188,7 +188,7 @@ describe('mergeMap', () => {
     );
   });
 
-  it('should map values to rejected promises and merge', (done) => {
+  it('should map values to rejected promises and merge', (done: Mocha.Done) => {
     const source = from([4, 3, 2, 1]);
     const project = (value: number, index: number) => from(Promise.reject<string>('' + value + '-' + index));
 

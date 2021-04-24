@@ -32,7 +32,7 @@ describe('switchAll', () => {
     });
   });
 
-  it('should switch to each immediately-scheduled inner Observable', (done) => {
+  it('should switch to each immediately-scheduled inner Observable', (done: Mocha.Done) => {
     const a = scheduled([1, 2, 3], queueScheduler);
     const b = scheduled([4, 5, 6], queueScheduler);
     const r = [1, 4, 5, 6];
@@ -68,7 +68,7 @@ describe('switchAll', () => {
     expect(unsubbed).to.deep.equal(['a', 'b']);
   });
 
-  it('should switch to each inner Observable', (done) => {
+  it('should switch to each inner Observable', (done: Mocha.Done) => {
     const a = of(1, 2, 3);
     const b = of(4, 5, 6);
     const r = [1, 2, 3, 4, 5, 6];
@@ -252,7 +252,7 @@ describe('switchAll', () => {
     });
   });
 
-  it('should handle an observable of promises', (done) => {
+  it('should handle an observable of promises', (done: Mocha.Done) => {
     const expected = [3];
 
     of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3))
@@ -268,7 +268,7 @@ describe('switchAll', () => {
       });
   });
 
-  it('should handle an observable of promises, where last rejects', (done) => {
+  it('should handle an observable of promises, where last rejects', (done: Mocha.Done) => {
     of(Promise.resolve(1), Promise.resolve(2), Promise.reject(3))
       .pipe(switchAll())
       .subscribe({

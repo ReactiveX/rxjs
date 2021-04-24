@@ -459,7 +459,7 @@ describe('zipWith', () => {
     });
   });
 
-  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done) => {
+  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done: Mocha.Done) => {
     const a = scheduled([1, 2, 3], queueScheduler);
     const b = scheduled([4, 5, 6, 7, 8], queueScheduler);
     const r = [

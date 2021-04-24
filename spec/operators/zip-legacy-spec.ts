@@ -15,7 +15,7 @@ describe('zip legacy', () => {
     rxTestScheduler = new TestScheduler(observableMatcher);
   });
 
-  it('should zip the provided observables', (done) => {
+  it('should zip the provided observables', (done: Mocha.Done) => {
     const expected = ['a1', 'b2', 'c3'];
     let i = 0;
 

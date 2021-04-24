@@ -76,7 +76,7 @@ describe('switchMapTo', () => {
       });
   });
 
-  it('should switch a synchronous many outer to a synchronous many inner', (done) => {
+  it('should switch a synchronous many outer to a synchronous many inner', (done: Mocha.Done) => {
     const a = of(1, 2, 3);
     const expected = ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'];
     a.pipe(switchMapTo(of('a', 'b', 'c'))).subscribe({

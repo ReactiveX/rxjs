@@ -227,7 +227,7 @@ describe('publishLast operator', () => {
     published.connect();
   });
 
-  it('should multicast one observable to multiple observers', (done) => {
+  it('should multicast one observable to multiple observers', (done: Mocha.Done) => {
     const results1: number[] = [];
     const results2: number[] = [];
     let subscriptions = 0;
