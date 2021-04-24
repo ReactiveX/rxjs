@@ -132,7 +132,7 @@ describe('defer', () => {
       const source = hot('--a--b--c--|');
       const sourceSubs = '^-----!     ';
       const expected = '  --a--b-     ';
-      const unsub = '------!     ';
+      const unsub = '     ------!     ';
 
       const e1 = defer(() => source);
 
