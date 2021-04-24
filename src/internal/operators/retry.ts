@@ -59,7 +59,7 @@ export function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
 export function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;
 export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTypeOperatorFunction<T> {
   let config: RetryConfig;
-  if (configOrCount && typeof configOrCount === 'object') {
+  if (typeof configOrCount !== 'number') {
     config = configOrCount;
   } else {
     config = {

@@ -126,18 +126,20 @@ export function shareReplay<T>(
 ): MonoTypeOperatorFunction<T> {
   let bufferSize: number;
   let refCount = false;
-  if (configOrBufferSize && typeof configOrBufferSize === 'object') {
+  if (!configOrBufferSize) {
+    bufferSize = Infinity;
+  } else if (typeof configOrBufferSize === 'number') {
+    bufferSize = configOrBufferSize;
+  } else {
     bufferSize = configOrBufferSize.bufferSize ?? Infinity;
     windowTime = configOrBufferSize.windowTime ?? Infinity;
     refCount = !!configOrBufferSize.refCount;
     scheduler = configOrBufferSize.scheduler;
-  } else {
-    bufferSize = configOrBufferSize ?? Infinity;
   }
   return share<T>({
     connector: () => new ReplaySubject(bufferSize, windowTime, scheduler),
     resetOnError: true,
     resetOnComplete: false,
-    resetOnRefCountZero: refCount
+    resetOnRefCountZero: refCount,
   });
 }
