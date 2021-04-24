@@ -139,7 +139,7 @@ describe('onErrorResumeNext operator', () => {
     expectSubscriptions(next.subscriptions).toBe(nextSubs);
   });
 
-  it('should work with promise', (done: MochaDone) => {
+  it('should work with promise', (done) => {
     const expected = [1, 2];
     const source = concat(of(1), throwError('meh'));
 

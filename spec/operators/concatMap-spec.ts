@@ -769,7 +769,7 @@ describe('Observable.prototype.concatMap', () => {
     });
   });
 
-  it('should map values to constant resolved promises and concatenate', (done: MochaDone) => {
+  it('should map values to constant resolved promises and concatenate', (done) => {
     const source = from([4, 3, 2, 1]);
     const project = (value: number) => from(Promise.resolve(42));
 
@@ -788,7 +788,7 @@ describe('Observable.prototype.concatMap', () => {
     );
   });
 
-  it('should map values to constant rejected promises and concatenate', done => {
+  it('should map values to constant rejected promises and concatenate', (done) => {
     const source = from([4, 3, 2, 1]);
     const project = (value: any) => from(Promise.reject(42));
 
@@ -806,7 +806,7 @@ describe('Observable.prototype.concatMap', () => {
     );
   });
 
-  it('should map values to resolved promises and concatenate', done => {
+  it('should map values to resolved promises and concatenate', (done) => {
     const source = from([4, 3, 2, 1]);
     const project = (value: number, index: number) => from(Promise.resolve(value + index));
 
@@ -825,7 +825,7 @@ describe('Observable.prototype.concatMap', () => {
     );
   });
 
-  it('should map values to rejected promises and concatenate', done => {
+  it('should map values to rejected promises and concatenate', (done) => {
     const source = from([4, 3, 2, 1]);
     const project = (value: number, index: number) => from(Promise.reject('' + value + '-' + index));
 

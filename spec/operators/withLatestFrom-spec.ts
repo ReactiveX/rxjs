@@ -275,7 +275,7 @@ describe('withLatestFrom', () => {
     });
   });
 
-  it('should handle promises', (done: Mocha.Done) => {
+  it('should handle promises', (done) => {
     of(1)
       .pipe(delay(1), withLatestFrom(Promise.resolve(2), Promise.resolve(3)))
       .subscribe({

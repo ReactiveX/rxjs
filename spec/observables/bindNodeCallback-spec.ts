@@ -100,7 +100,7 @@ describe('bindNodeCallback', () => {
       expect(results).to.deep.equal([error]);
     });
 
-    it('should not emit, throw or complete if immediately unsubscribed', (done: MochaDone) => {
+    it('should not emit, throw or complete if immediately unsubscribed', (done) => {
       const nextSpy = sinon.spy();
       const throwSpy = sinon.spy();
       const completeSpy = sinon.spy();

@@ -249,7 +249,7 @@ describe('shareReplay operator', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
-  it('should not break lift() composability', (done: MochaDone) => {
+  it('should not break lift() composability', (done) => {
     class MyCustomObservable<T> extends Observable<T> {
       lift<R>(operator: Operator<T, R>): Observable<R> {
         const observable = new MyCustomObservable<R>();

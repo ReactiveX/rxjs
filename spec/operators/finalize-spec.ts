@@ -8,7 +8,7 @@ import { asInteropObservable } from '../helpers/interop-helper';
 
 /** @test {finalize} */
 describe('finalize', () => {
-  it('should call finalize after complete', (done: MochaDone) => {
+  it('should call finalize after complete', (done) => {
     let completed = false;
     of(1, 2, 3)
       .pipe(
@@ -22,7 +22,7 @@ describe('finalize', () => {
       });
   });
 
-  it('should call finalize after error', (done: MochaDone) => {
+  it('should call finalize after error', (done) => {
     let thrown = false;
     of(1, 2, 3)
       .pipe(
@@ -42,7 +42,7 @@ describe('finalize', () => {
       });
   });
 
-  it('should call finalize upon disposal', (done: MochaDone) => {
+  it('should call finalize upon disposal', (done) => {
     let disposed = false;
     const subscription = timer(100)
       .pipe(
@@ -56,11 +56,11 @@ describe('finalize', () => {
     subscription.unsubscribe();
   });
 
-  it('should call finalize when synchronously subscribing to and unsubscribing from a shared Observable', (done: MochaDone) => {
+  it('should call finalize when synchronously subscribing to and unsubscribing from a shared Observable', (done) => {
     interval(50).pipe(finalize(done), share()).subscribe().unsubscribe();
   });
 
-  it('should call two finalize instances in succession on a shared Observable', (done: MochaDone) => {
+  it('should call two finalize instances in succession on a shared Observable', (done) => {
     let invoked = 0;
     function checkFinally() {
       invoked += 1;

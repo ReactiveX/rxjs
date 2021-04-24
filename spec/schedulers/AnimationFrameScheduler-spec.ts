@@ -65,7 +65,7 @@ describe('Scheduler.animationFrame', () => {
     });
   });
 
-  it('should schedule an action to happen later', (done: MochaDone) => {
+  it('should schedule an action to happen later', (done) => {
     let actionHappened = false;
     animationFrame.schedule(() => {
       actionHappened = true;
@@ -76,7 +76,7 @@ describe('Scheduler.animationFrame', () => {
     }
   });
 
-  it('should execute recursively scheduled actions in separate asynchronous contexts', (done: MochaDone) => {
+  it('should execute recursively scheduled actions in separate asynchronous contexts', (done) => {
     let syncExec1 = true;
     let syncExec2 = true;
     animationFrame.schedule(function (index) {
@@ -98,7 +98,7 @@ describe('Scheduler.animationFrame', () => {
     }, 0, 0);
   });
 
-  it('should cancel the animation frame if all scheduled actions unsubscribe before it executes', (done: MochaDone) => {
+  it('should cancel the animation frame if all scheduled actions unsubscribe before it executes', (done) => {
     let animationFrameExec1 = false;
     let animationFrameExec2 = false;
     const action1 = animationFrame.schedule(() => { animationFrameExec1 = true; });
@@ -116,7 +116,7 @@ describe('Scheduler.animationFrame', () => {
     });
   });
 
-  it('should execute the rest of the scheduled actions if the first action is canceled', (done: MochaDone) => {
+  it('should execute the rest of the scheduled actions if the first action is canceled', (done) => {
     let actionHappened = false;
     let secondSubscription: Subscription | null = null;
 
@@ -141,7 +141,7 @@ describe('Scheduler.animationFrame', () => {
     }
   });
 
-  it('should not execute rescheduled actions when flushing', (done: MochaDone) => {
+  it('should not execute rescheduled actions when flushing', (done) => {
     let flushCount = 0;
     let scheduledIndices: number[] = [];
 

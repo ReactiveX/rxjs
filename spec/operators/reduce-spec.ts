@@ -65,7 +65,7 @@ describe('reduce operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should reduce with index without seed', (done: MochaDone) => {
+  it('should reduce with index without seed', (done) => {
     const idx = [1, 2, 3, 4, 5];
 
     range(0, 6).pipe(reduce((acc, value, index) => {
@@ -77,7 +77,7 @@ describe('reduce operator', () => {
     });
   });
 
-  it('should reduce with index with seed', (done: MochaDone) => {
+  it('should reduce with index with seed', (done) => {
     const idx = [0, 1, 2, 3, 4, 5];
 
     range(0, 6).pipe(reduce((acc, value, index) => {
