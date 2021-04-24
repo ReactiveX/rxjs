@@ -249,7 +249,7 @@ describe('shareReplay operator', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
-  it('should not break lift() composability', (done: MochaDone) => {
+  it('should not break lift() composability', (done) => {
     class MyCustomObservable<T> extends Observable<T> {
       lift<R>(operator: Operator<T, R>): Observable<R> {
         const observable = new MyCustomObservable<R>();
@@ -322,7 +322,7 @@ describe('shareReplay operator', () => {
   const FinalizationRegistry = (global as any).FinalizationRegistry;
   if (FinalizationRegistry) {
 
-    it('should not leak the subscriber for sync sources', (done: Mocha.Done) => {
+    it('should not leak the subscriber for sync sources', (done) => {
       let callback: (() => void) | undefined = () => { /* noop */ };
 
       const registry = new FinalizationRegistry((value: any) => {

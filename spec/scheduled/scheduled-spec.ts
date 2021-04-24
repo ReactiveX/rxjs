@@ -39,7 +39,7 @@ describe('scheduled', () => {
     });
   });
 
-  it('should schedule a promise', (done: Mocha.Done) => {
+  it('should schedule a promise', (done) => {
     const results: any[] = [];
     const input = Promise.resolve('x'); // strings are iterables
     scheduled(input, testScheduler).subscribe({

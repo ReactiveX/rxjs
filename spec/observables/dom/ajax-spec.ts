@@ -246,7 +246,7 @@ describe('ajax', () => {
     expect(error).to.be.an('error', 'wokka wokka');
   });
 
-  it('should error if send request throws', (done: MochaDone) => {
+  it('should error if send request throws', (done) => {
     const expected = new Error('xhr send failure');
 
     ajax({
@@ -647,7 +647,7 @@ describe('ajax', () => {
       expect(MockXMLHttpRequest.mostRecent.data).to.equal('{"hello":"world"}');
     });
 
-    it('should error if send request throws', (done: MochaDone) => {
+    it('should error if send request throws', (done) => {
       const expected = new Error('xhr send failure');
 
       const obj: AjaxConfig = {

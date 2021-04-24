@@ -322,7 +322,7 @@ describe('filter', () => {
     });
   });
 
-  it('should send errors down the error path', (done: MochaDone) => {
+  it('should send errors down the error path', (done) => {
     of(42)
       .pipe(
         filter((x: number, index: number): boolean => {

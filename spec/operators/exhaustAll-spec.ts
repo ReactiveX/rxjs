@@ -235,7 +235,7 @@ describe('exhaust', () => {
     });
   });
 
-  it('should handle an observable of promises', (done: Mocha.Done) => {
+  it('should handle an observable of promises', (done) => {
     const expected = [1];
 
     of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3))
@@ -252,7 +252,7 @@ describe('exhaust', () => {
       );
   });
 
-  it('should handle an observable of promises, where one rejects', (done: Mocha.Done) => {
+  it('should handle an observable of promises, where one rejects', (done) => {
     of(Promise.reject(2), Promise.resolve(1))
       .pipe(exhaustAll())
       .subscribe(

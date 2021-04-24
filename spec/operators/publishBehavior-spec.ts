@@ -212,7 +212,7 @@ describe('publishBehavior operator', () => {
     });
   });
 
-  it('should emit completed when subscribed after completed', (done: Mocha.Done) => {
+  it('should emit completed when subscribed after completed', (done) => {
     const results1: number[] = [];
     const results2: number[] = [];
     let subscriptions = 0;
@@ -287,7 +287,7 @@ describe('publishBehavior operator', () => {
     published.connect();
   });
 
-  it('should multicast one observable to multiple observers', (done: Mocha.Done) => {
+  it('should multicast one observable to multiple observers', (done) => {
     const results1: number[] = [];
     const results2: number[] = [];
     let subscriptions = 0;
@@ -322,7 +322,7 @@ describe('publishBehavior operator', () => {
     done();
   });
 
-  it('should follow the RxJS 4 behavior and emit nothing to observer after completed', (done: Mocha.Done) => {
+  it('should follow the RxJS 4 behavior and emit nothing to observer after completed', (done) => {
     const results: number[] = [];
 
     const source = new Observable<number>((observer) => {

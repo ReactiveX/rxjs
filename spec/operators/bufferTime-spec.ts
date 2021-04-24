@@ -72,7 +72,7 @@ describe('bufferTime operator', () => {
     });
   });
 
-  it('should handle situations with a creation interval of zero', (done: Mocha.Done) => {
+  it('should handle situations with a creation interval of zero', (done) => {
     // This is an odd scenario, and I can't imagine who is weird enough to want this, but here
     // it is. Someone scheduling buffers to open and close on microtasks, with values emitted on microtasks
     // NOTE: Trying this with a completely synchronous scheduler (like queueScheduler, which is

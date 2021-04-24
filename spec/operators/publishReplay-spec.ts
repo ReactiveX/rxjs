@@ -231,7 +231,7 @@ describe('publishReplay operator', () => {
     });
   });
 
-  it('should multicast one observable to multiple observers', (done: Mocha.Done) => {
+  it('should multicast one observable to multiple observers', (done) => {
     const results1: number[] = [];
     const results2: number[] = [];
     let subscriptions = 0;
@@ -265,7 +265,7 @@ describe('publishReplay operator', () => {
     done();
   });
 
-  it('should replay as many events as specified by the bufferSize', (done: Mocha.Done) => {
+  it('should replay as many events as specified by the bufferSize', (done) => {
     const results1: number[] = [];
     const results2: number[] = [];
     let subscriptions = 0;
@@ -342,7 +342,7 @@ describe('publishReplay operator', () => {
     expect(subscriptions).to.equal(2);
   });
 
-  it('should emit replayed values plus completed when subscribed after completed', (done: Mocha.Done) => {
+  it('should emit replayed values plus completed when subscribed after completed', (done) => {
     const results1: number[] = [];
     const results2: number[] = [];
     let subscriptions = 0;

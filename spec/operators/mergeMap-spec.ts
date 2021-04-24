@@ -132,7 +132,7 @@ describe('mergeMap', () => {
     });
   });
 
-  it('should map values to constant resolved promises and merge', (done: Mocha.Done) => {
+  it('should map values to constant resolved promises and merge', (done) => {
     const source = from([4, 3, 2, 1]);
     const project = () => from(Promise.resolve(42));
 
@@ -151,7 +151,7 @@ describe('mergeMap', () => {
     );
   });
 
-  it('should map values to constant rejected promises and merge', (done: Mocha.Done) => {
+  it('should map values to constant rejected promises and merge', (done) => {
     const source = from([4, 3, 2, 1]);
     const project = () => from(Promise.reject<number>(42));
 
@@ -169,7 +169,7 @@ describe('mergeMap', () => {
     );
   });
 
-  it('should map values to resolved promises and merge', (done: Mocha.Done) => {
+  it('should map values to resolved promises and merge', (done) => {
     const source = from([4, 3, 2, 1]);
     const project = (value: number, index: number) => from(Promise.resolve(value + index));
 
@@ -188,7 +188,7 @@ describe('mergeMap', () => {
     );
   });
 
-  it('should map values to rejected promises and merge', (done: Mocha.Done) => {
+  it('should map values to rejected promises and merge', (done) => {
     const source = from([4, 3, 2, 1]);
     const project = (value: number, index: number) => from(Promise.reject<string>('' + value + '-' + index));
 
@@ -903,7 +903,7 @@ describe('mergeMap', () => {
     expect(completed).to.be.true;
   });
 
-  it('should support nested merges', (done: MochaDone) => {
+  it('should support nested merges', (done) => {
     // Added as a failing test when investigating:
     // https://github.com/ReactiveX/rxjs/issues/4071
 
@@ -926,7 +926,7 @@ describe('mergeMap', () => {
     }, 0);
   });
 
-  it('should support nested merges with promises', (done: MochaDone) => {
+  it('should support nested merges with promises', (done) => {
     // Added as a failing test when investigating:
     // https://github.com/ReactiveX/rxjs/issues/4071
 
@@ -949,7 +949,7 @@ describe('mergeMap', () => {
     }, 0);
   });
 
-  it('should support wrapped sources', (done: MochaDone) => {
+  it('should support wrapped sources', (done) => {
     // Added as a failing test when investigating:
     // https://github.com/ReactiveX/rxjs/issues/4095
 

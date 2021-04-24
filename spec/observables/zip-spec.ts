@@ -19,7 +19,7 @@ describe('static zip', () => {
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 
-  it('should zip the provided observables', (done: MochaDone) => {
+  it('should zip the provided observables', (done) => {
     const expected = ['a1', 'b2', 'c3'];
     let i = 0;
 
@@ -518,7 +518,7 @@ describe('static zip', () => {
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 
-  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done: MochaDone) => {
+  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done) => {
     const a = of(1, 2, 3, queueScheduler);
     const b = of(4, 5, 6, 7, 8, queueScheduler);
     const r = [[1, 4], [2, 5], [3, 6]];

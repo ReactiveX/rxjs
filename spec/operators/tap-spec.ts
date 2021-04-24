@@ -60,7 +60,7 @@ describe('tap', () => {
     expect(err).to.equal('bad');
   });
 
-  it('should handle everything with an observer', (done: Mocha.Done) => {
+  it('should handle everything with an observer', (done) => {
     const expected = [1, 2, 3];
     const results: number[] = [];
 
@@ -82,7 +82,7 @@ describe('tap', () => {
       .subscribe();
   });
 
-  it('should handle everything with a Subject', (done: Mocha.Done) => {
+  it('should handle everything with a Subject', (done) => {
     const expected = [1, 2, 3];
     const results: number[] = [];
     const subject = new Subject<number>();

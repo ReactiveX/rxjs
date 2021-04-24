@@ -382,7 +382,7 @@ describe('expand', () => {
     });
   });
 
-  it('should recursively flatten promises', (done: Mocha.Done) => {
+  it('should recursively flatten promises', (done) => {
     const expected = [1, 2, 4, 8, 16];
     of(1)
       .pipe(
@@ -405,7 +405,7 @@ describe('expand', () => {
       );
   });
 
-  it('should recursively flatten Arrays', (done: Mocha.Done) => {
+  it('should recursively flatten Arrays', (done) => {
     const expected = [1, 2, 4, 8, 16];
     of(1)
       .pipe(
@@ -428,7 +428,7 @@ describe('expand', () => {
       );
   });
 
-  it('should recursively flatten lowercase-o observables', (done: Mocha.Done) => {
+  it('should recursively flatten lowercase-o observables', (done) => {
     const expected = [1, 2, 4, 8, 16];
     const project = (x: number): InteropObservable<number> => {
       if (x === 16) {
@@ -488,7 +488,7 @@ describe('expand', () => {
     });
   });
 
-  it('should work with the AsapScheduler', (done: Mocha.Done) => {
+  it('should work with the AsapScheduler', (done) => {
     const expected = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     of(0)
       .pipe(
@@ -499,7 +499,7 @@ describe('expand', () => {
       .subscribe((actual) => expect(actual).to.deep.equal(expected), done, done);
   });
 
-  it('should work with the AsyncScheduler', (done: Mocha.Done) => {
+  it('should work with the AsyncScheduler', (done) => {
     const expected = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     of(0)
       .pipe(

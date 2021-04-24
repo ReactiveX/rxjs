@@ -28,7 +28,7 @@ describe('multicast', () => {
     });
   });
 
-  it('should accept Subjects', (done: Mocha.Done) => {
+  it('should accept Subjects', (done) => {
     const expected = [1, 2, 3, 4];
 
     const connectable = of(1, 2, 3, 4).pipe(multicast(new Subject<number>())) as ConnectableObservable<number>;
@@ -48,7 +48,7 @@ describe('multicast', () => {
     connectable.connect();
   });
 
-  it('should multicast a ConnectableObservable', (done: Mocha.Done) => {
+  it('should multicast a ConnectableObservable', (done) => {
     const expected = [1, 2, 3, 4];
 
     const source = new Subject<number>();
@@ -78,7 +78,7 @@ describe('multicast', () => {
       .subscribe(null, done, done);
   });
 
-  it('should accept Subject factory functions', (done: Mocha.Done) => {
+  it('should accept Subject factory functions', (done) => {
     const expected = [1, 2, 3, 4];
 
     const connectable = of(1, 2, 3, 4).pipe(multicast(() => new Subject<number>())) as ConnectableObservable<number>;
@@ -690,7 +690,7 @@ describe('multicast', () => {
     });
   });
 
-  it('should multicast one observable to multiple observers', (done: Mocha.Done) => {
+  it('should multicast one observable to multiple observers', (done) => {
     const results1: number[] = [];
     const results2: number[] = [];
     let subscriptions = 0;
@@ -745,7 +745,7 @@ describe('multicast', () => {
   });
 
   describe('when given a subject factory', () => {
-    it('should allow you to reconnect by subscribing again', (done: Mocha.Done) => {
+    it('should allow you to reconnect by subscribing again', (done) => {
       const expected = [1, 2, 3, 4];
       let i = 0;
 
@@ -774,7 +774,7 @@ describe('multicast', () => {
       source.connect();
     });
 
-    it('should not throw ObjectUnsubscribedError when used in ' + 'a switchMap', (done: Mocha.Done) => {
+    it('should not throw ObjectUnsubscribedError when used in ' + 'a switchMap', (done) => {
       const source = of(1, 2, 3).pipe(
         multicast(() => new Subject<number>()),
         refCount()
@@ -800,7 +800,7 @@ describe('multicast', () => {
   });
 
   describe('when given a subject', () => {
-    it('should not throw ObjectUnsubscribedError when used in ' + 'a switchMap', (done: Mocha.Done) => {
+    it('should not throw ObjectUnsubscribedError when used in ' + 'a switchMap', (done) => {
       const source = of(1, 2, 3).pipe(multicast(new Subject<number>()), refCount());
 
       const expected = ['a1', 'a2', 'a3'];
