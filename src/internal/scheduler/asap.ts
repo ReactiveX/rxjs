@@ -39,6 +39,6 @@ import { AsapScheduler } from './AsapScheduler';
 export const asapScheduler = new AsapScheduler(AsapAction);
 
 /**
- * @deprecated Renamed. Use {@link asapScheduler}.
+ * @deprecated Renamed to {@link asapScheduler}. Will be removed in v8.
  */
 export const asap = asapScheduler;

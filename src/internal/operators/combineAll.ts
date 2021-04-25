@@ -1,6 +1,6 @@
 import { combineLatestAll } from './combineLatestAll';
 
 /**
- * @deprecated renamed. Use {@link combineLatestAll}.
+ * @deprecated Renamed to {@link combineLatestAll}. Will be removed in v8.
  */
 export const combineAll = combineLatestAll;

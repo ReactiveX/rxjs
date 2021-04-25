@@ -73,7 +73,9 @@ export interface SubscriptionLike extends Unsubscribable {
   readonly closed: boolean;
 }
 
-/** @deprecated To be removed in v8. Do not use. Most likely you want to use `ObservableInput` */
+/**
+ * @deprecated Do not use. Most likely you want to use `ObservableInput`. Will be removed in v8.
+ */
 export type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | InteropObservable<T>;
 
 /** OBSERVABLE INTERFACES */
@@ -94,7 +96,9 @@ export type ObservableInput<T> =
   | Iterable<T>
   | ReadableStreamLike<T>;
 
-/** @deprecated use {@link InteropObservable } */
+/**
+ * @deprecated Renamed to {@link InteropObservable }. Will be removed in v8.
+ */
 export type ObservableLike<T> = InteropObservable<T>;
 
 /**
@@ -213,7 +217,9 @@ export type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;
  */
 export type ObservedValueUnionFromArray<X> = X extends Array<ObservableInput<infer T>> ? T : never;
 
-/** @deprecated use {@link ObservedValueUnionFromArray} */
+/**
+ * @deprecated Renamed to {@link ObservedValueUnionFromArray}. Will be removed in v8.
+ */
 export type ObservedValuesFromArray<X> = ObservedValueUnionFromArray<X>;
 
 /**
