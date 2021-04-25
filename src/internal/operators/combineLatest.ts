@@ -6,23 +6,23 @@ import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { pipe } from '../util/pipe';
 import { popResultSelector } from '../util/args';
 
-/** @deprecated use {@link combineLatestWith} */
+/** @deprecated Replaced with {@link combineLatestWith}. Will be removed in v8. */
 export function combineLatest<T, A extends readonly unknown[], R>(
   sources: [...ObservableInputTuple<A>],
   project: (...values: [T, ...A]) => R
 ): OperatorFunction<T, R>;
-/** @deprecated use {@link combineLatestWith} */
+/** @deprecated Replaced with {@link combineLatestWith}. Will be removed in v8. */
 export function combineLatest<T, A extends readonly unknown[], R>(sources: [...ObservableInputTuple<A>]): OperatorFunction<T, [T, ...A]>;
 
-/** @deprecated use {@link combineLatestWith} */
+/** @deprecated Replaced with {@link combineLatestWith}. Will be removed in v8. */
 export function combineLatest<T, A extends readonly unknown[], R>(
   ...sourcesAndProject: [...ObservableInputTuple<A>, (...values: [T, ...A]) => R]
 ): OperatorFunction<T, R>;
-/** @deprecated use {@link combineLatestWith} */
+/** @deprecated Replaced with {@link combineLatestWith}. Will be removed in v8. */
 export function combineLatest<T, A extends readonly unknown[], R>(...sources: [...ObservableInputTuple<A>]): OperatorFunction<T, [T, ...A]>;
 
 /**
- * @deprecated Deprecated, use {@link combineLatestWith} or static {@link combineLatest}
+ * @deprecated Replaced with {@link combineLatestWith}. Will be removed in v8.
  */
 export function combineLatest<T, R>(...args: (ObservableInput<any> | ((...values: any[]) => R))[]): OperatorFunction<T, unknown> {
   const resultSelector = popResultSelector(args);
