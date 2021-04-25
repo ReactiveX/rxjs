@@ -478,7 +478,7 @@ describe('publishReplay operator', () => {
 
   it('should emit error when the selector returns Observable.throw', () => {
     const error = "It's broken";
-    const selector = () => throwError(error);
+    const selector = () => throwError(() => (error));
     const source = cold('--1--2---3---|');
     const sourceSubs =  '(^!)';
     const published = source.pipe(publishReplay(1, Infinity, selector));

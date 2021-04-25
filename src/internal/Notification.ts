@@ -163,7 +163,7 @@ export class Notification<T> {
         : //
         kind === 'E'
         ? // Error kind. Return an observable that emits the error.
-          throwError(error)
+          throwError(() => error)
         : //
         kind === 'C'
         ? // Completion kind. Kind is "C", return an observable that just completes.

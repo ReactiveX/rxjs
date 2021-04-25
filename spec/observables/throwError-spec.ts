@@ -15,14 +15,14 @@ describe('throwError', () => {
   it('should create a cold observable that just emits an error', () => {
     rxTest.run(({ expectObservable }) => {
       const expected = '#';
-      const e1 = throwError('error');
+      const e1 = throwError(() => 'error');
       expectObservable(e1).toBe(expected);
     });
   });
 
   it('should emit one value', (done) => {
     let calls = 0;
-    throwError('bad').subscribe(
+    throwError(() => 'bad').subscribe(
       () => {
         done(new Error('should not be called'));
       },

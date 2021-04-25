@@ -341,7 +341,7 @@ describe('retryWhen operator', () => {
       }
     });
     const subscription = source.pipe(retryWhen(errors$ => errors$.pipe(
-      mergeMap((err, i) => i < 3 ? of(true) : throwError(err))
+      mergeMap((err, i) => i < 3 ? of(true) : throwError(() => (err)))
     ))).subscribe({
       next: value => results.push(value),
       error: (err) => results.push(err)

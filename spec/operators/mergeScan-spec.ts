@@ -220,7 +220,7 @@ describe('mergeScan', () => {
       const e1subs = '     ^--!';
       const expected = '   ---#';
 
-      const result = e1.pipe(mergeScan(() => throwError(new Error('bad!')), []));
+      const result = e1.pipe(mergeScan(() => throwError(() => new Error('bad!')), []));
 
       expectObservable(result).toBe(expected, undefined, new Error('bad!'));
       expectSubscriptions(e1.subscriptions).toBe(e1subs);

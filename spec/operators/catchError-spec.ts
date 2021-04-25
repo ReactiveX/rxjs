@@ -178,7 +178,7 @@ describe('catchError operator', () => {
       })
     );
 
-    throwError(new Error('Some error')).pipe(
+    throwError(() => new Error('Some error')).pipe(
       catchError(() => synchronousObservable),
       takeWhile((x) => x != 2) // unsubscribe at the second side-effect
     ).subscribe(() => { /* noop */ });
@@ -339,7 +339,7 @@ describe('catchError operator', () => {
   });
 
   it('should pass the error as the first argument', (done: MochaDone) => {
-    throwError('bad').pipe(
+    throwError(() => ('bad')).pipe(
       catchError((err: any) => {
         expect(err).to.equal('bad');
         return EMPTY;
@@ -358,7 +358,7 @@ describe('catchError operator', () => {
 
     input$.pipe(
       mergeMap(input =>
-        throwError('bad').pipe(catchError(err => input))
+        throwError(() => ('bad')).pipe(catchError(err => input))
       )
     ).subscribe(x => {
       expect(x).to.be.equal(42);
@@ -410,7 +410,7 @@ describe('catchError operator', () => {
       const testError = new Error('BROKEN PROMISE');
       from(Promise.reject(testError)).pipe(
         catchError(err =>
-          throwError(thrownError)
+          throwError(() => (thrownError))
         )
       ).subscribe(subscribeSpy, errorSpy);
 

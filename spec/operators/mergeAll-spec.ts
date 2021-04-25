@@ -49,7 +49,7 @@ describe('mergeAll', () => {
       // prettier-ignore
       const e1 = from([
         of('a'),
-        throwError('error'),
+        throwError(() => ('error')),
         of('c')
       ]);
       const expected = '(a#)';

@@ -137,7 +137,7 @@ describe('concatAll operator', () => {
 
   it('should throw if any child observable throws', () => {
     testScheduler.run(({ expectObservable }) => {
-      const e1 = from([of('a'), throwError('error'), of('c')]).pipe(take(10));
+      const e1 = from([of('a'), throwError(() => ('error')), of('c')]).pipe(take(10));
       const expected = '(a#)';
 
       expectObservable(e1.pipe(concatAll())).toBe(expected);

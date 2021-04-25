@@ -21,7 +21,7 @@ describe('Observable.toPromise', () => {
   });
 
   it('should handle errors properly', (done: Mocha.Done) => {
-    throwError('bad')
+    throwError(() => 'bad')
       .toPromise(Promise)
       .then(
         () => {
