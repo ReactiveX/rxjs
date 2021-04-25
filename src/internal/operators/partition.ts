@@ -47,12 +47,12 @@ import { UnaryFunction } from '../types';
  * @return A function that returns an array with two Observables: one with
  * values that passed the predicate, and another with values that did not pass
  * the predicate.
- * @deprecated use `partition` static creation function instead
+ * @deprecated Replaced with the `partition` static creation function. Will be removed in v8.
  */
-export function partition<T>(predicate: (value: T, index: number) => boolean,
-                             thisArg?: any): UnaryFunction<Observable<T>, [Observable<T>, Observable<T>]> {
-  return (source: Observable<T>) => [
-    filter(predicate, thisArg)(source),
-    filter(not(predicate, thisArg))(source)
-  ] as [Observable<T>, Observable<T>];
+export function partition<T>(
+  predicate: (value: T, index: number) => boolean,
+  thisArg?: any
+): UnaryFunction<Observable<T>, [Observable<T>, Observable<T>]> {
+  return (source: Observable<T>) =>
+    [filter(predicate, thisArg)(source), filter(not(predicate, thisArg))(source)] as [Observable<T>, Observable<T>];
 }
