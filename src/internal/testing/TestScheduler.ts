@@ -45,12 +45,12 @@ export class TestScheduler extends VirtualTimeScheduler {
   static frameTimeFactor = 10;
 
   /**
-   * @deprecated remove in v8. Not for public use.
+   * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
    */
   public readonly hotObservables: HotObservable<any>[] = [];
 
   /**
-   * @deprecated remove in v8. Not for public use.
+   * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
    */
   public readonly coldObservables: ColdObservable<any>[] = [];
 
