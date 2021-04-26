@@ -4,12 +4,12 @@ import { isFunction } from '../util/isFunction';
 
 /* tslint:disable:max-line-length */
 export function concatMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<any, ObservedValueOf<O>>;
-/** @deprecated resultSelector no longer supported, use inner map instead, Details https://rxjs.dev/deprecations/resultSelector */
+/** @deprecated The resultSelector parameter will be removed in v8. Use an inner `map` instead. Details https://rxjs.dev/deprecations/resultSelector */
 export function concatMapTo<O extends ObservableInput<unknown>>(
   observable: O,
   resultSelector: undefined
 ): OperatorFunction<any, ObservedValueOf<O>>;
-/** @deprecated resultSelector no longer supported, use inner map instead, Details https://rxjs.dev/deprecations/resultSelector */
+/** @deprecated The resultSelector parameter will be removed in v8. Use an inner `map` instead. Details https://rxjs.dev/deprecations/resultSelector */
 export function concatMapTo<T, R, O extends ObservableInput<unknown>>(
   observable: O,
   resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
