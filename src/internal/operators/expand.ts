@@ -9,8 +9,9 @@ export function expand<T, O extends ObservableInput<unknown>>(
   scheduler?: SchedulerLike
 ): OperatorFunction<T, ObservedValueOf<O>>;
 /**
- * @deprecated Will be removed in v8. If you need to schedule the inner subscription,
+ * @deprecated The `scheduler` parameter will be removed in v8. If you need to schedule the inner subscription,
  * use `subscribeOn` within the projection function: `expand((value) => fn(value).pipe(subscribeOn(scheduler)))`.
+ * Details: Details: https://rxjs.dev/deprecations/scheduler-argument
  */
 export function expand<T, O extends ObservableInput<unknown>>(
   project: (value: T, index: number) => O,
