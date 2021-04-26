@@ -52,10 +52,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @return A function that returns an Observable that emits
  * {@link Notification} objects that wrap the original emissions from the
  * source Observable with metadata.
- *
- * @deprecated In version 8, materialize will start to emit {@link ObservableNotification} objects, and not
- * {@link Notification} instances. This means that methods that are not commonly used, like `Notification.observe`
- * will not be available on the emitted values at that time.
  */
 export function materialize<T>(): OperatorFunction<T, Notification<T> & ObservableNotification<T>> {
   return operate((source, subscriber) => {
