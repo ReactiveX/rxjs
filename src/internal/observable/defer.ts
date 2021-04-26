@@ -41,7 +41,7 @@ import { innerFrom } from './from';
  *
  * @see {@link Observable}
  *
- * @param {function(): SubscribableOrPromise} observableFactory The Observable
+ * @param {function(): ObservableInput} observableFactory The Observable
  * factory function to invoke for each Observer that subscribes to the output
  * Observable. May also return a Promise, which will be converted on the fly
  * to an Observable.
