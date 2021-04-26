@@ -4,9 +4,9 @@ import { concat } from '../observable/concat';
 import { of } from '../observable/of';
 import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ValueFromArray } from '../types';
 
-/** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
+/** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `concatAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function endWith<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;
-/** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
+/** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `concatAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function endWith<T, A extends unknown[] = T[]>(
   ...valuesAndScheduler: [...A, SchedulerLike]
 ): OperatorFunction<T, T | ValueFromArray<A>>;
