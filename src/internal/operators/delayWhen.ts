@@ -6,12 +6,7 @@ import { ignoreElements } from './ignoreElements';
 import { mapTo } from './mapTo';
 import { mergeMap } from './mergeMap';
 
-/** @deprecated In future versions, empty notifiers will no longer re-emit the source value on the output observable. */
-export function delayWhen<T>(
-  delayDurationSelector: (value: T, index: number) => Observable<never>,
-  subscriptionDelay?: Observable<any>
-): MonoTypeOperatorFunction<T>;
-/** @deprecated In future versions, `subscriptionDelay` will no longer be supported. */
+/** @deprecated The `subscriptionDelay` parameter will be removed in v8. */
 export function delayWhen<T>(
   delayDurationSelector: (value: T, index: number) => Observable<any>,
   subscriptionDelay: Observable<any>
