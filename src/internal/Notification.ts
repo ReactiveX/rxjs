@@ -7,7 +7,8 @@ import { isFunction } from './util/isFunction';
 
 // TODO: When this enum is removed, replace it with a type alias. See #4556.
 /**
- * @deprecated NotificationKind is deprecated as const enums are not compatible with isolated modules. Use a string literal instead.
+ * @deprecated Use a string literal instead. `NotificationKind` will be replaced with a type alias in v8.
+ * It will not be replaced with a const enum as those are not compatible with isolated modules.
  */
 export enum NotificationKind {
   NEXT = 'N',
@@ -26,15 +27,16 @@ export enum NotificationKind {
  * @see {@link materialize}
  * @see {@link dematerialize}
  * @see {@link observeOn}
- * @deprecated remove in v8. It is NOT recommended to create instances of `Notification` directly
- * and use them. Rather, try to create POJOs matching the signature outlined in {@link ObservableNotification}.
- * For example: `{ kind: 'N', value: 1 }`, `{kind: 'E', error: new Error('bad') }`, or `{ kind: 'C' }`.
+ * @deprecated It is NOT recommended to create instances of `Notification` directly.
+ * Rather, try to create POJOs matching the signature outlined in {@link ObservableNotification}.
+ * For example: `{ kind: 'N', value: 1 }`, `{ kind: 'E', error: new Error('bad') }`, or `{ kind: 'C' }`.
+ * Will be removed in v8.
  */
 export class Notification<T> {
   /**
    * A value signifying that the notification will "next" if observed. In truth,
-   * This is really synonomous with just checking `kind === "N"`.
-   * @deprecated remove in v8. Instead, just check to see if the value of `kind` is `"N"`.
+   * This is really synonymous with just checking `kind === "N"`.
+   * @deprecated Will be removed in v8. Instead, just check to see if the value of `kind` is `"N"`.
    */
   readonly hasValue: boolean;
 
@@ -42,7 +44,7 @@ export class Notification<T> {
    * Creates a "Next" notification object.
    * @param kind Always `'N'`
    * @param value The value to notify with if observed.
-   * @deprecated internal as of v8. Use {@link createNext} instead.
+   * @deprecated Internal implementation detail. Use {@link createNext} instead.
    */
   constructor(kind: 'N', value?: T);
   /**
@@ -50,13 +52,13 @@ export class Notification<T> {
    * @param kind Always `'E'`
    * @param value Always `undefined`
    * @param error The error to notify with if observed.
-   * @deprecated internal as of v8. Use {@link createError} instead.
+   * @deprecated Internal implementation detail. Use {@link createError} instead.
    */
   constructor(kind: 'E', value: undefined, error: any);
   /**
    * Creates a "completion" notification object.
    * @param kind Always `'C'`
-   * @deprecated internal as of v8. Use {@link createComplete} instead.
+   * @deprecated Internal implementation detail. Use {@link createComplete} instead.
    */
   constructor(kind: 'C');
   constructor(public readonly kind: 'N' | 'E' | 'C', public readonly value?: T, public readonly error?: any) {
@@ -80,7 +82,7 @@ export class Notification<T> {
    * @param next A next handler
    * @param error An error handler
    * @param complete A complete handler
-   * @deprecated remove in v8. use {@link Notification.prototype.observe} instead.
+   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
    */
   do(next: (value: T) => void, error: (err: any) => void, complete: () => void): void;
   /**
@@ -89,14 +91,14 @@ export class Notification<T> {
    * and no error is thrown, it will be a noop.
    * @param next A next handler
    * @param error An error handler
-   * @deprecated remove in v8. use {@link Notification.prototype.observe} instead.
+   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
    */
   do(next: (value: T) => void, error: (err: any) => void): void;
   /**
    * Executes the next handler if the Notification is of `kind` `"N"`. Otherwise
    * this will not error, and it will be a noop.
    * @param next The next handler
-   * @deprecated remove in v8. use {@link Notification.prototype.observe} instead.
+   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
    */
   do(next: (value: T) => void): void;
   do(nextHandler: (value: T) => void, errorHandler?: (err: any) => void, completeHandler?: () => void): void {
@@ -111,7 +113,7 @@ export class Notification<T> {
    * @param next A next handler
    * @param error An error handler
    * @param complete A complete handler
-   * @deprecated remove in v8. use {@link Notification.prototype.observe} instead.
+   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
    */
   accept(next: (value: T) => void, error: (err: any) => void, complete: () => void): void;
   /**
@@ -120,14 +122,14 @@ export class Notification<T> {
    * and no error is thrown, it will be a noop.
    * @param next A next handler
    * @param error An error handler
-   * @deprecated remove in v8. use {@link Notification.prototype.observe} instead.
+   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
    */
   accept(next: (value: T) => void, error: (err: any) => void): void;
   /**
    * Executes the next handler if the Notification is of `kind` `"N"`. Otherwise
    * this will not error, and it will be a noop.
    * @param next The next handler
-   * @deprecated remove in v8. use {@link Notification.prototype.observe} instead.
+   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
    */
   accept(next: (value: T) => void): void;
 
@@ -136,7 +138,7 @@ export class Notification<T> {
    * If the handler is missing it will do nothing. Even if the notification is an error, if
    * there is no error handler on the observer, an error will not be thrown, it will noop.
    * @param observer The observer to notify.
-   * @deprecated remove in v8. Use {@link Notification.prototype.observe} instead.
+   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
    */
   accept(observer: PartialObserver<T>): void;
   accept(nextOrObserver: PartialObserver<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) {
@@ -149,9 +151,8 @@ export class Notification<T> {
    * Returns a simple Observable that just delivers the notification represented
    * by this Notification instance.
    *
-   * @deprecated remove in v8. In order to accomplish converting `Notification` to an {@link Observable}
-   * you may use {@link of} and {@link dematerialize}: `of(notification).pipe(dematerialize())`. This is
-   * being removed as it has limited usefulness, and we're trying to streamline the library.
+   * @deprecated Will be removed in v8. To convert a `Notification` to an {@link Observable},
+   * use {@link of} and {@link dematerialize}: `of(notification).pipe(dematerialize())`.
    */
   toObservable(): Observable<T> {
     const { kind, value, error } = this;
@@ -187,9 +188,10 @@ export class Notification<T> {
    * @return {Notification<T>} The "next" Notification representing the
    * argument.
    * @nocollapse
-   * @deprecated remove in v8. It is NOT recommended to create instances of `Notification` directly
-   * and use them. Rather, try to create POJOs matching the signature outlined in {@link ObservableNotification}.
-   * For example: `{ kind: 'N', value: 1 }`, `{kind: 'E', error: new Error('bad') }`, or `{ kind: 'C' }`.
+   * @deprecated It is NOT recommended to create instances of `Notification` directly.
+   * Rather, try to create POJOs matching the signature outlined in {@link ObservableNotification}.
+   * For example: `{ kind: 'N', value: 1 }`, `{ kind: 'E', error: new Error('bad') }`, or `{ kind: 'C' }`.
+   * Will be removed in v8.
    */
   static createNext<T>(value: T) {
     return new Notification('N', value) as Notification<T> & NextNotification<T>;
@@ -202,9 +204,10 @@ export class Notification<T> {
    * @return {Notification<T>} The "error" Notification representing the
    * argument.
    * @nocollapse
-   * @deprecated remove in v8. It is NOT recommended to create instances of `Notification` directly
-   * and use them. Rather, try to create POJOs matching the signature outlined in {@link ObservableNotification}.
-   * For example: `{ kind: 'N', value: 1 }`, `{kind: 'E', error: new Error('bad') }`, or `{ kind: 'C' }`.
+   * @deprecated It is NOT recommended to create instances of `Notification` directly.
+   * Rather, try to create POJOs matching the signature outlined in {@link ObservableNotification}.
+   * For example: `{ kind: 'N', value: 1 }`, `{ kind: 'E', error: new Error('bad') }`, or `{ kind: 'C' }`.
+   * Will be removed in v8.
    */
   static createError(err?: any) {
     return new Notification('E', undefined, err) as Notification<never> & ErrorNotification;
@@ -214,9 +217,10 @@ export class Notification<T> {
    * A shortcut to create a Notification instance of the type `complete`.
    * @return {Notification<any>} The valueless "complete" Notification.
    * @nocollapse
-   * @deprecated remove in v8. It is NOT recommended to create instances of `Notification` directly
-   * and use them. Rather, try to create POJOs matching the signature outlined in {@link ObservableNotification}.
-   * For example: `{ kind: 'N', value: 1 }`, `{kind: 'E', error: new Error('bad') }`, or `{ kind: 'C' }`.
+   * @deprecated It is NOT recommended to create instances of `Notification` directly.
+   * Rather, try to create POJOs matching the signature outlined in {@link ObservableNotification}.
+   * For example: `{ kind: 'N', value: 1 }`, `{ kind: 'E', error: new Error('bad') }`, or `{ kind: 'C' }`.
+   * Will be removed in v8.
    */
   static createComplete(): Notification<never> & CompleteNotification {
     return Notification.completeNotification;
