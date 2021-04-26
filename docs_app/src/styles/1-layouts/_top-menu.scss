@@ -11,6 +11,7 @@ mat-toolbar.mat-toolbar {
   left: 0;
   z-index: 10;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.30);
+  background-color: black !important;
 
   mat-toolbar-row {
     padding: 0 16px 0 0;
@@ -24,11 +25,11 @@ mat-toolbar.mat-toolbar {
 
 // HOME PAGE OVERRIDE: TOPNAV TOOLBAR
 aio-shell.page-home mat-toolbar.mat-toolbar {
-  background-color: $pink;
+  background-color: black;
 
   @media (min-width: 481px) {
     &:not(.transitioning) {
-      background-color: $pink;
+      background-color: black;
       transition: background-color .2s linear;
     }
   }
