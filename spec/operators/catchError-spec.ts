@@ -338,7 +338,7 @@ describe('catchError operator', () => {
     });
   });
 
-  it('should pass the error as the first argument', (done: MochaDone) => {
+  it('should pass the error as the first argument', (done) => {
     throwError(() => ('bad')).pipe(
       catchError((err: any) => {
         expect(err).to.equal('bad');
@@ -353,7 +353,7 @@ describe('catchError operator', () => {
     });
   });
 
-  it('should accept selector returns any ObservableInput', (done: MochaDone) => {
+  it('should accept selector returns any ObservableInput', (done) => {
     const input$ = createObservableInputs(42);
 
     input$.pipe(
@@ -403,7 +403,7 @@ describe('catchError operator', () => {
       sandbox.restore();
     });
 
-    it('should chain a throw from a promise using Observable.throw', (done: MochaDone) => {
+    it('should chain a throw from a promise using Observable.throw', (done) => {
       const subscribeSpy = sinon.spy();
       const errorSpy = sinon.spy();
       const thrownError = new Error('BROKEN THROW');
@@ -432,7 +432,7 @@ describe('catchError operator', () => {
   // The re-implementation in version 8 should fix the problem in the
   // referenced issue. Closed subscribers should remain closed.
   
-  it('Properly handle async handled result if source is synchronous', (done: MochaDone) => {
+  it('Properly handle async handled result if source is synchronous', (done) => {
     const source = new Observable<string>(observer => {
       observer.error(new Error('kaboom!'));
       observer.complete();

@@ -34,7 +34,7 @@ describe('iif', () => {
     expectObservable(e1).toBe(expected);
   });
 
-  it('should accept resolved promise as thenSource', (done: MochaDone) => {
+  it('should accept resolved promise as thenSource', (done) => {
     const expected = 42;
     const e1 = iif(() => true, new Promise((resolve: any) => { resolve(expected); }), of());
 
@@ -47,7 +47,7 @@ describe('iif', () => {
     });
   });
 
-  it('should accept resolved promise as elseSource', (done: MochaDone) => {
+  it('should accept resolved promise as elseSource', (done) => {
     const expected = 42;
     const e1 = iif(() => false,
       of('a'),
@@ -62,7 +62,7 @@ describe('iif', () => {
     });
   });
 
-  it('should accept rejected promise as elseSource', (done: MochaDone) => {
+  it('should accept rejected promise as elseSource', (done) => {
     const expected = 42;
     const e1 = iif(() => false,
       of('a'),
@@ -78,7 +78,7 @@ describe('iif', () => {
     });
   });
 
-  it('should accept rejected promise as thenSource', (done: MochaDone) => {
+  it('should accept rejected promise as thenSource', (done) => {
     const expected = 42;
     const e1 = iif(() => true, new Promise((resolve: any, reject: any) => { reject(expected); }), of());
 

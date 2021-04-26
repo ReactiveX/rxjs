@@ -43,7 +43,7 @@ describe('refCount', () => {
     sub3.unsubscribe();
   });
 
-  it('should unsub from the source when all other subscriptions are unsubbed', (done: MochaDone) => {
+  it('should unsub from the source when all other subscriptions are unsubbed', (done) => {
     let unsubscribeCalled = false;
     const connectable = new Observable<boolean>(observer => {
       observer.next(true);

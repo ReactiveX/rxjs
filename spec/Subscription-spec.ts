@@ -116,7 +116,7 @@ describe('Subscription', () => {
   });
 
   describe('unsubscribe()', () => {
-    it('Should unsubscribe from all subscriptions, when some of them throw', done => {
+    it('Should unsubscribe from all subscriptions, when some of them throw', (done) => {
       const tearDowns: number[] = [];
 
       const source1 = new Observable(() => {
@@ -149,7 +149,7 @@ describe('Subscription', () => {
       });
     });
 
-    it('Should unsubscribe from all subscriptions, when adding a bad custom subscription to a subscription', done => {
+    it('Should unsubscribe from all subscriptions, when adding a bad custom subscription to a subscription', (done) => {
       const tearDowns: number[] = [];
 
       const sub = new Subscription();

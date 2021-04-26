@@ -114,7 +114,7 @@ describe('fromFetch', () => {
     expect(fromFetch).to.be.a('function');
   });
 
-  it('should fetch', done => {
+  it('should fetch', (done) => {
     const fetch$ = fromFetch('/foo');
     expect(mockFetch.calls.length).to.equal(0);
     expect(MockAbortController.created).to.equal(0);
@@ -139,7 +139,7 @@ describe('fromFetch', () => {
     });
   });
 
-  it('should handle Response that is not `ok`', done => {
+  it('should handle Response that is not `ok`', (done) => {
     mockFetch.respondWith = {
       ok: false,
       status: 400,
@@ -200,7 +200,7 @@ describe('fromFetch', () => {
     expect(mockFetch.calls[1].init!.signal!.aborted).to.be.true;
   });
 
-  it('should allow passing of init object', done => {
+  it('should allow passing of init object', (done) => {
     const fetch$ = fromFetch('/foo', {method: 'HEAD'});
     fetch$.subscribe({
       error: done,
@@ -209,7 +209,7 @@ describe('fromFetch', () => {
     expect(mockFetch.calls[0].init!.method).to.equal('HEAD');
   });
 
-  it('should add a signal to internal init object without mutating the passed init object', done => {
+  it('should add a signal to internal init object without mutating the passed init object', (done) => {
     const myInit = {method: 'DELETE'};
     const fetch$ = fromFetch('/bar', myInit);
     fetch$.subscribe({
@@ -221,7 +221,7 @@ describe('fromFetch', () => {
     expect(mockFetch.calls[0].init!.signal).not.to.be.undefined;
   });
 
-  it('should treat passed signals as a cancellation token which triggers an error', done => {
+  it('should treat passed signals as a cancellation token which triggers an error', (done) => {
     const controller = new MockAbortController();
     const signal = controller.signal as any;
     const fetch$ = fromFetch('/foo', { signal });
@@ -237,7 +237,7 @@ describe('fromFetch', () => {
     expect(subscription.closed).to.be.false;
   });
 
-  it('should treat passed already aborted signals as a cancellation token which triggers an error', done => {
+  it('should treat passed already aborted signals as a cancellation token which triggers an error', (done) => {
     const controller = new MockAbortController();
     controller.abort();
     const signal = controller.signal as any;
@@ -253,7 +253,7 @@ describe('fromFetch', () => {
     expect(subscription.closed).to.be.false;
   });
 
-  it('should not leak listeners added to the passed in signal', done => {
+  it('should not leak listeners added to the passed in signal', (done) => {
     const controller = new MockAbortController();
     const signal = controller.signal as any;
     const fetch$ = fromFetch('/foo', { signal });
@@ -268,7 +268,7 @@ describe('fromFetch', () => {
     });
   });
 
-  it('should support a selector', done => {
+  it('should support a selector', (done) => {
     mockFetch.respondWith = {
       ...OK_RESPONSE,
       text: () => Promise.resolve('bar')

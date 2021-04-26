@@ -28,7 +28,7 @@ describe('throttleTime operator', () => {
       });
     });
 
-    it('should throttle events by 5 time units', (done: MochaDone) => {
+    it('should throttle events by 5 time units', (done) => {
       of(1, 2, 3)
         .pipe(throttleTime(5))
         .subscribe(

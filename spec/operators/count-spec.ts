@@ -90,7 +90,7 @@ describe('count', () => {
     });
   });
 
-  it('should count a range() source observable', (done: MochaDone) => {
+  it('should count a range() source observable', (done) => {
     range(1, 10)
       .pipe(count())
       .subscribe(
@@ -106,7 +106,7 @@ describe('count', () => {
       );
   });
 
-  it('should count a range().skip(1) source observable', (done: MochaDone) => {
+  it('should count a range().skip(1) source observable', (done) => {
     range(1, 10)
       .pipe(skip(1), count())
       .subscribe(
@@ -122,7 +122,7 @@ describe('count', () => {
       );
   });
 
-  it('should count a range().take(1) source observable', (done: MochaDone) => {
+  it('should count a range().take(1) source observable', (done) => {
     range(1, 10)
       .pipe(take(1), count())
       .subscribe(

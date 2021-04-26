@@ -32,7 +32,7 @@ describe('ReplaySubject', () => {
     expect(results).to.deep.equal([1, 2, 3]);
   });
 
-  it('should replay values upon subscription', (done: MochaDone) => {
+  it('should replay values upon subscription', (done) => {
     const subject = new ReplaySubject<number>();
     const expects = [1, 2, 3];
     let i = 0;
@@ -55,7 +55,7 @@ describe('ReplaySubject', () => {
     );
   });
 
-  it('should replay values and complete', (done: MochaDone) => {
+  it('should replay values and complete', (done) => {
     const subject = new ReplaySubject<number>();
     const expects = [1, 2, 3];
     let i = 0;
@@ -72,7 +72,7 @@ describe('ReplaySubject', () => {
     );
   });
 
-  it('should replay values and error', (done: MochaDone) => {
+  it('should replay values and error', (done) => {
     const subject = new ReplaySubject<number>();
     const expects = [1, 2, 3];
     let i = 0;
@@ -91,7 +91,7 @@ describe('ReplaySubject', () => {
     );
   });
 
-  it('should only replay values within its buffer size', (done: MochaDone) => {
+  it('should only replay values within its buffer size', (done) => {
     const subject = new ReplaySubject<number>(2);
     const expects = [2, 3];
     let i = 0;
