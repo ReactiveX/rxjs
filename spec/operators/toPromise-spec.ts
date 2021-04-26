@@ -4,7 +4,7 @@ import { of, EMPTY, throwError, config } from 'rxjs';
 
 /** @test {toPromise} */
 describe('Observable.toPromise', () => {
-  it('should convert an Observable to a promise of its last value', (done: Mocha.Done) => {
+  it('should convert an Observable to a promise of its last value', (done) => {
     of(1, 2, 3)
       .toPromise(Promise)
       .then((x) => {
@@ -13,14 +13,14 @@ describe('Observable.toPromise', () => {
       });
   });
 
-  it('should convert an empty Observable to a promise of undefined', (done: Mocha.Done) => {
+  it('should convert an empty Observable to a promise of undefined', (done) => {
     EMPTY.toPromise(Promise).then((x) => {
       expect(x).to.be.undefined;
       done();
     });
   });
 
-  it('should handle errors properly', (done: Mocha.Done) => {
+  it('should handle errors properly', (done) => {
     throwError(() => 'bad')
       .toPromise(Promise)
       .then(

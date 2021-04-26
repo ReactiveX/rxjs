@@ -389,7 +389,7 @@ describe('audit operator', () => {
     });
   });
 
-  it('should audit by promise resolves', (done: MochaDone) => {
+  it('should audit by promise resolves', (done) => {
     const e1 = interval(10).pipe(take(5));
     const expected = [0, 1, 2, 3, 4];
 
@@ -408,7 +408,7 @@ describe('audit operator', () => {
     );
   });
 
-  it('should raise error when promise rejects', (done: MochaDone) => {
+  it('should raise error when promise rejects', (done) => {
     const e1 = interval(10).pipe(take(10));
     const expected = [0, 1, 2];
     const error = new Error('error');
