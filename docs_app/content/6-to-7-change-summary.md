@@ -1,3 +1,7 @@
+# RxJS 6.x to 7.x Detailed Change List
+
+This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x, presented in the order they can be found when diffing the TypeScript APIs in various module files.
+
 # module `rxjs`
 
 ## Breaking changes
@@ -66,13 +70,12 @@
 ### Observable
 
 - `_isScalar` property removed.
-- `source` property is no longer `public` and is now `protected`.
-- `_subscribe` method is no longer `public` and is now `protected`.
-- `_trySubscribe` method is no longer `public` and is now `protected`.
-- `lift` method is no longer `public` and is now `protected`.
+- `_subscribe` method is no longer `public` and is now marked `@internal`.
+- `_trySubscribe` method is no longer `public` and is now `@internal`.
 - `pipe` method calls with `9` or more arguments will now return `Observable<unknown>` rather than `Observable<{}>`.
 - `toPromise` method now correctly returns `Promise<T | undefined>` instead of `Promise<T>`. This a correction without a runtime change, because if the observable does not emit a value before completion, the promise will resolve with `undefined`.
 - `static if` and `static throw` properties are no longer defined. They were unused in version 6.
+- `lift`, `source`, and `operator` properties are still **deprecated**, and should not be used. They are implementation details, and will very likely be renamed or missing in version 8.
 
 ### of
 
@@ -309,3 +312,15 @@
 ### XSRF (CSRF) additions:
 
 - `xsrfCookieName` and `xsrfHeaderName` were added for cross-site request forgery prevention capabilities.
+
+# module `rxjs/fetch`
+
+No changes.
+
+# module `rxjs/testing`
+
+## New Features
+
+### TestScheduler expectObservable().toEqual()
+
+- A new means of comparing the equality of to observables. If all emissions are the same, and at the same time, then they are equal. This is primarily useful for refactoring operator chains and making sure that they are equivalent.
