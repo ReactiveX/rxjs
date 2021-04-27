@@ -1,4 +1,4 @@
-import { ObservableInput } from '../types';
+import { ObservableInput, SubjectLike } from '../types';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
@@ -18,29 +18,58 @@ export interface ConnectableObservableLike<T> extends Observable<T> {
   connect(): Subscription;
 }
 
+export interface ConnectableConfig<T> {
+  /**
+   * A factory function used to create the Subject through which the source
+   * is multicast. By default this creates a {@link Subject}.
+   */
+  connector: () => SubjectLike<T>;
+  /**
+   * If true, the resulting observable will reset internal state upon disconnetion
+   * and return to a "cold" state. This allows the resulting observable to be
+   * reconnected.
+   * If false, upon disconnection, the connecting subject will remain the
+   * connecting subject, meaning the resulting observable will not go "cold" again,
+   * and subsequent repeats or resubscriptions will resubscribe to that same subject.
+   */
+  resetOnDisconnect?: boolean;
+}
+
+/**
+ * The default configuration for `connectable`.
+ */
+const DEFAULT_CONFIG: ConnectableConfig<unknown> = {
+  connector: () => new Subject<unknown>(),
+  resetOnDisconnect: true,
+};
+
 /**
  * Creates an observable that multicasts once `connect()` is called on it.
  *
  * @param source The observable source to make connectable.
- * @param connector The subject to used to multicast the source observable to all subscribers.
- * Defaults to a new {@link Subject}.
+ * @param config The configuration object for `connectable`.
  * @returns A "connectable" observable, that has a `connect()` method, that you must call to
  * connect the source to all consumers through the subject provided as the connector.
  */
-export function connectable<T>(source: ObservableInput<T>, connector: Subject<T> = new Subject<T>()): ConnectableObservableLike<T> {
+export function connectable<T>(source: ObservableInput<T>, config: ConnectableConfig<T> = DEFAULT_CONFIG): ConnectableObservableLike<T> {
   // The subscription representing the connection.
   let connection: Subscription | null = null;
+  const { connector, resetOnDisconnect = true } = config;
+  let subject = connector();
 
   const result: any = new Observable<T>((subscriber) => {
-    return connector.subscribe(subscriber);
+    return subject.subscribe(subscriber);
   });
 
   // Define the `connect` function. This is what users must call
   // in order to "connect" the source to the subject that is
   // multicasting it.
   result.connect = () => {
-    if (!connection) {
-      connection = defer(() => source).subscribe(connector);
+    if (!connection || connection.closed) {
+      connection = defer(() => source).subscribe(subject);
+      if (resetOnDisconnect) {
+        connection.add(() => (subject = connector()));
+      }
     }
     return connection;
   };
