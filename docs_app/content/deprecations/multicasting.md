@@ -46,10 +46,9 @@ tick$.connect();
 ```ts
 import { connectable, Subject, timer } from 'rxjs';
 // suggested refactor
-const tick$ = connectable(
-  timer(1_000),
-  () => new Subject() // TODO: connectable takes an instance?
-);
+const tick$ = connectable(timer(1_000), {
+  connector: () => new Subject()
+});
 tick$.connect();
 ```
 
@@ -78,43 +77,50 @@ const tick$ = timer(1_000).pipe(
 
 Where [multicast](/api/operators/multicast) is called with a subject factory, can be replaced with [connectable](/api/index/function/connectable).
 
+<!-- prettier-ignore -->
 ```ts
 import { ConnectableObservable, timer, Subject } from 'rxjs';
 import { multicast } from 'rxjs/operators';
 // deprecated
-const tick$ = timer(1_000).pipe(multicast(() => new Subject())) as ConnectableObservable<number>;
+const tick$ = timer(1_000).pipe(
+  multicast(() => new Subject())
+) as ConnectableObservable<number>;
 ```
 
+<!-- prettier-ignore -->
 ```ts
 import { connectable, timer, Subject } from 'rxjs';
 // suggested refactor
-const tick$ = connectable(
-  timer(1_000),
-  () => new Subject() // TODO: connectable takes an instance?
-);
+const tick$ = connectable(timer(1_000), {
+  connector: () => new Subject()
+});
 ```
 
 Where [multicast](/api/operators/multicast) is called with a subject instance, it can be replaced with [connectable](/api/index/function/connectable) and a local subject instance.
 
+<!-- prettier-ignore -->
 ```ts
 import { ConnectableObservable, timer, Subject } from 'rxjs';
 import { multicast } from 'rxjs/operators';
 // deprecated
-const tick$ = timer(1_000).pipe(multicast(new Subject())) as ConnectableObservable<number>;
+const tick$ = timer(1_000).pipe(
+  multicast(new Subject())
+) as ConnectableObservable<number>;
 ```
 
+<!-- prettier-ignore -->
 ```ts
 import { connectable, timer, Subject } from 'rxjs';
 // suggested refactor
-const subject = new Subject();
-const tick$ = connectable(
-  timer(1_000),
-  () => subject // TODO: connectable takes an instance?
-);
+const tick$ = connectable(timer(1_000), {
+  connector: () => new Subject(),
+  resetOnDisconnect: false
+});
 ```
 
 Where [multicast](/api/operators/multicast) is used in conjunction with [refCount](/api/operators/refCount), it can be replaced with [share](/api/index/function/connectable).
 
+<!-- prettier-ignore -->
 ```ts
 import { timer, Subject } from 'rxjs';
 import { multicast, refCount } from 'rxjs/operators';
@@ -125,14 +131,13 @@ const tick$ = timer(1_000).pipe(
 );
 ```
 
+<!-- prettier-ignore -->
 ```ts
 import { timer, Subject } from 'rxjs';
 import { share } from 'rxjs/operators';
 // suggested refactor
 const tick$ = timer(1_000).pipe(
-  share({
-    connector: () => new Subject(),
-  })
+  share({ connector: () => new Subject() })
 );
 ```
 
@@ -167,18 +172,24 @@ const tick$ = timer(1_000).pipe(
 
 If you're using [publish](/api/operators/publish) to create a [ConnectableObservable](/api/index/class/ConnectableObservable), you can use [connectable](/api/index/function/connectable) instead.
 
+<!-- prettier-ignore -->
 ```ts
 import { ConnectableObservable, timer } from 'rxjs';
 import { publish } from 'rxjs/operators';
 // deprecated
-const tick$ = timer(1_000).pipe(publish()) as ConnectableObservable<number>;
+const tick$ = timer(1_000).pipe(
+  publish()
+) as ConnectableObservable<number>;
 ```
 
+<!-- prettier-ignore -->
 ```ts
 import { connectable, timer } from 'rxjs';
 // suggested refactor
-const subject = new Subject<number>();
-const tick$ = connectable(timer(1_000), () => subject); // TODO: connectable takes an instance?
+const tick$ = connectable(timer(1_000), {
+  connector: () => new Subject<number>(),
+  resetOnDisconnect: false
+});
 ```
 
 And if [refCount](/api/operators/refCount) is being applied to the result of [publish](/api/operators/publish), you can use [share](/api/operators/share) to replace both.
@@ -234,18 +245,24 @@ const tick$ = timer(1_000).pipe(
 
 If you're using [publishBehavior](/api/operators/publishBehavior) to create a [ConnectableObservable](/api/index/class/ConnectableObservable), you can use [connectable](/api/index/function/connectable) and a [BehaviorSubject](api/index/class/BehaviorSubject) instead.
 
+<!-- prettier-ignore -->
 ```ts
 import { ConnectableObservable, timer } from 'rxjs';
 import { publishBehavior } from 'rxjs/operators';
 // deprecated
-const tick$ = timer(1_000).pipe(publishBehavior(0)) as ConnectableObservable<number>;
+const tick$ = timer(1_000).pipe(
+  publishBehavior(0)
+) as ConnectableObservable<number>;
 ```
 
+<!-- prettier-ignore -->
 ```ts
 import { connectable, timer, BehaviorSubject } from 'rxjs';
 // suggested refactor
-const subject = new BehaviorSubject(0);
-const tick$ = connectable(timer(1_000), () => subject); // TODO: connectable takes an instance?
+const tick$ = connectable(timer(1_000), {
+  connector: () => new BehaviorSubject(0),
+  resetOnDisconnect: false
+});
 ```
 
 And if [refCount](/api/operators/refCount) is being applied to the result of [publishBehavior](/api/operators/publishBehavior), you can use the [share](/api/operators/share) operator - with a [BehaviorSubject](api/index/class/BehaviorSubject) connector - to replace both.
@@ -280,18 +297,24 @@ const tick$ = timer(1_000).pipe(
 
 If you're using [publishLast](/api/operators/publishLast) to create a [ConnectableObservable](/api/index/class/ConnectableObservable), you can use [connectable](/api/index/function/connectable) and an [AsyncSubject](api/index/class/AsyncSubject) instead.
 
+<!-- prettier-ignore -->
 ```ts
 import { ConnectableObservable, timer } from 'rxjs';
 import { publishLast } from 'rxjs/operators';
 // deprecated
-const tick$ = timer(1_000).pipe(publishLast()) as ConnectableObservable<number>;
+const tick$ = timer(1_000).pipe(
+  publishLast()
+) as ConnectableObservable<number>;
 ```
 
+<!-- prettier-ignore -->
 ```ts
 import { connectable, timer, AsyncSubject } from 'rxjs';
 // suggested refactor
-const subject = new AsyncSubject<number>();
-const tick$ = connectable(timer(1_000), () => subject); // TODO: connectable takes an instance?
+const tick$ = connectable(timer(1_000), {
+  connector: () => new AsyncSubject<number>(),
+  resetOnDisconnect: false
+});
 ```
 
 And if [refCount](/api/operators/refCount) is being applied to the result of [publishLast](/api/operators/publishLast), you can use the [share](/api/operators/share) operator - with an [AsyncSubject](api/index/class/AsyncSubject) connector - to replace both.
@@ -326,18 +349,24 @@ const tick$ = timer(1_000).pipe(
 
 If you're using [publishReplay](/api/operators/publishReplay) to create a [ConnectableObservable](/api/index/class/ConnectableObservable), you can use [connectable](/api/index/function/connectable) and a [ReplaySubject](api/index/class/ReplaySubject) instead.
 
+<!-- prettier-ignore -->
 ```ts
 import { ConnectableObservable, timer } from 'rxjs';
 import { publishReplay } from 'rxjs/operators';
 // deprecated
-const tick$ = timer(1_000).pipe(publishReplay(1)) as ConnectableObservable<number>;
+const tick$ = timer(1_000).pipe(
+  publishReplay(1)
+) as ConnectableObservable<number>;
 ```
 
+<!-- prettier-ignore -->
 ```ts
 import { connectable, timer, ReplaySubject } from 'rxjs';
 // suggested refactor
-const subject = new ReplaySubject<number>(1);
-const tick$ = connectable(timer(1_000), () => subject); // TODO: connectable takes an instance?
+const tick$ = connectable(timer(1_000), {
+  connector: () => new ReplaySubject<number>(1),
+  resetOnDisconnect: false
+});
 ```
 
 And if [refCount](/api/operators/refCount) is being applied to the result of [publishReplay](/api/operators/publishReplay), you can use the [share](/api/operators/share) operator - with a [ReplaySubject](api/index/class/ReplaySubject) connector - to replace both.
