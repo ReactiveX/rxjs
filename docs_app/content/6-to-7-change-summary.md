@@ -189,6 +189,10 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ## Breaking Changes
 
+### buffer
+
+- `buffer` now subscribes to the source observable before it subscribes to the closing notifier. Previously, it subscribed to the closing notifier first.
+
 ### combineLatest
 
 - Generic signatures have changed. Do not explicitly pass generics.
