@@ -28,7 +28,7 @@ export interface ConnectableConfig<T> {
    * If true, the resulting observable will reset internal state upon disconnetion
    * and return to a "cold" state. This allows the resulting observable to be
    * reconnected.
-   * If false, upon disconnection, the connecting subject will will remain the
+   * If false, upon disconnection, the connecting subject will remain the
    * connecting subject, meaning the resulting observable will not go "cold" again,
    * and subsequent repeats or resubscriptions will resubscribe to that same subject.
    */
