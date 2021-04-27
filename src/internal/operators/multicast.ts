@@ -12,11 +12,11 @@ import { connect } from './connect';
  *
  * @param subject The subject to multicast through.
  * @return A function that returns a {@link ConnectableObservable}
- * @deprecated This will be removed in version 8. Please use the {@link connectable} creation
- * function, which creates a connectable observable. If you were using the {@link refCount} operator
- * on the result of the `multicast` operator, then use the {@link share} operator, which is now
- * highly configurable. `multicast(subject), refCount()` is equivalent to
+ * @deprecated Will be removed in v8. To create a connectable observable, use {@link connectable}.
+ * If you're using {@link refCount} after `multicast`, use the {@link share} operator instead.
+ * `multicast(subject), refCount()` is equivalent to
  * `share({ connector: () => subject, resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })`.
+ * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function multicast<T>(subject: Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
 
@@ -28,8 +28,10 @@ export function multicast<T>(subject: Subject<T>): UnaryFunction<Observable<T>, 
  * @param subject The subject used to multicast.
  * @param selector A setup function to setup the multicast
  * @return A function that returns an observable that mirrors the observable returned by the selector.
- * @deprecated To be removed in version 8. Please use the new {@link connect} operator.
- * `multicast(subject, fn)` is equivalent to `connect({ connector: () => subject, setup: fn })`.
+ * @deprecated Will be removed in v8. Use the {@link connect} operator instead.
+ * `multicast(subject, selector)` is equivalent to
+ * `connect(selector, { connector: () => subject })`.
+ * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function multicast<T, O extends ObservableInput<any>>(
   subject: Subject<T>,
@@ -45,11 +47,11 @@ export function multicast<T, O extends ObservableInput<any>>(
  * will cause the underlying subject to be "reset" on error, completion, or refCounted unsubscription of
  * the source.
  * @return A function that returns a {@link ConnectableObservable}
- * @deprecated This will be removed in version 8. Please use the {@link connectable} creation
- * function, which creates a connectable observable. If you were using the {@link refCount} operator
- * on the result of the `multicast` operator, then use the {@link share} operator, which is now
- * highly configurable. `multicast(() => new BehaviorSubject('test'))), refCount()` is equivalent to
+ * @deprecated Will be removed in v8. To create a connectable observable, use {@link connectable}.
+ * If you're using {@link refCount} after `multicast`, use the {@link share} operator instead.
+ * `multicast(() => new BehaviorSubject('test')), refCount()` is equivalent to
  * `share({ connector: () => new BehaviorSubject('test') })`.
+ * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function multicast<T>(subjectFactory: () => Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
 
@@ -61,8 +63,10 @@ export function multicast<T>(subjectFactory: () => Subject<T>): UnaryFunction<Ob
  * @param subjectFactory A factory that creates the subject used to multicast.
  * @param selector A function to setup the multicast and select the output.
  * @return A function that returns an observable that mirrors the observable returned by the selector.
- * @deprecated To be removed in version 8. Please use the new {@link connect} operator.
- * `multicast(subjectFactor, selector)` is equivalent to `connect(selector, { connector: subjectFactory })`.
+ * @deprecated Will be removed in v8. Use the {@link connect} operator instead.
+ * `multicast(subjectFactory, selector)` is equivalent to
+ * `connect(selector, { connector: subjectFactory })`.
+ * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function multicast<T, O extends ObservableInput<any>>(
   subjectFactory: () => Subject<T>,
