@@ -33,9 +33,9 @@ export function forkJoin<A extends readonly unknown[], R>(
 ): Observable<R>;
 
 // forkJoin(a, b, c)
-/** @deprecated Use the version that takes an array of Observables instead, Details https://rxjs.dev/deprecations/array-argument */
+/** @deprecated Pass an array of sources instead. The rest-parameters signature will be removed in v8. Details: https://rxjs.dev/deprecations/array-argument */
 export function forkJoin<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
-/** @deprecated Use the version that takes an array of Observables instead, Details https://rxjs.dev/deprecations/array-argument */
+/** @deprecated Pass an array of sources instead. The rest-parameters signature will be removed in v8. Details: https://rxjs.dev/deprecations/array-argument */
 export function forkJoin<A extends readonly unknown[], R>(
   ...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]
 ): Observable<R>;

@@ -129,7 +129,7 @@ export function timer(due: number | Date, scheduler?: SchedulerLike): Observable
 export function timer(startDue: number | Date, intervalDuration: number, scheduler?: SchedulerLike): Observable<number>;
 
 /**
- * @deprecated Use `timer(dueTime, scheduler?)` instead. This call pattern will be removed in version 8.
+ * @deprecated The signature allowing `undefined` to be passed for `intervalDuration` will be removed in v8. Use the `timer(dueTime, scheduler?)` signature instead.
  */
 export function timer(dueTime: number | Date, unused: undefined, scheduler?: SchedulerLike): Observable<0>;
 

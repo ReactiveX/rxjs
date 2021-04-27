@@ -18,12 +18,12 @@ import { isFunction } from './util/isFunction';
  */
 export class Observable<T> implements Subscribable<T> {
   /**
-   * @deprecated This is an internal implementation detail, do not use.
+   * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
    */
   source: Observable<any> | undefined;
 
   /**
-   * @deprecated This is an internal implementation detail, do not use.
+   * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
    */
   operator: Operator<any, T> | undefined;
 
@@ -43,13 +43,13 @@ export class Observable<T> implements Subscribable<T> {
   // HACK: Since TypeScript inherits static properties too, we have to
   // fight against TypeScript here so Subject can have a different static create signature
   /**
-   * Creates a new cold Observable by calling the Observable constructor
+   * Creates a new Observable by calling the Observable constructor
    * @owner Observable
    * @method create
    * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
-   * @return {Observable} a new cold observable
+   * @return {Observable} a new observable
    * @nocollapse
-   * @deprecated use new Observable() instead
+   * @deprecated Use `new Observable()` instead. Will be removed in v8.
    */
   static create: (...args: any[]) => any = <T>(subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) => {
     return new Observable<T>(subscribe);
@@ -61,9 +61,10 @@ export class Observable<T> implements Subscribable<T> {
    * @method lift
    * @param operator the operator defining the operation to take on the observable
    * @return a new observable with the Operator applied
-   * @deprecated This is an internal implementation detail, do not use directly. If you have implemented an operator
-   * using `lift`, it is recommended that you create an operator by simply returning `new Observable()` directly.
-   * See "Creating new operators from scratch" section here: https://rxjs.dev/guide/operators
+   * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
+   * If you have implemented an operator using `lift`, it is recommended that you create an
+   * operator by simply returning `new Observable()` directly. See "Creating new operators from
+   * scratch" section here: https://rxjs.dev/guide/operators
    */
   lift<R>(operator?: Operator<T, R>): Observable<R> {
     const observable = new Observable<R>();
@@ -74,7 +75,7 @@ export class Observable<T> implements Subscribable<T> {
 
   subscribe(observer?: Partial<Observer<T>>): Subscription;
   subscribe(next: (value: T) => void): Subscription;
-  /** @deprecated Use an observer instead of a complete callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
+  /** @deprecated Instead of passing separate callback arguments, use an observer argument. Signatures taking separate callback arguments will be removed in v8. Details: https://rxjs.dev/deprecations/subscribe-arguments */
   subscribe(next?: ((value: T) => void) | null, error?: ((error: any) => void) | null, complete?: (() => void) | null): Subscription;
   /**
    * Invokes an execution of an Observable and registers Observer handlers for notifications it will emit.
@@ -343,11 +344,11 @@ export class Observable<T> implements Subscribable<T> {
    * @param promiseCtor a constructor function used to instantiate the Promise
    * @return a promise that either resolves on observable completion or
    *  rejects with the handled error
-   * @deprecated remove in v8. Passing a Promise constructor will no longer be available
+   * @deprecated Passing a Promise constructor will no longer be available
    * in upcoming versions of RxJS. This is because it adds weight to the library, for very
    * little benefit. If you need this functionality, it is recommended that you either
    * polyfill Promise, or you create an adapter to convert the returned native promise
-   * to whatever promise implementation you wanted.
+   * to whatever promise implementation you wanted. Will be removed in v8.
    */
   forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
 
@@ -482,11 +483,11 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /* tslint:disable:max-line-length */
-  /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
+  /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. */
   toPromise(): Promise<T | undefined>;
-  /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
+  /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. */
   toPromise(PromiseCtor: typeof Promise): Promise<T | undefined>;
-  /** @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead */
+  /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. */
   toPromise(PromiseCtor: PromiseConstructorLike): Promise<T | undefined>;
   /* tslint:enable:max-line-length */
 
@@ -506,7 +507,7 @@ export class Observable<T> implements Subscribable<T> {
    * @return A Promise that resolves with the last value emit, or
    * rejects on an error. If there were no emissions, Promise
    * resolves with undefined.
-   * @deprecated Deprecated use {@link firstValueFrom} or {@link lastValueFrom} instead
+   * @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8.
    */
   toPromise(promiseCtor?: PromiseConstructorLike): Promise<T | undefined> {
     promiseCtor = getPromiseCtor(promiseCtor);

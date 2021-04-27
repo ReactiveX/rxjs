@@ -25,9 +25,9 @@ export class AjaxResponse<T> {
   readonly response: T;
 
   /**
-   * The responseType set on the request. (For example: `""`, "arraybuffer"`, "blob"`, "document"`, "json"`, or `"text"`)
-   * @deprecated There isn't much reason to examine this. It's the same responseType set (or defaulted) on the ajax config
-   * if you really need to examine this value, you can check it on the `request` or the `xhr`.
+   * The responseType set on the request. (For example: `""`, `"arraybuffer"`, `"blob"`, `"document"`, `"json"`, or `"text"`)
+   * @deprecated There isn't much reason to examine this. It's the same responseType set (or defaulted) on the ajax config.
+   * If you really need to examine this value, you can check it on the `request` or the `xhr`. Will be removed in v8.
    */
   readonly responseType: XMLHttpRequestResponseType;
 

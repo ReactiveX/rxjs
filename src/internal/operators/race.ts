@@ -2,9 +2,9 @@ import { ObservableInputTuple, OperatorFunction } from '../types';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { raceWith } from './raceWith';
 
-/** @deprecated Deprecated use {@link raceWith} */
+/** @deprecated Replaced with {@link raceWith}. Will be removed in v8. */
 export function race<T, A extends readonly unknown[]>(otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
-/** @deprecated Deprecated use {@link raceWith} */
+/** @deprecated Replaced with {@link raceWith}. Will be removed in v8. */
 export function race<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 
 /**
@@ -13,7 +13,7 @@ export function race<T, A extends readonly unknown[]>(...otherSources: [...Obser
  * @param args Sources used to race for which Observable emits first.
  * @return A function that returns an Observable that mirrors the output of the
  * first Observable to emit an item.
- * @deprecated Deprecated use {@link raceWith}
+ * @deprecated Replaced with {@link raceWith}. Will be removed in v8.
  */
 export function race<T>(...args: any[]): OperatorFunction<T, unknown> {
   return raceWith(...argsOrArgArray(args));

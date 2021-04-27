@@ -51,6 +51,6 @@ import { AsyncScheduler } from './AsyncScheduler';
 export const asyncScheduler = new AsyncScheduler(AsyncAction);
 
 /**
- * @deprecated Renamed. Use {@link asyncScheduler}.
+ * @deprecated Renamed to {@link asyncScheduler}. Will be removed in v8.
  */
 export const async = asyncScheduler;

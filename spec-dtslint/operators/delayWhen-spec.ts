@@ -27,9 +27,3 @@ it('should enforce types of delayWhenDurationSelector', () => {
 it('should enforce types of subscriptiondelayWhen', () => {
   const o = of(1, 2, 3).pipe(delayWhen(() => of('a', 'b', 'c'), 'a')); // $ExpectError
 });
-
-it('should deprecates', () => {
-  of(1, 2, 3).pipe(delayWhen(() => NEVER)); // $ExpectDeprecation
-  of(1, 2, 3).pipe(delayWhen(() => of('a', 'b', 'c'), of(0))); // $ExpectDeprecation
-  of(1, 2, 3).pipe(delayWhen(() => of('a', 'b', 'c'))); // $ExpectNoDeprecation
-});

@@ -1,7 +1,7 @@
 import { Action } from './scheduler/Action';
 import { Subscription } from './Subscription';
 import { SchedulerLike, SchedulerAction } from './types';
-import { dateTimestampProvider } from "./scheduler/dateTimestampProvider";
+import { dateTimestampProvider } from './scheduler/dateTimestampProvider';
 
 /**
  * An execution context and a data structure to order tasks and schedule their
@@ -20,14 +20,12 @@ import { dateTimestampProvider } from "./scheduler/dateTimestampProvider";
  * @class Scheduler
  * @deprecated Scheduler is an internal implementation detail of RxJS, and
  * should not be used directly. Rather, create your own class and implement
- * {@link SchedulerLike}
+ * {@link SchedulerLike}. Will be made internal in v8.
  */
 export class Scheduler implements SchedulerLike {
-
   public static now: () => number = dateTimestampProvider.now;
 
-  constructor(private schedulerActionCtor: typeof Action,
-              now: () => number = Scheduler.now) {
+  constructor(private schedulerActionCtor: typeof Action, now: () => number = Scheduler.now) {
     this.now = now;
   }
 

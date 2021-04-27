@@ -7,8 +7,3 @@ export function getSymbolIterator(): symbol {
 }
 
 export const iterator = getSymbolIterator();
-
-/**
- * @deprecated use {@link iterator} instead
- */
-export const $$iterator = iterator;

@@ -3,7 +3,7 @@ import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 export function mapTo<R>(value: R): OperatorFunction<any, R>;
-/** @deprecated remove in v8. Use mapTo<R>(value: R): OperatorFunction<any, R> signature instead **/
+/** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
 export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
 
 /**

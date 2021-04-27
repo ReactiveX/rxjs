@@ -34,8 +34,8 @@ import { noop } from '../util/noop';
 export const NEVER = new Observable<never>(noop);
 
 /**
- * @deprecated Deprecated in favor of using {@link NEVER} constant.
+ * @deprecated Replaced with the {@link NEVER} constant. Will be removed in v8.
  */
-export function never () {
+export function never() {
   return NEVER;
 }

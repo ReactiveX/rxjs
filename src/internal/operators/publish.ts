@@ -9,12 +9,13 @@ import { connect } from './connect';
  * Returns a connectable observable that, when connected, will multicast
  * all values through a single underlying {@link Subject} instance.
  *
- * @deprecated To be removed in version 8. If you're using `publish()` to get a connectable observable,
- * please use the new {@link connectable} creation function. `source.pipe(publish())` is
- * equivalent to `connectable(source, () => new Subject())`. If you're calling {@link refCount} on the result
- * of `publish`, please use the updated {@link share} operator which is highly configurable.
+ * @deprecated Will be removed in v8. To create a connectable observable, use {@link connectable}.
+ * `source.pipe(publish())` is equivalent to
+ * `connectable(source, { connector: () => new Subject(), resetOnDisconnect: false })`.
+ * If you're using {@link refCount} after `publish`, use {@link share} operator instead.
  * `source.pipe(publish(), refCount())` is equivalent to
  * `source.pipe(share({ resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false }))`.
+ * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function publish<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
 
@@ -26,8 +27,9 @@ export function publish<T>(): UnaryFunction<Observable<T>, ConnectableObservable
  *
  * @param selector A function used to setup multicasting prior to automatic connection.
  *
- * @deprecated To be removed in version 8. Use the new {@link connect} operator.
- * If you're using `publish(fn)`, it is equivalent to `connect(fn)`.
+ * @deprecated Will be removed in v8. Use the {@link connect} operator instead.
+ * `publish(selector)` is equivalent to `connect(selector)`.
+ * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function publish<T, O extends ObservableInput<any>>(selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
 

@@ -29,19 +29,22 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @return A Subscriber wrapping the (partially defined)
    * Observer represented by the given arguments.
    * @nocollapse
-   * @deprecated Do not use. Will be removed in v8. There is no replacement for this method, and there is no reason to be creating instances of `Subscriber` directly. If you have a specific use case, please file an issue.
+   * @deprecated Do not use. Will be removed in v8. There is no replacement for this
+   * method, and there is no reason to be creating instances of `Subscriber` directly.
+   * If you have a specific use case, please file an issue.
    */
   static create<T>(next?: (x?: T) => void, error?: (e?: any) => void, complete?: () => void): Subscriber<T> {
     return new SafeSubscriber(next, error, complete);
   }
 
-  /** @deprecated This is an internal implementation detail, do not use directly. */
+  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   protected isStopped: boolean = false;
-  /** @deprecated This is an internal implementation detail, do not use directly. */
+  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   protected destination: Subscriber<any> | Observer<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
 
   /**
-   * @deprecated Do not use directly. There is no reason to directly create an instance of Subscriber. This type is exported for typings reasons.
+   * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
+   * There is no reason to directly create an instance of Subscriber. This type is exported for typings reasons.
    */
   constructor(destination?: Subscriber<any> | Observer<any>) {
     super();

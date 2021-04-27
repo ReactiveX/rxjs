@@ -5,7 +5,7 @@ import { EMPTY } from './empty';
 export function range(start: number, count?: number): Observable<number>;
 
 /**
- * @deprecated To be removed in v8. Passing a scheduler is deprecated, use `range(start, count).pipe(observeOn(scheduler))` instead.
+ * @deprecated The `scheduler` parameter will be removed in v8. Use `range(start, count).pipe(observeOn(scheduler))` instead. Details: Details: https://rxjs.dev/deprecations/scheduler-argument
  */
 export function range(start: number, count: number | undefined, scheduler: SchedulerLike): Observable<number>;
 

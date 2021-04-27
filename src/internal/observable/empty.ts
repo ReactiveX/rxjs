@@ -25,7 +25,7 @@ import { SchedulerLike } from '../types';
  * // Complete!
  * ```
  */
-export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
+export const EMPTY = new Observable<never>((subscriber) => subscriber.complete());
 
 /**
  * Creates an Observable that emits no items to the Observer and immediately
@@ -82,12 +82,12 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  * the emission of the complete notification.
  * @return An "empty" Observable: emits only the complete
  * notification.
- * @deprecated Deprecated in favor of using {@link EMPTY} constant, or {@link scheduled} (e.g. `scheduled([], scheduler)`)
+ * @deprecated Replaced with the {@link EMPTY} constant or {@link scheduled} (e.g. `scheduled([], scheduler)`). Will be removed in v8.
  */
 export function empty(scheduler?: SchedulerLike) {
   return scheduler ? emptyScheduled(scheduler) : EMPTY;
 }
 
 function emptyScheduled(scheduler: SchedulerLike) {
-  return new Observable<never>(subscriber => scheduler.schedule(() => subscriber.complete()));
+  return new Observable<never>((subscriber) => scheduler.schedule(() => subscriber.complete()));
 }

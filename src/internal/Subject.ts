@@ -15,20 +15,20 @@ import { arrRemove } from './util/arrRemove';
  */
 export class Subject<T> extends Observable<T> implements SubscriptionLike {
   closed = false;
-  /** @deprecated This is an internal implementation detail, do not use directly. */
+  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   observers: Observer<T>[] = [];
-  /** @deprecated This is an internal implementation detail, do not use directly. */
+  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   isStopped = false;
-  /** @deprecated This is an internal implementation detail, do not use directly. */
+  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   hasError = false;
-  /** @deprecated This is an internal implementation detail, do not use directly. */
+  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   thrownError: any = null;
 
   /**
    * Creates a "subject" by basically gluing an observer to an observable.
    *
    * @nocollapse
-   * @deprecated Recommended you do not use, will be removed at some point in the future. Plans for replacement still under discussion.
+   * @deprecated Recommended you do not use. Will be removed at some point in the future. Plans for replacement still under discussion.
    */
   static create: (...args: any[]) => any = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
     return new AnonymousSubject<T>(destination, source);
@@ -39,7 +39,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     super();
   }
 
-  /** @deprecated This is an internal implementation detail, do not use directly. */
+  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   lift<R>(operator: Operator<T, R>): Observable<R> {
     const subject = new AnonymousSubject(this, this);
     subject.operator = operator as any;
@@ -140,7 +140,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
  */
 export class AnonymousSubject<T> extends Subject<T> {
   constructor(
-    /** @deprecated Internal implementation detail, do not use. */
+    /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
     public destination?: Observer<T>,
     source?: Observable<T>
   ) {
