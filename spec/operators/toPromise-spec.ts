@@ -21,7 +21,7 @@ describe('Observable.toPromise', () => {
   });
 
   it('should handle errors properly', (done) => {
-    throwError('bad')
+    throwError(() => 'bad')
       .toPromise(Promise)
       .then(
         () => {

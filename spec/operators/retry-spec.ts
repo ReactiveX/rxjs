@@ -99,7 +99,7 @@ describe('retry operator', () => {
         index++;
         if (index === 1 || index === 3) {
           errors++;
-          return throwError('bad');
+          return throwError(() => ('bad'));
         } else {
           return of(42);
         }
@@ -145,7 +145,7 @@ describe('retry operator', () => {
         index++;
         if (index === 1 || index === 3) {
           errors++;
-          return throwError('bad');
+          return throwError(() => ('bad'));
         } else {
           return of(42);
         }
@@ -293,7 +293,7 @@ describe('retry operator', () => {
     const expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
 
     of(1, 2, 3).pipe(
-      concat(throwError('bad!')),
+      concat(throwError(() => ('bad!'))),
       multicast(() => new Subject<number>()),
       refCount(),
       retry(4)

@@ -110,7 +110,7 @@ describe('throwIfEmpty', () => {
           throwIfEmpty(() => error),
           mergeMap((value) => {
             if (value > 1) {
-              return throwError(new Error());
+              return throwError(() => new Error());
             }
 
             return of(value);
@@ -210,7 +210,7 @@ describe('throwIfEmpty', () => {
           throwIfEmpty(),
           mergeMap((value) => {
             if (value > 1) {
-              return throwError(new Error());
+              return throwError(() => new Error());
             }
 
             return of(value);

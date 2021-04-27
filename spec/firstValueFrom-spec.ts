@@ -40,7 +40,7 @@ describe('firstValueFrom', () => {
   });
 
   it('should error for errored observables', async () => {
-    const source = throwError(new Error('blorp!'));
+    const source = throwError(() => new Error('blorp!'));
     let error: any = null;
     try {
       await firstValueFrom(source);

@@ -114,7 +114,7 @@ describe('onErrorResumeNext operator', () => {
       }
     });
 
-    throwError(new Error('Some error')).pipe(
+    throwError(() => new Error('Some error')).pipe(
       onErrorResumeNext(synchronousObservable),
       take(3),
     ).subscribe(() => { /* noop */ });
@@ -141,7 +141,7 @@ describe('onErrorResumeNext operator', () => {
 
   it('should work with promise', (done) => {
     const expected = [1, 2];
-    const source = concat(of(1), throwError('meh'));
+    const source = concat(of(1), throwError(() => ('meh')));
 
     source.pipe(onErrorResumeNext(Promise.resolve(2)))
       .subscribe(x => {

@@ -305,7 +305,7 @@ describe('bufferTime operator', () => {
 
   it('should handle throw', () => {
     testScheduler.run(({ time, expectObservable }) => {
-      const e1 = throwError(new Error('haha'));
+      const e1 = throwError(() => new Error('haha'));
       const expected = '#';
       const t = time('----------|');
 

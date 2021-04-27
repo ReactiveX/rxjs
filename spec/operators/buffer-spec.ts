@@ -122,7 +122,7 @@ describe('Observable.prototype.buffer', () => {
   it('should work with non-empty and throw selector', () => {
     testScheduler.run(({ hot, expectObservable }) => {
       const a = hot('---^--a--');
-      const b = throwError(new Error('too bad'));
+      const b = throwError(() => new Error('too bad'));
       const expected = '#';
       expectObservable(a.pipe(buffer(b))).toBe(expected, null, new Error('too bad'));
     });
@@ -130,7 +130,7 @@ describe('Observable.prototype.buffer', () => {
 
   it('should work with throw and non-empty selector', () => {
     testScheduler.run(({ hot, expectObservable }) => {
-      const a = throwError(new Error('too bad'));
+      const a = throwError(() => new Error('too bad'));
       const b = hot('---^--a--');
       const expected = '#';
       expectObservable(a.pipe(buffer(b))).toBe(expected, null, new Error('too bad'));
