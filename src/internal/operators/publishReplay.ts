@@ -14,7 +14,7 @@ import { isFunction } from '../util/isFunction';
  * @deprecated Will be removed in v8. To create a connectable observable that uses a
  * {@link ReplaySubject} under the hood, use {@link connectable}.
  * `source.pipe(publishReplay(size, time, scheduler))` is equivalent to
- * `connectable(source, () => new ReplaySubject(size, time, scheduler))`.
+ * `connectable(source, { connector: () => new ReplaySubject(size, time, scheduler), resetOnDisconnect: false })`.
  * If you're using {@link refCount} after `publishReplay`, use the {@link share} operator instead.
  * `publishReplay(size, time, scheduler), refCount()` is equivalent to
  * `share({ connector: () => new ReplaySubject(size, time, scheduler), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })`.
@@ -61,7 +61,7 @@ export function publishReplay<T, O extends ObservableInput<any>>(
  * @deprecated Will be removed in v8. To create a connectable observable that uses a
  * {@link ReplaySubject} under the hood, use {@link connectable}.
  * `source.pipe(publishReplay(size, time, scheduler))` is equivalent to
- * `connectable(source, () => new ReplaySubject(size, time, scheduler))`.
+ * `connectable(source, { connector: () => new ReplaySubject(size, time, scheduler), resetOnDisconnect: false })`.
  * If you're using {@link refCount} after `publishReplay`, use the {@link share} operator instead.
  * `publishReplay(size, time, scheduler), refCount()` is equivalent to
  * `share({ connector: () => new ReplaySubject(size, time, scheduler), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })`.

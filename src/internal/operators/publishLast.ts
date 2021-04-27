@@ -60,7 +60,7 @@ import { UnaryFunction } from '../types';
  * @deprecated Will be removed in v8. To create a connectable observable with an
  * {@link AsyncSubject} under the hood, use {@link connectable}.
  * `source.pipe(publishLast())` is equivalent to
- * `connectable(source, () => new AsyncSubject())`.
+ * `connectable(source, { connector: () => new AsyncSubject(), resetOnDisconnect: false })`.
  * If you're using {@link refCount} after `publishLast`, use the {@link share} operator instead.
  * `source.pipe(publishLast(), refCount())` is equivalent to
  * `source.pipe(share({ connector: () => new AsyncSubject(), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false }))`.

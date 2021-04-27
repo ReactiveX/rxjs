@@ -11,7 +11,7 @@ import { UnaryFunction } from '../types';
  * @deprecated Will be removed in v8. To create a connectable observable that uses a
  * {@link BehaviorSubject} under the hood, use {@link connectable}.
  * `source.pipe(publishBehavior(initValue))` is equivalent to
- * `connectable(source, () => new BehaviorSubject(initValue))`.
+ * `connectable(source, { connector: () => new BehaviorSubject(initValue), resetOnDisconnect: false })`.
  * If you're using {@link refCount} after `publishBehavior`, use the {@link share} operator instead.
  * `source.pipe(publishBehavior(initValue), refCount())` is equivalent to
  * `source.pipe(share({ connector: () => new BehaviorSubject(initValue), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false  }))`.

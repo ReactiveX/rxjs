@@ -23,7 +23,7 @@ export class ConnectableObservable<T> extends Observable<T> {
    * @param subjectFactory The factory that creates the subject used internally.
    * @deprecated Will be removed in v8. Use {@link connectable} to create a connectable observable.
    * `new ConnectableObservable(source, factory)` is equivalent to
-   * `connectable(source, factory)`.
+   * `connectable(source, { connector: factory })`.
    * When the `refCount()` method is needed, the {@link share} operator should be used instead:
    * `new ConnectableObservable(source, factory).refCount()` is equivalent to
    * `source.pipe(share({ connector: factory }))`.

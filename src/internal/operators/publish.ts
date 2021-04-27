@@ -11,7 +11,7 @@ import { connect } from './connect';
  *
  * @deprecated Will be removed in v8. To create a connectable observable, use {@link connectable}.
  * `source.pipe(publish())` is equivalent to
- * `connectable(source, () => new Subject())`.
+ * `connectable(source, { connector: () => new Subject(), resetOnDisconnect: false })`.
  * If you're using {@link refCount} after `publish`, use {@link share} operator instead.
  * `source.pipe(publish(), refCount())` is equivalent to
  * `source.pipe(share({ resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false }))`.
