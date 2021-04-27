@@ -77,7 +77,7 @@ export declare const config: {
     useDeprecatedNextContext: boolean;
 };
 
-export declare function connectable<T>(source: ObservableInput<T>, connector?: Subject<T>): ConnectableObservableLike<T>;
+export declare function connectable<T>(source: ObservableInput<T>, config?: ConnectableConfig<T>): ConnectableObservableLike<T>;
 
 export declare class ConnectableObservable<T> extends Observable<T> {
     protected _connection: Subscription | null;

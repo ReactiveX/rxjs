@@ -92,7 +92,7 @@ const DEFAULT_CONFIG: ConnectConfig<unknown> = {
  * and Observable, that when subscribed to, will utilize the multicast observable.
  * After this function is executed -- and its return value subscribed to -- the
  * the operator will subscribe to the source, and the connection will be made.
- * @param param0 The configuration object for `connect`.
+ * @param config The configuration object for `connect`.
  */
 export function connect<T, O extends ObservableInput<unknown>>(
   selector: (shared: Observable<T>) => O,
