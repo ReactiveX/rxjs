@@ -57,12 +57,14 @@ import { UnaryFunction } from '../types';
  *
  * @return A function that returns an Observable that emits elements of a
  * sequence produced by multicasting the source sequence.
- * @deprecated To be removed in version 8. If you're trying to create a connectable observable
- * with an {@link AsyncSubject} under the hood, please use the new {@link connectable} creation function.
- * `source.pipe(publishLast())` is equivalent to `connectable(source, () => new AsyncSubject())`.
- * If you're using {@link refCount} on the result of `publishLast`, you can use the updated {@link share}
- * operator, which is now highly configurable. `source.pipe(publishLast(), refCount())`
- * is equivalent to `source.pipe(share({ connector: () => new AsyncSubject(), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false }))`.
+ * @deprecated Will be removed in v8. To create a connectable observable with an
+ * {@link AsyncSubject} under the hood, use {@link connectable}.
+ * `source.pipe(publishLast())` is equivalent to
+ * `connectable(source, { connector: () => new AsyncSubject(), resetOnDisconnect: false })`.
+ * If you're using {@link refCount} after `publishLast`, use the {@link share} operator instead.
+ * `source.pipe(publishLast(), refCount())` is equivalent to
+ * `source.pipe(share({ connector: () => new AsyncSubject(), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false }))`.
+ * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function publishLast<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>> {
   const subject = new AsyncSubject<T>();

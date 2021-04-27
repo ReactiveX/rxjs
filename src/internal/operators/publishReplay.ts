@@ -11,12 +11,14 @@ import { isFunction } from '../util/isFunction';
  * @param bufferSize The buffer size for the underlying {@link ReplaySubject}.
  * @param windowTime The window time for the underlying {@link ReplaySubject}.
  * @param timestampProvider The timestamp provider for the underlying {@link ReplaySubject}.
- * @deprecated To be removed in version 8. Use the new {@link connectable} create method to create
- * a connectable observable. `source.pipe(publishReplay(size, time, scheduler))` is equivalent to
- * `connectable(source, () => new ReplaySubject(size, time, scheduler))`.
- * If you're using this with {@link refCount}, then use the new {@link share} operator,
- * which is now highly configurable. `publishReplay(size, time, scheduler), refCount()`
- * is equivalent to `share({ connector: () => new ReplaySubject(size, time, scheduler) })`.
+ * @deprecated Will be removed in v8. To create a connectable observable that uses a
+ * {@link ReplaySubject} under the hood, use {@link connectable}.
+ * `source.pipe(publishReplay(size, time, scheduler))` is equivalent to
+ * `connectable(source, { connector: () => new ReplaySubject(size, time, scheduler), resetOnDisconnect: false })`.
+ * If you're using {@link refCount} after `publishReplay`, use the {@link share} operator instead.
+ * `publishReplay(size, time, scheduler), refCount()` is equivalent to
+ * `share({ connector: () => new ReplaySubject(size, time, scheduler), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })`.
+ * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function publishReplay<T>(
   bufferSize?: number,
@@ -36,9 +38,10 @@ export function publishReplay<T>(
  * @param windowTime The window time for the underlying {@link ReplaySubject}.
  * @param selector A function used to setup the multicast.
  * @param timestampProvider The timestamp provider for the underlying {@link ReplaySubject}.
- * @deprecated To be removed in version 8. Use the new {@link connect} operator.
- * `source.pipe(publishReplay(size, window, fn, scheduler))` is equivalent to
- * `const subject = new ReplaySubject(size, window, scheduler), source.pipe(connect(fn, { connector: () => subject }))`.
+ * @deprecated Will be removed in v8. Use the {@link connect} operator instead.
+ * `source.pipe(publishReplay(size, window, selector, scheduler))` is equivalent to
+ * `source.pipe(connect(selector, { connector: () => new ReplaySubject(size, window, scheduler) }))`.
+ * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function publishReplay<T, O extends ObservableInput<any>>(
   bufferSize: number | undefined,
@@ -55,12 +58,14 @@ export function publishReplay<T, O extends ObservableInput<any>>(
  * @param windowTime The window time for the underlying {@link ReplaySubject}.
  * @param selector Passing `undefined` here determines that this operator will return a {@link ConnectableObservable}.
  * @param timestampProvider The timestamp provider for the underlying {@link ReplaySubject}.
- * @deprecated To be removed in version 8. Use the new {@link connectable} create method to create
- * a connectable observable. `source.pipe(publishReplay(size, time, scheduler))` is equivalent to
- * `connectable(source, () => new ReplaySubject(size, time, scheduler))`.
- * If you're using this with {@link refCount}, then use the new {@link share} operator,
- * which is now highly configurable. `publishReplay(size, time, scheduler), refCount()`
- * is equivalent to `share({ connector: () => new ReplaySubject(size, time, scheduler) })`.
+ * @deprecated Will be removed in v8. To create a connectable observable that uses a
+ * {@link ReplaySubject} under the hood, use {@link connectable}.
+ * `source.pipe(publishReplay(size, time, scheduler))` is equivalent to
+ * `connectable(source, { connector: () => new ReplaySubject(size, time, scheduler), resetOnDisconnect: false })`.
+ * If you're using {@link refCount} after `publishReplay`, use the {@link share} operator instead.
+ * `publishReplay(size, time, scheduler), refCount()` is equivalent to
+ * `share({ connector: () => new ReplaySubject(size, time, scheduler), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })`.
+ * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function publishReplay<T, O extends ObservableInput<any>>(
   bufferSize: number | undefined,

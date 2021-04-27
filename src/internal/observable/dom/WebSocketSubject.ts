@@ -104,7 +104,7 @@ export interface WebSocketSubjectConfig<T> {
   url: string;
   /** The protocol to use to connect */
   protocol?: string | Array<string>;
-  /** @deprecated use {@link deserializer} */
+  /** @deprecated Will be removed in v8. Use {@link deserializer} instead. */
   resultSelector?: (e: MessageEvent) => T;
   /**
    * A serializer used to create messages from passed values before the
@@ -187,6 +187,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     }
   }
 
+  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   lift<R>(operator: Operator<T, R>): WebSocketSubject<R> {
     const sock = new WebSocketSubject<R>(this._config as WebSocketSubjectConfig<any>, this.destination as any);
     sock.operator = operator;

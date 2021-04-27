@@ -67,6 +67,6 @@ import { QueueScheduler } from './QueueScheduler';
 export const queueScheduler = new QueueScheduler(QueueAction);
 
 /**
- * @deprecated renamed. Use {@link queueScheduler}.
+ * @deprecated Renamed to {@link queueScheduler}. Will be removed in v8.
  */
 export const queue = queueScheduler;

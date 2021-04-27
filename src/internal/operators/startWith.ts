@@ -11,7 +11,7 @@ import { operate } from '../util/lift';
 export function startWith<T>(value: null): OperatorFunction<T, T | null>;
 export function startWith<T>(value: undefined): OperatorFunction<T, T | undefined>;
 
-/** @deprecated The scheduler argument is deprecated, use scheduled and concatAll. Details: https://rxjs.dev/deprecations/scheduler-argument */
+/** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `concatAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function startWith<T, A extends readonly unknown[] = T[]>(
   ...valuesAndScheduler: [...A, SchedulerLike]
 ): OperatorFunction<T, T | ValueFromArray<A>>;

@@ -15,7 +15,7 @@ import { timeout } from './timeout';
  * @param dueBy The exact time, as a `Date`, at which the timeout will be triggered if the first value does not arrive.
  * @param switchTo The observable to switch to when timeout occurs.
  * @param scheduler The scheduler to use with time-related operations within this operator. Defaults to {@link asyncScheduler}
- * @deprecated This will be removed in v8. Use the configuration object with {@link timeout} instead: `timeoutWith(someDate, a$, scheduler)` -> `timeout({ first: someDate, with: () => a$, scheduler })`
+ * @deprecated Replaced with {@link timeout}. Instead of `timeoutWith(someDate, a$, scheduler)`, use the configuration object `timeout({ first: someDate, with: () => a$, scheduler })`. Will be removed in v8.
  */
 export function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
 
@@ -79,7 +79,7 @@ export function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, sch
  * @return A function that returns an Observable that mirrors behaviour of the
  * source Observable, unless timeout happens when it starts emitting values
  * from the Observable passed as a second parameter.
- * @deprecated This will be removed in v8. Use the configuration object with {@link timeout} instead: `timeoutWith(100, a$, scheduler)` -> `timeout({ each: 100, with: () => a$, scheduler })`
+ * @deprecated Replaced with {@link timeout}. Instead of `timeoutWith(100, a$, scheduler)`, use the configuration object `timeout({ each: 100, with: () => a$, scheduler })`. Will be removed in v8.
  */
 export function timeoutWith<T, R>(waitFor: number, switchTo: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
 

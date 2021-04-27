@@ -86,7 +86,7 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * @param {function (state: S): T} resultSelector Selector function for results produced in the sequence. (deprecated)
  * @param {SchedulerLike} [scheduler] A {@link SchedulerLike} on which to run the generator loop. If not provided, defaults to emit immediately.
  * @returns {Observable<T>} The generated sequence.
- * @deprecated Removing in v8. Use configuration object argument instead.
+ * @deprecated Instead of passing separate arguments, use the options argument. Signatures taking separate arguments will be removed in v8.
  */
 export function generate<T, S>(
   initialState: S,
@@ -237,7 +237,7 @@ export function generate<T, S>(
  * @param {function (state: S): T} [resultSelector] Selector function for results produced in the sequence.
  * @param {Scheduler} [scheduler] A {@link Scheduler} on which to run the generator loop. If not provided, defaults to emitting immediately.
  * @return {Observable<T>} The generated sequence.
- * @deprecated Removing in v8. Use configuration object argument instead.
+ * @deprecated Instead of passing separate arguments, use the options argument. Signatures taking separate arguments will be removed in v8.
  */
 export function generate<S>(
   initialState: S,

@@ -3,19 +3,19 @@ import { SchedulerLike } from '../types';
 import { from } from './from';
 
 /**
- * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
+ * @deprecated Use `from(Object.entries(obj))` instead. Will be removed in v8.
  */
 export function pairs<T>(arr: readonly T[], scheduler?: SchedulerLike): Observable<[string, T]>;
 /**
- * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
+ * @deprecated Use `from(Object.entries(obj))` instead. Will be removed in v8.
  */
 export function pairs<O extends Record<string, unknown>>(obj: O, scheduler?: SchedulerLike): Observable<[keyof O, O[keyof O]]>;
 /**
- * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
+ * @deprecated Use `from(Object.entries(obj))` instead. Will be removed in v8.
  */
 export function pairs<T>(iterable: Iterable<T>, scheduler?: SchedulerLike): Observable<[string, T]>;
 /**
- * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
+ * @deprecated Use `from(Object.entries(obj))` instead. Will be removed in v8.
  */
 export function pairs(
   n: number | bigint | boolean | ((...args: any[]) => any) | symbol,
@@ -73,7 +73,7 @@ export function pairs(
  * when resulting Observable will emit values.
  * @returns {(Observable<Array<string|T>>)} An observable sequence of
  * [key, value] pairs from the object.
- * @deprecated To be removed in version 8. Use `from(Object.entries(obj))` instead.
+ * @deprecated Use `from(Object.entries(obj))` instead. Will be removed in v8.
  */
 export function pairs(obj: any, scheduler?: SchedulerLike) {
   return from(Object.entries(obj), scheduler as any);

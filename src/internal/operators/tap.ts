@@ -6,7 +6,7 @@ import { identity } from '../util/identity';
 
 export function tap<T>(observer?: Partial<Observer<T>>): MonoTypeOperatorFunction<T>;
 export function tap<T>(next: (value: T) => void): MonoTypeOperatorFunction<T>;
-/** @deprecated Use an observer instead of a complete callback, Details: https://rxjs.dev/deprecations/subscribe-arguments */
+/** @deprecated Instead of passing separate callback arguments, use an observer argument. Signatures taking separate callback arguments will be removed in v8. Details: https://rxjs.dev/deprecations/subscribe-arguments */
 export function tap<T>(
   next?: ((value: T) => void) | null,
   error?: ((error: any) => void) | null,

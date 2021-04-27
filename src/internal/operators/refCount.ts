@@ -58,11 +58,10 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * @see {@link ConnectableObservable}
  * @see {@link share}
  * @see {@link publish}
- * @deprecated to be removed in version 8. Use the updated {@link share} operator,
- * which now is highly configurable. How `share` is used will depend on the connectable
- * observable you created just prior to the `refCount` operator. For examples on how
- * to replace this, see documentation in {@link multicast}, {@link publish}, {@link publishReplay},
- * {@link publishBehavior}, {@link publishLast} or {@link ConnectableObservable}.
+ * @deprecated Replaced with the {@link share} operator. How `share` is used
+ * will depend on the connectable observable you created just prior to the
+ * `refCount` operator.
+ * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function refCount<T>(): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {

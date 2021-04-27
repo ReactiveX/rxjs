@@ -33,9 +33,9 @@ export const config = {
    * The promise constructor used by default for methods such as
    * {@link toPromise} and {@link forEach}
    *
-   * @deprecated remove in v8. RxJS will no longer support this sort of injection of a
+   * @deprecated As of version 8, RxJS will no longer support this sort of injection of a
    * Promise constructor. If you need a Promise implementation other than native promises,
-   * please polyfill/patch Promises as you see appropriate.
+   * please polyfill/patch Promise as you see appropriate. Will be removed in v8.
    */
   Promise: undefined as PromiseConstructorLike | undefined,
 
@@ -47,9 +47,9 @@ export const config = {
    * an unhandled error. DO NOT USE THIS FLAG UNLESS IT'S NEEDED TO BUY TIME
    * FOR MIGRATION REASONS.
    *
-   * @deprecated remove in v8. As of version 8, RxJS will no longer support synchronous throwing
+   * @deprecated As of version 8, RxJS will no longer support synchronous throwing
    * of unhandled errors. All errors will be thrown on a separate call stack to prevent bad
-   * behaviors described above.
+   * behaviors described above. Will be removed in v8.
    */
   useDeprecatedSynchronousErrorHandling: false,
 
@@ -62,10 +62,10 @@ export const config = {
    * issues when types other than POJOs are passed to subscribe as subscribers, as they will likely have
    * their `this` context overwritten.
    *
-   * @deprecated remove in v8. As of version 8, RxJS will no longer support altering the
+   * @deprecated As of version 8, RxJS will no longer support altering the
    * context of next functions provided as part of an observer to Subscribe. Instead,
    * you will have access to a subscription or a signal or token that will allow you to do things like
-   * unsubscribe and test closed status.
+   * unsubscribe and test closed status. Will be removed in v8.
    */
   useDeprecatedNextContext: false,
 };

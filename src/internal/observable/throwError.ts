@@ -103,7 +103,7 @@ export function throwError(errorFactory: () => any): Observable<never>;
  * Returns an observable that will error with the specified error immediately upon subscription.
  *
  * @param error The error instance to emit
- * @deprecated Removed in v8. Instead, pass a factory function to `throwError(() => new Error('test'))`. This is
+ * @deprecated Support for passing an error value will be removed in v8. Instead, pass a factory function to `throwError(() => new Error('test'))`. This is
  * because it will create the error at the moment it should be created and capture a more appropriate stack trace. If
  * for some reason you need to create the error ahead of time, you can still do that: `const err = new Error('test'); throwError(() => err);`.
  */
@@ -114,8 +114,9 @@ export function throwError(error: any): Observable<never>;
  *
  * @param errorOrErrorFactory An error instance or error factory
  * @param scheduler A scheduler to use to schedule the error notification
- * @deprecated Use `throwError` in combination with {@link observeOn}:
- * `throwError(() => new Error('test')).pipe(observeOn(scheduler));`
+ * @deprecated The `scheduler` parameter will be removed in v8.
+ * Use `throwError` in combination with {@link observeOn}: `throwError(() => new Error('test')).pipe(observeOn(scheduler));`.
+ * Details: https://rxjs.dev/deprecations/scheduler-argument
  */
 export function throwError(errorOrErrorFactory: any, scheduler: SchedulerLike): Observable<never>;
 

@@ -1,6 +1,6 @@
 import { exhaustAll } from './exhaustAll';
 
 /**
- * @deprecated renamed. Use {@link exhaustAll}.
+ * @deprecated Renamed to {@link exhaustAll}. Will be removed in v8.
  */
 export const exhaust = exhaustAll;

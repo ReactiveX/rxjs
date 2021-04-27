@@ -36,6 +36,6 @@ import { AnimationFrameScheduler } from './AnimationFrameScheduler';
 export const animationFrameScheduler = new AnimationFrameScheduler(AnimationFrameAction);
 
 /**
- * @deprecated renamed. Use {@link animationFrameScheduler}.
+ * @deprecated Renamed to {@link animationFrameScheduler}. Will be removed in v8.
  */
 export const animationFrame = animationFrameScheduler;

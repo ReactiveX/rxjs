@@ -68,9 +68,9 @@ export function timeInterval<T>(scheduler: SchedulerLike = async): OperatorFunct
 // TODO(benlesh): make this an interface, export the interface, but not the implemented class,
 // there's no reason users should be manually creating this type.
 
-/**
- * @deprecated exposed API, use as interface only.
- */
 export class TimeInterval<T> {
+  /**
+   * @deprecated Internal implementation detail, do not construct directly. Will be made an interface in v8.
+   */
   constructor(public value: T, public interval: number) {}
 }
