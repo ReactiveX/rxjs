@@ -40,7 +40,6 @@ export interface AjaxError extends Error {
 export interface AjaxErrorCtor {
   /**
    * Internal use only. Do not manually create instances of this type.
-   * @internal
    */
   new (message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError;
 }
@@ -80,7 +79,6 @@ export interface AjaxTimeoutError extends AjaxError {}
 export interface AjaxTimeoutErrorCtor {
   /**
    * Internal use only. Do not manually create instances of this type.
-   * @internal
    */
   new (xhr: XMLHttpRequest, request: AjaxRequest): AjaxTimeoutError;
 }
