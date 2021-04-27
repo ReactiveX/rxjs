@@ -241,8 +241,8 @@ export class Observable<T> implements Subscribable<T> {
    * REMOVE THIS ENTIRE METHOD IN VERSION 8.
    */
   private _deprecatedSyncErrorSubscribe(subscriber: Subscriber<unknown>) {
-    let dest: any = subscriber;
-    dest._syncErrorHack_isSubscribing = true;
+    const localSubscriber: any = subscriber;
+    localSubscriber._syncErrorHack_isSubscribing = true;
     const { operator } = this;
     if (operator) {
       // We don't need to try/catch on operators, as they
@@ -253,7 +253,7 @@ export class Observable<T> implements Subscribable<T> {
       try {
         this._subscribe(subscriber);
       } catch (err) {
-        dest.__syncError = err;
+        localSubscriber.__syncError = err;
       }
     }
 
@@ -262,6 +262,7 @@ export class Observable<T> implements Subscribable<T> {
     // look to see if there's any synchronously thrown errors.
     // Does this suck for perf? Yes. So stop using the deprecated sync
     // error handling already. We're removing this in v8.
+    let dest = localSubscriber;
     while (dest) {
       // Technically, someone could throw something falsy, like 0, or "",
       // so we need to check to see if anything was thrown, and we know
@@ -275,7 +276,8 @@ export class Observable<T> implements Subscribable<T> {
       }
       dest = dest.destination;
     }
-    dest._syncErrorHack_isSubscribing = false;
+
+    localSubscriber._syncErrorHack_isSubscribing = false;
   }
 
   /** @internal */
