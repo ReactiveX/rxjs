@@ -799,6 +799,17 @@ describe('Observable', () => {
         expect(results).to.deep.equal([1, 2]);
       });
 
+      // https://github.com/ReactiveX/rxjs/issues/6271      
+      it('should not have a run-time error if no errors are thrown and there are operators', () => {
+        expect(() => {
+          of(1, 2, 3).pipe(
+            map(x => x + x),
+            map(x => Math.log(x))
+          )
+          .subscribe();
+        }).not.to.throw();
+      });
+
       afterEach(() => {
         config.useDeprecatedSynchronousErrorHandling = false;
       });
