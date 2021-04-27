@@ -177,6 +177,10 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 - `ReadableStream` such as those returned by `fetch`, et al, can be passed to any API that accepts an observable, and can be converted to `Observable` directly using `from`.
 
+### ReplaySubject
+
+- A [bug was fixed](https://github.com/ReactiveX/rxjs/pull/5696) that prevented a completed or errored `ReplaySubject` from accumulating values in its buffer when resubscribed to another source. This breaks some uses - like [this StackOverflow answer](https://stackoverflow.com/a/54957061) - that depended upon the buggy behavior.
+
 ### Subscription
 
 - Now allows adding and removing of functions directly via `add` and `remove` methods.
