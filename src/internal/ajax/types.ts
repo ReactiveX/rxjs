@@ -7,6 +7,10 @@ import { PartialObserver } from '../types';
  */
 export type AjaxDirection = 'upload' | 'download';
 
+export type ProgressEventType = 'loadstart' | 'progress' | 'load';
+
+export type AjaxResponseType = `${AjaxDirection}_${ProgressEventType}`;
+
 /**
  * The object containing values RxJS used to make the HTTP request.
  *
