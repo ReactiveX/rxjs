@@ -2,7 +2,6 @@
 $hamburgerShownMargin: 0;
 $hamburgerHiddenMargin: 0 24px 0 -88px;
 
-
 // DOCS PAGE / STANDARD: TOPNAV TOOLBAR FIXED
 mat-toolbar.mat-toolbar {
   position: fixed;
@@ -10,8 +9,7 @@ mat-toolbar.mat-toolbar {
   right: 0;
   left: 0;
   z-index: 10;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.30);
-  background-color: black !important;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
 
   mat-toolbar-row {
     padding: 0 16px 0 0;
@@ -22,19 +20,17 @@ mat-toolbar.mat-toolbar {
   }
 }
 
-
 // HOME PAGE OVERRIDE: TOPNAV TOOLBAR
 aio-shell.page-home mat-toolbar.mat-toolbar {
-  background-color: black;
+  background-color: $pink;
 
   @media (min-width: 481px) {
     &:not(.transitioning) {
-      background-color: black;
-      transition: background-color .2s linear;
+      background-color: $pink;
+      transition: background-color 0.2s linear;
     }
   }
 }
-
 
 // MARKETING PAGES OVERRIDE: TOPNAV TOOLBAR AND HAMBURGER
 aio-shell.page-home mat-toolbar.mat-toolbar,
@@ -47,7 +43,6 @@ aio-shell.page-events mat-toolbar.mat-toolbar {
     position: absolute;
   }
 }
-
 
 // DOCS PAGES OVERRIDE: HAMBURGER
 aio-shell.folder-api mat-toolbar.mat-toolbar,
@@ -62,7 +57,6 @@ aio-shell.folder-tutorial mat-toolbar.mat-toolbar {
   }
 }
 
-
 // HAMBURGER BUTTON
 .hamburger.mat-button {
   height: 100%;
@@ -70,9 +64,9 @@ aio-shell.folder-tutorial mat-toolbar.mat-toolbar {
   padding: 0;
 
   &:not(.starting) {
-    transition-duration: .4s;
+    transition-duration: 0.4s;
     transition-property: color, margin;
-    transition-timing-function: cubic-bezier(.25, .8, .25, 1);
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 
   @media (min-width: 992px) {
@@ -91,7 +85,6 @@ aio-shell.folder-tutorial mat-toolbar.mat-toolbar {
   }
 }
 
-
 // HOME NAV-LINK
 .nav-link.home img {
   position: relative;
@@ -100,13 +93,12 @@ aio-shell.folder-tutorial mat-toolbar.mat-toolbar {
   top: 12px;
   height: 40px;
 
-  @media(max-width: 992px) {
+  @media (max-width: 992px) {
     &:hover {
       transform: scale(1.1);
     }
   }
 }
-
 
 // TOP MENU
 aio-top-menu {
@@ -153,7 +145,6 @@ aio-top-menu {
   }
 }
 
-
 // SEARCH BOX
 aio-search-box.search-container {
   display: flex;
@@ -176,7 +167,7 @@ aio-search-box.search-container {
     -webkit-appearance: none;
 
     &:focus {
-        outline: none;
+      outline: none;
     }
 
     @include bp(big) {
