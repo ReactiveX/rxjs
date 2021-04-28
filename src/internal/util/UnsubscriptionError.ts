@@ -5,6 +5,10 @@ export interface UnsubscriptionError extends Error {
 }
 
 export interface UnsubscriptionErrorCtor {
+  /**
+   * @deprecated Internal implementation detail. Do not construct error instances.
+   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
+   */
   new (errors: any[]): UnsubscriptionError;
 }
 
