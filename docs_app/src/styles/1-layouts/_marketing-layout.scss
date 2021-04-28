@@ -3,7 +3,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
   width: 100%;
   box-sizing: border-box;
   padding: 48px 48px 32px 48px;
@@ -29,8 +28,8 @@ section#intro {
   position: relative;
   width: 900px;
   height: 480px;
-  margin: 0 auto -32px;
-  padding: 48px 0 0;
+  margin: 0 auto;
+  padding: 0;
   color: white;
 
   @media (max-width: 780px) {
@@ -62,7 +61,7 @@ section#intro {
       margin-top: 15px;
     }
 
-    @media  (max-width: 780px) {
+    @media (max-width: 780px) {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -72,7 +71,7 @@ section#intro {
     }
   }
 
-  .headline-container{
+  .headline-container {
     margin: 32px 0;
     text-align: center;
   }
@@ -97,7 +96,7 @@ section#intro {
     }
   }
 
-  .hero-subheadline{
+  .hero-subheadline {
     font-size: 22px;
     line-height: 32px;
     color: $accentgrey;
@@ -170,7 +169,7 @@ section#intro {
     color: $white;
     background-color: $pink;
     border-radius: 48px;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
     box-sizing: border-box;
     cursor: pointer;
 
@@ -210,6 +209,7 @@ section#intro {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   position: relative;
   width: 70%;
   min-width: 270px;
@@ -240,7 +240,7 @@ section#intro {
   }
 
   img {
-    margin: 16px ;
+    margin: 16px;
   }
 
   .card-text-container {
@@ -254,11 +254,14 @@ section#intro {
     }
   }
 
-
   &:hover {
     h2 {
       color: $pink;
     }
+  }
+
+  ul {
+    list-style-type: none;
   }
 }
 
@@ -274,7 +277,7 @@ section#intro {
   line-height: 40px;
   background-color: $white;
   border-radius: 48px;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
   box-sizing: border-box;
   cursor: pointer;
 
@@ -284,14 +287,16 @@ section#intro {
 }
 
 aio-shell {
-  
   &.page-home {
     section {
       padding: 0;
     }
   }
 
-  &.page-home, &.page-resources, &.page-events, &.page-contribute {
+  &.page-home,
+  &.page-resources,
+  &.page-events,
+  &.page-contribute {
     article {
       padding: 32px;
 
@@ -307,8 +312,10 @@ aio-shell {
     }
   }
 
-  &.page-home, &.page-resources, &.page-events, &.page-features {
-
+  &.page-home,
+  &.page-resources,
+  &.page-events,
+  &.page-features {
     .content img {
       @media (max-width: 1300px) {
         max-width: none;
@@ -350,41 +357,42 @@ aio-shell:not(.view-SideNav) {
   }
 }
 
-div[layout=row]{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
+div[layout='row'] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 
-    @media (max-width: 480px) {
-      display: block;
+  @media (max-width: 480px) {
+    display: block;
   }
 }
 
 .layout-row {
-    flex-direction: row;
+  flex-direction: row;
 }
 
 .home-rows {
-    overflow: hidden;
-    @media (max-width: 600px) {
-      margin: 0;
-    }
+  overflow: hidden;
+  @media (max-width: 600px) {
+    margin: 0;
+  }
 }
 
 .background-superhero-paper {
-    background-size: 100%;
-    background-blend-mode: multiply;
+  background-size: 100%;
+  background-blend-mode: multiply;
 }
 
 .home-row {
   max-width: 920px;
   margin: 32px auto;
 
-  .promo-img-container, .text-container {
+  .promo-img-container,
+  .text-container {
     max-width: 50%;
 
-    @media(max-width: 480px) {
+    @media (max-width: 480px) {
       max-width: 100%;
       text-align: center;
 
@@ -397,13 +405,12 @@ div[layout=row]{
   .text-block {
     padding-right: 15%;
 
-    @media(max-width: 600px) {
+    @media (max-width: 600px) {
       padding: 0;
     }
   }
 
   .promo-img-container {
-
     img {
       max-width: 90% !important;
     }
@@ -414,7 +421,6 @@ div[layout=row]{
 
     img {
       max-width: 90%;
-
 
       @media (max-width: 599px) {
         max-width: 100%;
@@ -458,23 +464,23 @@ div[layout=row]{
 }
 
 .blm-background {
-  background-color: black; 
-  color: white; 
-  display: flex; 
-  min-height: calc(100vh - 64px)
+  background-color: black;
+  color: white;
+  display: flex;
+  min-height: calc(100vh - 64px);
 }
 
 .text-container.blm-container {
-  text-align: center; 
-  line-height: inherit; 
+  text-align: center;
+  line-height: inherit;
   max-width: inherit;
 }
 
 .blm-text {
-  font-size: 2rem; 
-  line-height: inherit
+  font-size: 2rem;
+  line-height: inherit;
 }
 
 .blm-list-item {
-  margin: 10px 0
+  margin: 10px 0;
 }
