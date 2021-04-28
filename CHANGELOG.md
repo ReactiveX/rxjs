@@ -1,3 +1,19 @@
+# [7.0.0-rc.3](https://github.com/reactivex/rxjs/compare/7.0.0-rc.2...7.0.0-rc.3) (2021-04-28)
+
+### Bug Fixes
+
+- finalize behaves well with useDeprecatedSynchronousErrorHandling ([#6251](https://github.com/reactivex/rxjs/issues/6251)) ([e4bed2a](https://github.com/reactivex/rxjs/commit/e4bed2a2bad994f05a39246707d4f203412cebbd)), closes [#6250](https://github.com/reactivex/rxjs/issues/6250)
+- resolve run-time errors when using deprecated sync error handling ([#6272](https://github.com/reactivex/rxjs/issues/6272)) ([35daaf7](https://github.com/reactivex/rxjs/commit/35daaf77d3a9a909a7ec22c362c97ac42a597f79)), closes [#6271](https://github.com/reactivex/rxjs/issues/6271)
+- unable to evaluate `instanceof AjaxError` ([#6275](https://github.com/reactivex/rxjs/issues/6275)) ([a7c2d29](https://github.com/reactivex/rxjs/commit/a7c2d297ad6b2f405ac312b38f6360e9a645d890))
+
+### Features
+
+- add config object to connectable ([#6267](https://github.com/reactivex/rxjs/issues/6267)) ([4d98b40](https://github.com/reactivex/rxjs/commit/4d98b40f969d5f55381f9a178ef3c18e6850cf47))
+
+### BREAKING CHANGES
+
+- Our very new creation function, `connectable`, now takes a configuration object instead of just the `Subject` instance. This was necessary to make sure it covered all use cases for what we were trying to replace in the deprecated multicasting operators. Apologies for the late-in-the-game change, but we know it's not widely used yet (it's new in v7), and we want to get it right.
+
 # [7.0.0-rc.2](https://github.com/reactivex/rxjs/compare/7.0.0-rc.1...7.0.0-rc.2) (2021-04-20)
 
 ### Bug Fixes
