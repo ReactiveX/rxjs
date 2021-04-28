@@ -5,7 +5,12 @@
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm5/index.js",
   "es2015": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "index.d.ts",
+  "typesVersions": {
+    ">=4.2": {
+      "*": ["dist/types/*"]
+    }
+  },
   "sideEffects": false,
   "exports": {
     ".": {
