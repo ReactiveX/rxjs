@@ -3,6 +3,10 @@ import { createErrorClass } from './createErrorClass';
 export interface SequenceError extends Error {}
 
 export interface SequenceErrorCtor {
+  /**
+   * @deprecated Internal implementation detail. Do not construct error instances.
+   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
+   */
   new (message: string): SequenceError;
 }
 
