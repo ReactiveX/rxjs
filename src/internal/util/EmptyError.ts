@@ -1,10 +1,13 @@
 import { createErrorClass } from './createErrorClass';
 
-export interface EmptyError extends Error {
-}
+export interface EmptyError extends Error {}
 
 export interface EmptyErrorCtor {
-  new(): EmptyError;
+  /**
+   * @deprecated Internal implementation detail. Do not construct error instances.
+   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
+   */
+  new (): EmptyError;
 }
 
 /**
@@ -17,8 +20,11 @@ export interface EmptyErrorCtor {
  *
  * @class EmptyError
  */
-export const EmptyError: EmptyErrorCtor = createErrorClass((_super) => function EmptyErrorImpl(this: any) {
-  _super(this);
-  this.name = 'EmptyError';
-  this.message = 'no elements in sequence';
-});
+export const EmptyError: EmptyErrorCtor = createErrorClass(
+  (_super) =>
+    function EmptyErrorImpl(this: any) {
+      _super(this);
+      this.name = 'EmptyError';
+      this.message = 'no elements in sequence';
+    }
+);
