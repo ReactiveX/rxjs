@@ -4,7 +4,7 @@
 
 - finalize behaves well with useDeprecatedSynchronousErrorHandling ([#6251](https://github.com/reactivex/rxjs/issues/6251)) ([e4bed2a](https://github.com/reactivex/rxjs/commit/e4bed2a2bad994f05a39246707d4f203412cebbd)), closes [#6250](https://github.com/reactivex/rxjs/issues/6250)
 - resolve run-time errors when using deprecated sync error handling ([#6272](https://github.com/reactivex/rxjs/issues/6272)) ([35daaf7](https://github.com/reactivex/rxjs/commit/35daaf77d3a9a909a7ec22c362c97ac42a597f79)), closes [#6271](https://github.com/reactivex/rxjs/issues/6271)
-- unable to evaluate `instanceof AjaxError` ([#6275](https://github.com/reactivex/rxjs/issues/6275)) ([a7c2d29](https://github.com/reactivex/rxjs/commit/a7c2d297ad6b2f405ac312b38f6360e9a645d890))
+- resolve issue that made users unable to assert `instanceof AjaxError`. ([#6275](https://github.com/reactivex/rxjs/issues/6275)) ([a7c2d29](https://github.com/reactivex/rxjs/commit/a7c2d297ad6b2f405ac312b38f6360e9a645d890))
 
 ### Features
 
