@@ -12,7 +12,8 @@ The same behavior can be reproduced with the `map` operator, therefore this argu
 There were two reasons for actually deprecating those parameters:
 
 1. It increases the bundle size of every operator
-2. In some scenarios values had to be retained in memory causing a general memory preassure  
+2. In some scenarios values had to be retained in memory causing a general memory pressure
+
 ## Operators affected by this Change
 
 - [concatMap](/api/operators/concatMap)
