@@ -107,8 +107,8 @@ describe('groupBy operator', () => {
 
     of(1, 2, 3).pipe(
       groupBy({
-        key: x => x % 2,
-        subject: () => new ReplaySubject(1)
+        key: (x) => x % 2,
+        subject: () => new ReplaySubject(1),
       }),
       // Ensure each inner group reaches the destination after the first event
       // has been next'd to the group
