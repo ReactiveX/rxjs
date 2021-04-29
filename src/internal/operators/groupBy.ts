@@ -6,24 +6,28 @@ import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 interface BasicGroupByOptions<K, T> {
-  key: (value: T) => K;
   element?: undefined;
   duration?: (grouped: GroupedObservable<K, T>) => ObservableInput<any>;
   connector?: () => SubjectLike<T>;
 }
 
 interface GroupByOptionsWithElement<K, E, T> {
-  key: (value: T) => K;
   element: (value: T) => E;
   duration?: (grouped: GroupedObservable<K, E>) => ObservableInput<any>;
   connector?: () => SubjectLike<E>;
 }
 
-export function groupBy<T, K>(options: BasicGroupByOptions<K, T>): OperatorFunction<T, GroupedObservable<K, T>>;
+export function groupBy<T, K>(key: (value: T) => K, options: BasicGroupByOptions<K, T>): OperatorFunction<T, GroupedObservable<K, T>>;
 
-export function groupBy<T, K, E>(options: GroupByOptionsWithElement<K, E, T>): OperatorFunction<T, GroupedObservable<K, E>>;
+export function groupBy<T, K, E>(
+  key: (value: T) => K,
+  options: GroupByOptionsWithElement<K, E, T>
+): OperatorFunction<T, GroupedObservable<K, E>>;
 
-export function groupBy<T, K, E>(options: GroupByOptionsWithElement<K, E, T>): OperatorFunction<T, GroupedObservable<K, E>>;
+export function groupBy<T, K, E>(
+  key: (value: T) => K,
+  options: GroupByOptionsWithElement<K, E, T>
+): OperatorFunction<T, GroupedObservable<K, E>>;
 
 export function groupBy<T, K extends T>(
   key: (value: T) => value is K
@@ -149,17 +153,17 @@ export function groupBy<T, K, R>(
 
 // Impl
 export function groupBy<T, K, R>(
-  optionsOrKeySelector: BasicGroupByOptions<K, T> | GroupByOptionsWithElement<K, R, T> | ((value: T) => K),
-  element?: ((value: any) => any) | void,
+  keySelector: (value: T) => K,
+  elementOrOptions?: ((value: any) => any) | void | BasicGroupByOptions<K, T> | GroupByOptionsWithElement<K, R, T>,
   duration?: (grouped: GroupedObservable<any, any>) => ObservableInput<any>,
   connector?: () => SubjectLike<any>
 ): OperatorFunction<T, GroupedObservable<K, R>> {
   return operate((source, subscriber) => {
-    let keySelector: (value: T) => K;
-    if (typeof optionsOrKeySelector === 'function') {
-      keySelector = optionsOrKeySelector;
+    let element: ((value: any) => any) | void;
+    if (!elementOrOptions || typeof elementOrOptions === 'function') {
+      element = elementOrOptions;
     } else {
-      ({ key: keySelector, duration, element, connector } = optionsOrKeySelector);
+      ({ duration, element, connector } = elementOrOptions);
     }
 
     // A lookup for the groups that we have so far.

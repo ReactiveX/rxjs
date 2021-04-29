@@ -82,8 +82,7 @@ describe('groupBy operator', () => {
     const resultingGroups: { key: number, values: number [] }[] = [];
 
     of(1, 2, 3, 4, 5, 6).pipe(
-      groupBy({
-        key: x => x % 2,
+      groupBy(x => x % 2, {
         duration: g => g.pipe(skip(1))
       })
     ).subscribe((g: any) => {
@@ -106,9 +105,8 @@ describe('groupBy operator', () => {
     ];
 
     of(1, 2, 3).pipe(
-      groupBy({
-        key: (x) => x % 2,
-        subject: () => new ReplaySubject(1),
+      groupBy(x => x % 2, {
+        connector: () => new ReplaySubject(1),
       }),
       // Ensure each inner group reaches the destination after the first event
       // has been next'd to the group
@@ -806,8 +804,7 @@ describe('groupBy operator', () => {
 
     const source = e1
       .pipe(
-        groupBy({
-          key: val => val.toLowerCase().trim(),
+        groupBy(val => val.toLowerCase().trim(), {
           duration: group => group.pipe(skip(2)),
         })
       );
@@ -840,8 +837,7 @@ describe('groupBy operator', () => {
     const expectedValues = { v: v, w: w, x: x };
 
     const source = e1
-      .pipe(groupBy({
-        key: val => val.toLowerCase().trim(),
+      .pipe(groupBy(val => val.toLowerCase().trim(), {
         duration: group =>  group.pipe(skip(2))
       }));
 
@@ -882,8 +878,7 @@ describe('groupBy operator', () => {
       .unsubscribedFrame;
 
     const source = e1.pipe(
-      groupBy({
-        key: val => val.toLowerCase().trim(),
+      groupBy(val => val.toLowerCase().trim(), {
         duration: group => group.pipe(skip(2))
       }),
       map((group) => {
@@ -925,9 +920,8 @@ describe('groupBy operator', () => {
       .parseMarblesAsSubscriptions(sub)
       .unsubscribedFrame;
 
-    obs.pipe(groupBy({
-      key: (val) => val,
-      duration: (group) => durations[group.key]
+    obs.pipe(groupBy((val) => val, {
+      duration: (group) => durations[Number(group.key)]
     })).subscribe();
 
     rxTestScheduler.schedule(() => {
