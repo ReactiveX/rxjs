@@ -1,3 +1,18 @@
+//////////////////////////////////////////////////////////
+// Here we need to reference our other deep imports
+// so VS code will figure out where they are
+// see conversation here:
+// https://github.com/microsoft/TypeScript/issues/43034
+//////////////////////////////////////////////////////////
+
+// tslint:disable: no-reference
+/// <reference path="./ajax/index.ts" />
+/// <reference path="./fetch/index.ts" />
+/// <reference path="./operators/index.ts" />
+/// <reference path="./testing/index.ts" />
+/// <reference path="./webSocket/index.ts" />
+// tslint:enable: no-reference
+
 /* Observable */
 export { Observable } from './internal/Observable';
 export { ConnectableObservable } from './internal/observable/ConnectableObservable';
