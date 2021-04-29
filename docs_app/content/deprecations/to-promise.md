@@ -57,15 +57,15 @@ Observable and will immediately unsubscribe to retain resources. The `firstValue
 
 ```ts
 import { interval, firstValueFrom } from 'rxjs';
- 
+
 async function execute() {
   const source$ = interval(2000);
   const firstNumber = await firstValueFrom(source$);
   console.log(`The first number is ${firstNumber}`);
 }
- 
+
 execute();
- 
+
 // Expected output:
 // "The first number is 0"
 ```
@@ -73,9 +73,27 @@ execute();
 <span class="informal">Both functions will return a Promise that rejects if the source Observable errors. The Promise
 will reject with the same error that the Observable has errored with.</span>
 
-## Warning
-Only use `lastValueFrom` function if you *know* an Observable will eventually complete. The `firstValueFrom` function should
-be used if you *know* an Observable will emit at least one value _or_ will eventually complete. If the source Observable
+# Use default value
+
+If you don't want Promises created by `lastValueFrom` or `firstValueFrom` to reject with {@link EmptyError} if there
+were no emissions before completion, you can use the second parameter. The second parameter is expected to be an object
+with `defaultValue` parameter. The value in the `defaultValue` will be used to resolve a Promise when source Observable
+completes without emitted values.
+
+```ts
+import { firstValueFrom, EMPTY } from 'rxjs';
+
+const result = await firstValueFrom(EMPTY, { defaultValue: 0 });
+console.log(result);
+
+// Expected output:
+// 0
+```
+
+# Warning
+
+Only use `lastValueFrom` function if you _know_ an Observable will eventually complete. The `firstValueFrom` function should
+be used if you _know_ an Observable will emit at least one value _or_ will eventually complete. If the source Observable
 does not complete or emit, you will end up with a Promise that is hung up, and potentially all of the state of an async
 function hanging out in memory. To avoid this situation, look into adding something like {@link timeout}, {@link take},
 {@link takeWhile}, or {@link takeUntil} amongst others.
