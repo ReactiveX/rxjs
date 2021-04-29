@@ -1,6 +1,6 @@
 import { map } from '../operators/map';
 import { Observable } from '../Observable';
-import { AjaxConfig, AjaxRequest, AjaxDirection } from './types';
+import { AjaxConfig, AjaxRequest, AjaxDirection, ProgressEventType } from './types';
 import { AjaxResponse } from './AjaxResponse';
 import { AjaxTimeoutError, AjaxError } from './errors';
 
@@ -414,7 +414,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
        * @param event the actual event object.
        */
       const createResponse = (direction: AjaxDirection, event: ProgressEvent) =>
-        new AjaxResponse<T>(event, xhr, _request, `${direction}_${event.type}`);
+        new AjaxResponse<T>(event, xhr, _request, `${direction}_${event.type as ProgressEventType}` as const);
 
       /**
        * Wires up an event handler that emits a Response object to the consumer, used for
