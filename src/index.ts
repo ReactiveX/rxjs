@@ -98,4 +98,4 @@ export { NEVER } from './internal/observable/never';
 export * from './internal/types';
 
 /* Config */
-export { config } from './internal/config';
+export { config, GlobalConfig } from './internal/config';
