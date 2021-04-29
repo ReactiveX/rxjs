@@ -1,3 +1,10 @@
+# [7.0.0](https://github.com/reactivex/rxjs/compare/7.0.0-rc.3...7.0.0) (2021-04-29)
+
+### Bug Fixes
+
+- VS code will now properly auto-import operators, et al ([#6276](https://github.com/reactivex/rxjs/issues/6276)) ([f43c728](https://github.com/reactivex/rxjs/commit/f43c72815f9ebe5ee3a8ed11513be0f541c9517d)), closes [#6067](https://github.com/reactivex/rxjs/issues/6067)
+- **AjaxResponse:** add stricter `type` (`AjaxResponseType`) ([#6279](https://github.com/reactivex/rxjs/issues/6279)) ([839e192](https://github.com/reactivex/rxjs/commit/839e192b7d826d833d7ce941be97c3735bd19c0a))
+
 # [7.0.0-rc.3](https://github.com/reactivex/rxjs/compare/7.0.0-rc.2...7.0.0-rc.3) (2021-04-28)
 
 ### Bug Fixes
