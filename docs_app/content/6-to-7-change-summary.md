@@ -193,9 +193,21 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ## Breaking Changes
 
+### audit
+
+- The observable returned by the `audit` operator's duration selector must emit a next notification to end the duration. Complete notifications no longer end the duration.
+
 ### buffer
 
 - `buffer` now subscribes to the source observable before it subscribes to the closing notifier. Previously, it subscribed to the closing notifier first.
+
+### bufferToggle
+
+- The observable returned by the `bufferToggle` operator's closing selector must emit a next notification to close the buffer. Complete notifications no longer close the buffer.
+
+### bufferWhen
+
+- The observable returned by the `bufferWhen` operator's closing selector must emit a next notification to close the buffer. Complete notifications no longer close the buffer.
 
 ### combineLatest
 
@@ -214,9 +226,17 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 - Generic signatures have changed. Do not explicitly pass generics.
 
+### debounce
+
+- The observable returned by the `debounce` operator's duration selector must emit a next notification to end the duration. Complete notifications no longer end the duration.
+
 ### defaultIfEmpty
 
 - Generic signatures have changed. Do not explicitly pass generics.
+
+### delayWhen
+
+- `delayWhen` will no longer emit if the duration selector simply completes without a value. Notifiers must notify with a value, not a completion.
 
 ### endWith
 
@@ -247,6 +267,10 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 - Generic signatures have changed. Do not explicitly pass generics.
 
+### sample
+
+- The `sample` operator's notifier observable must emit a next notification to effect a sample. Complete notifications no longer effect a sample.
+
 ### scan
 
 - Generic signatures have changed. Do not explicitly pass generics.
@@ -262,6 +286,14 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 ### switchMapTo
 
 - Generic signatures have changed. Do not explicitly pass generics.
+
+### throttle
+
+- The observable returned by the `throttle` operator's duration selector must emit a next notification to end the duration. Complete notifications no longer end the duration.
+
+### windowToggle
+
+- The observable returned by the `windowToggle` operator's closing selector must emit a next notification to close the window. Complete notifications no longer close the window.
 
 ### withLatestFrom
 
