@@ -455,9 +455,9 @@ describe('throttle', () => {
           '               ------------------^---!    ',
           '               ----------------------^---!',
         ];
-        const expected = '-a---y----b---x---x---x---|';
+        const expected = '-----y--------x---x---x---|';
 
-        const result = e1.pipe(throttle(() => e2, { leading: true, trailing: true }));
+        const result = e1.pipe(throttle(() => e2, { leading: false, trailing: true }));
 
         expectObservable(result).toBe(expected);
         expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -467,13 +467,13 @@ describe('throttle', () => {
 
     it('should work for individual values', () => {
       testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
-        const s1 = hot('-^-x------------------|     ');
-        const s1Subs = ' ^--------------------!     ';
-        const n1 = cold('  ------------------------x');
-        const n1Subs = ['--^------------------!     '];
-        const exp = '    --x------------------|     ';
+        const s1 = hot('-^-x------------------|        ');
+        const s1Subs = ' ^--------------------!        ';
+        const n1 = cold('  ------------------------x   ');
+        const n1Subs = ['--^-----------------------!   '];
+        const exp = '    --------------------------(x|)';
 
-        const result = s1.pipe(throttle(() => n1, { leading: true, trailing: true }));
+        const result = s1.pipe(throttle(() => n1, { leading: false, trailing: true }));
         expectObservable(result).toBe(exp);
         expectSubscriptions(s1.subscriptions).toBe(s1Subs);
         expectSubscriptions(n1.subscriptions).toBe(n1Subs);
@@ -482,13 +482,13 @@ describe('throttle', () => {
 
     it('should wait for trailing throttle before completing, even if source completes', () => {
       testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
-        const source = hot('  -^--x--------y---------|');
-        const sourceSubs = '   ^---------------------!';
-        const duration = cold('   ------------------------x');
-        const durationSubs = ' ---^-----------------------!';
-        const exp = '          ---x-----------------------(y|)';
+        const source = hot('  -^--x--------y---------|        ');
+        const sourceSubs = '   ^---------------------!        ';
+        const duration = cold('   ------------------------x   ');
+        const durationSubs = ' ---^-----------------------!   ';
+        const exp = '          ---------------------------(y|)';
 
-        const result = source.pipe(throttle(() => duration, { leading: true, trailing: true }));
+        const result = source.pipe(throttle(() => duration, { leading: false, trailing: true }));
         expectObservable(result).toBe(exp);
         expectSubscriptions(source.subscriptions).toBe(sourceSubs);
         expectSubscriptions(duration.subscriptions).toBe(durationSubs);
