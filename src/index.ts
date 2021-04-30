@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////
 
 // tslint:disable: no-reference
-// It's tempting to put add references to all of the deep-import locations, but
+// It's tempting to add references to all of the deep-import locations, but
 // adding references to those that require DOM types breaks Node projects.
 /// <reference path="./operators/index.ts" />
 /// <reference path="./testing/index.ts" />
