@@ -6,11 +6,10 @@
 //////////////////////////////////////////////////////////
 
 // tslint:disable: no-reference
-/// <reference path="./ajax/index.ts" />
-/// <reference path="./fetch/index.ts" />
+// It's tempting to put add references to all of the deep-import locations, but
+// adding references to those that require DOM types breaks Node projects.
 /// <reference path="./operators/index.ts" />
 /// <reference path="./testing/index.ts" />
-/// <reference path="./webSocket/index.ts" />
 // tslint:enable: no-reference
 
 /* Observable */
