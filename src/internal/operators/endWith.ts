@@ -15,7 +15,7 @@ export function endWith<T, A extends unknown[] = T[]>(...values: A): OperatorFun
 
 /**
  * Returns an observable that will emit all values from the source, then synchronously emit
- * he provided value(s) immediately after the source completes.
+ * the provided value(s) immediately after the source completes.
  *
  * NOTE: Passing a last argument of a Scheduler is _deprecated_, and may result in incorrect
  * types in TypeScript.
