@@ -42,6 +42,10 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 - Generic signatures have changed. Do not explicitly pass generics.
 
+### fromEvent
+
+- The `fromEvent` signatures have been changed and there are now separate signatures for each type of target - DOM, Node, jQuery, etc. That means that an attempt to pass options - like `{ once: true }` - to a target that does not support an options argument will result in a TypeScript error.
+
 ### GroupedObservable
 
 - No longer publicly exposes `_subscribe`
