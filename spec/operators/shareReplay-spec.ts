@@ -313,18 +313,18 @@ describe('shareReplay', () => {
 
     const expected = [1, 2, 3];
 
-    result.subscribe(
-      (n: any) => {
+    result.subscribe({
+      next(n: any) {
         expect(expected.length).to.be.greaterThan(0);
         expect(n).to.equal(expected.shift());
       },
-      (x) => {
+      error() {
         done(new Error('should not be called'));
       },
-      () => {
+      complete() {
         done();
-      }
-    );
+      },
+    });
   });
 
   it('should not skip values on a sync source', () => {
