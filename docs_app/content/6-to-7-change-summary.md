@@ -205,7 +205,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ### auditTime
 
-- `auditTime` now emits the last value from the source when the source completes, after the audit duration elapses. Previously, `auditTime` would mirror the completion without emitting the value, without waiting for the audit duration to elapse.
+- `auditTime` now emits the last value from the source when the source completes, after the audit duration elapses. Previously, `auditTime` would mirror the completion without emitting the value and without waiting for the audit duration to elapse.
 
 ### buffer
 
