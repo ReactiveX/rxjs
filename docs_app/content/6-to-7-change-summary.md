@@ -201,6 +201,11 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 ### audit
 
 - The observable returned by the `audit` operator's duration selector must emit a next notification to end the duration. Complete notifications no longer end the duration.
+- `audit` now emits the last value from the source when the source completes. Previously, `audit` would mirror the completion without emitting the value.
+
+### auditTime
+
+- `auditTime` now emits the last value from the source when the source completes, after the audit duration elapses. Previously, `auditTime` would mirror the completion without emitting the value, without waiting for the audit duration to elapse.
 
 ### buffer
 
