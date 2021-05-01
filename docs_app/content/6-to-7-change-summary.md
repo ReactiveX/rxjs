@@ -44,7 +44,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ### fromEvent
 
-- The `fromEvent` signatures have been changed and there are now separate signatures for each type of target - DOM, Node, jQuery, etc. That means that attempts to pass options - like `{ once: true }` - to targets that do not support options will result in a TypeScript error.
+- The `fromEvent` signatures have been changed and there are now separate signatures for each type of target - DOM, Node, jQuery, etc. That means that an attempt to pass options - like `{ once: true }` - to a target that does not support an options argument will result in a TypeScript error.
 
 ### GroupedObservable
 
