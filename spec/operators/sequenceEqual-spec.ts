@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 import { sequenceEqual } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
@@ -199,7 +198,7 @@ describe('sequenceEqual operator', () => {
       z: { value: 'derp', weCouldBe: 'dancin, yeah' }
     };
 
-    expectObservable(source).toBe(expected, _.assign(booleans, values), new Error('shazbot'));
+    expectObservable(source).toBe(expected, {...booleans, ...values}, new Error('shazbot'));
     expectSubscriptions(s1.subscriptions).toBe(s1subs);
     expectSubscriptions(s2.subscriptions).toBe(s2subs);
   });
@@ -223,7 +222,7 @@ describe('sequenceEqual operator', () => {
       z: { value: 'derp', weCouldBe: 'dancin, yeah' }
     };
 
-    expectObservable(source).toBe(expected, _.assign(booleans, values));
+    expectObservable(source).toBe(expected, {...booleans, ...values});
     expectSubscriptions(s1.subscriptions).toBe(s1subs);
     expectSubscriptions(s2.subscriptions).toBe(s2subs);
   });
