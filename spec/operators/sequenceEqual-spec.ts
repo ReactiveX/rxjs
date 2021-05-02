@@ -173,7 +173,7 @@ describe('sequenceEqual operator', () => {
     expectObservable(source).toBe(expected);
   });
 
-  it('should error if the comparor errors', () => {
+  it('should error if the comparator function errors', () => {
     const s1 = hot('--a--^--b-----c------d--|');
     const s1subs =      '^            !';
     const s2 = hot('-----^--------x---y---z-------|');
@@ -203,7 +203,7 @@ describe('sequenceEqual operator', () => {
     expectSubscriptions(s2.subscriptions).toBe(s2subs);
   });
 
-  it('should use the provided comparor', () => {
+  it('should use the provided comparator function', () => {
     const s1 = hot('--a--^--b-----c------d--|');
     const s1subs =      '^                  !';
     const s2 = hot('-----^--------x---y---z-------|');
