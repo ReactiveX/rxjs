@@ -146,7 +146,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ### animationFrames
 
-- A new method for creating a stream of animation frames. Each event will carry with it a high-resolution timestamp, and an ellapsed time since observation was started.
+- A new method for creating a stream of animation frames. Each event will carry with it a high-resolution timestamp, and an elapsed time since observation was started.
 
 ### config
 
@@ -168,7 +168,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ### firstValueFrom
 
-- A better, more tree-shakable replacement for `toPromise()` (which is now deprecated). This function allows the user to convert any `Observable` in to a `Promise` that will resolve when the source observable emits its firsr value. If the source observable closes without emitting a value, the returned promise will reject with an `EmptyError`, or it will resolve with a configured `defaultValue`.
+- A better, more tree-shakable replacement for `toPromise()` (which is now deprecated). This function allows the user to convert any `Observable` in to a `Promise` that will resolve when the source observable emits its first value. If the source observable closes without emitting a value, the returned promise will reject with an `EmptyError`, or it will resolve with a configured `defaultValue`.
 
 ### ObservableInput
 
@@ -391,7 +391,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 ### AjaxResponse
 
 - Now includes `responseHeaders`.
-- Now includes event `type` and `total` numbers for examinining upload and download progress (see `includeUploadProgess` and `includeDownloadProgress`).
+- Now includes event `type` and `total` numbers for examining upload and download progress (see `includeUploadProgress` and `includeDownloadProgress`).
 
 ### includeUploadProgress
 
