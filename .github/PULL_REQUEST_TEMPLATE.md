@@ -14,4 +14,10 @@ If your PR is the addition of a new operator, please make sure all these boxes a
 
 **Description:**
 
+<!--
+If this PR introduces a breaking change, it must contain a notice for it to be included in the CHANGELOG.
+-->
+
+**BREAKING CHANGE:** <!-- add description or remove entirely if not breaking -->
+
 **Related issue (if exists):**
