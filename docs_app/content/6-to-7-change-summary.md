@@ -42,6 +42,10 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 - Generic signatures have changed. Do not explicitly pass generics.
 
+### fromEvent
+
+- The `fromEvent` signatures have been changed and there are now separate signatures for each type of target - DOM, Node, jQuery, etc. That means that an attempt to pass options - like `{ once: true }` - to a target that does not support an options argument will result in a TypeScript error.
+
 ### GroupedObservable
 
 - No longer publicly exposes `_subscribe`
@@ -146,7 +150,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ### animationFrames
 
-- A new method for creating a stream of animation frames. Each event will carry with it a high-resolution timestamp, and an ellapsed time since observation was started.
+- A new method for creating a stream of animation frames. Each event will carry with it a high-resolution timestamp, and an elapsed time since observation was started.
 
 ### config
 
@@ -168,7 +172,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ### firstValueFrom
 
-- A better, more tree-shakable replacement for `toPromise()` (which is now deprecated). This function allows the user to convert any `Observable` in to a `Promise` that will resolve when the source observable emits its firsr value. If the source observable closes without emitting a value, the returned promise will reject with an `EmptyError`, or it will resolve with a configured `defaultValue`.
+- A better, more tree-shakable replacement for `toPromise()` (which is now deprecated). This function allows the user to convert any `Observable` in to a `Promise` that will resolve when the source observable emits its first value. If the source observable closes without emitting a value, the returned promise will reject with an `EmptyError`, or it will resolve with a configured `defaultValue`.
 
 ### ObservableInput
 
@@ -201,6 +205,11 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 ### audit
 
 - The observable returned by the `audit` operator's duration selector must emit a next notification to end the duration. Complete notifications no longer end the duration.
+- `audit` now emits the last value from the source when the source completes. Previously, `audit` would mirror the completion without emitting the value.
+
+### auditTime
+
+- `auditTime` now emits the last value from the source when the source completes, after the audit duration elapses. Previously, `auditTime` would mirror the completion without emitting the value and without waiting for the audit duration to elapse.
 
 ### buffer
 
@@ -257,6 +266,10 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 ### expand
 
 - Generic signatures have changed. Do not explicitly pass generics.
+
+### finalize
+
+- `finalize` will now unsubscribe from its source _before_ it calls its callback. That means that `finalize` callbacks will run in the order in which they occur in the pipeline: `source.pipe(finalize(() => console.log(1)), finalize(() => console.log(2)))` will log `1` and then `2`. Previously, callbacks were called in the reverse order.
 
 ### map
 
@@ -387,7 +400,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 ### AjaxResponse
 
 - Now includes `responseHeaders`.
-- Now includes event `type` and `total` numbers for examinining upload and download progress (see `includeUploadProgess` and `includeDownloadProgress`).
+- Now includes event `type` and `total` numbers for examining upload and download progress (see `includeUploadProgress` and `includeDownloadProgress`).
 
 ### includeUploadProgress
 
