@@ -15,14 +15,14 @@ import { Observer, NextObserver } from '../../types';
  * It defines a set of properties to provide custom behavior in specific
  * moments of the socket's lifecycle. When the connection opens we can
  * use `openObserver`, when the connection is closed `closeObserver`, if we
- * are interested in listening for data comming from server: `deserializer`,
+ * are interested in listening for data coming from server: `deserializer`,
  * which allows us to customize the deserialization strategy of data before passing it
- * to the socket client. By default `deserializer` is going to apply `JSON.parse` to each message comming
+ * to the socket client. By default `deserializer` is going to apply `JSON.parse` to each message coming
  * from the Server.
  *
  * ## Example
  * **deserializer**, the default for this property is `JSON.parse` but since there are just two options
- * for incomming data, either be text or binarydata. We can apply a custom deserialization strategy
+ * for incoming data, either be text or binarydata. We can apply a custom deserialization strategy
  * or just simply skip the default behaviour.
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
@@ -81,7 +81,7 @@ import { Observer, NextObserver } from '../../types';
  *
  * **openObserver**, Let's say we need to make some kind of init task before sending/receiving msgs to the
  * webSocket or sending notification that the connection was successful, this is when
- * openObserver is usefull for.
+ * openObserver is useful for.
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
  *
@@ -121,7 +121,7 @@ export interface WebSocketSubjectConfig<T> {
    */
   openObserver?: NextObserver<Event>;
   /**
-   * An Observer than watches when close events occur on the underlying webSocket
+   * An Observer then watches when close events occur on the underlying webSocket
    */
   closeObserver?: NextObserver<CloseEvent>;
   /**
@@ -209,8 +209,8 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
    * subscription to data over that socket. Once data arrives, the
    * `messageFilter` argument will be used to select the appropriate data for
    * the resulting Observable. When teardown occurs, either due to
-   * unsubscription, completion or error, a message defined by the `unsubMsg`
-   * argument will be send to the server over the WebSocketSubject.
+   * unsubscription, completion, or error, a message defined by the `unsubMsg`
+   * argument will be sent to the server over the WebSocketSubject.
    *
    * @param subMsg A function to generate the subscription message to be sent to
    * the server. This will still be processed by the serializer in the
