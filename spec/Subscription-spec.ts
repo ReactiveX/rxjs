@@ -116,7 +116,7 @@ describe('Subscription', () => {
   });
 
   describe('unsubscribe()', () => {
-    it('Should unsubscribe from all subscriptions, when some of them throw', (done) => {
+    it('should unsubscribe from all subscriptions, when some of them throw', (done) => {
       const tearDowns: number[] = [];
 
       const source1 = new Observable(() => {
@@ -149,7 +149,7 @@ describe('Subscription', () => {
       });
     });
 
-    it('Should unsubscribe from all subscriptions, when adding a bad custom subscription to a subscription', (done) => {
+    it('should unsubscribe from all subscriptions, when adding a bad custom subscription to a subscription', (done) => {
       const tearDowns: number[] = [];
 
       const sub = new Subscription();
@@ -189,7 +189,7 @@ describe('Subscription', () => {
       });
     });
 
-    it('Should have idempotent unsubscription', () => {
+    it('should have idempotent unsubscription', () => {
       let count = 0;
       const subscription = new Subscription(() => ++count);
       expect(count).to.equal(0);
@@ -199,6 +199,29 @@ describe('Subscription', () => {
 
       subscription.unsubscribe();
       expect(count).to.equal(1);
+    });
+
+    it('should unsubscribe from all parents', () => {
+      // https://github.com/ReactiveX/rxjs/issues/6351
+      const a = new Subscription(() => { /* noop */});
+      const b = new Subscription(() => { /* noop */});
+      const c = new Subscription(() => { /* noop */});
+      const d = new Subscription(() => { /* noop */});
+      a.add(d);
+      b.add(d);
+      c.add(d);
+      // When d is added to the subscriptions, it's added as a teardown. The
+      // length is 1 because the teardowns passed to the ctors are stored in a
+      // separate property.
+      expect((a as any)._teardowns).to.have.length(1);
+      expect((b as any)._teardowns).to.have.length(1);
+      expect((c as any)._teardowns).to.have.length(1);
+      d.unsubscribe();
+      // When d is unsubscribed, it should remove itself from each of its
+      // parents.
+      expect((a as any)._teardowns).to.have.length(0);
+      expect((b as any)._teardowns).to.have.length(0);
+      expect((c as any)._teardowns).to.have.length(0);
     });
   });
 });
