@@ -56,6 +56,7 @@ export class Subscription implements SubscriptionLike {
 
       // Remove this from it's parents.
       const { _parentage } = this;
+      this._parentage = null;
       if (Array.isArray(_parentage)) {
         for (const parent of _parentage) {
           parent.remove(this);
