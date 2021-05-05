@@ -810,6 +810,24 @@ describe('Observable', () => {
         }).not.to.throw();
       });
 
+      it('should call teardown if sync unsubscribed', () => {
+        let called = false;
+        const observable = new Observable(() => () => (called = true));
+        const subscription = observable.subscribe();
+        subscription.unsubscribe();
+
+        expect(called).to.be.true;
+      });
+
+      it('should call registered teardowns if sync unsubscribed', () => {
+        let called = false;
+        const observable = new Observable((subscriber) => subscriber.add(() => called = true));
+        const subscription = observable.subscribe();
+        subscription.unsubscribe();
+
+        expect(called).to.be.true;
+      });
+
       afterEach(() => {
         config.useDeprecatedSynchronousErrorHandling = false;
       });
