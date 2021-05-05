@@ -6,7 +6,7 @@ While not all of the documentation for RxJS reflects this terminology, it is a g
 
 ## Major Entities
 
-There are high level entities that are frequently discussed. It's important to define them seperately from other lower-level concepts, because they relate to the nature of observable.
+There are high level entities that are frequently discussed. It's important to define them separately from other lower-level concepts, because they relate to the nature of observable.
 
 ### Consumer
 
@@ -18,7 +18,7 @@ Any system or thing that is the source of values that are being pushed out of th
 
 ### Subscription
 
-A contract where a [consumer](#Consumer) is [observing](#Observation) values pushed by a [producer](#Producer). The subscription (not to be confused with the `Subscription` class or type), is an ongoing process that amounts to the function of the observable from the Consumer's perspective. Subcription starts the moment a [subscribe](#Subscribe) action is initiated, even before the [subscribe](#Subscribe) action is finished.
+A contract where a [consumer](#Consumer) is [observing](#Observation) values pushed by a [producer](#Producer). The subscription (not to be confused with the `Subscription` class or type), is an ongoing process that amounts to the function of the observable from the Consumer's perspective. Subscription starts the moment a [subscribe](#Subscribe) action is initiated, even before the [subscribe](#Subscribe) action is finished.
 
 ### Observable
 
@@ -42,7 +42,7 @@ The act of cleaning up resources used by a producer. This is guaranteed to happe
 
 ### Unsubscription
 
-The act of a [consumer](#Consumer) telling a [producer](#Producer) is is no longer interested in recieving values. Causes [Teardown](#Teardown)
+The act of a [consumer](#Consumer) telling a [producer](#Producer) is is no longer interested in receiving values. Causes [Teardown](#Teardown)
 
 ### Observation
 
@@ -50,7 +50,7 @@ A [consumer](#Consumer) reacting to [next](#Next), [error](#Error), or [complete
 
 ### Observation Chain
 
-When an [observable](#Observable) uses another [observable](#Observable) as a [producer](#Producer), an "observation chain" is set up. That is a chain of [observation](#Observation) such that multiple [observers](#Observer) are [notifying](#Notifcation) each other in a unidirectional way toward the final [consumer](#Consumer).
+When an [observable](#Observable) uses another [observable](#Observable) as a [producer](#Producer), an "observation chain" is set up. That is a chain of [observation](#Observation) such that multiple [observers](#Observer) are [notifying](#Notification) each other in a unidirectional way toward the final [consumer](#Consumer).
 
 ### Next
 
