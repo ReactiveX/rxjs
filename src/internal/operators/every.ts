@@ -3,10 +3,13 @@ import { Falsy, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
+export function every<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
+/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function every<T>(
   predicate: BooleanConstructor,
-  thisArg?: any
+  thisArg: any
 ): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
+/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function every<T, A>(
   predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
   thisArg: A

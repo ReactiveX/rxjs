@@ -3,7 +3,10 @@ import { Falsy, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { createFind } from './find';
 
-export function findIndex<T>(predicate: BooleanConstructor, thisArg?: any): OperatorFunction<T, T extends Falsy ? -1 : number>;
+export function findIndex<T>(predicate: BooleanConstructor): OperatorFunction<T, T extends Falsy ? -1 : number>;
+/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
+export function findIndex<T>(predicate: BooleanConstructor, thisArg: any): OperatorFunction<T, T extends Falsy ? -1 : number>;
+/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function findIndex<T, A>(
   predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
   thisArg: A
