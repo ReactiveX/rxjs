@@ -37,9 +37,9 @@ export function firstValueFrom<T>(source: Observable<T>): Promise<T>;
  * import { interval, firstValueFrom } from 'rxjs';
  *
  * async function execute() {
- *    const source$ = interval(2000);
- *    const firstNumber = await firstValueFrom(source$);
- *    console.log(`The first number is ${firstNumber}`);
+ *   const source$ = interval(2000);
+ *   const firstNumber = await firstValueFrom(source$);
+ *   console.log(`The first number is ${firstNumber}`);
  * }
  *
  * execute();
@@ -48,10 +48,12 @@ export function firstValueFrom<T>(source: Observable<T>): Promise<T>;
  * // "The first number is 0"
  * ```
  *
+ * @see {@link lastValueFrom}
+ *
  * @param source the observable to convert to a promise
  * @param config a configuration object to define the `defaultValue` to use if the source completes without emitting a value
  */
-export function firstValueFrom<T, D>(source: Observable<T>, config?: FirstValueFromConfig<D>) {
+export function firstValueFrom<T, D>(source: Observable<T>, config?: FirstValueFromConfig<D>): Promise<T | D> {
   const hasConfig = typeof config === 'object';
   return new Promise<T | D>((resolve, reject) => {
     const subscriber = new SafeSubscriber<T>({
