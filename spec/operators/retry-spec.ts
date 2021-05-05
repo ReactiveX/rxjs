@@ -326,4 +326,17 @@ describe('retry operator', () => {
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
+
+  it('should not alter the source when the number of retries is smaller than 1', () => {
+    const source = cold('--1-2-3-#');
+    const subs =       ['^       !'];
+
+    const expected =    '--1-2-3-#';
+    const unsub =       '         !';
+
+    const result = source.pipe(retry(0));
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  })
 });

@@ -1,8 +1,8 @@
 import { MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { Subscription } from '../Subscription';
-import { EMPTY } from '../observable/empty';
 import { OperatorSubscriber } from './OperatorSubscriber';
+import { identity } from '../util/identity';
 
 export interface RetryConfig {
   count: number;
@@ -69,7 +69,7 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
   const { count, resetOnSuccess = false } = config;
 
   return count <= 0
-    ? () => EMPTY
+    ? identity
     : operate((source, subscriber) => {
         let soFar = 0;
         let innerSub: Subscription | null;
