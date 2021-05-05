@@ -8,6 +8,8 @@ import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 export function single<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
+export function single<T>(predicate?: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T>;
+/** @deprecated Use a closure instead of a `source` parameter. Support for predicates taking a `source` parameter will be removed in v8. */
 export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
 
 /**

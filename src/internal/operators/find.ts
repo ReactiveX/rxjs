@@ -10,6 +10,8 @@ export function find<T, S extends T, A>(
   predicate: (this: A, value: T, index: number, source: Observable<T>) => value is S,
   thisArg: A
 ): OperatorFunction<T, S | undefined>;
+export function find<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S | undefined>;
+/** @deprecated Use a closure instead of a `source` parameter. Support for predicates taking a `source` parameter will be removed in v8. */
 export function find<T, S extends T>(
   predicate: (value: T, index: number, source: Observable<T>) => value is S
 ): OperatorFunction<T, S | undefined>;
@@ -18,7 +20,10 @@ export function find<T, A>(
   predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
   thisArg: A
 ): OperatorFunction<T, T | undefined>;
+export function find<T>(predicate: (value: T, index: number) => boolean): OperatorFunction<T, T | undefined>;
+/** @deprecated Use a closure instead of a `source` parameter. Support for predicates taking a `source` parameter will be removed in v8. */
 export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, T | undefined>;
+
 /**
  * Emits only the first value emitted by the source Observable that meets some
  * condition.
