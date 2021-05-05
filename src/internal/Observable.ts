@@ -252,7 +252,7 @@ export class Observable<T> implements Subscribable<T> {
       subscriber.add(operator.call(subscriber, this.source));
     } else {
       try {
-        this._subscribe(subscriber);
+        subscriber.add(this._subscribe(subscriber));
       } catch (err) {
         localSubscriber.__syncError = err;
       }
