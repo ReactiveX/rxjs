@@ -17,14 +17,13 @@ export interface EmptyErrorCtor {
  * @see {@link first}
  * @see {@link last}
  * @see {@link single}
+ * @see {@link firstValueFrom}
+ * @see {@link lastValueFrom}
  *
  * @class EmptyError
  */
-export const EmptyError: EmptyErrorCtor = createErrorClass(
-  (_super) =>
-    function EmptyErrorImpl(this: any) {
-      _super(this);
-      this.name = 'EmptyError';
-      this.message = 'no elements in sequence';
-    }
-);
+export const EmptyError: EmptyErrorCtor = createErrorClass((_super) => function EmptyErrorImpl(this: any) {
+  _super(this);
+  this.name = 'EmptyError';
+  this.message = 'no elements in sequence';
+});

@@ -36,9 +36,9 @@ export function lastValueFrom<T>(source: Observable<T>): Promise<T>;
  * import { take } from 'rxjs/operators';
  *
  * async function execute() {
- *    const source$ = interval(2000).pipe(take(10));
- *    const finalNumber = await lastValueFrom(source$);
- *    console.log(`The final number is ${finalNumber}`);
+ *   const source$ = interval(2000).pipe(take(10));
+ *   const finalNumber = await lastValueFrom(source$);
+ *   console.log(`The final number is ${finalNumber}`);
  * }
  *
  * execute();
@@ -47,10 +47,12 @@ export function lastValueFrom<T>(source: Observable<T>): Promise<T>;
  * // "The final number is 9"
  * ```
  *
+ * @see {@link firstValueFrom}
+ *
  * @param source the observable to convert to a promise
  * @param config a configuration object to define the `defaultValue` to use if the source completes without emitting a value
  */
-export function lastValueFrom<T, D>(source: Observable<T>, config?: LastValueFromConfig<D>) {
+export function lastValueFrom<T, D>(source: Observable<T>, config?: LastValueFromConfig<D>): Promise<T | D> {
   const hasConfig = typeof config === 'object';
   return new Promise<T | D>((resolve, reject) => {
     let _hasValue = false;
