@@ -5,6 +5,7 @@ import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 export function find<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
+/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function find<T, S extends T, A>(
   predicate: (this: A, value: T, index: number, source: Observable<T>) => value is S,
   thisArg: A
@@ -12,6 +13,7 @@ export function find<T, S extends T, A>(
 export function find<T, S extends T>(
   predicate: (value: T, index: number, source: Observable<T>) => value is S
 ): OperatorFunction<T, S | undefined>;
+/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function find<T, A>(
   predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
   thisArg: A
