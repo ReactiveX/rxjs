@@ -35,11 +35,11 @@ export function bindCallbackInternals(
     };
   }
 
-  // We're using AsyncSubject, because it emits when it completes,
-  // and it will play the value to all late-arriving subscribers.
-  const subject = new AsyncSubject<any>();
-
   return function (this: any, ...args: any[]): Observable<any> {
+    // We're using AsyncSubject, because it emits when it completes,
+    // and it will play the value to all late-arriving subscribers.
+    const subject = new AsyncSubject<any>();
+
     // If this is true, then we haven't called our function yet.
     let uninitialized = true;
     return new Observable((subscriber) => {
