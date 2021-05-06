@@ -126,6 +126,29 @@ describe('bindCallback', () => {
         done();
       });
     });
+
+    it('should create a separate internal subject for each call', () => {
+      function callback(datum: number, cb: (result: number) => void) {
+        cb(datum);
+      }
+      const boundCallback = bindCallback(callback);
+      const results: Array<string|number> = [];
+
+      boundCallback(42)
+        .subscribe(x => {
+          results.push(x);
+        }, null, () => {
+          results.push('done');
+        });
+      boundCallback(54)
+        .subscribe(x => {
+          results.push(x);
+        }, null, () => {
+          results.push('done');
+        });
+
+      expect(results).to.deep.equal([42, 'done', 54, 'done']);
+    });
   });
 
   describe('when scheduled', () => {
