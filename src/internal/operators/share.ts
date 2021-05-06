@@ -112,10 +112,6 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
     // Create the subject if we don't have one yet.
     subject = subject ?? connector();
 
-    // The following line adds the subscription to the subscriber passed.
-    // Basically, `subscriber === subject.subscribe(subscriber)` is `true`.
-    subject.subscribe(subscriber);
-
     // Add the teardown directly to the subscriber - instead of returning it -
     // so that the handling of the subscriber's unsubscription will be wired
     // up _before_ the subscription to the source occurs. This is done so that
@@ -135,6 +131,10 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
         conn?.unsubscribe();
       }
     });
+
+    // The following line adds the subscription to the subscriber passed.
+    // Basically, `subscriber === subject.subscribe(subscriber)` is `true`.
+    subject.subscribe(subscriber);
 
     if (!connection) {
       // We need to create a subscriber here - rather than pass an observer and
