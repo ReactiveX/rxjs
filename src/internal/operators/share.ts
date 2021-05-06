@@ -115,6 +115,20 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
     // The following line adds the subscription to the subscriber passed.
     // Basically, `subscriber === subject.subscribe(subscriber)` is `true`.
     subject.subscribe(subscriber);
+    subscriber.add(() => {
+      refCount--;
+
+      // If we're resetting on refCount === 0, and it's 0, we only want to do
+      // that on "unsubscribe", really. Resetting on error or completion is a different
+      // configuration.
+      if (resetOnRefCountZero && !refCount && !hasErrored && !hasCompleted) {
+        // We need to capture the connection before
+        // we reset (if we need to reset).
+        const conn = connection;
+        reset();
+        conn?.unsubscribe();
+      }
+    });
 
     if (!connection) {
       // We need to create a subscriber here - rather than pass an observer and
@@ -147,21 +161,5 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
       });
       from(source).subscribe(connection);
     }
-
-    // This is also added to `subscriber`, technically.
-    return () => {
-      refCount--;
-
-      // If we're resetting on refCount === 0, and it's 0, we only want to do
-      // that on "unsubscribe", really. Resetting on error or completion is a different
-      // configuration.
-      if (resetOnRefCountZero && !refCount && !hasErrored && !hasCompleted) {
-        // We need to capture the connection before
-        // we reset (if we need to reset).
-        const conn = connection;
-        reset();
-        conn?.unsubscribe();
-      }
-    };
   });
 }
