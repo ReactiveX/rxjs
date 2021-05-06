@@ -14,8 +14,6 @@ export function every<T, A>(
   predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
   thisArg: A
 ): OperatorFunction<T, boolean>;
-export function every<T>(predicate: (value: T, index: number) => boolean): OperatorFunction<T, boolean>;
-/** @deprecated Use a closure instead of a `source` parameter. Support for predicates taking a `source` parameter will be removed in v8. */
 export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, boolean>;
 
 /**
