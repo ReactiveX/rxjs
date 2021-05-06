@@ -4,6 +4,7 @@ import { ObservableInput } from '../types';
 import { Observable } from '../Observable';
 import { innerFrom } from './from';
 
+/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function partition<T, U extends T, A>(
   source: ObservableInput<T>,
   predicate: (this: A, value: T, index: number) => value is U,
@@ -14,6 +15,7 @@ export function partition<T, U extends T>(
   predicate: (value: T, index: number) => value is U
 ): [Observable<U>, Observable<Exclude<T, U>>];
 
+/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function partition<T, A>(
   source: ObservableInput<T>,
   predicate: (this: A, value: T, index: number) => boolean,
