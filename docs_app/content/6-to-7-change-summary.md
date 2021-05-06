@@ -382,7 +382,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ### zipWith, concatWith, mergeWith, raceWith
 
-- Simply renamed versions of the operators `zip`, `concat`, `mergeWith`, and `race`. So we can deprecate those old names and use the new names without collisions.
+- Simply renamed versions of the operators `zip`, `concat`, `merge`, and `race`. So we can deprecate those old names and use the new names without collisions.
 
 # module `rxjs/ajax`
 
