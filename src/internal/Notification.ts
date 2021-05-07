@@ -44,7 +44,7 @@ export class Notification<T> {
    * Creates a "Next" notification object.
    * @param kind Always `'N'`
    * @param value The value to notify with if observed.
-   * @deprecated Internal implementation detail. Use {@link createNext} instead.
+   * @deprecated Internal implementation detail. Use {@link Notification#createNext createNext} instead.
    */
   constructor(kind: 'N', value?: T);
   /**
@@ -52,13 +52,13 @@ export class Notification<T> {
    * @param kind Always `'E'`
    * @param value Always `undefined`
    * @param error The error to notify with if observed.
-   * @deprecated Internal implementation detail. Use {@link createError} instead.
+   * @deprecated Internal implementation detail. Use {@link Notification#createError createError} instead.
    */
   constructor(kind: 'E', value: undefined, error: any);
   /**
    * Creates a "completion" notification object.
    * @param kind Always `'C'`
-   * @deprecated Internal implementation detail. Use {@link createComplete} instead.
+   * @deprecated Internal implementation detail. Use {@link Notification#createComplete createComplete} instead.
    */
   constructor(kind: 'C');
   constructor(public readonly kind: 'N' | 'E' | 'C', public readonly value?: T, public readonly error?: any) {
@@ -82,7 +82,7 @@ export class Notification<T> {
    * @param next A next handler
    * @param error An error handler
    * @param complete A complete handler
-   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
+   * @deprecated Replaced with {@link Notification#observe observe}. Will be removed in v8.
    */
   do(next: (value: T) => void, error: (err: any) => void, complete: () => void): void;
   /**
@@ -91,14 +91,14 @@ export class Notification<T> {
    * and no error is thrown, it will be a noop.
    * @param next A next handler
    * @param error An error handler
-   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
+   * @deprecated Replaced with {@link Notification#observe observe}. Will be removed in v8.
    */
   do(next: (value: T) => void, error: (err: any) => void): void;
   /**
    * Executes the next handler if the Notification is of `kind` `"N"`. Otherwise
    * this will not error, and it will be a noop.
    * @param next The next handler
-   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
+   * @deprecated Replaced with {@link Notification#observe observe}. Will be removed in v8.
    */
   do(next: (value: T) => void): void;
   do(nextHandler: (value: T) => void, errorHandler?: (err: any) => void, completeHandler?: () => void): void {
@@ -113,7 +113,7 @@ export class Notification<T> {
    * @param next A next handler
    * @param error An error handler
    * @param complete A complete handler
-   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
+   * @deprecated Replaced with {@link Notification#observe observe}. Will be removed in v8.
    */
   accept(next: (value: T) => void, error: (err: any) => void, complete: () => void): void;
   /**
@@ -122,14 +122,14 @@ export class Notification<T> {
    * and no error is thrown, it will be a noop.
    * @param next A next handler
    * @param error An error handler
-   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
+   * @deprecated Replaced with {@link Notification#observe observe}. Will be removed in v8.
    */
   accept(next: (value: T) => void, error: (err: any) => void): void;
   /**
    * Executes the next handler if the Notification is of `kind` `"N"`. Otherwise
    * this will not error, and it will be a noop.
    * @param next The next handler
-   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
+   * @deprecated Replaced with {@link Notification#observe observe}. Will be removed in v8.
    */
   accept(next: (value: T) => void): void;
 
@@ -138,7 +138,7 @@ export class Notification<T> {
    * If the handler is missing it will do nothing. Even if the notification is an error, if
    * there is no error handler on the observer, an error will not be thrown, it will noop.
    * @param observer The observer to notify.
-   * @deprecated Replaced with {@link Notification.prototype.observe}. Will be removed in v8.
+   * @deprecated Replaced with {@link Notification#observe observe}. Will be removed in v8.
    */
   accept(observer: PartialObserver<T>): void;
   accept(nextOrObserver: PartialObserver<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) {

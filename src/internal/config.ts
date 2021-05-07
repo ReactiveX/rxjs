@@ -43,7 +43,7 @@ export interface GlobalConfig {
   onStoppedNotification: ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null;
 
   /**
-   * The promise constructor used by default for {@link toPromise} and {@link forEach}
+   * The promise constructor used by default for {@link Observable#toPromise toPromise} and {@link Observable#forEach forEach}
    * methods.
    *
    * @deprecated As of version 8, RxJS will no longer support this sort of injection of a
