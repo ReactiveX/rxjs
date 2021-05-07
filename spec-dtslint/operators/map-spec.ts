@@ -33,3 +33,8 @@ it('should support this', () => {
     return val < limit ? val : limit;
   }, thisArg));
 });
+
+it('should deprecate thisArg usage', () => {
+  const a = of(1, 2, 3).pipe(map((value) => value)); // $ExpectNoDeprecation
+  const b = of(1, 2, 3).pipe(map((value) => value, {})); // $ExpectDeprecation
+});

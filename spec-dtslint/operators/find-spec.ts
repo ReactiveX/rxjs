@@ -41,3 +41,10 @@ it('should support this', () => {
     return val < wanted;
   }, thisArg));
 });
+
+it('should deprecate thisArg usage', () => {
+  const a = of(1, 2, 3).pipe(find(Boolean)); // $ExpectNoDeprecation
+  const b = of(1, 2, 3).pipe(find(Boolean, {})); // $ExpectDeprecation
+  const c = of(1, 2, 3).pipe(find((value) => Boolean(value))); // $ExpectNoDeprecation
+  const d = of(1, 2, 3).pipe(find((value) => Boolean(value), {})); // $ExpectDeprecation
+});
