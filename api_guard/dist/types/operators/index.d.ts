@@ -2,6 +2,8 @@ export declare function audit<T>(durationSelector: (value: T) => ObservableInput
 
 export declare function auditTime<T>(duration: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
+export declare function buckets<T>(bucketCount: number, options?: BucketsOptions<T>): OperatorFunction<T, Observable<T>[]>;
+
 export declare function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]>;
 
 export declare function bufferCount<T>(bufferSize: number, startBufferEvery?: number | null): OperatorFunction<T, T[]>;

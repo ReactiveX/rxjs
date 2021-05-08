@@ -147,6 +147,7 @@ These are Observable creation operators that also have join functionality -- emi
 
 ### Transformation Operators
 
+- [`buckets`](/api/operators/buckets)
 - [`buffer`](/api/operators/buffer)
 - [`bufferCount`](/api/operators/bufferCount)
 - [`bufferTime`](/api/operators/bufferTime)

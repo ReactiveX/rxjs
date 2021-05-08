@@ -1,6 +1,7 @@
 /* Operator exports */
 export { audit } from '../internal/operators/audit';
 export { auditTime } from '../internal/operators/auditTime';
+export { buckets } from '../internal/operators/buckets';
 export { buffer } from '../internal/operators/buffer';
 export { bufferCount } from '../internal/operators/bufferCount';
 export { bufferTime } from '../internal/operators/bufferTime';
