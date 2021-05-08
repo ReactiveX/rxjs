@@ -168,6 +168,7 @@ These are Observable creation operators that also have join functionality -- emi
 - [`partition`](/api/operators/partition)
 - [`pluck`](/api/operators/pluck)
 - [`scan`](/api/operators/scan)
+- [`splitBy`](/api/operators/splitBy)
 - [`switchScan`](/api/operators/switchScan)
 - [`switchMap`](/api/operators/switchMap)
 - [`switchMapTo`](/api/operators/switchMapTo)
