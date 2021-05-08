@@ -35,12 +35,4 @@ When subscribing to an Observable, you may also just provide the callbacks as ar
 observable.subscribe(x => console.log('Observer got a next value: ' + x));
 ```
 
-Internally in `observable.subscribe`, it will create an Observer object using the first callback argument as the `next` handler. All three types of callbacks may be provided as arguments:
-
-```ts
-observable.subscribe(
-  x => console.log('Observer got a next value: ' + x),
-  err => console.error('Observer got an error: ' + err),
-  () => console.log('Observer got a complete notification')
-);
-```
+Internally in `observable.subscribe`, it will create an Observer object using the first callback argument as the `next` handler.
