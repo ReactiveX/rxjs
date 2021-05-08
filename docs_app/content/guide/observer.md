@@ -35,4 +35,4 @@ When subscribing to an `Observable`, you may also just provide the next callback
 observable.subscribe(x => console.log('Observer got a next value: ' + x));
 ```
 
-Internally in `observable.subscribe`, it will create an `Observer` object using the first callback argument as the `next` handler.
+Internally in `observable.subscribe`, it will create an `Observer` object using the callback argument as the `next` handler.
