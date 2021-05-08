@@ -29,7 +29,7 @@ const observer = {
 };
 ```
 
-When subscribing to an `Observable`, you may also just provide the callbacks as arguments, without being attached to an `Observer` object, for instance like this:
+When subscribing to an `Observable`, you may also just provide the next callback as an argument, without being attached to an `Observer` object, for instance like this:
 
 ```ts
 observable.subscribe(x => console.log('Observer got a next value: ' + x));
