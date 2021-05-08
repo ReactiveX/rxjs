@@ -3,16 +3,16 @@ import { expect } from 'chai';
 import { dateTimestampProvider } from 'rxjs/internal/scheduler/dateTimestampProvider';
 
 describe('dateTimestampProvider', () => {
-  const originalDate = globalThis.Date;
+  const originalDate = global.Date;
 
   afterEach(() => {
-    globalThis.Date = originalDate;
+    global.Date = originalDate;
   });
 
   it('should be monkey patchable', () => {
     let nowCalled = false;
 
-    globalThis.Date = {
+    global.Date = {
       now() {
         nowCalled = true;
         return 0;

@@ -3,23 +3,23 @@ import { expect } from 'chai';
 import { timeoutProvider } from 'rxjs/internal/scheduler/timeoutProvider';
 
 describe('timeoutProvider', () => {
-  const originalSet = globalThis.setTimeout;
-  const originalClear = globalThis.clearTimeout;
+  const originalSet = global.setTimeout;
+  const originalClear = global.clearTimeout;
 
   afterEach(() => {
-    globalThis.setTimeout = originalSet;
-    globalThis.clearTimeout = originalClear;
+    global.setTimeout = originalSet;
+    global.clearTimeout = originalClear;
   });
 
   it('should be monkey patchable', () => {
     let setCalled = false;
     let clearCalled = false;
 
-    globalThis.setTimeout = (() => {
+    global.setTimeout = (() => {
       setCalled = true;
       return 0 as any;
     }) as any;
-    globalThis.clearTimeout = () => {
+    global.clearTimeout = () => {
       clearCalled = true;
     };
 

@@ -3,23 +3,23 @@ import { expect } from 'chai';
 import { intervalProvider } from 'rxjs/internal/scheduler/intervalProvider';
 
 describe('intervalProvider', () => {
-  const originalSet = globalThis.setInterval;
-  const originalClear = globalThis.clearInterval;
+  const originalSet = global.setInterval;
+  const originalClear = global.clearInterval;
 
   afterEach(() => {
-    globalThis.setInterval = originalSet;
-    globalThis.clearInterval = originalClear;
+    global.setInterval = originalSet;
+    global.clearInterval = originalClear;
   });
 
   it('should be monkey patchable', () => {
     let setCalled = false;
     let clearCalled = false;
 
-    globalThis.setInterval = () => {
+    global.setInterval = () => {
       setCalled = true;
       return 0 as any;
     };
-    globalThis.clearInterval = () => {
+    global.clearInterval = () => {
       clearCalled = true;
     };
 

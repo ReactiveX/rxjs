@@ -3,23 +3,23 @@ import { expect } from 'chai';
 import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
 
 describe('animationFrameProvider', () => {
-  const originalRequest = globalThis.requestAnimationFrame;
-  const originalCancel = globalThis.cancelAnimationFrame;
+  const originalRequest = global.requestAnimationFrame;
+  const originalCancel = global.cancelAnimationFrame;
 
   afterEach(() => {
-    globalThis.requestAnimationFrame = originalRequest;
-    globalThis.cancelAnimationFrame = originalCancel;
+    global.requestAnimationFrame = originalRequest;
+    global.cancelAnimationFrame = originalCancel;
   });
 
   it('should be monkey patchable', () => {
     let requestCalled = false;
     let cancelCalled = false;
 
-    globalThis.requestAnimationFrame = () => {
+    global.requestAnimationFrame = () => {
       requestCalled = true;
       return 0;
     };
-    globalThis.cancelAnimationFrame = () => {
+    global.cancelAnimationFrame = () => {
       cancelCalled = true;
     };
 
