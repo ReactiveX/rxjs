@@ -56,13 +56,13 @@ export declare class AjaxResponse<T> {
     readonly responseType: XMLHttpRequestResponseType;
     readonly status: number;
     readonly total: number;
-    readonly type: string;
+    readonly type: AjaxResponseType;
     readonly xhr: XMLHttpRequest;
     constructor(
     originalEvent: ProgressEvent,
     xhr: XMLHttpRequest,
     request: AjaxRequest,
-    type?: string);
+    type?: AjaxResponseType);
 }
 
 export interface AjaxTimeoutError extends AjaxError {

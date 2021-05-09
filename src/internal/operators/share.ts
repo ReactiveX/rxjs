@@ -112,6 +112,26 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
     // Create the subject if we don't have one yet.
     subject = subject ?? connector();
 
+    // Add the teardown directly to the subscriber - instead of returning it -
+    // so that the handling of the subscriber's unsubscription will be wired
+    // up _before_ the subscription to the source occurs. This is done so that
+    // the assignment to the source connection's `closed` property will be seen
+    // by synchronous firehose sources.
+    subscriber.add(() => {
+      refCount--;
+
+      // If we're resetting on refCount === 0, and it's 0, we only want to do
+      // that on "unsubscribe", really. Resetting on error or completion is a different
+      // configuration.
+      if (resetOnRefCountZero && !refCount && !hasErrored && !hasCompleted) {
+        // We need to capture the connection before
+        // we reset (if we need to reset).
+        const conn = connection;
+        reset();
+        conn?.unsubscribe();
+      }
+    });
+
     // The following line adds the subscription to the subscriber passed.
     // Basically, `subscriber === subject.subscribe(subscriber)` is `true`.
     subject.subscribe(subscriber);
@@ -147,21 +167,5 @@ export function share<T>(options?: ShareConfig<T>): OperatorFunction<T, T> {
       });
       from(source).subscribe(connection);
     }
-
-    // This is also added to `subscriber`, technically.
-    return () => {
-      refCount--;
-
-      // If we're resetting on refCount === 0, and it's 0, we only want to do
-      // that on "unsubscribe", really. Resetting on error or completion is a different
-      // configuration.
-      if (resetOnRefCountZero && !refCount && !hasErrored && !hasCompleted) {
-        // We need to capture the connection before
-        // we reset (if we need to reset).
-        const conn = connection;
-        reset();
-        conn?.unsubscribe();
-      }
-    };
   });
 }

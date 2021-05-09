@@ -1,22 +1,30 @@
+/** @prettier */
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { shareReplay, mergeMapTo, retry, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { Observable, Operator, Observer, of, from, defer } from 'rxjs';
-
-declare const rxTestScheduler: TestScheduler;
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {shareReplay} */
-describe('shareReplay operator', () => {
-  it('should mirror a simple source Observable', () => {
-    const source = cold('--1-2---3-4--5-|');
-    const sourceSubs =  '^              !';
-    const published = source.pipe(shareReplay());
-    const expected =    '--1-2---3-4--5-|';
+describe('shareReplay', () => {
+  let testScheduler: TestScheduler;
 
-    expectObservable(published).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  beforeEach(() => {
+    testScheduler = new TestScheduler(observableMatcher);
+  });
+
+  it('should mirror a simple source Observable', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('--1-2---3-4--5-|');
+      const sourceSubs = ' ^--------------!';
+      const expected = '   --1-2---3-4--5-|';
+
+      const published = source.pipe(shareReplay());
+
+      expectObservable(published).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
   });
 
   it('should do nothing if result is not subscribed', () => {
@@ -29,194 +37,227 @@ describe('shareReplay operator', () => {
   });
 
   it('should multicast the same values to multiple observers, bufferSize=1', () => {
-    const source =     cold('-1-2-3----4-|'); const shared = source.pipe(shareReplay(1));
-    const sourceSubs =      '^           !';
-    const subscriber1 = hot('a|           ').pipe(mergeMapTo(shared));
-    const expected1   =     '-1-2-3----4-|';
-    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(shared));
-    const expected2   =     '    23----4-|';
-    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(shared));
-    const expected3   =     '        3-4-|';
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const source = cold('    -1-2-3----4-|');
+      const sourceSubs = '     ^-----------!';
+      const subscriber1 = hot('a|           ');
+      const expected1 = '      -1-2-3----4-|';
+      const subscriber2 = hot('----b|       ');
+      const expected2 = '      ----23----4-|';
+      const subscriber3 = hot('--------c|   ');
+      const expected3 = '      --------3-4-|';
 
-    expectObservable(subscriber1).toBe(expected1);
-    expectObservable(subscriber2).toBe(expected2);
-    expectObservable(subscriber3).toBe(expected3);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      const shared = source.pipe(shareReplay(1));
+
+      expectObservable(subscriber1.pipe(mergeMapTo(shared))).toBe(expected1);
+      expectObservable(subscriber2.pipe(mergeMapTo(shared))).toBe(expected2);
+      expectObservable(subscriber3.pipe(mergeMapTo(shared))).toBe(expected3);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
   });
 
   it('should multicast the same values to multiple observers, bufferSize=2', () => {
-    const source =     cold('-1-2-----3------4-|'); const shared = source.pipe(shareReplay(2));
-    const sourceSubs =      '^                 !';
-    const subscriber1 = hot('a|                 ').pipe(mergeMapTo(shared));
-    const expected1   =     '-1-2-----3------4-|';
-    const subscriber2 = hot('    b|             ').pipe(mergeMapTo(shared));
-    const expected2   =     '    (12)-3------4-|';
-    const subscriber3 = hot('           c|       ').pipe(mergeMapTo(shared));
-    const expected3   =     '           (23)-4-|';
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const source = cold('    -1-2-----3------4-|');
+      const sourceSubs = '     ^-----------------!';
+      const subscriber1 = hot('a|                 ');
+      const expected1 = '      -1-2-----3------4-|';
+      const subscriber2 = hot('----b|             ');
+      const expected2 = '      ----(12)-3------4-|';
+      const subscriber3 = hot('-----------c|      ');
+      const expected3 = '      -----------(23)-4-|';
 
-    expectObservable(subscriber1).toBe(expected1);
-    expectObservable(subscriber2).toBe(expected2);
-    expectObservable(subscriber3).toBe(expected3);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      const shared = source.pipe(shareReplay(2));
+
+      expectObservable(subscriber1.pipe(mergeMapTo(shared))).toBe(expected1);
+      expectObservable(subscriber2.pipe(mergeMapTo(shared))).toBe(expected2);
+      expectObservable(subscriber3.pipe(mergeMapTo(shared))).toBe(expected3);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
   });
 
   it('should multicast an error from the source to multiple observers', () => {
-    const source =     cold('-1-2-3----4-#'); const shared = source.pipe(shareReplay(1));
-    const sourceSubs =      '^           !';
-    const subscriber1 = hot('a|           ').pipe(mergeMapTo(shared));
-    const expected1   =     '-1-2-3----4-#';
-    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(shared));
-    const expected2   =     '    23----4-#';
-    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(shared));
-    const expected3   =     '        3-4-#';
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const source = cold('    -1-2-3----4-#');
+      const sourceSubs = '     ^-----------!';
+      const subscriber1 = hot('a|           ');
+      const expected1 = '      -1-2-3----4-#';
+      const subscriber2 = hot('----b|       ');
+      const expected2 = '      ----23----4-#';
+      const subscriber3 = hot('--------c|   ');
+      const expected3 = '      --------3-4-#';
 
-    expectObservable(subscriber1).toBe(expected1);
-    expectObservable(subscriber2).toBe(expected2);
-    expectObservable(subscriber3).toBe(expected3);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      const shared = source.pipe(shareReplay(1));
+
+      expectObservable(subscriber1.pipe(mergeMapTo(shared))).toBe(expected1);
+      expectObservable(subscriber2.pipe(mergeMapTo(shared))).toBe(expected2);
+      expectObservable(subscriber3.pipe(mergeMapTo(shared))).toBe(expected3);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
   });
 
   it('should multicast an empty source', () => {
-    const source = cold('|');
-    const sourceSubs =  '(^!)';
-    const shared = source.pipe(shareReplay(1));
-    const expected =    '|';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('|   ');
+      const sourceSubs = ' (^!)';
+      const expected = '   |   ';
 
-    expectObservable(shared).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      const shared = source.pipe(shareReplay(1));
+
+      expectObservable(shared).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
   });
 
   it('should multicast a never source', () => {
-    const source = cold('-');
-    const sourceSubs =  '^';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('-');
+      const sourceSubs = ' ^';
+      const expected = '   -';
 
-    const shared = source.pipe(shareReplay(1));
-    const expected =    '-';
+      const shared = source.pipe(shareReplay(1));
 
-    expectObservable(shared).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectObservable(shared).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
   });
 
   it('should multicast a throw source', () => {
-    const source = cold('#');
-    const sourceSubs =  '(^!)';
-    const shared = source.pipe(shareReplay(1));
-    const expected =    '#';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('#   ');
+      const sourceSubs = ' (^!)';
+      const expected = '   #   ';
 
-    expectObservable(shared).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      const shared = source.pipe(shareReplay(1));
+
+      expectObservable(shared).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
   });
 
   it('should replay results to subsequent subscriptions if source completes, bufferSize=2', () => {
-    const source =     cold('-1-2-----3-|        ');
-    const shared = source.pipe(shareReplay(2));
-    const sourceSubs =      '^          !        ';
-    const subscriber1 = hot('a|                  ').pipe(mergeMapTo(shared));
-    const expected1   =     '-1-2-----3-|        ';
-    const subscriber2 = hot('    b|              ').pipe(mergeMapTo(shared));
-    const expected2   =     '    (12)-3-|        ';
-    const subscriber3 = hot('               (c|) ').pipe(mergeMapTo(shared));
-    const expected3   =     '               (23|)';
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const source = cold('    -1-2-----3-|        ');
+      const sourceSubs = '     ^----------!        ';
+      const subscriber1 = hot('a|                  ');
+      const expected1 = '      -1-2-----3-|        ';
+      const subscriber2 = hot('----b|              ');
+      const expected2 = '      ----(12)-3-|        ';
+      const subscriber3 = hot('---------------(c|) ');
+      const expected3 = '      ---------------(23|)';
 
-    expectObservable(subscriber1).toBe(expected1);
-    expectObservable(subscriber2).toBe(expected2);
-    expectObservable(subscriber3).toBe(expected3);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      const shared = source.pipe(shareReplay(2));
+
+      expectObservable(subscriber1.pipe(mergeMapTo(shared))).toBe(expected1);
+      expectObservable(subscriber2.pipe(mergeMapTo(shared))).toBe(expected2);
+      expectObservable(subscriber3.pipe(mergeMapTo(shared))).toBe(expected3);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
   });
 
   it('should completely restart for subsequent subscriptions if source errors, bufferSize=2', () => {
-    const source =     cold('-1-2-----3-#               ');
-    const shared = source.pipe(shareReplay(2));
-    const sourceSubs1 =     '^          !               ';
-    const subscriber1 = hot('a|                         ').pipe(mergeMapTo(shared));
-    const expected1   =     '-1-2-----3-#               ';
-    const subscriber2 = hot('    b|                     ').pipe(mergeMapTo(shared));
-    const expected2   =     '    (12)-3-#               ';
-    const subscriber3 = hot('               (c|)        ').pipe(mergeMapTo(shared));
-    const expected3   =     '               -1-2-----3-#';
-    const sourceSubs2 =     '               ^          !';
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const source = cold('    -1-2-----3-#               ');
+      const sourceSubs1 = '    ^----------!               ';
+      const subscriber1 = hot('a|                         ');
+      const expected1 = '      -1-2-----3-#               ';
+      const subscriber2 = hot('----b|                     ');
+      const expected2 = '      ----(12)-3-#               ';
+      const subscriber3 = hot('---------------(c|)        ');
+      const expected3 = '      ----------------1-2-----3-#';
+      const sourceSubs2 = '    ---------------^----------!';
 
-    expectObservable(subscriber1).toBe(expected1);
-    expectObservable(subscriber2).toBe(expected2);
-    expectObservable(subscriber3).toBe(expected3);
-    expectSubscriptions(source.subscriptions).toBe([sourceSubs1, sourceSubs2]);
+      const shared = source.pipe(shareReplay(2));
+
+      expectObservable(subscriber1.pipe(mergeMapTo(shared))).toBe(expected1);
+      expectObservable(subscriber2.pipe(mergeMapTo(shared))).toBe(expected2);
+      expectObservable(subscriber3.pipe(mergeMapTo(shared))).toBe(expected3);
+      expectSubscriptions(source.subscriptions).toBe([sourceSubs1, sourceSubs2]);
+    });
   });
 
   it('should be retryable, bufferSize=2', () => {
-    const subs = [];
-    const source =     cold('-1-2-----3-#                      ');
-    const shared = source.pipe(shareReplay(2), retry(1));
-    subs.push(              '^          !                      ');
-    subs.push(              '           ^          !           ');
-    subs.push(              '                      ^          !');
-    const subscriber1 = hot('a|                                ').pipe(mergeMapTo(shared));
-    const expected1   =     '-1-2-----3--1-2-----3-#           ';
-    const subscriber2 = hot('    b|                            ').pipe(mergeMapTo(shared));
-    const expected2   =     '    (12)-3--1-2-----3-#           ';
-    const subscriber3 = hot('               (c|)               ').pipe(mergeMapTo(shared));
-    const expected3   =     '               (12)-3--1-2-----3-#';
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const subs = [];
+      const source = cold('    -1-2-----3-#                      ');
+      subs.push('              ^----------!                      ');
+      subs.push('              -----------^----------!           ');
+      subs.push('              ----------------------^----------!');
+      const subscriber1 = hot('a|                                ');
+      const expected1 = '      -1-2-----3--1-2-----3-#           ';
+      const subscriber2 = hot('----b|                            ');
+      const expected2 = '      ----(12)-3--1-2-----3-#           ';
+      const subscriber3 = hot('---------------(c|)               ');
+      const expected3 = '      ---------------(12)-3--1-2-----3-#';
 
-    expectObservable(subscriber1).toBe(expected1);
-    expectObservable(subscriber2).toBe(expected2);
-    expectObservable(subscriber3).toBe(expected3);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      const shared = source.pipe(shareReplay(2), retry(1));
+
+      expectObservable(subscriber1.pipe(mergeMapTo(shared))).toBe(expected1);
+      expectObservable(subscriber2.pipe(mergeMapTo(shared))).toBe(expected2);
+      expectObservable(subscriber3.pipe(mergeMapTo(shared))).toBe(expected3);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
   });
 
   it('when no windowTime is given ReplaySubject should be in _infiniteTimeWindow mode', () => {
-    const spy = sinon.spy(rxTestScheduler, 'now');
+    const spy = sinon.spy(testScheduler, 'now');
 
-    of(1)
-      .pipe(shareReplay(1, undefined, rxTestScheduler))
-      .subscribe();
+    of(1).pipe(shareReplay(1, undefined, testScheduler)).subscribe();
     spy.restore();
     expect(spy, 'ReplaySubject should not call scheduler.now() when no windowTime is given').to.be.not.called;
   });
 
   it('should not restart due to unsubscriptions if refCount is false', () => {
-    const source = cold('a-b-c-d-e-f-g-h-i-j');
-    const sourceSubs =  '^------------------';
-    const sub1 =        '^------!';
-    const expected1 =   'a-b-c-d-';
-    const sub2 =        '-----------^-------';
-    const expected2 =   '-----------fg-h-i-j';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('a-b-c-d-e-f-g-h-i-j');
+      const sourceSubs = ' ^------------------';
+      const sub1 = '       ^------!           ';
+      const expected1 = '  a-b-c-d-           ';
+      const sub2 = '       -----------^-------';
+      const expected2 = '  -----------fg-h-i-j';
 
-    const shared = source.pipe(shareReplay({ bufferSize: 1, refCount: false }));
+      const shared = source.pipe(shareReplay({ bufferSize: 1, refCount: false }));
 
-    expectObservable(shared, sub1).toBe(expected1);
-    expectObservable(shared, sub2).toBe(expected2);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectObservable(shared, sub1).toBe(expected1);
+      expectObservable(shared, sub2).toBe(expected2);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
   });
 
   it('should restart due to unsubscriptions if refCount is true', () => {
-    const sourceSubs = [];
-    const source = cold('a-b-c-d-e-f-g-h-i-j');
-    sourceSubs.push(    '^------!----------------------');
-    sourceSubs.push(    '-----------^------------------');
-    const sub1 =        '^------!';
-    const expected1 =   'a-b-c-d-';
-    const sub2 =        '-----------^------------------';
-    const expected2 =   '-----------a-b-c-d-e-f-g-h-i-j';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const sourceSubs = [];
+      const source = cold('a-b-c-d-e-f-g-h-i-j           ');
+      sourceSubs.push('    ^------!----------------------');
+      sourceSubs.push('    -----------^------------------');
+      const sub1 = '       ^------!                      ';
+      const expected1 = '  a-b-c-d-                      ';
+      const sub2 = '       -----------^------------------';
+      const expected2 = '  -----------a-b-c-d-e-f-g-h-i-j';
 
-    const shared = source.pipe(shareReplay({ bufferSize: 1, refCount: true }));
+      const shared = source.pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
-    expectObservable(shared, sub1).toBe(expected1);
-    expectObservable(shared, sub2).toBe(expected2);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectObservable(shared, sub1).toBe(expected1);
+      expectObservable(shared, sub2).toBe(expected2);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
   });
 
   it('should not restart due to unsubscriptions if refCount is true when the source has completed', () => {
-    const source = cold('a-(b|)         ');
-    const sourceSubs =  '^-!            ';
-    const sub1 =        '^------!       ';
-    const expected1 =   'a-(b|)         ';
-    const sub2 =        '-----------^!  ';
-    const expected2 =   '-----------(b|)';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('a-(b|)         ');
+      const sourceSubs = ' ^-!            ';
+      const sub1 = '       ^------!       ';
+      const expected1 = '  a-(b|)         ';
+      const sub2 = '       -----------^!  ';
+      const expected2 = '  -----------(b|)';
 
-    const shared = source.pipe(shareReplay({ bufferSize: 1, refCount: true }));
+      const shared = source.pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
-    expectObservable(shared, sub1).toBe(expected1);
-    expectObservable(shared, sub2).toBe(expected2);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectObservable(shared, sub1).toBe(expected1);
+      expectObservable(shared, sub2).toBe(expected2);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
   });
 
   it('should not restart a synchronous source due to unsubscriptions if refCount is true when the source has completed', () => {
@@ -235,18 +276,20 @@ describe('shareReplay operator', () => {
   });
 
   it('should default to refCount being false', () => {
-    const source = cold('a-b-c-d-e-f-g-h-i-j');
-    const sourceSubs =  '^------------------';
-    const sub1 =        '^------!';
-    const expected1 =   'a-b-c-d-';
-    const sub2 =        '-----------^-------';
-    const expected2 =   '-----------fg-h-i-j';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('a-b-c-d-e-f-g-h-i-j');
+      const sourceSubs = ' ^------------------';
+      const sub1 = '       ^------!           ';
+      const expected1 = '  a-b-c-d-           ';
+      const sub2 = '       -----------^-------';
+      const expected2 = '  -----------fg-h-i-j';
 
-    const shared = source.pipe(shareReplay(1));
+      const shared = source.pipe(shareReplay(1));
 
-    expectObservable(shared, sub1).toBe(expected1);
-    expectObservable(shared, sub2).toBe(expected2);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expectObservable(shared, sub1).toBe(expected1);
+      expectObservable(shared, sub2).toBe(expected2);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
   });
 
   it('should not break lift() composability', (done) => {
@@ -270,60 +313,46 @@ describe('shareReplay operator', () => {
 
     const expected = [1, 2, 3];
 
-    result
-      .subscribe((n: any) => {
+    result.subscribe({
+      next(n: any) {
         expect(expected.length).to.be.greaterThan(0);
         expect(n).to.equal(expected.shift());
-      }, (x) => {
+      },
+      error() {
         done(new Error('should not be called'));
-      }, () => {
+      },
+      complete() {
         done();
-      });
+      },
+    });
   });
 
   it('should not skip values on a sync source', () => {
-    const a = from(['a', 'b', 'c', 'd']);
-    // We would like for the previous line to read like this:
-    //
-    // const a = cold('(abcd|)');
-    //
-    // However, that would synchronously emit multiple values at frame 0,
-    // but it's not synchronous upon-subscription.
-    // TODO: revisit once https://github.com/ReactiveX/rxjs/issues/5523 is fixed
+    testScheduler.run(({ cold, expectObservable }) => {
+      const a = from(['a', 'b', 'c', 'd']);
+      // We would like for the previous line to read like this:
+      //
+      // const a = cold('(abcd|)');
+      //
+      // However, that would synchronously emit multiple values at frame 0,
+      // but it's not synchronous upon-subscription.
+      // TODO: revisit once https://github.com/ReactiveX/rxjs/issues/5523 is fixed
 
-    const x = cold(  'x-------x');
-    const expected = '(abcd)--d';
+      const x = cold('  x-------x');
+      const expected = '(abcd)--d';
 
-    const shared = a.pipe(shareReplay(1));
-    const result = x.pipe(mergeMapTo(shared));
-    expectObservable(result).toBe(expected);
-  });
-
-  // TODO: fix firehose unsubscription
-  it.skip('should stop listening to a synchronous observable when unsubscribed', () => {
-    const sideEffects: number[] = [];
-    const synchronousObservable = new Observable<number>(subscriber => {
-      // This will check to see if the subscriber was closed on each loop
-      // when the unsubscribe hits (from the `take`), it should be closed
-      for (let i = 0; !subscriber.closed && i < 10; i++) {
-        sideEffects.push(i);
-        subscriber.next(i);
-      }
+      const shared = a.pipe(shareReplay(1));
+      const result = x.pipe(mergeMapTo(shared));
+      expectObservable(result).toBe(expected);
     });
-
-    synchronousObservable.pipe(
-      shareReplay(),
-      take(3),
-    ).subscribe(() => { /* noop */ });
-
-    expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 
   const FinalizationRegistry = (global as any).FinalizationRegistry;
   if (FinalizationRegistry) {
-
     it('should not leak the subscriber for sync sources', (done) => {
-      let callback: (() => void) | undefined = () => { /* noop */ };
+      let callback: (() => void) | undefined = () => {
+        /* noop */
+      };
 
       const registry = new FinalizationRegistry((value: any) => {
         expect(value).to.equal('callback');
@@ -337,9 +366,7 @@ describe('shareReplay operator', () => {
       callback = undefined;
       global.gc();
     });
-
   } else {
     console.warn(`No support for FinalizationRegistry in Node ${process.version}`);
   }
-
 });

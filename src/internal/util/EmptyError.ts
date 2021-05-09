@@ -1,10 +1,13 @@
 import { createErrorClass } from './createErrorClass';
 
-export interface EmptyError extends Error {
-}
+export interface EmptyError extends Error {}
 
 export interface EmptyErrorCtor {
-  new(): EmptyError;
+  /**
+   * @deprecated Internal implementation detail. Do not construct error instances.
+   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
+   */
+  new (): EmptyError;
 }
 
 /**
@@ -14,6 +17,8 @@ export interface EmptyErrorCtor {
  * @see {@link first}
  * @see {@link last}
  * @see {@link single}
+ * @see {@link firstValueFrom}
+ * @see {@link lastValueFrom}
  *
  * @class EmptyError
  */

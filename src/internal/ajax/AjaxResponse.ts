@@ -1,4 +1,4 @@
-import { AjaxRequest } from './types';
+import { AjaxRequest, AjaxResponseType } from './types';
 import { getXHRResponse } from './getXHRResponse';
 
 /**
@@ -90,7 +90,7 @@ export class AjaxResponse<T> {
      * `download_load` is the type of event when download has finished and the
      * response is available.
      */
-    public readonly type: string = 'download_load'
+    public readonly type: AjaxResponseType = 'download_load'
   ) {
     const { status, responseType } = xhr;
     this.status = status ?? 0;

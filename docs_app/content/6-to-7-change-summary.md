@@ -36,10 +36,15 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 ### defer
 
 - Generic argument no longer extends `void`.
+- `defer` no longer allows factories to return void or undefined. All factories passed to `defer` must return a proper `ObservableInput`, such as `Observable`, `Promise`, et al. To get the same behavior as you may have relied on previously, `return EMPTY` or `return of()` from the factory.
 
 ### forkJoin
 
 - Generic signatures have changed. Do not explicitly pass generics.
+
+### fromEvent
+
+- The `fromEvent` signatures have been changed and there are now separate signatures for each type of target - DOM, Node, jQuery, etc. That means that an attempt to pass options - like `{ once: true }` - to a target that does not support an options argument will result in a TypeScript error.
 
 ### GroupedObservable
 
@@ -50,6 +55,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 ### iif
 
 - Generic signatures have changed. Do not explicitly pass generics.
+- `iif` will no longer allow result arguments that are `undefined`. This was a bad call pattern that was likely an error in most cases. If for some reason you are relying on this behavior, simply substitute `EMPTY` in place of the `undefined` argument. This ensures that the behavior was intentional and desired, rather than the result of an accidental `undefined` argument.
 
 ### isObservable
 
@@ -88,6 +94,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 ### pairs
 
 - Generic signatures have changed. Do not explicitly pass generics.
+- `pairs` will no longer function in IE without a polyfill for `Object.entries`. `pairs` itself is also deprecated in favor of users just using `from(Object.entries(obj))`.
 
 ### partition
 
@@ -100,6 +107,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 ### race
 
 - Generic signatures have changed. Do not explicitly pass generics.
+- `race` will no longer subscribe to subsequent observables if a provided source synchronously errors or completes. This means side effects that might have occurred during subscription in those rare cases will no longer occur.
 
 ### ReplaySubject
 
@@ -134,6 +142,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 ### zip
 
 - Generic signatures have changed. Do not explicitly pass generics.
+- Zipping a single array will now have a different result. This is an extreme corner-case, because it is very unlikely that anyone would want to zip an array with nothing at all. The workaround would be to wrap the array in another array `zip([[1,2,3]])`. But again, that's pretty weird.
 
 ---
 
@@ -141,7 +150,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ### animationFrames
 
-- A new method for creating a stream of animation frames. Each event will carry with it a high-resolution timestamp, and an ellapsed time since observation was started.
+- A new method for creating a stream of animation frames. Each event will carry with it a high-resolution timestamp, and an elapsed time since observation was started.
 
 ### config
 
@@ -163,7 +172,11 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ### firstValueFrom
 
-- A better, more tree-shakable replacement for `toPromise()` (which is now deprecated). This function allows the user to convert any `Observable` in to a `Promise` that will resolve when the source observable emits its firsr value. If the source observable closes without emitting a value, the returned promise will reject with an `EmptyError`, or it will resolve with a configured `defaultValue`.
+- A better, more tree-shakable replacement for `toPromise()` (which is now deprecated). This function allows the user to convert any `Observable` in to a `Promise` that will resolve when the source observable emits its first value. If the source observable closes without emitting a value, the returned promise will reject with an `EmptyError`, or it will resolve with a configured `defaultValue`. For more information, see the [deprecation guide](/deprecations/to-promise).
+
+### lastValueFrom
+
+- A better, more tree-shakable replacement for `toPromise()` (which is now deprecated). This function allows the user to convert any `Observable` in to a `Promise` that will resolve when the source observable emits the last value. If the source observable closes without emitting a value, the returned promise will reject with an `EmptyError`, or it will resolve with a configured `defaultValue`. For more information, see the [deprecation guide](/deprecations/to-promise).
 
 ### ObservableInput
 
@@ -193,9 +206,28 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ## Breaking Changes
 
+### audit
+
+- The observable returned by the `audit` operator's duration selector must emit a next notification to end the duration. Complete notifications no longer end the duration.
+- `audit` now emits the last value from the source when the source completes. Previously, `audit` would mirror the completion without emitting the value.
+
+### auditTime
+
+- `auditTime` now emits the last value from the source when the source completes, after the audit duration elapses. Previously, `auditTime` would mirror the completion without emitting the value and without waiting for the audit duration to elapse.
+
 ### buffer
 
 - `buffer` now subscribes to the source observable before it subscribes to the closing notifier. Previously, it subscribed to the closing notifier first.
+- Final buffered values will now always be emitted. To get the same behavior as the previous release, you can use `endWith` and `skipLast(1)`, like so: `source$.pipe(buffer(notifier$.pipe(endWith(true))), skipLast(1))`
+- `closingNotifier` completion no longer completes the result of `buffer`. If that is truly a desired behavior, then you should use `takeUntil`. Something like: `source$.pipe(buffer(notifier$), takeUntil(notifier$.pipe(ignoreElements(), endWith(true))))`, where `notifier$` is multicast, although there are many ways to compose this behavior.
+
+### bufferToggle
+
+- The observable returned by the `bufferToggle` operator's closing selector must emit a next notification to close the buffer. Complete notifications no longer close the buffer.
+
+### bufferWhen
+
+- The observable returned by the `bufferWhen` operator's closing selector must emit a next notification to close the buffer. Complete notifications no longer close the buffer.
 
 ### combineLatest
 
@@ -214,9 +246,22 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 - Generic signatures have changed. Do not explicitly pass generics.
 
+### count
+
+- No longer passes `source` observable as a third argument to the predicate. That feature was rarely used, and of limited value. The workaround is to simply close over the source inside of the function if you need to access it in there.
+
+### debounce
+
+- The observable returned by the `debounce` operator's duration selector must emit a next notification to end the duration. Complete notifications no longer end the duration.
+
 ### defaultIfEmpty
 
 - Generic signatures have changed. Do not explicitly pass generics.
+- `defaultIfEmpty` requires a value be passed. Will no longer convert `undefined` to `null` for no good reason.
+
+### delayWhen
+
+- `delayWhen` will no longer emit if the duration selector simply completes without a value. Notifiers must notify with a value, not a completion.
 
 ### endWith
 
@@ -226,6 +271,14 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 - Generic signatures have changed. Do not explicitly pass generics.
 
+### finalize
+
+- `finalize` will now unsubscribe from its source _before_ it calls its callback. That means that `finalize` callbacks will run in the order in which they occur in the pipeline: `source.pipe(finalize(() => console.log(1)), finalize(() => console.log(2)))` will log `1` and then `2`. Previously, callbacks were called in the reverse order.
+
+### map
+
+- `thisArg` will now default to `undefined`. The previous default of `MapSubscriber` never made any sense. This will only affect code that calls map with a `function` and references `this` like so: `source.pipe(map(function () { console.log(this); }))`. There wasn't anything useful about doing this, so the breakage is expected to be very minimal. If anything we're no longer leaking an implementation detail.
+
 ### merge
 
 - Generic signatures have changed. Do not explicitly pass generics.
@@ -234,6 +287,10 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 ### mergeAll
 
 - Generic signatures have changed. Do not explicitly pass generics.
+
+### mergeScan
+
+- `mergeScan` will no longer emit its inner state again upon completion.
 
 ### pluck
 
@@ -247,9 +304,21 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 - Generic signatures have changed. Do not explicitly pass generics.
 
+### sample
+
+- The `sample` operator's notifier observable must emit a next notification to effect a sample. Complete notifications no longer effect a sample.
+
 ### scan
 
 - Generic signatures have changed. Do not explicitly pass generics.
+
+### single
+
+- The `single` operator will now throw for scenarios where values coming in are either not present, or do not match the provided predicate. Error types have thrown have also been updated, please check documentation for changes.
+
+### skipLast
+
+- `skipLast` will no longer error when passed a negative number, rather it will simply return the source, as though `0` was passed.
 
 ### startWith
 
@@ -263,6 +332,30 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 - Generic signatures have changed. Do not explicitly pass generics.
 
+### take
+
+- `take` and will now throw runtime error for arguments that are negative or NaN, this includes non-TS calls like `take()`.
+
+### takeLast
+
+- `takeLast` now has runtime assertions that throw `TypeError`s for invalid arguments. Calling takeLast without arguments or with an argument that is `NaN` will throw a `TypeError`.
+
+### throttle
+
+- The observable returned by the `throttle` operator's duration selector must emit a next notification to end the duration. Complete notifications no longer end the duration.
+
+### throwError
+
+- In an extreme corner case for usage, `throwError` is no longer able to emit a function as an error directly. If you need to push a function as an error, you will have to use the factory function to return the function like so: `throwError(() => functionToEmit)`, in other words `throwError(() => () => console.log('called later'))`.
+
+### window
+
+- The `windowBoundaries` observable no longer completes the result. It was only ever meant to notify of the window boundary. To get the same behavior as the old behavior, you would need to add an `endWith` and a `skipLast(1)` like so: `source$.pipe(window(notifier$.pipe(endWith(true))), skipLast(1))`.
+
+### windowToggle
+
+- The observable returned by the `windowToggle` operator's closing selector must emit a next notification to close the window. Complete notifications no longer close the window.
+
 ### withLatestFrom
 
 - Generic signatures have changed. Do not explicitly pass generics.
@@ -271,6 +364,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 - Generic signatures have changed. Do not explicitly pass generics.
 - Still deprecated, use the new `zipWith`.
+- `zip` operators will no longer iterate provided iterables "as needed", instead the iterables will be treated as push-streams just like they would be everywhere else in RxJS. This means that passing an endless iterable will result in the thread locking up, as it will endlessly try to read from that iterable. This puts us in-line with all other Rx implementations. To work around this, it is probably best to use `map` or some combination of `map` and `zip`. For example, `zip(source$, iterator)` could be `source$.pipe(map(value => [value, iterator.next().value]))`.
 
 ## New Features
 
@@ -288,11 +382,18 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ### zipWith, concatWith, mergeWith, raceWith
 
-- Simply renamed versions of the operators `zip`, `concat`, `mergeWith`, and `race`. So we can deprecate those old names and use the new names without collisions.
+- Simply renamed versions of the operators `zip`, `concat`, `merge`, and `race`. So we can deprecate those old names and use the new names without collisions.
 
 # module `rxjs/ajax`
 
 ## Breaking Changes
+
+### ajax
+
+- `ajax` body serialization will now use default XHR behavior in all cases. If the body is a `Blob`, `ArrayBuffer`, any array buffer view (like a byte sequence, e.g. `Uint8Array`, etc), `FormData`, `URLSearchParams`, `string`, or `ReadableStream`, default handling is use. If the `body` is otherwise `typeof` `"object"`, then it will be converted to JSON via `JSON.stringify`, and the `Content-Type` header will be set to `application/json;charset=utf-8`. All other types will emit an error.
+- The `Content-Type` header passed to `ajax` configuration no longer has any effect on the serialization behavior of the AJAX request.
+- For TypeScript users, `AjaxRequest` is no longer the type that should be explicitly used to create an `ajax`. It is now `AjaxConfig`, although the two types are compatible, only `AjaxConfig` has `progressSubscriber` and `createXHR`.
+- Ajax implementation drops support for IE10 and lower. This puts us in-line with other implementations and helps clean up code in this area
 
 ### AjaxRequest
 
@@ -303,7 +404,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 ### AjaxResponse
 
 - Now includes `responseHeaders`.
-- Now includes event `type` and `total` numbers for examinining upload and download progress (see `includeUploadProgess` and `includeDownloadProgress`).
+- Now includes event `type` and `total` numbers for examining upload and download progress (see `includeUploadProgress` and `includeDownloadProgress`).
 
 ### includeUploadProgress
 

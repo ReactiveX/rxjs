@@ -39,7 +39,8 @@ export interface AjaxError extends Error {
 
 export interface AjaxErrorCtor {
   /**
-   * Internal use only. Do not manually create instances of this type.
+   * @deprecated Internal implementation detail. Do not construct error instances.
+   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
    */
   new (message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError;
 }
@@ -78,7 +79,8 @@ export interface AjaxTimeoutError extends AjaxError {}
 
 export interface AjaxTimeoutErrorCtor {
   /**
-   * Internal use only. Do not manually create instances of this type.
+   * @deprecated Internal implementation detail. Do not construct error instances.
+   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
    */
   new (xhr: XMLHttpRequest, request: AjaxRequest): AjaxTimeoutError;
 }

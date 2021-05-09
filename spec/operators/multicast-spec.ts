@@ -821,47 +821,4 @@ describe('multicast', () => {
         );
     });
   });
-
-  // TODO: fix firehose unsubscription
-  // AFAICT, it's not possible for multicast observables to support ASAP
-  // unsubscription from synchronous firehose sources. The problem is that the
-  // chaining of the closed 'signal' is broken by the subject. For example,
-  // here:
-  //
-  // https://github.com/ReactiveX/rxjs/blob/2d5e4d5bd7b684a912485e1c1583ba3d41c8308e/src/internal/operators/multicast.ts#L53
-  //
-  // The subject is passed to subscribe. However, in the subscribe
-  // implementation a SafeSubscriber is created with the subject as the
-  // observer:
-  //
-  // https://github.com/ReactiveX/rxjs/blob/2d5e4d5bd7b684a912485e1c1583ba3d41c8308e/src/internal/Observable.ts#L210
-  //
-  // That breaks the chaining of closed - i.e. even if the unsubscribe is
-  // called on the subject, closing it, the SafeSubscriber's closed property
-  // won't reflect that.
-  it.skip('should stop listening to a synchronous observable when unsubscribed', () => {
-    const sideEffects: number[] = [];
-    const synchronousObservable = new Observable<number>((subscriber) => {
-      // This will check to see if the subscriber was closed on each loop
-      // when the unsubscribe hits (from the `take`), it should be closed
-      for (let i = 0; !subscriber.closed && i < 10; i++) {
-        sideEffects.push(i);
-        subscriber.next(i);
-      }
-    });
-
-    synchronousObservable
-      .pipe(
-        multicast(
-          () => new Subject<number>(),
-          (source) => source
-        ),
-        take(3)
-      )
-      .subscribe(() => {
-        /* noop */
-      });
-
-    expect(sideEffects).to.deep.equal([0, 1, 2]);
-  });
 });

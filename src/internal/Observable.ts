@@ -252,7 +252,7 @@ export class Observable<T> implements Subscribable<T> {
       subscriber.add(operator.call(subscriber, this.source));
     } else {
       try {
-        this._subscribe(subscriber);
+        subscriber.add(this._subscribe(subscriber));
       } catch (err) {
         localSubscriber.__syncError = err;
       }
@@ -483,11 +483,11 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /* tslint:disable:max-line-length */
-  /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. */
+  /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. Details: https://rxjs.dev/deprecations/to-promise */
   toPromise(): Promise<T | undefined>;
-  /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. */
+  /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. Details: https://rxjs.dev/deprecations/to-promise */
   toPromise(PromiseCtor: typeof Promise): Promise<T | undefined>;
-  /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. */
+  /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. Details: https://rxjs.dev/deprecations/to-promise */
   toPromise(PromiseCtor: PromiseConstructorLike): Promise<T | undefined>;
   /* tslint:enable:max-line-length */
 
@@ -507,7 +507,7 @@ export class Observable<T> implements Subscribable<T> {
    * @return A Promise that resolves with the last value emit, or
    * rejects on an error. If there were no emissions, Promise
    * resolves with undefined.
-   * @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8.
+   * @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. Details: https://rxjs.dev/deprecations/to-promise
    */
   toPromise(promiseCtor?: PromiseConstructorLike): Promise<T | undefined> {
     promiseCtor = getPromiseCtor(promiseCtor);

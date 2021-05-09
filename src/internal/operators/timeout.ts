@@ -67,8 +67,8 @@ export interface TimeoutError<T = unknown, M = unknown> extends Error {
 
 export interface TimeoutErrorCtor {
   /**
-   * Internal use only. DO NOT create new instances of TimeoutError directly.
-   * This type is exported for the purpose of `instanceof` checks.
+   * @deprecated Internal implementation detail. Do not construct error instances.
+   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
    */
   new <T = unknown, M = unknown>(info?: TimeoutInfo<T, M>): TimeoutError<T, M>;
 }

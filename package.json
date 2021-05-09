@@ -1,11 +1,18 @@
 {
   "name": "rxjs",
-  "version": "7.0.0-rc.3",
+  "version": "7.0.0",
   "description": "Reactive Extensions for modern JavaScript",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm5/index.js",
   "es2015": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "index.d.ts",
+  "typesVersions": {
+    ">=4.2": {
+      "*": [
+        "dist/types/*"
+      ]
+    }
+  },
   "sideEffects": false,
   "exports": {
     ".": {
@@ -31,6 +38,10 @@
     "./webSocket": {
       "node": "./dist/cjs/webSocket/index.js",
       "default": "./dist/esm5/webSocket/index.js"
+    },
+    "./internal/*": {
+      "node": "./dist/cjs/internal/*.js",
+      "default": "./dist/esm5/internal/*.js"
     },
     "./package.json": "./package.json"
   },
