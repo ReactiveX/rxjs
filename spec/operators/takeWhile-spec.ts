@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { takeWhile, tap, mergeMap } from 'rxjs/operators';
-import { of, Observable, from } from 'rxjs';
+import { of, Observable, from, Subject, merge } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -364,5 +364,89 @@ describe('takeWhile', () => {
     });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
+  });
+
+  it('should not emit errors sent from the source *after* it found the first value in reentrant scenarios', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const source = cold('-------a----b----c---|');
+      const expected = '   -------a----(b|)';
+      const subs = '       ^-----------!';
+
+      const result = merge(source, subject).pipe(
+        takeWhile((x) => x !== 'b', true),
+        tap({
+          complete: () => {
+            subject.error(new Error('reentrant shennanigans'));
+          },
+        })
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should not emit errors sent from the source *after* it found the first value in reentrant scenarios', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const source = cold('-------a----b----c---|');
+      const expected = '   -------a----|';
+      const subs = '       ^-----------!';
+
+      const result = merge(source, subject).pipe(
+        takeWhile((x) => x !== 'b'),
+        tap({
+          complete: () => {
+            subject.error(new Error('reentrant shennanigans'));
+          },
+        })
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should not emit completions sent from the source *after* it found the first value in reentrant scenarios', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const source = cold('-------a----b----c---|');
+      const expected = '   -------a----(b|)';
+      const subs = '       ^-----------!';
+
+      const result = merge(source, subject).pipe(
+        takeWhile((x) => x !== 'b', true),
+        tap({
+          complete: () => {
+            subject.complete();
+          },
+        })
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should not emit completions sent from the source *after* it found the first value in reentrant scenarios', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const source = cold('-------a----b----c---|');
+      const expected = '   -------a----|';
+      const subs = '       ^-----------!';
+
+      const result = merge(source, subject).pipe(
+        takeWhile((x) => x !== 'b'),
+        tap({
+          complete: () => {
+            subject.complete();
+          },
+        })
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
   });
 });
