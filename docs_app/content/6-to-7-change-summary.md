@@ -254,6 +254,10 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 - The observable returned by the `debounce` operator's duration selector must emit a next notification to end the duration. Complete notifications no longer end the duration.
 
+### debounceTime
+
+- The `debounceTime` implementation is more efficient and no longer schedules an action for each received next notification. However, because the implementation now uses the scheduler's concept of time, any tests using Jasmine's `clock` will need to ensure that [`jasmine.clock().mockDate()`](https://jasmine.github.io/api/edge/Clock.html#mockDate) is called after `jasmine.clock().install()` - because Jasmine does not mock `Date.now()` by default.
+
 ### defaultIfEmpty
 
 - Generic signatures have changed. Do not explicitly pass generics.
