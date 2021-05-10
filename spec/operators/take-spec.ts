@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
-import { take, mergeMap } from 'rxjs/operators';
-import { of, Observable, Subject } from 'rxjs';
+import { merge, Observable, of, Subject } from 'rxjs';
+import { mergeMap, take, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -214,6 +214,23 @@ describe('take', () => {
       const expected = '--a-----(b|)         ';
 
       expectObservable(e1.pipe(take('2' as any))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
+  it.skip('should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const e1 = cold(' (a|)');
+      const e1subs = '  (^!)';
+      const expected = '(a|)';
+
+      const result = merge(e1, subject).pipe(
+        take(1),
+        tap(() => subject.error('error'))
+      );
+
+      expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
