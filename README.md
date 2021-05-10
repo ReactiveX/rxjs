@@ -54,7 +54,7 @@ range(1, 200)
 
 For CDN, you can use [unpkg](https://unpkg.com/):
 
-https://unpkg.com/rxjs/bundles/rxjs.umd.min.js
+[https://unpkg.com/rxjs@^7/dist/bundles/rxjs.umd.min.js](https://unpkg.com/rxjs@%5E7/dist/bundles/rxjs.umd.min.js)
 
 The global namespace for rxjs is `rxjs`:
 
