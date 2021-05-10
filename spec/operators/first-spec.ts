@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { observableMatcher } from '../helpers/observableMatcher';
-import { first, mergeMap, delay } from 'rxjs/operators';
+import { first, mergeMap, delay, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { of, from, Observable, Subject, EmptyError } from 'rxjs';
+import { of, from, Observable, Subject, EmptyError, merge } from 'rxjs';
 
 /** @test {first} */
 describe('first', () => {
@@ -328,5 +328,81 @@ describe('first', () => {
     });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
+  });
+
+  it('should not emit errors sent from the source *after* it found the first value in reentrant scenarios', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const source = cold('-------a----b----c---|');
+      const expected = '   -------(a|)';
+      const subs = '       ^------!';
+
+      const result = merge(source, subject).pipe(
+        first(),
+        tap(() => {
+          subject.error(new Error('reentrant shennanigans'));
+        })
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should not emit errors sent from the source *after* it found the first value in reentrant scenarios', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const source = cold('-------a----b----c---|');
+      const expected = '   ------------(b|)';
+      const subs = '       ^-----------!';
+
+      const result = merge(source, subject).pipe(
+        first((value) => value === 'b'),
+        tap(() => {
+          subject.error(new Error('reentrant shennanigans'));
+        })
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should not emit complete sent from the source *after* it found the first value in reentrant scenarios', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const source = cold('-------a----b----c---|');
+      const expected = '   -------(a|)';
+      const subs = '       ^------!';
+
+      const result = merge(source, subject).pipe(
+        first(),
+        tap(() => {
+          subject.complete();
+        })
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should not emit completions sent from the source *after* it found the first value in reentrant scenarios', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const source = cold('-------a----b----c---|');
+      const expected = '   ------------(b|)';
+      const subs = '       ^-----------!';
+
+      const result = merge(source, subject).pipe(
+        first((value) => value === 'b'),
+        tap(() => {
+          subject.complete();
+        })
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
   });
 });
