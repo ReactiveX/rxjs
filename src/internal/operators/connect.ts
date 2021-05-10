@@ -5,6 +5,9 @@ import { from } from '../observable/from';
 import { operate } from '../util/lift';
 import { fromSubscribable } from '../observable/fromSubscribable';
 
+/**
+ * An object used to configure {@link connect} operator.
+ */
 export interface ConnectConfig<T> {
   /**
    * A factory function used to create the Subject through which the source
