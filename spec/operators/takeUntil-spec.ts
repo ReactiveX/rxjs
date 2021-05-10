@@ -1,5 +1,6 @@
-import { takeUntil, mergeMap } from 'rxjs/operators';
-import { of, EMPTY } from 'rxjs';
+/** @prettier */
+import { takeUntil, mergeMap, tap } from 'rxjs/operators';
+import { of, EMPTY, Subject, merge } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -249,6 +250,29 @@ describe('takeUntil operator', () => {
       expectObservable(result, unsub).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+  });
+
+  it('should not emit errors sent from the source *after* it found the first value in reentrant scenarios', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const source = cold('  -------a----b----c---|');
+      const notifier = cold('--------------x--');
+      const expected = '     -------a----b-|';
+      const subs = '         ^-------------!';
+
+      const result = merge(source, subject).pipe(
+        takeUntil(notifier),
+        tap({
+          complete: () => {
+            subject.error(new Error('reentrant shennanigans'));
+          },
+        })
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+      expectSubscriptions(notifier.subscriptions).toBe(subs);
     });
   });
 });
