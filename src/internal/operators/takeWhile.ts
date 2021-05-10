@@ -55,6 +55,7 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
 export function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive = false): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     let index = 0;
+    // Whether or not we're still taking values.
     let taking = true;
     source.subscribe(
       createOperatorSubscriber(
@@ -62,18 +63,21 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
         (value) => {
           taking = predicate(value, index++);
           if (taking || inclusive) {
+            // If we're still taking, Or if this was "inclusive", meaning
+            // we found the "last" value, then we send the value along.
             subscriber.next(value);
           }
           if (!taking) {
+            // We're no longer taking values after calling the predicate above
+            // time to complete the result.
             subscriber.complete();
           }
         },
-        () => {
-          if (taking) {
-            subscriber.complete();
-          }
-        },
+        undefined,
         (err) => {
+          // If we're not currently taking values,
+          // then the code that has reached here is reentrant, and
+          // racing our `subscriber.complete()` above. We want to stop it.
           if (taking) {
             subscriber.error(err);
           }
