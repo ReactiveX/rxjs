@@ -46,3 +46,10 @@ it('should support this with predicate', () => {
     return val < limit;
   }, thisArg);
 });
+
+it('should deprecate thisArg usage', () => {
+  const a = partition(of(1, 2, 3), Boolean); // $ExpectNoDeprecation
+  const b = partition(of(1, 2, 3), Boolean, {}); // $ExpectDeprecation
+  const c = partition(of(1, 2, 3), (value) => Boolean(value)); // $ExpectNoDeprecation
+  const d = partition(of(1, 2, 3), (value) => Boolean(value), {}); // $ExpectDeprecation
+});
