@@ -95,12 +95,6 @@ export { NEVER } from './internal/observable/never';
 
 /* Types */
 export * from './internal/types';
-export { ConnectConfig } from './internal/operators/connect';
-export { RetryConfig } from './internal/operators/retry';
-export { ShareConfig } from './internal/operators/share';
-export { ShareReplayConfig } from './internal/operators/shareReplay';
-export { ThrottleConfig } from './internal/operators/throttle';
-export { TimeoutConfig, TimeoutInfo } from './internal/operators/timeout';
 
 /* Config */
 export { config, GlobalConfig } from './internal/config';

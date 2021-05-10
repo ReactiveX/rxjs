@@ -86,10 +86,6 @@ export declare class ConnectableObservable<T> extends Observable<T> {
     refCount(): Observable<T>;
 }
 
-export interface ConnectConfig<T> {
-    connector: () => SubjectLike<T>;
-}
-
 export declare type Cons<X, Y extends readonly any[]> = ((arg: X, ...rest: Y) => any) extends (...args: infer U) => any ? U : never;
 
 export declare function defer<R extends ObservableInput<any>>(observableFactory: () => R): Observable<ObservedValueOf<R>>;
@@ -370,11 +366,6 @@ export declare class ReplaySubject<T> extends Subject<T> {
     next(value: T): void;
 }
 
-export interface RetryConfig {
-    count: number;
-    resetOnSuccess?: boolean;
-}
-
 export declare function scheduled<T>(input: ObservableInput<T>, scheduler: SchedulerLike): Observable<T>;
 
 export declare class Scheduler implements SchedulerLike {
@@ -396,20 +387,6 @@ export interface SequenceError extends Error {
 }
 
 export declare const SequenceError: SequenceErrorCtor;
-
-export interface ShareConfig<T> {
-    connector?: () => SubjectLike<T>;
-    resetOnComplete?: boolean;
-    resetOnError?: boolean;
-    resetOnRefCountZero?: boolean;
-}
-
-export interface ShareReplayConfig {
-    bufferSize?: number;
-    refCount: boolean;
-    scheduler?: SchedulerLike;
-    windowTime?: number;
-}
 
 export declare class Subject<T> extends Observable<T> implements SubscriptionLike {
     closed: boolean;
@@ -469,11 +446,6 @@ export declare type Tail<X extends readonly any[]> = ((...args: X) => any) exten
 
 export declare type TeardownLogic = Subscription | Unsubscribable | (() => void) | void;
 
-export interface ThrottleConfig {
-    leading?: boolean;
-    trailing?: boolean;
-}
-
 export declare function throwError(errorFactory: () => any): Observable<never>;
 export declare function throwError(error: any): Observable<never>;
 export declare function throwError(errorOrErrorFactory: any, scheduler: SchedulerLike): Observable<never>;
@@ -483,25 +455,11 @@ export interface TimeInterval<T> {
     value: T;
 }
 
-export interface TimeoutConfig<T, O extends ObservableInput<unknown> = ObservableInput<T>, M = unknown> {
-    each?: number;
-    first?: number | Date;
-    meta?: M;
-    scheduler?: SchedulerLike;
-    with?: (info: TimeoutInfo<T, M>) => O;
-}
-
 export interface TimeoutError<T = unknown, M = unknown> extends Error {
     info: TimeoutInfo<T, M> | null;
 }
 
 export declare const TimeoutError: TimeoutErrorCtor;
-
-export interface TimeoutInfo<T, M = unknown> {
-    readonly lastValue: T | null;
-    readonly meta: M;
-    readonly seen: number;
-}
 
 export declare function timer(due: number | Date, scheduler?: SchedulerLike): Observable<0>;
 export declare function timer(startDue: number | Date, intervalDuration: number, scheduler?: SchedulerLike): Observable<number>;
