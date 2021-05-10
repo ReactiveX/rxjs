@@ -218,7 +218,7 @@ describe('take', () => {
     });
   });
 
-  it.skip('should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified', () => {
+  it('should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const subject = new Subject();
       const e1 = cold(' (a|)');
@@ -228,6 +228,23 @@ describe('take', () => {
       const result = merge(e1, subject).pipe(
         take(1),
         tap(() => subject.error('error'))
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
+  it('should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream completion is notified', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const e1 = cold(' (a|)');
+      const e1subs = '  (^!)';
+      const expected = '(a|)';
+
+      const result = merge(e1, subject).pipe(
+        take(1),
+        tap(() => subject.complete())
       );
 
       expectObservable(result).toBe(expected);
