@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { elementAt, mergeMap } from 'rxjs/operators';
+import { elementAt, mergeMap, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { ArgumentOutOfRangeError, of, range, Observable } from 'rxjs';
+import { ArgumentOutOfRangeError, of, range, Observable, Subject, merge } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {elementAt} */
@@ -177,5 +177,24 @@ describe('elementAt', () => {
     });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
+  });
+
+  it('should not emit errors sent from the source *after* it found the first value in reentrant scenarios', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const source = cold('-------a----b----c---|');
+      const expected = '   ------------(b|)';
+      const subs = '       ^-----------!';
+
+      const result = merge(source, subject).pipe(
+        elementAt(1),
+        tap(() => {
+          subject.error(new Error('reentrant shennanigans'));
+        })
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
   });
 });
