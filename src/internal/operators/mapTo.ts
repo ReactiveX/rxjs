@@ -1,6 +1,5 @@
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { map } from './map';
 
 export function mapTo<R>(value: R): OperatorFunction<any, R>;
 /** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
@@ -32,19 +31,10 @@ export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
  *
  * @see {@link map}
  *
- * @param {any} value The value to map each source value to.
+ * @param value The value to map each source value to.
  * @return A function that returns an Observable that emits the given `value`
  * every time the source Observable emits.
  */
 export function mapTo<R>(value: R): OperatorFunction<any, R> {
-  return operate((source, subscriber) => {
-    // Subscribe to the source. All errors and completions are forwarded to the consumer
-    source.subscribe(
-      new OperatorSubscriber(
-        subscriber,
-        // On every value from the source, send the `mapTo` value to the consumer.
-        () => subscriber.next(value)
-      )
-    );
-  });
+  return map(() => value);
 }
