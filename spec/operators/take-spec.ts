@@ -218,6 +218,59 @@ describe('take', () => {
     });
   });
 
+  it('should treat NaN as 0', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' (- )--a---b---c---d---|');
+      const e1subs = '  (  )                   ';
+      const expected = '( |)                   ';
+
+      expectObservable(e1.pipe(take(NaN))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
+  it('should treat non-integer counts smaller than 1 as 0', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' (- )--a---b---c---d---|');
+      const e1subs = [
+        '               (  )                   ',
+        '               (  )                   ',
+        '               (  )                   ',
+      ];
+      const expected = '( |)                   ';
+
+      expectObservable(e1.pipe(take(0.5))).toBe(expected);
+      expectObservable(e1.pipe(take(-0.5))).toBe(expected);
+      expectObservable(e1.pipe(take(Number.NEGATIVE_INFINITY))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
+  it('should handle non-integer counts greater than 1', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' ---a---(b )---c---d---|');
+      const e1subs = [
+        '               ^------( !)            ',
+        '               ^------( !)            ',
+        '               ^------( !)            ',
+      ];
+      const expected = '---a---(b|)            ';
+
+      expectObservable(e1.pipe(take(2.2))).toBe(expected);
+      expectObservable(e1.pipe(take(2.5))).toBe(expected);
+      expectObservable(e1.pipe(take(2.8))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
+  it('should handle infinity and counts beyond increment resolution by returning an identity operator function', () => {
+    const source = new Observable();
+
+    expect(take(Number.POSITIVE_INFINITY)(source)).to.equal(source);
+    expect(take(Number.MAX_SAFE_INTEGER + 1)(source)).to.equal(source);
+    expect(take(Number.MAX_SAFE_INTEGER * 2)(source)).to.equal(source);
+  });
+
   it.skip('should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const subject = new Subject();
