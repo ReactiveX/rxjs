@@ -34,7 +34,7 @@ export class Subscription implements SubscriptionLike {
    * The list of registered teardowns to execute upon unsubscription. Adding and removing from this
    * list occurs in the {@link #add} and {@link #remove} methods.
    */
-  private _teardowns: Exclude<TeardownLogic, void>[] | null = null;
+  private _teardowns: Set<Exclude<TeardownLogic, void>> | null = null;
 
   /**
    * @param initialTeardown A function executed first as part of the teardown
@@ -134,7 +134,7 @@ export class Subscription implements SubscriptionLike {
           }
           teardown._addParent(this);
         }
-        (this._teardowns = this._teardowns ?? []).push(teardown);
+        (this._teardowns = this._teardowns ?? new Set()).add(teardown);
       }
     }
   }
@@ -190,7 +190,9 @@ export class Subscription implements SubscriptionLike {
    */
   remove(teardown: Exclude<TeardownLogic, void>): void {
     const { _teardowns } = this;
-    _teardowns && arrRemove(_teardowns, teardown);
+    if (_teardowns) {
+      _teardowns.delete(teardown);
+    }
 
     if (teardown instanceof Subscription) {
       teardown._removeParent(this);
