@@ -387,6 +387,48 @@ describe('takeWhile', () => {
     });
   });
 
+  it('should not emit errors sent from the source *after* it found the first value in reentrant scenarios in next', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const source = cold('-------a----b----c---|');
+      const expected = '   -------a----(b|)';
+      const subs = '       ^-----------!';
+
+      const result = merge(source, subject).pipe(
+        takeWhile((x) => x !== 'b', true),
+        tap((x) => {
+          if (x === 'b') {
+            subject.error(new Error('reentrant shennanigans'));
+          }
+        })
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  it('should not emit completes sent from the source *after* it found the first value in reentrant scenarios', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const source = cold('-------a----b----c---|');
+      const expected = '   -------a----(b|)';
+      const subs = '       ^-----------!';
+
+      const result = merge(source, subject).pipe(
+        takeWhile((x) => x !== 'b', true),
+        tap((x) => {
+          if (x === 'b') {
+            subject.complete();
+          }
+        })
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
   it('should not emit errors sent from the source *after* it found the first value in reentrant scenarios', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const subject = new Subject();
