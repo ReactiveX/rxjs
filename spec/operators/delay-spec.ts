@@ -241,7 +241,6 @@ describe('delay', () => {
           return delayed;
         }),
         skip(1),
-        take(2),
         tap({
           next() {
             const [[subscriber]] = subscribeSpy.args;
@@ -256,7 +255,8 @@ describe('delay', () => {
             // outer subscription's finalizers.
             expect(counts).to.deep.equal([2, 2]);
           },
-        })
+        }),
+        take(2)
       );
 
       expectObservable(result).toBe(expected);

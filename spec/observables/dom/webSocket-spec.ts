@@ -715,11 +715,11 @@ describe('webSocket', () => {
       expect(results).to.deep.equal([
         'A next',
         'B next',
-        'A complete',
         'A unsub',
+        'A complete',
         'B next',
-        'B complete',
         'B unsub',
+        'B complete',
       ]);
     });
   });

@@ -51,42 +51,15 @@ export function take<T>(count: number): MonoTypeOperatorFunction<T> {
       () => EMPTY
     : operate((source, subscriber) => {
         let seen = 0;
-        source.subscribe(
-          createOperatorSubscriber(
-            subscriber,
-            (value) => {
-              // Increment the number of values we have seen,
-              // then check it against the allowed count to see
-              // if we are still letting values through.
-              if (++seen <= count) {
-                subscriber.next(value);
-                // If we have met or passed our allowed count,
-                // we need to complete. We have to do <= here,
-                // because re-entrant code will increment `seen` twice.
-                if (count <= seen) {
-                  subscriber.complete();
-                }
-              }
-            },
-            () => {
-              // If seen === count or higher, then we've already taken all of
-              // the values we were supposed to, and the complete we're getting here
-              // is from reentrant code racing our `complete` above. We want to stop
-              // that here.
-              if (seen < count) {
-                subscriber.complete();
-              }
-            },
-            (err) => {
-              // If seen === count or higher, then we've already taken all of
-              // the values we were supposed to, and the error we're getting here
-              // is from reentrant code racing our `complete` above. We want to stop
-              // that here.
-              if (seen < count) {
-                subscriber.error(err);
-              }
-            }
-          )
-        );
+        const operatorSubscriber = createOperatorSubscriber<T>(subscriber, (value) => {
+          if (++seen < count) {
+            subscriber.next(value);
+          } else {
+            operatorSubscriber.unsubscribe();
+            subscriber.next(value);
+            subscriber.complete();
+          }
+        });
+        source.subscribe(operatorSubscriber);
       });
 }
