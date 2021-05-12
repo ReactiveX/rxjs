@@ -1,3 +1,14 @@
+## [7.0.1](https://github.com/reactivex/rxjs/compare/7.0.0...7.0.1) (2021-05-12)
+
+### Bug Fixes
+
+- **bindCallback:** resulting function now recreated underlying Subject and is reusable once again. ([#6369](https://github.com/reactivex/rxjs/issues/6369)) ([abf2bc1](https://github.com/reactivex/rxjs/commit/abf2bc13e38406717127159c8c373b910223b562))
+- **retry:** properly handles retry counts smaller than `1`. ([#6359](https://github.com/reactivex/rxjs/issues/6359)) ([e797bd7](https://github.com/reactivex/rxjs/commit/e797bd70b1368e189df00d697504304a3a5ef1a8))
+- **share:** properly closes synchronous "firehose" sources. ([#6370](https://github.com/reactivex/rxjs/issues/6370)) ([2271a91](https://github.com/reactivex/rxjs/commit/2271a9180131a0becdbf789c1429ef741ace4b2f))
+- Observable teardowns now properly called if `useDeprecatedSynchronousErrorHandling` is `true`. ([#6365](https://github.com/reactivex/rxjs/issues/6365)) ([e19e104](https://github.com/reactivex/rxjs/commit/e19e104d011233d83bc10c37f1ee0b3ac6e15612)), closes [#6364](https://github.com/reactivex/rxjs/issues/6364)
+- **Subscription:** properly release parent subscriptions when unsubscribed. ([#6352](https://github.com/reactivex/rxjs/issues/6352)) ([88331d2](https://github.com/reactivex/rxjs/commit/88331d2ecdcf0f81a0712b315ed810d4da7d4b97)), closes [#6351](https://github.com/reactivex/rxjs/issues/6351) [#6351](https://github.com/reactivex/rxjs/issues/6351)
+- **node**: do not reference DOM-related imports to assist in node usage. ([#6305](https://github.com/reactivex/rxjs/issues/6305)) ([b24818e](https://github.com/reactivex/rxjs/commit/b24818e96775045c7485932bf33349471e8f1363)), closes [#6297](https://github.com/reactivex/rxjs/issues/6297)
+
 # [7.0.0](https://github.com/reactivex/rxjs/compare/7.0.0-rc.3...7.0.0) (2021-04-29)
 
 ### Bug Fixes
