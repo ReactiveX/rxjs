@@ -74,6 +74,12 @@ export function publishReplay<T, O extends ObservableInput<any>>(
   timestampProvider: TimestampProvider
 ): OperatorFunction<T, ObservedValueOf<O>>;
 
+/**
+ * @deprecated Will be removed in v8. Use the {@link connectable} observable, the {@link connect} operator or the
+ * {@link share} operator instead. See the overloads below for equivalent replacement examples of this operator's
+ * behaviors.
+ * Details: https://rxjs.dev/deprecations/multicasting
+ */
 export function publishReplay<T, R>(
   bufferSize?: number,
   windowTime?: number,
