@@ -73,6 +73,12 @@ export function multicast<T, O extends ObservableInput<any>>(
   selector: (shared: Observable<T>) => O
 ): OperatorFunction<T, ObservedValueOf<O>>;
 
+/**
+ * @deprecated Will be removed in v8. Use the {@link connectable} observable, the {@link connect} operator or the
+ * {@link share} operator instead. See the overloads below for equivalent replacement examples of this operator's
+ * behaviors.
+ * Details: https://rxjs.dev/deprecations/multicasting
+ */
 export function multicast<T, R>(
   subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
   selector?: (source: Observable<T>) => Observable<R>
