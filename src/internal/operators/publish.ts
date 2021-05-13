@@ -79,6 +79,10 @@ export function publish<T, O extends ObservableInput<any>>(selector: (shared: Ob
  * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.
  * @return A function that returns a ConnectableObservable that upon connection
  * causes the source Observable to emit items to its Observers.
+ * @deprecated Will be removed in v8. Use the {@link connectable} observable, the {@link connect} operator or the
+ * {@link share} operator instead. See the overloads below for equivalent replacement examples of this operator's
+ * behaviors.
+ * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function publish<T, R>(selector?: OperatorFunction<T, R>): MonoTypeOperatorFunction<T> | OperatorFunction<T, R> {
   return selector ? connect(selector) : multicast(new Subject<T>());
