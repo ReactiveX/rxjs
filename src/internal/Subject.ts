@@ -91,6 +91,10 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     this.observers = null!;
   }
 
+  isObeserved() {
+    return this.observers?.length > 0;
+  }
+
   /** @internal */
   protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
     this._throwIfClosed();

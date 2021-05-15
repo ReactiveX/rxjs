@@ -430,6 +430,31 @@ describe('Subject', () => {
     done();
   });
 
+  it('should expose observed status', (done) => {
+    const subject = new Subject();
+
+    expect(subject.isObeserved()).to.equal(false);
+
+    const sub1 = subject.subscribe(function (x) {
+      //noop
+    });
+
+    expect(subject.isObeserved()).to.equal(true);
+
+    const sub2 = subject.subscribe(function (x) {
+      //noop
+    });
+
+    expect(subject.isObeserved()).to.equal(true);
+    sub1.unsubscribe();
+    expect(subject.isObeserved()).to.equal(true);
+    sub2.unsubscribe();
+    expect(subject.isObeserved()).to.equal(false);
+    subject.unsubscribe();
+    expect(subject.isObeserved()).to.equal(false);
+    done();
+  });
+
   it('should have a static create function that works', () => {
     expect(Subject.create).to.be.a('function');
     const source = of(1, 2, 3, 4, 5);
