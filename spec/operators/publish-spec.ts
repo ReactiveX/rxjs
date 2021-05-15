@@ -341,17 +341,17 @@ describe('publish operator', () => {
   it('should subscribe to its own source when using a shared pipeline', () => {
     const source1 = cold('-1-2-3-4-5-|');
     const source1Subs =  '^          !';
+    const expected1 =    '-1-2-3-4-5-|';
     const source2 = cold('-6-7-8-9-0-|');
-    const source2Subs =  '^          !'; 
+    const source2Subs =  '^          !';
+    const expected2 =    '-6-7-8-9-0-|';
 
     const sharedPipeLine = pipe(
-       publish()
-     );
+      publish()
+    );
 
     const published1 = source1.pipe(sharedPipeLine) as ConnectableObservable<any>;
     const published2 = source2.pipe(sharedPipeLine) as ConnectableObservable<any>;
-    const expected1 =    '-1-2-3-4-5-|';
-    const expected2 =    '-6-7-8-9-0-|';
 
     expectObservable(published1).toBe(expected1);
     expectSubscriptions(source1.subscriptions).toBe(source1Subs);
