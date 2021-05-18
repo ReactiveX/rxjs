@@ -134,90 +134,92 @@ export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
  * @return A function that returns an Observable that mirrors the source.
  */
 export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction<T> {
-  const { connector = () => new Subject<T>(), resetOnError = true, resetOnComplete = true, resetOnRefCountZero = true } = options;
+  return (observable) => {
+    const { connector = () => new Subject<T>(), resetOnError = true, resetOnComplete = true, resetOnRefCountZero = true } = options;
 
-  let connection: SafeSubscriber<T> | null = null;
-  let resetConnection: Subscription | null = null;
-  let subject: SubjectLike<T> | null = null;
-  let refCount = 0;
-  let hasCompleted = false;
-  let hasErrored = false;
+    let connection: SafeSubscriber<T> | null = null;
+    let resetConnection: Subscription | null = null;
+    let subject: SubjectLike<T> | null = null;
+    let refCount = 0;
+    let hasCompleted = false;
+    let hasErrored = false;
 
-  const cancelReset = () => {
-    resetConnection?.unsubscribe();
-    resetConnection = null;
-  };
-  // Used to reset the internal state to a "cold"
-  // state, as though it had never been subscribed to.
-  const reset = () => {
-    cancelReset();
-    connection = subject = null;
-    hasCompleted = hasErrored = false;
-  };
-  const resetAndUnsubscribe = () => {
-    // We need to capture the connection before
-    // we reset (if we need to reset).
-    const conn = connection;
-    reset();
-    conn?.unsubscribe();
-  };
-
-  return operate((source, subscriber) => {
-    refCount++;
-    if (!hasErrored && !hasCompleted) {
+    const cancelReset = () => {
+      resetConnection?.unsubscribe();
+      resetConnection = null;
+    };
+    // Used to reset the internal state to a "cold"
+    // state, as though it had never been subscribed to.
+    const reset = () => {
       cancelReset();
-    }
+      connection = subject = null;
+      hasCompleted = hasErrored = false;
+    };
+    const resetAndUnsubscribe = () => {
+      // We need to capture the connection before
+      // we reset (if we need to reset).
+      const conn = connection;
+      reset();
+      conn?.unsubscribe();
+    };
 
-    // Create the subject if we don't have one yet. Grab a local reference to
-    // it as well, which avoids non-null assertations when using it and, if we
-    // connect to it now, then error/complete need a reference after it was
-    // reset.
-    const dest = (subject = subject ?? connector());
-
-    // Add the teardown directly to the subscriber - instead of returning it -
-    // so that the handling of the subscriber's unsubscription will be wired
-    // up _before_ the subscription to the source occurs. This is done so that
-    // the assignment to the source connection's `closed` property will be seen
-    // by synchronous firehose sources.
-    subscriber.add(() => {
-      refCount--;
-
-      // If we're resetting on refCount === 0, and it's 0, we only want to do
-      // that on "unsubscribe", really. Resetting on error or completion is a different
-      // configuration.
-      if (refCount === 0 && !hasErrored && !hasCompleted) {
-        resetConnection = handleReset(resetAndUnsubscribe, resetOnRefCountZero);
+    return operate<T, T>((source, subscriber) => {
+      refCount++;
+      if (!hasErrored && !hasCompleted) {
+        cancelReset();
       }
-    });
 
-    // The following line adds the subscription to the subscriber passed.
-    // Basically, `subscriber === dest.subscribe(subscriber)` is `true`.
-    dest.subscribe(subscriber);
+      // Create the subject if we don't have one yet. Grab a local reference to
+      // it as well, which avoids non-null assertations when using it and, if we
+      // connect to it now, then error/complete need a reference after it was
+      // reset.
+      const dest = (subject = subject ?? connector());
 
-    if (!connection) {
-      // We need to create a subscriber here - rather than pass an observer and
-      // assign the returned subscription to connection - because it's possible
-      // for reentrant subscriptions to the shared observable to occur and in
-      // those situations we want connection to be already-assigned so that we
-      // don't create another connection to the source.
-      connection = new SafeSubscriber({
-        next: (value) => dest.next(value),
-        error: (err) => {
-          hasErrored = true;
-          cancelReset();
-          resetConnection = handleReset(reset, resetOnError, err);
-          dest.error(err);
-        },
-        complete: () => {
-          hasCompleted = true;
-          cancelReset();
-          resetConnection = handleReset(reset, resetOnComplete);
-          dest.complete();
-        },
+      // Add the teardown directly to the subscriber - instead of returning it -
+      // so that the handling of the subscriber's unsubscription will be wired
+      // up _before_ the subscription to the source occurs. This is done so that
+      // the assignment to the source connection's `closed` property will be seen
+      // by synchronous firehose sources.
+      subscriber.add(() => {
+        refCount--;
+
+        // If we're resetting on refCount === 0, and it's 0, we only want to do
+        // that on "unsubscribe", really. Resetting on error or completion is a different
+        // configuration.
+        if (refCount === 0 && !hasErrored && !hasCompleted) {
+          resetConnection = handleReset(resetAndUnsubscribe, resetOnRefCountZero);
+        }
       });
-      from(source).subscribe(connection);
-    }
-  });
+
+      // The following line adds the subscription to the subscriber passed.
+      // Basically, `subscriber === dest.subscribe(subscriber)` is `true`.
+      dest.subscribe(subscriber);
+
+      if (!connection) {
+        // We need to create a subscriber here - rather than pass an observer and
+        // assign the returned subscription to connection - because it's possible
+        // for reentrant subscriptions to the shared observable to occur and in
+        // those situations we want connection to be already-assigned so that we
+        // don't create another connection to the source.
+        connection = new SafeSubscriber({
+          next: (value) => dest.next(value),
+          error: (err) => {
+            hasErrored = true;
+            cancelReset();
+            resetConnection = handleReset(reset, resetOnError, err);
+            dest.error(err);
+          },
+          complete: () => {
+            hasCompleted = true;
+            cancelReset();
+            resetConnection = handleReset(reset, resetOnComplete);
+            dest.complete();
+          },
+        });
+        from(source).subscribe(connection);
+      }
+    })(observable);
+  };
 }
 
 function handleReset<T extends unknown[] = never[]>(
