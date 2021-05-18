@@ -1,6 +1,6 @@
 /** @prettier */
 import { expect } from 'chai';
-import { asapScheduler, concat, config, defer, EMPTY, NEVER, Observable, of, scheduled, Subject, throwError } from 'rxjs';
+import { asapScheduler, concat, config, defer, EMPTY, NEVER, Observable, of, scheduled, Subject, throwError, pipe } from 'rxjs';
 import {
   map,
   mergeMap,
@@ -617,6 +617,27 @@ describe('share', () => {
 
           expectObservable(result, subscription).toBe(expected);
           expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        });
+      });
+
+      it('should subscribe to its own source when using a shared pipeline', () => {
+        rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+          const source1 = cold('-1-2-3-4-5-|');
+          const source1Subs = ' ^----------!';
+          const expected1 = '   -1-2-3-4-5-|';
+          const source2 = cold('-6-7-8-9-0-|');
+          const source2Subs = ' ^----------!';
+          const expected2 = '   -6-7-8-9-0-|';
+
+          const sharedPipeLine = pipe(share({ resetOnRefCountZero }));
+
+          const shared1 = source1.pipe(sharedPipeLine);
+          const shared2 = source2.pipe(sharedPipeLine);
+
+          expectObservable(shared1).toBe(expected1);
+          expectSubscriptions(source1.subscriptions).toBe(source1Subs);
+          expectObservable(shared2).toBe(expected2);
+          expectSubscriptions(source2.subscriptions).toBe(source2Subs);
         });
       });
     });

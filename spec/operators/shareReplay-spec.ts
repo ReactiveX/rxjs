@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { shareReplay, mergeMapTo, retry, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, Operator, Observer, of, from, defer } from 'rxjs';
+import { Observable, Operator, Observer, of, from, defer, pipe } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {shareReplay} */
@@ -387,4 +387,25 @@ describe('shareReplay', () => {
   } else {
     console.warn(`No support for FinalizationRegistry in Node ${process.version}`);
   }
+
+  it('should subscribe to its own source when using a shared pipeline', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source1 = cold('-1-2-3-4-5-|');
+      const source1Subs = ' ^----------!';
+      const expected1 = '   -1-2-3-4-5-|';
+      const source2 = cold('-6-7-8-9-0-|');
+      const source2Subs = ' ^----------!';
+      const expected2 = '   -6-7-8-9-0-|';
+
+      const sharedPipeLine = pipe(shareReplay({ refCount: false }));
+
+      const shared1 = source1.pipe(sharedPipeLine);
+      const shared2 = source2.pipe(sharedPipeLine);
+
+      expectObservable(shared1).toBe(expected1);
+      expectSubscriptions(source1.subscriptions).toBe(source1Subs);
+      expectObservable(shared2).toBe(expected2);
+      expectSubscriptions(source2.subscriptions).toBe(source2Subs);
+    });
+  });
 });
