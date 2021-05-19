@@ -433,25 +433,25 @@ describe('Subject', () => {
   it('should expose observed status', () => {
     const subject = new Subject();
 
-    expect(subject.observed()).to.equal(false);
+    expect(subject.observed).to.equal(false);
 
     const sub1 = subject.subscribe(function (x) {
       //noop
     });
 
-    expect(subject.observed()).to.equal(true);
+    expect(subject.observed).to.equal(true);
 
     const sub2 = subject.subscribe(function (x) {
       //noop
     });
 
-    expect(subject.observed()).to.equal(true);
+    expect(subject.observed).to.equal(true);
     sub1.unsubscribe();
-    expect(subject.observed()).to.equal(true);
+    expect(subject.observed).to.equal(true);
     sub2.unsubscribe();
-    expect(subject.observed()).to.equal(false);
+    expect(subject.observed).to.equal(false);
     subject.unsubscribe();
-    expect(subject.observed()).to.equal(false);
+    expect(subject.observed).to.equal(false);
   });
 
   it('should have a static create function that works', () => {
