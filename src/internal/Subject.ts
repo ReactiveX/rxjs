@@ -91,7 +91,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     this.observers = null!;
   }
 
-  isObeserved() {
+  observed() {
     return this.observers?.length > 0;
   }
 
