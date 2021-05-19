@@ -262,7 +262,7 @@ describe('publishLast operator', () => {
     done();
   });
 
-  it('should subscribe to its own source when using a shared pipeline', () => {
+  it('should be referentially-transparent', () => {
     const source1 = cold('-1-2-3-4-5-|');
     const source1Subs =  '^          !';
     const expected1 =    '-----------(5|)';
@@ -270,10 +270,13 @@ describe('publishLast operator', () => {
     const source2Subs =  '^          !';
     const expected2 =    '-----------(0|)';
 
+    // Calls to the _operator_ must be referentially-transparent.
     const sharedPipeLine = pipe(
       publishLast()
     );
 
+    // The non-referentially-transparent publishing occurs within the _operator function_
+    // returned by the _operator_ and that happens when the complete pipeline is composed.
     const published1 = source1.pipe(sharedPipeLine) as ConnectableObservable<any>;
     const published2 = source2.pipe(sharedPipeLine) as ConnectableObservable<any>;
 
