@@ -24,11 +24,6 @@ export function groupBy<T, K, E>(
   options: GroupByOptionsWithElement<K, E, T>
 ): OperatorFunction<T, GroupedObservable<K, E>>;
 
-export function groupBy<T, K, E>(
-  key: (value: T) => K,
-  options: GroupByOptionsWithElement<K, E, T>
-): OperatorFunction<T, GroupedObservable<K, E>>;
-
 export function groupBy<T, K extends T>(
   key: (value: T) => value is K
 ): OperatorFunction<T, GroupedObservable<true, K> | GroupedObservable<false, Exclude<T, K>>>;
