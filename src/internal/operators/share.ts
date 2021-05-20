@@ -134,6 +134,7 @@ export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
  * @return A function that returns an Observable that mirrors the source.
  */
 export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction<T> {
+  const { connector = () => new Subject<T>(), resetOnError = true, resetOnComplete = true, resetOnRefCountZero = true } = options;
   // It's necessary to use a wrapper here, as the _operator_ must be
   // referentially transparent. Otherwise, it cannot be used in calls to the
   // static `pipe` function - to create a reusable pipeline.
@@ -143,8 +144,6 @@ export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction
   // _operator function_ is called when the complete pipeline is composed - not
   // when the static `pipe` function is called.
   return (wrapperSource) => {
-    const { connector = () => new Subject<T>(), resetOnError = true, resetOnComplete = true, resetOnRefCountZero = true } = options;
-
     let connection: SafeSubscriber<T> | null = null;
     let resetConnection: Subscription | null = null;
     let subject: SubjectLike<T> | null = null;
