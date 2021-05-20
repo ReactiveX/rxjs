@@ -73,7 +73,7 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  *   single(x => x.name.startsWith('B'))
  * )
  * .subscribe(x => console.log(x));
- * // Error emitted: NotFoundError('No values match')
+ * // Emits undefined
  * ```
  *
  * @see {@link first}
