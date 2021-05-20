@@ -42,7 +42,7 @@ describe('groupBy operator', () => {
     ];
 
     of(1, 2, 3).pipe(
-      groupBy((x: number) => x % 2)
+      groupBy((x) => x % 2)
     ).subscribe((g: any) => {
         const expectedGroup = expectedGroups.shift()!;
         expect(g.key).to.equal(expectedGroup.key);
@@ -60,7 +60,7 @@ describe('groupBy operator', () => {
     ];
 
     of(1, 2, 3).pipe(
-      groupBy((x: number) => x % 2, (x: number) => x + '!')
+      groupBy((x) => x % 2, (x) => x + '!')
     ).subscribe((g: any) => {
         const expectedGroup = expectedGroups.shift()!;
         expect(g.key).to.equal(expectedGroup.key);
@@ -82,21 +82,20 @@ describe('groupBy operator', () => {
     const resultingGroups: { key: number, values: number [] }[] = [];
 
     of(1, 2, 3, 4, 5, 6).pipe(
-      groupBy(
-        (x: number) => x % 2,
-        (x: number) => x,
-        (g: any) => g.pipe(skip(1)))
-      ).subscribe((g: any) => {
-        let group = { key: g.key, values: [] as number[] };
+      groupBy(x => x % 2, {
+        duration: g => g.pipe(skip(1))
+      })
+    ).subscribe((g: any) => {
+      let group = { key: g.key, values: [] as number[] };
 
-        g.subscribe((x: any) => {
-          group.values.push(x);
-        });
-
-        resultingGroups.push(group);
+      g.subscribe((x: any) => {
+        group.values.push(x);
       });
 
-      expect(resultingGroups).to.deep.equal(expectedGroups);
+      resultingGroups.push(group);
+    });
+
+    expect(resultingGroups).to.deep.equal(expectedGroups);
   });
 
   it('should group values with a subject selector', (done) => {
@@ -106,7 +105,9 @@ describe('groupBy operator', () => {
     ];
 
     of(1, 2, 3).pipe(
-      groupBy((x: number) => x % 2, null as any, null as any, () => new ReplaySubject(1)),
+      groupBy(x => x % 2, {
+        connector: () => new ReplaySubject(1),
+      }),
       // Ensure each inner group reaches the destination after the first event
       // has been next'd to the group
       delay(5)
@@ -802,11 +803,11 @@ describe('groupBy operator', () => {
     const expectedValues = { v: v, w: w, x: x, y: y, z: z };
 
     const source = e1
-      .pipe(groupBy(
-        (val: string) => val.toLowerCase().trim(),
-        (val: string) => val,
-        (group: any) => group.pipe(skip(2))
-      ));
+      .pipe(
+        groupBy(val => val.toLowerCase().trim(), {
+          duration: group => group.pipe(skip(2)),
+        })
+      );
 
     expectObservable(source).toBe(expected, expectedValues);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -836,11 +837,9 @@ describe('groupBy operator', () => {
     const expectedValues = { v: v, w: w, x: x };
 
     const source = e1
-      .pipe(groupBy(
-        (val: string) => val.toLowerCase().trim(),
-        (val: string) => val,
-        (group: any) =>  group.pipe(skip(2))
-      ));
+      .pipe(groupBy(val => val.toLowerCase().trim(), {
+        duration: group =>  group.pipe(skip(2))
+      }));
 
     expectObservable(source, unsub).toBe(expected, expectedValues);
   });
@@ -879,17 +878,15 @@ describe('groupBy operator', () => {
       .unsubscribedFrame;
 
     const source = e1.pipe(
-      groupBy(
-        (val: string) => val.toLowerCase().trim(),
-        (val: string) => val,
-        (group: any) => group.pipe(skip(2))
-      ),
-      map((group: any) => {
+      groupBy(val => val.toLowerCase().trim(), {
+        duration: group => group.pipe(skip(2))
+      }),
+      map((group) => {
         const arr: any[] = [];
 
         const subscription = group.pipe(
           phonyMarbelize()
-        ).subscribe((value: any) => {
+        ).subscribe((value) => {
           arr.push(value);
         });
 
@@ -923,11 +920,9 @@ describe('groupBy operator', () => {
       .parseMarblesAsSubscriptions(sub)
       .unsubscribedFrame;
 
-    obs.pipe(groupBy(
-      (val: string) => val,
-      (val: string) => val,
-      (group: any) => durations[group.key]
-    )).subscribe();
+    obs.pipe(groupBy((val) => val, {
+      duration: (group) => durations[Number(group.key)]
+    })).subscribe();
 
     rxTestScheduler.schedule(() => {
       durations.forEach((d, i) => {
