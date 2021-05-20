@@ -497,14 +497,14 @@ describe('publishReplay operator', () => {
     const expected2 =    '-6-7-8-9-0-|';
 
     // Calls to the _operator_ must be referentially-transparent.
-    const sharedPipeLine = pipe(
+    const partialPipeLine = pipe(
       publishReplay(1)
     );
 
     // The non-referentially-transparent publishing occurs within the _operator function_
     // returned by the _operator_ and that happens when the complete pipeline is composed.
-    const published1 = source1.pipe(sharedPipeLine) as ConnectableObservable<any>;
-    const published2 = source2.pipe(sharedPipeLine) as ConnectableObservable<any>;
+    const published1 = source1.pipe(partialPipeLine) as ConnectableObservable<any>;
+    const published2 = source2.pipe(partialPipeLine) as ConnectableObservable<any>;
 
     expectObservable(published1).toBe(expected1);
     expectSubscriptions(source1.subscriptions).toBe(source1Subs);

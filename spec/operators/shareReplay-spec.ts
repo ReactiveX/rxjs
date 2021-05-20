@@ -398,12 +398,12 @@ describe('shareReplay', () => {
       const expected2 = '   -6-7-8-9-0-|';
 
       // Calls to the _operator_ must be referentially-transparent.
-      const sharedPipeLine = pipe(shareReplay({ refCount: false }));
+      const partialPipeLine = pipe(shareReplay({ refCount: false }));
 
       // The non-referentially-transparent sharing occurs within the _operator function_
       // returned by the _operator_ and that happens when the complete pipeline is composed.
-      const shared1 = source1.pipe(sharedPipeLine);
-      const shared2 = source2.pipe(sharedPipeLine);
+      const shared1 = source1.pipe(partialPipeLine);
+      const shared2 = source2.pipe(partialPipeLine);
 
       expectObservable(shared1).toBe(expected1);
       expectSubscriptions(source1.subscriptions).toBe(source1Subs);
