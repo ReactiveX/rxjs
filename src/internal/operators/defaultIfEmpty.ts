@@ -18,7 +18,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ## Example
  * If no clicks happen in 5 seconds, then emit "no clicks"
  * ```ts
- * import { fromEvent } from 'rxjs';
+ * import { fromEvent, interval } from 'rxjs';
  * import { defaultIfEmpty, takeUntil } from 'rxjs/operators';
  *
  * const clicks = fromEvent(document, 'click');
