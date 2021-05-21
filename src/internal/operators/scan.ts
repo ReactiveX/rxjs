@@ -35,8 +35,10 @@ export function scan<V, A, S>(accumulator: (acc: A | S, value: V, index: number)
  * first value from the source.
  *
  * ```ts
- * import { interval } from 'rxjs';
+ * import { interval, of } from 'rxjs';
  * import { scan, map } from 'rxjs/operators';
+ *
+ * const numbers$ = of(1, 2, 3);
  *
  * numbers$
  *   .pipe(
