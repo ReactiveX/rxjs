@@ -150,7 +150,7 @@ describe('single operator', () => {
     });
   });
 
-  it('should return undefined from predicate if observable does not contain matching element', () => {
+  it('should raise error from predicate if observable does not contain matching element', () => {
     rxTest.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--c--|');
       const e1subs = '  ^----------!';
