@@ -60,7 +60,7 @@ export class ConnectableObservable<T> extends Observable<T> {
   }
 
   /**
-   * @deprecated {@link ConnectableObservable} will be removed in v8. Use {@link connecatble} instead.
+   * @deprecated {@link ConnectableObservable} will be removed in v8. Use {@link connectable} instead.
    * Details: https://rxjs.dev/deprecations/multicasting
    */
   connect(): Subscription {
