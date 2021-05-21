@@ -85,5 +85,5 @@ export function publish<T, O extends ObservableInput<any>>(selector: (shared: Ob
  * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function publish<T, R>(selector?: OperatorFunction<T, R>): MonoTypeOperatorFunction<T> | OperatorFunction<T, R> {
-  return selector ? connect(selector) : multicast(new Subject<T>());
+  return selector ? (source) => connect(selector)(source) : (source) => multicast(new Subject<T>())(source);
 }
