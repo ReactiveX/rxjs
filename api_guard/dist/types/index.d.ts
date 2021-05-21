@@ -392,6 +392,7 @@ export declare class Subject<T> extends Observable<T> implements SubscriptionLik
     closed: boolean;
     hasError: boolean;
     isStopped: boolean;
+    get observed(): boolean;
     observers: Observer<T>[];
     thrownError: any;
     constructor();
