@@ -1,3 +1,15 @@
+# [7.1.0](https://github.com/reactivex/rxjs/compare/7.0.1...7.1.0) (2021-05-21)
+
+### Bug Fixes
+
+- returned operator functions from multicast operators `share`, `publish`, `publishReplay` are now referentially transparent. Meaning if you take the result of calling `publishReplay(3)` and pass it to more than one observable's `pipe` method, it will behave the same in each case, rather than having a cumulative effect, which was a regression introduced sometime in version 6. If you required this broken behavior, there is a workaround posted [here](https://github.com/ReactiveX/rxjs/pull/6410#issuecomment-846087374) ([#6410](https://github.com/reactivex/rxjs/issues/6410)) ([e2f2e51](https://github.com/reactivex/rxjs/commit/e2f2e516514bdeb76229e69c639f10f21bccafad)), closes [/github.com/ReactiveX/rxjs/pull/6410#issuecomment-846087374](https://github.com//github.com/ReactiveX/rxjs/pull/6410/issues/issuecomment-846087374) [#5411](https://github.com/reactivex/rxjs/issues/5411)
+
+### Features
+
+- All subjects now have an `observed` property. This will allow users to check whether a subject has current subscribers without us allowing access to the `observers` array, which is going to be made private in future versions. ([#6405](https://github.com/reactivex/rxjs/issues/6405)) ([f47425d](https://github.com/reactivex/rxjs/commit/f47425d349475231c0f3542bb6ecef16a63e933a))
+- **groupBy:** Support named arguments, support ObservableInputs for duration selector ([#5679](https://github.com/reactivex/rxjs/issues/5679)) ([7a99397](https://github.com/reactivex/rxjs/commit/7a9939773802c4f7948c6d868a8f75facdea9f37))
+- **share:** use another observable to control resets ([#6169](https://github.com/reactivex/rxjs/issues/6169)) ([12c3716](https://github.com/reactivex/rxjs/commit/12c3716cecbf01f353c980488bf18845177b37b6))
+
 ## [7.0.1](https://github.com/reactivex/rxjs/compare/7.0.0...7.0.1) (2021-05-12)
 
 ### Bug Fixes
