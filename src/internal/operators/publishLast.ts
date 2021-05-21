@@ -67,7 +67,9 @@ import { UnaryFunction } from '../types';
  * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function publishLast<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>> {
-  const subject = new AsyncSubject<T>();
   // Note that this has *never* supported a selector function like `publish` and `publishReplay`.
-  return (source) => new ConnectableObservable(source, () => subject);
+  return (source) => {
+    const subject = new AsyncSubject<T>();
+    return new ConnectableObservable(source, () => subject);
+  };
 }

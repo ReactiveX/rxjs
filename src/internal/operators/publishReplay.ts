@@ -89,11 +89,8 @@ export function publishReplay<T, R>(
   if (selectorOrScheduler && !isFunction(selectorOrScheduler)) {
     timestampProvider = selectorOrScheduler;
   }
-
   const selector = isFunction(selectorOrScheduler) ? selectorOrScheduler : undefined;
-  const subject = new ReplaySubject<T>(bufferSize, windowTime, timestampProvider);
-
   // Note, we're passing `selector!` here, because at runtime, `undefined` is an acceptable argument
   // but it makes our TypeScript signature for `multicast` unhappy (as it should, because it's gross).
-  return (source: Observable<T>) => multicast(subject, selector!)(source);
+  return (source: Observable<T>) => multicast(new ReplaySubject<T>(bufferSize, windowTime, timestampProvider), selector!)(source);
 }

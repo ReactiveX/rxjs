@@ -18,7 +18,9 @@ import { UnaryFunction } from '../types';
  * Details: https://rxjs.dev/deprecations/multicasting
  */
 export function publishBehavior<T>(initialValue: T): UnaryFunction<Observable<T>, ConnectableObservable<T>> {
-  const subject = new BehaviorSubject<T>(initialValue);
   // Note that this has *never* supported the selector function.
-  return (source) => new ConnectableObservable(source, () => subject);
+  return (source) => {
+    const subject = new BehaviorSubject<T>(initialValue);
+    return new ConnectableObservable(source, () => subject);
+  };
 }

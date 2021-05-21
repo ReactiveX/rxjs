@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { throwError, ConnectableObservable, EMPTY, NEVER, of, Observable, Subscription } from 'rxjs';
+import { throwError, ConnectableObservable, EMPTY, NEVER, of, Observable, Subscription, pipe } from 'rxjs';
 import { publishReplay, mergeMapTo, tap, mergeMap, refCount, retry, repeat, map } from 'rxjs/operators';
 
 /** @test {publishReplay} */
@@ -486,5 +486,32 @@ describe('publishReplay operator', () => {
 
     expectObservable(published).toBe(expected, undefined, error);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should be referentially-transparent', () => {
+    const source1 = cold('-1-2-3-4-5-|');
+    const source1Subs =  '^          !';
+    const expected1 =    '-1-2-3-4-5-|';
+    const source2 = cold('-6-7-8-9-0-|');
+    const source2Subs =  '^          !';
+    const expected2 =    '-6-7-8-9-0-|';
+
+    // Calls to the _operator_ must be referentially-transparent.
+    const partialPipeLine = pipe(
+      publishReplay(1)
+    );
+
+    // The non-referentially-transparent publishing occurs within the _operator function_
+    // returned by the _operator_ and that happens when the complete pipeline is composed.
+    const published1 = source1.pipe(partialPipeLine) as ConnectableObservable<any>;
+    const published2 = source2.pipe(partialPipeLine) as ConnectableObservable<any>;
+
+    expectObservable(published1).toBe(expected1);
+    expectSubscriptions(source1.subscriptions).toBe(source1Subs);
+    expectObservable(published2).toBe(expected2);
+    expectSubscriptions(source2.subscriptions).toBe(source2Subs);
+
+    published1.connect();
+    published2.connect();
   });
 });
