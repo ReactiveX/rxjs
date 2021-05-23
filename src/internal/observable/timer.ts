@@ -80,7 +80,7 @@ import { isValidDate } from '../util/isDate';
  * should occur will be incorrect. In this case, it would be best to do your own calculations
  * ahead of time, and pass a `number` in as the `dueTime`.
  *
- * @param due If a `number`, the amount of time in seconds to wait before emitting.
+ * @param due If a `number`, the amount of time in milliseconds to wait before emitting.
  * If a `Date`, the exact time at which to emit.
  * @param scheduler The scheduler to use to schedule the delay. Defaults to {@link asyncScheduler}.
  */
