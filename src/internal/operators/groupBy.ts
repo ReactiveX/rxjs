@@ -5,13 +5,13 @@ import { ObservableInput, Observer, OperatorFunction, SubjectLike } from '../typ
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
-interface BasicGroupByOptions<K, T> {
+export interface BasicGroupByOptions<K, T> {
   element?: undefined;
   duration?: (grouped: GroupedObservable<K, T>) => ObservableInput<any>;
   connector?: () => SubjectLike<T>;
 }
 
-interface GroupByOptionsWithElement<K, E, T> {
+export interface GroupByOptionsWithElement<K, E, T> {
   element: (value: T) => E;
   duration?: (grouped: GroupedObservable<K, E>) => ObservableInput<any>;
   connector?: () => SubjectLike<E>;

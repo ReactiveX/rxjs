@@ -39,7 +39,7 @@ export { finalize } from '../internal/operators/finalize';
 export { find } from '../internal/operators/find';
 export { findIndex } from '../internal/operators/findIndex';
 export { first } from '../internal/operators/first';
-export { groupBy } from '../internal/operators/groupBy';
+export { groupBy, BasicGroupByOptions, GroupByOptionsWithElement } from '../internal/operators/groupBy';
 export { ignoreElements } from '../internal/operators/ignoreElements';
 export { isEmpty } from '../internal/operators/isEmpty';
 export { last } from '../internal/operators/last';
