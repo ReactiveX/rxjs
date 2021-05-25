@@ -2,6 +2,12 @@ export declare function audit<T>(durationSelector: (value: T) => ObservableInput
 
 export declare function auditTime<T>(duration: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
+export interface BasicGroupByOptions<K, T> {
+    connector?: () => SubjectLike<T>;
+    duration?: (grouped: GroupedObservable<K, T>) => ObservableInput<any>;
+    element?: undefined;
+}
+
 export declare function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]>;
 
 export declare function bufferCount<T>(bufferSize: number, startBufferEvery?: number | null): OperatorFunction<T, T[]>;
@@ -132,6 +138,12 @@ export declare function groupBy<T, K>(key: (value: T) => K, element: void, durat
 export declare function groupBy<T, K, R>(key: (value: T) => K, element?: (value: T) => R, duration?: (grouped: GroupedObservable<K, R>) => Observable<any>): OperatorFunction<T, GroupedObservable<K, R>>;
 export declare function groupBy<T, K, R>(key: (value: T) => K, element?: (value: T) => R, duration?: (grouped: GroupedObservable<K, R>) => Observable<any>, connector?: () => Subject<R>): OperatorFunction<T, GroupedObservable<K, R>>;
 
+export interface GroupByOptionsWithElement<K, E, T> {
+    connector?: () => SubjectLike<E>;
+    duration?: (grouped: GroupedObservable<K, E>) => ObservableInput<any>;
+    element: (value: T) => E;
+}
+
 export declare function ignoreElements(): OperatorFunction<any, never>;
 
 export declare function isEmpty<T>(): OperatorFunction<T, boolean>;
@@ -246,9 +258,9 @@ export declare function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunct
 
 export interface ShareConfig<T> {
     connector?: () => SubjectLike<T>;
-    resetOnComplete?: boolean;
-    resetOnError?: boolean;
-    resetOnRefCountZero?: boolean;
+    resetOnComplete?: boolean | (() => Observable<any>);
+    resetOnError?: boolean | ((error: any) => Observable<any>);
+    resetOnRefCountZero?: boolean | (() => Observable<any>);
 }
 
 export declare function shareReplay<T>(config: ShareReplayConfig): MonoTypeOperatorFunction<T>;
