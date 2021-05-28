@@ -27,7 +27,7 @@ export function combineLatest<T, A extends readonly unknown[], R>(...sources: [.
 export function combineLatest<T, R>(...args: (ObservableInput<any> | ((...values: any[]) => R))[]): OperatorFunction<T, unknown> {
   const resultSelector = popResultSelector(args);
   return resultSelector
-    ? pipe(combineLatest(...args), mapOneOrManyArgs(resultSelector))
+    ? pipe(combineLatest(...(args as Array<ObservableInput<any>>)), mapOneOrManyArgs(resultSelector))
     : operate((source, subscriber) => {
         combineLatestInit([source, ...argsOrArgArray(args)])(subscriber);
       });

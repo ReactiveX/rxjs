@@ -21,6 +21,6 @@ export function zip<T, A extends readonly unknown[], R>(
  */
 export function zip<T, R>(...sources: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): OperatorFunction<T, any> {
   return operate((source, subscriber) => {
-    zipStatic(source, ...sources).subscribe(subscriber);
+    zipStatic(source as ObservableInput<any>, ...(sources as Array<ObservableInput<any>>)).subscribe(subscriber);
   });
 }
