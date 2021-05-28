@@ -1,4 +1,4 @@
-import { of, Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { scan } from 'rxjs/operators';
 
 it('should enforce parameter', () => {

@@ -1,4 +1,4 @@
-import { of, Notification, Observable, ObservableNotification } from 'rxjs';
+import { of, Notification } from 'rxjs';
 import { dematerialize } from 'rxjs/operators';
 
 
