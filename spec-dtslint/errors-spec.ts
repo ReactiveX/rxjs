@@ -1,4 +1,4 @@
-import { AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
+import { AjaxError } from 'rxjs/ajax';
 import {
   ArgumentOutOfRangeError,
   EmptyError,
