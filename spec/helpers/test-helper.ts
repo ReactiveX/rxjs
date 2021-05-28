@@ -1,7 +1,6 @@
 import { of, asyncScheduler, Observable, scheduled, ObservableInput } from 'rxjs';
 import { observable } from 'rxjs/internal/symbol/observable';
 import { iterator } from 'rxjs/internal/symbol/iterator';
-import { expect } from 'chai';
 
 if (process && process.on) {
   /**

@@ -1,4 +1,4 @@
-import { of, OperatorFunction } from 'rxjs';
+import { of } from 'rxjs';
 import { reduce } from 'rxjs/operators';
 
 it('should enforce parameter', () => {

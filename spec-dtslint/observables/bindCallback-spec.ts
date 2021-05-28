@@ -1,6 +1,5 @@
 import { bindCallback } from 'rxjs';
 import { a,  b,  c,  d,  e,  f,  g, A, B, C, D, E, F, G } from '../helpers';
-import { SchedulerLike } from '../../src';
 
 describe('callbackFunc', () => {
   const f0 = (cb: () => void) => {

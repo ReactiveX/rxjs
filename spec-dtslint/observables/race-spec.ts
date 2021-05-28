@@ -1,4 +1,4 @@
-import { race, of, NEVER, EMPTY } from 'rxjs';
+import { race, NEVER, EMPTY } from 'rxjs';
 import { a$, b, b$, c, c$, d$, e$, f$ } from '../helpers';
 
 describe('race(a, b, c)', () => {

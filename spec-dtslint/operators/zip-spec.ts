@@ -1,4 +1,4 @@
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { zip } from 'rxjs/operators';
 
 it('should support observables', () => {
