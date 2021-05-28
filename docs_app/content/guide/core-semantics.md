@@ -18,7 +18,7 @@ The purpose of these semantics is provide predictable behavior for the users of 
     - Events that happen after the completion of a source should happen after the source finalizes. This is to ensure that finalization always happens in a predictable time frame relative to the event.
     - `Error` objects should never be retained longer than necessary. This is a possible source of memory pressure.
     - `Promise` references should never be retained longer than necessary. This is a possible source of memory pressure.
-    - Operators that split an source `Observable<T>` into many child observables `Observable<Observable<T>>` should emit child observables that do not stop simply because the original consumer subscription is unsubscribed. This is because those child observables may be consumed outside of that subscription life cycle. For example, a user could capture a grouped (child) observable emitted from `groupBy` and subscribe to it elsewhere. The purpose of the `groupBy` was to create observables, not dictate their lifespan.
+    - Operators that split a source `Observable<T>` into many child observables `Observable<Observable<T>>` should emit child observables that do not stop because the original consumer subscription is unsubscribed. This is because those child observables may be consumed outside of that subscription lifecycle. For example, a user could capture a grouped (child) observable emitted from `groupBy` and subscribe to it elsewhere. The purpose of the `groupBy` was to create observables, not dictate their lifespan.
 
 # Creation Functions
 
