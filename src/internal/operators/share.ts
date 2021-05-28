@@ -11,6 +11,8 @@ export interface ShareConfig<T> {
   /**
    * The factory used to create the subject that will connect the source observable to
    * multicast consumers.
+   *
+   * @defaultValue `() => new Subject<T>()`
    */
   connector?: () => SubjectLike<T>;
   /**
@@ -22,6 +24,8 @@ export interface ShareConfig<T> {
    * {@link ReplaySubject} will also push its buffered values before pushing the error.
    * It is also possible to pass a notifier factory returning an observable instead which grants more fine-grained
    * control over how and when the reset should happen. This allows behaviors like conditional or delayed resets.
+   *
+   * @defaultValue `true`
    */
   resetOnError?: boolean | ((error: any) => Observable<any>);
   /**
@@ -32,6 +36,8 @@ export interface ShareConfig<T> {
    * or resubscriptions will resubscribe to that same subject.
    * It is also possible to pass a notifier factory returning an observable instead which grants more fine-grained
    * control over how and when the reset should happen. This allows behaviors like conditional or delayed resets.
+   *
+   * @defaultValue `true`
    */
   resetOnComplete?: boolean | (() => Observable<any>);
   /**
@@ -43,6 +49,8 @@ export interface ShareConfig<T> {
    * will remain connected to the source, and new subscriptions to the result will be connected through that same subject.
    * It is also possible to pass a notifier factory returning an observable instead which grants more fine-grained
    * control over how and when the reset should happen. This allows behaviors like conditional or delayed resets.
+   *
+   * @defaultValue `true`
    */
   resetOnRefCountZero?: boolean | (() => Observable<any>);
 }
