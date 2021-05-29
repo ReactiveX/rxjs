@@ -341,5 +341,37 @@ describe('config', () => {
         });
       })
     );
+
+    it(
+      'should be called after onUnhandledError if two errors are emitted without a consuming error observer',
+      withConfigHandlerSpies(({ onUnhandledError, onStoppedNotification, done }) => {
+        const subscription = new Observable((subscriber) => {
+          subscriber.error('unhandled');
+          subscriber.error('stopped');
+        }).subscribe();
+
+        expect(onUnhandledError).to.not.have.been.called;
+        expect(onStoppedNotification).to.not.have.been.called;
+
+        Promise.resolve().then(() => {
+          expect(onUnhandledError).to.not.have.been.called;
+          expect(onStoppedNotification).to.not.have.been.called;
+        });
+
+        timeoutProvider.setTimeout(() => {
+          expect(onUnhandledError).to.have.been.calledOnce;
+          expect(onUnhandledError.firstCall).to.have.been.calledWithExactly('unhandled');
+
+          expect(onStoppedNotification).to.have.been.calledOnce;
+          expect(onStoppedNotification).to.have.been.calledAfter(onUnhandledError);
+          expect(onStoppedNotification.firstCall.args.length).to.equal(2);
+          // need to use include here because we test against an interface
+          expect(onStoppedNotification.firstCall.args[0]).to.include({ kind: 'E', error: 'stopped' });
+          expect(onStoppedNotification.firstCall.args[1]).to.equal(subscription);
+
+          done();
+        });
+      })
+    );
   });
 });
