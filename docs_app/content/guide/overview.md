@@ -1,127 +1,44 @@
-# Introduction
+# RxJS Guide
 
-RxJS is a library for composing asynchronous and event-based programs by using observable sequences. It provides one core type, the [Observable](./guide/observable), satellite types (Observer, Schedulers, Subjects) and operators inspired by [Array#extras](https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/1.6) (map, filter, reduce, every, etc) to allow handling asynchronous events as collections.
+Author: Ben Lesh
 
-<span class="informal">Think of RxJS as Lodash for events.</span>
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by/4.0/80x15.png" /></a>
+This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
 
-ReactiveX combines the [Observer pattern](https://en.wikipedia.org/wiki/Observer_pattern) with the [Iterator pattern](https://en.wikipedia.org/wiki/Iterator_pattern) and [functional programming with collections](http://martinfowler.com/articles/collection-pipeline/#NestedOperatorExpressions) to fill the need for an ideal way of managing sequences of events.
+## Work In Progress
 
-The essential concepts in RxJS which solve async event management are:
+This guide is evolving. Some sections below are marked "TODO" because they are currently under development.
 
-- **Observable:** represents the idea of an invokable collection of future values or events.
-- **Observer:** is a collection of callbacks that knows how to listen to values delivered by the Observable.
-- **Subscription:** represents the execution of an Observable, is primarily useful for cancelling the execution.
-- **Operators:** are pure functions that enable a functional programming style of dealing with collections with operations like `map`, `filter`, `concat`, `reduce`, etc.
-- **Subject:** is equivalent to an EventEmitter, and the only way of multicasting a value or event to multiple Observers.
-- **Schedulers:** are centralized dispatchers to control concurrency, allowing us to coordinate when computation happens on e.g. `setTimeout` or `requestAnimationFrame` or others.
+## Overview
 
-## First examples
+This section is a guide to how to approach RxJS concepts and how to address common issues while learning and using this library. The goal is to go into as much detail as possible or necessary in as many aspects of RxJS as possible while also trying to provide a quick high-level overview of the concepts.
 
-Normally you register event listeners.
+As you are reading, if you don't have time to dive deeply into any one topic, please note that each section has a **"TLDR"** section at the top. For those of you that aren't sure what that means, it means "Too long, didn't read". These sections intend to give the quickest possible summary of the content of the page.
 
-```ts
-document.addEventListener('click', () => console.log('Clicked!'));
-```
+## Topics
 
-Using RxJS you create an observable instead.
+The topics are ordered intentionally to provide insight into things folks will need to know about RxJS first before diving into deeper topics. For example, one of the first things people need to know about RxJS is [how to subscribe to an observable](1-subscribing.md), because often "first contact" with RxJS is because they have gotten an observable back from some API or service they just started using in their codebase.
 
-```ts
-import { fromEvent } from 'rxjs';
+1. [Subscribing](guide/1-subscribing)
+2. [Unsubscribing](guide/2-unsubscribing)
+3. [Creating An Observable](guide/3-creating-an-observable)
+4. [What Is An Operator?](guide/4-what-is-an-operator)
+5. [Implementing Operators](guide/5-implementing-operators)
+6. [Chaining Operators](guide/6-chaining-operators)
+7. [Flattening Operations](guide/7-flattening-operations)
+8. [Subjects](guide/8-subjects)
+9. [Advanced Subscription Management](guide/9-advanced-subscription-management)
+10. Multicasting (TODO)
+11. Error Handling (TODO)
+12. Async Await And Promises (TODO)
+13. Schedulers And Scheduling (TODO)
+14. Testing Operators (TODO)
+15. Testing Application Code (TODO)
+16. Debugging (TODO)
+17. Performance (TODO)
 
-fromEvent(document, 'click').subscribe(() => console.log('Clicked!'));
-```
+## Additional Topics
 
-### Purity
-
-What makes RxJS powerful is its ability to produce values using pure functions. That means your code is less prone to errors.
-
-Normally you would create an impure function, where other
-pieces of your code can mess up your state.
-
-```ts
-let count = 0;
-document.addEventListener('click', () => console.log(`Clicked ${++count} times`));
-```
-
-Using RxJS you isolate the state.
-
-```ts
-import { fromEvent } from 'rxjs';
-import { scan } from 'rxjs/operators';
-
-fromEvent(document, 'click')
-  .pipe(scan(count => count + 1, 0))
-  .subscribe(count => console.log(`Clicked ${count} times`));
-```
-
-The **scan** operator works just like **reduce** for arrays. It takes a value which is exposed to a callback. The returned value of the callback will then become the next value exposed the next time the callback runs.
-
-### Flow
-
-RxJS has a whole range of operators that helps you control how the events flow through your observables.
-
-This is how you would allow at most one click per second, with plain JavaScript:
-
-```ts
-let count = 0;
-let rate = 1000;
-let lastClick = Date.now() - rate;
-document.addEventListener('click', () => {
-  if (Date.now() - lastClick >= rate) {
-    console.log(`Clicked ${++count} times`);
-    lastClick = Date.now();
-  }
-});
-```
-
-With RxJS:
-
-```ts
-import { fromEvent } from 'rxjs';
-import { throttleTime, scan } from 'rxjs/operators';
-
-fromEvent(document, 'click')
-  .pipe(
-    throttleTime(1000),
-    scan(count => count + 1, 0)
-  )
-  .subscribe(count => console.log(`Clicked ${count} times`));
-```
-
-Other flow control operators are [**filter**](../api/operators/filter), [**delay**](../api/operators/delay), [**debounceTime**](../api/operators/debounceTime), [**take**](../api/operators/take), [**takeUntil**](../api/operators/takeUntil), [**distinct**](../api/operators/distinct), [**distinctUntilChanged**](../api/operators/distinctUntilChanged) etc.
-
-### Values
-
-You can transform the values passed through your observables.
-
-Here's how you can add the current mouse x position for every click, in plain JavaScript:
-
-```ts
-let count = 0;
-const rate = 1000;
-let lastClick = Date.now() - rate;
-document.addEventListener('click', event => {
-  if (Date.now() - lastClick >= rate) {
-    count += event.clientX;
-    console.log(count);
-    lastClick = Date.now();
-  }
-});
-```
-
-With RxJS:
-
-```ts
-import { fromEvent } from 'rxjs';
-import { throttleTime, map, scan } from 'rxjs/operators';
-
-fromEvent(document, 'click')
-  .pipe(
-    throttleTime(1000),
-    map(event => event.clientX),
-    scan((count, clientX) => count + clientX, 0)
-  )
-  .subscribe(count => console.log(count));
-```
-
-Other value producing operators are [**pluck**](../api/operators/pluck), [**pairwise**](../api/operators/pairwise), [**sample**](../api/operators/sample) etc.
+- [Why Observables?](guide/why-observables)
+- [When You Find RxJS Difficult](guide/but-rxjs-is-hard)
+- [Writing Readable RxJS](guide/writing-readable-rxjs)

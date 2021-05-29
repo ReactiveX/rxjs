@@ -72,6 +72,10 @@ The act of a [producer](#Producer) pushing [nexted](#Next) values, [errors](#Err
 
 Some of what we discuss is conceptual. These are mostly common traits of behaviors that can manifest in observables or in push-based reactive systems.
 
+### Side Effect
+
+The act of altering state external to a system. In the context of RxJS, a side effect is something updates state outside if the operations in your observable chain.
+
 ### Multicast
 
 The act of one [producer](#Producer) being [observed](#Observation) by **many** [consumers](#Consumer).
@@ -92,10 +96,9 @@ An observable is "hot", when its [producer](#Producer) was created outside of th
 
 [Observables](#Observable) are a push-based type. That means rather than having the [consumer](#Consumer) call a function or perform some other action to get a value, the [consumer](#Consumer) receives values as soon as the [producer](#Producer) has produced them, via a registered [next](#Next) handler.
 
+### Pull
 
-### Pull 
-
-Pull-based systems are the opposite of [push](#Push)-based. In a pull-based type or system, the [consumer](#Consumer) must request each value the [producer](#Producer) has produced manually, perhaps long after the [producer](#Producer) has actually done so. Examples of such systems are [Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function) and [Iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) 
+Pull-based systems are the opposite of [push](#Push)-based. In a pull-based type or system, the [consumer](#Consumer) must request each value the [producer](#Producer) has produced manually, perhaps long after the [producer](#Producer) has actually done so. Examples of such systems are [Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function) and [Iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)
 
 ## Minor Entities
 
@@ -116,6 +119,7 @@ An action taken while handling a [notification](#Notification), as set up by an 
 A "stream" or "streaming" in the case of observables, refers to the collection of [operations](#Operation), as they are processed during a [subscription](#Subscription). This is not to be confused with node [Streams](https://nodejs.org/api/stream.html), and the word "stream", on its own, should be used _sparingly_ in documentation and articles. Instead, prefer [observation chain](#Observation_Chain), [operations](#Operation), or [subscription](#Subscription). "Streaming" is less ambiguous, and is fine to use given this defined meaning.
 
 ### Source
+
 A [observable](#Observable) or [valid observable input](#Observable_Inputs) having been converted to an observable, that will supply values to another [observable](#Observable), either as the result of an [operator](#Operator) or other function that creates one observable as another. This [source](#Source), will be the [producer](#Producer) for the resulting [observable](#Observable) and all of its [subscriptions](#Subscriptions). Sources may generally be any type of observable.
 
 ### Observable Inputs
@@ -147,3 +151,7 @@ An "unhandled error" is any [error](#Error) that is not handled by a [consumer](
 ### Upstream And Downstream
 
 The order in which [notifications](#Notification) are processed by [operations](#Operation) in a [stream](#Stream) have a directionality to them. "Upstream" refers to an [operation](#Operation) that was already processed before the current [operation](#Operation), and "downstream" refers to an [operation](#Operation) that _will_ be processed _after_ the current [operation](#Operation). See also: [Streaming](#Stream).
+
+### Chaining
+
+Sometimes referred to as the "observable chain" or the "chain of operations". This is the structure through which the series of events is processed within your observable operations. Many operators can be chained together on an observable to process events in a particular order.

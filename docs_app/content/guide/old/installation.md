@@ -14,10 +14,10 @@ To import only what you need:
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-of(1, 2, 3).pipe(map(x => x + '!!!')); // etc
+of(1, 2, 3).pipe(map((x) => x + '!!!')); // etc
 ```
 
-* See [Pipeable Operators](/guide/v6/pipeable-operators) for more information.
+- See [Pipeable Operators](/guide/v6/pipeable-operators) for more information.
 
 To import the entire core set of functionality:
 
@@ -33,7 +33,7 @@ To use with a globally imported bundle:
 const { of } = rxjs;
 const { map } = rxjs.operators;
 
-of(1, 2, 3).pipe(map(x => x + '!!!')); // etc
+of(1, 2, 3).pipe(map((x) => x + '!!!')); // etc
 ```
 
 ## CommonJS via npm
@@ -66,7 +66,7 @@ npm install @reactivex/rxjs@5.0.0-beta.1
 
 ## CDN
 
-For CDN, you can use [unpkg](https://unpkg.com/). Just replace *version* with the current version on the link below:
+For CDN, you can use [unpkg](https://unpkg.com/). Just replace _version_ with the current version on the link below:
 
 For RxJS 5.0.0-beta.1 through beta.11: [https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.umd.js](https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.umd.js)
 

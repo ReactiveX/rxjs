@@ -14,7 +14,17 @@ export interface UnsubscriptionErrorCtor {
 
 /**
  * An error thrown when one or more errors have occurred during the
- * `unsubscribe` of a {@link Subscription}.
+ * {@link unsubscribe} call of a {@link Subscription}.
+ *
+ * When {@link unsubscribe} is called, RxJS will attempt to execute all teardowns,
+ * even if one of them errors. Errors that occur during unsubscription will be
+ * collected and rethrown at the end as an `UnsubscriptionError`. This
+ * error has an `errors` property on it that contains an `Array` of all
+ * errors thrown during teardown.
+ *
+ * Note: This error can also be thrown during error or completion of an observable.
+ * In those cases, there is no particular way to handle the errors, and it will
+ * be reported to global error handling (e.g. `window.onerror` or `process.on('error', fn)`)
  */
 export const UnsubscriptionError: UnsubscriptionErrorCtor = createErrorClass(
   (_super) =>
