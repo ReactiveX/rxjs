@@ -17,6 +17,30 @@ describe('config', () => {
     });
 
     it(
+      'should call the handler that was set when the error was emitted',
+      withConfigHandlerSpies(({ onUnhandledError, uninstallHandlers, done }) => {
+        new Observable((subscriber) => {
+          subscriber.error('bad');
+        }).subscribe();
+
+        expect(onUnhandledError).to.not.have.been.called;
+
+        uninstallHandlers();
+
+        Promise.resolve().then(() => {
+          expect(onUnhandledError).to.not.have.been.called;
+        });
+
+        timeoutProvider.setTimeout(() => {
+          expect(onUnhandledError).to.have.been.calledOnce;
+          expect(onUnhandledError.firstCall).to.have.been.calledWithExactly('bad');
+
+          done();
+        });
+      })
+    );
+
+    it(
       'should call asynchronously if an error is emitted and not handled by the consumer observer',
       withConfigHandlerSpies(({ onUnhandledError, done }) => {
         const observer = createSpiedObserver('next');
@@ -134,6 +158,34 @@ describe('config', () => {
     it('should default to null', () => {
       expect(config.onStoppedNotification).to.be.null;
     });
+
+    it(
+      'should call the handler that was set when the notification was stopped',
+      withConfigHandlerSpies(({ onStoppedNotification, uninstallHandlers, done }) => {
+        const subscription = new Observable((subscriber) => {
+          subscriber.complete();
+          subscriber.complete();
+        }).subscribe();
+
+        expect(onStoppedNotification).to.not.have.been.called;
+
+        uninstallHandlers();
+
+        Promise.resolve().then(() => {
+          expect(onStoppedNotification).to.not.have.been.called;
+        });
+
+        timeoutProvider.setTimeout(() => {
+          expect(onStoppedNotification).to.have.been.calledOnce;
+          expect(onStoppedNotification.firstCall.args.length).to.equal(2);
+          // need to use include here because we test against an interface
+          expect(onStoppedNotification.firstCall.args[0]).to.include({ kind: 'C' });
+          expect(onStoppedNotification.firstCall.args[1]).to.equal(subscription);
+
+          done();
+        });
+      })
+    );
 
     it(
       'should be called asynchronously if a subscription setup errors after the subscription is closed by an error',
