@@ -1,6 +1,6 @@
 /** @prettier */
 import { expect } from 'chai';
-import { asapScheduler, concat, config, defer, EMPTY, NEVER, Observable, of, scheduled, Subject, throwError, pipe } from 'rxjs';
+import { asapScheduler, concat, defer, EMPTY, NEVER, Observable, of, pipe, scheduled, Subject, throwError } from 'rxjs';
 import {
   map,
   mergeMap,
@@ -18,25 +18,13 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
+import { spy } from 'sinon';
 import { observableMatcher } from '../helpers/observableMatcher';
-import { SinonSpy, spy } from 'sinon';
+import { withConfigHandlerSpies } from '../helpers/test-helper';
 
 const syncNotify = of(1);
 const asapNotify = scheduled(syncNotify, asapScheduler);
 const syncError = throwError(() => new Error());
-
-function spyOnUnhandledError(fn: (spy: SinonSpy) => void): void {
-  const prevOnUnhandledError = config.onUnhandledError;
-
-  try {
-    const onUnhandledError = spy();
-    config.onUnhandledError = onUnhandledError;
-
-    fn(onUnhandledError);
-  } finally {
-    config.onUnhandledError = prevOnUnhandledError;
-  }
-}
 
 /** @test {share} */
 describe('share', () => {
@@ -811,8 +799,9 @@ describe('share', () => {
       });
     });
 
-    it('should not reset on refCount 0 if reset notifier errors before emitting any value', () => {
-      spyOnUnhandledError((onUnhandledError) => {
+    it(
+      'should not reset on refCount 0 if reset notifier errors before emitting any value',
+      withConfigHandlerSpies(({ onUnhandledError, done }) => {
         const error = new Error();
 
         rxTest.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
@@ -835,11 +824,14 @@ describe('share', () => {
         expect(onUnhandledError).to.have.been.calledTwice;
         expect(onUnhandledError.getCall(0)).to.have.been.calledWithExactly(error);
         expect(onUnhandledError.getCall(1)).to.have.been.calledWithExactly(error);
-      });
-    });
 
-    it('should not reset on error if reset notifier errors before emitting any value', () => {
-      spyOnUnhandledError((onUnhandledError) => {
+        done();
+      })
+    );
+
+    it(
+      'should not reset on error if reset notifier errors before emitting any value',
+      withConfigHandlerSpies(({ onUnhandledError, done }) => {
         const error = new Error();
 
         rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
@@ -860,11 +852,14 @@ describe('share', () => {
 
         expect(onUnhandledError).to.have.been.calledOnce;
         expect(onUnhandledError.getCall(0)).to.have.been.calledWithExactly(error);
-      });
-    });
 
-    it('should not reset on complete if reset notifier errors before emitting any value', () => {
-      spyOnUnhandledError((onUnhandledError) => {
+        done();
+      })
+    );
+
+    it(
+      'should not reset on complete if reset notifier errors before emitting any value',
+      withConfigHandlerSpies(({ onUnhandledError, done }) => {
         const error = new Error();
 
         rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
@@ -885,8 +880,10 @@ describe('share', () => {
 
         expect(onUnhandledError).to.have.been.calledOnce;
         expect(onUnhandledError.getCall(0)).to.have.been.calledWithExactly(error);
-      });
-    });
+
+        done();
+      })
+    );
 
     it('should not call "resetOnRefCountZero" on error', () => {
       rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
