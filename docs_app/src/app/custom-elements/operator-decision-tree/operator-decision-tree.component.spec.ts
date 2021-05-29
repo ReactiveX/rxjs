@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
@@ -28,7 +28,7 @@ describe('OperatorDecisionTreeComponent', () => {
   let scrollService: ScrollService;
   let locationService: jasmine.SpyObj<Location>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     locationService = jasmine.createSpyObj(['subscribe']);
     TestBed.configureTestingModule({
       imports: [
@@ -53,8 +53,8 @@ describe('OperatorDecisionTreeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(OperatorDecisionTreeComponent);
     component = fixture.componentInstance;
-    operatorDecisionTreeService = TestBed.get(OperatorDecisionTreeService);
-    scrollService = TestBed.get(ScrollService);
+    operatorDecisionTreeService = TestBed.inject(OperatorDecisionTreeService);
+    scrollService = TestBed.inject(ScrollService);
     fixture.detectChanges();
   });
 

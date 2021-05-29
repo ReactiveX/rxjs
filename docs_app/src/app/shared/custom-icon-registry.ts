@@ -1,4 +1,4 @@
-import { InjectionToken, Inject, Injectable, Optional } from '@angular/core';
+import { InjectionToken, Inject, Injectable, Optional, ErrorHandler } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { of } from 'rxjs';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -37,8 +37,8 @@ export class CustomIconRegistry extends MatIconRegistry {
   private preloadedSvgElements: SvgIconMap = {};
 
   constructor(http: HttpClient, sanitizer: DomSanitizer, @Optional() @Inject(DOCUMENT) document,
-              @Inject(SVG_ICONS) svgIcons: SvgIconInfo[]) {
-    super(http, sanitizer, document);
+              @Inject(SVG_ICONS) svgIcons: SvgIconInfo[], errorHandler: ErrorHandler) {
+    super(http, sanitizer, document, errorHandler);
     this.loadSvgElements(svgIcons);
   }
 

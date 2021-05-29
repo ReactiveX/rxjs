@@ -5,8 +5,7 @@ import { WithCustomElementComponent } from '../element-registry';
 
 @NgModule({
   imports: [ CommonModule ],
-  declarations: [ CurrentLocationComponent ],
-  entryComponents: [ CurrentLocationComponent ]
+  declarations: [ CurrentLocationComponent ]
 })
 export class CurrentLocationModule implements WithCustomElementComponent {
   customElementComponent: Type<any> = CurrentLocationComponent;
