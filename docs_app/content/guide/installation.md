@@ -66,10 +66,20 @@ npm install @reactivex/rxjs@5.0.0-beta.1
 
 ## CDN
 
-For CDN, you can use [unpkg](https://unpkg.com/). Just replace *version* with the current version on the link below:
+For CDN, you can use [unpkg](https://unpkg.com/):
 
-For RxJS 5.0.0-beta.1 through beta.11: [https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.umd.js](https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.umd.js)
+[https://unpkg.com/rxjs@^7/dist/bundles/rxjs.umd.min.js](https://unpkg.com/rxjs@%5E7/dist/bundles/rxjs.umd.min.js)
 
-For RxJS 5.0.0-beta.12 and higher: [https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.js](https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.js)
+The global namespace for rxjs is `rxjs`:
 
-For RxJS 6.0.0 and higher: [https://unpkg.com/@reactivex/rxjs@version/dist/global/rxjs.umd.js](https://unpkg.com/@reactivex/rxjs@version/dist/global/rxjs.umd.js)
+```js
+const { range } = rxjs;
+const { map, filter } = rxjs.operators;
+
+range(1, 200)
+  .pipe(
+    filter(x => x % 2 === 1),
+    map(x => x + x)
+  )
+  .subscribe(x => console.log(x));
+```
