@@ -18,6 +18,14 @@ it('should support an event target source result selector', () => {
   const a = fromEvent(eventTargetSource, "click", () => "clunk"); // $ExpectType Observable<string>
 });
 
+it('should support an event target source with options', () => {
+    const a = fromEvent(eventTargetSource, "click", { once: true }); // $ExpectType Observable<Event>
+});
+
+it('should support an event target source with options and result selector', () => {
+    const a = fromEvent(eventTargetSource, "click", { once: true }, () => "clunk"); // $ExpectType Observable<string>
+});
+
 declare const documentSource: HTMLDocument;
 
 it('should support a document source', () => {
@@ -27,6 +35,14 @@ it('should support a document source', () => {
 
 it('should support a document source result selector', () => {
   const a = fromEvent(documentSource, "click", () => "clunk"); // $ExpectType Observable<string>
+});
+
+it('should support an document source with options', () => {
+    const a = fromEvent(documentSource, "click", { once: true }); // $ExpectType Observable<Event>
+});
+
+it('should support an document source with options and result selector', () => {
+    const a = fromEvent(documentSource, "click", { once: true }, () => "clunk"); // $ExpectType Observable<string>
 });
 
 // Pick the parts that will match NodeStyleEventEmitter. If this isn't done, it
