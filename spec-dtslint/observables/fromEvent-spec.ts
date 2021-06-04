@@ -37,11 +37,11 @@ it('should support a document source result selector', () => {
   const a = fromEvent(documentSource, "click", () => "clunk"); // $ExpectType Observable<string>
 });
 
-it('should support an document source with options', () => {
+it('should support a document source with options', () => {
     const a = fromEvent(documentSource, "click", { once: true }); // $ExpectType Observable<Event>
 });
 
-it('should support an document source with options and result selector', () => {
+it('should support a document source with options and result selector', () => {
     const a = fromEvent(documentSource, "click", { once: true }, () => "clunk"); // $ExpectType Observable<string>
 });
 
