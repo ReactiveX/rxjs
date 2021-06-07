@@ -66,7 +66,8 @@ const tick$ = new ConnectableObservable(
 
 <!-- prettier-ignore -->
 ```ts
-import { share, Subject, timer } from 'rxjs';
+import { Subject, timer } from 'rxjs';
+import { share } from 'rxjs/operators';
 // suggested refactor
 const tick$ = timer(1_000).pipe(
   share({ connector: () => new Subject() })
