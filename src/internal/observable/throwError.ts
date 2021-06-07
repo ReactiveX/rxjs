@@ -33,11 +33,11 @@ import { isFunction } from '../util/isFunction';
  *    return error;
  * });
  *
- * errorWithTimesptamp$.subscribe({
+ * errorWithTimestamp$.subscribe({
  *    error: err => console.log(err.timestamp, err.message)
  * });
  *
- * errorWithTimesptamp$.subscribe({
+ * errorWithTimestamp$.subscribe({
  *    error: err => console.log(err.timestamp, err.message)
  * });
  *
