@@ -5,6 +5,7 @@ import { Subscription, EMPTY_SUBSCRIPTION } from './Subscription';
 import { Observer, SubscriptionLike, TeardownLogic } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { arrRemove } from './util/arrRemove';
+import { errorContext } from './util/errorContext';
 
 /**
  * A Subject is a special type of Observable that allows values to be
@@ -54,36 +55,42 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   next(value: T) {
-    this._throwIfClosed();
-    if (!this.isStopped) {
-      const copy = this.observers.slice();
-      for (const observer of copy) {
-        observer.next(value);
+    errorContext(() => {
+      this._throwIfClosed();
+      if (!this.isStopped) {
+        const copy = this.observers.slice();
+        for (const observer of copy) {
+          observer.next(value);
+        }
       }
-    }
+    });
   }
 
   error(err: any) {
-    this._throwIfClosed();
-    if (!this.isStopped) {
-      this.hasError = this.isStopped = true;
-      this.thrownError = err;
-      const { observers } = this;
-      while (observers.length) {
-        observers.shift()!.error(err);
+    errorContext(() => {
+      this._throwIfClosed();
+      if (!this.isStopped) {
+        this.hasError = this.isStopped = true;
+        this.thrownError = err;
+        const { observers } = this;
+        while (observers.length) {
+          observers.shift()!.error(err);
+        }
       }
-    }
+    });
   }
 
   complete() {
-    this._throwIfClosed();
-    if (!this.isStopped) {
-      this.isStopped = true;
-      const { observers } = this;
-      while (observers.length) {
-        observers.shift()!.complete();
+    errorContext(() => {
+      this._throwIfClosed();
+      if (!this.isStopped) {
+        this.isStopped = true;
+        const { observers } = this;
+        while (observers.length) {
+          observers.shift()!.complete();
+        }
       }
-    }
+    });
   }
 
   unsubscribe() {

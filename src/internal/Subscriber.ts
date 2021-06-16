@@ -6,6 +6,7 @@ import { reportUnhandledError } from './util/reportUnhandledError';
 import { noop } from './util/noop';
 import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories';
 import { timeoutProvider } from './scheduler/timeoutProvider';
+import { captureError } from './util/errorContext';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -193,16 +194,7 @@ function wrapForErrorHandling(handler: (arg?: any) => void, instance: SafeSubscr
       handler(...args);
     } catch (err) {
       if (config.useDeprecatedSynchronousErrorHandling) {
-        // If the user has opted for "super-gross" mode, we need to check to see
-        // if we're currently subscribing. If we are, we need to mark the _syncError
-        // So that it can be rethrown in the `subscribe` call on `Observable`.
-        if ((instance as any)._syncErrorHack_isSubscribing) {
-          (instance as any).__syncError = err;
-        } else {
-          // We're not currently subscribing, but we're in super-gross mode,
-          // so throw it immediately.
-          throw err;
-        }
+        captureError(err);
       } else {
         // Ideal path, we report this as an unhandled error,
         // which is thrown on a new call stack.
