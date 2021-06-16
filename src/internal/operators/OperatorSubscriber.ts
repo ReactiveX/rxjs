@@ -1,3 +1,4 @@
+import { config } from '../config';
 import { Subscriber } from '../Subscriber';
 
 /**
@@ -42,7 +43,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
           try {
             onNext(value);
           } catch (err) {
-            destination.error(err);
+            superGross(this, destination, err);
           }
         }
       : super._next;
@@ -52,7 +53,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
             onError(err);
           } catch (err) {
             // Send any errors that occur down stream.
-            destination.error(err);
+            superGross(this, destination, err);
           } finally {
             // Ensure teardown.
             this.unsubscribe();
@@ -65,7 +66,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
             onComplete();
           } catch (err) {
             // Send any errors that occur down stream.
-            destination.error(err);
+            superGross(this, destination, err);
           } finally {
             // Ensure teardown.
             this.unsubscribe();
@@ -80,4 +81,18 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
     // Execute additional teardown if we have any and we didn't already do so.
     !closed && this.onFinalize?.();
   }
+}
+
+function superGross(self: any, destination: Subscriber<any>, err: any) {
+  if (config.useDeprecatedSynchronousErrorHandling) {
+    let dest: any = destination;
+    while (dest) {
+      if (dest.__syncErrorHack_hasThrown) {
+        self.__syncErrorHack_hasThrown = true;
+        throw err;
+      }
+      dest = dest.destination;
+    }
+  }
+  destination.error(err);
 }

@@ -110,6 +110,10 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.closed) {
       this.isStopped = true;
       super.unsubscribe();
+      if (config.useDeprecatedSynchronousErrorHandling && (this.destination as any).__syncErrorHack_hasThrown) {
+        (this as any).__syncErrorHack_hasThrown = true;
+        (this as any).__syncError = (this.destination as any).__syncError;
+      }
       this.destination = null!;
     }
   }
@@ -199,6 +203,8 @@ function wrapForErrorHandling(handler: (arg?: any) => void, instance: SafeSubscr
         if ((instance as any)._syncErrorHack_isSubscribing) {
           (instance as any).__syncError = err;
         } else {
+          (instance as any).__syncErrorHack_hasThrown = true;
+          (instance as any).__syncError = err;
           // We're not currently subscribing, but we're in super-gross mode,
           // so throw it immediately.
           throw err;

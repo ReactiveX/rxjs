@@ -270,6 +270,8 @@ export class Observable<T> implements Subscribable<T> {
       // that by the mere existence of `__syncError`.
       if ('__syncError' in dest) {
         try {
+          localSubscriber.__syncErrorHack_hasThrown = true;
+          localSubscriber.__syncError = dest.__syncError;
           throw dest.__syncError;
         } finally {
           subscriber.unsubscribe();
