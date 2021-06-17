@@ -228,7 +228,7 @@ export class AppComponent implements OnInit {
       // (Apparently, this happens with a slight delay.)
       setTimeout(() => (this.isStarting = false), 100);
     }
-    console.log('ondoc rednered');
+    console.log('ondoc rendered');
     const head = this.dom.getElementsByTagName('head')[0];
     let element: HTMLLinkElement = this.dom.querySelector(`link[rel='canonical']`) || null
     if (element === null) {
