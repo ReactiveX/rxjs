@@ -886,11 +886,40 @@ describe('useDeprecatedSynchronousErrorHandling', () => {
     subject.pipe(mergeMap(x => [x])).subscribe();
     
     expect(() => {
-      subject.error('one');
-    }).to.throw();
+      subject.error(new Error('one'));
+    }).to.throw(Error, 'one');
 
     expect(() => {
       subject.error('two');
     }).not.to.throw();
+  });
+
+  it('deep rethrowing 1', () => {
+    const subject1 = new Subject();
+    const subject2 = new Subject();
+
+    subject2.subscribe();
+
+    subject1.subscribe({
+      next: () => subject2.error(new Error('hahaha'))
+    });
+
+    expect(() => {
+      subject1.next('test');
+    }).to.throw(Error, 'hahaha');
+  });
+
+  it('deep rethrowing 2', () => {
+    const subject1 = new Subject();
+
+    subject1.subscribe({
+      next: () => {
+        throwError(new Error('hahaha')).subscribe();
+      }
+    });
+
+    expect(() => {
+      subject1.next('test');
+    }).to.throw(Error, 'hahaha');
   });
 });
