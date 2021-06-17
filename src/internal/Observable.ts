@@ -9,6 +9,7 @@ import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
 import { isFunction } from './util/isFunction';
+import { errorContext } from './util/errorContext';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -216,9 +217,7 @@ export class Observable<T> implements Subscribable<T> {
   ): Subscription {
     const subscriber = isSubscriber(observerOrNext) ? observerOrNext : new SafeSubscriber(observerOrNext, error, complete);
 
-    if (config.useDeprecatedSynchronousErrorHandling) {
-      this._deprecatedSyncErrorSubscribe(subscriber);
-    } else {
+    errorContext(() => {
       const { operator, source } = this;
       subscriber.add(
         operator
@@ -234,51 +233,9 @@ export class Observable<T> implements Subscribable<T> {
             // function, so we need to catch errors and handle them appropriately.
             this._trySubscribe(subscriber)
       );
-    }
+    });
+
     return subscriber;
-  }
-
-  /**
-   * REMOVE THIS ENTIRE METHOD IN VERSION 8.
-   */
-  private _deprecatedSyncErrorSubscribe(subscriber: Subscriber<unknown>) {
-    const localSubscriber: any = subscriber;
-    localSubscriber._syncErrorHack_isSubscribing = true;
-    const { operator } = this;
-    if (operator) {
-      // We don't need to try/catch on operators, as they
-      // are doing their own try/catching, and will
-      // properly decorate the subscriber with `__syncError`.
-      subscriber.add(operator.call(subscriber, this.source));
-    } else {
-      try {
-        subscriber.add(this._subscribe(subscriber));
-      } catch (err) {
-        localSubscriber.__syncError = err;
-      }
-    }
-
-    // In the case of the deprecated sync error handling,
-    // we need to crawl forward through our subscriber chain and
-    // look to see if there's any synchronously thrown errors.
-    // Does this suck for perf? Yes. So stop using the deprecated sync
-    // error handling already. We're removing this in v8.
-    let dest = localSubscriber;
-    while (dest) {
-      // Technically, someone could throw something falsy, like 0, or "",
-      // so we need to check to see if anything was thrown, and we know
-      // that by the mere existence of `__syncError`.
-      if ('__syncError' in dest) {
-        try {
-          throw dest.__syncError;
-        } finally {
-          subscriber.unsubscribe();
-        }
-      }
-      dest = dest.destination;
-    }
-
-    localSubscriber._syncErrorHack_isSubscribing = false;
   }
 
   /** @internal */
