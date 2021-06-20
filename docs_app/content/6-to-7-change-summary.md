@@ -168,7 +168,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ### connectable
 
-- This is the new means for creating a `ConnectableObservable`, and really us a replacement for non-selector usage of `multicast` and `publish` variants. Simply pass your source observable to `connectable` with the `Subject` you'd like to connect through.
+- This is the new means for creating a `ConnectableObservable`, and really is a replacement for non-selector usage of `multicast` and `publish` variants. Simply pass your source observable to `connectable` with the `Subject` you'd like to connect through.
 
 ### firstValueFrom
 
