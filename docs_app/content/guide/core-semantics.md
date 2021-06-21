@@ -26,7 +26,7 @@ The purpose of these semantics is provide predictable behavior for the users of 
 - IF they perform a related operation to a creation function, they SHOULD share the creation function's name only with the suffix `With`. (e.g. `concat` and `concatWith`).
 - SHOULD NOT have "result selectors". This is a secondary argument that provides the ability to "map" values after performing the primary operation of the operator.
 
-# Creation Functions
+## Creation Functions
 
 - Names MUST NOT end in `With`. That is reserved for the operator counter parts of creation functions.
 - MAY have "result selectors". This is a secondary argument that provides the ability to "map" values before they're emitted from the resulting observable.
