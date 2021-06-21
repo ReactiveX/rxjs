@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { asyncScheduler, of, from, Observer, observable, Subject, noop } from 'rxjs';
+import { asyncScheduler, of, from, Observer, observable, Subject, noop, Subscription } from 'rxjs';
 import { first, concatMap, delay, take, tap } from 'rxjs/operators';
 import { ReadableStream } from 'web-streams-polyfill';
 
@@ -107,6 +107,34 @@ describe('from', () => {
         });
       }
     });
+  });
+
+  it('should finalize an AsyncGenerator on unsubscribe', (done) => {
+    const results: any[] = [];
+    const sideEffects: any[] = [];
+    let subscription: Subscription;
+
+    async function* gen() {
+      try {
+        let i = 0;
+        while (true) {
+          sideEffects.push(i);
+          yield await i++;
+          if (i === 2) {
+            subscription.unsubscribe();
+          }
+        }
+      } finally {
+        results.push('finalized generator');
+        expect(sideEffects).to.deep.equal([0, 1, 2]);
+        expect(results).to.deep.equal([0, 1, 'finalized generator']);
+        done();
+      }
+    }
+
+    const source = from(gen());
+
+    subscription = source.subscribe(value => results.push(value));
   });
 
 
