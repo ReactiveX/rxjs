@@ -76,7 +76,7 @@ export function fromEvent<T, R>(
   eventName: string,
   options: EventListenerOptions,
   resultSelector: (event: T) => R
-): Observable<T>;
+): Observable<R>;
 
 export function fromEvent(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<unknown>;
 /** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
