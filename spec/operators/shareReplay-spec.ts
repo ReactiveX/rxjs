@@ -366,7 +366,7 @@ describe('shareReplay', () => {
   });
 
   const FinalizationRegistry = (global as any).FinalizationRegistry;
-  if (FinalizationRegistry) {
+  if (FinalizationRegistry && global.gc) {
     it('should not leak the subscriber for sync sources', (done) => {
       let callback: (() => void) | undefined = () => {
         /* noop */

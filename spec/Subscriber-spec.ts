@@ -244,7 +244,7 @@ describe('Subscriber', () => {
   });
 
   const FinalizationRegistry = (global as any).FinalizationRegistry;
-  if (FinalizationRegistry) {
+  if (FinalizationRegistry && global.gc) {
 
     it('should not leak the destination', (done) => {
       let observer: Observer<number> | undefined = {
