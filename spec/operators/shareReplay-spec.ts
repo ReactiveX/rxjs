@@ -382,7 +382,7 @@ describe('shareReplay', () => {
       shared.subscribe(callback);
 
       callback = undefined;
-      global.gc();
+      global.gc?.();
     });
   } else {
     console.warn(`No support for FinalizationRegistry in Node ${process.version}`);

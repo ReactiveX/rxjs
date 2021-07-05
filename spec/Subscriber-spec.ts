@@ -262,7 +262,7 @@ describe('Subscriber', () => {
       const subscription = of(42).subscribe(observer);
 
       observer = undefined;
-      global.gc();
+      global.gc?.();
     });
 
   } else {
