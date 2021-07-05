@@ -15,10 +15,10 @@ describe('intervalProvider', () => {
     let setCalled = false;
     let clearCalled = false;
 
-    global.setInterval = () => {
+    global.setInterval = (() => {
       setCalled = true;
       return 0 as any;
-    };
+    }) as any; // TypeScript complains about a __promisify__ property
     global.clearInterval = () => {
       clearCalled = true;
     };
