@@ -1,3 +1,14 @@
+# [7.2.0](https://github.com/reactivex/rxjs/compare/7.1.0...7.2.0) (2021-07-05)
+
+### Bug Fixes
+
+- **debounceTime:** unschedule dangling task on unsubscribe before complete ([#6464](https://github.com/reactivex/rxjs/issues/6464)) ([7ab0a4c](https://github.com/reactivex/rxjs/commit/7ab0a4c649b1b54e763a726c4ffdc183b0b45b23))
+- **fromEvent:** Types now properly infer when resultSelector is provided ([#6447](https://github.com/reactivex/rxjs/issues/6447)) ([39b9d81](https://github.com/reactivex/rxjs/commit/39b9d818ef6ea033dc8e53800e3a220d56c76b4a))
+
+### Features
+
+- Operators are all exported at the top level, from "rxjs". From here on out, we encourage top-level imports with RxJS. Importing from `rxjs/operators` will be deprecated soon. ([#6488](https://github.com/reactivex/rxjs/issues/6488)) ([512adc2](https://github.com/reactivex/rxjs/commit/512adc25f350660113275d8277d16b7f3eec1d49)), closes [#6242](https://github.com/reactivex/rxjs/issues/6242)
+
 # [7.1.0](https://github.com/reactivex/rxjs/compare/7.0.1...7.1.0) (2021-05-21)
 
 ### Bug Fixes
