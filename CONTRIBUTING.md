@@ -5,23 +5,24 @@ it still applies to you. Ignorance is not an exemption.
 
 Contents
 
-- [Submitting a Pull Request (PR)](#submitting-a-pull-request-pr)
-  - [After your pull request is merged](#after-your-pull-request-is-merged)
-- [Coding Style Guidelines](#coding-style-guidelines)
-- [Documentation](#documentation)
-- [Unit Tests](#unit-tests)
-  - [CI Tests](#ci-tests)
-- [Performance Tests](#performance-tests)
-  - [Macro](#macro)
-  - [Micro](#micro)
-- [Commit Message Guidelines](#commit-message-guidelines)
-  - [Commit Message Format](#commit-message-format)
-  - [Revert](#revert)
-  - [Type](#type)
-  - [Scope](#scope)
-  - [Subject](#subject)
-  - [Body](#body)
-  - [Footer](#footer)
+- [Contributing to RxJS](#contributing-to-rxjs)
+  - [Submitting a Pull Request (PR)](#submitting-a-pull-request-pr)
+    - [After your pull request is merged](#after-your-pull-request-is-merged)
+  - [Coding Style Guidelines](#coding-style-guidelines)
+  - [Documentation](#documentation)
+  - [Unit Tests](#unit-tests)
+    - [CI Tests](#ci-tests)
+  - [Performance Tests](#performance-tests)
+    - [Macro](#macro)
+    - [Micro](#micro)
+  - [Commit Message Guidelines](#commit-message-guidelines)
+    - [Commit Message Format](#commit-message-format)
+    - [Revert](#revert)
+    - [Type](#type)
+    - [Scope](#scope)
+    - [Subject](#subject)
+    - [Body](#body)
+    - [Footer](#footer)
 
 ---
 
@@ -47,8 +48,6 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 - Create your patch, following [code style guidelines](#coding-style-guidelines), and **including appropriate test cases**.
 - Run the full test suite and ensure that all tests pass.
-- Run the micro and macro performance tests against your feature branch and compare against master
-  to ensure performance wasn't changed for the worse.
 - Commit your changes using a descriptive commit message that follows our
   [commit message guidelines](#commit-message-guidelines). Adherence to these conventions
   is necessary because release notes are automatically generated from these messages.
