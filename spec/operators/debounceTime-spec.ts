@@ -1,10 +1,12 @@
 /** @prettier */
 import { expect } from 'chai';
-import { of, Subject } from 'rxjs';
-import { debounceTime, mergeMap } from 'rxjs/operators';
+import { NEVER, of, Subject } from 'rxjs';
+import { AnimationFrameAction } from 'rxjs/internal/scheduler/AnimationFrameAction';
+import { AnimationFrameScheduler } from 'rxjs/internal/scheduler/AnimationFrameScheduler';
+import { debounceTime, mergeMap, startWith } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
 import { VirtualTimeScheduler } from '../../src/internal/scheduler/VirtualTimeScheduler';
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {debounceTime} */
 describe('debounceTime', () => {
@@ -220,5 +222,22 @@ describe('debounceTime', () => {
     scheduler.flush();
 
     expect(results).to.deep.equal([1, 2]);
+  });
+
+  it('should unsubscribe from the scheduled debounce action when downstream unsubscribes', () => {
+    const scheduler = new AnimationFrameScheduler(AnimationFrameAction);
+
+    expect(scheduler._scheduled).to.not.exist;
+    expect(scheduler.actions).to.be.empty;
+
+    const subscription = NEVER.pipe(startWith(1), debounceTime(0, scheduler)).subscribe();
+
+    expect(scheduler._scheduled).to.exist;
+    expect(scheduler.actions.length).to.equal(1);
+
+    subscription.unsubscribe();
+
+    expect(scheduler._scheduled).to.not.exist;
+    expect(scheduler.actions).to.be.empty;
   });
 });

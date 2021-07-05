@@ -86,6 +86,7 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
       if (now < targetTime) {
         // On that case, re-schedule to the new target
         activeTask = this.schedule(undefined, targetTime - now);
+        subscriber.add(activeTask);
         return;
       }
 
@@ -102,6 +103,7 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
           // Only set up a task if it's not already up
           if (!activeTask) {
             activeTask = scheduler.schedule(emitWhenIdle, dueTime);
+            subscriber.add(activeTask);
           }
         },
         () => {
