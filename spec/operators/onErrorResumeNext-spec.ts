@@ -1,111 +1,175 @@
+/** @prettier */
 import { expect } from 'chai';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { TestScheduler } from 'rxjs/testing';
 import { onErrorResumeNext, take, finalize } from 'rxjs/operators';
 import { concat, throwError, of, Observable } from 'rxjs';
 import { asInteropObservable } from '../helpers/interop-helper';
+import { observableMatcher } from '../helpers/observableMatcher';
 
-describe('onErrorResumeNext operator', () => {
+describe('onErrorResumeNext', () => {
+  let testScheduler: TestScheduler;
+
+  beforeEach(() => {
+    testScheduler = new TestScheduler(observableMatcher);
+  });
+
   it('should continue observable sequence with next observable', () => {
-    const source =  hot('--a--b--#');
-    const next   = cold(        '--c--d--|');
-    const subs =        '^       !';
-    const expected =    '--a--b----c--d--|';
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--#        ');
+      const e1subs = '  ^-------!        ';
+      const e2 = cold('         --c--d--|');
+      const e2subs = '  --------^-------!';
+      const expected = '--a--b----c--d--|';
 
-    expectObservable(source.pipe(onErrorResumeNext(next))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(onErrorResumeNext(e2))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
   });
 
   it('should continue with hot observables', () => {
-    const source =  hot('--a--b--#');
-    const next   =  hot('-----x----c--d--|');
-    const subs =        '^       !';
-    const expected =    '--a--b----c--d--|';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--#        ');
+      const e1subs = '  ^-------!        ';
+      const e2 = hot('  -----x----c--d--|');
+      const e2subs = '  --------^-------!';
+      const expected = '--a--b----c--d--|';
 
-    expectObservable(source.pipe(onErrorResumeNext(next))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(onErrorResumeNext(e2))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
   });
 
-  it('should continue with array of multiple observables throw error', () => {
-    const source =   hot('--a--b--#');
-    const next   = [cold(        '--c--d--#'),
-                    cold(                '--e--#'),
-                    cold(                     '--f--g--|')];
-    const subs =         '^       !';
-    const expected =     '--a--b----c--d----e----f--g--|';
+  it('should continue with array of multiple observables that throw errors', () => {
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--#                     ');
+      const e1subs = '  ^-------!                     ';
+      const e2 = [
+        cold('                  --c--d--#             '),
+        cold('                          --e--#        '),
+        cold('                               --f--g--|'),
+      ];
+      const e2subs = [
+        '               --------^-------!',
+        '               ----------------^----!',
+        '               ---------------------^-------!',
+      ];
+      const expected = '--a--b----c--d----e----f--g--|';
 
-    expectObservable(source.pipe(onErrorResumeNext(next))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(onErrorResumeNext(e2))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2[0].subscriptions).toBe(e2subs[0]);
+      expectSubscriptions(e2[1].subscriptions).toBe(e2subs[1]);
+      expectSubscriptions(e2[2].subscriptions).toBe(e2subs[2]);
+    });
   });
 
-  it('should continue with multiple observables throw error', () => {
-    const source =   hot('--a--b--#');
-    const next1  =  cold(        '--c--d--#');
-    const next2  =  cold(                '--e--#');
-    const next3  =  cold(                     '--f--g--|');
-    const subs =         '^       !';
-    const expected =     '--a--b----c--d----e----f--g--|';
+  it('should continue with multiple observables that throw errors', () => {
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--#                     ');
+      const e1subs = '  ^-------!                     ';
+      const e2 = cold('         --c--d--#             ');
+      const e2subs = '  --------^-------!             ';
+      const e3 = cold('                 --e--#        ');
+      const e3subs = '  ----------------^----!        ';
+      const e4 = cold('                      --f--g--|');
+      const e4subs = '  ---------------------^-------!';
+      const expected = '--a--b----c--d----e----f--g--|';
 
-    expectObservable(source.pipe(onErrorResumeNext(next1, next2, next3))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(onErrorResumeNext(e2, e3, e4))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectSubscriptions(e3.subscriptions).toBe(e3subs);
+      expectSubscriptions(e4.subscriptions).toBe(e4subs);
+    });
   });
 
-  it('should continue with multiple observables does not throw error', () => {
-    const source =   hot('--a--b--|');
-    const next1  =  cold(        '--c--d--|');
-    const next2  =  cold(                '--e--|');
-    const next3  =  cold(                     '--f--g--|');
-    const subs =         '^       !';
-    const expected =     '--a--b----c--d----e----f--g--|';
+  it("should continue with multiple observables that don't throw error", () => {
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--|                     ');
+      const e1subs = '  ^-------!                     ';
+      const e2 = cold('         --c--d--|             ');
+      const e2subs = '  --------^-------!             ';
+      const e3 = cold('                 --e--|        ');
+      const e3subs = '  ----------------^----!        ';
+      const e4 = cold('                      --f--g--|');
+      const e4subs = '  ---------------------^-------!';
+      const expected = '--a--b----c--d----e----f--g--|';
 
-    expectObservable(source.pipe(onErrorResumeNext(next1, next2, next3))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(onErrorResumeNext(e2, e3, e4))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectSubscriptions(e3.subscriptions).toBe(e3subs);
+      expectSubscriptions(e4.subscriptions).toBe(e4subs);
+    });
   });
 
   it('should continue after empty observable', () => {
-    const source =   hot('|');
-    const next1  =  cold('--c--d--|');
-    const next2  =  cold(        '--e--#');
-    const next3  =  cold(             '--f--g--|');
-    const subs =         '(^!)';
-    const expected =     '--c--d----e----f--g--|';
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  |                     ');
+      const e1subs = '  (^!)                  ';
+      const e2 = cold(' --c--d--|             ');
+      const e2subs = '  ^-------!             ';
+      const e3 = cold('         --e--#        ');
+      const e3subs = '  --------^----!        ';
+      const e4 = cold('              --f--g--|');
+      const e4subs = '  -------------^-------!';
+      const expected = '--c--d----e----f--g--|';
 
-    expectObservable(source.pipe(onErrorResumeNext(next1, next2, next3))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(onErrorResumeNext(e2, e3, e4))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      expectSubscriptions(e3.subscriptions).toBe(e3subs);
+      expectSubscriptions(e4.subscriptions).toBe(e4subs);
+    });
   });
 
-  it('should not complete with observble does not ends', () => {
-    const source =   hot('--a--b--|');
-    const next1  =  cold(        '--');
-    const subs =         '^       !';
-    const expected =     '--a--b----';
+  it('should not complete with observable that does not complete', () => {
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--| ');
+      const e1subs = '  ^-------! ';
+      const e2 = cold('         --');
+      const e2subs = '  --------^-';
+      const expected = '--a--b----';
 
-    expectObservable(source.pipe(onErrorResumeNext(next1))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(onErrorResumeNext(e2))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
   });
 
-  it('should not continue with observble does not ends', () => {
-    const source =   hot('--');
-    const next1  =  cold(  '-a--b-');
-    const subs =         '^       ';
-    const expected =     '-';
+  it('should not continue when source observable does not complete', () => {
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--');
+      const e1subs = '  ^----';
+      const e2 = cold('-b--c-');
+      const e2subs: string[] = [];
+      const expected = '--a--';
 
-    expectObservable(source.pipe(onErrorResumeNext(next1))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(onErrorResumeNext(e2))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
   });
 
-  it('should complete observable with next observable throws', () => {
-    const source =  hot('--a--b--#');
-    const next   = cold(        '--c--d--#');
-    const subs =        '^       !';
-    const expected =    '--a--b----c--d--|';
+  it('should complete observable when next observable throws', () => {
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--#        ');
+      const e1subs = '  ^-------!        ';
+      const e2 = cold('         --c--d--#');
+      const e2subs = '  --------^-------!';
+      const expected = '--a--b----c--d--|';
 
-    expectObservable(source.pipe(onErrorResumeNext(next))).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
+      expectObservable(e1.pipe(onErrorResumeNext(e2))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable(subscriber => {
+    const synchronousObservable = new Observable((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -114,87 +178,87 @@ describe('onErrorResumeNext operator', () => {
       }
     });
 
-    throwError(() => new Error('Some error')).pipe(
-      onErrorResumeNext(synchronousObservable),
-      take(3),
-    ).subscribe(() => { /* noop */ });
+    throwError(() => new Error('Some error'))
+      .pipe(onErrorResumeNext(synchronousObservable), take(3))
+      .subscribe(() => {
+        /* noop */
+      });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 
-  it('should unsubscribe from an interop observble upon explicit unsubscription', () => {
-    const source =  hot('--a--b--#');
-    const next   = cold(        '--c--d--');
-    const nextSubs =    '        ^   !';
-    const subs =        '^           !';
-    const expected =    '--a--b----c--';
+  it('should unsubscribe from an interop observable upon explicit unsubscription', () => {
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--#       ');
+      const e1subs = '  ^-------!       ';
+      const e2 = cold('         --c--d--');
+      const e2subs = '  --------^---!   ';
+      const unsub = '   ------------!   ';
+      const expected = '--a--b----c--   ';
 
-    // This test manipulates the observable to make it look like an interop
-    // observable - an observable from a foreign library. Interop subscribers
-    // are treated differently: they are wrapped in a safe subscriber. This
-    // test ensures that unsubscriptions are chained all the way to the
-    // interop subscriber.
+      // This test manipulates the observable to make it look like an interop
+      // observable - an observable from a foreign library. Interop subscribers
+      // are treated differently: they are wrapped in a safe subscriber. This
+      // test ensures that unsubscriptions are chained all the way to the
+      // interop subscriber.
 
-    expectObservable(source.pipe(onErrorResumeNext(asInteropObservable(next))), subs).toBe(expected);
-    expectSubscriptions(next.subscriptions).toBe(nextSubs);
+      expectObservable(e1.pipe(onErrorResumeNext(asInteropObservable(e2))), unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
   });
 
   it('should work with promise', (done) => {
     const expected = [1, 2];
-    const source = concat(of(1), throwError(() => ('meh')));
+    const source = concat(
+      of(1),
+      throwError(() => 'meh')
+    );
 
-    source.pipe(onErrorResumeNext(Promise.resolve(2)))
-      .subscribe(x => {
+    source.pipe(onErrorResumeNext(Promise.resolve(2))).subscribe(
+      (x) => {
         expect(expected.shift()).to.equal(x);
-      }, () => {
+      },
+      () => {
         done(new Error('should not be called'));
-      }, () => {
+      },
+      () => {
         expect(expected).to.be.empty;
         done();
-      });
+      }
+    );
   });
 
   it('should skip invalid sources and move on', () => {
     const results: any[] = [];
 
-    of(1).pipe(
-      onErrorResumeNext(
-        [2, 3, 4],
-        { notValid: 'LOL' } as any,
-        of(5, 6),
-      )
-    )
-    .subscribe({
-      next: value => results.push(value),
-      complete: () => results.push('complete')
-    });
+    of(1)
+      .pipe(onErrorResumeNext([2, 3, 4], { notValid: 'LOL' } as any, of(5, 6)))
+      .subscribe({
+        next: (value) => results.push(value),
+        complete: () => results.push('complete'),
+      });
 
     expect(results).to.deep.equal([1, 2, 3, 4, 5, 6, 'complete']);
   });
 
   it('should call finalize after each sync observable', () => {
-    let results: any[] = []
+    const results: any[] = [];
 
-    of(1).pipe(
-      finalize(() => results.push('finalize 1')),
-      onErrorResumeNext(of(2).pipe(
-        finalize(() => results.push('finalize 2'))
-      ), of(3).pipe(
-        finalize(() => results.push('finalize 3'))
-      ), of(4).pipe(
-        finalize(() => results.push('finalize 4'))
-      ))
-    ).subscribe({
-      next: value => results.push(value),
-      complete: () => results.push('complete')
-    });
+    of(1)
+      .pipe(
+        finalize(() => results.push('finalize 1')),
+        onErrorResumeNext(
+          of(2).pipe(finalize(() => results.push('finalize 2'))),
+          of(3).pipe(finalize(() => results.push('finalize 3'))),
+          of(4).pipe(finalize(() => results.push('finalize 4')))
+        )
+      )
+      .subscribe({
+        next: (value) => results.push(value),
+        complete: () => results.push('complete'),
+      });
 
-    expect(results).to.deep.equal([
-      1, 'finalize 1',
-      2, 'finalize 2',
-      3, 'finalize 3',
-      4, 'finalize 4',
-      'complete'
-    ]);
+    expect(results).to.deep.equal([1, 'finalize 1', 2, 'finalize 2', 3, 'finalize 3', 4, 'finalize 4', 'complete']);
   });
 });
