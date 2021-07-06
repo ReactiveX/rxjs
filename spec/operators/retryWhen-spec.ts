@@ -241,7 +241,7 @@ describe('retryWhen', () => {
     });
   });
 
-  it('should mirror a basic cold source with complete, given a never notifier', () => {
+  it('should mirror a basic cold source with complete, given an empty notifier', () => {
     rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
       const source = cold('  --a--b--c--|');
       const subs = '         ^----------!';
@@ -255,7 +255,7 @@ describe('retryWhen', () => {
     });
   });
 
-  it('should mirror a basic cold source with no termination, given a never notifier', () => {
+  it('should mirror a basic cold source with no termination, given an empty notifier', () => {
     rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
       const source = cold('  --a--b--c---');
       const subs = '         ^-----------';
@@ -269,7 +269,7 @@ describe('retryWhen', () => {
     });
   });
 
-  it('should mirror a basic hot source with complete, given a never notifier', () => {
+  it('should mirror a basic hot source with complete, given an empty notifier', () => {
     rxTest.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
       const source = hot('-a-^--b--c--|');
       const subs = '         ^--------!';
