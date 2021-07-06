@@ -78,15 +78,15 @@ describe('retryWhen', () => {
           )
         )
       )
-      .subscribe(
-        (x: any) => {
+      .subscribe({
+        next(x: any) {
           expect(x).to.equal(expected[i++]);
         },
-        (err: any) => {
+        error(err: any) {
           expect(err).to.be.an('error', 'done');
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should retry when notified and complete on returned completion', (done) => {
@@ -99,19 +99,19 @@ describe('retryWhen', () => {
           }
           return n;
         }),
-        retryWhen((errors: any) => EMPTY)
+        retryWhen(() => EMPTY)
       )
-      .subscribe(
-        (n: number) => {
+      .subscribe({
+        next(n: number) {
           expect(n).to.equal(expected.shift());
         },
-        (err: any) => {
+        error() {
           done(new Error('should not be called'));
         },
-        () => {
+        complete() {
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should apply an empty notifier on an empty source', () => {
