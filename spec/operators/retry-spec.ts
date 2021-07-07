@@ -47,15 +47,15 @@ describe('retry', () => {
         }),
         retry(retries)
       )
-      .subscribe(
-        (x: number) => {
+      .subscribe({
+        next(x: number) {
           expect(x).to.equal(42);
         },
-        (err: any) => {
+        error() {
           expect('this was called').to.be.true;
         },
-        done
-      );
+        complete: done,
+      });
   });
 
   it('should retry a number of times, then call error handler', (done) => {
@@ -72,18 +72,18 @@ describe('retry', () => {
         }),
         retry(retries - 1)
       )
-      .subscribe(
-        (x: number) => {
+      .subscribe({
+        next() {
           done("shouldn't next");
         },
-        (err: any) => {
+        error() {
           expect(errors).to.equal(2);
           done();
         },
-        () => {
+        complete() {
           done("shouldn't complete");
-        }
-      );
+        },
+      });
   });
 
   it('should retry a number of times, then call error handler (with resetOnSuccess)', (done) => {
@@ -100,18 +100,18 @@ describe('retry', () => {
         }),
         retry({ count: retries - 1, resetOnSuccess: true })
       )
-      .subscribe(
-        (x: number) => {
+      .subscribe({
+        next() {
           done("shouldn't next");
         },
-        (err: any) => {
+        error() {
           expect(errors).to.equal(2);
           done();
         },
-        () => {
+        complete() {
           done("shouldn't complete");
-        }
-      );
+        },
+      });
   });
 
   it('should retry a number of times, then call next handler without error, then retry and complete', (done) => {
@@ -131,18 +131,18 @@ describe('retry', () => {
         }),
         retry({ count: retries - 1, resetOnSuccess: true })
       )
-      .subscribe(
-        (x: number) => {
+      .subscribe({
+        next(x: number) {
           expect(x).to.equal(42);
         },
-        (err: any) => {
+        error() {
           done("shouldn't error");
         },
-        () => {
+        complete() {
           expect(errors).to.equal(retries);
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should always teardown before starting the next cycle, even when synchronous', () => {
@@ -181,18 +181,18 @@ describe('retry', () => {
         }),
         retry({ count: retries - 1, resetOnSuccess: false })
       )
-      .subscribe(
-        (x: number) => {
+      .subscribe({
+        next(x: number) {
           expect(x).to.equal(42);
         },
-        (err: any) => {
+        error() {
           expect(errors).to.equal(retries);
           done();
         },
-        () => {
+        complete() {
           done("shouldn't complete");
-        }
-      );
+        },
+      });
   });
 
   it('should retry until successful completion', (done) => {
@@ -213,15 +213,15 @@ describe('retry', () => {
         retry(),
         take(retries)
       )
-      .subscribe(
-        (x: number) => {
+      .subscribe({
+        next(x: number) {
           expect(x).to.equal(42);
         },
-        (err: any) => {
+        error() {
           expect('this was called').to.be.true;
         },
-        done
-      );
+        complete: done,
+      });
   });
 
   it('should handle an empty source', () => {
@@ -364,19 +364,19 @@ describe('retry', () => {
         refCount(),
         retry(4)
       )
-      .subscribe(
-        (x: number) => {
+      .subscribe({
+        next(x: number) {
           expect(x).to.equal(expected.shift());
         },
-        (err: any) => {
+        error(err: any) {
           expect(err).to.equal('bad!');
           expect(expected.length).to.equal(0);
           done();
         },
-        () => {
+        complete() {
           done(new Error('should not be called'));
-        }
-      );
+        },
+      });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
