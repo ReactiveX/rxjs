@@ -66,7 +66,7 @@ describe('retry', () => {
       observer.complete();
     })
       .pipe(
-        map((x: any) => {
+        map(() => {
           errors += 1;
           throw 'bad';
         }),
@@ -94,7 +94,7 @@ describe('retry', () => {
       observer.complete();
     })
       .pipe(
-        map((x: any) => {
+        map(() => {
           errors += 1;
           throw 'bad';
         }),
