@@ -83,21 +83,21 @@ export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
  * );
  *
  * source.subscribe(x => console.log('subscription 1: ', x));
- * source.subscribe(x => console.log('subscription 1: ', x));
+ * source.subscribe(x => console.log('subscription 2: ', x));
  *
  * // Logs:
  * // Processing:  0
  * // subscription 1:  0
- * // subscription 1:  0
+ * // subscription 2:  0
  * // Processing:  1
  * // subscription 1:  1
- * // subscription 1:  1
+ * // subscription 2:  1
  * // Processing:  2
  * // subscription 1:  4
- * // subscription 1:  4
+ * // subscription 2:  4
  * // Processing:  3
  * // subscription 1:  9
- * // subscription 1:  9
+ * // subscription 2:  9
  * // ... and so on
  * ```
  *
