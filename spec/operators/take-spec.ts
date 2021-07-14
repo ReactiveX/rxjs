@@ -218,6 +218,8 @@ describe('take', () => {
     });
   });
 
+  // This is related to a PR with discussion here: https://github.com/ReactiveX/rxjs/pull/6396
+  // We can't fix this until version 8.
   it.skip('should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const subject = new Subject();
