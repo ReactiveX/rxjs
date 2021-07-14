@@ -193,7 +193,7 @@ describe('BehaviorSubject', () => {
     source.subscribe(subject);
   });
 
-  it.skip('should be an Observer which can be given to an interop source', (done) => {
+  it('should be an Observer which can be given to an interop source', (done) => {
     // This test reproduces a bug reported in this issue:
     // https://github.com/ReactiveX/rxjs/issues/5105
     // However, it cannot easily be fixed. See this comment:
