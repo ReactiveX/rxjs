@@ -86,7 +86,7 @@ describe('retry', () => {
       });
   });
 
-  it('should retry a number of times, then call error handler (with resetOnSuccess)', (done) => {
+  it('should retry a number of times, then call error handler (with resetOnFirstValue)', (done) => {
     let errors = 0;
     const retries = 2;
     new Observable((observer: Observer<number>) => {
@@ -98,7 +98,7 @@ describe('retry', () => {
           errors += 1;
           throw 'bad';
         }),
-        retry({ count: retries - 1, resetOnSuccess: true })
+        retry({ count: retries - 1, resetOnFirstValue: true })
       )
       .subscribe({
         next() {
@@ -129,7 +129,7 @@ describe('retry', () => {
             return of(42);
           }
         }),
-        retry({ count: retries - 1, resetOnSuccess: true })
+        retry({ count: retries - 1, resetOnFirstValue: true })
       )
       .subscribe({
         next(x: number) {
@@ -179,7 +179,7 @@ describe('retry', () => {
             return of(42);
           }
         }),
-        retry({ count: retries - 1, resetOnSuccess: false })
+        retry({ count: retries - 1, resetOnFirstValue: false })
       )
       .subscribe({
         next(x: number) {

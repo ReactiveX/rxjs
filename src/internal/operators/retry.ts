@@ -20,10 +20,10 @@ export interface RetryConfig {
    */
   delay?: number | ((error: any, retryCount: number) => ObservableInput<any>);
   /**
-   * Whether or not to reset the retry counter on success.
-   * Defaults to false.
+   * Whether or not to reset the retry counter when the retried subscription
+   * emits its first value.
    */
-  resetOnSuccess?: boolean;
+  resetOnFirstValue?: boolean;
 }
 
 /**
@@ -67,21 +67,22 @@ export interface RetryConfig {
  * // "Error!: Retried 2 times then quit!"
  * ```
  *
- * @param {number} count - Number of retry attempts before failing.
- * @param {boolean} resetOnSuccess - When set to `true` every successful emission will reset the error count
+ * @param count - Number of retry attempts before failing.
+ * @param resetOnSuccess - When set to `true` every successful emission will reset the error count
  * @return A function that returns an Observable that will resubscribe to the
  * source stream when the source stream errors, at most `count` times.
  */
 export function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
 
 /**
- * A more configurable means of retrying a source.
+ * Returns an observable that mirrors the source observable unless it errors. If it errors, the source observable
+ * will be resubscribed to (or "retried") based on the configuration passed here. See documentation
+ * for {@link RetryConfig} for more details.
  *
- * If `delay` is provided as a `number`, after the source errors, the result will wait `delay` milliseconds,
- * then retry the source. If `delay` is a function, th
- * @param config The retry configuration
+ * @param config - The retry configuration
  */
 export function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;
+
 export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTypeOperatorFunction<T> {
   let config: RetryConfig;
   if (configOrCount && typeof configOrCount === 'object') {
@@ -91,7 +92,7 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
       count: configOrCount,
     };
   }
-  const { count = Infinity, delay, resetOnSuccess = false } = config;
+  const { count = Infinity, delay, resetOnFirstValue: resetOnSuccess = false } = config;
 
   return count <= 0
     ? identity
