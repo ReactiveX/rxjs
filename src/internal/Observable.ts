@@ -436,7 +436,7 @@ export class Observable<T> implements Subscribable<T> {
    * ```
    */
   pipe(...operations: OperatorFunction<any, any>[]): Observable<any> {
-    return operations.length ? pipeFromArray(operations)(this) : this;
+    return pipeFromArray(operations)(this);
   }
 
   /* tslint:disable:max-line-length */
