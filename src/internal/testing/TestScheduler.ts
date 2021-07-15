@@ -117,7 +117,8 @@ export class TestScheduler extends VirtualTimeScheduler {
   private materializeInnerObservable(observable: Observable<any>, outerFrame: number): TestMessage[] {
     const messages: TestMessage[] = [];
     observable.subscribe(
-      (value) => {
+      (x) => {
+        const value = this.materializeInnerObservables(x);
         messages.push({ frame: this.frame - outerFrame, notification: nextNotification(value) });
       },
       (error) => {
@@ -129,6 +130,13 @@ export class TestScheduler extends VirtualTimeScheduler {
     );
     return messages;
   }
+
+  private materializeInnerObservables = deepReplace(value => {
+    if (value instanceof Observable) {
+      return this.materializeInnerObservable(value, this.frame)
+    }
+    return value;
+  })
 
   expectObservable<T>(observable: Observable<T>, subscriptionMarbles: string | null = null) {
     const actual: TestMessage[] = [];
@@ -142,7 +150,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       subscription = observable.subscribe(
         (x) => {
           // Support Observable-of-Observables
-          const value = x instanceof Observable ? this.materializeInnerObservable(x, this.frame) : x;
+          const value = this.materializeInnerObservables(x);
           actual.push({ frame: this.frame, notification: nextNotification(value) });
         },
         (error) => {
@@ -323,7 +331,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     marbles: string,
     values?: any,
     errorValue?: any,
-    materializeInnerObservables: boolean = false,
+    shouldMaterializeInnerObservables: boolean = false,
     runMode = false
   ): TestMessage[] {
     if (marbles.indexOf('!') !== -1) {
@@ -336,13 +344,21 @@ export class TestScheduler extends VirtualTimeScheduler {
     const testMessages: TestMessage[] = [];
     const subIndex = runMode ? marbles.replace(/^[ ]+/, '').indexOf('^') : marbles.indexOf('^');
     let frame = subIndex === -1 ? 0 : subIndex * -this.frameTimeFactor;
+
+    const materializeInnerObservables = deepReplace(value => {
+      if(value instanceof ColdObservable) {
+        return materializeInnerObservables(value.messages);
+      }
+      return value;
+    });
+
     const getValue =
       typeof values !== 'object'
         ? (x: any) => x
         : (x: any) => {
             // Support Observable-of-Observables
-            if (materializeInnerObservables && values[x] instanceof ColdObservable) {
-              return values[x].messages;
+            if (shouldMaterializeInnerObservables) {
+              return materializeInnerObservables(values[x]);
             }
             return values[x];
           };
@@ -689,4 +705,34 @@ export class TestScheduler extends VirtualTimeScheduler {
       performanceTimestampProvider.delegate = undefined;
     }
   }
+}
+
+function deepReplace(replaceFn: (value: unknown) => unknown) {
+  function performDeepReplace(value: unknown) {
+    const replaced = replaceFn(value);
+    if(replaced !== value) {
+      return replaced;
+    }
+  
+    if (
+      typeof value !== 'object' ||
+      value === null
+    ) {
+      return value;
+    }
+  
+    if(Array.isArray(value)) {
+      for(let i=0; i<value.length; i++) {
+        value[i] = performDeepReplace(value[i])
+      }
+    } else {
+      for(let k in value) {
+        if(value.hasOwnProperty(k)) {
+          (value as any)[k] = performDeepReplace((value as any)[k]);
+        }
+      }
+    }
+    return value;
+  }
+  return performDeepReplace;
 }

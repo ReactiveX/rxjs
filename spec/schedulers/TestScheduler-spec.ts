@@ -281,6 +281,16 @@ describe('TestScheduler', () => {
         expectObservable(NEVER).toBe('---', {});
       });
 
+      it('handles observables of observables', () => {
+        expectObservable(cold('a', { a: cold('b') }))
+                        .toBe('a', { a: cold('b') })
+      })
+      
+      it('handles observables of nested observables', () => {
+        expectObservable(cold('-a-b', { a: {a: cold('--b'), b: 3} }))
+                        .toBe('-a-b', { a: {a: cold('--b'), b: 3}})
+      })
+
       it('should accept an unsubscription marble diagram', () => {
         const source = hot('---^-a-b-|');
         const unsubscribe  =  '---!';
