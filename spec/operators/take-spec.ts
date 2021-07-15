@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
-import { merge, Observable, of, Subject } from 'rxjs';
-import { mergeMap, take, tap } from 'rxjs/operators';
+import { config, merge, Observable, of, Subject } from 'rxjs';
+import { finalize, mergeMap, take, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -218,7 +218,7 @@ describe('take', () => {
     });
   });
 
-  it.skip('should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified', () => {
+  it('should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const subject = new Subject();
       const e1 = cold(' (a|)');
@@ -234,4 +234,47 @@ describe('take', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
+
+  it('should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream completion is notified', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const subject = new Subject();
+      const e1 = cold(' (a|)');
+      const e1subs = '  (^!)';
+      const expected = '(a|)';
+
+      const result = merge(e1, subject).pipe(
+        take(1),
+        tap(() => subject.complete())
+      );
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
+  it('should properly handle reentrancy when taking many values', () => {
+    const results: any[] = [];
+    const subject = new Subject<number>();
+
+    config.onStoppedNotification = (x) => results.push(x);
+
+    merge(subject, of(1))
+      .pipe(
+        finalize(() => results.push('finalize source')),
+        take(5),
+        tap((n) => subject.next(n + 1)),
+        finalize(() => results.push('finalize result'))
+      )
+      .subscribe({
+        next: (n) => results.push(n),
+        complete: () => results.push('done'),
+      });
+
+    // Because this is reentrant, the last "taken" value of 5 is followed by `complete()`
+    // which shuts off all value emissions. Otherwise, this would be
+    // [5, 'done', 4, 3, 2, 1, 'finalize source', 'finalize result']
+    expect(results).to.deep.equal([5, 'done', 'finalize source', 'finalize result']);
+  });
+
+  afterEach(() => (config.onStoppedNotification = null));
 });

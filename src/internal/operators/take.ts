@@ -50,21 +50,15 @@ export function take<T>(count: number): MonoTypeOperatorFunction<T> {
       () => EMPTY
     : operate((source, subscriber) => {
         let seen = 0;
-        source.subscribe(
-          new OperatorSubscriber(subscriber, (value) => {
-            // Increment the number of values we have seen,
-            // then check it against the allowed count to see
-            // if we are still letting values through.
-            if (++seen <= count) {
-              subscriber.next(value);
-              // If we have met or passed our allowed count,
-              // we need to complete. We have to do <= here,
-              // because re-entrant code will increment `seen` twice.
-              if (count <= seen) {
-                subscriber.complete();
-              }
-            }
-          })
-        );
+        const operatorSubscriber = new OperatorSubscriber<T>(subscriber, (value) => {
+          if (++seen < count) {
+            subscriber.next(value);
+          } else {
+            operatorSubscriber.unsubscribe();
+            subscriber.next(value);
+            subscriber.complete();
+          }
+        });
+        source.subscribe(operatorSubscriber);
       });
 }
