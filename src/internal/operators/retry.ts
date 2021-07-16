@@ -23,7 +23,7 @@ export interface RetryConfig {
    * Whether or not to reset the retry counter when the retried subscription
    * emits its first value.
    */
-  resetOnFirstValue?: boolean;
+  resetOnSuccess?: boolean;
 }
 
 /**
@@ -92,7 +92,7 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
       count: configOrCount,
     };
   }
-  const { count = Infinity, delay, resetOnFirstValue: resetOnSuccess = false } = config;
+  const { count = Infinity, delay, resetOnSuccess: resetOnSuccess = false } = config;
 
   return count <= 0
     ? identity
