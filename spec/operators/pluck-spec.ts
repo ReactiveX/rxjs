@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/internal/testing/TestScheduler';
-import { pluck, map, tap, mergeMap } from 'rxjs/operators';
+import { pluck, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -163,13 +163,7 @@ describe('pluck', () => {
       const e1subs = '  (^!)';
       const expected = '|   ';
 
-      const invoked = 0;
-      const result = e1.pipe(
-        pluck('whatever'),
-        tap(null, null, () => {
-          expect(invoked).to.equal(0);
-        })
-      );
+      const result = e1.pipe(pluck('whatever'));
 
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
