@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
 import { tap, mergeMap, take } from 'rxjs/operators';
-import { Subject, of, throwError, Observer, EMPTY, Observable } from 'rxjs';
+import { Subject, of, throwError, Observer, EMPTY, Observable, noop } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -309,5 +309,89 @@ describe('tap', () => {
       });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
+  });
+
+  describe('lifecycle handlers', () => {
+    it('should support an unsubscribe event that fires before finalize', () => {
+      const results: any[] = [];
+      const subject = new Subject<number>();
+
+      const subscription = subject
+        .pipe(
+          tap({
+            subscribe: () => results.push('subscribe'),
+            next: (value) => results.push(`next ${value}`),
+            error: (err) => results.push(`error: ${err.message}`),
+            complete: () => results.push('complete'),
+            unsubscribe: () => results.push('unsubscribe'),
+            finalize: () => results.push('finalize'),
+          })
+        )
+        .subscribe();
+
+      subject.next(1);
+      subject.next(2);
+      expect(results).to.deep.equal(['subscribe', 'next 1', 'next 2']);
+
+      subscription.unsubscribe();
+
+      expect(results).to.deep.equal(['subscribe', 'next 1', 'next 2', 'unsubscribe', 'finalize']);
+    });
+
+    it('should not call unsubscribe if source completes', () => {
+      const results: any[] = [];
+      const subject = new Subject<number>();
+
+      const subscription = subject
+        .pipe(
+          tap({
+            subscribe: () => results.push('subscribe'),
+            next: (value) => results.push(`next ${value}`),
+            error: (err) => results.push(`error: ${err.message}`),
+            complete: () => results.push('complete'),
+            unsubscribe: () => results.push('unsubscribe'),
+            finalize: () => results.push('finalize'),
+          })
+        )
+        .subscribe();
+
+      subject.next(1);
+      subject.next(2);
+      expect(results).to.deep.equal(['subscribe', 'next 1', 'next 2']);
+      subject.complete();
+      // should have no effect
+      subscription.unsubscribe();
+
+      expect(results).to.deep.equal(['subscribe', 'next 1', 'next 2', 'complete', 'finalize']);
+    });
+
+    it('should not call unsubscribe if source errors', () => {
+      const results: any[] = [];
+      const subject = new Subject<number>();
+
+      const subscription = subject
+        .pipe(
+          tap({
+            subscribe: () => results.push('subscribe'),
+            next: (value) => results.push(`next ${value}`),
+            error: (err) => results.push(`error: ${err.message}`),
+            complete: () => results.push('complete'),
+            unsubscribe: () => results.push('unsubscribe'),
+            finalize: () => results.push('finalize'),
+          })
+        )
+        .subscribe({
+          error: noop,
+        });
+
+      subject.next(1);
+      subject.next(2);
+      expect(results).to.deep.equal(['subscribe', 'next 1', 'next 2']);
+      subject.error(new Error('bad'));
+      // should have no effect
+      subscription.unsubscribe();
+
+      expect(results).to.deep.equal(['subscribe', 'next 1', 'next 2', 'error: bad', 'finalize']);
+    });
   });
 });
