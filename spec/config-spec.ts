@@ -1,9 +1,9 @@
 /** @prettier */
 
-import { config } from '../src/internal/config';
 import { expect } from 'chai';
-import { Observable } from 'rxjs';
+import { Observable, config } from 'rxjs';
 import { timeoutProvider } from 'rxjs/internal/scheduler/timeoutProvider';
+import { createSpiedObserver, withConfigHandlerSpies } from './helpers/test-helper';
 
 describe('config', () => {
   it('should have a Promise property that defaults to nothing', () => {
@@ -12,71 +12,111 @@ describe('config', () => {
   });
 
   describe('onUnhandledError', () => {
-    afterEach(() => {
-      config.onUnhandledError = null;
-    });
-
     it('should default to null', () => {
       expect(config.onUnhandledError).to.be.null;
     });
 
-    it('should call asynchronously if an error is emitted and not handled by the consumer observer', (done) => {
-      let called = false;
-      const results: any[] = [];
+    it(
+      'should call the handler that was set when the error was emitted',
+      withConfigHandlerSpies(({ onUnhandledError, uninstallHandlers, done }) => {
+        new Observable((subscriber) => {
+          subscriber.error('bad');
+        }).subscribe();
 
-      config.onUnhandledError = (err) => {
-        called = true;
-        expect(err).to.equal('bad');
-        done();
-      };
+        expect(onUnhandledError).to.not.have.been.called;
 
-      const source = new Observable<number>((subscriber) => {
-        subscriber.next(1);
-        subscriber.error('bad');
-      });
+        uninstallHandlers();
 
-      source.subscribe({
-        next: (value) => results.push(value),
-      });
-      expect(called).to.be.false;
-      expect(results).to.deep.equal([1]);
-    });
+        Promise.resolve().then(() => {
+          expect(onUnhandledError).to.not.have.been.called;
+        });
 
-    it('should call asynchronously if an error is emitted and not handled by the consumer next callback', (done) => {
-      let called = false;
-      const results: any[] = [];
+        timeoutProvider.setTimeout(() => {
+          expect(onUnhandledError).to.have.been.calledOnce;
+          expect(onUnhandledError.firstCall).to.have.been.calledWithExactly('bad');
 
-      config.onUnhandledError = (err) => {
-        called = true;
-        expect(err).to.equal('bad');
-        done();
-      };
+          done();
+        });
+      })
+    );
 
-      const source = new Observable<number>((subscriber) => {
-        subscriber.next(1);
-        subscriber.error('bad');
-      });
+    it(
+      'should call asynchronously if an error is emitted and not handled by the consumer observer',
+      withConfigHandlerSpies(({ onUnhandledError, done }) => {
+        const observer = createSpiedObserver('next');
 
-      source.subscribe((value) => results.push(value));
-      expect(called).to.be.false;
-      expect(results).to.deep.equal([1]);
-    });
+        new Observable((subscriber) => {
+          subscriber.next(1);
+          subscriber.error('bad');
+        }).subscribe(observer);
 
-    it('should call asynchronously if an error is emitted and not handled by the consumer in the empty case', (done) => {
-      let called = false;
-      config.onUnhandledError = (err) => {
-        called = true;
-        expect(err).to.equal('bad');
-        done();
-      };
+        expect(observer.next).to.have.been.calledOnce;
+        expect(observer.next.firstCall).to.have.been.calledWithExactly(1);
 
-      const source = new Observable((subscriber) => {
-        subscriber.error('bad');
-      });
+        expect(onUnhandledError).to.not.have.been.called;
 
-      source.subscribe();
-      expect(called).to.be.false;
-    });
+        Promise.resolve().then(() => {
+          expect(onUnhandledError).to.not.have.been.called;
+        });
+
+        timeoutProvider.setTimeout(() => {
+          expect(onUnhandledError).to.have.been.calledOnce;
+          expect(onUnhandledError.firstCall).to.have.been.calledWithExactly('bad');
+
+          done();
+        });
+      })
+    );
+
+    it(
+      'should call asynchronously if an error is emitted and not handled by the consumer next callback',
+      withConfigHandlerSpies(({ onUnhandledError, done }) => {
+        const { next } = createSpiedObserver('next');
+
+        new Observable((subscriber) => {
+          subscriber.next(1);
+          subscriber.error('bad');
+        }).subscribe(next);
+
+        expect(next).to.have.been.calledOnce;
+        expect(next.firstCall).to.have.been.calledWithExactly(1);
+
+        expect(onUnhandledError).to.not.have.been.called;
+
+        Promise.resolve().then(() => {
+          expect(onUnhandledError).to.not.have.been.called;
+        });
+
+        timeoutProvider.setTimeout(() => {
+          expect(onUnhandledError).to.have.been.calledOnce;
+          expect(onUnhandledError.firstCall).to.have.been.calledWithExactly('bad');
+
+          done();
+        });
+      })
+    );
+
+    it(
+      'should call asynchronously if an error is emitted and not handled by the consumer in the empty case',
+      withConfigHandlerSpies(({ onUnhandledError, done }) => {
+        new Observable((subscriber) => {
+          subscriber.error('bad');
+        }).subscribe();
+
+        expect(onUnhandledError).to.not.have.been.called;
+
+        Promise.resolve().then(() => {
+          expect(onUnhandledError).to.not.have.been.called;
+        });
+
+        timeoutProvider.setTimeout(() => {
+          expect(onUnhandledError).to.have.been.calledOnce;
+          expect(onUnhandledError.firstCall).to.have.been.calledWithExactly('bad');
+
+          done();
+        });
+      })
+    );
 
     /**
      * This test is added so people know this behavior is _intentional_. It's part of the contract of observables
@@ -86,164 +126,252 @@ describe('config', () => {
      * for two calls of `complete`? This is really something a build-time tool like a linter should
      * capture. Not a run time error reporting event.
      */
-    it('should not be called if two errors are sent to the subscriber', (done) => {
-      let called = false;
-      config.onUnhandledError = () => {
-        called = true;
-      };
+    it(
+      'should not be called if two errors are sent to the subscriber',
+      withConfigHandlerSpies(({ onUnhandledError, done }) => {
+        const observer = createSpiedObserver();
 
-      const source = new Observable((subscriber) => {
-        subscriber.error('handled');
-        subscriber.error('swallowed');
-      });
+        new Observable((subscriber) => {
+          subscriber.error('handled');
+          subscriber.error('swallowed');
+        }).subscribe(observer);
 
-      let syncSentError: any;
-      source.subscribe({
-        error: (err) => {
-          syncSentError = err;
-        },
-      });
+        expect(observer.error).to.have.been.calledOnce;
+        expect(observer.error.firstCall).to.have.been.calledWithExactly('handled');
 
-      expect(syncSentError).to.equal('handled');
-      // When called, onUnhandledError is called on a timeout, so delay the
-      // the assertion of the expectation until after the point at which
-      // onUnhandledError would have been called.
-      timeoutProvider.setTimeout(() => {
-        expect(called).to.be.false;
-        done();
-      });
-    });
+        expect(onUnhandledError).to.not.have.been.called;
+
+        Promise.resolve().then(() => {
+          expect(onUnhandledError).to.not.have.been.called;
+        });
+
+        timeoutProvider.setTimeout(() => {
+          expect(onUnhandledError).to.not.have.been.called;
+
+          done();
+        });
+      })
+    );
   });
 
   describe('onStoppedNotification', () => {
-    afterEach(() => {
-      config.onStoppedNotification = null;
-    });
-
     it('should default to null', () => {
       expect(config.onStoppedNotification).to.be.null;
     });
 
-    it('should be called asynchronously if a subscription setup errors after the subscription is closed by an error', (done) => {
-      let called = false;
-      config.onStoppedNotification = (notification) => {
-        called = true;
-        expect(notification.kind).to.equal('E');
-        expect(notification).to.have.property('error', 'bad');
-        done();
-      };
+    it(
+      'should call the handler that was set when the notification was stopped',
+      withConfigHandlerSpies(({ onStoppedNotification, uninstallHandlers, done }) => {
+        const subscription = new Observable((subscriber) => {
+          subscriber.complete();
+          subscriber.complete();
+        }).subscribe();
 
-      const source = new Observable((subscriber) => {
-        subscriber.error('handled');
-        throw 'bad';
-      });
+        expect(onStoppedNotification).to.not.have.been.called;
 
-      let syncSentError: any;
-      source.subscribe({
-        error: (err) => {
-          syncSentError = err;
-        },
-      });
+        uninstallHandlers();
 
-      expect(syncSentError).to.equal('handled');
-      expect(called).to.be.false;
-    });
+        Promise.resolve().then(() => {
+          expect(onStoppedNotification).to.not.have.been.called;
+        });
 
-    it('should be called asynchronously if a subscription setup errors after the subscription is closed by a completion', (done) => {
-      let called = false;
-      let completed = false;
-      config.onStoppedNotification = (notification) => {
-        called = true;
-        expect(notification.kind).to.equal('E');
-        expect(notification).to.have.property('error', 'bad');
-        done();
-      };
+        timeoutProvider.setTimeout(() => {
+          expect(onStoppedNotification).to.have.been.calledOnce;
+          expect(onStoppedNotification.firstCall.args.length).to.equal(2);
+          // need to use include here because we test against an interface
+          expect(onStoppedNotification.firstCall.args[0]).to.include({ kind: 'C' });
+          expect(onStoppedNotification.firstCall.args[1]).to.equal(subscription);
 
-      const source = new Observable((subscriber) => {
-        subscriber.complete();
-        throw 'bad';
-      });
+          done();
+        });
+      })
+    );
 
-      source.subscribe({
-        error: () => {
-          throw 'should not be called';
-        },
-        complete: () => {
-          completed = true;
-        },
-      });
+    it(
+      'should be called asynchronously if a subscription setup errors after the subscription is closed by an error',
+      withConfigHandlerSpies(({ onStoppedNotification, done }) => {
+        const observer = createSpiedObserver();
 
-      expect(completed).to.be.true;
-      expect(called).to.be.false;
-    });
+        const subscription = new Observable((subscriber) => {
+          subscriber.error('handled');
+          throw 'bad';
+        }).subscribe(observer);
 
-    it('should be called if a next is sent to the stopped subscriber', (done) => {
-      let called = false;
-      config.onStoppedNotification = (notification) => {
-        called = true;
-        expect(notification.kind).to.equal('N');
-        expect(notification).to.have.property('value', 2);
-        done();
-      };
+        expect(observer.error).to.have.been.calledOnce;
+        expect(observer.error.firstCall).to.have.been.calledWithExactly('handled');
 
-      const source = new Observable((subscriber) => {
-        subscriber.next(1);
-        subscriber.complete();
-        subscriber.next(2);
-      });
+        expect(onStoppedNotification).to.not.have.been.called;
 
-      let syncSentValue: any;
-      source.subscribe({
-        next: (value) => {
-          syncSentValue = value;
-        },
-      });
+        Promise.resolve().then(() => {
+          expect(onStoppedNotification).to.not.have.been.called;
+        });
 
-      expect(syncSentValue).to.equal(1);
-      expect(called).to.be.false;
-    });
+        timeoutProvider.setTimeout(() => {
+          expect(onStoppedNotification).to.have.been.calledOnce;
+          expect(onStoppedNotification.firstCall.args.length).to.equal(2);
+          // need to use include here because we test against an interface
+          expect(onStoppedNotification.firstCall.args[0]).to.include({ kind: 'E', error: 'bad' });
+          expect(onStoppedNotification.firstCall.args[1]).to.equal(subscription);
 
-    it('should be called if two errors are sent to the subscriber', (done) => {
-      let called = false;
-      config.onStoppedNotification = (notification) => {
-        called = true;
-        expect(notification.kind).to.equal('E');
-        expect(notification).to.have.property('error', 'swallowed');
-        done();
-      };
+          done();
+        });
+      })
+    );
 
-      const source = new Observable((subscriber) => {
-        subscriber.error('handled');
-        subscriber.error('swallowed');
-      });
+    it(
+      'should be called asynchronously if a subscription setup errors after the subscription is closed by a completion',
+      withConfigHandlerSpies(({ onStoppedNotification, done }) => {
+        const observer = createSpiedObserver();
 
-      let syncSentError: any;
-      source.subscribe({
-        error: (err) => {
-          syncSentError = err;
-        },
-      });
+        const subscription = new Observable((subscriber) => {
+          subscriber.complete();
+          throw 'bad';
+        }).subscribe(observer);
 
-      expect(syncSentError).to.equal('handled');
-      expect(called).to.be.false;
-    });
+        expect(observer.error).to.not.have.been.called;
+        expect(observer.complete).to.have.been.calledOnce;
 
-    it('should be called if two completes are sent to the subscriber', (done) => {
-      let called = false;
-      config.onStoppedNotification = (notification) => {
-        called = true;
-        expect(notification.kind).to.equal('C');
-        done();
-      };
+        expect(onStoppedNotification).to.not.have.been.called;
 
-      const source = new Observable((subscriber) => {
-        subscriber.complete();
-        subscriber.complete();
-      });
+        Promise.resolve().then(() => {
+          expect(onStoppedNotification).to.not.have.been.called;
+        });
 
-      source.subscribe();
+        timeoutProvider.setTimeout(() => {
+          expect(onStoppedNotification).to.have.been.calledOnce;
+          expect(onStoppedNotification.firstCall.args.length).to.equal(2);
+          // need to use include here because we test against an interface
+          expect(onStoppedNotification.firstCall.args[0]).to.include({ kind: 'E', error: 'bad' });
+          expect(onStoppedNotification.firstCall.args[1]).to.equal(subscription);
 
-      expect(called).to.be.false;
-    });
+          done();
+        });
+      })
+    );
+
+    it(
+      'should be called if a next is sent to the stopped subscriber',
+      withConfigHandlerSpies(({ onStoppedNotification, done }) => {
+        const observer = createSpiedObserver();
+
+        const subscription = new Observable((subscriber) => {
+          subscriber.next(1);
+          subscriber.complete();
+          subscriber.next(2);
+        }).subscribe(observer);
+
+        expect(observer.next).to.have.been.calledOnce;
+        expect(observer.next.firstCall).to.have.been.calledWithExactly(1);
+
+        expect(onStoppedNotification).to.not.have.been.called;
+
+        Promise.resolve().then(() => {
+          expect(onStoppedNotification).to.not.have.been.called;
+        });
+
+        timeoutProvider.setTimeout(() => {
+          expect(onStoppedNotification).to.have.been.calledOnce;
+          expect(onStoppedNotification.firstCall.args.length).to.equal(2);
+          // need to use include here because we test against an interface
+          expect(onStoppedNotification.firstCall.args[0]).to.include({ kind: 'N', value: 2 });
+          expect(onStoppedNotification.firstCall.args[1]).to.equal(subscription);
+
+          done();
+        });
+      })
+    );
+
+    it(
+      'should be called if two errors are sent to the subscriber',
+      withConfigHandlerSpies(({ onStoppedNotification, done }) => {
+        const observer = createSpiedObserver();
+
+        const subscription = new Observable((subscriber) => {
+          subscriber.error('handled');
+          subscriber.error('swallowed');
+        }).subscribe(observer);
+
+        expect(observer.error).to.have.been.calledOnce;
+        expect(observer.error.firstCall).to.have.been.calledWithExactly('handled');
+
+        expect(onStoppedNotification).to.not.have.been.called;
+
+        Promise.resolve().then(() => {
+          expect(onStoppedNotification).to.not.have.been.called;
+        });
+
+        timeoutProvider.setTimeout(() => {
+          expect(onStoppedNotification).to.have.been.calledOnce;
+          expect(onStoppedNotification.firstCall.args.length).to.equal(2);
+          // need to use include here because we test against an interface
+          expect(onStoppedNotification.firstCall.args[0]).to.include({ kind: 'E', error: 'swallowed' });
+          expect(onStoppedNotification.firstCall.args[1]).to.equal(subscription);
+
+          done();
+        });
+      })
+    );
+
+    it(
+      'should be called if two completes are sent to the subscriber',
+      withConfigHandlerSpies(({ onStoppedNotification, done }) => {
+        const observer = createSpiedObserver();
+
+        const subscription = new Observable((subscriber) => {
+          subscriber.complete();
+          subscriber.complete();
+        }).subscribe(observer);
+
+        expect(observer.complete).to.have.been.calledOnce;
+
+        expect(onStoppedNotification).to.not.have.been.called;
+
+        Promise.resolve().then(() => {
+          expect(onStoppedNotification).to.not.have.been.called;
+        });
+
+        timeoutProvider.setTimeout(() => {
+          expect(onStoppedNotification).to.have.been.calledOnce;
+          expect(onStoppedNotification.firstCall.args.length).to.equal(2);
+          // need to use include here because we test against an interface
+          expect(onStoppedNotification.firstCall.args[0]).to.include({ kind: 'C' });
+          expect(onStoppedNotification.firstCall.args[1]).to.equal(subscription);
+
+          done();
+        });
+      })
+    );
+
+    it(
+      'should be called after onUnhandledError if two errors are emitted without a consuming error observer',
+      withConfigHandlerSpies(({ onUnhandledError, onStoppedNotification, done }) => {
+        const subscription = new Observable((subscriber) => {
+          subscriber.error('unhandled');
+          subscriber.error('stopped');
+        }).subscribe();
+
+        expect(onUnhandledError).to.not.have.been.called;
+        expect(onStoppedNotification).to.not.have.been.called;
+
+        Promise.resolve().then(() => {
+          expect(onUnhandledError).to.not.have.been.called;
+          expect(onStoppedNotification).to.not.have.been.called;
+        });
+
+        timeoutProvider.setTimeout(() => {
+          expect(onUnhandledError).to.have.been.calledOnce;
+          expect(onUnhandledError.firstCall).to.have.been.calledWithExactly('unhandled');
+
+          expect(onStoppedNotification).to.have.been.calledOnce;
+          expect(onStoppedNotification).to.have.been.calledAfter(onUnhandledError);
+          expect(onStoppedNotification.firstCall.args.length).to.equal(2);
+          // need to use include here because we test against an interface
+          expect(onStoppedNotification.firstCall.args[0]).to.include({ kind: 'E', error: 'stopped' });
+          expect(onStoppedNotification.firstCall.args[1]).to.equal(subscription);
+
+          done();
+        });
+      })
+    );
   });
 });

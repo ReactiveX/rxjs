@@ -219,6 +219,8 @@ function defaultErrorHandler(err: any) {
  * @param subscriber The stopped subscriber
  */
 function handleStoppedNotification(notification: ObservableNotification<any>, subscriber: Subscriber<any>) {
+  // grab a local reference here, to ensure the async call uses the handler that
+  // was active when the notification was stopped
   const { onStoppedNotification } = config;
   onStoppedNotification && timeoutProvider.setTimeout(() => onStoppedNotification(notification, subscriber));
 }

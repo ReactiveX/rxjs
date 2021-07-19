@@ -11,8 +11,11 @@ import { timeoutProvider } from '../scheduler/timeoutProvider';
  * @param err the error to report
  */
 export function reportUnhandledError(err: any) {
+  // grab a local reference here, to ensure the async call uses the handler that
+  // was active when the error was reported
+  const { onUnhandledError } = config;
+
   timeoutProvider.setTimeout(() => {
-    const { onUnhandledError } = config;
     if (onUnhandledError) {
       // Execute the user-configured error handler.
       onUnhandledError(err);
