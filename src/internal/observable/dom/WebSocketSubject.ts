@@ -1,4 +1,4 @@
-import { Subject, AnonymousSubject } from '../../Subject';
+import { Subject } from '../../Subject';
 import { Subscriber } from '../../Subscriber';
 import { Observable } from '../../Observable';
 import { Subscription } from '../../Subscription';
@@ -99,23 +99,23 @@ import { Observer, NextObserver } from '../../types';
  * ```
  * */
 
-export interface WebSocketSubjectConfig<T> {
+export interface WebSocketSubjectConfig<In, Out = In> {
   /** The url of the socket server to connect to */
   url: string;
   /** The protocol to use to connect */
   protocol?: string | Array<string>;
   /** @deprecated Will be removed in v8. Use {@link deserializer} instead. */
-  resultSelector?: (e: MessageEvent) => T;
+  resultSelector?: (e: MessageEvent) => Out;
   /**
    * A serializer used to create messages from passed values before the
    * messages are sent to the server. Defaults to JSON.stringify.
    */
-  serializer?: (value: T) => WebSocketMessage;
+  serializer?: (value: In) => WebSocketMessage;
   /**
    * A deserializer used for messages arriving on the socket from the
    * server. Defaults to JSON.parse.
    */
-  deserializer?: (e: MessageEvent) => T;
+  deserializer?: (e: MessageEvent) => Out;
   /**
    * An Observer that watches when open events occur on the underlying web socket.
    */
@@ -150,24 +150,26 @@ const WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT =
 
 export type WebSocketMessage = string | ArrayBuffer | Blob | ArrayBufferView;
 
-export class WebSocketSubject<T> extends AnonymousSubject<T> {
+export class WebSocketSubject<In, Out = In> extends Observable<Out> implements Observer<In> {
   // @ts-ignore: Property has no initializer and is not definitely assigned
-  private _config: WebSocketSubjectConfig<T>;
+  private _config: WebSocketSubjectConfig<In, Out>;
 
   /** @internal */
   // @ts-ignore: Property has no initializer and is not definitely assigned
-  _output: Subject<T>;
+  _output: Subject<Out>;
 
   private _socket: WebSocket | null = null;
 
-  constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T> | Observable<T>, destination?: Observer<T>) {
+  destination?: Observer<In>;
+
+  constructor(urlConfigOrSource: string | WebSocketSubjectConfig<In, Out> | Observable<In>, destination?: Observer<In>) {
     super();
     if (urlConfigOrSource instanceof Observable) {
       this.destination = destination;
-      this.source = urlConfigOrSource as Observable<T>;
+      this.source = urlConfigOrSource as Observable<In>;
     } else {
       const config = (this._config = { ...DEFAULT_WEBSOCKET_CONFIG });
-      this._output = new Subject<T>();
+      this._output = new Subject<Out>();
       if (typeof urlConfigOrSource === 'string') {
         config.url = urlConfigOrSource;
       } else {
@@ -187,8 +189,20 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     }
   }
 
+  next(value: In): void {
+    this.destination!.next(value);
+  }
+
+  error(err: any): void {
+    this.destination!.error(err);
+  }
+
+  complete(): void {
+    this.destination!.complete();
+  }
+
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
-  lift<R>(operator: Operator<T, R>): WebSocketSubject<R> {
+  lift<R>(operator: Operator<In, R>): WebSocketSubject<R> {
     const sock = new WebSocketSubject<R>(this._config as WebSocketSubjectConfig<any>, this.destination as any);
     sock.operator = operator;
     sock.source = this;
@@ -200,7 +214,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     if (!this.source) {
       this.destination = new ReplaySubject();
     }
-    this._output = new Subject<T>();
+    this._output = new Subject<Out>();
   }
 
   /**
@@ -221,9 +235,9 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
    * @param messageFilter A predicate for selecting the appropriate messages
    * from the server for the output stream.
    */
-  multiplex(subMsg: () => any, unsubMsg: () => any, messageFilter: (value: T) => boolean) {
+  multiplex(subMsg: () => any, unsubMsg: () => any, messageFilter: (value: Out) => boolean) {
     const self = this;
-    return new Observable((observer: Observer<T>) => {
+    return new Observable((observer: Observer<Out>) => {
       try {
         self.next(subMsg());
       } catch (err) {
@@ -292,7 +306,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
       const queue = this.destination;
 
-      this.destination = Subscriber.create<T>(
+      this.destination = Subscriber.create<In>(
         (x) => {
           if (socket!.readyState === 1) {
             try {
@@ -326,7 +340,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       ) as Subscriber<any>;
 
       if (queue && queue instanceof ReplaySubject) {
-        subscription.add((queue as ReplaySubject<T>).subscribe(this.destination));
+        subscription.add((queue as ReplaySubject<In>).subscribe(this.destination));
       }
     };
 
@@ -359,7 +373,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   }
 
   /** @internal */
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: Subscriber<Out>): Subscription {
     const { source } = this;
     if (source) {
       return source.subscribe(subscriber);
@@ -386,6 +400,5 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       _socket.close();
     }
     this._resetState();
-    super.unsubscribe();
   }
 }
