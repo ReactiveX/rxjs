@@ -880,29 +880,37 @@ describe('Observable', () => {
     });
   });
 
-  // TODO: Stop skipping this until a later refactor (probably in version 8)
   // Discussion here: https://github.com/ReactiveX/rxjs/issues/5370
-  it.skip('should emit an error for unhandled synchronous exceptions from something like a stack overflow', (done) => {
-    const source = of(4).pipe(
+  it('should handle sync errors within a test scheduler', () => {
+    const observable = of(4).pipe(
       map(n => {
-        if (n === 4) {
-          throw 'four!';
+          if (n === 4) {
+            throw 'four!';
         }
         return n;
       }),
-      catchError((_, source) => source),
+      catchError((err, source) => source),
     );
 
-    let thrownError: any = undefined;
-    try {
-      source.subscribe({
-        error: err => thrownError = err
-      });
-    } catch (err) {
-      done('Should never hit this!');
-    }
+    rxTestScheduler.run(helpers => {
+      const { expectObservable } = helpers;
+      expectObservable(observable).toBe('-');
+    });
+  });
 
-    expect(thrownError).to.equal(new RangeError('Maximum call stack size exceeded'));
+  it('should emit an error for unhandled synchronous exceptions from something like a stack overflow', () => {
+    const source = new Observable(() => {
+      const boom = (): unknown => boom();
+      boom();
+    });
+
+    let thrownError: any = undefined;
+    source.subscribe({
+      error: err => thrownError = err
+    });
+
+    expect(thrownError).to.be.an.instanceOf(RangeError);
+    expect(thrownError.message).to.equal('Maximum call stack size exceeded');
   });
 });
 
@@ -1191,6 +1199,9 @@ describe('Observable.lift', () => {
    * 
    * The problem is that you can have the Subject parts, or you can have the ConnectableObservable parts,
    * but you can't have both.
+   * 
+   * NOTE: We can remove this in version 8 or 9, because we're getting rid of operators that
+   * return `ConnectableObservable`. :tada:
    */
   describe.skip('The lift through Connectable gaff', () => {
     it('should compose through multicast and refCount, even if it is a Subject', () => {

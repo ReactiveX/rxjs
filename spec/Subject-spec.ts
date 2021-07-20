@@ -856,8 +856,7 @@ describe('useDeprecatedSynchronousErrorHandling', () => {
     }).to.throw(Error, 'lol');
   });
 
-  // TODO: This is still an issue. Not sure how to handle this one yet.
-  it.skip('should throw an error when notifying an complete, and concatenated with another observable that synchronously errors', () => {
+  it('should throw an error when notifying an complete, and concatenated with another observable that synchronously errors', () => {
     const subject = new Subject<string>();
     concat(subject, throwError(new Error('lol'))).subscribe();
 
