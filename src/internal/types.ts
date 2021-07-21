@@ -308,3 +308,17 @@ interface ReadableStreamDefaultReaderLike<T> {
 export interface ReadableStreamLike<T> {
   getReader(): ReadableStreamDefaultReaderLike<T>;
 }
+
+/**
+ * An observable with a `connect` method that is used to create a subscription
+ * to an underlying source, connecting it with all consumers via a multicast.
+ */
+export interface Connectable<T> extends Observable<T> {
+  /**
+   * (Idempotent) Calling this method will connect the underlying source observable to all subscribed consumers
+   * through an underlying {@link Subject}.
+   * @returns A subscription, that when unsubscribed, will "disconnect" the source from the connector subject,
+   * severing notifications to all consumers.
+   */
+  connect(): Subscription;
+}

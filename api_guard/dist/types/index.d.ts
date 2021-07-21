@@ -112,7 +112,11 @@ export declare const config: GlobalConfig;
 
 export declare function connect<T, O extends ObservableInput<unknown>>(selector: (shared: Observable<T>) => O, config?: ConnectConfig<T>): OperatorFunction<T, ObservedValueOf<O>>;
 
-export declare function connectable<T>(source: ObservableInput<T>, config?: ConnectableConfig<T>): ConnectableObservableLike<T>;
+export declare function connectable<T>(source: ObservableInput<T>, config?: ConnectableConfig<T>): Connectable<T>;
+
+export interface Connectable<T> extends Observable<T> {
+    connect(): Subscription;
+}
 
 export declare class ConnectableObservable<T> extends Observable<T> {
     protected _connection: Subscription | null;
