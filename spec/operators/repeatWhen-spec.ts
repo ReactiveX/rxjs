@@ -205,8 +205,8 @@ describe('repeatWhen operator', () => {
     expectObservable(result).toBe(expected);
   });
 
-  xit('should hide errors using a never notifier on a source with eventual error', () => {
-    const source = cold(  '--a--b--c--#');
+  it('should return a never-ending result if the notifier is never', () => {
+    const source = cold(  '--a--b--c--|');
     const subs =          '^          !';
     const notifier = cold(           '-');
     const expected =      '--a--b--c---------------------------------';
@@ -217,7 +217,7 @@ describe('repeatWhen operator', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  xit('should propagate error thrown from notifierSelector function', () => {
+  it('should propagate error thrown from notifierSelector function', () => {
     const source = cold('--a--b--c--|');
     const subs =        '^          !';
     const expected =    '--a--b--c--#';
@@ -228,9 +228,8 @@ describe('repeatWhen operator', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  xit('should replace error with complete using an empty notifier on a source ' +
-  'with eventual error', () => {
-    const source = cold(  '--a--b--c--#');
+  it('should complete if the notifier only completes', () => {
+    const source = cold(  '--a--b--c--|');
     const subs =          '^          !';
     const notifier = cold(           '|');
     const expected =      '--a--b--c--|';
@@ -277,7 +276,8 @@ describe('repeatWhen operator', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  xit('should handle a hot source that raises error but eventually completes', () => {
+  // https://github.com/ReactiveX/rxjs/issues/6523
+  it.skip('should handle a host source that completes via operator like take, and a hot notifier', () => {
     const source =   hot('-1--2--3----4--5---|');
     const ssubs =       ['^      !            ',
                        '              ^    !'];
@@ -286,12 +286,7 @@ describe('repeatWhen operator', () => {
     const expected =     '-1--2---      -5---|';
 
     const result = source.pipe(
-      map((x: string) => {
-        if (x === '3') {
-          throw 'error';
-        }
-        return x;
-      }),
+      takeWhile(value => value !== '3'),
       repeatWhen(() => notifier)
     );
 
