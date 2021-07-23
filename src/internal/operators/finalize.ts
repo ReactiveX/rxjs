@@ -48,6 +48,7 @@ import { operate } from '../util/lift';
  * timer(150).subscribe(() => sub.unsubscribe());
  *
  * // results:
+ * //   '[next] Called'
  * //   0
  * //   '[finalize] Called'
  * ```
