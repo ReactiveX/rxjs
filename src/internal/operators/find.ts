@@ -31,7 +31,8 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
  * `find` searches for the first item in the source Observable that matches the
  * specified condition embodied by the `predicate`, and returns the first
  * occurrence in the source. Unlike {@link first}, the `predicate` is required
- * in `find`, and does not emit an error if a valid value is not found.
+ * in `find`, and does not emit an error if a valid value is not found
+ * (emits `undefined` instead).
  *
  * ## Example
  * Find and emit the first click that happens on a DIV element
