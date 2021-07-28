@@ -1,22 +1,8 @@
-import { ObservableInput, SubjectLike } from '../types';
+import { Connectable, ObservableInput, SubjectLike } from '../types';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
 import { defer } from './defer';
-
-/**
- * An observable with a `connect` method that is used to create a subscription
- * to an underlying source, connecting it with all consumers via a multicast.
- */
-export interface ConnectableObservableLike<T> extends Observable<T> {
-  /**
-   * (Idempotent) Calling this method will connect the underlying source observable to all subscribed consumers
-   * through an underlying {@link Subject}.
-   * @returns A subscription, that when unsubscribed, will "disconnect" the source from the connector subject,
-   * severing notifications to all consumers.
-   */
-  connect(): Subscription;
-}
 
 export interface ConnectableConfig<T> {
   /**
@@ -51,7 +37,7 @@ const DEFAULT_CONFIG: ConnectableConfig<unknown> = {
  * @returns A "connectable" observable, that has a `connect()` method, that you must call to
  * connect the source to all consumers through the subject provided as the connector.
  */
-export function connectable<T>(source: ObservableInput<T>, config: ConnectableConfig<T> = DEFAULT_CONFIG): ConnectableObservableLike<T> {
+export function connectable<T>(source: ObservableInput<T>, config: ConnectableConfig<T> = DEFAULT_CONFIG): Connectable<T> {
   // The subscription representing the connection.
   let connection: Subscription | null = null;
   const { connector, resetOnDisconnect = true } = config;
