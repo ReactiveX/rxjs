@@ -1,3 +1,15 @@
+# [7.3.0](https://github.com/reactivex/rxjs/compare/7.2.0...7.3.0) (2021-07-28)
+
+### Bug Fixes
+
+- Expose `Connectable`, the return type of `connectable` ([#6531](https://github.com/reactivex/rxjs/issues/6531)) ([69f5bfa](https://github.com/reactivex/rxjs/commit/69f5bfae0eb2880a3d5cfb34db3a182182b325de)), closes [#6529](https://github.com/reactivex/rxjs/issues/6529)
+- **AsyncSubject:** properly emits values during reentrant subscriptions ([#6522](https://github.com/reactivex/rxjs/issues/6522)) ([dd8bdf3](https://github.com/reactivex/rxjs/commit/dd8bdf3b18b596155b66029ef16ebabf989360c5)), closes [#6520](https://github.com/reactivex/rxjs/issues/6520)
+
+### Features
+
+- **retry:** Now supports configurable delay as a named argument ([#6421](https://github.com/reactivex/rxjs/issues/6421)) ([5f69795](https://github.com/reactivex/rxjs/commit/5f69795f4be035499cf223bf9a3d7352c4975291))
+- **tap:** Now supports subscribe, unsubscribe, and finalize handlers ([#6527](https://github.com/reactivex/rxjs/issues/6527)) ([eb26cbc](https://github.com/reactivex/rxjs/commit/eb26cbc4488c9953cdde565b598b1dbdeeeee9ea))
+
 # [7.2.0](https://github.com/reactivex/rxjs/compare/7.1.0...7.2.0) (2021-07-05)
 
 ### Bug Fixes
