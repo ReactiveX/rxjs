@@ -125,7 +125,6 @@ export function tap<T>(
         ({ next: observerOrNext as Exclude<typeof observerOrNext, Partial<TapObserver<T>>>, error, complete } as Partial<TapObserver<T>>)
       : observerOrNext;
 
-  // TODO: Use `operate` function once this PR lands: https://github.com/ReactiveX/rxjs/pull/5742
   return tapObserver
     ? operate((source, subscriber) => {
         tapObserver.subscribe?.();
