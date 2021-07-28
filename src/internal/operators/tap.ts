@@ -4,7 +4,13 @@ import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { identity } from '../util/identity';
 
-export function tap<T>(observer?: Partial<Observer<T>>): MonoTypeOperatorFunction<T>;
+export interface TapObserver<T> extends Observer<T> {
+  subscribe: () => void;
+  unsubscribe: () => void;
+  finalize: () => void;
+}
+
+export function tap<T>(observer?: Partial<TapObserver<T>>): MonoTypeOperatorFunction<T>;
 export function tap<T>(next: (value: T) => void): MonoTypeOperatorFunction<T>;
 /** @deprecated Instead of passing separate callback arguments, use an observer argument. Signatures taking separate callback arguments will be removed in v8. Details: https://rxjs.dev/deprecations/subscribe-arguments */
 export function tap<T>(
@@ -106,7 +112,7 @@ export function tap<T>(
  * runs the specified Observer or callback(s) for each item.
  */
 export function tap<T>(
-  observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null,
+  observerOrNext?: Partial<TapObserver<T>> | ((value: T) => void) | null,
   error?: ((e: any) => void) | null,
   complete?: (() => void) | null
 ): MonoTypeOperatorFunction<T> {
@@ -114,11 +120,15 @@ export function tap<T>(
   // but if error or complete were passed. This is because someone
   // could technically call tap like `tap(null, fn)` or `tap(null, null, fn)`.
   const tapObserver =
-    isFunction(observerOrNext) || error || complete ? { next: observerOrNext as (value: T) => void, error, complete } : observerOrNext;
+    isFunction(observerOrNext) || error || complete
+      ? // tslint:disable-next-line: no-object-literal-type-assertion
+        ({ next: observerOrNext as Exclude<typeof observerOrNext, Partial<TapObserver<T>>>, error, complete } as Partial<TapObserver<T>>)
+      : observerOrNext;
 
-  // TODO: Use `operate` function once this PR lands: https://github.com/ReactiveX/rxjs/pull/5742
   return tapObserver
     ? operate((source, subscriber) => {
+        tapObserver.subscribe?.();
+        let isUnsub = true;
         source.subscribe(
           new OperatorSubscriber(
             subscriber,
@@ -127,12 +137,20 @@ export function tap<T>(
               subscriber.next(value);
             },
             () => {
+              isUnsub = false;
               tapObserver.complete?.();
               subscriber.complete();
             },
             (err) => {
+              isUnsub = false;
               tapObserver.error?.(err);
               subscriber.error(err);
+            },
+            () => {
+              if (isUnsub) {
+                tapObserver.unsubscribe?.();
+              }
+              tapObserver.finalize?.();
             }
           )
         );
