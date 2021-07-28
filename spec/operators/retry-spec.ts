@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
 import { retry, map, take, mergeMap, concat, multicast, refCount } from 'rxjs/operators';
-import { Observable, Observer, defer, range, of, throwError, Subject } from 'rxjs';
+import { Observable, Observer, defer, range, of, throwError, Subject, timer, EMPTY } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -409,6 +409,250 @@ describe('retry', () => {
 
       expectObservable(result, unsub).toBe(expected);
       expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+  });
+
+  describe('with delay config', () => {
+    describe('of a number', () => {
+      it('should delay the retry by a specified amount of time', () => {
+        rxTest.run(({ cold, time, expectSubscriptions, expectObservable }) => {
+          const source = cold('---a---b---#');
+          const t = time('                ----|');
+          const subs = [
+            //
+            '                  ^----------!',
+            '                  ---------------^----------!',
+            '                  ------------------------------^----------!',
+            '                  ---------------------------------------------^----!',
+          ];
+          const unsub = '      ^-------------------------------------------------!';
+          const expected = '   ---a---b----------a---b----------a---b----------a--';
+          const result = source.pipe(
+            retry({
+              delay: t,
+            })
+          );
+          expectObservable(result, unsub).toBe(expected);
+          expectSubscriptions(source.subscriptions).toBe(subs);
+        });
+      });
+
+      it('should act like a normal retry if delay is set to 0', () => {
+        rxTest.run(({ cold, expectSubscriptions, expectObservable }) => {
+          const source = cold('---a---b---#');
+          const subs = [
+            //
+            '                  ^----------!',
+            '                  -----------^----------!',
+            '                  ----------------------^----------!',
+            '                  ---------------------------------^----!',
+          ];
+          const unsub = '      ^-------------------------------------!';
+          const expected = '   ---a---b------a---b------a---b------a--';
+          const result = source.pipe(
+            retry({
+              delay: 0,
+            })
+          );
+          expectObservable(result, unsub).toBe(expected);
+          expectSubscriptions(source.subscriptions).toBe(subs);
+        });
+      });
+
+      it('should act like a normal retry if delay is less than 0', () => {
+        rxTest.run(({ cold, expectSubscriptions, expectObservable }) => {
+          const source = cold('---a---b---#');
+          const subs = [
+            //
+            '                  ^----------!',
+            '                  -----------^----------!',
+            '                  ----------------------^----------!',
+            '                  ---------------------------------^----!',
+          ];
+          const unsub = '      ^-------------------------------------!';
+          const expected = '   ---a---b------a---b------a---b------a--';
+          const result = source.pipe(
+            retry({
+              delay: -100,
+            })
+          );
+          expectObservable(result, unsub).toBe(expected);
+          expectSubscriptions(source.subscriptions).toBe(subs);
+        });
+      });
+
+      it('should honor count as the max retries', () => {
+        rxTest.run(({ cold, time, expectSubscriptions, expectObservable }) => {
+          const source = cold('---a---b---#');
+          const t = time('                ----|');
+          const subs = [
+            //
+            '                  ^----------!',
+            '                  ---------------^----------!',
+            '                  ------------------------------^----------!',
+          ];
+          const expected = '   ---a---b----------a---b----------a---b---#';
+          const result = source.pipe(
+            retry({
+              count: 2,
+              delay: t,
+            })
+          );
+          expectObservable(result).toBe(expected);
+          expectSubscriptions(source.subscriptions).toBe(subs);
+        });
+      });
+    });
+
+    describe('of a function', () => {
+      it('should delay the retry with a function that returns a notifier', () => {
+        rxTest.run(({ cold, expectSubscriptions, expectObservable }) => {
+          const source = cold('---a---b---#');
+          const subs = [
+            //
+            '                  ^----------!',
+            '                  ------------^----------!',
+            '                  -------------------------^----------!',
+            '                  ---------------------------------------^----!',
+          ];
+          const unsub = '      ^-------------------------------------------!';
+          const expected = '   ---a---b-------a---b--------a---b---------a--';
+          const result = source.pipe(
+            retry({
+              delay: (_err, retryCount) => {
+                // retryCount will be 1, 2, 3, etc.
+                return timer(retryCount);
+              },
+            })
+          );
+          expectObservable(result, unsub).toBe(expected);
+          expectSubscriptions(source.subscriptions).toBe(subs);
+        });
+      });
+
+      it('should delay the retry with a function that returns a hot observable', () => {
+        rxTest.run(({ cold, hot, expectSubscriptions, expectObservable }) => {
+          const source = cold(' ---a---b---#');
+          const notifier = hot('--------------x----------------x----------------x------');
+          const subs = [
+            //
+            '                   ^----------!',
+            '                   --------------^----------!',
+            '                   -------------------------------^----------!',
+          ];
+          const notifierSubs = [
+            //
+            '                   -----------^--!',
+            '                   -------------------------^-----!',
+            '                   ------------------------------------------^-!',
+          ];
+          const unsub = '       ^-------------------------------------------!';
+          const expected = '    ---a---b---------a---b------------a---b------';
+          const result = source.pipe(
+            retry({
+              delay: () => notifier,
+            })
+          );
+          expectObservable(result, unsub).toBe(expected);
+          expectSubscriptions(source.subscriptions).toBe(subs);
+          expectSubscriptions(notifier.subscriptions).toBe(notifierSubs);
+        });
+      });
+
+      it('should complete if the notifier completes', () => {
+        rxTest.run(({ cold, expectSubscriptions, expectObservable }) => {
+          const source = cold('---a---b---#');
+          const subs = [
+            //
+            '                  ^----------!',
+            '                  ------------^----------!',
+            '                  -------------------------^----------!',
+            '                  ------------------------------------!',
+          ];
+          const expected = '   ---a---b-------a---b--------a---b---|';
+          const result = source.pipe(
+            retry({
+              delay: (_err, retryCount) => {
+                return retryCount <= 2 ? timer(retryCount) : EMPTY;
+              },
+            })
+          );
+          expectObservable(result).toBe(expected);
+          expectSubscriptions(source.subscriptions).toBe(subs);
+        });
+      });
+
+      it('should error if the notifier errors', () => {
+        rxTest.run(({ cold, expectSubscriptions, expectObservable }) => {
+          const source = cold('---a---b---#');
+          const subs = [
+            //
+            '                  ^----------!',
+            '                  ------------^----------!',
+            '                  -------------------------^----------!',
+            '                  ------------------------------------!',
+          ];
+          const expected = '   ---a---b-------a---b--------a---b---#';
+          const result = source.pipe(
+            retry({
+              delay: (_err, retryCount) => {
+                return retryCount <= 2 ? timer(retryCount) : throwError(() => new Error('blah'));
+              },
+            })
+          );
+          expectObservable(result).toBe(expected, undefined, new Error('blah'));
+          expectSubscriptions(source.subscriptions).toBe(subs);
+        });
+      });
+
+      it('should error if the delay function throws', () => {
+        rxTest.run(({ cold, expectSubscriptions, expectObservable }) => {
+          const source = cold('---a---b---#');
+          const subs = [
+            //
+            '                  ^----------!',
+            '                  ------------^----------!',
+            '                  -------------------------^----------!',
+            '                  ------------------------------------!',
+          ];
+          const expected = '   ---a---b-------a---b--------a---b---#';
+          const result = source.pipe(
+            retry({
+              delay: (_err, retryCount) => {
+                if (retryCount <= 2) {
+                  return timer(retryCount);
+                } else {
+                  throw new Error('blah');
+                }
+              },
+            })
+          );
+          expectObservable(result).toBe(expected, undefined, new Error('blah'));
+          expectSubscriptions(source.subscriptions).toBe(subs);
+        });
+      });
+
+      it('should be usable for exponential backoff', () => {
+        rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+          const source = cold('---a---#');
+          const subs = [
+            //
+            '                  ^------!',
+            '                  ---------^------!',
+            '                  --------------------^------!',
+            '                  -----------------------------------^------!',
+          ];
+          const expected = '   ---a--------a----------a--------------a---#';
+          const result = source.pipe(
+            retry({
+              count: 3,
+              delay: (_err, retryCount) => timer(2 ** retryCount),
+            })
+          );
+          expectObservable(result).toBe(expected);
+          expectSubscriptions(source.subscriptions).toBe(subs);
+        });
+      });
     });
   });
 });
