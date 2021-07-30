@@ -34,5 +34,18 @@ describe('isPromise', () => {
   it('should return false for a string', () => {
     expect(isPromise('1')).to.be.false;
   });
-
+  
+  it('should return false for a boolean', () => {
+    expect(isPromise(false)).to.be.false;
+  });
+  
+  it('should return false for a symbol', () => {
+    expect(isPromise(Symbol('we-love-rxjs'))).to.be.false;
+  });
+  
+  it('should return false for objects', () => {
+    expect(isPromise({})).to.be.false;
+    expect(isPromise(new Object())).to.be.false;
+    expect(isPromise(Object.create({}))).to.be.false;
+  });
 });
