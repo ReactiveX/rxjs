@@ -1,16 +1,16 @@
-var _ = require('lodash');
+var forEach = require('lodash.forEach');
 var mochaSauce = require('mocha-in-sauce');
 
 var customLaunchers = {
   sl_chrome: {
     base: 'SauceLabs',
     browserName: 'chrome',
-    version: '46'
+    version: '46',
   },
   sl_chrome_beta: {
     base: 'SauceLabs',
     browserName: 'chrome',
-    version: 'beta'
+    version: 'beta',
   },
   /*
   sl_chrome_dev: {
@@ -21,7 +21,7 @@ var customLaunchers = {
   sl_firefox: {
     base: 'SauceLabs',
     browserName: 'firefox',
-    version: '44'
+    version: '44',
   },
   /*sl_firefox_beta: {
     base: 'SauceLabs',
@@ -37,92 +37,92 @@ var customLaunchers = {
     base: 'SauceLabs',
     browserName: 'safari',
     platform: 'OS X 10.9',
-    version: '7'
+    version: '7',
   },
   sl_safari8: {
     base: 'SauceLabs',
     browserName: 'safari',
     platform: 'OS X 10.10',
-    version: '8'
+    version: '8',
   },
   sl_safari9: {
     base: 'SauceLabs',
     browserName: 'safari',
     platform: 'OS X 10.11',
-    version: '9.0'
+    version: '9.0',
   },
   sl_ios8: {
     base: 'SauceLabs',
     browserName: 'iphone',
     platform: 'OS X 10.11',
-    version: '8.4'
+    version: '8.4',
   },
   sl_ios9: {
     base: 'SauceLabs',
     browserName: 'iphone',
     platform: 'OS X 10.11',
-    version: '9.1'
+    version: '9.1',
   },
   sl_ie9: {
     base: 'SauceLabs',
     browserName: 'internet explorer',
     platform: 'Windows 2008',
-    version: '9'
+    version: '9',
   },
   sl_ie10: {
     base: 'SauceLabs',
     browserName: 'internet explorer',
     platform: 'Windows 2012',
-    version: '10'
+    version: '10',
   },
   sl_ie11: {
     base: 'SauceLabs',
     browserName: 'internet explorer',
     platform: 'Windows 8.1',
-    version: '11'
+    version: '11',
   },
   sl_edge: {
     base: 'SauceLabs',
     browserName: 'MicrosoftEdge',
     platform: 'Windows 10',
-    version: '14.14393'
+    version: '14.14393',
   },
   sl_edge_13: {
     base: 'SauceLabs',
     browserName: 'MicrosoftEdge',
     platform: 'Windows 10',
-    version: '13.10586'
+    version: '13.10586',
   },
   sl_android_4_1: {
     base: 'SauceLabs',
     browserName: 'android',
     platform: 'Linux',
-    version: '4.1'
+    version: '4.1',
   },
   sl_android_4_2: {
     base: 'SauceLabs',
     browserName: 'android',
     platform: 'Linux',
-    version: '4.2'
+    version: '4.2',
   },
   sl_android_4_3: {
     base: 'SauceLabs',
     browserName: 'android',
     platform: 'Linux',
-    version: '4.3'
+    version: '4.3',
   },
   sl_android_4_4: {
     base: 'SauceLabs',
     browserName: 'android',
     platform: 'Linux',
-    version: '4.4'
+    version: '4.4',
   },
   sl_android5: {
     base: 'SauceLabs',
     browserName: 'android',
     platform: 'Linux',
-    version: '5.1'
-  }
+    version: '5.1',
+  },
 };
 
 var sauce = new mochaSauce({
@@ -134,13 +134,13 @@ var sauce = new mochaSauce({
   port: 4445,
   runSauceConnect: true, // run sauceConnect automatically
 
-  url: 'http://localhost:9876/spec/support/mocha-browser-runner.html'
+  url: 'http://localhost:9876/spec/support/mocha-browser-runner.html',
 });
 
 sauce.record(true, true);
 sauce.concurrency(1);
 
-_.each(customLaunchers, function (browser) {
+forEach(customLaunchers, function (browser) {
   sauce.browser(browser);
 });
 

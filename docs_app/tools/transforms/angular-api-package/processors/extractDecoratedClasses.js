@@ -1,7 +1,6 @@
-var _ = require('lodash');
+var forEach = require('lodash.forEach');
 
 module.exports = function extractDecoratedClassesProcessor(EXPORT_DOC_TYPES) {
-
   // Add the "directive" docType into those that can be exported from a module
   EXPORT_DOC_TYPES.push('directive', 'pipe');
 
@@ -9,13 +8,11 @@ module.exports = function extractDecoratedClassesProcessor(EXPORT_DOC_TYPES) {
     $runAfter: ['processing-docs'],
     $runBefore: ['docs-processed'],
     decoratorTypes: ['Directive', 'Component', 'Pipe'],
-    $process: function(docs) {
+    $process: function (docs) {
       var decoratorTypes = this.decoratorTypes;
 
-      _.forEach(docs, function(doc) {
-
-        _.forEach(doc.decorators, function(decorator) {
-
+      forEach(docs, function (doc) {
+        forEach(doc.decorators, function (decorator) {
           if (decoratorTypes.indexOf(decorator.name) !== -1) {
             doc.docType = decorator.name.toLowerCase();
             doc[doc.docType + 'Options'] = decorator.argumentInfo[0];
@@ -24,6 +21,6 @@ module.exports = function extractDecoratedClassesProcessor(EXPORT_DOC_TYPES) {
       });
 
       return docs;
-    }
+    },
   };
 };
