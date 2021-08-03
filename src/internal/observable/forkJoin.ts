@@ -166,8 +166,10 @@ export function forkJoin(...args: any[]): Observable<any> {
             }
             values[sourceIndex] = value;
           },
+          () => remainingCompletions--,
+          undefined,
           () => {
-            if (!--remainingCompletions || !hasValue) {
+            if (!remainingCompletions || !hasValue) {
               if (!remainingEmissions) {
                 subscriber.next(keys ? createObject(keys, values) : values);
               }

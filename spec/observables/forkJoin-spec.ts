@@ -1,6 +1,6 @@
 /** @prettier */
 import { expect } from 'chai';
-import { forkJoin, of } from 'rxjs';
+import { finalize, forkJoin, map, of, timer } from 'rxjs';
 import { lowerCaseO } from '../helpers/test-helper';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -301,6 +301,22 @@ describe('forkJoin', () => {
         expectSubscriptions(e2.subscriptions).toBe(e2subs);
       });
     });
+  });
+
+  it('should finalize in the proper order', () => {
+    const results: any[] = [];
+    const source = forkJoin(
+      [1, 2, 3, 4].map((n) =>
+        timer(100, rxTestScheduler).pipe(
+          map(() => n),
+          finalize(() => results.push(`finalized ${n}`))
+        )
+      )
+    );
+
+    source.subscribe((value) => results.push(value));
+    rxTestScheduler.flush();
+    expect(results).to.deep.equal(['finalized 1', 'finalized 2', 'finalized 3', 'finalized 4', [1, 2, 3, 4]]);
   });
 
   describe('forkJoin({ foo, bar, baz })', () => {
