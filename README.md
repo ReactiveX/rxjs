@@ -4,6 +4,10 @@
 [![npm version](https://badge.fury.io/js/rxjs.svg)](http://badge.fury.io/js/rxjs)
 [![Join the chat at https://gitter.im/Reactive-Extensions/RxJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Reactive-Extensions/RxJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+# The Roadmap from RxJS 7 to 8
+
+Curious what's next for RxJS? Follow along with [Issue 6367](https://github.com/ReactiveX/rxjs/issues/6367).
+
 # RxJS 7
 
 ### FOR 6.X PLEASE GO TO [THE 6.x BRANCH](https://github.com/ReactiveX/rxjs/tree/6.x)
