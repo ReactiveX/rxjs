@@ -40,7 +40,7 @@ import { isValidDate } from '../util/isDate';
  *
  * ### Take all of the values until the start of the next minute
  *
- * Using the a date as the trigger for the first emission, you can
+ * Using a `Date` as the trigger for the first emission, you can
  * do things like wait until midnight to fire an event, or in this case,
  * wait until a new minute starts (chosen so the example wouldn't take
  * too long to run) in order to stop watching a stream. Leveraging
