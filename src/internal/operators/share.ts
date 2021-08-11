@@ -103,8 +103,8 @@ export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
  *
  * ## Example with notifier factory: Delayed reset
  * ```ts
- * import { interval } from 'rxjs';
- * import { share, take, timer } from 'rxjs/operators';
+ * import { interval, timer } from 'rxjs';
+ * import { share, take } from 'rxjs/operators';
  *
  * const source = interval(1000).pipe(take(3), share({ resetOnRefCountZero: () => timer(1000) }));
  *
