@@ -9,7 +9,7 @@ import { operate } from '../util/lift';
  * accumulator function itself returns an Observable, emitting values
  * only from the most recently returned Observable.
  *
- * <span class="informal">It's like {@link scan}, but only the most recent
+ * <span class="informal">It's like {@link mergeScan}, but only the most recent
  * Observable returned by the accumulator is merged into the outer Observable.</span>
  *
  * @see {@link scan}
