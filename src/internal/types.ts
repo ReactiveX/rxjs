@@ -180,6 +180,7 @@ export interface SubjectLike<T> extends Observer<T>, Subscribable<T> {}
 /** SCHEDULER INTERFACES */
 
 export interface SchedulerLike extends TimestampProvider {
+  schedule<T>(work: (this: SchedulerAction<T>, state: T) => void, delay: number, state: T): Subscription;
   schedule<T>(work: (this: SchedulerAction<T>, state?: T) => void, delay?: number, state?: T): Subscription;
 }
 
