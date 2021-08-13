@@ -1,8 +1,7 @@
 import { SchedulerLike, ValueFromArray } from '../types';
-import { internalFromArray } from './fromArray';
 import { Observable } from '../Observable';
-import { scheduleArray } from '../scheduled/scheduleArray';
 import { popScheduler } from '../util/args';
+import { from } from './from';
 
 // Devs are more likely to pass null or undefined than they are a scheduler
 // without accompanying values. To make things easier for (naughty) devs who
@@ -80,5 +79,5 @@ export function of<A extends readonly unknown[]>(...values: A): Observable<Value
  */
 export function of<T>(...args: Array<T | SchedulerLike>): Observable<T> {
   const scheduler = popScheduler(args);
-  return scheduler ? scheduleArray(args as T[], scheduler) : internalFromArray(args as T[]);
+  return from(args as T[], scheduler);
 }

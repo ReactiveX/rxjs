@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { innerFrom } from './from';
+import { innerFrom } from './innerFrom';
 import { Subscription } from '../Subscription';
 import { ObservableInput, ObservableInputTuple } from '../types';
 import { argsOrArgArray } from '../util/argsOrArgArray';

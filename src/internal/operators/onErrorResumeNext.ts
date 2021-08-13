@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { ObservableInputTuple, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';

@@ -4,7 +4,7 @@ import { isValidDate } from '../util/isDate';
 import { Subscription } from '../Subscription';
 import { operate } from '../util/lift';
 import { Observable } from '../Observable';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { createErrorClass } from '../util/createErrorClass';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { executeSchedule } from '../util/executeSchedule';

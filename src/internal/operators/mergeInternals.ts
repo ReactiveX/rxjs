@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { Subscriber } from '../Subscriber';
 import { ObservableInput, SchedulerLike } from '../types';
 import { executeSchedule } from '../util/executeSchedule';

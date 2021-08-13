@@ -3,7 +3,7 @@ import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { noop } from '../util/noop';
 import { OperatorSubscriber } from './OperatorSubscriber';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 
 /**
  * Buffers the source Observable values, using a factory function of closing

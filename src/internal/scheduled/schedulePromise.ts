@@ -1,4 +1,4 @@
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { observeOn } from '../operators/observeOn';
 import { subscribeOn } from '../operators/subscribeOn';
 import { SchedulerLike } from '../types';
