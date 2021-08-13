@@ -10,6 +10,7 @@ import { popResultSelector, popScheduler } from '../util/args';
 import { createObject } from '../util/createObject';
 import { OperatorSubscriber } from '../operators/OperatorSubscriber';
 import { AnyCatcher } from '../AnyCatcher';
+import { executeSchedule } from '../util/executeSchedule';
 
 // combineLatest(any)
 // We put this first because we need to catch cases where the user has supplied
@@ -293,7 +294,7 @@ export function combineLatestInit(
  */
 function maybeSchedule(scheduler: SchedulerLike | undefined, execute: () => void, subscription: Subscription) {
   if (scheduler) {
-    subscription.add(scheduler.schedule(execute));
+    executeSchedule(subscription, scheduler, execute);
   } else {
     execute();
   }

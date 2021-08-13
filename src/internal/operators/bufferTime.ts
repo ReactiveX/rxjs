@@ -5,6 +5,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
 import { arrRemove } from '../util/arrRemove';
 import { asyncScheduler } from '../scheduler/async';
 import { popScheduler } from '../util/args';
+import { executeSchedule } from '../util/executeSchedule';
 
 /* tslint:disable:max-line-length */
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
@@ -117,21 +118,18 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
           subs,
         };
         bufferRecords.push(record);
-        subs.add(scheduler.schedule(() => emit(record), bufferTimeSpan));
+        executeSchedule(subs, scheduler, () => emit(record), bufferTimeSpan);
       }
     };
 
-    bufferCreationInterval !== null && bufferCreationInterval >= 0
-      ? // The user passed both a bufferTimeSpan (required), and a creation interval
-        // That means we need to start new buffers on the interval, and those buffers need
-        // to wait the required time span before emitting.
-        subscriber.add(
-          scheduler.schedule(function () {
-            startBuffer();
-            !this.closed && subscriber.add(this.schedule(null, bufferCreationInterval));
-          }, bufferCreationInterval)
-        )
-      : (restartOnEmit = true);
+    if (bufferCreationInterval !== null && bufferCreationInterval >= 0) {
+      // The user passed both a bufferTimeSpan (required), and a creation interval
+      // That means we need to start new buffers on the interval, and those buffers need
+      // to wait the required time span before emitting.
+      executeSchedule(subscriber, scheduler, startBuffer, bufferCreationInterval, true);
+    } else {
+      restartOnEmit = true;
+    }
 
     startBuffer();
 

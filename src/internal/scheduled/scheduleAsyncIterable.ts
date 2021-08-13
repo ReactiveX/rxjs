@@ -1,28 +1,31 @@
 import { SchedulerLike } from '../types';
 import { Observable } from '../Observable';
-import { Subscription } from '../Subscription';
+import { executeSchedule } from '../util/executeSchedule';
 
 export function scheduleAsyncIterable<T>(input: AsyncIterable<T>, scheduler: SchedulerLike) {
   if (!input) {
     throw new Error('Iterable cannot be null');
   }
-  return new Observable<T>(subscriber => {
-    const sub = new Subscription();
-    sub.add(
-      scheduler.schedule(() => {
-        const iterator = input[Symbol.asyncIterator]();
-        sub.add(scheduler.schedule(function () {
-          iterator.next().then(result => {
+  return new Observable<T>((subscriber) => {
+    executeSchedule(subscriber, scheduler, () => {
+      const iterator = input[Symbol.asyncIterator]();
+      executeSchedule(
+        subscriber,
+        scheduler,
+        () => {
+          iterator.next().then((result) => {
             if (result.done) {
+              // This will remove the subscriptions from
+              // the parent subscription.
               subscriber.complete();
             } else {
               subscriber.next(result.value);
-              this.schedule();
             }
           });
-        }));
-      })
-    );
-    return sub;
+        },
+        0,
+        true
+      );
+    });
   });
 }
