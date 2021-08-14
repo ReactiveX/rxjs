@@ -3,7 +3,7 @@ import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { noop } from '../util/noop';
 import { OperatorSubscriber } from './OperatorSubscriber';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 
 /**
  * Emits a notification from the source Observable only after a particular time span

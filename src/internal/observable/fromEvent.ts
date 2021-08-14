@@ -1,9 +1,9 @@
+import { innerFrom } from '../observable/innerFrom';
 import { Observable } from '../Observable';
 import { mergeMap } from '../operators/mergeMap';
 import { isArrayLike } from '../util/isArrayLike';
 import { isFunction } from '../util/isFunction';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
-import { internalFromArray } from './fromArray';
 
 // These constants are used to create handler registry functions using array mapping below.
 const nodeEventEmitterMethods = ['addListener', 'removeListener'] as const;
@@ -267,7 +267,7 @@ export function fromEvent<T>(
   if (!add) {
     if (isArrayLike(target)) {
       return mergeMap((subTarget: any) => fromEvent(subTarget, eventName, options as EventListenerOptions))(
-        internalFromArray(target)
+        innerFrom(target)
       ) as Observable<T>;
     }
   }

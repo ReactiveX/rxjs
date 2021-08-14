@@ -7,6 +7,7 @@ import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { arrRemove } from '../util/arrRemove';
 import { popScheduler } from '../util/args';
+import { executeSchedule } from '../util/executeSchedule';
 
 export function windowTime<T>(windowTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(
@@ -136,21 +137,18 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
         };
         windowRecords.push(record);
         subscriber.next(window.asObservable());
-        subs.add(scheduler.schedule(() => closeWindow(record), windowTimeSpan));
+        executeSchedule(subs, scheduler, () => closeWindow(record), windowTimeSpan);
       }
     };
 
-    windowCreationInterval !== null && windowCreationInterval >= 0
-      ? // The user passed both a windowTimeSpan (required), and a creation interval
-        // That means we need to start new window on the interval, and those windows need
-        // to wait the required time span before completing.
-        subscriber.add(
-          scheduler.schedule(function () {
-            startWindow();
-            !this.closed && subscriber.add(this.schedule(null, windowCreationInterval));
-          }, windowCreationInterval)
-        )
-      : (restartOnClose = true);
+    if (windowCreationInterval !== null && windowCreationInterval >= 0) {
+      // The user passed both a windowTimeSpan (required), and a creation interval
+      // That means we need to start new window on the interval, and those windows need
+      // to wait the required time span before completing.
+      executeSchedule(subscriber, scheduler, startWindow, windowCreationInterval, true);
+    } else {
+      restartOnClose = true;
+    }
 
     startWindow();
 

@@ -4,7 +4,7 @@ import { Subject } from '../Subject';
 import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 
 /**
  * Branch out the source Observable values as a nested Observable using a

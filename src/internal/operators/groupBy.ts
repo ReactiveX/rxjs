@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { Subject } from '../Subject';
 import { ObservableInput, Observer, OperatorFunction, SubjectLike } from '../types';
 import { operate } from '../util/lift';

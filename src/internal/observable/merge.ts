@@ -1,10 +1,10 @@
 import { Observable } from '../Observable';
 import { ObservableInput, ObservableInputTuple, SchedulerLike } from '../types';
 import { mergeAll } from '../operators/mergeAll';
-import { internalFromArray } from './fromArray';
-import { innerFrom } from './from';
+import { innerFrom } from './innerFrom';
 import { EMPTY } from './empty';
 import { popNumber, popScheduler } from '../util/args';
+import { from } from './from';
 
 export function merge<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
 export function merge<A extends readonly unknown[]>(...sourcesAndConcurrency: [...ObservableInputTuple<A>, number?]): Observable<A[number]>;
@@ -95,5 +95,5 @@ export function merge(...args: (ObservableInput<unknown> | number | SchedulerLik
     ? // One source? Just return it.
       innerFrom(sources[0])
     : // Merge all sources
-      mergeAll(concurrent)(internalFromArray(sources, scheduler));
+      mergeAll(concurrent)(from(sources, scheduler));
 }

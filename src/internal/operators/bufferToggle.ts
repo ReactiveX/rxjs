@@ -1,7 +1,7 @@
 import { Subscription } from '../Subscription';
 import { OperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
 import { arrRemove } from '../util/arrRemove';
@@ -19,6 +19,7 @@ import { arrRemove } from '../util/arrRemove';
  * Buffers values from the source by opening the buffer via signals from an
  * Observable provided to `openings`, and closing and sending the buffers when
  * a Subscribable or Promise returned by the `closingSelector` function emits.
+ *
  *
  * ## Example
  *
