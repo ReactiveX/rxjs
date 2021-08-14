@@ -1,7 +1,7 @@
 import { OperatorFunction, ObservableInputTuple } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { identity } from '../util/identity';
 import { noop } from '../util/noop';
 import { popResultSelector } from '../util/args';

@@ -2,7 +2,7 @@ import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 
 import { operate } from '../util/lift';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**

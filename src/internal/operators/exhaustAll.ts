@@ -1,7 +1,7 @@
 import { Subscription } from '../Subscription';
 import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
 import { operate } from '../util/lift';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**

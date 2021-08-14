@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { Unsubscribable, ObservableInput, ObservedValueOf } from '../types';
-import { innerFrom } from './from';
+import { innerFrom } from './innerFrom';
 import { EMPTY } from './empty';
 
 /**

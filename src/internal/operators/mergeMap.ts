@@ -1,6 +1,6 @@
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { operate } from '../util/lift';
 import { mergeInternals } from './mergeInternals';
 import { isFunction } from '../util/isFunction';

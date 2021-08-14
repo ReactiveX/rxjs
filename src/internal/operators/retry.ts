@@ -4,7 +4,7 @@ import { Subscription } from '../Subscription';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { identity } from '../util/identity';
 import { timer } from '../observable/timer';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 
 export interface RetryConfig {
   /**

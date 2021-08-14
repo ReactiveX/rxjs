@@ -1,7 +1,8 @@
 import { Observable } from '../Observable';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { Subscriber } from '../Subscriber';
 import { ObservableInput, SchedulerLike } from '../types';
+import { executeSchedule } from '../util/executeSchedule';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -114,7 +115,11 @@ export function mergeInternals<T, R>(
                 // Particularly for `expand`, we need to check to see if a scheduler was provided
                 // for when we want to start our inner subscription. Otherwise, we just start
                 // are next inner subscription.
-                innerSubScheduler ? subscriber.add(innerSubScheduler.schedule(() => doInnerSub(bufferedValue))) : doInnerSub(bufferedValue);
+                if (innerSubScheduler) {
+                  executeSchedule(subscriber, innerSubScheduler, () => doInnerSub(bufferedValue));
+                } else {
+                  doInnerSub(bufferedValue);
+                }
               }
               // Check to see if we can complete, and complete if so.
               checkComplete();

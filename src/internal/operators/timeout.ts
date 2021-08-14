@@ -4,10 +4,10 @@ import { isValidDate } from '../util/isDate';
 import { Subscription } from '../Subscription';
 import { operate } from '../util/lift';
 import { Observable } from '../Observable';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { createErrorClass } from '../util/createErrorClass';
-import { caughtSchedule } from '../util/caughtSchedule';
 import { OperatorSubscriber } from './OperatorSubscriber';
+import { executeSchedule } from '../util/executeSchedule';
 
 export interface TimeoutConfig<T, O extends ObservableInput<unknown> = ObservableInput<T>, M = unknown> {
   /**
@@ -342,18 +342,22 @@ export function timeout<T, O extends ObservableInput<any>, M>(
     // tell how many values we have seen so far.
     let seen = 0;
     const startTimer = (delay: number) => {
-      timerSubscription = caughtSchedule(
+      timerSubscription = executeSchedule(
         subscriber,
         scheduler,
         () => {
-          originalSourceSubscription.unsubscribe();
-          innerFrom(
-            _with!({
-              meta,
-              lastValue,
-              seen,
-            })
-          ).subscribe(subscriber);
+          try {
+            originalSourceSubscription.unsubscribe();
+            innerFrom(
+              _with!({
+                meta,
+                lastValue,
+                seen,
+              })
+            ).subscribe(subscriber);
+          } catch (err) {
+            subscriber.error(err);
+          }
         },
         delay
       );

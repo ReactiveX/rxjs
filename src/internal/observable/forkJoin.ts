@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { ObservedValueOf, ObservableInputTuple, ObservableInput } from '../types';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
-import { innerFrom } from './from';
+import { innerFrom } from './innerFrom';
 import { popResultSelector } from '../util/args';
 import { OperatorSubscriber } from '../operators/OperatorSubscriber';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';

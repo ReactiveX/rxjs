@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { SchedulerLike } from '../types';
 import { iterator as Symbol_iterator } from '../symbol/iterator';
 import { isFunction } from '../util/isFunction';
-import { caughtSchedule } from '../util/caughtSchedule';
+import { executeSchedule } from '../util/executeSchedule';
 
 /**
  * Used in {@link scheduled} to create an observable from an Iterable.
@@ -16,15 +16,25 @@ export function scheduleIterable<T>(input: Iterable<T>, scheduler: SchedulerLike
     // Schedule the initial creation of the iterator from
     // the iterable. This is so the code in the iterable is
     // not called until the scheduled job fires.
-    subscriber.add(
-      scheduler.schedule(() => {
-        // Create the iterator.
-        iterator = (input as any)[Symbol_iterator]();
+    executeSchedule(subscriber, scheduler, () => {
+      // Create the iterator.
+      iterator = (input as any)[Symbol_iterator]();
 
-        // Schedule the first iteration and emission.
-        caughtSchedule(subscriber, scheduler, function () {
-          // Pull the value out of the iterator
-          const { value, done } = iterator.next();
+      executeSchedule(
+        subscriber,
+        scheduler,
+        () => {
+          let value: T;
+          let done: boolean | undefined;
+          try {
+            // Pull the value out of the iterator
+            ({ value, done } = iterator.next());
+          } catch (err) {
+            // We got an error while pulling from the iterator
+            subscriber.error(err);
+            return;
+          }
+
           if (done) {
             // If it is "done" we just complete. This mimics the
             // behavior of JavaScript's `for..of` consumption of
@@ -34,13 +44,12 @@ export function scheduleIterable<T>(input: Iterable<T>, scheduler: SchedulerLike
           } else {
             // The iterable is not done, emit the value.
             subscriber.next(value);
-            // Reschedule. This will cause this function to be
-            // called again on the same scheduled delay.
-            this.schedule();
           }
-        });
-      })
-    );
+        },
+        0,
+        true
+      );
+    });
 
     // During teardown, if we see this iterator has a `return` method,
     // then we know it is a Generator, and not just an Iterator. So we call

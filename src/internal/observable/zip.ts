@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { ObservableInputTuple } from '../types';
-import { innerFrom } from './from';
+import { innerFrom } from './innerFrom';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { EMPTY } from './empty';
 import { OperatorSubscriber } from '../operators/OperatorSubscriber';

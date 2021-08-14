@@ -3,7 +3,7 @@ import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { innerFrom } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
 import { arrRemove } from '../util/arrRemove';
