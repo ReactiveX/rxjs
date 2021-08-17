@@ -1,6 +1,6 @@
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CurrentDateToken } from 'app/shared/current-date';
 import { NotificationComponent } from './notification.component';
@@ -96,14 +96,14 @@ describe('NotificationComponent', () => {
     expect(component.showNotification).toBe('hide');
   });
 
-  it('should update localStorage key when dismiss is called', () => {
+  it('should update localStorage key when dismiss is called', inject([WindowToken], (windowToken: { localStorage: {setItem: () => {}, getItem: () => {}}}) => {
     configTestingModule();
     createComponent();
     
-    const setItemSpy: jasmine.Spy = token.localStorage.setItem;
+    const setItemSpy: jasmine.Spy = spyOn(windowToken.localStorage, 'setItem');
     component.dismiss();
     expect(setItemSpy).toHaveBeenCalledWith('aio-notification/survey-january-2018', 'hide');
-  });
+  }));
 
   it('should not show the notification if the date is after the expiry date', () => {
     configTestingModule(new Date('2018-01-23'));
@@ -111,14 +111,14 @@ describe('NotificationComponent', () => {
     expect(component.showNotification).toBe('hide');
   });
 
-  it('should not show the notification if the there is a "hide" flag in localStorage', () => {
+  it('should not show the notification if the there is a "hide" flag in localStorage', inject([WindowToken], (windowToken: { localStorage: { setItem: () => {}, getItem: () => {}}}) => {
     configTestingModule();
-    const getItemSpy: jasmine.Spy = token.localStorage.getItem;
+    const getItemSpy: jasmine.Spy = spyOn(windowToken.localStorage, 'getItem');
     getItemSpy.and.returnValue('hide');
     createComponent();
     expect(getItemSpy).toHaveBeenCalledWith('aio-notification/survey-january-2018');
     expect(component.showNotification).toBe('hide');
-  });
+  }));
 });
 
 @Component({
