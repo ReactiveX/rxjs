@@ -16,7 +16,7 @@ interface StackBlitzExampleConfig {
 })
 export class StackblitzService {
   openProject(config: StackBlitzExampleConfig) {
-    const codeExtension: 'js' | 'ts' = {
+    const codeExtension: 'js' | string= {
       'ts': 'ts',
       'typescript': 'ts'
     }[config.language] || 'js';

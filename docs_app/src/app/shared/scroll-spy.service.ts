@@ -223,7 +223,7 @@ export class ScrollSpyService {
     this.spiedElementGroups = this.spiedElementGroups.filter(group => group !== spiedGroup);
 
     if (!this.spiedElementGroups.length) {
-      this.onStopListening.next();
+      this.onStopListening.next(null);
     }
   }
 }
