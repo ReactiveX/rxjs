@@ -1,3 +1,15 @@
+# [7.0.0-beta.14](https://github.com/reactivex/rxjs/compare/7.0.0-beta.13...7.0.0-beta.14) (2021-03-30)
+
+### Bug Fixes
+
+- **share:** No longer throws errors for reentrant observables ([#6151](https://github.com/reactivex/rxjs/issues/6151)) ([fc728cd](https://github.com/reactivex/rxjs/commit/fc728cdf2f395620cca347602e66f3d173c057b5)), closes [#6144](https://github.com/reactivex/rxjs/issues/6144)
+
+### Features
+
+- **ajax:** Now allows configuration of query string parameters, via a `params` option in the request configuration ([#6174](https://github.com/reactivex/rxjs/issues/6174)) ([980f4d4](https://github.com/reactivex/rxjs/commit/980f4d4bb6a3bc1513a4335ed124f4d11b93d251))
+- **esm:** Added exports within package.json to enable scoped package loading. ([#6192](https://github.com/reactivex/rxjs/issues/6192)) ([33a9f06](https://github.com/reactivex/rxjs/commit/33a9f06f2c59c8aef3bb583bdb7d61d08ab597a0)), closes [sveltejs/kit#612](https://github.com/sveltejs/kit/issues/612) [nodejs/node#27408](https://github.com/nodejs/node/issues/27408)
+- **ReadableStreams:** RxJS now supports conversions for ReadableStreams e.g. `from(readableStream)`. ([#6163](https://github.com/reactivex/rxjs/issues/6163)) ([19d6502](https://github.com/reactivex/rxjs/commit/19d650223cf0e1964e893baca19f264154422a7d))
+
 # [7.0.0-beta.13](https://github.com/reactivex/rxjs/compare/7.0.0-beta.12...7.0.0-beta.13) (2021-03-15)
 
 ### Bug Fixes
