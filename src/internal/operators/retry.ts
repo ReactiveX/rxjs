@@ -13,7 +13,7 @@ export interface RetryConfig {
   count?: number;
   /**
    * The number of milliseconds to delay before retrying, OR a function to
-   * return a notifier for delaying. If a function is returned, that function should
+   * return a notifier for delaying. If a function is given, that function should
    * return a notifier that, when it emits will retry the source. If the notifier
    * completes _without_ emitting, the resulting observable will complete without error,
    * if the notifier errors, the error will be pushed to the result.
