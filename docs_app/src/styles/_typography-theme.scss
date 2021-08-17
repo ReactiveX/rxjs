@@ -1,4 +1,4 @@
-@import '~@angular/material/core/theming/theming';
+@use '~@angular/material' as mat;
 
 @mixin docs-site-typography-theme($theme) {
   $primary: map-get($theme, primary);
@@ -10,16 +10,16 @@
   .docs-component-viewer-tabbed-content,
   .docs-guide-content {
       h1 {
-        color: mat-color($primary, 800);
-        background: rgba(mat-color($foreground, secondary-text), .03);
+        color: mat.get-color-from-palette($primary, 800);
+        background: rgba(mat.get-color-from-palette($foreground, secondary-text), .03);
       }
 
       h3, h2, h4, h5, p, ol, li {
-        color: mat-color($foreground, secondary-text);
+        color: mat.get-color-from-palette($foreground, secondary-text);
       }
 
       a {
-        color: mat-color($primary);
+        color: mat.get-color-from-palette($primary);
       }
 
       .nav-link:visited {
@@ -31,17 +31,17 @@
       }
 
       table > tbody > tr > th {
-        border: 1px solid rgba(mat-color($foreground, secondary-text), .03);
+        border: 1px solid rgba(mat.get-color-from-palette($foreground, secondary-text), .03);
       }
 
       td {
-        color: mat-color($foreground, secondary-text);
-        border: 1px solid rgba(mat-color($foreground, secondary-text), .03);
+        color: mat.get-color-from-palette($foreground, secondary-text);
+        border: 1px solid rgba(mat.get-color-from-palette($foreground, secondary-text), .03);
       }
 
       th {
-        color: mat-color($foreground, secondary-text);
-        background: rgba(mat-color($foreground, secondary-text), .03);
+        color: mat.get-color-from-palette($foreground, secondary-text);
+        background: rgba(mat.get-color-from-palette($foreground, secondary-text), .03);
       }
   }
 }
