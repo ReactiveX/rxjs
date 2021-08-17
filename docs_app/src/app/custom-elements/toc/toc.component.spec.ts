@@ -136,8 +136,6 @@ describe('TocComponent', () => {
         beforeEach(() => {
           fixture.detectChanges();
           page = setPage();
-          const scrollSvc = TestBed.inject(ScrollService);
-          scrollToTopSpy = spyOn(scrollSvc, 'scrollToTop');
         });
 
         afterEach(() => fixture.destroy());
@@ -478,7 +476,7 @@ class TestTocService {
   activeItemIndex = new BehaviorSubject<number | null>(null);
   setActiveIndex(index: number|null) {
     this.activeItemIndex.next(index);
-    if (asap._scheduled !== undefined) {
+    if (asap.schedule !== undefined) {
       asap.flush();
     }
   }
