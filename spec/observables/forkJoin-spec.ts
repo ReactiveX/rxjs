@@ -1,6 +1,22 @@
 /** @prettier */
 import { expect } from 'chai';
-import { finalize, forkJoin, map, of, timer } from 'rxjs';
+import {
+  combineAll,
+  concat,
+  concatMap,
+  finalize,
+  first,
+  forkJoin,
+  last,
+  map,
+  mergeAll,
+  Observable,
+  of,
+  pipe,
+  take,
+  timer,
+  zipAll,
+} from 'rxjs';
 import { lowerCaseO } from '../helpers/test-helper';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -594,6 +610,165 @@ describe('forkJoin', () => {
           done();
         },
       });
+    });
+
+    it('concat reference', () => {
+      const results: Array<number | string> = [];
+      concat(of(1), of(2))
+        .pipe(last())
+        .subscribe({
+          next(value) {
+            results.push(+value);
+          },
+          error(err) {
+            throw err;
+          },
+          complete() {
+            results.push('done');
+          },
+        });
+      expect(results).to.deep.equal([2, 'done']);
+    });
+
+    it('concatMap reference', () => {
+      const results: Array<number | string> = [];
+      of(1)
+        .pipe(concatMap((val) => of(2)))
+        .subscribe({
+          next(value) {
+            results.push(+value);
+          },
+          error(err) {
+            throw err;
+          },
+          complete() {
+            results.push('done');
+          },
+        });
+      expect(results).to.deep.equal([2, 'done']);
+    });
+
+    xit('should work with concatMap fail', () => {
+      const results: Array<number | string> = [];
+      forkJoin([of(1).pipe(concatMap((val) => of(2))), of(3).pipe(concatMap((val) => of(4)))]).subscribe({
+        next(value) {
+          results.push(+value);
+        },
+        error(err) {
+          throw err;
+        },
+        complete() {
+          results.push('done');
+        },
+      });
+      expect(results).to.deep.equal([2, 4, 'done']);
+    });
+
+    xit('should work with concatMap cross types fail', () => {
+      const results: Array<number | string> = [];
+      forkJoin([
+        of('a').pipe(concatMap((val: string) => of(1))) as Observable<number>,
+        of('b').pipe(concatMap((val: string) => of(2))) as Observable<number>,
+      ]).subscribe({
+        next(value) {
+          results.push(+value);
+        },
+        error(err) {
+          throw err;
+        },
+        complete() {
+          results.push('done');
+        },
+      });
+      expect(results).to.deep.equal([1, 2, 'done']);
+    });
+
+    it('should work with concatMap cross types mergeAll', () => {
+      const results: Array<number | string> = [];
+      forkJoin([
+        of('a').pipe(concatMap((val: string) => of(1))) as Observable<number>,
+        of('b').pipe(concatMap((val: string) => of(2))) as Observable<number>,
+      ])
+        .pipe(mergeAll())
+        .subscribe({
+          next(value) {
+            results.push(+value);
+          },
+          error(err) {
+            throw err;
+          },
+          complete() {
+            results.push('done');
+          },
+        });
+      expect(results).to.deep.equal([1, 2, 'done']);
+    });
+
+    it('should work with concatMap cross types zipAll', () => {
+      const results: Array<number | string> = [];
+      forkJoin([
+        of('a').pipe(concatMap((val: string) => of(1))) as Observable<number>,
+        of('b').pipe(concatMap((val: string) => of(2))) as Observable<number>,
+      ])
+        .pipe(zipAll())
+        .subscribe({
+          next(value) {
+            results.push(+value);
+          },
+          error(err) {
+            throw err;
+          },
+          complete() {
+            results.push('done');
+          },
+        });
+      expect(results).to.deep.equal([1, 2, 'done']);
+    });
+
+    it('should work with concatMap cross types combineAll(deprecated)', () => {
+      const results: Array<number | string> = [];
+      forkJoin([
+        of('a').pipe(concatMap((val: string) => of(1))) as Observable<number>,
+        of('b').pipe(concatMap((val: string) => of(2))) as Observable<number>,
+      ])
+        .pipe(combineAll())
+        .subscribe({
+          next(value) {
+            results.push(+value);
+          },
+          error(err) {
+            throw err;
+          },
+          complete() {
+            results.push('done');
+          },
+        });
+      expect(results).to.deep.equal([1, 2, 'done']);
+    });
+
+    xit('should work with concatMap cross types take first fail', () => {
+      const results: Array<number | string> = [];
+      forkJoin([
+        of('a').pipe(
+          concatMap((val: string) => of(1)),
+          first()
+        ) as Observable<number>,
+        of('b').pipe(
+          concatMap((val: string) => of(2)),
+          first()
+        ) as Observable<number>,
+      ]).subscribe({
+        next(value) {
+          results.push(+value);
+        },
+        error(err) {
+          throw err;
+        },
+        complete() {
+          results.push('done');
+        },
+      });
+      expect(results).to.deep.equal([1, 2, 'done']);
     });
   });
 });
