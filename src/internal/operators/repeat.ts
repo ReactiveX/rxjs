@@ -20,7 +20,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * Repeat a message stream
  * ```ts
  * import { of } from 'rxjs';
- * import { repeat, delay } from 'rxjs/operators';
+ * import { repeat } from 'rxjs/operators';
  *
  * const source = of('Repeat message');
  * const example = source.pipe(repeat(3));
