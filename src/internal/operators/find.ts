@@ -41,7 +41,7 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
  * import { find } from 'rxjs/operators';
  *
  * const div = document.createElement('div');
- * div.style.cssText = `width: 200px;height: 200px;background: #09c;`;
+ * div.style.cssText = 'width: 200px; height: 200px; background: #09c;';
  * document.body.appendChild(div);
  *
  * const clicks = fromEvent(document, 'click');
