@@ -48,8 +48,8 @@ const DEFAULT_CONFIG: ConnectConfig<unknown> = {
  * Sharing a totally synchronous observable
  *
  * ```ts
- * import { defer, of } from 'rxjs';
- * import { tap, connect, filter, map, mergeWith } from 'rxjs/operators';
+ * import { defer, merge, of } from 'rxjs';
+ * import { tap, connect, filter, map } from 'rxjs/operators';
  *
  * const source$ = defer(() => {
  *  console.log('subscription started');
@@ -60,15 +60,11 @@ const DEFAULT_CONFIG: ConnectConfig<unknown> = {
  *
  * source$.pipe(
  *   // Notice in here we're merging 3 subscriptions to `shared$`.
- *   connect((shared$) =>
- *     shared$.pipe(
- *       map(n => `all ${n}`),
- *       mergeWith(
- *         shared$.pipe(filter(n => n % 2 === 0), map(n => `even ${n}`)),
- *         shared$.pipe(filter(n => n % 2 === 1), map(n => `odd ${n}`)),
- *       )
- *     )
- *   )
+ *   connect((shared$) => merge(
+ *     shared$.pipe(map(n => `all ${n}`)),
+ *     shared$.pipe(filter(n => n % 2 === 0), map(n => `even ${n}`)),
+ *     shared$.pipe(filter(n => n % 2 === 1), map(n => `odd ${n}`)),
+ *   ))
  * )
  * .subscribe(console.log);
  *
