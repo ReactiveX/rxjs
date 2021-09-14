@@ -16,10 +16,13 @@ describe('UnsubscriptionError', () => {
     try {
       subscription.unsubscribe();
     } catch (err) {
-      expect(err instanceof UnsubscriptionError).to.equal(true);
-      expect(err.errors).to.deep.equal([err1, err2]);
-      expect(err.name).to.equal('UnsubscriptionError');
-      expect(err.stack).to.be.a('string');
+      if (err instanceof UnsubscriptionError) {
+        expect(err.errors).to.deep.equal([err1, err2]);
+        expect(err.name).to.equal('UnsubscriptionError');
+        expect(err.stack).to.be.a('string');
+      } else {
+        throw new TypeError('Invalid error type');
+      }
     }
   });
 });
