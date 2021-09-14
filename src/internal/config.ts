@@ -8,7 +8,6 @@ import { ObservableNotification } from './types';
 export const config: GlobalConfig = {
   onUnhandledError: null,
   onStoppedNotification: null,
-  useDeprecatedSynchronousErrorHandling: false,
 };
 
 /**
@@ -39,18 +38,4 @@ export interface GlobalConfig {
    * behavior of the library.
    */
   onStoppedNotification: ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null;
-
-  /**
-   * If true, turns on synchronous error rethrowing, which is a deprecated behavior
-   * in v6 and higher. This behavior enables bad patterns like wrapping a subscribe
-   * call in a try/catch block. It also enables producer interference, a nasty bug
-   * where a multicast can be broken for all observers by a downstream consumer with
-   * an unhandled error. DO NOT USE THIS FLAG UNLESS IT'S NEEDED TO BUY TIME
-   * FOR MIGRATION REASONS.
-   *
-   * @deprecated As of version 8, RxJS will no longer support synchronous throwing
-   * of unhandled errors. All errors will be thrown on a separate call stack to prevent bad
-   * behaviors described above. Will be removed in v8.
-   */
-  useDeprecatedSynchronousErrorHandling: boolean;
 }

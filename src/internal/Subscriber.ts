@@ -6,7 +6,6 @@ import { reportUnhandledError } from './util/reportUnhandledError';
 import { noop } from './util/noop';
 import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories';
 import { timeoutProvider } from './scheduler/timeoutProvider';
-import { captureError } from './util/errorContext';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -182,13 +181,9 @@ function wrapForErrorHandling(handler: (arg?: any) => void, instance: SafeSubscr
     try {
       handler(...args);
     } catch (err) {
-      if (config.useDeprecatedSynchronousErrorHandling) {
-        captureError(err);
-      } else {
-        // Ideal path, we report this as an unhandled error,
-        // which is thrown on a new call stack.
-        reportUnhandledError(err);
-      }
+      // Ideal path, we report this as an unhandled error,
+      // which is thrown on a new call stack.
+      reportUnhandledError(err);
     }
   };
 }
