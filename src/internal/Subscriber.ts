@@ -155,20 +155,9 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       // going to put them all in a new destination with ensured methods
       // for `next`, `error`, and `complete`. That's part of what makes this
       // the "Safe" Subscriber.
-      ({ next, error, complete } = observerOrNext);
-      let context: any;
-      if (this && config.useDeprecatedNextContext) {
-        // This is a deprecated path that made `this.unsubscribe()` available in
-        // next handler functions passed to subscribe. This only exists behind a flag
-        // now, as it is *very* slow.
-        context = Object.create(observerOrNext);
-        context.unsubscribe = () => this.unsubscribe();
-      } else {
-        context = observerOrNext;
-      }
-      next = next?.bind(context);
-      error = error?.bind(context);
-      complete = complete?.bind(context);
+      next = observerOrNext.next?.bind(observerOrNext);
+      error = observerOrNext.error?.bind(observerOrNext);
+      complete = observerOrNext.complete?.bind(observerOrNext);
     }
 
     // Once we set the destination, the superclass `Subscriber` will

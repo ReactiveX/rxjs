@@ -278,7 +278,6 @@ export interface GlobalConfig {
     Promise?: PromiseConstructorLike;
     onStoppedNotification: ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null;
     onUnhandledError: ((err: any) => void) | null;
-    useDeprecatedNextContext: boolean;
     useDeprecatedSynchronousErrorHandling: boolean;
 }
 

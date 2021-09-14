@@ -10,7 +10,6 @@ export const config: GlobalConfig = {
   onStoppedNotification: null,
   Promise: undefined,
   useDeprecatedSynchronousErrorHandling: false,
-  useDeprecatedNextContext: false,
 };
 
 /**
@@ -65,20 +64,4 @@ export interface GlobalConfig {
    * behaviors described above. Will be removed in v8.
    */
   useDeprecatedSynchronousErrorHandling: boolean;
-
-  /**
-   * If true, enables an as-of-yet undocumented feature from v5: The ability to access
-   * `unsubscribe()` via `this` context in `next` functions created in observers passed
-   * to `subscribe`.
-   *
-   * This is being removed because the performance was severely problematic, and it could also cause
-   * issues when types other than POJOs are passed to subscribe as subscribers, as they will likely have
-   * their `this` context overwritten.
-   *
-   * @deprecated As of version 8, RxJS will no longer support altering the
-   * context of next functions provided as part of an observer to Subscribe. Instead,
-   * you will have access to a subscription or a signal or token that will allow you to do things like
-   * unsubscribe and test closed status. Will be removed in v8.
-   */
-  useDeprecatedNextContext: boolean;
 }
