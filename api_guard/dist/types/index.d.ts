@@ -437,9 +437,6 @@ export declare class Observable<T> implements Subscribable<T> {
     subscribe(observer?: Partial<Observer<T>>): Subscription;
     subscribe(next: (value: T) => void): Subscription;
     subscribe(next?: ((value: T) => void) | null, error?: ((error: any) => void) | null, complete?: (() => void) | null): Subscription;
-    toPromise(): Promise<T | undefined>;
-    toPromise(PromiseCtor: typeof Promise): Promise<T | undefined>;
-    toPromise(PromiseCtor: PromiseConstructorLike): Promise<T | undefined>;
     static create: (...args: any[]) => any;
 }
 
