@@ -6,11 +6,6 @@ import { Observable } from 'rxjs';
 import { timeoutProvider } from 'rxjs/internal/scheduler/timeoutProvider';
 
 describe('config', () => {
-  it('should have a Promise property that defaults to nothing', () => {
-    expect(config).to.have.property('Promise');
-    expect(config.Promise).to.be.undefined;
-  });
-
   describe('onUnhandledError', () => {
     afterEach(() => {
       config.onUnhandledError = null;

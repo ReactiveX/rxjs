@@ -86,25 +86,6 @@ describe('Observable', () => {
         );
     });
 
-    it('should allow Promise to be globally configured', async () => {
-      try {
-        let wasCalled = false;
-
-        config.Promise = function MyPromise(callback: any) {
-          wasCalled = true;
-          return new Promise<number>(callback);
-        } as any;
-
-        await of(42).forEach((x) => {
-          expect(x).to.equal(42);
-        })
-
-        expect(wasCalled).to.be.true;
-      } finally {
-        config.Promise = undefined;
-      }
-    });
-
     it('should reject promise if nextHandler throws', (done) => {
       const results: number[] = [];
 

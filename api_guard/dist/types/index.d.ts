@@ -275,7 +275,6 @@ export declare function generate<S>(options: GenerateBaseOptions<S>): Observable
 export declare function generate<T, S>(options: GenerateOptions<T, S>): Observable<T>;
 
 export interface GlobalConfig {
-    Promise?: PromiseConstructorLike;
     onStoppedNotification: ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null;
     onUnhandledError: ((err: any) => void) | null;
     useDeprecatedNextContext: boolean;

@@ -488,7 +488,7 @@ export class Observable<T> implements Subscribable<T> {
  * @param promiseCtor The optional promise constructor to passed by consuming code
  */
 function getPromiseCtor(promiseCtor: PromiseConstructorLike | undefined) {
-  return promiseCtor ?? config.Promise ?? Promise;
+  return promiseCtor ?? Promise;
 }
 
 function isObserver<T>(value: any): value is Observer<T> {
