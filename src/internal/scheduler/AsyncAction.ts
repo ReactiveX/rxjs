@@ -119,7 +119,7 @@ export class AsyncAction<T> extends Action<T> {
       // HACK: Since code elsewhere is relying on the "truthiness" of the
       // return here, we can't have it return "" or 0 or false.
       // TODO: Clean this up when we refactor schedulers mid-version-8 or so.
-      errorValue = e ? e : new Error('Falsy action error');
+      errorValue = e ? e : new Error('Scheduled action threw falsy error');
     }
     if (errored) {
       this.unsubscribe();
