@@ -13,7 +13,7 @@ describe('throttleTime operator', () => {
     rxTest = new TestScheduler(observableMatcher);
   });
 
-  describe('defailt behavior { leading: true, trailing: false }', () => {
+  describe('default behavior { leading: true, trailing: false }', () => {
     it('should immediately emit the first value in each time window', () => {
       rxTest.run(({ hot, expectObservable, expectSubscriptions }) => {
         const e1 = hot('  -a-x-y----b---x-cx---|');

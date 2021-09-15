@@ -63,7 +63,7 @@ describe('Scheduler.queue', () => {
     const actions: Subscription[] = [];
     let action2Exec = false;
     let action3Exec = false;
-    let errorValue = undefined;
+    let errorValue: any = undefined;
     try {
       queue.schedule(() => {
         actions.push(
