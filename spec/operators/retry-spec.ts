@@ -152,7 +152,7 @@ describe('retry', () => {
       subscriber.next(2);
       subscriber.error('bad');
       return () => {
-        results.push('finalization');
+        results.push('finalizer');
       };
     });
     const subscription = source.pipe(retry(3)).subscribe({
@@ -161,7 +161,7 @@ describe('retry', () => {
     });
 
     expect(subscription.closed).to.be.true;
-    expect(results).to.deep.equal([1, 2, 'finalization', 1, 2, 'finalization', 1, 2, 'finalization', 1, 2, 'bad', 'finalization']);
+    expect(results).to.deep.equal([1, 2, 'finalizer', 1, 2, 'finalizer', 1, 2, 'finalizer', 1, 2, 'bad', 'finalizer']);
   });
 
   it('should retry a number of times, then call next handler without error, then retry and error', (done) => {

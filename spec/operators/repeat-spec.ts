@@ -118,23 +118,23 @@ describe('repeat operator', () => {
         });
       });
       return () => {
-        results.push('finalization');
+        results.push('finalizer');
       }
     });
 
     await source.pipe(repeat(3)).forEach(value => results.push(value));
 
-    expect(results).to.deep.equal([1, 2, 'finalization', 1, 2, 'finalization', 1, 2, 'finalization'])
+    expect(results).to.deep.equal([1, 2, 'finalizer', 1, 2, 'finalizer', 1, 2, 'finalizer'])
   });
 
-  it('should always finalization before starting the next cycle, even when synchronous', () => {
+  it('should always finalize before starting the next cycle, even when synchronous', () => {
     const results: any[] = [];
     const source = new Observable<number>(subscriber => {
       subscriber.next(1);
       subscriber.next(2);
       subscriber.complete();
       return () => {
-        results.push('finalization');
+        results.push('finalizer');
       }
     });
     const subscription = source.pipe(repeat(3)).subscribe({
@@ -143,7 +143,7 @@ describe('repeat operator', () => {
     });
 
     expect(subscription.closed).to.be.true;
-    expect(results).to.deep.equal([1, 2, 'finalization', 1, 2, 'finalization', 1, 2, 'complete', 'finalization'])
+    expect(results).to.deep.equal([1, 2, 'finalizer', 1, 2, 'finalizer', 1, 2, 'complete', 'finalizer']);
   });
 
   it('should not complete when source never completes', () => {

@@ -4,7 +4,7 @@
 import { Operator } from './Operator';
 import { SafeSubscriber, Subscriber } from './Subscriber';
 import { isSubscription, Subscription } from './Subscription';
-import { FinalizationLogic, OperatorFunction, Subscribable, Observer } from './types';
+import { FinalizerLogic, OperatorFunction, Subscribable, Observer } from './types';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
@@ -35,7 +35,7 @@ export class Observable<T> implements Subscribable<T> {
    * can be `next`ed, or an `error` method can be called to raise an error, or
    * `complete` can be called to notify of a successful completion.
    */
-  constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => FinalizationLogic) {
+  constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => FinalizerLogic) {
     if (subscribe) {
       this._subscribe = subscribe;
     }
@@ -52,7 +52,7 @@ export class Observable<T> implements Subscribable<T> {
    * @nocollapse
    * @deprecated Use `new Observable()` instead. Will be removed in v8.
    */
-  static create: (...args: any[]) => any = <T>(subscribe?: (subscriber: Subscriber<T>) => FinalizationLogic) => {
+  static create: (...args: any[]) => any = <T>(subscribe?: (subscriber: Subscriber<T>) => FinalizerLogic) => {
     return new Observable<T>(subscribe);
   };
 
@@ -239,7 +239,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /** @internal */
-  protected _trySubscribe(sink: Subscriber<T>): FinalizationLogic {
+  protected _trySubscribe(sink: Subscriber<T>): FinalizerLogic {
     try {
       return this._subscribe(sink);
     } catch (err) {
@@ -332,7 +332,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /** @internal */
-  protected _subscribe(subscriber: Subscriber<any>): FinalizationLogic {
+  protected _subscribe(subscriber: Subscriber<any>): FinalizerLogic {
     return this.source?.subscribe(subscriber);
   }
 

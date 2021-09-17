@@ -389,7 +389,7 @@ describe('repeatWhen operator', () => {
       subscriber.next(2);
       subscriber.complete();
       return () => {
-        results.push('finalization');
+        results.push('finalizer');
       }
     });
     const subscription = source.pipe(repeatWhen(completions$ => completions$.pipe(
@@ -400,7 +400,7 @@ describe('repeatWhen operator', () => {
     });
 
     expect(subscription.closed).to.be.true;
-    expect(results).to.deep.equal([1, 2, 'finalization', 1, 2, 'finalization', 1, 2, 'finalization', 1, 2, 'complete', 'finalization'])
+    expect(results).to.deep.equal([1, 2, 'finalizer', 1, 2, 'finalizer', 1, 2, 'finalizer', 1, 2, 'complete', 'finalizer'])
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

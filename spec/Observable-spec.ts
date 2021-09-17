@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { Observer, FinalizationLogic } from '../src/internal/types';
+import { Observer, FinalizerLogic } from '../src/internal/types';
 import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty } from 'rxjs';
 import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError, concatMap, switchMap, publish, publishLast, publishBehavior, share, finalize} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
@@ -721,7 +721,7 @@ describe('Observable', () => {
         expect(caught).to.be.true;
       });
 
-      it('should execute finalization even with a sync error', () => {
+      it('should execute finalizer even with a sync error', () => {
         let called = false;
         const badObservable = new Observable((subscriber) => {
           subscriber.error(new Error('bad'));
@@ -757,7 +757,7 @@ describe('Observable', () => {
         expect(called).to.be.true;
       });
 
-      it('should execute finalization in order even with a sync error', () => {
+      it('should execute finalizer in order even with a sync error', () => {
         const results: any[] = [];
         const badObservable = new Observable((subscriber) => {
           subscriber.error(new Error('bad'));
@@ -778,7 +778,7 @@ describe('Observable', () => {
         expect(results).to.deep.equal([1, 2]);
       });
 
-      it('should execute finalization in order even with a sync thrown error', () => {
+      it('should execute finalizer in order even with a sync thrown error', () => {
         const results: any[] = [];
         const badObservable = new Observable(() => {
           throw new Error('bad');
@@ -819,7 +819,7 @@ describe('Observable', () => {
         expect(called).to.be.true;
       });
 
-      it('should call registered finalizations if sync unsubscribed', () => {
+      it('should call registered finalizer if sync unsubscribed', () => {
         let called = false;
         const observable = new Observable((subscriber) => subscriber.add(() => called = true));
         const subscription = observable.subscribe();
@@ -1426,7 +1426,7 @@ describe('Observable.lift', () => {
     class LogOperator<T, R> implements Operator<T, R> {
       constructor(private childOperator: Operator<T, R>) {}
 
-      call(subscriber: Subscriber<R>, source: any): FinalizationLogic {
+      call(subscriber: Subscriber<R>, source: any): FinalizerLogic {
         return this.childOperator.call(new LogSubscriber<R>(subscriber), source);
       }
     }

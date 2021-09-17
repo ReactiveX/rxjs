@@ -1,6 +1,6 @@
 import { isFunction } from './util/isFunction';
 import { UnsubscriptionError } from './util/UnsubscriptionError';
-import { SubscriptionLike, FinalizationLogic, Unsubscribable } from './types';
+import { SubscriptionLike, FinalizerLogic, Unsubscribable } from './types';
 import { arrRemove } from './util/arrRemove';
 
 /**
@@ -31,16 +31,16 @@ export class Subscription implements SubscriptionLike {
   private _parentage: Subscription[] | Subscription | null = null;
 
   /**
-   * The list of registered finalizations to execute upon unsubscription. Adding and removing from this
+   * The list of registered finalizers to execute upon unsubscription. Adding and removing from this
    * list occurs in the {@link #add} and {@link #remove} methods.
    */
-  private _finalizations: Exclude<FinalizationLogic, void>[] | null = null;
+  private _finalizers: Exclude<FinalizerLogic, void>[] | null = null;
 
   /**
-   * @param initialFinalization A function executed first as part of the finalization
+   * @param initialFinalizer A function executed first as part of the finalization
    * process that is kicked off when {@link #unsubscribe} is called.
    */
-  constructor(private initialFinalization?: () => void) {}
+  constructor(private initialFinalizer?: () => void) {}
 
   /**
    * Disposes the resources held by the subscription. May, for instance, cancel
@@ -67,21 +67,21 @@ export class Subscription implements SubscriptionLike {
         }
       }
 
-      const { initialFinalization } = this;
-      if (isFunction(initialFinalization)) {
+      const { initialFinalizer } = this;
+      if (isFunction(initialFinalizer)) {
         try {
-          initialFinalization();
+          initialFinalizer();
         } catch (e) {
           errors = e instanceof UnsubscriptionError ? e.errors : [e];
         }
       }
 
-      const { _finalizations } = this;
-      if (_finalizations) {
-        this._finalizations = null;
-        for (const finalization of _finalizations) {
+      const { _finalizers } = this;
+      if (_finalizers) {
+        this._finalizers = null;
+        for (const finalizer of _finalizers) {
           try {
-            execFinalization(finalization);
+            execFinalizer(finalizer);
           } catch (err) {
             errors = errors ?? [];
             if (err instanceof UnsubscriptionError) {
@@ -100,12 +100,12 @@ export class Subscription implements SubscriptionLike {
   }
 
   /**
-   * Adds a finalization to this subscription, so that finalization will be unsubscribed/called
+   * Adds a finalizer to this subscription, so that finalization will be unsubscribed/called
    * when this subscription is unsubscribed. If this subscription is already {@link #closed},
-   * because it has already been unsubscribed, then whatever finalization is passed to it
-   * will automatically be executed (unless the finalization itself is also a closed subscription).
+   * because it has already been unsubscribed, then whatever finalizer is passed to it
+   * will automatically be executed (unless the finalizer itself is also a closed subscription).
    *
-   * Closed Subscriptions cannot be added as finalizations to any subscription. Adding a closed
+   * Closed Subscriptions cannot be added as finalizers to any subscription. Adding a closed
    * subscription to a any subscription will result in no operation. (A noop).
    *
    * Adding a subscription to itself, or adding `null` or `undefined` will not perform any
@@ -115,26 +115,26 @@ export class Subscription implements SubscriptionLike {
    * if they are unsubscribed. Functions and {@link Unsubscribable} objects that you wish to remove
    * will need to be removed manually with {@link #remove}
    *
-   * @param finalization The finalization logic to add to this subscription.
+   * @param finalizer The finalization logic to add to this subscription.
    */
-  add(finalization: FinalizationLogic): void {
-    // Only add the finalization if it's not undefined
+  add(finalizer: FinalizerLogic): void {
+    // Only add the finalizer if it's not undefined
     // and don't add a subscription to itself.
-    if (finalization && finalization !== this) {
+    if (finalizer && finalizer !== this) {
       if (this.closed) {
         // If this subscription is already closed,
-        // execute whatever finalization is handed to it automatically.
-        execFinalization(finalization);
+        // execute whatever finalizer is handed to it automatically.
+        execFinalizer(finalizer);
       } else {
-        if (finalization instanceof Subscription) {
+        if (finalizer instanceof Subscription) {
           // We don't add closed subscriptions, and we don't add the same subscription
           // twice. Subscription unsubscribe is idempotent.
-          if (finalization.closed || finalization._hasParent(this)) {
+          if (finalizer.closed || finalizer._hasParent(this)) {
             return;
           }
-          finalization._addParent(this);
+          finalizer._addParent(this);
         }
-        (this._finalizations = this._finalizations ?? []).push(finalization);
+        (this._finalizers = this._finalizers ?? []).push(finalizer);
       }
     }
   }
@@ -175,25 +175,25 @@ export class Subscription implements SubscriptionLike {
   }
 
   /**
-   * Removes a finalization from this subscription that was previously added with the {@link #add} method.
+   * Removes a finalizer from this subscription that was previously added with the {@link #add} method.
    *
    * Note that `Subscription` instances, when unsubscribed, will automatically remove themselves
    * from every other `Subscription` they have been added to. This means that using the `remove` method
    * is not a common thing and should be used thoughtfully.
    *
-   * If you add the same finalization instance of a function or an unsubscribable object to a `Subcription` instance
+   * If you add the same finalizer instance of a function or an unsubscribable object to a `Subcription` instance
    * more than once, you will need to call `remove` the same number of times to remove all instances.
    *
-   * All finalization instances are removed to free up memory upon unsubscription.
+   * All finalizer instances are removed to free up memory upon unsubscription.
    *
-   * @param finalization The finalization to remove from this subscription
+   * @param finalizer The finalizer to remove from this subscription
    */
-  remove(finalization: Exclude<FinalizationLogic, void>): void {
-    const { _finalizations } = this;
-    _finalizations && arrRemove(_finalizations, finalization);
+  remove(finalizer: Exclude<FinalizerLogic, void>): void {
+    const { _finalizers } = this;
+    _finalizers && arrRemove(_finalizers, finalizer);
 
-    if (finalization instanceof Subscription) {
-      finalization._removeParent(this);
+    if (finalizer instanceof Subscription) {
+      finalizer._removeParent(this);
     }
   }
 }
@@ -207,10 +207,10 @@ export function isSubscription(value: any): value is Subscription {
   );
 }
 
-function execFinalization(finalization: Unsubscribable | (() => void)) {
-  if (isFunction(finalization)) {
-    finalization();
+function execFinalizer(finalizer: Unsubscribable | (() => void)) {
+  if (isFunction(finalizer)) {
+    finalizer();
   } else {
-    finalization.unsubscribe();
+    finalizer.unsubscribe();
   }
 }

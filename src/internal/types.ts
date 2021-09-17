@@ -66,11 +66,11 @@ export interface Unsubscribable {
   unsubscribe(): void;
 }
 
-export type FinalizationLogic = Subscription | Unsubscribable | (() => void) | void;
+export type FinalizerLogic = Subscription | Unsubscribable | (() => void) | void;
 /**
- * @deprecated Use {@link FinalizationLogic} instead
+ * @deprecated Use {@link FinalizerLogic} instead
  */
-export type TeardownLogic = FinalizationLogic;
+export type TeardownLogic = FinalizerLogic;
 
 export interface SubscriptionLike extends Unsubscribable {
   unsubscribe(): void;

@@ -212,9 +212,9 @@ export declare function filter<T>(predicate: BooleanConstructor): OperatorFuncti
 export declare function filter<T, A>(predicate: (this: A, value: T, index: number) => boolean, thisArg: A): MonoTypeOperatorFunction<T>;
 export declare function filter<T>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T>;
 
-export declare type FinalizationLogic = Subscription | Unsubscribable | (() => void) | void;
-
 export declare function finalize<T>(callback: () => void): MonoTypeOperatorFunction<T>;
+
+export declare type FinalizerLogic = Subscription | Unsubscribable | (() => void) | void;
 
 export declare function find<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export declare function find<T, S extends T, A>(predicate: (this: A, value: T, index: number, source: Observable<T>) => value is S, thisArg: A): OperatorFunction<T, S | undefined>;
@@ -423,7 +423,7 @@ export declare const observable: string | symbol;
 export declare class Observable<T> implements Subscribable<T> {
     operator: Operator<any, T> | undefined;
     source: Observable<any> | undefined;
-    constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => FinalizationLogic);
+    constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => FinalizerLogic);
     forEach(next: (value: T) => void): Promise<void>;
     forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
     lift<R>(operator?: Operator<T, R>): Observable<R>;
@@ -488,7 +488,7 @@ export declare function onErrorResumeNext<A extends readonly unknown[]>(sources:
 export declare function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
 
 export interface Operator<T, R> {
-    call(subscriber: Subscriber<R>, source: any): FinalizationLogic;
+    call(subscriber: Subscriber<R>, source: any): FinalizerLogic;
 }
 
 export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Observable<R>> {
@@ -678,9 +678,9 @@ export declare class Subscriber<T> extends Subscription implements Observer<T> {
 
 export declare class Subscription implements SubscriptionLike {
     closed: boolean;
-    constructor(initialFinalization?: (() => void) | undefined);
-    add(finalization: FinalizationLogic): void;
-    remove(finalization: Exclude<FinalizationLogic, void>): void;
+    constructor(initialFinalizer?: (() => void) | undefined);
+    add(finalizer: FinalizerLogic): void;
+    remove(finalizer: Exclude<FinalizerLogic, void>): void;
     unsubscribe(): void;
     static EMPTY: Subscription;
 }
@@ -721,7 +721,7 @@ export declare function tap<T>(observer?: Partial<TapObserver<T>>): MonoTypeOper
 export declare function tap<T>(next: (value: T) => void): MonoTypeOperatorFunction<T>;
 export declare function tap<T>(next?: ((value: T) => void) | null, error?: ((error: any) => void) | null, complete?: (() => void) | null): MonoTypeOperatorFunction<T>;
 
-export declare type TeardownLogic = FinalizationLogic;
+export declare type TeardownLogic = FinalizerLogic;
 
 export declare function throttle<T>(durationSelector: (value: T) => ObservableInput<any>, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 

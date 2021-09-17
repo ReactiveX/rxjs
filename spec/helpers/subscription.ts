@@ -1,9 +1,9 @@
 /** @prettier */
-import { FinalizationLogic } from 'rxjs';
+import { FinalizerLogic } from 'rxjs';
 
-export function getRegisteredFinalizations(subscription: any): Exclude<FinalizationLogic, void>[] {
-  if ('_finalizations' in subscription) {
-    return subscription._finalizations ?? [];
+export function getRegisteredFinalizers(subscription: any): Exclude<FinalizerLogic, void>[] {
+  if ('_finalizers' in subscription) {
+    return subscription._finalizers ?? [];
   } else {
     throw new TypeError('Invalid Subscription');
   }

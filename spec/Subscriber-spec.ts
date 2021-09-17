@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { SafeSubscriber } from 'rxjs/internal/Subscriber';
 import { Subscriber, Observable, config, of, Observer } from 'rxjs';
 import { asInteropSubscriber } from './helpers/interop-helper';
-import { getRegisteredFinalizations } from './helpers/subscription';
+import { getRegisteredFinalizers } from './helpers/subscription';
 
 /** @test {Subscriber} */
 describe('SafeSubscriber', () => {
@@ -119,17 +119,17 @@ describe('SafeSubscriber', () => {
     expect(count).to.equal(1);
   });
 
-  it('should close, unsubscribe, and unregister all finalizations after complete', () => {
+  it('should close, unsubscribe, and unregister all finalizers after complete', () => {
     let isUnsubscribed = false;
     const subscriber = new SafeSubscriber();
     subscriber.add(() => isUnsubscribed = true);
     subscriber.complete();
     expect(isUnsubscribed).to.be.true;
     expect(subscriber.closed).to.be.true;
-    expect(getRegisteredFinalizations(subscriber).length).to.equal(0);
+    expect(getRegisteredFinalizers(subscriber).length).to.equal(0);
   });
 
-  it('should close, unsubscribe, and unregister all finalizations after error', () => {
+  it('should close, unsubscribe, and unregister all finalizers after error', () => {
     let isTornDown = false;
     const subscriber = new SafeSubscriber({
       error: () => {
@@ -142,18 +142,18 @@ describe('SafeSubscriber', () => {
     subscriber.error(new Error('test'));
     expect(isTornDown).to.be.true;
     expect(subscriber.closed).to.be.true;
-    expect(getRegisteredFinalizations(subscriber).length).to.equal(0);
+    expect(getRegisteredFinalizers(subscriber).length).to.equal(0);
   });
 });
 
 describe('Subscriber', () => {
-  it('should finalize and unregister all finalizations after complete', () => {
+  it('should finalize and unregister all finalizers after complete', () => {
     let isTornDown = false;
     const subscriber = new Subscriber();
     subscriber.add(() => { isTornDown = true });
     subscriber.complete();
     expect(isTornDown).to.be.true;
-    expect(getRegisteredFinalizations(subscriber).length).to.equal(0);
+    expect(getRegisteredFinalizers(subscriber).length).to.equal(0);
   });
 
   it('should NOT break this context on next methods from unfortunate consumers', () => {
@@ -199,8 +199,8 @@ describe('Subscriber', () => {
         subscriber.complete();
 
         return () => {
-          results.push('finalization'); // TODO: @sangxxh
-        }
+          results.push('finalizer');
+        };
       });
 
       source.subscribe({
@@ -216,7 +216,7 @@ describe('Subscriber', () => {
         }
       });
 
-      expect(results).to.deep.equal([0, 1, 2, 3, 'finalization'])
+      expect(results).to.deep.equal([0, 1, 2, 3, 'finalizer']);
     });
 
     it('should NOT break this context on next methods from unfortunate consumers', () => {
