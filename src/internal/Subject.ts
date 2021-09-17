@@ -2,7 +2,7 @@ import { Operator } from './Operator';
 import { Observable } from './Observable';
 import { Subscriber } from './Subscriber';
 import { Subscription, EMPTY_SUBSCRIPTION } from './Subscription';
-import { Observer, SubscriptionLike, TeardownLogic } from './types';
+import { Observer, SubscriptionLike, FinalizationLogic } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { arrRemove } from './util/arrRemove';
 import { errorContext } from './util/errorContext';
@@ -103,7 +103,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   /** @internal */
-  protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _trySubscribe(subscriber: Subscriber<T>): FinalizationLogic {
     this._throwIfClosed();
     return super._trySubscribe(subscriber);
   }

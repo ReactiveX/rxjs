@@ -74,7 +74,7 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
                 // If we have an innerSub, this was an asynchronous call, kick off the retry.
                 // Otherwise, if we don't have an innerSub yet, that's because the inner subscription
                 // call hasn't even returned yet. We've arrived here synchronously.
-                // So we flag that we want to resub, such that we can ensure teardown
+                // So we flag that we want to resub, such that we can ensure finalization
                 // happens before we resubscribe.
                 innerSub ? subscribeForRetryWhen() : (syncResub = true)
               )

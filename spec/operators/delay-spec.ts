@@ -245,7 +245,7 @@ describe('delay', () => {
         tap({
           next() {
             const [[subscriber]] = subscribeSpy.args;
-            counts.push(subscriber._teardowns.length);
+            counts.push(subscriber._finalizations.length);
           },
           complete() {
             expect(counts).to.deep.equal([1, 1]);

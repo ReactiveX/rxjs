@@ -66,7 +66,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
               } else {
                 // If we don't have an innerSub yet, that's because the inner subscription
                 // call hasn't even returned yet. We've arrived here synchronously.
-                // So we flag that we want to resub, such that we can ensure teardown
+                // So we flag that we want to resub, such that we can ensure finalization
                 // happens before we resubscribe.
                 syncResub = true;
               }

@@ -1,9 +1,9 @@
 /** @prettier */
-import { TeardownLogic } from 'rxjs';
+import { FinalizationLogic } from 'rxjs';
 
-export function getRegisteredTeardowns(subscription: any): Exclude<TeardownLogic, void>[] {
-  if ('_teardowns' in subscription) {
-    return subscription._teardowns ?? [];
+export function getRegisteredFinalizations(subscription: any): Exclude<FinalizationLogic, void>[] {
+  if ('_finalizations' in subscription) {
+    return subscription._finalizations ?? [];
   } else {
     throw new TypeError('Invalid Subscription');
   }

@@ -382,14 +382,14 @@ describe('repeatWhen operator', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should always teardown before starting the next cycle, even when synchronous', () => {
+  it('should always finalize before starting the next cycle, even when synchronous', () => {
     const results: any[] = [];
     const source = new Observable<number>(subscriber => {
       subscriber.next(1);
       subscriber.next(2);
       subscriber.complete();
       return () => {
-        results.push('teardown');
+        results.push('finalization');
       }
     });
     const subscription = source.pipe(repeatWhen(completions$ => completions$.pipe(
@@ -400,7 +400,7 @@ describe('repeatWhen operator', () => {
     });
 
     expect(subscription.closed).to.be.true;
-    expect(results).to.deep.equal([1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'complete', 'teardown'])
+    expect(results).to.deep.equal([1, 2, 'finalization', 1, 2, 'finalization', 1, 2, 'finalization', 1, 2, 'complete', 'finalization'])
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

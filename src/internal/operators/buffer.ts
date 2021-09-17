@@ -74,7 +74,7 @@ export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T,
     );
 
     return () => {
-      // Ensure buffered values are released on teardown.
+      // Ensure buffered values are released on finalization.
       currentBuffer = null!;
     };
   });

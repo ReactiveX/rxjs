@@ -109,7 +109,7 @@ export function debounce<T>(durationSelector: (value: T) => ObservableInput<any>
         // Pass all errors through to consumer
         undefined,
         () => {
-          // Teardown.
+          // Finalization.
           lastValue = durationSubscriber = null;
         }
       )

@@ -51,7 +51,7 @@ export function scheduleIterable<T>(input: Iterable<T>, scheduler: SchedulerLike
       );
     });
 
-    // During teardown, if we see this iterator has a `return` method,
+    // During finalization, if we see this iterator has a `return` method,
     // then we know it is a Generator, and not just an Iterator. So we call
     // the `return()` function. This will ensure that any `finally { }` blocks
     // inside of the generator we can hit will be hit properly.
