@@ -7,7 +7,6 @@ import { isSubscription, Subscription } from './Subscription';
 import { TeardownLogic, OperatorFunction, Subscribable, Observer } from './types';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
-import { config } from './config';
 import { isFunction } from './util/isFunction';
 import { errorContext } from './util/errorContext';
 
@@ -488,7 +487,7 @@ export class Observable<T> implements Subscribable<T> {
  * @param promiseCtor The optional promise constructor to passed by consuming code
  */
 function getPromiseCtor(promiseCtor: PromiseConstructorLike | undefined) {
-  return promiseCtor ?? config.Promise ?? Promise;
+  return promiseCtor ?? Promise;
 }
 
 function isObserver<T>(value: any): value is Observer<T> {

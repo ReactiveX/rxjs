@@ -8,7 +8,6 @@ import { ObservableNotification } from './types';
 export const config: GlobalConfig = {
   onUnhandledError: null,
   onStoppedNotification: null,
-  Promise: undefined,
   useDeprecatedSynchronousErrorHandling: false,
   useDeprecatedNextContext: false,
 };
@@ -41,16 +40,6 @@ export interface GlobalConfig {
    * behavior of the library.
    */
   onStoppedNotification: ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null;
-
-  /**
-   * The promise constructor used by default for {@link Observable#toPromise toPromise} and {@link Observable#forEach forEach}
-   * methods.
-   *
-   * @deprecated As of version 8, RxJS will no longer support this sort of injection of a
-   * Promise constructor. If you need a Promise implementation other than native promises,
-   * please polyfill/patch Promise as you see appropriate. Will be removed in v8.
-   */
-  Promise?: PromiseConstructorLike;
 
   /**
    * If true, turns on synchronous error rethrowing, which is a deprecated behavior
