@@ -35,15 +35,15 @@ import { identity } from '../util/identity';
  *
  * // Output
  * // click
+ * // 0
  * // 1
  * // 2
  * // 3
- * // 4
  * // ...
  * // click
+ * // 0
  * // 1
  * // 2
- * // 3
  * // ...
  * // click
  * // ...

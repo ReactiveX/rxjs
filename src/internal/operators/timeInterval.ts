@@ -23,19 +23,22 @@ import { map } from './map';
  * Emit interval between current value with the last value
  *
  * ```ts
+ * import { interval } from "rxjs";
+ * import { timeInterval, timeout } from "rxjs/operators";
+ *
  * const seconds = interval(1000);
  *
  * seconds.pipe(timeInterval())
- * .subscribe(
- *     value => console.log(value),
- *     err => console.log(err),
- * );
+ * .subscribe({
+ *     next: value => console.log(value),
+ *     error: err => console.log(err),
+ * });
  *
  * seconds.pipe(timeout(900))
- * .subscribe(
- *     value => console.log(value),
- *     err => console.log(err),
- * );
+ * .subscribe({
+ *     next: value => console.log(value),
+ *     error: err => console.log(err),
+ * });
  *
  * // NOTE: The values will never be this precise,
  * // intervals created with `interval` or `setInterval`

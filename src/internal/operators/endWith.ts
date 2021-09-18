@@ -45,9 +45,7 @@ export function endWith<T, A extends unknown[] = T[]>(...values: A): OperatorFun
  *   takeUntil(documentClicks$),
  *   endWith('interval ended by click'),
  * )
- * .subscribe(
- *   x = console.log(x);
- * )
+ * .subscribe(x => console.log(x));
  *
  * // Result (assuming a user clicks after 15 seconds)
  * // "interval started"
