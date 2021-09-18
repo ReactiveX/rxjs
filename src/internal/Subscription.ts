@@ -189,10 +189,7 @@ export class Subscription implements SubscriptionLike {
    * @param teardown The teardown to remove from this subscription
    */
   remove(teardown: Exclude<TeardownLogic, void>): void {
-    const { _teardowns } = this;
-    if (_teardowns) {
-      _teardowns.delete(teardown);
-    }
+    this._teardowns?.delete(teardown);
 
     if (teardown instanceof Subscription) {
       teardown._removeParent(this);
