@@ -181,8 +181,6 @@ function wrapForErrorHandling(handler: (arg?: any) => void, instance: SafeSubscr
     try {
       handler(...args);
     } catch (err) {
-      // Ideal path, we report this as an unhandled error,
-      // which is thrown on a new call stack.
       reportUnhandledError(err);
     }
   };
