@@ -65,12 +65,7 @@ import { operate } from '../util/lift';
  */
 export function finalize<T>(callback: () => void): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
-    // TODO: This try/finally was only added for `useDeprecatedSynchronousErrorHandling`.
-    // REMOVE THIS WHEN THAT HOT GARBAGE IS REMOVED IN V8.
-    try {
-      source.subscribe(subscriber);
-    } finally {
-      subscriber.add(callback);
-    }
+    source.subscribe(subscriber);
+    subscriber.add(callback);
   });
 }

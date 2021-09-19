@@ -277,7 +277,6 @@ export declare function generate<T, S>(options: GenerateOptions<T, S>): Observab
 export interface GlobalConfig {
     onStoppedNotification: ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null;
     onUnhandledError: ((err: any) => void) | null;
-    useDeprecatedSynchronousErrorHandling: boolean;
 }
 
 export declare function groupBy<T, K>(key: (value: T) => K, options: BasicGroupByOptions<K, T>): OperatorFunction<T, GroupedObservable<K, T>>;
