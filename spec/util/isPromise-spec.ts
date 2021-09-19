@@ -8,11 +8,6 @@ describe('isPromise', () => {
     expect(isPromise(o)).to.be.true;
   });
 
-  it('should return true for a Promise that comes from an Observable', () => {
-    const o: any = of(null).toPromise();
-    expect(isPromise(o)).to.be.true;
-  });
-
   it('should NOT return true for any Observable', () => {
     const o: any = of(null);
 

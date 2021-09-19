@@ -437,46 +437,6 @@ export class Observable<T> implements Subscribable<T> {
   pipe(...operations: OperatorFunction<any, any>[]): Observable<any> {
     return pipeFromArray(operations)(this);
   }
-
-  /* tslint:disable:max-line-length */
-  /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. Details: https://rxjs.dev/deprecations/to-promise */
-  toPromise(): Promise<T | undefined>;
-  /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. Details: https://rxjs.dev/deprecations/to-promise */
-  toPromise(PromiseCtor: typeof Promise): Promise<T | undefined>;
-  /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. Details: https://rxjs.dev/deprecations/to-promise */
-  toPromise(PromiseCtor: PromiseConstructorLike): Promise<T | undefined>;
-  /* tslint:enable:max-line-length */
-
-  /**
-   * Subscribe to this Observable and get a Promise resolving on
-   * `complete` with the last emission (if any).
-   *
-   * **WARNING**: Only use this with observables you *know* will complete. If the source
-   * observable does not complete, you will end up with a promise that is hung up, and
-   * potentially all of the state of an async function hanging out in memory. To avoid
-   * this situation, look into adding something like {@link timeout}, {@link take},
-   * {@link takeWhile}, or {@link takeUntil} amongst others.
-   *
-   * @method toPromise
-   * @param [promiseCtor] a constructor function used to instantiate
-   * the Promise
-   * @return A Promise that resolves with the last value emit, or
-   * rejects on an error. If there were no emissions, Promise
-   * resolves with undefined.
-   * @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. Details: https://rxjs.dev/deprecations/to-promise
-   */
-  toPromise(promiseCtor?: PromiseConstructorLike): Promise<T | undefined> {
-    promiseCtor = getPromiseCtor(promiseCtor);
-
-    return new promiseCtor((resolve, reject) => {
-      let value: T | undefined;
-      this.subscribe(
-        (x: T) => (value = x),
-        (err: any) => reject(err),
-        () => resolve(value)
-      );
-    }) as Promise<T | undefined>;
-  }
 }
 
 /**
