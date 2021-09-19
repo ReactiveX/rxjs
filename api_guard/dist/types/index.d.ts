@@ -435,7 +435,6 @@ export declare class Observable<T> implements Subscribable<T> {
     subscribe(observer?: Partial<Observer<T>>): Subscription;
     subscribe(next: (value: T) => void): Subscription;
     subscribe(next?: ((value: T) => void) | null, error?: ((error: any) => void) | null, complete?: (() => void) | null): Subscription;
-    static create: (...args: any[]) => any;
 }
 
 export declare type ObservableInput<T> = Observable<T> | InteropObservable<T> | AsyncIterable<T> | PromiseLike<T> | ArrayLike<T> | Iterable<T> | ReadableStreamLike<T>;
@@ -714,7 +713,7 @@ export declare function tap<T>(next?: ((value: T) => void) | null, error?: ((err
 
 export declare type TeardownLogic = Subscription | Unsubscribable | (() => void) | void;
 
-export declare function throttle<T>(durationSelector: (value: T) => ObservableInput<any>, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
+export declare function throttle<T>(durationSelector: (value: T) => ObservableInput<any>, config?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
 export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, config?: import("./throttle").ThrottleConfig): MonoTypeOperatorFunction<T>;
 

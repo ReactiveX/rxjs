@@ -673,41 +673,6 @@ describe('Observable', () => {
   });
 });
 
-/** @test {Observable} */
-describe('Observable.create', () => {
-  it('should create an Observable', () => {
-    const result = Observable.create(() => {
-      //noop
-    });
-    expect(result instanceof Observable).to.be.true;
-  });
-
-  it('should provide an observer to the function', () => {
-    let called = false;
-    const result = Observable.create((observer: Observer<any>) => {
-      called = true;
-      expectFullObserver(observer);
-      observer.complete();
-    });
-
-    expect(called).to.be.false;
-    result.subscribe(() => {
-      //noop
-    });
-    expect(called).to.be.true;
-  });
-
-  it('should send errors thrown in the passed function down the error path', (done) => {
-    Observable.create(() => {
-      throw new Error('this should be handled');
-    }).subscribe({
-      error(err: Error) {
-        expect(err).to.exist.and.be.instanceof(Error).and.have.property('message', 'this should be handled');
-        done();
-      },
-    });
-  });
-});
 
 /** @test {Observable} */
 describe('Observable.lift', () => {
