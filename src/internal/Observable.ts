@@ -4,7 +4,7 @@
 import { Operator } from './Operator';
 import { SafeSubscriber, Subscriber } from './Subscriber';
 import { isSubscription, Subscription } from './Subscription';
-import { FinalizerLogic, OperatorFunction, Subscribable, Observer } from './types';
+import { TeardownLogic, OperatorFunction, Subscribable, Observer } from './types';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
@@ -35,7 +35,7 @@ export class Observable<T> implements Subscribable<T> {
    * can be `next`ed, or an `error` method can be called to raise an error, or
    * `complete` can be called to notify of a successful completion.
    */
-  constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => FinalizerLogic) {
+  constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic) {
     if (subscribe) {
       this._subscribe = subscribe;
     }
@@ -52,7 +52,7 @@ export class Observable<T> implements Subscribable<T> {
    * @nocollapse
    * @deprecated Use `new Observable()` instead. Will be removed in v8.
    */
-  static create: (...args: any[]) => any = <T>(subscribe?: (subscriber: Subscriber<T>) => FinalizerLogic) => {
+  static create: (...args: any[]) => any = <T>(subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) => {
     return new Observable<T>(subscribe);
   };
 
@@ -239,7 +239,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /** @internal */
-  protected _trySubscribe(sink: Subscriber<T>): FinalizerLogic {
+  protected _trySubscribe(sink: Subscriber<T>): TeardownLogic {
     try {
       return this._subscribe(sink);
     } catch (err) {
@@ -332,7 +332,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /** @internal */
-  protected _subscribe(subscriber: Subscriber<any>): FinalizerLogic {
+  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     return this.source?.subscribe(subscriber);
   }
 

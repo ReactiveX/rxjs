@@ -1,6 +1,6 @@
 import { isFunction } from './util/isFunction';
 import { UnsubscriptionError } from './util/UnsubscriptionError';
-import { SubscriptionLike, FinalizerLogic, Unsubscribable } from './types';
+import { SubscriptionLike, TeardownLogic, Unsubscribable } from './types';
 import { arrRemove } from './util/arrRemove';
 
 /**
@@ -34,13 +34,13 @@ export class Subscription implements SubscriptionLike {
    * The list of registered finalizers to execute upon unsubscription. Adding and removing from this
    * list occurs in the {@link #add} and {@link #remove} methods.
    */
-  private _finalizers: Exclude<FinalizerLogic, void>[] | null = null;
+  private _finalizers: Exclude<TeardownLogic, void>[] | null = null;
 
   /**
-   * @param initialFinalizer A function executed first as part of the finalization
+   * @param initialTeardown A function executed first as part of the finalization
    * process that is kicked off when {@link #unsubscribe} is called.
    */
-  constructor(private initialFinalizer?: () => void) {}
+  constructor(private initialTeardown?: () => void) {}
 
   /**
    * Disposes the resources held by the subscription. May, for instance, cancel
@@ -67,7 +67,7 @@ export class Subscription implements SubscriptionLike {
         }
       }
 
-      const { initialFinalizer } = this;
+      const { initialTeardown: initialFinalizer } = this;
       if (isFunction(initialFinalizer)) {
         try {
           initialFinalizer();
@@ -115,26 +115,26 @@ export class Subscription implements SubscriptionLike {
    * if they are unsubscribed. Functions and {@link Unsubscribable} objects that you wish to remove
    * will need to be removed manually with {@link #remove}
    *
-   * @param finalizer The finalization logic to add to this subscription.
+   * @param teardown The finalization logic to add to this subscription.
    */
-  add(finalizer: FinalizerLogic): void {
+  add(teardown: TeardownLogic): void {
     // Only add the finalizer if it's not undefined
     // and don't add a subscription to itself.
-    if (finalizer && finalizer !== this) {
+    if (teardown && teardown !== this) {
       if (this.closed) {
         // If this subscription is already closed,
         // execute whatever finalizer is handed to it automatically.
-        execFinalizer(finalizer);
+        execFinalizer(teardown);
       } else {
-        if (finalizer instanceof Subscription) {
+        if (teardown instanceof Subscription) {
           // We don't add closed subscriptions, and we don't add the same subscription
           // twice. Subscription unsubscribe is idempotent.
-          if (finalizer.closed || finalizer._hasParent(this)) {
+          if (teardown.closed || teardown._hasParent(this)) {
             return;
           }
-          finalizer._addParent(this);
+          teardown._addParent(this);
         }
-        (this._finalizers = this._finalizers ?? []).push(finalizer);
+        (this._finalizers = this._finalizers ?? []).push(teardown);
       }
     }
   }
@@ -186,14 +186,14 @@ export class Subscription implements SubscriptionLike {
    *
    * All finalizer instances are removed to free up memory upon unsubscription.
    *
-   * @param finalizer The finalizer to remove from this subscription
+   * @param teardown The finalizer to remove from this subscription
    */
-  remove(finalizer: Exclude<FinalizerLogic, void>): void {
+  remove(teardown: Exclude<TeardownLogic, void>): void {
     const { _finalizers } = this;
-    _finalizers && arrRemove(_finalizers, finalizer);
+    _finalizers && arrRemove(_finalizers, teardown);
 
-    if (finalizer instanceof Subscription) {
-      finalizer._removeParent(this);
+    if (teardown instanceof Subscription) {
+      teardown._removeParent(this);
     }
   }
 }

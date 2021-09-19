@@ -52,18 +52,11 @@ export class ConnectableObservable<T> extends Observable<T> {
     return this._subject!;
   }
 
-  protected _finalize() {
+  protected _teardown() {
     this._refCount = 0;
     const { _connection } = this;
     this._subject = this._connection = null;
     _connection?.unsubscribe();
-  }
-
-  /**
-   * @deprecated Use {@link _finalize} instead
-   */
-  protected _teardown() {
-    this._finalize();
   }
 
   /**
@@ -81,14 +74,14 @@ export class ConnectableObservable<T> extends Observable<T> {
             subject as any,
             undefined,
             () => {
-              this._finalize();
+              this._teardown();
               subject.complete();
             },
             (err) => {
-              this._finalize();
+              this._teardown();
               subject.error(err);
             },
-            () => this._finalize()
+            () => this._teardown()
           )
         )
       );

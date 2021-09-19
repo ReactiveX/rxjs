@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { Observer, FinalizerLogic } from '../src/internal/types';
+import { Observer, TeardownLogic } from '../src/internal/types';
 import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty } from 'rxjs';
 import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError, concatMap, switchMap, publish, publishLast, publishBehavior, share, finalize} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
@@ -1426,7 +1426,7 @@ describe('Observable.lift', () => {
     class LogOperator<T, R> implements Operator<T, R> {
       constructor(private childOperator: Operator<T, R>) {}
 
-      call(subscriber: Subscriber<R>, source: any): FinalizerLogic {
+      call(subscriber: Subscriber<R>, source: any): TeardownLogic {
         return this.childOperator.call(new LogSubscriber<R>(subscriber), source);
       }
     }
