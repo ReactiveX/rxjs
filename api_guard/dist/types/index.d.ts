@@ -277,7 +277,6 @@ export declare function generate<T, S>(options: GenerateOptions<T, S>): Observab
 export interface GlobalConfig {
     onStoppedNotification: ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null;
     onUnhandledError: ((err: any) => void) | null;
-    useDeprecatedNextContext: boolean;
     useDeprecatedSynchronousErrorHandling: boolean;
 }
 
