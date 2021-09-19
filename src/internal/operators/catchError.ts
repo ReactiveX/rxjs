@@ -128,7 +128,7 @@ export function catchError<T, O extends ObservableInput<any>>(
 
     if (syncUnsub) {
       // We have a synchronous error, we need to make sure to
-      // finalize right away. This ensures that `finalize` is called
+      // finalize right away. This ensures that callbacks in the `finalize` operator are called
       // at the right time, and that finalization occurs at the expected
       // time between the source error and the subscription to the
       // next observable.
