@@ -53,6 +53,10 @@ export function first<T, D = T>(
  * import { fromEvent } from 'rxjs';
  * import { first } from 'rxjs/operators';
  *
+ * const div = document.createElement('div');
+ * div.style.cssText = 'width: 200px; height: 200px; background: #09c;';
+ * document.body.appendChild(div);
+ *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(first(ev => ev.target.tagName === 'DIV'));
  * result.subscribe(x => console.log(x));

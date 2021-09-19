@@ -23,11 +23,11 @@ import { noop } from '../util/noop';
  * of('you', 'talking', 'to', 'me').pipe(
  *   ignoreElements(),
  * )
- * .subscribe(
- *   word => console.log(word),
- *   err => console.log('error:', err),
- *   () => console.log('the end'),
- * );
+ * .subscribe({
+ *   next: word => console.log(word),
+ *   error: err => console.log('error:', err),
+ *   complete: () => console.log('the end'),
+ * });
  * // result:
  * // 'the end'
  * ```

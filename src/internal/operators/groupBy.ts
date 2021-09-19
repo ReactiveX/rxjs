@@ -110,7 +110,7 @@ export function groupBy<T, K, R>(
  *   { id: 3, name: 'TSLint' }
  * )
  *   .pipe(
- *     groupBy(p => p.id, p => p.name),
+ *     groupBy(p => p.id, { element: p => p.name }),
  *     mergeMap(group$ =>
  *       group$.pipe(reduce((acc, cur) => [...acc, cur], [`${group$.key}`]))
  *     ),

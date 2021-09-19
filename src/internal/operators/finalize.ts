@@ -38,12 +38,18 @@ import { operate } from '../util/lift';
  *
  * const source = interval(100).pipe(
  *   finalize(() => console.log('[finalize] Called')),
- *    tap(() => console.log('[next] Called'),
- *      () => console.log('[error] Not called'),
- *      () => console.log('[tap] Not called')),
+ *   tap({
+ *     next: () => console.log('[next] Called'),
+ *     error: () => console.log('[error] Not called'),
+ *     complete: () => console.log('[tap complete] Not called')
+ *   })
  * );
  *
- * const sub = source.subscribe(x => console.log(x), noop, () => console.log('[complete] Not called'));
+ * const sub = source.subscribe({
+ *   next: x => console.log(x),
+ *   error: noop,
+ *   complete: () => console.log('[complete] Not called')
+ * });
  *
  * timer(150).subscribe(() => sub.unsubscribe());
  *
