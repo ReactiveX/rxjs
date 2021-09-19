@@ -32,7 +32,7 @@ describe('TocComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ HostEmbeddedTocComponent, HostNotEmbeddedTocComponent, TocComponent ],
+      declarations: [ HostEmbeddedTocComponent, TocComponent ],
       providers: [
         { provide: ScrollService, useClass: TestScrollService },
         { provide: TocService, useClass: TestTocService }
