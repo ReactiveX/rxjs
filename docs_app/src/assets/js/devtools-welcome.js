@@ -4,9 +4,7 @@ var welcomeText = (
   '| |_) |\\ \\/ /  | \\___ \\  \n' +
   '|  _ <  >  < |_| |___) |    \n' +
   '|_| \\_\\/_/\\_\\___/|____/ \n' +
-  '\nstarted experimenting with RxJS:\n' +
-  '\ntype this into the console:\n' +
-  '\nrxjs.interval(500).pipe(rxjs.operators.take(4)).subscribe(console.log)\n'
+  '\nTo start experimenting with RxJS: https://stackblitz.com/edit/rxjs\n'
 );
 if (console.info) {
   console.info(welcomeText);
