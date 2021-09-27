@@ -4,6 +4,44 @@
   "description": "Reactive Extensions for modern JavaScript",
   "main": "index.js",
   "sideEffects": false,
+  "exports": {
+    ".": {
+      "node": "./index.js",
+      "es2015": "./_esm2015/index.js",
+      "default": "./_esm5/index.js"
+    },
+    "./ajax": {
+      "node": "./ajax/index.js",
+      "es2015": "./_esm2015/ajax/index.js",
+      "default": "./_esm5/ajax/index.js"
+    },
+    "./fetch": {
+      "node": "./fetch/index.js",
+      "es2015": "./_esm2015/fetch/index.js",
+      "default": "./_esm5/fetch/index.js"
+    },
+    "./operators": {
+      "node": "./operators/index.js",
+      "es2015": "./_esm2015/operators/index.js",
+      "default": "./_esm5/operators/index.js"
+    },
+    "./testing": {
+      "node": "./testing/index.js",
+      "es2015": "./_esm2015/testing/index.js",
+      "default": "./_esm5/testing/index.js"
+    },
+    "./webSocket": {
+      "node": "./webSocket/index.js",
+      "es2015": "./_esm2015/webSocket/index.js",
+      "default": "./_esm5/webSocket/index.js"
+    },
+    "./internal/*": {
+      "node": "./internal/*.js",
+      "es2015": "./_esm2015/internal/*.js",
+      "default": "./_esm5/internal/*.js"
+    },
+    "./package.json": "./package.json"
+  },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
