@@ -1,3 +1,9 @@
+# [7.4.0](https://github.com/reactivex/rxjs/compare/7.3.1...7.4.0) (2021-10-06)
+
+### Features
+
+- Add es2015 entries to the exports declaration to support Angular ([#6614](https://github.com/reactivex/rxjs/issues/6614)) ([268777b](https://github.com/reactivex/rxjs/commit/268777bc3a4fd0cf76882683b51809771741ddc3)), closes [/github.com/ReactiveX/rxjs/pull/6613#discussion_r716958551](https://github.com//github.com/ReactiveX/rxjs/pull/6613/issues/discussion_r716958551)
+
 ## [7.3.1](https://github.com/reactivex/rxjs/compare/7.3.0...7.3.1) (2021-10-01)
 
 ### Bug Fixes
