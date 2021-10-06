@@ -65,6 +65,12 @@ export class ReplaySubject<T> extends Subject<T> {
     super.next(value);
   }
 
+  public clearBuffer() {
+    // clears the event buffer so that new subscribers do not receive events which have been 
+    // added to the buffer before this method was called.
+    this._events = [];
+  }
+  
   /** @internal */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
     this._throwIfClosed();
