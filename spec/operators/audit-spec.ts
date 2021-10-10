@@ -14,15 +14,17 @@ describe('audit operator', () => {
 
   it('should emit the last value in each time window', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('    -a-xy-----b--x--cxxx-|');
-      const e1subs = '    ^--------------------!';
-      const e2 = cold('    ----x                ');
+      const e1 = hot('  -a-xy-----b--x--cxyz-|');
+      const e1subs = '  ^--------------------!';
+      const e2 = cold('  ----i                ');
+      //                          ----i
+      //                                ----i
       const e2subs = [
-        '                 -^---!                ',
-        '                 ----------^---!        ',
-        '                 ----------------^---!  '
+        '               -^---!                ',
+        '               ----------^---!       ',
+        '               ----------------^---! ',
       ];
-      const expected = '  -----y--------x-----x|';
+      const expected = '-----y--------x-----z|';
 
       const result = e1.pipe(audit(() => e2));
 
