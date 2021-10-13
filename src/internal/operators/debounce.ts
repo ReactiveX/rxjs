@@ -12,7 +12,7 @@ import { innerFrom } from '../observable/innerFrom';
  * <span class="informal">It's like {@link debounceTime}, but the time span of
  * emission silence is determined by a second Observable.</span>
  *
- * ![](debounce.png)
+ * ![](debounce.svg)
  *
  * `debounce` delays notifications emitted by the source Observable, but drops previous
  * pending delayed emissions if a new notification arrives on the source Observable.
