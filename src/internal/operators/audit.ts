@@ -13,7 +13,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * <span class="informal">It's like {@link auditTime}, but the silencing
  * duration is determined by a second Observable.</span>
  *
- * ![](audit.png)
+ * ![](audit.svg)
  *
  * `audit` is similar to `throttle`, but emits the last value from the silenced
  * time window, instead of the first value. `audit` emits the most recent value
