@@ -320,7 +320,7 @@ function delay<T>(delayInMillis: number) {
         },
         complete() {
           hasCompleted = true;
-          // If we still have timers running, we don't want to yet.
+          // If we still have timers running, we don't want to complete yet.
           if (allTimerIDs.size === 0) {
             subscriber.complete();
           }
