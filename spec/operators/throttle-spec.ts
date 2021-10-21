@@ -2,8 +2,8 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/internal/testing/TestScheduler';
 import { observableMatcher } from '../helpers/observableMatcher';
-import { throttle, mergeMap, mapTo, take } from 'rxjs/operators';
-import { of, concat, timer, Observable } from 'rxjs';
+import { throttle, mergeMap, take } from 'rxjs/operators';
+import { of, Observable } from 'rxjs';
 
 /** @test {throttle} */
 describe('throttle', () => {
@@ -15,9 +15,11 @@ describe('throttle', () => {
 
   it('should immediately emit the first value in each time window', () => {
     testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  ^a-xy-----b--x--cxxx-|');
+      const e1 = hot('  -a-xy-----b--x--cxyz-|');
       const e1subs = '  ^--------------------!';
-      const e2 = cold('  ----x----------------');
+      const e2 = cold('  ----i                ');
+      //                          ----i
+      //                                ----i
       const e2subs = [
         '               -^---!                ',
         '               ----------^---!       ',
@@ -34,7 +36,7 @@ describe('throttle', () => {
   });
 
   it('should handle sync source with sync notifier and trailing appropriately', () => {
-    let results: any[] = [];
+    const results: any[] = [];
     const source = of(1).pipe(throttle(() => of(1), { leading: false, trailing: true }));
 
     source.subscribe({

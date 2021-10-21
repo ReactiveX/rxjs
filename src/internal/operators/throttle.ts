@@ -23,7 +23,7 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * <span class="informal">It's like {@link throttleTime}, but the silencing
  * duration is determined by a second Observable.</span>
  *
- * ![](throttle.png)
+ * ![](throttle.svg)
  *
  * `throttle` emits the source Observable values on the output Observable
  * when its internal timer is disabled, and ignores source values when the timer
