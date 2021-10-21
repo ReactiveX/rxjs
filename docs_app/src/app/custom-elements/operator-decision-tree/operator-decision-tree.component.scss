@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 @import '../../../styles/constants';
 
 h2 {
@@ -6,7 +6,7 @@ h2 {
 }
 
 button.option {
-  @include mat-elevation-transition;
+  @include mat.elevation-transition;
   border-radius: 34px;
   border: 0;
   cursor: pointer;
@@ -16,7 +16,7 @@ button.option {
   text-align: left;
 
   &:active, &:hover, &:focus {
-    @include mat-elevation(8);
+    @include mat.elevation(8);
     mat-card {
       background-color: $pink;
       color: $white;

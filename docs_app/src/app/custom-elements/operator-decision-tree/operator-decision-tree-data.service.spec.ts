@@ -13,8 +13,8 @@ describe('OperatorDecisionTreeDataService', () => {
       providers: [OperatorDecisionTreeDataService]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(OperatorDecisionTreeDataService);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(OperatorDecisionTreeDataService);
   });
 
   describe('getDecisionTree$', () => {

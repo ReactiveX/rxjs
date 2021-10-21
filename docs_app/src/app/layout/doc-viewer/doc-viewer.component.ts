@@ -204,15 +204,15 @@ export class DocViewerComponent implements OnDestroy {
           }
           elem.style.transition = '';
           return animationsDisabled
-              ? this.void$.pipe(tap(() => elem.style[prop] = to))
+              ? this.void$.pipe(tap(() => elem.style[`${prop}`] = to))
               : this.void$.pipe(
                     // In order to ensure that the `from` value will be applied immediately (i.e.
                     // without transition) and that the `to` value will be affected by the
                     // `transition` style, we need to ensure an animation frame has passed between
                     // setting each style.
-                    switchMap(() => raf$), tap(() => elem.style[prop] = from),
+                    switchMap(() => raf$), tap(() => elem.style[`${prop}`] = from),
                     switchMap(() => raf$), tap(() => elem.style.transition = `all ${duration}ms ease-in-out`),
-                    switchMap(() => raf$), tap(() => elem.style[prop] = to),
+                    switchMap(() => raf$), tap(() => elem.style[`${prop}`] = to),
                     switchMap(() => timer(getActualDuration(elem))), switchMap(() => this.void$),
                 );
         };
