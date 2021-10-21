@@ -18,14 +18,27 @@ describe('debounce', () => {
   }
 
   it('should debounce values by a specified cold Observable', () => {
-    testScheduler.run(({ cold, hot, expectObservable }) => {
-      const e1 = hot('  -a--bc--d---|');
-      const e2 = cold(' --x          ');
-      const expected = '---a---c--d-|';
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  -a----bc----d-ef----|');
+      const e1subs = '  ^-------------------!';
+      const e2 = cold('  ---x                ');
+      //                       ---x
+      //                               ---x
+      const e2subs = [
+        '               -^--!                ',
+        '               ------^!             ',
+        '               -------^--!          ',
+        '               ------------^-!      ',
+        '               --------------^!     ',
+        '               ---------------^--!  ',
+      ];
+      const expected = '----a-----c-------f-|';
 
       const result = e1.pipe(debounce(() => e2));
 
       expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
   });
 
