@@ -37,6 +37,7 @@ import { dateTimestampProvider } from './scheduler/dateTimestampProvider';
 export class ReplaySubject<T> extends Subject<T> {
   private _buffer: (T | number)[] = [];
   private _infiniteTimeWindow = true;
+  private _lastValue: T | null = null;
 
   /**
    * @param bufferSize The size of the buffer to replay on subscription
@@ -55,6 +56,14 @@ export class ReplaySubject<T> extends Subject<T> {
     this._windowTime = Math.max(1, _windowTime);
   }
 
+  get value(): T | null {
+    return this.getValue();
+  }
+
+  getValue(): T | null {
+    return this._lastValue;
+  }
+
   next(value: T): void {
     const { isStopped, _buffer, _infiniteTimeWindow, _timestampProvider, _windowTime } = this;
     if (!isStopped) {
@@ -62,7 +71,7 @@ export class ReplaySubject<T> extends Subject<T> {
       !_infiniteTimeWindow && _buffer.push(_timestampProvider.now() + _windowTime);
     }
     this._trimBuffer();
-    super.next(value);
+    super.next((this._lastValue = value));
   }
 
   /** @internal */
