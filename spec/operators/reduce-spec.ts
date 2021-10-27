@@ -1,289 +1,298 @@
+/** @prettier */
 import { expect } from 'chai';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { TestScheduler } from 'rxjs/testing';
 import { reduce, mergeMap } from 'rxjs/operators';
 import { range, of } from 'rxjs';
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {reduce} */
-describe('reduce operator', () => {
+describe('reduce', () => {
+  let testScheduler: TestScheduler;
+
+  beforeEach(() => {
+    testScheduler = new TestScheduler(observableMatcher);
+  });
+
   it('should reduce', () => {
-    const values = {
-      a: 1, b: 3, c: 5, x: 9
-    };
-    const e1 =     hot('--a--b--c--|', values);
-    const e1subs =     '^          !';
-    const expected =   '-----------(x|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const values = { a: 1, b: 3, c: 5, x: 9 };
+      const e1 = hot('  --a--b--c--|   ', values);
+      const e1subs = '  ^----------!   ';
+      const expected = '-----------(x|)';
 
-    const reduceFunction = function (o: number, x: number) {
-      return o + x;
-    };
+      const result = e1.pipe(reduce((o, x) => o + x, 0));
 
-    expectObservable(e1.pipe(reduce(reduceFunction, 0))).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected, values);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should reduce with seed', () => {
-    const e1 =     hot('--a--b--|');
-    const e1subs =     '^       !';
-    const expected =   '--------(x|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--|   ');
+      const e1subs = '  ^-------!   ';
+      const expected = '--------(x|)';
 
-    const seed = 'n';
-    const reduceFunction = function (o: string, x: string) {
-      return o + x;
-    };
+      const result = e1.pipe(reduce((o, x) => o + ' ' + x, 'n'));
 
-    expectObservable(e1.pipe(reduce(reduceFunction, seed))).toBe(expected, {x: seed + 'ab'});
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected, { x: 'n a b' });
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should reduce with a seed of undefined', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^                    !';
-    const expected =    '---------------------(x|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--e--f--g--|   ');
+      const e1subs = '     ^--------------------!   ';
+      const expected = '   ---------------------(x|)';
 
-    const values = {
-      x: 'undefined b c d e f g'
-    };
+      const result = e1.pipe(reduce((o: string | undefined, x) => o + ' ' + x, undefined));
 
-    const source = e1.pipe(reduce((acc: any, x: string) => acc + ' ' + x, undefined));
-
-    expectObservable(source).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected, { x: 'undefined b c d e f g' });
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should reduce without a seed', () => {
-    const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^                    !';
-    const expected =    '---------------------(x|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^--b--c--d--e--f--g--|   ');
+      const e1subs = '     ^--------------------!   ';
+      const expected = '   ---------------------(x|)';
 
-    const values = {
-      x: 'b c d e f g'
-    };
+      const result = e1.pipe(reduce((o, x) => o + ' ' + x));
 
-    const source = e1.pipe(reduce((acc: any, x: string) => acc + ' ' + x));
-
-    expectObservable(source).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected, { x: 'b c d e f g' });
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should reduce with index without seed', (done) => {
+  it('should reduce with index without seed', () => {
     const idx = [1, 2, 3, 4, 5];
 
-    range(0, 6).pipe(reduce((acc, value, index) => {
-      expect(idx.shift()).to.equal(index);
-      return value;
-    })).subscribe(null, null, () => {
-      expect(idx).to.be.empty;
-      done();
-    });
+    range(0, 6)
+      .pipe(
+        reduce((acc, value, index) => {
+          expect(idx.shift()).to.equal(index);
+          return value;
+        })
+      )
+      .subscribe({
+        complete() {
+          expect(idx).to.be.empty;
+        },
+      });
   });
 
-  it('should reduce with index with seed', (done) => {
+  it('should reduce with index with seed', () => {
     const idx = [0, 1, 2, 3, 4, 5];
 
-    range(0, 6).pipe(reduce((acc, value, index) => {
-      expect(idx.shift()).to.equal(index);
-      return value;
-    }, -1)).subscribe(null, null, () => {
-      expect(idx).to.be.empty;
-      done();
-    });
+    range(0, 6)
+      .pipe(
+        reduce((acc, value, index) => {
+          expect(idx.shift()).to.equal(index);
+          return value;
+        }, -1)
+      )
+      .subscribe({
+        complete() {
+          expect(idx).to.be.empty;
+        },
+      });
   });
 
   it('should reduce with seed if source is empty', () => {
-    const e1 = hot('--a--^-------|');
-    const e1subs =      '^       !';
-    const expected =    '--------(x|)';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^-------|   ');
+      const e1subs = '     ^-------!   ';
+      const expected = '   --------(x|)';
 
-    const expectedValue = '42';
-    const reduceFunction = function (o: string, x: string) {
-      return o + x;
-    };
+      const result = e1.pipe(reduce((o, x) => o + x, '42'));
 
-    expectObservable(e1.pipe(reduce(reduceFunction, expectedValue))).toBe(expected, {x: expectedValue});
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected, { x: '42' });
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should raise error if reduce function throws without seed', () => {
-    const e1 =     hot('--a--b--|');
-    const e1subs =     '^    !   ';
-    const expected =   '-----#   ';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--|');
+      const e1subs = '  ^----!   ';
+      const expected = '-----#   ';
 
-    const reduceFunction = function (o: string, x: string) {
-      throw 'error';
-    };
+      const result = e1.pipe(
+        reduce(() => {
+          throw 'error';
+        })
+      );
 
-    expectObservable(e1.pipe(reduce(reduceFunction))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should allow unsubscribing explicitly and early', () => {
-    const e1 =     hot('--a--b--|');
-    const unsub =      '      !  ';
-    const e1subs =     '^     !  ';
-    const expected =   '-------  ';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--|');
+      const e1subs = '  ^-----!  ';
+      const expected = '-------  ';
+      const unsub = '   ------!  ';
 
-    const reduceFunction = function (o: string, x: string) {
-      return o + x;
-    };
+      const result = e1.pipe(reduce((o, x) => o + x));
 
-    const result = e1.pipe(reduce(reduceFunction));
-
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should not break unsubscription chains when result is unsubscribed explicitly', () => {
-    const e1 =     hot('--a--b--|');
-    const e1subs =     '^     !  ';
-    const expected =   '-------  ';
-    const unsub =      '      !  ';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--|');
+      const e1subs = '  ^-----!  ';
+      const expected = '-------  ';
+      const unsub = '   ------!  ';
 
-    const reduceFunction = function (o: string, x: string) {
-      return o + x;
-    };
+      const result = e1.pipe(
+        mergeMap((x) => of(x)),
+        reduce((o, x) => o + x),
+        mergeMap((x) => of(x))
+      );
 
-    const result = e1.pipe(
-      mergeMap((x: string) => of(x)),
-      reduce(reduceFunction),
-      mergeMap((x: string) => of(x))
-    );
-
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should raise error if source emits and raises error with seed', () => {
-    const e1 =   hot('--a--b--#');
-    const e1subs =   '^       !';
-    const expected = '--------#';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--#');
+      const e1subs = '  ^-------!';
+      const expected = '--------#';
 
-    const expectedValue = '42';
-    const reduceFunction = function (o: string, x: string) {
-      return o + x;
-    };
+      const result = e1.pipe(reduce((o, x) => o + x, '42'));
 
-    expectObservable(e1.pipe(reduce(reduceFunction, expectedValue))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should raise error if source raises error with seed', () => {
-    const e1 =   hot('----#');
-    const e1subs =   '^   !';
-    const expected = '----#';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  ----#');
+      const e1subs = '  ^---!';
+      const expected = '----#';
 
-    const expectedValue = '42';
-    const reduceFunction = function (o: string, x: string) {
-      return o + x;
-    };
+      const result = e1.pipe(reduce((o, x) => o + x, '42'));
 
-    expectObservable(e1.pipe(reduce(reduceFunction, expectedValue))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should raise error if reduce function throws with seed', () => {
-    const e1 =     hot('--a--b--|');
-    const e1subs =     '^ !     ';
-    const expected =   '--#     ';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--|');
+      const e1subs = '  ^-!      ';
+      const expected = '--#      ';
 
-    const seed = 'n';
-    const reduceFunction = function (o: string, x: string) {
-      throw 'error';
-    };
+      const result = e1.pipe(
+        reduce(() => {
+          throw 'error';
+        }, 'n')
+      );
 
-    expectObservable(e1.pipe(reduce(reduceFunction, seed))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
-  it('should not complete with seed if source emits but does not completes', () => {
-    const e1 =     hot('--a--');
-    const e1subs =     '^    ';
-    const expected =   '-----';
+  it('should not complete with seed if source emits but does not complete', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--');
+      const e1subs = '  ^----';
+      const expected = '-----';
 
-    const seed = 'n';
-    const reduceFunction = function (o: string, x: string) {
-      return o + x;
-    };
+      const result = e1.pipe(reduce((o, x) => o + x, 'n'));
 
-    expectObservable(e1.pipe(reduce(reduceFunction, seed))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should not complete with seed if source never completes', () => {
-    const e1 =  cold('-');
-    const e1subs =   '^';
-    const expected = '-';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' -');
+      const e1subs = '  ^';
+      const expected = '-';
 
-    const seed = 'n';
-    const reduceFunction = function (o: string, x: string) {
-      return o + x;
-    };
+      const result = e1.pipe(reduce((o, x) => o + x, 'n'));
 
-    expectObservable(e1.pipe(reduce(reduceFunction, seed))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should not complete without seed if source emits but does not completes', () => {
-    const e1 =   hot('--a--b--');
-    const e1subs =   '^       ';
-    const expected = '--------';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--');
+      const e1subs = '  ^-------';
+      const expected = '--------';
 
-    const reduceFunction = function (o: string, x: string) {
-      return o + x;
-    };
+      const result = e1.pipe(reduce((o, x) => o + x));
 
-    expectObservable(e1.pipe(reduce(reduceFunction))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should not complete without seed if source never completes', () => {
-    const e1 =  cold('-');
-    const e1subs =   '^';
-    const expected = '-';
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' -');
+      const e1subs = '  ^';
+      const expected = '-';
 
-    const reduceFunction = function (o: string, x: string) {
-      return o + x;
-    };
+      const result = e1.pipe(reduce((o, x) => o + x));
 
-    expectObservable(e1.pipe(reduce(reduceFunction))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should reduce if source does not emit without seed', () => {
-    const e1 = hot('--a--^-------|');
-    const e1subs =      '^       !';
-    const expected =    '--------|';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('--a--^-------|');
+      const e1subs = '     ^-------!';
+      const expected = '   --------|';
 
-    const reduceFunction = function (o: string, x: string) {
-      return o + x;
-    };
+      const result = e1.pipe(reduce((o, x) => o + x));
 
-    expectObservable(e1.pipe(reduce(reduceFunction))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should raise error if source emits and raises error without seed', () => {
-    const e1 =   hot('--a--b--#');
-    const e1subs =   '^       !';
-    const expected = '--------#';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--#');
+      const e1subs = '  ^-------!';
+      const expected = '--------#';
 
-    const reduceFunction = function (o: string, x: string) {
-      return o + x;
-    };
+      const result = e1.pipe(reduce((o, x) => o + x));
 
-    expectObservable(e1.pipe(reduce(reduceFunction))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 
   it('should raise error if source raises error without seed', () => {
-    const e1 =   hot('----#');
-    const e1subs =   '^   !';
-    const expected = '----#';
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  ----#');
+      const e1subs = '  ^---!';
+      const expected = '----#';
 
-    const reduceFunction = function (o: string, x: string) {
-      return o + x;
-    };
+      const result = e1.pipe(reduce((o, x) => o + x));
 
-    expectObservable(e1.pipe(reduce(reduceFunction))).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 });
