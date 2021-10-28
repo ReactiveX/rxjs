@@ -5,7 +5,7 @@
  */
 module.exports = function disambiguateByNonOperator() {
   return (alias, originatingDoc, docs) => {
-    const filteredDocs = docs.filter((doc) => doc.moduleDoc.id !== 'operators');
+    const filteredDocs = docs.filter((doc) => doc.moduleDoc?.id !== 'operators');
     return filteredDocs.length > 0 ? filteredDocs : docs;
   };
 };

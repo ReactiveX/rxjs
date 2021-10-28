@@ -12,7 +12,6 @@ const DOCS_OUTPUT_PATH = resolve(OUTPUT_PATH, 'docs');
 const API_SOURCE_PATH = resolve(PROJECT_ROOT, 'src');
 const MARBLE_IMAGES_PATH = resolve(SRC_PATH, 'assets/images/marble-diagrams');
 const MARBLE_IMAGES_WEB_PATH = 'assets/images/marble-diagrams';
-const MARBLE_IMAGES_OUTPUT_PATH = resolve('assets/images/marble-diagrams');
 
 function requireFolder(dirname, folderPath) {
   const absolutePath = resolve(dirname, folderPath);
@@ -22,5 +21,5 @@ function requireFolder(dirname, folderPath) {
 }
 
 module.exports = { PROJECT_ROOT, AIO_PATH, TEMPLATES_PATH, API_TEMPLATES_PATH, CONTENTS_PATH, SRC_PATH,
-  OUTPUT_PATH, DOCS_OUTPUT_PATH, API_SOURCE_PATH, MARBLE_IMAGES_PATH, MARBLE_IMAGES_OUTPUT_PATH, MARBLE_IMAGES_WEB_PATH, requireFolder };
+  OUTPUT_PATH, DOCS_OUTPUT_PATH, API_SOURCE_PATH, MARBLE_IMAGES_PATH, MARBLE_IMAGES_WEB_PATH, requireFolder };
 
