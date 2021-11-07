@@ -17,8 +17,6 @@ export interface NodeStyleEventEmitter<TContext, T> {
 
 export type NodeEventHandler = (...args: any[]) => void;
 
-type AnyToUnknown<T> = null extends T ? (void extends T ? unknown : T) : T;
-
 // For APIs that implement `addListener` and `removeListener` methods that may
 // not use the same arguments or return EventEmitter values
 // such as React Native
