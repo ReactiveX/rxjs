@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { expectObservable } from '../helpers/marble-testing';
-import { fromEvent, NEVER, timer } from 'rxjs';
+import { fromEvent, NEVER, Observable, timer } from 'rxjs';
 import { mapTo, take, concat } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 
@@ -431,5 +431,20 @@ describe('fromEvent', () => {
     
     expect(nodeList[0]._removeEventListenerArgs).to.deep.equal(nodeList[0]._addEventListenerArgs);
     expect(nodeList[1]._removeEventListenerArgs).to.deep.equal(nodeList[1]._addEventListenerArgs);
+  });
+
+  it('should successful inference the first argument from the listener of Node.js EventEmitter', (done) => {
+    class NodeEventeEmitterTest {
+      addListener(eventName: 'foo', listener: (bar: number) => void)      { return this; }
+      removeListener(eventName: 'foo', listener: (bar: number) => void )  { return this; }
+    }
+    const test = new NodeEventeEmitterTest();
+
+    expect(() => {
+      const $ = fromEvent(test, 'foo');
+      const typeTest: typeof $ extends Observable<number> ? true : never = true;
+      expect(typeTest).to.be.true;
+      done();
+    }).to.not.throw(TypeError);
   });
 });
