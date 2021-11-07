@@ -60,7 +60,10 @@ export interface AddEventListenerOptions extends EventListenerOptions {
   passive?: boolean;
 }
 
-export function fromEvent<T>(target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>, eventName: string): Observable<T>;
+export function fromEvent<T>(
+  target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
+  eventName: string
+): Observable<any extends T ? unknown : T>;
 export function fromEvent<T, R>(
   target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
   eventName: string,
@@ -70,7 +73,7 @@ export function fromEvent<T>(
   target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
   eventName: string,
   options: EventListenerOptions
-): Observable<T>;
+): Observable<any extends T ? unknown : T>;
 export function fromEvent<T, R>(
   target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
   eventName: string,
