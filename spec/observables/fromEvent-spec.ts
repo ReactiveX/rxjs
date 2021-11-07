@@ -433,6 +433,10 @@ describe('fromEvent', () => {
     expect(nodeList[1]._removeEventListenerArgs).to.deep.equal(nodeList[1]._addEventListenerArgs);
   });
 
+  /**
+   * Huan(202111): Correct typing inference for Node.js EventEmitter
+   *  @see https://github.com/ReactiveX/rxjs/pull/6669
+   */
   it('should successful inference the first argument from the listener of Node.js EventEmitter', (done) => {
     class NodeEventeEmitterTest {
       addListener(eventName: 'foo', listener: (bar: number) => void)      { return this; }

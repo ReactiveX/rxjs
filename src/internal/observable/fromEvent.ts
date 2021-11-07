@@ -10,9 +10,9 @@ const nodeEventEmitterMethods = ['addListener', 'removeListener'] as const;
 const eventTargetMethods = ['addEventListener', 'removeEventListener'] as const;
 const jqueryMethods = ['on', 'off'] as const;
 
-export interface NodeStyleEventEmitter {
-  addListener(eventName: string | symbol, handler: NodeEventHandler): this;
-  removeListener(eventName: string | symbol, handler: NodeEventHandler): this;
+export interface NodeStyleEventEmitter<TContext, T> {
+  addListener(eventName: string | symbol, handler: (this: TContext, t: T, ...args: any[]) => any): this;
+  removeListener(eventName: string | symbol, handler: (this: TContext, t: T, ...args: any[]) => any): this;
 }
 
 export type NodeEventHandler = (...args: any[]) => void;
@@ -78,11 +78,17 @@ export function fromEvent<T, R>(
   resultSelector: (event: T) => R
 ): Observable<R>;
 
-export function fromEvent(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<unknown>;
+export function fromEvent<T>(
+  target: NodeStyleEventEmitter<any, T> | ArrayLike<NodeStyleEventEmitter<any, T>>,
+  eventName: string
+): Observable<T>;
 /** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
-export function fromEvent<T>(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<T>;
-export function fromEvent<R>(
-  target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>,
+export function fromEvent<T>(
+  target: NodeStyleEventEmitter<any, T> | ArrayLike<NodeStyleEventEmitter<any, T>>,
+  eventName: string
+): Observable<T>;
+export function fromEvent<T, R>(
+  target: NodeStyleEventEmitter<any, T> | ArrayLike<NodeStyleEventEmitter<any, T>>,
   eventName: string,
   resultSelector: (...args: any[]) => R
 ): Observable<R>;
@@ -306,7 +312,7 @@ function toCommonHandlerRegistry(target: any, eventName: string) {
  * for adding and removing event handlers.
  * @param target the object to check
  */
-function isNodeStyleEventEmitter(target: any): target is NodeStyleEventEmitter {
+function isNodeStyleEventEmitter(target: any): target is NodeStyleEventEmitter<any, any> {
   return isFunction(target.addListener) && isFunction(target.removeListener);
 }
 
