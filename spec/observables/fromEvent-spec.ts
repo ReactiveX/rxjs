@@ -439,15 +439,25 @@ describe('fromEvent', () => {
    */
   it('should successful inference the first argument from the listener of Node.js EventEmitter', (done) => {
     class NodeEventeEmitterTest {
-      addListener(eventName: 'foo', listener: (bar: number) => void)      { return this; }
-      removeListener(eventName: 'foo', listener: (bar: number) => void )  { return this; }
+      addListener(eventName: 'foo', listener: (foo: number) => void): this
+      addListener(eventName: 'bar', listener: (bar: string) => void): this
+      addListener(eventName: 'foo' | 'bar', listener: ((foo: number) => void) | ((bar: string) => void)): this  { return this; }
+
+      removeListener(eventName: 'foo', listener: (foo: number) => void ): this
+      removeListener(eventName: 'bar', listener: (bar: string) => void ): this
+      removeListener(eventName: 'foo' | 'bar', listener: ((foo: number) => void) | ((bar: string) => void)): this  { return this; }
     }
     const test = new NodeEventeEmitterTest();
 
     expect(() => {
-      const $ = fromEvent(test, 'foo');
-      const typeTest: typeof $ extends Observable<number> ? true : never = true;
-      expect(typeTest).to.be.true;
+      const foo$ = fromEvent(test, 'foo');
+      const fooTypeTest: typeof foo$ extends Observable<number> ? true : never = true;
+      expect(fooTypeTest).to.be.true;
+
+      const bar$ = fromEvent(test, 'bar');
+      const barTypeTest: typeof bar$ extends Observable<string> ? true : never = true;
+      expect(barTypeTest).to.be.true;
+
       done();
     }).to.not.throw(TypeError);
   });
