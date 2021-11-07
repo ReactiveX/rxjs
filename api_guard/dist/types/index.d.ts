@@ -257,9 +257,9 @@ export declare function fromEvent<T>(target: HasEventTargetAddRemove<T> | ArrayL
 export declare function fromEvent<T, R>(target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>, eventName: string, resultSelector: (event: T) => R): Observable<R>;
 export declare function fromEvent<T>(target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>, eventName: string, options: EventListenerOptions): Observable<T>;
 export declare function fromEvent<T, R>(target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>, eventName: string, options: EventListenerOptions, resultSelector: (event: T) => R): Observable<R>;
-export declare function fromEvent(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<unknown>;
-export declare function fromEvent<T>(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<T>;
-export declare function fromEvent<R>(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string, resultSelector: (...args: any[]) => R): Observable<R>;
+export declare function fromEvent<T>(target: NodeStyleEventEmitter<any, T> | ArrayLike<NodeStyleEventEmitter<any, T>>, eventName: string): Observable<AnyToUnknown<T>>;
+export declare function fromEvent<T>(target: NodeStyleEventEmitter<any, T> | ArrayLike<NodeStyleEventEmitter<any, T>>, eventName: string): Observable<T>;
+export declare function fromEvent<T, R>(target: NodeStyleEventEmitter<any, T> | ArrayLike<NodeStyleEventEmitter<any, T>>, eventName: string, resultSelector: (...args: any[]) => R): Observable<R>;
 export declare function fromEvent(target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>, eventName: string): Observable<unknown>;
 export declare function fromEvent<T>(target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>, eventName: string): Observable<T>;
 export declare function fromEvent<R>(target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>, eventName: string, resultSelector: (...args: any[]) => R): Observable<R>;
