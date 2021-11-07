@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { NodeEmitterEvent } from './inference-overload-function';
+import { NodeEventEmitterType } from '../../src/internal/util/NoddEventEmitterType';
 
 class NodeEventeEmitterFixture {
   addListener(eventName: 'foo', listener: (foo: false) => void): this
@@ -25,8 +25,8 @@ class NodeEventeEmitterFixture {
 
 describe('overload function inference types helper', () => {
   it('should get emitter type & event as correctly', () => {
-    const foo: NodeEmitterEvent<NodeEventeEmitterFixture, 'foo'> = false;
-    const bar: NodeEmitterEvent<NodeEventeEmitterFixture, 'bar'> = true;
+    const foo: NodeEventEmitterType<NodeEventeEmitterFixture, 'foo'> = false;
+    const bar: NodeEventEmitterType<NodeEventeEmitterFixture, 'bar'> = true;
 
     expect(foo).to.be.false;
     expect(bar).to.be.true;

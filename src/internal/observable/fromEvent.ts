@@ -4,6 +4,7 @@ import { mergeMap } from '../operators/mergeMap';
 import { isArrayLike } from '../util/isArrayLike';
 import { isFunction } from '../util/isFunction';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
+import { NodeEventEmitterType } from '../util/NoddEventEmitterType';
 
 // These constants are used to create handler registry functions using array mapping below.
 const nodeEventEmitterMethods = ['addListener', 'removeListener'] as const;
@@ -81,7 +82,7 @@ export function fromEvent<T, R>(
 export function fromEvent<T>(
   target: NodeStyleEventEmitter<any, T> | ArrayLike<NodeStyleEventEmitter<any, T>>,
   eventName: string
-): Observable<AnyToUnknown<T>>;
+): Observable<NodeEventEmitterType<T>>;
 /** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
 export function fromEvent<T>(
   target: NodeStyleEventEmitter<any, T> | ArrayLike<NodeStyleEventEmitter<any, T>>,
