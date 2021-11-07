@@ -434,7 +434,7 @@ describe('fromEvent', () => {
   });
 
   /**
-   * Huan(202111): Correct typing inference for Node.js EventEmitter
+   * Huan(202111): Correct typing inference for Node.js EventEmitter as `number`
    *  @see https://github.com/ReactiveX/rxjs/pull/6669
    */
   it('should successful inference the first argument from the listener of Node.js EventEmitter', (done) => {

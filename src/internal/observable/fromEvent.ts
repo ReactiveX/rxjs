@@ -60,10 +60,7 @@ export interface AddEventListenerOptions extends EventListenerOptions {
   passive?: boolean;
 }
 
-export function fromEvent<T>(
-  target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
-  eventName: string
-): Observable<any extends T ? unknown : T>;
+export function fromEvent<T>(target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>, eventName: string): Observable<T>;
 export function fromEvent<T, R>(
   target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
   eventName: string,
@@ -73,7 +70,7 @@ export function fromEvent<T>(
   target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
   eventName: string,
   options: EventListenerOptions
-): Observable<any extends T ? unknown : T>;
+): Observable<T>;
 export function fromEvent<T, R>(
   target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
   eventName: string,
@@ -84,7 +81,7 @@ export function fromEvent<T, R>(
 export function fromEvent<T>(
   target: NodeStyleEventEmitter<any, T> | ArrayLike<NodeStyleEventEmitter<any, T>>,
   eventName: string
-): Observable<T>;
+): Observable<any extends T ? unknown : T>;
 /** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
 export function fromEvent<T>(
   target: NodeStyleEventEmitter<any, T> | ArrayLike<NodeStyleEventEmitter<any, T>>,
