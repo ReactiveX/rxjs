@@ -4,7 +4,7 @@ import { mergeMap } from '../operators/mergeMap';
 import { isArrayLike } from '../util/isArrayLike';
 import { isFunction } from '../util/isFunction';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
-import { NodeEventEmitterType } from '../util/NoddEventEmitterType';
+import { NodeEventEmitterDataType } from '../util/NodeEventEmitterDataType';
 
 // These constants are used to create handler registry functions using array mapping below.
 const nodeEventEmitterMethods = ['addListener', 'removeListener'] as const;
