@@ -37,6 +37,35 @@ interface L1<N1, D1> extends L<N1, D1> {}
 interface L2<N1, N2, D1, D2> extends L<N1, D1>, L<N2, D2> {}
 interface L3<N1, N2, N3, D1, D2, D3> extends L<N1, D1>, L<N2, D2>, L<N3, D3> {}
 interface L4<N1, N2, N3, N4, D1, D2, D3, D4> extends L<N1, D1>, L<N2, D2>, L<N3, D3>, L<N4, D4> {}
+interface L5<N1, N2, N3, N4, N5, D1, D2, D3, D4, D5> extends L<N1, D1>, L<N2, D2>, L<N3, D3>, L<N4, D4>, L<N5, D5> {}
+interface L6<N1, N2, N3, N4, N5, N6, D1, D2, D3, D4, D5, D6> extends L<N1, D1>, L<N2, D2>, L<N3, D3>, L<N4, D4>, L<N5, D5>, L<N6, D6> {}
+interface L7<N1, N2, N3, N4, N5, N6, N7, D1, D2, D3, D4, D5, D6, D7>
+  extends L<N1, D1>,
+    L<N2, D2>,
+    L<N3, D3>,
+    L<N4, D4>,
+    L<N5, D5>,
+    L<N6, D6>,
+    L<N7, D7> {}
+interface L8<N1, N2, N3, N4, N5, N6, N7, N8, D1, D2, D3, D4, D5, D6, D7, D8>
+  extends L<N1, D1>,
+    L<N2, D2>,
+    L<N3, D3>,
+    L<N4, D4>,
+    L<N5, D5>,
+    L<N6, D6>,
+    L<N7, D7>,
+    L<N8, D8> {}
+interface L9<N1, N2, N3, N4, N5, N6, N7, N8, N9, D1, D2, D3, D4, D5, D6, D7, D8, D9>
+  extends L<N1, D1>,
+    L<N2, D2>,
+    L<N3, D3>,
+    L<N4, D4>,
+    L<N5, D5>,
+    L<N6, D6>,
+    L<N7, D7>,
+    L<N8, D8>,
+    L<N9, D9> {}
 
 type EventNameDataPair1<AddRemoveListener> = AddRemoveListener extends L1<infer N1, infer D1> ? [N1, D1] : never;
 type EventNameDataPair2<AddRemoveListener> = AddRemoveListener extends L2<infer N1, infer N2, infer D1, infer D2>
@@ -56,6 +85,96 @@ type EventNameDataPair4<AddRemoveListener> = AddRemoveListener extends L4<
   infer D4
 >
   ? [N1, D1] | [N2, D2] | [N3, D3] | [N4, D4]
+  : never;
+type EventNameDataPair5<AddRemoveListener> = AddRemoveListener extends L5<
+  infer N1,
+  infer N2,
+  infer N3,
+  infer N4,
+  infer N5,
+  infer D1,
+  infer D2,
+  infer D3,
+  infer D4,
+  infer D5
+>
+  ? [N1, D1] | [N2, D2] | [N3, D3] | [N4, D4] | [N5, D5]
+  : never;
+type EventNameDataPair6<AddRemoveListener> = AddRemoveListener extends L6<
+  infer N1,
+  infer N2,
+  infer N3,
+  infer N4,
+  infer N5,
+  infer N6,
+  infer D1,
+  infer D2,
+  infer D3,
+  infer D4,
+  infer D5,
+  infer D6
+>
+  ? [N1, D1] | [N2, D2] | [N3, D3] | [N4, D4] | [N5, D5] | [N6, D6]
+  : never;
+type EventNameDataPair7<AddRemoveListener> = AddRemoveListener extends L7<
+  infer N1,
+  infer N2,
+  infer N3,
+  infer N4,
+  infer N5,
+  infer N6,
+  infer N7,
+  infer D1,
+  infer D2,
+  infer D3,
+  infer D4,
+  infer D5,
+  infer D6,
+  infer D7
+>
+  ? [N1, D1] | [N2, D2] | [N3, D3] | [N4, D4] | [N5, D5] | [N6, D6] | [N7, D7]
+  : never;
+type EventNameDataPair8<AddRemoveListener> = AddRemoveListener extends L8<
+  infer N1,
+  infer N2,
+  infer N3,
+  infer N4,
+  infer N5,
+  infer N6,
+  infer N7,
+  infer N8,
+  infer D1,
+  infer D2,
+  infer D3,
+  infer D4,
+  infer D5,
+  infer D6,
+  infer D7,
+  infer D8
+>
+  ? [N1, D1] | [N2, D2] | [N3, D3] | [N4, D4] | [N5, D5] | [N6, D6] | [N7, D7] | [N8, D8]
+  : never;
+type EventNameDataPair9<AddRemoveListener> = AddRemoveListener extends L9<
+  infer N1,
+  infer N2,
+  infer N3,
+  infer N4,
+  infer N5,
+  infer N6,
+  infer N7,
+  infer N8,
+  infer N9,
+  infer D1,
+  infer D2,
+  infer D3,
+  infer D4,
+  infer D5,
+  infer D6,
+  infer D7,
+  infer D8,
+  infer D9
+>
+  ? [N1, D1] | [N2, D2] | [N3, D3] | [N4, D4] | [N5, D5] | [N6, D6] | [N7, D7] | [N8, D8] | [N9, D9]
   : never;
 
 interface HasNodeEventEmitterAddRemove<N, D> {
