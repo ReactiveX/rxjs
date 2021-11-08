@@ -188,6 +188,11 @@ interface HasNodeEventEmitterAddRemove<N, D> {
  * @return `['foo', number] | ['bar', string]`
  */
 type EventNameDataPair<AddRemoveListener extends HasNodeEventEmitterAddRemove<any, any>['addListener']> =
+  | EventNameDataPair9<AddRemoveListener>
+  | EventNameDataPair8<AddRemoveListener>
+  | EventNameDataPair7<AddRemoveListener>
+  | EventNameDataPair6<AddRemoveListener>
+  | EventNameDataPair5<AddRemoveListener>
   | EventNameDataPair4<AddRemoveListener>
   | EventNameDataPair3<AddRemoveListener>
   | EventNameDataPair2<AddRemoveListener>
