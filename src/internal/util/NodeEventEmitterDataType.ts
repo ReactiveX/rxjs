@@ -58,7 +58,6 @@ type EventNameDataPair4<AddRemoveListener> = AddRemoveListener extends L4<
   ? [N1, D1] | [N2, D2] | [N3, D3] | [N4, D4]
   : never;
 
-// type NodeEventEmitterAddRemoveListener<N = any, D = any> = (name: N, listener: (data: D, ...args: any[]) => any) => any;
 interface HasNodeEventEmitterAddRemove<N, D> {
   addListener(name: N, listener: (data: D, ...args: any[]) => void): this;
   removeListener(name: N, listener: (data: D, ...args: any[]) => void): this;
@@ -67,7 +66,7 @@ interface HasNodeEventEmitterAddRemove<N, D> {
 /**
  * Get the event name/data pair types from an event emitter
  *
- * @example `['foo', number] | ['bar', string]`
+ * @return `['foo', number] | ['bar', string]`
  */
 type EventNameDataPair<AddRemoveListener extends HasNodeEventEmitterAddRemove<any, any>['addListener']> =
   | EventNameDataPair4<AddRemoveListener>
@@ -78,7 +77,7 @@ type EventNameDataPair<AddRemoveListener extends HasNodeEventEmitterAddRemove<an
 /**
  * Convert the `any` type to `unknown for a better safety
  *
- * @example `AnyToUnknown<any> === unknown`
+ * @return `AnyToUnknown<any> -> unknown`
  *
  *  TODO: huan(202111) need to be tested more and confirm it has no bug in edge cases
  */
@@ -86,11 +85,6 @@ type AnyToUnknown<T> = unknown extends T ? unknown : T;
 
 // the [eventName, eventData] types array
 type NodeEventEmitterNameDataPair<E extends HasNodeEventEmitterAddRemove<any, any>> = EventNameDataPair<E['addListener']>;
-
-// the event names
-// type NodeEventEmitterName<T extends HasNodeEventEmitterAddRemove<any, any>> = NodeEventEmitterNameDataPair<T>[0];
-// // The types of `args[0]` defined by the listeners
-// type NodeEventEmitterData<T extends HasNodeEventEmitterAddRemove<any, any>> = NodeEventEmitterNameDataPair<T>[1];
 
 /**
  *
