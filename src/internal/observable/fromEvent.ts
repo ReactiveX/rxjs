@@ -4,6 +4,7 @@ import { mergeMap } from '../operators/mergeMap';
 import { isArrayLike } from '../util/isArrayLike';
 import { isFunction } from '../util/isFunction';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
+import { NamedNodeEventEmitter, NodeEventEmitterDataType } from '../util/NodeEventEmitterDataType';
 
 // These constants are used to create handler registry functions using array mapping below.
 const nodeEventEmitterMethods = ['addListener', 'removeListener'] as const;
@@ -77,6 +78,15 @@ export function fromEvent<T, R>(
   options: EventListenerOptions,
   resultSelector: (event: T) => R
 ): Observable<R>;
+
+/**
+ * Automatically infer from Node.js EventEmitter with event data types
+ *  @see https://github.com/ReactiveX/rxjs/pull/6669
+ */
+export function fromEvent<T extends string, E extends NamedNodeEventEmitter<T>>(
+  target: E | ArrayLike<E>,
+  eventName: T
+): Observable<NodeEventEmitterDataType<E, T>>;
 
 export function fromEvent(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<unknown>;
 /** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */

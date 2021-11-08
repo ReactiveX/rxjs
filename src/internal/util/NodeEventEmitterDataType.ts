@@ -105,11 +105,4 @@ interface NamedNodeEventEmitter<N> {
   removeListener(name: N, handler: (data: NodeEventEmitterDataType<HasNodeEventEmitterAddRemove<N, any>, N>, ...args: any[]) => any): this;
 }
 
-export function fromEvent<T extends string | symbol, E extends NamedNodeEventEmitter<T>>(
-  target: E | ArrayLike<E>,
-  eventName: T
-): Observable<NodeEventEmitterDataType<E, T>> {
-  return {} as any;
-}
-
-export type { NodeEventEmitterDataType, NodeEventEmitterNameDataPair };
+export type { NamedNodeEventEmitter, NodeEventEmitterDataType, NodeEventEmitterNameDataPair };

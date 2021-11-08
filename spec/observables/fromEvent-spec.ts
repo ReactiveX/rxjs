@@ -447,6 +447,7 @@ describe('fromEvent', () => {
       removeListener(eventName: 'bar', listener: (bar: boolean) => void ): this
       removeListener(eventName: 'foo' | 'bar', listener: ((foo: false) => void) | ((bar: boolean) => void)): this  { return this; }
     }
+
     const test = new NodeEventeEmitterTest();
 
     expect(() => {

@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import {
   NodeEventEmitterNameDataPair,
   NodeEventEmitterDataType,
+  NamedNodeEventEmitter,
 } from '../../src/internal/util/NodeEventEmitterDataType';
 
 const fooEvent = 'fooEvent';
@@ -40,6 +41,12 @@ describe('NodeEventEmitterDataType smoke testing', () => {
     expect(foo).to.be.ok;
     expect(bar).to.be.ok;
   });
+
+  it('should extendable', () => {
+    const emitterTypeTest: NodeEventEmitterFixture extends NamedNodeEventEmitter<'foo'> ? true : never = true;
+    expect(emitterTypeTest).to.be.ok;
+  });
+
   it('should get name & data from NodeEventEmitterNameDataPair', () => {
     // type EVENT_PAIR = TypeEventPair<NodeEventEmitterTest['addListener']>
     type EVENT_PAIR = NodeEventEmitterNameDataPair<NodeEventEmitterFixture>;
