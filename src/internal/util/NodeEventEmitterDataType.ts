@@ -94,17 +94,18 @@ type NodeEventEmitterNameDataPair<E extends HasNodeEventEmitterAddRemove<any, an
 // type NodeEventEmitterData<T extends HasNodeEventEmitterAddRemove<any, any>> = NodeEventEmitterNameDataPair<T>[1];
 
 /**
- * Get event emitter data type by event name
+ *
+ * Tada! Get event emitter data type by event name
+ *
  */
 type NodeEventEmitterDataType<E extends HasNodeEventEmitterAddRemove<T, any>, T> = Extract<NodeEventEmitterNameDataPair<E>, [T, any]>[1];
 
-// export interface NodeStyleEventEmitter<T extends HasNodeEventEmitterAddRemove<any, any>> {
-interface NodeStyleEventEmitter<N> {
+interface NamedNodeEventEmitter<N> {
   addListener(name: N, handler: (data: NodeEventEmitterDataType<HasNodeEventEmitterAddRemove<N, any>, N>, ...args: any[]) => any): this;
   removeListener(name: N, handler: (data: NodeEventEmitterDataType<HasNodeEventEmitterAddRemove<N, any>, N>, ...args: any[]) => any): this;
 }
 
-export function fromEvent<T extends string | symbol, E extends NodeStyleEventEmitter<T>>(
+export function fromEvent<T extends string | symbol, E extends NamedNodeEventEmitter<T>>(
   target: E | ArrayLike<E>,
   eventName: T
 ): Observable<NodeEventEmitterDataType<E, T>> {
