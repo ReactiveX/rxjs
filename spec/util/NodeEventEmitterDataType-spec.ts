@@ -3,12 +3,12 @@ import { expect } from 'chai';
 import {
   NodeEventEmitterNameDataPair,
   NodeEventEmitterDataType,
+  NodeEventEmitterDataTypeUnknown,
   NamedNodeEventEmitter,
   AnyToUnknown,
 } from '../../src/internal/util/NodeEventEmitterDataType';
 
 describe('NodeEventEmitterDataType smoke testing', () => {
-
   const fooEvent = 'fooEvent';
   const barEvent = 'barEvent';
 
@@ -61,6 +61,33 @@ describe('NodeEventEmitterDataType smoke testing', () => {
     expect(nameTypeTest).to.be.ok;
     expect(dataTypeTest).to.be.ok;
   });
+
+  it('should get `unknown` for `process` events by NodeEventEmitterDataTypeUnknown', () => {
+    let exit: NodeEventEmitterDataTypeUnknown<
+      Pick<
+        typeof process,
+        'addListener' | 'removeListener'
+      >,
+      'exit'
+    >;
+    exit = true;
+    exit = 42;
+    exit = 'unknown';
+
+    expect(exit).to.be.ok;
+  });
+
+  it('should get `never` for `process` events by NodeEventEmitterDataType', () => {
+    const exit: NodeEventEmitterDataType<
+      Pick<
+        typeof process,
+        'addListener' | 'removeListener'
+      >,
+      'exit'
+    > extends never ? true : never = true;
+
+    expect(exit).to.be.ok;
+  });
 });
 
 describe('AnyToUnknown smoke testing', () => {
@@ -74,9 +101,10 @@ describe('AnyToUnknown smoke testing', () => {
     type T_STRING    = AnyToUnknown<string>
     type T_UNDEFINED = AnyToUnknown<undefined>
     type T_VOID      = AnyToUnknown<void>
+    type T_NEVER     = AnyToUnknown<never>
 
     type UNKNOWN_TYPE = T_ANY & T_UNKNOWN
-    type KNOWN_TYPE = T_VOID | T_BOOLEAN | T_STRING | T_UNDEFINED | T_NULL | T_OBJ
+    type KNOWN_TYPE = T_VOID | T_BOOLEAN | T_STRING | T_UNDEFINED | T_NULL | T_OBJ | T_NEVER
 
     const unknownTypeTest: unknown extends UNKNOWN_TYPE ? true : never = true;
     const knownTypeTest: unknown extends KNOWN_TYPE ? never : true     = true;

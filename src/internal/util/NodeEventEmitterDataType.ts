@@ -99,9 +99,20 @@ type NodeEventEmitterNameDataPair<E extends HasNodeEventEmitterAddRemove<any, an
  */
 type NodeEventEmitterDataType<E extends HasNodeEventEmitterAddRemove<T, any>, T> = Extract<NodeEventEmitterNameDataPair<E>, [T, any]>[1];
 
+// Convert `never` to `unknown`
+type NodeEventEmitterDataTypeUnknown<E extends HasNodeEventEmitterAddRemove<T, any>, T> = NodeEventEmitterDataType<E, T> extends never
+  ? unknown
+  : NodeEventEmitterDataType<E, T>;
+
 interface NamedNodeEventEmitter<N> {
   addListener(name: N, handler: (data: NodeEventEmitterDataType<HasNodeEventEmitterAddRemove<N, any>, N>, ...args: any[]) => any): this;
   removeListener(name: N, handler: (data: NodeEventEmitterDataType<HasNodeEventEmitterAddRemove<N, any>, N>, ...args: any[]) => any): this;
 }
 
-export type { AnyToUnknown, NamedNodeEventEmitter, NodeEventEmitterDataType, NodeEventEmitterNameDataPair };
+export type {
+  AnyToUnknown,
+  NamedNodeEventEmitter,
+  NodeEventEmitterDataType,
+  NodeEventEmitterDataTypeUnknown,
+  NodeEventEmitterNameDataPair,
+};
