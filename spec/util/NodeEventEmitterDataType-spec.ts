@@ -4,36 +4,38 @@ import {
   NodeEventEmitterNameDataPair,
   NodeEventEmitterDataType,
   NamedNodeEventEmitter,
+  AnyToUnknown,
 } from '../../src/internal/util/NodeEventEmitterDataType';
 
-const fooEvent = 'fooEvent';
-const barEvent = 'barEvent';
-
-type FOO_DATA = typeof fooEvent;
-type BAR_DATA = typeof barEvent;
-
-class NodeEventEmitterFixture {
-  addListener(eventName: 'foo', listener: (foo: FOO_DATA) => void): this
-  addListener(eventName: 'bar', listener: (bar: BAR_DATA) => void): this
-  addListener(eventName: 'foo' | 'bar', listener: ((foo: FOO_DATA) => void) | ((bar: BAR_DATA) => void)): this  { return this; }
-
-  removeListener(eventName: 'foo', listener: (foo: FOO_DATA) => void ): this
-  removeListener(eventName: 'bar', listener: (bar: BAR_DATA) => void ): this
-  removeListener(eventName: 'foo' | 'bar', listener: ((foo: FOO_DATA) => void) | ((bar: BAR_DATA) => void)): this  { return this; }
-
-  /**
-   * TODO: JQueryStyle compatible in the future
-   */
-  // on(eventName: 'foo', listener: (foo: number) => void): void
-  // on(eventName: 'bar', listener: (bar: string) => void): void
-  // on(eventName: 'foo' | 'bar', listener: ((foo: number) => void) | ((bar: string) => void)): void  {}
-
-  // off(eventName: 'foo', listener: (foo: number) => void ): void
-  // off(eventName: 'bar', listener: (bar: string) => void ): void
-  // off(eventName: 'foo' | 'bar', listener: ((foo: number) => void) | ((bar: string) => void)): void  {}
-}
-
 describe('NodeEventEmitterDataType smoke testing', () => {
+
+  const fooEvent = 'fooEvent';
+  const barEvent = 'barEvent';
+
+  type FOO_DATA = typeof fooEvent;
+  type BAR_DATA = typeof barEvent;
+
+  class NodeEventEmitterFixture {
+    addListener(eventName: 'foo', listener: (foo: FOO_DATA) => void): this
+    addListener(eventName: 'bar', listener: (bar: BAR_DATA) => void): this
+    addListener(eventName: 'foo' | 'bar', listener: ((foo: FOO_DATA) => void) | ((bar: BAR_DATA) => void)): this  { return this; }
+
+    removeListener(eventName: 'foo', listener: (foo: FOO_DATA) => void ): this
+    removeListener(eventName: 'bar', listener: (bar: BAR_DATA) => void ): this
+    removeListener(eventName: 'foo' | 'bar', listener: ((foo: FOO_DATA) => void) | ((bar: BAR_DATA) => void)): this  { return this; }
+
+    /**
+     * TODO: JQueryStyle compatible in the future
+     */
+    // on(eventName: 'foo', listener: (foo: number) => void): void
+    // on(eventName: 'bar', listener: (bar: string) => void): void
+    // on(eventName: 'foo' | 'bar', listener: ((foo: number) => void) | ((bar: string) => void)): void  {}
+
+    // off(eventName: 'foo', listener: (foo: number) => void ): void
+    // off(eventName: 'bar', listener: (bar: string) => void ): void
+    // off(eventName: 'foo' | 'bar', listener: ((foo: number) => void) | ((bar: string) => void)): void  {}
+  }
+
   it('should get emitter name & data types correctly', () => {
     const foo: NodeEventEmitterDataType<NodeEventEmitterFixture, 'foo'> = fooEvent;
     const bar: NodeEventEmitterDataType<NodeEventEmitterFixture, 'bar'> = barEvent;
@@ -58,5 +60,28 @@ describe('NodeEventEmitterDataType smoke testing', () => {
 
     expect(nameTypeTest).to.be.ok;
     expect(dataTypeTest).to.be.ok;
+  });
+});
+
+describe('AnyToUnknown smoke testing', () => {
+  it('should only convert any to unknown', () => {
+    type T_ANY       = AnyToUnknown<any>
+    type T_UNKNOWN   = AnyToUnknown<unknown>
+
+    type T_BOOLEAN   = AnyToUnknown<boolean>
+    type T_NULL      = AnyToUnknown<null>
+    type T_OBJ       = AnyToUnknown<object>
+    type T_STRING    = AnyToUnknown<string>
+    type T_UNDEFINED = AnyToUnknown<undefined>
+    type T_VOID      = AnyToUnknown<void>
+
+    type UNKNOWN_TYPE = T_ANY & T_UNKNOWN
+    type KNOWN_TYPE = T_VOID | T_BOOLEAN | T_STRING | T_UNDEFINED | T_NULL | T_OBJ
+
+    const unknownTypeTest: unknown extends UNKNOWN_TYPE ? true : never = true;
+    const knownTypeTest: unknown extends KNOWN_TYPE ? never : true     = true;
+
+    expect(unknownTypeTest).to.be.true;
+    expect(knownTypeTest).to.be.true;
   });
 });

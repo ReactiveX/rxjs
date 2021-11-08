@@ -16,7 +16,6 @@
 
 /* eslint-disable no-use-before-define */
 /* eslint-disable max-len */
-import { Observable } from '../Observable';
 
 /**
  * Node.js EventEmitter Add/Remove Listener interface
@@ -83,7 +82,7 @@ type EventNameDataPair<AddRemoveListener extends HasNodeEventEmitterAddRemove<an
  *
  *  TODO: huan(202111) need to be tested more and confirm it has no bug in edge cases
  */
-type AnyToUnknown<T> = null extends T ? (void extends T ? unknown : T) : T;
+type AnyToUnknown<T> = unknown extends T ? unknown : T;
 
 // the [eventName, eventData] types array
 type NodeEventEmitterNameDataPair<E extends HasNodeEventEmitterAddRemove<any, any>> = EventNameDataPair<E['addListener']>;
@@ -95,7 +94,7 @@ type NodeEventEmitterNameDataPair<E extends HasNodeEventEmitterAddRemove<any, an
 
 /**
  *
- * Tada! Get event emitter data type by event name
+ * Tada! Get event emitter data type by event name 8-D
  *
  */
 type NodeEventEmitterDataType<E extends HasNodeEventEmitterAddRemove<T, any>, T> = Extract<NodeEventEmitterNameDataPair<E>, [T, any]>[1];
@@ -105,4 +104,4 @@ interface NamedNodeEventEmitter<N> {
   removeListener(name: N, handler: (data: NodeEventEmitterDataType<HasNodeEventEmitterAddRemove<N, any>, N>, ...args: any[]) => any): this;
 }
 
-export type { NamedNodeEventEmitter, NodeEventEmitterDataType, NodeEventEmitterNameDataPair };
+export type { AnyToUnknown, NamedNodeEventEmitter, NodeEventEmitterDataType, NodeEventEmitterNameDataPair };

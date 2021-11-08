@@ -51,13 +51,13 @@ it('should support a document source with options and result selector', () => {
 declare const nodeStyleSource: Pick<typeof process, 'addListener' | 'removeListener'>;
 
 it('should support a node-style source', () => {
-  const source: NodeStyleEventEmitter<any, any> = nodeStyleSource;
+  const source: NodeStyleEventEmitter = nodeStyleSource;
   const a = fromEvent(nodeStyleSource, "exit"); // $ExpectType Observable<unknown>
   const b = fromEvent<B>(nodeStyleSource, "exit"); // $ExpectType Observable<B>
 });
 
 it('should deprecate explicit type parameters for a node-style source', () => {
-  const source: NodeStyleEventEmitter<any, any> = nodeStyleSource;
+  const source: NodeStyleEventEmitter = nodeStyleSource;
   const a = fromEvent(nodeStyleSource, "exit"); // $ExpectNoDeprecation
   const b = fromEvent<B>(nodeStyleSource, "exit"); // $ExpectDeprecation
 });

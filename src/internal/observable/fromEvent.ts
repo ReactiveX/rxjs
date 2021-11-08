@@ -80,7 +80,9 @@ export function fromEvent<T, R>(
 ): Observable<R>;
 
 /**
- * Automatically infer from Node.js EventEmitter with event data types
+ * Automatically infer overloaded Node.js EventEmitter event types:
+ *  get event data type (`typeof args[0]` of the listener) by event name.
+ *
  *  @see https://github.com/ReactiveX/rxjs/pull/6669
  */
 export function fromEvent<T extends string, E extends NamedNodeEventEmitter<T>>(
