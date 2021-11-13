@@ -39,9 +39,10 @@ describe('Scheduler.asap', () => {
 
   it('should cancel asap actions when delay > 0', () => {
     testScheduler.run(({ cold, expectObservable, flush, time }) => {
-      const setImmediateSpy = sinon.spy(immediateProvider, 'setImmediate');
-      const setSpy = sinon.spy(intervalProvider, 'setInterval');
-      const clearSpy = sinon.spy(intervalProvider, 'clearInterval');
+      const sandbox = sinon.createSandbox();
+      const setImmediateSpy = sandbox.spy(immediateProvider, 'setImmediate');
+      const setSpy = sandbox.spy(intervalProvider, 'setInterval');
+      const clearSpy = sandbox.spy(intervalProvider, 'clearInterval');
 
       const a = cold('  a            ');
       const ta = time(' ----|        ');
@@ -57,9 +58,7 @@ describe('Scheduler.asap', () => {
       expect(setImmediateSpy).to.have.not.been.called;
       expect(setSpy).to.have.been.calledOnce;
       expect(clearSpy).to.have.been.calledOnce;
-      setImmediateSpy.restore();
-      setSpy.restore();
-      clearSpy.restore();
+      sandbox.restore();
     });
   });
 
@@ -67,7 +66,7 @@ describe('Scheduler.asap', () => {
     const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     // callThrough is missing from the declarations installed by the typings tool in stable
-    const stubSetInterval = (<any> sinon.stub(global, 'setInterval')).callThrough();
+    const stubSetInterval = (<any> sandbox.stub(global, 'setInterval')).callThrough();
     const period = 50;
     const state = { index: 0, period };
     type State = typeof state;
@@ -86,7 +85,6 @@ describe('Scheduler.asap', () => {
     fakeTimer.tick(period);
     expect(state).to.have.property('index', 2);
     expect(stubSetInterval).to.have.property('callCount', 1);
-    stubSetInterval.restore();
     sandbox.restore();
   });
 
@@ -94,7 +92,7 @@ describe('Scheduler.asap', () => {
     const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     // callThrough is missing from the declarations installed by the typings tool in stable
-    const stubSetInterval = (<any> sinon.stub(global, 'setInterval')).callThrough();
+    const stubSetInterval = (<any> sandbox.stub(global, 'setInterval')).callThrough();
     const period = 50;
     const state = { index: 0, period };
     type State = typeof state;
@@ -114,7 +112,6 @@ describe('Scheduler.asap', () => {
     fakeTimer.tick(period);
     expect(state).to.have.property('index', 2);
     expect(stubSetInterval).to.have.property('callCount', 3);
-    stubSetInterval.restore();
     sandbox.restore();
   });
 
