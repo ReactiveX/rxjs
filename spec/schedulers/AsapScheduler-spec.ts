@@ -218,4 +218,50 @@ describe('Scheduler.asap', () => {
     }, 0, 0);
     scheduledIndices.push(0);
   });
+
+  it('should execute actions scheduled when flushing in a subsequent flush', (done) => {
+    const sandbox = sinon.createSandbox();
+    const stubFlush = (sandbox.stub(asapScheduler, 'flush')).callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = asapScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+      c = asapScheduler.schedule(() => {
+        expect(stubFlush).to.have.callCount(2);
+        sandbox.restore();
+        done();
+      });
+    });
+    b = asapScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+    });
+  });
+
+  it('should execute actions scheduled when flushing in a subsequent flush when some actions are unsubscribed', (done) => {
+    const sandbox = sinon.createSandbox();
+    const stubFlush = (sandbox.stub(asapScheduler, 'flush')).callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = asapScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+      c = asapScheduler.schedule(() => {
+        expect(stubFlush).to.have.callCount(2);
+        sandbox.restore();
+        done();
+      });
+      b.unsubscribe();
+    });
+    b = asapScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+    });
+  });
+
+  it.skip('should properly cancel an unnecessary flush', (done) => {
+  });
 });

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { animationFrameScheduler, Subscription, merge } from 'rxjs';
+import { animationFrameScheduler, Subscription, merge, animationFrames } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -43,7 +43,7 @@ describe('Scheduler.animationFrame', () => {
       const requestSpy = sinon.spy(animationFrameProvider, 'requestAnimationFrame');
       const setSpy = sinon.spy(intervalProvider, 'setInterval');
       const clearSpy = sinon.spy(intervalProvider, 'clearInterval');
-  
+
       animate('         ----------x--');
       const a = cold('  a            ');
       const ta = time(' ----|        ');
@@ -167,5 +167,51 @@ describe('Scheduler.animationFrame', () => {
       }
     }, 0, 0);
     scheduledIndices.push(0);
+  });
+
+  it('should execute actions scheduled when flushing in a subsequent flush', (done) => {
+    const sandbox = sinon.createSandbox();
+    const stubFlush = (sandbox.stub(animationFrameScheduler, 'flush')).callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = animationFrameScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+      c = animationFrameScheduler.schedule(() => {
+        expect(stubFlush).to.have.callCount(2);
+        sandbox.restore();
+        done();
+      });
+    });
+    b = animationFrameScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+    });
+  });
+
+  it('should execute actions scheduled when flushing in a subsequent flush when some actions are unsubscribed', (done) => {
+    const sandbox = sinon.createSandbox();
+    const stubFlush = (sandbox.stub(animationFrameScheduler, 'flush')).callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = animationFrameScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+      c = animationFrameScheduler.schedule(() => {
+        expect(stubFlush).to.have.callCount(2);
+        sandbox.restore();
+        done();
+      });
+      b.unsubscribe();
+    });
+    b = animationFrameScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+    });
+  });
+
+  it.skip('should properly cancel an unnecessary flush', (done) => {
   });
 });
