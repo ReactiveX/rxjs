@@ -262,6 +262,27 @@ describe('Scheduler.asap', () => {
     });
   });
 
-  it.skip('should properly cancel an unnecessary flush', (done) => {
+  it('should properly cancel an unnecessary flush', (done) => {
+    const sandbox = sinon.createSandbox();
+    const clearImmediateStub = sandbox.stub(immediateProvider, 'clearImmediate').callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = asapScheduler.schedule(() => {
+      expect(asapScheduler.actions).to.have.length(1);
+      c = asapScheduler.schedule(() => { /* stupid lint rule */ });
+      expect(asapScheduler.actions).to.have.length(2);
+      // What we're testing here is that the unsubscription of action c effects
+      // the cancellation of the microtask in a scenario in which the actions
+      // queue is not empty - it contains action b.
+      c.unsubscribe();
+      expect(asapScheduler.actions).to.have.length(1);
+      expect(clearImmediateStub).to.have.callCount(1);
+      sandbox.restore();
+      done();
+    });
+    b = asapScheduler.schedule(() => { /* stupid lint rule */ });
   });
 });

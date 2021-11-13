@@ -212,6 +212,27 @@ describe('Scheduler.animationFrame', () => {
     });
   });
 
-  it.skip('should properly cancel an unnecessary flush', (done) => {
+  it('should properly cancel an unnecessary flush', (done) => {
+    const sandbox = sinon.createSandbox();
+    const cancelAnimationFrameStub = sandbox.stub(animationFrameProvider, 'cancelAnimationFrame').callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = animationFrameScheduler.schedule(() => {
+      expect(animationFrameScheduler.actions).to.have.length(1);
+      c = animationFrameScheduler.schedule(() => { /* stupid lint rule */ });
+      expect(animationFrameScheduler.actions).to.have.length(2);
+      // What we're testing here is that the unsubscription of action c effects
+      // the cancellation of the animation frame in a scenario in which the
+      // actions queue is not empty - it contains action b.
+      c.unsubscribe();
+      expect(animationFrameScheduler.actions).to.have.length(1);
+      expect(cancelAnimationFrameStub).to.have.callCount(1);
+      sandbox.restore();
+      done();
+    });
+    b = animationFrameScheduler.schedule(() => { /* stupid lint rule */ });
   });
 });
