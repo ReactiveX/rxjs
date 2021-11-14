@@ -208,7 +208,7 @@ describe('Scheduler.animationFrame', () => {
       b.unsubscribe();
     });
     b = animationFrameScheduler.schedule(() => {
-      expect(stubFlush).to.have.callCount(1);
+      done(new Error('Unexpected execution of b'));
     });
   });
 
@@ -222,7 +222,9 @@ describe('Scheduler.animationFrame', () => {
 
     a = animationFrameScheduler.schedule(() => {
       expect(animationFrameScheduler.actions).to.have.length(1);
-      c = animationFrameScheduler.schedule(() => { /* stupid lint rule */ });
+      c = animationFrameScheduler.schedule(() => {
+        done(new Error('Unexpected execution of c'));
+      });
       expect(animationFrameScheduler.actions).to.have.length(2);
       // What we're testing here is that the unsubscription of action c effects
       // the cancellation of the animation frame in a scenario in which the
@@ -230,9 +232,10 @@ describe('Scheduler.animationFrame', () => {
       c.unsubscribe();
       expect(animationFrameScheduler.actions).to.have.length(1);
       expect(cancelAnimationFrameStub).to.have.callCount(1);
+    });
+    b = animationFrameScheduler.schedule(() => {
       sandbox.restore();
       done();
     });
-    b = animationFrameScheduler.schedule(() => { /* stupid lint rule */ });
   });
 });

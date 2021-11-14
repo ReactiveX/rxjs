@@ -258,7 +258,7 @@ describe('Scheduler.asap', () => {
       b.unsubscribe();
     });
     b = asapScheduler.schedule(() => {
-      expect(stubFlush).to.have.callCount(1);
+      done(new Error('Unexpected execution of b'));
     });
   });
 
@@ -272,7 +272,9 @@ describe('Scheduler.asap', () => {
 
     a = asapScheduler.schedule(() => {
       expect(asapScheduler.actions).to.have.length(1);
-      c = asapScheduler.schedule(() => { /* stupid lint rule */ });
+      c = asapScheduler.schedule(() => {
+        done(new Error('Unexpected execution of c'));
+      });
       expect(asapScheduler.actions).to.have.length(2);
       // What we're testing here is that the unsubscription of action c effects
       // the cancellation of the microtask in a scenario in which the actions
@@ -280,9 +282,10 @@ describe('Scheduler.asap', () => {
       c.unsubscribe();
       expect(asapScheduler.actions).to.have.length(1);
       expect(clearImmediateStub).to.have.callCount(1);
+    });
+    b = asapScheduler.schedule(() => {
       sandbox.restore();
       done();
     });
-    b = asapScheduler.schedule(() => { /* stupid lint rule */ });
   });
 });
