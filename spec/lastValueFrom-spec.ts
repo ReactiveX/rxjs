@@ -1,4 +1,4 @@
-import { interval, lastValueFrom, EMPTY, EmptyError, throwError, of } from 'rxjs';
+import { interval, lastValueFrom, EMPTY, EmptyError, throwError, of, AbortError, NEVER } from 'rxjs';
 import { expect } from 'chai';
 import { finalize, take } from 'rxjs/operators';
 
@@ -61,4 +61,41 @@ describe('lastValueFrom', () => {
     expect(result).to.equal('bananas');
     expect(finalized).to.be.true;
   });
+
+  
+  if (typeof AbortController === 'function') {
+    it('should support abort signal', async () => {
+      const source = NEVER;
+      const ac = new AbortController();
+      const signal = ac.signal;
+      setTimeout(() => {
+        ac.abort();
+      });
+      let errorThrown: any;
+      try {
+        await lastValueFrom(source, { signal });
+      } catch (err) {
+        errorThrown = err;
+      }
+      expect(errorThrown).to.be.an.instanceOf(AbortError);
+    });
+
+    it('should support abort signal with a default value', async () => {
+      const source = NEVER;
+      const ac = new AbortController();
+      const signal = ac.signal;
+      setTimeout(() => {
+        ac.abort();
+      });
+      let errorThrown: any;
+      let result = 'not set';
+      try {
+        result = await lastValueFrom(source, { signal, defaultValue: 'bad' });
+      } catch (err) {
+        errorThrown = err;
+      }
+      expect(errorThrown).to.be.an.instanceOf(AbortError);
+      expect(result).to.equal('not set');
+    });
+  }
 });

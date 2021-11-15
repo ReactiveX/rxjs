@@ -1,11 +1,16 @@
 import { Observable } from './Observable';
+import { SafeSubscriber } from './Subscriber';
+import { AbortError } from './util/AbortError';
 import { EmptyError } from './util/EmptyError';
+import { linkSignalToSubscription } from './util/linkSignalToSubscription';
 
 export interface LastValueFromConfig<T> {
-  defaultValue: T;
+  defaultValue?: T;
+  signal?: AbortSignal;
 }
 
-export function lastValueFrom<T, D>(source: Observable<T>, config: LastValueFromConfig<D>): Promise<T | D>;
+export function lastValueFrom<T, D>(source: Observable<T>, config: { defaultValue: D; signal?: AbortSignal }): Promise<T | D>;
+export function lastValueFrom<T>(source: Observable<T>, config: { signal?: AbortSignal }): Promise<T>;
 export function lastValueFrom<T>(source: Observable<T>): Promise<T>;
 
 /**
@@ -53,25 +58,44 @@ export function lastValueFrom<T>(source: Observable<T>): Promise<T>;
  * @param config a configuration object to define the `defaultValue` to use if the source completes without emitting a value
  */
 export function lastValueFrom<T, D>(source: Observable<T>, config?: LastValueFromConfig<D>): Promise<T | D> {
-  const hasConfig = typeof config === 'object';
   return new Promise<T | D>((resolve, reject) => {
+    // We must track if we have a value or not, because if
+    // we don't, then the promised value never arrived.
     let _hasValue = false;
     let _value: T;
-    source.subscribe({
+    const subscriber = new SafeSubscriber<T>({
       next: (value) => {
+        // We have a value! The promise can resolve later.
         _value = value;
         _hasValue = true;
       },
       error: reject,
       complete: () => {
         if (_hasValue) {
+          // Happy path.
           resolve(_value);
-        } else if (hasConfig) {
-          resolve(config!.defaultValue);
+        } else if (config && 'defaultValue' in config) {
+          // The observable was empty, but we have a default value we'd like to emit.
+          resolve(config.defaultValue!);
         } else {
+          // if the observable is empty, and we don't have a default value, we'll reject with an EmptyError
+          // because promises _must_ resolve or reject. We cannot just leave this hanging.
           reject(new EmptyError());
         }
       },
     });
+
+    const signal = config?.signal;
+    if (signal) {
+      // The user provided an abort signal. Wire it up. The
+      // subscriber *is* the subscription.
+      linkSignalToSubscription(signal, subscriber, () => {
+        reject(new AbortError());
+      });
+    }
+
+    // Start the subscription. We are not keeping the subscription returned
+    // because it's technically the same instance as the subscriber.
+    source.subscribe(subscriber);
   });
 }

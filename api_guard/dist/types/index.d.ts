@@ -329,7 +329,13 @@ export declare function last<T, D = T>(predicate?: null, defaultValue?: D): Oper
 export declare function last<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue?: S): OperatorFunction<T, S>;
 export declare function last<T, D = T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: D): OperatorFunction<T, T | D>;
 
-export declare function lastValueFrom<T, D>(source: Observable<T>, config: LastValueFromConfig<D>): Promise<T | D>;
+export declare function lastValueFrom<T, D>(source: Observable<T>, config: {
+    defaultValue: D;
+    signal?: AbortSignal;
+}): Promise<T | D>;
+export declare function lastValueFrom<T>(source: Observable<T>, config: {
+    signal?: AbortSignal;
+}): Promise<T>;
 export declare function lastValueFrom<T>(source: Observable<T>): Promise<T>;
 
 export declare function map<T, R>(project: (value: T, index: number) => R): OperatorFunction<T, R>;
