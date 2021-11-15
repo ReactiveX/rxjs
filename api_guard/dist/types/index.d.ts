@@ -1,3 +1,8 @@
+export interface AbortError extends Error {
+}
+
+export declare const AbortError: AbortErrorCtor;
+
 export declare const animationFrame: AnimationFrameScheduler;
 
 export declare function animationFrames(timestampProvider?: TimestampProvider): Observable<{
@@ -231,7 +236,13 @@ export declare function first<T, S extends T>(predicate: (value: T, index: numbe
 export declare function first<T, S extends T, D>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue: D): OperatorFunction<T, S | D>;
 export declare function first<T, D = T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: D): OperatorFunction<T, T | D>;
 
-export declare function firstValueFrom<T, D>(source: Observable<T>, config: FirstValueFromConfig<D>): Promise<T | D>;
+export declare function firstValueFrom<T, D>(source: Observable<T>, config: {
+    defaultValue: D;
+    signal?: AbortSignal;
+}): Promise<T | D>;
+export declare function firstValueFrom<T, D>(source: Observable<T>, config: {
+    signal?: AbortSignal;
+}): Promise<T>;
 export declare function firstValueFrom<T>(source: Observable<T>): Promise<T>;
 
 export declare const flatMap: typeof mergeMap;

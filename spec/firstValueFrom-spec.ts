@@ -1,4 +1,5 @@
-import { interval, firstValueFrom, EMPTY, EmptyError, throwError, of, Observable } from 'rxjs';
+/** @prettier */
+import { interval, firstValueFrom, EMPTY, EmptyError, throwError, of, Observable, NEVER, AbortError } from 'rxjs';
 import { expect } from 'chai';
 import { finalize } from 'rxjs/operators';
 
@@ -61,7 +62,7 @@ describe('firstValueFrom', () => {
 
   it('should stop listening to a synchronous observable when resolved', async () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable<number>(subscriber => {
+    const synchronousObservable = new Observable<number>((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -70,7 +71,43 @@ describe('firstValueFrom', () => {
       }
     });
 
-    const result = await firstValueFrom(synchronousObservable);
+    await firstValueFrom(synchronousObservable);
     expect(sideEffects).to.deep.equal([0]);
   });
+
+  if (typeof AbortController === 'function') {
+    it('should support abort signal', async () => {
+      const source = NEVER;
+      const ac = new AbortController();
+      const signal = ac.signal;
+      setTimeout(() => {
+        ac.abort();
+      });
+      let errorThrown: any;
+      try {
+        await firstValueFrom(source, { signal });
+      } catch (err) {
+        errorThrown = err;
+      }
+      expect(errorThrown).to.be.an.instanceOf(AbortError);
+    });
+
+    it('should support abort signal with a default value', async () => {
+      const source = NEVER;
+      const ac = new AbortController();
+      const signal = ac.signal;
+      setTimeout(() => {
+        ac.abort();
+      });
+      let errorThrown: any;
+      let result = 'not set';
+      try {
+        result = await firstValueFrom(source, { signal, defaultValue: 'bad' });
+      } catch (err) {
+        errorThrown = err;
+      }
+      expect(errorThrown).to.be.an.instanceOf(AbortError);
+      expect(result).to.equal('not set');
+    });
+  }
 });

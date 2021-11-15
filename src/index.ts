@@ -53,6 +53,7 @@ export { firstValueFrom } from './internal/firstValueFrom';
 
 /* Error types */
 export { ArgumentOutOfRangeError } from './internal/util/ArgumentOutOfRangeError';
+export { AbortError } from './internal/util/AbortError';
 export { EmptyError } from './internal/util/EmptyError';
 export { NotFoundError } from './internal/util/NotFoundError';
 export { ObjectUnsubscribedError } from './internal/util/ObjectUnsubscribedError';
