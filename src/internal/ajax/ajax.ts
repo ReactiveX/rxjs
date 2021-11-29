@@ -279,7 +279,20 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     // Here we're pulling off each of the configuration arguments
     // that we don't want to add to the request information we're
     // passing around.
-    const { queryParams, body: configuredBody, headers: configuredHeaders, ...remainingConfig } = config;
+    const configWithDefaults = {
+      // Default values
+      async: true,
+      crossDomain: true,
+      withCredentials: false,
+      method: 'GET',
+      timeout: 0,
+      responseType: 'json' as XMLHttpRequestResponseType,
+
+      // Override with passed user values
+      ...config,
+    };
+
+    const { queryParams, body: configuredBody, headers: configuredHeaders, ...remainingConfig } = configWithDefaults;
 
     let { url } = remainingConfig;
     if (!url) {
@@ -334,7 +347,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     // None of this is necessary, it's only being set because it's "the thing libraries do"
     // Starting back as far as JQuery, and continuing with other libraries such as Angular 1,
     // Axios, et al.
-    if (!config.crossDomain && !('x-requested-with' in headers)) {
+    if (!configWithDefaults.crossDomain && !('x-requested-with' in headers)) {
       headers['x-requested-with'] = 'XMLHttpRequest';
     }
 
@@ -353,16 +366,8 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     const body = extractContentTypeAndMaybeSerializeBody(configuredBody, headers);
 
     const _request: AjaxRequest = {
-      // Default values
-      async: true,
-      crossDomain: true,
-      withCredentials: false,
-      method: 'GET',
-      timeout: 0,
-      responseType: 'json' as XMLHttpRequestResponseType,
-
-      // Override with passed user values
-      ...remainingConfig,
+      // Take the final configuration
+      ...configWithDefaults,
 
       // Set values we ensured above
       url,
