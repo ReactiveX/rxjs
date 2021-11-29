@@ -341,7 +341,7 @@ export class Observable<T> implements Subscribable<T> {
    * @method Symbol.observable
    * @return {Observable} this instance of the observable
    */
-  [Symbol_observable]() {
+  [Symbol_observable()]() {
     return this;
   }
 

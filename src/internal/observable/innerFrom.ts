@@ -46,7 +46,7 @@ export function innerFrom<T>(input: ObservableInput<T>): Observable<T> {
  */
 export function fromInteropObservable<T>(obj: any) {
   return new Observable((subscriber: Subscriber<T>) => {
-    const obs = obj[Symbol_observable]();
+    const obs = obj[Symbol_observable()]();
     if (isFunction(obs.subscribe)) {
       return obs.subscribe(subscriber);
     }

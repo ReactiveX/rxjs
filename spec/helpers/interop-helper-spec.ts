@@ -7,7 +7,7 @@ describe('interop helper', () => {
   it('should simulate interop observables', () => {
     const observable: any = asInteropObservable(of(42));
     expect(observable).to.not.be.instanceOf(Observable);
-    expect(observable[symbolObservable]).to.be.a('function');
+    expect(observable[symbolObservable()]).to.be.a('function');
   });
 
   it('should simulate interop subscribers', () => {

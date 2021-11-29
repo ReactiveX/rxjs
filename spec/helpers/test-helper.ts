@@ -26,7 +26,7 @@ export function lowerCaseO<T>(...args: Array<any>): Observable<T> {
     }
   };
 
-  o[observable] = function (this: any) {
+  o[observable()] = function (this: any) {
     return this;
   };
 
@@ -52,7 +52,7 @@ export const createObservableInputs = <T>(value: T) => of(
     }
   } as any as Iterable<T>,
   {
-    [observable]: () => of(value)
+    [observable()]: () => of(value)
   } as any
 ) as Observable<ObservableInput<T>>;
 

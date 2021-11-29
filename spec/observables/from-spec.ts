@@ -166,7 +166,7 @@ describe('from', () => {
   });
 
   const fakervable = <T>(...values: T[]) => ({
-    [observable]: () => ({
+    [observable()]: () => ({
       subscribe: (observer: Observer<T>) => {
         for (const value of values) {
           observer.next(value);
@@ -178,7 +178,7 @@ describe('from', () => {
 
   const fakeArrayObservable = <T>(...values: T[]) => {
     let arr: any = ['bad array!'];
-    arr[observable] = () =>  {
+    arr[observable()] = () =>  {
       return {
         subscribe: (observer: Observer<T>) => {
           for (const value of values) {
@@ -292,7 +292,7 @@ describe('from', () => {
     it(`should accept a function that implements [Symbol.observable]`, (done) => {
       const subject = new Subject<any>();
       const handler: any = (arg: any) => subject.next(arg);
-      handler[observable] = () => subject;
+      handler[observable()] = () => subject;
       let nextInvoked = false;
 
       from((handler as any)).pipe(first()).subscribe(
