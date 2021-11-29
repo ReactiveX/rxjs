@@ -1,11 +1,28 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { asapScheduler, Subscription, SchedulerAction } from 'rxjs';
+import { asapScheduler, Subscription, SchedulerAction, merge } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { Immediate } from 'rxjs/internal/util/Immediate';
+import { TestScheduler } from 'rxjs/testing';
+import { observableMatcher } from 'spec/helpers/observableMatcher';
+
+declare const globalThis: NodeJS.Global | Window;
 
 const asap = asapScheduler;
 
 /** @test {Scheduler} */
 describe('Scheduler.asap', () => {
+  let testScheduler: TestScheduler;
+
+  const ROOT = (typeof globalThis !== 'undefined' && globalThis)
+    || (typeof global !== 'undefined' && global)
+    || (typeof window !== 'undefined' && window)
+    || (typeof self !== 'undefined' && self);
+
+  beforeEach(() => {
+    testScheduler = new TestScheduler(observableMatcher);
+  });
+
   it('should exist', () => {
     expect(asap).exist;
   });
@@ -26,25 +43,35 @@ describe('Scheduler.asap', () => {
   });
 
   it('should cancel asap actions when delay > 0', () => {
-    let actionHappened = false;
-    const sandbox = sinon.sandbox.create();
-    const fakeTimer = sandbox.useFakeTimers();
-    asap.schedule(() => {
-      actionHappened = true;
-    }, 50).unsubscribe();
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.false;
-    sandbox.restore();
+    testScheduler.run(({ cold, expectObservable, flush }) => {
+      const sandbox = sinon.createSandbox();
+      const setImmediateSpy = sandbox.spy(Immediate, 'setImmediate');
+      const setSpy = sandbox.spy(ROOT, 'setInterval');
+      const clearSpy = sandbox.spy(ROOT, 'clearInterval');
+
+      const a = cold('  a            ');
+      const ta = 4;
+      const subs = '    ^-!          ';
+      const expected = '-------------';
+
+      const result = merge(
+        a.pipe(delay(ta, asap))
+      );
+      expectObservable(result, subs).toBe(expected);
+
+      flush();
+      expect(setImmediateSpy).to.have.not.been.called;
+      expect(setSpy).to.have.been.calledOnce;
+      expect(clearSpy).to.have.been.calledOnce;
+      sandbox.restore();
+    });
   });
 
   it('should reuse the interval for recursively scheduled actions with the same delay', () => {
     const sandbox = sinon.sandbox.create();
     const fakeTimer = sandbox.useFakeTimers();
     // callThrough is missing from the declarations installed by the typings tool in stable
-    const stubSetInterval = (<any> sinon.stub(global, 'setInterval')).callThrough();
+    const stubSetInterval = (<any> sandbox.stub(ROOT, 'setInterval')).callThrough();
     const period = 50;
     const state = { index: 0, period };
     type State = typeof state;
@@ -63,7 +90,6 @@ describe('Scheduler.asap', () => {
     fakeTimer.tick(period);
     expect(state).to.have.property('index', 2);
     expect(stubSetInterval).to.have.property('callCount', 1);
-    stubSetInterval.restore();
     sandbox.restore();
   });
 
@@ -71,7 +97,7 @@ describe('Scheduler.asap', () => {
     const sandbox = sinon.sandbox.create();
     const fakeTimer = sandbox.useFakeTimers();
     // callThrough is missing from the declarations installed by the typings tool in stable
-    const stubSetInterval = (<any> sinon.stub(global, 'setInterval')).callThrough();
+    const stubSetInterval = (<any> sandbox.stub(ROOT, 'setInterval')).callThrough();
     const period = 50;
     const state = { index: 0, period };
     type State = typeof state;
@@ -91,7 +117,6 @@ describe('Scheduler.asap', () => {
     fakeTimer.tick(period);
     expect(state).to.have.property('index', 2);
     expect(stubSetInterval).to.have.property('callCount', 3);
-    stubSetInterval.restore();
     sandbox.restore();
   });
 
@@ -169,5 +194,103 @@ describe('Scheduler.asap', () => {
     } else {
       firstSubscription.unsubscribe();
     }
+  });
+
+  it('should not execute rescheduled actions when flushing', (done) => {
+    let flushCount = 0;
+    let scheduledIndices: number[] = [];
+
+    let originalFlush = asap.flush;
+    asap.flush = (...args) => {
+      ++flushCount;
+      originalFlush.apply(asap, args);
+      if (flushCount === 2) {
+        asap.flush = originalFlush;
+        try {
+          expect(scheduledIndices).to.deep.equal([0, 1]);
+          done();
+        } catch (error) {
+          done(error);
+        }
+      }
+    };
+
+    asap.schedule(function (index) {
+      if (flushCount < 2) {
+        this.schedule(index! + 1);
+        scheduledIndices.push(index! + 1);
+      }
+    }, 0, 0);
+    scheduledIndices.push(0);
+  });
+
+  it('should execute actions scheduled when flushing in a subsequent flush', (done) => {
+    const sandbox = sinon.createSandbox();
+    const stubFlush = (sandbox.stub(asapScheduler, 'flush')).callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = asapScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+      c = asapScheduler.schedule(() => {
+        expect(stubFlush).to.have.callCount(2);
+        sandbox.restore();
+        done();
+      });
+    });
+    b = asapScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+    });
+  });
+
+  it('should execute actions scheduled when flushing in a subsequent flush when some actions are unsubscribed', (done) => {
+    const sandbox = sinon.createSandbox();
+    const stubFlush = (sandbox.stub(asapScheduler, 'flush')).callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = asapScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+      c = asapScheduler.schedule(() => {
+        expect(stubFlush).to.have.callCount(2);
+        sandbox.restore();
+        done();
+      });
+      b.unsubscribe();
+    });
+    b = asapScheduler.schedule(() => {
+      done(new Error('Unexpected execution of b'));
+    });
+  });
+
+  it('should properly cancel an unnecessary flush', (done) => {
+    const sandbox = sinon.createSandbox();
+    const clearImmediateStub = sandbox.stub(ROOT, 'clearImmediate').callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = asapScheduler.schedule(() => {
+      expect(asapScheduler.actions).to.have.length(1);
+      c = asapScheduler.schedule(() => {
+        done(new Error('Unexpected execution of c'));
+      });
+      expect(asapScheduler.actions).to.have.length(2);
+      // What we're testing here is that the unsubscription of action c effects
+      // the cancellation of the microtask in a scenario in which the actions
+      // queue is not empty - it contains action b.
+      c.unsubscribe();
+      expect(asapScheduler.actions).to.have.length(1);
+      expect(clearImmediateStub).to.have.callCount(1);
+    });
+    b = asapScheduler.schedule(() => {
+      sandbox.restore();
+      done();
+    });
   });
 });

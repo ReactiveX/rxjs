@@ -8,9 +8,7 @@ import { SchedulerAction } from '../types';
  * @extends {Ignored}
  */
 export class AnimationFrameAction<T> extends AsyncAction<T> {
-
-  constructor(protected scheduler: AnimationFrameScheduler,
-              protected work: (this: SchedulerAction<T>, state?: T) => void) {
+  constructor(protected scheduler: AnimationFrameScheduler, protected work: (this: SchedulerAction<T>, state?: T) => void) {
     super(scheduler, work);
   }
 
@@ -24,8 +22,7 @@ export class AnimationFrameAction<T> extends AsyncAction<T> {
     // If an animation frame has already been requested, don't request another
     // one. If an animation frame hasn't been requested yet, request one. Return
     // the current animation frame request id.
-    return scheduler.scheduled || (scheduler.scheduled = requestAnimationFrame(
-      () => scheduler.flush(null)));
+    return scheduler.scheduled || (scheduler.scheduled = requestAnimationFrame(() => scheduler.flush(null)));
   }
   protected recycleAsyncId(scheduler: AnimationFrameScheduler, id?: any, delay: number = 0): any {
     // If delay exists and is greater than 0, or if the delay is null (the
@@ -34,10 +31,10 @@ export class AnimationFrameAction<T> extends AsyncAction<T> {
     if ((delay !== null && delay > 0) || (delay === null && this.delay > 0)) {
       return super.recycleAsyncId(scheduler, id, delay);
     }
-    // If the scheduler queue is empty, cancel the requested animation frame and
-    // set the scheduled flag to undefined so the next AnimationFrameAction will
-    // request its own.
-    if (scheduler.actions.length === 0) {
+    // If the scheduler queue has no remaining actions with the same async id,
+    // cancel the requested animation frame and set the scheduled flag to
+    // undefined so the next AnimationFrameAction will request its own.
+    if (!scheduler.actions.some((action) => action.id === id)) {
       cancelAnimationFrame(id);
       scheduler.scheduled = undefined;
     }

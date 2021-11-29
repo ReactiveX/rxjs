@@ -1,11 +1,27 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { animationFrameScheduler, Subscription } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
+import { observableMatcher } from 'spec/helpers/observableMatcher';
 
 const animationFrame = animationFrameScheduler;
 
+declare const globalThis: NodeJS.Global | Window;
+
 /** @test {Scheduler} */
 describe('Scheduler.animationFrame', () => {
+  let testScheduler: TestScheduler;
+
+  const ROOT = (typeof globalThis !== 'undefined' && globalThis)
+    || (typeof global !== 'undefined' && global)
+    || (typeof window !== 'undefined' && window)
+    || (typeof self !== 'undefined' && self);
+
+  beforeEach(() => {
+    testScheduler = new TestScheduler(observableMatcher);
+  });
+
+
   it('should exist', () => {
     expect(animationFrame).exist;
   });
@@ -25,20 +41,34 @@ describe('Scheduler.animationFrame', () => {
     sandbox.restore();
   });
 
-  it('should cancel animationFrame actions when unsubscribed', () => {
-    let actionHappened = false;
-    const sandbox = sinon.sandbox.create();
-    const fakeTimer = sandbox.useFakeTimers();
-    animationFrame.schedule(() => {
-      actionHappened = true;
-    }, 50).unsubscribe();
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.false;
-    sandbox.restore();
-  });
+  // This test not supported in 6.x (ported from cherry-pick).
+
+  // it('should cancel animationFrame actions when delay > 0', () => {
+  //   testScheduler.run(({ animate, cold, expectObservable, flush }) => {
+  //     const requestSpy = sinon.spy(ROOT, 'requestAnimationFrame');
+  //     const setSpy = sinon.spy(ROOT, 'setInterval');
+  //     const clearSpy = sinon.spy(ROOT, 'clearInterval');
+
+  //     animate('         ----------x--');
+  //     const a = cold('  a            ');
+  //     const ta = 4;
+  //     const subs = '    ^-!          ';
+  //     const expected = '-------------';
+
+  //     const result = merge(
+  //       a.pipe(delay(ta, animationFrame))
+  //     );
+  //     expectObservable(result, subs).toBe(expected);
+
+  //     flush();
+  //     expect(requestSpy).to.have.not.been.called;
+  //     expect(setSpy).to.have.been.calledOnce;
+  //     expect(clearSpy).to.have.been.calledOnce;
+  //     requestSpy.restore();
+  //     setSpy.restore();
+  //     clearSpy.restore();
+  //   });
+  // });
 
   it('should schedule an action to happen later', (done: MochaDone) => {
     let actionHappened = false;
@@ -115,4 +145,104 @@ describe('Scheduler.animationFrame', () => {
       firstSubscription.unsubscribe();
     }
   });
+
+  it('should not execute rescheduled actions when flushing', (done) => {
+    let flushCount = 0;
+    let scheduledIndices: number[] = [];
+
+    let originalFlush = animationFrame.flush;
+    animationFrame.flush = (...args) => {
+      ++flushCount;
+      originalFlush.apply(animationFrame, args);
+      if (flushCount === 2) {
+        animationFrame.flush = originalFlush;
+        try {
+          expect(scheduledIndices).to.deep.equal([0, 1]);
+          done();
+        } catch (error) {
+          done(error);
+        }
+      }
+    };
+
+    animationFrame.schedule(function (index) {
+      if (flushCount < 2) {
+        this.schedule(index! + 1);
+        scheduledIndices.push(index! + 1);
+      }
+    }, 0, 0);
+    scheduledIndices.push(0);
+  });
+
+  it('should execute actions scheduled when flushing in a subsequent flush', (done) => {
+    const sandbox = sinon.createSandbox();
+    const stubFlush = (sandbox.stub(animationFrameScheduler, 'flush')).callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = animationFrameScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+      c = animationFrameScheduler.schedule(() => {
+        expect(stubFlush).to.have.callCount(2);
+        sandbox.restore();
+        done();
+      });
+    });
+    b = animationFrameScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+    });
+  });
+
+  it('should execute actions scheduled when flushing in a subsequent flush when some actions are unsubscribed', (done) => {
+    const sandbox = sinon.createSandbox();
+    const stubFlush = (sandbox.stub(animationFrameScheduler, 'flush')).callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = animationFrameScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+      c = animationFrameScheduler.schedule(() => {
+        expect(stubFlush).to.have.callCount(2);
+        sandbox.restore();
+        done();
+      });
+      b.unsubscribe();
+    });
+    b = animationFrameScheduler.schedule(() => {
+      done(new Error('Unexpected execution of b'));
+    });
+  });
+
+  if ('cancelAnimationFrame' in ROOT) {
+    it('should properly cancel an unnecessary flush', (done) => {
+      const sandbox = sinon.createSandbox();
+      const cancelAnimationFrameStub = sandbox.stub(ROOT, 'cancelAnimationFrame').callThrough();
+
+      let a: Subscription;
+      let b: Subscription;
+      let c: Subscription;
+
+      a = animationFrameScheduler.schedule(() => {
+        expect(animationFrameScheduler.actions).to.have.length(1);
+        c = animationFrameScheduler.schedule(() => {
+          done(new Error('Unexpected execution of c'));
+        });
+        expect(animationFrameScheduler.actions).to.have.length(2);
+        // What we're testing here is that the unsubscription of action c effects
+        // the cancellation of the animation frame in a scenario in which the
+        // actions queue is not empty - it contains action b.
+        c.unsubscribe();
+        expect(animationFrameScheduler.actions).to.have.length(1);
+        expect(cancelAnimationFrameStub).to.have.callCount(1);
+      });
+      b = animationFrameScheduler.schedule(() => {
+        sandbox.restore();
+        done();
+      });
+    });
+  }
 });

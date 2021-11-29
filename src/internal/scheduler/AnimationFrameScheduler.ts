@@ -3,26 +3,33 @@ import { AsyncScheduler } from './AsyncScheduler';
 
 export class AnimationFrameScheduler extends AsyncScheduler {
   public flush(action?: AsyncAction<any>): void {
-
     this.active = true;
+    // The async id that effects a call to flush is stored in `scheduled`.
+    // Before executing an action, it's necessary to check the action's async
+    // id to determine whether it's supposed to be executed in the current
+    // flush.
+    // Previous implementations of this method used a count to determine this,
+    // but that was unsound, as actions that are unsubscribed - i.e. cancelled -
+    // are removed from the actions array and that can shift actions that are
+    // scheduled to be executed in a subsequent flush into positions at which
+    // they are executed within the current flush.
+    const flushId = this.scheduled;
     this.scheduled = undefined;
 
-    const {actions} = this;
+    const { actions } = this;
     let error: any;
-    let index: number = -1;
-    let count: number = actions.length;
-    action = action || actions.shift();
+    action = action || actions.shift()!;
 
     do {
-      if (error = action.execute(action.state, action.delay)) {
+      if ((error = action.execute(action.state, action.delay))) {
         break;
       }
-    } while (++index < count && (action = actions.shift()));
+    } while ((action = actions[0]) && action.id === flushId && actions.shift());
 
     this.active = false;
 
     if (error) {
-      while (++index < count && (action = actions.shift())) {
+      while ((action = actions[0]) && action.id === flushId && actions.shift()) {
         action.unsubscribe();
       }
       throw error;
