@@ -43,7 +43,7 @@ describe('Scheduler.animationFrame', () => {
       const requestSpy = sinon.spy(animationFrameProvider, 'requestAnimationFrame');
       const setSpy = sinon.spy(intervalProvider, 'setInterval');
       const clearSpy = sinon.spy(intervalProvider, 'clearInterval');
-  
+
       animate('         ----------x--');
       const a = cold('  a            ');
       const ta = time(' ----|        ');
@@ -167,5 +167,75 @@ describe('Scheduler.animationFrame', () => {
       }
     }, 0, 0);
     scheduledIndices.push(0);
+  });
+
+  it('should execute actions scheduled when flushing in a subsequent flush', (done) => {
+    const sandbox = sinon.createSandbox();
+    const stubFlush = (sandbox.stub(animationFrameScheduler, 'flush')).callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = animationFrameScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+      c = animationFrameScheduler.schedule(() => {
+        expect(stubFlush).to.have.callCount(2);
+        sandbox.restore();
+        done();
+      });
+    });
+    b = animationFrameScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+    });
+  });
+
+  it('should execute actions scheduled when flushing in a subsequent flush when some actions are unsubscribed', (done) => {
+    const sandbox = sinon.createSandbox();
+    const stubFlush = (sandbox.stub(animationFrameScheduler, 'flush')).callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = animationFrameScheduler.schedule(() => {
+      expect(stubFlush).to.have.callCount(1);
+      c = animationFrameScheduler.schedule(() => {
+        expect(stubFlush).to.have.callCount(2);
+        sandbox.restore();
+        done();
+      });
+      b.unsubscribe();
+    });
+    b = animationFrameScheduler.schedule(() => {
+      done(new Error('Unexpected execution of b'));
+    });
+  });
+
+  it('should properly cancel an unnecessary flush', (done) => {
+    const sandbox = sinon.createSandbox();
+    const cancelAnimationFrameStub = sandbox.stub(animationFrameProvider, 'cancelAnimationFrame').callThrough();
+
+    let a: Subscription;
+    let b: Subscription;
+    let c: Subscription;
+
+    a = animationFrameScheduler.schedule(() => {
+      expect(animationFrameScheduler.actions).to.have.length(1);
+      c = animationFrameScheduler.schedule(() => {
+        done(new Error('Unexpected execution of c'));
+      });
+      expect(animationFrameScheduler.actions).to.have.length(2);
+      // What we're testing here is that the unsubscription of action c effects
+      // the cancellation of the animation frame in a scenario in which the
+      // actions queue is not empty - it contains action b.
+      c.unsubscribe();
+      expect(animationFrameScheduler.actions).to.have.length(1);
+      expect(cancelAnimationFrameStub).to.have.callCount(1);
+    });
+    b = animationFrameScheduler.schedule(() => {
+      sandbox.restore();
+      done();
+    });
   });
 });
