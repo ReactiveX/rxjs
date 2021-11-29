@@ -252,8 +252,8 @@ export const ajax: AjaxCreationMethod = (() => {
     const config: AjaxConfig =
       typeof urlOrConfig === 'string'
         ? {
-            url: urlOrConfig,
-          }
+          url: urlOrConfig,
+        }
         : urlOrConfig;
     return fromAjax<T>(config);
   };
@@ -276,13 +276,10 @@ const LOAD = 'load';
 
 export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
   return new Observable((destination) => {
-    // Here we're pulling off each of the configuration arguments
-    // that we don't want to add to the request information we're
-    // passing around.
-    const configWithDefaults = {
+    const requestConfig = {
       // Default values
       async: true,
-      crossDomain: true,
+      crossDomain: false,
       withCredentials: false,
       method: 'GET',
       timeout: 0,
@@ -290,11 +287,22 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
 
       // Override with passed user values
       ...config,
-    };
+    } as const;
 
-    const { queryParams, body: configuredBody, headers: configuredHeaders, ...remainingConfig } = configWithDefaults;
+    // Here we're pulling off each of the configuration arguments
+    // that we don't want to add to the request information we're
+    // passing around.
+    let {
+      url,
+      queryParams,
+      body: configuredBody,
+      headers: configuredHeaders,
+      withCredentials,
+      xsrfCookieName,
+      xsrfHeaderName,
+      crossDomain,
+    } = requestConfig;
 
-    let { url } = remainingConfig;
     if (!url) {
       throw new TypeError('url is required');
     }
@@ -347,14 +355,13 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     // None of this is necessary, it's only being set because it's "the thing libraries do"
     // Starting back as far as JQuery, and continuing with other libraries such as Angular 1,
     // Axios, et al.
-    if (!configWithDefaults.crossDomain && !('x-requested-with' in headers)) {
+    if (!crossDomain && !('x-requested-with' in headers)) {
       headers['x-requested-with'] = 'XMLHttpRequest';
     }
 
     // Allow users to provide their XSRF cookie name and the name of a custom header to use to
     // send the cookie.
-    const { withCredentials, xsrfCookieName, xsrfHeaderName } = remainingConfig;
-    if ((withCredentials || !remainingConfig.crossDomain) && xsrfCookieName && xsrfHeaderName) {
+    if ((withCredentials || !crossDomain) && xsrfCookieName && xsrfHeaderName) {
       const xsrfCookie = document?.cookie.match(new RegExp(`(^|;\\s*)(${xsrfCookieName})=([^;]*)`))?.pop() ?? '';
       if (xsrfCookie) {
         headers[xsrfHeaderName] = xsrfCookie;
@@ -367,7 +374,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
 
     const _request: AjaxRequest = {
       // Take the final configuration
-      ...configWithDefaults,
+      ...requestConfig,
 
       // Set values we ensured above
       url,

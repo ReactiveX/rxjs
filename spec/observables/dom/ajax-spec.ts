@@ -103,6 +103,7 @@ describe('ajax', () => {
       'content-type': 'kenny/loggins',
       'fly-into-the': 'Dangah Zone!',
       'take-a-ride-into-the': 'Danger ZoooOoone!',
+      'x-requested-with': 'XMLHttpRequest',
     });
     // Did not mutate the headers passed
     expect(obj.headers).to.deep.equal({
@@ -128,7 +129,7 @@ describe('ajax', () => {
         url: '/some/path',
         xsrfCookieName: 'foo',
         xsrfHeaderName: 'Custom-Header-Name',
-        crossDomain: false,
+        crossDomain: false, // this is the default anyway
       };
 
       ajax(obj).subscribe();
@@ -611,7 +612,9 @@ describe('ajax', () => {
 
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
       expect(MockXMLHttpRequest.mostRecent.data).to.equal(body);
-      expect(MockXMLHttpRequest.mostRecent.requestHeaders).to.deep.equal({});
+      expect(MockXMLHttpRequest.mostRecent.requestHeaders).to.deep.equal({
+        'x-requested-with': 'XMLHttpRequest',
+      });
     });
 
     it('should send the URLSearchParams straight through to the body', () => {
@@ -808,6 +811,7 @@ describe('ajax', () => {
       expect(request.url).to.equal('/flibbertyJibbet');
       expect(request.requestHeaders).to.deep.equal({
         'content-type': 'application/json;charset=utf-8',
+        'x-requested-with': 'XMLHttpRequest',
       });
 
       request.respondWith({
@@ -838,7 +842,9 @@ describe('ajax', () => {
 
       expect(request.method).to.equal('POST');
       expect(request.url).to.equal('/flibbertyJibbet');
-      expect(request.requestHeaders).to.deep.equal({});
+      expect(request.requestHeaders).to.deep.equal({
+        'x-requested-with': 'XMLHttpRequest',
+      });
 
       request.respondWith({
         status: 204,
@@ -928,7 +934,8 @@ describe('ajax', () => {
       expect(request.method).to.equal('PATCH');
       expect(request.url).to.equal('/flibbertyJibbet');
       expect(request.requestHeaders).to.deep.equal({
-        'content-type': 'application/json;charset=utf-8',
+        'content-type': 'application/json;charset=utf-8',        
+        'x-requested-with': 'XMLHttpRequest',
       });
 
       request.respondWith({
@@ -1041,7 +1048,9 @@ describe('ajax', () => {
         async: true,
         body: undefined,
         crossDomain: true,
-        headers: {},
+        headers: {
+          'x-requested-with': 'XMLHttpRequest',
+        },
         includeDownloadProgress: true,
         method: 'GET',
         responseType: 'json',
@@ -1166,7 +1175,7 @@ describe('ajax', () => {
       const request = {
         async: true,
         body: undefined,
-        crossDomain: true,
+        crossDomain: false,
         headers: {},
         includeUploadProgress: true,
         includeDownloadProgress: true,
