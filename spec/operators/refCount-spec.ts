@@ -1,33 +1,33 @@
+/** @prettier */
 import { expect } from 'chai';
-import { cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { refCount, publish, publishReplay, first, multicast, take } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
+import { refCount, publish, publishReplay, first } from 'rxjs/operators';
 import { NEVER, noop, Observable, Subject } from 'rxjs';
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {refCount} */
 describe('refCount', () => {
-  it('should turn a multicasted Observable an automatically ' +
-  '(dis)connecting hot one', () => {
-    const source = cold('--1-2---3-4--5-|');
-    const sourceSubs =  '^              !';
-    const expected =    '--1-2---3-4--5-|';
+  it('should turn a multicasted Observable an automatically (dis)connecting hot one', () => {
+    const testScheduler = new TestScheduler(observableMatcher);
 
-    const result = source.pipe(
-      publish(),
-      refCount()
-    );
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold(' --1-2---3-4--5-|');
+      const e1Subs = '  ^--------------!';
+      const expected = '--1-2---3-4--5-|';
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      const result = e1.pipe(publish(), refCount());
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1Subs);
+    });
   });
 
   it('should count references', () => {
     const connectable = NEVER.pipe(publish());
-    const refCounted = connectable.pipe(
-      refCount()
-    );
+    const refCounted = connectable.pipe(refCount());
 
     const sub1 = refCounted.subscribe({
-      next: noop
+      next: noop,
     });
     const sub2 = refCounted.subscribe({
       next: noop,
@@ -45,7 +45,7 @@ describe('refCount', () => {
 
   it('should unsub from the source when all other subscriptions are unsubbed', (done) => {
     let unsubscribeCalled = false;
-    const connectable = new Observable<boolean>(observer => {
+    const connectable = new Observable<boolean>((observer) => {
       observer.next(true);
       return () => {
         unsubscribeCalled = true;
@@ -60,7 +60,7 @@ describe('refCount', () => {
     const sub2 = refCounted.subscribe(() => {
       //noop
     });
-    const sub3 = refCounted.subscribe((x: any) => {
+    const sub3 = refCounted.subscribe(() => {
       expect((connectable as any)._refCount).to.equal(1);
     });
 
@@ -73,10 +73,9 @@ describe('refCount', () => {
     done();
   });
 
-  it('should not unsubscribe when a subscriber synchronously unsubscribes if ' +
-  'other subscribers are present', () => {
+  it('should not unsubscribe when a subscriber synchronously unsubscribes if other subscribers are present', () => {
     let unsubscribeCalled = false;
-    const connectable = new Observable<boolean>(observer => {
+    const connectable = new Observable<boolean>((observer) => {
       observer.next(true);
       return () => {
         unsubscribeCalled = true;
@@ -92,9 +91,7 @@ describe('refCount', () => {
     expect(unsubscribeCalled).to.be.false;
   });
 
-  it('should not unsubscribe when a subscriber synchronously unsubscribes if ' +
-  'other subscribers are present and the source is a Subject', () => {
-
+  it('should not unsubscribe when a subscriber synchronously unsubscribes if other subscribers are present and the source is a Subject', () => {
     const arr: string[] = [];
     const subject = new Subject<string>();
     const connectable = subject.pipe(publishReplay(1));
