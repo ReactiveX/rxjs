@@ -1,6 +1,6 @@
 {
   "name": "rxjs",
-  "version": "7.3.0",
+  "version": "7.4.0",
   "description": "Reactive Extensions for modern JavaScript",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm5/index.js",
@@ -17,30 +17,37 @@
   "exports": {
     ".": {
       "node": "./dist/cjs/index.js",
+      "es2015": "./dist/esm/index.js",
       "default": "./dist/esm5/index.js"
     },
     "./ajax": {
       "node": "./dist/cjs/ajax/index.js",
+      "es2015": "./dist/esm/ajax/index.js",
       "default": "./dist/esm5/ajax/index.js"
     },
     "./fetch": {
       "node": "./dist/cjs/fetch/index.js",
+      "es2015": "./dist/esm/fetch/index.js",
       "default": "./dist/esm5/fetch/index.js"
     },
     "./operators": {
       "node": "./dist/cjs/operators/index.js",
+      "es2015": "./dist/esm/operators/index.js",
       "default": "./dist/esm5/operators/index.js"
     },
     "./testing": {
       "node": "./dist/cjs/testing/index.js",
+      "es2015": "./dist/esm/testing/index.js",
       "default": "./dist/esm5/testing/index.js"
     },
     "./webSocket": {
       "node": "./dist/cjs/webSocket/index.js",
+      "es2015": "./dist/esm/webSocket/index.js",
       "default": "./dist/esm5/webSocket/index.js"
     },
     "./internal/*": {
       "node": "./dist/cjs/internal/*.js",
+      "es2015": "./dist/esm/internal/*.js",
       "default": "./dist/esm5/internal/*.js"
     },
     "./package.json": "./package.json"
@@ -194,7 +201,7 @@
     "tslint-no-toplevel-property-access": "0.0.2",
     "tslint-no-unused-expression-chai": "0.0.3",
     "typedoc": "^0.17.8",
-    "typescript": "~4.2.2",
+    "typescript": "^4.3.2",
     "validate-commit-msg": "2.14.0",
     "web-streams-polyfill": "^3.0.2",
     "webpack": "^4.31.0"

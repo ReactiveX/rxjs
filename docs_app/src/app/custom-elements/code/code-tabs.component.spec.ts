@@ -7,6 +7,23 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CodeTabsComponent } from './code-tabs.component';
 import { CodeTabsModule } from './code-tabs.module';
 
+@Component({
+  selector: 'aio-host-comp',
+  template: `
+    <code-tabs linenums="default-linenums">
+      <code-pane class="class-A" language="language-A" linenums="linenums-A" path="path-A" region="region-A" header="header-A">
+        Code example 1
+      </code-pane>
+      <code-pane class="class-B" language="language-B" path="path-B" region="region-B" header="header-B">
+        Code example 2
+      </code-pane>
+    </code-tabs>
+  `,
+})
+class HostComponent {
+  @ViewChild(CodeTabsComponent, { static: true }) codeTabsComponent: CodeTabsComponent;
+}
+
 describe('CodeTabsComponent', () => {
   let fixture: ComponentFixture<HostComponent>;
   let hostComponent: HostComponent;
@@ -14,12 +31,10 @@ describe('CodeTabsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ HostComponent ],
-      imports: [ CodeTabsModule, NoopAnimationsModule ],
-      schemas: [ NO_ERRORS_SCHEMA ],
-      providers: [
-       { provide: Logger, useClass: MockLogger },
-      ]
+      declarations: [HostComponent],
+      imports: [CodeTabsModule, NoopAnimationsModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [{ provide: Logger, useClass: MockLogger }],
     });
 
     fixture = TestBed.createComponent(HostComponent);
@@ -68,29 +83,3 @@ describe('CodeTabsComponent', () => {
     expect(codeContent.indexOf('Code example 1') !== -1).toBeTruthy();
   });
 });
-
-@Component({
-  selector: 'aio-host-comp',
-  template: `
-    <code-tabs linenums="default-linenums">
-      <code-pane class="class-A"
-                 language="language-A"
-                 linenums="linenums-A"
-                 path="path-A"
-                 region="region-A"
-                 header="header-A">
-        Code example 1
-      </code-pane>
-      <code-pane class="class-B"
-                 language="language-B"
-                 path="path-B"
-                 region="region-B"
-                 header="header-B">
-        Code example 2
-      </code-pane>
-    </code-tabs>
-  `
-})
-class HostComponent {
-  @ViewChild(CodeTabsComponent, {static: true}) codeTabsComponent: CodeTabsComponent;
-}

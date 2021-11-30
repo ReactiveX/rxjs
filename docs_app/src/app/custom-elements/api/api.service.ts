@@ -59,7 +59,7 @@ export class ApiService implements OnDestroy {
   constructor(private http: HttpClient, private logger: Logger) { }
 
   ngOnDestroy() {
-    this.onDestroy.next();
+    this.onDestroy.next(null);
   }
 
  /**

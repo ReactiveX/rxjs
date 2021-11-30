@@ -1,3 +1,19 @@
+# [7.4.0](https://github.com/reactivex/rxjs/compare/7.3.1...7.4.0) (2021-10-06)
+
+### Features
+
+- Add es2015 entries to the exports declaration to support Angular ([#6614](https://github.com/reactivex/rxjs/issues/6614)) ([268777b](https://github.com/reactivex/rxjs/commit/268777bc3a4fd0cf76882683b51809771741ddc3)), closes [/github.com/ReactiveX/rxjs/pull/6613#discussion_r716958551](https://github.com//github.com/ReactiveX/rxjs/pull/6613/issues/discussion_r716958551)
+
+## [7.3.1](https://github.com/reactivex/rxjs/compare/7.3.0...7.3.1) (2021-10-01)
+
+### Bug Fixes
+
+- **Schedulers:** Throwing a falsy error in a scheduled function no longer results in strange error objects. ([#6594](https://github.com/reactivex/rxjs/issues/6594)) ([c70fcc0](https://github.com/reactivex/rxjs/commit/c70fcc02b4b737709aba559bf36b030a47902ee4))
+- scheduling with Rx-provided schedulers will no longer leak action references ([#6562](https://github.com/reactivex/rxjs/issues/6562)) ([ff5a748](https://github.com/reactivex/rxjs/commit/ff5a748b31ee73a6517e2f4220c920c73fbdd1fc)), closes [#6561](https://github.com/reactivex/rxjs/issues/6561)
+- **forkJoin:** now finalizes sources before emitting ([#6546](https://github.com/reactivex/rxjs/issues/6546)) ([c52ff2e](https://github.com/reactivex/rxjs/commit/c52ff2e3aae19cd0877adb63182c03b79427de96)), closes [#4914](https://github.com/reactivex/rxjs/issues/4914)
+- **observeOn:** release action references on teardown ([321d205](https://github.com/reactivex/rxjs/commit/321d2052696a7c366786c1ef3be7ad2a98a55f62))
+- **types:** update schedule signature overload ([c61e57c](https://github.com/reactivex/rxjs/commit/c61e57c9c64a1525d034aea641f1b846737e1eee))
+
 # [7.3.0](https://github.com/reactivex/rxjs/compare/7.2.0...7.3.0) (2021-07-28)
 
 ### Bug Fixes

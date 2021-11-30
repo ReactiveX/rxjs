@@ -105,7 +105,7 @@ To explain how operators work, textual descriptions are often not enough. Many o
 
 Below you can see the anatomy of a marble diagram.
 
-<img src="../../assets/images/guide/marble-diagram-anatomy.svg">
+<img src="assets/images/guide/marble-diagram-anatomy.svg">
 
 Throughout this documentation site, we extensively use marble diagrams to explain how operators work. They may be really useful in other contexts too, like on a whiteboard or even in our unit tests (as ASCII diagrams).
 
@@ -320,7 +320,7 @@ function delay<T>(delayInMillis: number) {
         },
         complete() {
           hasCompleted = true;
-          // If we still have timers running, we don't want to yet.
+          // If we still have timers running, we don't want to complete yet.
           if (allTimerIDs.size === 0) {
             subscriber.complete();
           }

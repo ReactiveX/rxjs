@@ -640,7 +640,7 @@ describe('Observable', () => {
   });
 
   // Discussion here: https://github.com/ReactiveX/rxjs/issues/5370
-  it('should handle sync errors within a test scheduler', () => {
+  it.skip('should handle sync errors within a test scheduler', () => {
     const observable = of(4).pipe(
       map(n => {
           if (n === 4) {
