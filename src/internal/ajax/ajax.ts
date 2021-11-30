@@ -252,8 +252,8 @@ export const ajax: AjaxCreationMethod = (() => {
     const config: AjaxConfig =
       typeof urlOrConfig === 'string'
         ? {
-          url: urlOrConfig,
-        }
+            url: urlOrConfig,
+          }
         : urlOrConfig;
     return fromAjax<T>(config);
   };
@@ -289,11 +289,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       ...config,
     } as const;
 
-    // Here we're pulling off each of the configuration arguments
-    // that we don't want to add to the request information we're
-    // passing around.
-    let {
-      url,
+    const {
       queryParams,
       body: configuredBody,
       headers: configuredHeaders,
@@ -302,6 +298,8 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       xsrfHeaderName,
       crossDomain,
     } = requestConfig;
+
+    let url = requestConfig.url;
 
     if (!url) {
       throw new TypeError('url is required');
