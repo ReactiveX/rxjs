@@ -1,14 +1,11 @@
-import { expect } from 'chai';
-
 import {
   NodeEventEmitterNameDataPair,
   NodeEventEmitterDataType,
   NodeEventEmitterDataTypeUnknown,
-  NamedNodeEventEmitter,
   AnyToUnknown,
 } from '../../src/internal/util/NodeEventEmitterDataType';
 
-describe('NodeEventEmitterDataType smoke testing', () => {
+it('NodeEventEmitterDataType smoke testing', () => {
   const fooEvent = 'fooEvent';
   const barEvent = 'barEvent';
 
@@ -37,60 +34,46 @@ describe('NodeEventEmitterDataType smoke testing', () => {
   }
 
   it('should get emitter name & data types correctly', () => {
-    const foo: NodeEventEmitterDataType<NodeEventEmitterFixture, 'foo'> = fooEvent;
-    const bar: NodeEventEmitterDataType<NodeEventEmitterFixture, 'bar'> = barEvent;
-
-    expect(foo).to.be.ok;
-    expect(bar).to.be.ok;
-  });
-
-  it('should extendable', () => {
-    const emitterTypeTest: NodeEventEmitterFixture extends NamedNodeEventEmitter<'foo'> ? true : never = true;
-    expect(emitterTypeTest).to.be.ok;
+    // $ExpectType "fooEvent"
+    type Foo = NodeEventEmitterDataType<NodeEventEmitterFixture, 'foo'>;
+    // $ExpectType "barEvent"
+    type Bar = NodeEventEmitterDataType<NodeEventEmitterFixture, 'bar'>;
   });
 
   it('should get name & data from NodeEventEmitterNameDataPair', () => {
     // type EVENT_PAIR = TypeEventPair<NodeEventEmitterTest['addListener']>
     type EVENT_PAIR = NodeEventEmitterNameDataPair<NodeEventEmitterFixture>;
+
+    // $ExpectType "foo" | "bar"
     type EVENT_NAME = EVENT_PAIR[0];
+    // $ExpecTType  FOO_DATA | BAR_DATA
     type EVENT_DATA = EVENT_PAIR[1];
-
-    const nameTypeTest: EVENT_NAME extends 'foo' | 'bar'        ? true : never = true;
-    const dataTypeTest: EVENT_DATA extends FOO_DATA | BAR_DATA  ? true : never = true;
-
-    expect(nameTypeTest).to.be.ok;
-    expect(dataTypeTest).to.be.ok;
   });
 
   it('should get `unknown` for `process` events by NodeEventEmitterDataTypeUnknown', () => {
-    let exit: NodeEventEmitterDataTypeUnknown<
+    // $ExpectType unknown
+    type Exit = NodeEventEmitterDataTypeUnknown<
       Pick<
         typeof process,
         'addListener' | 'removeListener'
       >,
       'exit'
     >;
-    exit = true;
-    exit = 42;
-    exit = 'unknown';
-
-    expect(exit).to.be.ok;
   });
 
   it('should get `never` for `process` events by NodeEventEmitterDataType', () => {
-    const exit: NodeEventEmitterDataType<
+    // $ExpectType never
+    type Exit = NodeEventEmitterDataType<
       Pick<
         typeof process,
         'addListener' | 'removeListener'
       >,
       'exit'
-    > extends never ? true : never = true;
-
-    expect(exit).to.be.ok;
+    >
   });
 });
 
-describe('AnyToUnknown smoke testing', () => {
+it('AnyToUnknown smoke testing', () => {
   it('should only convert any to unknown', () => {
     type T_ANY       = AnyToUnknown<any>
     type T_UNKNOWN   = AnyToUnknown<unknown>
@@ -103,13 +86,11 @@ describe('AnyToUnknown smoke testing', () => {
     type T_VOID      = AnyToUnknown<void>
     type T_NEVER     = AnyToUnknown<never>
 
+    // $ExpectType unknown
     type UNKNOWN_TYPE = T_ANY & T_UNKNOWN
+
     type KNOWN_TYPE = T_VOID | T_BOOLEAN | T_STRING | T_UNDEFINED | T_NULL | T_OBJ | T_NEVER
-
-    const unknownTypeTest: unknown extends UNKNOWN_TYPE ? true : never = true;
-    const knownTypeTest: unknown extends KNOWN_TYPE ? never : true     = true;
-
-    expect(unknownTypeTest).to.be.true;
-    expect(knownTypeTest).to.be.true;
+    // $ExpectType true
+    type T = unknown extends KNOWN_TYPE ? never : true
   });
 });

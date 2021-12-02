@@ -1,19 +1,3 @@
-/**
- * Issue #6669 - fix(fromEvent): infer from Node.js EventEmitter with types
- *  @see https://github.com/ReactiveX/rxjs/pull/6669
- *
- *  Author: Huan <https://github.com/huan>
- *  Date: Nov 7, 2021
- *
- * TypeScript has design limitation that prevents us from inferring from the overload functins:
- *  > ReturnType or the use of infer in a function parameter or return position does handle overloads.
- *    the last overload is used for inference as it is assumed to be the most general.
- *    - @mhegazy @link https://github.com/Microsoft/TypeScript/issues/24275#issuecomment-390701982
- *
- * This file is created by @huan and it was inspired from the brilliant work from @Aidin on StackOverflow:
- *  @link https://stackoverflow.com/a/60822641/1123955
- */
-
 /* eslint-disable no-use-before-define */
 /* eslint-disable max-len */
 

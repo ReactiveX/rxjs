@@ -433,33 +433,4 @@ describe('fromEvent', () => {
     expect(nodeList[1]._removeEventListenerArgs).to.deep.equal(nodeList[1]._addEventListenerArgs);
   });
 
-  /**
-   * Huan(202111): Correct typing inference for Node.js EventEmitter as `number`
-   *  @see https://github.com/ReactiveX/rxjs/pull/6669
-   */
-  it('should successful inference the first argument from the listener of Node.js EventEmitter', (done) => {
-    class NodeEventeEmitterTest {
-      addListener(eventName: 'foo', listener: (foo: false) => void): this
-      addListener(eventName: 'bar', listener: (bar: boolean) => void): this
-      addListener(eventName: 'foo' | 'bar', listener: ((foo: false) => void) | ((bar: boolean) => void)): this  { return this; }
-
-      removeListener(eventName: 'foo', listener: (foo: false) => void ): this
-      removeListener(eventName: 'bar', listener: (bar: boolean) => void ): this
-      removeListener(eventName: 'foo' | 'bar', listener: ((foo: false) => void) | ((bar: boolean) => void)): this  { return this; }
-    }
-
-    const test = new NodeEventeEmitterTest();
-
-    expect(() => {
-      const foo$ = fromEvent(test, 'foo');
-      const fooTypeTest: typeof foo$ extends Observable<false> ? true : never = true;
-      expect(fooTypeTest).to.be.true;
-
-      const bar$ = fromEvent(test, 'bar');
-      const barTypeTest: typeof bar$ extends Observable<boolean> ? true : never = true;
-      expect(barTypeTest).to.be.true;
-
-      done();
-    }).to.not.throw(TypeError);
-  });
 });

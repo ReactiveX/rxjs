@@ -101,3 +101,24 @@ it('should support a jQuery-style source', () => {
 it('should support a jQuery-style source result selector', () => {
   const a = fromEvent(jQueryStyleSource, "something", () => "something else"); // $ExpectType Observable<string>
 });
+
+/**
+ * Huan(202111): Correct typing inference for Node.js EventEmitter as `number`
+ *  @see https://github.com/ReactiveX/rxjs/pull/6669
+ */
+it('should successful inference the first argument from the listener of Node.js EventEmitter', (done) => {
+  class NodeEventeEmitterTest {
+    addListener(eventName: 'foo', listener: (foo: false) => void): this
+    addListener(eventName: 'bar', listener: (bar: boolean) => void): this
+    addListener(eventName: 'foo' | 'bar', listener: ((foo: false) => void) | ((bar: boolean) => void)): this  { return this; }
+
+    removeListener(eventName: 'foo', listener: (foo: false) => void ): this
+    removeListener(eventName: 'bar', listener: (bar: boolean) => void ): this
+    removeListener(eventName: 'foo' | 'bar', listener: ((foo: false) => void) | ((bar: boolean) => void)): this  { return this; }
+  }
+
+  const test = new NodeEventeEmitterTest();
+
+  const foo$ = fromEvent(test, 'foo');  // $ExpectType Observable<false>
+  const bar$ = fromEvent(test, 'bar');  // $ExpectType Observable<boolean>
+});
