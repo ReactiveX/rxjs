@@ -37,8 +37,7 @@ export function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, sch
  * Fallback to a faster observable
  *
  * ```ts
- * import { interval } from 'rxjs';
- * import { timeoutWith } from 'rxjs/operators';
+ * import { interval, timeoutWith } from 'rxjs';
  *
  * const slow$ = interval(1000);
  * const faster$ = interval(500);
@@ -54,8 +53,7 @@ export function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, sch
  * Emit your own custom timeout error
  *
  * ```ts
- * import { interval, throwError } from 'rxjs';
- * import { timeoutWith } from 'rxjs/operators';
+ * import { interval, timeoutWith, throwError } from 'rxjs';
  *
  * class CustomTimeoutError extends Error {
  *   constructor() {

@@ -36,8 +36,7 @@ import { operate } from '../util/lift';
  * If we instead use the `subscribeOn` operator declaring that we want to use the {@link asyncScheduler} for values emited by Observable `a`:
  *
  * ```ts
- * import { of, merge, asyncScheduler } from 'rxjs';
- * import { subscribeOn } from 'rxjs/operators';
+ * import { of, subscribeOn, asyncScheduler, merge } from 'rxjs';
  *
  * const a = of(1, 2, 3).pipe(subscribeOn(asyncScheduler));
  * const b = of(4, 5, 6);

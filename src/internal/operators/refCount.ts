@@ -27,8 +27,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * until you call its connect function.
  *
  * ```ts
- * import { interval } from 'rxjs';
- * import { tap, publish, refCount } from 'rxjs/operators';
+ * import { interval, tap, publish, refCount } from 'rxjs';
  *
  * // Turn the interval observable into a ConnectableObservable (hot)
  * const refCountInterval = interval(400).pipe(

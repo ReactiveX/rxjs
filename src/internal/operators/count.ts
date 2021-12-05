@@ -22,8 +22,7 @@ import { reduce } from './reduce';
  *
  * Counts how many seconds have passed before the first click happened
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { count, takeUntil } from 'rxjs/operators';
+ * import { interval, fromEvent, takeUntil, count } from 'rxjs';
  *
  * const seconds = interval(1000);
  * const clicks = fromEvent(document, 'click');
@@ -34,8 +33,7 @@ import { reduce } from './reduce';
  *
  * Counts how many odd numbers are there between 1 and 7
  * ```ts
- * import { range } from 'rxjs';
- * import { count } from 'rxjs/operators';
+ * import { range, count } from 'rxjs';
  *
  * const numbers = range(1, 7);
  * const result = numbers.pipe(count(i => i % 2 === 1));

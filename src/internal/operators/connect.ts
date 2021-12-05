@@ -48,8 +48,7 @@ const DEFAULT_CONFIG: ConnectConfig<unknown> = {
  * Sharing a totally synchronous observable
  *
  * ```ts
- * import { defer, merge, of } from 'rxjs';
- * import { tap, connect, filter, map } from 'rxjs/operators';
+ * import { defer, of, tap, connect, merge, map, filter } from 'rxjs';
  *
  * const source$ = defer(() => {
  *  console.log('subscription started');

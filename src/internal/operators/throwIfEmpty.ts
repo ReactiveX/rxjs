@@ -12,8 +12,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * ## Example
  * ```ts
- * import { fromEvent, timer } from 'rxjs';
- * import { throwIfEmpty, takeUntil } from 'rxjs/operators';
+ * import { fromEvent, takeUntil, timer, throwIfEmpty } from 'rxjs';
  *
  * const click$ = fromEvent(document, 'click');
  *

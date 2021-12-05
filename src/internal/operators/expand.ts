@@ -43,8 +43,7 @@ export function expand<T, O extends ObservableInput<unknown>>(
  * ## Example
  * Start emitting the powers of two on every click, at most 10 of them
  * ```ts
- * import { fromEvent, of } from 'rxjs';
- * import { expand, mapTo, delay, take } from 'rxjs/operators';
+ * import { fromEvent, mapTo, expand, of, delay, take } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const powersOfTwo = clicks.pipe(

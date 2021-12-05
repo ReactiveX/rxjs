@@ -17,8 +17,7 @@ import { combineLatest } from './combineLatest';
  * Simple calculation from two inputs.
  *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { map, combineLatestWith } from 'rxjs/operators';
+ * import { fromEvent, combineLatestWith, map } from 'rxjs';
  *
  * // Setup: Add two inputs to the page
  * const input1 = document.createElement('input');

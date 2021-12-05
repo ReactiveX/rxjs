@@ -17,8 +17,7 @@ const arrReducer = (arr: any[], value: any) => (arr.push(value), arr);
  *
  *  ## Example
  * ```ts
- * import { interval } from 'rxjs';
- * import { toArray, take } from 'rxjs/operators';
+ * import { interval, take, toArray } from 'rxjs';
  *
  * const source = interval(1000);
  * const example = source.pipe(

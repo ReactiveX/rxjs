@@ -22,8 +22,7 @@ import { timer } from './timer';
  * ## Example
  * Emits ascending numbers, one every second (1000ms) up to the number 3
  * ```ts
- * import { interval } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * import { interval, take } from 'rxjs';
  *
  * const numbers = interval(1000);
  *

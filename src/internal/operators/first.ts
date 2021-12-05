@@ -40,8 +40,7 @@ export function first<T, D = T>(
  * ## Examples
  * Emit only the first click that happens on the DOM
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { first } from 'rxjs/operators';
+ * import { fromEvent, first } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(first());
@@ -50,8 +49,7 @@ export function first<T, D = T>(
  *
  * Emits the first click that happens on a DIV
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { first } from 'rxjs/operators';
+ * import { fromEvent, first } from 'rxjs';
  *
  * const div = document.createElement('div');
  * div.style.cssText = 'width: 200px; height: 200px; background: #09c;';

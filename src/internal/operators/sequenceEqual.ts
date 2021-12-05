@@ -23,8 +23,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ## Example
  * figure out if the Konami code matches
  * ```ts
- * import { from, fromEvent } from 'rxjs';
- * import { sequenceEqual, bufferCount, mergeMap, map } from 'rxjs/operators';
+ * import { from, fromEvent, map, bufferCount, mergeMap, sequenceEqual } from 'rxjs';
  *
  * const codes = from([
  *   'ArrowUp',

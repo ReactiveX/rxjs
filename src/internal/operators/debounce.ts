@@ -35,8 +35,7 @@ import { innerFrom } from '../observable/innerFrom';
  * ## Example
  * Emit the most recent click after a burst of clicks
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { scan, debounce } from 'rxjs/operators';
+ * import { fromEvent, scan, debounce, interval } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(

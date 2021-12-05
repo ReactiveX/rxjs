@@ -34,8 +34,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ## Example
  * Emit the most recent click after a burst of clicks
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { debounceTime } from 'rxjs/operators';
+ * import { fromEvent, debounceTime } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(debounceTime(1000));

@@ -31,8 +31,7 @@ export function catchError<T, O extends ObservableInput<any>>(
  * Continues with a different Observable when there's an error
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { map, catchError } from 'rxjs/operators';
+ * import { of, map, catchError } from 'rxjs';
  *
  * of(1, 2, 3, 4, 5).pipe(
  *     map(n => {
@@ -50,8 +49,7 @@ export function catchError<T, O extends ObservableInput<any>>(
  * Retries the caught source Observable again in case of error, similar to retry() operator
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { map, catchError, take } from 'rxjs/operators';
+ * import { of, map, catchError, take } from 'rxjs';
  *
  * of(1, 2, 3, 4, 5).pipe(
  *     map(n => {
@@ -70,8 +68,7 @@ export function catchError<T, O extends ObservableInput<any>>(
  * Throws a new error when the source Observable throws an error
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { map, catchError } from 'rxjs/operators';
+ * import { of, map, catchError } from 'rxjs';
  *
  * of(1, 2, 3, 4, 5).pipe(
  *     map(n => {

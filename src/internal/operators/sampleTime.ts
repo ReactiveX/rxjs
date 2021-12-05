@@ -22,8 +22,7 @@ import { interval } from '../observable/interval';
  * ## Example
  * Every second, emit the most recent click at most once
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { sampleTime } from 'rxjs/operators';
+ * import { fromEvent, sampleTime } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(sampleTime(1000));

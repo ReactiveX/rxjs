@@ -11,8 +11,7 @@ import { isFunction } from '../util/isFunction';
  * ## Examples
  * Get the minimal value of a series of numbers
  * ```ts
- * import { of } from 'rxjs';
- * import { min } from 'rxjs/operators';
+ * import { of, min } from 'rxjs';
  *
  * of(5, 4, 7, 2, 8).pipe(
  *   min(),
@@ -22,8 +21,7 @@ import { isFunction } from '../util/isFunction';
  *
  * Use a comparer function to get the minimal item
  * ```typescript
- * import { of } from 'rxjs';
- * import { min } from 'rxjs/operators';
+ * import { of, min } from 'rxjs';
  *
  * interface Person {
  *   age: number,

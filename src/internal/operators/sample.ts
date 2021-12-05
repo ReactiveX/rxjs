@@ -22,8 +22,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ## Example
  * On every click, sample the most recent "seconds" timer
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { sample } from 'rxjs/operators';
+ * import { fromEvent, interval, sample } from 'rxjs';
  *
  * const seconds = interval(1000);
  * const clicks = fromEvent(document, 'click');

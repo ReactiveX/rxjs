@@ -27,8 +27,7 @@ import { arrRemove } from '../util/arrRemove';
  * ## Example
  * Every other second, emit the click events from the next 500ms
  * ```ts
- * import { fromEvent, interval, EMPTY } from 'rxjs';
- * import { windowToggle, mergeAll } from 'rxjs/operators';
+ * import { fromEvent, interval, windowToggle, EMPTY, mergeAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const openings = interval(1000);

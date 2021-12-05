@@ -18,8 +18,7 @@ import { UnaryFunction } from '../types';
  * ## Example
  *
  * ```ts
- * import { interval } from 'rxjs';
- * import { publishLast, tap, take } from 'rxjs/operators';
+ * import { interval, publishLast, tap, take } from 'rxjs';
  *
  * const connectable =
  *   interval(1000)

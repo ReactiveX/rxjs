@@ -17,8 +17,7 @@ import { noop } from '../util/noop';
  *
  * ## Examples
  * ```ts
- * import { of } from 'rxjs';
- * import { ignoreElements } from 'rxjs/operators';
+ * import { of, ignoreElements } from 'rxjs';
  *
  * of('you', 'talking', 'to', 'me').pipe(
  *   ignoreElements(),

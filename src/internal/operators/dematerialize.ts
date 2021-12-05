@@ -25,8 +25,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * Convert an Observable of Notifications to an actual Observable
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { dematerialize } from 'rxjs/operators';
+ * import { of, dematerialize } from 'rxjs';
  *
  * const notifA = { kind: 'N', value: 'A' };
  * const notifB = { kind: 'N', value: 'B' };

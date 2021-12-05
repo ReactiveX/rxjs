@@ -49,8 +49,7 @@ export function tap<T>(
  * was, so we have added a `tap(console.log)`.
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { tap, map } from 'rxjs/operators';
+ * import { of, tap, map } from 'rxjs';
  *
  * of(Math.random()).pipe(
  *   tap(console.log),
@@ -64,8 +63,7 @@ export function tap<T>(
  * using `tap`.
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { tap } from 'rxjs/operators';
+ * import { of, tap } from 'rxjs';
  *
  * const source = of(1, 2, 3, 4, 5)
  *
@@ -86,9 +84,7 @@ export function tap<T>(
  * we have added a `tap` with the side-effect of logging to console.
  *
  * ```ts
- * import { of, interval } from 'rxjs';
- * import { tap, map, concatMap, take } from 'rxjs/operators';
- *
+ * import { of, concatMap, interval, take, map, tap } from 'rxjs';
  *
  * of(1, 2, 3).pipe(
  *  concatMap(n => interval(1000).pipe(

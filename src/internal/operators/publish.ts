@@ -45,8 +45,7 @@ export function publish<T, O extends ObservableInput<any>>(selector: (shared: Ob
  * Make source$ hot by applying publish operator, then merge each inner observable into a single one
  * and subscribe.
  * ```ts
- * import { of, zip, interval, merge } from "rxjs";
- * import { map, publish, tap } from "rxjs/operators";
+ * import { zip, interval, of, map, publish, merge, tap } from 'rxjs';
  *
  * const source$ = zip(interval(2000), of(1, 2, 3, 4, 5, 6, 7, 8, 9)).pipe(
  *   map(values => values[1])

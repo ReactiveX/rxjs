@@ -23,8 +23,7 @@ import { identity } from '../util/identity';
  * click, cancel the previous interval and subscribe to the new one.
  *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { switchAll, map, tap } from 'rxjs/operators';
+ * import { fromEvent, tap, map, interval, switchAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click').pipe(tap(() => console.log('click')));
  * const source = clicks.pipe(map((ev) => interval(1000)));

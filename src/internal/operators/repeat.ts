@@ -19,8 +19,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ## Example
  * Repeat a message stream
  * ```ts
- * import { of } from 'rxjs';
- * import { repeat } from 'rxjs/operators';
+ * import { of, repeat } from 'rxjs';
  *
  * const source = of('Repeat message');
  * const example = source.pipe(repeat(3));
@@ -34,8 +33,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * Repeat 3 values, 2 times
  * ```ts
- * import { interval } from 'rxjs';
- * import { repeat, take } from 'rxjs/operators';
+ * import { interval, take, repeat } from 'rxjs';
  *
  * const source = interval(1000);
  * const example = source.pipe(take(3), repeat(2));

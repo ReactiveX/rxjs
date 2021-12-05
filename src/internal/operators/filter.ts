@@ -27,8 +27,7 @@ export function filter<T>(predicate: (value: T, index: number) => boolean): Mono
  * ## Example
  * Emit only click events whose target was a DIV element
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { filter } from 'rxjs/operators';
+ * import { fromEvent, filter } from 'rxjs';
  *
  * const div = document.createElement('div');
  * div.style.cssText = `width: 200px;height: 200px;background: #09c;`;

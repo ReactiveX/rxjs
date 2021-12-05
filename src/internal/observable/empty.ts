@@ -44,8 +44,7 @@ export const EMPTY = new Observable<never>((subscriber) => subscriber.complete()
  * ### Emit the number 7, then complete
  *
  * ```ts
- * import { empty } from 'rxjs';
- * import { startWith } from 'rxjs/operators';
+ * import { empty, startWith } from 'rxjs';
  *
  * const result = empty().pipe(startWith(7));
  * result.subscribe(x => console.log(x));
@@ -57,8 +56,7 @@ export const EMPTY = new Observable<never>((subscriber) => subscriber.complete()
  * ### Map and flatten only odd numbers to the sequence 'a', 'b', 'c'
  *
  * ```ts
- * import { empty, interval, of } from 'rxjs';
- * import { mergeMap } from 'rxjs/operators';
+ * import { interval, mergeMap, of, empty } from 'rxjs';
  *
  * const interval$ = interval(1000);
  * const result = interval$.pipe(

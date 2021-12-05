@@ -11,8 +11,7 @@ import { isFunction } from '../util/isFunction';
  * ## Examples
  * Get the maximal value of a series of numbers
  * ```ts
- * import { of } from 'rxjs';
- * import { max } from 'rxjs/operators';
+ * import { of, max } from 'rxjs';
  *
  * of(5, 4, 7, 2, 8).pipe(
  *   max(),
@@ -22,8 +21,7 @@ import { isFunction } from '../util/isFunction';
  *
  * Use a comparer function to get the maximal item
  * ```typescript
- * import { of } from 'rxjs';
- * import { max } from 'rxjs/operators';
+ * import { of, max } from 'rxjs';
  *
  * interface Person {
  *   age: number,

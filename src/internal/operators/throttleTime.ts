@@ -27,8 +27,7 @@ import { timer } from '../observable/timer';
  *
  * Emit clicks at a rate of at most one click per second
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { throttleTime } from 'rxjs/operators';
+ * import { fromEvent, throttleTime } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(throttleTime(1000));
@@ -42,8 +41,7 @@ import { timer } from '../observable/timer';
  * click. It makes use of the `trailing` parameter of the throttle configuration.
  *
  * ```ts
- * import { fromEvent, asyncScheduler } from 'rxjs';
- * import { throttleTime, withLatestFrom } from 'rxjs/operators';
+ * import { fromEvent, throttleTime, asyncScheduler } from 'rxjs';
  *
  * // defaultThottleConfig = { leading: true, trailing: false }
  * const throttleConfig = {

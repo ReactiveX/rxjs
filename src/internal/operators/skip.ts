@@ -12,8 +12,7 @@ import { filter } from './filter';
  * ## Example
  * Skip the values before the emission
  * ```ts
- * import { interval } from 'rxjs';
- * import { skip } from 'rxjs/operators';
+ * import { interval, skip } from 'rxjs';
  *
  * //emit every half second
  * const source = interval(500);

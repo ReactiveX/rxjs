@@ -18,8 +18,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * ## Example
  * ```ts
- * import { timer, interval } from 'rxjs';
- * import { map, tap, retryWhen, delayWhen } from 'rxjs/operators';
+ * import { interval, map, retryWhen, tap, delayWhen, timer } from 'rxjs';
  *
  * const source = interval(1000);
  * const example = source.pipe(

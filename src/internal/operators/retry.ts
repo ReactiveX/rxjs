@@ -40,8 +40,7 @@ export interface RetryConfig {
  *
  * ## Example
  * ```ts
- * import { interval, of, throwError } from 'rxjs';
- * import { mergeMap, retry } from 'rxjs/operators';
+ * import { interval, mergeMap, throwError, of, retry } from 'rxjs';
  *
  * const source = interval(1000);
  * const example = source.pipe(

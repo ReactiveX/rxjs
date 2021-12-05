@@ -40,8 +40,7 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
  *
  * ## Example
  * ```ts
- * import { interval } from 'rxjs';
- * import { shareReplay, take } from 'rxjs/operators';
+ * import { interval, take, shareReplay } from 'rxjs';
  *
  * const obs$ = interval(1000);
  * const shared$ = obs$.pipe(
@@ -55,8 +54,7 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
  *
  * ## Example for refCount usage
  * ```ts
- * import { interval, Observable, defer } from 'rxjs';
- * import { shareReplay, take, tap, finalize } from 'rxjs/operators';
+ * import { Observable, defer, tap, finalize, interval, shareReplay, take } from 'rxjs';
  *
  * const log = <T>(source: Observable<T>, name: string) => defer(() => {
  *   console.log(`${name}: subscribed`);

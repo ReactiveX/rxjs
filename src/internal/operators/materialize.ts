@@ -30,8 +30,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * Convert a faulty Observable to an Observable of Notifications
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { materialize, map } from 'rxjs/operators';
+ * import { of, materialize, map } from 'rxjs';
  *
  * const letters = of('a', 'b', 13, 'd');
  * const upperCase = letters.pipe(map(x => x.toUpperCase()));

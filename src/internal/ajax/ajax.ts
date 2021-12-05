@@ -15,8 +15,7 @@ export interface AjaxCreationMethod {
    * ### Example
    * ```ts
    * import { ajax } from 'rxjs/ajax';
-   * import { map, catchError } from 'rxjs/operators';
-   * import { of } from 'rxjs';
+   * import { map, catchError, of } from 'rxjs';
    *
    * const obs$ = ajax({
    *    method: 'GET',
@@ -41,8 +40,7 @@ export interface AjaxCreationMethod {
    * ### Example
    * ```ts
    * import { ajax } from 'rxjs/ajax';
-   * import { map, catchError } from 'rxjs/operators';
-   * import { of } from 'rxjs';
+   * import { map, catchError, of } from 'rxjs';
    *
    * const obs$ = ajax(`https://api.github.com/users?per_page=5`).pipe(
    *   map(userResponse => console.log('users: ', userResponse)),
@@ -177,8 +175,7 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  * ## Using ajax() to fetch the response object that is being returned from API.
  * ```ts
  * import { ajax } from 'rxjs/ajax';
- * import { map, catchError } from 'rxjs/operators';
- * import { of } from 'rxjs';
+ * import { map, catchError, of } from 'rxjs';
  *
  * const obs$ = ajax(`https://api.github.com/users?per_page=5`).pipe(
  *   map(userResponse => console.log('users: ', userResponse)),
@@ -192,8 +189,7 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  * ## Using ajax.getJSON() to fetch data from API.
  * ```ts
  * import { ajax } from 'rxjs/ajax';
- * import { map, catchError } from 'rxjs/operators';
- * import { of } from 'rxjs';
+ * import { map, catchError, of } from 'rxjs';
  *
  * const obs$ = ajax.getJSON(`https://api.github.com/users?per_page=5`).pipe(
  *   map(userResponse => console.log('users: ', userResponse)),
@@ -208,8 +204,7 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  * ## Using ajax() with object as argument and method POST with a two seconds delay.
  * ```ts
  * import { ajax } from 'rxjs/ajax';
- * import { map, catchError } from 'rxjs/operators';
- * import { of } from 'rxjs';
+ * import { map, catchError, of } from 'rxjs';
  *
  * const users = ajax({
  *   url: 'https://httpbin.org/delay/2',
@@ -234,8 +229,7 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  * ## Using ajax() to fetch. An error object that is being returned from the request.
  * ```ts
  * import { ajax } from 'rxjs/ajax';
- * import { map, catchError } from 'rxjs/operators';
- * import { of } from 'rxjs';
+ * import { map, catchError, of } from 'rxjs';
  *
  * const obs$ = ajax(`https://api.github.com/404`).pipe(
  *   map(userResponse => console.log('users: ', userResponse)),

@@ -23,8 +23,7 @@ export function map<T, R, A>(project: (this: A, value: T, index: number) => R, t
  * ## Example
  * Map every click to the clientX position of that click
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { map } from 'rxjs/operators';
+ * import { fromEvent, map } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const positions = clicks.pipe(map(ev => ev.clientX));

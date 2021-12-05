@@ -32,8 +32,7 @@ export function reduce<V, A, S = A>(accumulator: (acc: A | S, value: V, index: n
  * ## Example
  * Count the number of click events that happened in 5 seconds
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { reduce, takeUntil, mapTo } from 'rxjs/operators';
+ * import { fromEvent, takeUntil, interval, mapTo, reduce } from 'rxjs';
  *
  * const clicksInFiveSeconds = fromEvent(document, 'click').pipe(
  *   takeUntil(interval(5000)),

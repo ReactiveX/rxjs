@@ -46,8 +46,7 @@ export function windowTime<T>(
  * ## Examples
  * In every window of 1 second each, emit at most 2 click events
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { windowTime, map, mergeAll, take } from 'rxjs/operators';
+ * import { fromEvent, windowTime, map, take, mergeAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
@@ -60,8 +59,7 @@ export function windowTime<T>(
  *
  * Every 5 seconds start a window 1 second long, and emit at most 2 click events per window
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { windowTime, map, mergeAll, take } from 'rxjs/operators';
+ * import { fromEvent, windowTime, map, take, mergeAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
@@ -74,8 +72,7 @@ export function windowTime<T>(
  *
  * Same as example above but with maxWindowCount instead of take
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { windowTime, mergeAll } from 'rxjs/operators';
+ * import { fromEvent, windowTime, mergeAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(

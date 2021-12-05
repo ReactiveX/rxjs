@@ -17,8 +17,7 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  * ## Examples
  * An example comparing the name of persons
  * ```typescript
- * import { of } from 'rxjs';
- * import { distinctUntilKeyChanged } from 'rxjs/operators';
+ * import { of, distinctUntilKeyChanged } from 'rxjs';
  *
  *  interface Person {
  *     age: number,
@@ -43,8 +42,7 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  *
  * An example comparing the first letters of the name
  * ```typescript
- * import { of } from 'rxjs';
- * import { distinctUntilKeyChanged } from 'rxjs/operators';
+ * import { of, distinctUntilKeyChanged } from 'rxjs';
  *
  * interface Person {
  *     age: number,

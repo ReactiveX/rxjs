@@ -43,8 +43,7 @@ export function from<O extends ObservableInput<any>>(input: O, scheduler: Schedu
  * ### Convert an infinite iterable (from a generator) to an Observable
  *
  * ```ts
- * import { from } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * import { from, take } from 'rxjs';
  *
  * function* generateDoubles(seed) {
  *    let i = seed;

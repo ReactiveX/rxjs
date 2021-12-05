@@ -23,8 +23,7 @@ import { noop } from '../util/noop';
  * A simple example with numbers
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { distinct } from 'rxjs/operators';
+ * import { of, distinct } from 'rxjs';
  *
  * of(1, 1, 2, 2, 2, 1, 2, 3, 4, 3, 2, 1)
  *   .pipe(
@@ -42,8 +41,7 @@ import { noop } from '../util/noop';
  * An example using a keySelector function
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { distinct } from 'rxjs/operators';
+ * import { of, distinct } from 'rxjs';
  *
  * interface Person {
  *    age: number,

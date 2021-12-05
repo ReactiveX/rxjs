@@ -31,8 +31,7 @@ export function findIndex<T>(predicate: (value: T, index: number, source: Observ
  * ## Example
  * Emit the index of first click that happens on a DIV element
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { findIndex } from 'rxjs/operators';
+ * import { fromEvent, findIndex } from 'rxjs';
  *
  * const div = document.createElement('div');
  * div.style.cssText = 'width: 200px; height: 200px; background: #09c;';

@@ -25,8 +25,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * Emit `false` for a non-empty Observable.
  *
  * ```ts
- * import { Subject } from 'rxjs';
- * import { isEmpty } from 'rxjs/operators';
+ * import { Subject, isEmpty } from 'rxjs';
  *
  * const source = new Subject<string>();
  * const result = source.pipe(isEmpty());
@@ -49,8 +48,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * Emit `true` for an empty Observable.
  *
  * ```ts
- * import { EMPTY } from 'rxjs';
- * import { isEmpty } from 'rxjs/operators';
+ * import { EMPTY, isEmpty } from 'rxjs';
  *
  * const result = EMPTY.pipe(isEmpty());
  * result.subscribe(x => console.log(x));

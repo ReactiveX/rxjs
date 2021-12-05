@@ -29,9 +29,8 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
  * ### Basic Use
  *
  * ```ts
- * import { of } from 'rxjs';
  * import { fromFetch } from 'rxjs/fetch';
- * import { switchMap, catchError } from 'rxjs/operators';
+ * import { switchMap, of, catchError } from 'rxjs';
  *
  * const data$ = fromFetch('https://api.github.com/users?per_page=5').pipe(
  *  switchMap(response => {

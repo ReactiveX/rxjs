@@ -263,8 +263,7 @@ export class Observable<T> implements Subscribable<T> {
    * ### Example:
    *
    * ```ts
-   * import { interval } from 'rxjs';
-   * import { take } from 'rxjs/operators';
+   * import { interval, take } from 'rxjs';
    *
    * const source$ = interval(1000).pipe(take(4));
    *
@@ -423,8 +422,7 @@ export class Observable<T> implements Subscribable<T> {
    *
    * ### Example
    * ```ts
-   * import { interval } from 'rxjs';
-   * import { map, filter, scan } from 'rxjs/operators';
+   * import { interval, filter, map, scan } from 'rxjs';
    *
    * interval(1000)
    *   .pipe(

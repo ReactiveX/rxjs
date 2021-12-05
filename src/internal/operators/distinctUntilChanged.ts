@@ -20,8 +20,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * not in comparison to _all other emitted values_.
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { distinctUntilChanged } from 'rxjs/operators';
+ * import { of, distinctUntilChanged } from 'rxjs';
  *
  * of(1, 1, 1, 2, 2, 2, 1, 1, 3, 3).pipe(
  *  distinctUntilChanged()
@@ -37,8 +36,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * changed:
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { distinctUntilChanged } from 'rxjs/operators';
+ * import { of, distinctUntilChanged } from 'rxjs';
  *
  * const totallyDifferentBuilds$ = of(
  *   { engineVersion: '1.1.0', transmissionVersion: '1.2.0' },
@@ -70,8 +68,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * the next record temperature:
  *
  * ```ts
- * import { of } from "rxjs";
- * import { distinctUntilChanged } from "rxjs/operators";
+ * import { of, distinctUntilChanged } from 'rxjs';
  *
  * const temps$ = of(30, 31, 20, 34, 33, 29, 35, 20);
  *
@@ -112,6 +109,8 @@ export function distinctUntilChanged<T>(comparator?: (previous: T, current: T) =
  * the account changed hands...
  *
  * ```ts
+ * import { of, distinctUntilChanged } from 'rxjs';
+ *
  * // A stream of updates to a given account
  * const accountUpdates$ = of(
  *   { updatedBy: "blesh", data: [] },

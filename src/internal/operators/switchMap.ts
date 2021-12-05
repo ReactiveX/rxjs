@@ -41,8 +41,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
  * ## Example
  * Generate new Observable according to source Observable values
  * ```typescript
- * import { of } from 'rxjs';
- * import { switchMap } from 'rxjs/operators';
+ * import { of, switchMap } from 'rxjs';
  *
  * const switched = of(1, 2, 3).pipe(switchMap((x: number) => of(x, x ** 2, x ** 3)));
  * switched.subscribe(x => console.log(x));
@@ -58,8 +57,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
  *
  * Restart an interval Observable on every click event
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { switchMap } from 'rxjs/operators';
+ * import { fromEvent, switchMap, interval } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(switchMap((ev) => interval(1000)));

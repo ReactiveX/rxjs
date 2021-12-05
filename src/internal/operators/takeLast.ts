@@ -25,8 +25,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * Take the last 3 values of an Observable with many values
  *
  * ```ts
- * import { range } from 'rxjs';
- * import { takeLast } from 'rxjs/operators';
+ * import { range, takeLast } from 'rxjs';
  *
  * const many = range(1, 100);
  * const lastThree = many.pipe(takeLast(3));

@@ -23,8 +23,7 @@ import { map } from './map';
  * Emit interval between current value with the last value
  *
  * ```ts
- * import { interval } from "rxjs";
- * import { timeInterval, timeout } from "rxjs/operators";
+ * import { interval, timeInterval } from 'rxjs';
  *
  * const seconds = interval(1000);
  *

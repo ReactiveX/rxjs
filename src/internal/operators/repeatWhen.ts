@@ -17,8 +17,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ## Example
  * Repeat a message stream on click
  * ```ts
- * import { of, fromEvent } from 'rxjs';
- * import { repeatWhen } from 'rxjs/operators';
+ * import { of, fromEvent, repeatWhen } from 'rxjs';
  *
  * const source = of('Repeat message');
  * const documentClick$ = fromEvent(document, 'click');

@@ -31,8 +31,7 @@ export function race<T extends readonly unknown[]>(...inputs: [...ObservableInpu
  * ### Subscribes to the observable that was the first to start emitting.
  *
  * ```ts
- * import { race, interval } from 'rxjs';
- * import { mapTo } from 'rxjs/operators';
+ * import { interval, mapTo, race } from 'rxjs';
  *
  * const obs1 = interval(1000).pipe(mapTo('fast one'));
  * const obs2 = interval(3000).pipe(mapTo('medium one'));

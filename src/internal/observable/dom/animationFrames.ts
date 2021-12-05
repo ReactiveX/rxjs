@@ -24,8 +24,7 @@ import { animationFrameProvider } from '../../scheduler/animationFrameProvider';
  * Tweening a div to move it on the screen
  *
  * ```ts
- * import { animationFrames } from 'rxjs';
- * import { map, takeWhile, endWith } from 'rxjs/operators';
+ * import { animationFrames, map, takeWhile, endWith } from 'rxjs';
  *
  * function tween(start: number, end: number, duration: number) {
  *   const diff = end - start;

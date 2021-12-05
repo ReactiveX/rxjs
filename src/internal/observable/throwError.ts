@@ -50,8 +50,7 @@ import { isFunction } from '../util/isFunction';
  * with a callback, is usually not necessary:
  *
  * ```ts
- * import { throwError, timer, of } from 'rxjs';
- * import { concatMap } from 'rxjs/operators';
+ * import { of, concatMap, timer, throwError } from 'rxjs';
  *
  * const delays$ = of(1000, 2000, Infinity, 3000);
  *
@@ -74,8 +73,7 @@ import { isFunction } from '../util/isFunction';
  * You can just throw the error instead:
  *
  * ```ts
- * import { throwError, timer, of } from 'rxjs';
- * import { concatMap } from 'rxjs/operators';
+ * import { of, concatMap, timer } from 'rxjs';
  *
  * const delays$ = of(1000, 2000, Infinity, 3000);
  *

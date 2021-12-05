@@ -30,8 +30,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * Emit clicks at a rate of at most one click per second
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { audit } from 'rxjs/operators'
+ * import { fromEvent, audit, interval } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(audit(ev => interval(1000)));

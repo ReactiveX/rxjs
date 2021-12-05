@@ -112,7 +112,7 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  * ## Examples
  * ### Combine two timer Observables
  * ```ts
- * import { combineLatest, timer } from 'rxjs';
+ * import { timer, combineLatest } from 'rxjs';
  *
  * const firstTimer = timer(0, 1000); // emit 0, 1, 2... after every second, starting from now
  * const secondTimer = timer(500, 1000); // emit 0, 1, 2... after every second, starting 0,5s from now
@@ -126,8 +126,7 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  * ```
  * ### Combine a dictionary of Observables
  * ```ts
- * import { combineLatest, of } from 'rxjs';
- * import { delay, startWith } from 'rxjs/operators';
+ * import { of, delay, startWith, combineLatest } from 'rxjs';
  *
  * const observables = {
  *   a: of(1).pipe(delay(1000), startWith(0)),
@@ -144,8 +143,7 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  * ```
  * ### Combine an array of Observables
  * ```ts
- * import { combineLatest, of } from 'rxjs';
- * import { delay, startWith } from 'rxjs/operators';
+ * import { of, delay, startWith, combineLatest } from 'rxjs';
  *
  * const observables = [1, 5, 10].map(
  *   n => of(n).pipe(
@@ -165,8 +163,7 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  *
  * ### Use map operator to dynamically calculate the Body-Mass Index
  * ```ts
- * import { combineLatest, of } from 'rxjs';
- * import { map } from 'rxjs/operators';
+ * import { of, combineLatest, map } from 'rxjs';
  *
  * const weight = of(70, 72, 76, 79, 75);
  * const height = of(1.76, 1.77, 1.78);

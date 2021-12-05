@@ -27,8 +27,7 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
  * ## Example
  * A simple example emitting true if all elements are less than 5, false otherwise
  * ```ts
- * import { of } from 'rxjs';
- * import { every } from 'rxjs/operators';
+ * import { of, every } from 'rxjs';
  *
  *  of(1, 2, 3, 4, 5, 6).pipe(
  *     every(x => x < 5),

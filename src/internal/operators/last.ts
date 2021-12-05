@@ -34,8 +34,7 @@ export function last<T, D = T>(
  * ## Example
  * Last alphabet from the sequence.
  * ```ts
- * import { from } from 'rxjs';
- * import { last } from 'rxjs/operators';
+ * import { from, last } from 'rxjs';
  *
  * const source = from(['x', 'y', 'z']);
  * const example = source.pipe(last());
@@ -45,8 +44,7 @@ export function last<T, D = T>(
  *
  * Default value when the value in the predicate is not matched.
  * ```ts
- * import { from } from 'rxjs';
- * import { last } from 'rxjs/operators';
+ * import { from, last } from 'rxjs';
  *
  * const source = from(['x', 'y', 'z']);
  * const example = source.pipe(last(char => char === 'a','not exist'));

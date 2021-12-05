@@ -31,8 +31,7 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  * Expect only name beginning with 'B':
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { single } from 'rxjs/operators';
+ * import { of, single } from 'rxjs';
  *
  * const source1 = of(
  *  { name: 'Ben' },

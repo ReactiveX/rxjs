@@ -51,8 +51,7 @@ export function merge<A extends readonly unknown[]>(
  *
  * ### Merge together 3 Observables, but only 2 run concurrently
  * ```ts
- * import { merge, interval } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * import { interval, take, merge } from 'rxjs';
  *
  * const timer1 = interval(1000).pipe(take(10));
  * const timer2 = interval(2000).pipe(take(6));

@@ -24,8 +24,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ## Example
  * Run a finite timer for each click, only if there is no currently active timer
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { exhaustAll, map, take } from 'rxjs/operators';
+ * import { fromEvent, map, interval, take, exhaustAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const higherOrder = clicks.pipe(
