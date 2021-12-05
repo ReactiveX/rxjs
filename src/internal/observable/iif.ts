@@ -49,26 +49,27 @@ import { ObservableInput } from '../types';
  * const observableIfYouHaveAccess = iif(
  *   () => accessGranted,
  *   of('It seems you have an access...'), // Note that only one Observable is passed to the operator.
+ *   of('error')
  * );
- *
+ * 
  * accessGranted = true;
- * observableIfYouHaveAccess.subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('The end'),
- * );
- *
+ * observableIfYouHaveAccess.subscribe({
+ *   next: (value) => console.log(value),
+ *   error: (err) => {},
+ *   complete: () => console.log('The end'),
+ * });
+ * 
  * // Logs:
  * // "It seems you have an access..."
  * // "The end"
- *
+ * 
  * accessGranted = false;
- * observableIfYouHaveAccess.subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('The end'),
- * );
- *
+ * observableIfYouHaveAccess.subscribe({
+ *   next: (value) => console.log(value),
+ *   error: console.error,
+ *   complete: () => console.log('The end'),
+ * });
+ * 
  * // Logs:
  * // "The end"
  * ```
