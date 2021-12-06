@@ -208,6 +208,33 @@ describe('ajax', () => {
     });
   });
 
+  it('should NOT set the X-Requested-With if crossDomain is true', () => {
+    ajax({
+      url: '/test/monkey',
+      method: 'GET',
+      crossDomain: true,
+    }).subscribe();
+
+    const request = MockXMLHttpRequest.mostRecent;
+
+    expect(request.requestHeaders).to.not.have.key('x-requested-with');
+  });
+
+  it('should not alter user-provided X-Requested-With header, even if crossDomain is true', () => {
+    ajax({
+      url: '/test/monkey',
+      method: 'GET',
+      crossDomain: true,
+      headers: {
+        'x-requested-with': 'Custom-XMLHttpRequest',
+      },
+    }).subscribe();
+
+    const request = MockXMLHttpRequest.mostRecent;
+
+    expect(request.requestHeaders['x-requested-with']).to.equal('Custom-XMLHttpRequest');
+  });
+
   it('should not set default Content-Type header when no body is sent', () => {
     const obj: AjaxConfig = {
       url: '/talk-to-me-goose',
@@ -1025,7 +1052,7 @@ describe('ajax', () => {
       const request = {
         async: true,
         body: undefined,
-        crossDomain: true,
+        crossDomain: false,
         headers: {
           'x-requested-with': 'XMLHttpRequest',
         },
@@ -1153,7 +1180,7 @@ describe('ajax', () => {
       const request = {
         async: true,
         body: undefined,
-        crossDomain: true,
+        crossDomain: false,
         headers: {
           'x-requested-with': 'XMLHttpRequest',
         },
