@@ -20,7 +20,7 @@ import { isFunction } from '../util/isFunction';
  * ```
  *
  * Use a comparer function to get the maximal item
- * ```typescript
+ * ```ts
  * import { of, max } from 'rxjs';
  *
  * interface Person {

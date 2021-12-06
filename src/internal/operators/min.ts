@@ -20,7 +20,7 @@ import { isFunction } from '../util/isFunction';
  * ```
  *
  * Use a comparer function to get the minimal item
- * ```typescript
+ * ```ts
  * import { of, min } from 'rxjs';
  *
  * interface Person {

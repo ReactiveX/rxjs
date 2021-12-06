@@ -40,7 +40,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
  *
  * ## Example
  * Generate new Observable according to source Observable values
- * ```typescript
+ * ```ts
  * import { of, switchMap } from 'rxjs';
  *
  * const switched = of(1, 2, 3).pipe(switchMap((x: number) => of(x, x ** 2, x ** 3)));
