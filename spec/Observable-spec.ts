@@ -134,9 +134,9 @@ describe('Observable', () => {
           },
           (err) => {
             results.push(err);
-            // Since the consuming code can no longer interfere with the synchronous
-            // producer, the remaining results are nexted.
-            expect(results).to.deep.equal([1, 2, 3, 4, expected]);
+            // The error should unsubscribe from the source, meaning we 
+            // should not see the number 4.
+            expect(results).to.deep.equal([1, 2, 3, expected]);
           }
         );
     });
