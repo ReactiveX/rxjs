@@ -20,7 +20,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * as the output Observable is subscribed.
  *
  * ## Example
- * On every click, sample the most recent "seconds" timer
+ *
+ * On every click, sample the most recent `seconds` timer
+ *
  * ```ts
  * import { fromEvent, interval, sample } from 'rxjs';
  *

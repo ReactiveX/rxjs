@@ -42,8 +42,10 @@ export function publish<T, O extends ObservableInput<any>>(selector: (shared: Ob
  * ![](publish.png)
  *
  * ## Examples
- * Make source$ hot by applying publish operator, then merge each inner observable into a single one
- * and subscribe.
+ *
+ * Make `source$` hot by applying `publish` operator, then merge each inner observable into a single one
+ * and subscribe
+ *
  * ```ts
  * import { zip, interval, of, map, publish, merge, tap } from 'rxjs';
  *

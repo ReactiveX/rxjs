@@ -12,7 +12,8 @@ export interface AjaxCreationMethod {
    *
    * This is the most configurable option, and the basis for all other AJAX calls in the library.
    *
-   * ### Example
+   * ## Example
+   *
    * ```ts
    * import { ajax } from 'rxjs/ajax';
    * import { map, catchError, of } from 'rxjs';
@@ -37,7 +38,8 @@ export interface AjaxCreationMethod {
    * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) in
    * global scope. Defaults to a `responseType` of `"json"`.
    *
-   * ### Example
+   * ## Example
+   *
    * ```ts
    * import { ajax } from 'rxjs/ajax';
    * import { map, catchError, of } from 'rxjs';
@@ -171,8 +173,10 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  * It creates an observable for an Ajax request with either a request object with
  * url, headers, etc or a string for a URL.
  *
+ * ## Examples
  *
- * ## Using ajax() to fetch the response object that is being returned from API.
+ * Using `ajax()` to fetch the response object that is being returned from API
+ *
  * ```ts
  * import { ajax } from 'rxjs/ajax';
  * import { map, catchError, of } from 'rxjs';
@@ -186,7 +190,8 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  * );
  * ```
  *
- * ## Using ajax.getJSON() to fetch data from API.
+ * Using `ajax.getJSON()` to fetch data from API
+ *
  * ```ts
  * import { ajax } from 'rxjs/ajax';
  * import { map, catchError, of } from 'rxjs';
@@ -201,7 +206,8 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  *
  * ```
  *
- * ## Using ajax() with object as argument and method POST with a two seconds delay.
+ * Using `ajax()` with object as argument and method POST with a two seconds delay
+ *
  * ```ts
  * import { ajax } from 'rxjs/ajax';
  * import { map, catchError, of } from 'rxjs';
@@ -226,7 +232,8 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  *
  * ```
  *
- * ## Using ajax() to fetch. An error object that is being returned from the request.
+ * Using `ajax()` to fetch. An error object that is being returned from the request
+ *
  * ```ts
  * import { ajax } from 'rxjs/ajax';
  * import { map, catchError, of } from 'rxjs';

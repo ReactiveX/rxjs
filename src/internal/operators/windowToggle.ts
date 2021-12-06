@@ -25,7 +25,9 @@ import { arrRemove } from '../util/arrRemove';
  * `closingSelector` emits an item.
  *
  * ## Example
+ *
  * Every other second, emit the click events from the next 500ms
+ *
  * ```ts
  * import { fromEvent, interval, windowToggle, EMPTY, mergeAll } from 'rxjs';
  *

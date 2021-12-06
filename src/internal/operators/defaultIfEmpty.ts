@@ -16,7 +16,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * having emitted any `next` value).
  *
  * ## Example
- * If no clicks happen in 5 seconds, then emit "no clicks"
+ *
+ * If no clicks happen in 5 seconds, then emit 'no clicks'
+ *
  * ```ts
  * import { fromEvent, takeUntil, interval, defaultIfEmpty } from 'rxjs';
  *

@@ -18,7 +18,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * there is no previous value in that case.
  *
  * ## Example
+ *
  * On every click (starting from the second), emit the relative distance to the previous click
+ *
  * ```ts
  * import { fromEvent, pairwise, map } from 'rxjs';
  *

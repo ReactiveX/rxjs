@@ -185,7 +185,9 @@ export function fromEvent<T, R>(
  *
  *
  * ## Examples
- * ### Emits clicks happening on the DOM document
+ *
+ * Emit clicks happening on the DOM document
+ *
  * ```ts
  * import { fromEvent } from 'rxjs';
  *
@@ -197,7 +199,8 @@ export function fromEvent<T, R>(
  * // occurs on the document.
  * ```
  *
- * ### Use addEventListener with capture option
+ * Use `addEventListener` with capture option
+ *
  * ```ts
  * import { fromEvent } from 'rxjs';
  *

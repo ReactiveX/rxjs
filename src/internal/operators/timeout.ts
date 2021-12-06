@@ -116,7 +116,7 @@ export const TimeoutError: TimeoutErrorCtor = createErrorClass(
  * `first` is _not_ provided, the value from `each` will be used to check timeout conditions for the arrival of the first
  * value and all subsequent values. If `first` _is_ provided, `each` will only be use to check all values after the first.
  *
- * ### Example
+ * ## Examples
  *
  * Emit a custom error if there is too much time between values
  *
@@ -142,8 +142,6 @@ export const TimeoutError: TimeoutErrorCtor = createErrorClass(
  *    error: console.error
  * })
  * ```
- *
- * ### Example
  *
  * Switch to a faster observable if your source is slow.
  *
@@ -198,8 +196,7 @@ export function timeout<T, O extends ObservableInput<unknown>, M = unknown>(
  * In this case, you would check the error for `instanceof TimeoutError` to validate that the error was indeed from `timeout`, and
  * not from some other source. If it's not from `timeout`, you should probably rethrow it if you're in a `catchError`.
  *
- *
- * ### Example
+ * ## Examples
  *
  * Emit a {@link TimeoutError} if the first value, and _only_ the first value, does not arrive within 5 seconds
  *
@@ -214,8 +211,6 @@ export function timeout<T, O extends ObservableInput<unknown>, M = unknown>(
  * )
  * .subscribe(console.log);
  * ```
- *
- * ### Example
  *
  * Emit a {@link TimeoutError} if the source waits longer than 5 seconds between any two values or the first value
  * and subscription.
@@ -236,9 +231,7 @@ export function timeout<T, O extends ObservableInput<unknown>, M = unknown>(
  * .subscribe(console.log);
  * ```
  *
- * ### Example
- *
- * Emit a {@link TimeoutError} if the the source does not emit before 7 seconds, _or_ if the source waits longer than
+ * Emit a {@link TimeoutError} if the source does not emit before 7 seconds, _or_ if the source waits longer than
  * 5 seconds between any two values after the first.
  *
  * ```ts

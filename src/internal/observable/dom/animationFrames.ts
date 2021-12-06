@@ -19,7 +19,7 @@ import { animationFrameProvider } from '../../scheduler/animationFrameProvider';
  *
  * This is useful for setting up animations with RxJS.
  *
- * ### Example
+ * ## Examples
  *
  * Tweening a div to move it on the screen
  *
@@ -53,8 +53,6 @@ import { animationFrameProvider } from '../../scheduler/animationFrameProvider';
  *   div.style.transform = `translate3d(${x}px, 0, 0)`;
  * });
  * ```
- *
- * ### Example
  *
  * Providing a custom timestamp provider
  *

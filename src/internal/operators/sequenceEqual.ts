@@ -21,7 +21,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * completes or emits after the other completes, the returned observable will never complete.
  *
  * ## Example
- * figure out if the Konami code matches
+ *
+ * Figure out if the Konami code matches
+ *
  * ```ts
  * import { from, fromEvent, map, bufferCount, mergeMap, sequenceEqual } from 'rxjs';
  *

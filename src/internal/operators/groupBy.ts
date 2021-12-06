@@ -68,7 +68,7 @@ export function groupBy<T, K, R>(
  *
  * ## Examples
  *
- * ### Group objects by id and return as array
+ * Group objects by `id` and return as array
  *
  * ```ts
  * import { of, groupBy, mergeMap, reduce } from 'rxjs';
@@ -95,7 +95,7 @@ export function groupBy<T, K, R>(
  * // [ { id: 3, name: 'TSLint'} ]
  * ```
  *
- * ### Pivot data on the id field
+ * Pivot data on the `id` field
  *
  * ```ts
  * import { of, groupBy, mergeMap, reduce, map } from 'rxjs';

@@ -32,7 +32,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * ## Example
  *
- * Ensure values in subscribe are called just before browser repaint.
+ * Ensure values in subscribe are called just before browser repaint
  *
  * ```ts
  * import { interval, observeOn, animationFrameScheduler } from 'rxjs';

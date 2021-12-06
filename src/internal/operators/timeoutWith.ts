@@ -32,7 +32,7 @@ export function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, sch
  * - You want to emit a custom error rather than the {@link TimeoutError} emitted
  *   by the default usage of {@link timeout}.
  *
- * ## Example
+ * ## Examples
  *
  * Fallback to a faster observable
  *
@@ -47,8 +47,6 @@ export function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, sch
  * )
  * .subscribe(console.log)
  * ```
- *
- * ### Example
  *
  * Emit your own custom timeout error
  *

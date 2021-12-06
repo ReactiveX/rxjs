@@ -30,7 +30,9 @@ export function reduce<V, A, S = A>(accumulator: (acc: A | S, value: V, index: n
  * value is specified, the first item of the source is used as the seed.
  *
  * ## Example
+ *
  * Count the number of click events that happened in 5 seconds
+ *
  * ```ts
  * import { fromEvent, takeUntil, interval, mapTo, reduce } from 'rxjs';
  *

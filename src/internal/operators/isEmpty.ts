@@ -22,7 +22,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * ## Examples
  *
- * Emit `false` for a non-empty Observable.
+ * Emit `false` for a non-empty Observable
  *
  * ```ts
  * import { Subject, isEmpty } from 'rxjs';
@@ -45,7 +45,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * // c
  * ```
  *
- * Emit `true` for an empty Observable.
+ * Emit `true` for an empty Observable
  *
  * ```ts
  * import { EMPTY, isEmpty } from 'rxjs';

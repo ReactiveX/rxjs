@@ -21,6 +21,7 @@ import { reduce } from './reduce';
  * ## Examples
  *
  * Counts how many seconds have passed before the first click happened
+ *
  * ```ts
  * import { interval, fromEvent, takeUntil, count } from 'rxjs';
  *
@@ -32,6 +33,7 @@ import { reduce } from './reduce';
  * ```
  *
  * Counts how many odd numbers are there between 1 and 7
+ *
  * ```ts
  * import { range, count } from 'rxjs';
  *

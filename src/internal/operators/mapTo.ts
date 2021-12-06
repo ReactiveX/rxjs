@@ -19,7 +19,9 @@ export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
  * and simply uses the emission moment to know when to emit the given `value`.
  *
  * ## Example
- * Map every click to the string 'Hi'
+ *
+ * Map every click to the string `'Hi'`
+ *
  * ```ts
  * import { fromEvent, mapTo } from 'rxjs';
  *

@@ -43,9 +43,10 @@ export function tap<T>(
  * in your observable `pipe`, log out the notifications as they are emitted by the source returned by the previous
  * operation.
  *
- * ## Example
+ * ## Examples
+ *
  * Check a random number before it is handled. Below is an observable that will use a random number between 0 and 1,
- * and emit "big" or "small" depending on the size of that number. But we wanted to log what the original number
+ * and emit `'big'` or `'small'` depending on the size of that number. But we wanted to log what the original number
  * was, so we have added a `tap(console.log)`.
  *
  * ```ts
@@ -57,7 +58,6 @@ export function tap<T>(
  * ).subscribe(console.log);
  * ```
  *
- * ## Example
  * Using `tap` to analyze a value and force an error. Below is an observable where in our system we only
  * want to emit numbers 3 or less we get from another source. We can force our observable to error
  * using `tap`.
@@ -77,11 +77,10 @@ export function tap<T>(
  * .subscribe(console.log);
  * ```
  *
- * ## Example
  * We want to know when an observable completes before moving on to the next observable. The system
- * below will emit a random series of `"X"` characters from 3 different observables in sequence. The
+ * below will emit a random series of `'X'` characters from 3 different observables in sequence. The
  * only way we know when one observable completes and moves to the next one, in this case, is because
- * we have added a `tap` with the side-effect of logging to console.
+ * we have added a `tap` with the side effect of logging to console.
  *
  * ```ts
  * import { of, concatMap, interval, take, map, tap } from 'rxjs';

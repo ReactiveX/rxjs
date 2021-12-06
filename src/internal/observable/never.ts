@@ -13,7 +13,9 @@ import { noop } from '../util/noop';
  * Subscriptions need to be manually disposed.
  *
  * ##  Example
- * ### Emit the number 7, then never emit anything else (not even complete)
+ *
+ * Emit the number 7, then never emit anything else (not even complete)
+ *
  * ```ts
  * import { NEVER, startWith } from 'rxjs';
  *

@@ -42,6 +42,7 @@ export function concatMap<T, R, O extends ObservableInput<any>>(
  * to `1`.
  *
  * ## Example
+ *
  * For each click event, tick every second from 0 to 3, with no concurrency
  *
  * ```ts

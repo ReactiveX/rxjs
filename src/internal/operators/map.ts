@@ -21,7 +21,9 @@ export function map<T, R, A>(project: (this: A, value: T, index: number) => R, t
  * Observable.
  *
  * ## Example
- * Map every click to the clientX position of that click
+ *
+ * Map every click to the `clientX` position of that click
+ *
  * ```ts
  * import { fromEvent, map } from 'rxjs';
  *

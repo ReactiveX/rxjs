@@ -24,7 +24,7 @@ export function range(start: number, count: number | undefined, scheduler: Sched
  *
  * ## Example
  *
- * ### Produce a range of numbers
+ * Produce a range of numbers
  *
  * ```ts
  * import { range } from 'rxjs';

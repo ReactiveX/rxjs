@@ -20,7 +20,7 @@ import { isFunction } from '../util/isFunction';
  * ## Example
  *
  * Create a simple observable that will create a new error with a timestamp and log it
- * and the message every time you subscribe to it.
+ * and the message every time you subscribe to it
  *
  * ```ts
  * import { throwError } from 'rxjs';
@@ -44,10 +44,10 @@ import { isFunction } from '../util/isFunction';
  * // Logs the timestamp and a new error message each subscription;
  * ```
  *
- * ## Unnecessary usage
+ * ### Unnecessary usage
  *
  * Using `throwError` inside of an operator or creation function
- * with a callback, is usually not necessary:
+ * with a callback, is usually not necessary
  *
  * ```ts
  * import { of, concatMap, timer, throwError } from 'rxjs';
@@ -70,7 +70,7 @@ import { isFunction } from '../util/isFunction';
  * });
  * ```
  *
- * You can just throw the error instead:
+ * You can just throw the error instead
  *
  * ```ts
  * import { of, concatMap, timer } from 'rxjs';

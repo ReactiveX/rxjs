@@ -20,7 +20,9 @@ import { interval } from '../observable/interval';
  * the output Observable is subscribed.
  *
  * ## Example
+ *
  * Every second, emit the most recent click at most once
+ *
  * ```ts
  * import { fromEvent, sampleTime } from 'rxjs';
  *

@@ -15,7 +15,9 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  * If a comparator function is not provided, an equality check is used by default.
  *
  * ## Examples
+ *
  * An example comparing the name of persons
+ *
  * ```ts
  * import { of, distinctUntilKeyChanged } from 'rxjs';
  *
@@ -41,6 +43,7 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  * ```
  *
  * An example comparing the first letters of the name
+ *
  * ```ts
  * import { of, distinctUntilKeyChanged } from 'rxjs';
  *

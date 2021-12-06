@@ -124,8 +124,10 @@ export class Observable<T> implements Subscribable<T> {
    * by default emits all its values synchronously. Always check documentation for how given Observable
    * will behave when subscribed and if its default behavior can be modified with a `scheduler`.
    *
-   * ## Example
-   * ### Subscribe with an Observer
+   * ## Examples
+   *
+   * Subscribe with an {@link guide/observer Observer}
+   *
    * ```ts
    * import { of } from 'rxjs';
    *
@@ -154,7 +156,8 @@ export class Observable<T> implements Subscribable<T> {
    * // "Sum equals: 6"
    * ```
    *
-   * ### Subscribe with functions
+   * Subscribe with functions ({@link deprecations/subscribe-arguments deprecated})
+   *
    * ```ts
    * import { of } from 'rxjs'
    *
@@ -176,7 +179,8 @@ export class Observable<T> implements Subscribable<T> {
    * // "Sum equals: 6"
    * ```
    *
-   * ### Cancel a subscription
+   * Cancel a subscription
+   *
    * ```ts
    * import { interval } from 'rxjs';
    *
@@ -260,7 +264,7 @@ export class Observable<T> implements Subscribable<T> {
    * this situation, look into adding something like {@link timeout}, {@link take},
    * {@link takeWhile}, or {@link takeUntil} amongst others.
    *
-   * ### Example:
+   * ## Example
    *
    * ```ts
    * import { interval, take } from 'rxjs';
@@ -420,7 +424,8 @@ export class Observable<T> implements Subscribable<T> {
    * @return {Observable} the Observable result of all of the operators having
    * been called in the order they were passed in.
    *
-   * ### Example
+   * ## Example
+   *
    * ```ts
    * import { interval, filter, map, scan } from 'rxjs';
    *

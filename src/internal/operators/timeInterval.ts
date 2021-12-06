@@ -19,7 +19,8 @@ import { map } from './map';
  *
  * ![](timeInterval.png)
  *
- * ## Examples
+ * ## Example
+ *
  * Emit interval between current value with the last value
  *
  * ```ts

@@ -20,7 +20,9 @@ import { timer } from '../observable/timer';
  * Observable execution until the given date occurs.
  *
  * ## Examples
+ *
  * Delay each click by one second
+ *
  * ```ts
  * import { fromEvent, delay } from 'rxjs';
  *
@@ -30,6 +32,7 @@ import { timer } from '../observable/timer';
  * ```
  *
  * Delay all clicks until a future date happens
+ *
  * ```ts
  * import { fromEvent, delay } from 'rxjs';
  *

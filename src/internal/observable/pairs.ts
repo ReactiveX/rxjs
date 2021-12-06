@@ -40,7 +40,9 @@ export function pairs(
  * pass a {@link SchedulerLike} as a second argument to `pairs`.
  *
  * ## Example
- * ### Converts an object to an Observable
+ *
+ * Converts an object to an Observable
+ *
  * ```ts
  * import { pairs } from 'rxjs';
  *

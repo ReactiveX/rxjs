@@ -21,7 +21,9 @@ import { noop } from '../util/noop';
  * Observable, the output is a higher-order Observable.
  *
  * ## Example
+ *
  * In every window of 1 second each, emit at most 2 click events
+ *
  * ```ts
  * import { fromEvent, interval, window, map, take, mergeAll } from 'rxjs';
  *

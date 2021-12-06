@@ -39,7 +39,9 @@ export function delayWhen<T>(delayDurationSelector: (value: T, index: number) =>
  * Observable is subscribed.
  *
  * ## Example
+ *
  * Delay each click by a random amount of time, between 0 and 5 seconds
+ *
  * ```ts
  * import { fromEvent, delayWhen, interval } from 'rxjs';
  *

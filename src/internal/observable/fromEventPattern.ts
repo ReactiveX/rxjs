@@ -60,8 +60,9 @@ export function fromEventPattern<T>(
  * that default project can be thought of as function that takes its first parameter
  * and ignores the rest.
  *
- * ## Example
- * ### Emits clicks happening on the DOM document
+ * ## Examples
+ *
+ * Emits clicks happening on the DOM document
  *
  * ```ts
  * import { fromEventPattern } from 'rxjs';
@@ -84,8 +85,7 @@ export function fromEventPattern<T>(
  * // object will be logged.
  * ```
  *
- * ## Example
- * ### Use with API that returns cancellation token
+ * Use with API that returns cancellation token
  *
  * ```ts
  * import { fromEventPattern } from 'rxjs';
@@ -100,8 +100,7 @@ export function fromEventPattern<T>(
  * );
  * ```
  *
- * ## Example
- * ### Use with project function
+ * Use with project function
  *
  * ```ts
  * import { fromEventPattern } from 'rxjs';

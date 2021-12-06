@@ -30,7 +30,9 @@ export function withLatestFrom<T, O extends unknown[], R>(
  * emit at least one value before the output Observable will emit a value.
  *
  * ## Example
+ *
  * On every click event, emit an array with the latest timer event plus the click event
+ *
  * ```ts
  * import { fromEvent, interval, withLatestFrom } from 'rxjs';
  *

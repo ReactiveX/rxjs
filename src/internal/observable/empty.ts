@@ -11,7 +11,7 @@ import { SchedulerLike } from '../types';
  *
  * ## Examples
  *
- * ### Log complete notification
+ * Log complete notification
  *
  * ```ts
  * import { EMPTY } from 'rxjs';
@@ -41,7 +41,7 @@ export const EMPTY = new Observable<never>((subscriber) => subscriber.complete()
  *
  * ## Examples
  *
- * ### Emit the number 7, then complete
+ * Emit the number 7, then complete
  *
  * ```ts
  * import { empty, startWith } from 'rxjs';
@@ -53,7 +53,7 @@ export const EMPTY = new Observable<never>((subscriber) => subscriber.complete()
  * // 7
  * ```
  *
- * ### Map and flatten only odd numbers to the sequence 'a', 'b', 'c'
+ * Map and flatten only odd numbers to the sequence 'a', 'b', 'c'
  *
  * ```ts
  * import { interval, mergeMap, of, empty } from 'rxjs';

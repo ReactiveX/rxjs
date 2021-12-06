@@ -25,7 +25,9 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
  * ![](every.png)
  *
  * ## Example
+ *
  * A simple example emitting true if all elements are less than 5, false otherwise
+ *
  * ```ts
  * import { of, every } from 'rxjs';
  *

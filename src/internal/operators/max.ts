@@ -9,7 +9,9 @@ import { isFunction } from '../util/isFunction';
  * ![](max.png)
  *
  * ## Examples
+ *
  * Get the maximal value of a series of numbers
+ *
  * ```ts
  * import { of, max } from 'rxjs';
  *
@@ -20,6 +22,7 @@ import { isFunction } from '../util/isFunction';
  * ```
  *
  * Use a comparer function to get the maximal item
+ *
  * ```ts
  * import { of, max } from 'rxjs';
  *

@@ -38,7 +38,9 @@ export function first<T, D = T>(
  * `defaultValue` was not provided and a matching element is not found.
  *
  * ## Examples
+ *
  * Emit only the first click that happens on the DOM
+ *
  * ```ts
  * import { fromEvent, first } from 'rxjs';
  *
@@ -48,6 +50,7 @@ export function first<T, D = T>(
  * ```
  *
  * Emits the first click that happens on a DIV
+ *
  * ```ts
  * import { fromEvent, first } from 'rxjs';
  *

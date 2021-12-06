@@ -11,6 +11,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ![](throwIfEmpty.png)
  *
  * ## Example
+ *
+ * Throw an error if the document wasn't clicked within 1 second
+ *
  * ```ts
  * import { fromEvent, takeUntil, timer, throwIfEmpty } from 'rxjs';
  *

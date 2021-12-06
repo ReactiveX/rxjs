@@ -29,7 +29,9 @@ export function findIndex<T>(predicate: (value: T, index: number, source: Observ
  * an error if a valid value is not found.
  *
  * ## Example
+ *
  * Emit the index of first click that happens on a DIV element
+ *
  * ```ts
  * import { fromEvent, findIndex } from 'rxjs';
  *

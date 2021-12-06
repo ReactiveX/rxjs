@@ -28,7 +28,7 @@ export function scan<V, A, S>(accumulator: (acc: A | S, value: V, index: number)
  * 3. Emit `state`.
  * 4. Next value arrives, let `value = nextValue`, go to 2.
  *
- * ## Example
+ * ## Examples
  *
  * An average of previous numbers. This example shows how
  * not providing a `seed` can prime the stream with the
@@ -50,10 +50,8 @@ export function scan<V, A, S>(accumulator: (acc: A | S, value: V, index: number)
  *   .subscribe(console.log);
  * ```
  *
- * ## Example
- *
  * The Fibonacci sequence. This example shows how you can use
- * a seed to prime accumulation process. Also... you know... Fibinacci.
+ * a seed to prime accumulation process. Also... you know... Fibonacci.
  * So important to like, computers and stuff that its whiteboarded
  * in job interviews. Now you can show them the Rx version! (Please don't, haha)
  *

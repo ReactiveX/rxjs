@@ -26,7 +26,9 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
  * `fetch`. If the provided `signal` aborts, the error that `fetch` normally rejects with
  * in that scenario will be emitted as an error from the observable.
  *
- * ### Basic Use
+ * ## Examples
+ *
+ * Basic use
  *
  * ```ts
  * import { fromFetch } from 'rxjs/fetch';

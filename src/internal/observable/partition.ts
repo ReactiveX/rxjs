@@ -41,7 +41,9 @@ export function partition<T>(source: ObservableInput<T>, predicate: (value: T, i
  * behaves like {@link filter} with the predicate negated.
  *
  * ## Example
+ *
  * Partition a set of numbers into odds and evens observables
+ *
  * ```ts
  * import { of, partition } from 'rxjs';
  *

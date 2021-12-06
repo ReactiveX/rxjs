@@ -35,7 +35,9 @@ import { mergeInternals } from './mergeInternals';
  * at a time.
  *
  * ## Example
+ *
  * Count the number of click events
+ *
  * ```ts
  * import { fromEvent, mapTo, mergeScan, of } from 'rxjs';
  *

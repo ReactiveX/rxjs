@@ -27,6 +27,7 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  * ## Example
  *
  * Emit clicks at a rate of at most one click per second
+ *
  * ```ts
  * import { fromEvent, auditTime } from 'rxjs';
  *

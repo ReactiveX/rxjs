@@ -18,7 +18,9 @@ import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
  * a inner Observable will be immediately emitted on the output Observable.
  *
  * ## Examples
+ *
  * Spawn a new interval Observable for each click event, and blend their outputs as one Observable
+ *
  * ```ts
  * import { fromEvent, map, interval, mergeAll } from 'rxjs';
  *
@@ -29,6 +31,7 @@ import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
  * ```
  *
  * Count from 0 to 9 every second for each click, but only allow 2 concurrent timers
+ *
  * ```ts
  * import { fromEvent, map, interval, take, mergeAll } from 'rxjs';
  *

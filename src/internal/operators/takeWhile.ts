@@ -30,7 +30,9 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
  * Observable and completes the output Observable.
  *
  * ## Example
+ *
  * Emit click events only while the clientX property is greater than 200
+ *
  * ```ts
  * import { fromEvent, takeWhile } from 'rxjs';
  *

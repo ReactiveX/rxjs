@@ -20,7 +20,8 @@ import { Observer, NextObserver } from '../../types';
  * to the socket client. By default `deserializer` is going to apply `JSON.parse` to each message coming
  * from the Server.
  *
- * ## Example
+ * ## Examples
+ *
  * **deserializer**, the default for this property is `JSON.parse` but since there are just two options
  * for incoming data, either be text or binarydata. We can apply a custom deserialization strategy
  * or just simply skip the default behaviour.
@@ -41,7 +42,8 @@ import { Observer, NextObserver } from '../../types';
  * // This is a msg from the server
  * ```
  *
- * **serializer** allows us to apply custom serialization strategy but for the outgoing messages
+ * **serializer** allows us to apply custom serialization strategy but for the outgoing messages.
+ *
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
  *
@@ -61,7 +63,8 @@ import { Observer, NextObserver } from '../../types';
  * // {"channel":"webDevelopment","msg":"msg to the server"}
  * ```
  *
- * **closeObserver** allows us to set a custom error when an error raise up.
+ * **closeObserver** allows us to set a custom error when an error raises up.
+ *
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
  *
@@ -97,8 +100,7 @@ import { Observer, NextObserver } from '../../types';
  * //output
  * // connetion ok`
  * ```
- * */
-
+ */
 export interface WebSocketSubjectConfig<T> {
   /** The url of the socket server to connect to */
   url: string;

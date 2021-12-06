@@ -19,8 +19,9 @@ import { identity } from '../util/identity';
  * if there are any.
  *
  * ## Examples
+ *
  * Spawn a new interval observable for each click event, but for every new
- * click, cancel the previous interval and subscribe to the new one.
+ * click, cancel the previous interval and subscribe to the new one
  *
  * ```ts
  * import { fromEvent, tap, map, interval, switchAll } from 'rxjs';

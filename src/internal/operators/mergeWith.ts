@@ -12,10 +12,9 @@ import { merge } from './merge';
  *
  * When any one source errors, the resulting observable will error.
  *
+ * ## Example
  *
- * ### Example
- *
- * Joining all outputs from multiple user input event streams:
+ * Joining all outputs from multiple user input event streams
  *
  * ```ts
  * import { fromEvent, map, mergeWith } from 'rxjs';

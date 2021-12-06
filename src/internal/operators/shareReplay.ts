@@ -38,7 +38,10 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
  * If `refCount` is false on the other hand, the source will not be unsubscribed meaning that the inner
  * `ReplaySubject` will still be subscribed to the source (and potentially run for ever).
  *
- * ## Example
+ * ## Examples
+ *
+ * Example with a third subscriber coming late to the party
+ *
  * ```ts
  * import { interval, take, shareReplay } from 'rxjs';
  *
@@ -52,7 +55,8 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
  *
  * ```
  *
- * ## Example for refCount usage
+ * Example for `refCount` usage
+ *
  * ```ts
  * import { Observable, defer, tap, finalize, interval, shareReplay, take } from 'rxjs';
  *

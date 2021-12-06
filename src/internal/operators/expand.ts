@@ -41,7 +41,9 @@ export function expand<T, O extends ObservableInput<unknown>>(
  * *expand* behaves recursively.
  *
  * ## Example
+ *
  * Start emitting the powers of two on every click, at most 10 of them
+ *
  * ```ts
  * import { fromEvent, mapTo, expand, of, delay, take } from 'rxjs';
  *

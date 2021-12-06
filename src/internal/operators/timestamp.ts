@@ -15,7 +15,7 @@ import { map } from './map';
  *
  * ## Example
  *
- * In this example there is a timestamp attached to the documents click event.
+ * In this example there is a timestamp attached to the document's click events
  *
  * ```ts
  * import { fromEvent, timestamp } from 'rxjs';
@@ -35,5 +35,5 @@ import { map } from './map';
  * each item emitted by the source Observable indicating when it was emitted.
  */
 export function timestamp<T>(timestampProvider: TimestampProvider = dateTimestampProvider): OperatorFunction<T, Timestamp<T>> {
-  return map((value: T) => ({ value, timestamp: timestampProvider.now()}));
+  return map((value: T) => ({ value, timestamp: timestampProvider.now() }));
 }

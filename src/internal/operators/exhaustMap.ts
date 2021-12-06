@@ -41,7 +41,9 @@ export function exhaustMap<T, I, R>(
  * and repeat this process.
  *
  * ## Example
+ *
  * Run a finite timer for each click, only if there is no currently active timer
+ *
  * ```ts
  * import { fromEvent, exhaustMap, interval, take } from 'rxjs';
  *

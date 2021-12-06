@@ -9,7 +9,9 @@ import { isFunction } from '../util/isFunction';
  * ![](min.png)
  *
  * ## Examples
+ *
  * Get the minimal value of a series of numbers
+ *
  * ```ts
  * import { of, min } from 'rxjs';
  *
@@ -20,6 +22,7 @@ import { isFunction } from '../util/isFunction';
  * ```
  *
  * Use a comparer function to get the minimal item
+ *
  * ```ts
  * import { of, min } from 'rxjs';
  *

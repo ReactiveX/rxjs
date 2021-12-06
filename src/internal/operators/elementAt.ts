@@ -21,7 +21,9 @@ import { take } from './take';
  * `ArgumentOutOfRangeError` error.
  *
  * ## Example
+ *
  * Emit only the third click event
+ *
  * ```ts
  * import { fromEvent, elementAt } from 'rxjs';
  *

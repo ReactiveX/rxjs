@@ -35,7 +35,9 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
  * (emits `undefined` instead).
  *
  * ## Example
+ *
  * Find and emit the first click that happens on a DIV element
+ *
  * ```ts
  * import { fromEvent, find } from 'rxjs';
  *

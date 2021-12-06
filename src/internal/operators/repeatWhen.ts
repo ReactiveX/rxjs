@@ -15,7 +15,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ![](repeatWhen.png)
  *
  * ## Example
+ *
  * Repeat a message stream on click
+ *
  * ```ts
  * import { of, fromEvent, repeatWhen } from 'rxjs';
  *

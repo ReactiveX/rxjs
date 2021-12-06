@@ -28,7 +28,8 @@ export function race<T extends readonly unknown[]>(...inputs: [...ObservableInpu
  * input.
  *
  * ## Example
- * ### Subscribes to the observable that was the first to start emitting.
+ *
+ * Subscribes to the observable that was the first to start emitting.
  *
  * ```ts
  * import { interval, mapTo, race } from 'rxjs';

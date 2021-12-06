@@ -13,7 +13,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * 3. If the value pushed by the source is determined to be unequal by this check, that value is emitted and
  *    becomes the new "previously emitted value" internally.
  *
- * ## Example
+ * ## Examples
  *
  * A very basic example with no `comparator`. Note that `1` is emitted more than once,
  * because it's distinct in comparison to the _previously emitted_ value,
@@ -28,8 +28,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * .subscribe(console.log);
  * // Logs: 1, 2, 1, 3
  * ```
- *
- * ## Example
  *
  * With a `comparator`, you can do custom comparisons. Let's say
  * you only want to emit a value when all of its components have
@@ -60,8 +58,6 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * // {engineVersion: "1.3.0", transmissionVersion: "1.4.0"}
  * // {engineVersion: "2.0.0", transmissionVersion: "1.5.0"}
  * ```
- *
- * ## Example
  *
  * You can also provide a custom `comparator` to check that emitted
  * changes are only in one direction. Let's say you only want to get

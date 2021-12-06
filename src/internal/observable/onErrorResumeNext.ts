@@ -32,7 +32,9 @@ export function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...
  * always use the {@link catchError} operator on them before passing them into `onErrorResumeNext`.
  *
  * ## Example
- * Subscribe to the next Observable after map fails</caption>
+ *
+ * Subscribe to the next Observable after map fails
+ *
  * ```ts
  * import { onErrorResumeNext, of, map } from 'rxjs';
  *

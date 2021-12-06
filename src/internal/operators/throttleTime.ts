@@ -23,9 +23,10 @@ import { timer } from '../observable/timer';
  *
  * ## Examples
  *
- * #### Limit click rate
+ * ### Limit click rate
  *
  * Emit clicks at a rate of at most one click per second
+ *
  * ```ts
  * import { fromEvent, throttleTime } from 'rxjs';
  *
@@ -34,7 +35,7 @@ import { timer } from '../observable/timer';
  * result.subscribe(x => console.log(x));
  * ```
  *
- * #### Double Click
+ * ### Double Click
  *
  * The following example only emits clicks which happen within a subsequent
  * delay of 400ms of the previous click. This for example can emulate a double

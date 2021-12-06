@@ -23,7 +23,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * with size `windowSize`.
  *
  * ## Examples
+ *
  * Ignore every 3rd click event, starting from the first one
+ *
  * ```ts
  * import { fromEvent, windowCount, map, skip, mergeAll } from 'rxjs';
  *
@@ -37,6 +39,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ```
  *
  * Ignore every 3rd click event, starting from the third one
+ *
  * ```ts
  * import { fromEvent, windowCount, mergeAll } from 'rxjs';
  *

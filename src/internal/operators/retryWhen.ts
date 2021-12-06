@@ -17,6 +17,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * Retry an observable sequence on error based on custom criteria.
  *
  * ## Example
+ *
  * ```ts
  * import { interval, map, retryWhen, tap, delayWhen, timer } from 'rxjs';
  *

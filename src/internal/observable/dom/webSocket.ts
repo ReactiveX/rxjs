@@ -82,8 +82,10 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * is not a `WebSocketSubject`, so calling `next` or `multiplex` again will fail. For pushing values to the
  * server, use root `WebSocketSubject`.
  *
- * ### Examples
- * #### Listening for messages from the server
+ * ## Examples
+ *
+ * Listening for messages from the server
+ *
  * ```ts
  * import { webSocket } from "rxjs/webSocket";
  * const subject = webSocket("ws://localhost:8081");
@@ -95,7 +97,8 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  *  );
  * ```
  *
- * #### Pushing messages to the server
+ * Pushing messages to the server
+ *
  * ```ts
  * import { webSocket } from "rxjs/webSocket";
  * const subject = webSocket('ws://localhost:8081');
@@ -113,7 +116,8 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * // Also closes the connection, but let's the server know that this closing is caused by some error.
  * ```
  *
- * #### Multiplexing WebSocket
+ * Multiplexing WebSocket
+ *
  * ```ts
  * import { webSocket } from "rxjs/webSocket";
  * const subject = webSocket('ws://localhost:8081');

@@ -44,7 +44,9 @@ export function windowTime<T>(
  * `windowTimeSpan` and `windowCreationInterval` arguments.
  *
  * ## Examples
+ *
  * In every window of 1 second each, emit at most 2 click events
+ *
  * ```ts
  * import { fromEvent, windowTime, map, take, mergeAll } from 'rxjs';
  *
@@ -58,6 +60,7 @@ export function windowTime<T>(
  * ```
  *
  * Every 5 seconds start a window 1 second long, and emit at most 2 click events per window
+ *
  * ```ts
  * import { fromEvent, windowTime, map, take, mergeAll } from 'rxjs';
  *
@@ -70,7 +73,8 @@ export function windowTime<T>(
  * result.subscribe(x => console.log(x));
  * ```
  *
- * Same as example above but with maxWindowCount instead of take
+ * Same as example above but with `maxWindowCount` instead of `take`
+ *
  * ```ts
  * import { fromEvent, windowTime, mergeAll } from 'rxjs';
  *

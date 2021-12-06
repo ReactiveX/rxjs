@@ -39,7 +39,9 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
  * subsequent inner Observables.
  *
  * ## Example
+ *
  * Generate new Observable according to source Observable values
+ *
  * ```ts
  * import { of, switchMap } from 'rxjs';
  *
@@ -56,6 +58,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
  * ```
  *
  * Restart an interval Observable on every click event
+ *
  * ```ts
  * import { fromEvent, switchMap, interval } from 'rxjs';
  *

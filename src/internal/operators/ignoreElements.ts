@@ -15,7 +15,10 @@ import { noop } from '../util/noop';
  * when it completes or when it terminates with an error, you can apply the `ignoreElements` operator
  * to the Observable, which will ensure that it will never call its observers’ `next` handlers.
  *
- * ## Examples
+ * ## Example
+ *
+ * Ignore all `next` emissions from the source
+ *
  * ```ts
  * import { of, ignoreElements } from 'rxjs';
  *

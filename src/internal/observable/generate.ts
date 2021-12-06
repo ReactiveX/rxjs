@@ -47,7 +47,7 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  *
  * ## Examples
  *
- * ### Produces sequences of number
+ * Produces sequence of numbers
  *
  * ```ts
  * import { generate } from 'rxjs';
@@ -62,12 +62,12 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * // 2
  * ```
  *
- * ### Use asap scheduler
+ * Use `asapScheduler`
  *
  * ```ts
- * import { generate } from 'rxjs';
+ * import { generate, asapScheduler } from 'rxjs';
  *
- * const result = generate(1, x => x < 5, x => x * 2, x => x + 1, asap);
+ * const result = generate(1, x => x < 5, x => x * 2, x => x + 1, asapScheduler);
  *
  * result.subscribe(x => console.log(x));
  *
@@ -142,7 +142,7 @@ export function generate<T, S>(
  *
  * ## Examples
  *
- * ### Use with condition and iterate functions
+ * Use with condition and iterate functions
  *
  * ```ts
  * import { generate } from 'rxjs';
@@ -161,7 +161,7 @@ export function generate<T, S>(
  * // "Complete!"
  * ```
  *
- * ### Use with condition, iterate and resultSelector functions
+ * Use with condition, iterate and resultSelector functions
  *
  * ```ts
  * import { generate } from 'rxjs';
@@ -180,7 +180,7 @@ export function generate<T, S>(
  * // "complete!"
  * ```
  *
- * ### Use with options object
+ * Use with options object
  *
  * ```ts
  * import { generate } from 'rxjs';
@@ -204,7 +204,7 @@ export function generate<T, S>(
  * // "Complete!"
  * ```
  *
- * ### Use options object without condition function
+ * Use options object without condition function
  *
  * ```ts
  * import { generate } from 'rxjs';
@@ -257,7 +257,7 @@ export function generate<S>(
  *
  * ## Examples
  *
- * ### Use options object with condition function
+ * Use options object with condition function
  *
  * ```ts
  * import { generate } from 'rxjs';
@@ -299,7 +299,7 @@ export function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
  *
  * ## Examples
  *
- * ### Use options object with condition and iterate function
+ * Use options object with condition and iterate function
  *
  * ```ts
  * import { generate } from 'rxjs';

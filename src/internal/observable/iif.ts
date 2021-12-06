@@ -16,7 +16,7 @@ import { ObservableInput } from '../types';
  *
  * ## Examples
  *
- * ### Change at runtime which Observable will be subscribed
+ * Change at runtime which Observable will be subscribed
  *
  * ```ts
  * import { iif, of } from 'rxjs';
@@ -42,7 +42,7 @@ import { ObservableInput } from '../types';
  *
  * ```
  *
- * ### Control an access to an Observable
+ * Control access to an Observable
  *
  * ```ts
  * let accessGranted;

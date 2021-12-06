@@ -29,6 +29,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ## Example
  *
  * Emit clicks at a rate of at most one click per second
+ *
  * ```ts
  * import { fromEvent, audit, interval } from 'rxjs';
  *

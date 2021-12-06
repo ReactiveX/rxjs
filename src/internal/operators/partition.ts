@@ -21,7 +21,9 @@ import { UnaryFunction } from '../types';
  * behaves like {@link filter} with the predicate negated.
  *
  * ## Example
+ *
  * Partition click events into those on DIV elements and those elsewhere
+ *
  * ```ts
  * import { fromEvent } from 'rxjs';
  * import { partition } from 'rxjs/operators';

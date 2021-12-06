@@ -17,7 +17,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * Note: `repeat(0)` returns an empty observable and `repeat()` will repeat forever
  *
  * ## Example
+ *
  * Repeat a message stream
+ *
  * ```ts
  * import { of, repeat } from 'rxjs';
  *
@@ -32,6 +34,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ```
  *
  * Repeat 3 values, 2 times
+ *
  * ```ts
  * import { interval, take, repeat } from 'rxjs';
  *

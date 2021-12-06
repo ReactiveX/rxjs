@@ -33,7 +33,9 @@ import { innerFrom } from '../observable/innerFrom';
  * same time as they did on the source Observable.
  *
  * ## Example
+ *
  * Emit the most recent click after a burst of clicks
+ *
  * ```ts
  * import { fromEvent, scan, debounce, interval } from 'rxjs';
  *

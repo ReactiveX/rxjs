@@ -23,7 +23,9 @@ import { innerFrom } from '../observable/innerFrom';
  * window is opened immediately when subscribing to the output Observable.
  *
  * ## Example
+ *
  * Emit only the first two clicks events in every window of [1-5] random seconds
+ *
  * ```ts
  * import { fromEvent, windowWhen, interval, map, take, mergeAll } from 'rxjs';
  *

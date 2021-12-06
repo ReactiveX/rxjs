@@ -28,7 +28,8 @@ export function catchError<T, O extends ObservableInput<any>>(
  * subscribe to it, and forward all of its events to the resulting observable.
  *
  * ## Examples
- * Continues with a different Observable when there's an error
+ *
+ * Continue with a different Observable when there's an error
  *
  * ```ts
  * import { of, map, catchError } from 'rxjs';
@@ -46,7 +47,7 @@ export function catchError<T, O extends ObservableInput<any>>(
  *   // 1, 2, 3, I, II, III, IV, V
  * ```
  *
- * Retries the caught source Observable again in case of error, similar to retry() operator
+ * Retry the caught source Observable again in case of error, similar to `retry()` operator
  *
  * ```ts
  * import { of, map, catchError, take } from 'rxjs';
@@ -65,7 +66,7 @@ export function catchError<T, O extends ObservableInput<any>>(
  *   // 1, 2, 3, 1, 2, 3, ...
  * ```
  *
- * Throws a new error when the source Observable throws an error
+ * Throw a new error when the source Observable throws an error
  *
  * ```ts
  * import { of, map, catchError } from 'rxjs';

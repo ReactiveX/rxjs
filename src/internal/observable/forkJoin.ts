@@ -94,7 +94,8 @@ export function forkJoin<T extends Record<string, ObservableInput<any>>>(
  *
  * ## Examples
  *
- * ### Use forkJoin with a dictionary of observable inputs
+ * Use `forkJoin` with a dictionary of observable inputs
+ *
  * ```ts
  * import { forkJoin, of, timer } from 'rxjs';
  *
@@ -113,7 +114,8 @@ export function forkJoin<T extends Record<string, ObservableInput<any>>>(
  * // "This is how it ends!" immediately after
  * ```
  *
- * ### Use forkJoin with an array of observable inputs
+ * Use `forkJoin` with an array of observable inputs
+ *
  * ```ts
  * import { forkJoin, of, timer } from 'rxjs';
  *

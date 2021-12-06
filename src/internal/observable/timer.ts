@@ -18,7 +18,7 @@ import { isValidDate } from '../util/isDate';
  *
  * ## Examples
  *
- * ### Wait 3 seconds and start another observable
+ * Wait 3 seconds and start another observable
  *
  * You might want to use `timer` to delay subscription to an
  * observable by a set amount of time. Here we use a timer with
@@ -37,7 +37,7 @@ import { isValidDate } from '../util/isDate';
  * .subscribe(console.log);
  * ```
  *
- * ### Take all of the values until the start of the next minute
+ * Take all values until the start of the next minute
  *
  * Using a `Date` as the trigger for the first emission, you can
  * do things like wait until midnight to fire an event, or in this case,

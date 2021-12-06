@@ -28,10 +28,10 @@ export function firstValueFrom<T>(source: Observable<T>): Promise<T>;
  * something like {@link timeout}, {@link take}, {@link takeWhile}, or {@link takeUntil}
  * amongst others.
  *
- * ### Example
+ * ## Example
  *
  * Wait for the first value from a stream and emit it from a promise in
- * an async function.
+ * an async function
  *
  * ```ts
  * import { interval, firstValueFrom } from 'rxjs';

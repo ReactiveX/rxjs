@@ -110,7 +110,9 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  * will error immediately as well, and all other Observables will be unsubscribed.
  *
  * ## Examples
- * ### Combine two timer Observables
+ *
+ * Combine two timer Observables
+ *
  * ```ts
  * import { timer, combineLatest } from 'rxjs';
  *
@@ -124,7 +126,9 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  * // [1, 1] after 1.5s
  * // [2, 1] after 2s
  * ```
- * ### Combine a dictionary of Observables
+ *
+ * Combine a dictionary of Observables
+ *
  * ```ts
  * import { of, delay, startWith, combineLatest } from 'rxjs';
  *
@@ -141,7 +145,9 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  * // {a: 1, b: 5, c: 0} after 5s
  * // {a: 1, b: 5, c: 10} after 10s
  * ```
- * ### Combine an array of Observables
+ *
+ * Combine an array of Observables
+ *
  * ```ts
  * import { of, delay, startWith, combineLatest } from 'rxjs';
  *
@@ -160,8 +166,8 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  * // [1, 5, 10] after 10s
  * ```
  *
+ * Use map operator to dynamically calculate the Body-Mass Index
  *
- * ### Use map operator to dynamically calculate the Body-Mass Index
  * ```ts
  * import { of, combineLatest, map } from 'rxjs';
  *

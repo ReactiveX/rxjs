@@ -7,6 +7,7 @@ import { operate } from '../util/lift';
  * The specified function will also be called when the subscriber explicitly unsubscribes.
  *
  * ## Examples
+ *
  * Execute callback function when the observable completes
  *
  * ```ts

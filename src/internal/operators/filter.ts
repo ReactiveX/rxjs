@@ -25,7 +25,9 @@ export function filter<T>(predicate: (value: T, index: number) => boolean): Mono
  * function and only emits those values that yielded `true`.
  *
  * ## Example
+ *
  * Emit only click events whose target was a DIV element
+ *
  * ```ts
  * import { fromEvent, filter } from 'rxjs';
  *

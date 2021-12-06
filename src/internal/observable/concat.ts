@@ -47,7 +47,9 @@ export function concat<T extends readonly unknown[]>(
  * you can always use {@link repeat}.
  *
  * ## Examples
- * ### Concatenate a timer counting from 0 to 3 with a synchronous sequence from 1 to 10
+ *
+ * Concatenate a timer counting from 0 to 3 with a synchronous sequence from 1 to 10
+ *
  * ```ts
  * import { interval, take, range, concat } from 'rxjs';
  *
@@ -60,7 +62,8 @@ export function concat<T extends readonly unknown[]>(
  * // 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3 -immediate-> 1 ... 10
  * ```
  *
- * ### Concatenate 3 Observables
+ * Concatenate 3 Observables
+ *
  * ```ts
  * import { interval, take, concat } from 'rxjs';
  *
@@ -78,7 +81,8 @@ export function concat<T extends readonly unknown[]>(
  * // -500ms-> 0 -500ms-> 1 -500ms-> ... 9
  * ```
  *
- * ### Concatenate the same Observable to repeat it
+ * Concatenate the same Observable to repeat it
+ *
  * ```ts
  * import { interval, take, concat } from 'rxjs';
  *

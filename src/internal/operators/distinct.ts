@@ -38,7 +38,7 @@ import { noop } from '../util/noop';
  * // 4
  * ```
  *
- * An example using a keySelector function
+ * An example using the `keySelector` function
  *
  * ```ts
  * import { of, distinct } from 'rxjs';

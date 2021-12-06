@@ -20,7 +20,7 @@ import { noop } from '../util/noop';
  *
  * ## Example
  *
- * In the following example, all emitted values ​​of the interval observable are skipped until the user clicks anywhere within the page.
+ * In the following example, all emitted values of the interval observable are skipped until the user clicks anywhere within the page
  *
  * ```ts
  * import { interval, fromEvent, skipUntil } from 'rxjs';

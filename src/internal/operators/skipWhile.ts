@@ -16,7 +16,9 @@ export function skipWhile<T>(predicate: (value: T, index: number) => boolean): M
  * It can also be skipped using index. Once the predicate is true, it will not be called again.
  *
  * ## Example
- * Using Value: Skip some super heroes
+ *
+ * Skip some super heroes
+ *
  * ```ts
  * import { from, skipWhile } from 'rxjs';
  *
@@ -26,7 +28,9 @@ export function skipWhile<T>(predicate: (value: T, index: number) => boolean): M
  * // output: SuperGirl, Black Canary
  * example.subscribe((femaleHero) => console.log(femaleHero));
  * ```
- * Using Index: Skip value from the array until index 5
+ *
+ * Skip values from the array until index 5
+ *
  * ```ts
  * import { from, skipWhile } from 'rxjs';
  *

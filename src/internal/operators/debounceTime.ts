@@ -32,7 +32,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * managing timers.
  *
  * ## Example
+ *
  * Emit the most recent click after a burst of clicks
+ *
  * ```ts
  * import { fromEvent, debounceTime } from 'rxjs';
  *

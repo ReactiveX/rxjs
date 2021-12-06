@@ -39,6 +39,7 @@ export interface RetryConfig {
  * would be: [1, 2, 1, 2, 3, 4, 5, `complete`].
  *
  * ## Example
+ *
  * ```ts
  * import { interval, mergeMap, throwError, of, retry } from 'rxjs';
  *
