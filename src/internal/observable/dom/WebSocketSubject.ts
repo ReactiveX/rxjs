@@ -336,7 +336,9 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     };
 
     socket.onclose = (e: CloseEvent) => {
-      this._resetState();
+      if (socket === this._socket) {
+        this._resetState();
+      }
       const { closeObserver } = this._config;
       if (closeObserver) {
         closeObserver.next(e);
