@@ -1,4 +1,4 @@
-import { async } from '../scheduler/async';
+import { asyncScheduler } from '../scheduler/async';
 import { audit } from './audit';
 import { timer } from '../observable/timer';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
@@ -49,6 +49,6 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  * @return A function that returns an Observable that performs rate-limiting of
  * emissions from the source Observable.
  */
-export function auditTime<T>(duration: number, scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
+export function auditTime<T>(duration: number, scheduler: SchedulerLike = asyncScheduler): MonoTypeOperatorFunction<T> {
   return audit(() => timer(duration, scheduler));
 }

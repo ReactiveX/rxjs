@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { async } from '../scheduler/async';
+import { asyncScheduler } from '../scheduler/async';
 import { SchedulerLike, OperatorFunction } from '../types';
 import { scan } from './scan';
 import { defer } from '../observable/defer';
@@ -52,7 +52,7 @@ import { map } from './map';
  * @return A function that returns an Observable that emits information about
  * value and interval.
  */
-export function timeInterval<T>(scheduler: SchedulerLike = async): OperatorFunction<T, TimeInterval<T>> {
+export function timeInterval<T>(scheduler: SchedulerLike = asyncScheduler): OperatorFunction<T, TimeInterval<T>> {
   return (source: Observable<T>) =>
     defer(() => {
       return source.pipe(
