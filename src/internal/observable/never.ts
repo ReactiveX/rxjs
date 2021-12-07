@@ -28,7 +28,7 @@ import { noop } from '../util/noop';
  * ```
  *
  * @see {@link Observable}
- * @see {@link index/EMPTY}
+ * @see {@link EMPTY}
  * @see {@link of}
  * @see {@link throwError}
  */

@@ -36,6 +36,11 @@ import { noop } from '../util/noop';
  * const subscribe = emitAfterClick.subscribe(value => console.log(value));
  * ```
  *
+ * @see {@link last}
+ * @see {@link skip}
+ * @see {@link skipWhile}
+ * @see {@link skipLast}
+ *
  * @param {Observable} notifier - The second Observable that has to emit an item before the source Observable's elements begin to
  * be mirrored by the resulting Observable.
  * @return A function that returns an Observable that skips items from the

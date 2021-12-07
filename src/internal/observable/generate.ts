@@ -229,7 +229,6 @@ export function generate<T, S>(
  * ```
  *
  * @see {@link from}
- * @see {@link index/Observable.create}
  *
  * @param {S} initialState Initial state.
  * @param {function (state: S): boolean} condition Condition to terminate generation (upon returning false).

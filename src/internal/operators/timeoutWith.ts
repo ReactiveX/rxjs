@@ -69,6 +69,9 @@ export function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, sch
  *    error: console.error
  * })
  * ```
+ *
+ * @see {@link timeout}
+ *
  * @param waitFor The time allowed between values from the source before timeout is triggered.
  * @param switchTo The observable to switch to when timeout occurs.
  * @param scheduler The scheduler to use with time-related operations within this operator. Defaults to {@link asyncScheduler}

@@ -129,8 +129,7 @@ export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
  * // subscription 3:  2
  * ```
  *
- * @see {@link api/index/function/interval}
- * @see {@link map}
+ * @see {@link shareReplay}
  *
  * @return A function that returns an Observable that mirrors the source.
  */

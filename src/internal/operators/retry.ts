@@ -67,6 +67,8 @@ export interface RetryConfig {
  * // "Error!: Retried 2 times then quit!"
  * ```
  *
+ * @see {@link retryWhen}
+ *
  * @param count - Number of retry attempts before failing.
  * @param resetOnSuccess - When set to `true` every successful emission will reset the error count
  * @return A function that returns an Observable that will resubscribe to the

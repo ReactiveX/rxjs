@@ -36,6 +36,9 @@ import { merge } from './merge';
  * // "click"
  * // "dblclick"
  * ```
+ *
+ * @see {@link merge}
+ *
  * @param otherSources the sources to combine the current source with.
  * @return A function that returns an Observable that merges the values from
  * all given Observables.

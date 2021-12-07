@@ -53,6 +53,8 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * //  --Wait 5 seconds then repeat
  * ```
  *
+ * @see {@link retry}
+ *
  * @param {function(errors: Observable): Observable} notifier - Receives an Observable of notifications with which a
  * user can `complete` or `error`, aborting the retry.
  * @return A function that returns an Observable that mirrors the source

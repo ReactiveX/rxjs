@@ -95,7 +95,7 @@ export function timer(due: number | Date, scheduler?: SchedulerLike): Observable
  *
  * ### Start an interval that starts right away
  *
- * Since {@link index/interval} waits for the passed delay before starting,
+ * Since {@link interval} waits for the passed delay before starting,
  * sometimes that's not ideal. You may want to start an interval immediately.
  * `timer` works well for this. Here we have both side-by-side so you can
  * see them in comparison.

@@ -49,7 +49,7 @@ import { innerFrom } from '../observable/innerFrom';
  *
  * @see {@link audit}
  * @see {@link auditTime}
- * @see {@link debounce}
+ * @see {@link debounceTime}
  * @see {@link delay}
  * @see {@link sample}
  * @see {@link sampleTime}

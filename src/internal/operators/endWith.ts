@@ -54,14 +54,14 @@ export function endWith<T, A extends unknown[] = T[]>(...values: A): OperatorFun
  * // "interval ended by click"
  * ```
  *
+ * @see {@link startWith}
+ * @see {@link concat}
+ * @see {@link takeUntil}
+ *
  * @param values Items you want the modified Observable to emit last.
  * @return A function that returns an Observable that emits all values from the
  * source, then synchronously emits the provided value(s) immediately after the
  * source completes.
- *
- * @see {@link startWith}
- * @see {@link concat}
- * @see {@link takeUntil}
  */
 export function endWith<T>(...values: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => concat(source, of(...values)) as Observable<T>;

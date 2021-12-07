@@ -58,7 +58,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ```
  *
  * @see {@link count}
- * @see {@link index/EMPTY}
+ * @see {@link EMPTY}
  *
  * @return A function that returns an Observable that emits boolean value
  * indicating whether the source Observable was empty or not.

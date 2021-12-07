@@ -74,14 +74,14 @@ export interface TimeoutErrorCtor {
 }
 
 /**
- * An error thrown by the {@link operators/timeout} operator.
+ * An error thrown by the {@link timeout} operator.
  *
  * Provided so users can use as a type and do quality comparisons.
  * We recommend you do not subclass this or create instances of this class directly.
  * If you have need of a error representing a timeout, you should
  * create your own error class and use that.
  *
- * @see {@link operators/timeout}
+ * @see {@link timeout}
  *
  * @class TimeoutError
  */
@@ -287,6 +287,8 @@ export function timeout<T>(each: number, scheduler?: SchedulerLike): MonoTypeOpe
  * <span class="informal">Timeouts on Observable that doesn't emit values fast enough.</span>
  *
  * ![](timeout.png)
+ *
+ * @see {@link timeoutWith}
  *
  * @return A function that returns an Observable that mirrors behaviour of the
  * source Observable, unless timeout happens when it throws an error.
