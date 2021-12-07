@@ -48,14 +48,14 @@ const DEFAULT_CONFIG: ConnectConfig<unknown> = {
  * Sharing a totally synchronous observable
  *
  * ```ts
- * import { defer, of, tap, connect, merge, map, filter } from 'rxjs';
+ * import { of, tap, connect, merge, map, filter } from 'rxjs';
  *
- * const source$ = defer(() => {
- *  console.log('subscription started');
- *  return of(1, 2, 3, 4, 5).pipe(
- *    tap(n => console.log(`source emitted ${n}`))
- *  );
- * });
+ * const source$ = of(1, 2, 3, 4, 5).pipe(
+ *   tap({
+ *     subscribe: () => console.log('subscription started'),
+ *     next: n => console.log(`source emitted ${ n }`)
+ *   })
+ * );
  *
  * source$.pipe(
  *   // Notice in here we're merging 3 subscriptions to `shared$`.

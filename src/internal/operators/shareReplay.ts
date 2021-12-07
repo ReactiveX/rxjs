@@ -86,25 +86,23 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
  * Example for `refCount` usage
  *
  * ```ts
- * import { Observable, defer, tap, finalize, interval, shareReplay, take } from 'rxjs';
+ * import { Observable, tap, interval, shareReplay, take } from 'rxjs';
  *
- * const log = <T>(source: Observable<T>, name: string) => defer(() => {
- *   console.log(`${name}: subscribed`);
- *   return source.pipe(
- *     tap({
- *       next: value => console.log(`${name}: ${value}`),
- *       complete: () => console.log(`${name}: complete`)
- *     }),
- *     finalize(() => console.log(`${name}: unsubscribed`))
- *   );
- * });
+ * const log = <T>(name: string, source: Observable<T>) => source.pipe(
+ *   tap({
+ *     subscribe: () => console.log(`${ name }: subscribed`),
+ *     next: value => console.log(`${ name }: ${ value }`),
+ *     complete: () => console.log(`${ name }: completed`),
+ *     finalize: () => console.log(`${ name }: unsubscribed`)
+ *   })
+ * );
  *
- * const obs$ = log(interval(1000), 'source');
+ * const obs$ = log('source', interval(1000));
  *
- * const shared$ = log(obs$.pipe(
- *   shareReplay({bufferSize: 1, refCount: true }),
- *   take(2),
- * ), 'shared');
+ * const shared$ = log('shared', obs$.pipe(
+ *   shareReplay({ bufferSize: 1, refCount: true }),
+ *   take(2)
+ * ));
  *
  * shared$.subscribe(x => console.log('sub A: ', x));
  * shared$.subscribe(y => console.log('sub B: ', y));
@@ -121,11 +119,11 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
  * // source: 1
  * // shared: 1
  * // sub A: 1
- * // shared: complete <-- take(2) completes the subscription for sub A
+ * // shared: completed <-- take(2) completes the subscription for sub A
  * // shared: unsubscribed <-- reference count = 1
  * // shared: 1
  * // sub B: 1
- * // shared: complete <-- take(2) completes the subscription for sub B
+ * // shared: completed <-- take(2) completes the subscription for sub B
  * // shared: unsubscribed <-- reference count = 0
  * // source: unsubscribed <-- replaySubject unsubscribes from source observable because the reference count dropped to 0 and refCount is true
  *
@@ -168,6 +166,6 @@ export function shareReplay<T>(
     connector: () => new ReplaySubject(bufferSize, windowTime, scheduler),
     resetOnError: true,
     resetOnComplete: false,
-    resetOnRefCountZero: refCount
+    resetOnRefCountZero: refCount,
   });
 }
