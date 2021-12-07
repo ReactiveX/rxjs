@@ -65,16 +65,16 @@ export function tap<T>(
  * ```ts
  * import { of, tap } from 'rxjs';
  *
- * const source = of(1, 2, 3, 4, 5)
+ * const source = of(1, 2, 3, 4, 5);
  *
  * source.pipe(
- *  tap(n => {
- *    if (n > 3) {
- *      throw new TypeError(`Value ${n} is greater than 3`)
- *    }
- *  })
+ *   tap(n => {
+ *     if (n > 3) {
+ *       throw new TypeError(`Value ${ n } is greater than 3`);
+ *     }
+ *   })
  * )
- * .subscribe(console.log);
+ * .subscribe({ next: console.log, error: err => console.log(err.message) });
  * ```
  *
  * We want to know when an observable completes before moving on to the next observable. The system
@@ -86,13 +86,11 @@ export function tap<T>(
  * import { of, concatMap, interval, take, map, tap } from 'rxjs';
  *
  * of(1, 2, 3).pipe(
- *  concatMap(n => interval(1000).pipe(
- *    take(Math.round(Math.random() * 10)),
- *    map(() => 'X'),
- *    tap({
- *      complete: () => console.log(`Done with ${n}`)
- *    })
- *  ))
+ *   concatMap(n => interval(1000).pipe(
+ *     take(Math.round(Math.random() * 10)),
+ *     map(() => 'X'),
+ *     tap({ complete: () => console.log(`Done with ${ n }`) })
+ *   ))
  * )
  * .subscribe(console.log);
  * ```

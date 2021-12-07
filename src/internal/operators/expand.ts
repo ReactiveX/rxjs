@@ -51,7 +51,7 @@ export function expand<T, O extends ObservableInput<unknown>>(
  * const powersOfTwo = clicks.pipe(
  *   mapTo(1),
  *   expand(x => of(2 * x).pipe(delay(1000))),
- *   take(10),
+ *   take(10)
  * );
  * powersOfTwo.subscribe(x => console.log(x));
  * ```

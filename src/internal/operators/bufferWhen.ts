@@ -27,12 +27,11 @@ import { innerFrom } from '../observable/innerFrom';
  * import { fromEvent, bufferWhen, interval } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
- * const buffered = clicks.pipe(bufferWhen(() =>
- *   interval(1000 + Math.random() * 4000)
- * ));
+ * const buffered = clicks.pipe(
+ *   bufferWhen(() => interval(1000 + Math.random() * 4000))
+ * );
  * buffered.subscribe(x => console.log(x));
  * ```
- *
  *
  * @see {@link buffer}
  * @see {@link bufferCount}

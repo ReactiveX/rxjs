@@ -66,6 +66,7 @@ export function pluck<T>(...properties: string[]): OperatorFunction<T, unknown>;
  *
  * const clicks = fromEvent(document, 'click');
  * const tagNames = clicks.pipe(pluck('target', 'tagName'));
+ *
  * tagNames.subscribe(x => console.log(x));
  * ```
  *

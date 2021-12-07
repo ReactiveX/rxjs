@@ -6,7 +6,6 @@ import { defer } from '../observable/defer';
 import { map } from './map';
 
 /**
- *
  * Emits an object containing the current value, and the time that has
  * passed between emitting the current value and the previous value, which is
  * calculated by using the provided `scheduler`'s `now()` method to retrieve
@@ -28,25 +27,17 @@ import { map } from './map';
  *
  * const seconds = interval(1000);
  *
- * seconds.pipe(timeInterval())
- * .subscribe({
- *     next: value => console.log(value),
- *     error: err => console.log(err),
- * });
- *
- * seconds.pipe(timeout(900))
- * .subscribe({
- *     next: value => console.log(value),
- *     error: err => console.log(err),
- * });
+ * seconds
+ *   .pipe(timeInterval())
+ *   .subscribe(value => console.log(value));
  *
  * // NOTE: The values will never be this precise,
  * // intervals created with `interval` or `setInterval`
  * // are non-deterministic.
  *
- * // {value: 0, interval: 1000}
- * // {value: 1, interval: 1000}
- * // {value: 2, interval: 1000}
+ * // { value: 0, interval: 1000 }
+ * // { value: 1, interval: 1000 }
+ * // { value: 2, interval: 1000 }
  * ```
  *
  * @param {SchedulerLike} [scheduler] Scheduler used to get the current time.

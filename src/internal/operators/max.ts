@@ -15,10 +15,12 @@ import { isFunction } from '../util/isFunction';
  * ```ts
  * import { of, max } from 'rxjs';
  *
- * of(5, 4, 7, 2, 8).pipe(
- *   max(),
- * )
- * .subscribe(x => console.log(x)); // -> 8
+ * of(5, 4, 7, 2, 8)
+ *   .pipe(max())
+ *   .subscribe(x => console.log(x));
+ *
+ * // Outputs
+ * // 8
  * ```
  *
  * Use a comparer function to get the maximal item
@@ -26,18 +28,17 @@ import { isFunction } from '../util/isFunction';
  * ```ts
  * import { of, max } from 'rxjs';
  *
- * interface Person {
- *   age: number,
- *   name: string
- * }
- *of(
- *   {age: 7, name: 'Foo'},
- *   {age: 5, name: 'Bar'},
- *   {age: 9, name: 'Beer'},
+ * of(
+ *   { age: 7, name: 'Foo' },
+ *   { age: 5, name: 'Bar' },
+ *   { age: 9, name: 'Beer' }
  * ).pipe(
- *   max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1),
+ *   max((a, b) => a.age < b.age ? -1 : 1)
  * )
- * .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'
+ * .subscribe(x => console.log(x.name));
+ *
+ * // Outputs
+ * // 'Beer'
  * ```
  *
  * @see {@link min}

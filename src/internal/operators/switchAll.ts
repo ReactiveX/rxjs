@@ -27,11 +27,11 @@ import { identity } from '../util/identity';
  * import { fromEvent, tap, map, interval, switchAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click').pipe(tap(() => console.log('click')));
- * const source = clicks.pipe(map((ev) => interval(1000)));
+ * const source = clicks.pipe(map(() => interval(1000)));
  *
- * source.pipe(
- *   switchAll()
- * ).subscribe(x => console.log(x));
+ * source
+ *   .pipe(switchAll())
+ *   .subscribe(x => console.log(x));
  *
  * // Output
  * // click
@@ -60,7 +60,6 @@ import { identity } from '../util/identity';
  * Observable into a first-order Observable producing values only from the most
  * recent Observable sequence.
  */
-
 export function switchAll<O extends ObservableInput<any>>(): OperatorFunction<O, ObservedValueOf<O>> {
   return switchMap(identity);
 }

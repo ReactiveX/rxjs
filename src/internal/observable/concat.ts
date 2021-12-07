@@ -89,18 +89,17 @@ export function concat<T extends readonly unknown[]>(
  * const timer = interval(1000).pipe(take(2));
  *
  * concat(timer, timer) // concatenating the same Observable!
- * .subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('...and it is done!')
- * );
+ *   .subscribe({
+ *     next: value => console.log(value),
+ *     complete: () => console.log('...and it is done!')
+ *   });
  *
  * // Logs:
  * // 0 after 1s
  * // 1 after 2s
  * // 0 after 3s
  * // 1 after 4s
- * // "...and it is done!" also after 4s
+ * // '...and it is done!' also after 4s
  * ```
  *
  * @see {@link concatAll}
@@ -109,11 +108,7 @@ export function concat<T extends readonly unknown[]>(
  * @see {@link startWith}
  * @see {@link endWith}
  *
- * @param input1 An input Observable to concatenate with others.
- * @param input2 An input Observable to concatenate with others.
- * More than one input Observables may be given as argument.
- * @param scheduler An optional {@link SchedulerLike} to schedule each
- * Observable subscription on.
+ * @param args Input Observables to concatenate.
  */
 export function concat(...args: any[]): Observable<unknown> {
   return concatAll()(from(args, popScheduler(args)));

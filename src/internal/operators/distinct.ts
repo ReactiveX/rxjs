@@ -7,8 +7,8 @@ import { noop } from '../util/noop';
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
  *
- * If a keySelector function is provided, then it will project each value from the source observable into a new value that it will
- * check for equality with previously projected values. If a keySelector function is not provided, it will use each value from the
+ * If a `keySelector` function is provided, then it will project each value from the source observable into a new value that it will
+ * check for equality with previously projected values. If the `keySelector` function is not provided, it will use each value from the
  * source observable directly with an equality check against previous values.
  *
  * In JavaScript runtimes that support `Set`, this operator will use a `Set` to improve performance of the distinct value checking.
@@ -26,9 +26,7 @@ import { noop } from '../util/noop';
  * import { of, distinct } from 'rxjs';
  *
  * of(1, 1, 2, 2, 2, 1, 2, 3, 4, 3, 2, 1)
- *   .pipe(
- *     distinct()
- *   )
+ *   .pipe(distinct())
  *   .subscribe(x => console.log(x));
  *
  * // Outputs
@@ -43,19 +41,13 @@ import { noop } from '../util/noop';
  * ```ts
  * import { of, distinct } from 'rxjs';
  *
- * interface Person {
- *    age: number,
- *    name: string
- * }
- *
  * of(
- *     { age: 4, name: 'Foo'},
- *     { age: 7, name: 'Bar'},
- *     { age: 5, name: 'Foo'}
- *   ).pipe(
- *     distinct((p: Person) => p.name)
- *   )
- *   .subscribe(x => console.log(x));
+ *   { age: 4, name: 'Foo'},
+ *   { age: 7, name: 'Bar'},
+ *   { age: 5, name: 'Foo'}
+ * )
+ * .pipe(distinct(({ name }) => name))
+ * .subscribe(x => console.log(x));
  *
  * // Outputs
  * // { age: 4, name: 'Foo' }

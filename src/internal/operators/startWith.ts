@@ -44,8 +44,8 @@ export function startWith<T, A extends readonly unknown[] = T[]>(...values: A): 
  *   .subscribe(x => console.log(x));
  *
  * // results:
- * // "timer start"
- * // "timer emit"
+ * // 'timer start'
+ * // 'timer emit'
  * ```
  *
  * @param values Items you want the modified Observable to emit first.

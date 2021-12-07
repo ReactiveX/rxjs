@@ -39,13 +39,13 @@ export function firstValueFrom<T>(source: Observable<T>): Promise<T>;
  * async function execute() {
  *   const source$ = interval(2000);
  *   const firstNumber = await firstValueFrom(source$);
- *   console.log(`The first number is ${firstNumber}`);
+ *   console.log(`The first number is ${ firstNumber }`);
  * }
  *
  * execute();
  *
  * // Expected output:
- * // "The first number is 0"
+ * // 'The first number is 0'
  * ```
  *
  * @see {@link lastValueFrom}

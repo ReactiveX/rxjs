@@ -37,13 +37,13 @@ export function lastValueFrom<T>(source: Observable<T>): Promise<T>;
  * async function execute() {
  *   const source$ = interval(2000).pipe(take(10));
  *   const finalNumber = await lastValueFrom(source$);
- *   console.log(`The final number is ${finalNumber}`);
+ *   console.log(`The final number is ${ finalNumber }`);
  * }
  *
  * execute();
  *
  * // Expected output:
- * // "The final number is 9"
+ * // 'The final number is 9'
  * ```
  *
  * @see {@link firstValueFrom}

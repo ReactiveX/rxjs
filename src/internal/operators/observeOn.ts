@@ -5,7 +5,6 @@ import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
- *
  * Re-emits all notifications from source Observable with specified scheduler.
  *
  * <span class="informal">Ensure a specific scheduler is used, from outside of an Observable.</span>
@@ -40,11 +39,11 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * const someDiv = document.createElement('div');
  * someDiv.style.cssText = 'width: 200px;background: #09c';
  * document.body.appendChild(someDiv);
- * const intervals = interval(10);        // Intervals are scheduled
- *                                        // with async scheduler by default...
+ * const intervals = interval(10);      // Intervals are scheduled
+ *                                      // with async scheduler by default...
  * intervals.pipe(
- *   observeOn(animationFrameScheduler),  // ...but we will observe on animationFrame
- * )                                      // scheduler to ensure smooth animation.
+ *   observeOn(animationFrameScheduler) // ...but we will observe on animationFrame
+ * )                                    // scheduler to ensure smooth animation.
  * .subscribe(val => {
  *   someDiv.style.height = val + 'px';
  * });

@@ -19,12 +19,14 @@ import { noop } from '../util/noop';
  * ```ts
  * import { NEVER, startWith } from 'rxjs';
  *
- * function info() {
- *   console.log('Will not be called');
- * }
- * const result = NEVER.pipe(startWith(7));
- * result.subscribe(x => console.log(x), info, info);
+ * const info = () => console.log('Will not be called');
  *
+ * const result = NEVER.pipe(startWith(7));
+ * result.subscribe({
+ *   next: x => console.log(x),
+ *   error: info,
+ *   complete: info
+ * });
  * ```
  *
  * @see {@link Observable}

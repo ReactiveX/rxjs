@@ -21,6 +21,7 @@ export function windowTime<T>(
   maxWindowSize: number,
   scheduler?: SchedulerLike
 ): OperatorFunction<T, Observable<T>>;
+
 /**
  * Branch out the source Observable values as a nested Observable periodically
  * in time.
@@ -53,8 +54,8 @@ export function windowTime<T>(
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
  *   windowTime(1000),
- *   map(win => win.pipe(take(2))), // each window has at most 2 emissions
- *   mergeAll(),                    // flatten the Observable-of-Observables
+ *   map(win => win.pipe(take(2))), // take at most 2 emissions from each window
+ *   mergeAll()                     // flatten the Observable-of-Observables
  * );
  * result.subscribe(x => console.log(x));
  * ```
@@ -67,8 +68,8 @@ export function windowTime<T>(
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
  *   windowTime(1000, 5000),
- *   map(win => win.pipe(take(2))), // each window has at most 2 emissions
- *   mergeAll(),                    // flatten the Observable-of-Observables
+ *   map(win => win.pipe(take(2))), // take at most 2 emissions from each window
+ *   mergeAll()                     // flatten the Observable-of-Observables
  * );
  * result.subscribe(x => console.log(x));
  * ```
@@ -80,8 +81,8 @@ export function windowTime<T>(
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
- *   windowTime(1000, 5000, 2), // each window has still at most 2 emissions
- *   mergeAll(),                // flatten the Observable-of-Observables
+ *   windowTime(1000, 5000, 2), // take at most 2 emissions from each window
+ *   mergeAll()                 // flatten the Observable-of-Observables
  * );
  * result.subscribe(x => console.log(x));
  * ```

@@ -27,8 +27,9 @@ export function map<T, R, A>(project: (this: A, value: T, index: number) => R, t
  * ```ts
  * import { fromEvent, map } from 'rxjs';
  *
- * const clicks = fromEvent(document, 'click');
+ * const clicks = fromEvent<PointerEvent>(document, 'click');
  * const positions = clicks.pipe(map(ev => ev.clientX));
+ *
  * positions.subscribe(x => console.log(x));
  * ```
  *

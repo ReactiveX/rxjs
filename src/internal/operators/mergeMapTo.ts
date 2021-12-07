@@ -37,6 +37,7 @@ export function mergeMapTo<T, R, O extends ObservableInput<unknown>>(
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(mergeMapTo(interval(1000)));
+ *
  * result.subscribe(x => console.log(x));
  * ```
  *

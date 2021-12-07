@@ -8,7 +8,7 @@ import { noop } from '../util/noop';
  *
  * ![](ignoreElements.png)
  *
- * The _IgnoreElements_ operator suppresses all of the items emitted by the source Observable,
+ * The `ignoreElements` operator suppresses all items emitted by the source Observable,
  * but allows its termination notification (either `error` or `complete`) to pass through unchanged.
  *
  * If you do not care about the items being emitted by an Observable, but you do want to be notified
@@ -22,17 +22,18 @@ import { noop } from '../util/noop';
  * ```ts
  * import { of, ignoreElements } from 'rxjs';
  *
- * of('you', 'talking', 'to', 'me').pipe(
- *   ignoreElements(),
- * )
- * .subscribe({
- *   next: word => console.log(word),
- *   error: err => console.log('error:', err),
- *   complete: () => console.log('the end'),
- * });
+ * of('you', 'talking', 'to', 'me')
+ *   .pipe(ignoreElements())
+ *   .subscribe({
+ *     next: word => console.log(word),
+ *     error: err => console.log('error:', err),
+ *     complete: () => console.log('the end'),
+ *   });
+ *
  * // result:
  * // 'the end'
  * ```
+ *
  * @return A function that returns an empty Observable that only calls
  * `complete` or `error`, based on which one is called by the source
  * Observable.

@@ -27,7 +27,7 @@ import { innerFrom } from './innerFrom';
  * ```ts
  * import { defer, fromEvent, interval } from 'rxjs';
  *
- * const clicksOrInterval = defer(function () {
+ * const clicksOrInterval = defer(() => {
  *   return Math.random() > 0.5
  *     ? fromEvent(document, 'click')
  *     : interval(1000);

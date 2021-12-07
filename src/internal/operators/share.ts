@@ -107,7 +107,12 @@ export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
  * ```ts
  * import { interval, take, share, timer } from 'rxjs';
  *
- * const source = interval(1000).pipe(take(3), share({ resetOnRefCountZero: () => timer(1000) }));
+ * const source = interval(1000).pipe(
+ *   take(3),
+ *   share({
+ *     resetOnRefCountZero: () => timer(1000)
+ *   })
+ * );
  *
  * const subscriptionOne = source.subscribe(x => console.log('subscription 1: ', x));
  * setTimeout(() => subscriptionOne.unsubscribe(), 1300);

@@ -27,15 +27,16 @@ import { noop } from '../util/noop';
  * ```ts
  * import { fromEvent, interval, window, map, take, mergeAll } from 'rxjs';
  *
- *  const clicks = fromEvent(document, 'click');
- *  const sec = interval(1000);
- *  const result = clicks.pipe(
- *      window(sec),
- *      map(win => win.pipe(take(2))), // each window has at most 2 emissions
- *      mergeAll(),              // flatten the Observable-of-Observables
- *  );
- *  result.subscribe(x => console.log(x));
+ * const clicks = fromEvent(document, 'click');
+ * const sec = interval(1000);
+ * const result = clicks.pipe(
+ *   window(sec),
+ *   map(win => win.pipe(take(2))), // take at most 2 emissions from each window
+ *   mergeAll()                     // flatten the Observable-of-Observables
+ * );
+ * result.subscribe(x => console.log(x));
  * ```
+ *
  * @see {@link windowCount}
  * @see {@link windowTime}
  * @see {@link windowToggle}

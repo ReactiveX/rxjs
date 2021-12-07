@@ -22,10 +22,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ```ts
  * import { of, distinctUntilChanged } from 'rxjs';
  *
- * of(1, 1, 1, 2, 2, 2, 1, 1, 3, 3).pipe(
- *  distinctUntilChanged()
- * )
- * .subscribe(console.log);
+ * of(1, 1, 1, 2, 2, 2, 1, 1, 3, 3)
+ *   .pipe(distinctUntilChanged())
+ *   .subscribe(console.log);
  * // Logs: 1, 2, 1, 3
  * ```
  *
@@ -54,9 +53,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * totallyDifferentBuilds$.subscribe(console.log);
  *
  * // Logs:
- * // {engineVersion: "1.1.0", transmissionVersion: "1.2.0"}
- * // {engineVersion: "1.3.0", transmissionVersion: "1.4.0"}
- * // {engineVersion: "2.0.0", transmissionVersion: "1.5.0"}
+ * // { engineVersion: '1.1.0', transmissionVersion: '1.2.0' }
+ * // { engineVersion: '1.3.0', transmissionVersion: '1.4.0' }
+ * // { engineVersion: '2.0.0', transmissionVersion: '1.5.0' }
  * ```
  *
  * You can also provide a custom `comparator` to check that emitted
@@ -109,11 +108,11 @@ export function distinctUntilChanged<T>(comparator?: (previous: T, current: T) =
  *
  * // A stream of updates to a given account
  * const accountUpdates$ = of(
- *   { updatedBy: "blesh", data: [] },
- *   { updatedBy: "blesh", data: [] },
- *   { updatedBy: "ncjamieson", data: [] },
- *   { updatedBy: "ncjamieson", data: [] },
- *   { updatedBy: "blesh", data: [] }
+ *   { updatedBy: 'blesh', data: [] },
+ *   { updatedBy: 'blesh', data: [] },
+ *   { updatedBy: 'ncjamieson', data: [] },
+ *   { updatedBy: 'ncjamieson', data: [] },
+ *   { updatedBy: 'blesh', data: [] }
  * );
  *
  * // We only want the events where it changed hands
@@ -123,9 +122,9 @@ export function distinctUntilChanged<T>(comparator?: (previous: T, current: T) =
  *
  * changedHands$.subscribe(console.log);
  * // Logs:
- * // {updatedBy: "blesh", data: Array[0]}
- * // {updatedBy: "ncjamieson", data: Array[0]}
- * // {updatedBy: "blesh", data: Array[0]}
+ * // { updatedBy: 'blesh', data: Array[0] }
+ * // { updatedBy: 'ncjamieson', data: Array[0] }
+ * // { updatedBy: 'blesh', data: Array[0] }
  * ```
  *
  * @param comparator A function used to compare the previous and current keys for

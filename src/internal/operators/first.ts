@@ -59,7 +59,7 @@ export function first<T, D = T>(
  * document.body.appendChild(div);
  *
  * const clicks = fromEvent(document, 'click');
- * const result = clicks.pipe(first(ev => ev.target.tagName === 'DIV'));
+ * const result = clicks.pipe(first(ev => (<HTMLElement>ev.target).tagName === 'DIV'));
  * result.subscribe(x => console.log(x));
  * ```
  *
@@ -73,7 +73,7 @@ export function first<T, D = T>(
  *
  * @param {function(value: T, index: number, source: Observable<T>): boolean} [predicate]
  * An optional function called with each item to test for condition matching.
- * @param {R} [defaultValue] The default value emitted in case no valid value
+ * @param {D} [defaultValue] The default value emitted in case no valid value
  * was found on the source.
  * @return A function that returns an Observable that emits the first item that
  * matches the condition.

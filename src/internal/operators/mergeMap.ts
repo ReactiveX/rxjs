@@ -47,8 +47,9 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
  *
  * const letters = of('a', 'b', 'c');
  * const result = letters.pipe(
- *   mergeMap(x => interval(1000).pipe(map(i => x+i))),
+ *   mergeMap(x => interval(1000).pipe(map(i => x + i)))
  * );
+ *
  * result.subscribe(x => console.log(x));
  *
  * // Results in the following:
@@ -58,7 +59,7 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
  * // a1
  * // b1
  * // c1
- * // continues to list a,b,c with respective ascending integers
+ * // continues to list a, b, c every second with respective ascending integers
  * ```
  *
  * @see {@link concatMap}

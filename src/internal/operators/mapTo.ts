@@ -27,6 +27,7 @@ export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
  *
  * const clicks = fromEvent(document, 'click');
  * const greetings = clicks.pipe(mapTo('Hi'));
+ *
  * greetings.subscribe(x => console.log(x));
  * ```
  *

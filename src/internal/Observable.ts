@@ -1,6 +1,3 @@
-/**
- * @prettier
- */
 import { Operator } from './Operator';
 import { SafeSubscriber, Subscriber } from './Subscriber';
 import { isSubscription, Subscription } from './Subscription';
@@ -150,10 +147,10 @@ export class Observable<T> implements Subscribable<T> {
    *   .subscribe(sumObserver);
    *
    * // Logs:
-   * // "Adding: 1"
-   * // "Adding: 2"
-   * // "Adding: 3"
-   * // "Sum equals: 6"
+   * // 'Adding: 1'
+   * // 'Adding: 2'
+   * // 'Adding: 3'
+   * // 'Sum equals: 6'
    * ```
    *
    * Subscribe with functions ({@link deprecations/subscribe-arguments deprecated})
@@ -173,10 +170,10 @@ export class Observable<T> implements Subscribable<T> {
    * );
    *
    * // Logs:
-   * // "Adding: 1"
-   * // "Adding: 2"
-   * // "Adding: 3"
-   * // "Sum equals: 6"
+   * // 'Adding: 1'
+   * // 'Adding: 2'
+   * // 'Adding: 3'
+   * // 'Sum equals: 6'
    * ```
    *
    * Cancel a subscription
@@ -202,14 +199,14 @@ export class Observable<T> implements Subscribable<T> {
    * // Logs:
    * // 0 after 1s
    * // 1 after 2s
-   * // "unsubscribed!" after 2.5s
+   * // 'unsubscribed!' after 2.5s
    * ```
    *
    * @param {Observer|Function} observerOrNext (optional) Either an observer with methods to be called,
-   *  or the first of three possible handlers, which is the handler for each value emitted from the subscribed
-   *  Observable.
+   * or the first of three possible handlers, which is the handler for each value emitted from the subscribed
+   * Observable.
    * @param {Function} error (optional) A handler for a terminal event resulting from an error. If no error handler is provided,
-   *  the error will be thrown asynchronously as unhandled.
+   * the error will be thrown asynchronously as unhandled.
    * @param {Function} complete (optional) A handler for a terminal event resulting from successful completion.
    * @return {Subscription} a subscription reference to the registered handlers
    * @method subscribe
@@ -272,27 +269,28 @@ export class Observable<T> implements Subscribable<T> {
    * const source$ = interval(1000).pipe(take(4));
    *
    * async function getTotal() {
-   *    let total = 0;
+   *   let total = 0;
    *
-   *    await source$.forEach(value => {
-   *      total += value;
-   *      console.log('observable -> ', value);
-   *    });
+   *   await source$.forEach(value => {
+   *     total += value;
+   *     console.log('observable -> ' + value);
+   *   });
    *
-   *    return total;
+   *   return total;
    * }
    *
    * getTotal().then(
-   *    total => console.log('Total:', total)
-   * )
+   *   total => console.log('Total: ' + total)
+   * );
    *
    * // Expected:
-   * // "observable -> 0"
-   * // "observable -> 1"
-   * // "observable -> 2"
-   * // "observable -> 3"
-   * // "Total: 6"
+   * // 'observable -> 0'
+   * // 'observable -> 1'
+   * // 'observable -> 2'
+   * // 'observable -> 3'
+   * // 'Total: 6'
    * ```
+   *
    * @param next a handler for each value emitted by the observable
    * @return a promise that either resolves on observable completion or
    *  rejects with the handled error
@@ -435,7 +433,7 @@ export class Observable<T> implements Subscribable<T> {
    *     map(x => x + x),
    *     scan((acc, x) => acc + x)
    *   )
-   *   .subscribe(x => console.log(x))
+   *   .subscribe(x => console.log(x));
    * ```
    */
   pipe(...operations: OperatorFunction<any, any>[]): Observable<any> {

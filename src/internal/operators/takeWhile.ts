@@ -36,7 +36,7 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
  * ```ts
  * import { fromEvent, takeWhile } from 'rxjs';
  *
- * const clicks = fromEvent(document, 'click');
+ * const clicks = fromEvent<PointerEvent>(document, 'click');
  * const result = clicks.pipe(takeWhile(ev => ev.clientX > 200));
  * result.subscribe(x => console.log(x));
  * ```

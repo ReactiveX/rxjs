@@ -158,7 +158,7 @@ export function generate<T, S>(
  * // 0
  * // 1
  * // 2
- * // "Complete!"
+ * // 'Complete!'
  * ```
  *
  * Use with condition, iterate and resultSelector functions
@@ -170,14 +170,14 @@ export function generate<T, S>(
  *
  * result.subscribe({
  *   next: value => console.log(value),
- *   complete: () => console.log('complete!')
+ *   complete: () => console.log('Complete!')
  * });
  *
  * // Logs:
  * // 0
  * // 1000
  * // 2000
- * // "complete!"
+ * // 'Complete!'
  * ```
  *
  * Use with options object
@@ -194,14 +194,14 @@ export function generate<T, S>(
  *
  * result.subscribe({
  *   next: value => console.log(value),
- *   complete: () => console.log('complete!')
+ *   complete: () => console.log('Complete!')
  * });
  *
  * // Logs:
  * // 0
  * // 1000
  * // 2000
- * // "Complete!"
+ * // 'Complete!'
  * ```
  *
  * Use options object without condition function
@@ -217,7 +217,7 @@ export function generate<T, S>(
  *
  * result.subscribe({
  *   next: value => console.log(value),
- *   complete: () => console.log('complete!') // This will never run
+ *   complete: () => console.log('Complete!') // This will never run
  * });
  *
  * // Logs:
@@ -264,19 +264,19 @@ export function generate<S>(
  * const result = generate({
  *   initialState: 0,
  *   condition: x => x < 3,
- *   iterate: x => x + 1,
+ *   iterate: x => x + 1
  * });
  *
  * result.subscribe({
  *   next: value => console.log(value),
- *   complete: () => console.log('complete!')
+ *   complete: () => console.log('Complete!')
  * });
  *
  * // Logs:
  * // 0
  * // 1
  * // 2
- * // "Complete!".
+ * // 'Complete!'
  * ```
  *
  * @see {@link from}
@@ -307,19 +307,19 @@ export function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
  *   initialState: 0,
  *   condition: x => x < 3,
  *   iterate: x => x + 1,
- *   resultSelector: x => x,
+ *   resultSelector: x => x
  * });
  *
  * result.subscribe({
  *   next: value => console.log(value),
- *   complete: () => console.log('complete!')
+ *   complete: () => console.log('Complete!')
  * });
  *
  * // Logs:
  * // 0
  * // 1
  * // 2
- * // "Complete!".
+ * // 'Complete!'
  * ```
  *
  * @see {@link from}

@@ -25,8 +25,9 @@ import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
  * import { fromEvent, map, interval, mergeAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
- * const higherOrder = clicks.pipe(map((ev) => interval(1000)));
+ * const higherOrder = clicks.pipe(map(() => interval(1000)));
  * const firstOrder = higherOrder.pipe(mergeAll());
+ *
  * firstOrder.subscribe(x => console.log(x));
  * ```
  *
@@ -37,9 +38,10 @@ import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
  *
  * const clicks = fromEvent(document, 'click');
  * const higherOrder = clicks.pipe(
- *   map((ev) => interval(1000).pipe(take(10))),
+ *   map(() => interval(1000).pipe(take(10)))
  * );
  * const firstOrder = higherOrder.pipe(mergeAll(2));
+ *
  * firstOrder.subscribe(x => console.log(x));
  * ```
  *

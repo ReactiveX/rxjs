@@ -2,7 +2,7 @@ import { ObservableInputTuple, OperatorFunction } from '../types';
 import { merge } from './merge';
 
 /**
- * Merge the values from all observables to an single observable result.
+ * Merge the values from all observables to a single observable result.
  *
  * Creates an observable, that when subscribed to, subscribes to the source
  * observable, and all other sources provided as arguments. All values from
@@ -10,7 +10,7 @@ import { merge } from './merge';
  *
  * When all sources complete, the resulting observable will complete.
  *
- * When any one source errors, the resulting observable will error.
+ * When any source errors, the resulting observable will error.
  *
  * ## Example
  *
@@ -23,18 +23,17 @@ import { merge } from './merge';
  * const mousemoves$ = fromEvent(document, 'mousemove').pipe(map(() => 'mousemove'));
  * const dblclicks$ = fromEvent(document, 'dblclick').pipe(map(() => 'dblclick'));
  *
- * mousemoves$.pipe(
- *   mergeWith(clicks$, dblclicks$),
- * )
- * .subscribe(x => console.log(x));
+ * mousemoves$
+ *   .pipe(mergeWith(clicks$, dblclicks$))
+ *   .subscribe(x => console.log(x));
  *
  * // result (assuming user interactions)
- * // "mousemove"
- * // "mousemove"
- * // "mousemove"
- * // "click"
- * // "click"
- * // "dblclick"
+ * // 'mousemove'
+ * // 'mousemove'
+ * // 'mousemove'
+ * // 'click'
+ * // 'click'
+ * // 'dblclick'
  * ```
  *
  * @see {@link merge}

@@ -102,7 +102,7 @@ export function forkJoin<T extends Record<string, ObservableInput<any>>>(
  * const observable = forkJoin({
  *   foo: of(1, 2, 3, 4),
  *   bar: Promise.resolve(8),
- *   baz: timer(4000),
+ *   baz: timer(4000)
  * });
  * observable.subscribe({
  *  next: value => console.log(value),
@@ -111,7 +111,7 @@ export function forkJoin<T extends Record<string, ObservableInput<any>>>(
  *
  * // Logs:
  * // { foo: 4, bar: 8, baz: 0 } after 4 seconds
- * // "This is how it ends!" immediately after
+ * // 'This is how it ends!' immediately after
  * ```
  *
  * Use `forkJoin` with an array of observable inputs
@@ -122,7 +122,7 @@ export function forkJoin<T extends Record<string, ObservableInput<any>>>(
  * const observable = forkJoin([
  *   of(1, 2, 3, 4),
  *   Promise.resolve(8),
- *   timer(4000),
+ *   timer(4000)
  * ]);
  * observable.subscribe({
  *  next: value => console.log(value),
@@ -131,7 +131,7 @@ export function forkJoin<T extends Record<string, ObservableInput<any>>>(
  *
  * // Logs:
  * // [4, 8, 0] after 4 seconds
- * // "This is how it ends!" immediately after
+ * // 'This is how it ends!' immediately after
  * ```
  *
  * @see {@link combineLatest}

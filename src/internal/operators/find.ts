@@ -46,7 +46,7 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
  * document.body.appendChild(div);
  *
  * const clicks = fromEvent(document, 'click');
- * const result = clicks.pipe(find(ev => ev.target.tagName === 'DIV'));
+ * const result = clicks.pipe(find(ev => (<HTMLElement>ev.target).tagName === 'DIV'));
  * result.subscribe(x => console.log(x));
  * ```
  *

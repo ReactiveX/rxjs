@@ -33,7 +33,7 @@ import { operate } from '../util/lift';
  *
  * Both Observable `a` and `b` will emit their values directly and synchronously once they are subscribed to.
  *
- * If we instead use the `subscribeOn` operator declaring that we want to use the {@link asyncScheduler} for values emited by Observable `a`:
+ * If we instead use the `subscribeOn` operator declaring that we want to use the {@link asyncScheduler} for values emitted by Observable `a`:
  *
  * ```ts
  * import { of, subscribeOn, asyncScheduler, merge } from 'rxjs';

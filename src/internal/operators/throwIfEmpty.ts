@@ -21,13 +21,15 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * click$.pipe(
  *   takeUntil(timer(1000)),
- *   throwIfEmpty(
- *     () => new Error('the document was not clicked within 1 second')
- *   ),
+ *   throwIfEmpty(() => new Error('The document was not clicked within 1 second'))
  * )
  * .subscribe({
- *   next() { console.log('The button was clicked'); },
- *   error(err) { console.error(err); }
+ *   next() {
+ *    console.log('The document was clicked');
+ *   },
+ *   error(err) {
+ *     console.error(err.message);
+ *   }
  * });
  * ```
  *

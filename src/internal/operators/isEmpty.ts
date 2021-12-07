@@ -39,10 +39,10 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * source.complete();
  *
  * // Outputs
- * // a
+ * // 'a'
  * // false
- * // b
- * // c
+ * // 'b'
+ * // 'c'
  * ```
  *
  * Emit `true` for an empty Observable

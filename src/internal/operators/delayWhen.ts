@@ -47,7 +47,7 @@ export function delayWhen<T>(delayDurationSelector: (value: T, index: number) =>
  *
  * const clicks = fromEvent(document, 'click');
  * const delayedClicks = clicks.pipe(
- *   delayWhen(event => interval(Math.random() * 5000)),
+ *   delayWhen(() => interval(Math.random() * 5000))
  * );
  * delayedClicks.subscribe(x => console.log(x));
  * ```

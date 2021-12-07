@@ -25,52 +25,52 @@ import { ObservableInput } from '../types';
  * const firstOrSecond = iif(
  *   () => subscribeToFirst,
  *   of('first'),
- *   of('second'),
+ *   of('second')
  * );
  *
  * subscribeToFirst = true;
  * firstOrSecond.subscribe(value => console.log(value));
  *
  * // Logs:
- * // "first"
+ * // 'first'
  *
  * subscribeToFirst = false;
  * firstOrSecond.subscribe(value => console.log(value));
  *
  * // Logs:
- * // "second"
- *
+ * // 'second'
  * ```
  *
  * Control access to an Observable
  *
  * ```ts
+ * import { iif, of, EMPTY } from 'rxjs';
+ *
  * let accessGranted;
  * const observableIfYouHaveAccess = iif(
  *   () => accessGranted,
- *   of('It seems you have an access...'), // Note that only one Observable is passed to the operator.
+ *   of('It seems you have an access...'),
+ *   EMPTY
  * );
  *
  * accessGranted = true;
- * observableIfYouHaveAccess.subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('The end'),
- * );
+ * observableIfYouHaveAccess.subscribe({
+ *   next: value => console.log(value),
+ *   complete: () => console.log('The end')
+ * });
  *
  * // Logs:
- * // "It seems you have an access..."
- * // "The end"
+ * // 'It seems you have an access...'
+ * // 'The end'
  *
  * accessGranted = false;
- * observableIfYouHaveAccess.subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('The end'),
- * );
+ * observableIfYouHaveAccess.subscribe({
+ *   next: value => console.log(value),
+ *   complete: () => console.log('The end')
+ * });
  *
  * // Logs:
- * // "The end"
+ * // 'The end'
  * ```
  *
  * @see {@link defer}

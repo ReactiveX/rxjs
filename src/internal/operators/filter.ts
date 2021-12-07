@@ -32,11 +32,11 @@ export function filter<T>(predicate: (value: T, index: number) => boolean): Mono
  * import { fromEvent, filter } from 'rxjs';
  *
  * const div = document.createElement('div');
- * div.style.cssText = `width: 200px;height: 200px;background: #09c;`;
+ * div.style.cssText = 'width: 200px; height: 200px; background: #09c;';
  * document.body.appendChild(div);
  *
  * const clicks = fromEvent(document, 'click');
- * const clicksOnDivs = clicks.pipe(filter(ev => ev.target.tagName === 'DIV'));
+ * const clicksOnDivs = clicks.pipe(filter(ev => (<HTMLElement>ev.target).tagName === 'DIV'));
  * clicksOnDivs.subscribe(x => console.log(x));
  * ```
  *

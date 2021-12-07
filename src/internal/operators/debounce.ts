@@ -41,8 +41,8 @@ import { innerFrom } from '../observable/innerFrom';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
- *   scan((i) => ++i, 1),
- *   debounce((i) => interval(200 * i))
+ *   scan(i => ++i, 1),
+ *   debounce(i => interval(200 * i))
  * );
  * result.subscribe(x => console.log(x));
  * ```

@@ -31,10 +31,9 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
  * ```ts
  * import { of, every } from 'rxjs';
  *
- *  of(1, 2, 3, 4, 5, 6).pipe(
- *     every(x => x < 5),
- * )
- * .subscribe(x => console.log(x)); // -> false
+ * of(1, 2, 3, 4, 5, 6)
+ *   .pipe(every(x => x < 5))
+ *   .subscribe(x => console.log(x)); // -> false
  * ```
  *
  * @param {function} predicate A function for determining if an item meets a specified condition.

@@ -50,18 +50,22 @@ export function onErrorResumeNext<T, A extends readonly unknown[]>(
  * ```ts
  * import { of, onErrorResumeNext, map } from 'rxjs';
  *
- * of(1, 2, 3, 0).pipe(
- *   map(x => {
- *       if (x === 0) { throw Error(); }
- *        return 10 / x;
- *   }),
- *   onErrorResumeNext(of(1, 2, 3)),
- * )
- * .subscribe(
- *   val => console.log(val),
- *   err => console.log(err),          // Will never be called.
- *   () => console.log('that\'s it!')
- * );
+ * of(1, 2, 3, 0)
+ *   .pipe(
+ *     map(x => {
+ *       if (x === 0) {
+ *         throw Error();
+ *       }
+ *
+ *       return 10 / x;
+ *     }),
+ *     onErrorResumeNext(of(1, 2, 3))
+ *   )
+ *   .subscribe({
+ *     next: val => console.log(val),
+ *     error: err => console.log(err),          // Will never be called.
+ *     complete: () => console.log('that\'s it!')
+ *   });
  *
  * // Logs:
  * // 10
@@ -70,13 +74,13 @@ export function onErrorResumeNext<T, A extends readonly unknown[]>(
  * // 1
  * // 2
  * // 3
- * // "that's it!"
+ * // 'that's it!'
  * ```
  *
  * @see {@link concat}
  * @see {@link catchError}
  *
- * @param {...ObservableInput} nextSources Observables passed either directly or as an array.
+ * @param {...ObservableInput} sources Observables passed either directly or as an array.
  * @return A function that returns an Observable that emits values from source
  * Observable, but - if it errors - subscribes to the next passed Observable
  * and so on, until it completes or runs out of Observables.

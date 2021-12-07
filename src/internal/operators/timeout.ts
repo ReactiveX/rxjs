@@ -125,22 +125,22 @@ export const TimeoutError: TimeoutErrorCtor = createErrorClass(
  *
  * class CustomTimeoutError extends Error {
  *   constructor() {
- *      super('It was too slow');
- *      this.name = 'CustomTimeoutError';
+ *     super('It was too slow');
+ *     this.name = 'CustomTimeoutError';
  *   }
  * }
  *
  * const slow$ = interval(900);
  *
  * slow$.pipe(
- *    timeout({
- *      each: 1000,
- *      with: () => throwError(new CustomTimeoutError())
- *    })
+ *   timeout({
+ *     each: 1000,
+ *     with: () => throwError(() => new CustomTimeoutError())
+ *   })
  * )
  * .subscribe({
- *    error: console.error
- * })
+ *   error: console.error
+ * });
  * ```
  *
  * Switch to a faster observable if your source is slow.
@@ -152,12 +152,12 @@ export const TimeoutError: TimeoutErrorCtor = createErrorClass(
  * const fast$ = interval(500);
  *
  * slow$.pipe(
- *    timeout({
- *      each: 1000,
- *      with: () => fast$,
- *    })
+ *   timeout({
+ *     each: 1000,
+ *     with: () => fast$,
+ *   })
  * )
- * .subscribe(console.log)
+ * .subscribe(console.log);
  * ```
  * @param config The configuration for the timeout.
  */
@@ -204,12 +204,15 @@ export function timeout<T, O extends ObservableInput<unknown>, M = unknown>(
  * import { interval, timeout } from 'rxjs';
  *
  * // A random interval that lasts between 0 and 10 seconds per tick
- * const source$ = interval(Math.round(Math.random() * 10000));
+ * const source$ = interval(Math.round(Math.random() * 10_000));
  *
  * source$.pipe(
- *    timeout({ first: 5000 })
+ *   timeout({ first: 5_000 })
  * )
- * .subscribe(console.log);
+ * .subscribe({
+ *   next: console.log,
+ *   error: console.error
+ * });
  * ```
  *
  * Emit a {@link TimeoutError} if the source waits longer than 5 seconds between any two values or the first value
@@ -218,17 +221,18 @@ export function timeout<T, O extends ObservableInput<unknown>, M = unknown>(
  * ```ts
  * import { timer, timeout, expand } from 'rxjs';
  *
- * const getRandomTime = () => Math.round(Math.random() * 10000);
+ * const getRandomTime = () => Math.round(Math.random() * 10_000);
  *
  * // An observable that waits a random amount of time between each delivered value
- * const source$ = timer(getRandomTime()).pipe(
- *  expand(() => timer(getRandomTime()))
- * )
+ * const source$ = timer(getRandomTime())
+ *   .pipe(expand(() => timer(getRandomTime())));
  *
- * source$.pipe(
- *    timeout({ each: 5000 })
- * )
- * .subscribe(console.log);
+ * source$
+ *   .pipe(timeout({ each: 5_000 }))
+ *   .subscribe({
+ *     next: console.log,
+ *     error: console.error
+ *   });
  * ```
  *
  * Emit a {@link TimeoutError} if the source does not emit before 7 seconds, _or_ if the source waits longer than
@@ -237,17 +241,18 @@ export function timeout<T, O extends ObservableInput<unknown>, M = unknown>(
  * ```ts
  * import { timer, timeout, expand } from 'rxjs';
  *
- * const getRandomTime = () => Math.round(Math.random() * 10000);
+ * const getRandomTime = () => Math.round(Math.random() * 10_000);
  *
  * // An observable that waits a random amount of time between each delivered value
- * const source$ = timer(getRandomTime()).pipe(
- *  expand(() => timer(getRandomTime()))
- * )
+ * const source$ = timer(getRandomTime())
+ *   .pipe(expand(() => timer(getRandomTime())));
  *
- * source$.pipe(
- *    timeout({ first: 7000, each: 5000 })
- * )
- * .subscribe(console.log);
+ * source$
+ *   .pipe(timeout({ first: 7_000, each: 5_000 }))
+ *   .subscribe({
+ *     next: console.log,
+ *     error: console.error
+ *   });
  * ```
  */
 export function timeout<T, M = unknown>(config: Omit<TimeoutConfig<T, any, M>, 'with'>): OperatorFunction<T, T>;

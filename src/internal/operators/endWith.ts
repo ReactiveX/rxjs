@@ -34,7 +34,7 @@ export function endWith<T, A extends unknown[] = T[]>(...values: A): OperatorFun
  * import { interval, map, fromEvent, startWith, takeUntil, endWith } from 'rxjs';
  *
  * const ticker$ = interval(5000).pipe(
- *   map(() => 'tick'),
+ *   map(() => 'tick')
  * );
  *
  * const documentClicks$ = fromEvent(document, 'click');
@@ -42,16 +42,16 @@ export function endWith<T, A extends unknown[] = T[]>(...values: A): OperatorFun
  * ticker$.pipe(
  *   startWith('interval started'),
  *   takeUntil(documentClicks$),
- *   endWith('interval ended by click'),
+ *   endWith('interval ended by click')
  * )
  * .subscribe(x => console.log(x));
  *
  * // Result (assuming a user clicks after 15 seconds)
- * // "interval started"
- * // "tick"
- * // "tick"
- * // "tick"
- * // "interval ended by click"
+ * // 'interval started'
+ * // 'tick'
+ * // 'tick'
+ * // 'tick'
+ * // 'interval ended by click'
  * ```
  *
  * @see {@link startWith}

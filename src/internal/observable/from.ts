@@ -84,8 +84,8 @@ export function from<O extends ObservableInput<any>>(input: O, scheduler: Schedu
  * console.log('end');
  *
  * // Logs:
- * // start
- * // end
+ * // 'start'
+ * // 'end'
  * // 10
  * // 20
  * // 30

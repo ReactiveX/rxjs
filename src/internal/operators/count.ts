@@ -1,5 +1,6 @@
 import { OperatorFunction } from '../types';
 import { reduce } from './reduce';
+
 /**
  * Counts the number of emissions on the source and emits that number when the
  * source completes.
@@ -55,7 +56,6 @@ import { reduce } from './reduce';
  * @return A function that returns an Observable that emits one number that
  * represents the count of emissions.
  */
-
 export function count<T>(predicate?: (value: T, index: number) => boolean): OperatorFunction<T, number> {
   return reduce((total, value, i) => (!predicate || predicate(value, i) ? total + 1 : total), 0);
 }

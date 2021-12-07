@@ -24,9 +24,11 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * const source = of('Repeat message');
  * const documentClick$ = fromEvent(document, 'click');
  *
- * source.pipe(repeatWhen(() => documentClick$)
- * ).subscribe(data => console.log(data))
+ * const result = source.pipe(repeatWhen(() => documentClick$));
+ *
+ * result.subscribe(data => console.log(data))
  * ```
+ *
  * @see {@link repeat}
  * @see {@link retry}
  * @see {@link retryWhen}

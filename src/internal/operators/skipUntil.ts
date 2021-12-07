@@ -8,7 +8,7 @@ import { noop } from '../util/noop';
 /**
  * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.
  *
- * The `skipUntil` operator causes the observable stream to skip the emission of values ​​until the passed in observable emits the first value.
+ * The `skipUntil` operator causes the observable stream to skip the emission of values until the passed in observable emits the first value.
  * This can be particularly useful in combination with user interactions, responses of http requests or waiting for specific times to pass by.
  *
  * ![](skipUntil.png)
@@ -33,7 +33,7 @@ import { noop } from '../util/noop';
  * );
  * // clicked at 4.6s. output: 5...6...7...8........ or
  * // clicked at 7.3s. output: 8...9...10..11.......
- * const subscribe = emitAfterClick.subscribe(value => console.log(value));
+ * emitAfterClick.subscribe(value => console.log(value));
  * ```
  *
  * @see {@link last}

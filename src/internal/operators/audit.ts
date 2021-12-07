@@ -37,6 +37,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * const result = clicks.pipe(audit(ev => interval(1000)));
  * result.subscribe(x => console.log(x));
  * ```
+ *
  * @see {@link auditTime}
  * @see {@link debounce}
  * @see {@link delayWhen}

@@ -35,8 +35,8 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * const upperCase = materialized.pipe(dematerialize());
  * upperCase.subscribe({
- *    next: x => console.log(x),
- *    error: e => console.error(e)
+ *   next: x => console.log(x),
+ *   error: e => console.error(e)
  * });
  *
  * // Results in:
@@ -44,6 +44,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * // B
  * // TypeError: x.toUpperCase is not a function
  * ```
+ *
  * @see {@link materialize}
  *
  * @return A function that returns an Observable that emits items and

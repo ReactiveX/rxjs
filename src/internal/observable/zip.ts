@@ -30,9 +30,9 @@ export function zip<A extends readonly unknown[], R>(
  * ```ts
  * import { of, zip, map } from 'rxjs';
  *
- * let age$ = of(27, 25, 29);
- * let name$ = of('Foo', 'Bar', 'Beer');
- * let isDev$ = of(true, true, false);
+ * const age$ = of(27, 25, 29);
+ * const name$ = of('Foo', 'Bar', 'Beer');
+ * const isDev$ = of(true, true, false);
  *
  * zip(age$, name$, isDev$).pipe(
  *   map(([age, name, isDev]) => ({ age, name, isDev }))
@@ -44,6 +44,7 @@ export function zip<A extends readonly unknown[], R>(
  * // { age: 25, name: 'Bar', isDev: true }
  * // { age: 29, name: 'Beer', isDev: false }
  * ```
+ *
  * @param sources
  * @return {Observable<R>}
  */

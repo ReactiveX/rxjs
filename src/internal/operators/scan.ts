@@ -59,9 +59,9 @@ export function scan<V, A, S>(accumulator: (acc: A | S, value: V, index: number)
  * import { interval, scan, map, startWith } from 'rxjs';
  *
  * const firstTwoFibs = [0, 1];
- * // An endless stream of Fibonnaci numbers.
- * const fibonnaci$ = interval(1000).pipe(
- *   // Scan to get the fibonnaci numbers (after 0, 1)
+ * // An endless stream of Fibonacci numbers.
+ * const fibonacci$ = interval(1000).pipe(
+ *   // Scan to get the fibonacci numbers (after 0, 1)
  *   scan(([a, b]) => [b, a + b], firstTwoFibs),
  *   // Get the second number in the tuple, it's the one you calculated
  *   map(([, n]) => n),
@@ -69,9 +69,8 @@ export function scan<V, A, S>(accumulator: (acc: A | S, value: V, index: number)
  *   startWith(...firstTwoFibs)
  * );
  *
- * fibonnaci$.subscribe(console.log);
+ * fibonacci$.subscribe(console.log);
  * ```
- *
  *
  * @see {@link expand}
  * @see {@link mergeScan}

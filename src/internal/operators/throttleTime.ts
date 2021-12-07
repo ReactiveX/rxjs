@@ -32,6 +32,7 @@ import { timer } from '../observable/timer';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(throttleTime(1000));
+ *
  * result.subscribe(x => console.log(x));
  * ```
  *
@@ -44,19 +45,19 @@ import { timer } from '../observable/timer';
  * ```ts
  * import { fromEvent, throttleTime, asyncScheduler } from 'rxjs';
  *
- * // defaultThottleConfig = { leading: true, trailing: false }
+ * // defaultThrottleConfig = { leading: true, trailing: false };
  * const throttleConfig = {
  *   leading: false,
  *   trailing: true
- * }
+ * };
  *
  * const click = fromEvent(document, 'click');
  * const doubleClick = click.pipe(
  *   throttleTime(400, asyncScheduler, throttleConfig)
  * );
  *
- * doubleClick.subscribe((throttleValue: Event) => {
- *   console.log(`Double-clicked! Timestamp: ${throttleValue.timeStamp}`);
+ * doubleClick.subscribe(event => {
+ *   console.log(`Double-clicked! Timestamp: ${ event.timeStamp }`);
  * });
  * ```
  *

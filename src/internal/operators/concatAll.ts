@@ -32,7 +32,7 @@ import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
  *
  * const clicks = fromEvent(document, 'click');
  * const higherOrder = clicks.pipe(
- *   map(ev => interval(1000).pipe(take(4))),
+ *   map(() => interval(1000).pipe(take(4)))
  * );
  * const firstOrder = higherOrder.pipe(concatAll());
  * firstOrder.subscribe(x => console.log(x));

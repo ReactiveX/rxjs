@@ -31,7 +31,7 @@ import { mergeInternals } from './mergeInternals';
  * current emission by the source Observable. It starts with 0.
  *
  * The last parameter to the `mergeScan` is the `concurrent` value which defaults
- * to Infinity. It represent the maximum number of inner Observable subscriptions
+ * to Infinity. It represents the maximum number of inner Observable subscriptions
  * at a time.
  *
  * ## Example
@@ -45,8 +45,9 @@ import { mergeInternals } from './mergeInternals';
  * const one$ = click$.pipe(mapTo(1));
  * const seed = 0;
  * const count$ = one$.pipe(
- *   mergeScan((acc, one) => of(acc + one), seed),
+ *   mergeScan((acc, one) => of(acc + one), seed)
  * );
+ *
  * count$.subscribe(x => console.log(x));
  *
  * // Results:

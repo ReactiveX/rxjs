@@ -24,13 +24,14 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * import { of, repeat } from 'rxjs';
  *
  * const source = of('Repeat message');
- * const example = source.pipe(repeat(3));
- * example.subscribe(x => console.log(x));
+ * const result = source.pipe(repeat(3));
+ *
+ * result.subscribe(x => console.log(x));
  *
  * // Results
- * // Repeat message
- * // Repeat message
- * // Repeat message
+ * // 'Repeat message'
+ * // 'Repeat message'
+ * // 'Repeat message'
  * ```
  *
  * Repeat 3 values, 2 times
@@ -39,8 +40,9 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * import { interval, take, repeat } from 'rxjs';
  *
  * const source = interval(1000);
- * const example = source.pipe(take(3), repeat(2));
- * example.subscribe(x => console.log(x));
+ * const result = source.pipe(take(3), repeat(2));
+ *
+ * result.subscribe(x => console.log(x));
  *
  * // Results every second
  * // 0

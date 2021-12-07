@@ -40,11 +40,11 @@ export function of<A extends readonly unknown[]>(...values: A): Observable<Value
  * import { of } from 'rxjs';
  *
  * of(10, 20, 30)
- * .subscribe(
- *   next => console.log('next:', next),
- *   err => console.log('error:', err),
- *   () => console.log('the end'),
- * );
+ *   .subscribe({
+ *     next: value => console.log('next:', value),
+ *     error: err => console.log('error:', err),
+ *     complete: () => console.log('the end'),
+ *   });
  *
  * // Outputs
  * // next: 10
@@ -59,11 +59,11 @@ export function of<A extends readonly unknown[]>(...values: A): Observable<Value
  * import { of } from 'rxjs';
  *
  * of([1, 2, 3])
- * .subscribe(
- *   next => console.log('next:', next),
- *   err => console.log('error:', err),
- *   () => console.log('the end'),
- * );
+ *   .subscribe({
+ *     next: value => console.log('next:', value),
+ *     error: err => console.log('error:', err),
+ *     complete: () => console.log('the end'),
+ *   });
  *
  * // Outputs
  * // next: [1, 2, 3]

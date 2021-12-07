@@ -40,7 +40,7 @@ export function findIndex<T>(predicate: (value: T, index: number, source: Observ
  * document.body.appendChild(div);
  *
  * const clicks = fromEvent(document, 'click');
- * const result = clicks.pipe(findIndex(ev => ev.target.tagName === 'DIV'));
+ * const result = clicks.pipe(findIndex(ev => (<HTMLElement>ev.target).tagName === 'DIV'));
  * result.subscribe(x => console.log(x));
  * ```
  *

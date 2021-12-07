@@ -56,8 +56,8 @@ import { isValidDate } from '../util/isDate';
  *   currentDate.getMonth(),
  *   currentDate.getDate(),
  *   currentDate.getHours(),
- *   currentDate.getMinutes() + 1,
- * )
+ *   currentDate.getMinutes() + 1
+ * );
  *
  * // This could be any observable stream
  * const source = interval(1000);

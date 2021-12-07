@@ -20,7 +20,6 @@ import { arrRemove } from '../util/arrRemove';
  * Observable provided to `openings`, and closing and sending the buffers when
  * a Subscribable or Promise returned by the `closingSelector` function emits.
  *
- *
  * ## Example
  *
  * Every other second, emit the click events from the next 500ms

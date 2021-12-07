@@ -41,12 +41,10 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *   'Enter', // no start key, clearly.
  * ]);
  *
- * const keys = fromEvent(document, 'keyup').pipe(map(e => e.code));
+ * const keys = fromEvent<KeyboardEvent>(document, 'keyup').pipe(map(e => e.code));
  * const matches = keys.pipe(
  *   bufferCount(11, 1),
- *   mergeMap(
- *     last11 => from(last11).pipe(sequenceEqual(codes)),
- *   ),
+ *   mergeMap(last11 => from(last11).pipe(sequenceEqual(codes)))
  * );
  * matches.subscribe(matched => console.log('Successful cheat at Contra? ', matched));
  * ```
