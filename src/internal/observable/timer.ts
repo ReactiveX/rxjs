@@ -26,15 +26,14 @@ import { isValidDate } from '../util/isDate';
  * a few seconds and start a subscription to a source.
  *
  * ```ts
- * import { of, timer, concatMapTo } from 'rxjs';
+ * import { of, timer, concatMap } from 'rxjs';
  *
  * // This could be any observable
  * const source = of(1, 2, 3);
  *
- * const result = timer(3000).pipe(
- *   concatMapTo(source)
- * )
- * .subscribe(console.log);
+ * timer(3000)
+ *   .pipe(concatMap(() => source))
+ *   .subscribe(console.log);
  * ```
  *
  * Take all values until the start of the next minute

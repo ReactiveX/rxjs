@@ -39,10 +39,10 @@ import { mergeInternals } from './mergeInternals';
  * Count the number of click events
  *
  * ```ts
- * import { fromEvent, mapTo, mergeScan, of } from 'rxjs';
+ * import { fromEvent, map, mergeScan, of } from 'rxjs';
  *
  * const click$ = fromEvent(document, 'click');
- * const one$ = click$.pipe(mapTo(1));
+ * const one$ = click$.pipe(map(() => 1));
  * const seed = 0;
  * const count$ = one$.pipe(
  *   mergeScan((acc, one) => of(acc + one), seed)
