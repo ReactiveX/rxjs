@@ -20,8 +20,8 @@
 </div>
 
 <article class="api-list-container l-content-small docs-content">
-  <div *ngFor="let section of filteredSections | async" >
-    <h2 *ngIf="section.items">{{section.title}}</h2>
+  <div *ngFor="let section of filteredSections | async">
+    <h2 [id]="section.title" *ngIf="section.items">{{section.title}}</h2>
     <ul class="api-list" *ngIf="section.items?.length">
       <ng-container *ngFor="let item of section.items">
         <li class="api-item">
