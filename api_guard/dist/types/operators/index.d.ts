@@ -2,6 +2,12 @@ export declare function audit<T>(durationSelector: (value: T) => ObservableInput
 
 export declare function auditTime<T>(duration: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
+export interface BasicGroupByOptions<K, T> {
+    connector?: () => SubjectLike<T>;
+    duration?: (grouped: GroupedObservable<K, T>) => ObservableInput<any>;
+    element?: undefined;
+}
+
 export declare function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]>;
 
 export declare function bufferCount<T>(bufferSize: number, startBufferEvery?: number | null): OperatorFunction<T, T[]>;
@@ -46,6 +52,10 @@ export declare function concatMapTo<T, R, O extends ObservableInput<unknown>>(ob
 export declare function concatWith<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
 
 export declare function connect<T, O extends ObservableInput<unknown>>(selector: (shared: Observable<T>) => O, config?: ConnectConfig<T>): OperatorFunction<T, ObservedValueOf<O>>;
+
+export interface ConnectConfig<T> {
+    connector: () => SubjectLike<T>;
+}
 
 export declare function count<T>(predicate?: (value: T, index: number) => boolean): OperatorFunction<T, number>;
 
@@ -127,6 +137,12 @@ export declare function groupBy<T, K>(key: (value: T) => K): OperatorFunction<T,
 export declare function groupBy<T, K>(key: (value: T) => K, element: void, duration: (grouped: GroupedObservable<K, T>) => Observable<any>): OperatorFunction<T, GroupedObservable<K, T>>;
 export declare function groupBy<T, K, R>(key: (value: T) => K, element?: (value: T) => R, duration?: (grouped: GroupedObservable<K, R>) => Observable<any>): OperatorFunction<T, GroupedObservable<K, R>>;
 export declare function groupBy<T, K, R>(key: (value: T) => K, element?: (value: T) => R, duration?: (grouped: GroupedObservable<K, R>) => Observable<any>, connector?: () => Subject<R>): OperatorFunction<T, GroupedObservable<K, R>>;
+
+export interface GroupByOptionsWithElement<K, E, T> {
+    connector?: () => SubjectLike<E>;
+    duration?: (grouped: GroupedObservable<K, E>) => ObservableInput<any>;
+    element: (value: T) => E;
+}
 
 export declare function ignoreElements(): OperatorFunction<any, never>;
 
@@ -220,6 +236,11 @@ export declare function repeatWhen<T>(notifier: (notifications: Observable<void>
 export declare function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
 export declare function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;
 
+export interface RetryConfig {
+    count: number;
+    resetOnSuccess?: boolean;
+}
+
 export declare function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T>;
 
 export declare function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T>;
@@ -235,8 +256,22 @@ export declare function sequenceEqual<T>(compareTo: Observable<T>, comparator?: 
 export declare function share<T>(): MonoTypeOperatorFunction<T>;
 export declare function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
 
+export interface ShareConfig<T> {
+    connector?: () => SubjectLike<T>;
+    resetOnComplete?: boolean | (() => Observable<any>);
+    resetOnError?: boolean | ((error: any) => Observable<any>);
+    resetOnRefCountZero?: boolean | (() => Observable<any>);
+}
+
 export declare function shareReplay<T>(config: ShareReplayConfig): MonoTypeOperatorFunction<T>;
 export declare function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+
+export interface ShareReplayConfig {
+    bufferSize?: number;
+    refCount: boolean;
+    scheduler?: SchedulerLike;
+    windowTime?: number;
+}
 
 export declare function single<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export declare function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
@@ -287,7 +322,12 @@ export declare function tap<T>(observer?: Partial<TapObserver<T>>): MonoTypeOper
 export declare function tap<T>(next: (value: T) => void): MonoTypeOperatorFunction<T>;
 export declare function tap<T>(next?: ((value: T) => void) | null, error?: ((error: any) => void) | null, complete?: (() => void) | null): MonoTypeOperatorFunction<T>;
 
-export declare function throttle<T>(durationSelector: (value: T) => ObservableInput<any>, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
+export declare function throttle<T>(durationSelector: (value: T) => ObservableInput<any>, config?: ThrottleConfig): MonoTypeOperatorFunction<T>;
+
+export interface ThrottleConfig {
+    leading?: boolean;
+    trailing?: boolean;
+}
 
 export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, config?: import("./throttle").ThrottleConfig): MonoTypeOperatorFunction<T>;
 
@@ -301,6 +341,20 @@ export declare function timeout<T, O extends ObservableInput<unknown>, M = unkno
 export declare function timeout<T, M = unknown>(config: Omit<TimeoutConfig<T, any, M>, 'with'>): OperatorFunction<T, T>;
 export declare function timeout<T>(first: Date, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 export declare function timeout<T>(each: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+
+export interface TimeoutConfig<T, O extends ObservableInput<unknown> = ObservableInput<T>, M = unknown> {
+    each?: number;
+    first?: number | Date;
+    meta?: M;
+    scheduler?: SchedulerLike;
+    with?: (info: TimeoutInfo<T, M>) => O;
+}
+
+export interface TimeoutInfo<T, M = unknown> {
+    readonly lastValue: T | null;
+    readonly meta: M;
+    readonly seen: number;
+}
 
 export declare function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
 export declare function timeoutWith<T, R>(waitFor: number, switchTo: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;

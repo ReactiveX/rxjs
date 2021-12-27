@@ -61,9 +61,10 @@ export const defaultThrottleConfig: ThrottleConfig = {
  */
 export function throttle<T>(
   durationSelector: (value: T) => ObservableInput<any>,
-  { leading, trailing }: ThrottleConfig = defaultThrottleConfig
+  config: ThrottleConfig = defaultThrottleConfig
 ): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
+    const { leading, trailing } = config;
     let hasValue = false;
     let sendValue: T | null = null;
     let throttled: Subscription | null = null;
