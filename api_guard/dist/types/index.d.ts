@@ -559,7 +559,7 @@ export declare function reduce<V, A, S = A>(accumulator: (acc: A | S, value: V, 
 
 export declare function refCount<T>(): MonoTypeOperatorFunction<T>;
 
-export declare function repeat<T>(count?: number): MonoTypeOperatorFunction<T>;
+export declare function repeat<T>(countOrConfig?: number | RepeatConfig): MonoTypeOperatorFunction<T>;
 
 export declare function repeatWhen<T>(notifier: (notifications: Observable<void>) => Observable<any>): MonoTypeOperatorFunction<T>;
 

@@ -1,26 +1,53 @@
 import { Subscription } from '../Subscription';
 import { EMPTY } from '../observable/empty';
 import { operate } from '../util/lift';
-import { MonoTypeOperatorFunction } from '../types';
+import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { OperatorSubscriber } from './OperatorSubscriber';
+import { innerFrom } from '../observable/innerFrom';
+import { timer } from '../observable/timer';
+
+export interface RepeatConfig {
+  /**
+   * The number of times to repeat the source. Defaults to `Infinity`.
+   */
+  count?: number;
+
+  /**
+   * If a `number`, will delay the repeat of the source by that number of milliseconds.
+   * If a function, it will provide the number of times the source has been subscribed to,
+   * and the return value should be a valid observable input that will notify when the source
+   * should be repeated. If the notifier observable is empty, the result will complete.
+   */
+  delay?: number | ((count: number) => ObservableInput<any>);
+}
 
 /**
- * Returns an Observable that will resubscribe to the source stream when the source stream completes, at most count times.
+ * Returns an Observable that will resubscribe to the source stream when the source stream completes.
  *
  * <span class="informal">Repeats all values emitted on the source. It's like {@link retry}, but for non error cases.</span>
  *
  * ![](repeat.png)
  *
- * Similar to {@link retry}, this operator repeats the stream of items emitted by the source for non error cases.
- * Repeat can be useful for creating observables that are meant to have some repeated pattern or rhythm.
+ * Repeat will output values from a source until the source completes, then it will resubscribe to the
+ * source a specified number of times, with a specified delay. Repeat can be particularly useful in
+ * combination with closing operators like {@link take}, {@link takeUntil}, {@link first}, or {@link takeWhile},
+ * as it can be used to restart a source again from scratch.
  *
- * Note: `repeat(0)` returns an empty observable and `repeat()` will repeat forever
+ * Repeat is very similar to {@link retry}, where {@link retry} will resubscribe to the source in the error case, but
+ * `repeat` will resubscribe if the source completes.
+ *
+ * Note that `repeat` will _not_ catch errors. Use {@link retry} for that.
+ *
+ * - `repeat(0)` returns an empty observable
+ * - `repeat()` will repeat forever
+ * - `repeat({ delay: 200 })` will repeat forever, with a delay of 200ms between repetitions.
+ * - `repeat({ count: 2, delay: 400 })` will repeat twice, with a delay of 400ms between repetitions.
+ * - `repeat({ delay: (count) => timer(count * 1000) })` will repeat forever, but will have a delay that grows by one second for each repetition.
  *
  * ## Example
  * Repeat a message stream
  * ```ts
- * import { of } from 'rxjs';
- * import { repeat } from 'rxjs/operators';
+ * import { of, repeat } from 'rxjs';
  *
  * const source = of('Repeat message');
  * const example = source.pipe(repeat(3));
@@ -50,29 +77,78 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * // 2
  * ```
  *
+ * Defining two complex repeats with delays on the same source.
+ * Note that the second repeat cannot be called until the first
+ * repeat as exhausted it's count.
+ *
+ * ```ts
+ * import { defer, of, repeat } from 'rxjs';
+ *
+ * const source = defer(() => {
+ *    return of(`Hello, it is ${new Date()}`)
+ * });
+ *
+ * source.pipe(
+ *    // Repeat 3 times with a delay of 1 second between repetitions
+ *    repeat({
+ *      count: 3,
+ *      delay: 1000,
+ *    }),
+ *
+ *    // *Then* repeat forever, but with an exponential step-back
+ *    // maxing out at 1 minute.
+ *    repeat({
+ *      delay: (count) => timer(Math.min(60000, 2 ^ count * 1000))
+ *    })
+ * )
+ * ```
+ *
  * @see {@link repeatWhen}
  * @see {@link retry}
  *
- * @param {number} [count] The number of times the source Observable items are repeated, a count of 0 will yield
+ * @param count The number of times the source Observable items are repeated, a count of 0 will yield
  * an empty Observable.
- * @return A function that returns an Observable that will resubscribe to the
- * source stream when the source stream completes, at most `count` times.
  */
-export function repeat<T>(count = Infinity): MonoTypeOperatorFunction<T> {
+export function repeat<T>(countOrConfig?: number | RepeatConfig): MonoTypeOperatorFunction<T> {
+  let count = Infinity;
+  let delay: RepeatConfig['delay'];
+
+  if (countOrConfig != null) {
+    if (typeof countOrConfig === 'object') {
+      ({ count = Infinity, delay } = countOrConfig);
+    } else {
+      count = countOrConfig;
+    }
+  }
+
   return count <= 0
     ? () => EMPTY
     : operate((source, subscriber) => {
         let soFar = 0;
-        let innerSub: Subscription | null;
-        const subscribeForRepeat = () => {
+        let sourceSub: Subscription | null;
+
+        const resubscribe = () => {
+          sourceSub?.unsubscribe();
+          sourceSub = null;
+          if (delay != null) {
+            const notifier = typeof delay === 'number' ? timer(delay) : innerFrom(delay(soFar));
+            const notifierSubscriber = new OperatorSubscriber(subscriber, () => {
+              notifierSubscriber.unsubscribe();
+              subscribeToSource();
+            });
+            notifier.subscribe(notifierSubscriber);
+          } else {
+            subscribeToSource();
+          }
+        };
+
+        const subscribeToSource = () => {
           let syncUnsub = false;
-          innerSub = source.subscribe(
+          sourceSub = source.subscribe(
             new OperatorSubscriber(subscriber, undefined, () => {
               if (++soFar < count) {
-                if (innerSub) {
-                  innerSub.unsubscribe();
-                  innerSub = null;
-                  subscribeForRepeat();
+                if (sourceSub) {
+                  resubscribe();
                 } else {
                   syncUnsub = true;
                 }
@@ -83,11 +159,10 @@ export function repeat<T>(count = Infinity): MonoTypeOperatorFunction<T> {
           );
 
           if (syncUnsub) {
-            innerSub.unsubscribe();
-            innerSub = null;
-            subscribeForRepeat();
+            resubscribe();
           }
         };
-        subscribeForRepeat();
+
+        subscribeToSource();
       });
 }
