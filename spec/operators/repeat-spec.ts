@@ -128,10 +128,9 @@ describe('repeat operator', () => {
   it('should consider negative count as no repeat, and return EMPTY', () => {
     rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
       const e1 = cold('--a--b--|                                    ');
-      const unsub = '                                            !';
       const expected = '|';
 
-      expectObservable(e1.pipe(repeat(-1)), unsub).toBe(expected);
+      expectObservable(e1.pipe(repeat(-1))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe([]);
     });
   });
