@@ -28,7 +28,7 @@ export interface TimeoutConfig<T, O extends ObservableInput<unknown> = Observabl
 
   /**
    * A factory used to create observable to switch to when timeout occurs. Provides
-   * some information about the source observable's emissions and what delay or
+   * a {@link TimeoutInfo} about the source observable's emissions and what delay or
    * exact time triggered the timeout.
    */
   with?: (info: TimeoutInfo<T, M>) => O;
