@@ -1,3 +1,9 @@
+## [7.5.1](https://github.com/reactivex/rxjs/compare/7.5.0...7.5.1) (2021-12-28)
+
+### Bug Fixes
+
+- export supporting interfaces from top-level `rxjs` site. ([#6733](https://github.com/reactivex/rxjs/issues/6733)) ([299a1e1](https://github.com/reactivex/rxjs/commit/299a1e16f725edfc2e333c430e3a7dfc75dd94e7))
+
 # [7.5.0](https://github.com/reactivex/rxjs/compare/7.4.0...7.5.0) (2021-12-27)
 
 ### Bug Fixes
