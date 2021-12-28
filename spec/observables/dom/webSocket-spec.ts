@@ -37,6 +37,40 @@ describe('webSocket', () => {
       teardownMockWebSocket();
     });
 
+    it('should send and receive messages <In, Out>', () => {
+      interface TestRequest {
+        action: string;
+      }
+
+      interface TestResponse {
+        result: string;
+      }
+
+      const request: TestRequest = {action: 'ping'};
+      const expectedResponse: TestResponse = {result: 'pong'};
+
+      let messageReceived = false;
+      const subject = webSocket<TestRequest, TestResponse>('ws://mysocket');
+
+      subject.next(request);
+
+      subject.subscribe((x: TestResponse) => {
+        expect(x.result).to.equal(expectedResponse.result);
+        messageReceived = true;
+      });
+
+      const socket = MockWebSocket.lastSocket;
+      expect(socket.url).to.equal('ws://mysocket');
+
+      socket.open();
+      expect(socket.lastMessageSent).to.equal(JSON.stringify(request));
+
+      socket.triggerMessage(JSON.stringify(expectedResponse));
+      expect(messageReceived).to.be.true;
+
+      subject.unsubscribe();
+    });
+
     it('should send and receive messages', () => {
       let messageReceived = false;
       const subject = webSocket<string>('ws://mysocket');
