@@ -22,11 +22,10 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  *
  * ## Examples
  *
- * Emit `false` for a non-empty Observable.
+ * Emit `false` for a non-empty Observable
  *
  * ```ts
- * import { Subject } from 'rxjs';
- * import { isEmpty } from 'rxjs/operators';
+ * import { Subject, isEmpty } from 'rxjs';
  *
  * const source = new Subject<string>();
  * const result = source.pipe(isEmpty());
@@ -40,17 +39,16 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * source.complete();
  *
  * // Outputs
- * // a
+ * // 'a'
  * // false
- * // b
- * // c
+ * // 'b'
+ * // 'c'
  * ```
  *
- * Emit `true` for an empty Observable.
+ * Emit `true` for an empty Observable
  *
  * ```ts
- * import { EMPTY } from 'rxjs';
- * import { isEmpty } from 'rxjs/operators';
+ * import { EMPTY, isEmpty } from 'rxjs';
  *
  * const result = EMPTY.pipe(isEmpty());
  * result.subscribe(x => console.log(x));
@@ -60,7 +58,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ```
  *
  * @see {@link count}
- * @see {@link index/EMPTY}
+ * @see {@link EMPTY}
  *
  * @return A function that returns an Observable that emits boolean value
  * indicating whether the source Observable was empty or not.

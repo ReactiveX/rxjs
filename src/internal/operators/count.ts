@@ -1,5 +1,6 @@
 import { OperatorFunction } from '../types';
 import { reduce } from './reduce';
+
 /**
  * Counts the number of emissions on the source and emits that number when the
  * source completes.
@@ -21,9 +22,9 @@ import { reduce } from './reduce';
  * ## Examples
  *
  * Counts how many seconds have passed before the first click happened
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { count, takeUntil } from 'rxjs/operators';
+ * import { interval, fromEvent, takeUntil, count } from 'rxjs';
  *
  * const seconds = interval(1000);
  * const clicks = fromEvent(document, 'click');
@@ -33,9 +34,9 @@ import { reduce } from './reduce';
  * ```
  *
  * Counts how many odd numbers are there between 1 and 7
+ *
  * ```ts
- * import { range } from 'rxjs';
- * import { count } from 'rxjs/operators';
+ * import { range, count } from 'rxjs';
  *
  * const numbers = range(1, 7);
  * const result = numbers.pipe(count(i => i % 2 === 1));
@@ -55,7 +56,6 @@ import { reduce } from './reduce';
  * @return A function that returns an Observable that emits one number that
  * represents the count of emissions.
  */
-
 export function count<T>(predicate?: (value: T, index: number) => boolean): OperatorFunction<T, number> {
   return reduce((total, value, i) => (!predicate || predicate(value, i) ? total + 1 : total), 0);
 }

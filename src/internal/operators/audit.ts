@@ -29,14 +29,15 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ## Example
  *
  * Emit clicks at a rate of at most one click per second
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { audit } from 'rxjs/operators'
+ * import { fromEvent, audit, interval } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(audit(ev => interval(1000)));
  * result.subscribe(x => console.log(x));
  * ```
+ *
  * @see {@link auditTime}
  * @see {@link debounce}
  * @see {@link delayWhen}

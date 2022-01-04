@@ -25,8 +25,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * Skip the last 2 values of an observable with many values
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { skipLast } from 'rxjs/operators';
+ * import { of, skipLast } from 'rxjs';
  *
  * const numbers = of(1, 2, 3, 4, 5);
  * const skipLastTwo = numbers.pipe(skipLast(2));

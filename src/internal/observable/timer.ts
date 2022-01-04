@@ -18,7 +18,7 @@ import { isValidDate } from '../util/isDate';
  *
  * ## Examples
  *
- * ### Wait 3 seconds and start another observable
+ * Wait 3 seconds and start another observable
  *
  * You might want to use `timer` to delay subscription to an
  * observable by a set amount of time. Here we use a timer with
@@ -26,19 +26,17 @@ import { isValidDate } from '../util/isDate';
  * a few seconds and start a subscription to a source.
  *
  * ```ts
- * import { timer, of } from 'rxjs';
- * import { concatMapTo } from 'rxjs/operators';
+ * import { of, timer, concatMap } from 'rxjs';
  *
  * // This could be any observable
  * const source = of(1, 2, 3);
  *
- * const result = timer(3000).pipe(
- *   concatMapTo(source)
- * )
- * .subscribe(console.log);
+ * timer(3000)
+ *   .pipe(concatMap(() => source))
+ *   .subscribe(console.log);
  * ```
  *
- * ### Take all of the values until the start of the next minute
+ * Take all values until the start of the next minute
  *
  * Using a `Date` as the trigger for the first emission, you can
  * do things like wait until midnight to fire an event, or in this case,
@@ -47,8 +45,7 @@ import { isValidDate } from '../util/isDate';
  * {@link takeUntil}.
  *
  * ```ts
- * import { interval, timer } from 'rxjs';
- * import { takeUntil } from 'rxjs/operators';
+ * import { interval, takeUntil, timer } from 'rxjs';
  *
  * // Build a Date object that marks the
  * // next minute.
@@ -58,8 +55,8 @@ import { isValidDate } from '../util/isDate';
  *   currentDate.getMonth(),
  *   currentDate.getDate(),
  *   currentDate.getHours(),
- *   currentDate.getMinutes() + 1,
- * )
+ *   currentDate.getMinutes() + 1
+ * );
  *
  * // This could be any observable stream
  * const source = interval(1000);
@@ -97,7 +94,7 @@ export function timer(due: number | Date, scheduler?: SchedulerLike): Observable
  *
  * ### Start an interval that starts right away
  *
- * Since {@link index/interval} waits for the passed delay before starting,
+ * Since {@link interval} waits for the passed delay before starting,
  * sometimes that's not ideal. You may want to start an interval immediately.
  * `timer` works well for this. Here we have both side-by-side so you can
  * see them in comparison.

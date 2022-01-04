@@ -82,51 +82,58 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * is not a `WebSocketSubject`, so calling `next` or `multiplex` again will fail. For pushing values to the
  * server, use root `WebSocketSubject`.
  *
- * ### Examples
- * #### Listening for messages from the server
- * ```ts
- * import { webSocket } from "rxjs/webSocket";
- * const subject = webSocket("ws://localhost:8081");
+ * ## Examples
  *
- * subject.subscribe(
- *    msg => console.log('message received: ' + msg), // Called whenever there is a message from the server.
- *    err => console.log(err), // Called if at any point WebSocket API signals some kind of error.
- *    () => console.log('complete') // Called when connection is closed (for whatever reason).
- *  );
+ * Listening for messages from the server
+ *
+ * ```ts
+ * import { webSocket } from 'rxjs/webSocket';
+ *
+ * const subject = webSocket('ws://localhost:8081');
+ *
+ * subject.subscribe({
+ *   next: msg => console.log('message received: ' + msg), // Called whenever there is a message from the server.
+ *   error: err => console.log(err), // Called if at any point WebSocket API signals some kind of error.
+ *   complete: () => console.log('complete') // Called when connection is closed (for whatever reason).
+ *  });
  * ```
  *
- * #### Pushing messages to the server
+ * Pushing messages to the server
+ *
  * ```ts
- * import { webSocket } from "rxjs/webSocket";
+ * import { webSocket } from 'rxjs/webSocket';
+ *
  * const subject = webSocket('ws://localhost:8081');
  *
  * subject.subscribe();
  * // Note that at least one consumer has to subscribe to the created subject - otherwise "nexted" values will be just buffered and not sent,
  * // since no connection was established!
  *
- * subject.next({message: 'some message'});
+ * subject.next({ message: 'some message' });
  * // This will send a message to the server once a connection is made. Remember value is serialized with JSON.stringify by default!
  *
  * subject.complete(); // Closes the connection.
  *
- * subject.error({code: 4000, reason: 'I think our app just broke!'});
+ * subject.error({ code: 4000, reason: 'I think our app just broke!' });
  * // Also closes the connection, but let's the server know that this closing is caused by some error.
  * ```
  *
- * #### Multiplexing WebSocket
+ * Multiplexing WebSocket
+ *
  * ```ts
- * import { webSocket } from "rxjs/webSocket";
+ * import { webSocket } from 'rxjs/webSocket';
+ *
  * const subject = webSocket('ws://localhost:8081');
  *
  * const observableA = subject.multiplex(
- *   () => ({subscribe: 'A'}), // When server gets this message, it will start sending messages for 'A'...
- *   () => ({unsubscribe: 'A'}), // ...and when gets this one, it will stop.
+ *   () => ({ subscribe: 'A' }), // When server gets this message, it will start sending messages for 'A'...
+ *   () => ({ unsubscribe: 'A' }), // ...and when gets this one, it will stop.
  *   message => message.type === 'A' // If the function returns `true` message is passed down the stream. Skipped if the function returns false.
  * );
  *
  * const observableB = subject.multiplex( // And the same goes for 'B'.
- *   () => ({subscribe: 'B'}),
- *   () => ({unsubscribe: 'B'}),
+ *   () => ({ subscribe: 'B' }),
+ *   () => ({ unsubscribe: 'B' }),
  *   message => message.type === 'B'
  * );
  *
@@ -145,7 +152,6 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * // Message '{"unsubscribe": "A"}' makes the server stop sending messages for 'A'. Since there is no more subscribers to root Subject,
  * // socket connection closes.
  * ```
- *
  *
  * @param {string|WebSocketSubjectConfig} urlConfigOrSource The WebSocket endpoint as an url or an object with
  * configuration and additional Observers.

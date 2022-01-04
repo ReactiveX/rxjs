@@ -27,18 +27,17 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * until you call its connect function.
  *
  * ```ts
- * import { interval } from 'rxjs';
- * import { tap, publish, refCount } from 'rxjs/operators';
+ * import { interval, tap, publish, refCount } from 'rxjs';
  *
  * // Turn the interval observable into a ConnectableObservable (hot)
  * const refCountInterval = interval(400).pipe(
- *   tap((num) => console.log(`refCount ${num}`)),
+ *   tap(num => console.log(`refCount ${ num }`)),
  *   publish(),
  *   refCount()
  * );
  *
  * const publishedInterval = interval(400).pipe(
- *   tap((num) => console.log(`publish ${num}`)),
+ *   tap(num => console.log(`publish ${ num }`)),
  *   publish()
  * );
  *
@@ -46,7 +45,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * refCountInterval.subscribe();
  * // 'refCount 0' -----> 'refCount 1' -----> etc
  * // All subscriptions will receive the same value and the tap (and
- * // every other operator) before the publish operator will be executed
+ * // every other operator) before the `publish` operator will be executed
  * // only once per event independently of the number of subscriptions.
  *
  * publishedInterval.subscribe();

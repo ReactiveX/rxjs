@@ -11,18 +11,15 @@ import { identity } from '../util/identity';
  * ## Example
  *
  * ```ts
- * import { interval } from 'rxjs';
- * import { mapTo, raceWith } from 'rxjs/operators';
+ * import { interval, map, raceWith } from 'rxjs';
  *
- * const obs1 = interval(1000).pipe(mapTo('fast one'));
- * const obs2 = interval(3000).pipe(mapTo('medium one'));
- * const obs3 = interval(5000).pipe(mapTo('slow one'));
+ * const obs1 = interval(7000).pipe(map(() => 'slow one'));
+ * const obs2 = interval(3000).pipe(map(() => 'fast one'));
+ * const obs3 = interval(5000).pipe(map(() => 'medium one'));
  *
- * obs2.pipe(
- *   raceWith(obs3, obs1)
- * ).subscribe(
- *   winner => console.log(winner)
- * );
+ * obs1
+ *   .pipe(raceWith(obs2, obs3))
+ *   .subscribe(winner => console.log(winner));
  *
  * // Outputs
  * // a series of 'fast one'
@@ -32,7 +29,6 @@ import { identity } from '../util/identity';
  * @return A function that returns an Observable that mirrors the output of the
  * first Observable to emit an item.
  */
-
 export function raceWith<T, A extends readonly unknown[]>(
   ...otherSources: [...ObservableInputTuple<A>]
 ): OperatorFunction<T, T | A[number]> {

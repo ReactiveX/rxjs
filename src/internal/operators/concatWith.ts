@@ -13,8 +13,7 @@ import { concat } from './concat';
  * Listen for one mouse click, then listen for all mouse moves.
  *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { concatWith, map, take } from 'rxjs/operators';
+ * import { fromEvent, map, take, concatWith } from 'rxjs';
  *
  * const clicks$ = fromEvent(document, 'click');
  * const moves$ = fromEvent(document, 'mousemove');

@@ -20,14 +20,12 @@ import { arrRemove } from '../util/arrRemove';
  * Observable provided to `openings`, and closing and sending the buffers when
  * a Subscribable or Promise returned by the `closingSelector` function emits.
  *
- *
  * ## Example
  *
  * Every other second, emit the click events from the next 500ms
  *
  * ```ts
- * import { fromEvent, interval, EMPTY } from 'rxjs';
- * import { bufferToggle } from 'rxjs/operators';
+ * import { fromEvent, interval, bufferToggle, EMPTY } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const openings = interval(1000);

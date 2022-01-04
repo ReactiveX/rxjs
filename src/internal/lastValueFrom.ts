@@ -26,25 +26,24 @@ export function lastValueFrom<T>(source: Observable<T>): Promise<T>;
  * this situation, look into adding something like {@link timeout}, {@link take},
  * {@link takeWhile}, or {@link takeUntil} amongst others.
  *
- * ### Example
+ * ## Example
  *
  * Wait for the last value from a stream and emit it from a promise in
- * an async function.
+ * an async function
  *
  * ```ts
- * import { interval, lastValueFrom } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * import { interval, take, lastValueFrom } from 'rxjs';
  *
  * async function execute() {
  *   const source$ = interval(2000).pipe(take(10));
  *   const finalNumber = await lastValueFrom(source$);
- *   console.log(`The final number is ${finalNumber}`);
+ *   console.log(`The final number is ${ finalNumber }`);
  * }
  *
  * execute();
  *
  * // Expected output:
- * // "The final number is 9"
+ * // 'The final number is 9'
  * ```
  *
  * @see {@link firstValueFrom}

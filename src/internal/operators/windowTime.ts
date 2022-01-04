@@ -21,6 +21,7 @@ export function windowTime<T>(
   maxWindowSize: number,
   scheduler?: SchedulerLike
 ): OperatorFunction<T, Observable<T>>;
+
 /**
  * Branch out the source Observable values as a nested Observable periodically
  * in time.
@@ -44,43 +45,44 @@ export function windowTime<T>(
  * `windowTimeSpan` and `windowCreationInterval` arguments.
  *
  * ## Examples
+ *
  * In every window of 1 second each, emit at most 2 click events
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { windowTime, map, mergeAll, take } from 'rxjs/operators';
+ * import { fromEvent, windowTime, map, take, mergeAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
  *   windowTime(1000),
- *   map(win => win.pipe(take(2))), // each window has at most 2 emissions
- *   mergeAll(),                    // flatten the Observable-of-Observables
+ *   map(win => win.pipe(take(2))), // take at most 2 emissions from each window
+ *   mergeAll()                     // flatten the Observable-of-Observables
  * );
  * result.subscribe(x => console.log(x));
  * ```
  *
  * Every 5 seconds start a window 1 second long, and emit at most 2 click events per window
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { windowTime, map, mergeAll, take } from 'rxjs/operators';
+ * import { fromEvent, windowTime, map, take, mergeAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
  *   windowTime(1000, 5000),
- *   map(win => win.pipe(take(2))), // each window has at most 2 emissions
- *   mergeAll(),                    // flatten the Observable-of-Observables
+ *   map(win => win.pipe(take(2))), // take at most 2 emissions from each window
+ *   mergeAll()                     // flatten the Observable-of-Observables
  * );
  * result.subscribe(x => console.log(x));
  * ```
  *
- * Same as example above but with maxWindowCount instead of take
+ * Same as example above but with `maxWindowCount` instead of `take`
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { windowTime, mergeAll } from 'rxjs/operators';
+ * import { fromEvent, windowTime, mergeAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
- *   windowTime(1000, 5000, 2), // each window has still at most 2 emissions
- *   mergeAll(),                // flatten the Observable-of-Observables
+ *   windowTime(1000, 5000, 2), // take at most 2 emissions from each window
+ *   mergeAll()                 // flatten the Observable-of-Observables
  * );
  * result.subscribe(x => console.log(x));
  * ```
