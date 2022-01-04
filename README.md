@@ -1,4 +1,4 @@
-# <img src="docs_app/assets/Rx_Logo_S.png" alt="RxJS Logo" width="86" height="86"> RxJS: Reactive Extensions For JavaScript
+# <img src="docs_app/src/assets/images/logos/Rx_Logo_S.png" alt="RxJS Logo" width="86" height="86"> RxJS: Reactive Extensions For JavaScript
 
 ![CI](https://github.com/reactivex/rxjs/workflows/CI/badge.svg)
 [![npm version](https://badge.fury.io/js/rxjs.svg)](http://badge.fury.io/js/rxjs)
