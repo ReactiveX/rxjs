@@ -39,21 +39,6 @@ export class Observable<T> implements Subscribable<T> {
     }
   }
 
-  // HACK: Since TypeScript inherits static properties too, we have to
-  // fight against TypeScript here so Subject can have a different static create signature
-  /**
-   * Creates a new Observable by calling the Observable constructor
-   * @owner Observable
-   * @method create
-   * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
-   * @return {Observable} a new observable
-   * @nocollapse
-   * @deprecated Use `new Observable()` instead. Will be removed in v8.
-   */
-  static create: (...args: any[]) => any = <T>(subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) => {
-    return new Observable<T>(subscribe);
-  };
-
   /**
    * Creates a new Observable, with this Observable instance as the source, and the passed
    * operator defined as the new observable's operator.

@@ -435,7 +435,6 @@ export declare class Observable<T> implements Subscribable<T> {
     subscribe(observer?: Partial<Observer<T>>): Subscription;
     subscribe(next: (value: T) => void): Subscription;
     subscribe(next?: ((value: T) => void) | null, error?: ((error: any) => void) | null, complete?: (() => void) | null): Subscription;
-    static create: (...args: any[]) => any;
 }
 
 export declare type ObservableInput<T> = Observable<T> | InteropObservable<T> | AsyncIterable<T> | PromiseLike<T> | ArrayLike<T> | Iterable<T> | ReadableStreamLike<T>;
