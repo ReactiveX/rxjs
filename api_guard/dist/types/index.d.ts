@@ -648,8 +648,6 @@ export interface Subscribable<T> {
     subscribe(observer: Partial<Observer<T>>): Unsubscribable;
 }
 
-export declare type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | InteropObservable<T>;
-
 export declare function subscribeOn<T>(scheduler: SchedulerLike, delay?: number): MonoTypeOperatorFunction<T>;
 
 export declare class Subscriber<T> extends Subscription implements Observer<T> {
