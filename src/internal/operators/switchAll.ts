@@ -19,19 +19,19 @@ import { identity } from '../util/identity';
  * if there are any.
  *
  * ## Examples
+ *
  * Spawn a new interval observable for each click event, but for every new
- * click, cancel the previous interval and subscribe to the new one.
+ * click, cancel the previous interval and subscribe to the new one
  *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { switchAll, map, tap } from 'rxjs/operators';
+ * import { fromEvent, tap, map, interval, switchAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click').pipe(tap(() => console.log('click')));
- * const source = clicks.pipe(map((ev) => interval(1000)));
+ * const source = clicks.pipe(map(() => interval(1000)));
  *
- * source.pipe(
- *   switchAll()
- * ).subscribe(x => console.log(x));
+ * source
+ *   .pipe(switchAll())
+ *   .subscribe(x => console.log(x));
  *
  * // Output
  * // click
@@ -60,7 +60,6 @@ import { identity } from '../util/identity';
  * Observable into a first-order Observable producing values only from the most
  * recent Observable sequence.
  */
-
 export function switchAll<O extends ObservableInput<any>>(): OperatorFunction<O, ObservedValueOf<O>> {
   return switchMap(identity);
 }

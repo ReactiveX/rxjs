@@ -33,7 +33,9 @@ export function merge<A extends readonly unknown[]>(
  * Observable will be immediately emitted on the output Observable.
  *
  * ## Examples
- * ### Merge together two Observables: 1s interval and clicks
+ *
+ * Merge together two Observables: 1s interval and clicks
+ *
  * ```ts
  * import { merge, fromEvent, interval } from 'rxjs';
  *
@@ -49,14 +51,15 @@ export function merge<A extends readonly unknown[]>(
  * // as they occur.
  * ```
  *
- * ### Merge together 3 Observables, but only 2 run concurrently
+ * Merge together 3 Observables, but run only 2 concurrently
+ *
  * ```ts
- * import { merge, interval } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * import { interval, take, merge } from 'rxjs';
  *
  * const timer1 = interval(1000).pipe(take(10));
  * const timer2 = interval(2000).pipe(take(6));
  * const timer3 = interval(500).pipe(take(10));
+ *
  * const concurrent = 2; // the argument
  * const merged = merge(timer1, timer2, timer3, concurrent);
  * merged.subscribe(x => console.log(x));

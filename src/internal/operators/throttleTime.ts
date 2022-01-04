@@ -23,41 +23,41 @@ import { timer } from '../observable/timer';
  *
  * ## Examples
  *
- * #### Limit click rate
+ * ### Limit click rate
  *
  * Emit clicks at a rate of at most one click per second
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { throttleTime } from 'rxjs/operators';
+ * import { fromEvent, throttleTime } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(throttleTime(1000));
+ *
  * result.subscribe(x => console.log(x));
  * ```
  *
- * #### Double Click
+ * ### Double Click
  *
  * The following example only emits clicks which happen within a subsequent
  * delay of 400ms of the previous click. This for example can emulate a double
  * click. It makes use of the `trailing` parameter of the throttle configuration.
  *
  * ```ts
- * import { fromEvent, asyncScheduler } from 'rxjs';
- * import { throttleTime, withLatestFrom } from 'rxjs/operators';
+ * import { fromEvent, throttleTime, asyncScheduler } from 'rxjs';
  *
- * // defaultThottleConfig = { leading: true, trailing: false }
+ * // defaultThrottleConfig = { leading: true, trailing: false };
  * const throttleConfig = {
  *   leading: false,
  *   trailing: true
- * }
+ * };
  *
  * const click = fromEvent(document, 'click');
  * const doubleClick = click.pipe(
  *   throttleTime(400, asyncScheduler, throttleConfig)
  * );
  *
- * doubleClick.subscribe((throttleValue: Event) => {
- *   console.log(`Double-clicked! Timestamp: ${throttleValue.timeStamp}`);
+ * doubleClick.subscribe(event => {
+ *   console.log(`Double-clicked! Timestamp: ${ event.timeStamp }`);
  * });
  * ```
  *

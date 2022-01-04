@@ -38,10 +38,11 @@ export function first<T, D = T>(
  * `defaultValue` was not provided and a matching element is not found.
  *
  * ## Examples
+ *
  * Emit only the first click that happens on the DOM
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { first } from 'rxjs/operators';
+ * import { fromEvent, first } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(first());
@@ -49,16 +50,16 @@ export function first<T, D = T>(
  * ```
  *
  * Emits the first click that happens on a DIV
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { first } from 'rxjs/operators';
+ * import { fromEvent, first } from 'rxjs';
  *
  * const div = document.createElement('div');
  * div.style.cssText = 'width: 200px; height: 200px; background: #09c;';
  * document.body.appendChild(div);
  *
  * const clicks = fromEvent(document, 'click');
- * const result = clicks.pipe(first(ev => ev.target.tagName === 'DIV'));
+ * const result = clicks.pipe(first(ev => (<HTMLElement>ev.target).tagName === 'DIV'));
  * result.subscribe(x => console.log(x));
  * ```
  *
@@ -72,7 +73,7 @@ export function first<T, D = T>(
  *
  * @param {function(value: T, index: number, source: Observable<T>): boolean} [predicate]
  * An optional function called with each item to test for condition matching.
- * @param {R} [defaultValue] The default value emitted in case no valid value
+ * @param {D} [defaultValue] The default value emitted in case no valid value
  * was found on the source.
  * @return A function that returns an Observable that emits the first item that
  * matches the condition.

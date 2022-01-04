@@ -43,14 +43,14 @@ export function tap<T>(
  * in your observable `pipe`, log out the notifications as they are emitted by the source returned by the previous
  * operation.
  *
- * ## Example
+ * ## Examples
+ *
  * Check a random number before it is handled. Below is an observable that will use a random number between 0 and 1,
- * and emit "big" or "small" depending on the size of that number. But we wanted to log what the original number
+ * and emit `'big'` or `'small'` depending on the size of that number. But we wanted to log what the original number
  * was, so we have added a `tap(console.log)`.
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { tap, map } from 'rxjs/operators';
+ * import { of, tap, map } from 'rxjs';
  *
  * of(Math.random()).pipe(
  *   tap(console.log),
@@ -58,46 +58,39 @@ export function tap<T>(
  * ).subscribe(console.log);
  * ```
  *
- * ## Example
  * Using `tap` to analyze a value and force an error. Below is an observable where in our system we only
  * want to emit numbers 3 or less we get from another source. We can force our observable to error
  * using `tap`.
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { tap } from 'rxjs/operators';
+ * import { of, tap } from 'rxjs';
  *
- * const source = of(1, 2, 3, 4, 5)
+ * const source = of(1, 2, 3, 4, 5);
  *
  * source.pipe(
- *  tap(n => {
- *    if (n > 3) {
- *      throw new TypeError(`Value ${n} is greater than 3`)
- *    }
- *  })
+ *   tap(n => {
+ *     if (n > 3) {
+ *       throw new TypeError(`Value ${ n } is greater than 3`);
+ *     }
+ *   })
  * )
- * .subscribe(console.log);
+ * .subscribe({ next: console.log, error: err => console.log(err.message) });
  * ```
  *
- * ## Example
  * We want to know when an observable completes before moving on to the next observable. The system
- * below will emit a random series of `"X"` characters from 3 different observables in sequence. The
+ * below will emit a random series of `'X'` characters from 3 different observables in sequence. The
  * only way we know when one observable completes and moves to the next one, in this case, is because
- * we have added a `tap` with the side-effect of logging to console.
+ * we have added a `tap` with the side effect of logging to console.
  *
  * ```ts
- * import { of, interval } from 'rxjs';
- * import { tap, map, concatMap, take } from 'rxjs/operators';
- *
+ * import { of, concatMap, interval, take, map, tap } from 'rxjs';
  *
  * of(1, 2, 3).pipe(
- *  concatMap(n => interval(1000).pipe(
- *    take(Math.round(Math.random() * 10)),
- *    map(() => 'X'),
- *    tap({
- *      complete: () => console.log(`Done with ${n}`)
- *    })
- *  ))
+ *   concatMap(n => interval(1000).pipe(
+ *     take(Math.round(Math.random() * 10)),
+ *     map(() => 'X'),
+ *     tap({ complete: () => console.log(`Done with ${ n }`) })
+ *   ))
  * )
  * .subscribe(console.log);
  * ```

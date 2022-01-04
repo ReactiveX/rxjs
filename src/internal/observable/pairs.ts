@@ -36,11 +36,13 @@ export function pairs(
  * enumerable keys that are present on an object directly - not ones inherited
  * via prototype chain.
  *
- * By default these arrays are emitted synchronously. To change that you can
+ * By default, these arrays are emitted synchronously. To change that you can
  * pass a {@link SchedulerLike} as a second argument to `pairs`.
  *
  * ## Example
- * ### Converts an object to an Observable
+ *
+ * Converts an object to an Observable
+ *
  * ```ts
  * import { pairs } from 'rxjs';
  *
@@ -56,10 +58,10 @@ export function pairs(
  * });
  *
  * // Logs:
- * // ["foo", 42],
- * // ["bar", 56],
- * // ["baz", 78],
- * // "Complete!"
+ * // ['foo', 42]
+ * // ['bar', 56]
+ * // ['baz', 78]
+ * // 'Complete!'
  * ```
  *
  * ### Object.entries required

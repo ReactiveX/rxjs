@@ -39,12 +39,13 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
  * subsequent inner Observables.
  *
  * ## Example
- * Generate new Observable according to source Observable values
- * ```typescript
- * import { of } from 'rxjs';
- * import { switchMap } from 'rxjs/operators';
  *
- * const switched = of(1, 2, 3).pipe(switchMap((x: number) => of(x, x ** 2, x ** 3)));
+ * Generate new Observable according to source Observable values
+ *
+ * ```ts
+ * import { of, switchMap } from 'rxjs';
+ *
+ * const switched = of(1, 2, 3).pipe(switchMap(x => of(x, x ** 2, x ** 3)));
  * switched.subscribe(x => console.log(x));
  * // outputs
  * // 1
@@ -53,16 +54,18 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
  * // 2
  * // 4
  * // 8
- * // ... and so on
+ * // 3
+ * // 9
+ * // 27
  * ```
  *
  * Restart an interval Observable on every click event
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { switchMap } from 'rxjs/operators';
+ * import { fromEvent, switchMap, interval } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
- * const result = clicks.pipe(switchMap((ev) => interval(1000)));
+ * const result = clicks.pipe(switchMap(() => interval(1000)));
  * result.subscribe(x => console.log(x));
  * ```
  *
@@ -72,7 +75,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
  * @see {@link switchAll}
  * @see {@link switchMapTo}
  *
- * @param {function(value: T, ?index: number): ObservableInput} project A function
+ * @param {function(value: T, index: number): ObservableInput} project A function
  * that, when applied to an item emitted by the source Observable, returns an
  * Observable.
  * @return A function that returns an Observable that emits the result of

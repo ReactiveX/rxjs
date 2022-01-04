@@ -35,17 +35,18 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
  * (emits `undefined` instead).
  *
  * ## Example
+ *
  * Find and emit the first click that happens on a DIV element
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { find } from 'rxjs/operators';
+ * import { fromEvent, find } from 'rxjs';
  *
  * const div = document.createElement('div');
  * div.style.cssText = 'width: 200px; height: 200px; background: #09c;';
  * document.body.appendChild(div);
  *
  * const clicks = fromEvent(document, 'click');
- * const result = clicks.pipe(find(ev => ev.target.tagName === 'DIV'));
+ * const result = clicks.pipe(find(ev => (<HTMLElement>ev.target).tagName === 'DIV'));
  * result.subscribe(x => console.log(x));
  * ```
  *

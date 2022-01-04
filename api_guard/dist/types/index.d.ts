@@ -29,6 +29,12 @@ export declare function audit<T>(durationSelector: (value: T) => ObservableInput
 
 export declare function auditTime<T>(duration: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
+export interface BasicGroupByOptions<K, T> {
+    connector?: () => SubjectLike<T>;
+    duration?: (grouped: GroupedObservable<K, T>) => ObservableInput<any>;
+    element?: undefined;
+}
+
 export declare class BehaviorSubject<T> extends Subject<T> {
     get value(): T;
     constructor(_value: T);
@@ -129,6 +135,10 @@ export declare class ConnectableObservable<T> extends Observable<T> {
     connect(): Subscription;
     protected getSubject(): Subject<T>;
     refCount(): Observable<T>;
+}
+
+export interface ConnectConfig<T> {
+    connector: () => SubjectLike<T>;
 }
 
 export declare type Cons<X, Y extends readonly any[]> = ((arg: X, ...rest: Y) => any) extends (...args: infer U) => any ? U : never;
@@ -286,6 +296,12 @@ export declare function groupBy<T, K>(key: (value: T) => K): OperatorFunction<T,
 export declare function groupBy<T, K>(key: (value: T) => K, element: void, duration: (grouped: GroupedObservable<K, T>) => Observable<any>): OperatorFunction<T, GroupedObservable<K, T>>;
 export declare function groupBy<T, K, R>(key: (value: T) => K, element?: (value: T) => R, duration?: (grouped: GroupedObservable<K, R>) => Observable<any>): OperatorFunction<T, GroupedObservable<K, R>>;
 export declare function groupBy<T, K, R>(key: (value: T) => K, element?: (value: T) => R, duration?: (grouped: GroupedObservable<K, R>) => Observable<any>, connector?: () => Subject<R>): OperatorFunction<T, GroupedObservable<K, R>>;
+
+export interface GroupByOptionsWithElement<K, E, T> {
+    connector?: () => SubjectLike<E>;
+    duration?: (grouped: GroupedObservable<K, E>) => ObservableInput<any>;
+    element: (value: T) => E;
+}
 
 export interface GroupedObservable<K, T> extends Observable<T> {
     readonly key: K;
@@ -564,6 +580,12 @@ export declare class ReplaySubject<T> extends Subject<T> {
 export declare function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
 export declare function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;
 
+export interface RetryConfig {
+    count?: number;
+    delay?: number | ((error: any, retryCount: number) => ObservableInput<any>);
+    resetOnSuccess?: boolean;
+}
+
 export declare function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T>;
 
 export declare function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T>;
@@ -603,8 +625,22 @@ export declare const SequenceError: SequenceErrorCtor;
 export declare function share<T>(): MonoTypeOperatorFunction<T>;
 export declare function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
 
+export interface ShareConfig<T> {
+    connector?: () => SubjectLike<T>;
+    resetOnComplete?: boolean | (() => Observable<any>);
+    resetOnError?: boolean | ((error: any) => Observable<any>);
+    resetOnRefCountZero?: boolean | (() => Observable<any>);
+}
+
 export declare function shareReplay<T>(config: ShareReplayConfig): MonoTypeOperatorFunction<T>;
 export declare function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+
+export interface ShareReplayConfig {
+    bufferSize?: number;
+    refCount: boolean;
+    scheduler?: SchedulerLike;
+    windowTime?: number;
+}
 
 export declare function single<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export declare function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
@@ -715,6 +751,11 @@ export declare type TeardownLogic = Subscription | Unsubscribable | (() => void)
 
 export declare function throttle<T>(durationSelector: (value: T) => ObservableInput<any>, config?: ThrottleConfig): MonoTypeOperatorFunction<T>;
 
+export interface ThrottleConfig {
+    leading?: boolean;
+    trailing?: boolean;
+}
+
 export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, config?: import("./throttle").ThrottleConfig): MonoTypeOperatorFunction<T>;
 
 export declare function throwError(errorFactory: () => any): Observable<never>;
@@ -737,11 +778,25 @@ export declare function timeout<T, M = unknown>(config: Omit<TimeoutConfig<T, an
 export declare function timeout<T>(first: Date, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 export declare function timeout<T>(each: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
+export interface TimeoutConfig<T, O extends ObservableInput<unknown> = ObservableInput<T>, M = unknown> {
+    each?: number;
+    first?: number | Date;
+    meta?: M;
+    scheduler?: SchedulerLike;
+    with?: (info: TimeoutInfo<T, M>) => O;
+}
+
 export interface TimeoutError<T = unknown, M = unknown> extends Error {
     info: TimeoutInfo<T, M> | null;
 }
 
 export declare const TimeoutError: TimeoutErrorCtor;
+
+export interface TimeoutInfo<T, M = unknown> {
+    readonly lastValue: T | null;
+    readonly meta: M;
+    readonly seen: number;
+}
 
 export declare function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
 export declare function timeoutWith<T, R>(waitFor: number, switchTo: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;

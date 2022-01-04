@@ -20,7 +20,7 @@ import { timeout } from './timeout';
 export function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
 
 /**
- * When the passed timespan ellapses before the source emits any given value, it will unsubscribe from the source,
+ * When the passed timespan elapses before the source emits any given value, it will unsubscribe from the source,
  * and switch the subscription to another observable.
  *
  * <span class="informal">Used to switch to a different observable if your source is being slow</span>
@@ -32,47 +32,44 @@ export function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, sch
  * - You want to emit a custom error rather than the {@link TimeoutError} emitted
  *   by the default usage of {@link timeout}.
  *
- * ## Example
+ * ## Examples
  *
  * Fallback to a faster observable
  *
  * ```ts
- * import { interval } from 'rxjs';
- * import { timeoutWith } from 'rxjs/operators';
+ * import { interval, timeoutWith } from 'rxjs';
  *
  * const slow$ = interval(1000);
  * const faster$ = interval(500);
  *
- * slow$.pipe(
- *    timeoutWith(900, faster$)
- * )
- * .subscribe(console.log)
+ * slow$
+ *   .pipe(timeoutWith(900, faster$))
+ *   .subscribe(console.log);
  * ```
- *
- * ### Example
  *
  * Emit your own custom timeout error
  *
  * ```ts
- * import { interval, throwError } from 'rxjs';
- * import { timeoutWith } from 'rxjs/operators';
+ * import { interval, timeoutWith, throwError } from 'rxjs';
  *
  * class CustomTimeoutError extends Error {
  *   constructor() {
- *      super('It was too slow');
- *      this.name = 'CustomTimeoutError';
+ *     super('It was too slow');
+ *     this.name = 'CustomTimeoutError';
  *   }
  * }
  *
- * const slow = interval(1000);
+ * const slow$ = interval(1000);
  *
- * slow$.pipe(
- *    timeoutWith(900, throwError(new CustomTimeoutError()))
- * )
- * .subscribe({
- *    error: console.error
- * })
+ * slow$
+ *   .pipe(timeoutWith(900, throwError(() => new CustomTimeoutError())))
+ *   .subscribe({
+ *     error: err => console.error(err.message)
+ *   });
  * ```
+ *
+ * @see {@link timeout}
+ *
  * @param waitFor The time allowed between values from the source before timeout is triggered.
  * @param switchTo The observable to switch to when timeout occurs.
  * @param scheduler The scheduler to use with time-related operations within this operator. Defaults to {@link asyncScheduler}

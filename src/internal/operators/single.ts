@@ -28,11 +28,10 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  *
  * ## Example
  *
- * Expect only name beginning with 'B':
+ * Expect only `name` beginning with `'B'`
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { single } from 'rxjs/operators';
+ * import { of, single } from 'rxjs';
  *
  * const source1 = of(
  *  { name: 'Ben' },
@@ -41,11 +40,10 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  *  { name: 'Lily' }
  * );
  *
- * source1.pipe(
- *   single(x => x.name.startsWith('B'))
- * )
- * .subscribe(x => console.log(x));
- * // Emits "Ben"
+ * source1
+ *   .pipe(single(x => x.name.startsWith('B')))
+ *   .subscribe(x => console.log(x));
+ * // Emits 'Ben'
  *
  *
  * const source2 = of(
@@ -55,10 +53,9 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  *  { name: 'Lincoln' }
  * );
  *
- * source2.pipe(
- *   single(x => x.name.startsWith('B'))
- * )
- * .subscribe(x => console.log(x));
+ * source2
+ *   .pipe(single(x => x.name.startsWith('B')))
+ *   .subscribe({ error: err => console.error(err) });
  * // Error emitted: SequenceError('Too many values match')
  *
  *
@@ -69,10 +66,9 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  *  { name: 'Lincoln' }
  * );
  *
- * source3.pipe(
- *   single(x => x.name.startsWith('B'))
- * )
- * .subscribe(x => console.log(x));
+ * source3
+ *   .pipe(single(x => x.name.startsWith('B')))
+ *   .subscribe({ error: err => console.error(err) });
  * // Error emitted: NotFoundError('No values match')
  * ```
  *
@@ -85,7 +81,7 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  * callback if the Observable completes before any `next` notification was sent.
  * @throws {SequenceError} Delivers a SequenceError if more than one value is emitted that matches the
  * provided predicate. If no predicate is provided, will deliver a SequenceError if more
- * that one value comes from the source
+ * than one value comes from the source
  * @param {Function} predicate - A predicate function to evaluate items emitted by the source Observable.
  * @return A function that returns an Observable that emits the single item
  * emitted by the source Observable that matches the predicate.

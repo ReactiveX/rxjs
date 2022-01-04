@@ -32,10 +32,11 @@ export function switchMapTo<T, R, O extends ObservableInput<unknown>>(
  * `innerObservable`.
  *
  * ## Example
- * Rerun an interval Observable on every click event
+ *
+ * Restart an interval Observable on every click event
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { switchMapTo } from 'rxjs/operators';
+ * import { fromEvent, switchMapTo, interval } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(switchMapTo(interval(1000)));

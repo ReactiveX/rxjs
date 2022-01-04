@@ -28,15 +28,14 @@ export function scan<V, A, S>(accumulator: (acc: A | S, value: V, index: number)
  * 3. Emit `state`.
  * 4. Next value arrives, let `value = nextValue`, go to 2.
  *
- * ## Example
+ * ## Examples
  *
  * An average of previous numbers. This example shows how
  * not providing a `seed` can prime the stream with the
  * first value from the source.
  *
  * ```ts
- * import { interval, of } from 'rxjs';
- * import { scan, map } from 'rxjs/operators';
+ * import { of, scan, map } from 'rxjs';
  *
  * const numbers$ = of(1, 2, 3);
  *
@@ -51,21 +50,18 @@ export function scan<V, A, S>(accumulator: (acc: A | S, value: V, index: number)
  *   .subscribe(console.log);
  * ```
  *
- * ## Example
- *
  * The Fibonacci sequence. This example shows how you can use
- * a seed to prime accumulation process. Also... you know... Fibinacci.
+ * a seed to prime accumulation process. Also... you know... Fibonacci.
  * So important to like, computers and stuff that its whiteboarded
  * in job interviews. Now you can show them the Rx version! (Please don't, haha)
  *
  * ```ts
- * import { interval } from 'rxjs';
- * import { scan, map, startWith } from 'rxjs/operators';
+ * import { interval, scan, map, startWith } from 'rxjs';
  *
  * const firstTwoFibs = [0, 1];
- * // An endless stream of Fibonnaci numbers.
- * const fibonnaci$ = interval(1000).pipe(
- *   // Scan to get the fibonnaci numbers (after 0, 1)
+ * // An endless stream of Fibonacci numbers.
+ * const fibonacci$ = interval(1000).pipe(
+ *   // Scan to get the fibonacci numbers (after 0, 1)
  *   scan(([a, b]) => [b, a + b], firstTwoFibs),
  *   // Get the second number in the tuple, it's the one you calculated
  *   map(([, n]) => n),
@@ -73,9 +69,8 @@ export function scan<V, A, S>(accumulator: (acc: A | S, value: V, index: number)
  *   startWith(...firstTwoFibs)
  * );
  *
- * fibonnaci$.subscribe(console.log);
+ * fibonacci$.subscribe(console.log);
  * ```
- *
  *
  * @see {@link expand}
  * @see {@link mergeScan}

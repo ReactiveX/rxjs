@@ -47,10 +47,11 @@ export function concat<T extends readonly unknown[]>(
  * you can always use {@link repeat}.
  *
  * ## Examples
- * ### Concatenate a timer counting from 0 to 3 with a synchronous sequence from 1 to 10
+ *
+ * Concatenate a timer counting from 0 to 3 with a synchronous sequence from 1 to 10
+ *
  * ```ts
- * import { concat, interval, range } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * import { interval, take, range, concat } from 'rxjs';
  *
  * const timer = interval(1000).pipe(take(4));
  * const sequence = range(1, 10);
@@ -61,10 +62,10 @@ export function concat<T extends readonly unknown[]>(
  * // 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3 -immediate-> 1 ... 10
  * ```
  *
- * ### Concatenate 3 Observables
+ * Concatenate 3 Observables
+ *
  * ```ts
- * import { concat, interval } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * import { interval, take, concat } from 'rxjs';
  *
  * const timer1 = interval(1000).pipe(take(10));
  * const timer2 = interval(2000).pipe(take(6));
@@ -80,26 +81,25 @@ export function concat<T extends readonly unknown[]>(
  * // -500ms-> 0 -500ms-> 1 -500ms-> ... 9
  * ```
  *
- * ### Concatenate the same Observable to repeat it
+ * Concatenate the same Observable to repeat it
+ *
  * ```ts
- * import { concat, interval } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * import { interval, take, concat } from 'rxjs';
  *
  * const timer = interval(1000).pipe(take(2));
  *
  * concat(timer, timer) // concatenating the same Observable!
- * .subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('...and it is done!')
- * );
+ *   .subscribe({
+ *     next: value => console.log(value),
+ *     complete: () => console.log('...and it is done!')
+ *   });
  *
  * // Logs:
  * // 0 after 1s
  * // 1 after 2s
  * // 0 after 3s
  * // 1 after 4s
- * // "...and it is done!" also after 4s
+ * // '...and it is done!' also after 4s
  * ```
  *
  * @see {@link concatAll}
@@ -108,11 +108,7 @@ export function concat<T extends readonly unknown[]>(
  * @see {@link startWith}
  * @see {@link endWith}
  *
- * @param input1 An input Observable to concatenate with others.
- * @param input2 An input Observable to concatenate with others.
- * More than one input Observables may be given as argument.
- * @param scheduler An optional {@link SchedulerLike} to schedule each
- * Observable subscription on.
+ * @param args Input Observables to concatenate.
  */
 export function concat(...args: any[]): Observable<unknown> {
   return concatAll()(from(args, popScheduler(args)));

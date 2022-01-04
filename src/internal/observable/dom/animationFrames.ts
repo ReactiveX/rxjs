@@ -1,13 +1,13 @@
 import { Observable } from '../../Observable';
 import { Subscription } from '../../Subscription';
-import { TimestampProvider } from "../../types";
+import { TimestampProvider } from '../../types';
 import { performanceTimestampProvider } from '../../scheduler/performanceTimestampProvider';
 import { animationFrameProvider } from '../../scheduler/animationFrameProvider';
 
 /**
  * An observable of animation frames
  *
- * Emits the the amount of time elapsed since subscription and the timestamp on each animation frame.
+ * Emits the amount of time elapsed since subscription and the timestamp on each animation frame.
  * Defaults to milliseconds provided to the requestAnimationFrame's callback. Does not end on its own.
  *
  * Every subscription will start a separate animation loop. Since animation frames are always scheduled
@@ -19,19 +19,18 @@ import { animationFrameProvider } from '../../scheduler/animationFrameProvider';
  *
  * This is useful for setting up animations with RxJS.
  *
- * ### Example
+ * ## Examples
  *
  * Tweening a div to move it on the screen
  *
  * ```ts
- * import { animationFrames } from 'rxjs';
- * import { map, takeWhile, endWith } from 'rxjs/operators';
+ * import { animationFrames, map, takeWhile, endWith } from 'rxjs';
  *
  * function tween(start: number, end: number, duration: number) {
  *   const diff = end - start;
  *   return animationFrames().pipe(
  *     // Figure out what percentage of time has passed
- *     map(({elapsed}) => elapsed / duration),
+ *     map(({ elapsed }) => elapsed / duration),
  *     // Take the vector while less than 100%
  *     takeWhile(v => v < 1),
  *     // Finish with 100%
@@ -51,11 +50,9 @@ import { animationFrameProvider } from '../../scheduler/animationFrameProvider';
  * div.style.transform = 'translate3d(10px, 0, 0)';
  *
  * tween(10, 200, 4000).subscribe(x => {
- *   div.style.transform = `translate3d(${x}px, 0, 0)`;
+ *   div.style.transform = `translate3d(${ x }px, 0, 0)`;
  * });
  * ```
- *
- * ### Example
  *
  * Providing a custom timestamp provider
  *
@@ -86,7 +83,7 @@ export function animationFrames(timestampProvider?: TimestampProvider) {
  */
 function animationFramesFactory(timestampProvider?: TimestampProvider) {
   const { schedule } = animationFrameProvider;
-  return new Observable<{ timestamp: number, elapsed: number }>(subscriber => {
+  return new Observable<{ timestamp: number; elapsed: number }>((subscriber) => {
     const subscription = new Subscription();
     // If no timestamp provider is specified, use performance.now() - as it
     // will return timestamps 'compatible' with those passed to the run
@@ -108,7 +105,7 @@ function animationFramesFactory(timestampProvider?: TimestampProvider) {
       const now = provider.now();
       subscriber.next({
         timestamp: timestampProvider ? now : timestamp,
-        elapsed: now - start
+        elapsed: now - start,
       });
       if (!subscriber.closed) {
         subscription.add(schedule(run));

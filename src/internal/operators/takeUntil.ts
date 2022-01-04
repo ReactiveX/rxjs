@@ -20,10 +20,11 @@ import { noop } from '../util/noop';
  * then `takeUntil` will pass all values.
  *
  * ## Example
+ *
  * Tick every second until the first click happens
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { takeUntil } from 'rxjs/operators';
+ * import { interval, fromEvent, takeUntil } from 'rxjs';
  *
  * const source = interval(1000);
  * const clicks = fromEvent(document, 'click');

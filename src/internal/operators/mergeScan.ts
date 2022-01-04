@@ -31,21 +31,23 @@ import { mergeInternals } from './mergeInternals';
  * current emission by the source Observable. It starts with 0.
  *
  * The last parameter to the `mergeScan` is the `concurrent` value which defaults
- * to Infinity. It represent the maximum number of inner Observable subscriptions
+ * to Infinity. It represents the maximum number of inner Observable subscriptions
  * at a time.
  *
  * ## Example
+ *
  * Count the number of click events
+ *
  * ```ts
- * import { fromEvent, of } from 'rxjs';
- * import { mapTo, mergeScan } from 'rxjs/operators';
+ * import { fromEvent, map, mergeScan, of } from 'rxjs';
  *
  * const click$ = fromEvent(document, 'click');
- * const one$ = click$.pipe(mapTo(1));
+ * const one$ = click$.pipe(map(() => 1));
  * const seed = 0;
  * const count$ = one$.pipe(
- *   mergeScan((acc, one) => of(acc + one), seed),
+ *   mergeScan((acc, one) => of(acc + one), seed)
  * );
+ *
  * count$.subscribe(x => console.log(x));
  *
  * // Results:

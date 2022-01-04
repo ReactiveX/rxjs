@@ -21,15 +21,20 @@ import { UnaryFunction } from '../types';
  * behaves like {@link filter} with the predicate negated.
  *
  * ## Example
+ *
  * Partition click events into those on DIV elements and those elsewhere
+ *
  * ```ts
  * import { fromEvent } from 'rxjs';
  * import { partition } from 'rxjs/operators';
  *
+ * const div = document.createElement('div');
+ * div.style.cssText = 'width: 200px; height: 200px; background: #09c;';
+ * document.body.appendChild(div);
+ *
  * const clicks = fromEvent(document, 'click');
- * const parts = clicks.pipe(partition(ev => ev.target.tagName === 'DIV'));
- * const clicksOnDivs = parts[0];
- * const clicksElsewhere = parts[1];
+ * const [clicksOnDivs, clicksElsewhere] = clicks.pipe(partition(ev => (<HTMLElement>ev.target).tagName === 'DIV'));
+ *
  * clicksOnDivs.subscribe(x => console.log('DIV clicked: ', x));
  * clicksElsewhere.subscribe(x => console.log('Other clicked: ', x));
  * ```

@@ -18,27 +18,30 @@ import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
  * a inner Observable will be immediately emitted on the output Observable.
  *
  * ## Examples
+ *
  * Spawn a new interval Observable for each click event, and blend their outputs as one Observable
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { map, mergeAll } from 'rxjs/operators';
+ * import { fromEvent, map, interval, mergeAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
- * const higherOrder = clicks.pipe(map((ev) => interval(1000)));
+ * const higherOrder = clicks.pipe(map(() => interval(1000)));
  * const firstOrder = higherOrder.pipe(mergeAll());
+ *
  * firstOrder.subscribe(x => console.log(x));
  * ```
  *
  * Count from 0 to 9 every second for each click, but only allow 2 concurrent timers
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { take, map, mergeAll } from 'rxjs/operators';
+ * import { fromEvent, map, interval, take, mergeAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const higherOrder = clicks.pipe(
- *   map((ev) => interval(1000).pipe(take(10))),
+ *   map(() => interval(1000).pipe(take(10)))
  * );
  * const firstOrder = higherOrder.pipe(mergeAll(2));
+ *
  * firstOrder.subscribe(x => console.log(x));
  * ```
  *

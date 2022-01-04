@@ -58,13 +58,15 @@ export function pluck<T>(...properties: string[]): OperatorFunction<T, unknown>;
  * that value.
  *
  * ## Example
+ *
  * Map every click to the tagName of the clicked target element
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { pluck } from 'rxjs/operators';
+ * import { fromEvent, pluck } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const tagNames = clicks.pipe(pluck('target', 'tagName'));
+ *
  * tagNames.subscribe(x => console.log(x));
  * ```
  *

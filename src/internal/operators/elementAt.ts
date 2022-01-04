@@ -21,10 +21,11 @@ import { take } from './take';
  * `ArgumentOutOfRangeError` error.
  *
  * ## Example
+ *
  * Emit only the third click event
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { elementAt } from 'rxjs/operators';
+ * import { fromEvent, elementAt } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(elementAt(2));

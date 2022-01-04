@@ -12,13 +12,12 @@ import { combineLatest } from './combineLatest';
  *
  * This is a useful operator for eagerly calculating values based off of changed inputs.
  *
- * ### Example
+ * ## Example
  *
- * Simple calculation from two inputs.
+ * Simple concatenation of values from two inputs
  *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { map, combineLatestWith } from 'rxjs/operators';
+ * import { fromEvent, combineLatestWith, map } from 'rxjs';
  *
  * // Setup: Add two inputs to the page
  * const input1 = document.createElement('input');
@@ -33,11 +32,11 @@ import { combineLatest } from './combineLatest';
  * // Combine the changes by adding them together
  * input1Changes$.pipe(
  *   combineLatestWith(input2Changes$),
- *   map(([e1, e2]) => Number(e1.target.value) + Number(e2.target.value)),
+ *   map(([e1, e2]) => (<HTMLInputElement>e1.target).value + ' - ' + (<HTMLInputElement>e2.target).value)
  * )
  * .subscribe(x => console.log(x));
- *
  * ```
+ *
  * @param otherSources the other sources to subscribe to.
  * @return A function that returns an Observable that emits the latest
  * emissions from both source and provided Observables.

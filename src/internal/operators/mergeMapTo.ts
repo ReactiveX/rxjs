@@ -29,13 +29,15 @@ export function mergeMapTo<T, R, O extends ObservableInput<unknown>>(
  * single Observable, which is the output Observable.
  *
  * ## Example
+ *
  * For each click event, start an interval Observable ticking every 1 second
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { mergeMapTo } from 'rxjs/operators';
+ * import { fromEvent, mergeMapTo, interval } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(mergeMapTo(interval(1000)));
+ *
  * result.subscribe(x => console.log(x));
  * ```
  *
