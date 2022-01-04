@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { Observer, TeardownLogic } from '../src/internal/types';
-import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, EMPTY } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError, concatMap, switchMap, publish, publishLast, publishBehavior, share, finalize} from 'rxjs/operators';
+import { TeardownLogic } from '../src/internal/types';
+import { Observable, config, Subscription, Subscriber, Operator, NEVER, Subject, of, throwError, EMPTY } from 'rxjs';
+import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError, publish, publishLast, publishBehavior, share} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -58,9 +58,9 @@ describe('Observable', () => {
     it('should iterate and return a Promise', (done) => {
       const expected = [1, 2, 3];
       const result = of(1, 2, 3)
-        .forEach(function (x) {
+        .forEach((x) => {
           expect(x).to.equal(expected.shift());
-        }, Promise)
+        })
         .then(() => {
           done();
         });
@@ -72,7 +72,7 @@ describe('Observable', () => {
       throwError(() => ('bad'))
         .forEach(() => {
           done(new Error('should not be called'));
-        }, Promise)
+        })
         .then(
           () => {
             done(new Error('should not complete'));
@@ -93,7 +93,7 @@ describe('Observable', () => {
             throw new Error('NO THREES!');
           }
           results.push(x);
-        }, Promise)
+        })
         .then(
           () => {
             done(new Error('should not be called'));

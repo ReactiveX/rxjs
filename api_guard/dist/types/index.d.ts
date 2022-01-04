@@ -403,7 +403,6 @@ export declare class Observable<T> implements Subscribable<T> {
     source: Observable<any> | undefined;
     constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic);
     forEach(next: (value: T) => void): Promise<void>;
-    forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
     lift<R>(operator?: Operator<T, R>): Observable<R>;
     pipe(): Observable<T>;
     pipe<A>(op1: OperatorFunction<T, A>): Observable<A>;
