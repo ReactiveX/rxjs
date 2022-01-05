@@ -18,10 +18,10 @@ import { Subject } from 'rxjs';
 const subject = new Subject<number>();
 
 subject.subscribe({
-  next: (v) => console.log(`observerA: ${v}`)
+  next: (v) => console.log(`observerA: ${v}`),
 });
 subject.subscribe({
-  next: (v) => console.log(`observerB: ${v}`)
+  next: (v) => console.log(`observerB: ${v}`),
 });
 
 subject.next(1);
@@ -42,10 +42,10 @@ import { Subject, from } from 'rxjs';
 const subject = new Subject<number>();
 
 subject.subscribe({
-  next: (v) => console.log(`observerA: ${v}`)
+  next: (v) => console.log(`observerA: ${v}`),
 });
 subject.subscribe({
-  next: (v) => console.log(`observerB: ${v}`)
+  next: (v) => console.log(`observerB: ${v}`),
 });
 
 const observable = from([1, 2, 3]);
@@ -74,8 +74,7 @@ A "multicasted Observable" passes notifications through a Subject which may have
 Under the hood, this is how the `multicast` operator works: Observers subscribe to an underlying Subject, and the Subject subscribes to the source Observable. The following example is similar to the previous example which used `observable.subscribe(subject)`:
 
 ```ts
-import { from, Subject } from 'rxjs';
-import { multicast } from 'rxjs/operators';
+import { from, Subject, multicast } from 'rxjs';
 
 const source = from([1, 2, 3]);
 const subject = new Subject();
@@ -83,10 +82,10 @@ const multicasted = source.pipe(multicast(subject));
 
 // These are, under the hood, `subject.subscribe({...})`:
 multicasted.subscribe({
-  next: (v) => console.log(`observerA: ${v}`)
+  next: (v) => console.log(`observerA: ${v}`),
 });
 multicasted.subscribe({
-  next: (v) => console.log(`observerB: ${v}`)
+  next: (v) => console.log(`observerB: ${v}`),
 });
 
 // This is, under the hood, `source.subscribe(subject)`:
@@ -95,11 +94,11 @@ multicasted.connect();
 
 `multicast` returns an Observable that looks like a normal Observable, but works like a Subject when it comes to subscribing. `multicast` returns a `ConnectableObservable`, which is simply an Observable with the `connect()` method.
 
-The `connect()` method is important to determine exactly when the shared Observable execution  will start. Because `connect()` does `source.subscribe(subject)` under the hood, `connect()` returns a Subscription, which you can unsubscribe from in order to cancel the shared Observable execution.
+The `connect()` method is important to determine exactly when the shared Observable execution will start. Because `connect()` does `source.subscribe(subject)` under the hood, `connect()` returns a Subscription, which you can unsubscribe from in order to cancel the shared Observable execution.
 
 ### Reference counting
 
-Calling `connect()` manually and handling the Subscription is often cumbersome. Usually, we want to *automatically* connect when the first Observer arrives, and automatically cancel the shared execution when the last Observer unsubscribes.
+Calling `connect()` manually and handling the Subscription is often cumbersome. Usually, we want to _automatically_ connect when the first Observer arrives, and automatically cancel the shared execution when the last Observer unsubscribes.
 
 Consider the following example where subscriptions occur as outlined by this list:
 
@@ -108,17 +107,16 @@ Consider the following example where subscriptions occur as outlined by this lis
 3. The `next` value `0` is delivered to the first Observer
 4. Second Observer subscribes to the multicasted Observable
 5. The `next` value `1` is delivered to the first Observer
-5. The `next` value `1` is delivered to the second Observer
-1. First Observer unsubscribes from the multicasted Observable
-5. The `next` value `2` is delivered to the second Observer
-1. Second Observer unsubscribes from the multicasted Observable
-1. **The connection to the multicasted Observable is unsubscribed**
+6. The `next` value `1` is delivered to the second Observer
+7. First Observer unsubscribes from the multicasted Observable
+8. The `next` value `2` is delivered to the second Observer
+9. Second Observer unsubscribes from the multicasted Observable
+10. **The connection to the multicasted Observable is unsubscribed**
 
 To achieve that with explicit calls to `connect()`, we write the following code:
 
 ```ts
-import { interval, Subject } from 'rxjs';
-import { multicast } from 'rxjs/operators';
+import { interval, Subject, multicast } from 'rxjs';
 
 const source = interval(500);
 const subject = new Subject();
@@ -126,7 +124,7 @@ const multicasted = source.pipe(multicast(subject));
 let subscription1, subscription2, subscriptionConnect;
 
 subscription1 = multicasted.subscribe({
-  next: (v) => console.log(`observerA: ${v}`)
+  next: (v) => console.log(`observerA: ${v}`),
 });
 // We should call `connect()` here, because the first
 // subscriber to `multicasted` is interested in consuming values
@@ -134,7 +132,7 @@ subscriptionConnect = multicasted.connect();
 
 setTimeout(() => {
   subscription2 = multicasted.subscribe({
-    next: (v) => console.log(`observerB: ${v}`)
+    next: (v) => console.log(`observerB: ${v}`),
   });
 }, 600);
 
@@ -157,8 +155,7 @@ If we wish to avoid explicit calls to `connect()`, we can use ConnectableObserva
 Below is an example:
 
 ```ts
-import { interval, Subject } from 'rxjs';
-import { multicast, refCount } from 'rxjs/operators';
+import { interval, Subject, multicast, refCount } from 'rxjs';
 
 const source = interval(500);
 const subject = new Subject();
@@ -169,13 +166,13 @@ let subscription1, subscription2;
 // it is the first subscriber to `refCounted`
 console.log('observerA subscribed');
 subscription1 = refCounted.subscribe({
-  next: (v) => console.log(`observerA: ${v}`)
+  next: (v) => console.log(`observerA: ${v}`),
 });
 
 setTimeout(() => {
   console.log('observerB subscribed');
   subscription2 = refCounted.subscribe({
-    next: (v) => console.log(`observerB: ${v}`)
+    next: (v) => console.log(`observerB: ${v}`),
   });
 }, 600);
 
@@ -217,14 +214,14 @@ import { BehaviorSubject } from 'rxjs';
 const subject = new BehaviorSubject(0); // 0 is the initial value
 
 subject.subscribe({
-  next: (v) => console.log(`observerA: ${v}`)
+  next: (v) => console.log(`observerA: ${v}`),
 });
 
 subject.next(1);
 subject.next(2);
 
 subject.subscribe({
-  next: (v) => console.log(`observerB: ${v}`)
+  next: (v) => console.log(`observerB: ${v}`),
 });
 
 subject.next(3);
@@ -240,7 +237,7 @@ subject.next(3);
 
 ## ReplaySubject
 
-A `ReplaySubject` is similar to a `BehaviorSubject` in that it can send old values to new subscribers, but it can also *record* a part of the Observable execution.
+A `ReplaySubject` is similar to a `BehaviorSubject` in that it can send old values to new subscribers, but it can also _record_ a part of the Observable execution.
 
 <span class="informal">A `ReplaySubject` records multiple values from the Observable execution and replays them to new subscribers.</span>
 
@@ -251,7 +248,7 @@ import { ReplaySubject } from 'rxjs';
 const subject = new ReplaySubject(3); // buffer 3 values for new subscribers
 
 subject.subscribe({
-  next: (v) => console.log(`observerA: ${v}`)
+  next: (v) => console.log(`observerA: ${v}`),
 });
 
 subject.next(1);
@@ -260,7 +257,7 @@ subject.next(3);
 subject.next(4);
 
 subject.subscribe({
-  next: (v) => console.log(`observerB: ${v}`)
+  next: (v) => console.log(`observerB: ${v}`),
 });
 
 subject.next(5);
@@ -277,15 +274,16 @@ subject.next(5);
 // observerB: 5
 ```
 
-You can also specify a *window time* in milliseconds, besides of the buffer size, to determine how old the recorded values can be. In the following example we use a large buffer size of `100`, but a window time parameter of just `500` milliseconds.
+You can also specify a _window time_ in milliseconds, besides of the buffer size, to determine how old the recorded values can be. In the following example we use a large buffer size of `100`, but a window time parameter of just `500` milliseconds.
 
 <!-- skip-example -->
+
 ```ts
 import { ReplaySubject } from 'rxjs';
 const subject = new ReplaySubject(100, 500 /* windowTime */);
 
 subject.subscribe({
-  next: (v) => console.log(`observerA: ${v}`)
+  next: (v) => console.log(`observerA: ${v}`),
 });
 
 let i = 1;
@@ -293,7 +291,7 @@ setInterval(() => subject.next(i++), 200);
 
 setTimeout(() => {
   subject.subscribe({
-    next: (v) => console.log(`observerB: ${v}`)
+    next: (v) => console.log(`observerB: ${v}`),
   });
 }, 1000);
 
@@ -320,7 +318,7 @@ import { AsyncSubject } from 'rxjs';
 const subject = new AsyncSubject();
 
 subject.subscribe({
-  next: (v) => console.log(`observerA: ${v}`)
+  next: (v) => console.log(`observerA: ${v}`),
 });
 
 subject.next(1);
@@ -329,7 +327,7 @@ subject.next(3);
 subject.next(4);
 
 subject.subscribe({
-  next: (v) => console.log(`observerB: ${v}`)
+  next: (v) => console.log(`observerB: ${v}`),
 });
 
 subject.next(5);
@@ -341,7 +339,6 @@ subject.complete();
 ```
 
 The AsyncSubject is similar to the [`last()`](/api/operators/last) operator, in that it waits for the `complete` notification in order to deliver a single value.
-
 
 ## Void subject
 
@@ -371,7 +368,7 @@ import { Subject } from 'rxjs';
 const subject = new Subject(); // Shorthand for Subject<void>
 
 subject.subscribe({
-  next: () => console.log('One second has passed')
+  next: () => console.log('One second has passed'),
 });
 
 setTimeout(() => subject.next(), 1000);
