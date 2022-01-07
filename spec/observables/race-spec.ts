@@ -208,8 +208,8 @@ describe('static race', () => {
 
   it('should support a single ObservableInput argument', (done) => {
     const source = race(Promise.resolve(42));
-    source.subscribe(value => {
+    source.subscribe({ next: value => {
       expect(value).to.equal(42);
-    }, done, done);
+    }, error: done, complete: done });
   });
 });

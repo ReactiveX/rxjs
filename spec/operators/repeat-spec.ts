@@ -331,18 +331,18 @@ describe('repeat operator', () => {
         refCount(),
         repeat(5)
       )
-      .subscribe(
-        (x: number) => {
+      .subscribe({
+        next: (x: number) => {
           expect(x).to.equal(expected.shift());
         },
-        (x) => {
+        error: (x) => {
           done(new Error('should not be called'));
         },
-        () => {
+        complete: () => {
           expect(expected.length).to.equal(0);
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

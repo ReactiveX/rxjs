@@ -215,18 +215,18 @@ describe('onErrorResumeNext', () => {
       throwError(() => 'meh')
     );
 
-    source.pipe(onErrorResumeNext(Promise.resolve(2))).subscribe(
-      (x) => {
+    source.pipe(onErrorResumeNext(Promise.resolve(2))).subscribe({
+      next: (x) => {
         expect(expected.shift()).to.equal(x);
       },
-      () => {
+      error: () => {
         done(new Error('should not be called'));
       },
-      () => {
+      complete: () => {
         expect(expected).to.be.empty;
         done();
-      }
-    );
+      },
+    });
   });
 
   it('should skip invalid sources and move on', () => {

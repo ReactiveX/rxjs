@@ -50,13 +50,12 @@ describe('repeatWhen operator', () => {
           retried = true;
           return x;
       })))
-    ).subscribe((x: any) => {
+    ).subscribe({ next: (x: any) => {
         expect(x).to.equal(expected[i++]);
-      },
-      (err: any) => {
+      }, error: (err: any) => {
         expect(err).to.be.an('error', 'done');
         done();
-      });
+      } });
     } catch (err) {
       done(err);
     }
@@ -70,15 +69,15 @@ describe('repeatWhen operator', () => {
         return n;
       }),
       repeatWhen((notifications: any) => EMPTY)
-    ).subscribe((n: number) => {
+    ).subscribe({ next: (n: number) => {
         expect(n).to.equal(expected.shift());
         nexted.push(n);
-      }, (err: any) => {
+      }, error: (err: any) => {
         done(new Error('should not be called'));
-      }, () => {
+      }, complete: () => {
         expect(nexted).to.deep.equal([1, 2]);
         done();
-      });
+      } });
   });
 
   it('should not error when applying an empty synchronous notifier', () => {
@@ -103,7 +102,7 @@ describe('repeatWhen operator', () => {
     };
     of(1, 2).pipe(
       repeatWhen((notifications: any) => EMPTY)
-    ).subscribe(undefined, err => errors.push(err));
+    ).subscribe({ error: err => errors.push(err) });
     Observable.prototype.subscribe = originalSubscribe;
     expect(errors).to.deep.equal([]);
   });
@@ -130,7 +129,7 @@ describe('repeatWhen operator', () => {
     };
     of(1, 2).pipe(
       repeatWhen((notifications: any) => of(1))
-    ).subscribe(undefined, err => errors.push(err));
+    ).subscribe({ error: err => errors.push(err) });
     Observable.prototype.subscribe = originalSubscribe;
     expect(errors).to.deep.equal([]);
   });

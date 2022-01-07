@@ -229,13 +229,13 @@ describe('fromEvent', () => {
     };
 
     fromEvent(obj, 'click').pipe(take(1))
-      .subscribe((e: any) => {
+      .subscribe({ next: (e: any) => {
         expect(e).to.equal('test');
-      }, (err: any) => {
+      }, error: (err: any) => {
         done(new Error('should not be called'));
-      }, () => {
+      }, complete: () => {
         done();
-      });
+      } });
 
     send('test');
   });
@@ -256,13 +256,13 @@ describe('fromEvent', () => {
     }
 
     fromEvent(obj, 'click', selector).pipe(take(1))
-      .subscribe((e: any) => {
+      .subscribe({ next: (e: any) => {
         expect(e).to.equal('test!');
-      }, (err: any) => {
+      }, error: (err: any) => {
         done(new Error('should not be called'));
-      }, () => {
+      }, complete: () => {
         done();
-      });
+      } });
 
     send('test');
   });
@@ -283,13 +283,13 @@ describe('fromEvent', () => {
     }
 
     fromEvent(obj, 'click', selector).pipe(take(1))
-      .subscribe((e: any) => {
+      .subscribe({ next: (e: any) => {
         expect(e).not.exist;
-      }, (err: any) => {
+      }, error: (err: any) => {
         done(new Error('should not be called'));
-      }, () => {
+      }, complete: () => {
         done();
-      });
+      } });
 
     send();
   });
@@ -310,13 +310,13 @@ describe('fromEvent', () => {
     }
 
     fromEvent(obj, 'click', selector).pipe(take(1))
-      .subscribe((e: any) => {
+      .subscribe({ next: (e: any) => {
         expect(e).to.equal('no arguments');
-      }, (err: any) => {
+      }, error: (err: any) => {
         done(new Error('should not be called'));
-      }, () => {
+      }, complete: () => {
         done();
-      });
+      } });
 
     send();
   });
@@ -337,13 +337,13 @@ describe('fromEvent', () => {
     }
 
     fromEvent(obj, 'click', selector).pipe(take(1))
-      .subscribe((e: any) => {
+      .subscribe({ next: (e: any) => {
         expect(e).to.deep.equal([1, 2, 3]);
-      }, (err: any) => {
+      }, error: (err: any) => {
         done(new Error('should not be called'));
-      }, () => {
+      }, complete: () => {
         done();
-      });
+      } });
 
     send(1, 2, 3);
   });
@@ -360,13 +360,13 @@ describe('fromEvent', () => {
     };
 
     fromEvent(obj, 'click').pipe(take(1))
-      .subscribe((e: any) => {
+      .subscribe({ next: (e: any) => {
         expect(e).to.deep.equal([1, 2, 3]);
-      }, (err: any) => {
+      }, error: (err: any) => {
         done(new Error('should not be called'));
-      }, () => {
+      }, complete: () => {
         done();
-      });
+      } });
 
     send(1, 2, 3);
   });

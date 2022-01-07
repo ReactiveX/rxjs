@@ -775,16 +775,14 @@ describe('Observable.prototype.concatMap', () => {
 
     const results: number[] = [];
     source.pipe(concatMap(project)).subscribe(
-      x => {
+      { next: x => {
         results.push(x);
-      },
-      err => {
+      }, error: err => {
         done(new Error('Subscriber error handler not supposed to be called.'));
-      },
-      () => {
+      }, complete: () => {
         expect(results).to.deep.equal([42, 42, 42, 42]);
         done();
-      }
+      } }
     );
   });
 
@@ -793,16 +791,14 @@ describe('Observable.prototype.concatMap', () => {
     const project = (value: any) => from(Promise.reject(42));
 
     source.pipe(concatMap(project)).subscribe(
-      x => {
+      { next: x => {
         done(new Error('Subscriber next handler not supposed to be called.'));
-      },
-      err => {
+      }, error: err => {
         expect(err).to.deep.equal(42);
         done();
-      },
-      () => {
+      }, complete: () => {
         done(new Error('Subscriber complete handler not supposed to be called.'));
-      }
+      } }
     );
   });
 
@@ -812,16 +808,14 @@ describe('Observable.prototype.concatMap', () => {
 
     const results: number[] = [];
     source.pipe(concatMap(project)).subscribe(
-      x => {
+      { next: x => {
         results.push(x);
-      },
-      err => {
+      }, error: err => {
         done(new Error('Subscriber error handler not supposed to be called.'));
-      },
-      () => {
+      }, complete: () => {
         expect(results).to.deep.equal([4, 4, 4, 4]);
         done();
-      }
+      } }
     );
   });
 
@@ -830,16 +824,14 @@ describe('Observable.prototype.concatMap', () => {
     const project = (value: number, index: number) => from(Promise.reject('' + value + '-' + index));
 
     source.pipe(concatMap(project)).subscribe(
-      x => {
+      { next: x => {
         done(new Error('Subscriber next handler not supposed to be called.'));
-      },
-      err => {
+      }, error: err => {
         expect(err).to.deep.equal('4-0');
         done();
-      },
-      () => {
+      }, complete: () => {
         done(new Error('Subscriber complete handler not supposed to be called.'));
-      }
+      } }
     );
   });
 
