@@ -10,7 +10,7 @@ import { timer } from '../observable/timer';
  * <span class="informal">Time shifts each item by some specified amount of
  * milliseconds.</span>
  *
- * ![](delay.png)
+ * ![](delay.svg)
  *
  * If the delay argument is a Number, this operator time shifts the source
  * Observable by that amount of time expressed in milliseconds. The relative
