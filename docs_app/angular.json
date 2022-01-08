@@ -198,16 +198,6 @@
               }
             ]
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": []
-          }
         }
       }
     },
@@ -221,15 +211,6 @@
           "options": {
             "protractorConfig": "tests/e2e/protractor.conf.js",
             "devServerTarget": "site:serve"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "tests/e2e/tsconfig.e2e.json"
-            ],
-            "exclude": []
           }
         }
       }
