@@ -149,6 +149,7 @@ export function groupBy<T, K, R>(
     if (!elementOrOptions || typeof elementOrOptions === 'function') {
       element = elementOrOptions;
     } else {
+      // eslint-disable-next-line no-param-reassign
       ({ duration, element, connector } = elementOrOptions);
     }
 

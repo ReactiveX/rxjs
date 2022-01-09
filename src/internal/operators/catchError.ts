@@ -6,11 +6,11 @@ import { innerFrom } from '../observable/innerFrom';
 import { OperatorSubscriber } from './OperatorSubscriber';
 import { operate } from '../util/lift';
 
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 export function catchError<T, O extends ObservableInput<any>>(
   selector: (err: any, caught: Observable<T>) => O
 ): OperatorFunction<T, T | ObservedValueOf<O>>;
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.

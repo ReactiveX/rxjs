@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { innerFrom } from '../observable/innerFrom';
 import { Observable } from '../Observable';
 import { mergeMap } from '../operators/mergeMap';
@@ -21,7 +22,9 @@ export type NodeEventHandler = (...args: any[]) => void;
 // not use the same arguments or return EventEmitter values
 // such as React Native
 export interface NodeCompatibleEventEmitter {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   addListener(eventName: string, handler: NodeEventHandler): void | {};
+  // eslint-disable-next-line @typescript-eslint/ban-types
   removeListener(eventName: string, handler: NodeEventHandler): void | {};
 }
 
@@ -285,7 +288,7 @@ export function fromEvent<T>(
     // The handler we are going to register. Forwards the event object, by itself, or
     // an array of arguments to the event handler, if there is more than one argument,
     // to the consumer.
-    const handler = (...args: any[]) => subscriber.next(1 < args.length ? args : args[0]);
+    const handler = (...args: any[]) => subscriber.next(args.length > 1 ? args : args[0]);
     // Do the work of adding the handler to the target.
     add(handler);
     // When we teardown, we want to remove the handler and free up memory.

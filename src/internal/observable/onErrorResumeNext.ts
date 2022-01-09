@@ -4,11 +4,11 @@ import { EMPTY } from './empty';
 import { onErrorResumeNext as onErrorResumeNextWith } from '../operators/onErrorResumeNext';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 export function onErrorResumeNext<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
 export function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
 
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 /**
  * When any of the provided Observable emits a complete or an error notification, it immediately subscribes to the next one

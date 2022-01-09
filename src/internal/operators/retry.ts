@@ -80,14 +80,12 @@ export function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
 export function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;
 
 export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTypeOperatorFunction<T> {
-  let config: RetryConfig;
-  if (configOrCount && typeof configOrCount === 'object') {
-    config = configOrCount;
-  } else {
-    config = {
-      count: configOrCount,
-    };
-  }
+  const config: RetryConfig =
+    configOrCount && typeof configOrCount === 'object'
+      ? configOrCount
+      : {
+          count: configOrCount,
+        };
   const { count = Infinity, delay, resetOnSuccess: resetOnSuccess = false } = config;
 
   return count <= 0

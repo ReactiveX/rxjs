@@ -2,7 +2,7 @@ import { OperatorFunction, ObservableInput, ObservedValueOf, SchedulerLike } fro
 import { operate } from '../util/lift';
 import { mergeInternals } from './mergeInternals';
 
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 export function expand<T, O extends ObservableInput<unknown>>(
   project: (value: T, index: number) => O,
   concurrent?: number,
@@ -18,7 +18,7 @@ export function expand<T, O extends ObservableInput<unknown>>(
   concurrent: number | undefined,
   scheduler: SchedulerLike
 ): OperatorFunction<T, ObservedValueOf<O>>;
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 /**
  * Recursively projects each source value to an Observable which is merged in
@@ -76,6 +76,7 @@ export function expand<T, O extends ObservableInput<unknown>>(
   concurrent = Infinity,
   scheduler?: SchedulerLike
 ): OperatorFunction<T, ObservedValueOf<O>> {
+  // eslint-disable-next-line no-param-reassign
   concurrent = (concurrent || 0) < 1 ? Infinity : concurrent;
   return operate((source, subscriber) =>
     mergeInternals(

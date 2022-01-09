@@ -14,6 +14,7 @@ export function bindCallbackInternals(
 ): (...args: any[]) => Observable<unknown> {
   if (resultSelector) {
     if (isScheduler(resultSelector)) {
+      // eslint-disable-next-line no-param-reassign
       scheduler = resultSelector;
     } else {
       // The user provided a result selector.
@@ -85,7 +86,7 @@ export function bindCallbackInternals(
               // of it as a single value, otherwise, if there's more than one, pass
               // them as an array. Note that if there are no arguments, `undefined`
               // will be emitted.
-              subject.next(1 < results.length ? results : results[0]);
+              subject.next(results.length > 1 ? results : results[0]);
               // Flip this flag, so we know we can complete it in the synchronous
               // case below.
               isComplete = true;

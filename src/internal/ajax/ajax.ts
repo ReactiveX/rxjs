@@ -30,8 +30,7 @@ export interface AjaxCreationMethod {
    *   })
    * );
    * ```
-   */
-  <T>(config: AjaxConfig): Observable<AjaxResponse<T>>;
+   */ <T>(config: AjaxConfig): Observable<AjaxResponse<T>>;
 
   /**
    * Perform an HTTP GET using the
@@ -52,8 +51,7 @@ export interface AjaxCreationMethod {
    *   })
    * );
    * ```
-   */
-  <T>(url: string): Observable<AjaxResponse<T>>;
+   */ <T>(url: string): Observable<AjaxResponse<T>>;
 
   /**
    * Performs an HTTP GET using the
@@ -311,7 +309,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
         // we need to combine them. So we're going to split it. There
         // should only be one `?` in a valid URL.
         const parts = url.split('?');
-        if (2 < parts.length) {
+        if (parts.length > 2) {
           throw new TypeError('invalid url');
         }
         // Add the passed queryParams to the params already in the url provided.
@@ -388,10 +386,8 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       body,
     };
 
-    let xhr: XMLHttpRequest;
-
     // Create our XHR so we can get started.
-    xhr = config.createXHR ? config.createXHR() : new XMLHttpRequest();
+    const xhr = config.createXHR ? config.createXHR() : new XMLHttpRequest();
 
     {
       ///////////////////////////////////////////////////
@@ -531,7 +527,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     }
 
     return () => {
-      if (xhr && xhr.readyState !== 4 /*XHR done*/) {
+      if (xhr && xhr.readyState !== 4 /* XHR done*/) {
         xhr.abort();
       }
     };

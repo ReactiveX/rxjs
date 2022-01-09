@@ -42,16 +42,19 @@ export class VirtualTimeScheduler extends AsyncScheduler {
     let error: any;
     let action: AsyncAction<any> | undefined;
 
+    // eslint-disable-next-line no-cond-assign
     while ((action = actions[0]) && action.delay <= maxFrames) {
       actions.shift();
       this.frame = action.delay;
 
+      // eslint-disable-next-line no-cond-assign
       if ((error = action.execute(action.state, action.delay))) {
         break;
       }
     }
 
     if (error) {
+      // eslint-disable-next-line no-cond-assign
       while ((action = actions.shift())) {
         action.unsubscribe();
       }
@@ -104,6 +107,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
     return undefined;
   }
 
+  // eslint-disable-next-line consistent-return
   protected _execute(state: T, delay: number): any {
     if (this.active === true) {
       return super._execute(state, delay);

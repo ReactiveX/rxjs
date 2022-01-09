@@ -114,7 +114,7 @@ export function tap<T>(
   // could technically call tap like `tap(null, fn)` or `tap(null, null, fn)`.
   const tapObserver =
     isFunction(observerOrNext) || error || complete
-      ? // tslint:disable-next-line: no-object-literal-type-assertion
+      ? // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         ({ next: observerOrNext as Exclude<typeof observerOrNext, Partial<TapObserver<T>>>, error, complete } as Partial<TapObserver<T>>)
       : observerOrNext;
 

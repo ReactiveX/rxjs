@@ -285,6 +285,7 @@ export class TestScheduler extends VirtualTimeScheduler {
                 const unit = match[2];
                 let durationInMs: number;
 
+                // eslint-disable-next-line max-depth
                 switch (unit) {
                   case 'ms':
                     durationInMs = duration;
@@ -311,11 +312,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       frame = nextFrame;
     }
 
-    if (unsubscriptionFrame < 0) {
-      return new SubscriptionLog(subscriptionFrame);
-    } else {
-      return new SubscriptionLog(subscriptionFrame, unsubscriptionFrame);
-    }
+    return unsubscriptionFrame < 0 ? new SubscriptionLog(subscriptionFrame) : new SubscriptionLog(subscriptionFrame, unsubscriptionFrame);
   }
 
   /** @nocollapse */
@@ -399,6 +396,7 @@ export class TestScheduler extends VirtualTimeScheduler {
                 const unit = match[2];
                 let durationInMs: number;
 
+                // eslint-disable-next-line max-depth
                 switch (unit) {
                   case 'ms':
                     durationInMs = duration;

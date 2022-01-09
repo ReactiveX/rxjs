@@ -7,7 +7,7 @@ import { asyncScheduler } from '../scheduler/async';
 import { popScheduler } from '../util/args';
 import { executeSchedule } from '../util/executeSchedule';
 
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
 export function bufferTime<T>(
   bufferTimeSpan: number,
@@ -20,7 +20,7 @@ export function bufferTime<T>(
   maxBufferSize: number,
   scheduler?: SchedulerLike
 ): OperatorFunction<T, T[]>;
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 /**
  * Buffers the source Observable values for a specific time period.

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { Subscription } from '../Subscription';
 import { SchedulerAction, SchedulerLike } from '../types';
 

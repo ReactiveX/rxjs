@@ -59,8 +59,12 @@
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix",
-    "(src|spec)/**/*.ts": [
+    "(spec)/**/*.ts": [
       "tslint --fix",
+      "prettier --write"
+    ],
+    "(src)/**/*.ts": [
+      "eslint src --fix --ext=ts --cache",
       "prettier --write"
     ],
     "*.{js,css,md}": "prettier --write"
@@ -69,7 +73,7 @@
     "changelog": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s",
     "build:spec:browser": "echo \"Browser test is not working currently\" && exit -1 && webpack --config spec/support/webpack.mocha.config.js",
     "lint_spec": "tslint -c spec/tslint.json -p spec/tsconfig.json \"spec/**/*.ts\"",
-    "lint_src": "tslint -c tslint.json -p src/tsconfig.base.json \"src/**/*.ts\"",
+    "lint_src": "eslint src -c .eslintrc --ext=ts",
     "lint": "npm-run-all --parallel lint_*",
     "dtslint": "tsc -b ./src/tsconfig.types.json && tslint -c spec-dtslint/tslint.json -p spec-dtslint/tsconfig.json \"spec-dtslint/**/*.ts\"",
     "prepublishOnly": "npm run build:package && npm run lint && npm run test && npm run test:circular && npm run dtslint && npm run test:side-effects && npm run api_guardian",
@@ -165,7 +169,11 @@
     "dependency-cruiser": "^9.12.0",
     "escape-string-regexp": "1.0.5",
     "eslint": "^7.8.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jasmine": "^2.10.1",
+    "eslint-plugin-jsdoc": "^37.5.1",
+    "eslint-plugin-unicorn": "^40.0.0",
     "form-data": "^3.0.0",
     "fs-extra": "^8.1.0",
     "glob": "7.1.2",

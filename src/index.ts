@@ -1,3 +1,4 @@
+/* tslint:disable:no-reference */
 //////////////////////////////////////////////////////////
 // Here we need to reference our other deep imports
 // so VS code will figure out where they are
@@ -5,13 +6,12 @@
 // https://github.com/microsoft/TypeScript/issues/43034
 //////////////////////////////////////////////////////////
 
-// tslint:disable: no-reference
+/* eslint-disable @typescript-eslint/triple-slash-reference */
 // It's tempting to add references to all of the deep-import locations, but
 // adding references to those that require DOM types breaks Node projects.
 /// <reference path="./operators/index.ts" />
 /// <reference path="./testing/index.ts" />
-// tslint:enable: no-reference
-
+/* eslint-enable @typescript-eslint/triple-slash-reference */
 /* Observable */
 export { Observable } from './internal/Observable';
 export { ConnectableObservable } from './internal/observable/ConnectableObservable';

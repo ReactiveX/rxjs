@@ -3,7 +3,7 @@ import { isFunction } from '../util/isFunction';
 import { NodeEventHandler } from './fromEvent';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 export function fromEventPattern<T>(
   addHandler: (handler: NodeEventHandler) => any,
   removeHandler?: (handler: NodeEventHandler, signal?: any) => void
@@ -13,7 +13,7 @@ export function fromEventPattern<T>(
   removeHandler?: (handler: NodeEventHandler, signal?: any) => void,
   resultSelector?: (...args: any[]) => T
 ): Observable<T>;
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 /**
  * Creates an Observable from an arbitrary API for registering event handlers.

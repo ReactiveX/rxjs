@@ -5,7 +5,7 @@ import { operate } from '../util/lift';
 import { mergeInternals } from './mergeInternals';
 import { isFunction } from '../util/isFunction';
 
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 export function mergeMap<T, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
   concurrent?: number
@@ -22,7 +22,7 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
   resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
   concurrent?: number
 ): OperatorFunction<T, R>;
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -89,6 +89,7 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
     // DEPRECATED PATH
     return mergeMap((a, i) => map((b: any, ii: number) => resultSelector(a, b, i, ii))(innerFrom(project(a, i))), concurrent);
   } else if (typeof resultSelector === 'number') {
+    // eslint-disable-next-line no-param-reassign
     concurrent = resultSelector;
   }
 

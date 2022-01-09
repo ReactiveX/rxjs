@@ -240,6 +240,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /** @internal */
+  // eslint-disable-next-line consistent-return
   protected _trySubscribe(sink: Subscriber<T>): TeardownLogic {
     try {
       return this._subscribe(sink);
@@ -311,6 +312,7 @@ export class Observable<T> implements Subscribable<T> {
   forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
 
   forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): Promise<void> {
+    // eslint-disable-next-line no-param-reassign
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor<void>((resolve, reject) => {
@@ -344,7 +346,7 @@ export class Observable<T> implements Subscribable<T> {
     return this;
   }
 
-  /* tslint:disable:max-line-length */
+  /* eslint-disable max-len */
   pipe(): Observable<T>;
   pipe<A>(op1: OperatorFunction<T, A>): Observable<A>;
   pipe<A, B>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>): Observable<B>;
@@ -412,7 +414,7 @@ export class Observable<T> implements Subscribable<T> {
     op9: OperatorFunction<H, I>,
     ...operations: OperatorFunction<any, any>[]
   ): Observable<unknown>;
-  /* tslint:enable:max-line-length */
+  /* eslint-enable max-len */
 
   /**
    * Used to stitch together functional operators into a chain.
@@ -438,14 +440,14 @@ export class Observable<T> implements Subscribable<T> {
     return pipeFromArray(operations)(this);
   }
 
-  /* tslint:disable:max-line-length */
+  /* eslint-disable max-len */
   /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. Details: https://rxjs.dev/deprecations/to-promise */
   toPromise(): Promise<T | undefined>;
   /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. Details: https://rxjs.dev/deprecations/to-promise */
   toPromise(PromiseCtor: typeof Promise): Promise<T | undefined>;
   /** @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. Details: https://rxjs.dev/deprecations/to-promise */
   toPromise(PromiseCtor: PromiseConstructorLike): Promise<T | undefined>;
-  /* tslint:enable:max-line-length */
+  /* eslint-enable max-len */
 
   /**
    * Subscribe to this Observable and get a Promise resolving on
@@ -466,6 +468,7 @@ export class Observable<T> implements Subscribable<T> {
    * @deprecated Replaced with {@link firstValueFrom} and {@link lastValueFrom}. Will be removed in v8. Details: https://rxjs.dev/deprecations/to-promise
    */
   toPromise(promiseCtor?: PromiseConstructorLike): Promise<T | undefined> {
+    // eslint-disable-next-line no-param-reassign
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor((resolve, reject) => {

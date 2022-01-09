@@ -145,6 +145,7 @@ export function distinctUntilChanged<T, K>(
   // We've been allowing `null` do be passed as the `compare`, so we can't do
   // a default value for the parameter, because that will only work
   // for `undefined`.
+  // eslint-disable-next-line no-param-reassign
   comparator = comparator ?? defaultCompare;
 
   return operate((source, subscriber) => {

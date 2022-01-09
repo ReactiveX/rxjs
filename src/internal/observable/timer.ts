@@ -144,6 +144,7 @@ export function timer(
     // override the scheduler we had defaulted. Otherwise,
     // it must be an interval.
     if (isScheduler(intervalOrScheduler)) {
+      // eslint-disable-next-line no-param-reassign
       scheduler = intervalOrScheduler;
     } else {
       // Note that this *could* be negative, in which case
@@ -172,7 +173,7 @@ export function timer(
         // Emit the next value and increment.
         subscriber.next(n++);
 
-        if (0 <= intervalDuration) {
+        if (intervalDuration >= 0) {
           // If we have a interval after the initial timer,
           // reschedule with the period.
           this.schedule(undefined, intervalDuration);

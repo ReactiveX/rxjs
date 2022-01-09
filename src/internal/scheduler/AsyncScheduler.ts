@@ -1,3 +1,4 @@
+/* eslint-disable no-cond-assign,no-param-reassign */
 import { Scheduler } from '../Scheduler';
 import { Action } from './Action';
 import { AsyncAction } from './AsyncAction';

@@ -19,6 +19,7 @@ export function operate<T, R>(
 ): OperatorFunction<T, R> {
   return (source: Observable<T>) => {
     if (hasLift(source)) {
+      // eslint-disable-next-line consistent-return
       return source.lift(function (this: Subscriber<R>, liftedSource: Observable<T>) {
         try {
           return init(liftedSource, this);

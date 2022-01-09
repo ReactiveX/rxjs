@@ -56,7 +56,9 @@ export function range(start: number, count: number | undefined, scheduler: Sched
 export function range(start: number, count?: number, scheduler?: SchedulerLike): Observable<number> {
   if (count == null) {
     // If one argument was passed, it's the count, not the start.
+    // eslint-disable-next-line no-param-reassign
     count = start;
+    // eslint-disable-next-line no-param-reassign
     start = 0;
   }
 

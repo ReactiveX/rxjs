@@ -23,6 +23,7 @@ export function merge<T, A extends readonly unknown[]>(
 export function merge<T>(...args: unknown[]): OperatorFunction<T, unknown> {
   const scheduler = popScheduler(args);
   const concurrent = popNumber(args, Infinity);
+  // eslint-disable-next-line no-param-reassign
   args = argsOrArgArray(args);
 
   return operate((source, subscriber) => {

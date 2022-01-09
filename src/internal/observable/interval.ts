@@ -51,6 +51,7 @@ import { timer } from './timer';
 export function interval(period = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number> {
   if (period < 0) {
     // We cannot schedule an interval in the past.
+    // eslint-disable-next-line no-param-reassign
     period = 0;
   }
 

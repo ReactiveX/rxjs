@@ -82,6 +82,7 @@ export class AsyncAction<T> extends Action<T> {
    * Immediately executes this action and the `work` it contains.
    * @return {any}
    */
+  // eslint-disable-next-line consistent-return
   public execute(state: T, delay: number): any {
     if (this.closed) {
       return new Error('executing a cancelled action');
@@ -109,6 +110,7 @@ export class AsyncAction<T> extends Action<T> {
     }
   }
 
+  // eslint-disable-next-line consistent-return
   protected _execute(state: T, _delay: number): any {
     let errored: boolean = false;
     let errorValue: any;

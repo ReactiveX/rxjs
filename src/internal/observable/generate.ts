@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { Observable } from '../Observable';
 import { identity } from '../util/identity';
 import { ObservableInput, SchedulerLike } from '../types';

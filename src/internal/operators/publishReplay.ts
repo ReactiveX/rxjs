@@ -87,6 +87,7 @@ export function publishReplay<T, R>(
   timestampProvider?: TimestampProvider
 ) {
   if (selectorOrScheduler && !isFunction(selectorOrScheduler)) {
+    // eslint-disable-next-line no-param-reassign
     timestampProvider = selectorOrScheduler;
   }
   const selector = isFunction(selectorOrScheduler) ? selectorOrScheduler : undefined;

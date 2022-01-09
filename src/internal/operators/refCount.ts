@@ -69,7 +69,7 @@ export function refCount<T>(): MonoTypeOperatorFunction<T> {
     (source as any)._refCount++;
 
     const refCounter = new OperatorSubscriber(subscriber, undefined, undefined, undefined, () => {
-      if (!source || (source as any)._refCount <= 0 || 0 < --(source as any)._refCount) {
+      if (!source || (source as any)._refCount <= 0 || --(source as any)._refCount > 0) {
         connection = null;
         return;
       }

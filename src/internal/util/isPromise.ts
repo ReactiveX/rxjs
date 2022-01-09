@@ -1,4 +1,4 @@
-import { isFunction } from "./isFunction";
+import { isFunction } from './isFunction';
 
 /**
  * Tests to see if the object is "thennable".

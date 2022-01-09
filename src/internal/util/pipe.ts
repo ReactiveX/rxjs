@@ -1,3 +1,4 @@
+/* eslint-disable no-redeclare */
 import { identity } from './identity';
 import { UnaryFunction } from '../types';
 

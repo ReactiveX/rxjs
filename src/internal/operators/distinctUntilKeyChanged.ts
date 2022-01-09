@@ -1,10 +1,10 @@
 import { distinctUntilChanged } from './distinctUntilChanged';
 import { MonoTypeOperatorFunction } from '../types';
 
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 export function distinctUntilKeyChanged<T>(key: keyof T): MonoTypeOperatorFunction<T>;
 export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (x: T[K], y: T[K]) => boolean): MonoTypeOperatorFunction<T>;
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,
@@ -66,6 +66,9 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  * @return A function that returns an Observable that emits items from the
  * source Observable with distinct values based on the key specified.
  */
-export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare?: (x: T[K], y: T[K]) => boolean): MonoTypeOperatorFunction<T> {
-  return distinctUntilChanged((x: T, y: T) => compare ? compare(x[key], y[key]) : x[key] === y[key]);
+export function distinctUntilKeyChanged<T, K extends keyof T>(
+  key: K,
+  compare?: (x: T[K], y: T[K]) => boolean
+): MonoTypeOperatorFunction<T> {
+  return distinctUntilChanged((x: T, y: T) => (compare ? compare(x[key], y[key]) : x[key] === y[key]));
 }

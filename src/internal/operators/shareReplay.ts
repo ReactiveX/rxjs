@@ -156,8 +156,10 @@ export function shareReplay<T>(
   let refCount = false;
   if (configOrBufferSize && typeof configOrBufferSize === 'object') {
     bufferSize = configOrBufferSize.bufferSize ?? Infinity;
+    // eslint-disable-next-line no-param-reassign
     windowTime = configOrBufferSize.windowTime ?? Infinity;
     refCount = !!configOrBufferSize.refCount;
+    // eslint-disable-next-line no-param-reassign
     scheduler = configOrBufferSize.scheduler;
   } else {
     bufferSize = configOrBufferSize ?? Infinity;

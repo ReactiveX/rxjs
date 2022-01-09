@@ -49,6 +49,7 @@ export function race<T extends readonly unknown[]>(...inputs: [...ObservableInpu
  * @return {Observable} an Observable that mirrors the output of the first Observable to emit an item.
  */
 export function race<T>(...sources: (ObservableInput<T> | ObservableInput<T>[])[]): Observable<any> {
+  // eslint-disable-next-line no-param-reassign
   sources = argsOrArgArray(sources);
   // If only one source was passed, just return it. Otherwise return the race.
   return sources.length === 1 ? innerFrom(sources[0] as ObservableInput<T>) : new Observable<T>(raceInit(sources as ObservableInput<T>[]));

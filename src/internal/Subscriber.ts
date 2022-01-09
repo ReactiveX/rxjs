@@ -155,6 +155,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       // going to put them all in a new destination with ensured methods
       // for `next`, `error`, and `complete`. That's part of what makes this
       // the "Safe" Subscriber.
+      // eslint-disable-next-line no-param-reassign
       ({ next, error, complete } = observerOrNext);
       let context: any;
       if (this && config.useDeprecatedNextContext) {
@@ -167,7 +168,9 @@ export class SafeSubscriber<T> extends Subscriber<T> {
         context = observerOrNext;
       }
       next = next?.bind(context);
+      // eslint-disable-next-line no-param-reassign
       error = error?.bind(context);
+      // eslint-disable-next-line no-param-reassign
       complete = complete?.bind(context);
     }
 

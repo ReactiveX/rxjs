@@ -88,6 +88,7 @@ export function timeoutWith<T, R>(
   let first: number | Date | undefined;
   let each: number | undefined;
   let _with: () => ObservableInput<R>;
+  // eslint-disable-next-line no-param-reassign
   scheduler = scheduler ?? async;
 
   if (isValidDate(due)) {

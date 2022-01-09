@@ -16,6 +16,7 @@ export interface UnsubscriptionErrorCtor {
  * An error thrown when one or more errors have occurred during the
  * `unsubscribe` of a {@link Subscription}.
  */
+// eslint-disable-next-line no-redeclare
 export const UnsubscriptionError: UnsubscriptionErrorCtor = createErrorClass(
   (_super) =>
     function UnsubscriptionErrorImpl(this: any, errors: (Error | string)[]) {

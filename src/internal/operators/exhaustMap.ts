@@ -6,7 +6,7 @@ import { innerFrom } from '../observable/innerFrom';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 export function exhaustMap<T, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O
 ): OperatorFunction<T, ObservedValueOf<O>>;
@@ -20,7 +20,7 @@ export function exhaustMap<T, I, R>(
   project: (value: T, index: number) => ObservableInput<I>,
   resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
 ): OperatorFunction<T, R>;
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 /**
  * Projects each source value to an Observable which is merged in the output

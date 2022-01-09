@@ -57,6 +57,7 @@ import { arrRemove } from '../util/arrRemove';
 export function bufferCount<T>(bufferSize: number, startBufferEvery: number | null = null): OperatorFunction<T, T[]> {
   // If no `startBufferEvery` value was supplied, then we're
   // opening and closing on the bufferSize itself.
+  // eslint-disable-next-line no-param-reassign
   startBufferEvery = startBufferEvery ?? bufferSize;
 
   return operate((source, subscriber) => {
