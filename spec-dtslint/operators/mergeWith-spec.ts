@@ -1,5 +1,5 @@
 import { mergeWith } from 'rxjs/operators';
-import { a$, b$, c$, d$, e$, f$, g$, h$} from '../helpers';
+import { a$, b$, c$, d$, e$, f$, g$, h$ } from '../helpers';
 
 it('should accept N args', () => {
   const r0 = a$.pipe(mergeWith()); // $ExpectType Observable<A>

@@ -1,7 +1,6 @@
 import { of, Notification } from 'rxjs';
 import { dematerialize } from 'rxjs/operators';
 
-
 it('should infer correctly', () => {
   const o = of(Notification.createNext('foo')).pipe(dematerialize()); // $ExpectType Observable<string>
 });
@@ -49,7 +48,6 @@ it('should enforce types from POJOS', () => {
     kind: 'E' as const
   });
   const o5 = source5.pipe(dematerialize()); // $ExpectError
-
 
   // Next notifications should have a value.
   const source6 = of({

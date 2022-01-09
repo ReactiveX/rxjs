@@ -11,7 +11,7 @@ function a<I, O extends string>(output: O): OperatorFunction<I, O>;
  * That is, `a('0', '1')` returns `OperatorFunction<'0', '1'>`.
  * That means that the `a` function can be used to create consecutive
  * arguments that are either compatible or incompatible.
- * 
+ *
  * ```javascript
  * a('0', '1'), a('1', '2') // OK
  * a('0', '1'), a('#', '2') // Error '1' is not compatible with '#'

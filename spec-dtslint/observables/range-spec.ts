@@ -8,7 +8,7 @@ it('should accept only number parameters', () => {
   const a = range('a', 1); // $ExpectError
 });
 
-it('should allow 1 parameter', () => { 
+it('should allow 1 parameter', () => {
   const a = range(1); // $ExpectType Observable<number>
 });
 

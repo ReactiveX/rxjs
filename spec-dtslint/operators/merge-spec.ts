@@ -1,6 +1,6 @@
 import { asyncScheduler } from 'rxjs';
 import { merge } from 'rxjs/operators';
-import { a$, b$, c$, d$, e$, f$} from '../helpers';
+import { a$, b$, c$, d$, e$, f$ } from '../helpers';
 
 it('should accept no parameter', () => {
   const res = a$.pipe(merge()); // $ExpectType Observable<A>

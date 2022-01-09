@@ -9,6 +9,6 @@ it('should support scheduler parameter', () => {
 });
 
 it('should always infer empty observable', () => {
-  // Empty Observable that replace empty static function 
+  // Empty Observable that replace empty static function
   const a = EMPTY; // $ExpectType Observable<never>
 });

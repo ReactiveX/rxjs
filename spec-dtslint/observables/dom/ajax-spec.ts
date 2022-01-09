@@ -12,7 +12,7 @@ it('should accept AjaxRequest params', () => {
   const ajaxRequest = {
     method: 'GET',
     url: '/a',
-    body: {a: 'a', b: 'b'},
+    body: { a: 'a', b: 'b' },
   };
   const o = ajax(ajaxRequest); // $ExpectType Observable<AjaxResponse<unknown>>
 });

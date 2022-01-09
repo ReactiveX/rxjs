@@ -77,7 +77,6 @@ it('should infer correctly with array', () => {
   const res = of([a, b, c]); // $ExpectType Observable<(A | B | C)[]>
 });
 
-
 // SchedulerLike inclusions (remove in v8)
 it('should infer never with 0 params', () => {
   const res = of(queueScheduler); // $ExpectType Observable<never>

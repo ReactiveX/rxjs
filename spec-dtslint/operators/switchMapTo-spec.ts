@@ -46,7 +46,7 @@ it('should enforce types', () => {
 });
 
 it('should enforce types of the observable parameter', () => {
-  const fn = () => {}
+  const fn = () => {};
   const o = of(1, 2, 3).pipe(switchMapTo(fn)); // $ExpectError
 });
 

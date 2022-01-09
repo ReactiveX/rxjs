@@ -7,7 +7,7 @@ it('should infer correctly', () => {
 });
 
 it('should be possible to use a this with in a SubjectFactory', () => {
-  const o = of(1, 2, 3).pipe(multicast(function(this: Observable<number>) { return new Subject<number>(); })); // $ExpectType Observable<number>
+  const o = of(1, 2, 3).pipe(multicast(function (this: Observable<number>) { return new Subject<number>(); })); // $ExpectType Observable<number>
 });
 
 it('should be possible to use a selector', () => {

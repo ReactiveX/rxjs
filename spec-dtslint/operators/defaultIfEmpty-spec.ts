@@ -25,4 +25,4 @@ it('should enforce types', () => {
 
 it('should handle Observable<never> appropriately', () => {
   const o = EMPTY.pipe(defaultIfEmpty('blah')); // $ExpectType Observable<string>
-})
+});

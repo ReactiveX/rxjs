@@ -47,7 +47,7 @@ it('should support Boolean as a predicate', () => {
   const s = of(false as const).pipe(filter(Boolean)); // $ExpectType Observable<never>
   const t = of(0 as const, -0 as const, 1 as const).pipe(filter(Boolean)); // $ExpectType Observable<1>
   const u = of(0 as const, -0 as const).pipe(filter(Boolean)); // $ExpectType Observable<never>
-  const v = of('' as const, "foo" as const, "bar" as const).pipe(filter(Boolean)); // $ExpectType Observable<"foo" | "bar">
+  const v = of('' as const, 'foo' as const, 'bar' as const).pipe(filter(Boolean)); // $ExpectType Observable<"foo" | "bar">
   const w = of('' as const).pipe(filter(Boolean)); // $ExpectType Observable<never>
   // Intentionally weird looking test... `false` is `boolean`, which is `true | false`.
   const x = of(false, false, false, false).pipe(filter(Boolean)); // $ExpectType Observable<true>
@@ -73,7 +73,7 @@ it('should support inference from a generic return type of the predicate', () =>
     };
   }
 
-  const o$ = of(1, null, {foo: 'bar'}, true, undefined, 'Nick Cage').pipe(filter(isDefined())); // $ExpectType Observable<string | number | boolean | { foo: string; }>
+  const o$ = of(1, null, { foo: 'bar' }, true, undefined, 'Nick Cage').pipe(filter(isDefined())); // $ExpectType Observable<string | number | boolean | { foo: string; }>
 });
 
 it('should support inference from a predicate that returns any', () => {

@@ -36,7 +36,6 @@ it('should infer if function returns never', () => {
   const a = defer(() => { throw new Error(); }); // $ExpectType Observable<never>
 });
 
-
 it('should infer correctly with function that sometimes error', () => {
   // $ExpectType Observable<number>
   defer(() => {
@@ -48,5 +47,6 @@ it('should infer correctly with function that sometimes error', () => {
 });
 
 it('should error with functions that sometimes do not return an ObservableInput', () => {
+  // eslint-disable-next-line consistent-return
   const a = defer(() => { if (Math.random() < 0.5) { return of(42); } }); // $ExpectError
 });

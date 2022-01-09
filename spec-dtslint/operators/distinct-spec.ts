@@ -19,5 +19,5 @@ it('should enforce types', () => {
 });
 
 it('should enforce types of keySelector', () => {
-  const o = of<{ id: string; }>({id: 'F00D'}).pipe(distinct(item => item.foo)); // $ExpectError
+  const o = of<{ id: string; }>({ id: 'F00D' }).pipe(distinct(item => item.foo)); // $ExpectError
 });

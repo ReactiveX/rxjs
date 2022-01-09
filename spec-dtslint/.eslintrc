@@ -1,0 +1,12 @@
+{
+  "root": false,
+  "extends": [
+    "../spec/.eslintrc",
+    "plugin:dtslint/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/no-empty-function": "off",
+    "no-empty-function": "off",
+    "dtslint/expect-type": "warn"
+  }
+}

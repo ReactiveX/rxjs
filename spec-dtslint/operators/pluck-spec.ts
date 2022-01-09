@@ -62,10 +62,10 @@ it('should accept a spread of arguments', () => {
 });
 
 it('should support arrays', () => {
-  const a = of(['abc']).pipe(pluck(0)) // $ExpectType Observable<string>
-})
+  const a = of(['abc']).pipe(pluck(0)); // $ExpectType Observable<string>
+});
 
 it('should support picking by symbols', () => {
-  const sym = Symbol('sym')
-  const a = of({ [sym]: 'abc' }).pipe(pluck(sym)) // $ExpectType Observable<string>
-})
+  const sym = Symbol('sym');
+  const a = of({ [sym]: 'abc' }).pipe(pluck(sym)); // $ExpectType Observable<string>
+});

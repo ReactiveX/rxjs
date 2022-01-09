@@ -43,7 +43,7 @@ it('should handle the Boolean constructor', () => {
   const c = of('test' as const, true as const, 1 as const, [], {}).pipe(every(Boolean)); // $ExpectType Observable<boolean>
   const d = of(NaN, NaN, NaN).pipe(every(Boolean)); // $ExpectType Observable<boolean>
   const e = of(0, 1, 0).pipe(every(Boolean)); // $ExpectType Observable<boolean>
-})
+});
 
 it('should support this', () => {
   const thisArg = { limit: 5 };

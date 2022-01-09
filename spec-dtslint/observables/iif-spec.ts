@@ -24,11 +24,10 @@ it('should infer correctly', () => {
   const r5 = iif(randomBoolean, EMPTY, EMPTY); // $ExpectType Observable<never>
 });
 
-
 it('should support inference from a predicate that returns any', () => {
   function alwaysTrueButReturnsAny(): any {
     return true;
   }
 
-  const o$ = iif(alwaysTrueButReturnsAny, a$, b$) // $ExpectType Observable<A | B>
+  const o$ = iif(alwaysTrueButReturnsAny, a$, b$); // $ExpectType Observable<A | B>
 });

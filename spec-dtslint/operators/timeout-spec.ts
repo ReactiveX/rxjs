@@ -56,7 +56,7 @@ it('Check config arguments', () => {
 
 it('should support a union', () => {
   const o = a$.pipe( // $ExpectType Observable<A | B | C>
-    timeout({ 
+    timeout({
       with: () => Math.random() > 0.5 ? b$ : c$
     })
   );

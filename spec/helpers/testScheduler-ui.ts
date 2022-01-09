@@ -50,7 +50,8 @@ const escapeRe = require('escape-string-regexp');
 // setup sinon-chai
 chai.use(sinonChai);
 
-declare const module: any; const global: any; const Suite: any; const Test: any;
+// eslint-disable-next-line one-var
+declare const module: any, global: any, Suite: any, Test: any;
 
 if (global && !(typeof window !== 'undefined')) {
   global.mocha = require('mocha'); // eslint-disable-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
