@@ -36,7 +36,7 @@ describe('Scheduler.queue', () => {
     const fakeTimer = sandbox.useFakeTimers();
 
     let asyncExec = false;
-    let state: Array<number> = [];
+    const state: Array<number> = [];
 
     queue.schedule(function (index) {
       state.push(index!);

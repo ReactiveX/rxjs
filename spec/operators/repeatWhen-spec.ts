@@ -7,12 +7,12 @@ import { SafeSubscriber } from 'rxjs/internal/Subscriber';
 /** @test {repeatWhen} */
 describe('repeatWhen operator', () => {
   it('should handle a source with eventual complete using a hot notifier', () => {
-    const source =  cold('-1--2--|');
-    const subs =        ['^      !                     ',
-                       '             ^      !        ',
-                       '                          ^      !'];
+    const source = cold('-1--2--|');
+    const subs = ['^      !                     ',
+      '             ^      !        ',
+      '                          ^      !'];
     const notifier = hot('-------------r------------r-|');
-    const expected =     '-1--2---------1--2---------1--2--|';
+    const expected = '-1--2---------1--2---------1--2--|';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -21,12 +21,12 @@ describe('repeatWhen operator', () => {
   });
 
   it('should handle a source with eventual complete using a hot notifier that raises error', () => {
-    const source = cold( '-1--2--|');
-    const subs =        ['^      !                    ',
-                       '           ^      !           ',
-                       '                   ^      !   '];
+    const source = cold('-1--2--|');
+    const subs = ['^      !                    ',
+      '           ^      !           ',
+      '                   ^      !   '];
     const notifier = hot('-----------r-------r---------#');
-    const expected =     '-1--2-------1--2----1--2-----#';
+    const expected = '-1--2-------1--2----1--2-----#';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -39,24 +39,24 @@ describe('repeatWhen operator', () => {
     const expected = [1, 2, 1, 2];
     let i = 0;
     try {
-    of(1, 2).pipe(
-      map((n: number) => {
-        return n;
-      }),
-      repeatWhen((notifications: any) => notifications.pipe(map((x: any) => {
+      of(1, 2).pipe(
+        map((n: number) => {
+          return n;
+        }),
+        repeatWhen((notifications: any) => notifications.pipe(map((x: any) => {
           if (retried) {
             throw new Error('done');
           }
           retried = true;
           return x;
-      })))
-    ).subscribe((x: any) => {
-        expect(x).to.equal(expected[i++]);
-      },
-      (err: any) => {
-        expect(err).to.be.an('error', 'done');
-        done();
-      });
+        })))
+      ).subscribe((x: any) => {
+          expect(x).to.equal(expected[i++]);
+        },
+        (err: any) => {
+          expect(err).to.be.an('error', 'done');
+          done();
+        });
     } catch (err) {
       done(err);
     }
@@ -71,14 +71,14 @@ describe('repeatWhen operator', () => {
       }),
       repeatWhen((notifications: any) => EMPTY)
     ).subscribe((n: number) => {
-        expect(n).to.equal(expected.shift());
-        nexted.push(n);
-      }, (err: any) => {
-        done(new Error('should not be called'));
-      }, () => {
-        expect(nexted).to.deep.equal([1, 2]);
-        done();
-      });
+      expect(n).to.equal(expected.shift());
+      nexted.push(n);
+    }, (err: any) => {
+      done(new Error('should not be called'));
+    }, () => {
+      expect(nexted).to.deep.equal([1, 2]);
+      done();
+    });
   });
 
   it('should not error when applying an empty synchronous notifier', () => {
@@ -136,10 +136,10 @@ describe('repeatWhen operator', () => {
   });
 
   it('should apply an empty notifier on an empty source', () => {
-    const source = cold(  '|');
-    const subs =          '(^!)';
+    const source = cold('|');
+    const subs = '(^!)';
     const notifier = cold('|');
-    const expected =      '|';
+    const expected = '|';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -148,10 +148,10 @@ describe('repeatWhen operator', () => {
   });
 
   it('should apply a never notifier on an empty source', () => {
-    const source = cold(  '|');
-    const subs =          '(^!)';
+    const source = cold('|');
+    const subs = '(^!)';
     const notifier = cold('-');
-    const expected =      '-';
+    const expected = '-';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -160,11 +160,11 @@ describe('repeatWhen operator', () => {
   });
 
   it('should apply an empty notifier on a never source', () => {
-    const source = cold(  '-');
-    const unsub =         '                                         !';
-    const subs =          '^                                        !';
+    const source = cold('-');
+    const unsub = '                                         !';
+    const subs = '^                                        !';
     const notifier = cold('|');
-    const expected =      '-';
+    const expected = '-';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -173,11 +173,11 @@ describe('repeatWhen operator', () => {
   });
 
   it('should apply a never notifier on a never source', () => {
-    const source = cold(  '-');
-    const unsub =         '                                         !';
-    const subs =          '^                                        !';
+    const source = cold('-');
+    const unsub = '                                         !';
+    const subs = '^                                        !';
     const notifier = cold('-');
-    const expected =      '-';
+    const expected = '-';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -186,9 +186,9 @@ describe('repeatWhen operator', () => {
   });
 
   it('should return an empty observable given a just-throw source and empty notifier', () => {
-    const source = cold(  '#');
+    const source = cold('#');
     const notifier = cold('|');
-    const expected =      '#';
+    const expected = '#';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -196,9 +196,9 @@ describe('repeatWhen operator', () => {
   });
 
   it('should return a error observable given a just-throw source and never notifier', () => {
-    const source = cold(  '#');
+    const source = cold('#');
     const notifier = cold('-');
-    const expected =      '#';
+    const expected = '#';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -206,10 +206,10 @@ describe('repeatWhen operator', () => {
   });
 
   it('should return a never-ending result if the notifier is never', () => {
-    const source = cold(  '--a--b--c--|');
-    const subs =          '^          !';
-    const notifier = cold(           '-');
-    const expected =      '--a--b--c---------------------------------';
+    const source = cold('--a--b--c--|');
+    const subs = '^          !';
+    const notifier = cold('-');
+    const expected = '--a--b--c---------------------------------';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -219,20 +219,22 @@ describe('repeatWhen operator', () => {
 
   it('should propagate error thrown from notifierSelector function', () => {
     const source = cold('--a--b--c--|');
-    const subs =        '^          !';
-    const expected =    '--a--b--c--#';
+    const subs = '^          !';
+    const expected = '--a--b--c--#';
 
-    const result = source.pipe(repeatWhen(<any>(() => { throw 'bad!'; })));
+    const result = source.pipe(repeatWhen(<any>(() => {
+      throw 'bad!';
+    })));
 
     expectObservable(result).toBe(expected, undefined, 'bad!');
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should complete if the notifier only completes', () => {
-    const source = cold(  '--a--b--c--|');
-    const subs =          '^          !';
-    const notifier = cold(           '|');
-    const expected =      '--a--b--c--|';
+    const source = cold('--a--b--c--|');
+    const subs = '^          !';
+    const notifier = cold('|');
+    const expected = '--a--b--c--|';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -241,10 +243,10 @@ describe('repeatWhen operator', () => {
   });
 
   it('should mirror a basic cold source with complete, given a never notifier', () => {
-    const source = cold(  '--a--b--c--|');
-    const subs =          '^          !';
-    const notifier = cold(           '|');
-    const expected =      '--a--b--c--|';
+    const source = cold('--a--b--c--|');
+    const subs = '^          !';
+    const notifier = cold('|');
+    const expected = '--a--b--c--|';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -253,10 +255,10 @@ describe('repeatWhen operator', () => {
   });
 
   it('should mirror a basic cold source with no termination, given a never notifier', () => {
-    const source = cold(  '--a--b--c---');
-    const subs =          '^           ';
-    const notifier = cold(           '|');
-    const expected =      '--a--b--c---';
+    const source = cold('--a--b--c---');
+    const subs = '^           ';
+    const notifier = cold('|');
+    const expected = '--a--b--c---';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -266,9 +268,9 @@ describe('repeatWhen operator', () => {
 
   it('should mirror a basic hot source with complete, given a never notifier', () => {
     const source = hot('-a-^--b--c--|');
-    const subs =          '^        !';
-    const notifier = cold(         '|');
-    const expected =      '---b--c--|';
+    const subs = '^        !';
+    const notifier = cold('|');
+    const expected = '---b--c--|';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -278,12 +280,12 @@ describe('repeatWhen operator', () => {
 
   // https://github.com/ReactiveX/rxjs/issues/6523
   it.skip('should handle a host source that completes via operator like take, and a hot notifier', () => {
-    const source =   hot('-1--2--3----4--5---|');
-    const ssubs =       ['^      !            ',
-                       '              ^    !'];
+    const source = hot('-1--2--3----4--5---|');
+    const ssubs = ['^      !            ',
+      '              ^    !'];
     const notifier = hot('--------------r--------r---r--r--r---|');
-    const nsubs =        '       ^           !';
-    const expected =     '-1--2---      -5---|';
+    const nsubs = '       ^           !';
+    const expected = '-1--2---      -5---|';
 
     const result = source.pipe(
       takeWhile(value => value !== '3'),
@@ -296,14 +298,14 @@ describe('repeatWhen operator', () => {
   });
 
   it('should tear down resources when result is unsubscribed early', () => {
-    const source = cold( '-1--2--|');
-    const unsub =        '                    !       ';
-    const subs =        ['^      !                    ',
-                       '         ^      !           ',
-                       '                 ^  !       '];
+    const source = cold('-1--2--|');
+    const unsub = '                    !       ';
+    const subs = ['^      !                    ',
+      '         ^      !           ',
+      '                 ^  !       '];
     const notifier = hot('---------r-------r---------#');
-    const nsubs =        '       ^            !       ';
-    const expected =     '-1--2-----1--2----1--       ';
+    const nsubs = '       ^            !       ';
+    const expected = '-1--2-----1--2----1--       ';
 
     const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
@@ -313,14 +315,14 @@ describe('repeatWhen operator', () => {
   });
 
   it('should not break unsubscription chains when unsubscribed explicitly', () => {
-    const source = cold( '-1--2--|');
-    const subs =        ['^      !                    ',
-                       '         ^      !           ',
-                       '                 ^  !       '];
+    const source = cold('-1--2--|');
+    const subs = ['^      !                    ',
+      '         ^      !           ',
+      '                 ^  !       '];
     const notifier = hot('---------r-------r-------r-#');
-    const nsubs =        '       ^            !       ';
-    const expected =     '-1--2-----1--2----1--       ';
-    const unsub =        '                    !       ';
+    const nsubs = '       ^            !       ';
+    const expected = '-1--2-----1--2----1--       ';
+    const unsub = '                    !       ';
 
     const result = source.pipe(
       mergeMap((x: string) => of(x)),
@@ -334,12 +336,12 @@ describe('repeatWhen operator', () => {
   });
 
   it('should handle a source with eventual error using a dynamic notifier ' +
-  'selector which eventually throws', () => {
+    'selector which eventually throws', () => {
     const source = cold('-1--2--|');
-    const subs =       ['^      !              ',
-                      '       ^      !       ',
-                      '              ^      !'];
-    const expected =    '-1--2---1--2---1--2--#';
+    const subs = ['^      !              ',
+      '       ^      !       ',
+      '              ^      !'];
+    const expected = '-1--2---1--2---1--2--#';
 
     let invoked = 0;
     const result = source.pipe(repeatWhen((notifications: any) =>
@@ -356,12 +358,12 @@ describe('repeatWhen operator', () => {
   });
 
   it('should handle a source with eventual error using a dynamic notifier ' +
-  'selector which eventually completes', () => {
+    'selector which eventually completes', () => {
     const source = cold('-1--2--|');
-    const subs =       ['^      !              ',
-                      '       ^      !       ',
-                      '              ^      !'];
-    const expected =    '-1--2---1--2---1--2--|';
+    const subs = ['^      !              ',
+      '       ^      !       ',
+      '              ^      !'];
+    const expected = '-1--2---1--2---1--2--|';
 
     let invoked = 0;
     const result = source.pipe(
@@ -369,13 +371,9 @@ describe('repeatWhen operator', () => {
         map(() => 'x'),
         takeUntil(
           notifications.pipe(mergeMap(() => {
-            if (++invoked < 3) {
-              return EMPTY;
-            } else {
-              return of('stop!');
-            }
+            return ++invoked < 3 ? EMPTY : of('stop!');
           }))
-      )))
+        )))
     );
 
     expectObservable(result).toBe(expected);
@@ -390,7 +388,7 @@ describe('repeatWhen operator', () => {
       subscriber.complete();
       return () => {
         results.push('teardown');
-      }
+      };
     });
     const subscription = source.pipe(repeatWhen(completions$ => completions$.pipe(
       takeWhile((_, i) => i < 3)
@@ -400,7 +398,7 @@ describe('repeatWhen operator', () => {
     });
 
     expect(subscription.closed).to.be.true;
-    expect(results).to.deep.equal([1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'complete', 'teardown'])
+    expect(results).to.deep.equal([1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'complete', 'teardown']);
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
@@ -417,7 +415,8 @@ describe('repeatWhen operator', () => {
     synchronousObservable.pipe(
       repeatWhen(() => of(0)),
       take(3),
-    ).subscribe(() => { /* noop */ });
+    ).subscribe(() => { /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });

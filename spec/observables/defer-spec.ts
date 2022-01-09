@@ -104,7 +104,7 @@ describe('defer', () => {
   it('should create an observable when factory does not throw', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const e1 = defer(() => {
-        if (1 !== Infinity) {
+        if (Infinity !== 1) {
           throw 'error';
         }
         return of();
@@ -117,6 +117,7 @@ describe('defer', () => {
 
   it('should error when factory throws', (done) => {
     const e1 = defer(() => {
+      // eslint-disable-next-line no-constant-condition
       if (1 + 2 === 3) {
         throw 'error';
       }

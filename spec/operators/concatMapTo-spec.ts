@@ -37,7 +37,7 @@ describe('concatMapTo', () => {
       )
     )
     .subscribe({
-      next (value) {
+      next(value) {
         results.push(value);
       },
       error(err) {
@@ -69,7 +69,7 @@ describe('concatMapTo', () => {
       )
     )
     .subscribe({
-      next (value) {
+      next(value) {
         results.push(value);
       },
       error(err) {

@@ -205,7 +205,7 @@ describe('switchMapTo', () => {
       const x = cold('           --a--b--c--d--e--|   ');
       // prettier-ignore
       const xsubs = [
-        '               ---------(^!)                 ', 
+        '               ---------(^!)                 ',
         '               ---------^----------------!   '
       ];
       const e1 = hot('  ---------(xx)----------------|');

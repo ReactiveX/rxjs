@@ -250,7 +250,7 @@ describe('scan', () => {
         a: 1, b: 3, c: 5,
         x: 1, y: 4, z: 9,
       };
-      let idx = [0, 1, 2];
+      const idx = [0, 1, 2];
 
       const e1 = hot('  --a--b--c--|', values);
       const e1subs = '  ^----------!';

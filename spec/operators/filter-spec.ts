@@ -362,7 +362,7 @@ describe('filter', () => {
   });
 
   it('should support type guards without breaking previous behavior', () => {
-    // tslint:disable no-unused-variable
+    // eslint-disable  no-unused-vars, @typescript-eslint/no-unused-vars
 
     // type guards with interfaces and classes
     {
@@ -418,7 +418,7 @@ describe('filter', () => {
       xs.pipe(filter((x, i) => typeof x === 'number' && x > i)).subscribe((x) => x); // x is still string | number
     }
 
-    // tslint:disable enable
+    // eslint-disable
   });
 
   it('should support Boolean as a predicate', () => {

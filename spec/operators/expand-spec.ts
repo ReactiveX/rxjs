@@ -78,11 +78,7 @@ describe('expand', () => {
       const result = e1.pipe(
         expand(
           (x, index): Observable<any> => {
-            if (x === 16) {
-              return EMPTY;
-            } else {
-              return cold(e2shape, { z: x + x });
-            }
+            return x === 16 ? EMPTY : cold(e2shape, { z: x + x });
           }
         )
       );

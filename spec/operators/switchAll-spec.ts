@@ -310,7 +310,7 @@ describe('switchAll', () => {
     const oStream = oStreamControl.pipe(map(() => (iStream = new Subject<number>())));
     const switcher = oStream.pipe(switchAll());
     const result: number[] = [];
-    let sub = switcher.subscribe((x) => result.push(x));
+    const sub = switcher.subscribe((x) => result.push(x));
 
     [0, 1, 2, 3, 4].forEach((n) => {
       oStreamControl.next(n); // creates inner
@@ -327,7 +327,7 @@ describe('switchAll', () => {
     const oStream = oStreamControl.pipe(map(() => new Subject<number>()));
     const switcher = oStream.pipe(switchAll());
     const result: number[] = [];
-    let sub = switcher.subscribe((x) => result.push(x));
+    const sub = switcher.subscribe((x) => result.push(x));
 
     [0, 1, 2, 3, 4].forEach((n) => {
       oStreamControl.next(n); // creates inner

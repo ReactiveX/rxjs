@@ -4,10 +4,11 @@ import { asyncScheduler, of, from, Observer, observable, Subject, noop, Subscrip
 import { first, concatMap, delay, take, tap } from 'rxjs/operators';
 import { ReadableStream } from 'web-streams-polyfill';
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 declare const expectObservable: any;
 declare const rxTestScheduler: TestScheduler;
-// tslint:enable:no-any
+
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 function getArguments<T>(...args: T[]) {
   return arguments;
@@ -23,12 +24,12 @@ describe('from', () => {
       )
     );
     const expected = 'x-y-(z|)';
-    expectObservable(e1).toBe(expected, {x: 10, y: 20, z: 30});
+    expectObservable(e1).toBe(expected, { x: 10, y: 20, z: 30 });
   });
 
   it('should throw for non observable object', () => {
     const r = () => {
-      // tslint:disable-next-line:no-any needed for the test
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       from({} as any).subscribe();
     };
 
@@ -54,7 +55,6 @@ describe('from', () => {
     const source = from(gen()).pipe(
       take(3),
     );
-
 
     source.subscribe({
       next: value => results.push(value),
@@ -94,7 +94,6 @@ describe('from', () => {
         }
       }),
     );
-
 
     source.subscribe({
       next: value => results.push(value),
@@ -137,7 +136,6 @@ describe('from', () => {
     subscription = source.subscribe(value => results.push(value));
   });
 
-
   it('should finalize a generator', () => {
     const results: any[] = [];
 
@@ -155,7 +153,6 @@ describe('from', () => {
     const source = from(gen()).pipe(
       take(3),
     );
-
 
     source.subscribe({
       next: value => results.push(value),
@@ -177,8 +174,8 @@ describe('from', () => {
   });
 
   const fakeArrayObservable = <T>(...values: T[]) => {
-    let arr: any = ['bad array!'];
-    arr[observable] = () =>  {
+    const arr: any = ['bad array!'];
+    arr[observable] = () => {
       return {
         subscribe: (observer: Observer<T>) => {
           for (const value of values) {
@@ -203,7 +200,7 @@ describe('from', () => {
     }
   });
 
-  // tslint:disable-next-line:no-any it's silly to define all of these types.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sources: Array<{ name: string, createValue: () => any }> = [
     { name: 'observable', createValue: () => of('x') },
     { name: 'observable-like', createValue: () => fakervable('x') },
@@ -214,13 +211,15 @@ describe('from', () => {
     { name: 'array-like', createValue: () => ({ [0]: 'x', length: 1 }) },
     // ReadableStreams are not lazy, so we have to have this createValue() thunk
     // so that each tests gets a new one.
-    { name: 'readable-stream-like', createValue: () => new ReadableStream({
-      pull(controller) {
-        controller.enqueue('x');
-        controller.close();
-      },
-    })},
-    { name: 'string', createValue: () => 'x'},
+    {
+      name: 'readable-stream-like', createValue: () => new ReadableStream({
+        pull(controller) {
+          controller.enqueue('x');
+          controller.close();
+        },
+      })
+    },
+    { name: 'string', createValue: () => 'x' },
     { name: 'arguments', createValue: () => getArguments('x') },
   ];
 
@@ -232,11 +231,7 @@ describe('from', () => {
           return {
             next() {
               const index = i++;
-              if (index < values.length) {
-                return Promise.resolve({ done: false, value: values[index] });
-              } else {
-                return Promise.resolve({ done: true });
-              }
+              return index < values.length ? Promise.resolve({ done: false, value: values[index] }) : Promise.resolve({ done: true });
             },
             [Symbol.asyncIterator]() {
               return this;
@@ -289,7 +284,7 @@ describe('from', () => {
       expect(nextInvoked).to.equal(false);
     });
 
-    it(`should accept a function that implements [Symbol.observable]`, (done) => {
+    it('should accept a function that implements [Symbol.observable]', (done) => {
       const subject = new Subject<any>();
       const handler: any = (arg: any) => subject.next(arg);
       handler[observable] = () => subject;
@@ -320,8 +315,8 @@ describe('from', () => {
           expect(x).to.equal('test');
           done();
         }
-      })
-    })
+      });
+    });
   }
 
   it('should appropriately handle errors from an iterator', () => {

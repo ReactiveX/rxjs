@@ -193,9 +193,9 @@ describe('Scheduler.asap', () => {
 
   it('should not execute rescheduled actions when flushing', (done) => {
     let flushCount = 0;
-    let scheduledIndices: number[] = [];
+    const scheduledIndices: number[] = [];
 
-    let originalFlush = asap.flush;
+    const originalFlush = asap.flush;
     asap.flush = (...args) => {
       ++flushCount;
       originalFlush.apply(asap, args);

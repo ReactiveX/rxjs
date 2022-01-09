@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "../.eslintrc"
+  ],
+  "rules": {
+    "padded-blocks": "off",
+    "@typescript-eslint/no-unused-expressions": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/no-internal-modules": "off",
+    "dot-notation": "off",
+    "@typescript-eslint/dot-notation": "off",
+    "@typescript-eslint/consistent-type-assertions": "off",
+    "object-shorthand": "off",
+    "no-undef-init": "off",
+    "no-throw-literal": "off",
+    "@typescript-eslint/ban-types": "off",
+    "radix": "off",
+    "prefer-const": "off",
+    "max-len": [
+      1,
+      140,
+      {
+        "ignoreComments": true,
+        "ignoreStrings": true
+      }
+    ]
+  }
+}

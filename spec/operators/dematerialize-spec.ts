@@ -28,11 +28,7 @@ describe('dematerialize', () => {
 
       const result = e1.pipe(
         map((x: string) => {
-          if (x === '|') {
-            return Notification.createComplete();
-          } else {
-            return Notification.createNext(x.replace('{', '').replace('}', ''));
-          }
+          return x === '|' ? Notification.createComplete() : Notification.createNext(x.replace('{', '').replace('}', ''));
         }),
         dematerialize()
       );

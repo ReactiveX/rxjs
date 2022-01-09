@@ -21,7 +21,7 @@ describe('tap', () => {
 
       const result = e1.pipe(
         tap(() => {
-          //noop
+          // noop
         })
       );
 
@@ -226,7 +226,7 @@ describe('tap', () => {
 
       const result = e1.pipe(
         tap(() => {
-          //noop
+          // noop
         })
       );
       expectObservable(result, unsub).toBe(expected);
@@ -244,7 +244,7 @@ describe('tap', () => {
       const result = e1.pipe(
         mergeMap((x: any) => of(x)),
         tap(() => {
-          //noop
+          // noop
         }),
         mergeMap((x: any) => of(x))
       );
@@ -262,7 +262,7 @@ describe('tap', () => {
 
       const result = e1.pipe(
         tap(() => {
-          //noop
+          // noop
         })
       );
       expectObservable(result).toBe(expected);
@@ -278,7 +278,7 @@ describe('tap', () => {
 
       const result = e1.pipe(
         tap(() => {
-          //noop
+          // noop
         })
       );
       expectObservable(result).toBe(expected);

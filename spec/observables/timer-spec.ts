@@ -62,7 +62,7 @@ describe('timer', () => {
 
   it('should start immediately and periodically emit values', () => {
     rxTest.run(({ expectObservable }) => {
-      const dueTime = 0; //|
+      const dueTime = 0; // |
       const period = 3; //  --|--|--|--|
       const expected = '   a--b--c--d--(e|)';
 
@@ -74,7 +74,7 @@ describe('timer', () => {
 
   it('should stop emiting values when subscription is done', () => {
     rxTest.run(({ expectObservable }) => {
-      const dueTime = 0; //|
+      const dueTime = 0; // |
       const period = 3; //  --|--|--|--|
       const expected = '   a--b--c--d--e';
       const unsub = '      ^------------!';

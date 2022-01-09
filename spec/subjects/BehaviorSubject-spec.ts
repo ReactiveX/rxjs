@@ -44,7 +44,7 @@ describe('BehaviorSubject', () => {
       // XXX: escape from readonly restriction for testing.
       (subject as any).value = 'jibbets';
     } catch (e) {
-      //noop
+      // noop
     }
 
     expect(subject.getValue()).to.equal('flibberty');

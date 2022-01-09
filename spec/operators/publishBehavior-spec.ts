@@ -350,7 +350,7 @@ describe('publishBehavior operator', () => {
     const source1Subs =  '^          !';
     const expected1 =    'x1-2-3-4-5-|';
     const source2 = cold('-6-7-8-9-0-|');
-    const source2Subs =  '^          !'; 
+    const source2Subs =  '^          !';
     const expected2 =    'x6-7-8-9-0-|';
 
     // Calls to the _operator_ must be referentially-transparent.

@@ -68,7 +68,7 @@ describe('bindNodeCallback', () => {
       const boundCallback = bindNodeCallback(callback);
       const results: Array<number | string> = [];
 
-      boundCallback.call({datum: 42})
+      boundCallback.call({ datum: 42 })
         .subscribe(
           (x: number) => results.push(x),
           null,
@@ -196,7 +196,7 @@ describe('bindNodeCallback', () => {
       const boundCallback = bindNodeCallback(callback, rxTestScheduler);
       const results: Array<number | string> = [];
 
-      boundCallback.call({datum: 42})
+      boundCallback.call({ datum: 42 })
         .subscribe(
           (x: number) => results.push(x),
           null,

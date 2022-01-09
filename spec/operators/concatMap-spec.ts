@@ -677,7 +677,7 @@ describe('Observable.prototype.concatMap', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
-  
+
   it('should finalize before moving to the next observable', () => {
     const results: any[] = [];
 
@@ -686,7 +686,7 @@ describe('Observable.prototype.concatMap', () => {
       return of(`next ${n}`).pipe(
         delay(100, testScheduler),
         finalize(() => {
-          results.push(`finalized ${n}`)
+          results.push(`finalized ${n}`);
         })
       );
     });
@@ -713,7 +713,7 @@ describe('Observable.prototype.concatMap', () => {
   });
 
   function arrayRepeat(value: string, times: number) {
-    let results = [];
+    const results = [];
     for (let i = 0; i < times; i++) {
       results.push(value);
     }
@@ -857,7 +857,8 @@ describe('Observable.prototype.concatMap', () => {
     synchronousObservable.pipe(
       concatMap(value => of(value)),
       take(3),
-    ).subscribe(() => { /* noop */ });
+    ).subscribe(() => { /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });

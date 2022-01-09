@@ -201,7 +201,7 @@ describe('fromFetch', () => {
   });
 
   it('should allow passing of init object', (done) => {
-    const fetch$ = fromFetch('/foo', {method: 'HEAD'});
+    const fetch$ = fromFetch('/foo', { method: 'HEAD' });
     fetch$.subscribe({
       error: done,
       complete: done,
@@ -210,7 +210,7 @@ describe('fromFetch', () => {
   });
 
   it('should add a signal to internal init object without mutating the passed init object', (done) => {
-    const myInit = {method: 'DELETE'};
+    const myInit = { method: 'DELETE' };
     const fetch$ = fromFetch('/bar', myInit);
     fetch$.subscribe({
       error: done,

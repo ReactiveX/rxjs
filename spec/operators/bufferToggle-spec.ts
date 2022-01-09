@@ -121,8 +121,8 @@ describe('bufferToggle operator', () => {
 
       expectObservable(result).toBe(expected, values);
       expectSubscriptions(e1.subscriptions).toBe(subs);
-      for (let j = 0; j < closings.length; j++) {
-        expectSubscriptions(closings[j].obs.subscriptions).toBe(closings[j].sub);
+      for (const item of closings) {
+        expectSubscriptions(item.obs.subscriptions).toBe(item.sub);
       }
     });
   });

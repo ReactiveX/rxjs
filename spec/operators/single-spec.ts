@@ -167,8 +167,8 @@ describe('single operator', () => {
       const e1subs = '  ^----------!';
       const expected = '-----------(b|)';
 
-      let indices: number[] = [];
-      const predicate = function(value: string, index: number) {
+      const indices: number[] = [];
+      const predicate = function (value: string, index: number) {
         indices.push(index);
         return value === 'b';
       };
@@ -342,7 +342,9 @@ describe('single operator', () => {
 
     synchronousObservable.pipe(
       single(),
-    ).subscribe(() => { /* noop */ }, () => { /* noop */ });
+    ).subscribe(() => { /* noop */
+    }, () => { /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1]);
   });

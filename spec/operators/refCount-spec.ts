@@ -55,10 +55,10 @@ describe('refCount', () => {
     const refCounted = connectable.pipe(refCount());
 
     const sub1 = refCounted.subscribe(() => {
-      //noop
+      // noop
     });
     const sub2 = refCounted.subscribe(() => {
-      //noop
+      // noop
     });
     const sub3 = refCounted.subscribe(() => {
       expect((connectable as any)._refCount).to.equal(1);

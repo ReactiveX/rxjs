@@ -319,7 +319,7 @@ describe('retry', () => {
       const unsub = '      -------------!';
       // prettier-ignore
       const subs = [
-        '                  ^-------!     ', 
+        '                  ^-------!     ',
         '                  --------^----!',
       ];
       const expected = '   --1-2-3---1-2-';

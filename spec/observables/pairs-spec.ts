@@ -7,7 +7,7 @@ declare const rxTestScheduler: TestScheduler;
 
 describe('pairs', () => {
   it('should create an observable emits key-value pair', () => {
-    const e1 = pairs({a: 1, b: 2}, rxTestScheduler);
+    const e1 = pairs({ a: 1, b: 2 }, rxTestScheduler);
     const expected = '(ab|)';
     const values = {
       a: ['a', 1],
@@ -18,13 +18,13 @@ describe('pairs', () => {
   });
 
   it('should create an observable without scheduler', (done) => {
-    let expected = [
+    const expected = [
       ['a', 1],
       ['b', 2],
       ['c', 3]
     ];
 
-    pairs({a: 1, b: 2, c: 3}).subscribe(x => {
+    pairs({ a: 1, b: 2, c: 3 }).subscribe(x => {
       expect(x).to.deep.equal(expected.shift());
     }, x => {
       done(new Error('should not be called'));

@@ -14,7 +14,7 @@ describe('of', () => {
       concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : 20, rxTestScheduler)))
     );
     const expected = 'x-y-(z|)';
-    expectObservable(e1).toBe(expected, {x: 1, y: 2, z: 3});
+    expectObservable(e1).toBe(expected, { x: 1, y: 2, z: 3 });
   });
 
   it('should create an observable from the provided values', (done) => {
@@ -22,7 +22,7 @@ describe('of', () => {
     const expected = [1, 'a', x];
     let i = 0;
 
-   of(1, 'a', x)
+    of(1, 'a', x)
       .subscribe((y: any) => {
         expect(y).to.equal(expected[i++]);
       }, (x) => {
@@ -38,7 +38,7 @@ describe('of', () => {
     of(42).subscribe((x: number) => {
       expect(++calls).to.equal(1);
       expect(x).to.equal(42);
-  }, (err: any) => {
+    }, (err: any) => {
       done(new Error('should not be called'));
     }, () => {
       done();
@@ -47,7 +47,7 @@ describe('of', () => {
 
   it('should handle an Observable as the only value', () => {
     const source = of(
-     of('a', 'b', 'c', rxTestScheduler),
+      of('a', 'b', 'c', rxTestScheduler),
       rxTestScheduler
     );
     const result = source.pipe(concatAll());
@@ -56,8 +56,8 @@ describe('of', () => {
 
   it('should handle many Observable as the given values', () => {
     const source = of(
-     of('a', 'b', 'c', rxTestScheduler),
-     of('d', 'e', 'f', rxTestScheduler),
+      of('a', 'b', 'c', rxTestScheduler),
+      of('d', 'e', 'f', rxTestScheduler),
       rxTestScheduler
     );
 

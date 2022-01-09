@@ -6,7 +6,7 @@ describe('Subscription', () => {
   describe('add()', () => {
     it('should unsubscribe child subscriptions', () => {
       const main = new Subscription();
-      
+
       let isCalled = false;
       const child = new Subscription(() => {
         isCalled = true;
@@ -107,7 +107,7 @@ describe('Subscription', () => {
         unsubscribe() {
           isCalled = true;
         }
-      }
+      };
       main.add(unsubscribable);
       main.remove(unsubscribable);
       main.unsubscribe();

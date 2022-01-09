@@ -6,17 +6,17 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 /** @test {partition} */
 describe('Observable.prototype.partition', () => {
   function expectObservableArray(result: Observable<string>[], expected: string[]) {
-    for (let idx = 0; idx < result.length; idx++ ) {
+    for (let idx = 0; idx < result.length; idx++) {
       expectObservable(result[idx]).toBe(expected[idx]);
     }
   }
 
   it('should partition an observable of ' +
-  'integers into even and odd', () => {
-    const e1 =    hot('--1-2---3------4--5---6--|');
-    const e1subs =    '^                        !';
+    'integers into even and odd', () => {
+    const e1 = hot('--1-2---3------4--5---6--|');
+    const e1subs = '^                        !';
     const expected = ['--1-----3---------5------|',
-                    '----2----------4------6--|'];
+      '----2----------4------6--|'];
 
     const result = partition(e1, (x: any) => x % 2 === 1);
 
@@ -25,10 +25,10 @@ describe('Observable.prototype.partition', () => {
   });
 
   it('should partition an observable into two using a predicate', () => {
-    const e1 =    hot('--a-b---a------d--a---c--|');
-    const e1subs =    '^                        !';
+    const e1 = hot('--a-b---a------d--a---c--|');
+    const e1subs = '^                        !';
     const expected = ['--a-----a---------a------|',
-                    '----b----------d------c--|'];
+      '----b----------d------c--|'];
 
     function predicate(x: string) {
       return x === 'a';
@@ -39,10 +39,10 @@ describe('Observable.prototype.partition', () => {
   });
 
   it('should partition an observable into two using a predicate that takes an index', () => {
-    const e1 =    hot('--a-b---a------d--e---c--|');
-    const e1subs =    '^                        !';
+    const e1 = hot('--a-b---a------d--e---c--|');
+    const e1subs = '^                        !';
     const expected = ['--a-----a---------e------|',
-                      '----b----------d------c--|'];
+      '----b----------d------c--|'];
 
     function predicate(value: string, index: number) {
       return index % 2 === 0;
@@ -53,24 +53,24 @@ describe('Observable.prototype.partition', () => {
   });
 
   it('should partition an observable into two using a predicate and thisArg', () => {
-    const e1 =    hot('--a-b---a------d--a---c--|');
-    const e1subs =    '^                        !';
+    const e1 = hot('--a-b---a------d--a---c--|');
+    const e1subs = '^                        !';
     const expected = ['--a-----a---------a------|',
-                    '----b----------d------c--|'];
+      '----b----------d------c--|'];
 
     function predicate(this: any, x: string) {
       return x === this.value;
     }
 
-    expectObservableArray(partition(e1, predicate, {value: 'a'}), expected);
+    expectObservableArray(partition(e1, predicate, { value: 'a' }), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
   it('should pass errors to both returned observables', () => {
-    const e1 =    hot('--a-b---#');
-    const e1subs =    '^       !';
+    const e1 = hot('--a-b---#');
+    const e1subs = '^       !';
     const expected = ['--a-----#',
-                    '----b---#'];
+      '----b---#'];
 
     function predicate(x: string) {
       return x === 'a';
@@ -81,10 +81,10 @@ describe('Observable.prototype.partition', () => {
   });
 
   it('should pass errors to both returned observables if source throws', () => {
-    const e1 =   cold('#');
-    const e1subs =    '(^!)';
+    const e1 = cold('#');
+    const e1subs = '(^!)';
     const expected = ['#',
-                    '#'];
+      '#'];
 
     function predicate(x: string) {
       return x === 'a';
@@ -95,13 +95,14 @@ describe('Observable.prototype.partition', () => {
   });
 
   it('should pass errors to both returned observables if predicate throws', () => {
-    const e1 =    hot('--a-b--a--|');
-    const e1subs =    '^      !   ';
+    const e1 = hot('--a-b--a--|');
+    const e1subs = '^      !   ';
     const expected = ['--a----#   ',
-                    '----b--#   '];
+      '----b--#   '];
 
     let index = 0;
     const error = 'error';
+
     function predicate(x: string) {
       const match = x === 'a';
       if (match && index++ > 1) {
@@ -115,10 +116,10 @@ describe('Observable.prototype.partition', () => {
   });
 
   it('should partition empty observable if source does not emits', () => {
-    const e1 =    hot('----|');
-    const e1subs =    '^   !';
+    const e1 = hot('----|');
+    const e1subs = '^   !';
     const expected = ['----|',
-                    '----|'];
+      '----|'];
 
     function predicate(x: string) {
       return x === 'x';
@@ -129,10 +130,10 @@ describe('Observable.prototype.partition', () => {
   });
 
   it('should partition empty observable if source is empty', () => {
-    const e1 =   cold('|');
-    const e1subs =    '(^!)';
+    const e1 = cold('|');
+    const e1subs = '(^!)';
     const expected = ['|',
-                    '|'];
+      '|'];
 
     function predicate(x: string) {
       return x === 'x';
@@ -143,10 +144,10 @@ describe('Observable.prototype.partition', () => {
   });
 
   it('should partition if source emits single elements', () => {
-    const e1 =    hot('--a--|');
-    const e1subs =    '^    !';
+    const e1 = hot('--a--|');
+    const e1subs = '^    !';
     const expected = ['--a--|',
-                    '-----|'];
+      '-----|'];
 
     function predicate(x: string) {
       return x === 'a';
@@ -157,10 +158,10 @@ describe('Observable.prototype.partition', () => {
   });
 
   it('should partition if predicate matches all of source elements', () => {
-    const e1 =    hot('--a--a--a--a--a--a--a--|');
-    const e1subs =    '^                      !';
+    const e1 = hot('--a--a--a--a--a--a--a--|');
+    const e1subs = '^                      !';
     const expected = ['--a--a--a--a--a--a--a--|',
-                    '-----------------------|'];
+      '-----------------------|'];
 
     function predicate(x: string) {
       return x === 'a';
@@ -171,10 +172,10 @@ describe('Observable.prototype.partition', () => {
   });
 
   it('should partition if predicate does not match all of source elements', () => {
-    const e1 =    hot('--b--b--b--b--b--b--b--|');
-    const e1subs =    '^                      !';
+    const e1 = hot('--b--b--b--b--b--b--b--|');
+    const e1subs = '^                      !';
     const expected = ['-----------------------|',
-                    '--b--b--b--b--b--b--b--|'];
+      '--b--b--b--b--b--b--b--|'];
 
     function predicate(x: string) {
       return x === 'a';
@@ -185,10 +186,10 @@ describe('Observable.prototype.partition', () => {
   });
 
   it('should partition to infinite observable if source does not completes', () => {
-    const e1 =    hot('--a-b---a------d----');
-    const e1subs =    '^                   ';
+    const e1 = hot('--a-b---a------d----');
+    const e1subs = '^                   ';
     const expected = ['--a-----a-----------',
-                    '----b----------d----'];
+      '----b----------d----'];
 
     function predicate(x: string) {
       return x === 'a';
@@ -199,10 +200,10 @@ describe('Observable.prototype.partition', () => {
   });
 
   it('should partition to infinite observable if source never completes', () => {
-    const e1 =   cold('-');
-    const e1subs =    '^';
+    const e1 = cold('-');
+    const e1subs = '^';
     const expected = ['-',
-                    '-'];
+      '-'];
 
     function predicate(x: string) {
       return x === 'a';
@@ -213,29 +214,30 @@ describe('Observable.prototype.partition', () => {
   });
 
   it('should partition into two observable with early unsubscription', () => {
-    const e1 =    hot('--a-b---a------d-|');
-    const unsub =     '       !          ';
-    const e1subs =    '^      !          ';
+    const e1 = hot('--a-b---a------d-|');
+    const unsub = '       !          ';
+    const e1subs = '^      !          ';
     const expected = ['--a-----          ',
-                    '----b---          '];
+      '----b---          '];
 
     function predicate(x: string) {
       return x === 'a';
     }
+
     const result = partition(e1, predicate);
 
-    for (let idx = 0; idx < result.length; idx++ ) {
+    for (let idx = 0; idx < result.length; idx++) {
       expectObservable(result[idx], unsub).toBe(expected[idx]);
     }
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
   it('should not break unsubscription chains when result is unsubscribed explicitly', () => {
-    const e1 =    hot('--a-b---a------d-|');
-    const e1subs =    '^      !          ';
+    const e1 = hot('--a-b---a------d-|');
+    const e1subs = '^      !          ';
     const expected = ['--a-----          ',
-                    '----b---          '];
-    const unsub =     '       !          ';
+      '----b---          '];
+    const unsub = '       !          ';
 
     const e1Pipe = e1.pipe(
       mergeMap((x: string) => of(x))

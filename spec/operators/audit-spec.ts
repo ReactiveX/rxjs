@@ -417,11 +417,7 @@ describe('audit operator', () => {
 
     e1.pipe(
       audit((x: number) => {
-        if (x === 3) {
-          return new Promise((resolve: any, reject: any) => { reject(error); });
-        } else {
-          return new Promise((resolve: any) => { resolve(42); });
-        }
+        return x === 3 ? new Promise((resolve: any, reject: any) => { reject(error); }) : new Promise((resolve: any) => { resolve(42); });
       })
     ).subscribe(
       (x: number) => {

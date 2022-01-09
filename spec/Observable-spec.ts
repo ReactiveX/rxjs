@@ -2,7 +2,27 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { Observer, TeardownLogic } from '../src/internal/types';
 import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError, concatMap, switchMap, publish, publishLast, publishBehavior, share, finalize} from 'rxjs/operators';
+import {
+  map,
+  multicast,
+  refCount,
+  filter,
+  count,
+  tap,
+  combineLatest,
+  concat,
+  merge,
+  race,
+  zip,
+  catchError,
+  concatMap,
+  switchMap,
+  publish,
+  publishLast,
+  publishBehavior,
+  share,
+  finalize
+} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -97,7 +117,7 @@ describe('Observable', () => {
 
         await of(42).forEach((x) => {
           expect(x).to.equal(42);
-        })
+        });
 
         expect(wasCalled).to.be.true;
       } finally {
@@ -153,7 +173,7 @@ describe('Observable', () => {
           },
           (err) => {
             results.push(err);
-            // The error should unsubscribe from the source, meaning we 
+            // The error should unsubscribe from the source, meaning we
             // should not see the number 4.
             expect(results).to.deep.equal([1, 2, 3, expected]);
           }
@@ -260,9 +280,9 @@ describe('Observable', () => {
         };
       });
 
-      let observer = {
+      const observer = {
         next: function () {
-          /*noop*/
+          /* noop*/
         },
       };
 
@@ -327,7 +347,7 @@ describe('Observable', () => {
       });
 
       const sub = source.subscribe(() => {
-        //noop
+        // noop
       });
       expect(sub instanceof Subscription).to.be.true;
       expect(unsubscribeCalled).to.be.false;
@@ -430,9 +450,9 @@ describe('Observable', () => {
     describe('when called with an anonymous observer', () => {
       it(
         'should accept an anonymous observer with just a next function and call the next function in the context' +
-          ' of the anonymous observer',
+        ' of the anonymous observer',
         (done) => {
-          //intentionally not using lambda to avoid typescript's this context capture
+          // intentionally not using lambda to avoid typescript's this context capture
           const o = {
             myValue: 'foo',
             next(x: any) {
@@ -448,9 +468,9 @@ describe('Observable', () => {
 
       it(
         'should accept an anonymous observer with just an error function and call the error function in the context' +
-          ' of the anonymous observer',
+        ' of the anonymous observer',
         (done) => {
-          //intentionally not using lambda to avoid typescript's this context capture
+          // intentionally not using lambda to avoid typescript's this context capture
           const o = {
             myValue: 'foo',
             error(err: any) {
@@ -466,9 +486,9 @@ describe('Observable', () => {
 
       it(
         'should accept an anonymous observer with just a complete function and call the complete function in the' +
-          ' context of the anonymous observer',
+        ' context of the anonymous observer',
         (done) => {
-          //intentionally not using lambda to avoid typescript's this context capture
+          // intentionally not using lambda to avoid typescript's this context capture
           const o = {
             myValue: 'foo',
             complete: function complete() {
@@ -577,7 +597,7 @@ describe('Observable', () => {
           });
       });
     });
-    
+
     it('should teardown even with a synchronous thrown error', () => {
       let called = false;
       const badObservable = new Observable((subscriber) => {
@@ -589,13 +609,13 @@ describe('Observable', () => {
       });
 
       badObservable.subscribe({
-        error: () => { /* do nothing */ }
+        error: () => { /* do nothing */
+        }
       });
 
       expect(called).to.be.true;
     });
 
-    
     it('should handle empty string sync errors', () => {
       const badObservable = new Observable(() => {
         throw '';
@@ -610,7 +630,6 @@ describe('Observable', () => {
       });
       expect(caught).to.be.true;
     });
-      
 
     describe('if config.useDeprecatedSynchronousErrorHandling === true', () => {
       beforeEach(() => {
@@ -635,7 +654,6 @@ describe('Observable', () => {
         }).to.throw('error!');
       });
 
-
       // From issue: https://github.com/ReactiveX/rxjs/issues/5979
       it('should still rethrow synchronous errors from next handlers on synchronous observables', () => {
         expect(() => {
@@ -649,9 +667,9 @@ describe('Observable', () => {
             next: () => {
               throw new Error(
                 'hi there!'
-              )
+              );
             }
-          })
+          });
         }).to.throw('hi there!');
       });
 
@@ -705,7 +723,6 @@ describe('Observable', () => {
         expect(called).to.be.true;
       });
 
-      
       it('should handle empty string sync errors', () => {
         const badObservable = new Observable(() => {
           throw '';
@@ -738,7 +755,7 @@ describe('Observable', () => {
         }
         expect(called).to.be.true;
       });
-      
+
       it('should execute finalize even with a sync thrown error', () => {
         let called = false;
         const badObservable = new Observable(() => {
@@ -756,7 +773,7 @@ describe('Observable', () => {
         }
         expect(called).to.be.true;
       });
-      
+
       it('should execute finalize in order even with a sync error', () => {
         const results: any[] = [];
         const badObservable = new Observable((subscriber) => {
@@ -766,7 +783,7 @@ describe('Observable', () => {
             results.push(1);
           }),
           finalize(() => {
-            results.push(2)
+            results.push(2);
           })
         );
 
@@ -787,7 +804,7 @@ describe('Observable', () => {
             results.push(1);
           }),
           finalize(() => {
-            results.push(2)
+            results.push(2);
           })
         );
 
@@ -799,14 +816,14 @@ describe('Observable', () => {
         expect(results).to.deep.equal([1, 2]);
       });
 
-      // https://github.com/ReactiveX/rxjs/issues/6271      
+      // https://github.com/ReactiveX/rxjs/issues/6271
       it('should not have a run-time error if no errors are thrown and there are operators', () => {
         expect(() => {
           of(1, 2, 3).pipe(
             map(x => x + x),
             map(x => Math.log(x))
           )
-          .subscribe();
+            .subscribe();
         }).not.to.throw();
       });
 
@@ -884,8 +901,8 @@ describe('Observable', () => {
   it.skip('should handle sync errors within a test scheduler', () => {
     const observable = of(4).pipe(
       map(n => {
-          if (n === 4) {
-            throw 'four!';
+        if (n === 4) {
+          throw 'four!';
         }
         return n;
       }),
@@ -918,7 +935,7 @@ describe('Observable', () => {
 describe('Observable.create', () => {
   it('should create an Observable', () => {
     const result = Observable.create(() => {
-      //noop
+      // noop
     });
     expect(result instanceof Observable).to.be.true;
   });
@@ -933,7 +950,7 @@ describe('Observable.create', () => {
 
     expect(called).to.be.false;
     result.subscribe(() => {
-      //noop
+      // noop
     });
     expect(called).to.be.true;
   });
@@ -964,6 +981,7 @@ describe('Observable.lift', () => {
       observable.source = <Observable<T>>source;
       return observable;
     }
+
     lift<R>(operator: Operator<T, R>): Observable<R> {
       const observable = new MyCustomObservable<R>();
       (<any>observable).source = this;
@@ -1047,7 +1065,6 @@ describe('Observable.lift', () => {
     );
   });
 
-  
   it('should compose through publish and refCount', (done) => {
     const result = new MyCustomObservable<number>((observer) => {
       observer.next(1);
@@ -1077,7 +1094,6 @@ describe('Observable.lift', () => {
     );
   });
 
-  
   it('should compose through publishLast and refCount', (done) => {
     const result = new MyCustomObservable<number>((observer) => {
       observer.next(1);
@@ -1138,7 +1154,7 @@ describe('Observable.lift', () => {
 
   it('should composes Subjects in the simple case', () => {
     const subject = new Subject<number>();
-    
+
     const result = subject.pipe(
       map((x) => 10 * x)
     ) as any as Subject<number>; // Yes, this is correct. (but you're advised not to do this)
@@ -1151,7 +1167,7 @@ describe('Observable.lift', () => {
     result.next(10);
     result.next(20);
     result.next(30);
-    
+
     expect(emitted).to.deep.equal([100, 200, 300]);
   });
 
@@ -1161,7 +1177,7 @@ describe('Observable.lift', () => {
    */
   it('should demonstrate the horrors of sharing and lifting the Subject through', () => {
     const subject = new Subject<number>();
-    
+
     const shared = subject.pipe(
       share()
     );
@@ -1177,15 +1193,15 @@ describe('Observable.lift', () => {
 
     const emitted1: any[] = [];
     result1.subscribe(value => emitted1.push(value));
-    
+
     const emitted2: any[] = [];
     result2.subscribe(value => emitted2.push(value));
 
     // THIS IS HORRIBLE DON'T DO THIS.
     result1.next(10);
     result2.next(20); // Yuck
-    result1.next(30); 
-    
+    result1.next(30);
+
     expect(emitted1).to.deep.equal([100, 200, 300]);
     expect(emitted2).to.deep.equal([0, 10, 20]);
   });
@@ -1196,17 +1212,17 @@ describe('Observable.lift', () => {
    * probably should have never tried to compose through the Subject's observer methods.
    * If you're a user and you're reading this... NEVER try to use this feature, it's likely
    * to go away at some point.
-   * 
+   *
    * The problem is that you can have the Subject parts, or you can have the ConnectableObservable parts,
    * but you can't have both.
-   * 
+   *
    * NOTE: We can remove this in version 8 or 9, because we're getting rid of operators that
    * return `ConnectableObservable`. :tada:
    */
   describe.skip('The lift through Connectable gaff', () => {
     it('should compose through multicast and refCount, even if it is a Subject', () => {
       const subject = new Subject<number>();
-      
+
       const result = subject.pipe(
         multicast(() => new Subject<number>()),
         refCount(),
@@ -1221,13 +1237,13 @@ describe('Observable.lift', () => {
       result.next(10);
       result.next(20);
       result.next(30);
-      
+
       expect(emitted).to.deep.equal([100, 200, 300]);
     });
-    
+
     it('should compose through publish and refCount, even if it is a Subject', () => {
       const subject = new Subject<number>();
-      
+
       const result = subject.pipe(
         publish(),
         refCount(),
@@ -1242,14 +1258,13 @@ describe('Observable.lift', () => {
       result.next(10);
       result.next(20);
       result.next(30);
-      
+
       expect(emitted).to.deep.equal([100, 200, 300]);
     });
 
-    
     it('should compose through publishLast and refCount, even if it is a Subject', () => {
       const subject = new Subject<number>();
-      
+
       const result = subject.pipe(
         publishLast(),
         refCount(),
@@ -1264,13 +1279,13 @@ describe('Observable.lift', () => {
       result.next(10);
       result.next(20);
       result.next(30);
-      
+
       expect(emitted).to.deep.equal([100, 200, 300]);
     });
 
     it('should compose through publishBehavior and refCount, even if it is a Subject', () => {
       const subject = new Subject<number>();
-      
+
       const result = subject.pipe(
         publishBehavior(0),
         refCount(),
@@ -1285,7 +1300,7 @@ describe('Observable.lift', () => {
       result.next(10);
       result.next(20);
       result.next(30);
-      
+
       expect(emitted).to.deep.equal([0, 100, 200, 300]);
     });
   });
@@ -1424,7 +1439,8 @@ describe('Observable.lift', () => {
 
     // The custom Operator
     class LogOperator<T, R> implements Operator<T, R> {
-      constructor(private childOperator: Operator<T, R>) {}
+      constructor(private childOperator: Operator<T, R>) {
+      }
 
       call(subscriber: Subscriber<R>, source: any): TeardownLogic {
         return this.childOperator.call(new LogSubscriber<R>(subscriber), source);

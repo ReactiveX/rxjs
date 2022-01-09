@@ -82,7 +82,7 @@ describe('interval', () => {
         done();
       }
     });
-    let i = -1, n = events.length;
+    let i = -1; const n = events.length;
     while (++i < n) {
       fakeTimer.tick(period);
     }
@@ -109,7 +109,7 @@ describe('interval', () => {
         done();
       }
     });
-    let i = -1, n = events.length;
+    let i = -1; const n = events.length;
     while (++i < n) {
       fakeTimer.tick(period);
     }
@@ -136,7 +136,7 @@ describe('interval', () => {
         done();
       }
     });
-    let i = -1, n = events.length;
+    let i = -1; const n = events.length;
     while (++i < n) {
       fakeTimer.tick(period);
     }

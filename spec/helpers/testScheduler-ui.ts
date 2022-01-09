@@ -1,13 +1,14 @@
+/* eslint-disable no-param-reassign */
 import * as _ from 'lodash';
 import * as chai from 'chai';
 import * as sinonChai from 'sinon-chai';
 import * as marble from './marble-testing';
 import { TestScheduler } from 'rxjs/testing';
 
-//tslint:disable:no-var-requires no-require-imports
+/* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports */
 const commonInterface = require('mocha/lib/interfaces/common');
 const escapeRe = require('escape-string-regexp');
-//tslint:enable:no-var-requires no-require-imports
+/* eslint-enable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports */
 
 /** Polyfill requestAnimationFrame for testing animationFrame scheduler in Node */
 // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
@@ -17,7 +18,8 @@ const escapeRe = require('escape-string-regexp');
 
 // MIT license
 
-(function(this: any, window: any) {
+(function (this: any, window: any) {
+  // eslint-disable-next-line no-param-reassign
   window = window || this;
   let lastTime = 0;
   const vendors = ['ms', 'moz', 'webkit', 'o'];
@@ -43,25 +45,25 @@ const escapeRe = require('escape-string-regexp');
           clearTimeout(id);
       };
   }
-}(global));
+})(global);
 
-//setup sinon-chai
+// setup sinon-chai
 chai.use(sinonChai);
 
-declare const module: any, global: any, Suite: any, Test: any;
+declare const module: any; const global: any; const Suite: any; const Test: any;
 
 if (global && !(typeof window !== 'undefined')) {
-  global.mocha = require('mocha'); // tslint:disable-line:no-require-imports no-var-requires
+  global.mocha = require('mocha'); // eslint-disable-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
   global.Suite = global.mocha.Suite;
   global.Test = global.mocha.Test;
 }
 
-//mocha creates own global context per each test suite, simple patching to global won't deliver its context into test cases.
-//this custom interface is just mimic of existing one amending test scheduler behavior previously test-helper does via global patching.
-module.exports = function(suite: any) {
+// mocha creates own global context per each test suite, simple patching to global won't deliver its context into test cases.
+// this custom interface is just mimic of existing one amending test scheduler behavior previously test-helper does via global patching.
+module.exports = function (suite: any) {
   const suites = [suite];
 
-  suite.on('pre-require', function(context: any, file: any, mocha: any) {
+  suite.on('pre-require', function (context: any, file: any, mocha: any) {
     const common = (<any>commonInterface)(suites, context);
 
     context.before = common.before;
@@ -70,10 +72,10 @@ module.exports = function(suite: any) {
     context.afterEach = common.afterEach;
     context.run = mocha.options.delay && common.runWithSuite(suite);
 
-    //setting up per-context test scheduler
+    // setting up per-context test scheduler
     context.rxTestScheduler = null;
 
-    //setting up assertion, helper for marble testing
+    // setting up assertion, helper for marble testing
     context.hot = marble.hot;
     context.cold = marble.cold;
     context.expectObservable = marble.expectObservable;
@@ -86,7 +88,7 @@ module.exports = function(suite: any) {
      * and/or tests.
      */
 
-    context.describe = context.context = function(title: any, fn: any) {
+    context.describe = context.context = function (title: any, fn: any) {
       const suite = (<any>Suite).create(suites[0], title);
       suite.file = file;
       suites.unshift(suite);
@@ -99,7 +101,7 @@ module.exports = function(suite: any) {
      * Pending describe.
      */
 
-    context.xdescribe = context.xcontext = context.describe.skip = function(title: any, fn: any) {
+    context.xdescribe = context.xcontext = context.describe.skip = function (title: any, fn: any) {
       const suite = (<any>Suite).create(suites[0], title);
       suite.pending = true;
       suites.unshift(suite);
@@ -111,7 +113,7 @@ module.exports = function(suite: any) {
      * Exclusive suite.
      */
 
-    context.describe.only = function(title: any, fn: any) {
+    context.describe.only = function (title: any, fn: any) {
       const suite = context.describe(title, fn);
       mocha.grep(suite.fullTitle());
       return suite;
@@ -174,7 +176,7 @@ module.exports = function(suite: any) {
      * acting as a thunk.
      */
 
-    const it = context.it = context.specify = function(title: any, fn: any) {
+    const it = context.it = context.specify = function (title: any, fn: any) {
       context.rxTestScheduler = null;
       let modified = fn;
 
@@ -205,7 +207,7 @@ module.exports = function(suite: any) {
      * Exclusive test-case.
      */
 
-    context.it.only = function(title: any, fn: any) {
+    context.it.only = function (title: any, fn: any) {
       const test = it(title, fn);
       const reString = '^' + (<any>escapeRe)(test.fullTitle()) + '$';
       mocha.grep(new RegExp(reString));
@@ -216,27 +218,27 @@ module.exports = function(suite: any) {
      * Pending test case.
      */
 
-    context.xit = context.xspecify = context.it.skip = function(title: string) {
+    context.xit = context.xspecify = context.it.skip = function (title: string) {
       context.it(title);
     };
 
     /**
      * Number of attempts to retry.
      */
-    context.it.retries = function(n: number) {
+    context.it.retries = function (n: number) {
       context.retries(n);
     };
   });
 };
 
-//register into global instnace if browser test page injects mocha globally
+// register into global instnace if browser test page injects mocha globally
 if (global.Mocha) {
   (<any>window).Mocha.interfaces['testschedulerui'] = module.exports;
 } else {
   (<any>mocha).interfaces['testschedulerui'] = module.exports;
 }
 
-//overrides JSON.toStringfy to serialize error object
+// overrides JSON.toStringfy to serialize error object
 Object.defineProperty(Error.prototype, 'toJSON', {
   value: function (this: any) {
     const alt: Record<string, any> = {};

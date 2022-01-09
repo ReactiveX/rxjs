@@ -24,7 +24,7 @@ describe('fromEvent', () => {
     };
     const e1 = fromEvent(target as any, 'click');
     const expected = '-----x-x---';
-    expectObservable(e1).toBe(expected, {x: 'ev'});
+    expectObservable(e1).toBe(expected, { x: 'ev' });
   });
 
   it('should setup an event observable on objects with "on" and "off" ', () => {
@@ -46,8 +46,8 @@ describe('fromEvent', () => {
 
     const subscription = fromEvent(obj, 'click')
       .subscribe(() => {
-        //noop
-       });
+        // noop
+      });
 
     subscription.unsubscribe();
 
@@ -76,8 +76,8 @@ describe('fromEvent', () => {
 
     const subscription = fromEvent(<any>obj, 'click')
       .subscribe(() => {
-        //noop
-       });
+        // noop
+      });
 
     subscription.unsubscribe();
 
@@ -108,8 +108,8 @@ describe('fromEvent', () => {
 
     const subscription = fromEvent(obj, 'click')
       .subscribe(() => {
-        //noop
-       });
+        // noop
+      });
 
     subscription.unsubscribe();
 
@@ -139,8 +139,8 @@ describe('fromEvent', () => {
 
     const subscription = fromEvent(obj, 'click')
       .subscribe(() => {
-        //noop
-       });
+        // noop
+      });
 
     subscription.unsubscribe();
 
@@ -170,8 +170,8 @@ describe('fromEvent', () => {
 
     const subscription = fromEvent(obj, 'click')
       .subscribe(() => {
-        //noop
-       });
+        // noop
+      });
 
     subscription.unsubscribe();
 
@@ -184,12 +184,12 @@ describe('fromEvent', () => {
   it('should throw if passed an invalid event target', () => {
     const obj = {
       addListener: () => {
-        //noop
+        // noop
       }
     };
     expect(() => {
       fromEvent(obj as any, 'click');
-    }).to.throw(/Invalid event target/)
+    }).to.throw(/Invalid event target/);
   });
 
   it('should pass through options to addEventListener and removeEventListener', () => {
@@ -208,8 +208,8 @@ describe('fromEvent', () => {
 
     const subscription = fromEvent(<any>obj, 'click', expectedOptions)
       .subscribe(() => {
-        //noop
-       });
+        // noop
+      });
 
     subscription.unsubscribe();
 
@@ -224,7 +224,7 @@ describe('fromEvent', () => {
         send = handler;
       },
       off: () => {
-        //noop
+        // noop
       }
     };
 
@@ -247,7 +247,7 @@ describe('fromEvent', () => {
         send = handler;
       },
       off: () => {
-        //noop
+        // noop
       }
     };
 
@@ -274,12 +274,12 @@ describe('fromEvent', () => {
         send = handler;
       },
       off: () => {
-        //noop
+        // noop
       }
     };
 
     function selector() {
-      //noop
+      // noop
     }
 
     fromEvent(obj, 'click', selector).pipe(take(1))
@@ -301,7 +301,7 @@ describe('fromEvent', () => {
         send = handler;
       },
       off: () => {
-        //noop
+        // noop
       }
     };
 
@@ -328,7 +328,7 @@ describe('fromEvent', () => {
         send = handler;
       },
       off: () => {
-        //noop
+        // noop
       }
     };
 
@@ -355,7 +355,7 @@ describe('fromEvent', () => {
         send = handler;
       },
       off: () => {
-        //noop
+        // noop
       }
     };
 
@@ -375,9 +375,13 @@ describe('fromEvent', () => {
     // NOTE: Can not test with Object.create(null) or `class Foo extends null`
     // due to TypeScript bug. https://github.com/Microsoft/TypeScript/issues/1108
     class NullProtoEventTarget {
-      on() { /*noop*/ }
-      off() { /*noop*/ }
+      on() { /* noop*/
+      }
+
+      off() { /* noop*/
+      }
     }
+
     NullProtoEventTarget.prototype.toString = null!;
     const obj: NullProtoEventTarget = new NullProtoEventTarget();
 
@@ -419,7 +423,7 @@ describe('fromEvent', () => {
     expect(nodeList[0]._addEventListenerArgs[0]).to.equal('click');
     expect(nodeList[0]._addEventListenerArgs[1]).to.be.a('function');
     expect(nodeList[0]._addEventListenerArgs[2]).to.equal(options);
-    
+
     expect(nodeList[1]._addEventListenerArgs[0]).to.equal('click');
     expect(nodeList[1]._addEventListenerArgs[1]).to.be.a('function');
     expect(nodeList[1]._addEventListenerArgs[2]).to.equal(options);
@@ -428,7 +432,7 @@ describe('fromEvent', () => {
     expect(nodeList[1]._removeEventListenerArgs).to.be.null;
 
     subscription.unsubscribe();
-    
+
     expect(nodeList[0]._removeEventListenerArgs).to.deep.equal(nodeList[0]._addEventListenerArgs);
     expect(nodeList[1]._removeEventListenerArgs).to.deep.equal(nodeList[1]._addEventListenerArgs);
   });

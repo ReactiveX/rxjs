@@ -23,11 +23,7 @@ describe('materialize', () => {
       const result = e1.pipe(
         materialize(),
         map((x: Notification<string>) => {
-          if (x.kind === 'C') {
-            return '|';
-          } else {
-            return '{' + x.value + '}';
-          }
+          return x.kind === 'C' ? '|' : '{' + x.value + '}';
         })
       );
 

@@ -150,16 +150,18 @@ describe('last', () => {
   });
 
   it('should support type guards without breaking previous behavior', () => {
-    // tslint:disable no-unused-variable
+    // eslint-disable  no-unused-vars,@typescript-eslint/no-unused-vars
 
     // type guards with interfaces and classes
     {
       interface Bar {
         bar?: string;
       }
+
       interface Baz {
         baz?: number;
       }
+
       class Foo implements Bar, Baz {
         constructor(public bar: string = 'name', public baz: number = 42) {}
       }
@@ -224,6 +226,6 @@ describe('last', () => {
       xs.pipe(last((x) => typeof x === 'string')).subscribe((x) => x); // x is still string | number
     }
 
-    // tslint:disable enable
+    // eslint-disable
   });
 });

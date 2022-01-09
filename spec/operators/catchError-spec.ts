@@ -125,7 +125,7 @@ describe('catchError operator', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  -1-2-3-#          ');
       const e1subs = '  ^------!          ';
-      const e2 =  cold('       5-6-7-8-9-|');
+      const e2 = cold('       5-6-7-8-9-|');
       const e2subs = '  -------^----!     ';
       const expected = '-1-2-3-5-6-7-     ';
       const unsub = '   ------------!     ';
@@ -142,7 +142,7 @@ describe('catchError operator', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  -1-2-3-#          ');
       const e1subs = '  ^------!          ';
-      const e2 =  cold('       5-6-7-8-9-|');
+      const e2 = cold('       5-6-7-8-9-|');
       const e2subs = '  -------^----!     ';
       const expected = '-1-2-3-5-6-7-     ';
       const unsub = '   ------------!     ';
@@ -181,7 +181,8 @@ describe('catchError operator', () => {
     throwError(() => new Error('Some error')).pipe(
       catchError(() => synchronousObservable),
       takeWhile((x) => x != 2) // unsubscribe at the second side-effect
-    ).subscribe(() => { /* noop */ });
+    ).subscribe(() => { /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([1, 2]);
   });
@@ -203,9 +204,9 @@ describe('catchError operator', () => {
   });
 
   it('should catch and allow the cold observable to be repeated with the third ' +
-  '(caught) argument', () => {
+    '(caught) argument', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 =  cold('--a--b--c--------|       ');
+      const e1 = cold('--a--b--c--------|       ');
       const subs = [
         '               ^-------!                ',
         '              --------^-------!         ',
@@ -235,7 +236,7 @@ describe('catchError operator', () => {
   });
 
   it('should catch and allow the hot observable to proceed with the third ' +
-  '(caught) argument', () => {
+    '(caught) argument', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--c----d---|');
       const subs = [
@@ -345,7 +346,7 @@ describe('catchError operator', () => {
         return EMPTY;
       })
     ).subscribe(() => {
-    //noop
+      // noop
     }, (err: any) => {
       done(new Error('should not be called'));
     }, () => {
@@ -414,6 +415,7 @@ describe('catchError operator', () => {
         )
       ).subscribe(subscribeSpy, errorSpy);
 
+      // eslint-disable-next-line consistent-return
       trueSetTimeout(() => {
         try {
           timers.tick(1);
@@ -431,7 +433,7 @@ describe('catchError operator', () => {
   // TODO(v8): see https://github.com/ReactiveX/rxjs/issues/5115
   // The re-implementation in version 8 should fix the problem in the
   // referenced issue. Closed subscribers should remain closed.
-  
+
   it('Properly handle async handled result if source is synchronous', (done) => {
     const source = new Observable<string>(observer => {
       observer.error(new Error('kaboom!'));
@@ -447,14 +449,14 @@ describe('catchError operator', () => {
     source.pipe(
       catchError(err => sourceWithDelay)
     )
-    .subscribe(
-      value => values.push(value),
-      err => done(err),
-      () => {
-        expect(values).to.deep.equal(['delayed']);
-        done();
-      }
-    );
+      .subscribe(
+        value => values.push(value),
+        err => done(err),
+        () => {
+          expect(values).to.deep.equal(['delayed']);
+          done();
+        }
+      );
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
@@ -471,7 +473,8 @@ describe('catchError operator', () => {
     synchronousObservable.pipe(
       catchError(() => EMPTY),
       take(3),
-    ).subscribe(() => { /* noop */ });
+    ).subscribe(() => { /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });

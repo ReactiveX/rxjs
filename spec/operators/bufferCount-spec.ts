@@ -30,7 +30,7 @@ describe('bufferCount operator', () => {
 
   it('should emit buffers at buffersize of intervals if not specified', () => {
     testScheduler.run(({ hot, expectObservable }) => {
-        const values = {
+      const values = {
         x: ['a', 'b'],
         y: ['c', 'd'],
         z: ['e', 'f']
@@ -48,12 +48,12 @@ describe('bufferCount operator', () => {
     item$.pipe(
       bufferCount(3, 1)
     ).subscribe(value => {
-        results.push(value);
+      results.push(value);
 
-        if (value.join() === '1,2,3') {
-          item$.next(4);
-        }
-      });
+      if (value.join() === '1,2,3') {
+        item$.next(4);
+      }
+    });
 
     item$.next(1);
     item$.next(2);
@@ -67,7 +67,7 @@ describe('bufferCount operator', () => {
       const e1 = hot('  --a--b--c--d--|');
       const expected = '--------------(x|)';
 
-      expectObservable(e1.pipe(bufferCount(5))).toBe(expected, {x: ['a', 'b', 'c', 'd']});
+      expectObservable(e1.pipe(bufferCount(5))).toBe(expected, { x: ['a', 'b', 'c', 'd'] });
     });
   });
 
@@ -77,7 +77,7 @@ describe('bufferCount operator', () => {
       const e1subs = '     ^-------------!';
       const expected = '   --------y-----(z|)';
 
-      expectObservable(e1.pipe(bufferCount(3))).toBe(expected, {y: ['b', 'c', 'd'], z: ['e']});
+      expectObservable(e1.pipe(bufferCount(3))).toBe(expected, { y: ['b', 'c', 'd'], z: ['e'] });
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -151,7 +151,7 @@ describe('bufferCount operator', () => {
 
   it('should emit buffers with specified skip count when skip count is more than window count', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-    const e1 = hot('  --a--b--c--d--e--|');
+      const e1 = hot('  --a--b--c--d--e--|');
       const e1subs = '  ^----------------!';
       const expected = '-----y--------z--|';
       const values = {
@@ -178,7 +178,8 @@ describe('bufferCount operator', () => {
     synchronousObservable.pipe(
       bufferCount(1),
       take(3),
-    ).subscribe(() => { /* noop */ });
+    ).subscribe(() => { /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });

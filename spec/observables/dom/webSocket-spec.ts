@@ -226,7 +226,7 @@ describe('webSocket', () => {
       // Close socket after socket2 has opened
       socket2.open();
       expect(socket2.readyState).to.equal(WebSocketState.OPEN);
-      socket.triggerClose({wasClean: true});
+      socket.triggerClose({ wasClean: true });
 
       expect(socket.readyState).to.equal(WebSocketState.CLOSED);
       expect(socket2.close).have.not.been.called;
@@ -247,7 +247,7 @@ describe('webSocket', () => {
       sinon.spy(socket, 'close');
       expect(socket.close).not.have.been.called;
 
-      subject.error({ code: 1337, reason: 'Too bad, so sad :('});
+      subject.error({ code: 1337, reason: 'Too bad, so sad :(' });
       expect(socket.close).have.been.calledWith(1337, 'Too bad, so sad :(');
 
       subject.unsubscribe();
@@ -488,7 +488,7 @@ describe('webSocket', () => {
       const subject = webSocket<string>(<any>{
         url: 'bad_url',
         WebSocketCtor: (url: string, protocol?: string | string[]): WebSocket => {
-          throw new Error(`connection refused`);
+          throw new Error('connection refused');
         }
       });
 
@@ -589,7 +589,7 @@ describe('webSocket', () => {
       const results = [] as Array<{ value: number, name: string }>;
       const subject = webSocket<{ value: number, name: string }>('ws://websocket');
       const source = subject.multiplex(
-        () => ({ sub: 'foo'}),
+        () => ({ sub: 'foo' }),
         () => ({ unsub: 'foo' }),
         value => value.name === 'foo'
       );
@@ -622,14 +622,14 @@ describe('webSocket', () => {
     });
 
     it('should keep the same socket for multiple multiplex subscriptions', () => {
-      const socketSubject = webSocket<string>({url: 'ws://mysocket'});
+      const socketSubject = webSocket<string>({ url: 'ws://mysocket' });
       const results = [] as string[];
       const socketMessages = [
-        {id: 'A'},
-        {id: 'B'},
-        {id: 'A'},
-        {id: 'B'},
-        {id: 'B'},
+        { id: 'A' },
+        { id: 'B' },
+        { id: 'A' },
+        { id: 'B' },
+        { id: 'B' },
       ];
 
       const sub1 = socketSubject.multiplex(
@@ -656,7 +656,7 @@ describe('webSocket', () => {
         );
 
       // Setup socket and send messages
-      let socket = MockWebSocket.lastSocket;
+      const socket = MockWebSocket.lastSocket;
       socket.open();
       socketMessages.forEach((msg, i) => {
         if (i === 1) {
@@ -679,14 +679,14 @@ describe('webSocket', () => {
     });
 
     it('should not close the socket until all subscriptions complete', () => {
-      const socketSubject = webSocket<{ id: string, complete: boolean }>({url: 'ws://mysocket'});
+      const socketSubject = webSocket<{ id: string, complete: boolean }>({ url: 'ws://mysocket' });
       const results = [] as string[];
       const socketMessages = [
-        {id: 'A'},
-        {id: 'B'},
-        {id: 'A', complete: true},
-        {id: 'B'},
-        {id: 'B', complete: true},
+        { id: 'A' },
+        { id: 'B' },
+        { id: 'A', complete: true },
+        { id: 'B' },
+        { id: 'B', complete: true },
       ];
 
       socketSubject.multiplex(
@@ -714,7 +714,7 @@ describe('webSocket', () => {
       );
 
       // Setup socket and send messages
-      let socket = MockWebSocket.lastSocket;
+      const socket = MockWebSocket.lastSocket;
       socket.open();
       socketMessages.forEach((msg) => {
         socket.triggerMessage(JSON.stringify(msg));
@@ -841,8 +841,8 @@ class MockWebSocket {
 
     const lookup = this.handlers[name];
     if (lookup) {
-      for (let i = 0; i < lookup.length; i++) {
-        lookup[i](e);
+      for (const item of lookup) {
+        item(e);
       }
     }
   }

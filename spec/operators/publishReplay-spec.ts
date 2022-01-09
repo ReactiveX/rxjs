@@ -419,7 +419,7 @@ describe('publishReplay operator', () => {
   });
 
   it('should mirror a simple source Observable with selector', () => {
-    const values = {a: 2, b: 4, c: 6, d: 8};
+    const values = { a: 2, b: 4, c: 6, d: 8 };
     const selector = (observable: Observable<string>) => observable.pipe(map(v => 2 * +v));
     const source = cold('--1-2---3-4---|');
     const sourceSubs =  '^             !';
@@ -431,18 +431,18 @@ describe('publishReplay operator', () => {
   });
 
   it('should EMIT an error when the selector throws an exception', () => {
-    const error = "It's broken";
+    const error = 'It\'s broken';
     const selector = () => {
       throw error;
     };
     const source = cold('--1-2---3-4---|');
     const published = source.pipe(publishReplay(1, Infinity, selector));
 
-    expectObservable(published).toBe('#', undefined, "It's broken");
+    expectObservable(published).toBe('#', undefined, 'It\'s broken');
   });
 
   it('should emit an error when the selector returns an Observable that emits an error', () => {
-    const error = "It's broken";
+    const error = 'It\'s broken';
     const innerObservable = cold('--5-6----#', undefined, error);
     const selector = (observable: Observable<string>) => observable.pipe(mergeMapTo(innerObservable));
     const source = cold('--1--2---3---|');
@@ -477,7 +477,7 @@ describe('publishReplay operator', () => {
   });
 
   it('should emit error when the selector returns Observable.throw', () => {
-    const error = "It's broken";
+    const error = 'It\'s broken';
     const selector = () => throwError(() => (error));
     const source = cold('--1--2---3---|');
     const sourceSubs =  '(^!)';

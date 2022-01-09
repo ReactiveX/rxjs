@@ -236,7 +236,7 @@ describe('first', () => {
   });
 
   it('should support type guards without breaking previous behavior', () => {
-    // tslint:disable no-unused-variable
+    // eslint-disable  no-unused-vars,@typescript-eslint/no-unused-vars
 
     // type guards with interfaces and classes
     {
@@ -310,7 +310,7 @@ describe('first', () => {
       xs.pipe(first((x) => typeof x === 'string')).subscribe((x) => x); // x is still string | number
     }
 
-    // tslint:disable enable
+    // eslint-disable
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

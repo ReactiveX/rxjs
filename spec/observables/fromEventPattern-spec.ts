@@ -18,9 +18,10 @@ describe('fromEventPattern', () => {
         concat(NEVER)
       ).subscribe(h);
     }
+
     const e1 = fromEventPattern(addHandler);
     const expected = '-----x-x---';
-    expectObservable(e1).toBe(expected, {x: 'ev'});
+    expectObservable(e1).toBe(expected, { x: 'ev' });
   });
 
   it('should call addHandler on subscription', () => {
@@ -50,7 +51,7 @@ describe('fromEventPattern', () => {
   });
 
   it('should deliver return value of addHandler to removeHandler as signal', () => {
-    const expected = { signal: true};
+    const expected = { signal: true };
     const addHandler = () => expected;
     const removeHandler = sinon.spy();
     fromEventPattern(addHandler, removeHandler).subscribe(noop).unsubscribe();

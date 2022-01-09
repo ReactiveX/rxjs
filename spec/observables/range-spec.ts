@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { asapScheduler as asap, range, of} from 'rxjs';
+import { asapScheduler as asap, range, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { expectObservable } from '../helpers/marble-testing';
 import { concatMap, delay } from 'rxjs/operators';
@@ -91,8 +91,8 @@ describe('range', () => {
     range(0).subscribe({
       next: value => results.push(value),
       complete: () => results.push('done')
-    })
-    expect(results).to.deep.equal(['done'])
+    });
+    expect(results).to.deep.equal(['done']);
   });
 
   it('should return empty for range with a negative count', () => {
@@ -100,7 +100,7 @@ describe('range', () => {
     range(5, -5).subscribe({
       next: value => results.push(value),
       complete: () => results.push('done')
-    })
-    expect(results).to.deep.equal(['done'])
+    });
+    expect(results).to.deep.equal(['done']);
   });
 });

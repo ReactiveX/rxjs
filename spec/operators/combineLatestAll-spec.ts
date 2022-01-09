@@ -125,9 +125,9 @@ describe('combineLatestAll operator', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('-a-^-|');
       const e1subs = '   ^-!';
-      const e2 = hot('------'); //never
+      const e2 = hot('------'); // never
       const e2subs = '   ^--';
-      const expected = ' ---'; //never
+      const expected = ' ---'; // never
 
       const result = of(e1, e2).pipe(combineLatestAll((x, y) => x + y));
 
@@ -139,11 +139,11 @@ describe('combineLatestAll operator', () => {
 
   it('should work with never and hot-single', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('--------'); //never
+      const e1 = hot('--------'); // never
       const e1subs = '   ^----';
       const e2 = hot('-a-^-b-|');
       const e2subs = '   ^---!';
-      const expected = ' -----'; //never
+      const expected = ' -----'; // never
 
       const result = of(e1, e2).pipe(combineLatestAll((x, y) => x + y));
 
@@ -230,9 +230,9 @@ describe('combineLatestAll operator', () => {
 
   it('should work with empty and error', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  ----------|'); //empty
+      const e1 = hot('  ----------|'); // empty
       const e1subs = '  ^-----!';
-      const e2 = hot('  ------#', undefined, 'shazbot!'); //error
+      const e2 = hot('  ------#', undefined, 'shazbot!'); // error
       const e2subs = '  ^-----!';
       const expected = '------#';
 
@@ -246,9 +246,9 @@ describe('combineLatestAll operator', () => {
 
   it('should work with error and empty', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('--^---#', undefined, 'too bad, honk'); //error
+      const e1 = hot('--^---#', undefined, 'too bad, honk'); // error
       const e1subs = '  ^---!';
-      const e2 = hot('--^--------|'); //empty
+      const e2 = hot('--^--------|'); // empty
       const e2subs = '  ^---!';
       const expected = '----#';
 
@@ -382,7 +382,7 @@ describe('combineLatestAll operator', () => {
 
       const result = of(e1, e2).pipe(combineLatestAll((x, y) => x + y));
 
-      expectObservable(result).toBe(expected, { a: 1, b: 2}, 'wokka wokka');
+      expectObservable(result).toBe(expected, { a: 1, b: 2 }, 'wokka wokka');
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
@@ -424,7 +424,7 @@ describe('combineLatestAll operator', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const left = hot('  -----^--------#', undefined, 'bad things');
       const leftSubs = '       ^--------!';
-      const right =  hot('--a--^--b---|');
+      const right = hot('--a--^--b---|');
       const rightSubs = '      ^------!';
       const expected = '       ---------#';
 
@@ -508,7 +508,9 @@ describe('combineLatestAll operator', () => {
       const e2subs = '     ^--!';
       const expected = '   ---#';
 
-      const result = of(e1, e2).pipe(combineLatestAll((x, y) => { throw 'ha ha ' + x + ', ' + y; }));
+      const result = of(e1, e2).pipe(combineLatestAll((x, y) => {
+        throw 'ha ha ' + x + ', ' + y;
+      }));
 
       expectObservable(result).toBe(expected, null, 'ha ha b, d');
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -536,9 +538,9 @@ describe('combineLatestAll operator', () => {
     of(a, b, queueScheduler).pipe(combineLatestAll())
       .subscribe((vals) => {
         expect(vals).to.deep.equal(r.shift());
-    }, null, () => {
-      expect(r.length).to.equal(0);
-      done();
-    });
+      }, null, () => {
+        expect(r.length).to.equal(0);
+        done();
+      });
   });
 });

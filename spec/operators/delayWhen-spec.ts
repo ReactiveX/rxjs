@@ -323,7 +323,7 @@ describe('delayWhen', () => {
       //                          (x|)
       //                             (x|)
 
-      let indices: number[] = [];
+      const indices: number[] = [];
       const predicate = (value: string, index: number) => {
         indices.push(index);
         return selector;

@@ -143,9 +143,9 @@ describe('Scheduler.animationFrame', () => {
 
   it('should not execute rescheduled actions when flushing', (done) => {
     let flushCount = 0;
-    let scheduledIndices: number[] = [];
+    const scheduledIndices: number[] = [];
 
-    let originalFlush = animationFrame.flush;
+    const originalFlush = animationFrame.flush;
     animationFrame.flush = (...args) => {
       ++flushCount;
       originalFlush.apply(animationFrame, args);

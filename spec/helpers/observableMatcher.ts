@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import * as _ from 'lodash';
 import * as chai from 'chai';
 

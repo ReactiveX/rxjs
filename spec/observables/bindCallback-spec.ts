@@ -92,7 +92,7 @@ describe('bindCallback', () => {
       const boundCallback = bindCallback(callback);
       const results: Array<string|number> = [];
 
-      boundCallback.apply({datum: 5})
+      boundCallback.apply({ datum: 5 })
         .subscribe(
           (x: number) => results.push(x),
           null,

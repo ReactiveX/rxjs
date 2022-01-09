@@ -18,7 +18,7 @@ describe('static combineLatest', () => {
     const results: string[] = [];
     combineLatest([]).subscribe({
       next: () => {
-        throw new Error('should not emit')
+        throw new Error('should not emit');
       },
       complete: () => {
         results.push('done');
@@ -32,7 +32,7 @@ describe('static combineLatest', () => {
     const results: string[] = [];
     combineLatest({}).subscribe({
       next: () => {
-        throw new Error('should not emit')
+        throw new Error('should not emit');
       },
       complete: () => {
         results.push('done');
@@ -41,12 +41,12 @@ describe('static combineLatest', () => {
 
     expect(results).to.deep.equal(['done']);
   });
-  
+
   it('should return EMPTY if passed an empty array and scheduler as the only argument', () => {
     const results: string[] = [];
     combineLatest([], rxTestScheduler).subscribe({
       next: () => {
-        throw new Error('should not emit')
+        throw new Error('should not emit');
       },
       complete: () => {
         results.push('done');
@@ -84,7 +84,7 @@ describe('static combineLatest', () => {
     ];
 
     const actual: [number, number][] = [];
-    //type definition need to be updated
+    // type definition need to be updated
     combineLatest(a, b, queueScheduler).subscribe(
       (vals) => {
         actual.push(vals);
@@ -117,11 +117,11 @@ describe('static combineLatest', () => {
       const secondSource = hot('--d--e--f--g--|');
       const expected = '        ----uv--wx-y--z----|';
 
-      const combined = combineLatest({a: firstSource, b: secondSource}).pipe(
-        map(({a, b}) => '' + a + b)
-      );  
+      const combined = combineLatest({ a: firstSource, b: secondSource }).pipe(
+        map(({ a, b }) => '' + a + b)
+      );
 
-      expectObservable(combined).toBe(expected, {u: 'ad', v: 'ae', w: 'af', x: 'bf', y: 'bg', z: 'cg'});
+      expectObservable(combined).toBe(expected, { u: 'ad', v: 'ae', w: 'af', x: 'bf', y: 'bg', z: 'cg' });
     });
   });
 
@@ -195,7 +195,7 @@ describe('static combineLatest', () => {
         a: 1,
         b: 2,
         c: 3,
-        r: 1 + 3, //a + c
+        r: 1 + 3, // a + c
       };
       const e1 = hot('-a-^-|', values);
       const e1subs = '   ^-!';
@@ -239,9 +239,9 @@ describe('static combineLatest', () => {
       };
       const e1 = hot('-a-^-|', values);
       const e1subs = '   ^-!';
-      const e2 = hot('------', values); //never
+      const e2 = hot('------', values); // never
       const e2subs = '   ^  ';
-      const expected = ' -'; //never
+      const expected = ' -'; // never
 
       const result = combineLatest(e1, e2, (x, y) => x + y);
 
@@ -257,11 +257,11 @@ describe('static combineLatest', () => {
         a: 1,
         b: 2,
       };
-      const e1 = hot('--------', values); //never
+      const e1 = hot('--------', values); // never
       const e1subs = '   ^----';
       const e2 = hot('-a-^-b-|', values);
       const e2subs = '   ^---!';
-      const expected = ' -----'; //never
+      const expected = ' -----'; // never
 
       const result = combineLatest(e1, e2, (x, y) => x + y);
 
@@ -289,9 +289,9 @@ describe('static combineLatest', () => {
 
   it('should work with empty and error', () => {
     rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  ----------|'); //empty
+      const e1 = hot('  ----------|'); // empty
       const e1subs = '  ^-----!';
-      const e2 = hot('  ------#', undefined, 'shazbot!'); //error
+      const e2 = hot('  ------#', undefined, 'shazbot!'); // error
       const e2subs = '  ^-----!';
       const expected = '------#';
 
@@ -305,9 +305,9 @@ describe('static combineLatest', () => {
 
   it('should work with error and empty', () => {
     rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('--^---#', undefined, 'too bad, honk'); //error
+      const e1 = hot('--^---#', undefined, 'too bad, honk'); // error
       const e1subs = '  ^---!';
-      const e2 = hot('--^--------|'); //empty
+      const e2 = hot('--^--------|'); // empty
       const e2subs = '  ^---!';
       const expected = '----#';
 

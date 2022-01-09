@@ -61,7 +61,7 @@ describe('SafeSubscriber', () => {
 
   it('should not be closed when other subscriber with same observer instance completes', () => {
     const observer = {
-      next: function () { /*noop*/ }
+      next: function () { /* noop*/ }
     };
 
     const sub1 = new SafeSubscriber(observer);
@@ -134,7 +134,7 @@ describe('SafeSubscriber', () => {
     const subscriber = new SafeSubscriber({
       error: () => {
         // Mischief managed!
-        // Adding this handler here to prevent the call to error from 
+        // Adding this handler here to prevent the call to error from
         // throwing, since it will have an error handler now.
       }
     });
@@ -150,7 +150,7 @@ describe('Subscriber', () => {
   it('should teardown and unregister all teardowns after complete', () => {
     let isTornDown = false;
     const subscriber = new Subscriber();
-    subscriber.add(() => { isTornDown = true });
+    subscriber.add(() => { isTornDown = true; });
     subscriber.complete();
     expect(isTornDown).to.be.true;
     expect(getRegisteredTeardowns(subscriber).length).to.equal(0);
@@ -171,7 +171,7 @@ describe('Subscriber', () => {
           this.valuesProcessed.push(value);
         }
       }
-    };
+    }
 
     const consumer = new CustomConsumer();
 
@@ -200,7 +200,7 @@ describe('Subscriber', () => {
 
         return () => {
           results.push('teardown');
-        }
+        };
       });
 
       source.subscribe({
@@ -216,7 +216,7 @@ describe('Subscriber', () => {
         }
       });
 
-      expect(results).to.deep.equal([0, 1, 2, 3, 'teardown'])
+      expect(results).to.deep.equal([0, 1, 2, 3, 'teardown']);
     });
 
     it('should NOT break this context on next methods from unfortunate consumers', () => {
@@ -224,7 +224,7 @@ describe('Subscriber', () => {
       // object that is "observer shaped"
       class CustomConsumer {
         valuesProcessed: string[] = [];
-  
+
         // In here, we access instance state and alter it.
         next(value: string) {
           if (value === 'reset') {
@@ -233,12 +233,12 @@ describe('Subscriber', () => {
             this.valuesProcessed.push(value);
           }
         }
-      };
-  
+      }
+
       const consumer = new CustomConsumer();
-  
+
       of('old', 'old', 'reset', 'new', 'new').subscribe(consumer);
-  
+
       expect(consumer.valuesProcessed).not.to.equal(['new', 'new']);
     });
   });

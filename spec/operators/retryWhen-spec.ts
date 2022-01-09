@@ -412,11 +412,7 @@ describe('retryWhen', () => {
             takeUntil(
               errors.pipe(
                 mergeMap(() => {
-                  if (++invoked < 3) {
-                    return EMPTY;
-                  } else {
-                    return of('stop!');
-                  }
+                  return ++invoked < 3 ? EMPTY : of('stop!');
                 })
               )
             )

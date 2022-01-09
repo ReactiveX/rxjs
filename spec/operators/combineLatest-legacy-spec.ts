@@ -95,7 +95,7 @@ describe('combineLatest', () => {
         a: 1,
         b: 2,
         c: 3,
-        r: 1 + 3 //a + c
+        r: 1 + 3 // a + c
       };
       const e1 = hot('-a-^-|', values);
       const e1subs = '   ^-!';
@@ -137,9 +137,9 @@ describe('combineLatest', () => {
       };
       const e1 = hot('-a-^-|', values);
       const e1subs = '   ^-!';
-      const e2 = hot('------', values); //never
+      const e2 = hot('------', values); // never
       const e2subs = '   ^--';
-      const expected = ' ---'; //never
+      const expected = ' ---'; // never
 
       const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
@@ -154,11 +154,11 @@ describe('combineLatest', () => {
       const values = {
         a: 1, b: 2
       };
-      const e1 = hot('--------', values); //never
+      const e1 = hot('--------', values); // never
       const e1subs = '   ^    ';
       const e2 = hot('-a-^-b-|', values);
       const e2subs = '   ^---!';
-      const expected = ' -----'; //never
+      const expected = ' -----'; // never
 
       const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
@@ -205,9 +205,9 @@ describe('combineLatest', () => {
 
   it('should work with empty and error', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  ----------|'); //empty
+      const e1 = hot('  ----------|'); // empty
       const e1subs = '  ^-----!';
-      const e2 = hot('  ------#', undefined, 'shazbot!'); //error
+      const e2 = hot('  ------#', undefined, 'shazbot!'); // error
       const e2subs = '  ^-----!';
       const expected = '------#';
 
@@ -221,9 +221,9 @@ describe('combineLatest', () => {
 
   it('should work with error and empty', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('--^---#', undefined, 'too bad, honk'); //error
+      const e1 = hot('--^---#', undefined, 'too bad, honk'); // error
       const e1subs = '  ^---!';
-      const e2 = hot('--^--------|'); //empty
+      const e2 = hot('--^--------|'); // empty
       const e2subs = '  ^---!';
       const expected = '----#';
 
@@ -237,7 +237,7 @@ describe('combineLatest', () => {
 
   it('should work with hot and throw', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('-a-^--b--c--|', { a: 1, b: 2, c: 3});
+      const e1 = hot('-a-^--b--c--|', { a: 1, b: 2, c: 3 });
       const e1subs = '   ^-!';
       const e2 = hot('---^-#', undefined, 'bazinga');
       const e2subs = '   ^-!';
@@ -255,7 +255,7 @@ describe('combineLatest', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('---^-#', undefined, 'bazinga');
       const e1subs = '   ^-!';
-      const e2 = hot('-a-^--b--c--|', { a: 1, b: 2, c: 3});
+      const e2 = hot('-a-^--b--c--|', { a: 1, b: 2, c: 3 });
       const e2subs = '   ^-!';
       const expected = ' --#';
 
@@ -357,7 +357,7 @@ describe('combineLatest', () => {
 
       const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
-      expectObservable(result).toBe(expected, { a: 1, b: 2}, 'wokka wokka');
+      expectObservable(result).toBe(expected, { a: 1, b: 2 }, 'wokka wokka');
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
@@ -373,7 +373,7 @@ describe('combineLatest', () => {
 
       const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
-      expectObservable(result).toBe(expected, { a: 1, b: 2}, 'wokka wokka');
+      expectObservable(result).toBe(expected, { a: 1, b: 2 }, 'wokka wokka');
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
@@ -415,7 +415,7 @@ describe('combineLatest', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('-a--^--b---c---|', { a: 'a', b: 'b', c: 'c' });
       const e1subs = '    ^----------!';
-      const e2 = hot('--d-^----e---f--|', { d: 'd', e: 'e', f: 'f'});
+      const e2 = hot('--d-^----e---f--|', { d: 'd', e: 'e', f: 'f' });
       const e2subs = '    ^-----------!';
       const expected = '  -----x-y-z--|';
 
@@ -477,13 +477,15 @@ describe('combineLatest', () => {
 
   it('should handle selector throwing', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('--a--^--b--|', { a: 1, b: 2});
+      const e1 = hot('--a--^--b--|', { a: 1, b: 2 });
       const e1subs = '     ^--!';
-      const e2 = hot('--c--^--d--|', { c: 3, d: 4});
+      const e2 = hot('--c--^--d--|', { c: 3, d: 4 });
       const e2subs = '     ^--!';
       const expected = '   ---#';
 
-      const result = e1.pipe(combineLatest(e2, (x, y) => { throw 'ha ha ' + x + ', ' + y; }));
+      const result = e1.pipe(combineLatest(e2, (x, y) => {
+        throw 'ha ha ' + x + ', ' + y;
+      }));
 
       expectObservable(result).toBe(expected, null, 'ha ha 2, 4');
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
