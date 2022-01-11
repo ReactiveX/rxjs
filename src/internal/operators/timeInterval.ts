@@ -1,9 +1,7 @@
-import { Observable } from '../Observable';
 import { asyncScheduler } from '../scheduler/async';
 import { SchedulerLike, OperatorFunction } from '../types';
-import { scan } from './scan';
-import { defer } from '../observable/defer';
-import { map } from './map';
+import { operate } from '../util/lift';
+import { OperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Emits an object containing the current value, and the time that has
@@ -45,18 +43,17 @@ import { map } from './map';
  * value and interval.
  */
 export function timeInterval<T>(scheduler: SchedulerLike = asyncScheduler): OperatorFunction<T, TimeInterval<T>> {
-  return (source: Observable<T>) =>
-    defer(() => {
-      return source.pipe(
-        // TODO(benlesh): correct these typings.
-        scan(({ current }, value) => ({ value, current: scheduler.now(), last: current }), {
-          current: scheduler.now(),
-          value: undefined,
-          last: undefined,
-        } as any) as OperatorFunction<T, any>,
-        map<any, TimeInterval<T>>(({ current, last, value }) => new TimeInterval(value, current - last))
-      );
-    });
+  return operate((source, subscriber) => {
+    let last = scheduler.now();
+    source.subscribe(
+      new OperatorSubscriber(subscriber, (value) => {
+        const now = scheduler.now();
+        const interval = now - last;
+        last = now;
+        subscriber.next(new TimeInterval(value, interval));
+      })
+    );
+  });
 }
 
 // TODO(benlesh): make this an interface, export the interface, but not the implemented class,
