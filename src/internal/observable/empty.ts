@@ -1,5 +1,4 @@
 import { Observable } from '../Observable';
-import { SchedulerLike } from '../types';
 
 /**
  * A simple Observable that emits no items to the Observer and immediately
@@ -64,16 +63,3 @@ import { SchedulerLike } from '../types';
  * @see {@link throwError}
  */
 export const EMPTY = new Observable<never>((subscriber) => subscriber.complete());
-
-/**
- * @param scheduler A {@link SchedulerLike} to use for scheduling
- * the emission of the complete notification.
- * @deprecated Replaced with the {@link EMPTY} constant or {@link scheduled} (e.g. `scheduled([], scheduler)`). Will be removed in v8.
- */
-export function empty(scheduler?: SchedulerLike) {
-  return scheduler ? emptyScheduled(scheduler) : EMPTY;
-}
-
-function emptyScheduled(scheduler: SchedulerLike) {
-  return new Observable<never>((subscriber) => scheduler.schedule(() => subscriber.complete()));
-}

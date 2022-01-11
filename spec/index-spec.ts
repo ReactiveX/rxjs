@@ -60,7 +60,6 @@ describe('index', () => {
     expect(index.combineLatest).to.exist;
     expect(index.concat).to.exist;
     expect(index.defer).to.exist;
-    expect(index.empty).to.exist;
     expect(index.forkJoin).to.exist;
     expect(index.from).to.exist;
     expect(index.fromEvent).to.exist;
