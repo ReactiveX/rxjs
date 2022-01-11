@@ -133,6 +133,14 @@ export interface AjaxConfig {
   /**
    * Whether or not to send the HTTP request as a CORS request.
    * Defaults to `false`.
+   *
+   * @deprecated Will be removed in version 8. Cross domain requests and what creates a cross
+   * domain request, are dictated by the browser, and a boolean that forces it to be cross domain
+   * does not make sense. If you need to force cross domain, make sure you're making a secure request,
+   * then add a custom header to the request or use `withCredentials`. For more information on what
+   * triggers a cross domain request, see the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS#Requests_with_credentials).
+   * In particular, the section on [Simple Requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Simple_requests) is useful
+   * for understanding when CORS will not be used.
    */
   crossDomain?: boolean;
 
