@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { Observer, TeardownLogic } from '../src/internal/types';
-import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty } from 'rxjs';
+import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, EMPTY } from 'rxjs';
 import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError, concatMap, switchMap, publish, publishLast, publishBehavior, share, finalize} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
@@ -224,7 +224,7 @@ describe('Observable', () => {
 
       expect(unsubscribeCalled).to.be.false;
 
-      empty().subscribe();
+      EMPTY.subscribe();
 
       expect(unsubscribeCalled).to.be.false;
     });
@@ -247,7 +247,7 @@ describe('Observable', () => {
 
       expect(unsubscribeCalled).to.be.false;
 
-      empty().subscribe(observer);
+      EMPTY.subscribe(observer);
 
       expect(unsubscribeCalled).to.be.false;
     });
@@ -451,13 +451,13 @@ describe('Observable', () => {
             },
           };
 
-          empty().subscribe(o);
+          EMPTY.subscribe(o);
         }
       );
 
       it('should accept an anonymous observer with no functions at all', () => {
         expect(() => {
-          empty().subscribe(<any>{});
+          EMPTY.subscribe(<any>{});
         }).not.to.throw();
       });
 

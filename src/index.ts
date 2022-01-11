@@ -67,7 +67,6 @@ export { combineLatest } from './internal/observable/combineLatest';
 export { concat } from './internal/observable/concat';
 export { connectable } from './internal/observable/connectable';
 export { defer } from './internal/observable/defer';
-export { empty } from './internal/observable/empty';
 export { forkJoin } from './internal/observable/forkJoin';
 export { from } from './internal/observable/from';
 export { fromEvent } from './internal/observable/fromEvent';
