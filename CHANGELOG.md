@@ -1,3 +1,10 @@
+## [7.5.2](https://github.com/reactivex/rxjs/compare/7.5.1...7.5.2) (2022-01-11)
+
+### Bug Fixes
+
+- operators that ignore input values now use `unknown` rather than `any`, which should resolve issues with eslint no-unsafe-argument ([#6738](https://github.com/reactivex/rxjs/issues/6738)) ([67cb317](https://github.com/reactivex/rxjs/commit/67cb317a7a6b9fdbd3d2e8fdbc2ac9ac7e57179c)), closes [#6536](https://github.com/reactivex/rxjs/issues/6536)
+- **ajax:** crossDomain flag deprecated and properly reported to consumers ([#6710](https://github.com/reactivex/rxjs/issues/6710)) ([7fd0575](https://github.com/reactivex/rxjs/commit/7fd05756c595dddb288b732b00a90fcfb2a9080a)), closes [#6663](https://github.com/reactivex/rxjs/issues/6663)
+
 ## [7.5.1](https://github.com/reactivex/rxjs/compare/7.5.0...7.5.1) (2021-12-28)
 
 ### Bug Fixes
