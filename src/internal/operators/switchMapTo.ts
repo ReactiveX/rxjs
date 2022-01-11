@@ -3,12 +3,12 @@ import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { isFunction } from '../util/isFunction';
 
 /* eslint-disable max-len */
-export function switchMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<any, ObservedValueOf<O>>;
+export function switchMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<unknown, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function switchMapTo<O extends ObservableInput<unknown>>(
   observable: O,
   resultSelector: undefined
-): OperatorFunction<any, ObservedValueOf<O>>;
+): OperatorFunction<unknown, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function switchMapTo<T, R, O extends ObservableInput<unknown>>(
   observable: O,

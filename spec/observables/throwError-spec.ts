@@ -22,16 +22,16 @@ describe('throwError', () => {
 
   it('should emit one value', (done) => {
     let calls = 0;
-    throwError(() => 'bad').subscribe(
-      () => {
+    throwError(() => 'bad').subscribe({
+      next: () => {
         done(new Error('should not be called'));
       },
-      (err) => {
+      error: (err) => {
         expect(++calls).to.equal(1);
         expect(err).to.equal('bad');
         done();
-      }
-    );
+      },
+    });
   });
 
   it('should accept scheduler', () => {

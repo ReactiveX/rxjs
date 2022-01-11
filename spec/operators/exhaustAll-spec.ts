@@ -240,33 +240,32 @@ describe('exhaust', () => {
 
     of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3))
       .pipe(exhaustAll())
-      .subscribe(
-        (x) => {
+      .subscribe({
+        next: (x) => {
           expect(x).to.equal(expected.shift());
         },
-        null,
-        () => {
+        complete: () => {
           expect(expected.length).to.equal(0);
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should handle an observable of promises, where one rejects', (done) => {
     of(Promise.reject(2), Promise.resolve(1))
       .pipe(exhaustAll())
-      .subscribe(
-        (x) => {
+      .subscribe({
+        next: (x) => {
           done(new Error('should not be called'));
         },
-        (err) => {
+        error: (err) => {
           expect(err).to.equal(2);
           done();
         },
-        () => {
+        complete: () => {
           done(new Error('should not be called'));
-        }
-      );
+        },
+      });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

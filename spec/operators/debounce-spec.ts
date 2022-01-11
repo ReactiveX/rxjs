@@ -469,18 +469,18 @@ describe('debounce', () => {
           resolve(42);
         });
       })
-    ).subscribe(
-      (x: number) => {
+    ).subscribe({
+      next: (x: number) => {
         expect(x).to.equal(expected.shift());
       },
-      (x) => {
+      error: (x) => {
         done(new Error('should not be called'));
       },
-      () => {
+      complete: () => {
         expect(expected.length).to.equal(0);
         done();
-      }
-    );
+      },
+    });
   });
 
   it('should raises error when promise rejects', (done) => {
@@ -498,19 +498,19 @@ describe('debounce', () => {
               resolve(42);
             });
       })
-    ).subscribe(
-      (x: number) => {
+    ).subscribe({
+      next: (x: number) => {
         expect(x).to.equal(expected.shift());
       },
-      (err: any) => {
+      error: (err: any) => {
         expect(err).to.be.an('error', 'error');
         expect(expected.length).to.equal(0);
         done();
       },
-      () => {
+      complete: () => {
         done(new Error('should not be called'));
-      }
-    );
+      },
+    });
   });
 
   it('should debounce correctly when synchronously reentered', () => {

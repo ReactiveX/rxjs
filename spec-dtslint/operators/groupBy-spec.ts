@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { of, Subject, GroupedObservable } from 'rxjs';
 import { groupBy, mergeMap } from 'rxjs/operators';
 

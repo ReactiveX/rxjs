@@ -371,14 +371,14 @@ describe('publishReplay operator', () => {
     expect(results2).to.deep.equal([]);
     expect(subscriptions).to.equal(1);
 
-    connectable.subscribe((x) => {
+    connectable.subscribe({ next: (x) => {
       results2.push(x);
-    }, (x) => {
+    }, error: (x) => {
       done(new Error('should not be called'));
-    }, () => {
+    }, complete: () => {
       expect(results2).to.deep.equal([3, 4]);
       done();
-    });
+    } });
   });
 
   it('should multicast an empty source', () => {

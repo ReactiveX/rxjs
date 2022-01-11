@@ -522,12 +522,12 @@ describe('combineLatestAll operator', () => {
     const a = of(1, 2, 3);
     const b = of(4, 5, 6, 7, 8);
     const expected = [[3, 4], [3, 5], [3, 6], [3, 7], [3, 8]];
-    of(a, b).pipe(combineLatestAll()).subscribe((vals) => {
+    of(a, b).pipe(combineLatestAll()).subscribe({ next: (vals) => {
       expect(vals).to.deep.equal(expected.shift());
-    }, null, () => {
+    }, complete: () => {
       expect(expected.length).to.equal(0);
       done();
-    });
+    } });
   });
 
   it('should combine two immediately-scheduled observables', (done) => {
@@ -536,11 +536,11 @@ describe('combineLatestAll operator', () => {
     const r = [[1, 4], [2, 4], [2, 5], [3, 5], [3, 6], [3, 7], [3, 8]];
 
     of(a, b, queueScheduler).pipe(combineLatestAll())
-      .subscribe((vals) => {
+      .subscribe({ next: (vals) => {
         expect(vals).to.deep.equal(r.shift());
-      }, null, () => {
-        expect(r.length).to.equal(0);
-        done();
-      });
+    }, complete: () => {
+      expect(r.length).to.equal(0);
+      done();
+    } });
   });
 });

@@ -58,16 +58,16 @@ describe('range', () => {
 
     const source = range(12, 4, asap);
 
-    source.subscribe(function (x) {
+    source.subscribe({ next: function (x) {
       expect(asap.schedule).have.been.called;
       const exp = expected.shift();
       expect(x).to.equal(exp);
-    }, function (x) {
+    }, error: function (x) {
       done(new Error('should not be called'));
-    }, () => {
+    }, complete: () => {
       (<any>asap.schedule).restore();
       done();
-    });
+    } });
 
   });
 

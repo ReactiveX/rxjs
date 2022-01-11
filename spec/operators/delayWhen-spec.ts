@@ -304,11 +304,7 @@ describe('delayWhen', () => {
 
     of(1)
       .pipe(delayWhen(() => of(2)))
-      .subscribe(
-        () => (next = true),
-        null,
-        () => (complete = true)
-      );
+      .subscribe({ next: () => (next = true), complete: () => (complete = true) });
 
     expect(next).to.be.true;
     expect(complete).to.be.true;
@@ -333,8 +329,10 @@ describe('delayWhen', () => {
 
       expectObservable(
         result.pipe(
-          tap(null, null, () => {
-            expect(indices).to.deep.equal([0, 1, 2]);
+          tap({
+            complete: () => {
+              expect(indices).to.deep.equal([0, 1, 2]);
+            },
           })
         )
       ).toBe(expected);

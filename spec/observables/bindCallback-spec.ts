@@ -16,11 +16,11 @@ describe('bindCallback', () => {
       const results: Array<string|number> = [];
 
       boundCallback()
-        .subscribe((x: any) => {
+        .subscribe({ next: (x: any) => {
           results.push(typeof x);
-        }, null, () => {
+        }, complete: () => {
           results.push('done');
-        });
+        } });
 
       expect(results).to.deep.equal(['undefined', 'done']);
     });
@@ -75,11 +75,11 @@ describe('bindCallback', () => {
       const results: Array<string|number> = [];
 
       boundCallback(42)
-        .subscribe(x => {
+        .subscribe({ next: x => {
           results.push(x);
-        }, null, () => {
+        }, complete: () => {
           results.push('done');
-        });
+        } });
 
       expect(results).to.deep.equal([42, 'done']);
     });
@@ -94,9 +94,7 @@ describe('bindCallback', () => {
 
       boundCallback.apply({ datum: 5 })
         .subscribe(
-          (x: number) => results.push(x),
-          null,
-          () => results.push('done')
+          { next: (x: number) => results.push(x), complete: () => results.push('done') }
         );
 
       expect(results).to.deep.equal([5, 'done']);
@@ -114,7 +112,7 @@ describe('bindCallback', () => {
         }, 0);
       }
       const subscription = bindCallback(callback)(42)
-        .subscribe(nextSpy, throwSpy, completeSpy);
+        .subscribe({ next: nextSpy, error: throwSpy, complete: completeSpy });
       subscription.unsubscribe();
 
       setTimeout(() => {
@@ -135,17 +133,17 @@ describe('bindCallback', () => {
       const results: Array<string|number> = [];
 
       boundCallback(42)
-        .subscribe(x => {
+        .subscribe({ next: x => {
           results.push(x);
-        }, null, () => {
+        }, complete: () => {
           results.push('done');
-        });
+        } });
       boundCallback(54)
-        .subscribe(x => {
+        .subscribe({ next: x => {
           results.push(x);
-        }, null, () => {
+        }, complete: () => {
           results.push('done');
-        });
+        } });
 
       expect(results).to.deep.equal([42, 'done', 54, 'done']);
     });
@@ -160,11 +158,11 @@ describe('bindCallback', () => {
       const results: Array<string|number> = [];
 
       boundCallback()
-        .subscribe(x => {
+        .subscribe({ next: x => {
           results.push(typeof x);
-        }, null, () => {
+        }, complete: () => {
           results.push('done');
-        });
+        } });
 
       rxTestScheduler.flush();
 
@@ -179,11 +177,11 @@ describe('bindCallback', () => {
       const results: Array<string|number> = [];
 
       boundCallback(42)
-        .subscribe(x => {
+        .subscribe({ next: x => {
           results.push(x);
-        }, null, () => {
+        }, complete: () => {
           results.push('done');
-        });
+        } });
 
       rxTestScheduler.flush();
 
@@ -200,9 +198,7 @@ describe('bindCallback', () => {
 
       boundCallback.apply({ datum: 5 })
         .subscribe(
-          (x: number) => results.push(x),
-          null,
-          () => results.push('done')
+          { next: (x: number) => results.push(x), complete: () => results.push('done') }
         );
 
       rxTestScheduler.flush();
@@ -218,13 +214,13 @@ describe('bindCallback', () => {
       const boundCallback = bindCallback(callback, rxTestScheduler);
 
       boundCallback(42)
-        .subscribe(x => {
+        .subscribe({ next: x => {
           throw new Error('should not next');
-        }, (err: any) => {
+        }, error: (err: any) => {
           expect(err).to.equal(expected);
-        }, () => {
+        }, complete: () => {
           throw new Error('should not complete');
-        });
+        } });
 
       rxTestScheduler.flush();
     });
@@ -237,11 +233,11 @@ describe('bindCallback', () => {
     const results: Array<string|number[]> = [];
 
     boundCallback(42)
-      .subscribe(x => {
+      .subscribe({ next: x => {
         results.push(x);
-      }, null, () => {
+      }, complete: () => {
         results.push('done');
-      });
+      } });
 
     rxTestScheduler.flush();
 
@@ -260,17 +256,17 @@ describe('bindCallback', () => {
 
     const source = boundCallback(42);
 
-    source.subscribe(x => {
+    source.subscribe({ next: x => {
       results1.push(x);
-    }, null, () => {
+    }, complete: () => {
       results1.push('done');
-    });
+    } });
 
-    source.subscribe(x => {
+    source.subscribe({ next: x => {
       results2.push(x);
-    }, null, () => {
+    }, complete: () => {
       results2.push('done');
-    });
+    } });
 
     rxTestScheduler.flush();
 
@@ -290,11 +286,11 @@ describe('bindCallback', () => {
 
     const source = boundCallback(42);
 
-    const subscription = source.subscribe((x: any) => {
+    const subscription = source.subscribe({ next: (x: any) => {
       results1.push(x);
-    }, null, () => {
+    }, complete: () => {
       results1.push('done');
-    });
+    } });
 
     subscription.unsubscribe();
 

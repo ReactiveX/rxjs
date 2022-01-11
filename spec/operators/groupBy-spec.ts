@@ -43,14 +43,14 @@ describe('groupBy operator', () => {
 
     of(1, 2, 3).pipe(
       groupBy((x) => x % 2)
-    ).subscribe((g: any) => {
-      const expectedGroup = expectedGroups.shift()!;
-      expect(g.key).to.equal(expectedGroup.key);
+    ).subscribe({ next: (g: any) => {
+        const expectedGroup = expectedGroups.shift()!;
+        expect(g.key).to.equal(expectedGroup.key);
 
-      g.subscribe((x: any) => {
-        expect(x).to.deep.equal(expectedGroup.values.shift());
-      });
-    }, null, done);
+        g.subscribe((x: any) => {
+          expect(x).to.deep.equal(expectedGroup.values.shift());
+        });
+      }, complete: done });
   });
 
   it('should group values with an element selector', (done) => {
@@ -61,14 +61,14 @@ describe('groupBy operator', () => {
 
     of(1, 2, 3).pipe(
       groupBy((x) => x % 2, (x) => x + '!')
-    ).subscribe((g: any) => {
-      const expectedGroup = expectedGroups.shift()!;
-      expect(g.key).to.equal(expectedGroup.key);
+    ).subscribe({ next: (g: any) => {
+        const expectedGroup = expectedGroups.shift()!;
+        expect(g.key).to.equal(expectedGroup.key);
 
-      g.subscribe((x: any) => {
-        expect(x).to.deep.equal(expectedGroup.values.shift());
-      });
-    }, null, done);
+        g.subscribe((x: any) => {
+          expect(x).to.deep.equal(expectedGroup.values.shift());
+        });
+      }, complete: done });
   });
 
   it('should group values with a duration selector', () => {
@@ -111,14 +111,14 @@ describe('groupBy operator', () => {
       // Ensure each inner group reaches the destination after the first event
       // has been next'd to the group
       delay(5)
-    ).subscribe((g: any) => {
-      const expectedGroup = expectedGroups.shift()!;
-      expect(g.key).to.equal(expectedGroup.key);
+    ).subscribe({ next: (g: any) => {
+        const expectedGroup = expectedGroups.shift()!;
+        expect(g.key).to.equal(expectedGroup.key);
 
-      g.subscribe((x: any) => {
-        expect(x).to.deep.equal(expectedGroup.values.shift());
-      });
-    }, null, done);
+        g.subscribe((x: any) => {
+          expect(x).to.deep.equal(expectedGroup.values.shift());
+        });
+      }, complete: done });
   });
 
   it('should handle an empty Observable', () => {
@@ -668,13 +668,13 @@ describe('groupBy operator', () => {
     const expected = '----------------------------#';
 
     e1.pipe(groupBy((val: string) => val.toLowerCase().trim()))
-      .subscribe((group: any) => {
+      .subscribe({ next: (group: any) => {
         rxTestScheduler.schedule(() => {
           expectObservable(group).toBe(expected);
         }, 260);
-      }, () => {
+      }, error: () => {
         // noop
-      });
+      } });
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -1430,18 +1430,18 @@ describe('groupBy operator', () => {
     ];
 
     result
-      .subscribe((g: any) => {
+      .subscribe({ next: (g: any) => {
         const expectedGroup = expectedGroups.shift()!;
         expect(g.key).to.equal(expectedGroup.key);
 
         g.subscribe((x: any) => {
           expect(x).to.deep.equal(expectedGroup.values.shift());
         });
-      }, (x) => {
+      }, error: (x) => {
         done(new Error('should not be called'));
-      }, () => {
+      }, complete: () => {
         done();
-      });
+      } });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

@@ -33,17 +33,15 @@ describe('concat operator', () => {
     }).pipe(concat(of(2)));
 
     s1.subscribe(
-      x => {
+      { next: x => {
         results.push('Next: ' + x);
-      },
-      x => {
+      }, error: x => {
         done(new Error('should not be called'));
-      },
-      () => {
+      }, complete: () => {
         results.push('Completed');
         expect(results).to.deep.equal(['Next: 1', 'Next: 2', 'Completed']);
         done();
-      }
+      } }
     );
   });
 

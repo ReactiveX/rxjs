@@ -6,7 +6,7 @@ import { isFunction } from '../util/isFunction';
 export function mergeMapTo<O extends ObservableInput<unknown>>(
   innerObservable: O,
   concurrent?: number
-): OperatorFunction<any, ObservedValueOf<O>>;
+): OperatorFunction<unknown, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function mergeMapTo<T, R, O extends ObservableInput<unknown>>(
   innerObservable: O,

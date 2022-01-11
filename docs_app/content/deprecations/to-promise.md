@@ -31,8 +31,7 @@ the return type change), while the `lastValueFrom` will reject with the {@link E
 ### Example
 
 ```ts
-import { interval, lastValueFrom } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { interval, take, lastValueFrom } from 'rxjs';
 
 async function execute() {
   const source$ = interval(2000).pipe(take(10));

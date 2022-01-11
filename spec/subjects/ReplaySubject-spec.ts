@@ -40,17 +40,17 @@ describe('ReplaySubject', () => {
     subject.next(2);
     subject.next(3);
     subject.subscribe(
-      (x: number) => {
-        expect(x).to.equal(expects[i++]);
-        if (i === 3) {
-          subject.complete();
+      {
+        next: (x: number) => {
+          expect(x).to.equal(expects[i++]);
+          if (i === 3) {
+            subject.complete();
+          }
+        }, error: (err: any) => {
+          done(new Error('should not be called'));
+        }, complete: () => {
+          done();
         }
-      },
-      (err: any) => {
-        done(new Error('should not be called'));
-      },
-      () => {
-        done();
       }
     );
   });
@@ -64,11 +64,11 @@ describe('ReplaySubject', () => {
     subject.next(3);
     subject.complete();
     subject.subscribe(
-      (x: number) => {
-        expect(x).to.equal(expects[i++]);
-      },
-      null,
-      done
+      {
+        next: (x: number) => {
+          expect(x).to.equal(expects[i++]);
+        }, complete: done
+      }
     );
   });
 
@@ -81,12 +81,13 @@ describe('ReplaySubject', () => {
     subject.next(3);
     subject.error('fooey');
     subject.subscribe(
-      (x: number) => {
-        expect(x).to.equal(expects[i++]);
-      },
-      (err: any) => {
-        expect(err).to.equal('fooey');
-        done();
+      {
+        next: (x: number) => {
+          expect(x).to.equal(expects[i++]);
+        }, error: (err: any) => {
+          expect(err).to.equal('fooey');
+          done();
+        }
       }
     );
   });
@@ -99,17 +100,17 @@ describe('ReplaySubject', () => {
     subject.next(2);
     subject.next(3);
     subject.subscribe(
-      (x: number) => {
-        expect(x).to.equal(expects[i++]);
-        if (i === 2) {
-          subject.complete();
+      {
+        next: (x: number) => {
+          expect(x).to.equal(expects[i++]);
+          if (i === 2) {
+            subject.complete();
+          }
+        }, error: (err: any) => {
+          done(new Error('should not be called'));
+        }, complete: () => {
+          done();
         }
-      },
-      (err: any) => {
-        done(new Error('should not be called'));
-      },
-      () => {
-        done();
       }
     );
   });
@@ -118,12 +119,15 @@ describe('ReplaySubject', () => {
     it('should replay 2 previous values when subscribed', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const replaySubject = new ReplaySubject<string>(2);
+
         function feedNextIntoSubject(x: string) {
           replaySubject.next(x);
         }
+
         function feedErrorIntoSubject(err: string) {
           replaySubject.error(err);
         }
+
         function feedCompleteIntoSubject() {
           replaySubject.complete();
         }
@@ -138,7 +142,11 @@ describe('ReplaySubject', () => {
         const subscriber3 = hot('---------------------------(c|)    ').pipe(mergeMapTo(replaySubject));
         const expected3 = '      ---------------------------(78)9--|';
 
-        expectObservable(hot(sourceTemplate).pipe(tap(feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject))).toBe(
+        expectObservable(hot(sourceTemplate).pipe(tap({
+          next: feedNextIntoSubject,
+          error: feedErrorIntoSubject,
+          complete: feedCompleteIntoSubject
+        }))).toBe(
           sourceTemplate
         );
         expectObservable(subscriber1, unsub1).toBe(expected1);
@@ -150,12 +158,15 @@ describe('ReplaySubject', () => {
     it('should replay 2 last values for when subscribed after completed', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const replaySubject = new ReplaySubject<string>(2);
+
         function feedNextIntoSubject(x: string) {
           replaySubject.next(x);
         }
+
         function feedErrorIntoSubject(err: string) {
           replaySubject.error(err);
         }
+
         function feedCompleteIntoSubject() {
           replaySubject.complete();
         }
@@ -164,7 +175,11 @@ describe('ReplaySubject', () => {
         const subscriber1 = hot('---------------(a|) ').pipe(mergeMapTo(replaySubject));
         const expected1 = '      ---------------(34|)';
 
-        expectObservable(hot(sourceTemplate).pipe(tap(feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject))).toBe(
+        expectObservable(hot(sourceTemplate).pipe(tap({
+          next: feedNextIntoSubject,
+          error: feedErrorIntoSubject,
+          complete: feedCompleteIntoSubject
+        }))).toBe(
           sourceTemplate
         );
         expectObservable(subscriber1).toBe(expected1);
@@ -183,28 +198,28 @@ describe('ReplaySubject', () => {
       subject.next(4);
 
       const subscription1 = subject.subscribe(
-        (x: number) => {
-          results1.push(x);
-        },
-        (err: any) => {
-          results1.push('E');
-        },
-        () => {
-          results1.push('C');
+        {
+          next: (x: number) => {
+            results1.push(x);
+          }, error: (err: any) => {
+            results1.push('E');
+          }, complete: () => {
+            results1.push('C');
+          }
         }
       );
 
       subject.next(5);
 
       const subscription2 = subject.subscribe(
-        (x: number) => {
-          results2.push(x);
-        },
-        (err: any) => {
-          results2.push('E');
-        },
-        () => {
-          results2.push('C');
+        {
+          next: (x: number) => {
+            results2.push(x);
+          }, error: (err: any) => {
+            results2.push('E');
+          }, complete: () => {
+            results2.push('C');
+          }
         }
       );
 
@@ -221,14 +236,14 @@ describe('ReplaySubject', () => {
       subject.next(10);
 
       const subscription3 = subject.subscribe(
-        (x: number) => {
-          results3.push(x);
-        },
-        (err: any) => {
-          results3.push('E');
-        },
-        () => {
-          results3.push('C');
+        {
+          next: (x: number) => {
+            results3.push(x);
+          }, error: (err: any) => {
+            results3.push('E');
+          }, complete: () => {
+            results3.push('C');
+          }
         }
       );
 
@@ -248,12 +263,15 @@ describe('ReplaySubject', () => {
     it('should replay previous values since 4 time units ago when subscribed', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const replaySubject = new ReplaySubject<string>(Infinity, 4, rxTestScheduler);
+
         function feedNextIntoSubject(x: string) {
           replaySubject.next(x);
         }
+
         function feedErrorIntoSubject(err: any) {
           replaySubject.error(err);
         }
+
         function feedCompleteIntoSubject() {
           replaySubject.complete();
         }
@@ -268,7 +286,11 @@ describe('ReplaySubject', () => {
         const subscriber3 = hot('---------------------------(c|)    ').pipe(mergeMapTo(replaySubject));
         const expected3 = '      ---------------------------(78)9--|';
 
-        expectObservable(hot(sourceTemplate).pipe(tap(feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject))).toBe(
+        expectObservable(hot(sourceTemplate).pipe(tap({
+          next: feedNextIntoSubject,
+          error: feedErrorIntoSubject,
+          complete: feedCompleteIntoSubject
+        }))).toBe(
           sourceTemplate
         );
         expectObservable(subscriber1, unsub1).toBe(expected1);
@@ -280,12 +302,15 @@ describe('ReplaySubject', () => {
     it('should replay last values since 4 time units ago when subscribed', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const replaySubject = new ReplaySubject<string>(Infinity, 4, rxTestScheduler);
+
         function feedNextIntoSubject(x: string) {
           replaySubject.next(x);
         }
+
         function feedErrorIntoSubject(err: any) {
           replaySubject.error(err);
         }
+
         function feedCompleteIntoSubject() {
           replaySubject.complete();
         }
@@ -294,7 +319,11 @@ describe('ReplaySubject', () => {
         const subscriber1 = hot('-------------(a|)').pipe(mergeMapTo(replaySubject));
         const expected1 = '      -------------(4|)';
 
-        expectObservable(hot(sourceTemplate).pipe(tap(feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject))).toBe(
+        expectObservable(hot(sourceTemplate).pipe(tap({
+          next: feedNextIntoSubject,
+          error: feedErrorIntoSubject,
+          complete: feedCompleteIntoSubject
+        }))).toBe(
           sourceTemplate
         );
         expectObservable(subscriber1).toBe(expected1);
@@ -304,12 +333,15 @@ describe('ReplaySubject', () => {
     it('should only replay bufferSize items when 4 time units ago more were emited', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const replaySubject = new ReplaySubject<string>(2, 4, rxTestScheduler);
+
         function feedNextIntoSubject(x: string) {
           replaySubject.next(x);
         }
+
         function feedErrorIntoSubject(err: any) {
           replaySubject.error(err);
         }
+
         function feedCompleteIntoSubject() {
           replaySubject.complete();
         }
@@ -318,7 +350,11 @@ describe('ReplaySubject', () => {
         const subscriber1 = hot('----(a|)').pipe(mergeMapTo(replaySubject));
         const expected1 = '      ----(34)---|';
 
-        expectObservable(hot(sourceTemplate).pipe(tap(feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject))).toBe(
+        expectObservable(hot(sourceTemplate).pipe(tap({
+          next: feedNextIntoSubject,
+          error: feedErrorIntoSubject,
+          complete: feedCompleteIntoSubject
+        }))).toBe(
           sourceTemplate
         );
         expectObservable(subscriber1).toBe(expected1);
@@ -332,9 +368,7 @@ describe('ReplaySubject', () => {
     let results: (number | string)[] = [];
 
     subject.subscribe(
-      (x) => results.push(x),
-      null,
-      () => results.push('done')
+      { next: (x) => results.push(x), complete: () => results.push('done') }
     );
 
     source.subscribe(subject);
@@ -344,9 +378,7 @@ describe('ReplaySubject', () => {
     results = [];
 
     subject.subscribe(
-      (x) => results.push(x),
-      null,
-      () => results.push('done')
+      { next: (x) => results.push(x), complete: () => results.push('done') }
     );
 
     expect(results).to.deep.equal([3, 4, 5, 'done']);
@@ -361,7 +393,7 @@ describe('ReplaySubject', () => {
     subject.next(3);
     subject.subscribe({
       next: value => results.push(value),
-      complete: () => results.push('C'),
+      complete: () => results.push('C')
     });
     expect(results).to.deep.equal([1, 2, 'C']);
   });
@@ -375,7 +407,7 @@ describe('ReplaySubject', () => {
     subject.next(3);
     subject.subscribe({
       next: value => results.push(value),
-      error: () => results.push('E'),
+      error: () => results.push('E')
     });
     expect(results).to.deep.equal([1, 2, 'E']);
   });

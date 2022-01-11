@@ -2,7 +2,10 @@
   "rules": {
     "quotes": [
       2,
-      "single"
+      "single",
+      {
+        "avoidEscape": true
+      }
     ],
     "linebreak-style": [
       2,
@@ -84,13 +87,7 @@
       2,
       "always"
     ],
-    "space-before-function-paren": [
-      2,
-      {
-        "anonymous": "always",
-        "named": "never"
-      }
-    ],
+    "space-before-function-paren": "off",
     "array-bracket-spacing": [
       2,
       "never"
@@ -194,6 +191,11 @@
         }
       }
     ],
+    "@typescript-eslint/space-before-function-paren": ["error", {
+      "anonymous": "always",
+      "named": "never",
+      "asyncArrow": "always"
+    }],
     "@typescript-eslint/consistent-type-assertions": "error",
     "@typescript-eslint/consistent-type-definitions": "error",
     "@typescript-eslint/dot-notation": "error",

@@ -17,11 +17,11 @@ describe('bindNodeCallback', () => {
       const results: Array<number | string> = [];
 
       boundCallback()
-        .subscribe((x: any) => {
+        .subscribe({ next: (x: any) => {
           results.push(typeof x);
-        }, null, () => {
+        }, complete: () => {
           results.push('done');
-        });
+        } });
 
       expect(results).to.deep.equal(['undefined', 'done']);
     });
@@ -35,11 +35,11 @@ describe('bindNodeCallback', () => {
       const results: Array<number | string> = [];
 
       boundCallback()
-        .subscribe(x => {
+        .subscribe({ next: x => {
           results.push(x);
-        }, null, () => {
+        }, complete: () => {
           results.push('done');
-        });
+        } });
 
       expect(results).to.deep.equal([43, 'done']);
     });
@@ -52,11 +52,11 @@ describe('bindNodeCallback', () => {
       const results: Array<number | string> = [];
 
       boundCallback(42)
-        .subscribe(x => {
+        .subscribe({ next: x => {
           results.push(x);
-        }, null, () => {
+        }, complete: () => {
           results.push('done');
-        });
+        } });
 
       expect(results).to.deep.equal([42, 'done']);
     });
@@ -70,9 +70,7 @@ describe('bindNodeCallback', () => {
 
       boundCallback.call({ datum: 42 })
         .subscribe(
-          (x: number) => results.push(x),
-          null,
-          () => results.push('done')
+          { next: (x: number) => results.push(x), complete: () => results.push('done') }
         );
 
       expect(results).to.deep.equal([42, 'done']);
@@ -89,13 +87,13 @@ describe('bindNodeCallback', () => {
       const results: Array<number | string> = [];
 
       boundCallback()
-        .subscribe(() => {
+        .subscribe({ next: () => {
           throw new Error('should not next');
-        }, (err: any) => {
+        }, error: (err: any) => {
           results.push(err);
-        }, () => {
+        }, complete: () => {
           throw new Error('should not complete');
-        });
+        } });
 
       expect(results).to.deep.equal([error]);
     });
@@ -112,7 +110,7 @@ describe('bindNodeCallback', () => {
         }, 0);
       }
       const subscription = bindNodeCallback(callback)(42)
-        .subscribe(nextSpy, throwSpy, completeSpy);
+        .subscribe({ next: nextSpy, error: throwSpy, complete: completeSpy });
       subscription.unsubscribe();
 
       setTimeout(() => {
@@ -133,17 +131,17 @@ describe('bindNodeCallback', () => {
       const results: Array<number | string> = [];
 
       boundCallback(42)
-        .subscribe(x => {
+        .subscribe({ next: x => {
           results.push(x);
-        }, null, () => {
+        }, complete: () => {
           results.push('done');
-        });
+        } });
       boundCallback(54)
-        .subscribe(x => {
+        .subscribe({ next: x => {
           results.push(x);
-        }, null, () => {
+        }, complete: () => {
           results.push('done');
-        });
+        } });
 
       expect(results).to.deep.equal([42, 'done', 54, 'done']);
     });
@@ -159,11 +157,11 @@ describe('bindNodeCallback', () => {
       const results: Array<number | string> = [];
 
       boundCallback()
-        .subscribe((x: any) => {
+        .subscribe({ next: (x: any) => {
           results.push(typeof x);
-        }, null, () => {
+        }, complete: () => {
           results.push('done');
-        });
+        } });
 
       rxTestScheduler.flush();
 
@@ -178,11 +176,11 @@ describe('bindNodeCallback', () => {
       const results: Array<number | string> = [];
 
       boundCallback(42)
-        .subscribe(x => {
+        .subscribe({ next: x => {
           results.push(x);
-        }, null, () => {
+        }, complete: () => {
           results.push('done');
-        });
+        } });
 
       rxTestScheduler.flush();
 
@@ -198,9 +196,7 @@ describe('bindNodeCallback', () => {
 
       boundCallback.call({ datum: 42 })
         .subscribe(
-          (x: number) => results.push(x),
-          null,
-          () => results.push('done')
+          { next: (x: number) => results.push(x), complete: () => results.push('done') }
         );
 
       rxTestScheduler.flush();
@@ -216,13 +212,13 @@ describe('bindNodeCallback', () => {
       const boundCallback = bindNodeCallback(callback, rxTestScheduler);
 
       boundCallback(42)
-        .subscribe(x => {
+        .subscribe({ next: x => {
           throw new Error('should not next');
-        }, (err: any) => {
+        }, error: (err: any) => {
           expect(err).to.equal(expected);
-        }, () => {
+        }, complete: () => {
           throw new Error('should not complete');
-        });
+        } });
 
       rxTestScheduler.flush();
     });
@@ -238,13 +234,13 @@ describe('bindNodeCallback', () => {
       const results: Array<number | string> = [];
 
       boundCallback()
-        .subscribe(() => {
+        .subscribe({ next: () => {
           throw new Error('should not next');
-        }, (err: any) => {
+        }, error: (err: any) => {
           results.push(err);
-        }, () => {
+        }, complete: () => {
           throw new Error('should not complete');
-        });
+        } });
 
       rxTestScheduler.flush();
 
@@ -260,11 +256,11 @@ describe('bindNodeCallback', () => {
     const results: Array<number[] | string> = [];
 
     boundCallback(42)
-      .subscribe(x => {
+      .subscribe({ next: x => {
         results.push(x);
-      }, null, () => {
+      }, complete: () => {
         results.push('done');
-      });
+      } });
 
     rxTestScheduler.flush();
 
@@ -283,17 +279,17 @@ describe('bindNodeCallback', () => {
 
     const source = boundCallback(42);
 
-    source.subscribe(x => {
+    source.subscribe({ next: x => {
       results1.push(x);
-    }, null, () => {
+    }, complete: () => {
       results1.push('done');
-    });
+    } });
 
-    source.subscribe(x => {
+    source.subscribe({ next: x => {
       results2.push(x);
-    }, null, () => {
+    }, complete: () => {
       results2.push('done');
-    });
+    } });
 
     rxTestScheduler.flush();
 
@@ -351,11 +347,11 @@ describe('bindNodeCallback', () => {
 
     const source = boundCallback(42);
 
-    const subscription = source.subscribe((x: any) => {
+    const subscription = source.subscribe({ next: (x: any) => {
       results1.push(x);
-    }, null, () => {
+    }, complete: () => {
       results1.push('done');
-    });
+    } });
 
     subscription.unsubscribe();
 

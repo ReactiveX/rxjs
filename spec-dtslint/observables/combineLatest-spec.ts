@@ -1,5 +1,6 @@
+/* eslint-disable max-len */
 import { combineLatest } from 'rxjs';
-import { a$,  b$,  c$,  d$,  e$,  f$,  g$, A, B, C, D, E, F } from '../helpers';
+import { a$, b$, c$, d$, e$, f$, g$, A, B, C, D, E, F } from '../helpers';
 
 it('should accept 1 param', () => {
   const o = combineLatest(a$); // $ExpectType Observable<[A]>

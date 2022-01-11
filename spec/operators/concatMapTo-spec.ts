@@ -384,32 +384,28 @@ describe('concatMapTo', () => {
 
     const results: number[] = [];
     source.pipe(concatMapTo(from(Promise.resolve(42)))).subscribe(
-      (x) => {
+      { next: (x) => {
         results.push(x);
-      },
-      (err) => {
+      }, error: (err) => {
         done(new Error('Subscriber error handler not supposed to be called.'));
-      },
-      () => {
+      }, complete: () => {
         expect(results).to.deep.equal([42, 42, 42, 42]);
         done();
-      });
+      } });
   });
 
   it('should map values to constant rejected promises and concatenate', (done) => {
     const source = from([4, 3, 2, 1]);
 
     source.pipe(concatMapTo(from(Promise.reject(42)))).subscribe(
-      (x) => {
+      { next: (x) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
-      },
-      (err) => {
+      }, error: (err) => {
         expect(err).to.equal(42);
         done();
-      },
-      () => {
+      }, complete: () => {
         done(new Error('Subscriber complete handler not supposed to be called.'));
-      });
+      } });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

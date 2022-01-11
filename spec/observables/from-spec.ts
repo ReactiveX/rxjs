@@ -252,34 +252,30 @@ describe('from', () => {
       let nextInvoked = false;
       from(source.createValue())
         .subscribe(
-          (x) => {
+          { next: (x) => {
             nextInvoked = true;
             expect(x).to.equal('x');
-          },
-          (x) => {
+          }, error: (x) => {
             done(new Error('should not be called'));
-          },
-          () => {
+          }, complete: () => {
             expect(nextInvoked).to.equal(true);
             done();
-          }
+          } }
         );
     });
     it(`should accept ${source.name} and scheduler`, (done) => {
       let nextInvoked = false;
       from(source.createValue(), asyncScheduler)
         .subscribe(
-          (x) => {
+          { next: (x) => {
             nextInvoked = true;
             expect(x).to.equal('x');
-          },
-          (x) => {
+          }, error: (x) => {
             done(new Error('should not be called'));
-          },
-          () => {
+          }, complete: () => {
             expect(nextInvoked).to.equal(true);
             done();
-          }
+          } }
         );
       expect(nextInvoked).to.equal(false);
     });
@@ -291,17 +287,15 @@ describe('from', () => {
       let nextInvoked = false;
 
       from((handler as any)).pipe(first()).subscribe(
-        (x) => {
+        { next: (x) => {
           nextInvoked = true;
           expect(x).to.equal('x');
-        },
-        (x) => {
+        }, error: (x) => {
           done(new Error('should not be called'));
-        },
-        () => {
+        }, complete: () => {
           expect(nextInvoked).to.equal(true);
           done();
-        }
+        } }
       );
       handler('x');
     });

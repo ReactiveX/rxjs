@@ -394,13 +394,12 @@ describe('static concat', () => {
     const b = of(4, 5, 6, 7, 8, queueScheduler);
     const r = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    concat(a, b, queueScheduler).subscribe(
-      (vals) => {
+    concat(a, b, queueScheduler).subscribe({
+      next: (vals) => {
         expect(vals).to.equal(r.shift());
       },
-      null,
-      done
-    );
+      complete: done,
+    });
   });
 
   it("should use the scheduler even when one Observable is concat'd", (done) => {

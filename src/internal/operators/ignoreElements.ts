@@ -38,7 +38,7 @@ import { noop } from '../util/noop';
  * `complete` or `error`, based on which one is called by the source
  * Observable.
  */
-export function ignoreElements(): OperatorFunction<any, never> {
+export function ignoreElements(): OperatorFunction<unknown, never> {
   return operate((source, subscriber) => {
     source.subscribe(new OperatorSubscriber(subscriber, noop));
   });

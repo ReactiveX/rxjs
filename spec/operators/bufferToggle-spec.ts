@@ -430,14 +430,14 @@ describe('bufferToggle operator', () => {
       bufferToggle(new Promise((resolve: any) => { resolve(42); }), () => {
         return timer(50);
       })
-    ).subscribe((x) => {
+    ).subscribe({ next: (x) => {
       expect(x).to.deep.equal(expected.shift());
-    }, (x) => {
+    }, error: (x) => {
       done(new Error('should not be called'));
-    }, () => {
+    }, complete: () => {
       expect(expected.length).to.be.equal(0);
       done();
-    });
+    } });
   });
 
   it('should accept openings rejected promise', (done) => {
@@ -453,14 +453,14 @@ describe('bufferToggle operator', () => {
       bufferToggle(new Promise((resolve: any, reject: any) => { reject(expected); }), () => {
         return timer(50);
       })
-    ).subscribe((x) => {
+    ).subscribe({ next: (x) => {
       done(new Error('should not be called'));
-    }, (x) => {
+    }, error: (x) => {
       expect(x).to.equal(expected);
       done();
-    }, () => {
+    }, complete: () => {
       done(new Error('should not be called'));
-    });
+    } });
   });
 
   it('should accept closing selector that returns a resolved promise', (done) => {
@@ -472,14 +472,14 @@ describe('bufferToggle operator', () => {
     const expected = [[1]];
 
     e1.pipe(bufferToggle(of(10), () => new Promise((resolve: any) => { resolve(42); })))
-      .subscribe((x) => {
+      .subscribe({ next: (x) => {
         expect(x).to.deep.equal(expected.shift());
-      }, () => {
+      }, error: () => {
         done(new Error('should not be called'));
-      }, () => {
+      }, complete: () => {
         expect(expected.length).to.be.equal(0);
         done();
-      });
+      } });
   });
 
   it('should accept closing selector that returns a rejected promise', (done) => {
@@ -492,14 +492,14 @@ describe('bufferToggle operator', () => {
     const expected = 42;
 
     e1.pipe(bufferToggle(of(10), () => new Promise((resolve: any, reject: any) => { reject(expected); })))
-      .subscribe((x) => {
+      .subscribe({ next: (x) => {
         done(new Error('should not be called'));
-      }, (x) => {
+      }, error: (x) => {
         expect(x).to.equal(expected);
         done();
-      }, () => {
+      }, complete: () => {
         done(new Error('should not be called'));
-      });
+      } });
   });
 
   it('should handle empty closing observable', () => {

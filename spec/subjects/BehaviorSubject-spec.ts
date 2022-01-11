@@ -63,9 +63,9 @@ describe('BehaviorSubject', () => {
     const expected = ['foo', 'bar'];
     let i = 0;
 
-    subject.subscribe((x: string) => {
+    subject.subscribe({ next: (x: string) => {
       expect(x).to.equal(expected[i++]);
-    }, null, done);
+    }, complete: done });
 
     subject.next('bar');
     subject.complete();
@@ -81,9 +81,9 @@ describe('BehaviorSubject', () => {
       expect(x).to.equal(expected[i++]);
     });
 
-    subject.subscribe((x: string) => {
+    subject.subscribe({ next: (x: string) => {
       expect(x).to.equal(expected[j++]);
-    }, null, done);
+    }, complete: done });
 
     expect(subject.observers.length).to.equal(2);
     subject.next('foo');
@@ -147,7 +147,7 @@ describe('BehaviorSubject', () => {
 
     expectObservable(hot(sourceTemplate).pipe(
       tap(
-      feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject
+      { next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject }
       )
     )).toBe(sourceTemplate);
     expectObservable(subscriber1, unsub1).toBe(expected1);
@@ -169,7 +169,7 @@ describe('BehaviorSubject', () => {
 
     expectObservable(hot(sourceTemplate).pipe(
       tap(
-        feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject
+        { next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject }
       )
     )).toBe(sourceTemplate);
     expectObservable(subscriber1).toBe(expected1);
@@ -181,14 +181,14 @@ describe('BehaviorSubject', () => {
     const expected = [0, 1, 2, 3, 4, 5];
 
     subject.subscribe(
-      (x: number) => {
+      { next: (x: number) => {
         expect(x).to.equal(expected.shift());
-      }, (x) => {
+      }, error: (x) => {
         done(new Error('should not be called'));
-      }, () => {
+      }, complete: () => {
         expect(subject.value).to.equal(5);
         done();
-      });
+      } });
 
     source.subscribe(subject);
   });
@@ -203,14 +203,14 @@ describe('BehaviorSubject', () => {
     const expected = [0, 1, 2, 3, 4, 5];
 
     subject.subscribe(
-      (x: number) => {
+      { next: (x: number) => {
         expect(x).to.equal(expected.shift());
-      }, (x) => {
+      }, error: (x) => {
         done(new Error('should not be called'));
-      }, () => {
+      }, complete: () => {
         expect(subject.value).to.equal(5);
         done();
-      });
+      } });
 
       source.subscribe(asInteropSubject(subject));
   });

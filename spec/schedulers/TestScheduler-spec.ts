@@ -224,11 +224,11 @@ describe('TestScheduler', () => {
       it('should create a cold observable', () => {
         const expected = [1, 2];
         const source = cold('-a-b-|', { a: 1, b: 2 });
-        source.subscribe((x: number) => {
+        source.subscribe({ next: (x: number) => {
           expect(x).to.equal(expected.shift());
-        }, null, () => {
+        }, complete: () => {
           expect(expected.length).to.equal(0);
-        });
+        } });
         expectObservable(source).toBe('-a-b-|', { a: 1, b: 2 });
       });
     });

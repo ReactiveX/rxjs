@@ -176,8 +176,10 @@ describe('single operator', () => {
       expectObservable(
         e1.pipe(
           single(predicate),
-          tap(null, null, () => {
-            expect(indices).to.deep.equal([0, 1, 2]);
+          tap({
+            complete: () => {
+              expect(indices).to.deep.equal([0, 1, 2]);
+            }
           })
         )
       ).toBe(expected);
@@ -341,9 +343,11 @@ describe('single operator', () => {
     });
 
     synchronousObservable.pipe(
-      single(),
-    ).subscribe(() => { /* noop */
-    }, () => { /* noop */
+      single()
+    ).subscribe({
+      next: () => { /* noop */
+      }, error: () => { /* noop */
+      }
     });
 
     expect(sideEffects).to.deep.equal([0, 1]);

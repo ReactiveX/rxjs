@@ -23,25 +23,29 @@ describe('of', () => {
     let i = 0;
 
     of(1, 'a', x)
-      .subscribe((y: any) => {
-        expect(y).to.equal(expected[i++]);
-      }, (x) => {
-        done(new Error('should not be called'));
-      }, () => {
-        done();
+      .subscribe({
+        next: (y: any) => {
+          expect(y).to.equal(expected[i++]);
+        }, error: (x) => {
+          done(new Error('should not be called'));
+        }, complete: () => {
+          done();
+        }
       });
   });
 
   it('should emit one value', (done) => {
     let calls = 0;
 
-    of(42).subscribe((x: number) => {
-      expect(++calls).to.equal(1);
-      expect(x).to.equal(42);
-    }, (err: any) => {
-      done(new Error('should not be called'));
-    }, () => {
-      done();
+    of(42).subscribe({
+      next: (x: number) => {
+        expect(++calls).to.equal(1);
+        expect(x).to.equal(42);
+      }, error: (err: any) => {
+        done(new Error('should not be called'));
+      }, complete: () => {
+        done();
+      }
     });
   });
 

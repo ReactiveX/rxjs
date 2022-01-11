@@ -76,11 +76,9 @@ describe('expand', () => {
       */
 
       const result = e1.pipe(
-        expand(
-          (x, index): Observable<any> => {
-            return x === 16 ? EMPTY : cold(e2shape, { z: x + x });
-          }
-        )
+        expand((x, index): Observable<any> => {
+          return x === 16 ? EMPTY : cold(e2shape, { z: x + x });
+        })
       );
 
       expectObservable(result).toBe(expected, values);
@@ -160,14 +158,12 @@ describe('expand', () => {
       const expected = 'a--b--c-';
 
       const result = e1.pipe(
-        expand(
-          (x): Observable<any> => {
-            if (x === 16) {
-              return EMPTY;
-            }
-            return cold(e2shape, { z: x + x });
+        expand((x): Observable<any> => {
+          if (x === 16) {
+            return EMPTY;
           }
-        )
+          return cold(e2shape, { z: x + x });
+        })
       );
 
       expectObservable(result, unsub).toBe(expected, values);
@@ -192,14 +188,12 @@ describe('expand', () => {
 
       const result = e1.pipe(
         mergeMap((x) => of(x)),
-        expand(
-          (x): Observable<any> => {
-            if (x === 16) {
-              return EMPTY;
-            }
-            return cold(e2shape, { z: x + x });
+        expand((x): Observable<any> => {
+          if (x === 16) {
+            return EMPTY;
           }
-        ),
+          return cold(e2shape, { z: x + x });
+        }),
         mergeMap((x) => of(x))
       );
 
@@ -223,14 +217,12 @@ describe('expand', () => {
       const expected = 'a-ab-bc-cd-de-(e|)';
 
       const result = e1.pipe(
-        expand(
-          (x): Observable<any> => {
-            if (x === 16) {
-              return EMPTY;
-            }
-            return cold(e2shape, { z: x + x });
+        expand((x): Observable<any> => {
+          if (x === 16) {
+            return EMPTY;
           }
-        )
+          return cold(e2shape, { z: x + x });
+        })
       );
 
       expectObservable(result).toBe(expected, values);
@@ -389,16 +381,15 @@ describe('expand', () => {
           return Promise.resolve(x + x);
         })
       )
-      .subscribe(
-        (x) => {
+      .subscribe({
+        next: (x) => {
           expect(x).to.equal(expected.shift());
         },
-        null,
-        () => {
+        complete: () => {
           expect(expected.length).to.equal(0);
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should recursively flatten Arrays', (done) => {
@@ -412,16 +403,15 @@ describe('expand', () => {
           return [x + x];
         })
       )
-      .subscribe(
-        (x) => {
+      .subscribe({
+        next: (x) => {
           expect(x).to.equal(expected.shift());
         },
-        null,
-        () => {
+        complete: () => {
           expect(expected.length).to.equal(0);
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should recursively flatten lowercase-o observables', (done) => {
@@ -444,16 +434,15 @@ describe('expand', () => {
 
     of(1)
       .pipe(expand(project))
-      .subscribe(
-        (x) => {
+      .subscribe({
+        next: (x) => {
           expect(x).to.equal(expected.shift());
         },
-        null,
-        () => {
+        complete: () => {
           expect(expected.length).to.equal(0);
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should work when passing undefined for the optional arguments', () => {
@@ -492,7 +481,7 @@ describe('expand', () => {
         take(10),
         toArray()
       )
-      .subscribe((actual) => expect(actual).to.deep.equal(expected), done, done);
+      .subscribe({ next: (actual) => expect(actual).to.deep.equal(expected), error: done, complete: done });
   });
 
   it('should work with the AsyncScheduler', (done) => {
@@ -503,7 +492,7 @@ describe('expand', () => {
         take(10),
         toArray()
       )
-      .subscribe((actual) => expect(actual).to.deep.equal(expected), done, done);
+      .subscribe({ next: (actual) => expect(actual).to.deep.equal(expected), error: done, complete: done });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

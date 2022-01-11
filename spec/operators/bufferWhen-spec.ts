@@ -369,14 +369,14 @@ describe('bufferWhen operator', () => {
     source.pipe(
       bufferWhen(() => closing),
       takeWhile((val: any, index: number) => index < TOO_MANY_INVOCATIONS)
-    ).subscribe((val: any) => {
+    ).subscribe({ next: (val: any) => {
       expect(Array.isArray(val)).to.be.true;
       expect(val.length).to.equal(0);
-    }, (err: any) => {
+    }, error: (err: any) => {
       done(new Error('should not be called'));
-    }, () => {
+    }, complete: () => {
       done();
-    });
+    } });
   });
 
   it('should handle inner throw', () => {

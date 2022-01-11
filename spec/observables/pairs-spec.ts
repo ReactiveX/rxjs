@@ -18,20 +18,23 @@ describe('pairs', () => {
   });
 
   it('should create an observable without scheduler', (done) => {
-    const expected = [
+    let expected = [
       ['a', 1],
       ['b', 2],
       ['c', 3]
     ];
 
-    pairs({ a: 1, b: 2, c: 3 }).subscribe(x => {
-      expect(x).to.deep.equal(expected.shift());
-    }, x => {
-      done(new Error('should not be called'));
-    }, () => {
-      expect(expected).to.be.empty;
-      done();
-    });
+    pairs({ a: 1, b: 2, c: 3 }).subscribe({
+      next: x => {
+        expect(x).to.deep.equal(expected.shift());
+      }, error: x => {
+        done(new Error('should not be called'));
+      }, complete: () => {
+        expect(expected).to.be.empty;
+        done();
+      }
+    })
+    ;
   });
 
   it('should work with empty object', () => {
@@ -40,4 +43,5 @@ describe('pairs', () => {
 
     expectObservable(e1).toBe(expected);
   });
-});
+})
+;

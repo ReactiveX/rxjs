@@ -290,14 +290,23 @@ const LOADSTART = 'loadstart';
 const PROGRESS = 'progress';
 const LOAD = 'load';
 
-export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
+export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
   return new Observable((destination) => {
-    // Here we're pulling off each of the configuration arguments
-    // that we don't want to add to the request information we're
-    // passing around.
-    const { queryParams, body: configuredBody, headers: configuredHeaders, ...remainingConfig } = config;
+    const config = {
+      // Defaults
+      async: true,
+      crossDomain: false,
+      withCredentials: false,
+      method: 'GET',
+      timeout: 0,
+      responseType: 'json' as XMLHttpRequestResponseType,
 
-    let { url } = remainingConfig;
+      ...init,
+    };
+
+    const { queryParams, body: configuredBody, headers: configuredHeaders } = config;
+
+    let url = config.url;
     if (!url) {
       throw new TypeError('url is required');
     }
@@ -343,6 +352,8 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       }
     }
 
+    const crossDomain = config.crossDomain;
+
     // Set the x-requested-with header. This is a non-standard header that has
     // come to be a de facto standard for HTTP requests sent by libraries and frameworks
     // using XHR. However, we DO NOT want to set this if it is a CORS request. This is
@@ -350,14 +361,14 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     // None of this is necessary, it's only being set because it's "the thing libraries do"
     // Starting back as far as JQuery, and continuing with other libraries such as Angular 1,
     // Axios, et al.
-    if (!config.crossDomain && !('x-requested-with' in headers)) {
+    if (!crossDomain && !('x-requested-with' in headers)) {
       headers['x-requested-with'] = 'XMLHttpRequest';
     }
 
     // Allow users to provide their XSRF cookie name and the name of a custom header to use to
     // send the cookie.
-    const { withCredentials, xsrfCookieName, xsrfHeaderName } = remainingConfig;
-    if ((withCredentials || !remainingConfig.crossDomain) && xsrfCookieName && xsrfHeaderName) {
+    const { withCredentials, xsrfCookieName, xsrfHeaderName } = config;
+    if ((withCredentials || !crossDomain) && xsrfCookieName && xsrfHeaderName) {
       const xsrfCookie = document?.cookie.match(new RegExp(`(^|;\\s*)(${xsrfCookieName})=([^;]*)`))?.pop() ?? '';
       if (xsrfCookie) {
         headers[xsrfHeaderName] = xsrfCookie;
@@ -368,17 +379,9 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     // and set the content-type in `headers`, if we're able.
     const body = extractContentTypeAndMaybeSerializeBody(configuredBody, headers);
 
-    const _request: AjaxRequest = {
-      // Default values
-      async: true,
-      crossDomain: true,
-      withCredentials: false,
-      method: 'GET',
-      timeout: 0,
-      responseType: 'json' as XMLHttpRequestResponseType,
-
-      // Override with passed user values
-      ...remainingConfig,
+    // The final request settings.
+    const _request: Readonly<AjaxRequest> = {
+      ...config,
 
       // Set values we ensured above
       url,
@@ -387,7 +390,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     };
 
     // Create our XHR so we can get started.
-    const xhr = config.createXHR ? config.createXHR() : new XMLHttpRequest();
+    const xhr = init.createXHR ? init.createXHR() : new XMLHttpRequest();
 
     {
       ///////////////////////////////////////////////////
@@ -397,7 +400,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       // Otherwise the progress events will not fire.
       ///////////////////////////////////////////////////
 
-      const { progressSubscriber, includeDownloadProgress = false, includeUploadProgress = false } = config;
+      const { progressSubscriber, includeDownloadProgress = false, includeUploadProgress = false } = init;
 
       /**
        * Wires up an event handler that will emit an error when fired. Used
