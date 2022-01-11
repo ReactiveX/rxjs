@@ -2,12 +2,15 @@ import { Observable } from '../Observable';
 import { SchedulerLike } from '../types';
 
 /**
- * The same Observable instance returned by any call to {@link empty} without a
- * `scheduler`. It is preferable to use this over `empty()`.
+ * A simple Observable that emits no items to the Observer and immediately
+ * emits a complete notification.
  *
  * <span class="informal">Just emits 'complete', and nothing else.</span>
  *
  * ![](empty.png)
+ *
+ * A simple Observable that only emits the complete notification. It can be used
+ * for composing with other Observables, such as in a {@link mergeMap}.
  *
  * ## Examples
  *
@@ -24,43 +27,27 @@ import { SchedulerLike } from '../types';
  * // Outputs
  * // Complete!
  * ```
- */
-export const EMPTY = new Observable<never>((subscriber) => subscriber.complete());
-
-/**
- * Creates an Observable that emits no items to the Observer and immediately
- * emits a complete notification.
- *
- * <span class="informal">Just emits 'complete', and nothing else.</span>
- *
- * ![](empty.png)
- *
- * This static operator is useful for creating a simple Observable that only
- * emits the complete notification. It can be used for composing with other
- * Observables, such as in a {@link mergeMap}.
- *
- * ## Examples
  *
  * Emit the number 7, then complete
  *
  * ```ts
- * import { empty, startWith } from 'rxjs';
+ * import { EMPTY, startWith } from 'rxjs';
  *
- * const result = empty().pipe(startWith(7));
+ * const result = EMPTY.pipe(startWith(7));
  * result.subscribe(x => console.log(x));
  *
  * // Outputs
  * // 7
  * ```
  *
- * Map and flatten only odd numbers to the sequence 'a', 'b', 'c'
+ * Map and flatten only odd numbers to the sequence `'a'`, `'b'`, `'c'`
  *
  * ```ts
- * import { interval, mergeMap, of, empty } from 'rxjs';
+ * import { interval, mergeMap, of, EMPTY } from 'rxjs';
  *
  * const interval$ = interval(1000);
  * const result = interval$.pipe(
- *   mergeMap(x => x % 2 === 1 ? of('a', 'b', 'c') : empty()),
+ *   mergeMap(x => x % 2 === 1 ? of('a', 'b', 'c') : EMPTY),
  * );
  * result.subscribe(x => console.log(x));
  *
@@ -72,14 +59,15 @@ export const EMPTY = new Observable<never>((subscriber) => subscriber.complete()
  * ```
  *
  * @see {@link Observable}
- * @see {@link never}
+ * @see {@link NEVER}
  * @see {@link of}
  * @see {@link throwError}
- *
+ */
+export const EMPTY = new Observable<never>((subscriber) => subscriber.complete());
+
+/**
  * @param scheduler A {@link SchedulerLike} to use for scheduling
  * the emission of the complete notification.
- * @return An "empty" Observable: emits only the complete
- * notification.
  * @deprecated Replaced with the {@link EMPTY} constant or {@link scheduled} (e.g. `scheduled([], scheduler)`). Will be removed in v8.
  */
 export function empty(scheduler?: SchedulerLike) {
