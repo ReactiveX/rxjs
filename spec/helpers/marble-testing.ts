@@ -6,8 +6,6 @@ import { observableToBeFn, subscriptionLogsToBeFn } from '../../src/internal/tes
 
 declare const global: any;
 
-export const emptySubs: any[] = [];
-
 export function hot(marbles: string, values?: void, error?: any): HotObservable<string>;
 export function hot<V>(marbles: string, values?: { [index: string]: V; }, error?: any): HotObservable<V>;
 export function hot<V>(marbles: string, values?: { [index: string]: V; } | void, error?: any): HotObservable<any> {
