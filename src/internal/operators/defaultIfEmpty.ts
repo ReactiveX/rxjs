@@ -16,10 +16,11 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * having emitted any `next` value).
  *
  * ## Example
- * If no clicks happen in 5 seconds, then emit "no clicks"
+ *
+ * If no clicks happen in 5 seconds, then emit 'no clicks'
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { defaultIfEmpty, takeUntil } from 'rxjs/operators';
+ * import { fromEvent, takeUntil, interval, defaultIfEmpty } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const clicksBeforeFive = clicks.pipe(takeUntil(interval(5000)));

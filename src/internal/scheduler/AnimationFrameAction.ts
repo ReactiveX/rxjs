@@ -27,10 +27,10 @@ export class AnimationFrameAction<T> extends AsyncAction<T> {
     if ((delay != null && delay > 0) || (delay == null && this.delay > 0)) {
       return super.recycleAsyncId(scheduler, id, delay);
     }
-    // If the scheduler queue is empty, cancel the requested animation frame and
-    // set the scheduled flag to undefined so the next AnimationFrameAction will
-    // request its own.
-    if (scheduler.actions.length === 0) {
+    // If the scheduler queue has no remaining actions with the same async id,
+    // cancel the requested animation frame and set the scheduled flag to
+    // undefined so the next AnimationFrameAction will request its own.
+    if (!scheduler.actions.some((action) => action.id === id)) {
       animationFrameProvider.cancelAnimationFrame(id);
       scheduler._scheduled = undefined;
     }

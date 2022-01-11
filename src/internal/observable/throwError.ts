@@ -20,7 +20,7 @@ import { isFunction } from '../util/isFunction';
  * ## Example
  *
  * Create a simple observable that will create a new error with a timestamp and log it
- * and the message every time you subscribe to it.
+ * and the message every time you subscribe to it
  *
  * ```ts
  * import { throwError } from 'rxjs';
@@ -28,70 +28,68 @@ import { isFunction } from '../util/isFunction';
  * let errorCount = 0;
  *
  * const errorWithTimestamp$ = throwError(() => {
- *    const error: any = new Error(`This is error number ${++errorCount}`);
- *    error.timestamp = Date.now();
- *    return error;
+ *   const error: any = new Error(`This is error number ${ ++errorCount }`);
+ *   error.timestamp = Date.now();
+ *   return error;
  * });
  *
  * errorWithTimestamp$.subscribe({
- *    error: err => console.log(err.timestamp, err.message)
+ *   error: err => console.log(err.timestamp, err.message)
  * });
  *
  * errorWithTimestamp$.subscribe({
- *    error: err => console.log(err.timestamp, err.message)
+ *   error: err => console.log(err.timestamp, err.message)
  * });
  *
- * // Logs the timestamp and a new error message each subscription;
+ * // Logs the timestamp and a new error message for each subscription
  * ```
  *
- * ## Unnecessary usage
+ * ### Unnecessary usage
  *
  * Using `throwError` inside of an operator or creation function
- * with a callback, is usually not necessary:
+ * with a callback, is usually not necessary
  *
  * ```ts
- * import { throwError, timer, of } from 'rxjs';
- * import { concatMap } from 'rxjs/operators';
+ * import { of, concatMap, timer, throwError } from 'rxjs';
  *
  * const delays$ = of(1000, 2000, Infinity, 3000);
  *
  * delays$.pipe(
- *    concatMap(ms => {
- *      if (ms < 10000) {
- *        return timer(ms);
- *      } else {
- *        // This is probably overkill.
- *        return throwError(() => new Error(`Invalid time ${ms}`));
- *      }
- *    })
+ *   concatMap(ms => {
+ *     if (ms < 10000) {
+ *       return timer(ms);
+ *     } else {
+ *       // This is probably overkill.
+ *       return throwError(() => new Error(`Invalid time ${ ms }`));
+ *     }
+ *   })
  * )
  * .subscribe({
- *    next: console.log,
- *    error: console.error
+ *   next: console.log,
+ *   error: console.error
  * });
  * ```
  *
- * You can just throw the error instead:
+ * You can just throw the error instead
  *
  * ```ts
- * import { throwError, timer, of } from 'rxjs';
- * import { concatMap } from 'rxjs/operators';
+ * import { of, concatMap, timer } from 'rxjs';
  *
  * const delays$ = of(1000, 2000, Infinity, 3000);
  *
  * delays$.pipe(
- *    concatMap(ms => {
- *      if (ms < 10000) {
- *        return timer(ms);
- *      } else {
- *        // Cleaner and easier to read for most folks.
- *        throw new Error(`Invalid time ${ms}`);
- *      }
- *    })
+ *   concatMap(ms => {
+ *     if (ms < 10000) {
+ *       return timer(ms);
+ *     } else {
+ *       // Cleaner and easier to read for most folks.
+ *       throw new Error(`Invalid time ${ ms }`);
+ *     }
+ *   })
  * )
  * .subscribe({
- *    next: console.log,
- *    error: console.error
+ *   next: console.log,
+ *   error: console.error
  * });
  * ```
  *

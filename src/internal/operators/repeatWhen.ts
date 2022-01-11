@@ -15,17 +15,20 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * ![](repeatWhen.png)
  *
  * ## Example
+ *
  * Repeat a message stream on click
+ *
  * ```ts
- * import { of, fromEvent } from 'rxjs';
- * import { repeatWhen } from 'rxjs/operators';
+ * import { of, fromEvent, repeatWhen } from 'rxjs';
  *
  * const source = of('Repeat message');
  * const documentClick$ = fromEvent(document, 'click');
  *
- * source.pipe(repeatWhen(() => documentClick$)
- * ).subscribe(data => console.log(data))
+ * const result = source.pipe(repeatWhen(() => documentClick$));
+ *
+ * result.subscribe(data => console.log(data))
  * ```
+ *
  * @see {@link repeat}
  * @see {@link retry}
  * @see {@link retryWhen}

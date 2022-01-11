@@ -34,38 +34,34 @@ export interface RetryConfig {
  * ![](retry.png)
  *
  * Any and all items emitted by the source Observable will be emitted by the resulting Observable, even those emitted
- * during failed subscriptions. For example, if an Observable fails at first but emits [1, 2] then succeeds the second
- * time and emits: [1, 2, 3, 4, 5] then the complete stream of emissions and notifications
- * would be: [1, 2, 1, 2, 3, 4, 5, `complete`].
+ * during failed subscriptions. For example, if an Observable fails at first but emits `[1, 2]` then succeeds the second
+ * time and emits: `[1, 2, 3, 4, 5]` then the complete stream of emissions and notifications
+ * would be: `[1, 2, 1, 2, 3, 4, 5, complete]`.
  *
  * ## Example
+ *
  * ```ts
- * import { interval, of, throwError } from 'rxjs';
- * import { mergeMap, retry } from 'rxjs/operators';
+ * import { interval, mergeMap, throwError, of, retry } from 'rxjs';
  *
  * const source = interval(1000);
- * const example = source.pipe(
- *   mergeMap(val => {
- *     if(val > 5){
- *       return throwError('Error!');
- *     }
- *     return of(val);
- *   }),
- *   //retry 2 times on error
- *   retry(2)
+ * const result = source.pipe(
+ *   mergeMap(val => val > 5 ? throwError(() => 'Error!') : of(val)),
+ *   retry(2) // retry 2 times on error
  * );
  *
- * const subscribe = example.subscribe({
- *   next: val => console.log(val),
- *   error: val => console.log(`${val}: Retried 2 times then quit!`)
+ * result.subscribe({
+ *   next: value => console.log(value),
+ *   error: err => console.log(`${ err }: Retried 2 times then quit!`)
  * });
  *
  * // Output:
  * // 0..1..2..3..4..5..
  * // 0..1..2..3..4..5..
  * // 0..1..2..3..4..5..
- * // "Error!: Retried 2 times then quit!"
+ * // 'Error!: Retried 2 times then quit!'
  * ```
+ *
+ * @see {@link retryWhen}
  *
  * @param count - Number of retry attempts before failing.
  * @param resetOnSuccess - When set to `true` every successful emission will reset the error count

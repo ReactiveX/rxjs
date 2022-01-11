@@ -17,8 +17,10 @@ describe('finalize', () => {
           done();
         })
       )
-      .subscribe(null, null, () => {
-        completed = true;
+      .subscribe({
+        complete: () => {
+          completed = true;
+        },
       });
   });
 
@@ -37,8 +39,10 @@ describe('finalize', () => {
           done();
         })
       )
-      .subscribe(null, () => {
-        thrown = true;
+      .subscribe({
+        error: () => {
+          thrown = true;
+        },
       });
   });
 

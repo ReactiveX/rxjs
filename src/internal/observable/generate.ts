@@ -47,7 +47,7 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  *
  * ## Examples
  *
- * ### Produces sequences of number
+ * Produces sequence of numbers
  *
  * ```ts
  * import { generate } from 'rxjs';
@@ -62,12 +62,12 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * // 2
  * ```
  *
- * ### Use asap scheduler
+ * Use `asapScheduler`
  *
  * ```ts
- * import { generate } from 'rxjs';
+ * import { generate, asapScheduler } from 'rxjs';
  *
- * const result = generate(1, x => x < 5, x => x * 2, x => x + 1, asap);
+ * const result = generate(1, x => x < 5, x => x * 2, x => x + 1, asapScheduler);
  *
  * result.subscribe(x => console.log(x));
  *
@@ -142,7 +142,7 @@ export function generate<T, S>(
  *
  * ## Examples
  *
- * ### Use with condition and iterate functions
+ * Use with condition and iterate functions
  *
  * ```ts
  * import { generate } from 'rxjs';
@@ -158,10 +158,10 @@ export function generate<T, S>(
  * // 0
  * // 1
  * // 2
- * // "Complete!"
+ * // 'Complete!'
  * ```
  *
- * ### Use with condition, iterate and resultSelector functions
+ * Use with condition, iterate and resultSelector functions
  *
  * ```ts
  * import { generate } from 'rxjs';
@@ -170,17 +170,17 @@ export function generate<T, S>(
  *
  * result.subscribe({
  *   next: value => console.log(value),
- *   complete: () => console.log('complete!')
+ *   complete: () => console.log('Complete!')
  * });
  *
  * // Logs:
  * // 0
  * // 1000
  * // 2000
- * // "complete!"
+ * // 'Complete!'
  * ```
  *
- * ### Use with options object
+ * Use with options object
  *
  * ```ts
  * import { generate } from 'rxjs';
@@ -194,17 +194,17 @@ export function generate<T, S>(
  *
  * result.subscribe({
  *   next: value => console.log(value),
- *   complete: () => console.log('complete!')
+ *   complete: () => console.log('Complete!')
  * });
  *
  * // Logs:
  * // 0
  * // 1000
  * // 2000
- * // "Complete!"
+ * // 'Complete!'
  * ```
  *
- * ### Use options object without condition function
+ * Use options object without condition function
  *
  * ```ts
  * import { generate } from 'rxjs';
@@ -217,7 +217,7 @@ export function generate<T, S>(
  *
  * result.subscribe({
  *   next: value => console.log(value),
- *   complete: () => console.log('complete!') // This will never run
+ *   complete: () => console.log('Complete!') // This will never run
  * });
  *
  * // Logs:
@@ -229,7 +229,6 @@ export function generate<T, S>(
  * ```
  *
  * @see {@link from}
- * @see {@link index/Observable.create}
  *
  * @param {S} initialState Initial state.
  * @param {function (state: S): boolean} condition Condition to terminate generation (upon returning false).
@@ -257,7 +256,7 @@ export function generate<S>(
  *
  * ## Examples
  *
- * ### Use options object with condition function
+ * Use options object with condition function
  *
  * ```ts
  * import { generate } from 'rxjs';
@@ -265,19 +264,19 @@ export function generate<S>(
  * const result = generate({
  *   initialState: 0,
  *   condition: x => x < 3,
- *   iterate: x => x + 1,
+ *   iterate: x => x + 1
  * });
  *
  * result.subscribe({
  *   next: value => console.log(value),
- *   complete: () => console.log('complete!')
+ *   complete: () => console.log('Complete!')
  * });
  *
  * // Logs:
  * // 0
  * // 1
  * // 2
- * // "Complete!".
+ * // 'Complete!'
  * ```
  *
  * @see {@link from}
@@ -299,7 +298,7 @@ export function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
  *
  * ## Examples
  *
- * ### Use options object with condition and iterate function
+ * Use options object with condition and iterate function
  *
  * ```ts
  * import { generate } from 'rxjs';
@@ -308,19 +307,19 @@ export function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
  *   initialState: 0,
  *   condition: x => x < 3,
  *   iterate: x => x + 1,
- *   resultSelector: x => x,
+ *   resultSelector: x => x
  * });
  *
  * result.subscribe({
  *   next: value => console.log(value),
- *   complete: () => console.log('complete!')
+ *   complete: () => console.log('Complete!')
  * });
  *
  * // Logs:
  * // 0
  * // 1
  * // 2
- * // "Complete!".
+ * // 'Complete!'
  * ```
  *
  * @see {@link from}

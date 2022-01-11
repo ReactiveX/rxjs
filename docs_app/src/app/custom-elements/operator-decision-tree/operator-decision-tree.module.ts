@@ -12,7 +12,6 @@ import { OperatorDecisionTreeService } from './operator-decision-tree.service';
 @NgModule({
   imports: [CommonModule, MatButtonModule, MatCardModule, MatRippleModule],
   declarations: [OperatorDecisionTreeComponent],
-  entryComponents: [OperatorDecisionTreeComponent],
   providers: [
     OperatorDecisionTreeDataService,
     OperatorDecisionTreeService,

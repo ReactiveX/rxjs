@@ -1,7 +1,7 @@
 import { OperatorFunction } from '../types';
 import { map } from './map';
 
-export function mapTo<R>(value: R): OperatorFunction<any, R>;
+export function mapTo<R>(value: R): OperatorFunction<unknown, R>;
 /** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
 export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
 
@@ -19,13 +19,15 @@ export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
  * and simply uses the emission moment to know when to emit the given `value`.
  *
  * ## Example
- * Map every click to the string 'Hi'
+ *
+ * Map every click to the string `'Hi'`
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { mapTo } from 'rxjs/operators';
+ * import { fromEvent, mapTo } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const greetings = clicks.pipe(mapTo('Hi'));
+ *
  * greetings.subscribe(x => console.log(x));
  * ```
  *
@@ -35,6 +37,6 @@ export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
  * @return A function that returns an Observable that emits the given `value`
  * every time the source Observable emits.
  */
-export function mapTo<R>(value: R): OperatorFunction<any, R> {
+export function mapTo<R>(value: R): OperatorFunction<unknown, R> {
   return map(() => value);
 }

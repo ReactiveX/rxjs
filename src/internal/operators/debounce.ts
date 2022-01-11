@@ -12,7 +12,7 @@ import { innerFrom } from '../observable/innerFrom';
  * <span class="informal">It's like {@link debounceTime}, but the time span of
  * emission silence is determined by a second Observable.</span>
  *
- * ![](debounce.png)
+ * ![](debounce.svg)
  *
  * `debounce` delays notifications emitted by the source Observable, but drops previous
  * pending delayed emissions if a new notification arrives on the source Observable.
@@ -33,22 +33,23 @@ import { innerFrom } from '../observable/innerFrom';
  * same time as they did on the source Observable.
  *
  * ## Example
+ *
  * Emit the most recent click after a burst of clicks
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { scan, debounce } from 'rxjs/operators';
+ * import { fromEvent, scan, debounce, interval } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
- *   scan((i) => ++i, 1),
- *   debounce((i) => interval(200 * i))
+ *   scan(i => ++i, 1),
+ *   debounce(i => interval(200 * i))
  * );
  * result.subscribe(x => console.log(x));
  * ```
  *
  * @see {@link audit}
  * @see {@link auditTime}
- * @see {@link debounce}
+ * @see {@link debounceTime}
  * @see {@link delay}
  * @see {@link sample}
  * @see {@link sampleTime}

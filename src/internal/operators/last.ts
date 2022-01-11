@@ -31,27 +31,34 @@ export function last<T, D = T>(
  * returns the last value or if a predicate is provided last value that matches the predicate. It returns the
  * given default value if no notification is emitted or matches the predicate.
  *
- * ## Example
- * Last alphabet from the sequence.
+ * ## Examples
+ *
+ * Last alphabet from the sequence
+ *
  * ```ts
- * import { from } from 'rxjs';
- * import { last } from 'rxjs/operators';
+ * import { from, last } from 'rxjs';
  *
  * const source = from(['x', 'y', 'z']);
- * const example = source.pipe(last());
- * //output: "Last alphabet: z"
- * example.subscribe(val => console.log(`Last alphabet: ${val}`));
+ * const result = source.pipe(last());
+ *
+ * result.subscribe(value => console.log(`Last alphabet: ${ value }`));
+ *
+ * // Outputs
+ * // Last alphabet: z
  * ```
  *
- * Default value when the value in the predicate is not matched.
+ * Default value when the value in the predicate is not matched
+ *
  * ```ts
- * import { from } from 'rxjs';
- * import { last } from 'rxjs/operators';
+ * import { from, last } from 'rxjs';
  *
  * const source = from(['x', 'y', 'z']);
- * const example = source.pipe(last(char => char === 'a','not exist'));
- * //output: "'a' is not exist."
- * example.subscribe(val => console.log(`'a' is ${val}.`));
+ * const result = source.pipe(last(char => char === 'a', 'not found'));
+ *
+ * result.subscribe(value => console.log(`'a' is ${ value }.`));
+ *
+ * // Outputs
+ * // 'a' is not found.
  * ```
  *
  * @see {@link skip}

@@ -5,10 +5,13 @@ import { from } from '../observable/from';
 import { operate } from '../util/lift';
 import { fromSubscribable } from '../observable/fromSubscribable';
 
+/**
+ * An object used to configure {@link connect} operator.
+ */
 export interface ConnectConfig<T> {
   /**
    * A factory function used to create the Subject through which the source
-   * is multicast. By default this creates a {@link Subject}.
+   * is multicast. By default, this creates a {@link Subject}.
    */
   connector: () => SubjectLike<T>;
 }
@@ -43,55 +46,54 @@ const DEFAULT_CONFIG: ConnectConfig<unknown> = {
  * the `selector` function returns, the observable it returns will be subscribed to, _then_ the
  * multicast will be connected to the source.
  *
- * ### Example
+ * ## Example
  *
  * Sharing a totally synchronous observable
  *
  * ```ts
- * import { defer, merge, of } from 'rxjs';
- * import { tap, connect, filter, map } from 'rxjs/operators';
+ * import { of, tap, connect, merge, map, filter } from 'rxjs';
  *
- * const source$ = defer(() => {
- *  console.log('subscription started');
- *  return of(1, 2, 3, 4, 5).pipe(
- *    tap(n => console.log(`source emitted ${n}`))
- *  );
- * });
+ * const source$ = of(1, 2, 3, 4, 5).pipe(
+ *   tap({
+ *     subscribe: () => console.log('subscription started'),
+ *     next: n => console.log(`source emitted ${ n }`)
+ *   })
+ * );
  *
  * source$.pipe(
  *   // Notice in here we're merging 3 subscriptions to `shared$`.
- *   connect((shared$) => merge(
- *     shared$.pipe(map(n => `all ${n}`)),
- *     shared$.pipe(filter(n => n % 2 === 0), map(n => `even ${n}`)),
- *     shared$.pipe(filter(n => n % 2 === 1), map(n => `odd ${n}`)),
+ *   connect(shared$ => merge(
+ *     shared$.pipe(map(n => `all ${ n }`)),
+ *     shared$.pipe(filter(n => n % 2 === 0), map(n => `even ${ n }`)),
+ *     shared$.pipe(filter(n => n % 2 === 1), map(n => `odd ${ n }`))
  *   ))
  * )
  * .subscribe(console.log);
  *
  * // Expected output: (notice only one subscription)
- * "subscription started"
- * "source emitted 1"
- * "all 1"
- * "odd 1"
- * "source emitted 2"
- * "all 2"
- * "even 2"
- * "source emitted 3"
- * "all 3"
- * "odd 3"
- * "source emitted 4"
- * "all 4"
- * "even 4"
- * "source emitted 5"
- * "all 5"
- * "odd 5"
+ * 'subscription started'
+ * 'source emitted 1'
+ * 'all 1'
+ * 'odd 1'
+ * 'source emitted 2'
+ * 'all 2'
+ * 'even 2'
+ * 'source emitted 3'
+ * 'all 3'
+ * 'odd 3'
+ * 'source emitted 4'
+ * 'all 4'
+ * 'even 4'
+ * 'source emitted 5'
+ * 'all 5'
+ * 'odd 5'
  * ```
  *
  * @param selector A function used to set up the multicast. Gives you a multicast observable
  * that is not yet connected. With that, you're expected to create and return
  * and Observable, that when subscribed to, will utilize the multicast observable.
  * After this function is executed -- and its return value subscribed to -- the
- * the operator will subscribe to the source, and the connection will be made.
+ * operator will subscribe to the source, and the connection will be made.
  * @param config The configuration object for `connect`.
  */
 export function connect<T, O extends ObservableInput<unknown>>(

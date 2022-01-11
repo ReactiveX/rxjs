@@ -1,4 +1,4 @@
-# <img src="docs_app/assets/Rx_Logo_S.png" alt="RxJS Logo" width="86" height="86"> RxJS: Reactive Extensions For JavaScript
+# <img src="docs_app/src/assets/images/logos/Rx_Logo_S.png" alt="RxJS Logo" width="86" height="86"> RxJS: Reactive Extensions For JavaScript
 
 ![CI](https://github.com/reactivex/rxjs/workflows/CI/badge.svg)
 [![npm version](https://badge.fury.io/js/rxjs.svg)](http://badge.fury.io/js/rxjs)
@@ -36,15 +36,29 @@ By contributing or commenting on issues in this repository, whether you've read 
 
 ### ES6 via npm
 
-```sh
+```shell
 npm install rxjs
 ```
 
-It's recommended to pull in the Observable creation methods you need directly from `'rxjs'` as shown below with `range`. And you can pull in any operator you need from one spot, under `'rxjs/operators'`.
+It's recommended to pull in the Observable creation methods you need directly from `'rxjs'` as shown below with `range`.
+If you're using RxJS version 7.2 or above, you can pull in any operator you need from the same spot, `'rxjs'`.
 
 ```ts
-import { range } from "rxjs";
-import { map, filter } from "rxjs/operators";
+import { range, filter, map } from 'rxjs';
+
+range(1, 200)
+  .pipe(
+    filter(x => x % 2 === 1),
+    map(x => x + x)
+  )
+  .subscribe(x => console.log(x));
+```
+
+If you're using RxJS version below 7.2, you can pull in any operator you need from one spot, under `'rxjs/operators'`.
+
+```ts
+import { range } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 range(1, 200)
   .pipe(
@@ -64,7 +78,7 @@ The global namespace for rxjs is `rxjs`:
 
 ```js
 const { range } = rxjs;
-const { map, filter } = rxjs.operators;
+const { filter, map } = rxjs.operators;
 
 range(1, 200)
   .pipe(

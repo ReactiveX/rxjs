@@ -9,35 +9,38 @@ import { isFunction } from '../util/isFunction';
  * ![](min.png)
  *
  * ## Examples
- * Get the minimal value of a series of numbers
- * ```ts
- * import { of } from 'rxjs';
- * import { min } from 'rxjs/operators';
  *
- * of(5, 4, 7, 2, 8).pipe(
- *   min(),
- * )
- * .subscribe(x => console.log(x)); // -> 2
+ * Get the minimal value of a series of numbers
+ *
+ * ```ts
+ * import { of, min } from 'rxjs';
+ *
+ * of(5, 4, 7, 2, 8)
+ *   .pipe(min())
+ *   .subscribe(x => console.log(x));
+ *
+ * // Outputs
+ * // 2
  * ```
  *
  * Use a comparer function to get the minimal item
- * ```typescript
- * import { of } from 'rxjs';
- * import { min } from 'rxjs/operators';
  *
- * interface Person {
- *   age: number,
- *   name: string
- * }
- *of(
- *   {age: 7, name: 'Foo'},
- *   {age: 5, name: 'Bar'},
- *   {age: 9, name: 'Beer'},
+ * ```ts
+ * import { of, min } from 'rxjs';
+ *
+ * of(
+ *   { age: 7, name: 'Foo' },
+ *   { age: 5, name: 'Bar' },
+ *   { age: 9, name: 'Beer' }
  * ).pipe(
- *   min<Person>( (a: Person, b: Person) => a.age < b.age ? -1 : 1),
+ *   min((a, b) => a.age < b.age ? -1 : 1)
  * )
- * .subscribe((x: Person) => console.log(x.name)); // -> 'Bar'
+ * .subscribe(x => console.log(x.name));
+ *
+ * // Outputs
+ * // 'Bar'
  * ```
+ *
  * @see {@link max}
  *
  * @param {Function} [comparer] - Optional comparer function that it will use instead of its default to compare the

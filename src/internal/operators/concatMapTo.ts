@@ -3,12 +3,12 @@ import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { isFunction } from '../util/isFunction';
 
 /* tslint:disable:max-line-length */
-export function concatMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<any, ObservedValueOf<O>>;
+export function concatMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<unknown, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function concatMapTo<O extends ObservableInput<unknown>>(
   observable: O,
   resultSelector: undefined
-): OperatorFunction<any, ObservedValueOf<O>>;
+): OperatorFunction<unknown, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function concatMapTo<T, R, O extends ObservableInput<unknown>>(
   observable: O,
@@ -40,14 +40,15 @@ export function concatMapTo<T, R, O extends ObservableInput<unknown>>(
  * set to `1`.
  *
  * ## Example
+ *
  * For each click event, tick every second from 0 to 3, with no concurrency
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { concatMapTo, take } from 'rxjs/operators';
+ * import { fromEvent, concatMapTo, interval, take } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
- *   concatMapTo(interval(1000).pipe(take(4))),
+ *   concatMapTo(interval(1000).pipe(take(4)))
  * );
  * result.subscribe(x => console.log(x));
  *

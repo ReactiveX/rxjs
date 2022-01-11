@@ -1,12 +1,11 @@
 import { Observable } from '../Observable';
-import { async } from '../scheduler/async';
+import { asyncScheduler } from '../scheduler/async';
 import { SchedulerLike, OperatorFunction } from '../types';
 import { scan } from './scan';
 import { defer } from '../observable/defer';
 import { map } from './map';
 
 /**
- *
  * Emits an object containing the current value, and the time that has
  * passed between emitting the current value and the previous value, which is
  * calculated by using the provided `scheduler`'s `now()` method to retrieve
@@ -19,41 +18,33 @@ import { map } from './map';
  *
  * ![](timeInterval.png)
  *
- * ## Examples
+ * ## Example
+ *
  * Emit interval between current value with the last value
  *
  * ```ts
- * import { interval } from "rxjs";
- * import { timeInterval, timeout } from "rxjs/operators";
+ * import { interval, timeInterval } from 'rxjs';
  *
  * const seconds = interval(1000);
  *
- * seconds.pipe(timeInterval())
- * .subscribe({
- *     next: value => console.log(value),
- *     error: err => console.log(err),
- * });
- *
- * seconds.pipe(timeout(900))
- * .subscribe({
- *     next: value => console.log(value),
- *     error: err => console.log(err),
- * });
+ * seconds
+ *   .pipe(timeInterval())
+ *   .subscribe(value => console.log(value));
  *
  * // NOTE: The values will never be this precise,
  * // intervals created with `interval` or `setInterval`
  * // are non-deterministic.
  *
- * // {value: 0, interval: 1000}
- * // {value: 1, interval: 1000}
- * // {value: 2, interval: 1000}
+ * // { value: 0, interval: 1000 }
+ * // { value: 1, interval: 1000 }
+ * // { value: 2, interval: 1000 }
  * ```
  *
  * @param {SchedulerLike} [scheduler] Scheduler used to get the current time.
  * @return A function that returns an Observable that emits information about
  * value and interval.
  */
-export function timeInterval<T>(scheduler: SchedulerLike = async): OperatorFunction<T, TimeInterval<T>> {
+export function timeInterval<T>(scheduler: SchedulerLike = asyncScheduler): OperatorFunction<T, TimeInterval<T>> {
   return (source: Observable<T>) =>
     defer(() => {
       return source.pipe(

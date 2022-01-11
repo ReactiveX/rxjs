@@ -5,13 +5,13 @@ import { ObservableInput, Observer, OperatorFunction, SubjectLike } from '../typ
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
 
-interface BasicGroupByOptions<K, T> {
+export interface BasicGroupByOptions<K, T> {
   element?: undefined;
   duration?: (grouped: GroupedObservable<K, T>) => ObservableInput<any>;
   connector?: () => SubjectLike<T>;
 }
 
-interface GroupByOptionsWithElement<K, E, T> {
+export interface GroupByOptionsWithElement<K, E, T> {
   element: (value: T) => E;
   duration?: (grouped: GroupedObservable<K, E>) => ObservableInput<any>;
   connector?: () => SubjectLike<E>;
@@ -68,39 +68,10 @@ export function groupBy<T, K, R>(
  *
  * ## Examples
  *
- * ### Group objects by id and return as array
+ * Group objects by `id` and return as array
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { mergeMap, groupBy, reduce } from 'rxjs/operators';
- *
- * of(
- *   {id: 1, name: 'JavaScript'},
- *   {id: 2, name: 'Parcel'},
- *   {id: 2, name: 'webpack'},
- *   {id: 1, name: 'TypeScript'},
- *   {id: 3, name: 'TSLint'}
- * ).pipe(
- *   groupBy(p => p.id),
- *   mergeMap((group$) => group$.pipe(reduce((acc, cur) => [...acc, cur], [])))
- * )
- * .subscribe(p => console.log(p));
- *
- * // displays:
- * // [ { id: 1, name: 'JavaScript'},
- * //   { id: 1, name: 'TypeScript'} ]
- * //
- * // [ { id: 2, name: 'Parcel'},
- * //   { id: 2, name: 'webpack'} ]
- * //
- * // [ { id: 3, name: 'TSLint'} ]
- * ```
- *
- * ### Pivot data on the id field
- *
- * ```ts
- * import { of } from 'rxjs';
- * import { groupBy, map, mergeMap, reduce } from 'rxjs/operators';
+ * import { of, groupBy, mergeMap, reduce } from 'rxjs';
  *
  * of(
  *   { id: 1, name: 'JavaScript' },
@@ -108,15 +79,35 @@ export function groupBy<T, K, R>(
  *   { id: 2, name: 'webpack' },
  *   { id: 1, name: 'TypeScript' },
  *   { id: 3, name: 'TSLint' }
+ * ).pipe(
+ *   groupBy(p => p.id),
+ *   mergeMap(group$ => group$.pipe(reduce((acc, cur) => [...acc, cur], [])))
  * )
- *   .pipe(
- *     groupBy(p => p.id, { element: p => p.name }),
- *     mergeMap(group$ =>
- *       group$.pipe(reduce((acc, cur) => [...acc, cur], [`${group$.key}`]))
- *     ),
- *     map(arr => ({ id: parseInt(arr[0], 10), values: arr.slice(1) }))
- *  )
- *  .subscribe(p => console.log(p));
+ * .subscribe(p => console.log(p));
+ *
+ * // displays:
+ * // [{ id: 1, name: 'JavaScript' }, { id: 1, name: 'TypeScript'}]
+ * // [{ id: 2, name: 'Parcel' }, { id: 2, name: 'webpack'}]
+ * // [{ id: 3, name: 'TSLint' }]
+ * ```
+ *
+ * Pivot data on the `id` field
+ *
+ * ```ts
+ * import { of, groupBy, mergeMap, reduce, map } from 'rxjs';
+ *
+ * of(
+ *   { id: 1, name: 'JavaScript' },
+ *   { id: 2, name: 'Parcel' },
+ *   { id: 2, name: 'webpack' },
+ *   { id: 1, name: 'TypeScript' },
+ *   { id: 3, name: 'TSLint' }
+ * ).pipe(
+ *   groupBy(p => p.id, { element: p => p.name }),
+ *   mergeMap(group$ => group$.pipe(reduce((acc, cur) => [...acc, cur], [`${ group$.key }`]))),
+ *   map(arr => ({ id: parseInt(arr[0], 10), values: arr.slice(1) }))
+ * )
+ * .subscribe(p => console.log(p));
  *
  * // displays:
  * // { id: 1, values: [ 'JavaScript', 'TypeScript' ] }

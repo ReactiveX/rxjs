@@ -65,6 +65,6 @@ export class NotificationComponent implements OnInit {
   dismiss() {
     this.storage.setItem(LOCAL_STORAGE_NAMESPACE + this.notificationId, 'hide');
     this.showNotification = 'hide';
-    this.dismissed.next();
+    this.dismissed.next(null);
   }
 }

@@ -28,7 +28,7 @@ export interface TimeoutConfig<T, O extends ObservableInput<unknown> = Observabl
 
   /**
    * A factory used to create observable to switch to when timeout occurs. Provides
-   * some information about the source observable's emissions and what delay or
+   * a {@link TimeoutInfo} about the source observable's emissions and what delay or
    * exact time triggered the timeout.
    */
   with?: (info: TimeoutInfo<T, M>) => O;
@@ -74,14 +74,14 @@ export interface TimeoutErrorCtor {
 }
 
 /**
- * An error thrown by the {@link operators/timeout} operator.
+ * An error thrown by the {@link timeout} operator.
  *
  * Provided so users can use as a type and do quality comparisons.
  * We recommend you do not subclass this or create instances of this class directly.
  * If you have need of a error representing a timeout, you should
  * create your own error class and use that.
  *
- * @see {@link operators/timeout}
+ * @see {@link timeout}
  *
  * @class TimeoutError
  */
@@ -116,52 +116,48 @@ export const TimeoutError: TimeoutErrorCtor = createErrorClass(
  * `first` is _not_ provided, the value from `each` will be used to check timeout conditions for the arrival of the first
  * value and all subsequent values. If `first` _is_ provided, `each` will only be use to check all values after the first.
  *
- * ### Example
+ * ## Examples
  *
  * Emit a custom error if there is too much time between values
  *
  * ```ts
- * import { interval, throwError } from 'rxjs';
- * import { timeout } from 'rxjs/operators';
+ * import { interval, timeout, throwError } from 'rxjs';
  *
  * class CustomTimeoutError extends Error {
  *   constructor() {
- *      super('It was too slow');
- *      this.name = 'CustomTimeoutError';
+ *     super('It was too slow');
+ *     this.name = 'CustomTimeoutError';
  *   }
  * }
  *
  * const slow$ = interval(900);
  *
  * slow$.pipe(
- *    timeout({
- *      each: 1000,
- *      with: () => throwError(new CustomTimeoutError())
- *    })
+ *   timeout({
+ *     each: 1000,
+ *     with: () => throwError(() => new CustomTimeoutError())
+ *   })
  * )
  * .subscribe({
- *    error: console.error
- * })
+ *   error: console.error
+ * });
  * ```
- *
- * ### Example
  *
  * Switch to a faster observable if your source is slow.
  *
  * ```ts
- * import { interval, throwError } from 'rxjs';
- * import { timeout } from 'rxjs/operators';
+ * import { interval, timeout } from 'rxjs';
  *
  * const slow$ = interval(900);
  * const fast$ = interval(500);
  *
  * slow$.pipe(
- *    timeout({
- *      each: 1000,
- *      with: () => fast$,
- *    })
+ *   timeout({
+ *     each: 1000,
+ *     with: () => fast$,
+ *   })
  * )
- * .subscribe(console.log)
+ * .subscribe(console.log);
  * ```
  * @param config The configuration for the timeout.
  */
@@ -200,66 +196,63 @@ export function timeout<T, O extends ObservableInput<unknown>, M = unknown>(
  * In this case, you would check the error for `instanceof TimeoutError` to validate that the error was indeed from `timeout`, and
  * not from some other source. If it's not from `timeout`, you should probably rethrow it if you're in a `catchError`.
  *
- *
- * ### Example
+ * ## Examples
  *
  * Emit a {@link TimeoutError} if the first value, and _only_ the first value, does not arrive within 5 seconds
  *
  * ```ts
- * import { interval } from 'rxjs';
- * import { timeout } from 'rxjs/operators';
+ * import { interval, timeout } from 'rxjs';
  *
  * // A random interval that lasts between 0 and 10 seconds per tick
- * const source$ = interval(Math.round(Math.random() * 10000));
+ * const source$ = interval(Math.round(Math.random() * 10_000));
  *
  * source$.pipe(
- *    timeout({ first: 5000 })
+ *   timeout({ first: 5_000 })
  * )
- * .subscribe(console.log);
+ * .subscribe({
+ *   next: console.log,
+ *   error: console.error
+ * });
  * ```
- *
- * ### Example
  *
  * Emit a {@link TimeoutError} if the source waits longer than 5 seconds between any two values or the first value
  * and subscription.
  *
  * ```ts
- * import { timer } from 'rxjs';
- * import { timeout, expand } from 'rxjs/operators';
+ * import { timer, timeout, expand } from 'rxjs';
  *
- * const getRandomTime = () => Math.round(Math.random() * 10000);
+ * const getRandomTime = () => Math.round(Math.random() * 10_000);
  *
  * // An observable that waits a random amount of time between each delivered value
- * const source$ = timer(getRandomTime()).pipe(
- *  expand(() => timer(getRandomTime()))
- * )
+ * const source$ = timer(getRandomTime())
+ *   .pipe(expand(() => timer(getRandomTime())));
  *
- * source$.pipe(
- *    timeout({ each: 5000 })
- * )
- * .subscribe(console.log);
+ * source$
+ *   .pipe(timeout({ each: 5_000 }))
+ *   .subscribe({
+ *     next: console.log,
+ *     error: console.error
+ *   });
  * ```
  *
- * ### Example
- *
- * Emit a {@link TimeoutError} if the the source does not emit before 7 seconds, _or_ if the source waits longer than
+ * Emit a {@link TimeoutError} if the source does not emit before 7 seconds, _or_ if the source waits longer than
  * 5 seconds between any two values after the first.
  *
  * ```ts
- * import { timer } from 'rxjs';
- * import { timeout, expand } from 'rxjs/operators';
+ * import { timer, timeout, expand } from 'rxjs';
  *
- * const getRandomTime = () => Math.round(Math.random() * 10000);
+ * const getRandomTime = () => Math.round(Math.random() * 10_000);
  *
  * // An observable that waits a random amount of time between each delivered value
- * const source$ = timer(getRandomTime()).pipe(
- *  expand(() => timer(getRandomTime()))
- * )
+ * const source$ = timer(getRandomTime())
+ *   .pipe(expand(() => timer(getRandomTime())));
  *
- * source$.pipe(
- *    timeout({ first: 7000, each: 5000 })
- * )
- * .subscribe(console.log);
+ * source$
+ *   .pipe(timeout({ first: 7_000, each: 5_000 }))
+ *   .subscribe({
+ *     next: console.log,
+ *     error: console.error
+ *   });
  * ```
  */
 export function timeout<T, M = unknown>(config: Omit<TimeoutConfig<T, any, M>, 'with'>): OperatorFunction<T, T>;
@@ -299,6 +292,8 @@ export function timeout<T>(each: number, scheduler?: SchedulerLike): MonoTypeOpe
  * <span class="informal">Timeouts on Observable that doesn't emit values fast enough.</span>
  *
  * ![](timeout.png)
+ *
+ * @see {@link timeoutWith}
  *
  * @return A function that returns an Observable that mirrors behaviour of the
  * source Observable, unless timeout happens when it throws an error.

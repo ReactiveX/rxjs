@@ -47,7 +47,7 @@ module.exports = function (wallaby) {
 
       var mocha = wallaby.testFramework;
       var path = require('path');
-      require(path.resolve(w.projectCacheDir, 'spec/helpers/polyfills'));
+      require(path.resolve(w.projectCacheDir, 'spec/helpers/setup'));
       mocha.ui(path.resolve(w.projectCacheDir, 'spec/helpers/testScheduler-ui'));
     }
   });

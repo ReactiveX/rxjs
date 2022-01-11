@@ -123,49 +123,49 @@ describe('max', () => {
   it('should max a range() source observable', (done) => {
     range(1, 10000)
       .pipe(max())
-      .subscribe(
-        (value: number) => {
+      .subscribe({
+        next: (value: number) => {
           expect(value).to.equal(10000);
         },
-        () => {
+        error: () => {
           done(new Error('should not be called'));
         },
-        () => {
+        complete: () => {
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should max a range().pipe(skip(1)) source observable', (done) => {
     range(1, 10)
       .pipe(skip(1), max())
-      .subscribe(
-        (value: number) => {
+      .subscribe({
+        next: (value: number) => {
           expect(value).to.equal(10);
         },
-        () => {
+        error: () => {
           done(new Error('should not be called'));
         },
-        () => {
+        complete: () => {
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should max a range().pipe(take(1)) source observable', (done) => {
     range(1, 10)
       .pipe(take(1), max())
-      .subscribe(
-        (value: number) => {
+      .subscribe({
+        next: (value: number) => {
           expect(value).to.equal(1);
         },
-        () => {
+        error: () => {
           done(new Error('should not be called'));
         },
-        () => {
+        complete: () => {
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should work with error', () => {

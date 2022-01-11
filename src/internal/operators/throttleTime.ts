@@ -23,15 +23,16 @@ import { timer } from '../observable/timer';
  *
  * ## Examples
  *
- * #### Limit click rate
+ * ### Limit click rate
  *
  * Emit clicks at a rate of at most one click per second
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { throttleTime } from 'rxjs/operators';
+ * import { fromEvent, throttleTime } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(throttleTime(1000));
+ *
  * result.subscribe(x => console.log(x));
  * ```
  *

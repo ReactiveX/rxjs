@@ -17,8 +17,7 @@ A Pipeable Operator is essentially a pure function which takes one Observable as
 For example, the operator called [`map`](/api/operators/map) is analogous to the Array method of the same name. Just as `[1, 2, 3].map(x => x * x)` will yield `[1, 4, 9]`, the Observable created like this:
 
 ```ts
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { of, map } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(map((x) => x * x))
@@ -33,8 +32,7 @@ of(1, 2, 3)
 will emit `1`, `4`, `9`. Another useful operator is [`first`](/api/operators/first):
 
 ```ts
-import { of } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { of, first } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(first())
@@ -105,7 +103,7 @@ To explain how operators work, textual descriptions are often not enough. Many o
 
 Below you can see the anatomy of a marble diagram.
 
-<img src="../../assets/images/guide/marble-diagram-anatomy.svg">
+<img src="assets/images/guide/marble-diagram-anatomy.svg">
 
 Throughout this documentation site, we extensively use marble diagrams to explain how operators work. They may be really useful in other contexts too, like on a whiteboard or even in our unit tests (as ASCII diagrams).
 
@@ -270,8 +268,7 @@ If there is a commonly used sequence of operators in your code, use the `pipe()`
 For example, you could make a function that discarded odd values and doubled even values like this:
 
 ```ts
-import { pipe } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { pipe, filter, map } from 'rxjs';
 
 function discardOddDoubleEven() {
   return pipe(
@@ -320,7 +317,7 @@ function delay<T>(delayInMillis: number) {
         },
         complete() {
           hasCompleted = true;
-          // If we still have timers running, we don't want to yet.
+          // If we still have timers running, we don't want to complete yet.
           if (allTimerIDs.size === 0) {
             subscriber.complete();
           }

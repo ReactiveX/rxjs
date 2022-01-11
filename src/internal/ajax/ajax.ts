@@ -12,16 +12,16 @@ export interface AjaxCreationMethod {
    *
    * This is the most configurable option, and the basis for all other AJAX calls in the library.
    *
-   * ### Example
+   * ## Example
+   *
    * ```ts
    * import { ajax } from 'rxjs/ajax';
-   * import { map, catchError } from 'rxjs/operators';
-   * import { of } from 'rxjs';
+   * import { map, catchError, of } from 'rxjs';
    *
    * const obs$ = ajax({
-   *    method: 'GET',
-   *    url: `https://api.github.com/users?per_page=5`,
-   *    responseType: 'json',
+   *   method: 'GET',
+   *   url: 'https://api.github.com/users?per_page=5',
+   *   responseType: 'json'
    * }).pipe(
    *   map(userResponse => console.log('users: ', userResponse)),
    *   catchError(error => {
@@ -38,13 +38,13 @@ export interface AjaxCreationMethod {
    * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) in
    * global scope. Defaults to a `responseType` of `"json"`.
    *
-   * ### Example
+   * ## Example
+   *
    * ```ts
    * import { ajax } from 'rxjs/ajax';
-   * import { map, catchError } from 'rxjs/operators';
-   * import { of } from 'rxjs';
+   * import { map, catchError, of } from 'rxjs';
    *
-   * const obs$ = ajax(`https://api.github.com/users?per_page=5`).pipe(
+   * const obs$ = ajax('https://api.github.com/users?per_page=5').pipe(
    *   map(userResponse => console.log('users: ', userResponse)),
    *   catchError(error => {
    *     console.log('error: ', error);
@@ -173,29 +173,15 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  * It creates an observable for an Ajax request with either a request object with
  * url, headers, etc or a string for a URL.
  *
+ * ## Examples
  *
- * ## Using ajax() to fetch the response object that is being returned from API.
+ * Using `ajax()` to fetch the response object that is being returned from API
+ *
  * ```ts
  * import { ajax } from 'rxjs/ajax';
- * import { map, catchError } from 'rxjs/operators';
- * import { of } from 'rxjs';
+ * import { map, catchError, of } from 'rxjs';
  *
- * const obs$ = ajax(`https://api.github.com/users?per_page=5`).pipe(
- *   map(userResponse => console.log('users: ', userResponse)),
- *   catchError(error => {
- *     console.log('error: ', error);
- *     return of(error);
- *   })
- * );
- * ```
- *
- * ## Using ajax.getJSON() to fetch data from API.
- * ```ts
- * import { ajax } from 'rxjs/ajax';
- * import { map, catchError } from 'rxjs/operators';
- * import { of } from 'rxjs';
- *
- * const obs$ = ajax.getJSON(`https://api.github.com/users?per_page=5`).pipe(
+ * const obs$ = ajax('https://api.github.com/users?per_page=5').pipe(
  *   map(userResponse => console.log('users: ', userResponse)),
  *   catchError(error => {
  *     console.log('error: ', error);
@@ -203,13 +189,37 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  *   })
  * );
  *
+ * obs$.subscribe({
+ *   next: value => console.log(value),
+ *   error: err => console.log(err)
+ * });
  * ```
  *
- * ## Using ajax() with object as argument and method POST with a two seconds delay.
+ * Using `ajax.getJSON()` to fetch data from API
+ *
  * ```ts
  * import { ajax } from 'rxjs/ajax';
- * import { map, catchError } from 'rxjs/operators';
- * import { of } from 'rxjs';
+ * import { map, catchError, of } from 'rxjs';
+ *
+ * const obs$ = ajax.getJSON('https://api.github.com/users?per_page=5').pipe(
+ *   map(userResponse => console.log('users: ', userResponse)),
+ *   catchError(error => {
+ *     console.log('error: ', error);
+ *     return of(error);
+ *   })
+ * );
+ *
+ * obs$.subscribe({
+ *   next: value => console.log(value),
+ *   error: err => console.log(err)
+ * });
+ * ```
+ *
+ * Using `ajax()` with object as argument and method POST with a two seconds delay
+ *
+ * ```ts
+ * import { ajax } from 'rxjs/ajax';
+ * import { map, catchError, of } from 'rxjs';
  *
  * const users = ajax({
  *   url: 'https://httpbin.org/delay/2',
@@ -229,15 +239,19 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  *   })
  * );
  *
+ * users.subscribe({
+ *   next: value => console.log(value),
+ *   error: err => console.log(err)
+ * });
  * ```
  *
- * ## Using ajax() to fetch. An error object that is being returned from the request.
+ * Using `ajax()` to fetch. An error object that is being returned from the request
+ *
  * ```ts
  * import { ajax } from 'rxjs/ajax';
- * import { map, catchError } from 'rxjs/operators';
- * import { of } from 'rxjs';
+ * import { map, catchError, of } from 'rxjs';
  *
- * const obs$ = ajax(`https://api.github.com/404`).pipe(
+ * const obs$ = ajax('https://api.github.com/404').pipe(
  *   map(userResponse => console.log('users: ', userResponse)),
  *   catchError(error => {
  *     console.log('error: ', error);
@@ -245,6 +259,10 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  *   })
  * );
  *
+ * obs$.subscribe({
+ *   next: value => console.log(value),
+ *   error: err => console.log(err)
+ * });
  * ```
  */
 export const ajax: AjaxCreationMethod = (() => {
@@ -274,14 +292,23 @@ const LOADSTART = 'loadstart';
 const PROGRESS = 'progress';
 const LOAD = 'load';
 
-export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
+export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
   return new Observable((destination) => {
-    // Here we're pulling off each of the configuration arguments
-    // that we don't want to add to the request information we're
-    // passing around.
-    const { queryParams, body: configuredBody, headers: configuredHeaders, ...remainingConfig } = config;
+    const config = {
+      // Defaults
+      async: true,
+      crossDomain: false,
+      withCredentials: false,
+      method: 'GET',
+      timeout: 0,
+      responseType: 'json' as XMLHttpRequestResponseType,
 
-    let { url } = remainingConfig;
+      ...init,
+    };
+
+    const { queryParams, body: configuredBody, headers: configuredHeaders } = config;
+
+    let url = config.url;
     if (!url) {
       throw new TypeError('url is required');
     }
@@ -327,6 +354,8 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       }
     }
 
+    const crossDomain = config.crossDomain;
+
     // Set the x-requested-with header. This is a non-standard header that has
     // come to be a de facto standard for HTTP requests sent by libraries and frameworks
     // using XHR. However, we DO NOT want to set this if it is a CORS request. This is
@@ -334,14 +363,14 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     // None of this is necessary, it's only being set because it's "the thing libraries do"
     // Starting back as far as JQuery, and continuing with other libraries such as Angular 1,
     // Axios, et al.
-    if (!config.crossDomain && !('x-requested-with' in headers)) {
+    if (!crossDomain && !('x-requested-with' in headers)) {
       headers['x-requested-with'] = 'XMLHttpRequest';
     }
 
     // Allow users to provide their XSRF cookie name and the name of a custom header to use to
     // send the cookie.
-    const { withCredentials, xsrfCookieName, xsrfHeaderName } = remainingConfig;
-    if ((withCredentials || !remainingConfig.crossDomain) && xsrfCookieName && xsrfHeaderName) {
+    const { withCredentials, xsrfCookieName, xsrfHeaderName } = config;
+    if ((withCredentials || !crossDomain) && xsrfCookieName && xsrfHeaderName) {
       const xsrfCookie = document?.cookie.match(new RegExp(`(^|;\\s*)(${xsrfCookieName})=([^;]*)`))?.pop() ?? '';
       if (xsrfCookie) {
         headers[xsrfHeaderName] = xsrfCookie;
@@ -352,17 +381,9 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     // and set the content-type in `headers`, if we're able.
     const body = extractContentTypeAndMaybeSerializeBody(configuredBody, headers);
 
-    const _request: AjaxRequest = {
-      // Default values
-      async: true,
-      crossDomain: true,
-      withCredentials: false,
-      method: 'GET',
-      timeout: 0,
-      responseType: 'json' as XMLHttpRequestResponseType,
-
-      // Override with passed user values
-      ...remainingConfig,
+    // The final request settings.
+    const _request: Readonly<AjaxRequest> = {
+      ...config,
 
       // Set values we ensured above
       url,
@@ -373,7 +394,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
     let xhr: XMLHttpRequest;
 
     // Create our XHR so we can get started.
-    xhr = config.createXHR ? config.createXHR() : new XMLHttpRequest();
+    xhr = init.createXHR ? init.createXHR() : new XMLHttpRequest();
 
     {
       ///////////////////////////////////////////////////
@@ -383,7 +404,7 @@ export function fromAjax<T>(config: AjaxConfig): Observable<AjaxResponse<T>> {
       // Otherwise the progress events will not fire.
       ///////////////////////////////////////////////////
 
-      const { progressSubscriber, includeDownloadProgress = false, includeUploadProgress = false } = config;
+      const { progressSubscriber, includeDownloadProgress = false, includeUploadProgress = false } = init;
 
       /**
        * Wires up an event handler that will emit an error when fired. Used

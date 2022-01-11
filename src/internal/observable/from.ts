@@ -22,7 +22,7 @@ export function from<O extends ObservableInput<any>>(input: O, scheduler: Schedu
  *
  * ## Examples
  *
- * ### Converts an array to an Observable
+ * Converts an array to an Observable
  *
  * ```ts
  * import { from } from 'rxjs';
@@ -38,13 +38,10 @@ export function from<O extends ObservableInput<any>>(input: O, scheduler: Schedu
  * // 30
  * ```
  *
- * ---
- *
- * ### Convert an infinite iterable (from a generator) to an Observable
+ * Convert an infinite iterable (from a generator) to an Observable
  *
  * ```ts
- * import { from } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * import { from, take } from 'rxjs';
  *
  * function* generateDoubles(seed) {
  *    let i = seed;
@@ -72,9 +69,7 @@ export function from<O extends ObservableInput<any>>(input: O, scheduler: Schedu
  * // 1536
  * ```
  *
- * ---
- *
- * ### With async scheduler
+ * With `asyncScheduler`
  *
  * ```ts
  * import { from, asyncScheduler } from 'rxjs';
@@ -89,8 +84,8 @@ export function from<O extends ObservableInput<any>>(input: O, scheduler: Schedu
  * console.log('end');
  *
  * // Logs:
- * // start
- * // end
+ * // 'start'
+ * // 'end'
  * // 10
  * // 20
  * // 30

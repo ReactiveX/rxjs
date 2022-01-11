@@ -15,25 +15,21 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  * If a comparator function is not provided, an equality check is used by default.
  *
  * ## Examples
+ *
  * An example comparing the name of persons
- * ```typescript
- * import { of } from 'rxjs';
- * import { distinctUntilKeyChanged } from 'rxjs/operators';
  *
- *  interface Person {
- *     age: number,
- *     name: string
- *  }
+ * ```ts
+ * import { of, distinctUntilKeyChanged } from 'rxjs';
  *
- *of(
- *     { age: 4, name: 'Foo'},
- *     { age: 7, name: 'Bar'},
- *     { age: 5, name: 'Foo'},
- *     { age: 6, name: 'Foo'},
- *   ).pipe(
- *     distinctUntilKeyChanged('name'),
- *   )
- *   .subscribe(x => console.log(x));
+ * of(
+ *   { age: 4, name: 'Foo' },
+ *   { age: 7, name: 'Bar' },
+ *   { age: 5, name: 'Foo' },
+ *   { age: 6, name: 'Foo' }
+ * ).pipe(
+ *   distinctUntilKeyChanged('name')
+ * )
+ * .subscribe(x => console.log(x));
  *
  * // displays:
  * // { age: 4, name: 'Foo' }
@@ -42,24 +38,19 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  * ```
  *
  * An example comparing the first letters of the name
- * ```typescript
- * import { of } from 'rxjs';
- * import { distinctUntilKeyChanged } from 'rxjs/operators';
  *
- * interface Person {
- *     age: number,
- *     name: string
- *  }
+ * ```ts
+ * import { of, distinctUntilKeyChanged } from 'rxjs';
  *
- *of(
- *     { age: 4, name: 'Foo1'},
- *     { age: 7, name: 'Bar'},
- *     { age: 5, name: 'Foo2'},
- *     { age: 6, name: 'Foo3'},
- *   ).pipe(
- *     distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3)),
- *   )
- *   .subscribe(x => console.log(x));
+ * of(
+ *   { age: 4, name: 'Foo1' },
+ *   { age: 7, name: 'Bar' },
+ *   { age: 5, name: 'Foo2' },
+ *   { age: 6, name: 'Foo3' }
+ * ).pipe(
+ *   distinctUntilKeyChanged('name', (x, y) => x.substring(0, 3) === y.substring(0, 3))
+ * )
+ * .subscribe(x => console.log(x));
  *
  * // displays:
  * // { age: 4, name: 'Foo1' }
