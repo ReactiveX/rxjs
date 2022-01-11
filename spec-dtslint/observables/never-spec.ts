@@ -1,9 +1,5 @@
-import { never } from 'rxjs';
+import { NEVER } from 'rxjs';
 
-it('should not support any parameter', () => {
-  const a = never(1); // $ExpectError
-});
-
-it('should infer never', () => {
-  const a = never(); // $ExpectType Observable<never>
+it('should be of type Observable<never>', () => {
+  const a = NEVER; // $ExpectType Observable<never>
 });
