@@ -30,13 +30,17 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
  * ![](shareReplay.png)
  *
  * ## Reference counting
+ * By default `shareReplay` will use `refCount` of false, meaning that it will _not_ unsubscribe the
+ * source when the reference counter drops to zero, i.e. the inner `ReplaySubject` will _not_ be unsubscribed
+ * (and potentially run for ever).
+ * This is the default as it is expected that `shareReplay` is often used to keep around expensive to setup
+ * observables which we want to keep running instead of having to do the expensive setup again.
+ *
  * As of RXJS version 6.4.0 a new overload signature was added to allow for manual control over what
  * happens when the operators internal reference counter drops to zero.
  * If `refCount` is true, the source will be unsubscribed from once the reference count drops to zero, i.e.
  * the inner `ReplaySubject` will be unsubscribed. All new subscribers will receive value emissions from a
  * new `ReplaySubject` which in turn will cause a new subscription to the source observable.
- * If `refCount` is false on the other hand, the source will not be unsubscribed meaning that the inner
- * `ReplaySubject` will still be subscribed to the source (and potentially run for ever).
  *
  * ## Examples
  *
