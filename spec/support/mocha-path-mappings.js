@@ -1,5 +1,3 @@
-'use strict';
-
 const { join } = require('path');
 const root = join(__dirname, '../..');
 
@@ -17,32 +15,26 @@ const originalResolveFilename = mod._resolveFilename;
 // that's within the 'dist' directory.
 
 const tsconfig = require(join(root, 'tsconfig.json'));
-const originalPaths = tsconfig.compilerOptions.paths;
+const paths = tsconfig.compilerOptions.paths;
 
-const paths = Object.entries(originalPaths).reduce((acc, [key, values]) => {
-  acc[key] = values.map(value => value.replace('/src/', '/dist/src/'));
-  return acc;
-}, {});
 const keys = Object.keys(paths);
 
-mod._resolveFilename = function(path, ...rest) {
+mod._resolveFilename = function (path, ...rest) {
   for (const key of keys) {
     if (key.endsWith('*')) {
-
       // If the key ends with a wildcard, we need to take the part of the
       // original path matched by the wildcard and use it to replace the
       // wildcard in the mapped path. TypeScript uses this configuration to
       // support deep paths. (Whilst RxJS does not support deep imports, there
       // are places in the tests in which deep imports of internals are made.)
 
-      const regExp = new RegExp(key.replace(/\//g, '\\\/').replace(/\*$/, '(.*)'));
+      const regExp = new RegExp(key.replace(/\//g, '\\/').replace(/\*$/, '(.*)'));
       const match = path.match(regExp);
       if (match) {
         const [, more] = match;
         return originalResolveFilename.call(this, join(root, paths[key][0].replace(/\*$/, more)), ...rest);
       }
     } else if (path === key) {
-
       // If the original path matches the key, we use the mapped path instead.
 
       return originalResolveFilename.call(this, join(root, paths[key][0]), ...rest);
