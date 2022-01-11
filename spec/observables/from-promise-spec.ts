@@ -10,26 +10,24 @@ describe('from (fromPromise)', () => {
     const promise = Promise.resolve(42);
     from(promise)
       .subscribe(
-        (x) => { expect(x).to.equal(42); },
-        (x) => {
+        { next: (x) => { expect(x).to.equal(42); }, error: (x) => {
           done(new Error('should not be called'));
-        }, () => {
+        }, complete: () => {
           done();
-        });
+        } });
   });
 
   it('should raise error from a rejected promise', (done) => {
     const promise = Promise.reject('bad');
     from(promise)
-      .subscribe((x) => {
+      .subscribe({ next: (x) => {
           done(new Error('should not be called'));
-        },
-        (e) => {
+        }, error: (e) => {
           expect(e).to.equal('bad');
           done();
-        }, () => {
+        }, complete: () => {
          done(new Error('should not be called'));
-       });
+       } });
   });
 
   it('should share the underlying promise with multiple subscribers', (done) => {
@@ -38,19 +36,17 @@ describe('from (fromPromise)', () => {
 
     observable
       .subscribe(
-        (x) => { expect(x).to.equal(42); },
-        (x) => {
+        { next: (x) => { expect(x).to.equal(42); }, error: (x) => {
           done(new Error('should not be called'));
-        }, undefined);
+        } });
     setTimeout(() => {
       observable
         .subscribe(
-          (x) => { expect(x).to.equal(42); },
-          (x) => {
+          { next: (x) => { expect(x).to.equal(42); }, error: (x) => {
             done(new Error('should not be called'));
-          }, () => {
+          }, complete: () => {
             done();
-          });
+          } });
     });
   });
 
@@ -60,12 +56,11 @@ describe('from (fromPromise)', () => {
       expect(x).to.equal(42);
       from(promise)
         .subscribe(
-          (y) => { expect(y).to.equal(42); },
-          (x) => {
+          { next: (y) => { expect(y).to.equal(42); }, error: (x) => {
             done(new Error('should not be called'));
-          }, () => {
+          }, complete: () => {
             done();
-          });
+          } });
     }, () => {
       done(new Error('should not be called'));
     });
@@ -84,37 +79,34 @@ describe('from (fromPromise)', () => {
     const promise = new CustomPromise(Promise.resolve(42));
     from(promise)
       .subscribe(
-        (x) => { expect(x).to.equal(42); },
-        () => {
+        { next: (x) => { expect(x).to.equal(42); }, error: () => {
           done(new Error('should not be called'));
-        }, () => {
+        }, complete: () => {
           done();
-        });
+        } });
   });
 
   it('should emit a value from a resolved promise on a separate scheduler', (done) => {
     const promise = Promise.resolve(42);
     from(promise, asapScheduler)
       .subscribe(
-        (x) => { expect(x).to.equal(42); },
-        (x) => {
+        { next: (x) => { expect(x).to.equal(42); }, error: (x) => {
           done(new Error('should not be called'));
-        }, () => {
+        }, complete: () => {
           done();
-        });
+        } });
   });
 
   it('should raise error from a rejected promise on a separate scheduler', (done) => {
     const promise = Promise.reject('bad');
     from(promise, asapScheduler)
       .subscribe(
-        (x) => { done(new Error('should not be called')); },
-        (e) => {
+        { next: (x) => { done(new Error('should not be called')); }, error: (e) => {
           expect(e).to.equal('bad');
           done();
-        }, () => {
+        }, complete: () => {
           done(new Error('should not be called'));
-        });
+        } });
   });
 
   it('should share the underlying promise with multiple subscribers on a separate scheduler', (done) => {
@@ -123,20 +115,17 @@ describe('from (fromPromise)', () => {
 
     observable
       .subscribe(
-        (x) => { expect(x).to.equal(42); },
-        (x) => {
+        { next: (x) => { expect(x).to.equal(42); }, error: (x) => {
           done(new Error('should not be called'));
-        },
-        undefined);
+        } });
     setTimeout(() => {
       observable
         .subscribe(
-          (x) => { expect(x).to.equal(42); },
-          (x) => {
+          { next: (x) => { expect(x).to.equal(42); }, error: (x) => {
             done(new Error('should not be called'));
-          }, () => {
+          }, complete: () => {
             done();
-          });
+          } });
     });
   });
 
@@ -146,7 +135,7 @@ describe('from (fromPromise)', () => {
     const completeSpy = sinon.spy();
     const promise = Promise.resolve(42);
     const subscription = from(promise)
-      .subscribe(nextSpy, throwSpy, completeSpy);
+      .subscribe({ next: nextSpy, error: throwSpy, complete: completeSpy });
     subscription.unsubscribe();
 
     setTimeout(() => {

@@ -52,7 +52,7 @@ describe('ajax', () => {
       method: '',
     };
 
-    ajax(obj).subscribe(null, (err) => expect(err).to.exist);
+    ajax(obj).subscribe({ error: (err) => expect(err).to.exist });
   });
 
   it('should create XMLHttpRequest for CORS', () => {
@@ -258,17 +258,17 @@ describe('ajax', () => {
       createXHR: () => {
         throw new Error('wokka wokka');
       },
-    }).subscribe(
-      () => {
+    }).subscribe({
+      next: () => {
         throw new Error('should not next');
       },
-      (err: any) => {
+      error: (err: any) => {
         error = err;
       },
-      () => {
+      complete: () => {
         throw new Error('should not complete');
-      }
-    );
+      },
+    });
 
     expect(error).to.be.an('error', 'wokka wokka');
   });
@@ -287,18 +287,18 @@ describe('ajax', () => {
         };
         return ret as any;
       },
-    }).subscribe(
-      () => {
+    }).subscribe({
+      next: () => {
         done(new Error('should not be called'));
       },
-      (e: Error) => {
+      error: (e: Error) => {
         expect(e).to.be.equal(expected);
         done();
       },
-      () => {
+      complete: () => {
         done(new Error('should not be called'));
-      }
-    );
+      },
+    });
   });
 
   it('should succeed on 200', () => {
@@ -309,15 +309,14 @@ describe('ajax', () => {
     ajax({
       url: '/flibbertyJibbet',
       method: '',
-    }).subscribe(
-      (x: any) => {
+    }).subscribe({
+      next: (x: any) => {
         result = x;
       },
-      null,
-      () => {
+      complete: () => {
         complete = true;
-      }
-    );
+      },
+    });
 
     expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
 
@@ -341,17 +340,17 @@ describe('ajax', () => {
     // No `response` property on the object (for older IE).
     MockXMLHttpRequest.noResponseProp = true;
 
-    ajax(obj).subscribe(
-      () => {
+    ajax(obj).subscribe({
+      next: () => {
         throw new Error('should not next');
       },
-      (err: any) => {
+      error: (err: any) => {
         error = err;
       },
-      () => {
+      complete: () => {
         throw new Error('should not complete');
-      }
-    );
+      },
+    });
 
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 207,
@@ -370,17 +369,17 @@ describe('ajax', () => {
       method: '',
     };
 
-    ajax(obj).subscribe(
-      () => {
+    ajax(obj).subscribe({
+      next: () => {
         throw new Error('should not next');
       },
-      (err: any) => {
+      error: (err: any) => {
         error = err;
       },
-      () => {
+      complete: () => {
         throw new Error('should not complete');
-      }
-    );
+      },
+    });
 
     expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
 
@@ -404,15 +403,14 @@ describe('ajax', () => {
       method: '',
     };
 
-    ajax(obj).subscribe(
-      (x: any) => {
+    ajax(obj).subscribe({
+      next: (x: any) => {
         result = x;
       },
-      null,
-      () => {
+      complete: () => {
         complete = true;
-      }
-    );
+      },
+    });
 
     expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
 
@@ -434,17 +432,17 @@ describe('ajax', () => {
       method: '',
     };
 
-    ajax(obj).subscribe(
-      () => {
+    ajax(obj).subscribe({
+      next: () => {
         throw new Error('should not next');
       },
-      (err: any) => {
+      error: (err: any) => {
         error = err;
       },
-      () => {
+      complete: () => {
         throw new Error('should not complete');
-      }
-    );
+      },
+    });
 
     MockXMLHttpRequest.mostRecent.respondWith({
       status: 404,
@@ -461,16 +459,16 @@ describe('ajax', () => {
   it('should succeed no settings', () => {
     const expected = JSON.stringify({ foo: 'bar' });
 
-    ajax('/flibbertyJibbet').subscribe(
-      (x: any) => {
+    ajax('/flibbertyJibbet').subscribe({
+      next: (x: any) => {
         expect(x.status).to.equal(200);
         expect(x.xhr.method).to.equal('GET');
         expect(x.xhr.responseText).to.equal(expected);
       },
-      () => {
+      error: () => {
         throw 'should not have been called';
-      }
-    );
+      },
+    });
 
     expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
     MockXMLHttpRequest.mostRecent.respondWith({
@@ -482,19 +480,19 @@ describe('ajax', () => {
   it('should fail no settings', () => {
     const expected = JSON.stringify({ foo: 'bar' });
 
-    ajax('/flibbertyJibbet').subscribe(
-      () => {
+    ajax('/flibbertyJibbet').subscribe({
+      next: () => {
         throw 'should not have been called';
       },
-      (x: any) => {
+      error: (x: any) => {
         expect(x.status).to.equal(500);
         expect(x.xhr.method).to.equal('GET');
         expect(x.xhr.responseText).to.equal(expected);
       },
-      () => {
+      complete: () => {
         throw 'should not have been called';
-      }
-    );
+      },
+    });
 
     expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
     MockXMLHttpRequest.mostRecent.respondWith({
@@ -510,18 +508,18 @@ describe('ajax', () => {
       timeout: 10,
     };
 
-    ajax(obj).subscribe(
-      (x: any) => {
+    ajax(obj).subscribe({
+      next: (x: any) => {
         expect(x.status).to.equal(200);
         expect(x.xhr.method).to.equal('GET');
         expect(x.xhr.async).to.equal(true);
         expect(x.xhr.timeout).to.equal(10);
         expect(x.xhr.responseType).to.equal('text');
       },
-      () => {
+      error: () => {
         throw 'should not have been called';
-      }
-    );
+      },
+    });
 
     const request = MockXMLHttpRequest.mostRecent;
 
@@ -542,18 +540,18 @@ describe('ajax', () => {
       timeout: 10,
     };
 
-    ajax(obj).subscribe(
-      () => {
+    ajax(obj).subscribe({
+      next: () => {
         throw 'should not have been called';
       },
-      (e) => {
+      error: (e) => {
         expect(e.status).to.equal(0);
         expect(e.xhr.method).to.equal('GET');
         expect(e.xhr.async).to.equal(true);
         expect(e.xhr.timeout).to.equal(10);
         expect(e.xhr.responseType).to.equal('text');
-      }
-    );
+      },
+    });
 
     const request = MockXMLHttpRequest.mostRecent;
 
@@ -691,18 +689,18 @@ describe('ajax', () => {
         },
       };
 
-      ajax(obj).subscribe(
-        () => {
+      ajax(obj).subscribe({
+        next: () => {
           done(new Error('should not be called'));
         },
-        (e: Error) => {
+        error: (e: Error) => {
           expect(e).to.be.equal(expected);
           done();
         },
-        () => {
+        complete: () => {
           done(new Error('should not be called'));
-        }
-      );
+        },
+      });
     });
   });
 
@@ -712,15 +710,14 @@ describe('ajax', () => {
       let result;
       let complete = false;
 
-      ajax.get('/flibbertyJibbet').subscribe(
-        (x) => {
+      ajax.get('/flibbertyJibbet').subscribe({
+        next: (x) => {
           result = x.response;
         },
-        null,
-        () => {
+        complete: () => {
           complete = true;
-        }
-      );
+        },
+      });
 
       const request = MockXMLHttpRequest.mostRecent;
 
@@ -739,15 +736,14 @@ describe('ajax', () => {
       let result;
       let complete = false;
 
-      ajax.get('/flibbertyJibbet').subscribe(
-        (x) => {
+      ajax.get('/flibbertyJibbet').subscribe({
+        next: (x) => {
           result = x.response;
         },
-        null,
-        () => {
+        complete: () => {
           complete = true;
-        }
-      );
+        },
+      });
 
       const request = MockXMLHttpRequest.mostRecent;
 
@@ -770,15 +766,14 @@ describe('ajax', () => {
       let result;
       let complete = false;
 
-      ajax.getJSON('/flibbertyJibbet').subscribe(
-        (x) => {
+      ajax.getJSON('/flibbertyJibbet').subscribe({
+        next: (x) => {
           result = x;
         },
-        null,
-        () => {
+        complete: () => {
           complete = true;
-        }
-      );
+        },
+      });
 
       const request = MockXMLHttpRequest.mostRecent;
 
@@ -800,15 +795,14 @@ describe('ajax', () => {
       let result: AjaxResponse<any>;
       let complete = false;
 
-      ajax.post('/flibbertyJibbet', expected).subscribe(
-        (x) => {
+      ajax.post('/flibbertyJibbet', expected).subscribe({
+        next: (x) => {
           result = x;
         },
-        null,
-        () => {
+        complete: () => {
           complete = true;
-        }
-      );
+        },
+      });
 
       const request = MockXMLHttpRequest.mostRecent;
 
@@ -833,15 +827,14 @@ describe('ajax', () => {
       let result: AjaxResponse<any>;
       let complete = false;
 
-      ajax.post('/flibbertyJibbet', undefined).subscribe(
-        (x) => {
+      ajax.post('/flibbertyJibbet', undefined).subscribe({
+        next: (x) => {
           result = x;
         },
-        null,
-        () => {
+        complete: () => {
           complete = true;
-        }
-      );
+        },
+      });
 
       const request = MockXMLHttpRequest.mostRecent;
 
@@ -924,15 +917,14 @@ describe('ajax', () => {
       let result: AjaxResponse<any>;
       let complete = false;
 
-      ajax.patch('/flibbertyJibbet', expected).subscribe(
-        (x) => {
+      ajax.patch('/flibbertyJibbet', expected).subscribe({
+        next: (x) => {
           result = x;
         },
-        null,
-        () => {
+        complete: () => {
           complete = true;
-        }
-      );
+        },
+      });
 
       const request = MockXMLHttpRequest.mostRecent;
 

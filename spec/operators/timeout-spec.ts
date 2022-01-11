@@ -35,17 +35,17 @@ describe('timeout operator', () => {
       const t = time(' -----|');
       const result = e1.pipe(timeout(t, rxTestScheduler));
       let error: any;
-      result.subscribe(
-        () => {
+      result.subscribe({
+        next: () => {
           throw new Error('this should not next');
         },
-        (err) => {
+        error: (err) => {
           error = err;
         },
-        () => {
+        complete: () => {
           throw new Error('this should not complete');
-        }
-      );
+        },
+      });
       rxTestScheduler.flush();
       expect(error).to.be.an.instanceof(TimeoutError);
       expect(error).to.have.property('name', 'TimeoutError');
@@ -67,17 +67,17 @@ describe('timeout operator', () => {
 
       const result = e1.pipe(timeout(dueDate, rxTestScheduler));
       let error: any;
-      result.subscribe(
-        () => {
+      result.subscribe({
+        next: () => {
           throw new Error('this should not next');
         },
-        (err) => {
+        error: (err) => {
           error = err;
         },
-        () => {
+        complete: () => {
           throw new Error('this should not complete');
-        }
-      );
+        },
+      });
       rxTestScheduler.flush();
       expect(error).to.be.an.instanceof(TimeoutError);
       expect(error).to.have.property('name', 'TimeoutError');
@@ -210,17 +210,17 @@ describe('timeout operator', () => {
         const t = time(' -----|');
         const result = e1.pipe(timeout({ each: t }));
         let error: any;
-        result.subscribe(
-          () => {
+        result.subscribe({
+          next: () => {
             throw new Error('this should not next');
           },
-          (err) => {
+          error: (err) => {
             error = err;
           },
-          () => {
+          complete: () => {
             throw new Error('this should not complete');
-          }
-        );
+          },
+        });
         rxTestScheduler.flush();
         expect(error).to.be.an.instanceof(TimeoutError);
         expect(error).to.have.property('name', 'TimeoutError');
@@ -242,17 +242,17 @@ describe('timeout operator', () => {
 
         const result = e1.pipe(timeout({ first: dueDate }));
         let error: any;
-        result.subscribe(
-          () => {
+        result.subscribe({
+          next: () => {
             throw new Error('this should not next');
           },
-          (err) => {
+          error: (err) => {
             error = err;
           },
-          () => {
+          complete: () => {
             throw new Error('this should not complete');
-          }
-        );
+          },
+        });
         rxTestScheduler.flush();
         expect(error).to.be.an.instanceof(TimeoutError);
         expect(error).to.have.property('name', 'TimeoutError');
@@ -423,10 +423,12 @@ describe('timeout operator', () => {
         const innerSubs = '    -----^-----!  ';
         const expected = '     -----x-y-z-|  ';
 
-        const result = source.pipe(timeout({
-          each: t,
-          with: () => inner,
-        }));
+        const result = source.pipe(
+          timeout({
+            each: t,
+            with: () => inner,
+          })
+        );
 
         expectObservable(result).toBe(expected);
         expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -444,10 +446,12 @@ describe('timeout operator', () => {
         const expected = '     ------------x--y--z--|';
 
         // The the current frame is zero.
-        const result = source.pipe(timeout({
-          first: new Date(t),
-          with: () => inner,
-        }));
+        const result = source.pipe(
+          timeout({
+            first: new Date(t),
+            with: () => inner,
+          })
+        );
 
         expectObservable(result).toBe(expected);
         expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -464,9 +468,12 @@ describe('timeout operator', () => {
         const innerSubs = '   -----------^----!  ';
         const expected = '    ---a---b----x-y-|  ';
 
-        const result = source.pipe(timeout({
-          each: t,
-          with: () => inner, }));
+        const result = source.pipe(
+          timeout({
+            each: t,
+            with: () => inner,
+          })
+        );
 
         expectObservable(result).toBe(expected);
         expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -504,7 +511,7 @@ describe('timeout operator', () => {
 
         const result = source.pipe(
           mergeMap((x) => of(x)),
-          timeout({ each: t, with: () => inner, }),
+          timeout({ each: t, with: () => inner }),
           mergeMap((x) => of(x))
         );
 
@@ -544,7 +551,7 @@ describe('timeout operator', () => {
         const innerSubs = '   ----------^--------!';
         const expected = '    --------------x----|';
 
-        const result = source.pipe(timeout({ each: t, with: () => inner, }));
+        const result = source.pipe(timeout({ each: t, with: () => inner }));
 
         expectObservable(result).toBe(expected);
         expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -561,7 +568,7 @@ describe('timeout operator', () => {
         const innerSubs = '   ---------^-----------';
         const expected = '    --a--b---------------';
 
-        const result = source.pipe(timeout({ each: t, with: () => inner, }));
+        const result = source.pipe(timeout({ each: t, with: () => inner }));
 
         expectObservable(result).toBe(expected);
         expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -578,7 +585,7 @@ describe('timeout operator', () => {
         const innerSubs = '   ----------^--------!';
         const expected = '    --------------x----|';
 
-        const result = source.pipe(timeout({ each: t, with: () => inner, }));
+        const result = source.pipe(timeout({ each: t, with: () => inner }));
 
         expectObservable(result).toBe(expected);
         expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -688,7 +695,7 @@ describe('timeout operator', () => {
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable<number>(subscriber => {
+    const synchronousObservable = new Observable<number>((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -697,10 +704,9 @@ describe('timeout operator', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      timeout(0),
-      take(3),
-    ).subscribe(() => { /* noop */ });
+    synchronousObservable.pipe(timeout(0), take(3)).subscribe(() => {
+      /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });

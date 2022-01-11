@@ -34,15 +34,13 @@ describe('merge operator', () => {
     const r = [1, 2, 3, 4, 5, 6, 7, 8];
 
     a.pipe(mergeWith(b)).subscribe(
-      val => {
+      { next: val => {
         expect(val).to.equal(r.shift());
-      },
-      () => {
+      }, error: () => {
         done(new Error('should not be called'));
-      },
-      () => {
+      }, complete: () => {
         done();
-      }
+      } }
     );
   });
 
@@ -314,11 +312,9 @@ describe('mergeAll operator', () => {
     of(a, b)
       .pipe(mergeAll())
       .subscribe(
-        val => {
+        { next: val => {
           expect(val).to.equal(r.shift());
-        },
-        null,
-        done
+        }, complete: done }
       );
   });
 
@@ -330,11 +326,9 @@ describe('mergeAll operator', () => {
     of(a, b, queueScheduler)
       .pipe(mergeAll())
       .subscribe(
-        val => {
+        { next: val => {
           expect(val).to.equal(r.shift());
-        },
-        null,
-        done
+        }, complete: done }
       );
   });
 
