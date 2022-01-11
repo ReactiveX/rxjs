@@ -1,13 +1,13 @@
-import { of, Notification } from 'rxjs';
+import { of } from 'rxjs';
 import { dematerialize } from 'rxjs/operators';
 
 
 it('should infer correctly', () => {
-  const o = of(Notification.createNext('foo')).pipe(dematerialize()); // $ExpectType Observable<string>
+  const o = of({ kind: 'N' as const, value: 'foo' }).pipe(dematerialize()); // $ExpectType Observable<string>
 });
 
 it('should enforce types', () => {
-  const o = of(Notification.createNext('foo')).pipe(dematerialize(() => {})); // $ExpectError
+  const o = of({ kind: 'N' as const, value: 'foo' }).pipe(dematerialize(() => {})); // $ExpectError
 });
 
 it('should enforce types from POJOS', () => {

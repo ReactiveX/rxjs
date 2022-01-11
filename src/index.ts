@@ -38,9 +38,6 @@ export { Scheduler } from './internal/Scheduler';
 export { Subscription } from './internal/Subscription';
 export { Subscriber } from './internal/Subscriber';
 
-/* Notification */
-export { Notification, NotificationKind } from './internal/Notification';
-
 /* Utils */
 export { pipe } from './internal/util/pipe';
 export { noop } from './internal/util/noop';

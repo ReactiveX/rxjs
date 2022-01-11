@@ -338,7 +338,7 @@ export declare function map<T, R, A>(project: (this: A, value: T, index: number)
 export declare function mapTo<R>(value: R): OperatorFunction<unknown, R>;
 export declare function mapTo<T, R>(value: R): OperatorFunction<T, R>;
 
-export declare function materialize<T>(): OperatorFunction<T, Notification<T> & ObservableNotification<T>>;
+export declare function materialize<T>(): OperatorFunction<T, ObservableNotification<T>>;
 
 export declare function max<T>(comparer?: (x: T, y: T) => number): MonoTypeOperatorFunction<T>;
 
@@ -390,34 +390,6 @@ export interface NotFoundError extends Error {
 }
 
 export declare const NotFoundError: NotFoundErrorCtor;
-
-export declare class Notification<T> {
-    readonly error?: any;
-    readonly hasValue: boolean;
-    readonly kind: 'N' | 'E' | 'C';
-    readonly value?: T | undefined;
-    constructor(kind: 'C');
-    constructor(kind: 'E', value: undefined, error: any);
-    constructor(kind: 'N', value?: T);
-    accept(next: (value: T) => void, error: (err: any) => void, complete: () => void): void;
-    accept(next: (value: T) => void, error: (err: any) => void): void;
-    accept(next: (value: T) => void): void;
-    accept(observer: PartialObserver<T>): void;
-    do(next: (value: T) => void, error: (err: any) => void, complete: () => void): void;
-    do(next: (value: T) => void, error: (err: any) => void): void;
-    do(next: (value: T) => void): void;
-    observe(observer: PartialObserver<T>): void;
-    toObservable(): Observable<T>;
-    static createComplete(): Notification<never> & CompleteNotification;
-    static createError(err?: any): Notification<never> & ErrorNotification;
-    static createNext<T>(value: T): Notification<T> & NextNotification<T>;
-}
-
-export declare enum NotificationKind {
-    NEXT = "N",
-    ERROR = "E",
-    COMPLETE = "C"
-}
 
 export interface ObjectUnsubscribedError extends Error {
 }

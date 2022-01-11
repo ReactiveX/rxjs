@@ -1,4 +1,4 @@
-import { Notification } from '../Notification';
+import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../NotificationFactories';
 import { OperatorFunction, ObservableNotification } from '../types';
 import { operate } from '../util/lift';
 import { OperatorSubscriber } from './OperatorSubscriber';
@@ -51,20 +51,20 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * {@link Notification} objects that wrap the original emissions from the
  * source Observable with metadata.
  */
-export function materialize<T>(): OperatorFunction<T, Notification<T> & ObservableNotification<T>> {
+export function materialize<T>(): OperatorFunction<T, ObservableNotification<T>> {
   return operate((source, subscriber) => {
     source.subscribe(
       new OperatorSubscriber(
         subscriber,
         (value) => {
-          subscriber.next(Notification.createNext(value));
+          subscriber.next(nextNotification(value));
         },
         () => {
-          subscriber.next(Notification.createComplete());
+          subscriber.next(COMPLETE_NOTIFICATION);
           subscriber.complete();
         },
-        (err) => {
-          subscriber.next(Notification.createError(err));
+        (error) => {
+          subscriber.next(errorNotification(error));
           subscriber.complete();
         }
       )
