@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { onErrorResumeNext, take, finalize } from 'rxjs/operators';
+import { onErrorResumeNext, take, finalize, tap } from 'rxjs/operators';
 import { concat, throwError, of, Observable } from 'rxjs';
 import { asInteropObservable } from '../helpers/interop-helper';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -260,5 +260,57 @@ describe('onErrorResumeNext', () => {
       });
 
     expect(results).to.deep.equal([1, 'finalize 1', 2, 'finalize 2', 3, 'finalize 3', 4, 'finalize 4', 'complete']);
+  });
+
+  it('should not subscribe to the next source until after the previous is finalized.', () => {
+    const results: any[] = [];
+
+    of(1)
+      .pipe(
+        tap({
+          subscribe: () => results.push('subscribe 1'),
+          finalize: () => results.push('finalize 1'),
+        }),
+        onErrorResumeNext(
+          of(2).pipe(
+            tap({
+              subscribe: () => results.push('subscribe 2'),
+              finalize: () => results.push('finalize 2'),
+            })
+          ),
+          of(3).pipe(
+            tap({
+              subscribe: () => results.push('subscribe 3'),
+              finalize: () => results.push('finalize 3'),
+            })
+          ),
+          of(4).pipe(
+            tap({
+              subscribe: () => results.push('subscribe 4'),
+              finalize: () => results.push('finalize 4'),
+            })
+          )
+        )
+      )
+      .subscribe({
+        next: (value) => results.push(value),
+        complete: () => results.push('complete'),
+      });
+
+    expect(results).to.deep.equal([
+      'subscribe 1',
+      1,
+      'finalize 1',
+      'subscribe 2',
+      2,
+      'finalize 2',
+      'subscribe 3',
+      3,
+      'finalize 3',
+      'subscribe 4',
+      4,
+      'finalize 4',
+      'complete',
+    ]);
   });
 });

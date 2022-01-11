@@ -92,7 +92,7 @@ export function onErrorResumeNext<T, A extends readonly unknown[]>(
   // result to be `A[number][]` - completely dropping the ObservableInput part
   // of the type. This makes no sense whatsoever. As a workaround, the type is
   // asserted explicitly.
-  const nextSources = (argsOrArgArray(sources) as unknown) as ObservableInputTuple<A>;
+  const nextSources = argsOrArgArray(sources) as unknown as ObservableInputTuple<A>;
 
   return operate((source, subscriber) => {
     const remaining = [source, ...nextSources];
@@ -112,7 +112,7 @@ export function onErrorResumeNext<T, A extends readonly unknown[]>(
           // would result in situation were we could not stop a synchronous firehose
           // with something like `take(3)`.
           const innerSub = new OperatorSubscriber(subscriber, undefined, noop, noop);
-          subscriber.add(nextSource.subscribe(innerSub));
+          nextSource.subscribe(innerSub);
           innerSub.add(subscribeNext);
         } else {
           subscriber.complete();
