@@ -170,8 +170,6 @@ export declare function distinctUntilKeyChanged<T, K extends keyof T>(key: K, co
 
 export declare function elementAt<T, D = T>(index: number, defaultValue?: D): OperatorFunction<T, T | D>;
 
-export declare function empty(scheduler?: SchedulerLike): Observable<never>;
-
 export declare const EMPTY: Observable<never>;
 
 export interface EmptyError extends Error {
@@ -371,8 +369,6 @@ export declare function multicast<T>(subject: Subject<T>): UnaryFunction<Observa
 export declare function multicast<T, O extends ObservableInput<any>>(subject: Subject<T>, selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
 export declare function multicast<T>(subjectFactory: () => Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
 export declare function multicast<T, O extends ObservableInput<any>>(subjectFactory: () => Subject<T>, selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
-
-export declare function never(): Observable<never>;
 
 export declare const NEVER: Observable<never>;
 
