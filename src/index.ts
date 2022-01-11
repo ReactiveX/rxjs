@@ -155,6 +155,7 @@ export { mergeWith } from './internal/operators/mergeWith';
 export { min } from './internal/operators/min';
 export { multicast } from './internal/operators/multicast';
 export { observeOn } from './internal/operators/observeOn';
+export { onErrorResumeNextWith } from './internal/operators/onErrorResumeNextWith';
 export { pairwise } from './internal/operators/pairwise';
 export { pluck } from './internal/operators/pluck';
 export { publish } from './internal/operators/publish';
