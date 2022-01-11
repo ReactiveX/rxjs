@@ -1,21 +1,17 @@
+/* eslint-disable no-var */
 module.exports = function (wallaby) {
-  return ({
-    files: [
-      'tsconfig.base.json',
-      'tsconfig.json',
-      'src/**/*.ts',
-      { pattern: 'spec/helpers/!(*-spec).ts', instrument: false, load: true }
-    ],
+  return {
+    files: ['tsconfig.base.json', 'tsconfig.json', 'src/**/*.ts', { pattern: 'spec/helpers/!(*-spec).ts', instrument: false, load: true }],
 
     tests: ['spec/**/*-spec.ts'],
 
     testFramework: {
       type: 'mocha',
-      path: 'mocha'
+      path: 'mocha',
     },
 
     env: {
-      type: 'node'
+      type: 'node',
     },
 
     workers: { initial: 2, regular: 1 },
@@ -23,12 +19,13 @@ module.exports = function (wallaby) {
     compilers: {
       '**/*.ts?(x)': wallaby.compilers.typeScript({
         module: 'commonjs',
-        target: 'esnext'
-      })
+        target: 'esnext',
+      }),
     },
 
-    setup: function (w) {
+    setup(w) {
       if (!global._tsconfigPathsRegistered) {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-extraneous-dependencies
         var tsConfigPaths = require('tsconfig-paths');
         tsConfigPaths.register();
         global._tsconfigPathsRegistered = true;
@@ -39,16 +36,17 @@ module.exports = function (wallaby) {
       global.Suite = global.mocha.Suite;
       global.Test = global.mocha.Test;
 
-      //delete global context due to avoid issue by reusing process
-      //https://github.com/wallabyjs/public/issues/536
+      // delete global context due to avoid issue by reusing process
+      // https://github.com/wallabyjs/public/issues/536
       if (global.asDiagram) {
         delete global.asDiagram;
       }
 
       var mocha = wallaby.testFramework;
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       var path = require('path');
-      require(path.resolve(w.projectCacheDir, 'spec/helpers/polyfills'));
+      require(path.resolve(w.projectCacheDir, 'spec/helpers/setup'));
       mocha.ui(path.resolve(w.projectCacheDir, 'spec/helpers/testScheduler-ui'));
-    }
-  });
+    },
+  };
 };
