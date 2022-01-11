@@ -455,18 +455,18 @@ describe('mergeAll', () => {
     const expected = ['a', 'b', 'c', 'd'];
 
     const res: string[] = [];
-    e1.pipe(mergeAll()).subscribe(
-      (x) => {
+    e1.pipe(mergeAll()).subscribe({
+      next: (x) => {
         res.push(x);
       },
-      () => {
+      error: () => {
         done(new Error('should not be called'));
       },
-      () => {
+      complete: () => {
         expect(res).to.deep.equal(expected);
         done();
-      }
-    );
+      },
+    });
   });
 
   it('should raise error when promise rejects', (done) => {
@@ -487,19 +487,19 @@ describe('mergeAll', () => {
     ]);
 
     const res: string[] = [];
-    e1.pipe(mergeAll()).subscribe(
-      (x) => {
+    e1.pipe(mergeAll()).subscribe({
+      next: (x) => {
         res.push(x);
       },
-      (err) => {
+      error: (err) => {
         expect(res.length).to.equal(1);
         expect(err).to.equal('error');
         done();
       },
-      () => {
+      complete: () => {
         done(new Error('should not be called'));
-      }
-    );
+      },
+    });
   });
 
   it('should finalize generators when merged if the subscription ends', () => {
@@ -521,11 +521,7 @@ describe('mergeAll', () => {
     const iterableObservable = from<string>(iterable as any);
     of(iterableObservable)
       .pipe(mergeAll(), take(3))
-      .subscribe(
-        (x) => results.push(x),
-        null,
-        () => results.push('GOOSE!')
-      );
+      .subscribe({ next: (x) => results.push(x), complete: () => results.push('GOOSE!') });
 
     expect(results).to.deep.equal(['duck', 'duck', 'duck', 'GOOSE!']);
     expect(iterable.finalized).to.be.true;
@@ -538,13 +534,12 @@ describe('mergeAll', () => {
 
     of(a, b)
       .pipe(mergeAll())
-      .subscribe(
-        (val) => {
+      .subscribe({
+        next: (val) => {
           expect(val).to.equal(r.shift());
         },
-        null,
-        done
-      );
+        complete: done,
+      });
   });
 
   it('should merge two immediately-scheduled observables', (done) => {
@@ -554,13 +549,12 @@ describe('mergeAll', () => {
 
     of(a, b, queueScheduler)
       .pipe(mergeAll())
-      .subscribe(
-        (val) => {
+      .subscribe({
+        next: (val) => {
           expect(val).to.equal(r.shift());
         },
-        null,
-        done
-      );
+        complete: done,
+      });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

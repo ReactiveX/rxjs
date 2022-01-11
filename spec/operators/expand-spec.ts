@@ -393,16 +393,15 @@ describe('expand', () => {
           return Promise.resolve(x + x);
         })
       )
-      .subscribe(
-        (x) => {
+      .subscribe({
+        next: (x) => {
           expect(x).to.equal(expected.shift());
         },
-        null,
-        () => {
+        complete: () => {
           expect(expected.length).to.equal(0);
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should recursively flatten Arrays', (done) => {
@@ -416,16 +415,15 @@ describe('expand', () => {
           return [x + x];
         })
       )
-      .subscribe(
-        (x) => {
+      .subscribe({
+        next: (x) => {
           expect(x).to.equal(expected.shift());
         },
-        null,
-        () => {
+        complete: () => {
           expect(expected.length).to.equal(0);
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should recursively flatten lowercase-o observables', (done) => {
@@ -448,16 +446,15 @@ describe('expand', () => {
 
     of(1)
       .pipe(expand(project))
-      .subscribe(
-        (x) => {
+      .subscribe({
+        next: (x) => {
           expect(x).to.equal(expected.shift());
         },
-        null,
-        () => {
+        complete: () => {
           expect(expected.length).to.equal(0);
           done();
-        }
-      );
+        },
+      });
   });
 
   it('should work when passing undefined for the optional arguments', () => {
@@ -496,7 +493,7 @@ describe('expand', () => {
         take(10),
         toArray()
       )
-      .subscribe((actual) => expect(actual).to.deep.equal(expected), done, done);
+      .subscribe({ next: (actual) => expect(actual).to.deep.equal(expected), error: done, complete: done });
   });
 
   it('should work with the AsyncScheduler', (done) => {
@@ -507,7 +504,7 @@ describe('expand', () => {
         take(10),
         toArray()
       )
-      .subscribe((actual) => expect(actual).to.deep.equal(expected), done, done);
+      .subscribe({ next: (actual) => expect(actual).to.deep.equal(expected), error: done, complete: done });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

@@ -398,15 +398,13 @@ describe('audit operator', () => {
     e1.pipe(
       audit(() => Promise.resolve(42))
     ).subscribe(
-      (x: number) => {
-        expect(x).to.equal(expected.shift()); },
-      () => {
+      { next: (x: number) => {
+        expect(x).to.equal(expected.shift()); }, error: () => {
         done(new Error('should not be called'));
-      },
-      () => {
+      }, complete: () => {
         expect(expected.length).to.equal(0);
         done();
-      }
+      } }
     );
   });
 
@@ -424,16 +422,14 @@ describe('audit operator', () => {
         }
       })
     ).subscribe(
-      (x: number) => {
-        expect(x).to.equal(expected.shift()); },
-      (err: any) => {
+      { next: (x: number) => {
+        expect(x).to.equal(expected.shift()); }, error: (err: any) => {
         expect(err).to.be.an('error', 'error');
         expect(expected.length).to.equal(0);
         done();
-      },
-      () => {
+      }, complete: () => {
         done(new Error('should not be called'));
-      }
+      } }
     );
   });
 

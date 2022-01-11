@@ -34,7 +34,8 @@ Instead of creating a [ConnectableObservable](/api/index/class/ConnectableObserv
 
 <!-- prettier-ignore -->
 ```ts
-import { ConnectableObservable, Subject, timer } from 'rxjs';
+import { ConnectableObservable, timer, Subject } from 'rxjs';
+
 // deprecated
 const tick$ = new ConnectableObservable(
   timer(1_000),
@@ -44,7 +45,8 @@ tick$.connect();
 
 <!-- prettier-ignore -->
 ```ts
-import { connectable, Subject, timer } from 'rxjs';
+import { connectable, timer, Subject } from 'rxjs';
+
 // suggested refactor
 const tick$ = connectable(timer(1_000), {
   connector: () => new Subject()
@@ -56,7 +58,8 @@ In situations in which the `refCount` method is used, the [share](/api/operators
 
 <!-- prettier-ignore -->
 ```ts
-import { ConnectableObservable, Subject, timer } from 'rxjs';
+import { ConnectableObservable, timer, Subject } from 'rxjs';
+
 // deprecated
 const tick$ = new ConnectableObservable(
   timer(1_000),
@@ -66,8 +69,8 @@ const tick$ = new ConnectableObservable(
 
 <!-- prettier-ignore -->
 ```ts
-import { Subject, timer } from 'rxjs';
-import { share } from 'rxjs/operators';
+import { timer, share, Subject } from 'rxjs';
+
 // suggested refactor
 const tick$ = timer(1_000).pipe(
   share({ connector: () => new Subject() })
@@ -80,8 +83,8 @@ Where [multicast](/api/operators/multicast) is called with a subject factory, ca
 
 <!-- prettier-ignore -->
 ```ts
-import { ConnectableObservable, timer, Subject } from 'rxjs';
-import { multicast } from 'rxjs/operators';
+import { timer, multicast, Subject, ConnectableObservable } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   multicast(() => new Subject())
@@ -91,6 +94,7 @@ const tick$ = timer(1_000).pipe(
 <!-- prettier-ignore -->
 ```ts
 import { connectable, timer, Subject } from 'rxjs';
+
 // suggested refactor
 const tick$ = connectable(timer(1_000), {
   connector: () => new Subject()
@@ -101,8 +105,8 @@ Where [multicast](/api/operators/multicast) is called with a subject instance, i
 
 <!-- prettier-ignore -->
 ```ts
-import { ConnectableObservable, timer, Subject } from 'rxjs';
-import { multicast } from 'rxjs/operators';
+import { timer, multicast, Subject, ConnectableObservable } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   multicast(new Subject())
@@ -112,6 +116,7 @@ const tick$ = timer(1_000).pipe(
 <!-- prettier-ignore -->
 ```ts
 import { connectable, timer, Subject } from 'rxjs';
+
 // suggested refactor
 const tick$ = connectable(timer(1_000), {
   connector: () => new Subject(),
@@ -123,8 +128,8 @@ Where [multicast](/api/operators/multicast) is used in conjunction with [refCoun
 
 <!-- prettier-ignore -->
 ```ts
-import { timer, Subject } from 'rxjs';
-import { multicast, refCount } from 'rxjs/operators';
+import { timer, multicast, Subject, refCount } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   multicast(() => new Subject()),
@@ -134,8 +139,8 @@ const tick$ = timer(1_000).pipe(
 
 <!-- prettier-ignore -->
 ```ts
-import { timer, Subject } from 'rxjs';
-import { share } from 'rxjs/operators';
+import { timer, share, Subject } from 'rxjs';
+
 // suggested refactor
 const tick$ = timer(1_000).pipe(
   share({ connector: () => new Subject() })
@@ -146,8 +151,8 @@ Where [multicast](/api/operators/multicast) is used with a selector, it can be r
 
 <!-- prettier-ignore -->
 ```ts
-import { timer, combineLatest } from 'rxjs';
-import { multicast } from 'rxjs/operators';
+import { timer, multicast, Subject, combineLatest } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   multicast(
@@ -159,8 +164,8 @@ const tick$ = timer(1_000).pipe(
 
 <!-- prettier-ignore -->
 ```ts
-import { timer, combineLatest } from 'rxjs';
-import { connect } from 'rxjs/operators';
+import { timer, connect, combineLatest, Subject } from 'rxjs';
+
 // suggested refactor
 const tick$ = timer(1_000).pipe(
   connect((source) => combineLatest([source, source]), {
@@ -175,8 +180,8 @@ If you're using [publish](/api/operators/publish) to create a [ConnectableObserv
 
 <!-- prettier-ignore -->
 ```ts
-import { ConnectableObservable, timer } from 'rxjs';
-import { publish } from 'rxjs/operators';
+import { timer, publish, ConnectableObservable } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   publish()
@@ -185,7 +190,8 @@ const tick$ = timer(1_000).pipe(
 
 <!-- prettier-ignore -->
 ```ts
-import { connectable, timer } from 'rxjs';
+import { connectable, timer, Subject } from 'rxjs';
+
 // suggested refactor
 const tick$ = connectable(timer(1_000), {
   connector: () => new Subject<number>(),
@@ -197,8 +203,8 @@ And if [refCount](/api/operators/refCount) is being applied to the result of [pu
 
 <!-- prettier-ignore -->
 ```ts
-import { timer } from 'rxjs';
-import { publish, refCount } from 'rxjs/operators';
+import { timer, publish, refCount } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   publish(),
@@ -208,14 +214,14 @@ const tick$ = timer(1_000).pipe(
 
 <!-- prettier-ignore -->
 ```ts
-import { timer } from 'rxjs';
-import { share } from 'rxjs/operators';
+import { timer, share } from 'rxjs';
+
 // suggested refactor
 const tick$ = timer(1_000).pipe(
   share({
     resetOnError: false,
     resetOnComplete: false,
-    resetOnRefCountZero: false,
+    resetOnRefCountZero: false
   })
 );
 ```
@@ -224,8 +230,8 @@ If [publish](/api/operators/publish) is being called with a selector, you can us
 
 <!-- prettier-ignore -->
 ```ts
-import { timer, combineLatest } from 'rxjs';
-import { publish } from 'rxjs/operators';
+import { timer, publish, combineLatest } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   publish((source) => combineLatest([source, source]))
@@ -234,8 +240,8 @@ const tick$ = timer(1_000).pipe(
 
 <!-- prettier-ignore -->
 ```ts
-import { timer, combineLatest } from 'rxjs';
-import { connect } from 'rxjs/operators';
+import { timer, connect, combineLatest } from 'rxjs';
+
 // suggested refactor
 const tick$ = timer(1_000).pipe(
   connect((source) => combineLatest([source, source]))
@@ -248,8 +254,8 @@ If you're using [publishBehavior](/api/operators/publishBehavior) to create a [C
 
 <!-- prettier-ignore -->
 ```ts
-import { ConnectableObservable, timer } from 'rxjs';
-import { publishBehavior } from 'rxjs/operators';
+import { timer, publishBehavior, ConnectableObservable } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   publishBehavior(0)
@@ -259,6 +265,7 @@ const tick$ = timer(1_000).pipe(
 <!-- prettier-ignore -->
 ```ts
 import { connectable, timer, BehaviorSubject } from 'rxjs';
+
 // suggested refactor
 const tick$ = connectable(timer(1_000), {
   connector: () => new BehaviorSubject(0),
@@ -270,8 +277,8 @@ And if [refCount](/api/operators/refCount) is being applied to the result of [pu
 
 <!-- prettier-ignore -->
 ```ts
-import { timer } from 'rxjs';
-import { publishBehavior, refCount } from 'rxjs/operators';
+import { timer, publishBehavior, refCount } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   publishBehavior(0),
@@ -281,15 +288,15 @@ const tick$ = timer(1_000).pipe(
 
 <!-- prettier-ignore -->
 ```ts
-import { timer, BehaviorSubject } from 'rxjs';
-import { share } from 'rxjs/operators';
+import { timer, share, BehaviorSubject } from 'rxjs';
+
 // suggested refactor
 const tick$ = timer(1_000).pipe(
   share({
     connector: () => new BehaviorSubject(0),
     resetOnError: false,
     resetOnComplete: false,
-    resetOnRefCountZero: false,
+    resetOnRefCountZero: false
   })
 );
 ```
@@ -300,8 +307,8 @@ If you're using [publishLast](/api/operators/publishLast) to create a [Connectab
 
 <!-- prettier-ignore -->
 ```ts
-import { ConnectableObservable, timer } from 'rxjs';
-import { publishLast } from 'rxjs/operators';
+import { timer, publishLast, ConnectableObservable } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   publishLast()
@@ -311,6 +318,7 @@ const tick$ = timer(1_000).pipe(
 <!-- prettier-ignore -->
 ```ts
 import { connectable, timer, AsyncSubject } from 'rxjs';
+
 // suggested refactor
 const tick$ = connectable(timer(1_000), {
   connector: () => new AsyncSubject<number>(),
@@ -322,8 +330,8 @@ And if [refCount](/api/operators/refCount) is being applied to the result of [pu
 
 <!-- prettier-ignore -->
 ```ts
-import { timer } from 'rxjs';
-import { publishLast, refCount } from 'rxjs/operators';
+import { timer, publishLast, refCount } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   publishLast(),
@@ -333,15 +341,15 @@ const tick$ = timer(1_000).pipe(
 
 <!-- prettier-ignore -->
 ```ts
-import { timer, AsyncSubject } from 'rxjs';
-import { share } from 'rxjs/operators';
+import { timer, share, AsyncSubject } from 'rxjs';
+
 // suggested refactor
 const tick$ = timer(1_000).pipe(
   share({
     connector: () => new AsyncSubject(),
     resetOnError: false,
     resetOnComplete: false,
-    resetOnRefCountZero: false,
+    resetOnRefCountZero: false
   })
 );
 ```
@@ -352,8 +360,8 @@ If you're using [publishReplay](/api/operators/publishReplay) to create a [Conne
 
 <!-- prettier-ignore -->
 ```ts
-import { ConnectableObservable, timer } from 'rxjs';
-import { publishReplay } from 'rxjs/operators';
+import { timer, publishReplay, ConnectableObservable } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   publishReplay(1)
@@ -363,6 +371,7 @@ const tick$ = timer(1_000).pipe(
 <!-- prettier-ignore -->
 ```ts
 import { connectable, timer, ReplaySubject } from 'rxjs';
+
 // suggested refactor
 const tick$ = connectable(timer(1_000), {
   connector: () => new ReplaySubject<number>(1),
@@ -374,8 +383,8 @@ And if [refCount](/api/operators/refCount) is being applied to the result of [pu
 
 <!-- prettier-ignore -->
 ```ts
-import { timer } from 'rxjs';
-import { publishReplay, refCount } from 'rxjs/operators';
+import { timer, publishReplay, refCount } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   publishReplay(1),
@@ -385,15 +394,15 @@ const tick$ = timer(1_000).pipe(
 
 <!-- prettier-ignore -->
 ```ts
-import { timer, ReplaySubject } from 'rxjs';
-import { share } from 'rxjs/operators';
+import { timer, share, ReplaySubject } from 'rxjs';
+
 // suggested refactor
 const tick$ = timer(1_000).pipe(
   share({
     connector: () => new ReplaySubject(1),
     resetOnError: false,
     resetOnComplete: false,
-    resetOnRefCountZero: false,
+    resetOnRefCountZero: false
   })
 );
 ```
@@ -402,8 +411,8 @@ If [publishReplay](/api/operators/publishReplay) is being called with a selector
 
 <!-- prettier-ignore -->
 ```ts
-import { timer, combineLatest } from 'rxjs';
-import { publishReplay } from 'rxjs/operators';
+import { timer, publishReplay, combineLatest } from 'rxjs';
+
 // deprecated
 const tick$ = timer(1_000).pipe(
   publishReplay(1, undefined, (source) => combineLatest([source, source]))
@@ -412,8 +421,8 @@ const tick$ = timer(1_000).pipe(
 
 <!-- prettier-ignore -->
 ```ts
-import { timer, combineLatest, ReplaySubject } from 'rxjs';
-import { connect } from 'rxjs/operators';
+import { timer, connect, combineLatest, ReplaySubject } from 'rxjs';
+
 // suggested refactor
 const tick$ = timer(1_000).pipe(
   connect((source) => combineLatest([source, source]), {

@@ -24,14 +24,14 @@ describe('pairs', () => {
       ['c', 3]
     ];
 
-    pairs({a: 1, b: 2, c: 3}).subscribe(x => {
+    pairs({a: 1, b: 2, c: 3}).subscribe({ next: x => {
       expect(x).to.deep.equal(expected.shift());
-    }, x => {
+    }, error: x => {
       done(new Error('should not be called'));
-    }, () => {
+    }, complete: () => {
       expect(expected).to.be.empty;
       done();
-    });
+    } });
   });
 
   it('should work with empty object', () => {

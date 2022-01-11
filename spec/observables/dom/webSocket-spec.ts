@@ -403,11 +403,11 @@ describe('webSocket', () => {
         }
       });
 
-      subject.subscribe((x: any) => {
+      subject.subscribe({ next: (x: any) => {
         expect(x).to.equal('this should not happen');
-      }, (err: any) => {
+      }, error: (err: any) => {
         expect(err).to.be.an('error', 'I am a bad error');
-      });
+      } });
 
       const socket = MockWebSocket.lastSocket;
       socket.open();
@@ -468,9 +468,9 @@ describe('webSocket', () => {
       socket.triggerClose(expected[0]);
       expect(closes.length).to.equal(1);
 
-      subject.subscribe(null, function (err) {
+      subject.subscribe({ error: function (err) {
         expect(err).to.equal(expected[1]);
-      });
+      } });
 
       socket = MockWebSocket.lastSocket;
       socket.open();
@@ -492,11 +492,11 @@ describe('webSocket', () => {
         }
       });
 
-      subject.subscribe((x: any) => {
+      subject.subscribe({ next: (x: any) => {
         expect(x).to.equal('this should not happen');
-      }, (err: any) => {
+      }, error: (err: any) => {
         expect(err).to.be.an('error', 'connection refused');
-      });
+      } });
 
       subject.unsubscribe();
     });
@@ -640,9 +640,7 @@ describe('webSocket', () => {
         takeWhile((req: any) => !req.complete)
       )
       .subscribe(
-        () => results.push('A next'),
-        (e) => results.push('A error ' + e),
-        () => results.push('A complete')
+        { next: () => results.push('A next'), error: (e) => results.push('A error ' + e), complete: () => results.push('A complete') }
       );
 
       socketSubject.multiplex(
@@ -650,9 +648,7 @@ describe('webSocket', () => {
         () => results.push('B unsub'),
         (req: any) => req.id === 'B')
         .subscribe(
-          () => results.push('B next'),
-          (e) => results.push('B error ' + e),
-          () => results.push('B complete')
+          { next: () => results.push('B next'), error: (e) => results.push('B error ' + e), complete: () => results.push('B complete') }
         );
 
       // Setup socket and send messages
@@ -696,9 +692,7 @@ describe('webSocket', () => {
       ).pipe(
         takeWhile(req => !req.complete)
       ).subscribe(
-        () => results.push('A next'),
-        (e) => results.push('A error ' + e),
-        () => results.push('A complete')
+        { next: () => results.push('A next'), error: (e) => results.push('A error ' + e), complete: () => results.push('A complete') }
       );
 
       socketSubject.multiplex(
@@ -708,9 +702,7 @@ describe('webSocket', () => {
       ).pipe(
         takeWhile(req => !req.complete)
       ).subscribe(
-        () => results.push('B next'),
-        (e) => results.push('B error ' + e),
-        () => results.push('B complete')
+        { next: () => results.push('B next'), error: (e) => results.push('B error ' + e), complete: () => results.push('B complete') }
       );
 
       // Setup socket and send messages

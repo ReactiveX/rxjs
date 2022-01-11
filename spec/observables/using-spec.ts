@@ -28,13 +28,13 @@ describe('using', () => {
       () => new Subscription(() => disposed = true),
       (resource) => new Promise((resolve: any) => { resolve(expected); }));
 
-    e1.subscribe(x => {
+    e1.subscribe({ next: x => {
       expect(x).to.equal(expected);
-    }, (x) => {
+    }, error: (x) => {
       done(new Error('should not be called'));
-    }, () => {
+    }, complete: () => {
       done();
-    });
+    } });
   });
 
   it('should accept factory returns promise rejects', (done) => {
@@ -45,14 +45,14 @@ describe('using', () => {
       () => new Subscription(() => disposed = true),
       (resource) => new Promise((resolve: any, reject: any) => { reject(expected); }));
 
-    e1.subscribe(x => {
+    e1.subscribe({ next: x => {
       done(new Error('should not be called'));
-    }, (x) => {
+    }, error: (x) => {
       expect(x).to.equal(expected);
       done();
-    }, () => {
+    }, complete: () => {
       done(new Error('should not be called'));
-    });
+    } });
   });
 
   it('should raise error when resource factory throws', (done) => {
@@ -68,14 +68,14 @@ describe('using', () => {
       }
     );
 
-    source.subscribe((x) => {
+    source.subscribe({ next: (x) => {
       done(new Error('should not be called'));
-    }, (x) => {
+    }, error: (x) => {
       expect(x).to.equal(expectedError);
       done();
-    }, () => {
+    }, complete: () => {
       done(new Error('should not be called'));
-    });
+    } });
   });
 
   it('should raise error when observable factory throws', (done) => {
@@ -89,13 +89,13 @@ describe('using', () => {
       }
     );
 
-    source.subscribe((x) => {
+    source.subscribe({ next: (x) => {
       done(new Error('should not be called'));
-    }, (x) => {
+    }, error: (x) => {
       expect(x).to.equal(error);
       done();
-    }, () => {
+    }, complete: () => {
       done(new Error('should not be called'));
-    });
+    } });
   });
 });

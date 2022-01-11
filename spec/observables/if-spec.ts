@@ -38,13 +38,13 @@ describe('iif', () => {
     const expected = 42;
     const e1 = iif(() => true, new Promise((resolve: any) => { resolve(expected); }), of());
 
-    e1.subscribe(x => {
+    e1.subscribe({ next: x => {
       expect(x).to.equal(expected);
-    }, (x) => {
+    }, error: (x) => {
       done(new Error('should not be called'));
-    }, () => {
+    }, complete: () => {
       done();
-    });
+    } });
   });
 
   it('should accept resolved promise as elseSource', (done) => {
@@ -53,13 +53,13 @@ describe('iif', () => {
       of('a'),
       new Promise((resolve: any) => { resolve(expected); }));
 
-    e1.subscribe(x => {
+    e1.subscribe({ next: x => {
       expect(x).to.equal(expected);
-    }, (x) => {
+    }, error: (x) => {
       done(new Error('should not be called'));
-    }, () => {
+    }, complete: () => {
       done();
-    });
+    } });
   });
 
   it('should accept rejected promise as elseSource', (done) => {
@@ -68,27 +68,27 @@ describe('iif', () => {
       of('a'),
       new Promise((resolve: any, reject: any) => { reject(expected); }));
 
-    e1.subscribe(x => {
+    e1.subscribe({ next: x => {
       done(new Error('should not be called'));
-    }, (x) => {
+    }, error: (x) => {
       expect(x).to.equal(expected);
       done();
-    }, () => {
+    }, complete: () => {
       done(new Error('should not be called'));
-    });
+    } });
   });
 
   it('should accept rejected promise as thenSource', (done) => {
     const expected = 42;
     const e1 = iif(() => true, new Promise((resolve: any, reject: any) => { reject(expected); }), of());
 
-    e1.subscribe(x => {
+    e1.subscribe({ next: x => {
       done(new Error('should not be called'));
-    }, (x) => {
+    }, error: (x) => {
       expect(x).to.equal(expected);
       done();
-    }, () => {
+    }, complete: () => {
       done(new Error('should not be called'));
-    });
+    } });
   });
 });

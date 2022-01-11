@@ -28,24 +28,16 @@ There were two reasons for actually deprecating those parameters:
 
 Instead of using the `resultSelector` Argument, you can leverage the [`map`](/api/operators/map) operator on the inner Observable:
 
+<!-- prettier-ignore -->
 ```ts
-
-import {fromEvent, interval} from 'rxjs';
-import {switchMap, map} from 'rxjs/operators';
+import { fromEvent, switchMap, interval, map } from 'rxjs';
 
 // deprecated
 fromEvent(document, 'click').pipe(
-    switchMap(x => interval(0, 1000), (x) => x+1)
+  switchMap((x) => interval(1000), (_, x) => x + 1)
 );
 // suggested change
 fromEvent(document, 'click').pipe(
-    switchMap(x => interval(0, 1000).pipe(
-        map(x => x+1)
-    ))
+  switchMap((x) => interval(1000).pipe(map((x) => x + 1)))
 );
 ```
-
-
-
-
-

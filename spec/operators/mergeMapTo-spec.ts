@@ -110,35 +110,35 @@ describe('mergeMapTo', () => {
     const source = from([4, 3, 2, 1]);
 
     const results: number[] = [];
-    source.pipe(mergeMapTo(from(Promise.resolve(42)))).subscribe(
-      (x) => {
+    source.pipe(mergeMapTo(from(Promise.resolve(42)))).subscribe({
+      next: (x) => {
         results.push(x);
       },
-      () => {
+      error: () => {
         done(new Error('Subscriber error handler not supposed to be called.'));
       },
-      () => {
+      complete: () => {
         expect(results).to.deep.equal([42, 42, 42, 42]);
         done();
-      }
-    );
+      },
+    });
   });
 
   it('should map values to constant rejected promises and merge', (done) => {
     const source = from([4, 3, 2, 1]);
 
-    source.pipe(mergeMapTo(from(Promise.reject(42)))).subscribe(
-      () => {
+    source.pipe(mergeMapTo(from(Promise.reject(42)))).subscribe({
+      next: () => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       },
-      (err) => {
+      error: (err) => {
         expect(err).to.equal(42);
         done();
       },
-      () => {
+      complete: () => {
         done(new Error('Subscriber complete handler not supposed to be called.'));
-      }
-    );
+      },
+    });
   });
 
   it('should mergeMapTo many outer values to many inner values', () => {
@@ -422,16 +422,15 @@ describe('mergeMapTo', () => {
     const expected = ['!', '!', '!', '!'];
     let completed = false;
 
-    source.subscribe(
-      (x) => {
+    source.subscribe({
+      next: (x) => {
         expect(x).to.equal(expected.shift());
       },
-      null,
-      () => {
+      complete: () => {
         expect(expected.length).to.equal(0);
         completed = true;
-      }
-    );
+      },
+    });
 
     expect(completed).to.be.true;
   });
@@ -442,16 +441,15 @@ describe('mergeMapTo', () => {
     const expected = ['!', '!', '!', '!'];
     let completed = false;
 
-    source.subscribe(
-      (x) => {
+    source.subscribe({
+      next: (x) => {
         expect(x).to.equal(expected.shift());
       },
-      null,
-      () => {
+      complete: () => {
         expect(expected.length).to.equal(0);
         completed = true;
-      }
-    );
+      },
+    });
 
     expect(completed).to.be.true;
   });

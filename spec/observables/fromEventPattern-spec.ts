@@ -63,11 +63,10 @@ describe('fromEventPattern', () => {
     fromEventPattern((h: any) => {
       throw 'bad';
     }, noop).subscribe(
-      () => done(new Error('should not be called')),
-      (err: any) => {
+      { next: () => done(new Error('should not be called')), error: (err: any) => {
         expect(err).to.equal('bad');
         done();
-      }, () => done(new Error('should not be called')));
+      }, complete: () => done(new Error('should not be called')) });
   });
 
   it('should accept a selector that maps outgoing values', (done) => {
@@ -89,13 +88,13 @@ describe('fromEventPattern', () => {
     };
 
     fromEventPattern(addHandler, removeHandler, selector).pipe(take(1))
-      .subscribe((x: any) => {
+      .subscribe({ next: (x: any) => {
         expect(x).to.equal('testme!');
-      }, (err: any) => {
+      }, error: (err: any) => {
         done(new Error('should not be called'));
-      }, () => {
+      }, complete: () => {
         done();
-      });
+      } });
 
     trigger('test', 'me');
   });
@@ -119,14 +118,14 @@ describe('fromEventPattern', () => {
     };
 
     fromEventPattern(addHandler, removeHandler, selector)
-      .subscribe((x: any) => {
+      .subscribe({ next: (x: any) => {
         done(new Error('should not be called'));
-      }, (err: any) => {
+      }, error: (err: any) => {
         expect(err).to.equal('bad');
         done();
-      }, () => {
+      }, complete: () => {
         done(new Error('should not be called'));
-      });
+      } });
 
     trigger('test');
   });

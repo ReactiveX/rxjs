@@ -1,7 +1,7 @@
 import { OperatorFunction } from '../types';
 import { map } from './map';
 
-export function mapTo<R>(value: R): OperatorFunction<any, R>;
+export function mapTo<R>(value: R): OperatorFunction<unknown, R>;
 /** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
 export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
 
@@ -37,6 +37,6 @@ export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
  * @return A function that returns an Observable that emits the given `value`
  * every time the source Observable emits.
  */
-export function mapTo<R>(value: R): OperatorFunction<any, R> {
+export function mapTo<R>(value: R): OperatorFunction<unknown, R> {
   return map(() => value);
 }
