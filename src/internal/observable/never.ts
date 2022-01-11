@@ -35,10 +35,3 @@ import { noop } from '../util/noop';
  * @see {@link throwError}
  */
 export const NEVER = new Observable<never>(noop);
-
-/**
- * @deprecated Replaced with the {@link NEVER} constant. Will be removed in v8.
- */
-export function never() {
-  return NEVER;
-}
