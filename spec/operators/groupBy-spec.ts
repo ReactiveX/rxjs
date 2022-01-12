@@ -1464,7 +1464,7 @@ describe('groupBy operator', () => {
 function phonyMarbelize<T>() {
   return (source: Observable<T>) => source.pipe(
     materialize(),
-    map((notification) => {
+    map((notification: any) => {
       // Because we're hacking some weird inner-observable marbles here, we need
       // to make sure this is all the same shape as it would be from the TestScheduler
       // assertions

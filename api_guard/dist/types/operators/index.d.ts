@@ -160,7 +160,7 @@ export declare function map<T, R, A>(project: (this: A, value: T, index: number)
 export declare function mapTo<R>(value: R): OperatorFunction<unknown, R>;
 export declare function mapTo<T, R>(value: R): OperatorFunction<T, R>;
 
-export declare function materialize<T>(): OperatorFunction<T, Notification<T> & ObservableNotification<T>>;
+export declare function materialize<T>(): OperatorFunction<T, ObservableNotification<T>>;
 
 export declare function max<T>(comparer?: (x: T, y: T) => number): MonoTypeOperatorFunction<T>;
 

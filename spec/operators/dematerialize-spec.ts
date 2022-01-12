@@ -1,6 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
-import { of, Notification, ObservableNotification, Observable } from 'rxjs';
+import { of, ObservableNotification, Observable } from 'rxjs';
+import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from 'rxjs/internal/NotificationFactories';
 import { dematerialize, map, mergeMap, materialize, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -29,9 +30,9 @@ describe('dematerialize', () => {
       const result = e1.pipe(
         map((x: string) => {
           if (x === '|') {
-            return Notification.createComplete();
+            return COMPLETE_NOTIFICATION;
           } else {
-            return Notification.createNext(x.replace('{', '').replace('}', ''));
+            return nextNotification(x.replace('{', '').replace('}', ''));
           }
         }),
         dematerialize()
@@ -45,10 +46,10 @@ describe('dematerialize', () => {
   it('should dematerialize a happy stream', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const values = {
-        a: Notification.createNext('w'),
-        b: Notification.createNext('x'),
-        c: Notification.createNext('y'),
-        d: Notification.createComplete(),
+        a: nextNotification('w'),
+        b: nextNotification('x'),
+        c: nextNotification('y'),
+        d: COMPLETE_NOTIFICATION,
       };
 
       const e1 = hot('  --a--b--c--d--|', values);
@@ -63,10 +64,10 @@ describe('dematerialize', () => {
   it('should dematerialize a sad stream', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const values = {
-        a: Notification.createNext('w'),
-        b: Notification.createNext('x'),
-        c: Notification.createNext('y'),
-        d: Notification.createError('error'),
+        a: nextNotification('w'),
+        b: nextNotification('x'),
+        c: nextNotification('y'),
+        d: errorNotification('error'),
       };
 
       const e1 = hot('  --a--b--c--d--|', values);
@@ -125,7 +126,7 @@ describe('dematerialize', () => {
   it('should dematerialize stream throws', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const error = 'error';
-      const e1 = hot('  (x|)', { x: Notification.createError(error) });
+      const e1 = hot('  (x|)', { x: errorNotification(error) });
       const e1subs = '  (^!)';
       const expected = '#   ';
 
@@ -137,8 +138,8 @@ describe('dematerialize', () => {
   it('should allow unsubscribing early and explicitly', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const values = {
-        a: Notification.createNext('w'),
-        b: Notification.createNext('x'),
+        a: nextNotification('w'),
+        b: nextNotification('x'),
       };
 
       const e1 = hot('  --a--b--c--d--|', values);
@@ -156,8 +157,8 @@ describe('dematerialize', () => {
   it('should not break unsubscription chains when unsubscribed explicitly', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const values = {
-        a: Notification.createNext('w'),
-        b: Notification.createNext('x'),
+        a: nextNotification('w'),
+        b: nextNotification('x'),
       };
 
       const e1 = hot('  --a--b--c--d--|', values);
@@ -178,7 +179,7 @@ describe('dematerialize', () => {
 
   it('should dematerialize and completes when stream completes with complete notification', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  ----(a|)', { a: Notification.createComplete() });
+      const e1 = hot('  ----(a|)', { a: COMPLETE_NOTIFICATION });
       const e1subs = '  ^---!   ';
       const expected = '----|   ';
 
@@ -189,7 +190,7 @@ describe('dematerialize', () => {
 
   it('should dematerialize and completes when stream emits complete notification', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  ----a--|', { a: Notification.createComplete() });
+      const e1 = hot('  ----a--|', { a: COMPLETE_NOTIFICATION });
       const e1subs = '  ^---!   ';
       const expected = '----|   ';
 

@@ -31,10 +31,6 @@ describe('index', () => {
     expect(index.Subscriber).to.exist;
   });
 
-  it('should export Notification', () => {
-    expect(index.Notification).to.exist;
-  });
-
   it('should export the appropriate utilities', () => {
     expect(index.pipe).to.exist;
     expect(index.noop).to.exist;
