@@ -276,25 +276,8 @@ export class Observable<T> implements Subscribable<T> {
    * @return a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
-  forEach(next: (value: T) => void): Promise<void>;
-
-  /**
-   * @param next a handler for each value emitted by the observable
-   * @param promiseCtor a constructor function used to instantiate the Promise
-   * @return a promise that either resolves on observable completion or
-   *  rejects with the handled error
-   * @deprecated Passing a Promise constructor will no longer be available
-   * in upcoming versions of RxJS. This is because it adds weight to the library, for very
-   * little benefit. If you need this functionality, it is recommended that you either
-   * polyfill Promise, or you create an adapter to convert the returned native promise
-   * to whatever promise implementation you wanted. Will be removed in v8.
-   */
-  forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
-
-  forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): Promise<void> {
-    promiseCtor = getPromiseCtor(promiseCtor);
-
-    return new promiseCtor<void>((resolve, reject) => {
+  forEach(next: (value: T) => void): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       const subscriber = new SafeSubscriber<T>({
         next: (value) => {
           try {
@@ -308,7 +291,7 @@ export class Observable<T> implements Subscribable<T> {
         complete: resolve,
       });
       this.subscribe(subscriber);
-    }) as Promise<void>;
+    });
   }
 
   /** @internal */
@@ -418,17 +401,6 @@ export class Observable<T> implements Subscribable<T> {
   pipe(...operations: OperatorFunction<any, any>[]): Observable<any> {
     return pipeFromArray(operations)(this);
   }
-}
-
-/**
- * Decides between a passed promise constructor from consuming code,
- * A default configured promise constructor, and the native promise
- * constructor and returns it. If nothing can be found, it will throw
- * an error.
- * @param promiseCtor The optional promise constructor to passed by consuming code
- */
-function getPromiseCtor(promiseCtor: PromiseConstructorLike | undefined) {
-  return promiseCtor ?? Promise;
 }
 
 function isObserver<T>(value: any): value is Observer<T> {
