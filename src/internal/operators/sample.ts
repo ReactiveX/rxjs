@@ -54,14 +54,19 @@ export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T
         lastValue = value;
       })
     );
-    const emit = () => {
-      if (hasValue) {
-        hasValue = false;
-        const value = lastValue!;
-        lastValue = null;
-        subscriber.next(value);
-      }
-    };
-    notifier.subscribe(new OperatorSubscriber(subscriber, emit, noop));
+    notifier.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        () => {
+          if (hasValue) {
+            hasValue = false;
+            const value = lastValue!;
+            lastValue = null;
+            subscriber.next(value);
+          }
+        },
+        noop
+      )
+    );
   });
 }
