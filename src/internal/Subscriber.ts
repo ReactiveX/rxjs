@@ -34,7 +34,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * If you have a specific use case, please file an issue.
    */
   static create<T>(next?: (x?: T) => void, error?: (e?: any) => void, complete?: () => void): Subscriber<T> {
-    return new SafeSubscriber(next, error, complete);
+    return new SafeSubscriber({ next, error, complete });
   }
 
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
@@ -136,14 +136,12 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
 }
 
 export class SafeSubscriber<T> extends Subscriber<T> {
-  constructor(
-    observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null,
-    error?: ((e?: any) => void) | null,
-    complete?: (() => void) | null
-  ) {
+  constructor(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null) {
     super();
 
     let next: ((value: T) => void) | undefined;
+    let error: ((err: any) => void) | undefined;
+    let complete: (() => void) | undefined;
     if (isFunction(observerOrNext)) {
       // The first argument is a function, not an observer. The next
       // two arguments *could* be observers, or they could be empty.

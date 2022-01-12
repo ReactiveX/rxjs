@@ -421,7 +421,7 @@ describe('Subject', () => {
     expect(Subject.create).to.be.a('function');
     const source = of(1, 2, 3, 4, 5);
     const nexts: number[] = [];
-    const output: number[] = [];
+    const output: any[] = [];
 
     let error: any;
     let complete = false;
@@ -442,17 +442,17 @@ describe('Subject', () => {
       },
     };
 
-    const sub = Subject.create(destination, source);
+    // TODO(benlesh): This needs to go away, the types here are all wrong.
+    const sub: Subject<number | string> = Subject.create(destination, source);
 
-    sub.subscribe(
-      function (x: number) {
+    sub.subscribe({
+      next: function (x) {
         output.push(x);
       },
-      null,
-      () => {
+      complete: () => {
         outputComplete = true;
       }
-    );
+    });
 
     sub.next('a');
     sub.next('b');
@@ -492,17 +492,16 @@ describe('Subject', () => {
       },
     };
 
-    const sub = Subject.create(destination, source);
+    const sub: Subject<any> = Subject.create(destination, source);
 
-    sub.subscribe(
-      function (x: number) {
+    sub.subscribe({
+      next: function (x) {
         output.push(x);
       },
-      null,
-      () => {
+      complete: () => {
         outputComplete = true;
       }
-    );
+    });
 
     sub.next('a');
     sub.next('b');

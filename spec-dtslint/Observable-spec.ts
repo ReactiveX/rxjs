@@ -143,11 +143,5 @@ describe('subscribe', () => {
     o.subscribe({ error, complete }); // $ExpectNoDeprecation
     o.subscribe({ complete }); // $ExpectNoDeprecation
     o.subscribe(next); // $ExpectNoDeprecation
-    o.subscribe(null, error); // $ExpectDeprecation
-    o.subscribe(undefined, error); // $ExpectDeprecation
-    o.subscribe(null, error, complete); // $ExpectDeprecation
-    o.subscribe(undefined, error, complete); // $ExpectDeprecation
-    o.subscribe(null, null, complete); // $ExpectDeprecation
-    o.subscribe(undefined, undefined, complete); // $ExpectDeprecation
   });
 });
