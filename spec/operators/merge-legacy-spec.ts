@@ -9,15 +9,13 @@ describe('merge (legacy)', () => {
     const r = [1, 2, 4, 3, 5, 6, 7, 8];
 
     a.pipe(merge(b, queueScheduler)).subscribe(
-      val => {
+      { next: val => {
         expect(val).to.equal(r.shift());
-      },
-      x => {
+      }, error: x => {
         done(new Error('should not be called'));
-      },
-      () => {
+      }, complete: () => {
         done();
-      }
+      } }
     );
   });
 });

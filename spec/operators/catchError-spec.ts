@@ -344,13 +344,13 @@ describe('catchError operator', () => {
         expect(err).to.equal('bad');
         return EMPTY;
       })
-    ).subscribe(() => {
+    ).subscribe({ next: () => {
     //noop
-    }, (err: any) => {
+    }, error: (err: any) => {
       done(new Error('should not be called'));
-    }, () => {
+    }, complete: () => {
       done();
-    });
+    } });
   });
 
   it('should accept selector returns any ObservableInput', (done) => {
@@ -360,13 +360,13 @@ describe('catchError operator', () => {
       mergeMap(input =>
         throwError(() => ('bad')).pipe(catchError(err => input))
       )
-    ).subscribe(x => {
+    ).subscribe({ next: x => {
       expect(x).to.be.equal(42);
-    }, (err: any) => {
+    }, error: (err: any) => {
       done(new Error('should not be called'));
-    }, () => {
+    }, complete: () => {
       done();
-    });
+    } });
   });
 
   it('should catch errors throw from within the constructor', () => {
@@ -412,7 +412,7 @@ describe('catchError operator', () => {
         catchError(err =>
           throwError(() => (thrownError))
         )
-      ).subscribe(subscribeSpy, errorSpy);
+      ).subscribe({ next: subscribeSpy, error: errorSpy });
 
       trueSetTimeout(() => {
         try {
@@ -448,12 +448,10 @@ describe('catchError operator', () => {
       catchError(err => sourceWithDelay)
     )
     .subscribe(
-      value => values.push(value),
-      err => done(err),
-      () => {
+      { next: value => values.push(value), error: err => done(err), complete: () => {
         expect(values).to.deep.equal(['delayed']);
         done();
-      }
+      } }
     );
   });
 

@@ -45,16 +45,14 @@ describe('concatAll operator', () => {
 
     const res: number[] = [];
     sources.pipe(concatAll()).subscribe(
-      x => {
+      { next: x => {
         res.push(x);
-      },
-      err => {
+      }, error: err => {
         done(new Error('should not be called'));
-      },
-      () => {
+      }, complete: () => {
         expect(res).to.deep.equal([0, 1, 2, 3]);
         done();
-      }
+      } }
     );
   });
 
@@ -112,17 +110,15 @@ describe('concatAll operator', () => {
 
     const res: number[] = [];
     sources.pipe(concatAll()).subscribe(
-      x => {
+      { next: x => {
         res.push(x);
-      },
-      err => {
+      }, error: err => {
         expect(res.length).to.equal(1);
         expect(err).to.equal(1);
         done();
-      },
-      () => {
+      }, complete: () => {
         done(new Error('should not be called'));
-      }
+      } }
     );
   });
 

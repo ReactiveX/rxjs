@@ -26,9 +26,9 @@ describe('static zip', () => {
     zip(
       from(['a', 'b', 'c']),
       from([1, 2, 3]), (a: string, b: number) => a + b)
-        .subscribe((x: string) => {
+        .subscribe({ next: (x: string) => {
           expect(x).to.equal(expected[i++]);
-        }, null, done);
+        }, complete: done });
   });
 
   it('should end once one observable completes and its buffer is empty', () => {
@@ -524,9 +524,9 @@ describe('static zip', () => {
     const r = [[1, 4], [2, 5], [3, 6]];
     let i = 0;
 
-    zip(a, b).subscribe((vals: Array<number>) => {
+    zip(a, b).subscribe({ next: (vals: Array<number>) => {
       expect(vals).to.deep.equal(r[i++]);
-    }, null, done);
+    }, complete: done });
   });
 
   it('should be able to zip all iterables', () => {

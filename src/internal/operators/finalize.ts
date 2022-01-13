@@ -7,34 +7,33 @@ import { operate } from '../util/lift';
  * The specified function will also be called when the subscriber explicitly unsubscribes.
  *
  * ## Examples
+ *
  * Execute callback function when the observable completes
  *
  * ```ts
- * import { interval } from 'rxjs';
- * import { take, finalize } from 'rxjs/operators';
+ * import { interval, take, finalize } from 'rxjs';
  *
  * // emit value in sequence every 1 second
  * const source = interval(1000);
  * const example = source.pipe(
  *   take(5), //take only the first 5 values
  *   finalize(() => console.log('Sequence complete')) // Execute when the observable completes
- * )
+ * );
  * const subscribe = example.subscribe(val => console.log(val));
  *
  * // results:
- * //   0
- * //   1
- * //   2
- * //   3
- * //   4
- * //   'Sequence complete'
+ * // 0
+ * // 1
+ * // 2
+ * // 3
+ * // 4
+ * // 'Sequence complete'
  * ```
  *
  * Execute callback function when the subscriber explicitly unsubscribes
  *
  * ```ts
- * import { interval, timer, noop } from 'rxjs';
- * import { finalize, tap } from 'rxjs/operators';
+ * import { interval, finalize, tap, noop, timer } from 'rxjs';
  *
  * const source = interval(100).pipe(
  *   finalize(() => console.log('[finalize] Called')),
@@ -54,9 +53,9 @@ import { operate } from '../util/lift';
  * timer(150).subscribe(() => sub.unsubscribe());
  *
  * // results:
- * //   '[next] Called'
- * //   0
- * //   '[finalize] Called'
+ * // '[next] Called'
+ * // 0
+ * // '[finalize] Called'
  * ```
  *
  * @param {function} callback Function to be called when source terminates.

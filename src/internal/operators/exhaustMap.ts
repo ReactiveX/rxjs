@@ -41,14 +41,15 @@ export function exhaustMap<T, I, R>(
  * and repeat this process.
  *
  * ## Example
+ *
  * Run a finite timer for each click, only if there is no currently active timer
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { exhaustMap, take } from 'rxjs/operators';
+ * import { fromEvent, exhaustMap, interval, take } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
- *   exhaustMap(ev => interval(1000).pipe(take(5)))
+ *   exhaustMap(() => interval(1000).pipe(take(5)))
  * );
  * result.subscribe(x => console.log(x));
  * ```

@@ -7,6 +7,13 @@ const root: any = (typeof globalThis !== 'undefined' && globalThis)
   || (typeof self !== 'undefined' && self)
   || global;
 
+enum WebSocketState {
+  CONNECTING = 0,
+  OPEN = 1,
+  CLOSING = 2,
+  CLOSED = 3
+}
+
 /** @test {webSocket}  */
 describe('webSocket', () => {
   let __ws: any;
@@ -131,7 +138,7 @@ describe('webSocket', () => {
       const socket = MockWebSocket.lastSocket;
       socket.open();
 
-      expect(socket.readyState).to.equal(1); // open
+      expect(socket.readyState).to.equal(WebSocketState.OPEN);
 
       sinon.spy(socket, 'close');
 
@@ -139,7 +146,10 @@ describe('webSocket', () => {
 
       subject.complete();
       expect(socket.close).have.been.called;
-      expect(socket.readyState).to.equal(3); // closed
+      expect(socket.readyState).to.equal(WebSocketState.CLOSING);
+
+      socket.triggerClose({ wasClean: true });
+      expect(socket.readyState).to.equal(WebSocketState.CLOSED);
 
       subject.unsubscribe();
       (<any>socket.close).restore();
@@ -154,7 +164,7 @@ describe('webSocket', () => {
       socket.open();
 
       expect(socket.close).have.been.called;
-      expect(socket.readyState).to.equal(3); // closed
+      expect(socket.readyState).to.equal(WebSocketState.CLOSING);
 
       (<any>socket.close).restore();
     });
@@ -168,7 +178,7 @@ describe('webSocket', () => {
       socket.open();
 
       expect(socket.close).have.been.called;
-      expect(socket.readyState).to.equal(3); // closed
+      expect(socket.readyState).to.equal(WebSocketState.CLOSING);
 
       (<any>socket.close).restore();
     });
@@ -181,7 +191,7 @@ describe('webSocket', () => {
       subject.unsubscribe();
 
       expect(socket.close).have.been.called;
-      expect(socket.readyState).to.equal(3); // closed
+      expect(socket.readyState).to.equal(WebSocketState.CLOSING);
 
       (<any>socket.close).restore();
     });
@@ -194,7 +204,36 @@ describe('webSocket', () => {
       subscription.unsubscribe();
 
       expect(socket.close).have.been.called;
-      expect(socket.readyState).to.equal(3); // closed
+      expect(socket.readyState).to.equal(WebSocketState.CLOSING);
+
+      (<any>socket.close).restore();
+    });
+
+    it('should close a socket that opens before the previous socket has closed', () => {
+      const subject = webSocket<string>('ws://mysocket');
+      const subscription = subject.subscribe();
+      const socket = MockWebSocket.lastSocket;
+      sinon.spy(socket, 'close');
+      subscription.unsubscribe();
+
+      expect(socket.close).have.been.called;
+      expect(socket.readyState).to.equal(WebSocketState.CLOSING);
+
+      const subscription2 = subject.subscribe();
+      const socket2 = MockWebSocket.lastSocket;
+      sinon.spy(socket2, 'close');
+
+      // Close socket after socket2 has opened
+      socket2.open();
+      expect(socket2.readyState).to.equal(WebSocketState.OPEN);
+      socket.triggerClose({wasClean: true});
+
+      expect(socket.readyState).to.equal(WebSocketState.CLOSED);
+      expect(socket2.close).have.not.been.called;
+
+      subscription2.unsubscribe();
+      expect(socket2.close).have.been.called;
+      expect(socket2.readyState).to.equal(WebSocketState.CLOSING);
 
       (<any>socket.close).restore();
     });
@@ -364,11 +403,11 @@ describe('webSocket', () => {
         }
       });
 
-      subject.subscribe((x: any) => {
+      subject.subscribe({ next: (x: any) => {
         expect(x).to.equal('this should not happen');
-      }, (err: any) => {
+      }, error: (err: any) => {
         expect(err).to.be.an('error', 'I am a bad error');
-      });
+      } });
 
       const socket = MockWebSocket.lastSocket;
       socket.open();
@@ -429,9 +468,9 @@ describe('webSocket', () => {
       socket.triggerClose(expected[0]);
       expect(closes.length).to.equal(1);
 
-      subject.subscribe(null, function (err) {
+      subject.subscribe({ error: function (err) {
         expect(err).to.equal(expected[1]);
-      });
+      } });
 
       socket = MockWebSocket.lastSocket;
       socket.open();
@@ -453,11 +492,11 @@ describe('webSocket', () => {
         }
       });
 
-      subject.subscribe((x: any) => {
+      subject.subscribe({ next: (x: any) => {
         expect(x).to.equal('this should not happen');
-      }, (err: any) => {
+      }, error: (err: any) => {
         expect(err).to.be.an('error', 'connection refused');
-      });
+      } });
 
       subject.unsubscribe();
     });
@@ -601,9 +640,7 @@ describe('webSocket', () => {
         takeWhile((req: any) => !req.complete)
       )
       .subscribe(
-        () => results.push('A next'),
-        (e) => results.push('A error ' + e),
-        () => results.push('A complete')
+        { next: () => results.push('A next'), error: (e) => results.push('A error ' + e), complete: () => results.push('A complete') }
       );
 
       socketSubject.multiplex(
@@ -611,9 +648,7 @@ describe('webSocket', () => {
         () => results.push('B unsub'),
         (req: any) => req.id === 'B')
         .subscribe(
-          () => results.push('B next'),
-          (e) => results.push('B error ' + e),
-          () => results.push('B complete')
+          { next: () => results.push('B next'), error: (e) => results.push('B error ' + e), complete: () => results.push('B complete') }
         );
 
       // Setup socket and send messages
@@ -657,9 +692,7 @@ describe('webSocket', () => {
       ).pipe(
         takeWhile(req => !req.complete)
       ).subscribe(
-        () => results.push('A next'),
-        (e) => results.push('A error ' + e),
-        () => results.push('A complete')
+        { next: () => results.push('A next'), error: (e) => results.push('A error ' + e), complete: () => results.push('A complete') }
       );
 
       socketSubject.multiplex(
@@ -669,9 +702,7 @@ describe('webSocket', () => {
       ).pipe(
         takeWhile(req => !req.complete)
       ).subscribe(
-        () => results.push('B next'),
-        (e) => results.push('B error ' + e),
-        () => results.push('B complete')
+        { next: () => results.push('B next'), error: (e) => results.push('B error ' + e), complete: () => results.push('B complete') }
       );
 
       // Setup socket and send messages
@@ -747,7 +778,7 @@ class MockWebSocket {
 
   sent: string[] = [];
   handlers: any = {};
-  readyState: number = 0;
+  readyState: WebSocketState = WebSocketState.CONNECTING;
   closeCode: any;
   closeReason: any;
   binaryType?: string;
@@ -766,8 +797,8 @@ class MockWebSocket {
     return length > 0 ? sent[length - 1] : undefined!;
   }
 
-  triggerClose(e: any): void {
-    this.readyState = 3;
+  triggerClose(e: Partial<CloseEvent>): void {
+    this.readyState = WebSocketState.CLOSED;
     this.trigger('close', e);
   }
 
@@ -783,16 +814,15 @@ class MockWebSocket {
   }
 
   open(): void {
-    this.readyState = 1;
+    this.readyState = WebSocketState.OPEN;
     this.trigger('open', {});
   }
 
   close(code: any, reason: any): void {
-    if (this.readyState < 2) {
-      this.readyState = 2;
+    if (this.readyState < WebSocketState.CLOSING) {
+      this.readyState = WebSocketState.CLOSING;
       this.closeCode = code;
       this.closeReason = reason;
-      this.triggerClose({ wasClean: true });
     }
   }
 

@@ -29,6 +29,12 @@ export declare function audit<T>(durationSelector: (value: T) => ObservableInput
 
 export declare function auditTime<T>(duration: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
+export interface BasicGroupByOptions<K, T> {
+    connector?: () => SubjectLike<T>;
+    duration?: (grouped: GroupedObservable<K, T>) => ObservableInput<any>;
+    element?: undefined;
+}
+
 export declare class BehaviorSubject<T> extends Subject<T> {
     get value(): T;
     constructor(_value: T);
@@ -102,8 +108,8 @@ export declare function concatMap<T, O extends ObservableInput<any>>(project: (v
 export declare function concatMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;
 export declare function concatMap<T, R, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 
-export declare function concatMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<any, ObservedValueOf<O>>;
-export declare function concatMapTo<O extends ObservableInput<unknown>>(observable: O, resultSelector: undefined): OperatorFunction<any, ObservedValueOf<O>>;
+export declare function concatMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<unknown, ObservedValueOf<O>>;
+export declare function concatMapTo<O extends ObservableInput<unknown>>(observable: O, resultSelector: undefined): OperatorFunction<unknown, ObservedValueOf<O>>;
 export declare function concatMapTo<T, R, O extends ObservableInput<unknown>>(observable: O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 
 export declare function concatWith<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
@@ -129,6 +135,10 @@ export declare class ConnectableObservable<T> extends Observable<T> {
     connect(): Subscription;
     protected getSubject(): Subject<T>;
     refCount(): Observable<T>;
+}
+
+export interface ConnectConfig<T> {
+    connector: () => SubjectLike<T>;
 }
 
 export declare type Cons<X, Y extends readonly any[]> = ((arg: X, ...rest: Y) => any) extends (...args: infer U) => any ? U : never;
@@ -290,6 +300,12 @@ export declare function groupBy<T, K>(key: (value: T) => K, element: void, durat
 export declare function groupBy<T, K, R>(key: (value: T) => K, element?: (value: T) => R, duration?: (grouped: GroupedObservable<K, R>) => Observable<any>): OperatorFunction<T, GroupedObservable<K, R>>;
 export declare function groupBy<T, K, R>(key: (value: T) => K, element?: (value: T) => R, duration?: (grouped: GroupedObservable<K, R>) => Observable<any>, connector?: () => Subject<R>): OperatorFunction<T, GroupedObservable<K, R>>;
 
+export interface GroupByOptionsWithElement<K, E, T> {
+    connector?: () => SubjectLike<E>;
+    duration?: (grouped: GroupedObservable<K, E>) => ObservableInput<any>;
+    element: (value: T) => E;
+}
+
 export interface GroupedObservable<K, T> extends Observable<T> {
     readonly key: K;
 }
@@ -298,7 +314,7 @@ export declare type Head<X extends readonly any[]> = ((...args: X) => any) exten
 
 export declare function identity<T>(x: T): T;
 
-export declare function ignoreElements(): OperatorFunction<any, never>;
+export declare function ignoreElements(): OperatorFunction<unknown, never>;
 
 export declare function iif<T, F>(condition: () => boolean, trueResult: ObservableInput<T>, falseResult: ObservableInput<F>): Observable<T | F>;
 
@@ -324,7 +340,7 @@ export declare function lastValueFrom<T>(source: Observable<T>): Promise<T>;
 export declare function map<T, R>(project: (value: T, index: number) => R): OperatorFunction<T, R>;
 export declare function map<T, R, A>(project: (this: A, value: T, index: number) => R, thisArg: A): OperatorFunction<T, R>;
 
-export declare function mapTo<R>(value: R): OperatorFunction<any, R>;
+export declare function mapTo<R>(value: R): OperatorFunction<unknown, R>;
 export declare function mapTo<T, R>(value: R): OperatorFunction<T, R>;
 
 export declare function materialize<T>(): OperatorFunction<T, Notification<T> & ObservableNotification<T>>;
@@ -342,7 +358,7 @@ export declare function mergeMap<T, O extends ObservableInput<any>>(project: (va
 export declare function mergeMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined, concurrent?: number): OperatorFunction<T, ObservedValueOf<O>>;
 export declare function mergeMap<T, R, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R, concurrent?: number): OperatorFunction<T, R>;
 
-export declare function mergeMapTo<O extends ObservableInput<unknown>>(innerObservable: O, concurrent?: number): OperatorFunction<any, ObservedValueOf<O>>;
+export declare function mergeMapTo<O extends ObservableInput<unknown>>(innerObservable: O, concurrent?: number): OperatorFunction<unknown, ObservedValueOf<O>>;
 export declare function mergeMapTo<T, R, O extends ObservableInput<unknown>>(innerObservable: O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R, concurrent?: number): OperatorFunction<T, R>;
 
 export declare function mergeScan<T, R>(accumulator: (acc: R, value: T, index: number) => ObservableInput<R>, seed: R, concurrent?: number): OperatorFunction<T, R>;
@@ -559,7 +575,7 @@ export declare function reduce<V, A, S = A>(accumulator: (acc: A | S, value: V, 
 
 export declare function refCount<T>(): MonoTypeOperatorFunction<T>;
 
-export declare function repeat<T>(count?: number): MonoTypeOperatorFunction<T>;
+export declare function repeat<T>(countOrConfig?: number | RepeatConfig): MonoTypeOperatorFunction<T>;
 
 export declare function repeatWhen<T>(notifier: (notifications: Observable<void>) => Observable<any>): MonoTypeOperatorFunction<T>;
 
@@ -570,6 +586,12 @@ export declare class ReplaySubject<T> extends Subject<T> {
 
 export declare function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
 export declare function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;
+
+export interface RetryConfig {
+    count?: number;
+    delay?: number | ((error: any, retryCount: number) => ObservableInput<any>);
+    resetOnSuccess?: boolean;
+}
 
 export declare function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T>;
 
@@ -610,8 +632,22 @@ export declare const SequenceError: SequenceErrorCtor;
 export declare function share<T>(): MonoTypeOperatorFunction<T>;
 export declare function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
 
+export interface ShareConfig<T> {
+    connector?: () => SubjectLike<T>;
+    resetOnComplete?: boolean | (() => Observable<any>);
+    resetOnError?: boolean | ((error: any) => Observable<any>);
+    resetOnRefCountZero?: boolean | (() => Observable<any>);
+}
+
 export declare function shareReplay<T>(config: ShareReplayConfig): MonoTypeOperatorFunction<T>;
 export declare function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+
+export interface ShareReplayConfig {
+    bufferSize?: number;
+    refCount: boolean;
+    scheduler?: SchedulerLike;
+    windowTime?: number;
+}
 
 export declare function single<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export declare function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
@@ -693,8 +729,8 @@ export declare function switchMap<T, O extends ObservableInput<any>>(project: (v
 export declare function switchMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;
 export declare function switchMap<T, R, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 
-export declare function switchMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<any, ObservedValueOf<O>>;
-export declare function switchMapTo<O extends ObservableInput<unknown>>(observable: O, resultSelector: undefined): OperatorFunction<any, ObservedValueOf<O>>;
+export declare function switchMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<unknown, ObservedValueOf<O>>;
+export declare function switchMapTo<O extends ObservableInput<unknown>>(observable: O, resultSelector: undefined): OperatorFunction<unknown, ObservedValueOf<O>>;
 export declare function switchMapTo<T, R, O extends ObservableInput<unknown>>(observable: O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 
 export declare function switchScan<T, R, O extends ObservableInput<any>>(accumulator: (acc: R, value: T, index: number) => O, seed: R): OperatorFunction<T, ObservedValueOf<O>>;
@@ -707,9 +743,9 @@ export declare function takeLast<T>(count: number): MonoTypeOperatorFunction<T>;
 
 export declare function takeUntil<T>(notifier: ObservableInput<any>): MonoTypeOperatorFunction<T>;
 
-export declare function takeWhile<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? never : T>;
-export declare function takeWhile<T>(predicate: BooleanConstructor, inclusive: false): OperatorFunction<T, Exclude<T, Falsy> extends never ? never : T>;
 export declare function takeWhile<T>(predicate: BooleanConstructor, inclusive: true): MonoTypeOperatorFunction<T>;
+export declare function takeWhile<T>(predicate: BooleanConstructor, inclusive: false): OperatorFunction<T, TruthyTypesOf<T>>;
+export declare function takeWhile<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export declare function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
 export declare function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S, inclusive: false): OperatorFunction<T, S>;
 export declare function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive?: boolean): MonoTypeOperatorFunction<T>;
@@ -720,7 +756,12 @@ export declare function tap<T>(next?: ((value: T) => void) | null, error?: ((err
 
 export declare type TeardownLogic = Subscription | Unsubscribable | (() => void) | void;
 
-export declare function throttle<T>(durationSelector: (value: T) => ObservableInput<any>, { leading, trailing }?: ThrottleConfig): MonoTypeOperatorFunction<T>;
+export declare function throttle<T>(durationSelector: (value: T) => ObservableInput<any>, config?: ThrottleConfig): MonoTypeOperatorFunction<T>;
+
+export interface ThrottleConfig {
+    leading?: boolean;
+    trailing?: boolean;
+}
 
 export declare function throttleTime<T>(duration: number, scheduler?: SchedulerLike, config?: import("./throttle").ThrottleConfig): MonoTypeOperatorFunction<T>;
 
@@ -744,11 +785,25 @@ export declare function timeout<T, M = unknown>(config: Omit<TimeoutConfig<T, an
 export declare function timeout<T>(first: Date, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 export declare function timeout<T>(each: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
+export interface TimeoutConfig<T, O extends ObservableInput<unknown> = ObservableInput<T>, M = unknown> {
+    each?: number;
+    first?: number | Date;
+    meta?: M;
+    scheduler?: SchedulerLike;
+    with?: (info: TimeoutInfo<T, M>) => O;
+}
+
 export interface TimeoutError<T = unknown, M = unknown> extends Error {
     info: TimeoutInfo<T, M> | null;
 }
 
 export declare const TimeoutError: TimeoutErrorCtor;
+
+export interface TimeoutInfo<T, M = unknown> {
+    readonly lastValue: T | null;
+    readonly meta: M;
+    readonly seen: number;
+}
 
 export declare function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
 export declare function timeoutWith<T, R>(waitFor: number, switchTo: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;

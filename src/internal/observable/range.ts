@@ -24,7 +24,7 @@ export function range(start: number, count: number | undefined, scheduler: Sched
  *
  * ## Example
  *
- * ### Produce a range of numbers
+ * Produce a range of numbers
  *
  * ```ts
  * import { range } from 'rxjs';
@@ -32,19 +32,19 @@ export function range(start: number, count: number | undefined, scheduler: Sched
  * const numbers = range(1, 3);
  *
  * numbers.subscribe({
- *  next: value => { console.log(value) },
- *  complete: () => { console.log('Complete!') }
+ *   next: value => console.log(value),
+ *   complete: () => console.log('Complete!')
  * });
  *
  * // Logs:
  * // 1
  * // 2
  * // 3
- * // "Complete!"
+ * // 'Complete!'
  * ```
  *
  * @see {@link timer}
- * @see {@link index/interval}
+ * @see {@link interval}
  *
  * @param {number} [start=0] The value of the first integer in the sequence.
  * @param {number} count The number of sequential integers to generate.

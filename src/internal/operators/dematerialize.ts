@@ -25,19 +25,18 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * Convert an Observable of Notifications to an actual Observable
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { dematerialize } from 'rxjs/operators';
+ * import { NextNotification, ErrorNotification, of, dematerialize } from 'rxjs';
  *
- * const notifA = { kind: 'N', value: 'A' };
- * const notifB = { kind: 'N', value: 'B' };
- * const notifE = { kind: 'E', error: new TypeError('x.toUpperCase is not a function') }
+ * const notifA: NextNotification<string> = { kind: 'N', value: 'A' };
+ * const notifB: NextNotification<string> = { kind: 'N', value: 'B' };
+ * const notifE: ErrorNotification = { kind: 'E', error: new TypeError('x.toUpperCase is not a function') };
  *
  * const materialized = of(notifA, notifB, notifE);
  *
  * const upperCase = materialized.pipe(dematerialize());
  * upperCase.subscribe({
- *    next: x => console.log(x),
- *    error: e => console.error(e)
+ *   next: x => console.log(x),
+ *   error: e => console.error(e)
  * });
  *
  * // Results in:
@@ -45,6 +44,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * // B
  * // TypeError: x.toUpperCase is not a function
  * ```
+ *
  * @see {@link materialize}
  *
  * @return A function that returns an Observable that emits items and

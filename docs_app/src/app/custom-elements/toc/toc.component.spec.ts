@@ -10,7 +10,7 @@ import { TocComponent } from './toc.component';
 describe('TocComponent', () => {
   let tocComponentDe: DebugElement;
   let tocComponent: TocComponent;
-  let tocService: TestTocService;
+  let tocService: TocService;
 
   let page: {
     listItems: DebugElement[];
@@ -32,7 +32,7 @@ describe('TocComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ HostEmbeddedTocComponent, HostNotEmbeddedTocComponent, TocComponent ],
+      declarations: [ HostEmbeddedTocComponent, TocComponent ],
       providers: [
         { provide: ScrollService, useClass: TestScrollService },
         { provide: TocService, useClass: TestTocService }
@@ -48,7 +48,7 @@ describe('TocComponent', () => {
       fixture = TestBed.createComponent(HostEmbeddedTocComponent);
       tocComponentDe = fixture.debugElement.children[0];
       tocComponent = tocComponentDe.componentInstance;
-      tocService = TestBed.get(TocService);
+      tocService = TestBed.inject(TocService);
     });
 
     it('should create tocComponent', () => {
@@ -133,12 +133,14 @@ describe('TocComponent', () => {
 
       describe('when many TocItems', () => {
         let scrollToTopSpy: jasmine.Spy;
-
         beforeEach(() => {
           fixture.detectChanges();
           page = setPage();
-          scrollToTopSpy = TestBed.get(ScrollService).scrollToTop;
+          const scrollSvc = TestBed.inject(ScrollService);
+          scrollToTopSpy = spyOn(scrollSvc, 'scrollToTop');
         });
+
+        afterEach(() => fixture.destroy());
 
         it('should have more than 4 displayed items', () => {
           expect(page.listItems.length).toBeGreaterThan(4);
@@ -187,6 +189,7 @@ describe('TocComponent', () => {
           });
 
           it('should not scroll', () => {
+            scrollToTopSpy = jasmine.createSpy('scrollToTop');
             expect(scrollToTopSpy).not.toHaveBeenCalled();
           });
 
@@ -197,6 +200,7 @@ describe('TocComponent', () => {
           });
 
           it('should not scroll after clicking again', () => {
+            scrollToTopSpy = jasmine.createSpy('scrollToTop');
             page.tocHeadingButtonEmbedded.nativeElement.click();
             fixture.detectChanges();
             expect(scrollToTopSpy).not.toHaveBeenCalled();
@@ -219,6 +223,7 @@ describe('TocComponent', () => {
           });
 
           it('should not scroll', () => {
+            scrollToTopSpy = jasmine.createSpy('scrollToTop');
             expect(scrollToTopSpy).not.toHaveBeenCalled();
           });
 
@@ -235,6 +240,7 @@ describe('TocComponent', () => {
           });
 
           it('should scroll after clicking again', () => {
+            scrollToTopSpy = jasmine.createSpy('scrollToTop');
             page.tocMoreButton.nativeElement.click();
             fixture.detectChanges();
             expect(scrollToTopSpy).toHaveBeenCalled();
@@ -252,7 +258,7 @@ describe('TocComponent', () => {
 
       tocComponentDe = fixture.debugElement.children[0];
       tocComponent = tocComponentDe.componentInstance;
-      tocService = TestBed.get(TocService);
+      tocService = TestBed.inject(TocService);
 
       fixture.detectChanges();
       page = setPage();
@@ -286,23 +292,28 @@ describe('TocComponent', () => {
       it('should keep track of `TocService`\'s `activeItemIndex`', () => {
         expect(tocComponent.activeIndex).toBeNull();
 
-        tocService.setActiveIndex(42);
+        tocService.activeItemIndex.next(42);
+        fixture.detectChanges();
         expect(tocComponent.activeIndex).toBe(42);
 
-        tocService.setActiveIndex(null);
+        tocService.activeItemIndex.next(null);
+        fixture.detectChanges();
         expect(tocComponent.activeIndex).toBeNull();
       });
 
       it('should stop tracking `activeItemIndex` once destroyed', () => {
-        tocService.setActiveIndex(42);
+        tocService.activeItemIndex.next(42);
+        fixture.detectChanges();
         expect(tocComponent.activeIndex).toBe(42);
 
         tocComponent.ngOnDestroy();
 
-        tocService.setActiveIndex(43);
+        tocService.activeItemIndex.next(43);
+        fixture.detectChanges();
         expect(tocComponent.activeIndex).toBe(42);
 
-        tocService.setActiveIndex(null);
+        tocService.activeItemIndex.next(null);
+        fixture.detectChanges();
         expect(tocComponent.activeIndex).toBe(42);
       });
 
@@ -385,17 +396,17 @@ describe('TocComponent', () => {
         });
 
         it('when the `activeIndex` changes', () => {
-          tocService.setActiveIndex(0);
+          tocService.activeItemIndex.next(0);
           fixture.detectChanges();
 
           expect(parentScrollTop).toBe(0);
 
-          tocService.setActiveIndex(1);
+          tocService.activeItemIndex.next(1);
           fixture.detectChanges();
 
           expect(parentScrollTop).toBe(0);
 
-          tocService.setActiveIndex(page.listItems.length - 1);
+          tocService.activeItemIndex.next(page.listItems.length - 1);
           fixture.detectChanges();
 
           expect(parentScrollTop).toBeGreaterThan(0);
@@ -409,7 +420,7 @@ describe('TocComponent', () => {
 
           expect(parentScrollTop).toBe(0);
 
-          tocService.setActiveIndex(tocList.length - 1);
+          tocService.activeItemIndex.next(tocList.length - 1);
           fixture.detectChanges();
 
           expect(parentScrollTop).toBe(0);
@@ -424,7 +435,7 @@ describe('TocComponent', () => {
           const tocList = tocComponent.tocList;
           tocComponent.ngOnDestroy();
 
-          tocService.setActiveIndex(page.listItems.length - 1);
+          tocService.activeItemIndex.next(page.listItems.length - 1);
           fixture.detectChanges();
 
           expect(parentScrollTop).toBe(0);
@@ -467,7 +478,7 @@ class TestTocService {
   activeItemIndex = new BehaviorSubject<number | null>(null);
   setActiveIndex(index: number|null) {
     this.activeItemIndex.next(index);
-    if (asap._scheduled !== undefined) {
+    if (asap.schedule !== undefined) {
       asap.flush();
     }
   }

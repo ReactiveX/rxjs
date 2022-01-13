@@ -28,52 +28,53 @@ export function catchError<T, O extends ObservableInput<any>>(
  * subscribe to it, and forward all of its events to the resulting observable.
  *
  * ## Examples
- * Continues with a different Observable when there's an error
+ *
+ * Continue with a different Observable when there's an error
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { map, catchError } from 'rxjs/operators';
+ * import { of, map, catchError } from 'rxjs';
  *
- * of(1, 2, 3, 4, 5).pipe(
+ * of(1, 2, 3, 4, 5)
+ *   .pipe(
  *     map(n => {
- *   	   if (n === 4) {
- * 	       throw 'four!';
+ *       if (n === 4) {
+ *         throw 'four!';
  *       }
- *	     return n;
+ *       return n;
  *     }),
- *     catchError(err => of('I', 'II', 'III', 'IV', 'V')),
+ *     catchError(err => of('I', 'II', 'III', 'IV', 'V'))
  *   )
  *   .subscribe(x => console.log(x));
  *   // 1, 2, 3, I, II, III, IV, V
  * ```
  *
- * Retries the caught source Observable again in case of error, similar to retry() operator
+ * Retry the caught source Observable again in case of error, similar to `retry()` operator
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { map, catchError, take } from 'rxjs/operators';
+ * import { of, map, catchError, take } from 'rxjs';
  *
- * of(1, 2, 3, 4, 5).pipe(
+ * of(1, 2, 3, 4, 5)
+ *   .pipe(
  *     map(n => {
- *   	   if (n === 4) {
- *   	     throw 'four!';
+ *       if (n === 4) {
+ *         throw 'four!';
  *       }
- * 	     return n;
+ *       return n;
  *     }),
  *     catchError((err, caught) => caught),
- *     take(30),
+ *     take(30)
  *   )
  *   .subscribe(x => console.log(x));
  *   // 1, 2, 3, 1, 2, 3, ...
  * ```
  *
- * Throws a new error when the source Observable throws an error
+ * Throw a new error when the source Observable throws an error
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { map, catchError } from 'rxjs/operators';
+ * import { of, map, catchError } from 'rxjs';
  *
- * of(1, 2, 3, 4, 5).pipe(
+ * of(1, 2, 3, 4, 5)
+ *   .pipe(
  *     map(n => {
  *       if (n === 4) {
  *         throw 'four!';
@@ -82,12 +83,12 @@ export function catchError<T, O extends ObservableInput<any>>(
  *     }),
  *     catchError(err => {
  *       throw 'error in source. Details: ' + err;
- *     }),
+ *     })
  *   )
- *   .subscribe(
- *     x => console.log(x),
- *     err => console.log(err)
- *   );
+ *   .subscribe({
+ *     next: x => console.log(x),
+ *     error: err => console.log(err)
+ *   });
  *   // 1, 2, 3, error in source. Details: four!
  * ```
  *

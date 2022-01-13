@@ -44,23 +44,28 @@ export function onErrorResumeNext<T, A extends readonly unknown[]>(
  *
  *
  * ## Example
- * Subscribe to the next Observable after map fails
- * ```ts
- * import { of } from 'rxjs';
- * import { onErrorResumeNext, map } from 'rxjs/operators';
  *
- * of(1, 2, 3, 0).pipe(
- *   map(x => {
- *       if (x === 0) { throw Error(); }
- *        return 10 / x;
- *   }),
- *   onErrorResumeNext(of(1, 2, 3)),
- * )
- * .subscribe(
- *   val => console.log(val),
- *   err => console.log(err),          // Will never be called.
- *   () => console.log('that\'s it!')
- * );
+ * Subscribe to the next Observable after map fails
+ *
+ * ```ts
+ * import { of, onErrorResumeNext, map } from 'rxjs';
+ *
+ * of(1, 2, 3, 0)
+ *   .pipe(
+ *     map(x => {
+ *       if (x === 0) {
+ *         throw Error();
+ *       }
+ *
+ *       return 10 / x;
+ *     }),
+ *     onErrorResumeNext(of(1, 2, 3))
+ *   )
+ *   .subscribe({
+ *     next: val => console.log(val),
+ *     error: err => console.log(err),          // Will never be called.
+ *     complete: () => console.log('that\'s it!')
+ *   });
  *
  * // Logs:
  * // 10
@@ -69,13 +74,13 @@ export function onErrorResumeNext<T, A extends readonly unknown[]>(
  * // 1
  * // 2
  * // 3
- * // "that's it!"
+ * // 'that's it!'
  * ```
  *
  * @see {@link concat}
  * @see {@link catchError}
  *
- * @param {...ObservableInput} nextSources Observables passed either directly or as an array.
+ * @param {...ObservableInput} sources Observables passed either directly or as an array.
  * @return A function that returns an Observable that emits values from source
  * Observable, but - if it errors - subscribes to the next passed Observable
  * and so on, until it completes or runs out of Observables.
@@ -87,7 +92,7 @@ export function onErrorResumeNext<T, A extends readonly unknown[]>(
   // result to be `A[number][]` - completely dropping the ObservableInput part
   // of the type. This makes no sense whatsoever. As a workaround, the type is
   // asserted explicitly.
-  const nextSources = (argsOrArgArray(sources) as unknown) as ObservableInputTuple<A>;
+  const nextSources = argsOrArgArray(sources) as unknown as ObservableInputTuple<A>;
 
   return operate((source, subscriber) => {
     const remaining = [source, ...nextSources];
@@ -107,7 +112,7 @@ export function onErrorResumeNext<T, A extends readonly unknown[]>(
           // would result in situation were we could not stop a synchronous firehose
           // with something like `take(3)`.
           const innerSub = new OperatorSubscriber(subscriber, undefined, noop, noop);
-          subscriber.add(nextSource.subscribe(innerSub));
+          nextSource.subscribe(innerSub);
           innerSub.add(subscribeNext);
         } else {
           subscriber.complete();

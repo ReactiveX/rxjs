@@ -7,8 +7,7 @@ import { timer } from './timer';
  * Creates an Observable that emits sequential numbers every specified
  * interval of time, on a specified {@link SchedulerLike}.
  *
- * <span class="informal">Emits incremental numbers periodically in time.
- * </span>
+ * <span class="informal">Emits incremental numbers periodically in time.</span>
  *
  * ![](interval.png)
  *
@@ -20,10 +19,11 @@ import { timer } from './timer';
  * {@link SchedulerLike} to it.
  *
  * ## Example
+ *
  * Emits ascending numbers, one every second (1000ms) up to the number 3
+ *
  * ```ts
- * import { interval } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * import { interval, take } from 'rxjs';
  *
  * const numbers = interval(1000);
  *

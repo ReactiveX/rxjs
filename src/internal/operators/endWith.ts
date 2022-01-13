@@ -31,11 +31,10 @@ export function endWith<T, A extends unknown[] = T[]>(...values: A): OperatorFun
  * stop when a user clicks anywhere on the document.
  *
  * ```ts
- * import { interval, fromEvent } from 'rxjs';
- * import { map, startWith, takeUntil, endWith } from 'rxjs/operators';
+ * import { interval, map, fromEvent, startWith, takeUntil, endWith } from 'rxjs';
  *
  * const ticker$ = interval(5000).pipe(
- *   map(() => 'tick'),
+ *   map(() => 'tick')
  * );
  *
  * const documentClicks$ = fromEvent(document, 'click');
@@ -43,26 +42,26 @@ export function endWith<T, A extends unknown[] = T[]>(...values: A): OperatorFun
  * ticker$.pipe(
  *   startWith('interval started'),
  *   takeUntil(documentClicks$),
- *   endWith('interval ended by click'),
+ *   endWith('interval ended by click')
  * )
  * .subscribe(x => console.log(x));
  *
  * // Result (assuming a user clicks after 15 seconds)
- * // "interval started"
- * // "tick"
- * // "tick"
- * // "tick"
- * // "interval ended by click"
+ * // 'interval started'
+ * // 'tick'
+ * // 'tick'
+ * // 'tick'
+ * // 'interval ended by click'
  * ```
+ *
+ * @see {@link startWith}
+ * @see {@link concat}
+ * @see {@link takeUntil}
  *
  * @param values Items you want the modified Observable to emit last.
  * @return A function that returns an Observable that emits all values from the
  * source, then synchronously emits the provided value(s) immediately after the
  * source completes.
- *
- * @see {@link startWith}
- * @see {@link concat}
- * @see {@link takeUntil}
  */
 export function endWith<T>(...values: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => concat(source, of(...values)) as Observable<T>;

@@ -20,14 +20,16 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * as the output Observable is subscribed.
  *
  * ## Example
- * On every click, sample the most recent "seconds" timer
+ *
+ * On every click, sample the most recent `seconds` timer
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { sample } from 'rxjs/operators';
+ * import { fromEvent, interval, sample } from 'rxjs';
  *
  * const seconds = interval(1000);
  * const clicks = fromEvent(document, 'click');
  * const result = seconds.pipe(sample(clicks));
+ *
  * result.subscribe(x => console.log(x));
  * ```
  *
@@ -52,14 +54,19 @@ export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T
         lastValue = value;
       })
     );
-    const emit = () => {
-      if (hasValue) {
-        hasValue = false;
-        const value = lastValue!;
-        lastValue = null;
-        subscriber.next(value);
-      }
-    };
-    notifier.subscribe(new OperatorSubscriber(subscriber, emit, noop));
+    notifier.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        () => {
+          if (hasValue) {
+            hasValue = false;
+            const value = lastValue!;
+            lastValue = null;
+            subscriber.next(value);
+          }
+        },
+        noop
+      )
+    );
   });
 }

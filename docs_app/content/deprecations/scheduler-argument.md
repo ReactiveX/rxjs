@@ -55,8 +55,7 @@ concat(of('hello '), of('World'), asyncScheduler).subscribe((x) => console.log(x
 To work around this deprecation you can leverage the [`scheduled`](/api/index/function/scheduled) function.
 
 ```ts
-import { scheduled, of, asyncScheduler } from 'rxjs';
-import { concatAll } from 'rxjs/operators';
+import { scheduled, of, asyncScheduler, concatAll } from 'rxjs';
 
 scheduled([of('hello '), of('World')], asyncScheduler)
   .pipe(concatAll())
@@ -78,8 +77,7 @@ combineLatest(of('hello '), of('World'), asyncScheduler).subscribe(console.log);
 would become:
 
 ```ts
-import { scheduled, of, asyncScheduler } from 'rxjs';
-import { combineLatestAll } from 'rxjs/operators';
+import { scheduled, of, asyncScheduler, combineLatestAll } from 'rxjs';
 
 scheduled([of('hello '), of('World')], asyncScheduler)
   .pipe(combineLatestAll())

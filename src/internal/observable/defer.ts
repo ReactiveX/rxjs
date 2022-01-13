@@ -21,11 +21,13 @@ import { innerFrom } from './innerFrom';
  * function call is transferred to the Observer by calling `error`.
  *
  * ## Example
- * ### Subscribe to either an Observable of clicks or an Observable of interval, at random
+ *
+ * Subscribe to either an Observable of clicks or an Observable of interval, at random
+ *
  * ```ts
  * import { defer, fromEvent, interval } from 'rxjs';
  *
- * const clicksOrInterval = defer(function () {
+ * const clicksOrInterval = defer(() => {
  *   return Math.random() > 0.5
  *     ? fromEvent(document, 'click')
  *     : interval(1000);

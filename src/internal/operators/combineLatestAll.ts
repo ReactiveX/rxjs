@@ -13,7 +13,7 @@ export function combineLatestAll<R>(project: (...values: Array<any>) => R): Oper
  * ![](combineLatestAll.png)
  *
  * `combineLatestAll` takes an Observable of Observables, and collects all Observables from it. Once the outer Observable completes,
- * it subscribes to all collected Observables and combines their values using the {@link combineLatest}</a> strategy, such that:
+ * it subscribes to all collected Observables and combines their values using the {@link combineLatest} strategy, such that:
  *
  * * Every time an inner Observable emits, the output Observable emits
  * * When the returned observable emits, it emits all of the latest values by:
@@ -21,26 +21,19 @@ export function combineLatestAll<R>(project: (...values: Array<any>) => R): Oper
  *      arrived, and the result of the `project` function is what is emitted by the output Observable.
  *    * If there is no `project` function, an array of all the most recent values is emitted by the output Observable.
  *
- * ---
+ * ## Example
  *
- * ## Examples
- *
- * ### Map two click events to a finite interval Observable, then apply `combineLatestAll`
+ * Map two click events to a finite interval Observable, then apply `combineLatestAll`
  *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { map, combineLatestAll, take } from 'rxjs/operators';
+ * import { fromEvent, map, interval, take, combineLatestAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const higherOrder = clicks.pipe(
- *   map(ev =>
- *      interval(Math.random() * 2000).pipe(take(3))
- *   ),
+ *   map(() => interval(Math.random() * 2000).pipe(take(3))),
  *   take(2)
  * );
- * const result = higherOrder.pipe(
- *   combineLatestAll()
- * );
+ * const result = higherOrder.pipe(combineLatestAll());
  *
  * result.subscribe(x => console.log(x));
  * ```

@@ -14,15 +14,17 @@ describe('audit operator', () => {
 
   it('should emit the last value in each time window', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('    -a-xy-----b--x--cxxx-|');
-      const e1subs = '    ^--------------------!';
-      const e2 = cold('    ----x                ');
+      const e1 = hot('  -a-xy-----b--x--cxyz-|');
+      const e1subs = '  ^--------------------!';
+      const e2 = cold('  ----i                ');
+      //                          ----i
+      //                                ----i
       const e2subs = [
-        '                 -^---!                ',
-        '                 ----------^---!        ',
-        '                 ----------------^---!  '
+        '               -^---!                ',
+        '               ----------^---!       ',
+        '               ----------------^---! ',
       ];
-      const expected = '  -----y--------x-----x|';
+      const expected = '-----y--------x-----z|';
 
       const result = e1.pipe(audit(() => e2));
 
@@ -396,15 +398,13 @@ describe('audit operator', () => {
     e1.pipe(
       audit(() => Promise.resolve(42))
     ).subscribe(
-      (x: number) => {
-        expect(x).to.equal(expected.shift()); },
-      () => {
+      { next: (x: number) => {
+        expect(x).to.equal(expected.shift()); }, error: () => {
         done(new Error('should not be called'));
-      },
-      () => {
+      }, complete: () => {
         expect(expected.length).to.equal(0);
         done();
-      }
+      } }
     );
   });
 
@@ -422,16 +422,14 @@ describe('audit operator', () => {
         }
       })
     ).subscribe(
-      (x: number) => {
-        expect(x).to.equal(expected.shift()); },
-      (err: any) => {
+      { next: (x: number) => {
+        expect(x).to.equal(expected.shift()); }, error: (err: any) => {
         expect(err).to.be.an('error', 'error');
         expect(expected.length).to.equal(0);
         done();
-      },
-      () => {
+      }, complete: () => {
         done(new Error('should not be called'));
-      }
+      } }
     );
   });
 

@@ -13,32 +13,27 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * 3. If the value pushed by the source is determined to be unequal by this check, that value is emitted and
  *    becomes the new "previously emitted value" internally.
  *
- * ## Example
+ * ## Examples
  *
  * A very basic example with no `comparator`. Note that `1` is emitted more than once,
  * because it's distinct in comparison to the _previously emitted_ value,
  * not in comparison to _all other emitted values_.
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { distinctUntilChanged } from 'rxjs/operators';
+ * import { of, distinctUntilChanged } from 'rxjs';
  *
- * of(1, 1, 1, 2, 2, 2, 1, 1, 3, 3).pipe(
- *  distinctUntilChanged()
- * )
- * .subscribe(console.log);
+ * of(1, 1, 1, 2, 2, 2, 1, 1, 3, 3)
+ *   .pipe(distinctUntilChanged())
+ *   .subscribe(console.log);
  * // Logs: 1, 2, 1, 3
  * ```
- *
- * ## Example
  *
  * With a `comparator`, you can do custom comparisons. Let's say
  * you only want to emit a value when all of its components have
  * changed:
  *
  * ```ts
- * import { of } from 'rxjs';
- * import { distinctUntilChanged } from 'rxjs/operators';
+ * import { of, distinctUntilChanged } from 'rxjs';
  *
  * const totallyDifferentBuilds$ = of(
  *   { engineVersion: '1.1.0', transmissionVersion: '1.2.0' },
@@ -58,20 +53,17 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * totallyDifferentBuilds$.subscribe(console.log);
  *
  * // Logs:
- * // {engineVersion: "1.1.0", transmissionVersion: "1.2.0"}
- * // {engineVersion: "1.3.0", transmissionVersion: "1.4.0"}
- * // {engineVersion: "2.0.0", transmissionVersion: "1.5.0"}
+ * // { engineVersion: '1.1.0', transmissionVersion: '1.2.0' }
+ * // { engineVersion: '1.3.0', transmissionVersion: '1.4.0' }
+ * // { engineVersion: '2.0.0', transmissionVersion: '1.5.0' }
  * ```
- *
- * ## Example
  *
  * You can also provide a custom `comparator` to check that emitted
  * changes are only in one direction. Let's say you only want to get
  * the next record temperature:
  *
  * ```ts
- * import { of } from "rxjs";
- * import { distinctUntilChanged } from "rxjs/operators";
+ * import { of, distinctUntilChanged } from 'rxjs';
  *
  * const temps$ = of(30, 31, 20, 34, 33, 29, 35, 20);
  *
@@ -112,13 +104,15 @@ export function distinctUntilChanged<T>(comparator?: (previous: T, current: T) =
  * the account changed hands...
  *
  * ```ts
+ * import { of, distinctUntilChanged } from 'rxjs';
+ *
  * // A stream of updates to a given account
  * const accountUpdates$ = of(
- *   { updatedBy: "blesh", data: [] },
- *   { updatedBy: "blesh", data: [] },
- *   { updatedBy: "ncjamieson", data: [] },
- *   { updatedBy: "ncjamieson", data: [] },
- *   { updatedBy: "blesh", data: [] }
+ *   { updatedBy: 'blesh', data: [] },
+ *   { updatedBy: 'blesh', data: [] },
+ *   { updatedBy: 'ncjamieson', data: [] },
+ *   { updatedBy: 'ncjamieson', data: [] },
+ *   { updatedBy: 'blesh', data: [] }
  * );
  *
  * // We only want the events where it changed hands
@@ -128,9 +122,9 @@ export function distinctUntilChanged<T>(comparator?: (previous: T, current: T) =
  *
  * changedHands$.subscribe(console.log);
  * // Logs:
- * // {updatedBy: "blesh", data: Array[0]}
- * // {updatedBy: "ncjamieson", data: Array[0]}
- * // {updatedBy: "blesh", data: Array[0]}
+ * // { updatedBy: 'blesh', data: Array[0] }
+ * // { updatedBy: 'ncjamieson', data: Array[0] }
+ * // { updatedBy: 'blesh', data: Array[0] }
  * ```
  *
  * @param comparator A function used to compare the previous and current keys for

@@ -6,7 +6,7 @@ import { isFunction } from '../util/isFunction';
 export function mergeMapTo<O extends ObservableInput<unknown>>(
   innerObservable: O,
   concurrent?: number
-): OperatorFunction<any, ObservedValueOf<O>>;
+): OperatorFunction<unknown, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function mergeMapTo<T, R, O extends ObservableInput<unknown>>(
   innerObservable: O,
@@ -29,13 +29,15 @@ export function mergeMapTo<T, R, O extends ObservableInput<unknown>>(
  * single Observable, which is the output Observable.
  *
  * ## Example
+ *
  * For each click event, start an interval Observable ticking every 1 second
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { mergeMapTo } from 'rxjs/operators';
+ * import { fromEvent, mergeMapTo, interval } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(mergeMapTo(interval(1000)));
+ *
  * result.subscribe(x => console.log(x));
  * ```
  *

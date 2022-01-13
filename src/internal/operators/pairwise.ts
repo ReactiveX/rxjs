@@ -18,22 +18,24 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * there is no previous value in that case.
  *
  * ## Example
- * On every click (starting from the second), emit the relative distance to the previous click
- * ```ts
- * import { fromEvent } from 'rxjs';
- * import { pairwise, map } from 'rxjs/operators';
  *
- * const clicks = fromEvent(document, 'click');
+ * On every click (starting from the second), emit the relative distance to the previous click
+ *
+ * ```ts
+ * import { fromEvent, pairwise, map } from 'rxjs';
+ *
+ * const clicks = fromEvent<PointerEvent>(document, 'click');
  * const pairs = clicks.pipe(pairwise());
  * const distance = pairs.pipe(
- *   map(pair => {
- *     const x0 = pair[0].clientX;
- *     const y0 = pair[0].clientY;
- *     const x1 = pair[1].clientX;
- *     const y1 = pair[1].clientY;
+ *   map(([first, second]) => {
+ *     const x0 = first.clientX;
+ *     const y0 = first.clientY;
+ *     const x1 = second.clientX;
+ *     const y1 = second.clientY;
  *     return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));
- *   }),
+ *   })
  * );
+ *
  * distance.subscribe(x => console.log(x));
  * ```
  *

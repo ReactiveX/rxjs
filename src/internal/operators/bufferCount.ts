@@ -23,8 +23,7 @@ import { arrRemove } from '../util/arrRemove';
  * Emit the last two click events as an array
  *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { bufferCount } from 'rxjs/operators';
+ * import { fromEvent, bufferCount } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const buffered = clicks.pipe(bufferCount(2));
@@ -34,8 +33,7 @@ import { arrRemove } from '../util/arrRemove';
  * On every click, emit the last two click events as an array
  *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { bufferCount } from 'rxjs/operators';
+ * import { fromEvent, bufferCount } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const buffered = clicks.pipe(bufferCount(2, 1));

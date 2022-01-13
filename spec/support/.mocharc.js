@@ -1,7 +1,8 @@
 module.exports = {
-  require: ['spec/support/mocha-path-mappings.js', 'dist/spec/helpers/polyfills.js', 'dist/spec/helpers/testScheduler-ui.js'],
-  ui: ['dist/spec/helpers/testScheduler-ui.js'],
+  require: ['ts-node/register', 'spec/support/mocha-path-mappings.js', 'spec/helpers/setup.ts'],
+  ui: ['spec/helpers/testScheduler-ui.ts'],
   reporter: 'dot',
+  extensions: ['ts', 'js'],
   timeout: 5000,
   recursive: true,
   'enable-source-maps': true,

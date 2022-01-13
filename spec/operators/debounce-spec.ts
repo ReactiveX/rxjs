@@ -18,14 +18,27 @@ describe('debounce', () => {
   }
 
   it('should debounce values by a specified cold Observable', () => {
-    testScheduler.run(({ cold, hot, expectObservable }) => {
-      const e1 = hot('  -a--bc--d---|');
-      const e2 = cold(' --x          ');
-      const expected = '---a---c--d-|';
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  -a----bc----d-ef----|');
+      const e1subs = '  ^-------------------!';
+      const e2 = cold('  ---x                ');
+      //                       ---x
+      //                               ---x
+      const e2subs = [
+        '               -^--!                ',
+        '               ------^!             ',
+        '               -------^--!          ',
+        '               ------------^-!      ',
+        '               --------------^!     ',
+        '               ---------------^--!  ',
+      ];
+      const expected = '----a-----c-------f-|';
 
       const result = e1.pipe(debounce(() => e2));
 
       expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
   });
 
@@ -456,18 +469,18 @@ describe('debounce', () => {
           resolve(42);
         });
       })
-    ).subscribe(
-      (x: number) => {
+    ).subscribe({
+      next: (x: number) => {
         expect(x).to.equal(expected.shift());
       },
-      (x) => {
+      error: (x) => {
         done(new Error('should not be called'));
       },
-      () => {
+      complete: () => {
         expect(expected.length).to.equal(0);
         done();
-      }
-    );
+      },
+    });
   });
 
   it('should raises error when promise rejects', (done) => {
@@ -487,19 +500,19 @@ describe('debounce', () => {
           });
         }
       })
-    ).subscribe(
-      (x: number) => {
+    ).subscribe({
+      next: (x: number) => {
         expect(x).to.equal(expected.shift());
       },
-      (err: any) => {
+      error: (err: any) => {
         expect(err).to.be.an('error', 'error');
         expect(expected.length).to.equal(0);
         done();
       },
-      () => {
+      complete: () => {
         done(new Error('should not be called'));
-      }
-    );
+      },
+    });
   });
 
   it('should debounce correctly when synchronously reentered', () => {

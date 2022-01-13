@@ -1,3 +1,46 @@
+## [7.5.2](https://github.com/reactivex/rxjs/compare/7.5.1...7.5.2) (2022-01-11)
+
+### Bug Fixes
+
+- operators that ignore input values now use `unknown` rather than `any`, which should resolve issues with eslint no-unsafe-argument ([#6738](https://github.com/reactivex/rxjs/issues/6738)) ([67cb317](https://github.com/reactivex/rxjs/commit/67cb317a7a6b9fdbd3d2e8fdbc2ac9ac7e57179c)), closes [#6536](https://github.com/reactivex/rxjs/issues/6536)
+- **ajax:** crossDomain flag deprecated and properly reported to consumers ([#6710](https://github.com/reactivex/rxjs/issues/6710)) ([7fd0575](https://github.com/reactivex/rxjs/commit/7fd05756c595dddb288b732b00a90fcfb2a9080a)), closes [#6663](https://github.com/reactivex/rxjs/issues/6663)
+
+## [7.5.1](https://github.com/reactivex/rxjs/compare/7.5.0...7.5.1) (2021-12-28)
+
+### Bug Fixes
+
+- export supporting interfaces from top-level `rxjs` site. ([#6733](https://github.com/reactivex/rxjs/issues/6733)) ([299a1e1](https://github.com/reactivex/rxjs/commit/299a1e16f725edfc2e333c430e3a7dfc75dd94e7))
+
+# [7.5.0](https://github.com/reactivex/rxjs/compare/7.4.0...7.5.0) (2021-12-27)
+
+### Bug Fixes
+
+- **takeWhile:** Now returns proper types when passed a `Boolean` constructor. ([#6633](https://github.com/reactivex/rxjs/issues/6633)) ([081ca2b](https://github.com/reactivex/rxjs/commit/081ca2ba7290aa3084c1477a6d4bcc573bf478f6))
+- **forEach:** properly unsubs after error in next handler ([#6677](https://github.com/reactivex/rxjs/issues/6677)) ([b9ab67d](https://github.com/reactivex/rxjs/commit/b9ab67d21ca9d227fcd1123bf80ab87ca9296af9)), closes [#6676](https://github.com/reactivex/rxjs/issues/6676)
+- **WebSocketSubject:** handle slow WebSocket close ([#6708](https://github.com/reactivex/rxjs/issues/6708)) ([8cb201c](https://github.com/reactivex/rxjs/commit/8cb201cd42dd751b4185b94fe2d36c6bfda02fe2)), closes [#4650](https://github.com/reactivex/rxjs/issues/4650) [#3935](https://github.com/reactivex/rxjs/issues/3935)
+- RxJS now supports tslib 2.x, rather than just 2.1.x ([#6692](https://github.com/reactivex/rxjs/issues/6692)) ([0b2495f](https://github.com/reactivex/rxjs/commit/0b2495f72e76627fdd19dd7a670dd74847d6449c)), closes [#6689](https://github.com/reactivex/rxjs/issues/6689)
+- schedulers will no longer error while rescheduling and unsubscribing during flushes ([e35f589](https://github.com/reactivex/rxjs/commit/e35f589e2ca10ab2d2d69f7e9fe60727edc4c53d)), closes [#6672](https://github.com/reactivex/rxjs/issues/6672)
+
+### Features
+
+- **repeat:** now has configurable delay ([#6640](https://github.com/reactivex/rxjs/issues/6640)) ([6b7a534](https://github.com/reactivex/rxjs/commit/6b7a534f579f95f97f47eff74bdea9991ee85712))
+
+# [7.4.0](https://github.com/reactivex/rxjs/compare/7.3.1...7.4.0) (2021-10-06)
+
+### Features
+
+- Add es2015 entries to the exports declaration to support Angular ([#6614](https://github.com/reactivex/rxjs/issues/6614)) ([268777b](https://github.com/reactivex/rxjs/commit/268777bc3a4fd0cf76882683b51809771741ddc3)), closes [/github.com/ReactiveX/rxjs/pull/6613#discussion_r716958551](https://github.com//github.com/ReactiveX/rxjs/pull/6613/issues/discussion_r716958551)
+
+## [7.3.1](https://github.com/reactivex/rxjs/compare/7.3.0...7.3.1) (2021-10-01)
+
+### Bug Fixes
+
+- **Schedulers:** Throwing a falsy error in a scheduled function no longer results in strange error objects. ([#6594](https://github.com/reactivex/rxjs/issues/6594)) ([c70fcc0](https://github.com/reactivex/rxjs/commit/c70fcc02b4b737709aba559bf36b030a47902ee4))
+- scheduling with Rx-provided schedulers will no longer leak action references ([#6562](https://github.com/reactivex/rxjs/issues/6562)) ([ff5a748](https://github.com/reactivex/rxjs/commit/ff5a748b31ee73a6517e2f4220c920c73fbdd1fc)), closes [#6561](https://github.com/reactivex/rxjs/issues/6561)
+- **forkJoin:** now finalizes sources before emitting ([#6546](https://github.com/reactivex/rxjs/issues/6546)) ([c52ff2e](https://github.com/reactivex/rxjs/commit/c52ff2e3aae19cd0877adb63182c03b79427de96)), closes [#4914](https://github.com/reactivex/rxjs/issues/4914)
+- **observeOn:** release action references on teardown ([321d205](https://github.com/reactivex/rxjs/commit/321d2052696a7c366786c1ef3be7ad2a98a55f62))
+- **types:** update schedule signature overload ([c61e57c](https://github.com/reactivex/rxjs/commit/c61e57c9c64a1525d034aea641f1b846737e1eee))
+
 # [7.3.0](https://github.com/reactivex/rxjs/compare/7.2.0...7.3.0) (2021-07-28)
 
 ### Bug Fixes

@@ -23,7 +23,7 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * <span class="informal">It's like {@link throttleTime}, but the silencing
  * duration is determined by a second Observable.</span>
  *
- * ![](throttle.png)
+ * ![](throttle.svg)
  *
  * `throttle` emits the source Observable values on the output Observable
  * when its internal timer is disabled, and ignores source values when the timer
@@ -35,13 +35,15 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * next source value.
  *
  * ## Example
+ *
  * Emit clicks at a rate of at most one click per second
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { throttle } from 'rxjs/operators';
+ * import { fromEvent, throttle, interval } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
- * const result = clicks.pipe(throttle(ev => interval(1000)));
+ * const result = clicks.pipe(throttle(() => interval(1000)));
+ *
  * result.subscribe(x => console.log(x));
  * ```
  *
@@ -61,9 +63,10 @@ export const defaultThrottleConfig: ThrottleConfig = {
  */
 export function throttle<T>(
   durationSelector: (value: T) => ObservableInput<any>,
-  { leading, trailing }: ThrottleConfig = defaultThrottleConfig
+  config: ThrottleConfig = defaultThrottleConfig
 ): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
+    const { leading, trailing } = config;
     let hasValue = false;
     let sendValue: T | null = null;
     let throttled: Subscription | null = null;

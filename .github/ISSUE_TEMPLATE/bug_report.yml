@@ -1,0 +1,45 @@
+name: Bug Report
+description: Bug report for RxJS core behavior.
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: |
+        A clear and concise description of the behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expect to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: Reproduction code
+      description: Code to create a minimal reproduction.
+      render: typescript
+  - type: input
+    id: repro-link
+    attributes:
+      label: Reproduction URL
+      description: Use [Stackblitz](https://stackblitz.com/fork/rxjs) or a git repo to show a minimal reproduction of the issue. Please also paste the example code in the "Reproduction code" section above.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: Version of runtime environment, build configuration, etc, that can affect behavior of RxJS.
+  - type: textarea
+    id: addition
+    attributes:
+      label: Additional context
+      placeholder: Add any other context about the problem here.

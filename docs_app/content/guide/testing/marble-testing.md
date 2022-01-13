@@ -10,7 +10,7 @@ We can test our _asynchronous_ RxJS code _synchronously_ and deterministically b
 
 ```ts
 import { TestScheduler } from 'rxjs/testing';
-import { throttleTime } from 'rxjs/operators';
+import { throttleTime } from 'rxjs';
 
 const testScheduler = new TestScheduler((actual, expected) => {
   // asserting the two objects are equal - required

@@ -23,16 +23,17 @@ import { innerFrom } from '../observable/innerFrom';
  * window is opened immediately when subscribing to the output Observable.
  *
  * ## Example
+ *
  * Emit only the first two clicks events in every window of [1-5] random seconds
+ *
  * ```ts
- * import { fromEvent, interval } from 'rxjs';
- * import { windowWhen, map, mergeAll, take } from 'rxjs/operators';
+ * import { fromEvent, windowWhen, interval, map, take, mergeAll } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
  *   windowWhen(() => interval(1000 + Math.random() * 4000)),
- *   map(win => win.pipe(take(2))),     // each window has at most 2 emissions
- *   mergeAll()                         // flatten the Observable-of-Observables
+ *   map(win => win.pipe(take(2))), // take at most 2 emissions from each window
+ *   mergeAll()                     // flatten the Observable-of-Observables
  * );
  * result.subscribe(x => console.log(x));
  * ```

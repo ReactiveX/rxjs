@@ -47,18 +47,18 @@ describe('interval', () => {
     const values: number[] = [];
     const expected = [0, 1, 2, 3, 4, 5, 6];
     const e1 = interval(5);
-    const subscription = e1.subscribe((x: number) => {
+    const subscription = e1.subscribe({ next: (x: number) => {
       values.push(x);
       if (x === 6) {
         subscription.unsubscribe();
         expect(values).to.deep.equal(expected);
         done();
       }
-    }, (err: any) => {
+    }, error: (err: any) => {
       done(new Error('should not be called'));
-    }, () => {
+    }, complete: () => {
       done(new Error('should not be called'));
-    });
+    } });
   });
 
   it('should create an observable emitting periodically with the AsapScheduler', (done) => {

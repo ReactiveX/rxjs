@@ -55,15 +55,15 @@ describe('defer', () => {
       });
     });
 
-    e1.subscribe(
-      (x: number) => {
+    e1.subscribe({
+      next: (x: number) => {
         expect(x).to.equal(expected);
         done();
       },
-      (x: any) => {
+      error: (x: any) => {
         done(new Error('should not be called'));
-      }
-    );
+      },
+    });
   });
 
   it('should accept factory returns promise rejects', (done) => {
@@ -74,18 +74,18 @@ describe('defer', () => {
       });
     });
 
-    e1.subscribe(
-      (x: number) => {
+    e1.subscribe({
+      next: (x: number) => {
         done(new Error('should not be called'));
       },
-      (x: any) => {
+      error: (x: any) => {
         expect(x).to.equal(expected);
         done();
       },
-      () => {
+      complete: () => {
         done(new Error('should not be called'));
-      }
-    );
+      },
+    });
   });
 
   it('should create an observable from error', () => {

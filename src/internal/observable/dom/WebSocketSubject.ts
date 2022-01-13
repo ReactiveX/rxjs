@@ -17,88 +17,92 @@ import { Observer, NextObserver } from '../../types';
  * use `openObserver`, when the connection is closed `closeObserver`, if we
  * are interested in listening for data coming from server: `deserializer`,
  * which allows us to customize the deserialization strategy of data before passing it
- * to the socket client. By default `deserializer` is going to apply `JSON.parse` to each message coming
+ * to the socket client. By default, `deserializer` is going to apply `JSON.parse` to each message coming
  * from the Server.
  *
- * ## Example
+ * ## Examples
+ *
  * **deserializer**, the default for this property is `JSON.parse` but since there are just two options
  * for incoming data, either be text or binarydata. We can apply a custom deserialization strategy
  * or just simply skip the default behaviour.
+ *
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
  *
  * const wsSubject = webSocket({
- *     url: 'ws://localhost:8081',
- * //Apply any transformation of your choice.
- *     deserializer: ({data}) => data
+ *   url: 'ws://localhost:8081',
+ *   //Apply any transformation of your choice.
+ *   deserializer: ({ data }) => data
  * });
  *
  * wsSubject.subscribe(console.log);
  *
- * // Let's suppose we have this on the Server: ws.send("This is a msg from the server")
+ * // Let's suppose we have this on the Server: ws.send('This is a msg from the server')
  * //output
  * //
  * // This is a msg from the server
  * ```
  *
- * **serializer** allows us to apply custom serialization strategy but for the outgoing messages
+ * **serializer** allows us to apply custom serialization strategy but for the outgoing messages.
+ *
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
  *
  * const wsSubject = webSocket({
- *     url: 'ws://localhost:8081',
- * //Apply any transformation of your choice.
- *     serializer: msg => JSON.stringify({channel: "webDevelopment", msg: msg})
+ *   url: 'ws://localhost:8081',
+ *   // Apply any transformation of your choice.
+ *   serializer: msg => JSON.stringify({ channel: 'webDevelopment', msg: msg })
  * });
  *
- * wsSubject.subscribe(() => subject.next("msg to the server"));
+ * wsSubject.subscribe(() => subject.next('msg to the server'));
  *
  * // Let's suppose we have this on the Server:
- * //   ws.on("message", msg => console.log);
- * //   ws.send("This is a msg from the server");
- * //output at server side:
+ * //   ws.on('message', msg => console.log);
+ * //   ws.send('This is a msg from the server');
+ * // output at server side:
  * //
  * // {"channel":"webDevelopment","msg":"msg to the server"}
  * ```
  *
- * **closeObserver** allows us to set a custom error when an error raise up.
+ * **closeObserver** allows us to set a custom error when an error raises up.
+ *
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
  *
  * const wsSubject = webSocket({
- *     url: 'ws://localhost:8081',
- *     closeObserver: {
-        next(closeEvent) {
-            const customError = { code: 6666, reason: "Custom evil reason" }
-            console.log(`code: ${customError.code}, reason: ${customError.reason}`);
-        }
-    }
+ *   url: 'ws://localhost:8081',
+ *   closeObserver: {
+ *     next() {
+ *       const customError = { code: 6666, reason: 'Custom evil reason' }
+ *       console.log(`code: ${ customError.code }, reason: ${ customError.reason }`);
+ *     }
+ *   }
  * });
  *
- * //output
+ * // output
  * // code: 6666, reason: Custom evil reason
  * ```
  *
  * **openObserver**, Let's say we need to make some kind of init task before sending/receiving msgs to the
  * webSocket or sending notification that the connection was successful, this is when
  * openObserver is useful for.
+ *
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
  *
  * const wsSubject = webSocket({
- *     url: 'ws://localhost:8081',
- *     openObserver: {
- *         next: () => {
- *             console.log('connetion ok');
- *         }
- *     },
+ *   url: 'ws://localhost:8081',
+ *   openObserver: {
+ *     next: () => {
+ *       console.log('Connection ok');
+ *     }
+ *   }
  * });
  *
- * //output
- * // connetion ok`
+ * // output
+ * // Connection ok
  * ```
- * */
-
+ */
 export interface WebSocketSubjectConfig<T> {
   /** The url of the socket server to connect to */
   url: string;
@@ -121,7 +125,7 @@ export interface WebSocketSubjectConfig<T> {
    */
   openObserver?: NextObserver<Event>;
   /**
-   * An Observer then watches when close events occur on the underlying webSocket
+   * An Observer that watches when close events occur on the underlying web socket
    */
   closeObserver?: NextObserver<CloseEvent>;
   /**
@@ -230,8 +234,8 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
         observer.error(err);
       }
 
-      const subscription = self.subscribe(
-        (x) => {
+      const subscription = self.subscribe({
+        next: (x) => {
           try {
             if (messageFilter(x)) {
               observer.next(x);
@@ -240,9 +244,9 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
             observer.error(err);
           }
         },
-        (err) => observer.error(err),
-        () => observer.complete()
-      );
+        error: (err) => observer.error(err),
+        complete: () => observer.complete(),
+      });
 
       return () => {
         try {
@@ -336,7 +340,9 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     };
 
     socket.onclose = (e: CloseEvent) => {
-      this._resetState();
+      if (socket === this._socket) {
+        this._resetState();
+      }
       const { closeObserver } = this._config;
       if (closeObserver) {
         closeObserver.next(e);

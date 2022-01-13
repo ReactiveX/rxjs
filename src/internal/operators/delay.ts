@@ -10,7 +10,7 @@ import { timer } from '../observable/timer';
  * <span class="informal">Time shifts each item by some specified amount of
  * milliseconds.</span>
  *
- * ![](delay.png)
+ * ![](delay.svg)
  *
  * If the delay argument is a Number, this operator time shifts the source
  * Observable by that amount of time expressed in milliseconds. The relative
@@ -20,10 +20,11 @@ import { timer } from '../observable/timer';
  * Observable execution until the given date occurs.
  *
  * ## Examples
+ *
  * Delay each click by one second
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { delay } from 'rxjs/operators';
+ * import { fromEvent, delay } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const delayedClicks = clicks.pipe(delay(1000)); // each click emitted after 1 second
@@ -31,9 +32,9 @@ import { timer } from '../observable/timer';
  * ```
  *
  * Delay all clicks until a future date happens
+ *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { delay } from 'rxjs/operators';
+ * import { fromEvent, delay } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
  * const date = new Date('March 15, 2050 12:00:00'); // in the future

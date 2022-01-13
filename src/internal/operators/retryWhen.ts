@@ -17,41 +17,43 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * Retry an observable sequence on error based on custom criteria.
  *
  * ## Example
+ *
  * ```ts
- * import { timer, interval } from 'rxjs';
- * import { map, tap, retryWhen, delayWhen } from 'rxjs/operators';
+ * import { interval, map, retryWhen, tap, delayWhen, timer } from 'rxjs';
  *
  * const source = interval(1000);
- * const example = source.pipe(
- *   map(val => {
- *     if (val > 5) {
+ * const result = source.pipe(
+ *   map(value => {
+ *     if (value > 5) {
  *       // error will be picked up by retryWhen
- *       throw val;
+ *       throw value;
  *     }
- *     return val;
+ *     return value;
  *   }),
  *   retryWhen(errors =>
  *     errors.pipe(
  *       // log error message
- *       tap(val => console.log(`Value ${val} was too high!`)),
+ *       tap(value => console.log(`Value ${ value } was too high!`)),
  *       // restart in 5 seconds
- *       delayWhen(val => timer(val * 1000))
+ *       delayWhen(value => timer(value * 1000))
  *     )
  *   )
  * );
  *
- * const subscribe = example.subscribe(val => console.log(val));
+ * result.subscribe(value => console.log(value));
  *
  * // results:
- * //   0
- * //   1
- * //   2
- * //   3
- * //   4
- * //   5
- * //   "Value 6 was too high!"
- * //  --Wait 5 seconds then repeat
+ * // 0
+ * // 1
+ * // 2
+ * // 3
+ * // 4
+ * // 5
+ * // 'Value 6 was too high!'
+ * // - Wait 5 seconds then repeat
  * ```
+ *
+ * @see {@link retry}
  *
  * @param {function(errors: Observable): Observable} notifier - Receives an Observable of notifications with which a
  * user can `complete` or `error`, aborting the retry.

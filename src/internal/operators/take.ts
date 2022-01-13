@@ -17,10 +17,11 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * source completes.
  *
  * ## Example
+ *
  * Take the first 5 seconds of an infinite 1-second interval Observable
+ *
  * ```ts
- * import { interval } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * import { interval, take } from 'rxjs';
  *
  * const intervalCount = interval(1000);
  * const takeFive = intervalCount.pipe(take(5));

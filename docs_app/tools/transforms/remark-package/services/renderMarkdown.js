@@ -1,25 +1,29 @@
 const remark = require('remark');
 const html = require('remark-html');
 const code = require('./handlers/code');
+const mapHeadings = require('./plugins/mapHeadings');
 
 /**
  * @dgService renderMarkdown
  * @description
  * Render the markdown in the given string as HTML.
+ * @param headingMap A map of headings to convert.
+ *                   E.g. `{h3: 'h4'} will map heading 3 level into heading 4.
  */
 module.exports = function renderMarkdown() {
-  const handlers = { code };
-  const renderer = remark()
-    .use(inlineTagDefs)
-    .use(noIndentedCodeBlocks)
-    .use(plainHTMLBlocks)
-  // USEFUL DEBUGGING CODE
-  // .use(() => tree => {
-  //   console.log(require('util').inspect(tree, { colors: true, depth: 4 }));
-  // })
-    .use(html, { handlers });
+  return function renderMarkdownImpl(content, headingMap) {
 
-  return function renderMarkdownImpl(content) {
+    const renderer = remark()
+      .use(inlineTagDefs)
+      .use(noIndentedCodeBlocks)
+      .use(plainHTMLBlocks)
+      // USEFUL DEBUGGING CODE
+      // .use(() => tree => {
+      //   console.log(require('util').inspect(tree, { colors: true, depth: 4 }));
+      // })
+      .use(mapHeadings(headingMap))
+      .use(html, { handlers: { code }, sanitize: false });
+
     return renderer.processSync(content).toString();
   };
 
@@ -165,7 +169,6 @@ function rgxFindMatchPos(str, left, right, flags) {
   let index, match, start, end;
   let count = 0;
 
-  // eslint-disable-next-line no-cond-assign
   while ((match = bothMatcher.exec(str))) {
     if (leftMatcher.test(match[0])) {
       if (!(count++)) {

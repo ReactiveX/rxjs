@@ -168,9 +168,9 @@ describe('race operator', () => {
     const e1 = of(true);
     const e2 = timer(200).pipe(map(_ => false));
 
-    e1.pipe(race(e2)).subscribe(x => {
+    e1.pipe(race(e2)).subscribe({ next: x => {
       expect(x).to.be.true;
-    }, done, done);
+    }, error: done, complete: done });
   });
 
   it('should ignore latter observables if a former one emits immediately', () => {

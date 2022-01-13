@@ -15,10 +15,10 @@ const arrReducer = (arr: any[], value: any) => (arr.push(value), arr);
  * the array containing all emissions. When the source Observable errors no
  * array will be emitted.
  *
- *  ## Example
+ * ## Example
+ *
  * ```ts
- * import { interval } from 'rxjs';
- * import { toArray, take } from 'rxjs/operators';
+ * import { interval, take, toArray } from 'rxjs';
  *
  * const source = interval(1000);
  * const example = source.pipe(
@@ -26,7 +26,7 @@ const arrReducer = (arr: any[], value: any) => (arr.push(value), arr);
  *   toArray()
  * );
  *
- * const subscribe = example.subscribe(val => console.log(val));
+ * example.subscribe(value => console.log(value));
  *
  * // output: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
  * ```
@@ -39,6 +39,6 @@ export function toArray<T>(): OperatorFunction<T, T[]> {
   // reducer process, we have to escapulate the creation of the initial
   // array within this `operate` function.
   return operate((source, subscriber) => {
-    reduce(arrReducer, [] as T[])(source).subscribe(subscriber)
+    reduce(arrReducer, [] as T[])(source).subscribe(subscriber);
   });
 }

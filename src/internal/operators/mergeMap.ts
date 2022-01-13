@@ -39,15 +39,17 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
  * emitting the results of this merger.
  *
  * ## Example
+ *
  * Map and flatten each letter to an Observable ticking every 1 second
+ *
  * ```ts
- * import { of, interval } from 'rxjs';
- * import { mergeMap, map } from 'rxjs/operators';
+ * import { of, mergeMap, interval, map } from 'rxjs';
  *
  * const letters = of('a', 'b', 'c');
  * const result = letters.pipe(
- *   mergeMap(x => interval(1000).pipe(map(i => x+i))),
+ *   mergeMap(x => interval(1000).pipe(map(i => x + i)))
  * );
+ *
  * result.subscribe(x => console.log(x));
  *
  * // Results in the following:
@@ -57,7 +59,7 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
  * // a1
  * // b1
  * // c1
- * // continues to list a,b,c with respective ascending integers
+ * // continues to list a, b, c every second with respective ascending integers
  * ```
  *
  * @see {@link concatMap}
