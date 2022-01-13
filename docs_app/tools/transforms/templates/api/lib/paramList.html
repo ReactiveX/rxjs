@@ -17,7 +17,10 @@
   <tbody>
   {% for parameter in parameters %}
     <tr class="{$ parameterClass $}">
-      <td class="param-name"><a id="{$ parameter.anchor $}"></a>{$ parameter.name $}</td>
+      <td class="param-name">
+        <a id="{$ parameter.anchor or parameter.name $}"></a>
+        <code>{$ parameter.name $}</code>
+      </td>
       {% if showType %}<td class="param-type"><code>{$ parameter.type $}</code></td>{% endif %}
       <td class="param-description">
       {% marked %}
