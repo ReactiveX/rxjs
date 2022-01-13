@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { of, EMPTY, Observable } from 'rxjs';
-import { bufferWhen, mergeMap, takeWhile, take } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { bufferWhen, mergeMap, takeWhile } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -16,7 +16,7 @@ describe('bufferWhen operator', () => {
     testScheduler.run(({ hot, cold, expectObservable }) => {
       const e1 = hot('--a--^---b---c---d---e---f---g---------|   ');
       const e2 = cold('    --------------(s|)                    ');
-      //                                 --------------(s |)
+      //                                 --------------(s|)
       const expected = '   --------------x-------------y-----(z|)';
       const values = {
         x: ['b', 'c', 'd'],
