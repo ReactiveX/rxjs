@@ -234,8 +234,8 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
         observer.error(err);
       }
 
-      const subscription = self.subscribe(
-        (x) => {
+      const subscription = self.subscribe({
+        next: (x) => {
           try {
             if (messageFilter(x)) {
               observer.next(x);
@@ -244,9 +244,9 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
             observer.error(err);
           }
         },
-        (err) => observer.error(err),
-        () => observer.complete()
-      );
+        error: (err) => observer.error(err),
+        complete: () => observer.complete(),
+      });
 
       return () => {
         try {

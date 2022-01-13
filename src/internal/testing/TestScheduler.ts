@@ -116,17 +116,17 @@ export class TestScheduler extends VirtualTimeScheduler {
 
   private materializeInnerObservable(observable: Observable<any>, outerFrame: number): TestMessage[] {
     const messages: TestMessage[] = [];
-    observable.subscribe(
-      (value) => {
+    observable.subscribe({
+      next: (value) => {
         messages.push({ frame: this.frame - outerFrame, notification: nextNotification(value) });
       },
-      (error) => {
+      error: (error) => {
         messages.push({ frame: this.frame - outerFrame, notification: errorNotification(error) });
       },
-      () => {
+      complete: () => {
         messages.push({ frame: this.frame - outerFrame, notification: COMPLETE_NOTIFICATION });
-      }
-    );
+      },
+    });
     return messages;
   }
 
@@ -139,19 +139,19 @@ export class TestScheduler extends VirtualTimeScheduler {
     let subscription: Subscription;
 
     this.schedule(() => {
-      subscription = observable.subscribe(
-        (x) => {
+      subscription = observable.subscribe({
+        next: (x) => {
           // Support Observable-of-Observables
           const value = x instanceof Observable ? this.materializeInnerObservable(x, this.frame) : x;
           actual.push({ frame: this.frame, notification: nextNotification(value) });
         },
-        (error) => {
+        error: (error) => {
           actual.push({ frame: this.frame, notification: errorNotification(error) });
         },
-        () => {
+        complete: () => {
           actual.push({ frame: this.frame, notification: COMPLETE_NOTIFICATION });
-        }
-      );
+        },
+      });
     }, subscriptionFrame);
 
     if (unsubscriptionFrame !== Infinity) {
@@ -170,19 +170,19 @@ export class TestScheduler extends VirtualTimeScheduler {
         flushTest.ready = true;
         flushTest.expected = [];
         this.schedule(() => {
-          subscription = other.subscribe(
-            (x) => {
+          subscription = other.subscribe({
+            next: (x) => {
               // Support Observable-of-Observables
               const value = x instanceof Observable ? this.materializeInnerObservable(x, this.frame) : x;
               flushTest.expected!.push({ frame: this.frame, notification: nextNotification(value) });
             },
-            (error) => {
+            error: (error) => {
               flushTest.expected!.push({ frame: this.frame, notification: errorNotification(error) });
             },
-            () => {
+            complete: () => {
               flushTest.expected!.push({ frame: this.frame, notification: COMPLETE_NOTIFICATION });
-            }
-          );
+            },
+          });
         }, subscriptionFrame);
       },
     };
