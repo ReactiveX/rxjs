@@ -29,10 +29,4 @@ it('should deprecate the multi-argument usage', () => {
   o.pipe(tap({ error, complete })); // $ExpectNoDeprecation
   o.pipe(tap({ complete })); // $ExpectNoDeprecation
   o.pipe(tap(next)); // $ExpectNoDeprecation
-  o.pipe(tap(null, error)); // $ExpectDeprecation
-  o.pipe(tap(undefined, error)); // $ExpectDeprecation
-  o.pipe(tap(null, error, complete)); // $ExpectDeprecation
-  o.pipe(tap(undefined, error, complete)); // $ExpectDeprecation
-  o.pipe(tap(null, null, complete)); // $ExpectDeprecation
-  o.pipe(tap(undefined, undefined, complete)); // $ExpectDeprecation
 });
