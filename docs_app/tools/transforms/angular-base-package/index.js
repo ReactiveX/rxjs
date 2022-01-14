@@ -137,7 +137,7 @@ module.exports = new Package('angular-base', [
     postProcessHtml.plugins = [
       require('./post-processors/autolink-headings'),
       addImageDimensions,
-      // require('./post-processors/h1-checker'),
+      require('./post-processors/h1-checker'),
       autoLinkCode,
     ];
   })

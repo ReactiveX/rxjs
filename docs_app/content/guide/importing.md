@@ -8,7 +8,7 @@ the used RxJS version, but also depends on the used installation method.
 with RxJS version 6 where all pipeable operators could have been imported from `'rxjs/operators'`. For
 example, `import { map } from 'rxjs/operators'`.
 
-# New in RxJS v7.2.0
+## New in RxJS v7.2.0
 
 <span class="informal">**With RxJS v7.2.0, most operators have been moved to `{@link api#index 'rxjs'}`
 export site. This means that the preferred way to import operators is from `'rxjs'`, while
@@ -31,7 +31,7 @@ versions.
 
 Click {@link #how-to-migrate here to see} how to migrate.
 
-# Export sites
+## Export sites
 
 RxJS v7 exports 6 different locations out of which you can import what you need. Those are:
 
@@ -42,7 +42,7 @@ RxJS v7 exports 6 different locations out of which you can import what you need.
 - `{@link api#webSocket 'rxjs/webSocket'}` - for example: `import { webSocket } from 'rxjs/webSocket';`
 - `{@link api#testing 'rxjs/testing'}` - for example: `import { TestScheduler } from 'rxjs/testing';`
 
-## How to migrate?
+### How to migrate?
 
 While nothing has been removed from `'rxjs/operators'`, it is strongly recommended doing the operator
 imports from `'rxjs'`. Almost all operator function exports have been moved to `'rxjs'`, but only a
@@ -93,12 +93,12 @@ Depending on the preferred style, you can choose which one to follow, they are c
 Since a new way of importing operators is introduced with RxJS v7.2.0, instructions will be split to
 prior and after this version.
 
-## ES6 via npm
+### ES6 via npm
 
 If you've installed RxJS using {@link guide/installation#es6-via-npm ES6 via npm} and installed version
 is:
 
-### v7.2.0 or later
+#### v7.2.0 or later
 
 Import only what you need:
 
@@ -126,7 +126,7 @@ of(1, 2, 3).pipe(map((x) => x + '!!!')); // etc
 
 If you installed RxJS version:
 
-### v7.1.0 or older
+#### v7.1.0 or older
 
 Import only what you need:
 
@@ -155,12 +155,12 @@ const { map } = rxjs.operators;
 of(1, 2, 3).pipe(map((x) => x + '!!!')); // etc
 ```
 
-## CDN
+### CDN
 
 If you installed a library {@link guide/installation#cdn using CDN}, the global namespace for rxjs is
 `rxjs`.
 
-### v7.2.0 or later
+#### v7.2.0 or later
 
 ```js
 const { range, filter, map } = rxjs;
@@ -173,7 +173,7 @@ range(1, 200)
   .subscribe((x) => console.log(x));
 ```
 
-### v7.1.0 or older
+#### v7.1.0 or older
 
 ```js
 const { range } = rxjs;
