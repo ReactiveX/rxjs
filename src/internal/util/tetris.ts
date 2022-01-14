@@ -18,6 +18,7 @@ export class Tetris<T extends any> {
     }
     for (let column = 0; column < this.columns; column++) {
       if (this._hasNewIn(column)) {
+        delete this.arrays[column][this.lastEmissionIndices[column]];
         this.lastEmissionIndices[column] += 1;
       }
       next.push(this.arrays[column][this.lastEmissionIndices[column]]);
