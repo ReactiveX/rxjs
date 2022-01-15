@@ -49,6 +49,7 @@ export function firstValueFrom<T>(source: Observable<T>): Promise<T>;
  * ```
  *
  * @see {@link lastValueFrom}
+ * @see {@link allValuesFrom}
  *
  * @param source the observable to convert to a promise
  * @param config a configuration object to define the `defaultValue` to use if the source completes without emitting a value

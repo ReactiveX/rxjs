@@ -50,6 +50,7 @@ export { isObservable } from './internal/util/isObservable';
 /* Promise Conversion */
 export { lastValueFrom } from './internal/lastValueFrom';
 export { firstValueFrom } from './internal/firstValueFrom';
+export { allValuesFrom } from './internal/allValuesFrom';
 
 /* Error types */
 export { ArgumentOutOfRangeError } from './internal/util/ArgumentOutOfRangeError';
