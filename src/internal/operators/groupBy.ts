@@ -9,12 +9,14 @@ export interface BasicGroupByOptions<K, T> {
   element?: undefined;
   duration?: (grouped: GroupedObservable<K, T>) => ObservableInput<any>;
   connector?: () => SubjectLike<T>;
+  seed?: () => ObservableInput<K>;
 }
 
 export interface GroupByOptionsWithElement<K, E, T> {
   element: (value: T) => E;
   duration?: (grouped: GroupedObservable<K, E>) => ObservableInput<any>;
   connector?: () => SubjectLike<E>;
+  seed?: () => ObservableInput<K>;
 }
 
 export function groupBy<T, K>(key: (value: T) => K, options: BasicGroupByOptions<K, T>): OperatorFunction<T, GroupedObservable<K, T>>;
@@ -146,10 +148,11 @@ export function groupBy<T, K, R>(
 ): OperatorFunction<T, GroupedObservable<K, R>> {
   return operate((source, subscriber) => {
     let element: ((value: any) => any) | void;
+    let seed: (() => ObservableInput<K>) | undefined;
     if (!elementOrOptions || typeof elementOrOptions === 'function') {
       element = elementOrOptions;
     } else {
-      ({ duration, element, connector } = elementOrOptions);
+      ({ duration, element, connector, seed } = elementOrOptions);
     }
 
     // A lookup for the groups that we have so far.
@@ -180,45 +183,7 @@ export function groupBy<T, K, R>(
         // OperatorSubscriber will only send the error to the main subscriber.
         try {
           const key = keySelector(value);
-
-          let group = groups.get(key);
-          if (!group) {
-            // Create our group subject
-            groups.set(key, (group = connector ? connector() : new Subject<any>()));
-
-            // Emit the grouped observable. Note that we can't do a simple `asObservable()` here,
-            // because the grouped observable has special semantics around reference counting
-            // to ensure we don't sever our connection to the source prematurely.
-            const grouped = createGroupedObservable(key, group);
-            subscriber.next(grouped);
-
-            if (duration) {
-              const durationSubscriber = new OperatorSubscriber(
-                // Providing the group here ensures that it is disposed of -- via `unsubscribe` --
-                // wnen the duration subscription is torn down. That is important, because then
-                // if someone holds a handle to the grouped observable and tries to subscribe to it
-                // after the connection to the source has been severed, they will get an
-                // `ObjectUnsubscribedError` and know they can't possibly get any notifications.
-                group as any,
-                () => {
-                  // Our duration notified! We can complete the group.
-                  // The group will be removed from the map in the teardown phase.
-                  group!.complete();
-                  durationSubscriber?.unsubscribe();
-                },
-                // Completions are also sent to the group, but just the group.
-                undefined,
-                // Errors on the duration subscriber are sent to the group
-                // but only the group. They are not sent to the main subscription.
-                undefined,
-                // Teardown: Remove this group from our map.
-                () => groups.delete(key)
-              );
-
-              // Start our duration notifier.
-              groupBySourceSubscriber.add(innerFrom(duration(grouped)).subscribe(durationSubscriber));
-            }
-          }
+          const group = groups.get(key) ?? createGroup(key);
 
           // Send the value to our group.
           group.next(element ? element(value) : value);
@@ -237,8 +202,59 @@ export function groupBy<T, K, R>(
       () => groups.clear()
     );
 
+    if (seed !== undefined) {
+      groupBySourceSubscriber.add(
+        innerFrom(seed()).subscribe({
+          next: (value) => void (groups.has(value) || createGroup(value)),
+          complete: () => subscriber.complete(),
+          error: handleError,
+        })
+      );
+    }
+
     // Subscribe to the source
     source.subscribe(groupBySourceSubscriber);
+
+    function createGroup(key: K): SubjectLike<T> {
+      // Create our group subject
+      const group = connector ? connector() : new Subject<any>();
+      groups.set(key, group);
+
+      // Emit the grouped observable. Note that we can't do a simple `asObservable()` here,
+      // because the grouped observable has special semantics around reference counting
+      // to ensure we don't sever our connection to the source prematurely.
+      const grouped = createGroupedObservable(key, group);
+      subscriber.next(grouped);
+
+      if (duration) {
+        const durationSubscriber = new OperatorSubscriber(
+          // Providing the group here ensures that it is disposed of -- via `unsubscribe` --
+          // when the duration subscription is torn down. That is important, because then
+          // if someone holds a handle to the grouped observable and tries to subscribe to it
+          // after the connection to the source has been severed, they will get an
+          // `ObjectUnsubscribedError` and know they can't possibly get any notifications.
+          group as any,
+          () => {
+            // Our duration notified! We can complete the group.
+            // The group will be removed from the map in the teardown phase.
+            group.complete();
+            durationSubscriber.unsubscribe();
+          },
+          // Completions are also sent to the group, but just the group.
+          undefined,
+          // Errors on the duration subscriber are sent to the group
+          // but only the group. They are not sent to the main subscription.
+          undefined,
+          // Teardown: Remove this group from our map.
+          () => groups.delete(key)
+        );
+
+        // Start our duration notifier.
+        groupBySourceSubscriber.add(innerFrom(duration(grouped)).subscribe(durationSubscriber));
+      }
+
+      return group;
+    }
 
     /**
      * Creates the actual grouped observable returned.

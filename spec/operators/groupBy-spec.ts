@@ -1,9 +1,10 @@
 import { expect } from 'chai';
-import { groupBy, delay, tap, map, take, mergeMap, materialize, skip, ignoreElements } from 'rxjs/operators';
-import { TestScheduler } from 'rxjs/testing';
-import { ReplaySubject, of, Observable, Operator, Observer, interval, Subject } from 'rxjs';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { Observable, Observer, of, Operator, ReplaySubject, Subject } from 'rxjs';
 import { createNotification } from 'rxjs/internal/NotificationFactories';
+import { delay, groupBy, ignoreElements, map, materialize, mergeMap, skip, take, tap } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
+import { cold, expectObservable, expectSubscriptions, hot } from '../helpers/marble-testing';
+import { observableMatcher } from '../helpers/observableMatcher';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -1456,6 +1457,51 @@ describe('groupBy operator', () => {
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
+
+  describe('seed', () => {
+    let rxTest: TestScheduler;
+
+    beforeEach(() => {
+      rxTest = new TestScheduler(observableMatcher);
+    });
+
+    it('should open groups when seed emits', () => {
+      rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+        const source = cold('(--)---a---|   ');
+        const sourceSubs = ' (^-)-------!   ';
+        const seed = cold('  (ab)----------|');
+        const seedSubs = '   (^-)-------!   ';
+        const expected = '   (ab)-------|   ';
+        const a = cold('     (--)---a---|   ');
+        const b = cold('     (--)-------|   ');
+        const expectedValues = { a, b };
+
+        const grouped = source.pipe(groupBy((letter) => letter, { seed: () => seed }));
+
+        expectObservable(grouped).toBe(expected, expectedValues);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        expectSubscriptions(seed.subscriptions).toBe(seedSubs);
+      });
+    });
+
+    it('should emit complete when the seed completes', () => {
+      rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+        const source = cold('(--)---a---|');
+        const sourceSubs = ' (^-)-------!';
+        const seed = cold('  (a|)        ');
+        const seedSubs = '   (^!)        ';
+        const expected = '   (a|)        ';
+        const a = cold('     (--)---a---|');
+        const expectedValues = { a };
+
+        const grouped = source.pipe(groupBy((letter) => letter, { seed: () => seed }));
+
+        expectObservable(grouped).toBe(expected, expectedValues);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        expectSubscriptions(seed.subscriptions).toBe(seedSubs);
+      });
+    });
+  })
 });
 
 /**
