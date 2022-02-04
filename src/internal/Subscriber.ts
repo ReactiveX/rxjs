@@ -166,9 +166,9 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       } else {
         context = observerOrNext;
       }
-      next = next?.bind(context);
-      error = error?.bind(context);
-      complete = complete?.bind(context);
+      next = next && ((value: T) => context.next(value));
+      error = error && ((err: any) => context.error(err));
+      complete = complete && (() => context.complete());
     }
 
     // Once we set the destination, the superclass `Subscriber` will
