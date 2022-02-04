@@ -136,6 +136,12 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 }
 
+const _bind = Function.prototype.bind;
+
+function bind<Fn extends (...args: any[]) => any>(fn: Fn, thisArg: any): Fn {
+  return _bind.call(fn, thisArg);
+}
+
 export class SafeSubscriber<T> extends Subscriber<T> {
   constructor(
     observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null,
@@ -166,9 +172,9 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       } else {
         context = observerOrNext;
       }
-      next = next && ((value: T) => context.next(value));
-      error = error && ((err: any) => context.error(err));
-      complete = complete && (() => context.complete());
+      next = next && bind(next, context);
+      error = error && bind(error, context);
+      complete = complete && bind(complete, context);
     }
 
     // Once we set the destination, the superclass `Subscriber` will
