@@ -3,7 +3,7 @@ import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 
 import { operate } from '../util/lift';
 import { innerFrom } from '../observable/innerFrom';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Ignores source values for a duration determined by another Observable, then
@@ -75,14 +75,14 @@ export function audit<T>(durationSelector: (value: T) => ObservableInput<any>): 
     };
 
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value) => {
           hasValue = true;
           lastValue = value;
           if (!durationSubscriber) {
             innerFrom(durationSelector(value)).subscribe(
-              (durationSubscriber = new OperatorSubscriber(subscriber, endDuration, cleanupDuration))
+              (durationSubscriber = createOperatorSubscriber(subscriber, endDuration, cleanupDuration))
             );
           }
         },

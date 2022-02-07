@@ -1,7 +1,7 @@
 import { MonoTypeOperatorFunction } from '../types';
 import { identity } from '../util/identity';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Skip a specified number of values before the completion of an observable.
@@ -58,7 +58,7 @@ export function skipLast<T>(skipCount: number): MonoTypeOperatorFunction<T> {
         // the index of the current value when it arrives.
         let seen = 0;
         source.subscribe(
-          new OperatorSubscriber(subscriber, (value) => {
+          createOperatorSubscriber(subscriber, (value) => {
             // Get the index of the value we have right now
             // relative to all other values we've seen, then
             // increment `seen`. This ensures we've moved to

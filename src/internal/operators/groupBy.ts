@@ -3,7 +3,7 @@ import { innerFrom } from '../observable/innerFrom';
 import { Subject } from '../Subject';
 import { ObservableInput, Observer, OperatorFunction, SubjectLike } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber, OperatorSubscriber } from './OperatorSubscriber';
 
 export interface BasicGroupByOptions<K, T> {
   element?: undefined;
@@ -193,7 +193,7 @@ export function groupBy<T, K, R>(
             subscriber.next(grouped);
 
             if (duration) {
-              const durationSubscriber = new OperatorSubscriber(
+              const durationSubscriber = createOperatorSubscriber(
                 // Providing the group here ensures that it is disposed of -- via `unsubscribe` --
                 // wnen the duration subscription is torn down. That is important, because then
                 // if someone holds a handle to the grouped observable and tries to subscribe to it

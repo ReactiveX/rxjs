@@ -1,7 +1,7 @@
 import { EmptyError } from '../util/EmptyError';
 import { MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * If the source observable completes without emitting a value, it will emit
@@ -43,7 +43,7 @@ export function throwIfEmpty<T>(errorFactory: () => any = defaultErrorFactory): 
   return operate((source, subscriber) => {
     let hasValue = false;
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value) => {
           hasValue = true;

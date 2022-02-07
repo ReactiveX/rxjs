@@ -1,7 +1,7 @@
 import { Subscription } from '../Subscription';
 import { OperatorFunction, SchedulerLike } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 import { arrRemove } from '../util/arrRemove';
 import { asyncScheduler } from '../scheduler/async';
 import { popScheduler } from '../util/args';
@@ -131,7 +131,7 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
 
     startBuffer();
 
-    const bufferTimeSubscriber = new OperatorSubscriber(
+    const bufferTimeSubscriber = createOperatorSubscriber(
       subscriber,
       (value: T) => {
         // Copy the records, so if we need to remove one we

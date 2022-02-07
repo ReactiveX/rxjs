@@ -1,6 +1,6 @@
 import { OperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
 
 /**
@@ -40,6 +40,6 @@ import { noop } from '../util/noop';
  */
 export function ignoreElements(): OperatorFunction<unknown, never> {
   return operate((source, subscriber) => {
-    source.subscribe(new OperatorSubscriber(subscriber, noop));
+    source.subscribe(createOperatorSubscriber(subscriber, noop));
   });
 }

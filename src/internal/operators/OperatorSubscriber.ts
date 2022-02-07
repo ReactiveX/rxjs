@@ -1,6 +1,28 @@
 import { Subscriber } from '../Subscriber';
 
 /**
+ * Creates an instance of an `OperatorSubscriber`.
+ * @param destination The downstream subscriber.
+ * @param onNext Handles next values, only called if this subscriber is not stopped or closed. Any
+ * error that occurs in this function is caught and sent to the `error` method of this subscriber.
+ * @param onError Handles errors from the subscription, any errors that occur in this handler are caught
+ * and send to the `destination` error handler.
+ * @param onComplete Handles completion notification from the subscription. Any errors that occur in
+ * this handler are sent to the `destination` error handler.
+ * @param onFinalize Additional teardown logic here. This will only be called on teardown if the
+ * subscriber itself is not already closed. This is called after all other teardown logic is executed.
+ */
+export function createOperatorSubscriber<T>(
+  destination: Subscriber<any>,
+  onNext?: (value: T) => void,
+  onComplete?: () => void,
+  onError?: (err: any) => void,
+  onFinalize?: () => void
+): Subscriber<T> {
+  return new OperatorSubscriber(destination, onNext, onComplete, onError, onFinalize);
+}
+
+/**
  * A generic helper for allowing operators to be created with a Subscriber and
  * use closures to capture necessary state from the operator function itself.
  */
