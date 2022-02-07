@@ -18,37 +18,44 @@
     ".": {
       "node": "./dist/cjs/index.js",
       "es2015": "./dist/esm/index.js",
-      "default": "./dist/esm5/index.js"
+      "default": "./dist/esm5/index.js",
+      "types": "./dist/types/index.d.ts"
     },
     "./ajax": {
       "node": "./dist/cjs/ajax/index.js",
       "es2015": "./dist/esm/ajax/index.js",
-      "default": "./dist/esm5/ajax/index.js"
+      "default": "./dist/esm5/ajax/index.js",
+      "types": "./dist/types/ajax/index.d.ts"
     },
     "./fetch": {
       "node": "./dist/cjs/fetch/index.js",
       "es2015": "./dist/esm/fetch/index.js",
-      "default": "./dist/esm5/fetch/index.js"
+      "default": "./dist/esm5/fetch/index.js",
+      "types": "./dist/types/fetch/index.d.ts"
     },
     "./operators": {
       "node": "./dist/cjs/operators/index.js",
       "es2015": "./dist/esm/operators/index.js",
-      "default": "./dist/esm5/operators/index.js"
+      "default": "./dist/esm5/operators/index.js",
+      "types": "./dist/types/operators/index.d.ts"
     },
     "./testing": {
       "node": "./dist/cjs/testing/index.js",
       "es2015": "./dist/esm/testing/index.js",
-      "default": "./dist/esm5/testing/index.js"
+      "default": "./dist/esm5/testing/index.js",
+      "types": "./dist/types/testing/index.d.ts"
     },
     "./webSocket": {
       "node": "./dist/cjs/webSocket/index.js",
       "es2015": "./dist/esm/webSocket/index.js",
-      "default": "./dist/esm5/webSocket/index.js"
+      "default": "./dist/esm5/webSocket/index.js",
+      "types": "./dist/types/webSocket/index.d.ts"
     },
     "./internal/*": {
       "node": "./dist/cjs/internal/*.js",
       "es2015": "./dist/esm/internal/*.js",
-      "default": "./dist/esm5/internal/*.js"
+      "default": "./dist/esm5/internal/*.js",
+      "types": "./dist/types/internal/*.d.ts"
     },
     "./package.json": "./package.json"
   },
