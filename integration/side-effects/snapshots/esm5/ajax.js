@@ -1,1 +1,1 @@
-import 'tslib';
+import "tslib";
