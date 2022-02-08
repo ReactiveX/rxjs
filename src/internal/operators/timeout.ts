@@ -6,7 +6,7 @@ import { operate } from '../util/lift';
 import { Observable } from '../Observable';
 import { innerFrom } from '../observable/innerFrom';
 import { createErrorClass } from '../util/createErrorClass';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 import { executeSchedule } from '../util/executeSchedule';
 
 export interface TimeoutConfig<T, O extends ObservableInput<unknown> = ObservableInput<T>, M = unknown> {
@@ -309,11 +309,13 @@ export function timeout<T, O extends ObservableInput<any>, M>(
   // we destructure that into what we're going to use, setting important defaults as we do.
   // NOTE: The default for `scheduler` will be the `scheduler` argument if it exists, or
   // it will default to the `asyncScheduler`.
-  const { first, each, with: _with = timeoutErrorFactory, scheduler = schedulerArg ?? asyncScheduler, meta = null! } = (isValidDate(config)
-    ? { first: config }
-    : typeof config === 'number'
-    ? { each: config }
-    : config) as TimeoutConfig<T, O, M>;
+  const {
+    first,
+    each,
+    with: _with = timeoutErrorFactory,
+    scheduler = schedulerArg ?? asyncScheduler,
+    meta = null!,
+  } = (isValidDate(config) ? { first: config } : typeof config === 'number' ? { each: config } : config) as TimeoutConfig<T, O, M>;
 
   if (first == null && each == null) {
     // Ensure timeout was provided at runtime.
@@ -359,7 +361,7 @@ export function timeout<T, O extends ObservableInput<any>, M>(
     };
 
     originalSourceSubscription = source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value: T) => {
           // clear the timer so we can emit and start another one.

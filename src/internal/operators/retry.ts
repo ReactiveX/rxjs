@@ -1,7 +1,7 @@
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { Subscription } from '../Subscription';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 import { identity } from '../util/identity';
 import { timer } from '../observable/timer';
 import { innerFrom } from '../observable/innerFrom';
@@ -98,7 +98,7 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
         const subscribeForRetry = () => {
           let syncUnsub = false;
           innerSub = source.subscribe(
-            new OperatorSubscriber(
+            createOperatorSubscriber(
               subscriber,
               (value) => {
                 // If we're resetting on success
@@ -127,7 +127,7 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
                     // They gave us a number, use a timer, otherwise, it's a function,
                     // and we're going to call it to get a notifier.
                     const notifier = typeof delay === 'number' ? timer(delay) : innerFrom(delay(err, soFar));
-                    const notifierSubscriber = new OperatorSubscriber(
+                    const notifierSubscriber = createOperatorSubscriber(
                       subscriber,
                       () => {
                         // After we get the first notification, we

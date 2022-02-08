@@ -1,6 +1,6 @@
 import { OperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Groups pairs of consecutive emissions together and emits them as an array of
@@ -50,7 +50,7 @@ export function pairwise<T>(): OperatorFunction<T, [T, T]> {
     let prev: T;
     let hasPrev = false;
     source.subscribe(
-      new OperatorSubscriber(subscriber, (value) => {
+      createOperatorSubscriber(subscriber, (value) => {
         const p = prev;
         prev = value;
         hasPrev && subscriber.next([p, value]);

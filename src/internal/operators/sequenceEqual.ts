@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 
 import { OperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Compares all values of two observables in sequence using an optional comparator function
@@ -81,7 +81,7 @@ export function sequenceEqual<T>(
      * is used for both streams.
      */
     const createSubscriber = (selfState: SequenceState<T>, otherState: SequenceState<T>) => {
-      const sequenceEqualSubscriber = new OperatorSubscriber(
+      const sequenceEqualSubscriber = createOperatorSubscriber(
         subscriber,
         (a: T) => {
           const { buffer, complete } = otherState;

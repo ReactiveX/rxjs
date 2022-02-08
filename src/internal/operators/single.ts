@@ -5,7 +5,7 @@ import { MonoTypeOperatorFunction, OperatorFunction, TruthyTypesOf } from '../ty
 import { SequenceError } from '../util/SequenceError';
 import { NotFoundError } from '../util/NotFoundError';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 export function single<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
@@ -93,7 +93,7 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
     let seenValue = false;
     let index = 0;
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value) => {
           seenValue = true;

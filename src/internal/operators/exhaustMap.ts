@@ -4,7 +4,7 @@ import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { innerFrom } from '../observable/innerFrom';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
 export function exhaustMap<T, O extends ObservableInput<any>>(
@@ -80,11 +80,11 @@ export function exhaustMap<T, R, O extends ObservableInput<any>>(
     let innerSub: Subscriber<T> | null = null;
     let isComplete = false;
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (outerValue) => {
           if (!innerSub) {
-            innerSub = new OperatorSubscriber(subscriber, undefined, () => {
+            innerSub = createOperatorSubscriber(subscriber, undefined, () => {
               innerSub = null;
               isComplete && subscriber.complete();
             });

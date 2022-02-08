@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { OperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Branch out the source Observable values as a nested Observable with each
@@ -78,7 +78,7 @@ export function windowCount<T>(windowSize: number, startWindowEvery: number = 0)
     subscriber.next(windows[0].asObservable());
 
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value: T) => {
           // Emit the value through all current windows.

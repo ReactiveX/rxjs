@@ -4,7 +4,7 @@ import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source
@@ -61,7 +61,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
         // If the call to `notifier` throws, it will be caught by the OperatorSubscriber
         // In the main subscription -- in `subscribeForRepeatWhen`.
         notifier(completions$).subscribe(
-          new OperatorSubscriber(
+          createOperatorSubscriber(
             subscriber,
             () => {
               if (innerSub) {
@@ -88,7 +88,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
       isMainComplete = false;
 
       innerSub = source.subscribe(
-        new OperatorSubscriber(subscriber, undefined, () => {
+        createOperatorSubscriber(subscriber, undefined, () => {
           isMainComplete = true;
           // Check to see if we are complete, and complete if so.
           // If we are not complete. Get the subject. This calls the `notifier` function.

@@ -2,7 +2,7 @@
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { executeSchedule } from '../util/executeSchedule';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Re-emits all notifications from source Observable with specified scheduler.
@@ -59,7 +59,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
 export function observeOn<T>(scheduler: SchedulerLike, delay = 0): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value) => executeSchedule(subscriber, scheduler, () => subscriber.next(value), delay),
         () => executeSchedule(subscriber, scheduler, () => subscriber.complete(), delay),

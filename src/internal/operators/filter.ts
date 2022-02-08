@@ -1,6 +1,6 @@
 import { OperatorFunction, MonoTypeOperatorFunction, TruthyTypesOf } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function filter<T, S extends T, A>(predicate: (this: A, value: T, index: number) => value is S, thisArg: A): OperatorFunction<T, S>;
@@ -69,7 +69,7 @@ export function filter<T>(predicate: (value: T, index: number) => boolean, thisA
       // Call the predicate with the appropriate `this` context,
       // if the predicate returns `true`, then send the value
       // to the consumer.
-      new OperatorSubscriber(subscriber, (value) => predicate.call(thisArg, value, index++) && subscriber.next(value))
+      createOperatorSubscriber(subscriber, (value) => predicate.call(thisArg, value, index++) && subscriber.next(value))
     );
   });
 }
