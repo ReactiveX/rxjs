@@ -205,11 +205,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
         complete: complete ?? undefined,
       };
     } else {
-      // The first argument is an observer object, we have to pull the handlers
-      // off and capture the owner object as the context. That is because we're
-      // going to put them all in a new destination with ensured methods
-      // for `next`, `error`, and `complete`. That's part of what makes this
-      // the "Safe" Subscriber.
+      // The first argument is a partial observer.
       let context: any;
       if (this && config.useDeprecatedNextContext) {
         // This is a deprecated path that made `this.unsubscribe()` available in
@@ -223,10 +219,13 @@ export class SafeSubscriber<T> extends Subscriber<T> {
           complete: observerOrNext.complete && bind(observerOrNext.complete, context),
         };
       } else {
+        // The "normal" path. Just use the partial observer directly.
         partialObserver = observerOrNext;
       }
     }
 
+    // Wrap the partial observer to ensure it's a full observer, and
+    // make sure proper error handling is accounted for.
     this.destination = new ConsumerObserver(partialObserver);
   }
 }
