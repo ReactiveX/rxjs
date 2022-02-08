@@ -1,5 +1,5 @@
 import { Operator } from './Operator';
-import { SafeSubscriber, Subscriber } from './Subscriber';
+import { createSafeSubscriber, Subscriber } from './Subscriber';
 import { isSubscription, Subscription } from './Subscription';
 import { TeardownLogic, OperatorFunction, Subscribable, Observer } from './types';
 import { observable as Symbol_observable } from './symbol/observable';
@@ -191,7 +191,7 @@ export class Observable<T> implements Subscribable<T> {
    * @method subscribe
    */
   subscribe(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null): Subscription {
-    const subscriber = isSubscriber(observerOrNext) ? observerOrNext : new SafeSubscriber(observerOrNext);
+    const subscriber = isSubscriber(observerOrNext) ? observerOrNext : createSafeSubscriber(observerOrNext);
 
     const { operator, source } = this;
     subscriber.add(
@@ -270,7 +270,7 @@ export class Observable<T> implements Subscribable<T> {
    */
   forEach(next: (value: T) => void): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      const subscriber = new SafeSubscriber<T>({
+      const subscriber = createSafeSubscriber<T>({
         next: (value) => {
           try {
             next(value);

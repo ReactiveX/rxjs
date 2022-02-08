@@ -193,7 +193,11 @@ function createSafeObserver<T>(observerOrNext?: Partial<Observer<T>> | ((value: 
   return new ConsumerObserver(!observerOrNext || isFunction(observerOrNext) ? { next: observerOrNext ?? undefined } : observerOrNext);
 }
 
-export class SafeSubscriber<T> extends Subscriber<T> {
+export function createSafeSubscriber<T>(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null) {
+  return new SafeSubscriber(observerOrNext);
+}
+
+class SafeSubscriber<T> extends Subscriber<T> {
   constructor(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null) {
     super();
 
