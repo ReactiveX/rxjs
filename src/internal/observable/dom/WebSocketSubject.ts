@@ -1,5 +1,5 @@
 import { Subject, AnonymousSubject } from '../../Subject';
-import { createSafeSubscriber, Subscriber } from '../../Subscriber';
+import { Subscriber } from '../../Subscriber';
 import { Observable } from '../../Observable';
 import { Subscription } from '../../Subscription';
 import { Operator } from '../../Operator';
@@ -296,7 +296,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
       const queue = this.destination;
 
-      this.destination = createSafeSubscriber({
+      this.destination = new Subscriber({
         next: (x: T) => {
           if (socket!.readyState === 1) {
             try {

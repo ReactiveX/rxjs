@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { from } from '../observable/from';
 import { take } from '../operators/take';
 import { Subject } from '../Subject';
-import { createSafeSubscriber, Subscriber } from '../Subscriber';
+import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SubjectLike } from '../types';
 import { operate } from '../util/lift';
@@ -217,9 +217,9 @@ export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction
         // for reentrant subscriptions to the shared observable to occur and in
         // those situations we want connection to be already-assigned so that we
         // don't create another connection to the source.
-        connection = createSafeSubscriber({
-          next: (value) => dest.next(value),
-          error: (err) => {
+        connection = new Subscriber({
+          next: (value: T) => dest.next(value),
+          error: (err: any) => {
             hasErrored = true;
             cancelReset();
             resetConnection = handleReset(reset, resetOnError, err);

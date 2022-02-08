@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { repeatWhen, map, mergeMap, takeUntil, takeWhile, take } from 'rxjs/operators';
 import { of, EMPTY, Observable, Subscriber } from 'rxjs';
-import { createSafeSubscriber } from 'rxjs/internal/Subscriber';
 
 /** @test {repeatWhen} */
 describe('repeatWhen operator', () => {
@@ -92,7 +91,7 @@ describe('repeatWhen operator', () => {
     Observable.prototype.subscribe = function (...args: any[]): any {
       let [subscriber] = args;
       if (!(subscriber instanceof Subscriber)) {
-        subscriber = createSafeSubscriber(...args);
+        subscriber = new Subscriber(...args);
       }
       subscriber.error = function (err: any): void {
         errors.push(err);
@@ -119,7 +118,7 @@ describe('repeatWhen operator', () => {
     Observable.prototype.subscribe = function (...args: any[]): any {
       let [subscriber] = args;
       if (!(subscriber instanceof Subscriber)) {
-        subscriber = createSafeSubscriber(...args);
+        subscriber = new Subscriber(...args);
       }
       subscriber.error = function (err: any): void {
         errors.push(err);

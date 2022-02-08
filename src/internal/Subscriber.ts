@@ -25,8 +25,16 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   protected destination: Subscriber<T> | Observer<T>; // this `any` is the escape hatch to erase extra type param (e.g. R)
 
   /**
-   * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
-   * There is no reason to directly create an instance of Subscriber. This type is exported for typings reasons.
+   * Creates an instance of an RxJS Subscriber. This is the workhorse of the library.
+   *
+   * If another instance of Subscriber is passed in, it will automatically wire up unsubscription
+   * between this instnace and the passed in instance.
+   *
+   * If a partial or full observer is passed in, it will be wrapped and appropriate safeguards will be applied.
+   *
+   * If a next-handler function is passed in, it will be wrapped and appropriate safeguards will be applied.
+   *
+   * @param destination A subscriber, partial observer, or function that receives the next value.
    */
   constructor(destination?: Subscriber<T> | Partial<Observer<T>> | ((value: T) => void) | null) {
     super();
@@ -155,10 +163,6 @@ class ConsumerObserver<T> implements Observer<T> {
 
 function createSafeObserver<T>(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null): Observer<T> {
   return new ConsumerObserver(!observerOrNext || isFunction(observerOrNext) ? { next: observerOrNext ?? undefined } : observerOrNext);
-}
-
-export function createSafeSubscriber<T>(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null) {
-  return new Subscriber(observerOrNext);
 }
 
 /**
