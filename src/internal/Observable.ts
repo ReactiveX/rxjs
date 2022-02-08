@@ -1,10 +1,9 @@
 import { Operator } from './Operator';
-import { Subscriber } from './Subscriber';
+import { Subscriber, isSubscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { TeardownLogic, OperatorFunction, Subscribable, Observer } from './types';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
-import { isSubscriber } from './util/isSubscriber';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block

@@ -652,9 +652,9 @@ export interface Subscribable<T> {
 export declare function subscribeOn<T>(scheduler: SchedulerLike, delay?: number): MonoTypeOperatorFunction<T>;
 
 export declare class Subscriber<T> extends Subscription implements Observer<T> {
-    protected destination: Subscriber<any> | Observer<any>;
+    protected destination: Subscriber<T> | Observer<T>;
     protected isStopped: boolean;
-    constructor(destination?: Subscriber<any> | Observer<any>);
+    constructor(destination?: Subscriber<T> | Partial<Observer<T>> | ((value: T) => void) | null);
     protected _complete(): void;
     protected _error(err: any): void;
     protected _next(value: T): void;
@@ -662,7 +662,6 @@ export declare class Subscriber<T> extends Subscription implements Observer<T> {
     error(err?: any): void;
     next(value?: T): void;
     unsubscribe(): void;
-    static create<T>(next?: (x?: T) => void, error?: (e?: any) => void, complete?: () => void): Subscriber<T>;
 }
 
 export declare class Subscription implements SubscriptionLike {

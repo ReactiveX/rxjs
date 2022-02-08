@@ -6,7 +6,6 @@ import { reportUnhandledError } from './util/reportUnhandledError';
 import { noop } from './util/noop';
 import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories';
 import { timeoutProvider } from './scheduler/timeoutProvider';
-import { isSubscriber } from './util/isSubscriber';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -196,3 +195,11 @@ export const EMPTY_OBSERVER: Readonly<Observer<any>> & { closed: true } = {
   error: defaultErrorHandler,
   complete: noop,
 };
+
+function isObserver<T>(value: any): value is Observer<T> {
+  return value && isFunction(value.next) && isFunction(value.error) && isFunction(value.complete);
+}
+
+export function isSubscriber<T>(value: any): value is Subscriber<T> {
+  return (value && value instanceof Subscriber) || (isObserver(value) && isSubscription(value));
+}
