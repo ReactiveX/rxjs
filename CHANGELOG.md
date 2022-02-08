@@ -1,3 +1,9 @@
+## [7.5.3](https://github.com/reactivex/rxjs/compare/7.5.2...7.5.3) (2022-02-08)
+
+### Bug Fixes
+
+- **subscribe:** allow interop with Monio and other libraries that patch function bind ([0ab91eb](https://github.com/reactivex/rxjs/commit/0ab91eb4c1da914efbf03a2732629914cd3398dc)), closes [#6783](https://github.com/reactivex/rxjs/issues/6783)
+
 ## [7.5.2](https://github.com/reactivex/rxjs/compare/7.5.1...7.5.2) (2022-01-11)
 
 ### Bug Fixes
