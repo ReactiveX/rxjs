@@ -1,7 +1,7 @@
 import { MonoTypeOperatorFunction, Observer } from '../types';
 import { isFunction } from '../util/isFunction';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 import { identity } from '../util/identity';
 
 export interface TapObserver<T> extends Observer<T> {
@@ -106,7 +106,7 @@ export function tap<T>(observerOrNext?: Partial<TapObserver<T>> | ((value: T) =>
         tapObserver.subscribe?.();
         let isUnsub = true;
         source.subscribe(
-          new OperatorSubscriber(
+          createOperatorSubscriber(
             subscriber,
             (value) => {
               tapObserver.next?.(value);

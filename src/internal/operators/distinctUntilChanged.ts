@@ -1,7 +1,7 @@
 import { MonoTypeOperatorFunction } from '../types';
 import { identity } from '../util/identity';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Returns a result {@link Observable} that emits all values pushed by the source observable if they
@@ -155,7 +155,7 @@ export function distinctUntilChanged<T, K>(
     let first = true;
 
     source.subscribe(
-      new OperatorSubscriber(subscriber, (value) => {
+      createOperatorSubscriber(subscriber, (value) => {
         // We always call the key selector.
         const currentKey = keySelector(value);
 

@@ -3,7 +3,7 @@ import { innerFrom } from '../observable/innerFrom';
 import { Subject } from '../Subject';
 import { ObservableInput, Observer, OperatorFunction, SubjectLike } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber, OperatorSubscriber } from './OperatorSubscriber';
 
 export interface BasicGroupByOptions<K, T> {
   element?: undefined;
@@ -165,6 +165,12 @@ export function groupBy<T, K, R>(
     // next call from the source.
     const handleError = (err: any) => notify((consumer) => consumer.error(err));
 
+    // The number of actively subscribed groups
+    let activeGroups = 0;
+
+    // Whether or not teardown was attempted on this subscription.
+    let teardownAttempted = false;
+
     // Capturing a reference to this, because we need a handle to it
     // in `createGroupedObservable` below. This is what we use to
     // subscribe to our source observable. This sometimes needs to be unsubscribed
@@ -172,7 +178,7 @@ export function groupBy<T, K, R>(
     // in cases where a user unsubscribes from the main resulting subscription, but
     // still has groups from this subscription subscribed and would expect values from it
     // Consider:  `source.pipe(groupBy(fn), take(2))`.
-    const groupBySourceSubscriber = new GroupBySubscriber(
+    const groupBySourceSubscriber = new OperatorSubscriber(
       subscriber,
       (value: T) => {
         // Because we have to notify all groups of any errors that occur in here,
@@ -193,7 +199,7 @@ export function groupBy<T, K, R>(
             subscriber.next(grouped);
 
             if (duration) {
-              const durationSubscriber = new OperatorSubscriber(
+              const durationSubscriber = createOperatorSubscriber(
                 // Providing the group here ensures that it is disposed of -- via `unsubscribe` --
                 // wnen the duration subscription is torn down. That is important, because then
                 // if someone holds a handle to the grouped observable and tries to subscribe to it
@@ -234,7 +240,14 @@ export function groupBy<T, K, R>(
       // When the source subscription is _finally_ torn down, release the subjects and keys
       // in our groups Map, they may be quite large and we don't want to keep them around if we
       // don't have to.
-      () => groups.clear()
+      () => groups.clear(),
+      () => {
+        teardownAttempted = true;
+        // We only kill our subscription to the source if we have
+        // no active groups. As stated above, consider this scenario:
+        // source$.pipe(groupBy(fn), take(2)).
+        return activeGroups === 0;
+      }
     );
 
     // Subscribe to the source
@@ -247,46 +260,20 @@ export function groupBy<T, K, R>(
      */
     function createGroupedObservable(key: K, groupSubject: SubjectLike<any>) {
       const result: any = new Observable<T>((groupSubscriber) => {
-        groupBySourceSubscriber.activeGroups++;
+        activeGroups++;
         const innerSub = groupSubject.subscribe(groupSubscriber);
         return () => {
           innerSub.unsubscribe();
           // We can kill the subscription to our source if we now have no more
           // active groups subscribed, and a teardown was already attempted on
           // the source.
-          --groupBySourceSubscriber.activeGroups === 0 &&
-            groupBySourceSubscriber.teardownAttempted &&
-            groupBySourceSubscriber.unsubscribe();
+          --activeGroups === 0 && teardownAttempted && groupBySourceSubscriber.unsubscribe();
         };
       });
       result.key = key;
       return result;
     }
   });
-}
-
-/**
- * This was created because groupBy is a bit unique, in that emitted groups that have
- * subscriptions have to keep the subscription to the source alive until they
- * are torn down.
- */
-class GroupBySubscriber<T> extends OperatorSubscriber<T> {
-  /**
-   * The number of actively subscribed groups
-   */
-  activeGroups = 0;
-  /**
-   * Whether or not teardown was attempted on this subscription.
-   */
-  teardownAttempted = false;
-
-  unsubscribe() {
-    this.teardownAttempted = true;
-    // We only kill our subscription to the source if we have
-    // no active groups. As stated above, consider this scenario:
-    // source$.pipe(groupBy(fn), take(2)).
-    this.activeGroups === 0 && super.unsubscribe();
-  }
 }
 
 /**

@@ -3,7 +3,7 @@ import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 import { innerFrom } from '../observable/innerFrom';
 
 /**
@@ -95,7 +95,7 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
       // to capture the subscriber (aka Subscription)
       // so we can clean it up when we close the window
       // and open a new one.
-      closingNotifier.subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openWindow, openWindow, handleError)));
+      closingNotifier.subscribe((closingSubscriber = createOperatorSubscriber(subscriber, openWindow, openWindow, handleError)));
     };
 
     // Start the first window.
@@ -103,7 +103,7 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
 
     // Subscribe to the source
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value) => window!.next(value),
         () => {

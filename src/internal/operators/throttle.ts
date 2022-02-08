@@ -2,7 +2,7 @@ import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 import { innerFrom } from '../observable/innerFrom';
 
 export interface ThrottleConfig {
@@ -87,7 +87,7 @@ export function throttle<T>(
     };
 
     const startThrottle = (value: T) =>
-      (throttled = innerFrom(durationSelector(value)).subscribe(new OperatorSubscriber(subscriber, endThrottling, cleanupThrottling)));
+      (throttled = innerFrom(durationSelector(value)).subscribe(createOperatorSubscriber(subscriber, endThrottling, cleanupThrottling)));
 
     const send = () => {
       if (hasValue) {
@@ -104,7 +104,7 @@ export function throttle<T>(
     };
 
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         // Regarding the presence of throttled.closed in the following
         // conditions, if a synchronous duration selector is specified - weird,

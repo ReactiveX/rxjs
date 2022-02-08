@@ -3,7 +3,7 @@ import { innerFrom } from './innerFrom';
 import { Subscription } from '../Subscription';
 import { ObservableInput, ObservableInputTuple } from '../types';
 import { argsOrArgArray } from '../util/argsOrArgArray';
-import { OperatorSubscriber } from '../operators/OperatorSubscriber';
+import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
 import { Subscriber } from '../Subscriber';
 
 export function race<T extends readonly unknown[]>(inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
@@ -70,7 +70,7 @@ export function raceInit<T>(sources: ObservableInput<T>[]) {
     for (let i = 0; subscriptions && !subscriber.closed && i < sources.length; i++) {
       subscriptions.push(
         innerFrom(sources[i] as ObservableInput<T>).subscribe(
-          new OperatorSubscriber(subscriber, (value) => {
+          createOperatorSubscriber(subscriber, (value) => {
             if (subscriptions) {
               // We're still racing, but we won! So unsubscribe
               // all other subscriptions that we have, except this one.

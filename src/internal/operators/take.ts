@@ -1,7 +1,7 @@
 import { MonoTypeOperatorFunction } from '../types';
 import { EMPTY } from '../observable/empty';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Emits only the first `count` values emitted by the source Observable.
@@ -52,7 +52,7 @@ export function take<T>(count: number): MonoTypeOperatorFunction<T> {
     : operate((source, subscriber) => {
         let seen = 0;
         source.subscribe(
-          new OperatorSubscriber(subscriber, (value) => {
+          createOperatorSubscriber(subscriber, (value) => {
             // Increment the number of values we have seen,
             // then check it against the allowed count to see
             // if we are still letting values through.

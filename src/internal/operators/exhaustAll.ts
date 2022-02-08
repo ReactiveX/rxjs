@@ -2,7 +2,7 @@ import { Subscription } from '../Subscription';
 import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
 import { operate } from '../util/lift';
 import { innerFrom } from '../observable/innerFrom';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping
@@ -53,12 +53,12 @@ export function exhaustAll<O extends ObservableInput<any>>(): OperatorFunction<O
     let isComplete = false;
     let innerSub: Subscription | null = null;
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (inner) => {
           if (!innerSub) {
             innerSub = innerFrom(inner).subscribe(
-              new OperatorSubscriber(subscriber, undefined, () => {
+              createOperatorSubscriber(subscriber, undefined, () => {
                 innerSub = null;
                 isComplete && subscriber.complete();
               })
