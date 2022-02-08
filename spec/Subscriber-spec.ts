@@ -1,15 +1,15 @@
 import { expect } from 'chai';
-import { SafeSubscriber } from 'rxjs/internal/Subscriber';
-import { Subscriber, Observable, config, of, Observer } from 'rxjs';
+import { createSafeSubscriber } from 'rxjs/internal/Subscriber';
+import { Subscriber, Observable, of, Observer } from 'rxjs';
 import { asInteropSubscriber } from './helpers/interop-helper';
 import { getRegisteredTeardowns } from './helpers/subscription';
 
 /** @test {Subscriber} */
-describe('SafeSubscriber', () => {
+describe('createSafeSubscriber', () => {
   it('should ignore next messages after unsubscription', () => {
     let times = 0;
 
-    const sub = new SafeSubscriber({
+    const sub = createSafeSubscriber({
       next() { times += 1; }
     });
 
@@ -25,7 +25,7 @@ describe('SafeSubscriber', () => {
     let times = 0;
     let errorCalled = false;
 
-    const sub = new SafeSubscriber({
+    const sub = createSafeSubscriber({
       next() { times += 1; },
       error() { errorCalled = true; }
     });
@@ -44,7 +44,7 @@ describe('SafeSubscriber', () => {
     let times = 0;
     let completeCalled = false;
 
-    const sub = new SafeSubscriber({
+    const sub = createSafeSubscriber({
       next() { times += 1; },
       complete() { completeCalled = true; }
     });
@@ -64,8 +64,8 @@ describe('SafeSubscriber', () => {
       next: function () { /*noop*/ }
     };
 
-    const sub1 = new SafeSubscriber(observer);
-    const sub2 = new SafeSubscriber(observer);
+    const sub1 = createSafeSubscriber(observer);
+    const sub2 = createSafeSubscriber(observer);
 
     sub2.complete();
 
@@ -82,7 +82,7 @@ describe('SafeSubscriber', () => {
       }
     };
 
-    const sub1 = new SafeSubscriber(observer);
+    const sub1 = createSafeSubscriber(observer);
     sub1.complete();
 
     expect(argument).to.have.lengthOf(0);
@@ -93,7 +93,7 @@ describe('SafeSubscriber', () => {
     let subscriberUnsubscribed = false;
     let subscriptionUnsubscribed = false;
 
-    const subscriber = new SafeSubscriber<void>();
+    const subscriber = createSafeSubscriber<void>();
     subscriber.add(() => subscriberUnsubscribed = true);
 
     const source = new Observable<void>(() => () => observableUnsubscribed = true);
@@ -108,7 +108,7 @@ describe('SafeSubscriber', () => {
 
   it('should have idempotent unsubscription', () => {
     let count = 0;
-    const subscriber = new SafeSubscriber();
+    const subscriber = createSafeSubscriber();
     subscriber.add(() => ++count);
     expect(count).to.equal(0);
 
@@ -121,7 +121,7 @@ describe('SafeSubscriber', () => {
 
   it('should close, unsubscribe, and unregister all teardowns after complete', () => {
     let isUnsubscribed = false;
-    const subscriber = new SafeSubscriber();
+    const subscriber = createSafeSubscriber();
     subscriber.add(() => isUnsubscribed = true);
     subscriber.complete();
     expect(isUnsubscribed).to.be.true;
@@ -131,7 +131,7 @@ describe('SafeSubscriber', () => {
 
   it('should close, unsubscribe, and unregister all teardowns after error', () => {
     let isTornDown = false;
-    const subscriber = new SafeSubscriber({
+    const subscriber = createSafeSubscriber({
       error: () => {
         // Mischief managed!
         // Adding this handler here to prevent the call to error from 

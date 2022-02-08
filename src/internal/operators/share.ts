@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { from } from '../observable/from';
 import { take } from '../operators/take';
 import { Subject } from '../Subject';
-import { SafeSubscriber } from '../Subscriber';
+import { createSafeSubscriber, Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SubjectLike } from '../types';
 import { operate } from '../util/lift';
@@ -153,7 +153,7 @@ export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction
   // call to a source observable's `pipe` method - not when the static `pipe`
   // function is called.
   return (wrapperSource) => {
-    let connection: SafeSubscriber<T> | null = null;
+    let connection: Subscriber<T> | null = null;
     let resetConnection: Subscription | null = null;
     let subject: SubjectLike<T> | null = null;
     let refCount = 0;
@@ -217,7 +217,7 @@ export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction
         // for reentrant subscriptions to the shared observable to occur and in
         // those situations we want connection to be already-assigned so that we
         // don't create another connection to the source.
-        connection = new SafeSubscriber({
+        connection = createSafeSubscriber({
           next: (value) => dest.next(value),
           error: (err) => {
             hasErrored = true;
