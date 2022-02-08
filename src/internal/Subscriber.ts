@@ -135,6 +135,17 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 }
 
+/**
+ * This bind is captured here because we want to be able to have
+ * compatibility with monoid libraries that tend to use a method named
+ * `bind`. In particular, a library called Monio requires this.
+ */
+const _bind = Function.prototype.bind;
+
+function bind<Fn extends (...args: any[]) => any>(fn: Fn, thisArg: any): Fn {
+  return _bind.call(fn, thisArg);
+}
+
 export class SafeSubscriber<T> extends Subscriber<T> {
   constructor(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null) {
     super();
@@ -152,9 +163,10 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       // going to put them all in a new destination with ensured methods
       // for `next`, `error`, and `complete`. That's part of what makes this
       // the "Safe" Subscriber.
-      next = observerOrNext.next?.bind(observerOrNext);
-      error = observerOrNext.error?.bind(observerOrNext);
-      complete = observerOrNext.complete?.bind(observerOrNext);
+      ({ next, error, complete } = observerOrNext);
+      next = next && bind(next, observerOrNext);
+      error = error && bind(error, observerOrNext);
+      complete = complete && bind(complete, observerOrNext);
     }
 
     // Once we set the destination, the superclass `Subscriber` will

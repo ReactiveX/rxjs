@@ -172,6 +172,34 @@ describe('Observable', () => {
   });
 
   describe('subscribe', () => {
+    it('should work with handlers with hacked bind methods', () => {
+      const source = of('Hi');
+      const results: any[] = [];
+      const next = function (value: string) {
+        results.push(value);
+      }
+      next.bind = () => { /* lol */};
+      
+      const complete = function () {
+        results.push('done');
+      }
+      complete.bind = () => { /* lol */};
+
+      source.subscribe({ next, complete });
+      expect(results).to.deep.equal(['Hi', 'done']);
+    });
+
+    it('should work with handlers with hacked bind methods, in the error case', () => {
+      const source = throwError(() => 'an error');
+      const results: any[] = [];
+      const error = function (value: string) {
+        results.push(value);
+      }
+
+      source.subscribe({ error });
+      expect(results).to.deep.equal(['an error']);
+    });
+
     it('should be synchronous', () => {
       let subscribed = false;
       let nexted: string;
