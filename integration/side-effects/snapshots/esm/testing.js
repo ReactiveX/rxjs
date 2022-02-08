@@ -1,11 +1,11 @@
-import 'tslib';
+import "tslib";
 
 const _bind = Function.prototype.bind;
 
 var NotificationKind;
 
-(function (NotificationKind) {
-  NotificationKind['NEXT'] = 'N';
-  NotificationKind['ERROR'] = 'E';
-  NotificationKind['COMPLETE'] = 'C';
+(function(NotificationKind) {
+    NotificationKind["NEXT"] = "N";
+    NotificationKind["ERROR"] = "E";
+    NotificationKind["COMPLETE"] = "C";
 })(NotificationKind || (NotificationKind = {}));
