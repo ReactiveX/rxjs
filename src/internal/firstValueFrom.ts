@@ -1,6 +1,6 @@
 import { Observable } from './Observable';
 import { EmptyError } from './util/EmptyError';
-import { createSafeSubscriber } from './Subscriber';
+import { Subscriber } from './Subscriber';
 
 export interface FirstValueFromConfig<T> {
   defaultValue: T;
@@ -56,8 +56,8 @@ export function firstValueFrom<T>(source: Observable<T>): Promise<T>;
 export function firstValueFrom<T, D>(source: Observable<T>, config?: FirstValueFromConfig<D>): Promise<T | D> {
   const hasConfig = typeof config === 'object';
   return new Promise<T | D>((resolve, reject) => {
-    const subscriber = createSafeSubscriber<T>({
-      next: (value) => {
+    const subscriber = new Subscriber({
+      next: (value: T) => {
         resolve(value);
         subscriber.unsubscribe();
       },
