@@ -3,7 +3,7 @@ import { innerFrom } from '../observable/innerFrom';
 import { Subject } from '../Subject';
 import { ObservableInput, Observer, OperatorFunction, SubjectLike } from '../types';
 import { operate } from '../util/lift';
-import { createOperatorSubscriber, OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 export interface BasicGroupByOptions<K, T> {
   element?: undefined;
@@ -178,7 +178,7 @@ export function groupBy<T, K, R>(
     // in cases where a user unsubscribes from the main resulting subscription, but
     // still has groups from this subscription subscribed and would expect values from it
     // Consider:  `source.pipe(groupBy(fn), take(2))`.
-    const groupBySourceSubscriber = new OperatorSubscriber(
+    const groupBySourceSubscriber = createOperatorSubscriber(
       subscriber,
       (value: T) => {
         // Because we have to notify all groups of any errors that occur in here,
