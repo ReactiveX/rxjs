@@ -1,10 +1,10 @@
 import { Operator } from './Operator';
 import { createSafeSubscriber, Subscriber } from './Subscriber';
-import { isSubscription, Subscription } from './Subscription';
+import { Subscription } from './Subscription';
 import { TeardownLogic, OperatorFunction, Subscribable, Observer } from './types';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
-import { isFunction } from './util/isFunction';
+import { isSubscriber } from './util/isSubscriber';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -393,12 +393,4 @@ export class Observable<T> implements Subscribable<T> {
   pipe(...operations: OperatorFunction<any, any>[]): Observable<any> {
     return pipeFromArray(operations)(this);
   }
-}
-
-function isObserver<T>(value: any): value is Observer<T> {
-  return value && isFunction(value.next) && isFunction(value.error) && isFunction(value.complete);
-}
-
-function isSubscriber<T>(value: any): value is Subscriber<T> {
-  return (value && value instanceof Subscriber) || (isObserver(value) && isSubscription(value));
 }
