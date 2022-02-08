@@ -38,13 +38,18 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
    * this handler are sent to the `destination` error handler.
    * @param onFinalize Additional teardown logic here. This will only be called on teardown if the
    * subscriber itself is not already closed. This is called after all other teardown logic is executed.
+   * @param shouldUnsubscribe An optional check to see if an unsubscribe call should truly unsubscribe.
+   * NOTE: This currently **ONLY** exists to support the strange behavior of {@link groupBy}, where unsubscription
+   * to the resulting observable does not actually disconnect from the source if there are active subscriptions
+   * to any grouped observable. (DO NOT EXPOSE OR USE EXTERNALLY!!!)
    */
   constructor(
     destination: Subscriber<any>,
     onNext?: (value: T) => void,
     onComplete?: () => void,
     onError?: (err: any) => void,
-    private onFinalize?: () => void
+    private onFinalize?: () => void,
+    private shouldUnsubscribe?: () => boolean
   ) {
     // It's important - for performance reasons - that all of this class's
     // members are initialized and that they are always initialized in the same
@@ -97,9 +102,11 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
   }
 
   unsubscribe() {
-    const { closed } = this;
-    super.unsubscribe();
-    // Execute additional teardown if we have any and we didn't already do so.
-    !closed && this.onFinalize?.();
+    if (!this.shouldUnsubscribe || this.shouldUnsubscribe()) {
+      const { closed } = this;
+      super.unsubscribe();
+      // Execute additional teardown if we have any and we didn't already do so.
+      !closed && this.onFinalize?.();
+    }
   }
 }
