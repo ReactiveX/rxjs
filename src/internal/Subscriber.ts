@@ -6,6 +6,7 @@ import { reportUnhandledError } from './util/reportUnhandledError';
 import { noop } from './util/noop';
 import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories';
 import { timeoutProvider } from './scheduler/timeoutProvider';
+import { isSubscriber } from './util/isSubscriber';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -40,23 +41,20 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   protected isStopped: boolean = false;
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
-  protected destination: Subscriber<any> | Observer<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
+  protected destination: Subscriber<T> | Observer<T>; // this `any` is the escape hatch to erase extra type param (e.g. R)
 
   /**
    * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
    * There is no reason to directly create an instance of Subscriber. This type is exported for typings reasons.
    */
-  constructor(destination?: Subscriber<any> | Observer<any>) {
+  constructor(destination?: Subscriber<T> | Partial<Observer<T>> | ((value: T) => void) | null) {
     super();
-    if (destination) {
-      this.destination = destination;
-      // Automatically chain subscriptions together here.
-      // if destination is a Subscription, then it is a Subscriber.
-      if (isSubscription(destination)) {
-        destination.add(this);
-      }
-    } else {
-      this.destination = EMPTY_OBSERVER;
+    this.destination = isSubscriber(destination) ? destination : createSafeObserver(destination);
+
+    // Automatically chain subscriptions together here.
+    // if destination is a Subscription, then it is a Subscriber.
+    if (isSubscription(destination)) {
+      destination.add(this);
     }
   }
 
@@ -135,21 +133,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 }
 
-/**
- * This bind is captured here because we want to be able to have
- * compatibility with monoid libraries that tend to use a method named
- * `bind`. In particular, a library called Monio requires this.
- */
-const _bind = Function.prototype.bind;
-
-function bind<Fn extends (...args: any[]) => any>(fn: Fn, thisArg: any): Fn {
-  return _bind.call(fn, thisArg);
-}
-
-/**
- * Internal optimization only, DO NOT EXPOSE.
- * @internal
- */
 class ConsumerObserver<T> implements Observer<T> {
   constructor(private partialObserver: Partial<Observer<T>>) {}
 
@@ -194,7 +177,7 @@ function createSafeObserver<T>(observerOrNext?: Partial<Observer<T>> | ((value: 
 }
 
 export function createSafeSubscriber<T>(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null) {
-  return new SafeSubscriber(observerOrNext);
+  return new Subscriber(observerOrNext);
 }
 
 class SafeSubscriber<T> extends Subscriber<T> {
