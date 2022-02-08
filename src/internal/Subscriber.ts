@@ -189,25 +189,17 @@ class ConsumerObserver<T> implements Observer<T> {
   }
 }
 
+function createSafeObserver<T>(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null): Observer<T> {
+  return new ConsumerObserver(!observerOrNext || isFunction(observerOrNext) ? { next: observerOrNext ?? undefined } : observerOrNext);
+}
+
 export class SafeSubscriber<T> extends Subscriber<T> {
   constructor(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null) {
     super();
 
-    let partialObserver: Partial<Observer<T>>;
-    if (isFunction(observerOrNext) || !observerOrNext) {
-      // The first argument is a function, not an observer. The next
-      // two arguments *could* be observers, or they could be empty.
-      partialObserver = {
-        next: observerOrNext ?? undefined,
-      };
-    } else {
-      // The "normal" path. Just use the partial observer directly.
-      partialObserver = observerOrNext;
-    }
-
     // Wrap the partial observer to ensure it's a full observer, and
     // make sure proper error handling is accounted for.
-    this.destination = new ConsumerObserver(partialObserver);
+    this.destination = createSafeObserver(observerOrNext);
   }
 }
 
