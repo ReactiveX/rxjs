@@ -136,6 +136,11 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 }
 
+/**
+ * This bind is captured here because we want to be able to have
+ * compatibility with monoid libraries that tend to use a method named
+ * `bind`. In particular, a library called Monio requires this.
+ */
 const _bind = Function.prototype.bind;
 
 function bind<Fn extends (...args: any[]) => any>(fn: Fn, thisArg: any): Fn {
