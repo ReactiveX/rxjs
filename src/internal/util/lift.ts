@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { OperatorFunction } from '../types';
+import { OperatorFunction, Subscribable } from '../types';
 import { isFunction } from './isFunction';
 
 /**
@@ -17,16 +17,32 @@ export function hasLift(source: any): source is { lift: InstanceType<typeof Obse
 export function operate<T, R>(
   init: (liftedSource: Observable<T>, subscriber: Subscriber<R>) => (() => void) | void
 ): OperatorFunction<T, R> {
-  return (source: Observable<T>) => {
+  return (source: Subscribable<T>) => {
     if (hasLift(source)) {
+      // The current v7 path for operators over our own observables.
       return source.lift(function (this: Subscriber<R>, liftedSource: Observable<T>) {
         try {
           return init(liftedSource, this);
         } catch (err) {
           this.error(err);
         }
+      }) as Subscribable<R>;
+    } else {
+      // Allow our operators to handle non-liftable sources.
+      const rxSource = fromSubscribable(source);
+      return new Observable<R>((ths) => {
+        try {
+          return init(rxSource as any, ths);
+        } catch (err) {
+          ths.error(err);
+        }
       });
     }
-    throw new TypeError('Unable to lift unknown Observable type');
   };
+}
+
+function fromSubscribable<T>(source: Subscribable<T>) {
+  return new Observable<T>((subscriber) => {
+    return source.subscribe(subscriber);
+  });
 }

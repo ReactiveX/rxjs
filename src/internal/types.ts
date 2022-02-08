@@ -20,7 +20,7 @@ export interface UnaryFunction<T, R> {
   (source: T): R;
 }
 
-export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Observable<R>> {}
+export interface OperatorFunction<T, R> extends UnaryFunction<Subscribable<T>, Subscribable<R>> {}
 
 export type FactoryOrValue<T> = T | (() => T);
 
