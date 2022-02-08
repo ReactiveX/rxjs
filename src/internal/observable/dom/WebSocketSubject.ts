@@ -1,5 +1,5 @@
 import { Subject, AnonymousSubject } from '../../Subject';
-import { Subscriber } from '../../Subscriber';
+import { createSafeSubscriber, Subscriber } from '../../Subscriber';
 import { Observable } from '../../Observable';
 import { Subscription } from '../../Subscription';
 import { Operator } from '../../Operator';
@@ -296,8 +296,8 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
       const queue = this.destination;
 
-      this.destination = Subscriber.create<T>(
-        (x) => {
+      this.destination = createSafeSubscriber({
+        next: (x: T) => {
           if (socket!.readyState === 1) {
             try {
               const { serializer } = this._config;
@@ -307,7 +307,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
             }
           }
         },
-        (err) => {
+        error: (err: any) => {
           const { closingObserver } = this._config;
           if (closingObserver) {
             closingObserver.next(undefined);
@@ -319,15 +319,15 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
           }
           this._resetState();
         },
-        () => {
+        complete: () => {
           const { closingObserver } = this._config;
           if (closingObserver) {
             closingObserver.next(undefined);
           }
           socket!.close();
           this._resetState();
-        }
-      ) as Subscriber<any>;
+        },
+      });
 
       if (queue && queue instanceof ReplaySubject) {
         subscription.add((queue as ReplaySubject<T>).subscribe(this.destination));

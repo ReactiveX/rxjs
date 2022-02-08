@@ -19,25 +19,6 @@ import { isSubscriber } from './util/isSubscriber';
  * @class Subscriber<T>
  */
 export class Subscriber<T> extends Subscription implements Observer<T> {
-  /**
-   * A static factory for a Subscriber, given a (potentially partial) definition
-   * of an Observer.
-   * @param next The `next` callback of an Observer.
-   * @param error The `error` callback of an
-   * Observer.
-   * @param complete The `complete` callback of an
-   * Observer.
-   * @return A Subscriber wrapping the (partially defined)
-   * Observer represented by the given arguments.
-   * @nocollapse
-   * @deprecated Do not use. Will be removed in v8. There is no replacement for this
-   * method, and there is no reason to be creating instances of `Subscriber` directly.
-   * If you have a specific use case, please file an issue.
-   */
-  static create<T>(next?: (x?: T) => void, error?: (e?: any) => void, complete?: () => void): Subscriber<T> {
-    return new SafeSubscriber({ next, error, complete });
-  }
-
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   protected isStopped: boolean = false;
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
@@ -178,16 +159,6 @@ function createSafeObserver<T>(observerOrNext?: Partial<Observer<T>> | ((value: 
 
 export function createSafeSubscriber<T>(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null) {
   return new Subscriber(observerOrNext);
-}
-
-class SafeSubscriber<T> extends Subscriber<T> {
-  constructor(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null) {
-    super();
-
-    // Wrap the partial observer to ensure it's a full observer, and
-    // make sure proper error handling is accounted for.
-    this.destination = createSafeObserver(observerOrNext);
-  }
 }
 
 /**
