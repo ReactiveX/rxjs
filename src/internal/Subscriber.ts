@@ -155,9 +155,10 @@ class ConsumerObserver<T> implements Observer<T> {
   constructor(private partialObserver: Partial<Observer<T>>) {}
 
   next(value: T): void {
-    if (this.partialObserver.next) {
+    const { partialObserver } = this;
+    if (partialObserver.next) {
       try {
-        this.partialObserver.next(value);
+        partialObserver.next(value);
       } catch (error) {
         handleUnhandledError(error);
       }
@@ -165,9 +166,10 @@ class ConsumerObserver<T> implements Observer<T> {
   }
 
   error(err: any): void {
-    if (this.partialObserver.error) {
+    const { partialObserver } = this;
+    if (partialObserver.error) {
       try {
-        this.partialObserver.error(err);
+        partialObserver.error(err);
       } catch (error) {
         handleUnhandledError(error);
       }
@@ -177,9 +179,10 @@ class ConsumerObserver<T> implements Observer<T> {
   }
 
   complete(): void {
-    if (this.partialObserver.complete) {
+    const { partialObserver } = this;
+    if (partialObserver.complete) {
       try {
-        this.partialObserver.complete();
+        partialObserver.complete();
       } catch (error) {
         handleUnhandledError(error);
       }
