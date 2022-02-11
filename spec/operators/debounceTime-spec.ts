@@ -1,6 +1,6 @@
 /** @prettier */
 import { expect } from 'chai';
-import { NEVER, of, Subject } from 'rxjs';
+import { NEVER, of, Subject, queueScheduler } from 'rxjs';
 import { AnimationFrameAction } from 'rxjs/internal/scheduler/AnimationFrameAction';
 import { AnimationFrameScheduler } from 'rxjs/internal/scheduler/AnimationFrameScheduler';
 import { debounceTime, mergeMap, startWith } from 'rxjs/operators';
@@ -239,5 +239,15 @@ describe('debounceTime', () => {
 
     expect(scheduler._scheduled).to.not.exist;
     expect(scheduler.actions).to.be.empty;
+  });
+
+  it('should work synchronously with queueScheduler', () => {
+    testScheduler.run(({ cold, expectObservable }) => {
+      const a = cold('a');
+      const expected = 'a';
+
+      const result = a.pipe(debounceTime(0, queueScheduler));
+      expectObservable(result).toBe(expected);
+    });
   });
 });
