@@ -2,7 +2,7 @@ import { Operator } from './Operator';
 import { SafeSubscriber, Subscriber } from './Subscriber';
 import { isSubscription, Subscription } from './Subscription';
 import { TeardownLogic, OperatorFunction, Subscribable, Observer } from './types';
-import { observable as Symbol_observable } from './symbol/observable';
+import { observableTypeRef } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
 import { isFunction } from './util/isFunction';
@@ -340,7 +340,7 @@ export class Observable<T> implements Subscribable<T> {
    * @method Symbol.observable
    * @return {Observable} this instance of the observable
    */
-  [Symbol_observable]() {
+  [observableTypeRef.symbol](): Subscribable<T> {
     return this;
   }
 
