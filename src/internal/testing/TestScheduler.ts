@@ -221,7 +221,7 @@ export class TestScheduler extends VirtualTimeScheduler {
   }
 
   /** @nocollapse */
-  static parseMarblesAsSubscriptions(marbles: string | null, runMode = false): SubscriptionLog {
+  static parseMarblesAsSubscriptions(marbles: string | null, runMode = true): SubscriptionLog {
     if (typeof marbles !== 'string') {
       return new SubscriptionLog(Infinity);
     }
@@ -324,7 +324,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     values?: any,
     errorValue?: any,
     materializeInnerObservables: boolean = false,
-    runMode = false
+    runMode = true
   ): TestMessage[] {
     if (marbles.indexOf('!') !== -1) {
       throw new Error('conventional marble diagrams cannot have the ' + 'unsubscription marker "!"');
