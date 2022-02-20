@@ -21,7 +21,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   protected isStopped: boolean = false;
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
-  protected destination: Subscriber<T> | Observer<T>; // this `any` is the escape hatch to erase extra type param (e.g. R)
+  protected destination: Subscriber<T> | Observer<T>;
 
   /**
    * Creates an instance of an RxJS Subscriber. This is the workhorse of the library.
