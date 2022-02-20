@@ -1,5 +1,2 @@
 /** Symbol.observable or a string "@@observable". Used for interop */
-export const observable = (() => (typeof Symbol === 'function' && Symbol.observable) || '@@observable')();
-export const observableTypeRef = {
-  symbol: observable as Exclude<typeof observable, string>,
-};
+export const observable: typeof Symbol.observable = (() => (typeof Symbol === 'function' && Symbol.observable) || '@@observable')() as any;
