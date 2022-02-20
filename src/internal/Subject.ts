@@ -16,6 +16,9 @@ import { errorContext } from './util/errorContext';
  */
 export class Subject<T> extends Observable<T> implements SubscriptionLike {
   closed = false;
+
+  private currentObservers: Observer<T>[] | null = null;
+
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   observers: Observer<T>[] = [];
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
@@ -58,8 +61,10 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     errorContext(() => {
       this._throwIfClosed();
       if (!this.isStopped) {
-        const copy = this.observers.slice();
-        for (const observer of copy) {
+        if (!this.currentObservers) {
+          this.currentObservers = Array.from(this.observers);
+        }
+        for (const observer of this.currentObservers) {
           observer.next(value);
         }
       }
@@ -95,7 +100,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   unsubscribe() {
     this.isStopped = this.closed = true;
-    this.observers = null!;
+    this.observers = this.currentObservers = null!;
   }
 
   get observed() {
@@ -118,9 +123,15 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   /** @internal */
   protected _innerSubscribe(subscriber: Subscriber<any>) {
     const { hasError, isStopped, observers } = this;
-    return hasError || isStopped
-      ? EMPTY_SUBSCRIPTION
-      : (observers.push(subscriber), new Subscription(() => arrRemove(observers, subscriber)));
+    if (hasError || isStopped) {
+      return EMPTY_SUBSCRIPTION;
+    }
+    this.currentObservers = null;
+    observers.push(subscriber);
+    return new Subscription(() => {
+      this.currentObservers = null;
+      arrRemove(observers, subscriber);
+    });
   }
 
   /** @internal */
