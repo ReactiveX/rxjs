@@ -94,6 +94,12 @@
 - `useDeprecatedNextContext` is no longer available. No workaround.
 - `config.Promise` no longer exists. As a workaround, you will need to set a global Promise if one does not already exist in your environment.
 
+## [7.5.4](https://github.com/reactivex/rxjs/compare/7.5.3...7.5.4) (2022-02-09)
+
+### Performance Improvements
+
+- removed code that would `bind` functions passed with observers to `subscribe`. ([#6815](https://github.com/reactivex/rxjs/issues/6815)) ([fb375a0](https://github.com/reactivex/rxjs/commit/fb375a0c5befd6852cd63d3c310448e42fa9580e)), closes [#6783](https://github.com/reactivex/rxjs/issues/6783)
+
 ## [7.5.3](https://github.com/reactivex/rxjs/compare/7.5.2...7.5.3) (2022-02-08)
 
 ### Bug Fixes
