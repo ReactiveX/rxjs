@@ -136,6 +136,60 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 }
 
+/**
+ * This bind is captured here because we want to be able to have
+ * compatibility with monoid libraries that tend to use a method named
+ * `bind`. In particular, a library called Monio requires this.
+ */
+const _bind = Function.prototype.bind;
+
+function bind<Fn extends (...args: any[]) => any>(fn: Fn, thisArg: any): Fn {
+  return _bind.call(fn, thisArg);
+}
+
+/**
+ * Internal optimization only, DO NOT EXPOSE.
+ * @internal
+ */
+class ConsumerObserver<T> implements Observer<T> {
+  constructor(private partialObserver: Partial<Observer<T>>) {}
+
+  next(value: T): void {
+    const { partialObserver } = this;
+    if (partialObserver.next) {
+      try {
+        partialObserver.next(value);
+      } catch (error) {
+        handleUnhandledError(error);
+      }
+    }
+  }
+
+  error(err: any): void {
+    const { partialObserver } = this;
+    if (partialObserver.error) {
+      try {
+        partialObserver.error(err);
+      } catch (error) {
+        handleUnhandledError(error);
+      }
+    } else {
+      handleUnhandledError(err);
+    }
+  }
+
+  complete(): void {
+    const { partialObserver } = this;
+    if (partialObserver.complete) {
+      try {
+        partialObserver.complete();
+      } catch (error) {
+        handleUnhandledError(error);
+      }
+    }
+  }
+}
+
 export class SafeSubscriber<T> extends Subscriber<T> {
   constructor(
     observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null,
@@ -144,18 +198,17 @@ export class SafeSubscriber<T> extends Subscriber<T> {
   ) {
     super();
 
-    let next: ((value: T) => void) | undefined;
-    if (isFunction(observerOrNext)) {
+    let partialObserver: Partial<Observer<T>>;
+    if (isFunction(observerOrNext) || !observerOrNext) {
       // The first argument is a function, not an observer. The next
       // two arguments *could* be observers, or they could be empty.
-      next = observerOrNext;
-    } else if (observerOrNext) {
-      // The first argument is an observer object, we have to pull the handlers
-      // off and capture the owner object as the context. That is because we're
-      // going to put them all in a new destination with ensured methods
-      // for `next`, `error`, and `complete`. That's part of what makes this
-      // the "Safe" Subscriber.
-      ({ next, error, complete } = observerOrNext);
+      partialObserver = {
+        next: observerOrNext ?? undefined,
+        error: error ?? undefined,
+        complete: complete ?? undefined,
+      };
+    } else {
+      // The first argument is a partial observer.
       let context: any;
       if (this && config.useDeprecatedNextContext) {
         // This is a deprecated path that made `this.unsubscribe()` available in
@@ -163,46 +216,33 @@ export class SafeSubscriber<T> extends Subscriber<T> {
         // now, as it is *very* slow.
         context = Object.create(observerOrNext);
         context.unsubscribe = () => this.unsubscribe();
+        partialObserver = {
+          next: observerOrNext.next && bind(observerOrNext.next, context),
+          error: observerOrNext.error && bind(observerOrNext.error, context),
+          complete: observerOrNext.complete && bind(observerOrNext.complete, context),
+        };
       } else {
-        context = observerOrNext;
+        // The "normal" path. Just use the partial observer directly.
+        partialObserver = observerOrNext;
       }
-      next = next?.bind(context);
-      error = error?.bind(context);
-      complete = complete?.bind(context);
     }
 
-    // Once we set the destination, the superclass `Subscriber` will
-    // do it's magic in the `_next`, `_error`, and `_complete` methods.
-    this.destination = {
-      next: next ? wrapForErrorHandling(next, this) : noop,
-      error: wrapForErrorHandling(error ?? defaultErrorHandler, this),
-      complete: complete ? wrapForErrorHandling(complete, this) : noop,
-    };
+    // Wrap the partial observer to ensure it's a full observer, and
+    // make sure proper error handling is accounted for.
+    this.destination = new ConsumerObserver(partialObserver);
   }
 }
 
-/**
- * Wraps a user-provided handler (or our {@link defaultErrorHandler} in one case) to
- * ensure that any thrown errors are caught and handled appropriately.
- *
- * @param handler The handler to wrap
- * @param instance The SafeSubscriber instance we're going to mark if there's an error.
- */
-function wrapForErrorHandling(handler: (arg?: any) => void, instance: SafeSubscriber<any>) {
-  return (...args: any[]) => {
-    try {
-      handler(...args);
-    } catch (err) {
-      if (config.useDeprecatedSynchronousErrorHandling) {
-        captureError(err);
-      } else {
-        // Ideal path, we report this as an unhandled error,
-        // which is thrown on a new call stack.
-        reportUnhandledError(err);
-      }
-    }
-  };
+function handleUnhandledError(error: any) {
+  if (config.useDeprecatedSynchronousErrorHandling) {
+    captureError(error);
+  } else {
+    // Ideal path, we report this as an unhandled error,
+    // which is thrown on a new call stack.
+    reportUnhandledError(error);
+  }
 }
+
 /**
  * An error handler used when no error handler was supplied
  * to the SafeSubscriber -- meaning no error handler was supplied

@@ -1,6 +1,6 @@
 import { OperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 export function map<T, R>(project: (value: T, index: number) => R): OperatorFunction<T, R>;
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
@@ -52,7 +52,7 @@ export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any
     // Subscribe to the source, all errors and completions are sent along
     // to the consumer.
     source.subscribe(
-      new OperatorSubscriber(subscriber, (value: T) => {
+      createOperatorSubscriber(subscriber, (value: T) => {
         // Call the projection function with the appropriate this context,
         // and send the resulting value to the consumer.
         subscriber.next(project.call(thisArg, value, index++));

@@ -5,7 +5,7 @@ import { ObservableInput } from '../types';
 /**
  * Checks a boolean at subscription time, and chooses between one of two observable sources
  *
- * `iif` excepts a function that returns a boolean (the `condition` function), and two sources,
+ * `iif` expects a function that returns a boolean (the `condition` function), and two sources,
  * the `trueResult` and the `falseResult`, and returns an Observable.
  *
  * At the moment of subscription, the `condition` function is called. If the result is `true`, the

@@ -2,7 +2,7 @@ import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { noop } from '../util/noop';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 import { innerFrom } from '../observable/innerFrom';
 
 /**
@@ -66,7 +66,7 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
       b && subscriber.next(b);
 
       // Get a new closing notifier and subscribe to it.
-      innerFrom(closingSelector()).subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, noop)));
+      innerFrom(closingSelector()).subscribe((closingSubscriber = createOperatorSubscriber(subscriber, openBuffer, noop)));
     };
 
     // Start the first buffer.
@@ -74,7 +74,7 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
 
     // Subscribe to our source.
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         // Add every new value to the current buffer.
         (value) => buffer?.push(value),

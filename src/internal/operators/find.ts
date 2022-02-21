@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { OperatorFunction, TruthyTypesOf } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 export function find<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
@@ -78,7 +78,7 @@ export function createFind<T>(
   return (source: Observable<T>, subscriber: Subscriber<any>) => {
     let index = 0;
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value) => {
           const i = index++;

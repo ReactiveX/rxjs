@@ -8,7 +8,7 @@ import { Subscription } from '../Subscription';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { popResultSelector, popScheduler } from '../util/args';
 import { createObject } from '../util/createObject';
-import { OperatorSubscriber } from '../operators/OperatorSubscriber';
+import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
 import { AnyCatcher } from '../AnyCatcher';
 import { executeSchedule } from '../util/executeSchedule';
 
@@ -256,7 +256,7 @@ export function combineLatestInit(
               const source = from(observables[i], scheduler as any);
               let hasFirstValue = false;
               source.subscribe(
-                new OperatorSubscriber(
+                createOperatorSubscriber(
                   subscriber,
                   (value) => {
                     // When we get a value, record it in our set of values.

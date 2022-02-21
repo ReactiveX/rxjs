@@ -2,7 +2,7 @@ import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Make a {@link ConnectableObservable} behave like a ordinary observable and automates the way
@@ -68,7 +68,7 @@ export function refCount<T>(): MonoTypeOperatorFunction<T> {
 
     (source as any)._refCount++;
 
-    const refCounter = new OperatorSubscriber(subscriber, undefined, undefined, undefined, () => {
+    const refCounter = createOperatorSubscriber(subscriber, undefined, undefined, undefined, () => {
       if (!source || (source as any)._refCount <= 0 || 0 < --(source as any)._refCount) {
         connection = null;
         return;

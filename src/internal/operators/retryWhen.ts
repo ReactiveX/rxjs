@@ -4,7 +4,7 @@ import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
@@ -68,11 +68,11 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
 
     const subscribeForRetryWhen = () => {
       innerSub = source.subscribe(
-        new OperatorSubscriber(subscriber, undefined, undefined, (err) => {
+        createOperatorSubscriber(subscriber, undefined, undefined, (err) => {
           if (!errors$) {
             errors$ = new Subject();
             notifier(errors$).subscribe(
-              new OperatorSubscriber(subscriber, () =>
+              createOperatorSubscriber(subscriber, () =>
                 // If we have an innerSub, this was an asynchronous call, kick off the retry.
                 // Otherwise, if we don't have an innerSub yet, that's because the inner subscription
                 // call hasn't even returned yet. We've arrived here synchronously.

@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * A basic scan operation. This is used for `scan` and `reduce`.
@@ -32,7 +32,7 @@ export function scanInternals<V, A, S>(
 
     // Subscribe to our source. All errors and completions are passed through.
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value) => {
           // Always increment the index.

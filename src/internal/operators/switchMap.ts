@@ -2,7 +2,7 @@ import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { innerFrom } from '../observable/innerFrom';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /* tslint:disable:max-line-length */
 export function switchMap<T, O extends ObservableInput<any>>(
@@ -98,7 +98,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
     const checkComplete = () => isComplete && !innerSubscriber && subscriber.complete();
 
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value) => {
           // Cancel the previous inner subscription if there was one
@@ -107,7 +107,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
           const outerIndex = index++;
           // Start the next inner subscription
           innerFrom(project(value, outerIndex)).subscribe(
-            (innerSubscriber = new OperatorSubscriber(
+            (innerSubscriber = createOperatorSubscriber(
               subscriber,
               // When we get a new inner value, next it through. Note that this is
               // handling the deprecate result selector here. This is because with this architecture

@@ -52,7 +52,7 @@
 </div>{% endif %}
 
 <h4 class="no-anchor">Parameters</h4>
-{$ params.renderParameters(overload.parameterDocs, cssClass + '-parameters', cssClass + '-parameter') $}
+{$ params.renderParameters(overload.parameterDocs, cssClass + '-parameters', cssClass + '-parameter', true) $}
 
 {% if overload.type or overload.returns.type %}
 <h4 class="no-anchor">Returns</h4>

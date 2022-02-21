@@ -3,7 +3,7 @@ import { ObservableInputTuple, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { innerFrom } from '../observable/innerFrom';
 import { argsOrArgArray } from '../util/argsOrArgArray';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
 
 export function onErrorResumeNext<T, A extends readonly unknown[]>(
@@ -111,7 +111,7 @@ export function onErrorResumeNext<T, A extends readonly unknown[]>(
           // The `closed` property of upstream Subscribers synchronously, that
           // would result in situation were we could not stop a synchronous firehose
           // with something like `take(3)`.
-          const innerSub = new OperatorSubscriber(subscriber, undefined, noop, noop);
+          const innerSub = createOperatorSubscriber(subscriber, undefined, noop, noop);
           nextSource.subscribe(innerSub);
           innerSub.add(subscribeNext);
         } else {

@@ -2,7 +2,7 @@ import { Subscription } from '../Subscription';
 import { OperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { innerFrom } from '../observable/innerFrom';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
 import { arrRemove } from '../util/arrRemove';
 
@@ -58,7 +58,7 @@ export function bufferToggle<T, O>(
 
     // Subscribe to the openings notifier first
     innerFrom(openings).subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (openValue) => {
           const buffer: T[] = [];
@@ -74,14 +74,14 @@ export function bufferToggle<T, O>(
           };
 
           // The line below will add the subscription to the parent subscriber *and* the closing subscription.
-          closingSubscription.add(innerFrom(closingSelector(openValue)).subscribe(new OperatorSubscriber(subscriber, emitBuffer, noop)));
+          closingSubscription.add(innerFrom(closingSelector(openValue)).subscribe(createOperatorSubscriber(subscriber, emitBuffer, noop)));
         },
         noop
       )
     );
 
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value) => {
           // Value from our source. Add it to all pending buffers.
