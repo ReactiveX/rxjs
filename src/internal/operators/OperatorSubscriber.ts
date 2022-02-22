@@ -36,8 +36,8 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
    * and send to the `destination` error handler.
    * @param onComplete Handles completion notification from the subscription. Any errors that occur in
    * this handler are sent to the `destination` error handler.
-   * @param onFinalize Additional teardown logic here. This will only be called on teardown if the
-   * subscriber itself is not already closed. This is called after all other teardown logic is executed.
+   * @param onFinalize Additional finalization logic here. This will only be called on finalization if the
+   * subscriber itself is not already closed. This is called after all other finalization logic is executed.
    * @param shouldUnsubscribe An optional check to see if an unsubscribe call should truly unsubscribe.
    * NOTE: This currently **ONLY** exists to support the strange behavior of {@link groupBy}, where unsubscription
    * to the resulting observable does not actually disconnect from the source if there are active subscriptions
@@ -81,7 +81,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
             // Send any errors that occur down stream.
             destination.error(err);
           } finally {
-            // Ensure teardown.
+            // Ensure finalization.
             this.unsubscribe();
           }
         }
@@ -94,7 +94,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
             // Send any errors that occur down stream.
             destination.error(err);
           } finally {
-            // Ensure teardown.
+            // Ensure finalization.
             this.unsubscribe();
           }
         }

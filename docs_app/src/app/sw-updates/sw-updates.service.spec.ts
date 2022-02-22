@@ -33,11 +33,11 @@ describe('SwUpdatesService', () => {
     swu = injector.get(SwUpdate);
     checkInterval = (service as any).checkInterval;
   };
-  const tearDown = () => service.ngOnDestroy();
+  const finalize = () => service.ngOnDestroy();
   const run = (specFn: VoidFunction, isSwUpdateEnabled = true) => () => {
     setup(isSwUpdateEnabled);
     specFn();
-    tearDown();
+    finalize();
   };
 
 

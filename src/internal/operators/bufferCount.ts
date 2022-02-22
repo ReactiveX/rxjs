@@ -111,7 +111,7 @@ export function bufferCount<T>(bufferSize: number, startBufferEvery: number | nu
         // Pass all errors through to consumer.
         undefined,
         () => {
-          // Clean up our memory when we teardown
+          // Clean up our memory when we finalize
           buffers = null!;
         }
       )

@@ -191,7 +191,7 @@ export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction
       // reset.
       const dest = (subject = subject ?? connector());
 
-      // Add the teardown directly to the subscriber - instead of returning it -
+      // Add the finalization directly to the subscriber - instead of returning it -
       // so that the handling of the subscriber's unsubscription will be wired
       // up _before_ the subscription to the source occurs. This is done so that
       // the assignment to the source connection's `closed` property will be seen

@@ -115,7 +115,7 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
         // Pass all errors through to consumer.
         undefined,
         () => {
-          // Teardown.
+          // Finalization.
           lastValue = activeTask = null;
         }
       )

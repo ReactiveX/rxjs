@@ -208,7 +208,7 @@ export function groupBy<T, K, R>(
                 group as any,
                 () => {
                   // Our duration notified! We can complete the group.
-                  // The group will be removed from the map in the teardown phase.
+                  // The group will be removed from the map in the finalization phase.
                   group!.complete();
                   durationSubscriber?.unsubscribe();
                 },
@@ -217,7 +217,7 @@ export function groupBy<T, K, R>(
                 // Errors on the duration subscriber are sent to the group
                 // but only the group. They are not sent to the main subscription.
                 undefined,
-                // Teardown: Remove this group from our map.
+                // Finalization: Remove this group from our map.
                 () => groups.delete(key)
               );
 
@@ -265,7 +265,7 @@ export function groupBy<T, K, R>(
         return () => {
           innerSub.unsubscribe();
           // We can kill the subscription to our source if we now have no more
-          // active groups subscribed, and a teardown was already attempted on
+          // active groups subscribed, and a finalization was already attempted on
           // the source.
           --activeGroups === 0 && teardownAttempted && groupBySourceSubscriber.unsubscribe();
         };

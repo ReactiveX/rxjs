@@ -23,6 +23,7 @@ const textContent = require('hast-util-to-string');
 module.exports = function autoLinkCode(getDocFromAlias) {
   autoLinkCodeImpl.docTypes = [];
   autoLinkCodeImpl.customFilters = [];
+  autoLinkCodeImpl.wordFilters = [];
   autoLinkCodeImpl.codeElements = ['code'];
   autoLinkCodeImpl.ignoredLanguages = ['bash', 'sh', 'shell', 'json', 'markdown'];
   autoLinkCodeImpl.failOnMissingDocPath = false;
@@ -86,14 +87,19 @@ module.exports = function autoLinkCode(getDocFromAlias) {
       (docs, filter) => filter(docs, words, index), getDocFromAlias(words[index]));
   }
 
+  function shouldSkipFindingValidDoc(words, index) {
+    return autoLinkCodeImpl.wordFilters.reduce((skip, filter) => skip || filter(words, index), false);
+  }
+
   function getNodes(node, file) {
     return textContent(node)
       .split(/([A-Za-z0-9_.-]+)/)
       .filter(word => word.length)
       .map((word, index, words) => {
         const filteredDocs = getFilteredDocsFromAlias(words, index);
+        const skipFindingValidDoc = shouldSkipFindingValidDoc(words, index);
 
-        return foundValidDoc(filteredDocs, word, file) ?
+        return !skipFindingValidDoc && foundValidDoc(filteredDocs, word, file) ?
           // Create a link wrapping the text node.
           createLinkNode(filteredDocs[0], word) :
           // this is just text so push a new text node

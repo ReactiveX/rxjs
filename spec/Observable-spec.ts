@@ -579,8 +579,8 @@ describe('Observable', () => {
           });
       });
     });
-    
-    it('should teardown even with a synchronous thrown error', () => {
+
+    it('should finalize even with a synchronous thrown error', () => {
       let called = false;
       const badObservable = new Observable((subscriber) => {
         subscriber.add(() => {
@@ -597,7 +597,7 @@ describe('Observable', () => {
       expect(called).to.be.true;
     });
 
-    
+
     it('should handle empty string sync errors', () => {
       const badObservable = new Observable(() => {
         throw '';
@@ -715,7 +715,7 @@ describe('Observable.lift', () => {
     }
   }
 
-  it('should return Observable which calls TeardownLogic of operator on unsubscription', (done) => {
+  it('should return Observable which calls FinalizationLogic of operator on unsubscription', (done) => {
     const myOperator: Operator<any, any> = {
       call: (subscriber: Subscriber<any>, source: any) => {
         const subscription = source.subscribe((x: any) => subscriber.next(x));
@@ -786,7 +786,7 @@ describe('Observable.lift', () => {
     );
   });
 
-  
+
   it('should compose through publish and refCount', (done) => {
     const result = new MyCustomObservable<number>((observer) => {
       observer.next(1);
@@ -814,7 +814,7 @@ describe('Observable.lift', () => {
     );
   });
 
-  
+
   it('should compose through publishLast and refCount', (done) => {
     const result = new MyCustomObservable<number>((observer) => {
       observer.next(1);
@@ -871,7 +871,7 @@ describe('Observable.lift', () => {
 
   it('should composes Subjects in the simple case', () => {
     const subject = new Subject<number>();
-    
+
     const result = subject.pipe(
       map((x) => 10 * x)
     ) as any as Subject<number>; // Yes, this is correct. (but you're advised not to do this)
@@ -884,7 +884,7 @@ describe('Observable.lift', () => {
     result.next(10);
     result.next(20);
     result.next(30);
-    
+
     expect(emitted).to.deep.equal([100, 200, 300]);
   });
 
@@ -894,7 +894,7 @@ describe('Observable.lift', () => {
    */
   it('should demonstrate the horrors of sharing and lifting the Subject through', () => {
     const subject = new Subject<number>();
-    
+
     const shared = subject.pipe(
       share()
     );
@@ -910,15 +910,15 @@ describe('Observable.lift', () => {
 
     const emitted1: any[] = [];
     result1.subscribe(value => emitted1.push(value));
-    
+
     const emitted2: any[] = [];
     result2.subscribe(value => emitted2.push(value));
 
     // THIS IS HORRIBLE DON'T DO THIS.
     result1.next(10);
     result2.next(20); // Yuck
-    result1.next(30); 
-    
+    result1.next(30);
+
     expect(emitted1).to.deep.equal([100, 200, 300]);
     expect(emitted2).to.deep.equal([0, 10, 20]);
   });
@@ -929,17 +929,17 @@ describe('Observable.lift', () => {
    * probably should have never tried to compose through the Subject's observer methods.
    * If you're a user and you're reading this... NEVER try to use this feature, it's likely
    * to go away at some point.
-   * 
+   *
    * The problem is that you can have the Subject parts, or you can have the ConnectableObservable parts,
    * but you can't have both.
-   * 
+   *
    * NOTE: We can remove this in version 8 or 9, because we're getting rid of operators that
    * return `ConnectableObservable`. :tada:
    */
   describe.skip('The lift through Connectable gaff', () => {
     it('should compose through multicast and refCount, even if it is a Subject', () => {
       const subject = new Subject<number>();
-      
+
       const result = subject.pipe(
         multicast(() => new Subject<number>()),
         refCount(),
@@ -954,13 +954,13 @@ describe('Observable.lift', () => {
       result.next(10);
       result.next(20);
       result.next(30);
-      
+
       expect(emitted).to.deep.equal([100, 200, 300]);
     });
-    
+
     it('should compose through publish and refCount, even if it is a Subject', () => {
       const subject = new Subject<number>();
-      
+
       const result = subject.pipe(
         publish(),
         refCount(),
@@ -975,14 +975,14 @@ describe('Observable.lift', () => {
       result.next(10);
       result.next(20);
       result.next(30);
-      
+
       expect(emitted).to.deep.equal([100, 200, 300]);
     });
 
-    
+
     it('should compose through publishLast and refCount, even if it is a Subject', () => {
       const subject = new Subject<number>();
-      
+
       const result = subject.pipe(
         publishLast(),
         refCount(),
@@ -997,13 +997,13 @@ describe('Observable.lift', () => {
       result.next(10);
       result.next(20);
       result.next(30);
-      
+
       expect(emitted).to.deep.equal([100, 200, 300]);
     });
 
     it('should compose through publishBehavior and refCount, even if it is a Subject', () => {
       const subject = new Subject<number>();
-      
+
       const result = subject.pipe(
         publishBehavior(0),
         refCount(),
@@ -1018,7 +1018,7 @@ describe('Observable.lift', () => {
       result.next(10);
       result.next(20);
       result.next(30);
-      
+
       expect(emitted).to.deep.equal([0, 100, 200, 300]);
     });
   });

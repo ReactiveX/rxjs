@@ -135,7 +135,7 @@ describe('repeat operator', () => {
     });
   });
 
-  it('should always teardown before starting the next cycle', async () => {
+  it('should always finalization before starting the next cycle', async () => {
     const results: any[] = [];
     const source = new Observable<number>((subscriber) => {
       Promise.resolve().then(() => {
@@ -148,23 +148,23 @@ describe('repeat operator', () => {
         });
       });
       return () => {
-        results.push('teardown');
+        results.push('finalizer');
       };
     });
 
     await source.pipe(repeat(3)).forEach((value) => results.push(value));
 
-    expect(results).to.deep.equal([1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'teardown']);
+    expect(results).to.deep.equal([1, 2, 'finalizer', 1, 2, 'finalizer', 1, 2, 'finalizer']);
   });
 
-  it('should always teardown before starting the next cycle, even when synchronous', () => {
+  it('should always finalize before starting the next cycle, even when synchronous', () => {
     const results: any[] = [];
     const source = new Observable<number>((subscriber) => {
       subscriber.next(1);
       subscriber.next(2);
       subscriber.complete();
       return () => {
-        results.push('teardown');
+        results.push('finalizer');
       };
     });
     const subscription = source.pipe(repeat(3)).subscribe({
@@ -173,7 +173,7 @@ describe('repeat operator', () => {
     });
 
     expect(subscription.closed).to.be.true;
-    expect(results).to.deep.equal([1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'complete', 'teardown']);
+    expect(results).to.deep.equal([1, 2, 'finalizer', 1, 2, 'finalizer', 1, 2, 'complete', 'finalizer']);
   });
 
   it('should not complete when source never completes', () => {

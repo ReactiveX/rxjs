@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Subscriber, Observable, of, Observer } from 'rxjs';
 import { asInteropSubscriber } from './helpers/interop-helper';
-import { getRegisteredTeardowns } from './helpers/subscription';
+import { getRegisteredFinalizers } from './helpers/subscription';
 
 /** @test {Subscriber} */
 describe('Subscriber', () => {
@@ -118,22 +118,22 @@ describe('Subscriber', () => {
     expect(count).to.equal(1);
   });
 
-  it('should close, unsubscribe, and unregister all teardowns after complete', () => {
+  it('should close, unsubscribe, and unregister all finalizers after complete', () => {
     let isUnsubscribed = false;
     const subscriber = new Subscriber();
     subscriber.add(() => isUnsubscribed = true);
     subscriber.complete();
     expect(isUnsubscribed).to.be.true;
     expect(subscriber.closed).to.be.true;
-    expect(getRegisteredTeardowns(subscriber).length).to.equal(0);
+    expect(getRegisteredFinalizers(subscriber).length).to.equal(0);
   });
 
-  it('should close, unsubscribe, and unregister all teardowns after error', () => {
+  it('should close, unsubscribe, and unregister all finalizers after error', () => {
     let isTornDown = false;
     const subscriber = new Subscriber({
       error: () => {
         // Mischief managed!
-        // Adding this handler here to prevent the call to error from 
+        // Adding this handler here to prevent the call to error from
         // throwing, since it will have an error handler now.
       }
     });
@@ -141,18 +141,18 @@ describe('Subscriber', () => {
     subscriber.error(new Error('test'));
     expect(isTornDown).to.be.true;
     expect(subscriber.closed).to.be.true;
-    expect(getRegisteredTeardowns(subscriber).length).to.equal(0);
+    expect(getRegisteredFinalizers(subscriber).length).to.equal(0);
   });
 });
 
 describe('Subscriber', () => {
-  it('should teardown and unregister all teardowns after complete', () => {
+  it('should finalize and unregister all finalizers after complete', () => {
     let isTornDown = false;
     const subscriber = new Subscriber();
     subscriber.add(() => { isTornDown = true });
     subscriber.complete();
     expect(isTornDown).to.be.true;
-    expect(getRegisteredTeardowns(subscriber).length).to.equal(0);
+    expect(getRegisteredFinalizers(subscriber).length).to.equal(0);
   });
 
   it('should NOT break this context on next methods from unfortunate consumers', () => {

@@ -231,24 +231,24 @@ describe('finalize', () => {
     expect(finalized).to.deep.equal(['source', 'sink']);
   });
 
-  it('should finalize after the teardown', () => {
+  it('should finalize after the finalization', () => {
     const order: string[] = [];
     const source = new Observable<void>(() => {
-      return () => order.push('teardown');
+      return () => order.push('finalizer');
     });
     const subscription = source.pipe(finalize(() => order.push('finalize'))).subscribe();
     subscription.unsubscribe();
-    expect(order).to.deep.equal(['teardown', 'finalize']);
+    expect(order).to.deep.equal(['finalizer', 'finalize']);
   });
 
-  it('should finalize after the teardown with synchronous completion', () => {
+  it('should finalize after the finalizer with synchronous completion', () => {
     const order: string[] = [];
     const source = new Observable<void>((subscriber) => {
       subscriber.complete();
-      return () => order.push('teardown');
+      return () => order.push('finalizer');
     });
     source.pipe(finalize(() => order.push('finalize'))).subscribe();
-    expect(order).to.deep.equal(['teardown', 'finalize']);
+    expect(order).to.deep.equal(['finalizer', 'finalize']);
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
