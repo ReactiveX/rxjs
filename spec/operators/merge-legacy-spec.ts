@@ -8,14 +8,16 @@ describe('merge (legacy)', () => {
     const b = of(4, 5, 6, 7, 8, queueScheduler);
     const r = [1, 2, 4, 3, 5, 6, 7, 8];
 
-    a.pipe(merge(b, queueScheduler)).subscribe(
-      { next: val => {
+    a.pipe(merge(b, queueScheduler)).subscribe({
+      next: (val) => {
         expect(val).to.equal(r.shift());
-      }, error: x => {
+      },
+      error: (x) => {
         done(new Error('should not be called'));
-      }, complete: () => {
+      },
+      complete: () => {
         done();
-      } }
-    );
+      },
+    });
   });
 });

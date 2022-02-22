@@ -1,4 +1,3 @@
-/** @prettier */
 import { window, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { EMPTY, of, Observable } from 'rxjs';

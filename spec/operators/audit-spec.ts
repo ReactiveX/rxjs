@@ -42,7 +42,7 @@ describe('audit operator', () => {
       const e2subs = [
         '               -^---!                ',
         '               ----------^---!       ',
-        '               ----------------^---! '
+        '               ----------------^---! ',
       ];
       const expected = '-----a--------b-----c|';
 
@@ -62,7 +62,7 @@ describe('audit operator', () => {
       const e2subs = [
         '                -^---!                ',
         '                ----------^---!       ',
-        '                ----------------^---! '
+        '                ----------------^---! ',
       ];
       const expected = ' -----y--------x-----x|';
 
@@ -83,7 +83,7 @@ describe('audit operator', () => {
       const e2subs = [
         '               -^----!                       ',
         '               -------^----!                 ',
-        '               -------------^!               '
+        '               -------------^!               ',
       ];
       const expected = '------y-----z--               ';
 
@@ -103,7 +103,7 @@ describe('audit operator', () => {
       const e2subs = [
         '               -^----!                       ',
         '               -------^----!                 ',
-        '               -------------^!               '
+        '               -------------^!               ',
       ];
       const expected = '------y-----z--               ';
       const unsub = '   --------------!               ';
@@ -130,7 +130,7 @@ describe('audit operator', () => {
         '               ------^----!                  ',
         '               ------------^----!            ',
         '               ------------------^----!      ',
-        '               ------------------------^----!'
+        '               ------------------------^----!',
       ];
       const expected = '-----f-----f-----f-----f-----(a|)';
 
@@ -158,9 +158,9 @@ describe('audit operator', () => {
 
   it('should emit no values if durations are EMPTY', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 =   hot('abcdefabcdefabcdefabcdefa|');
-      const e1subs =   '^------------------------!';
-      const e2 =  EMPTY;
+      const e1 = hot('  abcdefabcdefabcdefabcdefa|');
+      const e1subs = '  ^------------------------!';
+      const e2 = EMPTY;
       const expected = '-------------------------|';
 
       const result = e1.pipe(audit(() => e2));
@@ -241,14 +241,14 @@ describe('audit operator', () => {
         cold('              ---x                    '),
         cold('                  -------x            '),
         cold('                        --x           '),
-        cold('                           ----x      ')
+        cold('                           ----x      '),
       ];
-      const e2subs =  [
+      const e2subs = [
         '               ^----!                      ',
         '               ------^--!                  ',
         '               ----------^------!          ',
         '               ------------------^-!       ',
-        '               ---------------------^---!  '
+        '               ---------------------^---!  ',
       ];
       const expected = '-----f---d-------h--c----(a|)';
 
@@ -270,12 +270,12 @@ describe('audit operator', () => {
       const e2 = [
         cold('          -----x                 '),
         cold('              ---x               '),
-        cold('                  -------#       ')
+        cold('                  -------#       '),
       ];
       const e2subs = [
         '               ^----!                 ',
         '               ------^--!             ',
-        '               ----------^------!     '
+        '               ----------^------!     ',
       ];
       const expected = '-----f---d-------#     ';
 
@@ -292,16 +292,17 @@ describe('audit operator', () => {
 
   it('should propagate error thrown from durationSelector function', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const e1 =   hot('abcdefabcdabcdefghabca|   ');
-      const e1subs =   '^---------!               ';
+      const e1 = hot('  abcdefabcdabcdefghabca|   ');
+      const e1subs = '  ^---------!               ';
       const e2 = [
         cold('          -----x                    '),
         cold('              ---x                  '),
-        cold('                  -------x          ')
+        cold('                  -------x          '),
       ];
+      // prettier-ignore
       const e2subs = [
         '               ^----!                     ',
-        '               ------^--!                 '
+        '               ------^--!                 ',
       ];
       const expected = '-----f---d#                ';
 
@@ -328,7 +329,9 @@ describe('audit operator', () => {
       const e1 = hot('  -----|');
       const subs = '    ^----!';
       const expected = '-----|';
-      function durationSelector() { return cold('-----|'); }
+      function durationSelector() {
+        return cold('-----|');
+      }
 
       expectObservable(e1.pipe(audit(durationSelector))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -395,17 +398,18 @@ describe('audit operator', () => {
     const e1 = interval(10).pipe(take(5));
     const expected = [0, 1, 2, 3, 4];
 
-    e1.pipe(
-      audit(() => Promise.resolve(42))
-    ).subscribe(
-      { next: (x: number) => {
-        expect(x).to.equal(expected.shift()); }, error: () => {
+    e1.pipe(audit(() => Promise.resolve(42))).subscribe({
+      next: (x: number) => {
+        expect(x).to.equal(expected.shift());
+      },
+      error: () => {
         done(new Error('should not be called'));
-      }, complete: () => {
+      },
+      complete: () => {
         expect(expected.length).to.equal(0);
         done();
-      } }
-    );
+      },
+    });
   });
 
   it('should raise error when promise rejects', (done) => {
@@ -416,26 +420,33 @@ describe('audit operator', () => {
     e1.pipe(
       audit((x: number) => {
         if (x === 3) {
-          return new Promise((resolve: any, reject: any) => { reject(error); });
+          return new Promise((resolve: any, reject: any) => {
+            reject(error);
+          });
         } else {
-          return new Promise((resolve: any) => { resolve(42); });
+          return new Promise((resolve: any) => {
+            resolve(42);
+          });
         }
       })
-    ).subscribe(
-      { next: (x: number) => {
-        expect(x).to.equal(expected.shift()); }, error: (err: any) => {
+    ).subscribe({
+      next: (x: number) => {
+        expect(x).to.equal(expected.shift());
+      },
+      error: (err: any) => {
         expect(err).to.be.an('error', 'error');
         expect(expected.length).to.equal(0);
         done();
-      }, complete: () => {
+      },
+      complete: () => {
         done(new Error('should not be called'));
-      } }
-    );
+      },
+    });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable(subscriber => {
+    const synchronousObservable = new Observable((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -444,26 +455,31 @@ describe('audit operator', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      audit(() => of(0)),
-      take(3),
-    ).subscribe(() => { /* noop */ });
+    synchronousObservable
+      .pipe(
+        audit(() => of(0)),
+        take(3)
+      )
+      .subscribe(() => {
+        /* noop */
+      });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 
-  it('should emit last value after duration completes if source completes first', () =>  {
+  it('should emit last value after duration completes if source completes first', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const e1 =   hot('-a--------xy|  ');
+      const e1 = hot('  -a--------xy|  ');
       const e1subs = '  ^-----------!  ';
-      const e2 =  cold(' ----x         ');
-      const e2subs =  [
+      const e2 = cold('  ----x         ');
+      // prettier-ignore
+      const e2subs = [
         '               -^---!         ',
-        '               ----------^---!'
+        '               ----------^---!',
       ];
       const expected = '-----a--------(y|)';
 
-      const result = e1.pipe(audit(() =>  e2));
+      const result = e1.pipe(audit(() => e2));
 
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);

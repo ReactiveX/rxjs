@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { multicast, tap, mergeMapTo, takeLast, mergeMap, refCount, retry, repeat, switchMap, map, take } from 'rxjs/operators';
 import { Subject, ReplaySubject, of, ConnectableObservable, zip, concat, Subscription, Observable, from } from 'rxjs';
@@ -772,7 +771,7 @@ describe('multicast', () => {
       source.connect();
     });
 
-    it('should not throw ObjectUnsubscribedError when used in ' + 'a switchMap', (done) => {
+    it('should not throw ObjectUnsubscribedError when used in a switchMap', (done) => {
       const source = of(1, 2, 3).pipe(
         multicast(() => new Subject<number>()),
         refCount()
@@ -798,7 +797,7 @@ describe('multicast', () => {
   });
 
   describe('when given a subject', () => {
-    it('should not throw ObjectUnsubscribedError when used in ' + 'a switchMap', (done) => {
+    it('should not throw ObjectUnsubscribedError when used in a switchMap', (done) => {
       const source = of(1, 2, 3).pipe(multicast(new Subject<number>()), refCount());
 
       const expected = ['a1', 'a2', 'a3'];

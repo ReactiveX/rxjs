@@ -1,4 +1,3 @@
-/** @prettier */
 import { BehaviorSubject, merge } from 'rxjs';
 import { connect, delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';

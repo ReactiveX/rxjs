@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { asapScheduler, concat, config, defer, EMPTY, NEVER, Observable, of, scheduled, Subject, throwError, pipe } from 'rxjs';
 import {
