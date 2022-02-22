@@ -57,7 +57,7 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
     // the current buffer  if there is one, starts a new buffer, and starts a
     // new closing notifier.
     const openBuffer = () => {
-      // Make sure to teardown the closing subscription, we only cared
+      // Make sure to finalize the closing subscription, we only cared
       // about one notification.
       closingSubscriber?.unsubscribe();
       // emit the buffer if we have one, and start a new buffer.
@@ -86,7 +86,7 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
         },
         // Pass all errors through to consumer.
         undefined,
-        // Release memory on teardown
+        // Release memory on finalization
         () => (buffer = closingSubscriber = null!)
       )
     );

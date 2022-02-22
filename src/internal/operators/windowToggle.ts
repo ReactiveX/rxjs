@@ -119,7 +119,7 @@ export function windowToggle<T, O>(
         },
         handleError,
         () => {
-          // Add this teardown so that all window subjects are
+          // Add this finalization so that all window subjects are
           // disposed of. This way, if a user tries to subscribe
           // to a window *after* the outer subscription has been unsubscribed,
           // they will get an error, instead of waiting forever to

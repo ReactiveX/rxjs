@@ -212,7 +212,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
    * defined by the `subMsg` function, to the server over the socket to begin a
    * subscription to data over that socket. Once data arrives, the
    * `messageFilter` argument will be used to select the appropriate data for
-   * the resulting Observable. When teardown occurs, either due to
+   * the resulting Observable. When finalization occurs, either due to
    * unsubscription, completion, or error, a message defined by the `unsubMsg`
    * argument will be sent to the server over the WebSocketSubject.
    *
@@ -220,7 +220,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
    * the server. This will still be processed by the serializer in the
    * WebSocketSubject's config. (Which defaults to JSON serialization)
    * @param unsubMsg A function to generate the unsubscription message to be
-   * sent to the server at teardown. This will still be processed by the
+   * sent to the server at finalization. This will still be processed by the
    * serializer in the WebSocketSubject's config.
    * @param messageFilter A predicate for selecting the appropriate messages
    * from the server for the output stream.

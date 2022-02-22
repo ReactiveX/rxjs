@@ -26,7 +26,7 @@ export function mergeInternals<T, R>(
   onBeforeNext?: (innerValue: R) => void,
   expand?: boolean,
   innerSubScheduler?: SchedulerLike,
-  additionalTeardown?: () => void
+  additionalFinalizer?: () => void
 ) {
   // Buffered values, in the event of going over our concurrency limit
   const buffer: T[] = [];
@@ -141,9 +141,9 @@ export function mergeInternals<T, R>(
     })
   );
 
-  // Additional teardown (for when the destination is torn down).
-  // Other teardown is added implicitly via subscription above.
+  // Additional finalization (for when the destination is torn down).
+  // Other finalization is added implicitly via subscription above.
   return () => {
-    additionalTeardown?.();
+    additionalFinalizer?.();
   };
 }

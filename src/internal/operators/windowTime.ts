@@ -190,8 +190,8 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
       )
     );
 
-    // Additional teardown. This will be called when the
-    // destination tears down. Other teardowns are registered implicitly
+    // Additional finalization. This will be called when the
+    // destination tears down. Other finalizations are registered implicitly
     // above via subscription.
     return () => {
       // Ensure that the buffer is released.

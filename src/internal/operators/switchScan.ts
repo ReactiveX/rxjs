@@ -43,7 +43,7 @@ export function switchScan<T, R, O extends ObservableInput<any>>(
     )(source).subscribe(subscriber);
 
     return () => {
-      // Release state on teardown
+      // Release state on finalization
       state = null!;
     };
   });

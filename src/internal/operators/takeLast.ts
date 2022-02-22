@@ -72,7 +72,7 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
             // Errors are passed through to the consumer
             undefined,
             () => {
-              // During teardown release the values in our buffer.
+              // During finalization release the values in our buffer.
               buffer = null!;
             }
           )
