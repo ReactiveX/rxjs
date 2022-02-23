@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { BehaviorSubject, Subject, ObjectUnsubscribedError, of } from 'rxjs';
 import { tap, mergeMapTo } from 'rxjs/operators';
