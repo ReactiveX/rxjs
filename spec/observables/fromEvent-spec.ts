@@ -1,30 +1,34 @@
+/** @prettier */
 import { expect } from 'chai';
-import { expectObservable } from '../helpers/marble-testing';
 import { fromEvent, NEVER, timer } from 'rxjs';
 import { mapTo, take, concat } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-
-declare const rxTestScheduler: TestScheduler;
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {fromEvent} */
 describe('fromEvent', () => {
+  let rxTestScheduler: TestScheduler;
+
+  beforeEach(() => {
+    rxTestScheduler = new TestScheduler(observableMatcher);
+  });
+
   it('should create an observable of click on the element', () => {
-    const target = {
-      addEventListener: (eventType: any, listener: any) => {
-        timer(50, 20, rxTestScheduler)
-          .pipe(
-            mapTo('ev'),
-            take(2),
-            concat(NEVER)
-          )
-          .subscribe(listener);
-      },
-      removeEventListener: (): void => void 0,
-      dispatchEvent: (): void => void 0,
-    };
-    const e1 = fromEvent(target as any, 'click');
-    const expected = '-----x-x---';
-    expectObservable(e1).toBe(expected, {x: 'ev'});
+    rxTestScheduler.run(({ expectObservable, time }) => {
+      const delay1 = time('-----|     ');
+      const delay2 = time('     --|   ');
+      const expected = '   -----x-x---';
+
+      const target = {
+        addEventListener: (eventType: any, listener: any) => {
+          timer(delay1, delay2, rxTestScheduler).pipe(mapTo('ev'), take(2), concat(NEVER)).subscribe(listener);
+        },
+        removeEventListener: (): void => void 0,
+        dispatchEvent: (): void => void 0,
+      };
+      const e1 = fromEvent(target as any, 'click');
+      expectObservable(e1).toBe(expected, { x: 'ev' });
+    });
   });
 
   it('should setup an event observable on objects with "on" and "off" ', () => {
@@ -41,13 +45,12 @@ describe('fromEvent', () => {
       off: (a: string, b: Function) => {
         offEventName = a;
         offHandler = b;
-      }
+      },
     };
 
-    const subscription = fromEvent(obj, 'click')
-      .subscribe(() => {
-        //noop
-       });
+    const subscription = fromEvent(obj, 'click').subscribe(() => {
+      //noop
+    });
 
     subscription.unsubscribe();
 
@@ -71,13 +74,12 @@ describe('fromEvent', () => {
       removeEventListener: (a: string, b: EventListenerOrEventListenerObject, useCapture?: boolean) => {
         offEventName = a;
         offHandler = b;
-      }
+      },
     };
 
-    const subscription = fromEvent(<any>obj, 'click')
-      .subscribe(() => {
-        //noop
-       });
+    const subscription = fromEvent(<any>obj, 'click').subscribe(() => {
+      //noop
+    });
 
     subscription.unsubscribe();
 
@@ -103,13 +105,12 @@ describe('fromEvent', () => {
         offEventName = a;
         offHandler = b;
         return this;
-      }
+      },
     };
 
-    const subscription = fromEvent(obj, 'click')
-      .subscribe(() => {
-        //noop
-       });
+    const subscription = fromEvent(obj, 'click').subscribe(() => {
+      //noop
+    });
 
     subscription.unsubscribe();
 
@@ -134,13 +135,12 @@ describe('fromEvent', () => {
       removeListener(a: string, b: (...args: any[]) => void) {
         offEventName = a;
         offHandler = b;
-      }
+      },
     };
 
-    const subscription = fromEvent(obj, 'click')
-      .subscribe(() => {
-        //noop
-       });
+    const subscription = fromEvent(obj, 'click').subscribe(() => {
+      //noop
+    });
 
     subscription.unsubscribe();
 
@@ -165,13 +165,12 @@ describe('fromEvent', () => {
         offEventName = a;
         offHandler = b;
       },
-      length: 1
+      length: 1,
     };
 
-    const subscription = fromEvent(obj, 'click')
-      .subscribe(() => {
-        //noop
-       });
+    const subscription = fromEvent(obj, 'click').subscribe(() => {
+      //noop
+    });
 
     subscription.unsubscribe();
 
@@ -185,11 +184,11 @@ describe('fromEvent', () => {
     const obj = {
       addListener: () => {
         //noop
-      }
+      },
     };
     expect(() => {
       fromEvent(obj as any, 'click');
-    }).to.throw(/Invalid event target/)
+    }).to.throw(/Invalid event target/);
   });
 
   it('should pass through options to addEventListener and removeEventListener', () => {
@@ -203,13 +202,12 @@ describe('fromEvent', () => {
       },
       removeEventListener: (a: string, b: EventListenerOrEventListenerObject, c?: any) => {
         offOptions = c;
-      }
+      },
     };
 
-    const subscription = fromEvent(<any>obj, 'click', expectedOptions)
-      .subscribe(() => {
-        //noop
-       });
+    const subscription = fromEvent(<any>obj, 'click', expectedOptions).subscribe(() => {
+      //noop
+    });
 
     subscription.unsubscribe();
 
@@ -225,17 +223,22 @@ describe('fromEvent', () => {
       },
       off: () => {
         //noop
-      }
+      },
     };
 
-    fromEvent(obj, 'click').pipe(take(1))
-      .subscribe({ next: (e: any) => {
-        expect(e).to.equal('test');
-      }, error: (err: any) => {
-        done(new Error('should not be called'));
-      }, complete: () => {
-        done();
-      } });
+    fromEvent(obj, 'click')
+      .pipe(take(1))
+      .subscribe({
+        next: (e: any) => {
+          expect(e).to.equal('test');
+        },
+        error: (err: any) => {
+          done(new Error('should not be called'));
+        },
+        complete: () => {
+          done();
+        },
+      });
 
     send('test');
   });
@@ -248,21 +251,26 @@ describe('fromEvent', () => {
       },
       off: () => {
         //noop
-      }
+      },
     };
 
     function selector(x: string) {
       return x + '!';
     }
 
-    fromEvent(obj, 'click', selector).pipe(take(1))
-      .subscribe({ next: (e: any) => {
-        expect(e).to.equal('test!');
-      }, error: (err: any) => {
-        done(new Error('should not be called'));
-      }, complete: () => {
-        done();
-      } });
+    fromEvent(obj, 'click', selector)
+      .pipe(take(1))
+      .subscribe({
+        next: (e: any) => {
+          expect(e).to.equal('test!');
+        },
+        error: (err: any) => {
+          done(new Error('should not be called'));
+        },
+        complete: () => {
+          done();
+        },
+      });
 
     send('test');
   });
@@ -275,21 +283,26 @@ describe('fromEvent', () => {
       },
       off: () => {
         //noop
-      }
+      },
     };
 
     function selector() {
       //noop
     }
 
-    fromEvent(obj, 'click', selector).pipe(take(1))
-      .subscribe({ next: (e: any) => {
-        expect(e).not.exist;
-      }, error: (err: any) => {
-        done(new Error('should not be called'));
-      }, complete: () => {
-        done();
-      } });
+    fromEvent(obj, 'click', selector)
+      .pipe(take(1))
+      .subscribe({
+        next: (e: any) => {
+          expect(e).not.exist;
+        },
+        error: (err: any) => {
+          done(new Error('should not be called'));
+        },
+        complete: () => {
+          done();
+        },
+      });
 
     send();
   });
@@ -302,21 +315,26 @@ describe('fromEvent', () => {
       },
       off: () => {
         //noop
-      }
+      },
     };
 
     function selector() {
       return 'no arguments';
     }
 
-    fromEvent(obj, 'click', selector).pipe(take(1))
-      .subscribe({ next: (e: any) => {
-        expect(e).to.equal('no arguments');
-      }, error: (err: any) => {
-        done(new Error('should not be called'));
-      }, complete: () => {
-        done();
-      } });
+    fromEvent(obj, 'click', selector)
+      .pipe(take(1))
+      .subscribe({
+        next: (e: any) => {
+          expect(e).to.equal('no arguments');
+        },
+        error: (err: any) => {
+          done(new Error('should not be called'));
+        },
+        complete: () => {
+          done();
+        },
+      });
 
     send();
   });
@@ -329,21 +347,26 @@ describe('fromEvent', () => {
       },
       off: () => {
         //noop
-      }
+      },
     };
 
     function selector(x: number, y: number, z: number) {
       return [].slice.call(arguments);
     }
 
-    fromEvent(obj, 'click', selector).pipe(take(1))
-      .subscribe({ next: (e: any) => {
-        expect(e).to.deep.equal([1, 2, 3]);
-      }, error: (err: any) => {
-        done(new Error('should not be called'));
-      }, complete: () => {
-        done();
-      } });
+    fromEvent(obj, 'click', selector)
+      .pipe(take(1))
+      .subscribe({
+        next: (e: any) => {
+          expect(e).to.deep.equal([1, 2, 3]);
+        },
+        error: (err: any) => {
+          done(new Error('should not be called'));
+        },
+        complete: () => {
+          done();
+        },
+      });
 
     send(1, 2, 3);
   });
@@ -356,17 +379,22 @@ describe('fromEvent', () => {
       },
       off: () => {
         //noop
-      }
+      },
     };
 
-    fromEvent(obj, 'click').pipe(take(1))
-      .subscribe({ next: (e: any) => {
-        expect(e).to.deep.equal([1, 2, 3]);
-      }, error: (err: any) => {
-        done(new Error('should not be called'));
-      }, complete: () => {
-        done();
-      } });
+    fromEvent(obj, 'click')
+      .pipe(take(1))
+      .subscribe({
+        next: (e: any) => {
+          expect(e).to.deep.equal([1, 2, 3]);
+        },
+        error: (err: any) => {
+          done(new Error('should not be called'));
+        },
+        complete: () => {
+          done();
+        },
+      });
 
     send(1, 2, 3);
   });
@@ -375,8 +403,12 @@ describe('fromEvent', () => {
     // NOTE: Can not test with Object.create(null) or `class Foo extends null`
     // due to TypeScript bug. https://github.com/Microsoft/TypeScript/issues/1108
     class NullProtoEventTarget {
-      on() { /*noop*/ }
-      off() { /*noop*/ }
+      on() {
+        /*noop*/
+      }
+      off() {
+        /*noop*/
+      }
     }
     NullProtoEventTarget.prototype.toString = null!;
     const obj: NullProtoEventTarget = new NullProtoEventTarget();
@@ -409,7 +441,7 @@ describe('fromEvent', () => {
         _addEventListenerArgs: null as any,
         _removeEventListenerArgs: null as any,
       },
-      length: 2
+      length: 2,
     };
 
     const options = {};
@@ -419,7 +451,7 @@ describe('fromEvent', () => {
     expect(nodeList[0]._addEventListenerArgs[0]).to.equal('click');
     expect(nodeList[0]._addEventListenerArgs[1]).to.be.a('function');
     expect(nodeList[0]._addEventListenerArgs[2]).to.equal(options);
-    
+
     expect(nodeList[1]._addEventListenerArgs[0]).to.equal('click');
     expect(nodeList[1]._addEventListenerArgs[1]).to.be.a('function');
     expect(nodeList[1]._addEventListenerArgs[2]).to.equal(options);
@@ -428,7 +460,7 @@ describe('fromEvent', () => {
     expect(nodeList[1]._removeEventListenerArgs).to.be.null;
 
     subscription.unsubscribe();
-    
+
     expect(nodeList[0]._removeEventListenerArgs).to.deep.equal(nodeList[0]._addEventListenerArgs);
     expect(nodeList[1]._removeEventListenerArgs).to.deep.equal(nodeList[1]._addEventListenerArgs);
   });
