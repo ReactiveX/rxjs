@@ -1,3 +1,4 @@
+import { Observable } from '../Observable';
 import { ReplaySubject } from '../ReplaySubject';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { share } from './share';
@@ -5,7 +6,7 @@ import { share } from './share';
 export interface ShareReplayConfig {
   bufferSize?: number;
   windowTime?: number;
-  refCount: boolean;
+  refCount: boolean | (() => Observable<any>);
   scheduler?: SchedulerLike;
 }
 
@@ -157,7 +158,7 @@ export function shareReplay<T>(
   scheduler?: SchedulerLike
 ): MonoTypeOperatorFunction<T> {
   let bufferSize: number;
-  let refCount = false;
+  let refCount: boolean | (() => Observable<any>) = false;
   if (configOrBufferSize && typeof configOrBufferSize === 'object') {
     ({ bufferSize = Infinity, windowTime = Infinity, refCount = false, scheduler } = configOrBufferSize);
   } else {
