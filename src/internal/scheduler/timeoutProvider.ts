@@ -15,9 +15,12 @@ interface TimeoutProvider {
 export const timeoutProvider: TimeoutProvider = {
   // When accessing the delegate, use the variable rather than `this` so that
   // the functions can be called without being bound to the provider.
-  setTimeout(...args) {
-    const { delegate } = timeoutProvider;
-    return (delegate?.setTimeout || setTimeout)(...args);
+  setTimeout(handler: () => void, timeout?: number, ...args) {
+    const {delegate} = timeoutProvider;
+    if (delegate?.setTimeout) {
+      return delegate.setTimeout(handler, timeout, ...args);
+    }
+    return setTimeout(handler, timeout, ...args);
   },
   clearTimeout(handle) {
     const { delegate } = timeoutProvider;
