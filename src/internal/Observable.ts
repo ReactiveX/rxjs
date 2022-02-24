@@ -340,6 +340,7 @@ export class Observable<T> implements Subscribable<T> {
    * @method Symbol.observable
    * @return {Observable} this instance of the observable
    */
+  /** @ts-ignore mute errors for people without skipLibCheck on older versions of TS, remove this comment when we drop support for TS<4.3 */
   [Symbol_observable](): Subscribable<T> {
     return this;
   }
