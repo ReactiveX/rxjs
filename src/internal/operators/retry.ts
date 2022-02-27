@@ -43,7 +43,7 @@ export function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;
  * ![](retry.png)
  *
  * The number of retries is determined by the `count` parameter. It can be set either by passing a number to
- * `retry` function or by setting `count` parameter when `retry` is configured using {@link RetryConfig}. If
+ * `retry` function or by setting `count` property when `retry` is configured using {@link RetryConfig}. If
  * `count` is omitted, `retry` will try to resubscribe on errors infinite number of times.
  *
  * Any and all items emitted by the source Observable will be emitted by the resulting Observable, even those
