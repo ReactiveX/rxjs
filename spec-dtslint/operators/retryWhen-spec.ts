@@ -16,3 +16,7 @@ it('should enforce types', () => {
 it('should enforce types of the notifier', () => {
   const o = of(1, 2, 3).pipe(retryWhen(() => 8)); // $ExpectError
 });
+
+it('should be deprecated', () => {
+  const o = of(1, 2, 3).pipe(retryWhen(() => of(true))); // $ExpectDeprecation
+});
