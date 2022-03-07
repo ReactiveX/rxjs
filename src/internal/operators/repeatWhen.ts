@@ -37,6 +37,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * which a user can `complete` or `error`, aborting the repetition.
  * @return A function that returns an Observable that that mirrors the source
  * Observable with the exception of a `complete`.
+ * @deprecated Will be removed in v9 or v10. Use {@link repeat}'s `delay` option instead.
  */
 export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Observable<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
