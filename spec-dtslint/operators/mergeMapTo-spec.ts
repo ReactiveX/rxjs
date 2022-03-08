@@ -75,3 +75,7 @@ it('should enforce types of the concurrent parameter with a resultSelector', () 
 it('should produce `Observable<never>` when mapping to an `ObservableInput<never>`', () => {
   const o = of(1, 2, 3).pipe(mergeMapTo(Promise.reject())); // $ExpectType Observable<never>
 });
+
+it('should be deprecated', () => {
+  const o = of(1, 2, 3).pipe(mergeMapTo(of(true))); // $ExpectDeprecation
+});

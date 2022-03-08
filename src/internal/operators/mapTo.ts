@@ -1,8 +1,13 @@
 import { OperatorFunction } from '../types';
 import { map } from './map';
 
+/** @deprecated To be removed in v9. Use {@link map} instead: `map(() => value)`. */
 export function mapTo<R>(value: R): OperatorFunction<unknown, R>;
-/** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
+/**
+ * @deprecated Do not specify explicit type parameters. Signatures with type parameters
+ * that cannot be inferred will be removed in v8. `mapTo` itself will be removed in v9,
+ * use {@link map} instead: `map(() => value)`.
+ * */
 export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
 
 /**
@@ -36,6 +41,7 @@ export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
  * @param value The value to map each source value to.
  * @return A function that returns an Observable that emits the given `value`
  * every time the source Observable emits.
+ * @deprecated To be removed in v9. Use {@link map} instead: `map(() => value)`.
  */
 export function mapTo<R>(value: R): OperatorFunction<unknown, R> {
   return map(() => value);
