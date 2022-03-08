@@ -1,3 +1,15 @@
+## [7.5.5](https://github.com/reactivex/rxjs/compare/7.5.4...7.5.5) (2022-03-08)
+
+### Bug Fixes
+
+- **package:** add types to exports ([#6802](https://github.com/reactivex/rxjs/issues/6802)) ([3750f75](https://github.com/reactivex/rxjs/commit/3750f75104bb82d870c53c0605c942e41245d79c))
+- **package:** add `require` export condition ([#6821](https://github.com/reactivex/rxjs/issues/6821)) ([c8955e4](https://github.com/reactivex/rxjs/commit/c8955e4c6a972135030fdfddc18a7a48337ae9c7))
+- **timeout:** no longer will timeout when receiving the first value synchronously ([#6865](https://github.com/reactivex/rxjs/issues/6865)) ([2330c96](https://github.com/reactivex/rxjs/commit/2330c9660b20f2e0cda0c4eeb36bb582b4a85186)), closes [#6862](https://github.com/reactivex/rxjs/issues/6862)
+
+### Performance Improvements
+
+- Don't clone observers unless you have to ([#6842](https://github.com/reactivex/rxjs/issues/6842)) ([3289d20](https://github.com/reactivex/rxjs/commit/3289d20ddc3a84d2aede8e3ab9962a8ef5d43c83))
+
 ## [7.5.4](https://github.com/reactivex/rxjs/compare/7.5.3...7.5.4) (2022-02-09)
 
 ### Performance Improvements
