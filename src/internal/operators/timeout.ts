@@ -386,10 +386,12 @@ export function timeout<T, O extends ObservableInput<any>, M>(
     );
 
     // Intentionally terse code.
+    // If we've `seen` a value, that means the "first" clause was met already, if it existed.
+    //   it also means that a timer was already started for "each" (in the next handler above).
     // If `first` was provided, and it's a number, then use it.
     // If `first` was provided and it's not a number, it's a Date, and we get the difference between it and "now".
     // If `first` was not provided at all, then our first timer will be the value from `each`.
-    startTimer(first != null ? (typeof first === 'number' ? first : +first - scheduler!.now()) : each!);
+    !seen && startTimer(first != null ? (typeof first === 'number' ? first : +first - scheduler!.now()) : each!);
   });
 }
 
