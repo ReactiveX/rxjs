@@ -1,8 +1,8 @@
 /** @prettier */
 import { expect } from 'chai';
-import { timeout, mergeMap, take } from 'rxjs/operators';
+import { timeout, mergeMap, take, concatWith } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { TimeoutError, of, Observable } from 'rxjs';
+import { TimeoutError, of, Observable, NEVER } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {timeout} */
@@ -694,7 +694,7 @@ describe('timeout operator', () => {
 
     it('should not timeout if source emits synchronously when subscribed', () => {
       rxTestScheduler.run(({ expectObservable, time }) => {
-        const source = of('a');
+        const source = of('a').pipe(concatWith(NEVER));
         const t = time('  ---|');
         const expected = 'a---';
         expectObservable(source.pipe(timeout({ first: new Date(t) }))).toBe(expected);
