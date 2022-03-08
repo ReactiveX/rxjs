@@ -6,9 +6,14 @@ import { identity } from '../util/identity';
 import { timer } from '../observable/timer';
 import { innerFrom } from '../observable/innerFrom';
 
+/**
+ * The {@link retry} operator configuration object. `retry` either accepts a `number`
+ * or an object described by this interface.
+ */
 export interface RetryConfig {
   /**
-   * The maximum number of times to retry.
+   * The maximum number of times to retry. If `count` is omitted, `retry` will try to
+   * resubscribe on errors infinite number of times.
    */
   count?: number;
   /**
@@ -26,17 +31,25 @@ export interface RetryConfig {
   resetOnSuccess?: boolean;
 }
 
+export function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
+export function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;
+
 /**
- * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
- * calls `error`, this method will resubscribe to the source Observable for a maximum of `count` resubscriptions (given
- * as a number parameter) rather than propagating the `error` call.
+ * Returns an Observable that mirrors the source Observable with the exception of an `error`.
+ *
+ * If the source Observable calls `error`, this method will resubscribe to the source Observable for a maximum of
+ * `count` resubscriptions rather than propagating the `error` call.
  *
  * ![](retry.png)
  *
- * Any and all items emitted by the source Observable will be emitted by the resulting Observable, even those emitted
- * during failed subscriptions. For example, if an Observable fails at first but emits `[1, 2]` then succeeds the second
- * time and emits: `[1, 2, 3, 4, 5]` then the complete stream of emissions and notifications
- * would be: `[1, 2, 1, 2, 3, 4, 5, complete]`.
+ * The number of retries is determined by the `count` parameter. It can be set either by passing a number to
+ * `retry` function or by setting `count` property when `retry` is configured using {@link RetryConfig}. If
+ * `count` is omitted, `retry` will try to resubscribe on errors infinite number of times.
+ *
+ * Any and all items emitted by the source Observable will be emitted by the resulting Observable, even those
+ * emitted during failed subscriptions. For example, if an Observable fails at first but emits `[1, 2]` then
+ * succeeds the second time and emits: `[1, 2, 3, 4, 5, complete]` then the complete stream of emissions and
+ * notifications would be: `[1, 2, 1, 2, 3, 4, 5, complete]`.
  *
  * ## Example
  *
@@ -63,22 +76,10 @@ export interface RetryConfig {
  *
  * @see {@link retryWhen}
  *
- * @param count - Number of retry attempts before failing.
- * @param resetOnSuccess - When set to `true` every successful emission will reset the error count
+ * @param configOrCount - Either number of retry attempts before failing or a {@link RetryConfig} object.
  * @return A function that returns an Observable that will resubscribe to the
  * source stream when the source stream errors, at most `count` times.
  */
-export function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
-
-/**
- * Returns an observable that mirrors the source observable unless it errors. If it errors, the source observable
- * will be resubscribed to (or "retried") based on the configuration passed here. See documentation
- * for {@link RetryConfig} for more details.
- *
- * @param config - The retry configuration
- */
-export function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;
-
 export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTypeOperatorFunction<T> {
   let config: RetryConfig;
   if (configOrCount && typeof configOrCount === 'object') {
