@@ -694,7 +694,7 @@ describe('timeout operator', () => {
 
     it('should not timeout if source emits synchronously when subscribed', () => {
       rxTestScheduler.run(({ expectObservable, time }) => {
-        const source = new BehaviorSubject('a');
+        const source = of('a');
         const t = time('  ---|');
         const expected = 'a---';
         expectObservable(source.pipe(timeout({ first: new Date(t) }))).toBe(expected);
