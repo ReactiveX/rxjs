@@ -2,7 +2,7 @@ import { concatMap } from './concatMap';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { isFunction } from '../util/isFunction';
 
-/* tslint:disable:max-line-length */
+/** @deprecated Will be removed in v9. Use {@link concatMap} instead: `concatMap(() => result)` */
 export function concatMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<unknown, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function concatMapTo<O extends ObservableInput<unknown>>(
@@ -14,7 +14,6 @@ export function concatMapTo<T, R, O extends ObservableInput<unknown>>(
   observable: O,
   resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
 ): OperatorFunction<T, R>;
-/* tslint:enable:max-line-length */
 
 /**
  * Projects each source value to the same Observable which is merged multiple
@@ -70,6 +69,7 @@ export function concatMapTo<T, R, O extends ObservableInput<unknown>>(
  * @return A function that returns an Observable of values merged together by
  * joining the passed Observable with itself, one after the other, for each
  * value emitted from the source.
+ * @deprecated Will be removed in v9. Use {@link concatMap} instead: `concatMap(() => result)`
  */
 export function concatMapTo<T, R, O extends ObservableInput<unknown>>(
   innerObservable: O,
