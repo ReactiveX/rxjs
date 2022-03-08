@@ -3,7 +3,7 @@ const filterFromInImports = require('./filterFromInImports')();
 const words = ['import', ' { ', 'from', ' } ', 'from', ' \'', 'rxjs', '\';'];
 const words2 = [' } ', 'from', '(', 'of'];
 
-describe('filterFromInImports(word, index,  words)', () => {
+describe('filterFromInImports(words, index)', () => {
   it('should not filter the word, if the word is not "from"', () => {
     expect(filterFromInImports(words, 0)).toEqual(false);
   });
