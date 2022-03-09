@@ -1,7 +1,7 @@
 import { isArrayLike } from '../util/isArrayLike';
 import { isPromise } from '../util/isPromise';
 import { Observable } from '../Observable';
-import { ObservableInput, ReadableStreamLike } from '../types';
+import { ObservableInput, ObservedValueOf, ReadableStreamLike } from '../types';
 import { isInteropObservable } from '../util/isInteropObservable';
 import { isAsyncIterable } from '../util/isAsyncIterable';
 import { createInvalidObservableTypeError } from '../util/throwUnobservableError';
@@ -12,6 +12,7 @@ import { isFunction } from '../util/isFunction';
 import { reportUnhandledError } from '../util/reportUnhandledError';
 import { observable as Symbol_observable } from '../symbol/observable';
 
+export function innerFrom<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>>;
 export function innerFrom<T>(input: ObservableInput<T>): Observable<T> {
   if (input instanceof Observable) {
     return input;
