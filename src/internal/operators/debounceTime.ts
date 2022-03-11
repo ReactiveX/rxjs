@@ -67,28 +67,11 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
     let lastValue: T | null = null;
     let lastTime: number | null = null;
 
-    // Flags for managing state for synchronous schedulers
-    let possibleSynchronousEmitInProgress = false;
-    let activeTaskNeedsCleanup = false;
-
     const emit = () => {
-      // If we have a synchronous scheduler, scheduler.schedule() won't return
-      // before emit is called, so activeTask won't be set here even though we
-      // have a value ready to go. So we use some flags to maintain the same
-      // behavior between sync/async schedulers.
-      const shouldEmit = activeTask || possibleSynchronousEmitInProgress;
-
       if (activeTask) {
+        // We have a value! Free up memory first, then emit the value.
         activeTask.unsubscribe();
         activeTask = null;
-      }
-
-      if (possibleSynchronousEmitInProgress) {
-        possibleSynchronousEmitInProgress = false;
-        activeTaskNeedsCleanup = true;
-      }
-
-      if (shouldEmit) {
         const value = lastValue!;
         lastValue = null;
         subscriber.next(value);
@@ -119,19 +102,10 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
 
           // Only set up a task if it's not already up
           if (!activeTask) {
-            possibleSynchronousEmitInProgress = true;
-            activeTask = scheduler.schedule(emitWhenIdle, dueTime);
-            possibleSynchronousEmitInProgress = false;
-
-            // A synchronous scheduler may have already processed this task. If
-            // so the cleanup flag is set above so we know to do so immediately.
-            if (activeTaskNeedsCleanup) {
-              activeTaskNeedsCleanup = false;
-              activeTask.unsubscribe();
-              activeTask = null;
-            } else {
-              subscriber.add(activeTask);
-            }
+            // Set activeTask as intermediary Subscription to handle synchronous schedulers
+            // https://github.com/ReactiveX/rxjs/pull/6826
+            subscriber.add(activeTask = new Subscription());
+            activeTask.add(scheduler.schedule(emitWhenIdle, dueTime));
           }
         },
         () => {
