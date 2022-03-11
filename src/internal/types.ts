@@ -14,8 +14,15 @@ declare global {
   }
 }
 
-/** OPERATOR INTERFACES */
+/* OPERATOR INTERFACES */
 
+/**
+ * A function type interface that describes a function that accepts one parameter `T`
+ * and returns another parameter `R`.
+ *
+ * Usually used to describe {@link OperatorFunction}s - they always take a single
+ * parameter (the source Observable) and return another Observable.
+ */
 export interface UnaryFunction<T, R> {
   (source: T): R;
 }
@@ -60,7 +67,7 @@ export interface TimeInterval<T> {
   interval: number;
 }
 
-/** SUBSCRIPTION INTERFACES */
+/* SUBSCRIPTION INTERFACES */
 
 export interface Unsubscribable {
   unsubscribe(): void;
@@ -73,7 +80,7 @@ export interface SubscriptionLike extends Unsubscribable {
   readonly closed: boolean;
 }
 
-/** OBSERVABLE INTERFACES */
+/* OBSERVABLE INTERFACES */
 
 export interface Subscribable<T> {
   subscribe(observer: Partial<Observer<T>>): Unsubscribable;
@@ -98,7 +105,7 @@ export interface InteropObservable<T> {
   [Symbol.observable]: () => Subscribable<T>;
 }
 
-/** NOTIFICATIONS */
+/* NOTIFICATIONS */
 
 /**
  * A notification representing a "next" from an observable.
@@ -134,7 +141,7 @@ export interface CompleteNotification {
  */
 export type ObservableNotification<T> = NextNotification<T> | ErrorNotification | CompleteNotification;
 
-/** OBSERVER INTERFACES */
+/* OBSERVER INTERFACES */
 
 export interface NextObserver<T> {
   closed?: boolean;
@@ -167,7 +174,7 @@ export interface Observer<T> {
 
 export interface SubjectLike<T> extends Observer<T>, Subscribable<T> {}
 
-/** SCHEDULER INTERFACES */
+/* SCHEDULER INTERFACES */
 
 export interface SchedulerLike extends TimestampProvider {
   schedule<T>(work: (this: SchedulerAction<T>, state: T) => void, delay: number, state: T): Subscription;
