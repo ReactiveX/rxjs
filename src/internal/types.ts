@@ -20,8 +20,8 @@ declare global {
  * A function type interface that describes a function that accepts one parameter `T`
  * and returns another parameter `R`.
  *
- * Usually used to describe {@link OperatorFunction}s - they always take a single
- * parameter (the source Observable) and return another Observable.
+ * Usually used to describe {@link OperatorFunction} - it always takes a single
+ * parameter (the source Observable) and returns another Observable.
  */
 export interface UnaryFunction<T, R> {
   (source: T): R;
