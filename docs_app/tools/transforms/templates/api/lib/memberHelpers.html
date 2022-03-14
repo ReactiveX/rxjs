@@ -45,11 +45,6 @@
 <div class="short-description">
   {$ overload.shortDescription | marked $}
 </div>{% endif %}
-{% if overload.deprecated !== undefined %}
-<div class="deprecated">
-  <h4>Deprecation Notes</h4>
-  {$ overload.deprecated | marked $}
-</div>{% endif %}
 
 <h4 class="no-anchor">Parameters</h4>
 {$ params.renderParameters(overload.parameterDocs, cssClass + '-parameters', cssClass + '-parameter', true) $}
