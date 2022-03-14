@@ -3,6 +3,20 @@ import { AsyncScheduler } from './AsyncScheduler';
 
 export class AnimationFrameScheduler extends AsyncScheduler {
   public flush(action?: AsyncAction<any>): void {
+    let error: any;
+
+    if (action) {
+      // This code path handles AsyncActions scheduled with delay.
+      // These are not executed from _scheduled nor part of the actions queue.
+      this._active = true;
+      error = action.execute(action.state, action.delay);
+      this._active = false;
+      if (error) {
+        throw error;
+      }
+      return;
+    }
+
     this._active = true;
     // The async id that effects a call to flush is stored in _scheduled.
     // Before executing an action, it's necessary to check the action's async
@@ -17,8 +31,7 @@ export class AnimationFrameScheduler extends AsyncScheduler {
     this._scheduled = undefined;
 
     const { actions } = this;
-    let error: any;
-    action = action || actions.shift()!;
+    action = actions.shift()!;
 
     do {
       if ((error = action.execute(action.state, action.delay))) {

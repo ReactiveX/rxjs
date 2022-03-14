@@ -261,4 +261,26 @@ describe('Scheduler.animationFrame', () => {
     animationFrameScheduler.schedule(work);
     expect(result).to.deep.equal([]);
   });
+
+  it('should execute actions with delay separate from all other actions', () => {
+    const sandbox = sinon.createSandbox();
+    const timers = sandbox.useFakeTimers();
+    let rafCallback!: () => void;
+    const stub = sinon.stub(animationFrameProvider, 'requestAnimationFrame').callsFake((cb) => rafCallback = cb);
+
+    let asyncExecuted = false;
+    let animationFrameExecuted = false
+    animationFrameScheduler.schedule(() => asyncExecuted = true, 1);
+    animationFrameScheduler.schedule(() => animationFrameExecuted = true);
+
+    timers.tick(1);
+    expect(asyncExecuted).to.equal(true);
+    expect(animationFrameExecuted).to.equal(false);
+
+    rafCallback();
+    expect(animationFrameExecuted).to.equal(true);
+
+    stub.restore();
+    sandbox.restore();
+  });
 });
