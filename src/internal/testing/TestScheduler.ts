@@ -10,6 +10,7 @@ import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../N
 import { dateTimestampProvider } from '../scheduler/dateTimestampProvider';
 import { performanceTimestampProvider } from '../scheduler/performanceTimestampProvider';
 import { animationFrameProvider } from '../scheduler/animationFrameProvider';
+import type { TimerHandle } from '../scheduler/timerHandle';
 import { immediateProvider } from '../scheduler/immediateProvider';
 import { intervalProvider } from '../scheduler/intervalProvider';
 import { timeoutProvider } from '../scheduler/timeoutProvider';
@@ -510,11 +511,11 @@ export class TestScheduler extends VirtualTimeScheduler {
 
     let lastHandle = 0;
     const scheduleLookup = new Map<
-      number,
+      TimerHandle,
       {
         due: number;
         duration: number;
-        handle: number;
+        handle: TimerHandle;
         handler: () => void;
         subscription: Subscription;
         type: 'immediate' | 'interval' | 'timeout';
@@ -582,7 +583,7 @@ export class TestScheduler extends VirtualTimeScheduler {
         });
         return handle;
       },
-      clearImmediate: (handle: number) => {
+      clearImmediate: (handle: TimerHandle) => {
         const value = scheduleLookup.get(handle);
         if (value) {
           value.subscription.unsubscribe();
@@ -604,7 +605,7 @@ export class TestScheduler extends VirtualTimeScheduler {
         });
         return handle;
       },
-      clearInterval: (handle: number) => {
+      clearInterval: (handle: TimerHandle) => {
         const value = scheduleLookup.get(handle);
         if (value) {
           value.subscription.unsubscribe();
@@ -626,7 +627,7 @@ export class TestScheduler extends VirtualTimeScheduler {
         });
         return handle;
       },
-      clearTimeout: (handle: number) => {
+      clearTimeout: (handle: TimerHandle) => {
         const value = scheduleLookup.get(handle);
         if (value) {
           value.subscription.unsubscribe();
