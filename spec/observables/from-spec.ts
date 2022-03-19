@@ -27,7 +27,7 @@ describe('from', () => {
 
       const e1 = from([10, 20, 30]).pipe(
         // for the purpose of making a nice diagram, spread out the synchronous emissions
-        concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : delayTime, rxTestScheduler)))
+        concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : delayTime)))
       );
 
       expectObservable(e1).toBe(expected, { x: 10, y: 20, z: 30 });
