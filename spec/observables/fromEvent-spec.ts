@@ -21,7 +21,7 @@ describe('fromEvent', () => {
 
       const target = {
         addEventListener: (eventType: any, listener: any) => {
-          timer(delay1, delay2, rxTestScheduler).pipe(mapTo('ev'), take(2), concat(NEVER)).subscribe(listener);
+          timer(delay1, delay2).pipe(mapTo('ev'), take(2), concat(NEVER)).subscribe(listener);
         },
         removeEventListener: (): void => void 0,
         dispatchEvent: (): void => void 0,
