@@ -59,7 +59,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * user can `complete` or `error`, aborting the retry.
  * @return A function that returns an Observable that mirrors the source
  * Observable with the exception of an `error`.
- * @deprecated: Will be removed in v9 or v10, use {@link retry}'s `delay` option instead.
+ * @deprecated Will be removed in v9 or v10, use {@link retry}'s `delay` option instead.
  */
 export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
