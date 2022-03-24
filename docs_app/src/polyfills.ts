@@ -18,15 +18,6 @@
  * BROWSER POLYFILLS
  */
 
-/**
- * INTERNET EXPLORER
- *
- * All the Internet Explorer polyfills are defined separately, in the `ie-polyfills.js` file.
- * They are also built separately from the main app, via the `yarn build-ie-polyfills` task.
- * The output of this build is conditionally loaded (only if we are running IE) in the browser,
- * and executed before the rest of the application files are executed.
- */
-
 /** HACK: force import of environment.ts/environment.prod.ts to load env specific polyfills */
 import './environments/environment';
 
