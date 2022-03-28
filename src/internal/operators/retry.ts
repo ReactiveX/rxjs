@@ -86,7 +86,7 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
     config = configOrCount;
   } else {
     config = {
-      count: configOrCount,
+      count: configOrCount as number,
     };
   }
   const { count = Infinity, delay, resetOnSuccess: resetOnSuccess = false } = config;

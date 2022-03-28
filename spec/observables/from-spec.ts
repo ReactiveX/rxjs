@@ -1,13 +1,10 @@
+/** @prettier */
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
 import { asyncScheduler, of, from, Observer, observable, Subject, noop, Subscription } from 'rxjs';
 import { first, concatMap, delay, take, tap } from 'rxjs/operators';
 import { ReadableStream } from 'web-streams-polyfill';
-
-// tslint:disable:no-any
-declare const expectObservable: any;
-declare const rxTestScheduler: TestScheduler;
-// tslint:enable:no-any
+import { observableMatcher } from '../helpers/observableMatcher';
 
 function getArguments<T>(...args: T[]) {
   return arguments;
@@ -15,15 +12,26 @@ function getArguments<T>(...args: T[]) {
 
 /** @test {from} */
 describe('from', () => {
+  let rxTestScheduler: TestScheduler;
+
+  beforeEach(() => {
+    rxTestScheduler = new TestScheduler(observableMatcher);
+  });
+
   it('should create an observable from an array', () => {
-    const e1 = from([10, 20, 30]).pipe(
-      // for the purpose of making a nice diagram, spread out the synchronous emissions
-      concatMap((x, i) => of(x).pipe(
-        delay(i === 0 ? 0 : 20, rxTestScheduler))
-      )
-    );
-    const expected = 'x-y-(z|)';
-    expectObservable(e1).toBe(expected, {x: 10, y: 20, z: 30});
+    rxTestScheduler.run(({ expectObservable, time }) => {
+      const delayTime = time('--|');
+      //                --|
+      //                  --|
+      const expected = 'x-y-(z|)';
+
+      const e1 = from([10, 20, 30]).pipe(
+        // for the purpose of making a nice diagram, spread out the synchronous emissions
+        concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : delayTime)))
+      );
+
+      expectObservable(e1).toBe(expected, { x: 10, y: 20, z: 30 });
+    });
   });
 
   it('should throw for non observable object', () => {
@@ -51,13 +59,10 @@ describe('from', () => {
       }
     }
 
-    const source = from(gen()).pipe(
-      take(3),
-    );
-
+    const source = from(gen()).pipe(take(3));
 
     source.subscribe({
-      next: value => results.push(value),
+      next: (value) => results.push(value),
       complete: () => {
         results.push('done');
         setTimeout(() => {
@@ -65,7 +70,7 @@ describe('from', () => {
           expect(results).to.deep.equal([0, 1, 2, 'done', 'finalized generator']);
           done();
         });
-      }
+      },
     });
   });
 
@@ -87,17 +92,16 @@ describe('from', () => {
 
     const source = from(gen()).pipe(
       tap({
-        next: value => {
+        next: (value) => {
           if (value === 2) {
             throw new Error('weee');
           }
-        }
-      }),
+        },
+      })
     );
 
-
     source.subscribe({
-      next: value => results.push(value),
+      next: (value) => results.push(value),
       error: () => {
         results.push('in error');
         setTimeout(() => {
@@ -105,7 +109,7 @@ describe('from', () => {
           expect(results).to.deep.equal([0, 1, 'in error', 'finalized generator']);
           done();
         });
-      }
+      },
     });
   });
 
@@ -134,9 +138,8 @@ describe('from', () => {
 
     const source = from(gen());
 
-    subscription = source.subscribe(value => results.push(value));
+    subscription = source.subscribe((value) => results.push(value));
   });
-
 
   it('should finalize a generator', () => {
     const results: any[] = [];
@@ -152,14 +155,11 @@ describe('from', () => {
       }
     }
 
-    const source = from(gen()).pipe(
-      take(3),
-    );
-
+    const source = from(gen()).pipe(take(3));
 
     source.subscribe({
-      next: value => results.push(value),
-      complete: () => results.push('done')
+      next: (value) => results.push(value),
+      complete: () => results.push('done'),
     });
 
     expect(results).to.deep.equal([0, 1, 2, 'done', 'finalized generator']);
@@ -172,20 +172,20 @@ describe('from', () => {
           observer.next(value);
         }
         observer.complete();
-      }
-    })
+      },
+    }),
   });
 
   const fakeArrayObservable = <T>(...values: T[]) => {
     let arr: any = ['bad array!'];
-    arr[observable] = () =>  {
+    arr[observable] = () => {
       return {
         subscribe: (observer: Observer<T>) => {
           for (const value of values) {
             observer.next(value);
           }
           observer.complete();
-        }
+        },
       };
     };
     return arr;
@@ -197,14 +197,14 @@ describe('from', () => {
       return {
         next: () => ({
           done: clone.length <= 0,
-          value: clone.shift()
-        })
+          value: clone.shift(),
+        }),
       };
-    }
+    },
   });
 
   // tslint:disable-next-line:no-any it's silly to define all of these types.
-  const sources: Array<{ name: string, createValue: () => any }> = [
+  const sources: Array<{ name: string; createValue: () => any }> = [
     { name: 'observable', createValue: () => of('x') },
     { name: 'observable-like', createValue: () => fakervable('x') },
     { name: 'observable-like-array', createValue: () => fakeArrayObservable('x') },
@@ -214,13 +214,17 @@ describe('from', () => {
     { name: 'array-like', createValue: () => ({ [0]: 'x', length: 1 }) },
     // ReadableStreams are not lazy, so we have to have this createValue() thunk
     // so that each tests gets a new one.
-    { name: 'readable-stream-like', createValue: () => new ReadableStream({
-      pull(controller) {
-        controller.enqueue('x');
-        controller.close();
-      },
-    })},
-    { name: 'string', createValue: () => 'x'},
+    {
+      name: 'readable-stream-like',
+      createValue: () =>
+        new ReadableStream({
+          pull(controller) {
+            controller.enqueue('x');
+            controller.close();
+          },
+        }),
+    },
+    { name: 'string', createValue: () => 'x' },
     { name: 'arguments', createValue: () => getArguments('x') },
   ];
 
@@ -240,48 +244,50 @@ describe('from', () => {
             },
             [Symbol.asyncIterator]() {
               return this;
-            }
+            },
           };
-        }
+        },
       };
     };
 
     sources.push({
       name: 'async-iterator',
-      createValue: () => fakeAsyncIterator('x')
+      createValue: () => fakeAsyncIterator('x'),
     });
   }
 
   for (const source of sources) {
     it(`should accept ${source.name}`, (done) => {
       let nextInvoked = false;
-      from(source.createValue())
-        .subscribe(
-          { next: (x) => {
-            nextInvoked = true;
-            expect(x).to.equal('x');
-          }, error: (x) => {
-            done(new Error('should not be called'));
-          }, complete: () => {
-            expect(nextInvoked).to.equal(true);
-            done();
-          } }
-        );
+      from(source.createValue()).subscribe({
+        next: (x) => {
+          nextInvoked = true;
+          expect(x).to.equal('x');
+        },
+        error: (x) => {
+          done(new Error('should not be called'));
+        },
+        complete: () => {
+          expect(nextInvoked).to.equal(true);
+          done();
+        },
+      });
     });
     it(`should accept ${source.name} and scheduler`, (done) => {
       let nextInvoked = false;
-      from(source.createValue(), asyncScheduler)
-        .subscribe(
-          { next: (x) => {
-            nextInvoked = true;
-            expect(x).to.equal('x');
-          }, error: (x) => {
-            done(new Error('should not be called'));
-          }, complete: () => {
-            expect(nextInvoked).to.equal(true);
-            done();
-          } }
-        );
+      from(source.createValue(), asyncScheduler).subscribe({
+        next: (x) => {
+          nextInvoked = true;
+          expect(x).to.equal('x');
+        },
+        error: (x) => {
+          done(new Error('should not be called'));
+        },
+        complete: () => {
+          expect(nextInvoked).to.equal(true);
+          done();
+        },
+      });
       expect(nextInvoked).to.equal(false);
     });
 
@@ -291,17 +297,21 @@ describe('from', () => {
       handler[observable] = () => subject;
       let nextInvoked = false;
 
-      from((handler as any)).pipe(first()).subscribe(
-        { next: (x) => {
-          nextInvoked = true;
-          expect(x).to.equal('x');
-        }, error: (x) => {
-          done(new Error('should not be called'));
-        }, complete: () => {
-          expect(nextInvoked).to.equal(true);
-          done();
-        } }
-      );
+      from(handler as any)
+        .pipe(first())
+        .subscribe({
+          next: (x) => {
+            nextInvoked = true;
+            expect(x).to.equal('x');
+          },
+          error: (x) => {
+            done(new Error('should not be called'));
+          },
+          complete: () => {
+            expect(nextInvoked).to.equal(true);
+            done();
+          },
+        });
       handler('x');
     });
 
@@ -310,12 +320,12 @@ describe('from', () => {
       const input = Promise.resolve('test');
       (input as any).subscribe = noop;
       from(input).subscribe({
-        next: x => {
+        next: (x) => {
           expect(x).to.equal('test');
           done();
-        }
-      })
-    })
+        },
+      });
+    });
   }
 
   it('should appropriately handle errors from an iterator', () => {
@@ -331,8 +341,8 @@ describe('from', () => {
     const results: any[] = [];
 
     from(erroringIterator).subscribe({
-      next: x => results.push(x),
-      error: err => results.push(err.message)
+      next: (x) => results.push(x),
+      error: (err) => results.push(err.message),
     });
 
     expect(results).to.deep.equal([0, 1, 2, 'bad']);
@@ -370,7 +380,7 @@ describe('from', () => {
     });
 
     from(readableStream).subscribe({
-      next: value => {
+      next: (value) => {
         output.push(value);
         expect(readableStream.locked).to.equal(true);
       },
@@ -378,7 +388,7 @@ describe('from', () => {
         expect(output).to.deep.equal([0, 1, 2]);
         expect(readableStream.locked).to.equal(false);
         done();
-      }
+      },
     });
   });
 
@@ -399,7 +409,7 @@ describe('from', () => {
     });
 
     from(readableStream).subscribe({
-      next: value => {
+      next: (value) => {
         output.push(value);
         expect(readableStream.locked).to.equal(true);
       },
@@ -407,7 +417,7 @@ describe('from', () => {
         expect(output).to.deep.equal([0, 1, 2]);
         expect(readableStream.locked).to.equal(false);
         done();
-      }
+      },
     });
   });
 });
