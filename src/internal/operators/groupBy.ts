@@ -147,7 +147,7 @@ export function groupBy<T, K, R>(
   return operate((source, subscriber) => {
     let element: ((value: any) => any) | void;
     if (!elementOrOptions || typeof elementOrOptions === 'function') {
-      element = elementOrOptions;
+      element = elementOrOptions as ((value: any) => any);
     } else {
       ({ duration, element, connector } = elementOrOptions);
     }

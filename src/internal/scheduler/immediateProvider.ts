@@ -1,8 +1,9 @@
 import { Immediate } from '../util/Immediate';
+import type { TimerHandle } from './timerHandle';
 const { setImmediate, clearImmediate } = Immediate;
 
-type SetImmediateFunction = (handler: () => void, ...args: any[]) => number;
-type ClearImmediateFunction = (handle: number) => void;
+type SetImmediateFunction = (handler: () => void, ...args: any[]) => TimerHandle;
+type ClearImmediateFunction = (handle: TimerHandle) => void;
 
 interface ImmediateProvider {
   setImmediate: SetImmediateFunction;
@@ -24,7 +25,7 @@ export const immediateProvider: ImmediateProvider = {
   },
   clearImmediate(handle) {
     const { delegate } = immediateProvider;
-    return (delegate?.clearImmediate || clearImmediate)(handle);
+    return (delegate?.clearImmediate || clearImmediate)(handle as any);
   },
   delegate: undefined,
 };

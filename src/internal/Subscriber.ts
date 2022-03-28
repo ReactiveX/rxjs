@@ -203,7 +203,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       // The first argument is a function, not an observer. The next
       // two arguments *could* be observers, or they could be empty.
       partialObserver = {
-        next: observerOrNext ?? undefined,
+        next: (observerOrNext ?? undefined) as (((value: T) => void) | undefined),
         error: error ?? undefined,
         complete: complete ?? undefined,
       };

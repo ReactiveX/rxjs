@@ -161,7 +161,7 @@ export function shareReplay<T>(
   if (configOrBufferSize && typeof configOrBufferSize === 'object') {
     ({ bufferSize = Infinity, windowTime = Infinity, refCount = false, scheduler } = configOrBufferSize);
   } else {
-    bufferSize = configOrBufferSize ?? Infinity;
+    bufferSize = (configOrBufferSize ?? Infinity) as number;
   }
   return share<T>({
     connector: () => new ReplaySubject(bufferSize, windowTime, scheduler),
