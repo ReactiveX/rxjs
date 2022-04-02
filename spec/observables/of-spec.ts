@@ -19,7 +19,7 @@ describe('of', () => {
 
       const e1 = of(1, 2, 3).pipe(
         // for the purpose of making a nice diagram, spread out the synchronous emissions
-        concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : delayValue, rxTestScheduler)))
+        concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : delayValue)))
       );
       const expected = 'x-y-(z|)';
       expectObservable(e1).toBe(expected, { x: 1, y: 2, z: 3 });
@@ -63,7 +63,7 @@ describe('of', () => {
 
   it('should handle an Observable as the only value', () => {
     rxTestScheduler.run(({ expectObservable }) => {
-      const source = of(of('a', 'b', 'c', rxTestScheduler), rxTestScheduler);
+      const source = of(of('a', 'b', 'c'));
       const result = source.pipe(concatAll());
       expectObservable(result).toBe('(abc|)');
     });
@@ -71,7 +71,7 @@ describe('of', () => {
 
   it('should handle many Observable as the given values', () => {
     rxTestScheduler.run(({ expectObservable }) => {
-      const source = of(of('a', 'b', 'c', rxTestScheduler), of('d', 'e', 'f', rxTestScheduler), rxTestScheduler);
+      const source = of(of('a', 'b', 'c'), of('d', 'e', 'f'));
 
       const result = source.pipe(concatAll());
       expectObservable(result).toBe('(abcdef|)');
