@@ -1,4 +1,5 @@
 import { isArrayLike } from '../util/isArrayLike';
+import { isObservable } from '../util/isObservable';
 import { isPromise } from '../util/isPromise';
 import { Observable } from '../Observable';
 import { ObservableInput, ReadableStreamLike } from '../types';
@@ -13,7 +14,7 @@ import { reportUnhandledError } from '../util/reportUnhandledError';
 import { observable as Symbol_observable } from '../symbol/observable';
 
 export function innerFrom<T>(input: ObservableInput<T>): Observable<T> {
-  if (input instanceof Observable) {
+  if (isObservable(input)) {
     return input;
   }
   if (input != null) {
