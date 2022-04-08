@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
 import { of, ReplaySubject, Subject } from 'rxjs';
-import { mergeMapTo, tap } from 'rxjs/operators';
+import { mergeMap, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -129,13 +129,13 @@ describe('ReplaySubject', () => {
         }
 
         const sourceTemplate = ' -1-2-3----4------5-6---7--8----9--|';
-        const subscriber1 = hot('------(a|)                         ').pipe(mergeMapTo(replaySubject));
+        const subscriber1 = hot('------(a|)                         ').pipe(mergeMap(() => replaySubject));
         const unsub1 = '         ---------------------!             ';
         const expected1 = '      ------(23)4------5-6--             ';
-        const subscriber2 = hot('------------(b|)                   ').pipe(mergeMapTo(replaySubject));
+        const subscriber2 = hot('------------(b|)                   ').pipe(mergeMap(() => replaySubject));
         const unsub2 = '         -------------------------!         ';
         const expected2 = '      ------------(34)-5-6---7--         ';
-        const subscriber3 = hot('---------------------------(c|)    ').pipe(mergeMapTo(replaySubject));
+        const subscriber3 = hot('---------------------------(c|)    ').pipe(mergeMap(() => replaySubject));
         const expected3 = '      ---------------------------(78)9--|';
 
         expectObservable(
@@ -161,7 +161,7 @@ describe('ReplaySubject', () => {
         }
 
         const sourceTemplate = ' -1-2-3--4--|';
-        const subscriber1 = hot('---------------(a|) ').pipe(mergeMapTo(replaySubject));
+        const subscriber1 = hot('---------------(a|) ').pipe(mergeMap(() => replaySubject));
         const expected1 = '      ---------------(34|)';
 
         expectObservable(
@@ -259,13 +259,13 @@ describe('ReplaySubject', () => {
         }
 
         const sourceTemplate = ' -1-2-3----4------5-6----7-8----9--|';
-        const subscriber1 = hot('------(a|)                         ').pipe(mergeMapTo(replaySubject));
+        const subscriber1 = hot('------(a|)                         ').pipe(mergeMap(() => replaySubject));
         const unsub1 = '         ---------------------!             ';
         const expected1 = '      ------(23)4------5-6--             ';
-        const subscriber2 = hot('------------(b|)                   ').pipe(mergeMapTo(replaySubject));
+        const subscriber2 = hot('------------(b|)                   ').pipe(mergeMap(() => replaySubject));
         const unsub2 = '         -------------------------!         ';
         const expected2 = '      ------------4----5-6----7-         ';
-        const subscriber3 = hot('---------------------------(c|)    ').pipe(mergeMapTo(replaySubject));
+        const subscriber3 = hot('---------------------------(c|)    ').pipe(mergeMap(() => replaySubject));
         const expected3 = '      ---------------------------(78)9--|';
 
         expectObservable(
@@ -291,7 +291,7 @@ describe('ReplaySubject', () => {
         }
 
         const sourceTemplate = ' -1-2-3----4|';
-        const subscriber1 = hot('-------------(a|)').pipe(mergeMapTo(replaySubject));
+        const subscriber1 = hot('-------------(a|)').pipe(mergeMap(() => replaySubject));
         const expected1 = '      -------------(4|)';
 
         expectObservable(
@@ -315,7 +315,7 @@ describe('ReplaySubject', () => {
         }
 
         const sourceTemplate = ' 1234-------|';
-        const subscriber1 = hot('----(a|)').pipe(mergeMapTo(replaySubject));
+        const subscriber1 = hot('----(a|)').pipe(mergeMap(() => replaySubject));
         const expected1 = '      ----(34)---|';
 
         expectObservable(
