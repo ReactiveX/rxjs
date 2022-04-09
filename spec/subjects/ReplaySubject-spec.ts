@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
-import { of, ReplaySubject, Subject } from 'rxjs';
-import { mergeMap, tap } from 'rxjs/operators';
+import { firstValueFrom, of, ReplaySubject, Subject } from 'rxjs';
+import { mergeMap, take, tap, toArray } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -370,5 +370,37 @@ describe('ReplaySubject', () => {
       error: () => results.push('E'),
     });
     expect(results).to.deep.equal([1, 2, 'E']);
+  });
+
+  it('should emit buffered values before forwarding source emissions', () => {
+    const subject = new ReplaySubject<number>();
+    subject.next(1);
+    subject.next(2);
+
+    const results: number[] = [];
+
+    subject.pipe(take(4)).subscribe((value) => {
+      results.push(value);
+      subject.next(value + 2);
+    });
+
+    expect(results).to.deep.equal([1, 2, 3, 4]);
+  });
+
+  it('ReplaySubject wtf ???', async () => {
+    const subject = new ReplaySubject<number>();
+    subject.next(1);
+    subject.next(2);
+
+    const results = await firstValueFrom(
+      subject.pipe(
+        take(4),
+        tap((value) => subject.next(value + 2)),
+        toArray()
+      )
+    );
+
+    // results is [7] ?? wat?
+    expect(results).to.deep.equal([1, 2, 3, 4]);
   });
 });
