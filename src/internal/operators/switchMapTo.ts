@@ -2,7 +2,7 @@ import { switchMap } from './switchMap';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { isFunction } from '../util/isFunction';
 
-/** @deprecated Will be removed in v9. Use {@link mergeMap} instead: `mergeMap(() => result)` */
+/** @deprecated Will be removed in v9. Use {@link switchMap} instead: `switchMap(() => result)` */
 export function switchMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<unknown, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function switchMapTo<O extends ObservableInput<unknown>>(
@@ -54,7 +54,7 @@ export function switchMapTo<T, R, O extends ObservableInput<unknown>>(
  * `resultSelector`) every time a value is emitted on the source Observable,
  * and taking only the values from the most recently projected inner
  * Observable.
- * @deprecated Will be removed in v9. Use {@link mergeMap} instead: `mergeMap(() => result)`
+ * @deprecated Will be removed in v9. Use {@link switchMap} instead: `switchMap(() => result)`
  */
 export function switchMapTo<T, R, O extends ObservableInput<unknown>>(
   innerObservable: O,
