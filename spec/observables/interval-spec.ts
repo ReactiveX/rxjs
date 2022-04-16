@@ -1,64 +1,72 @@
+/** @prettier */
 import { expect } from 'chai';
-import { expectObservable } from '../helpers/marble-testing';
 import { NEVER, interval, asapScheduler, animationFrameScheduler, queueScheduler } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { take, concat } from 'rxjs/operators';
 import * as sinon from 'sinon';
-
-declare const rxTestScheduler: TestScheduler;
+import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {interval} */
 describe('interval', () => {
-  it('should create an observable emitting periodically', () => {
-    const e1 = interval(20, rxTestScheduler).pipe(
-      take(6), // make it actually finite, so it can be rendered
-      concat(NEVER) // but pretend it's infinite by not completing
-    );
-    const expected = '--a-b-c-d-e-f-';
-    const values = {
-      a: 0,
-      b: 1,
-      c: 2,
-      d: 3,
-      e: 4,
-      f: 5,
-    };
-    expectObservable(e1).toBe(expected, values);
+  let rxTestScheduler: TestScheduler;
+
+  beforeEach(() => {
+    rxTestScheduler = new TestScheduler(observableMatcher);
   });
 
   it('should set up an interval', () => {
-    const expected = '----------0---------1---------2---------3---------4---------5---------6-----';
-    expectObservable(interval(100, rxTestScheduler)).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
+    rxTestScheduler.run(({ expectObservable, time }) => {
+      const period = time('----------|                                                                 ');
+      //                             ----------|
+      //                                       ----------|
+      //                                                 ----------|
+      //                                                           ----------|
+      //                                                                     ----------|
+      //                                                                               ----------|
+      const unsubs = '     ---------------------------------------------------------------------------!';
+      const expected = '   ----------0---------1---------2---------3---------4---------5---------6-----';
+      expectObservable(interval(period), unsubs).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
+    });
   });
 
   it('should emit when relative interval set to zero', () => {
-    const e1 = interval(0, rxTestScheduler).pipe(take(7));
-    const expected = '(0123456|)';
-    expectObservable(e1).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
+    rxTestScheduler.run(({ expectObservable, time }) => {
+      const period = time('|         ');
+      const expected = '   (0123456|)';
+
+      const e1 = interval(period).pipe(take(7));
+      expectObservable(e1).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
+    });
   });
 
   it('should consider negative interval as zero', () => {
-    const e1 = interval(-1, rxTestScheduler).pipe(take(7));
-    const expected = '(0123456|)';
-    expectObservable(e1).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
+    rxTestScheduler.run(({ expectObservable }) => {
+      const expected = '(0123456|)';
+      const e1 = interval(-1).pipe(take(7));
+      expectObservable(e1).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
+    });
   });
 
   it('should emit values until unsubscribed', (done) => {
     const values: number[] = [];
     const expected = [0, 1, 2, 3, 4, 5, 6];
     const e1 = interval(5);
-    const subscription = e1.subscribe({ next: (x: number) => {
-      values.push(x);
-      if (x === 6) {
-        subscription.unsubscribe();
-        expect(values).to.deep.equal(expected);
-        done();
-      }
-    }, error: (err: any) => {
-      done(new Error('should not be called'));
-    }, complete: () => {
-      done(new Error('should not be called'));
-    } });
+    const subscription = e1.subscribe({
+      next: (x: number) => {
+        values.push(x);
+        if (x === 6) {
+          subscription.unsubscribe();
+          expect(values).to.deep.equal(expected);
+          done();
+        }
+      },
+      error: (err: any) => {
+        done(new Error('should not be called'));
+      },
+      complete: () => {
+        done(new Error('should not be called'));
+      },
+    });
   });
 
   it('should create an observable emitting periodically with the AsapScheduler', (done) => {
@@ -80,9 +88,10 @@ describe('interval', () => {
         expect(asapScheduler._scheduled).to.equal(undefined);
         sandbox.restore();
         done();
-      }
+      },
     });
-    let i = -1, n = events.length;
+    let i = -1,
+      n = events.length;
     while (++i < n) {
       fakeTimer.tick(period);
     }
@@ -107,9 +116,10 @@ describe('interval', () => {
         expect(queueScheduler._scheduled).to.equal(undefined);
         sandbox.restore();
         done();
-      }
+      },
     });
-    let i = -1, n = events.length;
+    let i = -1,
+      n = events.length;
     while (++i < n) {
       fakeTimer.tick(period);
     }
@@ -134,9 +144,10 @@ describe('interval', () => {
         expect(animationFrameScheduler._scheduled).to.equal(undefined);
         sandbox.restore();
         done();
-      }
+      },
     });
-    let i = -1, n = events.length;
+    let i = -1,
+      n = events.length;
     while (++i < n) {
       fakeTimer.tick(period);
     }
