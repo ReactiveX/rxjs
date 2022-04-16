@@ -14,35 +14,6 @@ describe('interval', () => {
     rxTestScheduler = new TestScheduler(observableMatcher);
   });
 
-  it('should create an observable emitting periodically', () => {
-    rxTestScheduler.run(({ expectObservable, time }) => {
-      const values = {
-        a: 0,
-        b: 1,
-        c: 2,
-        d: 3,
-        e: 4,
-        f: 5,
-      };
-
-      const period = time('--|           ');
-      //                     --|
-      //                       --|
-      //                         --|
-      //                           --|
-      //                             --|
-      //                               --|
-      const expected = '   --a-b-c-d-e-f-';
-
-      const e1 = interval(period).pipe(
-        take(6), // make it actually finite, so it can be rendered
-        concat(NEVER) // but pretend it's infinite by not completing
-      );
-
-      expectObservable(e1).toBe(expected, values);
-    });
-  });
-
   it('should set up an interval', () => {
     rxTestScheduler.run(({ expectObservable, time }) => {
       const period = time('----------|                                                                 ');
