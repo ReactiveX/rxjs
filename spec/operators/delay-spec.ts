@@ -1,4 +1,3 @@
-/** @prettier */
 import { of, concat } from 'rxjs';
 import { delay, repeatWhen, skip, take, tap, mergeMap, ignoreElements } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';

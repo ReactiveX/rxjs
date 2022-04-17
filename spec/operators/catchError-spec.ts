@@ -125,7 +125,7 @@ describe('catchError operator', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  -1-2-3-#          ');
       const e1subs = '  ^------!          ';
-      const e2 =  cold('       5-6-7-8-9-|');
+      const e2 = cold('        5-6-7-8-9-|');
       const e2subs = '  -------^----!     ';
       const expected = '-1-2-3-5-6-7-     ';
       const unsub = '   ------------!     ';
@@ -142,7 +142,7 @@ describe('catchError operator', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  -1-2-3-#          ');
       const e1subs = '  ^------!          ';
-      const e2 =  cold('       5-6-7-8-9-|');
+      const e2 = cold('        5-6-7-8-9-|');
       const e2subs = '  -------^----!     ';
       const expected = '-1-2-3-5-6-7-     ';
       const unsub = '   ------------!     ';
@@ -178,10 +178,14 @@ describe('catchError operator', () => {
       })
     );
 
-    throwError(() => new Error('Some error')).pipe(
-      catchError(() => synchronousObservable),
-      takeWhile((x) => x != 2) // unsubscribe at the second side-effect
-    ).subscribe(() => { /* noop */ });
+    throwError(() => new Error('Some error'))
+      .pipe(
+        catchError(() => synchronousObservable),
+        takeWhile((x) => x != 2) // unsubscribe at the second side-effect
+      )
+      .subscribe(() => {
+        /* noop */
+      });
 
     expect(sideEffects).to.deep.equal([1, 2]);
   });
@@ -202,14 +206,13 @@ describe('catchError operator', () => {
     });
   });
 
-  it('should catch and allow the cold observable to be repeated with the third ' +
-  '(caught) argument', () => {
+  it('should catch and allow the cold observable to be repeated with the third (caught) argument', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 =  cold('--a--b--c--------|       ');
+      const e1 = cold('--a--b--c--------|       ');
       const subs = [
         '               ^-------!                ',
         '              --------^-------!         ',
-        '              ----------------^-------! '
+        '              ----------------^-------! ',
       ];
       const expected = '--a--b----a--b----a--b--#';
 
@@ -234,13 +237,14 @@ describe('catchError operator', () => {
     });
   });
 
-  it('should catch and allow the hot observable to proceed with the third ' +
-  '(caught) argument', () => {
+  it('should catch and allow the hot observable to proceed with the third (caught) argument', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--c----d---|');
+      // prettier-ignore
       const subs = [
         '               ^-------!         ',
-        '              --------^--------! '];
+        '              --------^--------! ',
+      ];
       const expected = '--a--b-------d---|';
 
       let retries = 0;
@@ -339,46 +343,50 @@ describe('catchError operator', () => {
   });
 
   it('should pass the error as the first argument', (done) => {
-    throwError(() => ('bad')).pipe(
-      catchError((err: any) => {
-        expect(err).to.equal('bad');
-        return EMPTY;
-      })
-    ).subscribe({ next: () => {
-    //noop
-    }, error: (err: any) => {
-      done(new Error('should not be called'));
-    }, complete: () => {
-      done();
-    } });
+    throwError(() => 'bad')
+      .pipe(
+        catchError((err: any) => {
+          expect(err).to.equal('bad');
+          return EMPTY;
+        })
+      )
+      .subscribe({
+        next: () => {
+          //noop
+        },
+        error: (err: any) => {
+          done(new Error('should not be called'));
+        },
+        complete: () => {
+          done();
+        },
+      });
   });
 
   it('should accept selector returns any ObservableInput', (done) => {
     const input$ = createObservableInputs(42);
 
-    input$.pipe(
-      mergeMap(input =>
-        throwError(() => ('bad')).pipe(catchError(err => input))
-      )
-    ).subscribe({ next: x => {
-      expect(x).to.be.equal(42);
-    }, error: (err: any) => {
-      done(new Error('should not be called'));
-    }, complete: () => {
-      done();
-    } });
+    input$.pipe(mergeMap((input) => throwError(() => 'bad').pipe(catchError((err) => input)))).subscribe({
+      next: (x) => {
+        expect(x).to.be.equal(42);
+      },
+      error: (err: any) => {
+        done(new Error('should not be called'));
+      },
+      complete: () => {
+        done();
+      },
+    });
   });
 
   it('should catch errors throw from within the constructor', () => {
     // See https://github.com/ReactiveX/rxjs/issues/3740
     testScheduler.run(({ expectObservable }) => {
       const source = concat(
-        new Observable<string>(o => {
+        new Observable<string>((o) => {
           o.next('a');
           throw 'kaboom';
-        }).pipe(
-          catchError(_ => of('b'))
-        ),
+        }).pipe(catchError((_) => of('b'))),
         of('c')
       );
       const expected = '(abc|)';
@@ -408,11 +416,9 @@ describe('catchError operator', () => {
       const errorSpy = sinon.spy();
       const thrownError = new Error('BROKEN THROW');
       const testError = new Error('BROKEN PROMISE');
-      from(Promise.reject(testError)).pipe(
-        catchError(err =>
-          throwError(() => (thrownError))
-        )
-      ).subscribe({ next: subscribeSpy, error: errorSpy });
+      from(Promise.reject(testError))
+        .pipe(catchError((err) => throwError(() => thrownError)))
+        .subscribe({ next: subscribeSpy, error: errorSpy });
 
       trueSetTimeout(() => {
         try {
@@ -431,33 +437,32 @@ describe('catchError operator', () => {
   // TODO(v8): see https://github.com/ReactiveX/rxjs/issues/5115
   // The re-implementation in version 8 should fix the problem in the
   // referenced issue. Closed subscribers should remain closed.
-  
+
   it('Properly handle async handled result if source is synchronous', (done) => {
-    const source = new Observable<string>(observer => {
+    const source = new Observable<string>((observer) => {
       observer.error(new Error('kaboom!'));
       observer.complete();
     });
 
-    const sourceWithDelay = new Observable<string>(observer => {
+    const sourceWithDelay = new Observable<string>((observer) => {
       observer.next('delayed');
       observer.complete();
     }).pipe(delay(0));
 
     const values: string[] = [];
-    source.pipe(
-      catchError(err => sourceWithDelay)
-    )
-    .subscribe(
-      { next: value => values.push(value), error: err => done(err), complete: () => {
+    source.pipe(catchError((err) => sourceWithDelay)).subscribe({
+      next: (value) => values.push(value),
+      error: (err) => done(err),
+      complete: () => {
         expect(values).to.deep.equal(['delayed']);
         done();
-      } }
-    );
+      },
+    });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable(subscriber => {
+    const synchronousObservable = new Observable((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -466,12 +471,15 @@ describe('catchError operator', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      catchError(() => EMPTY),
-      take(3),
-    ).subscribe(() => { /* noop */ });
+    synchronousObservable
+      .pipe(
+        catchError(() => EMPTY),
+        take(3)
+      )
+      .subscribe(() => {
+        /* noop */
+      });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
-
 });

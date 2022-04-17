@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { min, skip, take, mergeMap } from 'rxjs/operators';
 import { range, of } from 'rxjs';

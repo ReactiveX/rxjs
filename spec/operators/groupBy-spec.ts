@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { groupBy, delay, tap, map, take, mergeMap, materialize, skip, ignoreElements } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';

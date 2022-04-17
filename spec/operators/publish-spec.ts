@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { publish, zip, mergeMapTo, mergeMap, tap, refCount, retry, repeat } from 'rxjs/operators';
 import { ConnectableObservable, of, Subscription, Observable, pipe } from 'rxjs';

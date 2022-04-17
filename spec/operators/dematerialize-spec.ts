@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { of, ObservableNotification, Observable } from 'rxjs';
 import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from 'rxjs/internal/NotificationFactories';

@@ -1,4 +1,3 @@
-/** @prettier */
 import { TestScheduler } from 'rxjs/testing';
 import { pairwise, take } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';

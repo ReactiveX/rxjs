@@ -20,7 +20,14 @@ describe('combineLatest', () => {
       const result = e1.pipe(combineLatest(e2, (a, b) => String(a) + String(b)));
 
       expectObservable(result).toBe(expected, {
-        A: 'a1', B: 'b1', C: 'b2', D: 'b3', E: 'b4', F: 'c4', G: 'd4', H: 'e4'
+        A: 'a1',
+        B: 'b1',
+        C: 'b2',
+        D: 'b3',
+        E: 'b4',
+        F: 'c4',
+        G: 'd4',
+        H: 'e4',
       });
     });
   });
@@ -95,7 +102,7 @@ describe('combineLatest', () => {
         a: 1,
         b: 2,
         c: 3,
-        r: 1 + 3 //a + c
+        r: 1 + 3, //a + c
       };
       const e1 = hot('-a-^-|', values);
       const e1subs = '   ^-!';
@@ -114,7 +121,9 @@ describe('combineLatest', () => {
   it('should work with hot-single and hot-empty', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const values = {
-        a: 1, b: 2, c: 3
+        a: 1,
+        b: 2,
+        c: 3,
       };
       const e1 = hot('-a-^-|', values);
       const e1subs = '   ^-!';
@@ -133,7 +142,7 @@ describe('combineLatest', () => {
   it('should work with hot-single and never', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const values = {
-        a: 1
+        a: 1,
       };
       const e1 = hot('-a-^-|', values);
       const e1subs = '   ^-!';
@@ -152,7 +161,8 @@ describe('combineLatest', () => {
   it('should work with never and hot-single', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const values = {
-        a: 1, b: 2
+        a: 1,
+        b: 2,
       };
       const e1 = hot('--------', values); //never
       const e1subs = '   ^    ';
@@ -237,7 +247,7 @@ describe('combineLatest', () => {
 
   it('should work with hot and throw', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('-a-^--b--c--|', { a: 1, b: 2, c: 3});
+      const e1 = hot('-a-^--b--c--|', { a: 1, b: 2, c: 3 });
       const e1subs = '   ^-!';
       const e2 = hot('---^-#', undefined, 'bazinga');
       const e2subs = '   ^-!';
@@ -255,7 +265,7 @@ describe('combineLatest', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('---^-#', undefined, 'bazinga');
       const e1subs = '   ^-!';
-      const e2 = hot('-a-^--b--c--|', { a: 1, b: 2, c: 3});
+      const e2 = hot('-a-^--b--c--|', { a: 1, b: 2, c: 3 });
       const e2subs = '   ^-!';
       const expected = ' --#';
 
@@ -357,7 +367,7 @@ describe('combineLatest', () => {
 
       const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
-      expectObservable(result).toBe(expected, { a: 1, b: 2}, 'wokka wokka');
+      expectObservable(result).toBe(expected, { a: 1, b: 2 }, 'wokka wokka');
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
@@ -373,7 +383,7 @@ describe('combineLatest', () => {
 
       const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
-      expectObservable(result).toBe(expected, { a: 1, b: 2}, 'wokka wokka');
+      expectObservable(result).toBe(expected, { a: 1, b: 2 }, 'wokka wokka');
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
@@ -415,7 +425,7 @@ describe('combineLatest', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('-a--^--b---c---|', { a: 'a', b: 'b', c: 'c' });
       const e1subs = '    ^----------!';
-      const e2 = hot('--d-^----e---f--|', { d: 'd', e: 'e', f: 'f'});
+      const e2 = hot('--d-^----e---f--|', { d: 'd', e: 'e', f: 'f' });
       const e2subs = '    ^-----------!';
       const expected = '  -----x-y-z--|';
 
@@ -477,13 +487,17 @@ describe('combineLatest', () => {
 
   it('should handle selector throwing', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('--a--^--b--|', { a: 1, b: 2});
+      const e1 = hot('--a--^--b--|', { a: 1, b: 2 });
       const e1subs = '     ^--!';
-      const e2 = hot('--c--^--d--|', { c: 3, d: 4});
+      const e2 = hot('--c--^--d--|', { c: 3, d: 4 });
       const e2subs = '     ^--!';
       const expected = '   ---#';
 
-      const result = e1.pipe(combineLatest(e2, (x, y) => { throw 'ha ha ' + x + ', ' + y; }));
+      const result = e1.pipe(
+        combineLatest(e2, (x, y) => {
+          throw 'ha ha ' + x + ', ' + y;
+        })
+      );
 
       expectObservable(result).toBe(expected, null, 'ha ha 2, 4');
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -537,11 +551,7 @@ describe('combineLatest', () => {
       const e2 = hot('  --1--2-|');
       const expected = '-------(c|)';
 
-      const result = e1.pipe(
-        combineLatest(e2),
-        distinct(),
-        count()
-      );
+      const result = e1.pipe(combineLatest(e2), distinct(), count());
 
       expectObservable(result).toBe(expected, { c: 3 });
     });
