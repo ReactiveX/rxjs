@@ -121,7 +121,7 @@ export class Observable<T> implements Subscribable<T> {
    * by default emits all its values synchronously. Always check documentation for how given Observable
    * will behave when subscribed and if its default behavior can be modified with a `scheduler`.
    *
-   * ## Examples
+   * #### Examples
    *
    * Subscribe with an {@link guide/observer Observer}
    *
@@ -261,7 +261,7 @@ export class Observable<T> implements Subscribable<T> {
    * this situation, look into adding something like {@link timeout}, {@link take},
    * {@link takeWhile}, or {@link takeUntil} amongst others.
    *
-   * ## Example
+   * #### Example
    *
    * ```ts
    * import { interval, take } from 'rxjs';
