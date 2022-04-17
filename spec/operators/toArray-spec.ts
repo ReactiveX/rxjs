@@ -1,4 +1,3 @@
-/** @prettier */
 import { toArray, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';

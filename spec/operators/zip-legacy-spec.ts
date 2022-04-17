@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { zip } from 'rxjs/operators';
 import { from } from 'rxjs';

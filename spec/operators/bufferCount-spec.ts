@@ -19,7 +19,7 @@ describe('bufferCount operator', () => {
         w: ['c', 'd', 'e'],
         x: ['e', 'f', 'g'],
         y: ['g', 'h', 'i'],
-        z: ['i']
+        z: ['i'],
       };
       const e1 = hot('  --a--b--c--d--e--f--g--h--i--|');
       const expected = '--------v-----w-----x-----y--(z|)';
@@ -30,10 +30,10 @@ describe('bufferCount operator', () => {
 
   it('should emit buffers at buffersize of intervals if not specified', () => {
     testScheduler.run(({ hot, expectObservable }) => {
-        const values = {
+      const values = {
         x: ['a', 'b'],
         y: ['c', 'd'],
-        z: ['e', 'f']
+        z: ['e', 'f'],
       };
       const e1 = hot('  --a--b--c--d--e--f--|');
       const expected = '-----x-----y-----z--|';
@@ -45,21 +45,22 @@ describe('bufferCount operator', () => {
   it('should buffer properly (issue #2062)', () => {
     const item$ = new Subject<number>();
     const results: any[] = [];
-    item$.pipe(
-      bufferCount(3, 1)
-    ).subscribe(value => {
-        results.push(value);
+    item$.pipe(bufferCount(3, 1)).subscribe((value) => {
+      results.push(value);
 
-        if (value.join() === '1,2,3') {
-          item$.next(4);
-        }
-      });
+      if (value.join() === '1,2,3') {
+        item$.next(4);
+      }
+    });
 
     item$.next(1);
     item$.next(2);
     item$.next(3);
 
-    expect(results).to.deep.equal([[1, 2, 3], [2, 3, 4]]);
+    expect(results).to.deep.equal([
+      [1, 2, 3],
+      [2, 3, 4],
+    ]);
   });
 
   it('should emit partial buffers if source completes before reaching specified buffer count', () => {
@@ -67,7 +68,7 @@ describe('bufferCount operator', () => {
       const e1 = hot('  --a--b--c--d--|');
       const expected = '--------------(x|)';
 
-      expectObservable(e1.pipe(bufferCount(5))).toBe(expected, {x: ['a', 'b', 'c', 'd']});
+      expectObservable(e1.pipe(bufferCount(5))).toBe(expected, { x: ['a', 'b', 'c', 'd'] });
     });
   });
 
@@ -77,7 +78,7 @@ describe('bufferCount operator', () => {
       const e1subs = '     ^-------------!';
       const expected = '   --------y-----(z|)';
 
-      expectObservable(e1.pipe(bufferCount(3))).toBe(expected, {y: ['b', 'c', 'd'], z: ['e']});
+      expectObservable(e1.pipe(bufferCount(3))).toBe(expected, { y: ['b', 'c', 'd'], z: ['e'] });
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -86,7 +87,7 @@ describe('bufferCount operator', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const values = {
         v: ['a', 'b', 'c'],
-        w: ['c', 'd', 'e']
+        w: ['c', 'd', 'e'],
       };
       const e1 = hot('  --a--b--c--d--e--f--g--h--i--|');
       const unsub = '   ------------------!           ';
@@ -102,7 +103,7 @@ describe('bufferCount operator', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const values = {
         v: ['a', 'b', 'c'],
-        w: ['c', 'd', 'e']
+        w: ['c', 'd', 'e'],
       };
       const e1 = hot('  --a--b--c--d--e--f--g--h--i--|');
       const subs = '    ^-----------------!           ';
@@ -138,7 +139,7 @@ describe('bufferCount operator', () => {
         w: ['b', 'c', 'd'],
         x: ['c', 'd', 'e'],
         y: ['d', 'e'],
-        z: ['e']
+        z: ['e'],
       };
       const e1 = hot('  --a--b--c--d--e--|');
       const e1subs = '  ^----------------!';
@@ -151,12 +152,12 @@ describe('bufferCount operator', () => {
 
   it('should emit buffers with specified skip count when skip count is more than window count', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-    const e1 = hot('  --a--b--c--d--e--|');
+      const e1 = hot('--a--b--c--d--e--|');
       const e1subs = '  ^----------------!';
       const expected = '-----y--------z--|';
       const values = {
         y: ['a', 'b'],
-        z: ['d', 'e']
+        z: ['d', 'e'],
       };
 
       expectObservable(e1.pipe(bufferCount(2, 3))).toBe(expected, values);
@@ -166,7 +167,7 @@ describe('bufferCount operator', () => {
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable(subscriber => {
+    const synchronousObservable = new Observable((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -175,10 +176,9 @@ describe('bufferCount operator', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      bufferCount(1),
-      take(3),
-    ).subscribe(() => { /* noop */ });
+    synchronousObservable.pipe(bufferCount(1), take(3)).subscribe(() => {
+      /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });

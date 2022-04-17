@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { of, EMPTY, throwError, config } from 'rxjs';
 

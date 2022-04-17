@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { repeatWhen, map, mergeMap, takeUntil, takeWhile, take } from 'rxjs/operators';
 import { of, EMPTY, Observable, Subscriber } from 'rxjs';
@@ -479,7 +478,7 @@ describe('repeatWhen operator', () => {
       subscriber.complete();
       return () => {
         results.push('finalizer');
-      }
+      };
     });
     const subscription = source.pipe(repeatWhen((completions$) => completions$.pipe(takeWhile((_, i) => i < 3)))).subscribe({
       next: (value) => results.push(value),

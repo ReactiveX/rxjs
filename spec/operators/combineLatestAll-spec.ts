@@ -382,7 +382,7 @@ describe('combineLatestAll operator', () => {
 
       const result = of(e1, e2).pipe(combineLatestAll((x, y) => x + y));
 
-      expectObservable(result).toBe(expected, { a: 1, b: 2}, 'wokka wokka');
+      expectObservable(result).toBe(expected, { a: 1, b: 2 }, 'wokka wokka');
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
@@ -422,11 +422,11 @@ describe('combineLatestAll operator', () => {
 
   it('should handle throw after complete right', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const left = hot('  -----^--------#', undefined, 'bad things');
-      const leftSubs = '       ^--------!';
-      const right =  hot('--a--^--b---|');
-      const rightSubs = '      ^------!';
-      const expected = '       ---------#';
+      const left = hot(' -----^--------#', undefined, 'bad things');
+      const leftSubs = '      ^--------!';
+      const right = hot('--a--^--b---|');
+      const rightSubs = '     ^------!';
+      const expected = '      ---------#';
 
       const result = of(left, right).pipe(combineLatestAll((x, y) => x + y));
 
@@ -508,7 +508,11 @@ describe('combineLatestAll operator', () => {
       const e2subs = '     ^--!';
       const expected = '   ---#';
 
-      const result = of(e1, e2).pipe(combineLatestAll((x, y) => { throw 'ha ha ' + x + ', ' + y; }));
+      const result = of(e1, e2).pipe(
+        combineLatestAll((x, y) => {
+          throw 'ha ha ' + x + ', ' + y;
+        })
+      );
 
       expectObservable(result).toBe(expected, null, 'ha ha b, d');
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -519,26 +523,49 @@ describe('combineLatestAll operator', () => {
   it('should combine two observables', (done) => {
     const a = of(1, 2, 3);
     const b = of(4, 5, 6, 7, 8);
-    const expected = [[3, 4], [3, 5], [3, 6], [3, 7], [3, 8]];
-    of(a, b).pipe(combineLatestAll()).subscribe({ next: (vals) => {
-      expect(vals).to.deep.equal(expected.shift());
-    }, complete: () => {
-      expect(expected.length).to.equal(0);
-      done();
-    } });
+    const expected = [
+      [3, 4],
+      [3, 5],
+      [3, 6],
+      [3, 7],
+      [3, 8],
+    ];
+    of(a, b)
+      .pipe(combineLatestAll())
+      .subscribe({
+        next: (vals) => {
+          expect(vals).to.deep.equal(expected.shift());
+        },
+        complete: () => {
+          expect(expected.length).to.equal(0);
+          done();
+        },
+      });
   });
 
   it('should combine two immediately-scheduled observables', (done) => {
     const a = of(1, 2, 3, queueScheduler);
     const b = of(4, 5, 6, 7, 8, queueScheduler);
-    const r = [[1, 4], [2, 4], [2, 5], [3, 5], [3, 6], [3, 7], [3, 8]];
+    const r = [
+      [1, 4],
+      [2, 4],
+      [2, 5],
+      [3, 5],
+      [3, 6],
+      [3, 7],
+      [3, 8],
+    ];
 
-    of(a, b, queueScheduler).pipe(combineLatestAll())
-      .subscribe({ next: (vals) => {
-        expect(vals).to.deep.equal(r.shift());
-    }, complete: () => {
-      expect(r.length).to.equal(0);
-      done();
-    } });
+    of(a, b, queueScheduler)
+      .pipe(combineLatestAll())
+      .subscribe({
+        next: (vals) => {
+          expect(vals).to.deep.equal(r.shift());
+        },
+        complete: () => {
+          expect(r.length).to.equal(0);
+          done();
+        },
+      });
   });
 });

@@ -1,4 +1,3 @@
-/** @prettier */
 import { TestScheduler } from 'rxjs/testing';
 import { of, defer, EMPTY, NEVER, concat, throwError, Observable } from 'rxjs';
 import { mergeScan, delay, mergeMap, takeWhile, startWith, take } from 'rxjs/operators';

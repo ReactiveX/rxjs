@@ -21,7 +21,7 @@ describe('bufferWhen operator', () => {
       const values = {
         x: ['b', 'c', 'd'],
         y: ['e', 'f', 'g'],
-        z: [] as string[]
+        z: [] as string[],
       };
 
       expectObservable(e1.pipe(bufferWhen(() => e2))).toBe(expected, values);
@@ -35,12 +35,13 @@ describe('bufferWhen operator', () => {
       const closings = [
         cold('             ---------------s--|                       '),
         cold('                            ----------(s|)             '),
-        cold('                                      -------------(s|)')];
+        cold('                                      -------------(s|)'),
+      ];
       const expected = '   ---------------x---------y---------(z|)   ';
       const values = {
         x: ['b', 'c', 'd'],
         y: ['e', 'f', 'g'],
-        z: ['h']
+        z: ['h'],
       };
 
       let i = 0;
@@ -58,22 +59,22 @@ describe('bufferWhen operator', () => {
       const closings = [
         {
           obs: hot('   -1--^--------------s---|                   '),
-          sub: '           ^--------------!                       '
+          sub: '           ^--------------!                       ',
         },
         {
           obs: hot('   --1-^----3--------4----------s-|           '),
-          sub: '           ---------------^---------!             '
+          sub: '           ---------------^---------!             ',
         },
         {
           obs: hot('   1-2-^------3----4-------5--6-----------s--|'),
-          sub: '           -------------------------^---------!   '
-        }
+          sub: '           -------------------------^---------!   ',
+        },
       ];
       const expected = '   ---------------x---------y---------(z|)';
       const values = {
         x: ['b', 'c', 'd'],
         y: ['e', 'f', 'g'],
-        z: ['h']
+        z: ['h'],
       };
 
       let i = 0;
@@ -94,16 +95,16 @@ describe('bufferWhen operator', () => {
       const closings = [
         cold('             ---------------|                       '),
         cold('                            ----------|             '),
-        cold('                                      -------------|')
+        cold('                                      -------------|'),
       ];
-      const closeSubs =  [
+      const closeSubs = [
         '                  ^--------------!                       ',
         '                                                         ',
         '                                                         ',
       ];
       const expected = '   -----------------------------------(x|)';
       const values = {
-        x: ['b', 'c', 'd', 'e', 'f', 'g', 'h']
+        x: ['b', 'c', 'd', 'e', 'f', 'g', 'h'],
       };
 
       let i = 0;
@@ -125,15 +126,15 @@ describe('bufferWhen operator', () => {
       const closings = [
         cold('             ---------------(s|)                       '),
         cold('                            ----------(s|)             '),
-        cold('                                      -------------(s|)')
+        cold('                                      -------------(s|)'),
       ];
-      const closeSubs =  [
+      const closeSubs = [
         '                  ^--------------!                          ',
-        '                  ---------------^--!                       '
+        '                  ---------------^--!                       ',
       ];
       const expected = '   ---------------x---                       ';
       const values = {
-        x: ['b', 'c', 'd']
+        x: ['b', 'c', 'd'],
       };
 
       let i = 0;
@@ -154,16 +155,16 @@ describe('bufferWhen operator', () => {
       const closings = [
         cold('             ---------------(s|)                       '),
         cold('                            ----------(s|)             '),
-        cold('                                      -------------(s|)')
+        cold('                                      -------------(s|)'),
       ];
       const closeSubs = [
         '                  ^--------------!                          ',
-        '                  ---------------^--!                       '
+        '                  ---------------^--!                       ',
       ];
       const expected = '   ---------------x---                       ';
       const unsub = '      ------------------!                       ';
       const values = {
-        x: ['b', 'c', 'd']
+        x: ['b', 'c', 'd'],
       };
 
       let i = 0;
@@ -188,7 +189,7 @@ describe('bufferWhen operator', () => {
       const closings = [
         cold('             ---------------s--|                       '),
         cold('                            ----------(s|)             '),
-        cold('                                      -------------(s|)')
+        cold('                                      -------------(s|)'),
       ];
       const closeSubs0 = ' ^--------------!                          ';
       const expected = '   ---------------(x#)                       ';
@@ -216,15 +217,15 @@ describe('bufferWhen operator', () => {
       const subs = '       ^--------------!                    ';
       const closings = [
         cold('             ---------------s--|                 '),
-        cold('                            #                    ')
+        cold('                            #                    '),
       ];
-      const closeSubs =  [
+      const closeSubs = [
         '                  ^--------------!                    ',
-        '                  ---------------(^!)                 '
+        '                  ---------------(^!)                 ',
       ];
       const expected = '   ---------------(x#)                 ';
       const values = {
-        x: ['b', 'c', 'd']
+        x: ['b', 'c', 'd'],
       };
 
       let i = 0;
@@ -243,13 +244,13 @@ describe('bufferWhen operator', () => {
       const subs = '       ^--------------------!              ';
       const closings = [
         cold('             ---------------s--|                 '),
-        cold('                            ------#              ')
+        cold('                            ------#              '),
       ];
       const closeSubs = [
         '                  ^--------------!                    ',
-        '                  ---------------^-----!              '
+        '                  ---------------^-----!              ',
       ];
-      const expected =    '---------------x-----#              ';
+      const expected = '   ---------------x-----#              ';
       const values = { x: ['b', 'c', 'd'] };
 
       let i = 0;
@@ -267,13 +268,14 @@ describe('bufferWhen operator', () => {
       const e1 = hot('--a--^---b---c---d---e---f---#');
       const e2 = cold('    ---------------(s|)      ');
       //                                ---------------(s|)
+      // prettier-ignore
       const e2subs = [
         '                  ^--------------!         ',
-        '                  ---------------^--------!'
+        '                  ---------------^--------!',
       ];
       const expected = '   ---------------x--------#';
       const values = {
-        x: ['b', 'c', 'd']
+        x: ['b', 'c', 'd'],
       };
 
       const result = e1.pipe(bufferWhen(() => e2));
@@ -290,7 +292,7 @@ describe('bufferWhen operator', () => {
       const e1subs = '  (^!)';
       const expected = '(x|)';
       const values = {
-        x: [] as string[]
+        x: [] as string[],
       };
 
       const result = e1.pipe(bufferWhen(() => e2));
@@ -307,7 +309,7 @@ describe('bufferWhen operator', () => {
       const e1subs = '  (^!)';
       const expected = '#';
       const values = {
-        x: [] as string[]
+        x: [] as string[],
       };
 
       const result = e1.pipe(bufferWhen(() => e2));
@@ -329,11 +331,11 @@ describe('bufferWhen operator', () => {
         '               ----------------^-------!                    ',
         '               ------------------------^-------!            ',
         '               --------------------------------^-------!    ',
-        '               ----------------------------------------^---!'
+        '               ----------------------------------------^---!',
       ];
       const expected = '--------x-------x-------x-------x-------x----';
       const values = {
-        x: [] as string[]
+        x: [] as string[],
       };
 
       const source = e1.pipe(bufferWhen(() => e2));
@@ -350,7 +352,7 @@ describe('bufferWhen operator', () => {
       const e2 = cold('-');
       const expected = '   -----------------------------------(x|)';
       const values = {
-        x: ['b', 'c', 'd', 'e', 'f', 'g', 'h']
+        x: ['b', 'c', 'd', 'e', 'f', 'g', 'h'],
       };
 
       expectObservable(e1.pipe(bufferWhen(() => e2))).toBe(expected, values);
@@ -366,17 +368,23 @@ describe('bufferWhen operator', () => {
     const closing = of(1);
     const TOO_MANY_INVOCATIONS = 30;
 
-    source.pipe(
-      bufferWhen(() => closing),
-      takeWhile((val: any, index: number) => index < TOO_MANY_INVOCATIONS)
-    ).subscribe({ next: (val: any) => {
-      expect(Array.isArray(val)).to.be.true;
-      expect(val.length).to.equal(0);
-    }, error: (err: any) => {
-      done(new Error('should not be called'));
-    }, complete: () => {
-      done();
-    } });
+    source
+      .pipe(
+        bufferWhen(() => closing),
+        takeWhile((val: any, index: number) => index < TOO_MANY_INVOCATIONS)
+      )
+      .subscribe({
+        next: (val: any) => {
+          expect(Array.isArray(val)).to.be.true;
+          expect(val.length).to.equal(0);
+        },
+        error: (err: any) => {
+          done(new Error('should not be called'));
+        },
+        complete: () => {
+          done();
+        },
+      });
   });
 
   it('should handle inner throw', () => {
@@ -387,7 +395,7 @@ describe('bufferWhen operator', () => {
       const e2subs = '     (^!)';
       const expected = '   #';
       const values = {
-        x: ['b', 'c', 'd', 'e', 'f', 'g', 'h']
+        x: ['b', 'c', 'd', 'e', 'f', 'g', 'h'],
       };
 
       const result = e1.pipe(bufferWhen(() => e2));
@@ -409,7 +417,7 @@ describe('bufferWhen operator', () => {
       const values = {
         x: ['b', 'c', 'd'],
         y: ['e', 'f', 'g', 'h'],
-        z: [] as string[]
+        z: [] as string[],
       };
 
       const source = e1.pipe(bufferWhen(() => e2));

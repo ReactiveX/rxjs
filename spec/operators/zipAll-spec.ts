@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { zipAll, mergeMap } from 'rxjs/operators';
 import { queueScheduler, of, zip, scheduled } from 'rxjs';
@@ -76,7 +75,7 @@ describe('zipAll operator', () => {
     });
   });
 
-  it('should end once one observable nexts and zips value from completed other ' + 'observable whose buffer is empty', () => {
+  it('should end once one observable nexts and zips value from completed other observable whose buffer is empty', () => {
     rxTestScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  ---a--b--c--|             ');
       const e1subs = '  ^-----------!             ';

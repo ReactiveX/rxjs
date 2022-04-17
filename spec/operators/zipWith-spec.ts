@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { zipWith, mergeMap } from 'rxjs/operators';
 import { queueScheduler, of, scheduled } from 'rxjs';

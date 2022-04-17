@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { NEVER, of, Subject } from 'rxjs';
 import { AnimationFrameAction } from 'rxjs/internal/scheduler/AnimationFrameAction';
