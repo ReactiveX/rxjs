@@ -1,4 +1,3 @@
-/** @prettier */
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { of, EMPTY } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';

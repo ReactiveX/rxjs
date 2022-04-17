@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { mergeMap, map, delay, take } from 'rxjs/operators';
 import { asapScheduler, defer, Observable, from, of, timer } from 'rxjs';

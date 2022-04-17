@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { concat, defer, Observable, of } from 'rxjs';
 import { switchScan, map, mergeMap, takeWhile } from 'rxjs/operators';
