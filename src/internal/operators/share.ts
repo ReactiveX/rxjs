@@ -1,16 +1,17 @@
-import { Observable } from '../Observable';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/from';
 import { take } from '../operators/take';
 import { Subject } from '../Subject';
 import { SafeSubscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { MonoTypeOperatorFunction, SubjectLike } from '../types';
+import { MonoTypeOperatorFunction, ObservableInput, SubjectLike } from '../types';
 import { operate } from '../util/lift';
 
 export interface ShareConfig<T> {
   /**
    * The factory used to create the subject that will connect the source observable to
    * multicast consumers.
+   *
+   * @defaultValue `() => new Subject<T>()`
    */
   connector?: () => SubjectLike<T>;
   /**
@@ -22,8 +23,10 @@ export interface ShareConfig<T> {
    * {@link ReplaySubject} will also push its buffered values before pushing the error.
    * It is also possible to pass a notifier factory returning an observable instead which grants more fine-grained
    * control over how and when the reset should happen. This allows behaviors like conditional or delayed resets.
+   *
+   * @defaultValue `true`
    */
-  resetOnError?: boolean | ((error: any) => Observable<any>);
+  resetOnError?: boolean | ((error: any) => ObservableInput<any>);
   /**
    * If true, the resulting observable will reset internal state on completion from source and return to a "cold" state. This
    * allows the resulting observable to be "repeated" after it is done.
@@ -32,8 +35,10 @@ export interface ShareConfig<T> {
    * or resubscriptions will resubscribe to that same subject.
    * It is also possible to pass a notifier factory returning an observable instead which grants more fine-grained
    * control over how and when the reset should happen. This allows behaviors like conditional or delayed resets.
+   *
+   * @defaultValue `true`
    */
-  resetOnComplete?: boolean | (() => Observable<any>);
+  resetOnComplete?: boolean | (() => ObservableInput<any>);
   /**
    * If true, when the number of subscribers to the resulting observable reaches zero due to those subscribers unsubscribing, the
    * internal state will be reset and the resulting observable will return to a "cold" state. This means that the next
@@ -43,8 +48,10 @@ export interface ShareConfig<T> {
    * will remain connected to the source, and new subscriptions to the result will be connected through that same subject.
    * It is also possible to pass a notifier factory returning an observable instead which grants more fine-grained
    * control over how and when the reset should happen. This allows behaviors like conditional or delayed resets.
+   *
+   * @defaultValue `true`
    */
-  resetOnRefCountZero?: boolean | (() => Observable<any>);
+  resetOnRefCountZero?: boolean | (() => ObservableInput<any>);
 }
 
 export function share<T>(): MonoTypeOperatorFunction<T>;
@@ -232,7 +239,7 @@ export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction
             dest.complete();
           },
         });
-        from(source).subscribe(connection);
+        source.subscribe(connection);
       }
     })(wrapperSource);
   };
@@ -240,7 +247,7 @@ export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction
 
 function handleReset<T extends unknown[] = never[]>(
   reset: () => void,
-  on: boolean | ((...args: T) => Observable<any>),
+  on: boolean | ((...args: T) => ObservableInput<any>),
   ...args: T
 ): Subscription | null {
   if (on === true) {
@@ -253,7 +260,7 @@ function handleReset<T extends unknown[] = never[]>(
     return null;
   }
 
-  return on(...args)
+  return innerFrom(on(...args))
     .pipe(take(1))
-    .subscribe(() => reset());
+    .subscribe(reset);
 }

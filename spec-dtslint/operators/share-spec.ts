@@ -1,3 +1,5 @@
+/** @prettier */
+
 import { of } from 'rxjs';
 import { share } from 'rxjs/operators';
 
@@ -7,4 +9,14 @@ it('should infer correctly', () => {
 
 it('should enforce types', () => {
   const o = of('foo', 'bar', 'baz').pipe(share('abc')); // $ExpectError
+});
+
+it('should accept observable input as notifier values', () => {
+  const o = of('foo', 'bar', 'baz').pipe( // $ExpectType Observable<string>
+    share({
+      resetOnError: () => Promise.resolve(),
+      resetOnComplete: () => Promise.resolve(),
+      resetOnRefCountZero: () => Promise.resolve(),
+    })
+  );
 });
