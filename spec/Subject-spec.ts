@@ -442,11 +442,10 @@ describe('Subject', () => {
       },
     };
 
-    // TODO(benlesh): This needs to go away, the types here are all wrong.
-    const sub: Subject<number | string> = Subject.create(destination, source);
+    const sub: Subject<any> = Subject.create(destination, source);
 
     sub.subscribe({
-      next: function (x) {
+      next: function (x: number) {
         output.push(x);
       },
       complete: () => {
@@ -495,7 +494,7 @@ describe('Subject', () => {
     const sub: Subject<any> = Subject.create(destination, source);
 
     sub.subscribe({
-      next: function (x) {
+      next: function (x: number) {
         output.push(x);
       },
       complete: () => {

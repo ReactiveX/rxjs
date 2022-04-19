@@ -75,15 +75,13 @@ describe('expand', () => {
       */
 
       const result = e1.pipe(
-        expand(
-          (x, index): Observable<any> => {
-            if (x === 16) {
-              return EMPTY;
-            } else {
-              return cold(e2shape, { z: x + x });
-            }
+        expand((x, index): Observable<any> => {
+          if (x === 16) {
+            return EMPTY;
+          } else {
+            return cold(e2shape, { z: x + x });
           }
-        )
+        })
       );
 
       expectObservable(result).toBe(expected, values);
@@ -163,14 +161,12 @@ describe('expand', () => {
       const expected = 'a--b--c-';
 
       const result = e1.pipe(
-        expand(
-          (x): Observable<any> => {
-            if (x === 16) {
-              return EMPTY;
-            }
-            return cold(e2shape, { z: x + x });
+        expand((x): Observable<any> => {
+          if (x === 16) {
+            return EMPTY;
           }
-        )
+          return cold(e2shape, { z: x + x });
+        })
       );
 
       expectObservable(result, unsub).toBe(expected, values);
@@ -195,14 +191,12 @@ describe('expand', () => {
 
       const result = e1.pipe(
         mergeMap((x) => of(x)),
-        expand(
-          (x): Observable<any> => {
-            if (x === 16) {
-              return EMPTY;
-            }
-            return cold(e2shape, { z: x + x });
+        expand((x): Observable<any> => {
+          if (x === 16) {
+            return EMPTY;
           }
-        ),
+          return cold(e2shape, { z: x + x });
+        }),
         mergeMap((x) => of(x))
       );
 
@@ -226,14 +220,12 @@ describe('expand', () => {
       const expected = 'a-ab-bc-cd-de-(e|)';
 
       const result = e1.pipe(
-        expand(
-          (x): Observable<any> => {
-            if (x === 16) {
-              return EMPTY;
-            }
-            return cold(e2shape, { z: x + x });
+        expand((x): Observable<any> => {
+          if (x === 16) {
+            return EMPTY;
           }
-        )
+          return cold(e2shape, { z: x + x });
+        })
       );
 
       expectObservable(result).toBe(expected, values);

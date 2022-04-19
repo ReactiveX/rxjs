@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { from } from '../observable/from';
+import { innerFrom } from '../observable/innerFrom';
 import { take } from '../operators/take';
 import { Subject } from '../Subject';
 import { Subscriber } from '../Subscriber';
@@ -232,7 +232,7 @@ export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction
             dest.complete();
           },
         });
-        from(source).subscribe(connection);
+        innerFrom(source).subscribe(connection);
       }
     })(wrapperSource);
   };
