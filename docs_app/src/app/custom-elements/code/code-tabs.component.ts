@@ -3,13 +3,13 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChi
 import { CodeComponent } from './code.component';
 
 export interface TabInfo {
-  class: string|null;
+  class: string | null;
   code: string;
-  language: string|null;
+  language: string | null;
   linenums: any;
   path: string;
   region: string;
-  header: string|null;
+  header: string | null;
 }
 
 /**
@@ -30,12 +30,14 @@ export interface TabInfo {
           <ng-template mat-tab-label>
             <span class="{{ tab.class }}">{{ tab.header }}</span>
           </ng-template>
-          <aio-code class="{{ tab.class }}"
-                    [language]="tab.language"
-                    [linenums]="tab.linenums"
-                    [path]="tab.path"
-                    [region]="tab.region"
-                    [header]="tab.header">
+          <aio-code
+            class="{{ tab.class }}"
+            [language]="tab.language"
+            [linenums]="tab.linenums"
+            [path]="tab.path"
+            [region]="tab.region"
+            [header]="tab.header"
+          >
           </aio-code>
         </mat-tab>
       </mat-tab-group>
@@ -75,7 +77,7 @@ export class CodeTabsComponent implements OnInit, AfterViewInit {
       linenums: tabContent.getAttribute('linenums') || this.linenums,
       path: tabContent.getAttribute('path') || '',
       region: tabContent.getAttribute('region') || '',
-      header: tabContent.getAttribute('header')
+      header: tabContent.getAttribute('header'),
     };
   }
 }

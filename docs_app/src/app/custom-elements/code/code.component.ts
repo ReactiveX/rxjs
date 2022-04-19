@@ -37,7 +37,7 @@ const DEFAULT_LINE_NUMS_COUNT = 10;
 @Component({
   selector: 'aio-code',
   template: `
-    <pre class="prettyprint lang-{{language}}">
+    <pre class="prettyprint lang-{{ language }}">
       <button *ngIf="!hideCopy" class="material-icons copy-button no-print"
         title="Copy code snippet"
         [attr.aria-label]="ariaLabelCopy"
@@ -52,7 +52,7 @@ const DEFAULT_LINE_NUMS_COUNT = 10;
       </button>
       <code class="animated fadeIn" #codeContainer></code>
     </pre>
-    `
+  `,
 })
 export class CodeComponent implements OnChanges {
   ariaLabelCopy = '';
@@ -71,14 +71,16 @@ export class CodeComponent implements OnChanges {
       this.formatDisplayedCode();
     }
   }
-  get code(): string { return this._code; }
+  get code(): string {
+    return this._code;
+  }
   _code: string;
 
   /** Whether the copy button should be shown. */
   @Input() hideCopy: boolean;
 
   /** Language to render the code (e.g. javascript, dart, typescript). */
-  @Input() language: string;
+  @Input() language: string | null;
 
   /**
    * Whether to display line numbers:
@@ -96,13 +98,15 @@ export class CodeComponent implements OnChanges {
 
   /** Optional header to be displayed above the code. */
   @Input()
-  set header(header: string) {
+  set header(header: string | null) {
     this._header = header;
     this.ariaLabelCopy = this.header ? `Copy code snippet from ${this.header}` : '';
     this.ariaLabelEdit = this.header ? `Edit code snippet from ${this.header} in StackBlitz` : '';
   }
-  get header(): string { return this._header; }
-  private _header: string;
+  get header(): string | null {
+    return this._header;
+  }
+  private _header: string | null;
 
   @Output() codeFormatted = new EventEmitter<void>();
 
@@ -114,7 +118,8 @@ export class CodeComponent implements OnChanges {
     private pretty: PrettyPrinter,
     private copier: CopierService,
     private logger: Logger,
-    private stackblitz: StackblitzService) { }
+    private stackblitz: StackblitzService
+  ) {}
 
   ngOnChanges() {
     // If some inputs have changed and there is code displayed, update the view with the latest
@@ -130,10 +135,14 @@ export class CodeComponent implements OnChanges {
     this.codeText = this.getCodeText(); // store the unformatted code as text (for copying)
 
     this.pretty
-        .formatCode(leftAlignedCode, this.language, this.getLinenums(leftAlignedCode))
-        .pipe(tap(() => this.codeFormatted.emit()))
-        .subscribe(c => this.setCodeHtml(c), err => { /* ignore failure to format */ }
-    );
+      .formatCode(leftAlignedCode, this.language ?? '', this.getLinenums(leftAlignedCode))
+      .pipe(tap(() => this.codeFormatted.emit()))
+      .subscribe(
+        (c) => this.setCodeHtml(c),
+        (err) => {
+          /* ignore failure to format */
+        }
+      );
   }
 
   /** Sets the message showing that the code could not be found. */
@@ -163,9 +172,7 @@ export class CodeComponent implements OnChanges {
     const pattern = new RegExp('// html: (.*)');
     const matches = code.match(pattern);
 
-    return matches
-      ? matches[1]
-      : '';
+    return matches ? matches[1] : '';
   }
 
   /** Copies the code snippet to the user's clipboard. */
@@ -185,26 +192,29 @@ export class CodeComponent implements OnChanges {
   editInStackBlitz() {
     this.stackblitz.openProject({
       code: this.codeText,
-      language: this.language,
+      language: this.language ?? '',
       dependencies: {
-        rxjs: version
+        rxjs: version,
       },
-      html: this.getHtmlFromCode(this.codeText)
+      html: this.getHtmlFromCode(this.codeText),
     });
   }
 
   /** Gets the calculated value of linenums (boolean/number). */
   getLinenums(code: string) {
     const linenums =
-      typeof this.linenums === 'boolean' ? this.linenums :
-      this.linenums === 'true' ? true :
-      this.linenums === 'false' ? false :
-      typeof this.linenums === 'string' ? parseInt(this.linenums, 10) :
-      this.linenums;
+      typeof this.linenums === 'boolean'
+        ? this.linenums
+        : this.linenums === 'true'
+        ? true
+        : this.linenums === 'false'
+        ? false
+        : typeof this.linenums === 'string'
+        ? parseInt(this.linenums, 10)
+        : this.linenums;
 
     // if no linenums, enable line numbers if more than one line
-    return linenums == null || isNaN(linenums as number) ?
-        (code.match(/\n/g) || []).length > DEFAULT_LINE_NUMS_COUNT : linenums;
+    return linenums == null || isNaN(linenums as number) ? (code.match(/\n/g) || []).length > DEFAULT_LINE_NUMS_COUNT : linenums;
   }
 }
 
@@ -212,12 +222,15 @@ function leftAlign(text: string): string {
   let indent = Number.MAX_VALUE;
 
   const lines = text.split('\n');
-  lines.forEach(line => {
+  lines.forEach((line) => {
     const lineIndent = line.search(/\S/);
     if (lineIndent !== -1) {
       indent = Math.min(lineIndent, indent);
     }
   });
 
-  return lines.map(line => line.substr(indent)).join('\n').trim();
+  return lines
+    .map((line) => line.substr(indent))
+    .join('\n')
+    .trim();
 }
