@@ -101,7 +101,7 @@ export function onErrorResumeNext<T, A extends readonly unknown[]>(
         if (remaining.length > 0) {
           let nextSource: Observable<A[number]>;
           try {
-            nextSource = innerFrom<T | A[number]>(remaining.shift()!);
+            nextSource = innerFrom(remaining.shift()!);
           } catch (err) {
             subscribeNext();
             return;
