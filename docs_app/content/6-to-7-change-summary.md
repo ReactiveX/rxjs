@@ -107,7 +107,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 #### race
 
 - Generic signatures have changed. Do not explicitly pass generics.
-- `race` will no longer subscribe to subsequent observables if a provided source synchronously errors or completes. This means side effects that might have occurred during subscription in those rare cases will no longer occur.
+- `race` will no longer subscribe to subsequent observables if a provided source synchronously emits, errors, or completes. This means side effects that might have occurred during subscription in those rare cases will no longer occur.
 
 #### ReplaySubject
 
