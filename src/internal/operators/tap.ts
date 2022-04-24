@@ -25,22 +25,22 @@ import { identity } from '../util/identity';
  *         tap({
  *           subscribe: () => console.log('Subscribed to the mouse move events after click #' + i),
  *           unsubscribe: () => console.log('Mouse move events #' + i + ' unsubscribed'),
- *           finalize: () => console.log('Mouse move events #' + i + ' finalized'),
+ *           finalize: () => console.log('Mouse move events #' + i + ' finalized')
  *         })
  *       )
  *     : interval(1_000).pipe(
  *         take(5),
  *         tap({
  *           subscribe: () => console.log('Subscribed to the 1-second interval events after click #' + i),
- *           unsubscribe: () => console.log('1 second interval events #' + i + ' unsubscribed'),
- *           finalize: () => console.log('1 second interval events #' + i + ' finalized'),
+ *           unsubscribe: () => console.log('1-second interval events #' + i + ' unsubscribed'),
+ *           finalize: () => console.log('1-second interval events #' + i + ' finalized')
  *         })
  *       )
  *   )
  * );
  *
  * const subscription = result$.subscribe({
- *   next: console.log,
+ *   next: console.log
  * });
  *
  * setTimeout(() => {
@@ -67,7 +67,7 @@ export interface TapObserver<T> extends Observer<T> {
    * the source Observable `error`s or `complete`s or when it gets explicitly unsubscribed
    * by the user. There is no difference in using this callback or the {@link finalize}
    * operator, but if you're already using `tap` operator, you can use this callback
-   * instead. You'd get the same results in either case.
+   * instead. You'd get the same result in either case.
    */
   finalize: () => void;
 }
