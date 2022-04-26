@@ -193,7 +193,6 @@ export interface Observer<T> {
    * the consumer has unsubscribed.
    *
    * For more info, please refer to {@link guide/glossary-and-semantics#error this guide}.
-   * @param err
    */
   error: (err: any) => void;
   /**
