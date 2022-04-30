@@ -1,7 +1,5 @@
 'use strict';
-
-var fs = require('fs');
-var path = require('canonical-path');
+/* eslint-disable */
 
 /**
  * @dgProcessor generateKeywordsProcessor
@@ -10,129 +8,98 @@ var path = require('canonical-path');
  * a new document that will be rendered as a JavaScript file containing all
  * this data.
  */
-module.exports = function generateKeywordsProcessor(log, readFilesProcessor) {
+module.exports = function generateKeywordsProcessor(log) {
   return {
-    ignoreWordsFile: undefined,
+    ignoreWords: [],
     propertiesToIgnore: [],
     docTypesToIgnore: [],
     outputFolder: '',
     $validate: {
-      ignoreWordsFile: {},
+      ignoreWords: {},
       docTypesToIgnore: {},
       propertiesToIgnore: {},
-      outputFolder: {presence: true}
+      outputFolder: { presence: true },
     },
     $runAfter: ['postProcessHtml'],
     $runBefore: ['writing-files'],
-    $process: function(docs) {
+    async $process(docs) {
+      const { stemmer: stem } = await import('stemmer');
+
+      const dictionary = new Map();
+
+      const emptySet = new Set();
 
       // Keywords to ignore
-      var wordsToIgnore = [];
-      var propertiesToIgnore;
-      var docTypesToIgnore;
-
-      // Keywords start with "ng:" or one of $, _ or a letter
-      var KEYWORD_REGEX = /^((ng:|[$_a-z])[\w\-_]+)/;
-
-      // Load up the keywords to ignore, if specified in the config
-      if (this.ignoreWordsFile) {
-        var ignoreWordsPath = path.resolve(readFilesProcessor.basePath, this.ignoreWordsFile);
-        wordsToIgnore = fs.readFileSync(ignoreWordsPath, 'utf8').toString().split(/[,\s\n\r]+/gm);
-
-        log.debug('Loaded ignore words from "' + ignoreWordsPath + '"');
-        log.silly(wordsToIgnore);
-      }
-
-      propertiesToIgnore = convertToMap(this.propertiesToIgnore);
+      const ignoreWords = new Set(this.ignoreWords);
+      log.debug('Words to ignore', ignoreWords);
+      const propertiesToIgnore = new Set(this.propertiesToIgnore);
       log.debug('Properties to ignore', propertiesToIgnore);
-      docTypesToIgnore = convertToMap(this.docTypesToIgnore);
+      const docTypesToIgnore = new Set(this.docTypesToIgnore);
       log.debug('Doc types to ignore', docTypesToIgnore);
 
-      var ignoreWordsMap = convertToMap(wordsToIgnore);
-
-      // If the heading contains a name starting with ng, e.g. "ngController", then add the
-      // name without the ng to the text, e.g. "controller".
-      function preprocessText(text) {
-        return text.replace(/(^|\s)([nN]g([A-Z]\w*))/g, '$1$2 $3');
-      }
-
-      function extractWords(text, words, keywordMap) {
-        var tokens = preprocessText(text).toLowerCase().split(/[.\s,`'"#]+/mg);
-        tokens.forEach(function(token) {
-          var match = token.match(KEYWORD_REGEX);
-          if (match) {
-            var key = match[1];
-            if (!keywordMap[key]) {
-              keywordMap[key] = true;
-              words.push(key);
-            }
-          }
-        });
-      }
-
-
       const filteredDocs = docs
-      // We are not interested in some docTypes
-        .filter(function(doc) { return !docTypesToIgnore[doc.docType]; })
-      // Ignore internals and private exports (indicated by the ɵ prefix)
-        .filter(function(doc) { return !doc.internal && !doc.privateExport; });
+        // We are not interested in some docTypes
+        .filter((doc) => !docTypesToIgnore.has(doc.docType))
+        // Ignore internals and private exports (indicated by the ɵ prefix)
+        .filter((doc) => !doc.internal && !doc.privateExport);
 
-
-      filteredDocs.forEach(function(doc) {
-
-        var words = [];
-        var keywordMap = Object.assign({}, ignoreWordsMap);
-        var members = [];
-        var membersMap = Object.assign({}, ignoreWordsMap);
-        const headingWords = [];
-        const headingWordMap = Object.assign({}, ignoreWordsMap);
-
+      for (const doc of filteredDocs) {
         // Search each top level property of the document for search terms
-        Object.keys(doc).forEach(function(key) {
+        let mainTokens = [];
+        for (const key of Object.keys(doc)) {
           const value = doc[key];
-
-          if (isString(value) && !propertiesToIgnore[key]) {
-            extractWords(value, words, keywordMap);
+          if (isString(value) && !propertiesToIgnore.has(key)) {
+            mainTokens.push(...tokenize(value, ignoreWords, dictionary));
           }
+        }
 
-          // Special case properties that contain content relating to "members"
-          // of a doc that represents, say, a class or interface
-          if (key === 'members' || key === 'statics') {
-            value.forEach(function(member) { extractWords(member.name, members, membersMap); });
-          }
-        });
+        const memberTokens = extractMemberTokens(doc, dictionary);
 
         // Extract all the keywords from the headings
+        let headingTokens = [];
         if (doc.vFile && doc.vFile.headings) {
-          Object.keys(doc.vFile.headings).forEach(function(headingTag) {
-            doc.vFile.headings[headingTag].forEach(function(headingText) {
-              extractWords(headingText, headingWords, headingWordMap);
-            });
-          });
+          for (const headingTag of Object.keys(doc.vFile.headings)) {
+            for (const headingText of doc.vFile.headings[headingTag]) {
+              headingTokens.push(...tokenize(headingText, ignoreWords, dictionary));
+            }
+          }
         }
 
         // Extract the title to use in searches
-        doc.searchTitle = doc.searchTitle || doc.title || doc.vFile && doc.vFile.title || doc.name || '';
+        doc.searchTitle = doc.searchTitle || doc.title || (doc.vFile && doc.vFile.title) || doc.name || '';
 
         // Attach all this search data to the document
-        doc.searchTerms = {
-          titleWords: preprocessText(doc.searchTitle),
-          headingWords: headingWords.sort().join(' '),
-          keywords: words.sort().join(' '),
-          members: members.sort().join(' ')
-        };
-
-      });
+        doc.searchTerms = {};
+        if (headingTokens.length > 0) {
+          doc.searchTerms.headings = headingTokens;
+        }
+        if (mainTokens.length > 0) {
+          doc.searchTerms.keywords = mainTokens;
+        }
+        if (memberTokens.length > 0) {
+          doc.searchTerms.members = memberTokens;
+        }
+        if (doc.searchKeywords) {
+          doc.searchTerms.topics = doc.searchKeywords.trim();
+        }
+      }
 
       // Now process all the search data and collect it up to be used in creating a new document
-      var searchData = filteredDocs.map(function(page) {
-        // Copy the properties from the searchTerms object onto the search data object
-        return Object.assign({
-          path: page.path,
-          title: page.searchTitle,
-          type: page.docType
-        }, page.searchTerms);
-      });
+      const searchData = {
+        dictionary: Array.from(dictionary.keys()).join(' '),
+        pages: filteredDocs.map((page) => {
+          // Copy the properties from the searchTerms object onto the search data object
+          const searchObj = {
+            path: page.path,
+            title: page.searchTitle,
+            type: page.docType,
+          };
+          if (page.deprecated) {
+            searchObj.deprecated = true;
+          }
+          return Object.assign(searchObj, page.searchTerms);
+        }),
+      };
 
       docs.push({
         docType: 'json-doc',
@@ -140,19 +107,86 @@ module.exports = function generateKeywordsProcessor(log, readFilesProcessor) {
         path: this.outputFolder + '/search-data.json',
         outputPath: this.outputFolder + '/search-data.json',
         data: searchData,
-        renderedContent: JSON.stringify(searchData)
+        renderedContent: JSON.stringify(searchData),
       });
-    }
+
+      return docs;
+
+      // Helpers
+      function tokenize(text, ignoreWords, dictionary) {
+        // Split on whitespace and things that are likely to be HTML tags (this is not exhaustive but reduces the unwanted tokens that are indexed).
+        const rawTokens = text.split(
+          new RegExp(
+            '[\\s/]+' + // whitespace
+              '|' + // or
+              '</?[a-z]+(?:\\s+\\w+(?:="[^"]+")?)*/?>', // simple HTML tags (e.g. <td>, <hr/>, </table>, etc.)
+            'ig'
+          )
+        );
+        const tokens = [];
+        for (let token of rawTokens) {
+          token = token.trim();
+
+          // Trim unwanted trivia characters from the start and end of the token
+          const TRIVIA_CHARS = '[\\s_"\'`({[<$*)}\\]>.,-]';
+          // Tokens can contain letters, numbers, underscore, dot or hyphen but not at the start or end.
+          // The leading TRIVIA_CHARS will capture any leading `.`, '-`' or `_` so we don't have to avoid them in this regular expression.
+          // But we do need to ensure we don't capture the at the end of the token.
+          const POSSIBLE_TOKEN = '[a-z0-9_.-]*[a-z0-9]';
+          token = token.replace(new RegExp(`^${TRIVIA_CHARS}*(${POSSIBLE_TOKEN})${TRIVIA_CHARS}*$`, 'i'), '$1');
+
+          // Skip if blank or in the ignored words list
+          if (token === '' || ignoreWords.has(token.toLowerCase())) {
+            continue;
+          }
+
+          // Skip tokens that contain weird characters
+          if (!/^\w[\w.-]*$/.test(token)) {
+            continue;
+          }
+
+          storeToken(token, tokens, dictionary);
+          if (token.startsWith('ng')) {
+            // Strip off `ng`, `ng-`, `ng1`, `ng2`, etc
+            storeToken(token.replace(/^ng[-12]*/, ''), tokens, dictionary);
+          }
+        }
+
+        return tokens;
+      }
+
+      function storeToken(token, tokens, dictionary) {
+        token = stem(token);
+        if (!dictionary.has(token)) {
+          dictionary.set(token, dictionary.size);
+        }
+        tokens.push(dictionary.get(token));
+      }
+
+      function extractMemberTokens(doc, dictionary) {
+        if (!doc) return [];
+
+        let memberContent = [];
+
+        if (doc.members) {
+          doc.members.forEach((member) => memberContent.push(...tokenize(member.name, emptySet, dictionary)));
+        }
+        if (doc.statics) {
+          doc.statics.forEach((member) => memberContent.push(...tokenize(member.name, emptySet, dictionary)));
+        }
+        if (doc.extendsClauses) {
+          doc.extendsClauses.forEach((clause) => memberContent.push(...extractMemberTokens(clause.doc, dictionary)));
+        }
+        if (doc.implementsClauses) {
+          doc.implementsClauses.forEach((clause) => memberContent.push(...extractMemberTokens(clause.doc, dictionary)));
+        }
+
+        return memberContent;
+      }
+    },
   };
 };
 
-
 function isString(value) {
   return typeof value == 'string';
-}
-
-function convertToMap(collection) {
-  const obj = {};
-  collection.forEach(key => { obj[key] = true; });
-  return obj;
 }

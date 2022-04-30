@@ -22,23 +22,19 @@ export class SearchService {
    * initial rendering of the web page. Triggering a search will override this delay and cause the index to be
    * loaded immediately.
    *
-   * @param workerUrl the url of the WebWorker script that runs the searches
    * @param initDelay the number of milliseconds to wait before we load the WebWorker and generate the search index
    */
-  initWorker(workerUrl: string, initDelay: number) {
+  initWorker(initDelay: number) {
     // Wait for the initDelay or the first search
-    const ready = this.ready = race<any>(
-        timer(initDelay),
-        this.searchesSubject.asObservable().pipe(first()),
-      )
-      .pipe(
-        concatMap(() => {
-          // Create the worker and load the index
-          this.worker = WebWorkerClient.create(workerUrl, this.zone);
-          return this.worker.sendMessage<boolean>('load-index');
-        }),
-        publishReplay(1),
-      );
+    const ready = (this.ready = race<any>(timer(initDelay), this.searchesSubject.asObservable().pipe(first())).pipe(
+      concatMap(() => {
+        // Create the worker and load the index
+        const worker = new Worker(new URL('./search.worker', import.meta.url), { type: 'module' });
+        this.worker = WebWorkerClient.create(worker, this.zone);
+        return this.worker.sendMessage<boolean>('load-index');
+      }),
+      publishReplay(1)
+    ));
 
     // Connect to the observable to kick off the timer
     (ready as ConnectableObservable<boolean>).connect();
@@ -47,6 +43,7 @@ export class SearchService {
 
   /**
    * Search the index using the given query and emit results on the observable that is returned.
+   *
    * @param query The query to run against the index.
    * @returns an observable collection of search results
    */
