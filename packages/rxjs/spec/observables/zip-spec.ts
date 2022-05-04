@@ -1,6 +1,6 @@
 /** @prettier */
 import { expect } from 'chai';
-import { queueScheduler as rxQueueScheduler, zip, from, scheduled } from 'rxjs';
+import { queueScheduler as rxQueueScheduler, zip, from, scheduled, of, config, concat, NEVER, first, delay, filter, GlobalConfig } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -629,5 +629,29 @@ describe('zip', () => {
     });
 
     expect(results).to.deep.equal(['done']);
+  });
+
+  describe('with a registered notificaiton handler', () => {
+    let onStoppedNotification: GlobalConfig['onStoppedNotification'];
+
+    beforeEach(() => onStoppedNotification = config.onStoppedNotification);
+
+    afterEach(() => config.onStoppedNotification = onStoppedNotification);
+
+    it('should handle when unsubscribing from within a next handler', (done) => {
+      let error: any = null;
+
+      config.onStoppedNotification = (notification) => {
+        if (notification.kind === 'E') {
+          error = notification.error;
+
+          done(notification.error);
+        }
+      };
+
+      const source$ = concat(of(1), NEVER);
+
+      zip(source$).pipe(first(), delay(1), filter(() => error === null)).subscribe(() => done());
+    });
   });
 });
