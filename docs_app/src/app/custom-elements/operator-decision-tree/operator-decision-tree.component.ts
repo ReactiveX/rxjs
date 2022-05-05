@@ -48,7 +48,7 @@ import { OperatorDecisionTreeService } from './operator-decision-tree.service';
         <p>Oops! There was an issue loading the decision tree.. we're real sorry about that. Please try reloading the page.</p>
         <p>
           You can also try
-          <a href="https://github.com/ReactiveX/rxjs/issues/new?template=documentation.md" target="_blank">submitting an issue on Github</a
+          <a href="https://github.com/ReactiveX/rxjs/issues/new?template=documentation.md" target="_blank">submitting an issue on GitHub</a
           >.
         </p>
       </div>
