@@ -290,7 +290,7 @@ describe('skipUntil', () => {
     });
   });
 
-  it('should skip skip all elements if notifier is unsubscribed explicitly before the notifier emits', () => {
+  it('should skip all elements if notifier is unsubscribed explicitly before the notifier emits', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--c--d--e--|');
       const e1subs = [
