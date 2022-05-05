@@ -185,7 +185,7 @@ module.exports = function (suite: any) {
   });
 };
 
-//register into global instnace if browser test page injects mocha globally
+//register into global instance if browser test page injects mocha globally
 if (global.Mocha) {
   (<any>window).Mocha.interfaces['testschedulerui'] = module.exports;
 } else {
