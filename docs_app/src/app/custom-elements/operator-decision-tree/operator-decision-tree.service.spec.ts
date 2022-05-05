@@ -191,7 +191,7 @@ describe('OperatorDecisionTreeService', () => {
 
   describe('hasError$', () => {
     describe('when the tree has no error', () => {
-      it('shoud not emit', () => {
+      it('should not emit', () => {
         dataServiceStub.getDecisionTree$.and.returnValue(
           cold('x', { x: treeStub })
         );
