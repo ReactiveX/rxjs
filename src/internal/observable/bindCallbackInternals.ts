@@ -93,7 +93,7 @@ export function bindCallbackInternals(
               // until after the call to the function is over. This is because an
               // error could be thrown in the function after it calls our callback,
               // and if that is the case, if we complete here, we are unable to notify
-              // the consumer than an error occured.
+              // the consumer than an error occurred.
               if (isAsync) {
                 subject.complete();
               }
