@@ -1093,7 +1093,7 @@ Why "tactical"? Because I _TOTALLY MEANT_ to ruin the release names by publishin
 - **compat:** add concat operator to compatibility layer ([6e84e78](https://github.com/ReactiveX/RxJS/commit/6e84e78))
 - **compat:** add legacy reexport compat layer for 'rxjs/Observable' and other top-level symbols ([70e562b](https://github.com/ReactiveX/RxJS/commit/70e562b))
 - **compat:** add Rx.ts to rxjs-compat ([df25de1](https://github.com/ReactiveX/RxJS/commit/df25de1))
-- **compat:** combatability mode for combineLatest ([fd86df5](https://github.com/ReactiveX/RxJS/commit/fd86df5))
+- **compat:** compatibility mode for combineLatest ([fd86df5](https://github.com/ReactiveX/RxJS/commit/fd86df5))
 - **compat:** compatibility mode for merge operator ([ffce980](https://github.com/ReactiveX/RxJS/commit/ffce980))
 - **compat:** compatibility mode for zip operator ([9f131d0](https://github.com/ReactiveX/RxJS/commit/9f131d0))
 - **compat:** make Rx.ts for compatability layer work as the default for rxjs-compat ([d43a4c2](https://github.com/ReactiveX/RxJS/commit/d43a4c2))
