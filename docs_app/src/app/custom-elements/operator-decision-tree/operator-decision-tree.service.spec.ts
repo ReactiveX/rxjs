@@ -31,7 +31,7 @@ describe('OperatorDecisionTreeService', () => {
   });
 
   describe('currentSentence$', () => {
-    const initialSetence = 'Start by choosing an option from the list below.';
+    const initialSentence = 'Start by choosing an option from the list below.';
 
     beforeEach(() => {
       dataServiceStub.getDecisionTree$.and.returnValue(
@@ -44,7 +44,7 @@ describe('OperatorDecisionTreeService', () => {
       it('should emit an initial sentence', () => {
         spyOn(service, 'selectOption');
         expect(service.currentSentence$).toBeObservable(
-          cold('x', { x: initialSetence })
+          cold('x', { x: initialSentence })
         );
         expect(service.selectOption).not.toHaveBeenCalled();
       });
@@ -83,7 +83,7 @@ describe('OperatorDecisionTreeService', () => {
           service.selectOption(treeNodeStubWithOptionsA.id);
           service.startOver();
           expect(service.currentSentence$).toBeObservable(
-            cold('x', { x: initialSetence })
+            cold('x', { x: initialSentence })
           );
         });
       });
