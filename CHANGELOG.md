@@ -808,8 +808,8 @@
 
 ### Bug Fixes
 
-- **first:** improved type gaurds for TypeScript ([3e12f7a](https://github.com/reactivex/rxjs/commit/3e12f7a))
-- **last:** improved type gaurds for TypeScript ([3e12f7a](https://github.com/reactivex/rxjs/commit/3e12f7a))
+- **first:** improved type guards for TypeScript ([3e12f7a](https://github.com/reactivex/rxjs/commit/3e12f7a))
+- **last:** improved type guards for TypeScript ([3e12f7a](https://github.com/reactivex/rxjs/commit/3e12f7a))
 
 <a name="6.2.1"></a>
 
