@@ -1125,7 +1125,7 @@ Why "tactical"? Because I _TOTALLY MEANT_ to ruin the release names by publishin
 - **bindCallback:** removes result selector, use `map` instead: `bindCallback(fn1, fn2)()` becomes `bindCallback(fn1)().pipe(map(fn2))`
 - **Rx.ts:** importing from `rxjs/Rx` is no longer available. Upcoming backwards compat solution will allow that
 - **Symbol.iterator:** We are no longer polyfilling `Symbol.iterator`. That would be done by a proper polyfilling library
-- **Observable.if:** TypeScript users using `Observable.if` will have to cast `Observable` as any to get to `if`. It is a better idae to just use `iif` directly via `import { iif } from 'rxjs';`
+- **Observable.if:** TypeScript users using `Observable.if` will have to cast `Observable` as any to get to `if`. It is a better idea to just use `iif` directly via `import { iif } from 'rxjs';`
 - **bindNodeCallback:** resultSelector removed, use `map` instead: `bindNodeCallback(fn1, fn2)()` becomes `bindNodeCallback(fn1)().pipe(map(fn2))`
 - **Symbol.observable:** RxJS will no longer be polyfilling Symbol.observable. That should be done by an actual polyfill library. This is to prevent duplication of code, and also to prevent having modules with side-effects in rxjs.
 - **fromEvent:** result selector removed, use `map` instead: `fromEvent(target, 'click', fn)` becomes `fromEvent(target, 'click').pipe(map(fn))`
@@ -1188,7 +1188,7 @@ Why "tactical"? Because I _TOTALLY MEANT_ to ruin the release names by publishin
 - **bindCallback:** removes result selector, use `map` instead: `bindCallback(fn1, fn2)()` becomes `bindCallback(fn1)().pipe(map(fn2))`
 - **Rx.ts:** importing from `rxjs/Rx` is no longer available. Upcoming backwards compat solution will allow that
 - **Symbol.iterator:** We are no longer polyfilling `Symbol.iterator`. That would be done by a proper polyfilling library
-- **Observable.if:** TypeScript users using `Observable.if` will have to cast `Observable` as any to get to `if`. It is a better idae to just use `iif` directly via `import { iif } from 'rxjs';`
+- **Observable.if:** TypeScript users using `Observable.if` will have to cast `Observable` as any to get to `if`. It is a better idea to just use `iif` directly via `import { iif } from 'rxjs';`
 - **bindNodeCallback:** resultSelector removed, use `map` instead: `bindNodeCallback(fn1, fn2)()` becomes `bindNodeCallback(fn1)().pipe(map(fn2))`
 - **never:** no longer exported. Use the `NEVER` constant instead.
 - **fromEvent:** result selector removed, use `map` instead: `fromEvent(target, 'click', fn)` becomes `fromEvent(target, 'click').pipe(map(fn))`
