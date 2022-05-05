@@ -551,7 +551,7 @@
 
 ### BREAKING CHANGES
 
-- `Notification.createNext(undefined)` will no longer return the exact same reference everytime.
+- `Notification.createNext(undefined)` will no longer return the exact same reference every time.
 - Type signatures tightened up around `Notification` and `dematerialize`, may uncover issues with invalid types passed to those operators.
 - Experimental support for `for await` as been removed. Use https://github.com/benlesh/rxjs-for-await instead.
 - `defer` no longer allows factories to return `void` or `undefined`. All factories passed to defer must return a proper `ObservableInput`, such as `Observable`, `Promise`, et al. To get the same behavior as you may have relied on previously, `return EMPTY` or `return of()` from the factory.
