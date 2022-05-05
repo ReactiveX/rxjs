@@ -39,7 +39,7 @@ export type subscriptionLogsToBeFn = (marbles: string | string[]) => void;
 export class TestScheduler extends VirtualTimeScheduler {
   /**
    * The number of virtual time units each character in a marble diagram represents. If
-   * the test scheduler is being used in "run mode", via the `run` method, this is temporarly
+   * the test scheduler is being used in "run mode", via the `run` method, this is temporarily
    * set to `1` for the duration of the `run` block, then set back to whatever value it was.
    * @nocollapse
    */
