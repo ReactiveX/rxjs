@@ -233,7 +233,7 @@
 
 - **ajax:** now errors on forced abort ([#6041](https://github.com/reactivex/rxjs/issues/6041)) ([d950921](https://github.com/reactivex/rxjs/commit/d95092143c1860eef054d27f2a1e50cb98b0ef58)), closes [#4251](https://github.com/reactivex/rxjs/issues/4251)
 - **buffer:** closingNotifier completion does not complete resulting observable ([358ae84](https://github.com/reactivex/rxjs/commit/358ae84cb9d59170216e7e0845c192eb3e1dcb51))
-- **buffer:** Remaining buffer will correctly be emited on source close. ([0c667d5](https://github.com/reactivex/rxjs/commit/0c667d596d4a14002ffe9d4db319ed7cd7442ada)), closes [#3990](https://github.com/reactivex/rxjs/issues/3990) [#6035](https://github.com/reactivex/rxjs/issues/6035)
+- **buffer:** Remaining buffer will correctly be emitted on source close. ([0c667d5](https://github.com/reactivex/rxjs/commit/0c667d596d4a14002ffe9d4db319ed7cd7442ada)), closes [#3990](https://github.com/reactivex/rxjs/issues/3990) [#6035](https://github.com/reactivex/rxjs/issues/6035)
 - **debounceTime:** improves performance on quick succession of emits ([#6049](https://github.com/reactivex/rxjs/issues/6049)) ([9b70861](https://github.com/reactivex/rxjs/commit/9b708613cb7687647dc43c5e15b821e17ccc23ef))
 - **distinctUntilChanged:** Ensure reentrant code is compared properly ([#6014](https://github.com/reactivex/rxjs/issues/6014)) ([0ebcf17](https://github.com/reactivex/rxjs/commit/0ebcf1751a5359072b137ff197789570be4d7ead))
 - **share:** Ensure proper memory clean up ([1aa400a](https://github.com/reactivex/rxjs/commit/1aa400a5214325bc843a74602022a7912da20166))

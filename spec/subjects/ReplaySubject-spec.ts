@@ -300,7 +300,7 @@ describe('ReplaySubject', () => {
       });
     });
 
-    it('should only replay bufferSize items when 4 time units ago more were emited', () => {
+    it('should only replay bufferSize items when 4 time units ago more were emitted', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const replaySubject = new ReplaySubject<string>(2, 4, rxTestScheduler);
         function feedNextIntoSubject(x: string) {
