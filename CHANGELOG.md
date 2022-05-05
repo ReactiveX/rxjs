@@ -1959,7 +1959,7 @@ in d.ts.
 - **bufferTime:** handle closing context when synchronously unsubscribed ([4ce4433](https://github.com/ReactiveX/RxJS/commit/4ce4433)), closes [#1763](https://github.com/ReactiveX/RxJS/issues/1763)
 - **multicast:** Fixes multicast with selector to create a new source connection per subscriber. ([c3ac852](https://github.com/ReactiveX/RxJS/commit/c3ac852)), closes [(#1774](https://github.com/(/issues/1774)
 - **Subject:** allow optional next value in type definition ([3e0c6d9](https://github.com/ReactiveX/RxJS/commit/3e0c6d9)), closes [#1728](https://github.com/ReactiveX/RxJS/issues/1728)
-- **WebSocketSubject:** respect WebSockeCtor, support source/destination arguments in constructor. (#179 ([cd8cdd0](https://github.com/ReactiveX/RxJS/commit/cd8cdd0)), closes [#1745](https://github.com/ReactiveX/RxJS/issues/1745) [#1784](https://github.com/ReactiveX/RxJS/issues/1784)
+- **WebSocketSubject:** respect WebSocketCtor, support source/destination arguments in constructor. (#179 ([cd8cdd0](https://github.com/ReactiveX/RxJS/commit/cd8cdd0)), closes [#1745](https://github.com/ReactiveX/RxJS/issues/1745) [#1784](https://github.com/ReactiveX/RxJS/issues/1784)
 
 <a name="5.0.0-beta.9"></a>
 
