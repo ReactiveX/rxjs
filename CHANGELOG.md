@@ -167,7 +167,7 @@
 - forkJoin/combineLatest return Observable<unknown> if passed any ([#6227](https://github.com/reactivex/rxjs/issues/6227)) ([ce0a2fa](https://github.com/reactivex/rxjs/commit/ce0a2fa975e7c08de2bbf893010f2c25c090b1ca)), closes [#6226](https://github.com/reactivex/rxjs/issues/6226)
 - **fromEvent:** match targets properly; fix result selector type ([#6208](https://github.com/reactivex/rxjs/issues/6208)) ([8412c73](https://github.com/reactivex/rxjs/commit/8412c739bb47cc45ec3f38327115301b4fcc0118))
 - **merge:** single array is not an array of sources ([#6211](https://github.com/reactivex/rxjs/issues/6211)) ([4e900dc](https://github.com/reactivex/rxjs/commit/4e900dc745b5fbd7659b104c49fb0fce4ae84707))
-- **pipe:** Ensure that `unknown` is infered for 9+ arguments. ([#6212](https://github.com/reactivex/rxjs/issues/6212)) ([6fa819b](https://github.com/reactivex/rxjs/commit/6fa819beb91ba99dadd6262d6c13f7ddfd9470c5))
+- **pipe:** Ensure that `unknown` is inferred for 9+ arguments. ([#6212](https://github.com/reactivex/rxjs/issues/6212)) ([6fa819b](https://github.com/reactivex/rxjs/commit/6fa819beb91ba99dadd6262d6c13f7ddfd9470c5))
 
 ### Features
 
