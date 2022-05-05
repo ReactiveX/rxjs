@@ -96,7 +96,7 @@ describe('ApiListComponent', () => {
     });
 
     it('should have no sections and no items visible when there is no match', () => {
-      component.setQuery('fizbuzz');
+      component.setQuery('fizzbuzz');
       component.filteredSections.subscribe(filtered => {
         expect(filtered.some(section => !!section.items)).toBeFalsy();
       });
