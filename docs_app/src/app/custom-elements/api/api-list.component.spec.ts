@@ -32,7 +32,7 @@ describe('ApiListComponent', () => {
    * Expectation Utility: Assert that filteredSections has the expected result for this test
    * @param itemTest - return true if the item passes the match test
    *
-   * Subscibes to `filteredSections` and performs expectation within subscription callback.
+   * Subscribes to `filteredSections` and performs expectation within subscription callback.
    */
   function expectFilteredResult(label: string, itemTest: (item: ApiItem) => boolean) {
     component.filteredSections.subscribe(filtered => {
