@@ -1494,7 +1494,7 @@ Why "tactical"? Because I _TOTALLY MEANT_ to ruin the release names by publishin
 - **debounceTime:** add higher-order lettable version of debounceTime ([df0d439](https://github.com/ReactiveX/RxJS/commit/df0d439))
 - **delay:** add higher-order lettable version of delay ([7efb803](https://github.com/ReactiveX/RxJS/commit/7efb803))
 - **delayWhen:** add higher-order lettable version of delayWhen ([cb91c3f](https://github.com/ReactiveX/RxJS/commit/cb91c3f))
-- **dematerialize:** add higher-ordeer lettable version of dematerialize ([b5948f9](https://github.com/ReactiveX/RxJS/commit/b5948f9))
+- **dematerialize:** add higher-order lettable version of dematerialize ([b5948f9](https://github.com/ReactiveX/RxJS/commit/b5948f9))
 - **distinct:** add higher-order lettable version of distinct ([0429a69](https://github.com/ReactiveX/RxJS/commit/0429a69))
 - **distinctUntilChanged:** add higher-order lettable version of distinctUntilChanged ([b2725e7](https://github.com/ReactiveX/RxJS/commit/b2725e7))
 - **distinctUntilKeyChanged:** add higher-order lettable version of distinctUntilKeyChanged ([9db141c](https://github.com/ReactiveX/RxJS/commit/9db141c))
