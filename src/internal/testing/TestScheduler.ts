@@ -84,7 +84,7 @@ export class TestScheduler extends VirtualTimeScheduler {
 
   /**
    * @param marbles A diagram in the marble DSL. Letters map to keys in `values` if provided.
-   * @param values Values to use for the letters in `marbles`. If ommitted, the letters themselves are used.
+   * @param values Values to use for the letters in `marbles`. If omitted, the letters themselves are used.
    * @param error The error to use for the `#` marble (if present).
    */
   createColdObservable<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): ColdObservable<T> {
@@ -102,7 +102,7 @@ export class TestScheduler extends VirtualTimeScheduler {
 
   /**
    * @param marbles A diagram in the marble DSL. Letters map to keys in `values` if provided.
-   * @param values Values to use for the letters in `marbles`. If ommitted, the letters themselves are used.
+   * @param values Values to use for the letters in `marbles`. If omitted, the letters themselves are used.
    * @param error The error to use for the `#` marble (if present).
    */
   createHotObservable<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): HotObservable<T> {
