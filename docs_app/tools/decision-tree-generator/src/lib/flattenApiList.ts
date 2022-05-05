@@ -2,7 +2,7 @@ import { ApiListNode, FlattenedApiList } from './interfaces';
 import { isStable } from './helpers';
 
 /**
- * Flattens API List from the docs generation into a map with relavant properties.
+ * Flattens API List from the docs generation into a map with relevant properties.
  * Makes navigation easier.
  *
  * @export
