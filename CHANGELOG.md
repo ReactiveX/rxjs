@@ -321,7 +321,7 @@
   Complete notifications no longer end the duration.
 - **sample:** the sample operator's notifier observable must emit a next notification to effect a sample. Complete notifications no longer effect a sample.
 - **audit:** the observable returned by the audit operator's duration selector must emit a next notification to end the duration. Complete notifications no longer end the duration.
-- **Symbol.observable:** `rxjs@7` is only compatible with `@types/node@14.14.3` or higher and `symbol-observable@3.0.0` and heigher. Older versions of `@types/node` incorrectly defined `Symbol.observable` and will be in conflict with `rxjs` and `symbol-observable@3.0.0`.
+- **Symbol.observable:** `rxjs@7` is only compatible with `@types/node@14.14.3` or higher and `symbol-observable@3.0.0` and higher. Older versions of `@types/node` incorrectly defined `Symbol.observable` and will be in conflict with `rxjs` and `symbol-observable@3.0.0`.
 - **delayWhen:** `delayWhen` will no longer emit if the duration selector simply completes without a value. Notifiers must notify with a value, not a completion.
 - **iif:** `iif` will no longer allow result arguments that are `undefined`. This was a bad call pattern that was likely an error in most cases. If for some reason you are relying on this behavior, simply substitute `EMPTY` in place of the `undefined` argument. This ensures that the behavior was intentional and desired, rather than the result of an accidental `undefined` argument.
 
