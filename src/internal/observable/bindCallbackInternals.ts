@@ -112,7 +112,7 @@ export function bindCallbackInternals(
         isAsync = true;
       }
 
-      // Return the subscription fron adding our subscriber to the subject.
+      // Return the subscription from adding our subscriber to the subject.
       return subs;
     });
   };
