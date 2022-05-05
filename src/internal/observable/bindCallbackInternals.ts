@@ -50,7 +50,7 @@ export function bindCallbackInternals(
         uninitialized = false;
         // We're going to execute the bound function
         // This bit is to signal that we are hitting the callback asynchronously.
-        // Because we don't have any anti-"Zalgo" gaurantees with whatever
+        // Because we don't have any anti-"Zalgo" guarantees with whatever
         // function we are handed, we use this bit to figure out whether or not
         // we are getting hit in a callback synchronously during our call.
         let isAsync = false;
