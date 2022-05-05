@@ -328,7 +328,7 @@ describe('skipUntil', () => {
 
   it('should stop listening to a synchronous notifier after its first nexted value', () => {
     const sideEffects: number[] = [];
-    const synchronousNotifer = concat(
+    const synchronousNotifier = concat(
       defer(() => {
         sideEffects.push(1);
         return of(1);
@@ -343,7 +343,7 @@ describe('skipUntil', () => {
       })
     );
     of(null)
-      .pipe(skipUntil(synchronousNotifer))
+      .pipe(skipUntil(synchronousNotifier))
       .subscribe(() => {
         /* noop */
       });
