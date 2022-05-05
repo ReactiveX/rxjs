@@ -23,7 +23,7 @@ import { Observer, NextObserver } from '../../types';
  * ## Examples
  *
  * **deserializer**, the default for this property is `JSON.parse` but since there are just two options
- * for incoming data, either be text or binarydata. We can apply a custom deserialization strategy
+ * for incoming data, either be text or binary data. We can apply a custom deserialization strategy
  * or just simply skip the default behaviour.
  *
  * ```ts
