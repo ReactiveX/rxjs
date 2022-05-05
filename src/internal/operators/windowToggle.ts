@@ -98,7 +98,7 @@ export function windowToggle<T, O>(
       )
     );
 
-    // Subcribe to the source to get things started.
+    // Subscribe to the source to get things started.
     source.subscribe(
       createOperatorSubscriber(
         subscriber,
