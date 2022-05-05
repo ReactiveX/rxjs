@@ -2007,7 +2007,7 @@ in d.ts.
 - Subject: Subjects no longer duck-type as Subscriptions
 - Subject: Subjects will no longer throw when re-subscribed to if they are not unsubscribed
 - Subject: Subjects no longer automatically unsubscribe when completed or errored
-  BREAKING CAHNGE: Minor scheduling changes to groupBy to ensure proper emission ordering
+  BREAKING CHANGE: Minor scheduling changes to groupBy to ensure proper emission ordering
 - Rx: `Rx.kitchenSink` and `Rx.DOM` are removed, `Rx`
   export everything.
 
