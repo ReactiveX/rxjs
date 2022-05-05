@@ -21,14 +21,14 @@ import { OperatorDecisionTreeService } from './operator-decision-tree.service';
       </ng-container>
       <div>
         <ng-container *ngFor="let option of options$ | async">
-          <ng-container *ngIf="option.options; else operatorTempalte">
+          <ng-container *ngIf="option.options; else operatorTemplate">
             <button class="option mat-body-1" (click)="selectOption(option.id)" [@flyIn]>
               <mat-card matRipple>
                 {{ option.label }}
               </mat-card>
             </button>
           </ng-container>
-          <ng-template #operatorTempalte>
+          <ng-template #operatorTemplate>
             <p *ngIf="option.method" class="mat-body-1">
               You want the {{ option.method }} of the {{ option.docType }}
               <a href="{{ option.path }}#{{ option.method }}">{{ option.label }}</a
