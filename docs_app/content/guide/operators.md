@@ -282,7 +282,7 @@ function discardOddDoubleEven() {
 
 ### Creating new operators from scratch
 
-It is more complicated, but if you have to write an operator that cannot be made from a combination of existing operators (a rare occurrance), you can write an operator from scratch using the Observable constructor, like this:
+It is more complicated, but if you have to write an operator that cannot be made from a combination of existing operators (a rare occurrence), you can write an operator from scratch using the Observable constructor, like this:
 
 ```ts
 import { Observable, of } from 'rxjs';
