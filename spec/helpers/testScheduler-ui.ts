@@ -192,7 +192,7 @@ if (global.Mocha) {
   (<any>mocha).interfaces['testschedulerui'] = module.exports;
 }
 
-//overrides JSON.toStringfy to serialize error object
+//overrides JSON.toStringify to serialize error object
 Object.defineProperty(Error.prototype, 'toJSON', {
   value: function (this: any) {
     const alt: Record<string, any> = {};
