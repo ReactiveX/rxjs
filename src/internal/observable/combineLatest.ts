@@ -91,9 +91,9 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  *
  * To ensure the output array always has the same length, `combineLatest` will
  * actually wait for all input Observables to emit at least once,
- * before it starts emitting results. This means if some Observable emits
+ * before it starts emitting results. This means if some Observable emits multiple
  * values before other Observables started emitting, all these values but the last
- * will be lost. On the other hand, if some Observable does not emit a value but
+ * will be lost. On the other hand, if some Observable does not emit any value but
  * completes, resulting Observable will complete at the same moment without
  * emitting anything, since it will now be impossible to include a value from the
  * completed Observable in the resulting array. Also, if some input Observable does
