@@ -17,7 +17,10 @@ If the target browsers for a project support ES2015+ or the bundle process suppo
 You can enable support for using the ES2015 RxJS code by configuring a bundler to use the `es2015` custom export condition during module resolution.
 Configuring a bundler to use the `es2015` custom export condition is specific to each bundler.
 If you are interested in using this option, please consult the documentation of your bundler for additional information.
-However, some general information can be found here: https://webpack.js.org/guides/package-exports/#conditions-custom
+However, some general information can be found here:
+
+- https://webpack.js.org/guides/package-exports/#conditions-custom
+- https://github.com/rollup/plugins/blob/node-resolve-v11.0.0/packages/node-resolve/README.md#exportconditions
 
 To import only what you need, please {@link guide/importing#es6-via-npm check out this} guide.
 
