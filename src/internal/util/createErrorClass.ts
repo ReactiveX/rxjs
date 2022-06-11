@@ -14,7 +14,13 @@ export function createErrorClass<T>(createImpl: (_super: any) => any): T {
   };
 
   const ctorFunc = createImpl(_super);
-  ctorFunc.prototype = Object.create(Error.prototype);
-  ctorFunc.prototype.constructor = ctorFunc;
+    ctorFunc.prototype = Object.create(Error.prototype, {
+        constructor: {
+            value: ctorFunc,
+            writable: true,
+            enumerable: false,
+            configurable: true,
+        }
+    });
   return ctorFunc;
 }
