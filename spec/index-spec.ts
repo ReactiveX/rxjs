@@ -160,6 +160,7 @@ describe('index', () => {
     expect(index.skipLast).to.exist;
     expect(index.skipUntil).to.exist;
     expect(index.skipWhile).to.exist;
+    expect(index.some).to.exist;
     expect(index.startWith).to.exist;
     expect(index.subscribeOn).to.exist;
     expect(index.switchAll).to.exist;

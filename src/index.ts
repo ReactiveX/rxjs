@@ -185,6 +185,7 @@ export { skip } from './internal/operators/skip';
 export { skipLast } from './internal/operators/skipLast';
 export { skipUntil } from './internal/operators/skipUntil';
 export { skipWhile } from './internal/operators/skipWhile';
+export { some } from './internal/operators/some';
 export { startWith } from './internal/operators/startWith';
 export { subscribeOn } from './internal/operators/subscribeOn';
 export { switchAll } from './internal/operators/switchAll';
