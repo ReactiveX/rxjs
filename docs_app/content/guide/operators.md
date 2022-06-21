@@ -248,6 +248,7 @@ Also see the [Join Creation Operators](#join-creation-operators) section above.
 
 - [`defaultIfEmpty`](/api/operators/defaultIfEmpty)
 - [`every`](/api/operators/every)
+- [`some`](/api/operators/some)
 - [`find`](/api/operators/find)
 - [`findIndex`](/api/operators/findIndex)
 - [`isEmpty`](/api/operators/isEmpty)

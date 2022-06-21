@@ -12,6 +12,8 @@ export function some<T>(predicate: (value: T, index: number, source: Observable<
  * <span class="informal">If some value passes the predicate before the source completes, emits true before completion,
  * otherwise emit false, then complete.</span>
  *
+ * ![](some.svg)
+ *
  *
  * ## Example
  *
