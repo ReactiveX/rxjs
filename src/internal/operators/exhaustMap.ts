@@ -1,26 +1,8 @@
-import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { map } from './map';
 import { innerFrom } from '../observable/innerFrom';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
-
-/* tslint:disable:max-line-length */
-export function exhaustMap<T, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O
-): OperatorFunction<T, ObservedValueOf<O>>;
-/** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
-export function exhaustMap<T, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O,
-  resultSelector: undefined
-): OperatorFunction<T, ObservedValueOf<O>>;
-/** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
-export function exhaustMap<T, I, R>(
-  project: (value: T, index: number) => ObservableInput<I>,
-  resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
-): OperatorFunction<T, R>;
-/* tslint:enable:max-line-length */
 
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -66,15 +48,9 @@ export function exhaustMap<T, I, R>(
  * Observables of each item of the source, ignoring projected Observables that
  * start before their preceding Observable has completed.
  */
-export function exhaustMap<T, R, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O,
-  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
-): OperatorFunction<T, ObservedValueOf<O> | R> {
-  if (resultSelector) {
-    // DEPRECATED PATH
-    return (source: Observable<T>) =>
-      source.pipe(exhaustMap((a, i) => innerFrom(project(a, i)).pipe(map((b: any, ii: any) => resultSelector(a, b, i, ii)))));
-  }
+export function exhaustMap<T, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O
+): OperatorFunction<T, ObservedValueOf<O>> {
   return operate((source, subscriber) => {
     let index = 0;
     let innerSub: Subscriber<T> | null = null;
