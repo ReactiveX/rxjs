@@ -213,28 +213,6 @@ describe('map', () => {
     });
   });
 
-  it('should map using a custom thisArg', () => {
-    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('-5-^-4--3---2----1--|');
-      const e1subs = '   ^----------------!';
-      const expected = ' --a--b---c----d--|';
-      const values = { a: 46, b: 55, c: 64, d: 73 };
-
-      const foo = {
-        value: 42,
-      };
-      const result = e1.pipe(
-        map(function (this: typeof foo, x: string, index: number) {
-          expect(this).to.equal(foo);
-          return parseInt(x) + foo.value + index * 10;
-        }, foo)
-      );
-
-      expectObservable(result).toBe(expected, values);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
-  });
-
   it('should map twice', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('-0----1-^-2---3--4-5--6--7-8-|');
@@ -259,36 +237,6 @@ describe('map', () => {
             expect(invoked2).to.equal(7);
           },
         })
-      );
-
-      expectObservable(result).toBe(expected, values);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
-  });
-
-  it('should do multiple maps using a custom thisArg', () => {
-    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  --1--2--3--4--|');
-      const e1subs = '  ^-------------!';
-      const expected = '--a--b--c--d--|';
-      const values = { a: 11, b: 14, c: 17, d: 20 };
-
-      class Filterer {
-        selector1 = (x: string) => parseInt(x) + 2;
-        selector2 = (x: string) => parseInt(x) * 3;
-      }
-      const filterer = new Filterer();
-
-      const result = e1.pipe(
-        map(function (this: any, x) {
-          return this.selector1(x);
-        }, filterer),
-        map(function (this: any, x) {
-          return this.selector2(x);
-        }, filterer),
-        map(function (this: any, x) {
-          return this.selector1(x);
-        }, filterer)
       );
 
       expectObservable(result).toBe(expected, values);
