@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { TeardownLogic } from '../src/internal/types';
 import { Observable, config, Subscription, Subscriber, Operator, NEVER, Subject, of, throwError, EMPTY } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip, catchError, publish, publishLast, publishBehavior, share} from 'rxjs/operators';
+import { map, multicast, refCount, filter, count, tap, combineLatestWith, concat, merge, race, zip, catchError, publish, publishLast, publishBehavior, share} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -132,7 +132,7 @@ describe('Observable', () => {
           },
           (err) => {
             results.push(err);
-            // The error should unsubscribe from the source, meaning we 
+            // The error should unsubscribe from the source, meaning we
             // should not see the number 4.
             expect(results).to.deep.equal([1, 2, 3, expected]);
           }
@@ -179,7 +179,7 @@ describe('Observable', () => {
         results.push(value);
       }
       next.bind = () => { /* lol */};
-      
+
       const complete = function () {
         results.push('done');
       }
@@ -1051,13 +1051,16 @@ describe('Observable.lift', () => {
     );
   });
 
-  it('should compose through combineLatest', () => {
+  it('should compose through combineLatestWith', () => {
     rxTestScheduler.run(({ cold, expectObservable }) => {
       const e1 = cold(' -a--b-----c-d-e-|');
       const e2 = cold(' --1--2-3-4---|   ');
       const expected = '--A-BC-D-EF-G-H-|';
 
-      const result = MyCustomObservable.from(e1).pipe(combineLatest(e2, (a, b) => String(a) + String(b)));
+      const result = MyCustomObservable.from(e1).pipe(
+        combineLatestWith(e2),
+        map(([a, b]) => String(a) + String(b))
+      );
 
       expect(result instanceof MyCustomObservable).to.be.true;
 
