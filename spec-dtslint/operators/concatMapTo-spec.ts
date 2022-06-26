@@ -17,26 +17,6 @@ it('should infer correctly with a Promise', () => {
   const o = of(1, 2, 3).pipe(concatMapTo(new Promise<string>(() => {}))); // $ExpectType Observable<string>
 });
 
-it('should infer correctly by using the resultSelector first parameter', () => {
-  const o = of(1, 2, 3).pipe(concatMapTo(of('foo'), a => a)); // $ExpectType Observable<number>
-});
-
-it('should infer correctly by using the resultSelector second parameter', () => {
-  const o = of(1, 2, 3).pipe(concatMapTo(of('foo'), (a, b) => b)); // $ExpectType Observable<string>
-});
-
-it('should support a resultSelector that takes an inner index', () => {
-  const o = of(1, 2, 3).pipe(concatMapTo(of('foo'), (a, b, innerIndex) => a)); // $ExpectType Observable<number>
-});
-
-it('should support a resultSelector that takes an inner and outer index', () => {
-  const o = of(1, 2, 3).pipe(concatMapTo(of('foo'), (a, b, innerIndex, outerIndex) => a)); // $ExpectType Observable<number>
-});
-
-it('should support an undefined resultSelector', () => {
-  const o = of(1, 2, 3).pipe(concatMapTo(of('foo'), undefined)); // $ExpectType Observable<string>
-});
-
 it('should support union types', () => {
   const s = Math.random() > 0.5 ? of(123) : of('abc');
   const r = of(1, 2, 3).pipe(concatMapTo(s)); // $ExpectType Observable<string | number>
