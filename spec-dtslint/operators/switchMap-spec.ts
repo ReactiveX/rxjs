@@ -9,26 +9,6 @@ it('should support a projector that takes an index', () => {
   const o = of(1, 2, 3).pipe(switchMap(p => of(Boolean(p)))); // $ExpectType Observable<boolean>
 });
 
-it('should infer correctly by using the resultSelector first parameter', () => {
-  const o = of(1, 2, 3).pipe(switchMap(p => of(Boolean(p)), a => a)); // $ExpectType Observable<number>
-});
-
-it('should infer correctly by using the resultSelector second parameter', () => {
-  const o = of(1, 2, 3).pipe(switchMap(p => of(Boolean(p)), (a, b) => b)); // $ExpectType Observable<boolean>
-});
-
-it('should support a resultSelector that takes an inner index', () => {
-  const o = of(1, 2, 3).pipe(switchMap(p => of(Boolean(p)), (a, b, i) => a)); // $ExpectType Observable<number>
-});
-
-it('should support a resultSelector that takes an inner and outer index', () => {
-  const o = of(1, 2, 3).pipe(switchMap(p => of(Boolean(p)), (a, b, i, ii) => a)); // $ExpectType Observable<number>
-});
-
-it('should support an undefined resultSelector', () => {
-  const o = of(1, 2, 3).pipe(switchMap(p => of(Boolean(p)), undefined)); // $ExpectType Observable<boolean>
-});
-
 it('should support union-type projections with empty streams', () => {
   const o = of(1, 2, 3).pipe(switchMap(n => Math.random() < 0.5 ? of(123) : of())); // $ExpectType Observable<number>
 });

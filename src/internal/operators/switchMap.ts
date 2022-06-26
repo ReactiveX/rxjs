@@ -4,22 +4,6 @@ import { innerFrom } from '../observable/innerFrom';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
-/* tslint:disable:max-line-length */
-export function switchMap<T, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O
-): OperatorFunction<T, ObservedValueOf<O>>;
-/** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
-export function switchMap<T, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O,
-  resultSelector: undefined
-): OperatorFunction<T, ObservedValueOf<O>>;
-/** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
-export function switchMap<T, R, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O,
-  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
-): OperatorFunction<T, R>;
-/* tslint:enable:max-line-length */
-
 /**
  * Projects each source value to an Observable which is merged in the output
  * Observable, emitting values only from the most recently projected Observable.
@@ -79,14 +63,12 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
  * that, when applied to an item emitted by the source Observable, returns an
  * Observable.
  * @return A function that returns an Observable that emits the result of
- * applying the projection function (and the optional deprecated
- * `resultSelector`) to each item emitted by the source Observable and taking
- * only the values from the most recently projected inner Observable.
+ * applying the projection function to each item emitted by the source Observable
+ * and taking only the values from the most recently projected inner Observable.
  */
-export function switchMap<T, R, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O,
-  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
-): OperatorFunction<T, ObservedValueOf<O> | R> {
+export function switchMap<T, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O
+): OperatorFunction<T, ObservedValueOf<O>> {
   return operate((source, subscriber) => {
     let innerSubscriber: Subscriber<ObservedValueOf<O>> | null = null;
     let index = 0;
@@ -103,24 +85,16 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
         (value) => {
           // Cancel the previous inner subscription if there was one
           innerSubscriber?.unsubscribe();
-          let innerIndex = 0;
           const outerIndex = index++;
           // Start the next inner subscription
           innerFrom(project(value, outerIndex)).subscribe(
-            (innerSubscriber = createOperatorSubscriber(
-              subscriber,
-              // When we get a new inner value, next it through. Note that this is
-              // handling the deprecate result selector here. This is because with this architecture
-              // it ends up being smaller than using the map operator.
-              (innerValue) => subscriber.next(resultSelector ? resultSelector(value, innerValue, outerIndex, innerIndex++) : innerValue),
-              () => {
-                // The inner has completed. Null out the inner subscriber to
-                // free up memory and to signal that we have no inner subscription
-                // currently.
-                innerSubscriber = null!;
-                checkComplete();
-              }
-            ))
+            (innerSubscriber = createOperatorSubscriber(subscriber, undefined, () => {
+              // The inner has completed. Null out the inner subscriber to
+              // free up memory and to signal that we have no inner subscription
+              // currently.
+              innerSubscriber = null!;
+              checkComplete();
+            }))
           );
         },
         () => {
