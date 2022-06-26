@@ -5,25 +5,6 @@ import { operate } from '../util/lift';
 import { mergeInternals } from './mergeInternals';
 import { isFunction } from '../util/isFunction';
 
-/* tslint:disable:max-line-length */
-export function mergeMap<T, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O,
-  concurrent?: number
-): OperatorFunction<T, ObservedValueOf<O>>;
-/** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
-export function mergeMap<T, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O,
-  resultSelector: undefined,
-  concurrent?: number
-): OperatorFunction<T, ObservedValueOf<O>>;
-/** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
-export function mergeMap<T, R, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O,
-  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
-  concurrent?: number
-): OperatorFunction<T, R>;
-/* tslint:enable:max-line-length */
-
 /**
  * Projects each source value to an Observable which is merged in the output
  * Observable.
@@ -76,21 +57,12 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
  * @param {number} [concurrent=Infinity] Maximum number of input
  * Observables being subscribed to concurrently.
  * @return A function that returns an Observable that emits the result of
- * applying the projection function (and the optional deprecated
- * `resultSelector`) to each item emitted by the source Observable and merging
- * the results of the Observables obtained from this transformation.
+ * applying the projection function to each item emitted by the source Observable
+ * and merging the results of the Observables obtained from this transformation.
  */
-export function mergeMap<T, R, O extends ObservableInput<any>>(
+export function mergeMap<T, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
-  resultSelector?: ((outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R) | number,
   concurrent: number = Infinity
-): OperatorFunction<T, ObservedValueOf<O> | R> {
-  if (isFunction(resultSelector)) {
-    // DEPRECATED PATH
-    return mergeMap((a, i) => map((b: any, ii: number) => resultSelector(a, b, i, ii))(innerFrom(project(a, i))), concurrent);
-  } else if (typeof resultSelector === 'number') {
-    concurrent = resultSelector;
-  }
-
+): OperatorFunction<T, ObservedValueOf<O>> {
   return operate((source, subscriber) => mergeInternals(source, subscriber, project, concurrent));
 }
