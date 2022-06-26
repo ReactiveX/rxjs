@@ -1,22 +1,5 @@
 import { mergeMap } from './mergeMap';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { isFunction } from '../util/isFunction';
-
-/* tslint:disable:max-line-length */
-export function concatMap<T, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O
-): OperatorFunction<T, ObservedValueOf<O>>;
-/** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
-export function concatMap<T, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O,
-  resultSelector: undefined
-): OperatorFunction<T, ObservedValueOf<O>>;
-/** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
-export function concatMap<T, R, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O,
-  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
-): OperatorFunction<T, R>;
-/* tslint:enable:max-line-length */
 
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -72,13 +55,11 @@ export function concatMap<T, R, O extends ObservableInput<any>>(
  * that, when applied to an item emitted by the source Observable, returns an
  * Observable.
  * @return A function that returns an Observable that emits the result of
- * applying the projection function (and the optional deprecated
- * `resultSelector`) to each item emitted by the source Observable and taking
- * values from each projected inner Observable sequentially.
+ * applying the projection function to each item emitted by the source Observable
+ * and taking values from each projected inner Observable sequentially.
  */
-export function concatMap<T, R, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O,
-  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
-): OperatorFunction<T, ObservedValueOf<O> | R> {
-  return isFunction(resultSelector) ? mergeMap(project, resultSelector, 1) : mergeMap(project, 1);
+export function concatMap<T, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O
+): OperatorFunction<T, ObservedValueOf<O>> {
+  return mergeMap(project, 1);
 }
