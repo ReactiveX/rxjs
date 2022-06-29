@@ -211,7 +211,13 @@ export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction
       // Basically, `subscriber === dest.subscribe(subscriber)` is `true`.
       dest.subscribe(subscriber);
 
-      if (!connection) {
+      if (
+        !connection &&
+        // Check this shareReplay is still activate - it can be reset to 0
+        // and be "unsubscribed" _before_ it actually subscribes.
+        // If we were to subscribe then, it'd leak and get stuck.
+        refCount > 0
+      ) {
         // We need to create a subscriber here - rather than pass an observer and
         // assign the returned subscription to connection - because it's possible
         // for reentrant subscriptions to the shared observable to occur and in
