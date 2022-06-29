@@ -34,14 +34,6 @@ describe('throwError', () => {
     });
   });
 
-  it('should accept scheduler', () => {
-    rxTest.run(({ expectObservable }) => {
-      const e = throwError(() => 'error', rxTest);
-
-      expectObservable(e).toBe('#');
-    });
-  });
-
   it('should accept a factory function', () => {
     let calls = 0;
     let errors: any[] = [];
