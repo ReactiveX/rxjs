@@ -1,7 +1,6 @@
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { SchedulerLike } from '../types';
-import { isFunction } from '../util/isFunction';
 
 /**
  * Creates an observable that will create an error instance and push it to the consumer as an error
@@ -98,28 +97,17 @@ import { isFunction } from '../util/isFunction';
 export function throwError(errorFactory: () => any): Observable<never>;
 
 /**
- * Returns an observable that will error with the specified error immediately upon subscription.
- *
- * @param error The error instance to emit
- * @deprecated Support for passing an error value will be removed in v8. Instead, pass a factory function to `throwError(() => new Error('test'))`. This is
- * because it will create the error at the moment it should be created and capture a more appropriate stack trace. If
- * for some reason you need to create the error ahead of time, you can still do that: `const err = new Error('test'); throwError(() => err);`.
- */
-export function throwError(error: any): Observable<never>;
-
-/**
  * Notifies the consumer of an error using a given scheduler by scheduling it at delay `0` upon subscription.
  *
- * @param errorOrErrorFactory An error instance or error factory
+ * @param errorFactory An error instance or error factory
  * @param scheduler A scheduler to use to schedule the error notification
  * @deprecated The `scheduler` parameter will be removed in v8.
  * Use `throwError` in combination with {@link observeOn}: `throwError(() => new Error('test')).pipe(observeOn(scheduler));`.
  * Details: https://rxjs.dev/deprecations/scheduler-argument
  */
-export function throwError(errorOrErrorFactory: any, scheduler: SchedulerLike): Observable<never>;
+export function throwError(errorFactory: () => any, scheduler: SchedulerLike): Observable<never>;
 
-export function throwError(errorOrErrorFactory: any, scheduler?: SchedulerLike): Observable<never> {
-  const errorFactory = isFunction(errorOrErrorFactory) ? errorOrErrorFactory : () => errorOrErrorFactory;
+export function throwError(errorFactory: () => any, scheduler?: SchedulerLike): Observable<never> {
   const init = (subscriber: Subscriber<never>) => subscriber.error(errorFactory());
   return new Observable(scheduler ? (subscriber) => scheduler.schedule(init as any, 0, subscriber) : init);
 }

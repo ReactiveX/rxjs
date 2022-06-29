@@ -36,7 +36,7 @@ describe('throwError', () => {
 
   it('should accept scheduler', () => {
     rxTest.run(({ expectObservable }) => {
-      const e = throwError('error', rxTest);
+      const e = throwError(() => 'error', rxTest);
 
       expectObservable(e).toBe('#');
     });
