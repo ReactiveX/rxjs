@@ -1,6 +1,4 @@
 import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
-import { SchedulerLike } from '../types';
 
 /**
  * Creates an observable that will create an error instance and push it to the consumer as an error
@@ -94,20 +92,8 @@ import { SchedulerLike } from '../types';
  *
  * @param errorFactory A factory function that will create the error instance that is pushed.
  */
-export function throwError(errorFactory: () => any): Observable<never>;
-
-/**
- * Notifies the consumer of an error using a given scheduler by scheduling it at delay `0` upon subscription.
- *
- * @param errorFactory An error instance or error factory
- * @param scheduler A scheduler to use to schedule the error notification
- * @deprecated The `scheduler` parameter will be removed in v8.
- * Use `throwError` in combination with {@link observeOn}: `throwError(() => new Error('test')).pipe(observeOn(scheduler));`.
- * Details: https://rxjs.dev/deprecations/scheduler-argument
- */
-export function throwError(errorFactory: () => any, scheduler: SchedulerLike): Observable<never>;
-
-export function throwError(errorFactory: () => any, scheduler?: SchedulerLike): Observable<never> {
-  const init = (subscriber: Subscriber<never>) => subscriber.error(errorFactory());
-  return new Observable(scheduler ? (subscriber) => scheduler.schedule(init as any, 0, subscriber) : init);
+export function throwError(errorFactory: () => any): Observable<never> {
+  return new Observable((subscriber) => {
+    subscriber.error(errorFactory());
+  });
 }
