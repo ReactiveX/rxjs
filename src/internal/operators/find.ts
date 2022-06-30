@@ -5,19 +5,9 @@ import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 export function find<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
-/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
-export function find<T, S extends T, A>(
-  predicate: (this: A, value: T, index: number, source: Observable<T>) => value is S,
-  thisArg: A
-): OperatorFunction<T, S | undefined>;
 export function find<T, S extends T>(
   predicate: (value: T, index: number, source: Observable<T>) => value is S
 ): OperatorFunction<T, S | undefined>;
-/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
-export function find<T, A>(
-  predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
-  thisArg: A
-): OperatorFunction<T, T | undefined>;
 export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, T | undefined>;
 /**
  * Emits only the first value emitted by the source Observable that meets some
@@ -57,16 +47,11 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
  *
  * @param {function(value: T, index: number, source: Observable<T>): boolean} predicate
  * A function called with each item to test for condition matching.
- * @param {any} [thisArg] An optional argument to determine the value of `this`
- * in the `predicate` function.
  * @return A function that returns an Observable that emits the first item that
  * matches the condition.
  */
-export function find<T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  thisArg?: any
-): OperatorFunction<T, T | undefined> {
-  return operate(createFind(predicate, thisArg, 'value'));
+export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, T | undefined> {
+  return operate(createFind(predicate, undefined, 'value'));
 }
 
 export function createFind<T>(
