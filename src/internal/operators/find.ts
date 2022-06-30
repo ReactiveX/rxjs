@@ -51,14 +51,10 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
  * matches the condition.
  */
 export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, T | undefined> {
-  return operate(createFind(predicate, undefined, 'value'));
+  return operate(createFind(predicate, 'value'));
 }
 
-export function createFind<T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  thisArg: any,
-  emit: 'value' | 'index'
-) {
+export function createFind<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, emit: 'value' | 'index') {
   const findIndex = emit === 'index';
   return (source: Observable<T>, subscriber: Subscriber<any>) => {
     let index = 0;
@@ -67,7 +63,7 @@ export function createFind<T>(
         subscriber,
         (value) => {
           const i = index++;
-          if (predicate.call(thisArg, value, i, source)) {
+          if (predicate(value, i, source)) {
             subscriber.next(findIndex ? i : value);
             subscriber.complete();
           }
