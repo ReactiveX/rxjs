@@ -4,13 +4,6 @@ import { operate } from '../util/lift';
 import { createFind } from './find';
 
 export function findIndex<T>(predicate: BooleanConstructor): OperatorFunction<T, T extends Falsy ? -1 : number>;
-/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
-export function findIndex<T>(predicate: BooleanConstructor, thisArg: any): OperatorFunction<T, T extends Falsy ? -1 : number>;
-/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
-export function findIndex<T, A>(
-  predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
-  thisArg: A
-): OperatorFunction<T, number>;
 export function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, number>;
 
 /**
@@ -51,14 +44,9 @@ export function findIndex<T>(predicate: (value: T, index: number, source: Observ
  *
  * @param {function(value: T, index: number, source: Observable<T>): boolean} predicate
  * A function called with each item to test for condition matching.
- * @param {any} [thisArg] An optional argument to determine the value of `this`
- * in the `predicate` function.
  * @return A function that returns an Observable that emits the index of the
  * first item that matches the condition.
  */
-export function findIndex<T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  thisArg?: any
-): OperatorFunction<T, number> {
-  return operate(createFind(predicate, thisArg, 'index'));
+export function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, number> {
+  return operate(createFind(predicate, undefined, 'index'));
 }

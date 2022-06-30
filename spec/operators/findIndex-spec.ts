@@ -86,23 +86,6 @@ describe('findIndex', () => {
     });
   });
 
-  it('should work with a custom thisArg', () => {
-    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const sourceValues = { b: 7 };
-      const e1 = hot('  --a--b---c-|', sourceValues);
-      const e1subs = '  ^----!      ';
-      const expected = '-----(x|)   ';
-
-      const predicate = function (this: typeof sourceValues, value: number) {
-        return value === this.b;
-      };
-      const result = e1.pipe(findIndex(predicate, sourceValues));
-
-      expectObservable(result).toBe(expected, { x: 1 });
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
-  });
-
   it('should return negative index if element does not match with predicate', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--c--|   ');
