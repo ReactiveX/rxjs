@@ -86,24 +86,6 @@ describe('find', () => {
     });
   });
 
-  it('should work with a custom thisArg', () => {
-    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  --a--b---c-|');
-      const e1subs = '  ^----!      ';
-      const expected = '-----(b|)   ';
-
-      const finder = {
-        target: 'b',
-      };
-      const predicate = function (this: typeof finder, value: string) {
-        return value === this.target;
-      };
-
-      expectObservable(e1.pipe(find(predicate, finder))).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
-  });
-
   it('should return undefined if element does not match with predicate', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--c--|   ');
