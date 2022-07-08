@@ -284,7 +284,7 @@ describe('shareReplay', () => {
       return new BehaviorSubject(1);
     }).pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
-    firstValueFrom(combineLatest([source, source]));
+    await firstValueFrom(combineLatest([source, source]));
     expect(subscriptions).to.equal(1);
   });
 
