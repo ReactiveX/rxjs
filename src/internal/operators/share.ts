@@ -1,6 +1,5 @@
 import { Observable } from '../Observable';
 import { innerFrom } from '../observable/innerFrom';
-import { take } from '../operators/take';
 import { Subject } from '../Subject';
 import { SafeSubscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
@@ -153,22 +152,22 @@ export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction
   // call to a source observable's `pipe` method - not when the static `pipe`
   // function is called.
   return (wrapperSource) => {
-    let connection: SafeSubscriber<T> | null = null;
-    let resetConnection: Subscription | null = null;
-    let subject: SubjectLike<T> | null = null;
+    let connection: SafeSubscriber<T> | undefined;
+    let resetConnection: Subscription | undefined;
+    let subject: SubjectLike<T> | undefined;
     let refCount = 0;
     let hasCompleted = false;
     let hasErrored = false;
 
     const cancelReset = () => {
       resetConnection?.unsubscribe();
-      resetConnection = null;
+      resetConnection = undefined;
     };
     // Used to reset the internal state to a "cold"
     // state, as though it had never been subscribed to.
     const reset = () => {
       cancelReset();
-      connection = subject = null;
+      connection = subject = undefined;
       hasCompleted = hasErrored = false;
     };
     const resetAndUnsubscribe = () => {
@@ -248,18 +247,22 @@ function handleReset<T extends unknown[] = never[]>(
   reset: () => void,
   on: boolean | ((...args: T) => Observable<any>),
   ...args: T
-): Subscription | null {
+): Subscription | undefined {
   if (on === true) {
     reset();
-
-    return null;
+    return;
   }
 
   if (on === false) {
-    return null;
+    return;
   }
 
-  return on(...args)
-    .pipe(take(1))
-    .subscribe(() => reset());
+  const onSubscriber = new SafeSubscriber({
+    next: () => {
+      onSubscriber.unsubscribe();
+      reset();
+    },
+  });
+
+  return on(...args).subscribe(onSubscriber);
 }
