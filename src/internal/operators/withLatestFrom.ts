@@ -2,7 +2,6 @@ import { OperatorFunction, ObservableInputTuple } from '../types';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { innerFrom } from '../observable/innerFrom';
-import { identity } from '../util/identity';
 import { noop } from '../util/noop';
 import { popResultSelector } from '../util/args';
 
@@ -61,10 +60,7 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | 
   return operate((source, subscriber) => {
     const len = inputs.length;
     const otherValues = new Array(len);
-    // An array of whether or not the other sources have emitted. Matched with them by index.
-    // TODO: At somepoint, we should investigate the performance implications here, and look
-    // into using a `Set()` and checking the `size` to see if we're ready.
-    let hasValue = inputs.map(() => false);
+    let remainingValues = len;
     // Flipped true when we have at least one value from all other sources and
     // we are ready to start emitting values.
     let ready = false;
@@ -74,19 +70,21 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | 
     // from them. This is an important distinction because subscription constitutes
     // a side-effect.
     for (let i = 0; i < len; i++) {
+      let hasFirstValue = false;
       innerFrom(inputs[i]).subscribe(
         createOperatorSubscriber(
           subscriber,
           (value) => {
             otherValues[i] = value;
-            if (!ready && !hasValue[i]) {
-              // If we're not ready yet, flag to show this observable has emitted.
-              hasValue[i] = true;
+            if (!ready && !hasFirstValue && remainingValues) {
+              // If we're not ready yet, subtract one value from remainingValues and mark
+              // this inner observable because he emitted a value.
+              remainingValues--;
+              hasFirstValue = true;
               // Intentionally terse code.
               // If all of our other observables have emitted, set `ready` to `true`,
-              // so we know we can start emitting values, then clean up the `hasValue` array,
-              // because we don't need it anymore.
-              (ready = hasValue.every(identity)) && (hasValue = null!);
+              // so we know we can start emitting values.
+              ready = remainingValues === 0;
             }
           },
           // Completing one of the other sources has
