@@ -1,3 +1,12 @@
+## [7.5.6](https://github.com/reactivex/rxjs/compare/7.5.5...7.5.6) (2022-07-11)
+
+### Bug Fixes
+
+- **share:** No longer results in a bad-state observable in an edge case where a synchronous source was shared and refCounted, and the result is subscribed to twice in a row synchronously. ([#7005](https://github.com/reactivex/rxjs/issues/7005)) ([5d4c1d9](https://github.com/reactivex/rxjs/commit/5d4c1d9a37b1347217223adb0d9e166fd85f67a9))
+- **share & connect:** `share` and `connect` no longer bundle scheduling code by default ([#6873](https://github.com/reactivex/rxjs/issues/6873)) ([9948dc2](https://github.com/reactivex/rxjs/commit/9948dc2f5577eaa4013de234f3552508918518c7)), closes [#6872](https://github.com/reactivex/rxjs/issues/6872)
+- **exhaustAll:** Result will now complete properly when flattening all synchronous observables. ([#6911](https://github.com/reactivex/rxjs/issues/6911)) ([3c1c6b8](https://github.com/reactivex/rxjs/commit/3c1c6b8303028eebc7af31cfc5e5bad42a5b2da4)), closes [#6910](https://github.com/reactivex/rxjs/issues/6910)
+- **TypeScript:** Now compatible with TypeScript 4.6 type checks ([#6895](https://github.com/reactivex/rxjs/issues/6895)) ([fce9aa1](https://github.com/reactivex/rxjs/commit/fce9aa12931796892673581761bba1f7ceafabff))
+
 ## [7.5.5](https://github.com/reactivex/rxjs/compare/7.5.4...7.5.5) (2022-03-08)
 
 ### Bug Fixes
