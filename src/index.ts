@@ -15,8 +15,8 @@
 /* Observable */
 export { Observable } from './internal/Observable';
 export { ConnectableObservable } from './internal/observable/ConnectableObservable';
-export type { GroupedObservable } from './internal/operators/groupBy';
-export type { Operator } from './internal/Operator';
+export { GroupedObservable } from './internal/operators/groupBy';
+export { Operator } from './internal/Operator';
 export { observable } from './internal/symbol/observable';
 export { animationFrames } from './internal/observable/dom/animationFrames';
 
@@ -92,8 +92,7 @@ export { NEVER } from './internal/observable/never';
 export * from './internal/types';
 
 /* Config */
-export { config } from './internal/config';
-export type { GlobalConfig } from './internal/config';
+export { config, GlobalConfig } from './internal/config';
 
 /* Operators */
 export { audit } from './internal/operators/audit';
@@ -111,8 +110,7 @@ export { concatAll } from './internal/operators/concatAll';
 export { concatMap } from './internal/operators/concatMap';
 export { concatMapTo } from './internal/operators/concatMapTo';
 export { concatWith } from './internal/operators/concatWith';
-export { connect } from './internal/operators/connect';
-export type { ConnectConfig } from './internal/operators/connect';
+export { connect, ConnectConfig } from './internal/operators/connect';
 export { count } from './internal/operators/count';
 export { debounce } from './internal/operators/debounce';
 export { debounceTime } from './internal/operators/debounceTime';
@@ -135,8 +133,7 @@ export { finalize } from './internal/operators/finalize';
 export { find } from './internal/operators/find';
 export { findIndex } from './internal/operators/findIndex';
 export { first } from './internal/operators/first';
-export { groupBy } from './internal/operators/groupBy';
-export type { BasicGroupByOptions, GroupByOptionsWithElement } from './internal/operators/groupBy';
+export { groupBy, BasicGroupByOptions, GroupByOptionsWithElement } from './internal/operators/groupBy';
 export { ignoreElements } from './internal/operators/ignoreElements';
 export { isEmpty } from './internal/operators/isEmpty';
 export { last } from './internal/operators/last';
@@ -163,18 +160,15 @@ export { raceWith } from './internal/operators/raceWith';
 export { reduce } from './internal/operators/reduce';
 export { repeat } from './internal/operators/repeat';
 export { repeatWhen } from './internal/operators/repeatWhen';
-export { retry } from './internal/operators/retry';
-export type { RetryConfig } from './internal/operators/retry';
+export { retry, RetryConfig } from './internal/operators/retry';
 export { retryWhen } from './internal/operators/retryWhen';
 export { refCount } from './internal/operators/refCount';
 export { sample } from './internal/operators/sample';
 export { sampleTime } from './internal/operators/sampleTime';
 export { scan } from './internal/operators/scan';
 export { sequenceEqual } from './internal/operators/sequenceEqual';
-export { share } from './internal/operators/share';
-export type { ShareConfig } from './internal/operators/share';
-export { shareReplay } from './internal/operators/shareReplay';
-export type { ShareReplayConfig } from './internal/operators/shareReplay';
+export { share, ShareConfig } from './internal/operators/share';
+export { shareReplay, ShareReplayConfig } from './internal/operators/shareReplay';
 export { single } from './internal/operators/single';
 export { skip } from './internal/operators/skip';
 export { skipLast } from './internal/operators/skipLast';
@@ -191,13 +185,11 @@ export { takeLast } from './internal/operators/takeLast';
 export { takeUntil } from './internal/operators/takeUntil';
 export { takeWhile } from './internal/operators/takeWhile';
 export { tap } from './internal/operators/tap';
-export { throttle } from './internal/operators/throttle';
-export type { ThrottleConfig } from './internal/operators/throttle';
+export { throttle, ThrottleConfig } from './internal/operators/throttle';
 export { throttleTime } from './internal/operators/throttleTime';
 export { throwIfEmpty } from './internal/operators/throwIfEmpty';
 export { timeInterval } from './internal/operators/timeInterval';
-export { timeout } from './internal/operators/timeout';
-export type { TimeoutConfig, TimeoutInfo } from './internal/operators/timeout';
+export { timeout, TimeoutConfig, TimeoutInfo } from './internal/operators/timeout';
 export { timeoutWith } from './internal/operators/timeoutWith';
 export { timestamp } from './internal/operators/timestamp';
 export { toArray } from './internal/operators/toArray';

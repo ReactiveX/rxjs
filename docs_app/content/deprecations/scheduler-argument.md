@@ -37,7 +37,7 @@ Following code example demonstrate this process.
 import { of, asyncScheduler, scheduled } from 'rxjs';
 
 // Deprecated approach
-of([1, 2, 3], asyncScheduler).subscribe((x) => console.log(x));
+of(1, 2, 3, asyncScheduler).subscribe((x) => console.log(x));
 // suggested approach
 scheduled([1, 2, 3], asyncScheduler).subscribe((x) => console.log(x));
 ```

@@ -79,7 +79,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 - `_subscribe` method is no longer `public` and is now marked `@internal`.
 - `_trySubscribe` method is no longer `public` and is now `@internal`.
 - `pipe` method calls with `9` or more arguments will now return `Observable<unknown>` rather than `Observable<{}>`.
-- `toPromise` method now correctly returns `Promise<T | undefined>` instead of `Promise<T>`. This a correction without a runtime change, because if the observable does not emit a value before completion, the promise will resolve with `undefined`.
+- `toPromise` method now correctly returns `Promise<T | undefined>` instead of `Promise<T>`. This is a correction without a runtime change, because if the observable does not emit a value before completion, the promise will resolve with `undefined`.
 - `static if` and `static throw` properties are no longer defined. They were unused in version 6.
 - `lift`, `source`, and `operator` properties are still **deprecated**, and should not be used. They are implementation details, and will very likely be renamed or missing in version 8.
 
