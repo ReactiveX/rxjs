@@ -7,17 +7,23 @@ const LOCAL_STORAGE_NAMESPACE = 'aio-notification/';
 
 @Component({
   selector: 'aio-notification',
-  templateUrl: 'notification.component.html',
+  template: `<span class="content" (click)="contentClick()">
+      <ng-content></ng-content>
+    </span>
+
+    <button mat-icon-button class="close-button" aria-label="Close" (click)="dismiss()">
+      <mat-icon svgIcon="close" aria-label="Dismiss notification"></mat-icon>
+    </button> `,
   animations: [
     trigger('hideAnimation', [
-      state('show', style({height: '*'})),
-      state('hide', style({height: 0})),
+      state('show', style({ height: '*' })),
+      state('hide', style({ height: 0 })),
       // this should be kept in sync with the animation durations in:
       // - aio/src/styles/2-modules/_notification.scss
       // - aio/src/app/app.component.ts : notificationDismissed()
-      transition('show => hide', animate(250))
-    ])
-  ]
+      transition('show => hide', animate(250)),
+    ]),
+  ],
 })
 export class NotificationComponent implements OnInit {
   private storage: Storage;
@@ -28,12 +34,9 @@ export class NotificationComponent implements OnInit {
   @Output() dismissed = new EventEmitter();
 
   @HostBinding('@hideAnimation')
-  showNotification: 'show'|'hide';
+  showNotification: 'show' | 'hide';
 
-  constructor(
-    @Inject(WindowToken) window: Window,
-    @Inject(CurrentDateToken) private currentDate: Date
-  ) {
+  constructor(@Inject(WindowToken) window: Window, @Inject(CurrentDateToken) private currentDate: Date) {
     try {
       this.storage = window.localStorage;
     } catch {
@@ -45,7 +48,7 @@ export class NotificationComponent implements OnInit {
         getItem: () => null,
         key: () => null,
         removeItem: () => undefined,
-        setItem: () => undefined
+        setItem: () => undefined,
       };
     }
   }
