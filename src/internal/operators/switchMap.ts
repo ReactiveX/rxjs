@@ -114,7 +114,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
               // it ends up being smaller than using the map operator.
               (innerValue) => subscriber.next(resultSelector ? resultSelector(value, innerValue, outerIndex, innerIndex++) : innerValue),
               () => {
-                // The inner has completed. Null out the inner subcriber to
+                // The inner has completed. Null out the inner subscriber to
                 // free up memory and to signal that we have no inner subscription
                 // currently.
                 innerSubscriber = null!;
