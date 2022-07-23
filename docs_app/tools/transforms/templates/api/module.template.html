@@ -9,7 +9,7 @@
   <ul>
     {% for export in doc.exports -%}
       {% if not export.duplicateOf %}
-        <li><a href="{$ export.path $}">{$ export.name $}</a></li>
+        <li><a{% if export.deprecated %} class="deprecated"{% endif %} href="{$ export.path $}">{$ export.name $}</a></li>
       {% endif %}
     {%- endfor %}
   </ul>
