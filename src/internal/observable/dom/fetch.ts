@@ -1,4 +1,4 @@
-import { OperatorSubscriber } from '../../operators/OperatorSubscriber';
+import { createOperatorSubscriber } from '../../operators/OperatorSubscriber';
 import { Observable } from '../../Observable';
 import { innerFrom } from '../../observable/innerFrom';
 import { ObservableInput } from '../../types';
@@ -20,7 +20,7 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
  * required for this implementation to work and use cancellation appropriately.
  *
  * Will automatically set up an internal [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
- * in order to teardown the internal `fetch` when the subscription tears down.
+ * in order to finalize the internal `fetch` when the subscription tears down.
  *
  * If a `signal` is provided via the `init` argument, it will behave like it usually does with
  * `fetch`. If the provided `signal` aborts, the error that `fetch` normally rejects with
@@ -114,7 +114,7 @@ export function fromFetch<T>(
 
     // If the user provided an init configuration object,
     // let's process it and chain our abort signals, if necessary.
-    // If a signal is provided, just have it teardown. It's a cancellation token, basically.
+    // If a signal is provided, just have it finalized. It's a cancellation token, basically.
     const { signal: outerSignal } = init;
     if (outerSignal) {
       if (outerSignal.aborted) {
@@ -151,7 +151,7 @@ export function fromFetch<T>(
           // Note that any error that comes from our selector will be
           // sent to the promise `catch` below and handled.
           innerFrom(selector(response)).subscribe(
-            new OperatorSubscriber(
+            createOperatorSubscriber(
               subscriber,
               // Values are passed through to the subscriber
               undefined,

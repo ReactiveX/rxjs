@@ -4,7 +4,7 @@ import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { Observer, OperatorFunction, SchedulerLike } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 import { arrRemove } from '../util/arrRemove';
 import { popScheduler } from '../util/args';
 import { executeSchedule } from '../util/executeSchedule';
@@ -173,7 +173,7 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
     };
 
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value: T) => {
           // Notify all windows of the value.
@@ -190,8 +190,8 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
       )
     );
 
-    // Additional teardown. This will be called when the
-    // destination tears down. Other teardowns are registered implicitly
+    // Additional finalization. This will be called when the
+    // destination tears down. Other finalizations are registered implicitly
     // above via subscription.
     return () => {
       // Ensure that the buffer is released.

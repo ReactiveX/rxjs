@@ -1,5 +1,7 @@
 import "tslib";
 
+var _bind = Function.prototype.bind;
+
 var NotificationKind;
 
 (function(NotificationKind) {

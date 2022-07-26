@@ -12,3 +12,7 @@ it('should infer correctly when returning a different type', () => {
 it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(mapTo()); // $ExpectError
 });
+
+it('should be deprecated', () => {
+  const o = of(1, 2, 3).pipe(mapTo(true)); // $ExpectDeprecation
+});

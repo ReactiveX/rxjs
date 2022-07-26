@@ -3,7 +3,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { refCount as higherOrderRefCount } from '../operators/refCount';
-import { OperatorSubscriber } from '../operators/OperatorSubscriber';
+import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
 import { hasLift } from '../util/lift';
 
 /**
@@ -70,7 +70,7 @@ export class ConnectableObservable<T> extends Observable<T> {
       const subject = this.getSubject();
       connection.add(
         this.source.subscribe(
-          new OperatorSubscriber(
+          createOperatorSubscriber(
             subject as any,
             undefined,
             () => {

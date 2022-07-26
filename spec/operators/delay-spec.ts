@@ -1,4 +1,3 @@
-/** @prettier */
 import { of, concat } from 'rxjs';
 import { delay, repeatWhen, skip, take, tap, mergeMap, ignoreElements } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
@@ -245,7 +244,7 @@ describe('delay', () => {
         tap({
           next() {
             const [[subscriber]] = subscribeSpy.args;
-            counts.push(subscriber._teardowns.length);
+            counts.push(subscriber._finalizers.length);
           },
           complete() {
             expect(counts).to.deep.equal([1, 1]);

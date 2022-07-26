@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { noop } from '../util/noop';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Buffers the source Observable values until `closingNotifier` emits.
@@ -48,7 +48,7 @@ export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T,
 
     // Subscribe to our source.
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value) => currentBuffer.push(value),
         () => {
@@ -60,7 +60,7 @@ export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T,
 
     // Subscribe to the closing notifier.
     closingNotifier.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         () => {
           // Start a new buffer and emit the previous one.
@@ -73,7 +73,7 @@ export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T,
     );
 
     return () => {
-      // Ensure buffered values are released on teardown.
+      // Ensure buffered values are released on finalization.
       currentBuffer = null!;
     };
   });

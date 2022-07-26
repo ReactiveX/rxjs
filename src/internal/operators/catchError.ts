@@ -3,7 +3,7 @@ import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { Subscription } from '../Subscription';
 import { innerFrom } from '../observable/innerFrom';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 import { operate } from '../util/lift';
 
 /* tslint:disable:max-line-length */
@@ -113,7 +113,7 @@ export function catchError<T, O extends ObservableInput<any>>(
     let handledResult: Observable<ObservedValueOf<O>>;
 
     innerSub = source.subscribe(
-      new OperatorSubscriber(subscriber, undefined, undefined, (err) => {
+      createOperatorSubscriber(subscriber, undefined, undefined, (err) => {
         handledResult = innerFrom(selector(err, catchError(selector)(source)));
         if (innerSub) {
           innerSub.unsubscribe();
@@ -129,8 +129,8 @@ export function catchError<T, O extends ObservableInput<any>>(
 
     if (syncUnsub) {
       // We have a synchronous error, we need to make sure to
-      // teardown right away. This ensures that `finalize` is called
-      // at the right time, and that teardown occurs at the expected
+      // finalize right away. This ensures that callbacks in the `finalize` operator are called
+      // at the right time, and that finalization occurs at the expected
       // time between the source error and the subscription to the
       // next observable.
       innerSub.unsubscribe();

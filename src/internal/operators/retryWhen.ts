@@ -4,7 +4,7 @@ import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
@@ -59,6 +59,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * user can `complete` or `error`, aborting the retry.
  * @return A function that returns an Observable that mirrors the source
  * Observable with the exception of an `error`.
+ * @deprecated Will be removed in v9 or v10, use {@link retry}'s `delay` option instead.
  */
 export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
@@ -68,15 +69,15 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
 
     const subscribeForRetryWhen = () => {
       innerSub = source.subscribe(
-        new OperatorSubscriber(subscriber, undefined, undefined, (err) => {
+        createOperatorSubscriber(subscriber, undefined, undefined, (err) => {
           if (!errors$) {
             errors$ = new Subject();
             notifier(errors$).subscribe(
-              new OperatorSubscriber(subscriber, () =>
+              createOperatorSubscriber(subscriber, () =>
                 // If we have an innerSub, this was an asynchronous call, kick off the retry.
                 // Otherwise, if we don't have an innerSub yet, that's because the inner subscription
                 // call hasn't even returned yet. We've arrived here synchronously.
-                // So we flag that we want to resub, such that we can ensure teardown
+                // So we flag that we want to resub, such that we can ensure finalization
                 // happens before we resubscribe.
                 innerSub ? subscribeForRetryWhen() : (syncResub = true)
               )

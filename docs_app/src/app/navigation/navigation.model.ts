@@ -4,13 +4,13 @@
 
 export interface NavigationNode {
   url?: string;
-  title?: string;
+  title: string;
   tooltip?: string;
   hidden?: boolean;
   children?: NavigationNode[];
 }
 
-export type NavigationResponse = {__versionInfo: VersionInfo } & { [name: string]: NavigationNode[]|VersionInfo };
+export type NavigationResponse = { __versionInfo: VersionInfo } & { [name: string]: NavigationNode[] | VersionInfo };
 
 export interface NavigationViews {
   [name: string]: NavigationNode[];

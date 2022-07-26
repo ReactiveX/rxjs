@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { of, Notification, ObservableNotification, Observable } from 'rxjs';
 import { dematerialize, map, mergeMap, materialize, take } from 'rxjs/operators';

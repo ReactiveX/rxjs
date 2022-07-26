@@ -1,7 +1,7 @@
 import { EMPTY } from '../observable/empty';
 import { MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Waits for the source to complete, then emits the last N values from the source,
@@ -52,7 +52,7 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
         // any more values.
         let buffer: T[] = [];
         source.subscribe(
-          new OperatorSubscriber(
+          createOperatorSubscriber(
             subscriber,
             (value) => {
               // Add the most recent value onto the end of our buffer.
@@ -72,7 +72,7 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
             // Errors are passed through to the consumer
             undefined,
             () => {
-              // During teardown release the values in our buffer.
+              // During finalization release the values in our buffer.
               buffer = null!;
             }
           )

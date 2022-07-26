@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { SearchResult, SearchResults, SearchArea } from 'app/search/interfaces';
 
 /**
@@ -6,15 +6,41 @@ import { SearchResult, SearchResults, SearchArea } from 'app/search/interfaces';
  */
 @Component({
   selector: 'aio-search-results',
-  templateUrl: './search-results.component.html',
+  template: `<div class="search-results">
+      <div *ngIf="searchAreas.length; then searchResults; else notFound"></div>
+    </div>
+
+    <ng-template #searchResults>
+      <h2 class="visually-hidden">Search Results</h2>
+      <div class="search-area" *ngFor="let area of searchAreas">
+        <h3>{{ area.name }} ({{ area.pages.length + area.priorityPages.length }})</h3>
+        <ul class="priority-pages">
+          <li class="search-page" *ngFor="let page of area.priorityPages">
+            <a class="search-result-item" href="{{ page.path }}" (click)="onResultSelected(page, $event)">
+              <span class="symbol {{ page.type }}" *ngIf="area.name === 'api'"></span>{{ page.title }}
+            </a>
+          </li>
+        </ul>
+        <ul>
+          <li class="search-page" *ngFor="let page of area.pages">
+            <a class="search-result-item" href="{{ page.path }}" (click)="onResultSelected(page, $event)">
+              <span class="symbol {{ page.type }}" *ngIf="area.name === 'api'"></span>{{ page.title }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </ng-template>
+
+    <ng-template #notFound>
+      <p>{{ notFoundMessage }}</p>
+    </ng-template>`,
 })
 export class SearchResultsComponent implements OnChanges {
-
   /**
    * The results to display
    */
   @Input()
-  searchResults: SearchResults;
+  searchResults: SearchResults | null;
 
   /**
    * Emitted when the user selects a search result
@@ -27,8 +53,8 @@ export class SearchResultsComponent implements OnChanges {
   readonly topLevelFolders = ['guide', 'tutorial'];
   searchAreas: SearchArea[] = [];
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.searchAreas = this.processSearchResults(this.searchResults);
+  ngOnChanges() {
+    this.searchAreas = this.searchResults ? this.processSearchResults(this.searchResults) : [];
   }
 
   onResultSelected(page: SearchResult, event: MouseEvent) {
@@ -45,14 +71,16 @@ export class SearchResultsComponent implements OnChanges {
     }
     this.notFoundMessage = 'No results found.';
     const searchAreaMap: { [key: string]: SearchResult[] } = {};
-    search.results.forEach(result => {
-      if (!result.title) { return; } // bad data; should fix
+    search.results.forEach((result) => {
+      if (!result.title) {
+        return;
+      } // bad data; should fix
       const areaName = this.computeAreaName(result) || this.defaultArea;
-      const area = searchAreaMap[areaName] = searchAreaMap[areaName] || [];
+      const area = (searchAreaMap[areaName] = searchAreaMap[areaName] || []);
       area.push(result);
     });
-    const keys = Object.keys(searchAreaMap).sort((l, r) => l > r ? 1 : -1);
-    return keys.map(name => {
+    const keys = Object.keys(searchAreaMap).sort((l, r) => (l > r ? 1 : -1));
+    return keys.map((name) => {
       let pages: SearchResult[] = searchAreaMap[name];
 
       // Extract the top 5 most relevant results as priorityPages

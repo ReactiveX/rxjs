@@ -7,7 +7,25 @@ export interface Option {
 
 @Component({
   selector: 'aio-select',
-  templateUrl: 'select.component.html'
+  template: `<div class="form-select-menu">
+    <button class="form-select-button" (click)="toggleOptions()">
+      <strong>{{ label }}</strong
+      ><span *ngIf="showSymbol" class="symbol {{ selected?.value }}"></span>{{ selected?.title }}
+    </button>
+    <ul class="form-select-dropdown" *ngIf="showOptions">
+      <li
+        *ngFor="let option of options; index as i"
+        [class.selected]="option === selected"
+        role="button"
+        tabindex="0"
+        (click)="select(option, i)"
+        (keydown.enter)="select(option, i)"
+        (keydown.space)="select(option, i); $event.preventDefault()"
+      >
+        <span *ngIf="showSymbol" class="symbol {{ option.value }}"></span>{{ option.title }}
+      </li>
+    </ul>
+  </div>`,
 })
 export class SelectComponent implements OnInit {
   @Input()
@@ -17,7 +35,7 @@ export class SelectComponent implements OnInit {
   options: Option[];
 
   @Output()
-  change = new EventEmitter<{option: Option, index: number}>();
+  change = new EventEmitter<{ option: Option; index: number }>();
 
   @Input()
   showSymbol = false;
@@ -43,7 +61,7 @@ export class SelectComponent implements OnInit {
 
   select(option: Option, index: number) {
     this.selected = option;
-    this.change.emit({option, index});
+    this.change.emit({ option, index });
     this.hideOptions();
   }
 

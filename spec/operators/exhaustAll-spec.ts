@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { exhaustAll, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
@@ -286,5 +285,18 @@ describe('exhaust', () => {
       });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
+  });
+
+  it('should handle synchronously completing inner observables', (done) => {
+    let i = 1;
+    of(of(1), of(2))
+      .pipe(exhaustAll())
+      .subscribe({
+        next: (v) => expect(v).to.equal(i++),
+        complete: () => {
+          expect(i).to.equal(3);
+          done();
+        },
+      });
   });
 });

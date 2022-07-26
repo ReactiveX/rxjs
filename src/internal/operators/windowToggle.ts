@@ -4,7 +4,7 @@ import { Subscription } from '../Subscription';
 import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { innerFrom } from '../observable/innerFrom';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
 import { arrRemove } from '../util/arrRemove';
 
@@ -70,7 +70,7 @@ export function windowToggle<T, O>(
     };
 
     innerFrom(openings).subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (openValue) => {
           const window = new Subject<T>();
@@ -92,7 +92,7 @@ export function windowToggle<T, O>(
 
           subscriber.next(window.asObservable());
 
-          closingSubscription.add(closingNotifier.subscribe(new OperatorSubscriber(subscriber, closeWindow, noop, handleError)));
+          closingSubscription.add(closingNotifier.subscribe(createOperatorSubscriber(subscriber, closeWindow, noop, handleError)));
         },
         noop
       )
@@ -100,7 +100,7 @@ export function windowToggle<T, O>(
 
     // Subcribe to the source to get things started.
     source.subscribe(
-      new OperatorSubscriber(
+      createOperatorSubscriber(
         subscriber,
         (value: T) => {
           // Copy the windows array before we emit to
@@ -119,7 +119,7 @@ export function windowToggle<T, O>(
         },
         handleError,
         () => {
-          // Add this teardown so that all window subjects are
+          // Add this finalization so that all window subjects are
           // disposed of. This way, if a user tries to subscribe
           // to a window *after* the outer subscription has been unsubscribed,
           // they will get an error, instead of waiting forever to

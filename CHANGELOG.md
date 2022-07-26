@@ -1,3 +1,36 @@
+## [7.5.6](https://github.com/reactivex/rxjs/compare/7.5.5...7.5.6) (2022-07-11)
+
+### Bug Fixes
+
+- **share:** No longer results in a bad-state observable in an edge case where a synchronous source was shared and refCounted, and the result is subscribed to twice in a row synchronously. ([#7005](https://github.com/reactivex/rxjs/issues/7005)) ([5d4c1d9](https://github.com/reactivex/rxjs/commit/5d4c1d9a37b1347217223adb0d9e166fd85f67a9))
+- **share & connect:** `share` and `connect` no longer bundle scheduling code by default ([#6873](https://github.com/reactivex/rxjs/issues/6873)) ([9948dc2](https://github.com/reactivex/rxjs/commit/9948dc2f5577eaa4013de234f3552508918518c7)), closes [#6872](https://github.com/reactivex/rxjs/issues/6872)
+- **exhaustAll:** Result will now complete properly when flattening all synchronous observables. ([#6911](https://github.com/reactivex/rxjs/issues/6911)) ([3c1c6b8](https://github.com/reactivex/rxjs/commit/3c1c6b8303028eebc7af31cfc5e5bad42a5b2da4)), closes [#6910](https://github.com/reactivex/rxjs/issues/6910)
+- **TypeScript:** Now compatible with TypeScript 4.6 type checks ([#6895](https://github.com/reactivex/rxjs/issues/6895)) ([fce9aa1](https://github.com/reactivex/rxjs/commit/fce9aa12931796892673581761bba1f7ceafabff))
+
+## [7.5.5](https://github.com/reactivex/rxjs/compare/7.5.4...7.5.5) (2022-03-08)
+
+### Bug Fixes
+
+- **package:** add types to exports ([#6802](https://github.com/reactivex/rxjs/issues/6802)) ([3750f75](https://github.com/reactivex/rxjs/commit/3750f75104bb82d870c53c0605c942e41245d79c))
+- **package:** add `require` export condition ([#6821](https://github.com/reactivex/rxjs/issues/6821)) ([c8955e4](https://github.com/reactivex/rxjs/commit/c8955e4c6a972135030fdfddc18a7a48337ae9c7))
+- **timeout:** no longer will timeout when receiving the first value synchronously ([#6865](https://github.com/reactivex/rxjs/issues/6865)) ([2330c96](https://github.com/reactivex/rxjs/commit/2330c9660b20f2e0cda0c4eeb36bb582b4a85186)), closes [#6862](https://github.com/reactivex/rxjs/issues/6862)
+
+### Performance Improvements
+
+- Don't clone observers unless you have to ([#6842](https://github.com/reactivex/rxjs/issues/6842)) ([3289d20](https://github.com/reactivex/rxjs/commit/3289d20ddc3a84d2aede8e3ab9962a8ef5d43c83))
+
+## [7.5.4](https://github.com/reactivex/rxjs/compare/7.5.3...7.5.4) (2022-02-09)
+
+### Performance Improvements
+
+- removed code that would `bind` functions passed with observers to `subscribe`. ([#6815](https://github.com/reactivex/rxjs/issues/6815)) ([fb375a0](https://github.com/reactivex/rxjs/commit/fb375a0c5befd6852cd63d3c310448e42fa9580e)), closes [#6783](https://github.com/reactivex/rxjs/issues/6783)
+
+## [7.5.3](https://github.com/reactivex/rxjs/compare/7.5.2...7.5.3) (2022-02-08)
+
+### Bug Fixes
+
+- **subscribe:** allow interop with Monio and other libraries that patch function bind ([0ab91eb](https://github.com/reactivex/rxjs/commit/0ab91eb4c1da914efbf03a2732629914cd3398dc)), closes [#6783](https://github.com/reactivex/rxjs/issues/6783)
+
 ## [7.5.2](https://github.com/reactivex/rxjs/compare/7.5.1...7.5.2) (2022-01-11)
 
 ### Bug Fixes

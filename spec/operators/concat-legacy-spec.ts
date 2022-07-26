@@ -25,24 +25,26 @@ describe('concat operator', () => {
   it('should work properly with scalar observables', (done) => {
     const results: string[] = [];
 
-    const s1 = new Observable<number>(observer => {
+    const s1 = new Observable<number>((observer) => {
       setTimeout(() => {
         observer.next(1);
         observer.complete();
       });
     }).pipe(concat(of(2)));
 
-    s1.subscribe(
-      { next: x => {
+    s1.subscribe({
+      next: (x) => {
         results.push('Next: ' + x);
-      }, error: x => {
+      },
+      error: (x) => {
         done(new Error('should not be called'));
-      }, complete: () => {
+      },
+      complete: () => {
         results.push('Completed');
         expect(results).to.deep.equal(['Next: 1', 'Next: 2', 'Completed']);
         done();
-      } }
-    );
+      },
+    });
   });
 
   it('should complete without emit if both sources are empty', () => {
@@ -171,23 +173,19 @@ describe('concat operator', () => {
     });
   });
 
-  it(
-    'should emit element from first source, and should not complete if second ' +
-      'source does not complete',
-    () => {
-      testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-        const e1 = cold('  --a--|');
-        const e1subs = '   ^----!';
-        const e2 = cold('       -');
-        const e2subs = '   -----^';
-        const expected = ' --a---';
+  it('should emit element from first source, and should not complete if second source does not complete', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold('  --a--|');
+      const e1subs = '   ^----!';
+      const e2 = cold('       -');
+      const e2subs = '   -----^';
+      const expected = ' --a---';
 
-        expectObservable(e1.pipe(concat(e2))).toBe(expected);
-        expectSubscriptions(e1.subscriptions).toBe(e1subs);
-        expectSubscriptions(e2.subscriptions).toBe(e2subs);
-      });
-    }
-  );
+      expectObservable(e1.pipe(concat(e2))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+  });
 
   it('should not complete if first source does not complete', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
@@ -242,9 +240,9 @@ describe('concat operator', () => {
       const unsub = '    -----------------!    ';
 
       const result = e1.pipe(
-        mergeMap(x => of(x)),
+        mergeMap((x) => of(x)),
         concat(e2),
-        mergeMap(x => of(x))
+        mergeMap((x) => of(x))
       );
 
       expectObservable(result, unsub).toBe(expected);
@@ -281,43 +279,33 @@ describe('concat operator', () => {
     });
   });
 
-  it(
-    'should emit all elements from both hot observable sources if first source ' +
-      'completes before second source starts emit',
-    () => {
-      testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-        const e1 = hot('  --a--b-|');
-        const e1subs = '  ^------!';
-        const e2 = hot('  --------x--y--|');
-        const e2subs = '  -------^------!';
-        const expected = '--a--b--x--y--|';
+  it('should emit all elements from both hot observable sources if first source completes before second source starts emit', () => {
+    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b-|');
+      const e1subs = '  ^------!';
+      const e2 = hot('  --------x--y--|');
+      const e2subs = '  -------^------!';
+      const expected = '--a--b--x--y--|';
 
-        expectObservable(e1.pipe(concat(e2))).toBe(expected);
-        expectSubscriptions(e1.subscriptions).toBe(e1subs);
-        expectSubscriptions(e2.subscriptions).toBe(e2subs);
-      });
-    }
-  );
+      expectObservable(e1.pipe(concat(e2))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+  });
 
-  it(
-    'should emit elements from second source regardless of completion time ' +
-      'when second source is cold observable',
-    () => {
-      testScheduler.run(
-        ({ hot, cold, expectObservable, expectSubscriptions }) => {
-          const e1 = hot('  --a--b--c---|');
-          const e1subs = '  ^-----------!';
-          const e2 = cold(' -x-y-z-|');
-          const e2subs = '  ------------^------!';
-          const expected = '--a--b--c----x-y-z-|';
+  it('should emit elements from second source regardless of completion time when second source is cold observable', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--c---|');
+      const e1subs = '  ^-----------!';
+      const e2 = cold(' -x-y-z-|');
+      const e2subs = '  ------------^------!';
+      const expected = '--a--b--c----x-y-z-|';
 
-          expectObservable(e1.pipe(concat(e2))).toBe(expected);
-          expectSubscriptions(e1.subscriptions).toBe(e1subs);
-          expectSubscriptions(e2.subscriptions).toBe(e2subs);
-        }
-      );
-    }
-  );
+      expectObservable(e1.pipe(concat(e2))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+  });
 
   it('should not emit collapsing element from second source', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {

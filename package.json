@@ -1,6 +1,6 @@
 {
   "name": "rxjs",
-  "version": "7.5.2",
+  "version": "7.5.6",
   "description": "Reactive Extensions for modern JavaScript",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm5/index.js",
@@ -16,37 +16,51 @@
   "sideEffects": false,
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "node": "./dist/cjs/index.js",
+      "require": "./dist/cjs/index.js",
       "es2015": "./dist/esm/index.js",
       "default": "./dist/esm5/index.js"
     },
     "./ajax": {
+      "types": "./dist/types/ajax/index.d.ts",
       "node": "./dist/cjs/ajax/index.js",
+      "require": "./dist/cjs/ajax/index.js",
       "es2015": "./dist/esm/ajax/index.js",
       "default": "./dist/esm5/ajax/index.js"
     },
     "./fetch": {
+      "types": "./dist/types/fetch/index.d.ts",
       "node": "./dist/cjs/fetch/index.js",
+      "require": "./dist/cjs/fetch/index.js",
       "es2015": "./dist/esm/fetch/index.js",
       "default": "./dist/esm5/fetch/index.js"
     },
     "./operators": {
+      "types": "./dist/types/operators/index.d.ts",
       "node": "./dist/cjs/operators/index.js",
+      "require": "./dist/cjs/operators/index.js",
       "es2015": "./dist/esm/operators/index.js",
       "default": "./dist/esm5/operators/index.js"
     },
     "./testing": {
+      "types": "./dist/types/testing/index.d.ts",
       "node": "./dist/cjs/testing/index.js",
+      "require": "./dist/cjs/testing/index.js",
       "es2015": "./dist/esm/testing/index.js",
       "default": "./dist/esm5/testing/index.js"
     },
     "./webSocket": {
+      "types": "./dist/types/webSocket/index.d.ts",
       "node": "./dist/cjs/webSocket/index.js",
+      "require": "./dist/cjs/webSocket/index.js",
       "es2015": "./dist/esm/webSocket/index.js",
       "default": "./dist/esm5/webSocket/index.js"
     },
     "./internal/*": {
+      "types": "./dist/types/internal/*.d.ts",
       "node": "./dist/cjs/internal/*.js",
+      "require": "./dist/cjs/internal/*.js",
       "es2015": "./dist/esm/internal/*.js",
       "default": "./dist/esm5/internal/*.js"
     },

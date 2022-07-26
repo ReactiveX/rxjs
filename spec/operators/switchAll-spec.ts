@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { Observable, of, NEVER, queueScheduler, Subject, scheduled } from 'rxjs';
 import { map, switchAll, mergeMap, take } from 'rxjs/operators';
@@ -318,7 +317,7 @@ describe('switchAll', () => {
     });
 
     // Expect one child of switchAll(): The oStream
-    expect((sub as any)._teardowns?.[0]._teardowns?.length).to.equal(1);
+    expect((sub as any)._finalizers?.[0]._finalizers?.length).to.equal(1);
     sub.unsubscribe();
   });
 
@@ -333,10 +332,10 @@ describe('switchAll', () => {
       oStreamControl.next(n); // creates inner
     });
     // Expect one child of switchAll(): The oStream
-    expect((sub as any)._teardowns?.[0]._teardowns?.length).to.equal(1);
+    expect((sub as any)._finalizers?.[0]._finalizers?.length).to.equal(1);
     // Expect two children of subscribe(): The destination and the first inner
     // See #4106 - inner subscriptions are now added to destinations
-    expect((sub as any)._teardowns?.length).to.equal(2);
+    expect((sub as any)._finalizers?.length).to.equal(2);
     sub.unsubscribe();
   });
 

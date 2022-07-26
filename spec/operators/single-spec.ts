@@ -65,9 +65,9 @@ describe('single operator', () => {
       const unsub = '   ---!        ';
 
       const result = e1.pipe(
-        mergeMap(x => of(x)),
+        mergeMap((x) => of(x)),
         single(),
-        mergeMap(x => of(x))
+        mergeMap((x) => of(x))
       );
 
       expectObservable(result, unsub).toBe(expected);
@@ -92,7 +92,7 @@ describe('single operator', () => {
       const e1subs = '      ^--!';
       const expected = '    ---#';
 
-      expectObservable(e1.pipe(single(v => v === 'c'))).toBe(expected);
+      expectObservable(e1.pipe(single((v) => v === 'c'))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -105,7 +105,7 @@ describe('single operator', () => {
 
       expectObservable(
         e1.pipe(
-          single(v => {
+          single((v) => {
             if (v !== 'd') {
               return false;
             }
@@ -123,7 +123,7 @@ describe('single operator', () => {
       const e1subs = '  ^----------!';
       const expected = '-----------(b|)';
 
-      expectObservable(e1.pipe(single(v => v === 'b'))).toBe(expected);
+      expectObservable(e1.pipe(single((v) => v === 'b'))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -134,7 +134,7 @@ describe('single operator', () => {
       const e1subs = '  ^----------!      ';
       const expected = '-----------#      ';
 
-      expectObservable(e1.pipe(single(v => v === 'b'))).toBe(expected, null, new SequenceError('Too many matching values'));
+      expectObservable(e1.pipe(single((v) => v === 'b'))).toBe(expected, null, new SequenceError('Too many matching values'));
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -145,7 +145,7 @@ describe('single operator', () => {
       const e1subs = '     ^--!';
       const expected = '   ---#';
 
-      expectObservable(e1.pipe(single(v => v === 'a'))).toBe(expected, null, new EmptyError());
+      expectObservable(e1.pipe(single((v) => v === 'a'))).toBe(expected, null, new EmptyError());
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -156,7 +156,7 @@ describe('single operator', () => {
       const e1subs = '  ^----------!';
       const expected = '-----------#';
 
-      expectObservable(e1.pipe(single(v => v === 'x'))).toBe(expected, undefined, new NotFoundError('No matching values'));
+      expectObservable(e1.pipe(single((v) => v === 'x'))).toBe(expected, undefined, new NotFoundError('No matching values'));
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -168,7 +168,7 @@ describe('single operator', () => {
       const expected = '-----------(b|)';
 
       let indices: number[] = [];
-      const predicate = function(value: string, index: number) {
+      const predicate = function (value: string, index: number) {
         indices.push(index);
         return value === 'b';
       };
@@ -176,9 +176,11 @@ describe('single operator', () => {
       expectObservable(
         e1.pipe(
           single(predicate),
-          tap({ complete: () => {
-            expect(indices).to.deep.equal([0, 1, 2]);
-          } })
+          tap({
+            complete: () => {
+              expect(indices).to.deep.equal([0, 1, 2]);
+            },
+          })
         )
       ).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -298,7 +300,7 @@ describe('single operator', () => {
       const source = cold('(axbxc|)');
       const expected = '   #';
       const subs = ['      (^!)'];
-      const result = source.pipe(single(v => v === 'x'));
+      const result = source.pipe(single((v) => v === 'x'));
 
       expectObservable(result).toBe(expected, undefined, new SequenceError('Too many matching values'));
       expectSubscriptions(source.subscriptions).toBe(subs);
@@ -310,7 +312,7 @@ describe('single operator', () => {
       const source = cold('--a-x-b-x-c-|');
       const expected = '   --------#';
       const subs = ['      ^-------!'];
-      const result = source.pipe(single(v => v === 'x'));
+      const result = source.pipe(single((v) => v === 'x'));
 
       expectObservable(result).toBe(expected, undefined, new SequenceError('Too many matching values'));
       expectSubscriptions(source.subscriptions).toBe(subs);
@@ -322,7 +324,7 @@ describe('single operator', () => {
       const source = hot('--a--b--^--c--x--d--x--|');
       const expected = '          ------------#';
       const subs = ['             ^-----------!'];
-      const result = source.pipe(single(v => v === 'x'));
+      const result = source.pipe(single((v) => v === 'x'));
 
       expectObservable(result).toBe(expected, undefined, new SequenceError('Too many matching values'));
       expectSubscriptions(source.subscriptions).toBe(subs);
@@ -331,7 +333,7 @@ describe('single operator', () => {
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable<number>(subscriber => {
+    const synchronousObservable = new Observable<number>((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits, it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -340,9 +342,14 @@ describe('single operator', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      single(),
-    ).subscribe({ next: () => { /* noop */ }, error: () => { /* noop */ } });
+    synchronousObservable.pipe(single()).subscribe({
+      next: () => {
+        /* noop */
+      },
+      error: () => {
+        /* noop */
+      },
+    });
 
     expect(sideEffects).to.deep.equal([0, 1]);
   });

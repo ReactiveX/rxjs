@@ -324,7 +324,7 @@ function delay<T>(delayInMillis: number) {
         },
       });
 
-      // Return the teardown logic. This will be invoked when
+      // Return the finalization logic. This will be invoked when
       // the result errors, completes, or is unsubscribed.
       return () => {
         subscription.unsubscribe();
@@ -343,7 +343,7 @@ of(1, 2, 3).pipe(delay(1000)).subscribe(console.log);
 Note that you must
 
 1. implement all three Observer functions, `next()`, `error()`, and `complete()` when subscribing to the input Observable.
-2. implement a "teardown" function that cleans up when the Observable completes (in this case by unsubscribing and clearing any pending timeouts).
-3. return that teardown function from the function passed to the Observable constructor.
+2. implement a "finalization" function that cleans up when the Observable completes (in this case by unsubscribing and clearing any pending timeouts).
+3. return that finalization function from the function passed to the Observable constructor.
 
 Of course, this is only an example; the [`delay()`](/api/operators/delay) operator already exists.

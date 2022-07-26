@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { min, skip, take, mergeMap } from 'rxjs/operators';
 import { range, of } from 'rxjs';
@@ -91,45 +90,45 @@ describe('min', () => {
   });
 
   it('should min a range() source observable', (done) => {
-    (<any>range(1, 10000)).pipe(min()).subscribe(
-      (value: number) => {
-        expect(value).to.equal(1);
-      },
-      (x: any) => {
-        done(new Error('should not be called'));
-      },
-      () => {
-        done();
-      }
-    );
+    range(1, 10000)
+      .pipe(min())
+      .subscribe({
+        next: (value) => {
+          expect(value).to.equal(1);
+        },
+        error: () => {
+          done(new Error('should not be called'));
+        },
+        complete: done,
+      });
   });
 
   it('should min a range().skip(1) source observable', (done) => {
-    (<any>range(1, 10)).pipe(skip(1), min()).subscribe(
-      (value: number) => {
-        expect(value).to.equal(2);
-      },
-      (x: any) => {
-        done(new Error('should not be called'));
-      },
-      () => {
-        done();
-      }
-    );
+    range(1, 10)
+      .pipe(skip(1), min())
+      .subscribe({
+        next: (value) => {
+          expect(value).to.equal(2);
+        },
+        error: () => {
+          done(new Error('should not be called'));
+        },
+        complete: done,
+      });
   });
 
   it('should min a range().take(1) source observable', (done) => {
-    (<any>range(1, 10)).pipe(take(1), min()).subscribe(
-      (value: number) => {
-        expect(value).to.equal(1);
-      },
-      (x: any) => {
-        done(new Error('should not be called'));
-      },
-      () => {
-        done();
-      }
-    );
+    range(1, 10)
+      .pipe(take(1), min())
+      .subscribe({
+        next: (value) => {
+          expect(value).to.equal(1);
+        },
+        error: () => {
+          done(new Error('should not be called'));
+        },
+        complete: done,
+      });
   });
 
   it('should work with error', () => {

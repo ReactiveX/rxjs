@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { retry, map, take, mergeMap, concat, multicast, refCount } from 'rxjs/operators';
 import { Observable, Observer, defer, range, of, throwError, Subject, timer, EMPTY } from 'rxjs';
@@ -145,14 +144,14 @@ describe('retry', () => {
       });
   });
 
-  it('should always teardown before starting the next cycle, even when synchronous', () => {
+  it('should always finalize before starting the next cycle, even when synchronous', () => {
     const results: any[] = [];
     const source = new Observable<number>((subscriber) => {
       subscriber.next(1);
       subscriber.next(2);
       subscriber.error('bad');
       return () => {
-        results.push('teardown');
+        results.push('finalizer');
       };
     });
     const subscription = source.pipe(retry(3)).subscribe({
@@ -161,7 +160,7 @@ describe('retry', () => {
     });
 
     expect(subscription.closed).to.be.true;
-    expect(results).to.deep.equal([1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'teardown', 1, 2, 'bad', 'teardown']);
+    expect(results).to.deep.equal([1, 2, 'finalizer', 1, 2, 'finalizer', 1, 2, 'finalizer', 1, 2, 'bad', 'finalizer']);
   });
 
   it('should retry a number of times, then call next handler without error, then retry and error', (done) => {
@@ -319,7 +318,7 @@ describe('retry', () => {
       const unsub = '      -------------!';
       // prettier-ignore
       const subs = [
-        '                  ^-------!     ', 
+        '                  ^-------!     ',
         '                  --------^----!',
       ];
       const expected = '   --1-2-3---1-2-';

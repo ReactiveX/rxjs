@@ -10,8 +10,6 @@ export function combineLatestAll<R>(project: (...values: Array<any>) => R): Oper
 /**
  * Flattens an Observable-of-Observables by applying {@link combineLatest} when the Observable-of-Observables completes.
  *
- * ![](combineLatestAll.png)
- *
  * `combineLatestAll` takes an Observable of Observables, and collects all Observables from it. Once the outer Observable completes,
  * it subscribes to all collected Observables and combines their values using the {@link combineLatest} strategy, such that:
  *

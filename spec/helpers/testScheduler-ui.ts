@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 import * as chai from 'chai';
-import * as marble from './marble-testing';
 import { TestScheduler } from 'rxjs/testing';
 
 //tslint:disable:no-var-requires no-require-imports
@@ -36,13 +35,6 @@ module.exports = function (suite: any) {
 
     //setting up per-context test scheduler
     context.rxTestScheduler = null;
-
-    //setting up assertion, helper for marble testing
-    context.hot = marble.hot;
-    context.cold = marble.cold;
-    context.expectObservable = marble.expectObservable;
-    context.expectSubscriptions = marble.expectSubscriptions;
-    context.time = marble.time;
 
     /**
      * Describe a "suite" with the given `title`

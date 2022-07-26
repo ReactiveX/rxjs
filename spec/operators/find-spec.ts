@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { find, mergeMap, delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';

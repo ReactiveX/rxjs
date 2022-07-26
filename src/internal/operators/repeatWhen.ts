@@ -4,7 +4,7 @@ import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source
@@ -37,6 +37,7 @@ import { OperatorSubscriber } from './OperatorSubscriber';
  * which a user can `complete` or `error`, aborting the repetition.
  * @return A function that returns an Observable that that mirrors the source
  * Observable with the exception of a `complete`.
+ * @deprecated Will be removed in v9 or v10. Use {@link repeat}'s `delay` option instead.
  */
 export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Observable<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
@@ -61,7 +62,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
         // If the call to `notifier` throws, it will be caught by the OperatorSubscriber
         // In the main subscription -- in `subscribeForRepeatWhen`.
         notifier(completions$).subscribe(
-          new OperatorSubscriber(
+          createOperatorSubscriber(
             subscriber,
             () => {
               if (innerSub) {
@@ -69,7 +70,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
               } else {
                 // If we don't have an innerSub yet, that's because the inner subscription
                 // call hasn't even returned yet. We've arrived here synchronously.
-                // So we flag that we want to resub, such that we can ensure teardown
+                // So we flag that we want to resub, such that we can ensure finalization
                 // happens before we resubscribe.
                 syncResub = true;
               }
@@ -88,7 +89,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
       isMainComplete = false;
 
       innerSub = source.subscribe(
-        new OperatorSubscriber(subscriber, undefined, () => {
+        createOperatorSubscriber(subscriber, undefined, () => {
           isMainComplete = true;
           // Check to see if we are complete, and complete if so.
           // If we are not complete. Get the subject. This calls the `notifier` function.

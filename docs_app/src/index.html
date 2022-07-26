@@ -82,12 +82,7 @@
   </script>
 
   <script>
-    if (window.document.documentMode) {
-      // polyfill IE11 in a blocking way
-      var s = document.createElement('script');
-      s.src = 'generated/ie-polyfills.min.js';
-      document.head.appendChild(s);
-    } else if (!Object.assign) {
+    if (!Object.assign) {
       // polyfill other non-evergreen browsers in a blocking way
       var polyfillUrl = "https://cdn.polyfill.io/v2/polyfill.min.js?features=default,Array.prototype.find&flags=gated&unknown=polyfill";
 

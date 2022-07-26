@@ -6,7 +6,7 @@ describe('Subscription', () => {
   describe('add()', () => {
     it('should unsubscribe child subscriptions', () => {
       const main = new Subscription();
-      
+
       let isCalled = false;
       const child = new Subscription(() => {
         isCalled = true;
@@ -30,7 +30,7 @@ describe('Subscription', () => {
       expect(isCalled).to.equal(true);
     });
 
-    it('should unsubscribe a teardown function that was passed', () => {
+    it('should unsubscribe a finalizer function that was passed', () => {
       let isCalled = false;
       const main = new Subscription();
       main.add(() => {
@@ -40,7 +40,7 @@ describe('Subscription', () => {
       expect(isCalled).to.be.true;
     });
 
-    it('should unsubscribe a teardown function that was passed immediately if it has been unsubscribed', () => {
+    it('should unsubscribe a finalizer function that was passed immediately if it has been unsubscribed', () => {
       let isCalled = false;
       const main = new Subscription();
       main.unsubscribe();
@@ -91,11 +91,11 @@ describe('Subscription', () => {
     it('should remove added functions', () => {
       let isCalled = false;
       const main = new Subscription();
-      const teardown = () => {
+      const finalizer = () => {
         isCalled = true;
       };
-      main.add(teardown);
-      main.remove(teardown);
+      main.add(finalizer);
+      main.remove(finalizer);
       main.unsubscribe();
       expect(isCalled).to.be.false;
     });
@@ -117,24 +117,24 @@ describe('Subscription', () => {
 
   describe('unsubscribe()', () => {
     it('should unsubscribe from all subscriptions, when some of them throw', (done) => {
-      const tearDowns: number[] = [];
+      const finalizers: number[] = [];
 
       const source1 = new Observable(() => {
         return () => {
-          tearDowns.push(1);
+          finalizers.push(1);
         };
       });
 
       const source2 = new Observable(() => {
         return () => {
-          tearDowns.push(2);
+          finalizers.push(2);
           throw new Error('oops, I am a bad unsubscribe!');
         };
       });
 
       const source3 = new Observable(() => {
         return () => {
-          tearDowns.push(3);
+          finalizers.push(3);
         };
       });
 
@@ -144,25 +144,25 @@ describe('Subscription', () => {
         expect(() => {
           subscription.unsubscribe();
         }).to.throw(UnsubscriptionError);
-        expect(tearDowns).to.deep.equal([1, 2, 3]);
+        expect(finalizers).to.deep.equal([1, 2, 3]);
         done();
       });
     });
 
     it('should unsubscribe from all subscriptions, when adding a bad custom subscription to a subscription', (done) => {
-      const tearDowns: number[] = [];
+      const finalizers: number[] = [];
 
       const sub = new Subscription();
 
       const source1 = new Observable(() => {
         return () => {
-          tearDowns.push(1);
+          finalizers.push(1);
         };
       });
 
       const source2 = new Observable(() => {
         return () => {
-          tearDowns.push(2);
+          finalizers.push(2);
           sub.add(<any>({
             unsubscribe: () => {
               expect(sub.closed).to.be.true;
@@ -174,7 +174,7 @@ describe('Subscription', () => {
 
       const source3 = new Observable(() => {
         return () => {
-          tearDowns.push(3);
+          finalizers.push(3);
         };
       });
 
@@ -184,7 +184,7 @@ describe('Subscription', () => {
         expect(() => {
           sub.unsubscribe();
         }).to.throw(UnsubscriptionError);
-        expect(tearDowns).to.deep.equal([1, 2, 3]);
+        expect(finalizers).to.deep.equal([1, 2, 3]);
         done();
       });
     });
@@ -210,18 +210,18 @@ describe('Subscription', () => {
       a.add(d);
       b.add(d);
       c.add(d);
-      // When d is added to the subscriptions, it's added as a teardown. The
-      // length is 1 because the teardowns passed to the ctors are stored in a
+      // When d is added to the subscriptions, it's added as a finalizer. The
+      // length is 1 because the finalizers passed to the ctors are stored in a
       // separate property.
-      expect((a as any)._teardowns).to.have.length(1);
-      expect((b as any)._teardowns).to.have.length(1);
-      expect((c as any)._teardowns).to.have.length(1);
+      expect((a as any)._finalizers).to.have.length(1);
+      expect((b as any)._finalizers).to.have.length(1);
+      expect((c as any)._finalizers).to.have.length(1);
       d.unsubscribe();
       // When d is unsubscribed, it should remove itself from each of its
       // parents.
-      expect((a as any)._teardowns).to.have.length(0);
-      expect((b as any)._teardowns).to.have.length(0);
-      expect((c as any)._teardowns).to.have.length(0);
+      expect((a as any)._finalizers).to.have.length(0);
+      expect((b as any)._finalizers).to.have.length(0);
+      expect((c as any)._finalizers).to.have.length(0);
     });
   });
 });

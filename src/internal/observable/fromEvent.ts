@@ -288,7 +288,7 @@ export function fromEvent<T>(
     const handler = (...args: any[]) => subscriber.next(1 < args.length ? args : args[0]);
     // Do the work of adding the handler to the target.
     add(handler);
-    // When we teardown, we want to remove the handler and free up memory.
+    // When we finalize, we want to remove the handler and free up memory.
     return () => remove!(handler);
   });
 }

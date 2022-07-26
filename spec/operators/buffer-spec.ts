@@ -1,4 +1,3 @@
-/** @prettier */
 import { buffer, mergeMap, take, window, toArray } from 'rxjs/operators';
 import { EMPTY, NEVER, throwError, of, Subject } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';

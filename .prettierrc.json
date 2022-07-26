@@ -2,10 +2,18 @@
   "trailingComma": "es5",
   "singleQuote": true,
   "printWidth": 140,
-  "overrides": [{
-    "files": ["spec/**/*.ts", "spec-dtslint/**/*.ts"],
-    "options": {
-      "requirePragma": true
+  "overrides": [
+    {
+      "files": ["spec/**/*.ts", "spec-dtslint/**/*.ts"],
+      "options": {
+        "requirePragma": true
+      }
+    },
+    {
+      "files": ["spec/operators/**/*.ts", "spec/subjects/**/*.ts"],
+      "options": {
+        "requirePragma": false
+      }
     }
-  }]
+  ]
 }

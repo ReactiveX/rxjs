@@ -30,57 +30,47 @@ describe('concatMapTo', () => {
   it('should support the deprecated resultSelector', () => {
     const results: Array<number[]> = [];
 
-    of(1, 2, 3).pipe(
-      concatMapTo(
-        of(4, 5, 6),
-        (a, b, i, ii) => [a, b, i, ii]
-      )
-    )
-    .subscribe({
-      next (value) {
-        results.push(value);
-      },
-      error(err) {
-        throw err;
-      },
-      complete() {
-        expect(results).to.deep.equal([
-          [1, 4, 0, 0],
-          [1, 5, 0, 1],
-          [1, 6, 0, 2],
-          [2, 4, 1, 0],
-          [2, 5, 1, 1],
-          [2, 6, 1, 2],
-          [3, 4, 2, 0],
-          [3, 5, 2, 1],
-          [3, 6, 2, 2],
-        ]);
-      }
-    });
+    of(1, 2, 3)
+      .pipe(concatMapTo(of(4, 5, 6), (a, b, i, ii) => [a, b, i, ii]))
+      .subscribe({
+        next(value) {
+          results.push(value);
+        },
+        error(err) {
+          throw err;
+        },
+        complete() {
+          expect(results).to.deep.equal([
+            [1, 4, 0, 0],
+            [1, 5, 0, 1],
+            [1, 6, 0, 2],
+            [2, 4, 1, 0],
+            [2, 5, 1, 1],
+            [2, 6, 1, 2],
+            [3, 4, 2, 0],
+            [3, 5, 2, 1],
+            [3, 6, 2, 2],
+          ]);
+        },
+      });
   });
 
   it('should support a void resultSelector (still deprecated)', () => {
     const results: number[] = [];
 
-    of(1, 2, 3).pipe(
-      concatMapTo(
-        of(4, 5, 6),
-        void 0
-      )
-    )
-    .subscribe({
-      next (value) {
-        results.push(value);
-      },
-      error(err) {
-        throw err;
-      },
-      complete() {
-        expect(results).to.deep.equal([
-          4, 5, 6, 4, 5, 6, 4, 5, 6
-        ]);
-      }
-    });
+    of(1, 2, 3)
+      .pipe(concatMapTo(of(4, 5, 6), void 0))
+      .subscribe({
+        next(value) {
+          results.push(value);
+        },
+        error(err) {
+          throw err;
+        },
+        complete() {
+          expect(results).to.deep.equal([4, 5, 6, 4, 5, 6, 4, 5, 6]);
+        },
+      });
   });
 
   it('should concatMapTo many outer values to many inner values', () => {
@@ -93,7 +83,7 @@ describe('concatMapTo', () => {
         '                 -^---------!                              ',
         '                 -----------^---------!                    ',
         '                 ---------------------^---------!          ',
-        '                 -------------------------------^---------!'
+        '                 -------------------------------^---------!',
       ];
       const expected = '  ---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l-|';
 
@@ -158,10 +148,11 @@ describe('concatMapTo', () => {
       const e1 = cold('   --a-b--c-|');
       const e1subs = '    ^--------!';
       const inner = cold('|');
+      // prettier-ignore
       const innerSubs = [
         '                 --(^!)     ',
         '                 ----(^!)   ',
-        '                 -------(^!)'
+        '                 -------(^!)',
       ];
       const expected = '  ---------|';
 
@@ -215,7 +206,7 @@ describe('concatMapTo', () => {
         '                 -^---------!                                     ',
         '                 -----------^---------!                           ',
         '                 ---------------------^---------!                 ',
-        '                 -------------------------------^---------!       '
+        '                 -------------------------------^---------!       ',
       ];
       const expected = '  ---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l--------|';
 
@@ -255,9 +246,10 @@ describe('concatMapTo', () => {
       const e1 = hot('    -a---b---c---d---| ');
       const e1subs = '    ^----------------! ';
       const inner = cold('--i-j-k-l-|        ', values);
+      // prettier-ignore
       const innerSubs = [
         '                 -^---------!       ',
-        '                 -----------^------!'
+        '                 -----------^------!',
       ];
       const expected = '  ---i-j-k-l---i-j-k-';
       const unsub = '     ------------------!';
@@ -314,9 +306,10 @@ describe('concatMapTo', () => {
       const e1 = hot('    -a---b---c---d---#');
       const e1subs = '    ^----------------!';
       const inner = cold('--i-j-k-l-|       ', values);
+      // prettier-ignore
       const innerSubs = [
         '                 -^---------!      ',
-        '                 -----------^-----!'
+        '                 -----------^-----!',
       ];
       const expected = '  ---i-j-k-l---i-j-#';
 
@@ -383,34 +376,40 @@ describe('concatMapTo', () => {
     const source = from([4, 3, 2, 1]);
 
     const results: number[] = [];
-    source.pipe(concatMapTo(from(Promise.resolve(42)))).subscribe(
-      { next: (x) => {
+    source.pipe(concatMapTo(from(Promise.resolve(42)))).subscribe({
+      next: (x) => {
         results.push(x);
-      }, error: (err) => {
+      },
+      error: (err) => {
         done(new Error('Subscriber error handler not supposed to be called.'));
-      }, complete: () => {
+      },
+      complete: () => {
         expect(results).to.deep.equal([42, 42, 42, 42]);
         done();
-      } });
+      },
+    });
   });
 
   it('should map values to constant rejected promises and concatenate', (done) => {
     const source = from([4, 3, 2, 1]);
 
-    source.pipe(concatMapTo(from(Promise.reject(42)))).subscribe(
-      { next: (x) => {
+    source.pipe(concatMapTo(from(Promise.reject(42)))).subscribe({
+      next: (x) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
-      }, error: (err) => {
+      },
+      error: (err) => {
         expect(err).to.equal(42);
         done();
-      }, complete: () => {
+      },
+      complete: () => {
         done(new Error('Subscriber complete handler not supposed to be called.'));
-      } });
+      },
+    });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable(subscriber => {
+    const synchronousObservable = new Observable((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -419,10 +418,9 @@ describe('concatMapTo', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      concatMapTo(of(0)),
-      take(3),
-    ).subscribe(() => { /* noop */ });
+    synchronousObservable.pipe(concatMapTo(of(0)), take(3)).subscribe(() => {
+      /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
