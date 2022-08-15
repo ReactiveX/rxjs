@@ -444,7 +444,7 @@ describe('timeout operator', () => {
         const innerSubs = '    ----------^----------!';
         const expected = '     ------------x--y--z--|';
 
-        // The the current frame is zero.
+        // The current frame is zero.
         const result = source.pipe(
           timeout({
             first: new Date(t),
