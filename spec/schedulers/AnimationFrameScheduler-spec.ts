@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { animationFrameScheduler, Subscription, merge } from 'rxjs';
+import {animationFrameScheduler, Subscription, merge, SchedulerAction} from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -237,5 +237,50 @@ describe('Scheduler.animationFrame', () => {
       sandbox.restore();
       done();
     });
+  });
+
+  it('should handle actions scheduled during flush before current action is rescheduled', (done) => {
+    const sandbox = sinon.createSandbox();
+
+    const result: string[] = [];
+    let reschedule = true;
+    function work(this: SchedulerAction<unknown>) {
+      result.push('work');
+      if (reschedule) {
+        animationFrameScheduler.schedule(() => result.push('task 1'));
+        animationFrameScheduler.schedule(() => result.push('task 2'));
+        this.schedule();
+        expect(result).to.deep.equal(['work']);
+        reschedule = false;
+      } else {
+        expect(result).to.deep.equal(['work', 'task 1', 'task 2', 'work']);
+        sandbox.restore();
+        done();
+      }
+    }
+    animationFrameScheduler.schedule(work);
+    expect(result).to.deep.equal([]);
+  });
+
+  it('should execute actions with delay separate from all other actions', () => {
+    const sandbox = sinon.createSandbox();
+    const timers = sandbox.useFakeTimers();
+    let rafCallback!: () => void;
+    const stub = sinon.stub(animationFrameProvider, 'requestAnimationFrame').callsFake((cb) => rafCallback = cb);
+
+    let asyncExecuted = false;
+    let animationFrameExecuted = false
+    animationFrameScheduler.schedule(() => asyncExecuted = true, 1);
+    animationFrameScheduler.schedule(() => animationFrameExecuted = true);
+
+    timers.tick(1);
+    expect(asyncExecuted).to.equal(true);
+    expect(animationFrameExecuted).to.equal(false);
+
+    rafCallback();
+    expect(animationFrameExecuted).to.equal(true);
+
+    stub.restore();
+    sandbox.restore();
   });
 });

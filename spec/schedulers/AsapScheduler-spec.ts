@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { asapScheduler, Subscription, SchedulerAction, merge } from 'rxjs';
+import {asapScheduler, Subscription, SchedulerAction, merge, animationFrameScheduler} from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -287,5 +287,28 @@ describe('Scheduler.asap', () => {
       sandbox.restore();
       done();
     });
+  });
+
+  it('should handle actions scheduled during flush before current action is rescheduled', (done) => {
+    const sandbox = sinon.createSandbox();
+
+    const result: string[] = [];
+    let reschedule = true;
+    function work(this: SchedulerAction<unknown>) {
+      result.push('work');
+      if (reschedule) {
+        asapScheduler.schedule(() => result.push('task 1'));
+        asapScheduler.schedule(() => result.push('task 2'));
+        this.schedule();
+        expect(result).to.deep.equal(['work']);
+        reschedule = false;
+      } else {
+        expect(result).to.deep.equal(['work', 'task 1', 'task 2', 'work']);
+        sandbox.restore();
+        done();
+      }
+    }
+    asapScheduler.schedule(work);
+    expect(result).to.deep.equal([]);
   });
 });
