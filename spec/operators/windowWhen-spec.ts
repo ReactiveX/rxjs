@@ -13,21 +13,21 @@ describe('windowWhen', () => {
 
   it('should emit windows that close and reopen', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const e2 = cold('       -----------|                ');
-      //                                 -----------|
-      //                                            -----------|
+      const e2 = cold('    -----------x|               ');
+      //                              -----------x|
+      //                                         -----------x|
       const e2subs = [
-        '                     ^----------!                ',
-        '                     -----------^----------!     ',
-        '                     ----------------------^----!',
+        '                  ^----------!                ',
+        '                  -----------^----------!     ',
+        '                  ----------------------^----!',
       ];
-      const e1 = hot('   --a--^--b--c--d--e--f--g--h--i--|');
-      const e1subs = '        ^--------------------------!';
-      const expected = '      a----------b----------c----|';
+      const e1 = hot('--a--^--b--c--d--e--f--g--h--i--|');
+      const e1subs = '     ^--------------------------!';
+      const expected = '   a----------b----------c----|';
 
-      const a = cold('        ---b--c--d-|                ');
-      const b = cold('                   -e--f--g--h|     ');
-      const c = cold('                              --i--|');
+      const a = cold('     ---b--c--d-|                ');
+      const b = cold('                -e--f--g--h|     ');
+      const c = cold('                           --i--|');
       const values = { a: a, b: b, c: c };
 
       const source = e1.pipe(windowWhen(() => e2));
@@ -102,7 +102,7 @@ describe('windowWhen', () => {
     });
   });
 
-  it('should emit windows using varying empty delayed closings', () => {
+  it('should not emit windows using varying empty delayed closings', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
       const closings = [
         cold('             -----------------|                    '),
@@ -111,17 +111,15 @@ describe('windowWhen', () => {
       ];
       const closeSubs = [
         '                  ^----------------!                    ',
-        '                  -----------------^----!               ',
-        '                  ----------------------^------------!  ',
+        '                                                        ',
+        '                                                        ',
       ];
       const e1 = hot('--a--^---b---c---d---e---f---g---h------|  ');
       const e1subs = '     ^----------------------------------!  ';
-      const expected = '   x----------------y----z------------|  ';
+      const expected = '   x----------------------------------|  ';
 
-      const x = cold('     ----b---c---d---e|                    ');
-      const y = cold('                      ---f-|               ');
-      const z = cold('                           --g---h------|  ');
-      const values = { x: x, y: y, z: z };
+      const x = cold('     ----b---c---d---e---f---g---h------|  ');
+      const values = { x: x };
 
       let i = 0;
       const result = e1.pipe(windowWhen(() => closings[i++]));
