@@ -5,6 +5,7 @@ import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { innerFrom } from '../observable/innerFrom';
+import { noop } from '../util/noop';
 
 /**
  * Branch out the source Observable values as a nested Observable using a
@@ -95,7 +96,7 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
       // to capture the subscriber (aka Subscription)
       // so we can clean it up when we close the window
       // and open a new one.
-      closingNotifier.subscribe((closingSubscriber = createOperatorSubscriber(subscriber, openWindow, openWindow, handleError)));
+      closingNotifier.subscribe((closingSubscriber = createOperatorSubscriber(subscriber, openWindow, noop, handleError)));
     };
 
     // Start the first window.
