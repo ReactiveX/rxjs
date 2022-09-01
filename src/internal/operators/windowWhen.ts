@@ -15,13 +15,15 @@ import { noop } from '../util/noop';
  * <span class="informal">It's like {@link bufferWhen}, but emits a nested
  * Observable instead of an array.</span>
  *
- * ![](windowWhen.png)
+ * ![](windowWhen.svg)
  *
- * Returns an Observable that emits windows of items it collects from the source
- * Observable. The output Observable emits connected, non-overlapping windows.
- * It emits the current window and opens a new one whenever the Observable
- * produced by the specified `closingSelector` function emits an item. The first
- * window is opened immediately when subscribing to the output Observable.
+ * Returns an Observable that emits Observable windows of items it collects from
+ * the source Observable. The output Observable emits connected, non-overlapping
+ * windows. It emits the current window immediately when subscribing to the source
+ * Observable and opens a new one whenever the Observable produced by the specified
+ * `closingSelector` function emits `next`. When an Observable returned by the
+ * `closingSelector` emits `next`, the previous window completes and a new window
+ * is emitted to the output subscriber.
  *
  * ## Example
  *
@@ -45,9 +47,9 @@ import { noop } from '../util/noop';
  * @see {@link windowToggle}
  * @see {@link bufferWhen}
  *
- * @param {function(): Observable} closingSelector A function that takes no
- * arguments and returns an Observable that signals (on either `next` or
- * `complete`) when to close the previous window and start a new one.
+ * @param closingSelector A function that takes no arguments and returns an
+ * {@link ObservableInput} (that gets converted to Observable) that signals
+ * (only on `next`) when to close the previous window and start a new one.
  * @return A function that returns an Observable of windows, which in turn are
  * Observables.
  */
