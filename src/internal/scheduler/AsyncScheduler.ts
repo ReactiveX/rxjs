@@ -1,6 +1,7 @@
 import { Scheduler } from '../Scheduler';
 import { Action } from './Action';
 import { AsyncAction } from './AsyncAction';
+import { TimerHandle } from './timerHandle';
 
 export class AsyncScheduler extends Scheduler {
   public actions: Array<AsyncAction<any>> = [];
@@ -18,7 +19,7 @@ export class AsyncScheduler extends Scheduler {
    * @type {any}
    * @internal
    */
-  public _scheduled: any = undefined;
+  public _scheduled: TimerHandle | undefined;
 
   constructor(SchedulerAction: typeof Action, now: () => number = Scheduler.now) {
     super(SchedulerAction, now);

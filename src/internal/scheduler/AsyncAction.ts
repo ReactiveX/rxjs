@@ -4,9 +4,10 @@ import { Subscription } from '../Subscription';
 import { AsyncScheduler } from './AsyncScheduler';
 import { intervalProvider } from './intervalProvider';
 import { arrRemove } from '../util/arrRemove';
+import { TimerHandle } from './timerHandle';
 
 export class AsyncAction<T> extends Action<T> {
-  public id: any;
+  public id: TimerHandle | undefined;
   public state?: T;
   // @ts-ignore: Property has no initializer and is not definitely assigned
   public delay: number;
@@ -58,23 +59,26 @@ export class AsyncAction<T> extends Action<T> {
 
     this.delay = delay;
     // If this action has already an async Id, don't request a new one.
-    this.id = this.id || this.requestAsyncId(scheduler, this.id, delay);
+    this.id = this.id ?? this.requestAsyncId(scheduler, this.id, delay);
 
     return this;
   }
 
-  protected requestAsyncId(scheduler: AsyncScheduler, _id?: any, delay: number = 0): any {
+  protected requestAsyncId(scheduler: AsyncScheduler, _id?: TimerHandle, delay: number = 0): TimerHandle {
     return intervalProvider.setInterval(scheduler.flush.bind(scheduler, this), delay);
   }
 
-  protected recycleAsyncId(_scheduler: AsyncScheduler, id: any, delay: number | null = 0): any {
+  protected recycleAsyncId(_scheduler: AsyncScheduler, id?: TimerHandle, delay: number | null = 0): TimerHandle | undefined {
     // If this action is rescheduled with the same delay time, don't clear the interval id.
     if (delay != null && this.delay === delay && this.pending === false) {
       return id;
     }
     // Otherwise, if the action's delay time is different from the current delay,
     // or the action has been rescheduled before it's executed, clear the interval id
-    intervalProvider.clearInterval(id);
+    if (id != null) {
+      intervalProvider.clearInterval(id);
+    }
+
     return undefined;
   }
 
