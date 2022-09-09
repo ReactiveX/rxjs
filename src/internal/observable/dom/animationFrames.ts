@@ -1,5 +1,4 @@
 import { Observable } from '../../Observable';
-import { Subscription } from '../../Subscription';
 import { TimestampProvider } from '../../types';
 import { performanceTimestampProvider } from '../../scheduler/performanceTimestampProvider';
 import { animationFrameProvider } from '../../scheduler/animationFrameProvider';
@@ -82,37 +81,47 @@ export function animationFrames(timestampProvider?: TimestampProvider) {
  * @param timestampProvider The timestamp provider to use to create the observable
  */
 function animationFramesFactory(timestampProvider?: TimestampProvider) {
-  const { schedule } = animationFrameProvider;
   return new Observable<{ timestamp: number; elapsed: number }>((subscriber) => {
-    const subscription = new Subscription();
     // If no timestamp provider is specified, use performance.now() - as it
     // will return timestamps 'compatible' with those passed to the run
     // callback and won't be affected by NTP adjustments, etc.
     const provider = timestampProvider || performanceTimestampProvider;
+
     // Capture the start time upon subscription, as the run callback can remain
     // queued for a considerable period of time and the elapsed time should
     // represent the time elapsed since subscription - not the time since the
     // first rendered animation frame.
     const start = provider.now();
-    const run = (timestamp: DOMHighResTimeStamp | number) => {
-      // Use the provider's timestamp to calculate the elapsed time. Note that
-      // this means - if the caller hasn't passed a provider - that
-      // performance.now() will be used instead of the timestamp that was
-      // passed to the run callback. The reason for this is that the timestamp
-      // passed to the callback can be earlier than the start time, as it
-      // represents the time at which the browser decided it would render any
-      // queued frames - and that time can be earlier the captured start time.
-      const now = provider.now();
-      subscriber.next({
-        timestamp: timestampProvider ? now : timestamp,
-        elapsed: now - start,
-      });
+
+    let id = 0;
+    const run = () => {
       if (!subscriber.closed) {
-        subscription.add(schedule(run));
+        id = animationFrameProvider.requestAnimationFrame((timestamp: DOMHighResTimeStamp | number) => {
+          id = 0;
+          // Use the provider's timestamp to calculate the elapsed time. Note that
+          // this means - if the caller hasn't passed a provider - that
+          // performance.now() will be used instead of the timestamp that was
+          // passed to the run callback. The reason for this is that the timestamp
+          // passed to the callback can be earlier than the start time, as it
+          // represents the time at which the browser decided it would render any
+          // queued frames - and that time can be earlier the captured start time.
+          const now = provider.now();
+          subscriber.next({
+            timestamp: timestampProvider ? now : timestamp,
+            elapsed: now - start,
+          });
+          run();
+        });
       }
     };
-    subscription.add(schedule(run));
-    return subscription;
+
+    run();
+
+    return () => {
+      if (id) {
+        animationFrameProvider.cancelAnimationFrame(id);
+      }
+    };
   });
 }
 
