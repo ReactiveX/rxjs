@@ -1,4 +1,4 @@
-import { of, EMPTY } from 'rxjs';
+import { of, EMPTY, interval, take } from 'rxjs';
 import { delayWhen, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -336,6 +336,44 @@ describe('delayWhen', () => {
         )
       ).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
+  it('should delayWhen Promise resolves', (done) => {
+    const e1 = interval(10).pipe(take(5));
+    const expected = [0, 1, 2, 3, 4];
+
+    e1.pipe(delayWhen(() => Promise.resolve(42))).subscribe({
+      next: (x: number) => {
+        expect(x).to.equal(expected.shift());
+      },
+      error: () => {
+        done(new Error('should not be called'));
+      },
+      complete: () => {
+        expect(expected.length).to.equal(0);
+        done();
+      },
+    });
+  });
+
+  it('should raise error when Promise rejects', (done) => {
+    const e1 = interval(10).pipe(take(10));
+    const expected = [0, 1, 2];
+    const error = new Error('err');
+
+    e1.pipe(delayWhen((x) => (x === 3 ? Promise.reject(error) : Promise.resolve(42)))).subscribe({
+      next: (x: number) => {
+        expect(x).to.equal(expected.shift());
+      },
+      error: (err: any) => {
+        expect(err).to.be.an('error');
+        expect(expected.length).to.equal(0);
+        done();
+      },
+      complete: () => {
+        done(new Error('should not be called'));
+      },
     });
   });
 });
