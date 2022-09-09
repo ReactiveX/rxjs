@@ -35,6 +35,10 @@ export class QueueAction<T> extends AsyncAction<T> {
     // Otherwise flush the scheduler starting with this action.
     scheduler.flush(this);
 
-    return 1;
+    // HACK: In the past, this was returning `void`. However, `void` isn't a valid
+    // `TimerHandle`, and generally the return value here isn't really used. So the
+    // compromise is to return `0` which is both "falsy" and a valid `TimerHandle`,
+    // as opposed to refactoring every other instanceo of `requestAsyncId`.
+    return 0;
   }
 }
