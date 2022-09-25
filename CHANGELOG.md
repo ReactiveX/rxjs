@@ -1,3 +1,84 @@
+# [8.0.0-alpha.5](https://github.com/reactivex/rxjs/compare/7.5.7...8.0.0-alpha.5) (2022-09-25)
+
+Merged updates from 7.x branch
+
+# [8.0.0-alpha.4](https://github.com/reactivex/rxjs/compare/7.5.6...8.0.0-alpha.4) (2022-07-11)
+
+### Bug Fixes
+
+- add missing deprecated JSDoc tag to pluck overload signatures ([#6896](https://github.com/reactivex/rxjs/issues/6896)) ([08a549b](https://github.com/reactivex/rxjs/commit/08a549b735602322eb8895768bc45bd218fa5827))
+
+### Features
+
+- **Subscriber:** ctor no longer deprecated. Creates safe subscribers. ([ac2b001](https://github.com/reactivex/rxjs/commit/ac2b001b31bb2b9f4f2ea1dbafddd6b92cb421aa))
+- **Subscriber.create:** Removed. ([826d807](https://github.com/reactivex/rxjs/commit/826d8075fb94b3127ea6313883fded2fdc0636ef))
+
+### BREAKING CHANGES
+
+- **Subscriber.create:** Subscriber.create has been removed. Please use `new Subscriber` instead.
+
+# [8.0.0-alpha.1](https://github.com/reactivex/rxjs/compare/7.5.3...8.0.0-alpha.1) (2022-02-08)
+
+Merged updates from 7.x branch
+
+# [8.0.0-alpha.0](https://github.com/reactivex/rxjs/compare/7.5.2...8.0.0-alpha.0) (2022-01-13)
+
+### Bug Fixes
+
+- takeWhile Boolean constructor types ([#6633](https://github.com/reactivex/rxjs/issues/6633)) ([edbaf4f](https://github.com/reactivex/rxjs/commit/edbaf4f2c6203b7a53c6070924ebd4e9103caa77))
+- **forEach:** properly unsubs after error in next handler ([#6677](https://github.com/reactivex/rxjs/issues/6677)) ([4c675b8](https://github.com/reactivex/rxjs/commit/4c675b83d6e6112efc51e0fffd8172c2e3c6d0aa)), closes [#6676](https://github.com/reactivex/rxjs/issues/6676)
+- **WebSocketSubject:** handle slow WebSocket close ([#6708](https://github.com/reactivex/rxjs/issues/6708)) ([bf3831b](https://github.com/reactivex/rxjs/commit/bf3831b72a8ff2a04c9ed4c8e069932c47b9d208)), closes [#4650](https://github.com/reactivex/rxjs/issues/4650) [#3935](https://github.com/reactivex/rxjs/issues/3935)
+- RxJS now supports tslib 2.x, rather than just 2.1.x ([#6692](https://github.com/reactivex/rxjs/issues/6692)) ([d5d98bc](https://github.com/reactivex/rxjs/commit/d5d98bc7a5bb2b81971cfa944250d330945c51e6)), closes [#6689](https://github.com/reactivex/rxjs/issues/6689)
+- schedulers will no longer error while rescheduling and unsubscribing during flushes ([7f9c8d3](https://github.com/reactivex/rxjs/commit/7f9c8d3773ae042cd0938482242edb31a8f2adc7)), closes [#6672](https://github.com/reactivex/rxjs/issues/6672)
+
+### Features
+
+- **empty:** removed deprecated `empty` function. ([9bab0d0](https://github.com/reactivex/rxjs/commit/9bab0d0073794b6c864437fea026a96092f6e3fe))
+- **forEach:** Removed PromiseCtor argument ([#6736](https://github.com/reactivex/rxjs/issues/6736)) ([b7ba41c](https://github.com/reactivex/rxjs/commit/b7ba41c2b6d55db9190fc680ab8b6f12dbf7a146))
+- **never:** remove `never` function ([25cdca6](https://github.com/reactivex/rxjs/commit/25cdca6fddcc9ae52696828475502f47bbbee5b8))
+- **Notification:** Removed Notification class. ([ca4d42a](https://github.com/reactivex/rxjs/commit/ca4d42a6a68c5262d634170378f14fd792fb8430))
+- **Observable.create:** removed ([#6602](https://github.com/reactivex/rxjs/issues/6602)) ([fb94ee8](https://github.com/reactivex/rxjs/commit/fb94ee87cf9986418b4d55b019d34655e5533fa9))
+- **subscribe:** Removed deprecated fn, fn, fn call pattern. ([#6757](https://github.com/reactivex/rxjs/issues/6757)) ([ef59c7e](https://github.com/reactivex/rxjs/commit/ef59c7ed3668f4501bf3a7635affd0dd5cc5e500))
+- **tap:** Removed deprecated `tap(fn, fn, fn)` call pattern. ([#6759](https://github.com/reactivex/rxjs/issues/6759)) ([2c0b3e5](https://github.com/reactivex/rxjs/commit/2c0b3e590e427e355b7c9e4cfb7d2506f5c7c15d))
+- `toPromise` removed. ([#6598](https://github.com/reactivex/rxjs/issues/6598)) ([8233648](https://github.com/reactivex/rxjs/commit/82336482154ca446bdc956490c9661ed5fbe4636))
+- `useDeprecatedNextContext` no longer available ([#6596](https://github.com/reactivex/rxjs/issues/6596)) ([df25015](https://github.com/reactivex/rxjs/commit/df25015cf3756068d959aa0981b4a8b1c1ca9d8f))
+- Remove "super gross mode" once and for all! `useDeprecatedSynchronousErrorHandling` is removed ([#6595](https://github.com/reactivex/rxjs/issues/6595)) ([5225692](https://github.com/reactivex/rxjs/commit/5225692351bb089305d7790e625e49263d753eed))
+- Remove SubscribableOrPromise type. ([#6735](https://github.com/reactivex/rxjs/issues/6735)) ([d79fd00](https://github.com/reactivex/rxjs/commit/d79fd000a5babaefaea56c33c593cab3eeb538a1))
+- **Subscription:** idempotent add and remove of teardowns ([#6401](https://github.com/reactivex/rxjs/issues/6401)) ([d197e40](https://github.com/reactivex/rxjs/commit/d197e40032ba2ea8defcfba86a209083c8933d8c)), closes [#6400](https://github.com/reactivex/rxjs/issues/6400)
+- removed `config.Promise` injection point. ([#6597](https://github.com/reactivex/rxjs/issues/6597)) ([6552b85](https://github.com/reactivex/rxjs/commit/6552b85afb66a76ae61b54efce66ab225347bd30))
+
+### BREAKING CHANGES
+
+- **tap:** `tap(fn, fn, fn)` call pattern is no longer available. Use named arguments (observers) instead: `tap({ complete: fn, error: fn, next: fn })`.
+
+- chore: update dtslint for tap
+
+- chore: update api guardian files
+- **subscribe:** `subscribe(fn, fn, fn)` is no longer a valid call for `subscribe`. Instead, use an observer: `subscribe({ next: fn, error: fn, complete: fn })`.
+
+- chore: remove unnecessary deprecation tests
+- **forEach:** PromiseCtor argument removed. If your runtime lacks a Promise implementation, you'll need to polyfill it.
+- **Notification:** `Notification` is no longer exported. To create a notification object you may use an object literal. To convert a notification object to an observable, you can use `materialize`: `of({ kind: 'N' as const, value: 'test' }).pipe(materialize())`.
+
+- chore: update side-effects snapshots
+- **never:** `never()` has been removed finally. Just use `NEVER`.
+- **empty:** `empty` no longer exists, use `EMPTY` or if you need scheduling, `scheduled`.
+- `SubscribableOrPromise` is no longer an exported type, you will likely want to use `ObservableInput` instead.
+- **Observable.create:** `Observable.create` has been removed. Use `new Observable` instead.
+- Removed `useDeprecatedSynchronousErrorHandling`. No workarounds for this.
+
+- chore: update api_guardian files
+
+- chore: remove unnecessary comment
+
+- chore: update api_guardian files
+- `toPromise` has been removed from `Observable`. As a workaround, use `firstValueFrom` and `lastValueFrom` functions, which can be imported from `rxjs`. For example `source$.toPromise()` would be `lastValueFrom(source$)`. In the case that you know your source only has one value, we recommend using `firstValueFrom(source$)`.
+- **Subscription:** Adding the same function instance to a subscription as a teardown multiple times will now result in that function being executed only once on teardown. This brings us inline with the behavior of EventTarget, and also makes removing teardowns faster. The workaround is to make sure you are adding a new function instance to the Subscription each time if you need the same effect.
+- `useDeprecatedNextContext` is no longer available. No workaround.
+- `config.Promise` no longer exists. As a workaround, you will need to set a global Promise if one does not already exist in your environment.
+
+- chore: remove unused import
+
 # [8.0.0-alpha.4](https://github.com/reactivex/rxjs/compare/7.5.6...8.0.0-alpha.4) (2022-07-11)
 
 ### Bug Fixes
