@@ -9,7 +9,7 @@ export class VirtualTimeScheduler extends AsyncScheduler {
   static frameTimeFactor = 10;
 
   /**
-   * The current frame for the state of the virtual scheduler instance. The the difference
+   * The current frame for the state of the virtual scheduler instance. The difference
    * between two "frames" is synonymous with the passage of "virtual time units". So if
    * you record `scheduler.frame` to be `1`, then later, observe `scheduler.frame` to be at `11`,
    * that means `10` virtual time units have passed.
