@@ -330,7 +330,7 @@ export function timeout<T, O extends ObservableInput<any>, M>(
     // hand of the subscription to that one.
     let originalSourceSubscription: Subscription;
     // The subscription for our timeout timer. This changes
-    // every time get get a new value.
+    // every time we get a new value.
     let timerSubscription: Subscription;
     // A bit of state we pass to our with and error factories to
     // tell what the last value we saw was.

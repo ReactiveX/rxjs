@@ -24,7 +24,7 @@ import { CONTENT_URL_PREFIX } from 'app/documents/document.service';
                     <a *ngIf="person.github" mat-button class="icon"
                         href="{{person.github}}" target="_blank" (click)="$event.stopPropagation()">
                         <span class="fa fa-github fa-2x" aria-hidden="true"></span>
-                        <span class="sr-only">Github {{person.name}}</span>
+                        <span class="sr-only">GitHub {{person.name}}</span>
                     </a>
                     <a *ngIf="person.website" mat-button class="icon"
                         href="{{person.website}}" target="_blank" (click)="$event.stopPropagation()">

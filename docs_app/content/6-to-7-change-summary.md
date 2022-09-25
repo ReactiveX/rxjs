@@ -116,7 +116,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 #### Subscribable
 
-- `subscribe` will accept `Partial<Observer<T>>` now. All overloads with functions as arguments have been removed. This is because `Subscribable` is intended to map to the basic observable contract from the TC39 proposal and the the return type of a call to `[Symbol.observable]()`.
+- `subscribe` will accept `Partial<Observer<T>>` now. All overloads with functions as arguments have been removed. This is because `Subscribable` is intended to map to the basic observable contract from the TC39 proposal and the return type of a call to `[Symbol.observable]()`.
 
 #### SubscribableOrPromise
 

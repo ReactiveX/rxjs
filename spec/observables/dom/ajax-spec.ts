@@ -144,7 +144,7 @@ describe('ajax', () => {
 
     it('should send the cookie cross-domain with a custom header when withCredentials is set', () => {
       const obj: AjaxConfig = {
-        url: 'https://some.subresouce.net/some/page',
+        url: 'https://some.subresource.net/some/page',
         xsrfCookieName: 'foo',
         xsrfHeaderName: 'Custom-Header-Name',
         crossDomain: true,
@@ -155,7 +155,7 @@ describe('ajax', () => {
 
       const request = MockXMLHttpRequest.mostRecent;
 
-      expect(request.url).to.equal('https://some.subresouce.net/some/page');
+      expect(request.url).to.equal('https://some.subresource.net/some/page');
       expect(request.requestHeaders).to.deep.equal({
         'Custom-Header-Name': 'bar',
       });
@@ -163,7 +163,7 @@ describe('ajax', () => {
 
     it('should not send the cookie cross-domain with a custom header when withCredentials is not set', () => {
       const obj: AjaxConfig = {
-        url: 'https://some.subresouce.net/some/page',
+        url: 'https://some.subresource.net/some/page',
         xsrfCookieName: 'foo',
         xsrfHeaderName: 'Custom-Header-Name',
         crossDomain: true,
@@ -173,7 +173,7 @@ describe('ajax', () => {
 
       const request = MockXMLHttpRequest.mostRecent;
 
-      expect(request.url).to.equal('https://some.subresouce.net/some/page');
+      expect(request.url).to.equal('https://some.subresource.net/some/page');
       expect(request.requestHeaders).to.deep.equal({});
     });
 

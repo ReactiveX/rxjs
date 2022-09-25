@@ -181,7 +181,7 @@ export class Subscription implements SubscriptionLike {
    * from every other `Subscription` they have been added to. This means that using the `remove` method
    * is not a common thing and should be used thoughtfully.
    *
-   * If you add the same finalizer instance of a function or an unsubscribable object to a `Subcription` instance
+   * If you add the same finalizer instance of a function or an unsubscribable object to a `Subscription` instance
    * more than once, you will need to call `remove` the same number of times to remove all instances.
    *
    * All finalizer instances are removed to free up memory upon unsubscription.

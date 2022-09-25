@@ -15,7 +15,7 @@ module.exports = function getDocFromAlias(aliasMap) {
   function getDocFromAlias(alias, originatingDoc) {
     return getDocFromAlias.disambiguators.reduce(
       // Run the disambiguators while there is more than 1 doc found
-      (docs, disambiguater) => docs.length > 1 ? disambiguater(alias, originatingDoc, docs) : docs,
+      (docs, disambiguator) => docs.length > 1 ? disambiguator(alias, originatingDoc, docs) : docs,
       // Start with the docs that match the alias
       aliasMap.getDocs(alias)
     );

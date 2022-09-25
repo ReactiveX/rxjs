@@ -25,7 +25,7 @@ import { dateTimestampProvider } from './scheduler/dateTimestampProvider';
  *
  * ### Differences with BehaviorSubject
  *
- * `BehaviorSubject` is similar to `new ReplaySubject(1)`, with a couple fo exceptions:
+ * `BehaviorSubject` is similar to `new ReplaySubject(1)`, with a couple of exceptions:
  *
  * 1. `BehaviorSubject` comes "primed" with a single value upon construction.
  * 2. `ReplaySubject` will replay values, even after observing an error, where `BehaviorSubject` will not.

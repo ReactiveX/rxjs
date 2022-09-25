@@ -1,13 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  HostBinding,
-  HostListener,
-  OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core';
+import { Component, ElementRef, HostBinding, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 
 import { CurrentNodes, NavigationService, NavigationNode, VersionInfo } from 'app/navigation/navigation.service';
@@ -30,7 +21,92 @@ const sideNavView = 'SideNav';
 
 @Component({
   selector: 'aio-shell',
-  templateUrl: './app.component.html',
+  template: `<div id="top-of-page"></div>
+
+    <div *ngIf="isFetching" class="progress-bar-container">
+      <mat-progress-bar mode="indeterminate" color="warn"></mat-progress-bar>
+    </div>
+
+    <mat-toolbar color="primary" class="app-toolbar no-print" [class.transitioning]="isTransitioning">
+      <mat-toolbar-row class="notification-container">
+        <aio-notification
+          notificationId="blm-2020"
+          expirationDate="2022-04-15"
+          [dismissOnContentClick]="false"
+          (dismissed)="notificationDismissed()"
+        >
+          <a href="/blackLivesMatter">#BlackLivesMatter</a>
+        </aio-notification>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <button mat-button class="hamburger" [class.starting]="isStarting" (click)="sidenav.toggle()" title="Docs menu">
+          <mat-icon svgIcon="menu"></mat-icon>
+        </button>
+        <a class="nav-link home" href="/" [ngSwitch]="isSideBySide">
+          <img *ngSwitchCase="true" src="assets/images/logos/logo.png" width="150" height="40" title="Home" alt="Home" />
+          <img *ngSwitchDefault src="assets/images/logos/Rx_Logo_S.png" width="37" height="40" title="Home" alt="Home" />
+        </a>
+        <aio-top-menu *ngIf="isSideBySide" [nodes]="topMenuNodes"></aio-top-menu>
+        <aio-search-box class="search-container" #searchBox (onSearch)="doSearch($event)" (onFocus)="doSearch($event)"></aio-search-box>
+        <div class="toolbar-external-icons-container">
+          <a href="https://github.com/ReactiveX/rxjs" title="GitHub" target="_blank">
+            <img src="assets/images/logos/github-icon.svg" alt="View on GitHub"
+          /></a>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <aio-search-results
+      #searchResultsView
+      *ngIf="showSearchResults"
+      [searchResults]="searchResults | async"
+      (resultSelected)="hideSearchResults()"
+    ></aio-search-results>
+
+    <mat-sidenav-container class="sidenav-container" [class.starting]="isStarting" [class.has-floating-toc]="hasFloatingToc">
+      <mat-sidenav
+        [ngClass]="{ collapsed: !isSideBySide }"
+        #sidenav
+        class="sidenav"
+        [mode]="mode"
+        [opened]="isOpened"
+        (openedChange)="updateHostClasses()"
+      >
+        <aio-nav-menu
+          *ngIf="!isSideBySide"
+          [nodes]="topMenuNarrowNodes"
+          [currentNode]="currentNodes?.TopBarNarrow"
+          [isWide]="false"
+        ></aio-nav-menu>
+        <aio-nav-menu [nodes]="sideNavNodes" [currentNode]="currentNodes?.SideNav" [isWide]="isSideBySide"></aio-nav-menu>
+
+        <div class="doc-version">
+          <aio-select (change)="onDocVersionChange($event.index)" [options]="docVersions" [selected]="currentDocVersion"></aio-select>
+        </div>
+      </mat-sidenav>
+
+      <section class="sidenav-content" [id]="pageId" role="main">
+        <aio-mode-banner [mode]="deployment.mode" [version]="versionInfo"></aio-mode-banner>
+        <aio-doc-viewer
+          [class.no-animations]="isStarting"
+          [doc]="currentDocument"
+          (docReady)="onDocReady()"
+          (docRemoved)="onDocRemoved()"
+          (docInserted)="onDocInserted()"
+          (docRendered)="onDocRendered()"
+        >
+        </aio-doc-viewer>
+        <aio-dt *ngIf="dtOn" [(doc)]="currentDocument"></aio-dt>
+      </section>
+    </mat-sidenav-container>
+
+    <div *ngIf="hasFloatingToc" class="toc-container no-print" [style.max-height.px]="tocMaxHeight" (wheel)="restrainScrolling($event)">
+      <aio-lazy-ce selector="aio-toc"></aio-lazy-ce>
+    </div>
+
+    <footer class="no-print">
+      <aio-footer [nodes]="footerNodes" [versionInfo]="versionInfo"></aio-footer>
+    </footer> `,
 })
 export class AppComponent implements OnInit {
   currentDocument: DocumentContents;
@@ -59,7 +135,7 @@ export class AppComponent implements OnInit {
    *
    * * `page-...`: computed from the current document id (e.g. events, guide-security, tutorial-toh-pt2)
    * * `folder-...`: computed from the top level folder for an id (e.g. guide, tutorial, etc)
-   * * `view-...`: computef from the navigation view (e.g. SideNav, TopBar, etc)
+   * * `view-...`: computed from the navigation view (e.g. SideNav, TopBar, etc)
    */
   @HostBinding('class')
   hostClasses = '';
@@ -131,9 +207,9 @@ export class AppComponent implements OnInit {
 
     /* No need to unsubscribe because this root component never dies */
 
-    this.documentService.currentDocument.subscribe(doc => (this.currentDocument = doc));
+    this.documentService.currentDocument.subscribe((doc) => (this.currentDocument = doc));
 
-    this.locationService.currentPath.subscribe(path => {
+    this.locationService.currentPath.subscribe((path) => {
       if (path === this.currentPath) {
         // scroll only if on same page (most likely a change to the hash)
         this.scrollService.scroll();
@@ -147,36 +223,35 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.navigationService.currentNodes.subscribe(currentNodes => {
+    this.navigationService.currentNodes.subscribe((currentNodes) => {
       this.currentNodes = currentNodes;
-
     });
 
     // Compute the version picker list from the current version and the versions in the navigation map
     combineLatest(
       this.navigationService.versionInfo,
-      this.navigationService.navigationViews.pipe(map(views => views['docVersions']))
+      this.navigationService.navigationViews.pipe(map((views) => views['docVersions']))
     ).subscribe(([versionInfo, versions]) => {
       this.docVersions = [...versions];
 
-      // Find the current version - eithers title matches the current deployment mode
+      // Find the current version - either title matches the current deployment mode
       // or its title matches the major version of the current version info
       this.currentDocVersion = this.docVersions.find(
-        version => version.title === this.deployment.mode || version.title === `v${versionInfo.major}`
+        (version) => version.title === this.deployment.mode || version.title === `v${versionInfo.major}`
       )!;
       this.currentDocVersion.title += ` (v${versionInfo.raw})`;
     });
 
-    this.navigationService.navigationViews.subscribe(views => {
+    this.navigationService.navigationViews.subscribe((views) => {
       this.footerNodes = views['Footer'] || [];
       this.sideNavNodes = views['SideNav'] || [];
       this.topMenuNodes = views['TopBar'] || [];
       this.topMenuNarrowNodes = views['TopBarNarrow'] || this.topMenuNodes;
     });
 
-    this.navigationService.versionInfo.subscribe(vi => (this.versionInfo = vi));
+    this.navigationService.versionInfo.subscribe((vi) => (this.versionInfo = vi));
 
-    const hasNonEmptyToc = this.tocService.tocList.pipe(map(tocList => tocList.length > 0));
+    const hasNonEmptyToc = this.tocService.tocList.pipe(map((tocList) => tocList.length > 0));
     combineLatest(hasNonEmptyToc, this.showFloatingToc).subscribe(
       ([hasToc, showFloatingToc]) => (this.hasFloatingToc = hasToc && showFloatingToc)
     );
@@ -230,13 +305,13 @@ export class AppComponent implements OnInit {
     }
 
     const head = this.dom.getElementsByTagName('head')[0];
-    let element: HTMLLinkElement = this.dom.querySelector(`link[rel='canonical']`) || null
+    let element: HTMLLinkElement = this.dom.querySelector(`link[rel='canonical']`) || null;
     if (element === null) {
       element = this.dom.createElement('link') as HTMLLinkElement;
       head.appendChild(element);
     }
-    element.setAttribute('rel', 'canonical')
-    element.setAttribute('href', `https://rxjs.dev/${this.currentPath}`)
+    element.setAttribute('rel', 'canonical');
+    element.setAttribute('href', `https://rxjs.dev/${this.currentPath}`);
     this.isTransitioning = false;
   }
 
@@ -264,7 +339,7 @@ export class AppComponent implements OnInit {
   @HostListener('click', ['$event.target', '$event.button', '$event.ctrlKey', '$event.metaKey', '$event.altKey'])
   onClick(eventTarget: HTMLElement, button: number, ctrlKey: boolean, metaKey: boolean, altKey: boolean): boolean {
     // Hide the search results if we clicked outside both the "search box" and the "search results"
-    if (!this.searchElements.some(element => element.nativeElement.contains(eventTarget))) {
+    if (!this.searchElements.some((element) => element.nativeElement.contains(eventTarget))) {
       this.hideSearchResults();
     }
 
@@ -312,20 +387,12 @@ export class AppComponent implements OnInit {
     const pageClass = `page-${this.pageId}`;
     const folderClass = `folder-${this.folderId}`;
     const viewClasses = Object.keys(this.currentNodes)
-      .map(view => `view-${view}`)
+      .map((view) => `view-${view}`)
       .join(' ');
     const notificationClass = `aio-notification-${this.notification.showNotification}`;
     const notificationAnimatingClass = this.notificationAnimating ? 'aio-notification-animating' : '';
 
-    this.hostClasses = [
-      mode,
-      sideNavOpen,
-      pageClass,
-      folderClass,
-      viewClasses,
-      notificationClass,
-      notificationAnimatingClass,
-    ].join(' ');
+    this.hostClasses = [mode, sideNavOpen, pageClass, folderClass, viewClasses, notificationClass, notificationAnimatingClass].join(' ');
   }
 
   updateShell() {

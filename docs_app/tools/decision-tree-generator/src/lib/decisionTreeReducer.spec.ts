@@ -20,7 +20,7 @@ describe('decisionTreeReducer', () => {
     });
 
     describe('that have options', () => {
-      it('should have an optons property that is an array of strings', () => {
+      it('should have an options property that is an array of strings', () => {
         for (const key in tree) {
           if (
             tree.hasOwnProperty(key) &&

@@ -290,7 +290,7 @@ describe('skipUntil', () => {
     });
   });
 
-  it('should skip skip all elements if notifier is unsubscribed explicitly before the notifier emits', () => {
+  it('should skip all elements if notifier is unsubscribed explicitly before the notifier emits', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --a--b--c--d--e--|');
       const e1subs = [
@@ -328,7 +328,7 @@ describe('skipUntil', () => {
 
   it('should stop listening to a synchronous notifier after its first nexted value', () => {
     const sideEffects: number[] = [];
-    const synchronousNotifer = concat(
+    const synchronousNotifier = concat(
       defer(() => {
         sideEffects.push(1);
         return of(1);
@@ -343,7 +343,7 @@ describe('skipUntil', () => {
       })
     );
     of(null)
-      .pipe(skipUntil(synchronousNotifer))
+      .pipe(skipUntil(synchronousNotifier))
       .subscribe(() => {
         /* noop */
       });

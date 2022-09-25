@@ -185,7 +185,7 @@ export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction
       }
 
       // Create the subject if we don't have one yet. Grab a local reference to
-      // it as well, which avoids non-null assertations when using it and, if we
+      // it as well, which avoids non-null assertions when using it and, if we
       // connect to it now, then error/complete need a reference after it was
       // reset.
       const dest = (subject = subject ?? connector());

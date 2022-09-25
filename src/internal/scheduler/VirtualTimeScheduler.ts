@@ -2,13 +2,14 @@ import { AsyncAction } from './AsyncAction';
 import { Subscription } from '../Subscription';
 import { AsyncScheduler } from './AsyncScheduler';
 import { SchedulerAction } from '../types';
+import { TimerHandle } from './timerHandle';
 
 export class VirtualTimeScheduler extends AsyncScheduler {
   /** @deprecated Not used in VirtualTimeScheduler directly. Will be removed in v8. */
   static frameTimeFactor = 10;
 
   /**
-   * The current frame for the state of the virtual scheduler instance. The the difference
+   * The current frame for the state of the virtual scheduler instance. The difference
    * between two "frames" is synonymous with the passage of "virtual time units". So if
    * you record `scheduler.frame` to be `1`, then later, observe `scheduler.frame` to be at `11`,
    * that means `10` virtual time units have passed.
@@ -92,15 +93,15 @@ export class VirtualAction<T> extends AsyncAction<T> {
     }
   }
 
-  protected requestAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): any {
+  protected requestAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): TimerHandle {
     this.delay = scheduler.frame + delay;
     const { actions } = scheduler;
     actions.push(this);
     (actions as Array<VirtualAction<T>>).sort(VirtualAction.sortActions);
-    return true;
+    return 1;
   }
 
-  protected recycleAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): any {
+  protected recycleAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): TimerHandle | undefined {
     return undefined;
   }
 

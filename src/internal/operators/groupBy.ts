@@ -201,7 +201,7 @@ export function groupBy<T, K, R>(
             if (duration) {
               const durationSubscriber = createOperatorSubscriber(
                 // Providing the group here ensures that it is disposed of -- via `unsubscribe` --
-                // wnen the duration subscription is torn down. That is important, because then
+                // when the duration subscription is torn down. That is important, because then
                 // if someone holds a handle to the grouped observable and tries to subscribe to it
                 // after the connection to the source has been severed, they will get an
                 // `ObjectUnsubscribedError` and know they can't possibly get any notifications.
