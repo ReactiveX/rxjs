@@ -1,3 +1,13 @@
+## [7.5.7](https://github.com/reactivex/rxjs/compare/7.5.6...7.5.7) (2022-09-25)
+
+### Bug Fixes
+
+- **schedulers:** improve performance of animationFrameScheduler and asapScheduler ([#7059](https://github.com/reactivex/rxjs/issues/7059)) ([c93aa60](https://github.com/reactivex/rxjs/commit/c93aa60e9f073297d959fa1fff9323e48872d47e)), closes [#7017](https://github.com/reactivex/rxjs/issues/7017) [#7018](https://github.com/reactivex/rxjs/issues/7018) [#6674](https://github.com/reactivex/rxjs/issues/6674)
+
+### Performance Improvements
+
+- **animationFrames:** uses fewer Subscription instances ([#7060](https://github.com/reactivex/rxjs/issues/7060)) ([2d57b38](https://github.com/reactivex/rxjs/commit/2d57b38ec9f7ada838ee130ab75cd795b156c182)), closes [#7018](https://github.com/reactivex/rxjs/issues/7018)
+
 ## [7.5.6](https://github.com/reactivex/rxjs/compare/7.5.5...7.5.6) (2022-07-11)
 
 ### Bug Fixes
