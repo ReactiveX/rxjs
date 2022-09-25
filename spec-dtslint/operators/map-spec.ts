@@ -21,7 +21,7 @@ it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(map()); // $ExpectError
 });
 
-it('should enforce the projecter types', () => {
+it('should enforce the projector types', () => {
   const o = of(1, 2, 3).pipe(map((value: string) => value)); // $ExpectError
   const p = of(1, 2, 3).pipe(map((value, index: string) => value)); // $ExpectError
 });

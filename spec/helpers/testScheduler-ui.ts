@@ -185,14 +185,14 @@ module.exports = function (suite: any) {
   });
 };
 
-//register into global instnace if browser test page injects mocha globally
+//register into global instance if browser test page injects mocha globally
 if (global.Mocha) {
   (<any>window).Mocha.interfaces['testschedulerui'] = module.exports;
 } else {
   (<any>mocha).interfaces['testschedulerui'] = module.exports;
 }
 
-//overrides JSON.toStringfy to serialize error object
+//overrides JSON.toStringify to serialize error object
 Object.defineProperty(Error.prototype, 'toJSON', {
   value: function (this: any) {
     const alt: Record<string, any> = {};

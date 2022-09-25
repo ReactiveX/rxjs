@@ -24,7 +24,7 @@
 
 - The static `sortActions` method on `VirtualTimeScheduler` is no longer publicly exposed by our TS types.
 
-- `Notification.createNext(undefined)` will no longer return the exact same reference everytime.
+- `Notification.createNext(undefined)` will no longer return the exact same reference every time.
 
 - Type signatures tightened up around `Notification` and `dematerialize`, may uncover issues with invalid types passed to those operators.
 

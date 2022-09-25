@@ -8,7 +8,7 @@ describe('VirtualTimeScheduler', () => {
     expect(VirtualTimeScheduler).to.be.a('function');
   });
 
-  it('should schedule things in order when flushed if each this is scheduled synchrously', () => {
+  it('should schedule things in order when flushed if each this is scheduled synchronously', () => {
     const v = new VirtualTimeScheduler();
     const invoked: number[] = [];
     const invoke: any = (state: number) => {

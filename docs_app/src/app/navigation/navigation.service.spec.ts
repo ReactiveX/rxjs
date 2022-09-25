@@ -65,7 +65,7 @@ describe('NavigationService', () => {
       expect(views2).toBe(views1);
       expect(views3).toBe(views1);
 
-      // Verfy that subsequent subscriptions did not trigger another request.
+      // Verify that subsequent subscriptions did not trigger another request.
       httpMock.expectNone({});
     });
 

@@ -333,7 +333,7 @@ export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
         // specify, nor can we assume `location` will exist, because of node.
         url = parts[0] + '?' + searchParams;
       } else {
-        // There is no pre-existing querystring, so we can just use URLSearchParams
+        // There is no preexisting querystring, so we can just use URLSearchParams
         // to convert the passed queryParams into the proper format and encodings.
         // queryParams is converted to any because the runtime is *much* more permissive than
         // the types are.

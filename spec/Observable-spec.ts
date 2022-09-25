@@ -1008,7 +1008,7 @@ describe('Observable.lift', () => {
 
   });
 
-  it('should be overrideable in a custom Observable type that composes', (done) => {
+  it('should be overridable in a custom Observable type that composes', (done) => {
     const result = new MyCustomObservable<number>((observer) => {
       observer.next(1);
       observer.next(2);

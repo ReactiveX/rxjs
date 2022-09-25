@@ -49,7 +49,7 @@ describe('target inline-tag-def', function() {
   });
 
   describe('deactivate', function() {
-    it('should deactive an already allowed target', function() {
+    it('should deactivate an already allowed target', function() {
       te.addAllowed('a', true);
       te.addAllowed('b', false);
       te.addAllowed('c');

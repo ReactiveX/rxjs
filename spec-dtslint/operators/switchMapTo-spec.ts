@@ -26,11 +26,11 @@ it('should infer correctly by using the resultSelector second parameter', () => 
 });
 
 it('should support a resultSelector that takes an inner index', () => {
-  const o = of(1, 2, 3).pipe(switchMapTo(of('foo'), (a, b, innnerIndex) => a)); // $ExpectType Observable<number>
+  const o = of(1, 2, 3).pipe(switchMapTo(of('foo'), (a, b, innerIndex) => a)); // $ExpectType Observable<number>
 });
 
 it('should support a resultSelector that takes an inner and outer index', () => {
-  const o = of(1, 2, 3).pipe(switchMapTo(of('foo'), (a, b, innnerIndex, outerIndex) => a)); // $ExpectType Observable<number>
+  const o = of(1, 2, 3).pipe(switchMapTo(of('foo'), (a, b, innerIndex, outerIndex) => a)); // $ExpectType Observable<number>
 });
 
 it('should support an undefined resultSelector', () => {

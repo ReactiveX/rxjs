@@ -46,7 +46,7 @@ export function merge<A extends readonly unknown[]>(
  *
  * // Results in the following:
  * // timer will emit ascending values, one every second(1000ms) to console
- * // clicks logs MouseEvents to console everytime the "document" is clicked
+ * // clicks logs MouseEvents to console every time the "document" is clicked
  * // Since the two streams are merged you see these happening
  * // as they occur.
  * ```

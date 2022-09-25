@@ -15,7 +15,7 @@ it('should support an undefined predicate with a non-T default', () => {
   const o = of('foo').pipe(first(undefined, false)); // $ExpectType Observable<string | boolean>
 });
 
-it('should default D to T with an undfined predicate', () => {
+it('should default D to T with an undefined predicate', () => {
   const o = of('foo').pipe(first<string>(undefined)); // $Observable<string>
 });
 

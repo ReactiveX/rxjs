@@ -60,7 +60,7 @@ export function bindCallback<A extends readonly unknown[], R extends readonly un
  *
  * If `func` depends on some context (`this` property) and is not already bound, the context of `func`
  * will be the context that the output function has at call time. In particular, if `func`
- * is called as a method of some objec and if `func` is not already bound, in order to preserve the context
+ * is called as a method of some object and if `func` is not already bound, in order to preserve the context
  * it is recommended that the context of the output function is set to that object as well.
  *
  * If the input function calls its callback in the "node style" (i.e. first argument to callback is

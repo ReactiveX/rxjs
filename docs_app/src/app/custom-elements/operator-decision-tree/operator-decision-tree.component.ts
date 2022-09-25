@@ -21,14 +21,14 @@ import { OperatorDecisionTreeService } from './operator-decision-tree.service';
       </ng-container>
       <div>
         <ng-container *ngFor="let option of options$ | async">
-          <ng-container *ngIf="option.options; else operatorTempalte">
+          <ng-container *ngIf="option.options; else operatorTemplate">
             <button class="option mat-body-1" (click)="selectOption(option.id)" [@flyIn]>
               <mat-card matRipple>
                 {{ option.label }}
               </mat-card>
             </button>
           </ng-container>
-          <ng-template #operatorTempalte>
+          <ng-template #operatorTemplate>
             <p *ngIf="option.method" class="mat-body-1">
               You want the {{ option.method }} of the {{ option.docType }}
               <a href="{{ option.path }}#{{ option.method }}">{{ option.label }}</a
@@ -48,7 +48,7 @@ import { OperatorDecisionTreeService } from './operator-decision-tree.service';
         <p>Oops! There was an issue loading the decision tree.. we're real sorry about that. Please try reloading the page.</p>
         <p>
           You can also try
-          <a href="https://github.com/ReactiveX/rxjs/issues/new?template=documentation.md" target="_blank">submitting an issue on Github</a
+          <a href="https://github.com/ReactiveX/rxjs/issues/new?template=documentation.md" target="_blank">submitting an issue on GitHub</a
           >.
         </p>
       </div>

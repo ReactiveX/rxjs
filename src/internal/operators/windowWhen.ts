@@ -57,7 +57,7 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
 
     /**
      * When we get an error, we have to notify both the
-     * destiation subscriber and the window.
+     * destination subscriber and the window.
      */
     const handleError = (err: any) => {
       window!.error(err);

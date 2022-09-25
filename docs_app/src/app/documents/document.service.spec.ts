@@ -82,7 +82,7 @@ describe('DocumentService', () => {
       // Subsequent request for not-found document.
       logger.output.error = [];
       httpMock.expectOne(CONTENT_URL_PREFIX + 'file-not-found.json').flush(notFoundDoc);
-      expect(logger.output.error).toEqual([]); // does not report repeate errors
+      expect(logger.output.error).toEqual([]); // does not report repeated errors
       expect(currentDocument).toEqual(notFoundDoc);
     });
 
