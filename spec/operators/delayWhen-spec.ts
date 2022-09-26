@@ -340,7 +340,7 @@ describe('delayWhen', () => {
   });
 
   it('should delayWhen Promise resolves', (done) => {
-    const e1 = interval(10).pipe(take(5));
+    const e1 = interval(1).pipe(take(5));
     const expected = [0, 1, 2, 3, 4];
 
     e1.pipe(delayWhen(() => Promise.resolve(42))).subscribe({
@@ -358,7 +358,7 @@ describe('delayWhen', () => {
   });
 
   it('should raise error when Promise rejects', (done) => {
-    const e1 = interval(10).pipe(take(10));
+    const e1 = interval(1).pipe(take(10));
     const expected = [0, 1, 2];
     const error = new Error('err');
 
