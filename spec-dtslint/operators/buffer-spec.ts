@@ -9,3 +9,8 @@ it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(buffer()); // $ExpectError
   const p = of(1, 2, 3).pipe(buffer(6)); // $ExpectError
 });
+
+it('should support Promises', () => {
+  const o = of(1, 2, 3).pipe(buffer(Promise.resolve('foo'))); // $ExpectType Observable<number[]>
+  const p = of(1, 2, 3).pipe(buffer(async () => {})); // $ExpectType Observable<number[]>
+});
