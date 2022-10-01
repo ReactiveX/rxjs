@@ -105,7 +105,9 @@
     "build:global": "node ./tools/make-umd-bundle.js && node ./tools/make-closure-core.js",
     "build:package": "npm-run-all build:clean compile build:global && node ./tools/prepare-package.js && node ./tools/generate-alias.js",
     "watch": "nodemon -w \"src/\" -w \"spec/\" -e ts -x npm test",
-    "watch:dtslint": "nodemon -w \"src/\" -w \"spec-dtslint/\" -e ts -x npm run dtslint"
+    "watch:dtslint": "nodemon -w \"src/\" -w \"spec-dtslint/\" -e ts -x npm run dtslint",
+    "//": "Turbo commands below",
+    "turbo:compile": "turbo compile"
   },
   "repository": {
     "type": "git",
