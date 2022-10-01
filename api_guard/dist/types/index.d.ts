@@ -431,12 +431,13 @@ export interface ObjectUnsubscribedError extends Error {
 
 export declare const ObjectUnsubscribedError: ObjectUnsubscribedErrorCtor;
 
-export declare const observable: string | symbol;
+export declare const observable: typeof Symbol.observable;
 
 export declare class Observable<T> implements Subscribable<T> {
     operator: Operator<any, T> | undefined;
     source: Observable<any> | undefined;
     constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic);
+    [Symbol_observable](): Subscribable<T>;
     forEach(next: (value: T) => void): Promise<void>;
     forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
     lift<R>(operator?: Operator<T, R>): Observable<R>;

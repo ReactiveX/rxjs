@@ -1,4 +1,4 @@
-import { Observable, of, OperatorFunction } from 'rxjs';
+import { Observable, of, OperatorFunction, InteropObservable } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
 function a<I extends string, O extends string>(input: I, output: O): OperatorFunction<I, O>;
@@ -11,7 +11,7 @@ function a<I, O extends string>(output: O): OperatorFunction<I, O>;
  * That is, `a('0', '1')` returns `OperatorFunction<'0', '1'>`.
  * That means that the `a` function can be used to create consecutive
  * arguments that are either compatible or incompatible.
- * 
+ *
  * ```javascript
  * a('0', '1'), a('1', '2') // OK
  * a('0', '1'), a('#', '2') // Error '1' is not compatible with '#'
@@ -154,4 +154,25 @@ describe('subscribe', () => {
     o.subscribe(null, null, complete); // $ExpectDeprecation
     o.subscribe(undefined, undefined, complete); // $ExpectDeprecation
   });
+});
+
+describe('interop', () => {
+  it('should be possible to consume Rx Observable as InteropObservable', () => {
+    class MyObservable<T> {
+      subscribe(_cb: (a: T) => void): void {};
+      // just make this class nominal to avoid relying on structural subtyping with RxJS Observable
+      private _tag: string = 'tag'
+    }
+
+    type ObservableInput<T> = MyObservable<T> | InteropObservable<T>;
+    type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;
+
+    function myFrom<O extends ObservableInput<any>>(
+      _input: O
+    ): MyObservable<ObservedValueOf<O>> {
+      return {} as any
+    };
+
+    const o = myFrom(of('foo')); // $ExpectType MyObservable<string>
+  })
 });
