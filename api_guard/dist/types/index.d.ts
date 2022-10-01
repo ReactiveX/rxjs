@@ -1,3 +1,5 @@
+export declare function allValuesFrom<T>(source: Observable<T>): Promise<T[]>;
+
 export declare const animationFrame: AnimationFrameScheduler;
 
 export declare function animationFrames(timestampProvider?: TimestampProvider): Observable<{

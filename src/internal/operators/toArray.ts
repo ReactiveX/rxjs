@@ -31,6 +31,8 @@ const arrReducer = (arr: any[], value: any) => (arr.push(value), arr);
  * // output: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
  * ```
  *
+ * @see {@link allValuesFrom}
+ *
  * @return A function that returns an Observable that emits an array of items
  * emitted by the source Observable when source completes.
  */
