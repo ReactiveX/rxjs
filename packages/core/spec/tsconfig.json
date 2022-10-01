@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "../dist/spec",
+    "target": "es5",
+    "downlevelIteration": true,
+    "module": "commonjs"
+  },
+  "references": [
+    {
+      "path": "../src/tsconfig.types.spec.json"
+    }
+  ]
+}

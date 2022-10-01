@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="UTF-8">
+      <base target="_blank">
+      <link rel="stylesheet" href="../../node_modules/mocha/mocha.css" />
+  </head>
+
+  <body>
+      <div id="mocha"></div>
+      <script type="text/javascript" src="../../node_modules/babel-polyfill/dist/polyfill.js"></script>
+      <script type="text/javascript" src="../../node_modules/mocha/mocha.js"></script>
+      <script type="text/javascript" src="../../tmp/browser/browser.common.js"></script>
+      <script type="text/javascript" src="../../tmp/browser/browser.testscheduler.js"></script>
+      <script>
+        Suite = Mocha.Suite;
+        Test = Mocha.Test;
+        mocha.setup({ui: 'testschedulerui'});
+      </script>
+      <script type="text/javascript" src="../../tmp/browser/browser.spec.js"></script>
+      <script type="text/javascript" src="../../node_modules/mocha-in-sauce/client.js"></script>
+      <script>
+        onload = function() {
+          var runner = mocha.run();
+          var failedTests = [];
+
+          function logFailure(test, err) {
+            var flattenTitles = function(test) {
+              var titles = [];
+              while (test.parent.title){
+                titles.push(test.parent.title);
+                test = test.parent;
+              }
+              return titles.reverse();
+            };
+
+            failedTests.push({name: test.title, result: false, message: err.message, stack: err.stack, titles: flattenTitles(test) });
+          };
+
+          runner.on('end', function() {
+            window.mochaResults = runner.stats;
+            window.mochaResults.reports = failedTests;
+            window.chocoReady = true;
+          });
+
+          runner.on('fail', logFailure);
+        };
+      </script>
+  </body>
+</html>

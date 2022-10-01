@@ -1,0 +1,25 @@
+{
+  "extends": ["../tslint.json", "tslint-no-unused-expression-chai"],
+  "rules": {
+    "arrow-return-shorthand": [false],
+    "ban-types": [false],
+    "comment-format": [false],
+    "no-angle-bracket-type-assertion": [false],
+    "no-console": [false],
+    "no-implicit-dependencies": [true, "dev", ["rxjs", "chai"]],
+    "no-object-literal-type-assertion": [false],
+    "no-shadowed-variable": [false],
+    "no-string-literal": [false],
+    "no-string-throw": [false],
+    "no-submodule-imports": [false],
+    "no-unnecessary-initializer": [false],
+    "no-unused-declaration": [false],
+    "object-literal-shorthand": [false],
+    "one-variable-per-declaration": [false],
+    "only-arrow-functions": [false],
+    "prefer-const": [false],
+    "prefer-for-of": [false],
+    "radix": [false],
+    "triple-equals": [false]
+  }
+}
