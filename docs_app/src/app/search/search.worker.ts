@@ -125,10 +125,28 @@ function queryIndex(query: string): PageInfo[] {
   query = query.replace(/^["']|['"]$/g, '');
   try {
     if (query.length) {
-      // First try a query where every term must be present
-      // (see https://lunrjs.com/guides/searching.html#term-presence)
-      const queryAll = query.replace(/\S+/g, '+$&');
-      let results = index.search(queryAll);
+      let results = index.query((queryBuilder) => {
+        queryBuilder.term(lunr.tokenizer(query), {
+          fields: ['title'],
+          wildcard: lunr.Query.wildcard.TRAILING | lunr.Query.wildcard.LEADING,
+          usePipeline: true,
+          presence: lunr.Query.presence.REQUIRED,
+        });
+      });
+
+      if (results.length === 0) {
+        // First try a query where every term must be present
+        // (see https://lunrjs.com/guides/searching.html#term-presence)
+        results = index.query((queryBuilder) => {
+          const tokens = lunr.tokenizer(query);
+          for (const token of tokens) {
+            queryBuilder.term(token, {
+              usePipeline: true,
+              presence: lunr.Query.presence.REQUIRED,
+            });
+          }
+        });
+      }
 
       // If that was too restrictive just query for any term to be present
       if (results.length === 0) {
