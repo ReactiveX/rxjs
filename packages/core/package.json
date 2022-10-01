@@ -1,0 +1,145 @@
+{
+  "name": "rxjs",
+  "version": "8.0.0-alpha.5",
+  "description": "Reactive Extensions for modern JavaScript",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm5/index.js",
+  "es2015": "./dist/esm/index.js",
+  "types": "index.d.ts",
+  "typesVersions": {
+    ">=4.2": {
+      "*": [
+        "dist/types/*"
+      ]
+    }
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "node": "./dist/cjs/index.js",
+      "require": "./dist/cjs/index.js",
+      "es2015": "./dist/esm/index.js",
+      "default": "./dist/esm5/index.js"
+    },
+    "./ajax": {
+      "types": "./dist/types/ajax/index.d.ts",
+      "node": "./dist/cjs/ajax/index.js",
+      "require": "./dist/cjs/ajax/index.js",
+      "es2015": "./dist/esm/ajax/index.js",
+      "default": "./dist/esm5/ajax/index.js"
+    },
+    "./fetch": {
+      "types": "./dist/types/fetch/index.d.ts",
+      "node": "./dist/cjs/fetch/index.js",
+      "require": "./dist/cjs/fetch/index.js",
+      "es2015": "./dist/esm/fetch/index.js",
+      "default": "./dist/esm5/fetch/index.js"
+    },
+    "./operators": {
+      "types": "./dist/types/operators/index.d.ts",
+      "node": "./dist/cjs/operators/index.js",
+      "require": "./dist/cjs/operators/index.js",
+      "es2015": "./dist/esm/operators/index.js",
+      "default": "./dist/esm5/operators/index.js"
+    },
+    "./testing": {
+      "types": "./dist/types/testing/index.d.ts",
+      "node": "./dist/cjs/testing/index.js",
+      "require": "./dist/cjs/testing/index.js",
+      "es2015": "./dist/esm/testing/index.js",
+      "default": "./dist/esm5/testing/index.js"
+    },
+    "./webSocket": {
+      "types": "./dist/types/webSocket/index.d.ts",
+      "node": "./dist/cjs/webSocket/index.js",
+      "require": "./dist/cjs/webSocket/index.js",
+      "es2015": "./dist/esm/webSocket/index.js",
+      "default": "./dist/esm5/webSocket/index.js"
+    },
+    "./internal/*": {
+      "types": "./dist/types/internal/*.d.ts",
+      "node": "./dist/cjs/internal/*.js",
+      "require": "./dist/cjs/internal/*.js",
+      "es2015": "./dist/esm/internal/*.js",
+      "default": "./dist/esm5/internal/*.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "compile": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactivex/rxjs.git"
+  },
+  "keywords": [
+    "Rx",
+    "RxJS",
+    "ReactiveX",
+    "ReactiveExtensions",
+    "Streams",
+    "Observables",
+    "Observable",
+    "Stream",
+    "ES6",
+    "ES2015"
+  ],
+  "author": "Ben Lesh <ben@benlesh.com>",
+  "contributors": [
+    {
+      "name": "Ben Lesh",
+      "email": "ben@benlesh.com"
+    },
+    {
+      "name": "Paul Taylor",
+      "email": "paul.e.taylor@me.com"
+    },
+    {
+      "name": "Jeff Cross",
+      "email": "crossj@google.com"
+    },
+    {
+      "name": "Matthew Podwysocki",
+      "email": "matthewp@microsoft.com"
+    },
+    {
+      "name": "OJ Kwon",
+      "email": "kwon.ohjoong@gmail.com"
+    },
+    {
+      "name": "Andre Staltz",
+      "email": "andre@staltz.com"
+    }
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ReactiveX/RxJS/issues"
+  },
+  "homepage": "https://rxjs.dev",
+  "dependencies": {
+    "tslib": "^2.1.0"
+  },
+  "devDependencies": {
+    "tsconfig": "*"
+  },
+  "files": [
+    "dist/bundles",
+    "dist/cjs/**/!(*.tsbuildinfo)",
+    "dist/esm/**/!(*.tsbuildinfo)",
+    "dist/esm5/**/!(*.tsbuildinfo)",
+    "dist/types/**/!(*.tsbuildinfo)",
+    "ajax",
+    "fetch",
+    "operators",
+    "testing",
+    "webSocket",
+    "src",
+    "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
+    "LICENSE.txt",
+    "package.json",
+    "README.md",
+    "tsconfig.json"
+  ]
+}
