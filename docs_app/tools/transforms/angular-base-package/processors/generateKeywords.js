@@ -1,4 +1,4 @@
-'use strict';
+
 /* eslint-disable */
 
 /**
@@ -41,7 +41,9 @@ module.exports = function generateKeywordsProcessor(log) {
         // We are not interested in some docTypes
         .filter((doc) => !docTypesToIgnore.has(doc.docType))
         // Ignore internals and private exports (indicated by the ɵ prefix)
-        .filter((doc) => !doc.internal && !doc.privateExport);
+        .filter((doc) => !doc.internal && !doc.privateExport)
+        // Ignore duplicates and remove the `/api/operators/` path entries from the search results
+        .filter((doc) => doc.path.indexOf('api/operators/') !== 0);
 
       for (const doc of filteredDocs) {
         // Search each top level property of the document for search terms
