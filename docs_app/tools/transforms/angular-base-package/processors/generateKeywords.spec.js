@@ -9,7 +9,7 @@ const mockReadFilesProcessor = {
   basePath: 'base/path',
 };
 
-const ignoreWords = require(path.resolve(__dirname, '../ignore-words'))['en'];
+const ignoreWords = require(path.resolve(__dirname, '../ignore-words'));
 
 function createProcessor() {
   const processor = processorFactory(mockLogger, mockReadFilesProcessor);
@@ -17,7 +17,7 @@ function createProcessor() {
   return processor;
 }
 
-fdescribe('generateKeywords processor', () => {
+describe('generateKeywords processor', () => {
   it('should be available on the injector', () => {
     const dgeni = new Dgeni([testPackage('angular-base-package'), testPackage('angular-api-package')]);
     const injector = dgeni.configureInjector();

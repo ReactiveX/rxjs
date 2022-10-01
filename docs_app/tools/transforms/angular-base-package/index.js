@@ -64,7 +64,7 @@ module.exports = new Package('angular-base', [
     readFilesProcessor.basePath = PROJECT_ROOT;
     readFilesProcessor.sourceFiles = [];
 
-    generateKeywordsProcessor.ignoreWords = require(path.resolve(__dirname, 'ignore-words'))['en'];
+    generateKeywordsProcessor.ignoreWords = require(path.resolve(__dirname, 'ignore-words'));
     generateKeywordsProcessor.docTypesToIgnore = [
       undefined,
       'json-doc',
