@@ -1,0 +1,41 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "hosting": {
+    "public": "dist",
+    "target": "stable",
+    "cleanUrls": true,
+    "redirects": [
+      //////////////////////////////////////////////////////////////////////////////////////////////
+      // README:
+      //   Redirects must also be handled by the ServiceWorker. If you add a redirect rule here,
+      //   make sure it is compatible with the configuration in `ngsw-config.json`.
+      //////////////////////////////////////////////////////////////////////////////////////////////
+
+      // Strip off the `.html` extension, because Firebase will not do this automatically any more
+      // (unless the new URL points to an existing file, which is not necessarily the case here).
+      { "type": 301, "source": "/:somePath*/:file.html", "destination": "/:somePath*/:file" },
+      { "type": 301, "source": "/:topLevelFile.html", "destination": "/:topLevelFile" },
+      { "type": 301, "source": "/guide/v6/migration", "destination": "https://v6.rxjs.dev/guide/v6/migration" },
+      { "type": 301, "source": "/guide/v6/pipeable-operators", "destination": "https://v6.rxjs.dev/guide/v6/pipeable-operators" }
+    ],
+    "rewrites": [
+      {
+        "source": "**/!(*.*)",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/",
+        "headers": [
+          {
+            "key": "Link",
+            "value": "</generated/navigation.json>;rel=preload;as=fetch,</generated/docs/index.json>;rel=preload;as=fetch"
+          }
+        ]
+      }
+    ]
+  }
+}
