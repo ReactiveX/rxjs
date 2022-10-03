@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the base styles for Angular Material core. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue.
+$rxjs-primary: mat.define-palette(mat.$pink-palette, 700, 600, 800);
+$rxjs-accent:  mat.define-palette(mat.$red-palette, 700, 600, 800);
+
+// The warn palette is optional (defaults to red).
+$rxjs-warn:    mat.define-palette(mat.$red-palette);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$rxjs-theme: mat.define-light-theme($rxjs-primary, $rxjs-accent, $rxjs-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($rxjs-theme);

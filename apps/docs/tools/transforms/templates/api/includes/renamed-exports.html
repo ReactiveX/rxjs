@@ -1,0 +1,8 @@
+{% if doc.renamedDuplicates %}
+<section class="renamed-duplicates">
+  Aliased as
+  {% for d in doc.renamedDuplicates %}
+    <i>{$ d.name $}</i>{% if not loop.last %}, {% endif %}
+  {% endfor %}
+</section>
+{% endif %}

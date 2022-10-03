@@ -1,0 +1,12 @@
+import { NgModule, Type } from '@angular/core';
+import { ExpandableSectionComponent } from './expandable-section.component';
+import { WithCustomElementComponent } from '../element-registry';
+import { MatExpansionModule } from '@angular/material/expansion';
+
+@NgModule({
+  imports: [ MatExpansionModule ],
+  declarations: [ ExpandableSectionComponent, ]
+})
+export class ExpandableSectionModule implements WithCustomElementComponent {
+  customElementComponent: Type<any> = ExpandableSectionComponent;
+}
