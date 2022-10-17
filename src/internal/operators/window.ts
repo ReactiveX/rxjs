@@ -1,9 +1,10 @@
 import { Observable } from '../Observable';
-import { OperatorFunction } from '../types';
+import { OperatorFunction, ObservableInput } from '../types';
 import { Subject } from '../Subject';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
+import { innerFrom } from '../observable/innerFrom';
 
 /**
  * Branch out the source Observable values as a nested Observable whenever
@@ -17,8 +18,9 @@ import { noop } from '../util/noop';
  * Returns an Observable that emits windows of items it collects from the source
  * Observable. The output Observable emits connected, non-overlapping
  * windows. It emits the current window and opens a new one whenever the
- * Observable `windowBoundaries` emits an item. Because each window is an
- * Observable, the output is a higher-order Observable.
+ * `windowBoundaries` emits an item. `windowBoundaries` can be any type that
+ * `ObservableInput` accepts. It internally gets converted to an Observable.
+ * Because each window is an Observable, the output is a higher-order Observable.
  *
  * ## Example
  *
@@ -43,12 +45,12 @@ import { noop } from '../util/noop';
  * @see {@link windowWhen}
  * @see {@link buffer}
  *
- * @param {Observable<any>} windowBoundaries An Observable that completes the
+ * @param windowBoundaries An `ObservableInput` that completes the
  * previous window and starts a new window.
  * @return A function that returns an Observable of windows, which are
  * Observables emitting values of the source Observable.
  */
-export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T, Observable<T>> {
+export function window<T>(windowBoundaries: ObservableInput<any>): OperatorFunction<T, Observable<T>> {
   return operate((source, subscriber) => {
     let windowSubject: Subject<T> = new Subject<T>();
 
@@ -73,7 +75,7 @@ export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T
     );
 
     // Subscribe to the window boundaries.
-    windowBoundaries.subscribe(
+    innerFrom(windowBoundaries).subscribe(
       createOperatorSubscriber(
         subscriber,
         () => {

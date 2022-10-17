@@ -1,7 +1,8 @@
-import { window, mergeMap } from 'rxjs/operators';
+import { window, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { EMPTY, of, Observable } from 'rxjs';
+import { EMPTY, of, Observable, interval } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
+import { expect } from 'chai';
 
 /** @test {window} */
 describe('window', () => {
@@ -278,6 +279,45 @@ describe('window', () => {
       expectObservable(result).toBe(expected, expectedValues);
       expectSubscriptions(source.subscriptions).toBe(subs);
       expectSubscriptions(closings.subscriptions).toBe(closingSubs);
+    });
+  });
+
+  it('should window when Promise resolves', (done) => {
+    const e1 = interval(3).pipe(take(5));
+    let pos = 0;
+    const result: number[][] = [[], []];
+    const expected = [
+      [0, 1],
+      [2, 3, 4],
+    ];
+
+    e1.pipe(window(new Promise<void>((resolve) => setTimeout(() => resolve(), 8)))).subscribe({
+      next: (x) => {
+        x.subscribe({
+          next: (v) => result[pos].push(v),
+          complete: () => pos++,
+        });
+      },
+      error: () => done(new Error('should not be called')),
+      complete: () => {
+        expect(result).to.deep.equal(expected);
+        done();
+      },
+    });
+  });
+
+  it('should raise error when Promise rejects', (done) => {
+    const e1 = interval(1).pipe(take(5));
+    const error = new Error('err');
+
+    e1.pipe(window(Promise.reject(error))).subscribe({
+      error: (err) => {
+        expect(err).to.be.an('error');
+        done();
+      },
+      complete: () => {
+        done(new Error('should not be called'));
+      },
     });
   });
 });
