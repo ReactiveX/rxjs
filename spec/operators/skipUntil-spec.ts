@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { concat, defer, of, Subject, Observable } from 'rxjs';
+import { concat, defer, of, Subject, Observable, interval } from 'rxjs';
 import { skipUntil, mergeMap, take } from 'rxjs/operators';
 import { asInteropObservable } from '../helpers/interop-helper';
 import { TestScheduler } from 'rxjs/testing';
@@ -366,5 +366,39 @@ describe('skipUntil', () => {
     });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
+  });
+
+  it('should skip until Promise resolves', (done) => {
+    const e1 = interval(3).pipe(take(5));
+    const expected = [2, 3, 4];
+
+    e1.pipe(skipUntil(new Promise<void>((resolve) => setTimeout(() => resolve(), 8)))).subscribe({
+      next: (x) => {
+        expect(x).to.deep.equal(expected.shift());
+      },
+      error: () => done(new Error('should not be called')),
+      complete: () => {
+        expect(expected.length).to.equal(0);
+        done();
+      },
+    });
+  });
+
+  it('should raise error when Promise rejects', (done) => {
+    const e1 = interval(1).pipe(take(5));
+    const error = new Error('err');
+
+    e1.pipe(skipUntil(Promise.reject(error))).subscribe({
+      next: () => {
+        done(new Error('should not be called'));
+      },
+      error: (err: any) => {
+        expect(err).to.be.an('error');
+        done();
+      },
+      complete: () => {
+        done(new Error('should not be called'));
+      },
+    });
   });
 });

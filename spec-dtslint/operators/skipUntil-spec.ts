@@ -7,5 +7,9 @@ it('should infer correctly', () => {
 
 it('should enforce types', () => {
   const o = of('foo', 'bar', 'baz').pipe(skipUntil()); // $ExpectError
-  const p = of('foo', 'bar', 'baz').pipe(skipUntil('7')); // $ExpectError
+  const p = of('foo', 'bar', 'baz').pipe(skipUntil(7)); // $ExpectError
+});
+
+it('should support Promises', () => {
+  of(1, 2, 3).pipe(skipUntil(Promise.resolve('foo'))); // $ExpectType Observable<number>
 });
