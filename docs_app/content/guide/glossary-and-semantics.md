@@ -128,7 +128,7 @@ An [observable](#observable) that is being used to notify another [observable](#
 
 ### Inner Source
 
-One, of possibly many [sources](#source), which are [subscribed](#subscribe) to automatically within a single [subscription](#subscription) to another observable. Examples of an "inner source" include the [observable inputs](#observable-inputs) returned by the mapping function in a [mergeMap](/api/operators/mergeMap) [operator](#operator). (e.g. `source.pipe(mergeMap(value => createInnerSource(value))))`, where `createInnerSource` returns any valid [observable input](#observable-inputs)).
+One, of possibly many [sources](#source), which are [subscribed](#subscribe) to automatically within a single [subscription](#subscription) to another observable. Examples of an "inner source" include the [observable inputs](#observable-inputs) returned by the mapping function in a [mergeMap](/api/operators/mergeMap) [operator](#operator). (e.g. `source.pipe(mergeMap(value => createInnerSource(value)))`, where `createInnerSource` returns any valid [observable input](#observable-inputs)).
 
 ### Partial Observer
 
