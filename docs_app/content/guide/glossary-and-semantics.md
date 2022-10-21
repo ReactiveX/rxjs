@@ -120,7 +120,7 @@ An [observable](#observable) or [valid observable input](#observable-inputs) hav
 
 ### Observable Inputs
 
-An "observable input" ([defined as a type here](/api/index/type-alias/ObservableInput)), is any type that can easily converted to an [Observable](#observable). Observable Inputs may sometimes be referred to as "valid observable sources".
+An "observable input" ([defined as a type here](/api/index/type-alias/ObservableInput)), is any type that can be easily converted to an [Observable](#observable). Observable Inputs may sometimes be referred to as "valid observable sources".
 
 ### Notifier
 
