@@ -1,8 +1,8 @@
-import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction } from '../types';
+import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
+import { innerFrom } from '../observable/innerFrom';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
@@ -56,12 +56,12 @@ import { noop } from '../util/noop';
  * @see {@link distinctUntilChanged}
  * @see {@link distinctUntilKeyChanged}
  *
- * @param {function} [keySelector] Optional function to select which value you want to check as distinct.
- * @param {Observable} [flushes] Optional Observable for flushing the internal HashSet of the operator.
+ * @param keySelector Optional `function` to select which value you want to check as distinct.
+ * @param flushes Optional `ObservableInput` for flushing the internal HashSet of the operator.
  * @return A function that returns an Observable that emits items from the
  * source Observable with distinct values.
  */
-export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: Observable<any>): MonoTypeOperatorFunction<T> {
+export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: ObservableInput<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     const distinctKeys = new Set();
     source.subscribe(
@@ -74,6 +74,6 @@ export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: Observab
       })
     );
 
-    flushes?.subscribe(createOperatorSubscriber(subscriber, () => distinctKeys.clear(), noop));
+    flushes && innerFrom(flushes).subscribe(createOperatorSubscriber(subscriber, () => distinctKeys.clear(), noop));
   });
 }
