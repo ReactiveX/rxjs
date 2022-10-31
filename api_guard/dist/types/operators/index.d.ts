@@ -231,6 +231,11 @@ export declare function refCount<T>(): MonoTypeOperatorFunction<T>;
 
 export declare function repeat<T>(countOrConfig?: number | RepeatConfig): MonoTypeOperatorFunction<T>;
 
+export interface RepeatConfig {
+    count?: number;
+    delay?: number | ((count: number) => ObservableInput<any>);
+}
+
 export declare function repeatWhen<T>(notifier: (notifications: Observable<void>) => ObservableInput<any>): MonoTypeOperatorFunction<T>;
 
 export declare function retry<T>(count?: number): MonoTypeOperatorFunction<T>;

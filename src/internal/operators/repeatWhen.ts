@@ -34,7 +34,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * @see {@link retry}
  * @see {@link retryWhen}
  *
- * @param notifier function that receives an Observable of notifications with
+ * @param notifier Function that receives an Observable of notifications with
  * which a user can `complete` or `error`, aborting the repetition.
  * @return A function that returns an `ObservableInput` that mirrors the source
  * Observable with the exception of a `complete`.
