@@ -1,4 +1,3 @@
-import { Observable } from '../Observable';
 import { innerFrom } from '../observable/innerFrom';
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
@@ -10,7 +9,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * another Observable, the `notifier`, emits.
  *
  * <span class="informal">It's like {@link sampleTime}, but samples whenever
- * the `notifier` ObservableInput emits something.</span>
+ * the `notifier` `ObservableInput` emits something.</span>
  *
  * ![](sample.png)
  *
