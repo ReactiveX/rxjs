@@ -1,5 +1,3 @@
-import { ObservableInput } from "..";
-
 export declare function audit<T>(durationSelector: (value: T) => ObservableInput<any>): MonoTypeOperatorFunction<T>;
 
 export declare function auditTime<T>(duration: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
@@ -241,7 +239,7 @@ export declare function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<
 export interface RetryConfig {
     count?: number;
     delay?: number | ((error: any, retryCount: number) => ObservableInput<any>);
-    resetOnSuccess?: boolean;  b
+    resetOnSuccess?: boolean;
 }
 
 export declare function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T>;
