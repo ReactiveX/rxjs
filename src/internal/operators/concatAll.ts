@@ -13,7 +13,10 @@ import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
  * Joins every Observable emitted by the source (a higher-order Observable), in
  * a serial fashion. It subscribes to each inner Observable only after the
  * previous inner Observable has completed, and merges all of their values into
- * the returned observable.
+ * the returned Observable. The output Observable will only complete if the source
+ * Observable completes, *and* once all inner Observables have completed. Any error
+ * delivered by the inner Observable will be immediately emitted on the output
+ * Observable.
  *
  * __Warning:__ If the source Observable emits Observables quickly and
  * endlessly, and the inner Observables it emits generally complete slower than

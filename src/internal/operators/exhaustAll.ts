@@ -17,7 +17,10 @@ import { identity } from '../util/identity';
  * inner Observable. So far, it behaves like {@link mergeAll}. However,
  * `exhaustAll` ignores every new inner Observable if the previous Observable has
  * not yet completed. Once that one completes, it will accept and flatten the
- * next inner Observable and repeat this process.
+ * next inner Observable and repeat this process. The output Observable will only
+ * complete if the source Observable completes, *and* once the inner Observable have
+ * completed, if there were any. Any error delivered by the inner Observable will be
+ * immediately emitted on the output Observable.
  *
  * ## Example
  *

@@ -13,9 +13,10 @@ import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
  * `mergeAll` subscribes to an Observable that emits Observables, also known as
  * a higher-order Observable. Each time it observes one of these emitted inner
  * Observables, it subscribes to that and delivers all the values from the
- * inner Observable on the output Observable. The output Observable only
- * completes once all inner Observables have completed. Any error delivered by
- * a inner Observable will be immediately emitted on the output Observable.
+ * inner Observable on the output Observable. The output Observable will only
+ * complete if the source Observable completes, *and* once all inner Observables
+ * have completed. Any error delivered by the inner Observable will be
+ * immediately emitted on the output Observable.
  *
  * ## Examples
  *
@@ -56,8 +57,7 @@ import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
  * @see {@link switchMap}
  * @see {@link zipAll}
  *
- * @param {number} [concurrent=Infinity] Maximum number of inner
- * Observables being subscribed to concurrently.
+ * @param concurrent Maximum number of inner Observables being subscribed to concurrently.
  * @return A function that returns an Observable that emits values coming from
  * all the inner Observables emitted by the source Observable.
  */
