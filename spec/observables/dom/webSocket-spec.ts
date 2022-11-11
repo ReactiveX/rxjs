@@ -416,6 +416,52 @@ describe('webSocket', () => {
       subject.unsubscribe();
     });
 
+    it('should take a serializer', () => {
+      const subject = webSocket<{ data: string}>({
+        url: 'ws://mysocket',
+        serializer: (e: any) => {
+          return e.data + '!';
+        }
+      });
+
+      subject.subscribe();
+
+      const socket = MockWebSocket.lastSocket;
+      socket.open();
+
+
+      ['ahoy', 'yarr', 'shove off'].forEach(x => {
+        subject.next({ data: x });
+        expect(socket.lastMessageSent).to.equal(x + '!');
+      });
+
+      subject.unsubscribe();
+    });
+
+    it('if the serializer fails it should close the connection and rethrow the error', () => {
+      const subject = webSocket<string>({
+        url: 'ws://mysocket',
+        serializer: (e: any) => {
+          throw new Error('I am a bad error');
+        }
+      });
+
+      subject.subscribe({ next: (x: any) => {
+        expect(x).to.equal('this should not happen');
+      }, error: (err: any) => {
+        expect(err).to.equal('this should not happen');
+      } });
+
+      const socket = MockWebSocket.lastSocket;
+      socket.open();
+
+      expect(() => subject.next('weee!')).to.throw('I am a bad error');
+      expect(socket.readyState).to.equal(WebSocketState.CLOSING);
+      expect(socket.closeCode).to.equal(1000);
+
+      subject.unsubscribe();
+    });
+
     it('should accept a closingObserver', () => {
       let calls = 0;
       const subject = webSocket<string>(<any>{
