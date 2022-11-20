@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { timeout, mergeMap, take, concatWith } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
@@ -445,7 +444,7 @@ describe('timeout operator', () => {
         const innerSubs = '    ----------^----------!';
         const expected = '     ------------x--y--z--|';
 
-        // The the current frame is zero.
+        // The current frame is zero.
         const result = source.pipe(
           timeout({
             first: new Date(t),

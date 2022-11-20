@@ -37,7 +37,7 @@ export class ScrollSpiedElement implements ScrollItem {
 
   /*
    * @method
-   * Caclulate the `top` value, i.e. the value of the `scrollTop` property at which this element
+   * Calculate the `top` value, i.e. the value of the `scrollTop` property at which this element
    * becomes active. The current implementation assumes that window is the scroll-container.
    *
    * @param {number} scrollTop - How much is window currently scrolled (vertically).
@@ -72,7 +72,7 @@ export class ScrollSpiedElementGroup {
 
   /*
    * @method
-   * Caclulate the `top` value of each ScrollSpiedElement of this group (based on te current
+   * Calculate the `top` value of each ScrollSpiedElement of this group (based on te current
    * `scrollTop` and `topOffset` values), so that the active element can be later determined just by
    * comparing its `top` property with the then current `scrollTop`.
    *

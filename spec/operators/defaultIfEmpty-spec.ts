@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { observableMatcher } from '../helpers/observableMatcher';
 import { of, Observable } from 'rxjs';

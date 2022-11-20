@@ -31,7 +31,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="translucent">
 
   <script>
-    // Dynamically, pre-emptively, add `noindex`, which will be removed when the doc is ready and valid
+    // Dynamically, preemptively, add `noindex`, which will be removed when the doc is ready and valid
     var tag = document.createElement('meta'); tag.name = 'robots'; tag.content = 'noindex';
     document.head.appendChild(tag);
   </script>
@@ -82,12 +82,7 @@
   </script>
 
   <script>
-    if (window.document.documentMode) {
-      // polyfill IE11 in a blocking way
-      var s = document.createElement('script');
-      s.src = 'generated/ie-polyfills.min.js';
-      document.head.appendChild(s);
-    } else if (!Object.assign) {
+    if (!Object.assign) {
       // polyfill other non-evergreen browsers in a blocking way
       var polyfillUrl = "https://cdn.polyfill.io/v2/polyfill.min.js?features=default,Array.prototype.find&flags=gated&unknown=polyfill";
 

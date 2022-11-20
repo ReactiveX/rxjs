@@ -49,8 +49,8 @@ export function bindCallbackInternals(
       if (uninitialized) {
         uninitialized = false;
         // We're going to execute the bound function
-        // This bit is to signal that we are hitting the callback asychronously.
-        // Because we don't have any anti-"Zalgo" gaurantees with whatever
+        // This bit is to signal that we are hitting the callback asynchronously.
+        // Because we don't have any anti-"Zalgo" guarantees with whatever
         // function we are handed, we use this bit to figure out whether or not
         // we are getting hit in a callback synchronously during our call.
         let isAsync = false;
@@ -93,7 +93,7 @@ export function bindCallbackInternals(
               // until after the call to the function is over. This is because an
               // error could be thrown in the function after it calls our callback,
               // and if that is the case, if we complete here, we are unable to notify
-              // the consumer than an error occured.
+              // the consumer than an error occurred.
               if (isAsync) {
                 subject.complete();
               }
@@ -112,7 +112,7 @@ export function bindCallbackInternals(
         isAsync = true;
       }
 
-      // Return the subscription fron adding our subscriber to the subject.
+      // Return the subscription from adding our subscriber to the subject.
       return subs;
     });
   };

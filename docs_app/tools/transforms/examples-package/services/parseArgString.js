@@ -23,8 +23,8 @@ module.exports = function parseArgString() {
     //["] Close match if "
     var rx = /[^\s'"]+|[']([^']*?)[']|["]([^"]*?)["]/gi;
     var value = str;
-    var unnammedArgs = [];
-    var args = {_: unnammedArgs};
+    var unnamedArgs = [];
+    var args = {_: unnamedArgs};
     var match, key;
     do {
       // Each call to exec returns the next regex match as an array
@@ -47,7 +47,7 @@ module.exports = function parseArgString() {
               key = key.substr(1);
             }
           } else {
-            unnammedArgs.push(arg);
+            unnamedArgs.push(arg);
             key = null;
           }
         }

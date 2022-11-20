@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
 import { onErrorResumeNext, take, finalize, tap } from 'rxjs/operators';

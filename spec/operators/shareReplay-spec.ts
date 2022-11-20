@@ -1,9 +1,8 @@
-/** @prettier */
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { shareReplay, mergeMapTo, retry, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, Operator, Observer, of, from, defer, pipe } from 'rxjs';
+import { Observable, Operator, Observer, of, from, defer, pipe, combineLatest, firstValueFrom, BehaviorSubject } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {shareReplay} */
@@ -272,6 +271,20 @@ describe('shareReplay', () => {
     }).pipe(shareReplay({ bufferSize: 1, refCount: true }));
     source.subscribe();
     source.subscribe();
+    expect(subscriptions).to.equal(1);
+  });
+
+  it('should only subscribe once each with multiple synchronous subscriptions and unsubscriptions ', async () => {
+    // This may seem very specific, but it's a regression test for https://github.com/ReactiveX/rxjs/issues/6760
+
+    let subscriptions = 0;
+    const source = defer(() => {
+      ++subscriptions;
+      // Needs to be an observable that doesn't complete
+      return new BehaviorSubject(1);
+    }).pipe(shareReplay({ bufferSize: 1, refCount: true }));
+
+    await firstValueFrom(combineLatest([source, source]));
     expect(subscriptions).to.equal(1);
   });
 

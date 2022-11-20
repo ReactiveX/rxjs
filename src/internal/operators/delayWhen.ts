@@ -22,14 +22,28 @@ export function delayWhen<T>(delayDurationSelector: (value: T, index: number) =>
  *
  * ![](delayWhen.png)
  *
- * `delayWhen` time shifts each emitted value from the source Observable by a
- * time span determined by another Observable. When the source emits a value,
- * the `delayDurationSelector` function is called with the source value as
- * argument, and should return an Observable, called the "duration" Observable.
- * The source value is emitted on the output Observable only when the duration
- * Observable emits a value or completes.
- * The completion of the notifier triggering the emission of the source value
- * is deprecated behavior and will be removed in future versions.
+ * `delayWhen` operator shifts each emitted value from the source Observable by
+ * a time span determined by another Observable. When the source emits a value,
+ * the `delayDurationSelector` function is called with the value emitted from
+ * the source Observable as the first argument to the `delayDurationSelector`.
+ * The `delayDurationSelector` function should return an Observable, called
+ * the "duration" Observable.
+ *
+ * The source value is emitted on the output Observable only when the "duration"
+ * Observable emits ({@link guide/glossary-and-semantics#next next}s) any value.
+ * Upon that, the "duration" Observable gets unsubscribed.
+ *
+ * Before RxJS V7, the {@link guide/glossary-and-semantics#complete completion}
+ * of the "duration" Observable would have been triggering the emission of the
+ * source value to the output Observable, but with RxJS V7, this is not the case
+ * anymore.
+ *
+ * Only next notifications (from the "duration" Observable) trigger values from
+ * the source Observable to be passed to the output Observable. If the "duration"
+ * Observable only emits the complete notification (without next), the value
+ * emitted by the source Observable will never get to the output Observable - it
+ * will be swallowed. If the "duration" Observable errors, the error will be
+ * propagated to the output Observable.
  *
  * Optionally, `delayWhen` takes a second argument, `subscriptionDelay`, which
  * is an Observable. When `subscriptionDelay` emits its first value or

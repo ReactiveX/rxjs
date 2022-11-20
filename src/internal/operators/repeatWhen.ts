@@ -35,7 +35,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  *
  * @param {function(notifications: Observable): Observable} notifier - Receives an Observable of notifications with
  * which a user can `complete` or `error`, aborting the repetition.
- * @return A function that returns an Observable that that mirrors the source
+ * @return A function that returns an Observable that mirrors the source
  * Observable with the exception of a `complete`.
  * @deprecated Will be removed in v9 or v10. Use {@link repeat}'s `delay` option instead.
  */

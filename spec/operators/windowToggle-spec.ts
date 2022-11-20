@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { Observable, NEVER, of, ObjectUnsubscribedError, EMPTY } from 'rxjs';
 import { windowToggle, tap, mergeMap } from 'rxjs/operators';

@@ -1,9 +1,14 @@
 on: 
   issue_comment:
     types: [created]
+permissions:
+  contents: read
 name: Automatic Rebase
 jobs:
   rebase:
+    permissions:
+      contents: write  # for cirrus-actions/rebase to push code to rebase
+      pull-requests: read  # for cirrus-actions/rebase to get info about PR
     name: Rebase
     if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase')
     runs-on: ubuntu-latest

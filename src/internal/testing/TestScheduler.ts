@@ -39,7 +39,7 @@ export type subscriptionLogsToBeFn = (marbles: string | string[]) => void;
 export class TestScheduler extends VirtualTimeScheduler {
   /**
    * The number of virtual time units each character in a marble diagram represents. If
-   * the test scheduler is being used in "run mode", via the `run` method, this is temporarly
+   * the test scheduler is being used in "run mode", via the `run` method, this is temporarily
    * set to `1` for the duration of the `run` block, then set back to whatever value it was.
    * @nocollapse
    */
@@ -84,7 +84,7 @@ export class TestScheduler extends VirtualTimeScheduler {
 
   /**
    * @param marbles A diagram in the marble DSL. Letters map to keys in `values` if provided.
-   * @param values Values to use for the letters in `marbles`. If ommitted, the letters themselves are used.
+   * @param values Values to use for the letters in `marbles`. If omitted, the letters themselves are used.
    * @param error The error to use for the `#` marble (if present).
    */
   createColdObservable<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): ColdObservable<T> {
@@ -102,7 +102,7 @@ export class TestScheduler extends VirtualTimeScheduler {
 
   /**
    * @param marbles A diagram in the marble DSL. Letters map to keys in `values` if provided.
-   * @param values Values to use for the letters in `marbles`. If ommitted, the letters themselves are used.
+   * @param values Values to use for the letters in `marbles`. If omitted, the letters themselves are used.
    * @param error The error to use for the `#` marble (if present).
    */
   createHotObservable<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): HotObservable<T> {

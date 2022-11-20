@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { lowerCaseO } from '../helpers/test-helper';
 import { withLatestFrom, mergeMap, delay } from 'rxjs/operators';

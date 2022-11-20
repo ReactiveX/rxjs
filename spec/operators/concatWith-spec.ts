@@ -26,24 +26,26 @@ describe('concat operator', () => {
   it('should work properly with scalar observables', (done) => {
     const results: string[] = [];
 
-    const s1 = new Observable<number>(observer => {
+    const s1 = new Observable<number>((observer) => {
       setTimeout(() => {
         observer.next(1);
         observer.complete();
       });
     }).pipe(concatWith(of(2)));
 
-    s1.subscribe(
-      { next: x => {
+    s1.subscribe({
+      next: (x) => {
         results.push('Next: ' + x);
-      }, error: x => {
+      },
+      error: (x) => {
         done(new Error('should not be called'));
-      }, complete: () => {
+      },
+      complete: () => {
         results.push('Completed');
         expect(results).to.deep.equal(['Next: 1', 'Next: 2', 'Completed']);
         done();
-      } }
-    );
+      },
+    });
   });
 
   it('should complete without emit if both sources are empty', () => {
@@ -172,7 +174,7 @@ describe('concat operator', () => {
     });
   });
 
-  it('should emit element from first source, and should not complete if second ' + 'source does not completes', () => {
+  it('should emit element from first source, and should not complete if second source does not completes', () => {
     rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
       const e1 = cold(' --a--|');
       const e1subs = '  ^----!';
@@ -239,9 +241,9 @@ describe('concat operator', () => {
       const unsub = '   ------------------!    ';
 
       const result = e1.pipe(
-        mergeMap(x => of(x)),
+        mergeMap((x) => of(x)),
         concatWith(e2),
-        mergeMap(x => of(x))
+        mergeMap((x) => of(x))
       );
 
       expectObservable(result, unsub).toBe(expected);
@@ -278,40 +280,33 @@ describe('concat operator', () => {
     });
   });
 
-  it(
-    'should emit all elements from both hot observable sources if first source ' +
-      'completes before second source starts emit',
-    () => {
-      rxTest.run(({ hot, expectObservable, expectSubscriptions }) => {
-        const e1 = hot('  --a--b-|');
-        const e1subs = '  ^------!';
-        const e2 = hot('  --------x--y--|');
-        const e2subs = '  -------^------!';
-        const expected = '--a--b--x--y--|';
+  it('should emit all elements from both hot observable sources if first source completes before second source starts emit', () => {
+    rxTest.run(({ hot, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b-|');
+      const e1subs = '  ^------!';
+      const e2 = hot('  --------x--y--|');
+      const e2subs = '  -------^------!';
+      const expected = '--a--b--x--y--|';
 
-        expectObservable(e1.pipe(concatWith(e2))).toBe(expected);
-        expectSubscriptions(e1.subscriptions).toBe(e1subs);
-        expectSubscriptions(e2.subscriptions).toBe(e2subs);
-      });
-    }
-  );
+      expectObservable(e1.pipe(concatWith(e2))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+  });
 
-  it(
-    'should emit elements from second source regardless of completion time ' + 'when second source is cold observable',
-    () => {
-      rxTest.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-        const e1 = hot('  --a--b--c---|');
-        const e1subs = '  ^-----------!';
-        const e2 = cold('           -x-y-z-|');
-        const e2subs = '  ------------^------!';
-        const expected = '--a--b--c----x-y-z-|';
+  it('should emit elements from second source regardless of completion time when second source is cold observable', () => {
+    rxTest.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  --a--b--c---|');
+      const e1subs = '  ^-----------!';
+      const e2 = cold('           -x-y-z-|');
+      const e2subs = '  ------------^------!';
+      const expected = '--a--b--c----x-y-z-|';
 
-        expectObservable(e1.pipe(concatWith(e2))).toBe(expected);
-        expectSubscriptions(e1.subscriptions).toBe(e1subs);
-        expectSubscriptions(e2.subscriptions).toBe(e2subs);
-      });
-    }
-  );
+      expectObservable(e1.pipe(concatWith(e2))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+  });
 
   it('should not emit collapsing element from second source', () => {
     rxTest.run(({ hot, expectObservable, expectSubscriptions }) => {
@@ -340,7 +335,7 @@ describe('concat operator', () => {
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable(subscriber => {
+    const synchronousObservable = new Observable((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -349,10 +344,9 @@ describe('concat operator', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      concatWith(of(0)),
-      take(3),
-    ).subscribe(() => { /* noop */ });
+    synchronousObservable.pipe(concatWith(of(0)), take(3)).subscribe(() => {
+      /* noop */
+    });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });

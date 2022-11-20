@@ -79,7 +79,7 @@ describe('TocService', () => {
       expect(indices).toEqual([null, 42, 0, null, 7]);
     });
 
-    it('should reset athe active index (and unspy) when calling `reset()`', () => {
+    it('should reset the active index (and unspy) when calling `reset()`', () => {
       const indices: (number | null)[] = [];
 
       tocService.activeItemIndex.subscribe(i => indices.push(i));

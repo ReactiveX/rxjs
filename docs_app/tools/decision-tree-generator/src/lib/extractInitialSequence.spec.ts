@@ -6,7 +6,7 @@ const tree = addUniqueId(mockRawTreeNodes);
 const initialSequence = extractInitialSequence(tree);
 
 describe('extractInitialSequence', () => {
-  describe('when givien a tree that has passed through addUniqueId', () => {
+  describe('when given a tree that has passed through addUniqueId', () => {
     it('will return an object that has an id of initial', () => {
       expect(initialSequence).toMatchObject({
         id: 'initial',

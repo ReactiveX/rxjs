@@ -1,4 +1,3 @@
-/** @prettier */
 import { of, EMPTY } from 'rxjs';
 import { delayWhen, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';

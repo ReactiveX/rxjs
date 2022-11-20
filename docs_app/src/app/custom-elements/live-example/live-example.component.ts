@@ -4,7 +4,6 @@ import { Location } from '@angular/common';
 import { CONTENT_URL_PREFIX } from 'app/documents/document.service';
 import { AttrMap, boolFromValue, getAttrs, getAttrValue } from 'app/shared/attribute-utils';
 
-
 const LIVE_EXAMPLE_BASE = CONTENT_URL_PREFIX + 'live-examples/';
 const ZIP_BASE = CONTENT_URL_PREFIX + 'zips/';
 
@@ -52,10 +51,28 @@ const ZIP_BASE = CONTENT_URL_PREFIX + 'zips/';
  */
 @Component({
   selector: 'live-example',
-  templateUrl: 'live-example.component.html'
+  template: `
+    <!-- Content projection is used to get the content HTML provided to the component. -->
+    <span #content style="display: none"><ng-content></ng-content></span>
+
+    <span [ngSwitch]="mode">
+      <span *ngSwitchCase="'embedded'">
+        <div title="{{ title }}">
+          <aio-embedded-stackblitz [src]="stackblitz"></aio-embedded-stackblitz>
+        </div>
+        <p *ngIf="enableDownload">You can also <a [href]="zip" download title="Download example">download this example</a>.</p>
+      </span>
+      <span *ngSwitchCase="'downloadOnly'">
+        <a [href]="zip" download title="{{ title }}">{{ title }}</a>
+      </span>
+      <span *ngSwitchDefault>
+        <a [href]="stackblitz" target="_blank" title="{{ title }}">{{ title }}</a>
+        <span *ngIf="enableDownload"> / <a [href]="zip" download title="Download example">download example</a> </span>
+      </span>
+    </span>
+  `,
 })
 export class LiveExampleComponent implements AfterContentInit {
-
   readonly mode: 'default' | 'embedded' | 'downloadOnly';
   readonly enableDownload: boolean;
   readonly stackblitz: string;
@@ -104,9 +121,7 @@ export class LiveExampleComponent implements AfterContentInit {
     const downloadOnly = boolFromValue(getAttrValue(attrs, 'downloadOnly'));
     const isEmbedded = boolFromValue(getAttrValue(attrs, 'embedded'));
 
-    return downloadOnly ? 'downloadOnly'
-           : isEmbedded ? 'embedded' :
-                          'default';
+    return downloadOnly ? 'downloadOnly' : isEmbedded ? 'embedded' : 'default';
   }
 
   private getStackblitz(exampleDir: string, stackblitzName: string, isEmbedded: boolean) {
@@ -137,7 +152,7 @@ export class LiveExampleComponent implements AfterContentInit {
 @Component({
   selector: 'aio-embedded-stackblitz',
   template: `<iframe #iframe frameborder="0" width="100%" height="100%"></iframe>`,
-  styles: [ 'iframe { min-height: 400px; }' ]
+  styles: ['iframe { min-height: 400px; }'],
 })
 export class EmbeddedStackblitzComponent implements AfterViewInit {
   @Input() src: string;

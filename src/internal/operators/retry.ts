@@ -132,7 +132,7 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
                       subscriber,
                       () => {
                         // After we get the first notification, we
-                        // unsubscribe from the notifer, because we don't want anymore
+                        // unsubscribe from the notifier, because we don't want anymore
                         // and we resubscribe to the source.
                         notifierSubscriber.unsubscribe();
                         resub();

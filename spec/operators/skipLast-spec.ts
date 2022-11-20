@@ -198,7 +198,7 @@ describe('skipLast operator', () => {
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
-    const synchronousObservable = new Observable<number>(subscriber => {
+    const synchronousObservable = new Observable<number>((subscriber) => {
       // This will check to see if the subscriber was closed on each loop
       // when the unsubscribe hits (from the `take`), it should be closed
       for (let i = 0; !subscriber.closed && i < 10; i++) {
@@ -207,10 +207,9 @@ describe('skipLast operator', () => {
       }
     });
 
-    synchronousObservable.pipe(
-      skipLast(1),
-      take(3),
-    ).subscribe(() => { /* noop */ });
+    synchronousObservable.pipe(skipLast(1), take(3)).subscribe(() => {
+      /* noop */
+    });
 
     // This expectation might seem a little strange, but the implementation of
     // skipLast works by eating the number of elements that are to be skipped,

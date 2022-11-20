@@ -146,7 +146,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   /**
    * Creates a new Observable with this Subject as the source. You can do this
-   * to create customize Observer-side logic of the Subject and conceal it from
+   * to create custom Observer-side logic of the Subject and conceal it from
    * code that uses the Observable.
    * @return {Observable} Observable that the Subject casts to
    */

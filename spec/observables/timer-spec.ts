@@ -72,7 +72,7 @@ describe('timer', () => {
     });
   });
 
-  it('should stop emiting values when subscription is done', () => {
+  it('should stop emitting values when subscription is done', () => {
     rxTest.run(({ expectObservable }) => {
       const dueTime = 0; //|
       const period = 3; //  --|--|--|--|

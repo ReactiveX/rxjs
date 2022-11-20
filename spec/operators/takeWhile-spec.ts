@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { takeWhile, tap, mergeMap } from 'rxjs/operators';
 import { of, Observable, from } from 'rxjs';
