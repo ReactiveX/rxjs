@@ -24,13 +24,13 @@ To support this transition the [scheduled creation function](/api/index/function
 
 ## How to Refactor
 
-If you use any other operator from the list above and using the `scheduler` argument, you have to three potential refactoring options.
+If you use any operator from the list above and also use the `scheduler` argument, you have three potential refactoring options.
 
 ### Refactoring of `of` and `from`
 
 `scheduled` is kinda copying the behavior of `from`. Therefore if you used `from` with a `scheduler` argument, you can just replace them.
 
-For the `of` creation function you need to this Observable with `scheduled` and instead of passing the `scheduler` argument to `of` pass it to `scheduled`.
+For the `of` creation function you need to replace this Observable with `scheduled` and instead of passing the `scheduler` argument to `of` pass it to `scheduled`.
 Following code example demonstrate this process.
 
 ```ts
