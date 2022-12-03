@@ -1,8 +1,9 @@
 import { Observable } from '../Observable';
 import { ObservableInputTuple } from '../types';
-import { EMPTY } from './empty';
-import { onErrorResumeNext as onErrorResumeNextWith } from '../operators/onErrorResumeNext';
 import { argsOrArgArray } from '../util/argsOrArgArray';
+import { OperatorSubscriber } from '../operators/OperatorSubscriber';
+import { noop } from '../util/noop';
+import { innerFrom } from './innerFrom';
 
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
@@ -75,5 +76,26 @@ export function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...
 export function onErrorResumeNext<A extends readonly unknown[]>(
   ...sources: [[...ObservableInputTuple<A>]] | [...ObservableInputTuple<A>]
 ): Observable<A[number]> {
-  return onErrorResumeNextWith(argsOrArgArray(sources))(EMPTY);
+  const nextSources: ObservableInputTuple<A> = argsOrArgArray(sources) as any;
+
+  return new Observable((subscriber) => {
+    let sourceIndex = 0;
+    const subscribeNext = () => {
+      if (sourceIndex < nextSources.length) {
+        let nextSource: Observable<A[number]>;
+        try {
+          nextSource = innerFrom(nextSources[sourceIndex++]);
+        } catch (err) {
+          subscribeNext();
+          return;
+        }
+        const innerSubscriber = new OperatorSubscriber(subscriber, undefined, noop, noop);
+        nextSource.subscribe(innerSubscriber);
+        innerSubscriber.add(subscribeNext);
+      } else {
+        subscriber.complete();
+      }
+    };
+    subscribeNext();
+  });
 }

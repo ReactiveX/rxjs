@@ -56,10 +56,11 @@ ending with `With`). Those are:
 | [`combineLatest`](/api/operators/combineLatest)         | {@link combineLatest}                 | {@link combineLatestWith}      |
 | [`concat`](/api/operators/concat)                       | {@link concat}                        | {@link concatWith}             |
 | [`merge`](/api/operators/merge)                         | {@link merge}                         | {@link mergeWith}              |
-| [`onErrorResumeNext`](/api/operators/onErrorResumeNext) | {@link onErrorResumeNext}             | -                              |
-| [`partition`](/api/operators/partition)                 | {@link partition}                     | -                              |
+| [`onErrorResumeNext`](/api/operators/onErrorResumeNext) | {@link onErrorResumeNext}             | {@link onErrorResumeNextWith}  |
 | [`race`](/api/operators/race)                           | {@link race}                          | {@link raceWith}               |
 | [`zip`](/api/operators/zip)                             | {@link zip}                           | {@link zipWith}                |
+
+`partition`, the operator, is a special case, as it is deprecated and you should be using the `partition` creation function exported from `'rxjs'` instead.
 
 For example, the old and deprecated way of using [`merge`](/api/operators/merge) from `'rxjs/operators'`
 is:
