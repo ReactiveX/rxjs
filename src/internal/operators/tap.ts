@@ -9,9 +9,7 @@ export interface TapObserver<T> extends Observer<T> {
   unsubscribe: () => void;
   finalize: () => void;
 }
-
-export function tap<T>(observer?: Partial<TapObserver<T>>): MonoTypeOperatorFunction<T>;
-export function tap<T>(next: (value: T) => void): MonoTypeOperatorFunction<T>;
+export function tap<T>(observerOrNext?: Partial<TapObserver<T>> | ((value: T) => void)): MonoTypeOperatorFunction<T>;
 /** @deprecated Instead of passing separate callback arguments, use an observer argument. Signatures taking separate callback arguments will be removed in v8. Details: https://rxjs.dev/deprecations/subscribe-arguments */
 export function tap<T>(
   next?: ((value: T) => void) | null,
