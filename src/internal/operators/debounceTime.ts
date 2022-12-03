@@ -103,8 +103,7 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
           // Only set up a task if it's not already up
           if (!activeTask) {
             // Set activeTask as intermediary Subscription to handle synchronous schedulers
-            // https://github.com/ReactiveX/rxjs/pull/6826
-            subscriber.add(activeTask = new Subscription());
+            subscriber.add((activeTask = new Subscription()));
             activeTask.add(scheduler.schedule(emitWhenIdle, dueTime));
           }
         },
