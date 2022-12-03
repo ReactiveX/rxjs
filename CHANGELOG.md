@@ -154,6 +154,17 @@ Merged updates from 7.x branch
 
 - chore: remove unused import
 
+# [7.6.0](https://github.com/reactivex/rxjs/compare/7.5.7...7.6.0) (2022-12-03)
+
+### Bug Fixes
+
+- **schedulers:** no longer cause TypeScript build failures when Node types aren't included ([c1a07b7](https://github.com/reactivex/rxjs/commit/c1a07b71ac050ab36b371ff7f18dc9a924fffc9f))
+- **types:** Improved subscribe and tap type overloads ([#6718](https://github.com/reactivex/rxjs/issues/6718)) ([af1a9f4](https://github.com/reactivex/rxjs/commit/af1a9f446a860883abaa36ace21345dc923e7e53)), closes [#6717](https://github.com/reactivex/rxjs/issues/6717)
+
+### Features
+
+- **onErrorResumeNextWith:** renamed `onErrorResumeNext` and exported from the top level. (`onErrorResumeNext` operator is stil available, but deprecated) ([#6755](https://github.com/reactivex/rxjs/issues/6755)) ([51e3b2c](https://github.com/reactivex/rxjs/commit/51e3b2c8ec28b5d30bca4c63ad69ce6942c2cdcc))
+
 ## [7.5.7](https://github.com/reactivex/rxjs/compare/7.5.6...7.5.7) (2022-09-25)
 
 ### Bug Fixes
