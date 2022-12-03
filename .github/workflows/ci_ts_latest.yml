@@ -6,23 +6,21 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '14' ]
+        node: ['18']
 
     name: ts@latest
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node }}
-    - name: build
-      run: |
-        npm install -g npm@latest
-        npm ci
-        npm install --legacy-peer-deps --no-save typescript@latest tslib@latest @types/node@latest
-        npm run compile
-
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: build
+        run: |
+          npm install -g npm@latest
+          npm ci
+          npm install --legacy-peer-deps --no-save typescript@latest tslib@latest @types/node@latest
+          npm run compile
