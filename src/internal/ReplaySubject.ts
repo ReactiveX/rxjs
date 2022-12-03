@@ -40,7 +40,7 @@ export class ReplaySubject<T> extends Subject<T> {
 
   /**
    * @param bufferSize The size of the buffer to replay on subscription
-   * @param windowTime The amount of time the buffered items will say buffered
+   * @param windowTime The amount of time the buffered items will stay buffered
    * @param timestampProvider An object with a `now()` method that provides the current timestamp. This is used to
    * calculate the amount of time something has been buffered.
    */
