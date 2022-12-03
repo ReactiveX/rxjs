@@ -158,7 +158,7 @@ Merged updates from 7.x branch
 
 ### Bug Fixes
 
-- **schedulers:** improve performance of animationFrameScheduler and asapScheduler ([#7059](https://github.com/reactivex/rxjs/issues/7059)) ([c93aa60](https://github.com/reactivex/rxjs/commit/c93aa60e9f073297d959fa1fff9323e48872d47e)), closes [#7017](https://github.com/reactivex/rxjs/issues/7017) [#7018](https://github.com/reactivex/rxjs/issues/7018) [#6674](https://github.com/reactivex/rxjs/issues/6674)
+- **schedulers:** improve performance of animationFrameScheduler and asapScheduler ([#7059](https://github.com/reactivex/rxjs/issues/7059)) ([c93aa60](https://github.com/reactivex/rxjs/commit/c93aa60e9f073297d959fa1fff9323e48872d47e)), closes [#7017](https://github.com/reactivex/rxjs/issues/7017), related to [#7018](https://github.com/reactivex/rxjs/issues/7018) and [#6674](https://github.com/reactivex/rxjs/issues/6674)
 
 ### Performance Improvements
 
