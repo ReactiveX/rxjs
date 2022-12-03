@@ -191,8 +191,7 @@ export declare function multicast<T, O extends ObservableInput<any>>(subjectFact
 
 export declare function observeOn<T>(scheduler: SchedulerLike, delay?: number): MonoTypeOperatorFunction<T>;
 
-export declare function onErrorResumeNext<T, A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
-export declare function onErrorResumeNext<T, A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
+export declare const onErrorResumeNext: typeof onErrorResumeNextWith;
 
 export declare function pairwise<T>(): OperatorFunction<T, [T, T]>;
 

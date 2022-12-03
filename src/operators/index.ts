@@ -57,7 +57,7 @@ export { mergeWith } from '../internal/operators/mergeWith';
 export { min } from '../internal/operators/min';
 export { multicast } from '../internal/operators/multicast';
 export { observeOn } from '../internal/operators/observeOn';
-export { onErrorResumeNext } from '../internal/operators/onErrorResumeNext';
+export { onErrorResumeNext } from '../internal/operators/onErrorResumeNextWith';
 export { pairwise } from '../internal/operators/pairwise';
 export { partition } from '../internal/operators/partition';
 export { pluck } from '../internal/operators/pluck';
