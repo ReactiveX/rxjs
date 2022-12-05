@@ -24,7 +24,7 @@ To support this transition the [scheduled creation function](/api/index/function
 
 ## How to Refactor
 
-If you use any operator from the list above and also use the `scheduler` argument, you have three potential refactoring options.
+If you use any operator from the above list and you're passing the `scheduler` argument, you have three potential refactoring options.
 
 ### Refactoring of `of` and `from`
 
