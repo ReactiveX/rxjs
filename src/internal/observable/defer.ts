@@ -16,9 +16,8 @@ import { innerFrom } from './innerFrom';
  * subscribes. It waits until an Observer subscribes to it, calls the given
  * factory function to get an Observable -- where a factory function typically
  * generates a new Observable -- and subscribes the Observer to this Observable.
- * In case the factory function returns a falsy value, then EMPTY is used as
- * Observable instead. Last but not least, an exception during the factory
- * function call is transferred to the Observer by calling `error`.
+ * Last but not least, an exception during the factory function call is 
+ * transferred to the Observer by calling `error`.
  *
  * ## Example
  *
