@@ -27,10 +27,14 @@ klawSync(ESM5_ROOT, {
 })
   .map((item) => item.path.slice(`${__dirname}/${ESM5_ROOT}`.length))
   .map((fileName) => {
-    if (!bo) {return fileName;}
+    if (!bo) {
+      return fileName;
+    }
     const fullPath = path.resolve(__dirname, ESM5_ROOT, fileName);
     // The file won't exist when running build_test as we don't create the ESM5 sources
-    if (!fs.existsSync(fullPath)) {return fileName;}
+    if (!fs.existsSync(fullPath)) {
+      return fileName;
+    }
     const content = fs.readFileSync(fullPath).toString();
     const transformed = bo.transformJavascript({
       content: content,
@@ -76,3 +80,9 @@ fs.removeSync(ESM5_ROOT + '/internal/umd.js.map');
 fs.removeSync(ESM_ROOT + '/internal/umd.js');
 fs.removeSync(ESM_ROOT + '/internal/umd.js.map');
 fs.removeSync(TYPE_ROOT + '/internal/umd.d.ts');
+
+// Create `package.json` files for the ESM5 and ESM2015 roots that
+// instruct NodeJS to treat `.js` files inside as ESM.
+const esmPkgJson = JSON.stringify({ type: 'module', sideEffects: false });
+fs.writeFileSync(path.join(ESM5_ROOT, 'package.json'), esmPkgJson);
+fs.writeFileSync(path.join(ESM_ROOT, 'package.json'), esmPkgJson);
