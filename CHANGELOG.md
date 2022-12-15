@@ -154,6 +154,15 @@ Merged updates from 7.x branch
 
 - chore: remove unused import
 
+# [7.7.0](https://github.com/reactivex/rxjs/compare/7.6.0...7.7.0) (2022-12-15)
+
+### Features
+
+- **distinct:** `flush` argument now supports any `ObservableInput` ([#7081](https://github.com/reactivex/rxjs/issues/7081)) ([74c9ebd](https://github.com/reactivex/rxjs/commit/74c9ebd818113f9f25f1fb2b9fee4a0eac121ae0))
+- **repeatWhen:** `notifier` supports `ObservableInput` ([#7103](https://github.com/reactivex/rxjs/issues/7103)) ([8f1b976](https://github.com/reactivex/rxjs/commit/8f1b976125c55a5e884317c2b463fd019662e6af))
+- **retryWhen:** `notifier` now supports any `ObservableInput` ([#7105](https://github.com/reactivex/rxjs/issues/7105)) ([794f806](https://github.com/reactivex/rxjs/commit/794f8064cf8fe754e9dfebeee0ffef0ac1562252))
+- **sample:** `notifier` now supports any `ObservableInput` ([#7104](https://github.com/reactivex/rxjs/issues/7104)) ([b18c2eb](https://github.com/reactivex/rxjs/commit/b18c2eb2bc8dc1a717c927f998028316eec83937))
+
 # [7.6.0](https://github.com/reactivex/rxjs/compare/7.5.7...7.6.0) (2022-12-03)
 
 ### Bug Fixes
