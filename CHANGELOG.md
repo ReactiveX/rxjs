@@ -1,3 +1,7 @@
+# [8.0.0-alpha.7](https://github.com/reactivex/rxjs/compare/7.8.0...8.0.0-alpha.7) (2022-12-15)
+
+Merged in changes from 7.8.0
+
 # [8.0.0-alpha.6](https://github.com/reactivex/rxjs/compare/7.7.0...8.0.0-alpha.6) (2022-12-15)
 
 Merged in changes from 7.7.0
