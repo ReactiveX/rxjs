@@ -438,7 +438,7 @@ describe('webSocket', () => {
       subject.unsubscribe();
     });
 
-    it('if the serializer fails it should close the connection and rethrow the error', () => {
+    it('if the serializer fails it should go down the error path', () => {
       const subject = webSocket<string>({
         url: 'ws://mysocket',
         serializer: (e: any) => {
@@ -446,16 +446,16 @@ describe('webSocket', () => {
         }
       });
 
+      const error = sinon.spy();
       subject.subscribe({ next: (x: any) => {
         expect(x).to.equal('this should not happen');
-      }, error: (err: any) => {
-        expect(err).to.equal('this should not happen');
-      } });
+      }, error });
 
       const socket = MockWebSocket.lastSocket;
       socket.open();
 
-      expect(() => subject.next('weee!')).to.throw('I am a bad error');
+      subject.next('weee!');
+      expect(error).to.have.been.calledWithMatch({ message: 'I am a bad error' });
       expect(socket.readyState).to.equal(WebSocketState.CLOSING);
       expect(socket.closeCode).to.equal(1000);
 

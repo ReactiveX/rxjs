@@ -296,25 +296,21 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
       const queue = this.destination;
 
-      this.destination = new Subscriber<T>({
-        next: (x: T) => {
+      this.destination = Subscriber.create<T>(
+        (x) => {
           if (socket!.readyState === 1) {
             try {
               const { serializer } = this._config;
               socket!.send(serializer!(x!));
-            } catch (e: any) {
-              if (e && e.code) {
-                this.destination!.error(e);
-              } else {
-                this.destination!.error({
-                  code: 1000,
-                });
-                throw e;
-              }
+            } catch (e) {
+              this.destination!.error({
+                code: 1000,
+              });
+              observer.error(e);
             }
           }
         },
-        error: (err: any) => {
+        (err) => {
           const { closingObserver } = this._config;
           if (closingObserver) {
             closingObserver.next(undefined);
@@ -326,15 +322,15 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
           }
           this._resetState();
         },
-        complete: () => {
+        () => {
           const { closingObserver } = this._config;
           if (closingObserver) {
             closingObserver.next(undefined);
           }
           socket!.close();
           this._resetState();
-        },
-      }) as Subscriber<any>;
+        }
+      ) as Subscriber<any>;
 
       if (queue && queue instanceof ReplaySubject) {
         subscription.add((queue as ReplaySubject<T>).subscribe(this.destination));
