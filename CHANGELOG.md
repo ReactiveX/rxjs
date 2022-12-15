@@ -1,3 +1,14 @@
+# [7.8.0](https://github.com/reactivex/rxjs/compare/7.7.0...7.8.0) (2022-12-15)
+
+### Features
+
+- **buffer:** `closingNotifier` now supports any `ObservableInput` ([#7073](https://github.com/reactivex/rxjs/issues/7073)) ([61b877a](https://github.com/reactivex/rxjs/commit/61b877a50c2557196a45e12622305c5a84fc3f0a))
+- **delayWhen:** `delayWhen`'s `delayDurationSelector` now supports any `ObservableInput` ([#7049](https://github.com/reactivex/rxjs/issues/7049)) ([dfd95db](https://github.com/reactivex/rxjs/commit/dfd95db952a6772d35d11bdd1974f2c4b4d68b25))
+- **sequenceEqual:** `compareTo` now supports any `ObservableInput` ([#7102](https://github.com/reactivex/rxjs/issues/7102)) ([d501961](https://github.com/reactivex/rxjs/commit/d50196187710c7a0cad50703b2071fc3f2cabd3c))
+- **share:** `ShareConfig` factory properties now supports any `ObservableInput` ([#7093](https://github.com/reactivex/rxjs/issues/7093)) ([cc3995a](https://github.com/reactivex/rxjs/commit/cc3995a6f6baf9456ec11f749fe89bf61b9e2d62))
+- **skipUntil:** `notifier` now supports any `ObservableInput` ([#7091](https://github.com/reactivex/rxjs/issues/7091)) ([60d6c40](https://github.com/reactivex/rxjs/commit/60d6c40fb484903286feca2bbfa9fcb2cde720e2))
+- **window:** `windowBoundaries` now supports any `ObservableInput` ([#7088](https://github.com/reactivex/rxjs/issues/7088)) ([8c4347c](https://github.com/reactivex/rxjs/commit/8c4347c48f2432d7399c911d329fa74e0d6c6e8d))
+
 # [7.7.0](https://github.com/reactivex/rxjs/compare/7.6.0...7.7.0) (2022-12-15)
 
 ### Features
