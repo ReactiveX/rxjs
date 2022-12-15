@@ -1,8 +1,8 @@
-import { Observable } from '../Observable';
-import { OperatorFunction } from '../types';
+import { OperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { noop } from '../util/noop';
 import { createOperatorSubscriber } from './OperatorSubscriber';
+import { innerFrom } from '../observable/innerFrom';
 
 /**
  * Buffers the source Observable values until `closingNotifier` emits.
@@ -13,7 +13,8 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * ![](buffer.png)
  *
  * Buffers the incoming Observable values until the given `closingNotifier`
- * Observable emits a value, at which point it emits the buffer on the output
+ * `ObservableInput` (that internally gets converted to an Observable)
+ * emits a value, at which point it emits the buffer on the output
  * Observable and starts a new buffer internally, awaiting the next time
  * `closingNotifier` emits.
  *
@@ -36,12 +37,12 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * @see {@link bufferWhen}
  * @see {@link window}
  *
- * @param {Observable<any>} closingNotifier An Observable that signals the
+ * @param closingNotifier An `ObservableInput` that signals the
  * buffer to be emitted on the output Observable.
  * @return A function that returns an Observable of buffers, which are arrays
  * of values.
  */
-export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]> {
+export function buffer<T>(closingNotifier: ObservableInput<any>): OperatorFunction<T, T[]> {
   return operate((source, subscriber) => {
     // The current buffered values.
     let currentBuffer: T[] = [];
@@ -59,7 +60,7 @@ export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T,
     );
 
     // Subscribe to the closing notifier.
-    closingNotifier.subscribe(
+    innerFrom(closingNotifier).subscribe(
       createOperatorSubscriber(
         subscriber,
         () => {

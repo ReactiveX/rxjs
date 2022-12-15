@@ -395,7 +395,7 @@ describe('audit operator', () => {
   });
 
   it('should audit by promise resolves', (done) => {
-    const e1 = interval(10).pipe(take(5));
+    const e1 = interval(1).pipe(take(5));
     const expected = [0, 1, 2, 3, 4];
 
     e1.pipe(audit(() => Promise.resolve(42))).subscribe({
@@ -413,7 +413,7 @@ describe('audit operator', () => {
   });
 
   it('should raise error when promise rejects', (done) => {
-    const e1 = interval(10).pipe(take(10));
+    const e1 = interval(1).pipe(take(10));
     const expected = [0, 1, 2];
     const error = new Error('error');
 
