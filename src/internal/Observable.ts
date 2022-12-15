@@ -71,8 +71,7 @@ export class Observable<T> implements Subscribable<T> {
     return observable;
   }
 
-  subscribe(observer?: Partial<Observer<T>>): Subscription;
-  subscribe(next: (value: T) => void): Subscription;
+  subscribe(observerOrNext?: Partial<Observer<T>> | ((value: T) => void)): Subscription;
   /** @deprecated Instead of passing separate callback arguments, use an observer argument. Signatures taking separate callback arguments will be removed in v8. Details: https://rxjs.dev/deprecations/subscribe-arguments */
   subscribe(next?: ((value: T) => void) | null, error?: ((error: any) => void) | null, complete?: (() => void) | null): Subscription;
   /**

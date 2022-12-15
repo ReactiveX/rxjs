@@ -6,39 +6,35 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '12', '13', '14', '15', '16' ]
+        node: ['14', '16', '18']
 
     name: Node ${{ matrix.node }} build
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node }}
-    - name: install
-      run: |
-        npm install -g npm@latest
-        npm ci
-    - name: lint
-      run: npm run lint
-    - name: build
-      run: npm run build:package
-    - name: test
-      run: |
-        npm test
-        npm run test:side-effects
-    - name: dtslint
-      run: npm run dtslint
-    - name: api_guardian
-      run: npm run api_guardian
-    - name: import
-      if: ${{ matrix.node == '14' }}
-      run: npm run test:import
-    - name: import
-      if: ${{ matrix.node == '14' || matrix.node == '15' }}
-      run: npm run test:esm
-
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: install
+        run: |
+          npm install -g npm@latest
+          npm ci
+      - name: lint
+        run: npm run lint
+      - name: build
+        run: npm run build:package
+      - name: test
+        run: |
+          npm test
+          npm run test:side-effects
+      - name: dtslint
+        run: npm run dtslint
+      - name: import
+        if: ${{ matrix.node == '14' }}
+        run: npm run test:import
+      - name: import
+        if: ${{ matrix.node == '14' || matrix.node == '15' }}
+        run: npm run test:esm
