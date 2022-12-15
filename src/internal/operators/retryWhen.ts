@@ -1,14 +1,15 @@
 import { Observable } from '../Observable';
+import { innerFrom } from '../observable/innerFrom';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 
-import { MonoTypeOperatorFunction } from '../types';
+import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
- * calls `error`, this method will emit the Throwable that caused the error to the Observable returned from `notifier`.
+ * calls `error`, this method will emit the Throwable that caused the error to the `ObservableInput` returned from `notifier`.
  * If that Observable calls `complete` or `error` then this method will call `complete` or `error` on the child
  * subscription. Otherwise this method will resubscribe to the source Observable.
  *
@@ -55,13 +56,15 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  *
  * @see {@link retry}
  *
- * @param {function(errors: Observable): Observable} notifier - Receives an Observable of notifications with which a
+ * @param notifier Function that receives an Observable of notifications with which a
  * user can `complete` or `error`, aborting the retry.
- * @return A function that returns an Observable that mirrors the source
+ * @return A function that returns an `ObservableInput` that mirrors the source
  * Observable with the exception of an `error`.
  * @deprecated Will be removed in v9 or v10, use {@link retry}'s `delay` option instead.
+ * Will be removed in v9 or v10. Use {@link retry}'s {@link RetryConfig#delay delay} option instead.
+ * Instead of `retryWhen(() => notify$)`, use: `retry({ delay: () => notify$ })`.
  */
-export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): MonoTypeOperatorFunction<T> {
+export function retryWhen<T>(notifier: (errors: Observable<any>) => ObservableInput<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     let innerSub: Subscription | null;
     let syncResub = false;
@@ -72,7 +75,7 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
         createOperatorSubscriber(subscriber, undefined, undefined, (err) => {
           if (!errors$) {
             errors$ = new Subject();
-            notifier(errors$).subscribe(
+            innerFrom(notifier(errors$)).subscribe(
               createOperatorSubscriber(subscriber, () =>
                 // If we have an innerSub, this was an asynchronous call, kick off the retry.
                 // Otherwise, if we don't have an innerSub yet, that's because the inner subscription
