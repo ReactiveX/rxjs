@@ -6,5 +6,10 @@ it('should infer correctly', () => {
 });
 
 it('should enforce types', () => {
-  of(1).pipe(window('')); // $ExpectError
+  of(1).pipe(window()); // $ExpectError
+  of(1).pipe(window(6)); // $ExpectError
+});
+
+it('should support Promises', () => {
+  of(1, 2, 3).pipe(window(Promise.resolve('foo'))); // $ExpectType Observable<Observable<number>>
 });
