@@ -1,5 +1,5 @@
-import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction } from '../types';
+import { innerFrom } from '../observable/innerFrom';
+import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { noop } from '../util/noop';
 import { createOperatorSubscriber } from './OperatorSubscriber';
@@ -9,11 +9,11 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * another Observable, the `notifier`, emits.
  *
  * <span class="informal">It's like {@link sampleTime}, but samples whenever
- * the `notifier` Observable emits something.</span>
+ * the `notifier` `ObservableInput` emits something.</span>
  *
  * ![](sample.png)
  *
- * Whenever the `notifier` Observable emits a value, `sample`
+ * Whenever the `notifier` `ObservableInput` emits a value, `sample`
  * looks at the source Observable and emits whichever value it has most recently
  * emitted since the previous sampling, unless the source has not emitted
  * anything since the previous sampling. The `notifier` is subscribed to as soon
@@ -38,13 +38,13 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * @see {@link sampleTime}
  * @see {@link throttle}
  *
- * @param notifier The Observable to use for sampling the
+ * @param notifier The `ObservableInput` to use for sampling the
  * source Observable.
  * @return A function that returns an Observable that emits the results of
  * sampling the values emitted by the source Observable whenever the notifier
  * Observable emits value or completes.
  */
-export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T> {
+export function sample<T>(notifier: ObservableInput<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     let hasValue = false;
     let lastValue: T | null = null;
@@ -54,7 +54,7 @@ export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T
         lastValue = value;
       })
     );
-    notifier.subscribe(
+    innerFrom(notifier).subscribe(
       createOperatorSubscriber(
         subscriber,
         () => {
