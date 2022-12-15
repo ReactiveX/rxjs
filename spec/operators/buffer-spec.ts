@@ -1,5 +1,5 @@
 import { buffer, mergeMap, take, window, toArray } from 'rxjs/operators';
-import { EMPTY, NEVER, throwError, of, Subject } from 'rxjs';
+import { EMPTY, NEVER, throwError, of, Subject, interval } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 import { expect } from 'chai';
@@ -322,6 +322,43 @@ describe('Observable.prototype.buffer', () => {
     expect(results).to.deep.equal([[1], [2]]);
     subject.complete();
     expect(results).to.deep.equal([[1], [2], [], 'complete']);
+  });
+
+  it('should buffer when Promise resolves', (done) => {
+    const e1 = interval(3).pipe(take(5));
+    const expected = [
+      [0, 1],
+      [2, 3, 4],
+    ];
+
+    e1.pipe(buffer(new Promise<void>((resolve) => setTimeout(() => resolve(), 8)))).subscribe({
+      next: (x) => {
+        expect(x).to.deep.equal(expected.shift());
+      },
+      error: () => done(new Error('should not be called')),
+      complete: () => {
+        expect(expected.length).to.equal(0);
+        done();
+      },
+    });
+  });
+
+  it('should raise error when Promise rejects', (done) => {
+    const e1 = interval(1).pipe(take(5));
+    const error = new Error('err');
+
+    e1.pipe(buffer(Promise.reject(error))).subscribe({
+      next: () => {
+        done(new Error('should not be called'));
+      },
+      error: (err: any) => {
+        expect(err).to.be.an('error');
+        done();
+      },
+      complete: () => {
+        done(new Error('should not be called'));
+      },
+    });
   });
 
   describe('equivalence with the window operator', () => {
