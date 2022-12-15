@@ -1,8 +1,9 @@
 import { Observable } from '../Observable';
+import { innerFrom } from '../observable/innerFrom';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 
-import { MonoTypeOperatorFunction } from '../types';
+import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
@@ -33,13 +34,14 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * @see {@link retry}
  * @see {@link retryWhen}
  *
- * @param {function(notifications: Observable): Observable} notifier - Receives an Observable of notifications with
+ * @param notifier Function that receives an Observable of notifications with
  * which a user can `complete` or `error`, aborting the repetition.
- * @return A function that returns an Observable that mirrors the source
+ * @return A function that returns an `ObservableInput` that mirrors the source
  * Observable with the exception of a `complete`.
- * @deprecated Will be removed in v9 or v10. Use {@link repeat}'s `delay` option instead.
+ * @deprecated Will be removed in v9 or v10. Use {@link repeat}'s {@link RepeatConfig#delay delay} option instead.
+ * Instead of `repeatWhen(() => notify$)`, use: `repeat({ delay: () => notify$ })`.
  */
-export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Observable<any>): MonoTypeOperatorFunction<T> {
+export function repeatWhen<T>(notifier: (notifications: Observable<void>) => ObservableInput<any>): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     let innerSub: Subscription | null;
     let syncResub = false;
@@ -61,7 +63,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
 
         // If the call to `notifier` throws, it will be caught by the OperatorSubscriber
         // In the main subscription -- in `subscribeForRepeatWhen`.
-        notifier(completions$).subscribe(
+        innerFrom(notifier(completions$)).subscribe(
           createOperatorSubscriber(
             subscriber,
             () => {

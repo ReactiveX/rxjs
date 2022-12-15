@@ -164,7 +164,7 @@ export { publishLast } from './internal/operators/publishLast';
 export { publishReplay } from './internal/operators/publishReplay';
 export { raceWith } from './internal/operators/raceWith';
 export { reduce } from './internal/operators/reduce';
-export { repeat } from './internal/operators/repeat';
+export { repeat, RepeatConfig } from './internal/operators/repeat';
 export { repeatWhen } from './internal/operators/repeatWhen';
 export { retry, RetryConfig } from './internal/operators/retry';
 export { retryWhen } from './internal/operators/retryWhen';
