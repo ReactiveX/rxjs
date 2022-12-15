@@ -10,7 +10,7 @@ it('should support an empty notifier', () => {
   const o = of(1, 2, 3).pipe(delayWhen(() => NEVER)); // $ExpectType Observable<number>
 });
 
-it('should support a subscriptiondelayWhen parameter', () => {
+it('should support a subscriptionDelay parameter', () => {
   const o = of(1, 2, 3).pipe(delayWhen(() => of('a', 'b', 'c'), of(new Date()))); // $ExpectType Observable<number>
 });
 
@@ -18,12 +18,16 @@ it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(delayWhen()); // $ExpectError
 });
 
-it('should enforce types of delayWhenDurationSelector', () => {
+it('should enforce types of delayDurationSelector', () => {
   const o = of(1, 2, 3).pipe(delayWhen(of('a', 'b', 'c'))); // $ExpectError
   const p = of(1, 2, 3).pipe(delayWhen((value: string, index) => of('a', 'b', 'c'))); // $ExpectError
   const q = of(1, 2, 3).pipe(delayWhen((value, index: string) => of('a', 'b', 'c'))); // $ExpectError
 });
 
-it('should enforce types of subscriptiondelayWhen', () => {
+it('should enforce types of subscriptionDelay', () => {
   const o = of(1, 2, 3).pipe(delayWhen(() => of('a', 'b', 'c'), 'a')); // $ExpectError
+});
+
+it('should support Promises', () => {
+  const o = of(1, 2, 3).pipe(delayWhen(() => Promise.resolve('a'))); // $ExpectType Observable<number>
 });
