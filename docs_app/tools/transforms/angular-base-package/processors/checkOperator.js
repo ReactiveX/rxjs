@@ -4,7 +4,7 @@ module.exports = function checkOperator() {
     $runBefore: ['renderDocsProcessor'],
     $process(docs) {
       docs.forEach((doc) => {
-        doc.isOperator = !!(doc.originalModule && doc.originalModule.startsWith('internal/operators'));
+        doc.isOperator = !!(doc.originalModule?.startsWith('internal/operators') && doc.docType === 'function');
       });
     },
   };
