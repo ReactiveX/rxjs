@@ -85,7 +85,7 @@ export function timer(due: number | Date, scheduler?: SchedulerLike): Observable
 
 /**
  * Creates an observable that starts an interval after a specified delay, emitting incrementing numbers -- starting at `0` --
- * on each interval after words.
+ * on each interval afterwards.
  *
  * The `delay` and `intervalDuration` are specified by default in milliseconds, however providing a custom scheduler could
  * create a different behavior.
