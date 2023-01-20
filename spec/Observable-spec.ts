@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { TeardownLogic } from '../src/internal/types';
 import { Observable, config, Subscription, Subscriber, Operator, NEVER, Subject, of, throwError, EMPTY } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatestWith, concat, merge, race, zip, catchError, publish, publishLast, publishBehavior, share} from 'rxjs/operators';
+import { map, multicast, refCount, filter, count, tap, combineLatestWith, concatWith, merge, race, zip, catchError, publish, publishLast, publishBehavior, share} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -1077,13 +1077,13 @@ describe('Observable.lift', () => {
     });
   });
 
-  it('should compose through concat', () => {
+  it('should compose through concatWith', () => {
     rxTestScheduler.run(({ cold, expectObservable }) => {
       const e1 = cold(' --a--b-|');
       const e2 = cold(' --x---y--|');
       const expected = '--a--b---x---y--|';
 
-      const result = MyCustomObservable.from(e1).pipe(concat(e2, rxTestScheduler));
+      const result = MyCustomObservable.from(e1).pipe(concatWith(e2));
 
       expect(result instanceof MyCustomObservable).to.be.true;
 

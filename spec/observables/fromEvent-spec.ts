@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
 import { fromEvent, NEVER, timer } from 'rxjs';
-import { mapTo, take, concat } from 'rxjs/operators';
+import { mapTo, take, concatWith } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -21,7 +21,7 @@ describe('fromEvent', () => {
 
       const target = {
         addEventListener: (eventType: any, listener: any) => {
-          timer(delay1, delay2).pipe(mapTo('ev'), take(2), concat(NEVER)).subscribe(listener);
+          timer(delay1, delay2).pipe(mapTo('ev'), take(2), concatWith(NEVER)).subscribe(listener);
         },
         removeEventListener: (): void => void 0,
         dispatchEvent: (): void => void 0,

@@ -1,6 +1,6 @@
 import { timer, NEVER, merge } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { mergeMap, take, concat } from 'rxjs/operators';
+import { mergeMap, take, concatWith } from 'rxjs/operators';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {timer} */
@@ -15,7 +15,7 @@ describe('timer', () => {
     rxTest.run(({ expectObservable }) => {
       const e1 = timer(6, 2, rxTest).pipe(
         take(4), // make it actually finite, so it can be rendered
-        concat(NEVER) // but pretend it's infinite by not completing
+        concatWith(NEVER) // but pretend it's infinite by not completing
       );
       const expected = '------a-b-c-d-';
       const values = {

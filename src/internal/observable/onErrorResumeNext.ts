@@ -25,7 +25,7 @@ export function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...
  *
  * If `onErrorResumeNext` is provided no arguments, or a single, empty array, it will return {@link EMPTY}.
  *
- * `onErrorResumeNext` is basically {@link concat}, only it will continue, even if one of its
+ * `onErrorResumeNext` is basically {@link concatWith}, only it will continue, even if one of its
  * sources emits an error.
  *
  * Note that there is no way to handle any errors thrown by sources via the result of
