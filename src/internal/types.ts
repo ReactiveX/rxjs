@@ -281,30 +281,12 @@ export type Falsy = null | undefined | false | 0 | -0 | 0n | '';
 
 export type TruthyTypesOf<T> = T extends Falsy ? never : T;
 
-// We shouldn't rely on this type definition being available globally yet since it's
-// not necessarily available in every TS environment.
-interface ReadableStreamDefaultReaderLike<T> {
-  // HACK: As of TS 4.2.2, The provided types for the iterator results of a `ReadableStreamDefaultReader`
-  // are significantly different enough from `IteratorResult` as to cause compilation errors.
-  // The type at the time is `ReadableStreamDefaultReadResult`.
-  read(): PromiseLike<
-    | {
-        done: false;
-        value: T;
-      }
-    | { done: true; value?: undefined }
-  >;
-  releaseLock(): void;
-}
-
 /**
  * The base signature RxJS will look for to identify and use
  * a [ReadableStream](https://streams.spec.whatwg.org/#rs-class)
  * as an {@link ObservableInput} source.
  */
-export interface ReadableStreamLike<T> {
-  getReader(): ReadableStreamDefaultReaderLike<T>;
-}
+export type ReadableStreamLike<T> = Pick<ReadableStream<T>, 'getReader'>;
 
 /**
  * An observable with a `connect` method that is used to create a subscription
