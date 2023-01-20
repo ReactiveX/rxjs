@@ -66,12 +66,15 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
     let activeTask: Subscription | null = null;
     let lastValue: T | null = null;
     let lastTime: number | null = null;
+    let scheduling = false;
 
     const emit = () => {
-      if (activeTask) {
+      if (scheduling || activeTask) {
         // We have a value! Free up memory first, then emit the value.
-        activeTask.unsubscribe();
-        activeTask = null;
+        if (activeTask) {
+          activeTask.unsubscribe();
+          activeTask = null;
+        }
         const value = lastValue!;
         lastValue = null;
         subscriber.next(value);
@@ -102,9 +105,11 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
 
           // Only set up a task if it's not already up
           if (!activeTask) {
+            scheduling = true;
+            activeTask = scheduler.schedule(emitWhenIdle, dueTime);
+            scheduling = false;
             // Set activeTask as intermediary Subscription to handle synchronous schedulers
-            subscriber.add((activeTask = new Subscription()));
-            activeTask.add(scheduler.schedule(emitWhenIdle, dueTime));
+            subscriber.add(activeTask);
           }
         },
         () => {
