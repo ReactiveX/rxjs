@@ -1,7 +1,7 @@
 import { ObservableInput, ObservedValueOf, OperatorFunction } from '../types';
 import { switchMap } from './switchMap';
-import { tap } from './tap';
 import { operate } from '../util/lift';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 // TODO: Generate a marble diagram for these docs.
 
@@ -31,20 +31,20 @@ export function switchScan<T, R, O extends ObservableInput<any>>(
     // accumulator function at each new value from the source.
     let state = seed;
 
-    source
-      .pipe(
-        // Use `switchMap` on our `source` to do the work of creating this operator.
-        switchMap(
-          // On each value from the source, call the accumulator with
-          // our previous state, the value and the index.
-          (value, index) => accumulator(state, value, index)
-        ),
-        tap((innerValue) => {
-          // Update our state with the flattened value.
-          state = innerValue;
-        })
-      )
-      .subscribe(subscriber);
+    // Use `switchMap` on our `source` to do the work of creating
+    // this operator. Note the backwards order here of `switchMap()(source)`
+    // to avoid needing to use `pipe` unnecessarily
+    switchMap(
+      // On each value from the source, call the accumulator with
+      // our previous state, the value and the index.
+      (value: T, index) => accumulator(state, value, index)
+    )(source).subscribe(
+      createOperatorSubscriber(subscriber, (innerValue) => {
+        // Update our state with the flattened value.
+        state = innerValue;
+        subscriber.next(innerValue);
+      })
+    );
 
     return () => {
       // Release state on finalization
