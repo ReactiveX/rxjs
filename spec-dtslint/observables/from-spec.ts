@@ -57,7 +57,7 @@ it('should support scheduler', () => {
 });
 
 it('should accept a ReadableStream', () => {
-  const stream: ReadableStreamLike<string> = new ReadableStream<string>({
+  const stream = new ReadableStream<string>({
     pull(controller) {
       controller.enqueue('x');
       controller.close();
