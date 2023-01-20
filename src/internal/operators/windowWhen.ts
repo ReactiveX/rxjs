@@ -49,7 +49,8 @@ import { noop } from '../util/noop';
  *
  * @param closingSelector A function that takes no arguments and returns an
  * {@link ObservableInput} (that gets converted to Observable) that signals
- * (only on `next`) when to close the previous window and start a new one.
+ * when to close the previous window and start a new one. Note that a value (any value) must be
+ * observed to signal window closure.
  * @return A function that returns an Observable of windows, which in turn are
  * Observables.
  */
