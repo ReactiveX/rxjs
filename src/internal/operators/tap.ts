@@ -96,10 +96,8 @@ export interface TapObserver<T> extends Observer<T> {
  * runs the specified Observer or callback(s) for each item.
  */
 export function tap<T>(observerOrNext?: Partial<TapObserver<T>> | ((value: T) => void) | null): MonoTypeOperatorFunction<T> {
-  // We have to check to see not only if next is a function,
-  // but if error or complete were passed. This is because someone
-  // could technically call tap like `tap(null, fn)` or `tap(null, null, fn)`.
-  const tapObserver = isFunction(observerOrNext) ? { next: observerOrNext } : observerOrNext;
+  // Just need to see if it's a function or a partial observer.
+  const tapObserver: Partial<TapObserver<T>> | null | undefined = isFunction(observerOrNext) ? { next: observerOrNext } : observerOrNext;
 
   return tapObserver
     ? operate((source, subscriber) => {
@@ -132,7 +130,7 @@ export function tap<T>(observerOrNext?: Partial<TapObserver<T>> | ((value: T) =>
         );
       })
     : // Tap was called with no valid tap observer or handler
-      // (e.g. `tap(null, null, null)` or `tap(null)` or `tap()`)
+      // (e.g. `tap(null)` or `tap()`)
       // so we're going to just mirror the source.
       identity;
 }
