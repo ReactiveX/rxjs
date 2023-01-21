@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { onErrorResumeNext, take, finalize, tap } from 'rxjs/operators';
+import { onErrorResumeNextWith, take, finalize, tap } from 'rxjs/operators';
 import { concat, throwError, of, Observable } from 'rxjs';
 import { asInteropObservable } from '../helpers/interop-helper';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-describe('onErrorResumeNext', () => {
+describe('onErrorResumeNextWith', () => {
   let testScheduler: TestScheduler;
 
   beforeEach(() => {
@@ -20,7 +20,7 @@ describe('onErrorResumeNext', () => {
       const e2subs = '  --------^-------!';
       const expected = '--a--b----c--d--|';
 
-      expectObservable(e1.pipe(onErrorResumeNext(e2))).toBe(expected);
+      expectObservable(e1.pipe(onErrorResumeNextWith(e2))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
@@ -34,7 +34,7 @@ describe('onErrorResumeNext', () => {
       const e2subs = '  --------^-------!';
       const expected = '--a--b----c--d--|';
 
-      expectObservable(e1.pipe(onErrorResumeNext(e2))).toBe(expected);
+      expectObservable(e1.pipe(onErrorResumeNextWith(e2))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
@@ -56,7 +56,7 @@ describe('onErrorResumeNext', () => {
       ];
       const expected = '--a--b----c--d----e----f--g--|';
 
-      expectObservable(e1.pipe(onErrorResumeNext(e2))).toBe(expected);
+      expectObservable(e1.pipe(onErrorResumeNextWith(e2))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2[0].subscriptions).toBe(e2subs[0]);
       expectSubscriptions(e2[1].subscriptions).toBe(e2subs[1]);
@@ -76,7 +76,7 @@ describe('onErrorResumeNext', () => {
       const e4subs = '  ---------------------^-------!';
       const expected = '--a--b----c--d----e----f--g--|';
 
-      expectObservable(e1.pipe(onErrorResumeNext(e2, e3, e4))).toBe(expected);
+      expectObservable(e1.pipe(onErrorResumeNextWith(e2, e3, e4))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
       expectSubscriptions(e3.subscriptions).toBe(e3subs);
@@ -96,7 +96,7 @@ describe('onErrorResumeNext', () => {
       const e4subs = '  ---------------------^-------!';
       const expected = '--a--b----c--d----e----f--g--|';
 
-      expectObservable(e1.pipe(onErrorResumeNext(e2, e3, e4))).toBe(expected);
+      expectObservable(e1.pipe(onErrorResumeNextWith(e2, e3, e4))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
       expectSubscriptions(e3.subscriptions).toBe(e3subs);
@@ -116,7 +116,7 @@ describe('onErrorResumeNext', () => {
       const e4subs = '  -------------^-------!';
       const expected = '--c--d----e----f--g--|';
 
-      expectObservable(e1.pipe(onErrorResumeNext(e2, e3, e4))).toBe(expected);
+      expectObservable(e1.pipe(onErrorResumeNextWith(e2, e3, e4))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
       expectSubscriptions(e3.subscriptions).toBe(e3subs);
@@ -132,7 +132,7 @@ describe('onErrorResumeNext', () => {
       const e2subs = '  --------^-';
       const expected = '--a--b----';
 
-      expectObservable(e1.pipe(onErrorResumeNext(e2))).toBe(expected);
+      expectObservable(e1.pipe(onErrorResumeNextWith(e2))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
@@ -146,7 +146,7 @@ describe('onErrorResumeNext', () => {
       const e2subs: string[] = [];
       const expected = '--a--';
 
-      expectObservable(e1.pipe(onErrorResumeNext(e2))).toBe(expected);
+      expectObservable(e1.pipe(onErrorResumeNextWith(e2))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
@@ -160,7 +160,7 @@ describe('onErrorResumeNext', () => {
       const e2subs = '  --------^-------!';
       const expected = '--a--b----c--d--|';
 
-      expectObservable(e1.pipe(onErrorResumeNext(e2))).toBe(expected);
+      expectObservable(e1.pipe(onErrorResumeNextWith(e2))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
@@ -178,7 +178,7 @@ describe('onErrorResumeNext', () => {
     });
 
     throwError(() => new Error('Some error'))
-      .pipe(onErrorResumeNext(synchronousObservable), take(3))
+      .pipe(onErrorResumeNextWith(synchronousObservable), take(3))
       .subscribe(() => {
         /* noop */
       });
@@ -201,7 +201,7 @@ describe('onErrorResumeNext', () => {
       // test ensures that unsubscriptions are chained all the way to the
       // interop subscriber.
 
-      expectObservable(e1.pipe(onErrorResumeNext(asInteropObservable(e2))), unsub).toBe(expected);
+      expectObservable(e1.pipe(onErrorResumeNextWith(asInteropObservable(e2))), unsub).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
@@ -214,7 +214,7 @@ describe('onErrorResumeNext', () => {
       throwError(() => 'meh')
     );
 
-    source.pipe(onErrorResumeNext(Promise.resolve(2))).subscribe({
+    source.pipe(onErrorResumeNextWith(Promise.resolve(2))).subscribe({
       next: (x) => {
         expect(expected.shift()).to.equal(x);
       },
@@ -232,7 +232,7 @@ describe('onErrorResumeNext', () => {
     const results: any[] = [];
 
     of(1)
-      .pipe(onErrorResumeNext([2, 3, 4], { notValid: 'LOL' } as any, of(5, 6)))
+      .pipe(onErrorResumeNextWith([2, 3, 4], { notValid: 'LOL' } as any, of(5, 6)))
       .subscribe({
         next: (value) => results.push(value),
         complete: () => results.push('complete'),
@@ -247,7 +247,7 @@ describe('onErrorResumeNext', () => {
     of(1)
       .pipe(
         finalize(() => results.push('finalize 1')),
-        onErrorResumeNext(
+        onErrorResumeNextWith(
           of(2).pipe(finalize(() => results.push('finalize 2'))),
           of(3).pipe(finalize(() => results.push('finalize 3'))),
           of(4).pipe(finalize(() => results.push('finalize 4')))
@@ -270,7 +270,7 @@ describe('onErrorResumeNext', () => {
           subscribe: () => results.push('subscribe 1'),
           finalize: () => results.push('finalize 1'),
         }),
-        onErrorResumeNext(
+        onErrorResumeNextWith(
           of(2).pipe(
             tap({
               subscribe: () => results.push('subscribe 2'),
