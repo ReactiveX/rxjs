@@ -1,4 +1,4 @@
-import { async } from '../scheduler/async';
+import { asyncScheduler } from '../scheduler/async';
 import { isValidDate } from '../util/isDate';
 import { ObservableInput, OperatorFunction, SchedulerLike } from '../types';
 import { timeout } from './timeout';
@@ -88,7 +88,7 @@ export function timeoutWith<T, R>(
   let first: number | Date | undefined;
   let each: number | undefined;
   let _with: () => ObservableInput<R>;
-  scheduler = scheduler ?? async;
+  scheduler = scheduler ?? asyncScheduler;
 
   if (isValidDate(due)) {
     first = due;

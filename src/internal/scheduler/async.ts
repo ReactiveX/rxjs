@@ -7,7 +7,7 @@ import { AsyncScheduler } from './AsyncScheduler';
  *
  * <span class="informal">Schedule task as if you used setTimeout(task, duration)</span>
  *
- * `async` scheduler schedules tasks asynchronously, by putting them on the JavaScript
+ * `asyncScheduler` scheduler schedules tasks asynchronously, by putting them on the JavaScript
  * event loop queue. It is best used to delay tasks in time or to schedule tasks repeating
  * in intervals.
  *
@@ -49,8 +49,3 @@ import { AsyncScheduler } from './AsyncScheduler';
  */
 
 export const asyncScheduler = new AsyncScheduler(AsyncAction);
-
-/**
- * @deprecated Renamed to {@link asyncScheduler}. Will be removed in v8.
- */
-export const async = asyncScheduler;

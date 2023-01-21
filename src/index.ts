@@ -28,7 +28,7 @@ export { AsyncSubject } from './internal/AsyncSubject';
 
 /* Schedulers */
 export { asapScheduler } from './internal/scheduler/asap';
-export { async, asyncScheduler } from './internal/scheduler/async';
+export { asyncScheduler } from './internal/scheduler/async';
 export { queueScheduler } from './internal/scheduler/queue';
 export { animationFrameScheduler } from './internal/scheduler/animationFrame';
 export { VirtualTimeScheduler, VirtualAction } from './internal/scheduler/VirtualTimeScheduler';
