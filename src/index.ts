@@ -103,7 +103,6 @@ export { bufferTime } from './internal/operators/bufferTime';
 export { bufferToggle } from './internal/operators/bufferToggle';
 export { bufferWhen } from './internal/operators/bufferWhen';
 export { catchError } from './internal/operators/catchError';
-export { combineAll } from './internal/operators/combineAll';
 export { combineLatestAll } from './internal/operators/combineLatestAll';
 export { combineLatestWith } from './internal/operators/combineLatestWith';
 export { concatAll } from './internal/operators/concatAll';

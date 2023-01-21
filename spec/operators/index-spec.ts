@@ -11,7 +11,6 @@ describe('operators/index', () => {
     expect(index.bufferToggle).to.exist;
     expect(index.bufferWhen).to.exist;
     expect(index.catchError).to.exist;
-    expect(index.combineAll).to.exist;
     expect(index.combineLatestAll).to.exist;
     expect(index.concatAll).to.exist;
     expect(index.concatMap).to.exist;
