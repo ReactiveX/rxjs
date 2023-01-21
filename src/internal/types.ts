@@ -92,11 +92,6 @@ export type ObservableInput<T> =
   | ReadableStreamLike<T>;
 
 /**
- * @deprecated Renamed to {@link InteropObservable }. Will be removed in v8.
- */
-export type ObservableLike<T> = InteropObservable<T>;
-
-/**
  * An object that implements the `Symbol.observable` interface.
  */
 export interface InteropObservable<T> {
