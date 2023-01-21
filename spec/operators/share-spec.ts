@@ -4,7 +4,7 @@ import {
   map,
   mergeMap,
   mergeMapTo,
-  onErrorResumeNext,
+  onErrorResumeNextWith,
   repeat,
   retry,
   share,
@@ -906,7 +906,7 @@ describe('share', () => {
 
         const sharedSource = source.pipe(share({ resetOnError: () => reset, resetOnRefCountZero }));
 
-        const result = concat(sharedSource.pipe(onErrorResumeNext(firstPause)), sharedSource);
+        const result = concat(sharedSource.pipe(onErrorResumeNextWith(firstPause)), sharedSource);
 
         expectObservable(result, subscription).toBe(expected);
         expectSubscriptions(source.subscriptions).toBe(sourceSubs);

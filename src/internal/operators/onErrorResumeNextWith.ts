@@ -92,8 +92,3 @@ export function onErrorResumeNextWith<T, A extends readonly unknown[]>(
 
   return (source) => oERNCreate(source, ...nextSources);
 }
-
-/**
- * @deprecated Renamed. Use {@link onErrorResumeNextWith} instead. Will be removed in v8.
- */
-export const onErrorResumeNext = onErrorResumeNextWith;

@@ -92,7 +92,7 @@ export function catchError<T, O extends ObservableInput<any>>(
  *   // 1, 2, 3, error in source. Details: four!
  * ```
  *
- * @see {@link onErrorResumeNext}
+ * @see {@link onErrorResumeNextWith}
  * @see {@link repeat}
  * @see {@link repeatWhen}
  * @see {@link retry }
