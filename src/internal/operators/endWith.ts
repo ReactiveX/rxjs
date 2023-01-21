@@ -1,7 +1,7 @@
 /** prettier */
-import { concat } from '../observable/concat';
 import { fromArrayLike } from '../observable/innerFrom';
 import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ValueFromArray } from '../types';
+import { operate } from '../util/lift';
 import { concatAll } from './concatAll';
 
 /**
@@ -52,5 +52,7 @@ import { concatAll } from './concatAll';
  * source completes.
  */
 export function endWith<T, A extends readonly unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>> {
-  return (source) => concatAll()(fromArrayLike([source, ...values] as any));
+  return operate((source, subscriber) => {
+    concatAll()(fromArrayLike([source, fromArrayLike(values)])).subscribe(subscriber);
+  });
 }
