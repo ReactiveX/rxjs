@@ -1,24 +1,12 @@
 /** prettier */
-import { Observable } from '../Observable';
-import { concat } from '../observable/concat';
-import { of } from '../observable/of';
-import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ValueFromArray } from '../types';
-
-/** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `concatAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function endWith<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;
-/** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `concatAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function endWith<T, A extends unknown[] = T[]>(
-  ...valuesAndScheduler: [...A, SchedulerLike]
-): OperatorFunction<T, T | ValueFromArray<A>>;
-
-export function endWith<T, A extends unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
+import { fromArrayLike } from '../observable/innerFrom';
+import { OperatorFunction, ValueFromArray } from '../types';
+import { operate } from '../util/lift';
+import { concatAll } from './concatAll';
 
 /**
  * Returns an observable that will emit all values from the source, then synchronously emit
  * the provided value(s) immediately after the source completes.
- *
- * NOTE: Passing a last argument of a Scheduler is _deprecated_, and may result in incorrect
- * types in TypeScript.
  *
  * This is useful for knowing when an observable ends. Particularly when paired with an
  * operator like {@link takeUntil}
@@ -63,6 +51,8 @@ export function endWith<T, A extends unknown[] = T[]>(...values: A): OperatorFun
  * source, then synchronously emits the provided value(s) immediately after the
  * source completes.
  */
-export function endWith<T>(...values: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => concat(source, of(...values)) as Observable<T>;
+export function endWith<T, A extends readonly unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>> {
+  return operate((source, subscriber) => {
+    concatAll()(fromArrayLike([source, fromArrayLike(values)])).subscribe(subscriber);
+  });
 }
