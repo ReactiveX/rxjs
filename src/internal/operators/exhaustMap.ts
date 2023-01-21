@@ -9,7 +9,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * Observable only if the previous projected Observable has completed.
  *
  * <span class="informal">Maps each value to an Observable, then flattens all of
- * these inner Observables using {@link exhaust}.</span>
+ * these inner Observables using {@link exhaustAll}.</span>
  *
  * ![](exhaustMap.png)
  *
@@ -37,7 +37,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * ```
  *
  * @see {@link concatMap}
- * @see {@link exhaust}
+ * @see {@link exhaustAll}
  * @see {@link mergeMap}
  * @see {@link switchMap}
  *
