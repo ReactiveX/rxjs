@@ -178,28 +178,6 @@ describe('endWith', () => {
     });
   });
 
-  it('should accept scheduler as last argument with single value', () => {
-    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  --a--|   ');
-      const e1subs = '  ^----!   ';
-      const expected = '--a--(x|)';
-
-      expectObservable(e1.pipe(endWith(defaultEndValue, testScheduler))).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
-  });
-
-  it('should accept scheduler as last argument with multiple value', () => {
-    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  -----a--|    ');
-      const e1subs = '  ^-------!    ';
-      const expected = '-----a--(yz|)';
-
-      expectObservable(e1.pipe(endWith('y', 'z', testScheduler))).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
-  });
-
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
     const synchronousObservable = new Observable<number>((subscriber) => {
