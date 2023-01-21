@@ -4,8 +4,8 @@ import { TestScheduler } from 'rxjs/testing';
 import { of, Observable } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-/** @test {exhaust} */
-describe('exhaust', () => {
+/** @test {exhaustAll} */
+describe('exhaustAll', () => {
   let testScheduler: TestScheduler;
 
   beforeEach(() => {

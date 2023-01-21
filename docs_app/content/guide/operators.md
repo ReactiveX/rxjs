@@ -152,7 +152,6 @@ These are Observable creation operators that also have join functionality -- emi
 - [`bufferWhen`](/api/operators/bufferWhen)
 - [`concatMap`](/api/operators/concatMap)
 - [`concatMapTo`](/api/operators/concatMapTo)
-- [`exhaust`](/api/operators/exhaust)
 - [`exhaustMap`](/api/operators/exhaustMap)
 - [`expand`](/api/operators/expand)
 - [`groupBy`](/api/operators/groupBy)

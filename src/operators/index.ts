@@ -27,7 +27,6 @@ export { distinctUntilKeyChanged } from '../internal/operators/distinctUntilKeyC
 export { elementAt } from '../internal/operators/elementAt';
 export { endWith } from '../internal/operators/endWith';
 export { every } from '../internal/operators/every';
-export { exhaust } from '../internal/operators/exhaust';
 export { exhaustAll } from '../internal/operators/exhaustAll';
 export { exhaustMap } from '../internal/operators/exhaustMap';
 export { expand } from '../internal/operators/expand';
