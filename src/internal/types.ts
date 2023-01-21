@@ -210,11 +210,6 @@ export type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;
 export type ObservedValueUnionFromArray<X> = X extends Array<ObservableInput<infer T>> ? T : never;
 
 /**
- * @deprecated Renamed to {@link ObservedValueUnionFromArray}. Will be removed in v8.
- */
-export type ObservedValuesFromArray<X> = ObservedValueUnionFromArray<X>;
-
-/**
  * Extracts a tuple of element types from an `ObservableInput<any>[]`.
  * If you have `O extends ObservableInput<any>[]` and you pass in
  * `[Observable<string>, Observable<number>]` you would get back a type
