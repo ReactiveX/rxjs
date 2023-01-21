@@ -122,7 +122,6 @@ describe('index', () => {
     expect(index.materialize).to.exist;
     expect(index.max).to.exist;
     expect(index.mergeAll).to.exist;
-    expect(index.flatMap).to.exist;
     expect(index.mergeMap).to.exist;
     expect(index.mergeMapTo).to.exist;
     expect(index.mergeScan).to.exist;

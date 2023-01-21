@@ -141,7 +141,6 @@ export { mapTo } from './internal/operators/mapTo';
 export { materialize } from './internal/operators/materialize';
 export { max } from './internal/operators/max';
 export { mergeAll } from './internal/operators/mergeAll';
-export { flatMap } from './internal/operators/flatMap';
 export { mergeMap } from './internal/operators/mergeMap';
 export { mergeMapTo } from './internal/operators/mergeMapTo';
 export { mergeScan } from './internal/operators/mergeScan';

@@ -46,7 +46,6 @@ describe('operators/index', () => {
     expect(index.max).to.exist;
     expect(index.mergeAll).to.exist;
     expect(index.mergeMap).to.exist;
-    expect(index.flatMap).to.exist;
     expect(index.mergeMap).to.exist;
     expect(index.mergeMapTo).to.exist;
     expect(index.mergeScan).to.exist;
