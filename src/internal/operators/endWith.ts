@@ -1,6 +1,6 @@
 /** prettier */
 import { fromArrayLike } from '../observable/innerFrom';
-import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ValueFromArray } from '../types';
+import { OperatorFunction, ValueFromArray } from '../types';
 import { operate } from '../util/lift';
 import { concatAll } from './concatAll';
 
