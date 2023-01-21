@@ -42,7 +42,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * const intervals = interval(10);      // Intervals are scheduled
  *                                      // with async scheduler by default...
  * intervals.pipe(
- *   observeOn(animationFrameScheduler) // ...but we will observe on animationFrame
+ *   observeOn(animationFrameScheduler) // ...but we will observe on animationFrameScheduler
  * )                                    // scheduler to ensure smooth animation.
  * .subscribe(val => {
  *   someDiv.style.height = val + 'px';

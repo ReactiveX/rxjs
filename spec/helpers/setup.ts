@@ -17,7 +17,7 @@ if (!(Symbol as any).observable) {
   (Symbol as any).observable = Symbol('Symbol.observable polyfill from RxJS Testing');
 }
 
-/** Polyfill requestAnimationFrame for testing animationFrame scheduler in Node */
+/** Polyfill requestAnimationFrame for testing animationFrameScheduler scheduler in Node */
 // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 
