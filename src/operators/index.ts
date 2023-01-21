@@ -10,7 +10,6 @@ export { catchError } from '../internal/operators/catchError';
 export { combineAll } from '../internal/operators/combineAll';
 export { combineLatestAll } from '../internal/operators/combineLatestAll';
 export { combineLatestWith } from '../internal/operators/combineLatestWith';
-export { concat } from '../internal/operators/concat';
 export { concatAll } from '../internal/operators/concatAll';
 export { concatMap } from '../internal/operators/concatMap';
 export { concatMapTo } from '../internal/operators/concatMapTo';

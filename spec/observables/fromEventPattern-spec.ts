@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { fromEventPattern, noop, NEVER, timer } from 'rxjs';
-import { mapTo, take, concat } from 'rxjs/operators';
+import { mapTo, take, concatWith } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -22,7 +22,7 @@ describe('fromEventPattern', () => {
       const expected = '  -----x-x---';
 
       function addHandler(h: any) {
-        timer(time1, time2, rxTestScheduler).pipe(mapTo('ev'), take(2), concat(NEVER)).subscribe(h);
+        timer(time1, time2, rxTestScheduler).pipe(mapTo('ev'), take(2), concatWith(NEVER)).subscribe(h);
       }
       const e1 = fromEventPattern(addHandler);
 
