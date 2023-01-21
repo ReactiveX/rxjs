@@ -27,7 +27,7 @@ export { ReplaySubject } from './internal/ReplaySubject';
 export { AsyncSubject } from './internal/AsyncSubject';
 
 /* Schedulers */
-export { asap, asapScheduler } from './internal/scheduler/asap';
+export { asapScheduler } from './internal/scheduler/asap';
 export { async, asyncScheduler } from './internal/scheduler/async';
 export { queue, queueScheduler } from './internal/scheduler/queue';
 export { animationFrameScheduler } from './internal/scheduler/animationFrame';

@@ -7,19 +7,19 @@ import { AsapScheduler } from './AsapScheduler';
  *
  * <span class="informal">Perform task as fast as it can be performed asynchronously</span>
  *
- * `asap` scheduler behaves the same as {@link asyncScheduler} scheduler when you use it to delay task
+ * `asapScheduler` scheduler behaves the same as {@link asyncScheduler} scheduler when you use it to delay task
  * in time. If however you set delay to `0`, `asap` will wait for current synchronously executing
  * code to end and then it will try to execute given task as fast as possible.
  *
- * `asap` scheduler will do its best to minimize time between end of currently executing code
+ * `asapScheduler` scheduler will do its best to minimize time between end of currently executing code
  * and start of scheduled task. This makes it best candidate for performing so called "deferring".
  * Traditionally this was achieved by calling `setTimeout(deferredTask, 0)`, but that technique involves
  * some (although minimal) unwanted delay.
  *
- * Note that using `asap` scheduler does not necessarily mean that your task will be first to process
- * after currently executing code. In particular, if some task was also scheduled with `asap` before,
+ * Note that using `asapScheduler` scheduler does not necessarily mean that your task will be first to process
+ * after currently executing code. In particular, if some task was also scheduled with `asapScheduler` before,
  * that task will execute first. That being said, if you need to schedule task asynchronously, but
- * as soon as possible, `asap` scheduler is your best bet.
+ * as soon as possible, `asapScheduler` scheduler is your best bet.
  *
  * ## Example
  * Compare async and asap scheduler<
@@ -37,8 +37,3 @@ import { AsapScheduler } from './AsapScheduler';
  */
 
 export const asapScheduler = new AsapScheduler(AsapAction);
-
-/**
- * @deprecated Renamed to {@link asapScheduler}. Will be removed in v8.
- */
-export const asap = asapScheduler;
