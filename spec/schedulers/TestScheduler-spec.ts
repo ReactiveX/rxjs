@@ -736,7 +736,7 @@ describe('TestScheduler', () => {
     });
 
     describe('schedulers', () => {
-      it('should support animationFrame, async and asap schedulers', () => {
+      it('should support animationFrameScheduler, async and asap schedulers', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
         testScheduler.run(({ animate, cold, expectObservable, time }) => {
           animate('            ---------x');

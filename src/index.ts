@@ -30,7 +30,7 @@ export { AsyncSubject } from './internal/AsyncSubject';
 export { asap, asapScheduler } from './internal/scheduler/asap';
 export { async, asyncScheduler } from './internal/scheduler/async';
 export { queue, queueScheduler } from './internal/scheduler/queue';
-export { animationFrame, animationFrameScheduler } from './internal/scheduler/animationFrame';
+export { animationFrameScheduler } from './internal/scheduler/animationFrame';
 export { VirtualTimeScheduler, VirtualAction } from './internal/scheduler/VirtualTimeScheduler';
 export { Scheduler } from './internal/Scheduler';
 
