@@ -40,7 +40,7 @@ import { interval } from '../observable/interval';
  *
  * @param {number} period The sampling period expressed in milliseconds or the
  * time unit determined internally by the optional `scheduler`.
- * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
+ * @param {SchedulerLike} [scheduler=asyncScheduler] The {@link SchedulerLike} to use for
  * managing the timers that handle the sampling.
  * @return A function that returns an Observable that emits the results of
  * sampling the values emitted by the source Observable at the specified time

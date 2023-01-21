@@ -136,7 +136,7 @@ export function generate<T, S>(
  * `scheduler` property on the object passed to the operator. In both cases, a scheduler decides when
  * the next iteration of the loop will happen and therefore when the next value will be emitted
  * by the Observable. For example, to ensure that each value is pushed to the Observer
- * on a separate task in the event loop, you could use the `async` scheduler. Note that
+ * on a separate task in the event loop, you could use the `asyncScheduler` scheduler. Note that
  * by default (when no scheduler is passed) values are simply emitted synchronously.
  *
  *

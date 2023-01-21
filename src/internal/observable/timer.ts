@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { SchedulerLike } from '../types';
-import { async as asyncScheduler } from '../scheduler/async';
+import { asyncScheduler } from '../scheduler/async';
 import { isScheduler } from '../util/isScheduler';
 import { isValidDate } from '../util/isDate';
 

@@ -55,7 +55,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * unit determined internally by the optional `scheduler`) for the window of
  * time required to wait for emission silence before emitting the most recent
  * source value.
- * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
+ * @param {SchedulerLike} [scheduler=asyncScheduler] The {@link SchedulerLike} to use for
  * managing the timers that handle the timeout for each value.
  * @return A function that returns an Observable that delays the emissions of
  * the source Observable by the specified `dueTime`, and may drop some values
