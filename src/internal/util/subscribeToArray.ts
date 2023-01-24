@@ -15,7 +15,8 @@ export function subscribeToArray<T>(array: ArrayLike<T>, subscriber: Subscriber<
   //    This is a known issue, but considered an edge case. The alternative would
   //    be to copy the array before executing the loop, but this has
   //    performance implications.
-  for (let i = 0, { length } = array; i < length && !subscriber.closed; i++) {
+  const length = array.length;
+  for (let i = 0; i < length && !subscriber.closed; i++) {
     subscriber.next(array[i]);
   }
   subscriber.complete();
