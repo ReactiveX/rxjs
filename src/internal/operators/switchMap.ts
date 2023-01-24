@@ -25,7 +25,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
  * Observable, emitting values only from the most recently projected Observable.
  *
  * <span class="informal">Maps each value to an Observable, then flattens all of
- * these inner Observables.</span>
+ * these inner Observables using {@link switchAll}.</span>
  *
  * ![](switchMap.png)
  *
