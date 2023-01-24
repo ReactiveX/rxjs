@@ -1,16 +1,16 @@
 import { Observable } from '../Observable';
-import { ObservableInput, SchedulerLike, ObservedValueOf, ObservableInputTuple } from '../types';
+import { ObservableInput, ObservedValueOf, ObservableInputTuple } from '../types';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { Subscriber } from '../Subscriber';
 import { from } from './from';
 import { identity } from '../util/identity';
 import { Subscription } from '../Subscription';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
-import { popResultSelector, popScheduler } from '../util/args';
+import { popResultSelector } from '../util/args';
 import { createObject } from '../util/createObject';
 import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
 import { AnyCatcher } from '../AnyCatcher';
-import { executeSchedule } from '../util/executeSchedule';
+import { EMPTY } from './empty';
 
 // combineLatest(any)
 // We put this first because we need to catch cases where the user has supplied
@@ -28,37 +28,18 @@ export function combineLatest<T extends AnyCatcher>(arg: T): Observable<unknown>
 // combineLatest([a, b, c])
 export function combineLatest(sources: []): Observable<never>;
 export function combineLatest<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
-/** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `combineLatestAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function combineLatest<A extends readonly unknown[], R>(
-  sources: readonly [...ObservableInputTuple<A>],
-  resultSelector: (...values: A) => R,
-  scheduler: SchedulerLike
-): Observable<R>;
 export function combineLatest<A extends readonly unknown[], R>(
   sources: readonly [...ObservableInputTuple<A>],
   resultSelector: (...values: A) => R
 ): Observable<R>;
-/** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `combineLatestAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function combineLatest<A extends readonly unknown[]>(
-  sources: readonly [...ObservableInputTuple<A>],
-  scheduler: SchedulerLike
-): Observable<A>;
 
 // combineLatest(a, b, c)
 /** @deprecated Pass an array of sources instead. The rest-parameters signature will be removed in v8. Details: https://rxjs.dev/deprecations/array-argument */
 export function combineLatest<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
-/** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `combineLatestAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function combineLatest<A extends readonly unknown[], R>(
-  ...sourcesAndResultSelectorAndScheduler: [...ObservableInputTuple<A>, (...values: A) => R, SchedulerLike]
-): Observable<R>;
 /** @deprecated Pass an array of sources instead. The rest-parameters signature will be removed in v8. Details: https://rxjs.dev/deprecations/array-argument */
 export function combineLatest<A extends readonly unknown[], R>(
   ...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]
 ): Observable<R>;
-/** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `combineLatestAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function combineLatest<A extends readonly unknown[]>(
-  ...sourcesAndScheduler: [...ObservableInputTuple<A>, SchedulerLike]
-): Observable<A>;
 
 // combineLatest({a, b, c})
 export function combineLatest(sourcesObject: { [K in any]: never }): Observable<never>;
@@ -192,14 +173,11 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  * An array of Observables must be given as the first argument.
  * @param {function} [project] An optional function to project the values from
  * the combined latest values into a new value on the output Observable.
- * @param {SchedulerLike} [scheduler=null] The {@link SchedulerLike} to use for subscribing to
- * each input Observable.
  * @return {Observable} An Observable of projected values from the most recent
  * values from each input Observable, or an array of the most recent values from
  * each input Observable.
  */
 export function combineLatest<O extends ObservableInput<any>, R>(...args: any[]): Observable<R> | Observable<ObservedValueOf<O>[]> {
-  const scheduler = popScheduler(args);
   const resultSelector = popResultSelector(args);
 
   const { args: observables, keys } = argsArgArrayOrObject(args);
@@ -208,13 +186,12 @@ export function combineLatest<O extends ObservableInput<any>, R>(...args: any[])
     // If no observables are passed, or someone has passed an empty array
     // of observables, or even an empty object POJO, we need to just
     // complete (EMPTY), but we have to honor the scheduler provided if any.
-    return from([], scheduler as any);
+    return EMPTY;
   }
 
   const result = new Observable<ObservedValueOf<O>[]>(
     combineLatestInit(
       observables as ObservableInput<ObservedValueOf<O>>[],
-      scheduler,
       keys
         ? // A handler for scrubbing the array of args into a dictionary.
           (values) => createObject(keys, values)
@@ -226,79 +203,49 @@ export function combineLatest<O extends ObservableInput<any>, R>(...args: any[])
   return resultSelector ? (result.pipe(mapOneOrManyArgs(resultSelector)) as Observable<R>) : result;
 }
 
-export function combineLatestInit(
-  observables: ObservableInput<any>[],
-  scheduler?: SchedulerLike,
-  valueTransform: (values: any[]) => any = identity
-) {
+export function combineLatestInit(observables: ObservableInput<any>[], valueTransform: (values: any[]) => any = identity) {
   return (subscriber: Subscriber<any>) => {
-    // The outer subscription. We're capturing this in a function
-    // because we may have to schedule it.
-    maybeSchedule(
-      scheduler,
-      () => {
-        const { length } = observables;
-        // A store for the values each observable has emitted so far. We match observable to value on index.
-        const values = new Array(length);
-        // The number of currently active subscriptions, as they complete, we decrement this number to see if
-        // we are all done combining values, so we can complete the result.
-        let active = length;
-        // The number of inner sources that still haven't emitted the first value
-        // We need to track this because all sources need to emit one value in order
-        // to start emitting values.
-        let remainingFirstValues = length;
-        // The loop to kick off subscription. We're keying everything on index `i` to relate the observables passed
-        // in to the slot in the output array or the key in the array of keys in the output dictionary.
-        for (let i = 0; i < length; i++) {
-          maybeSchedule(
-            scheduler,
-            () => {
-              const source = from(observables[i], scheduler as any);
-              let hasFirstValue = false;
-              source.subscribe(
-                createOperatorSubscriber(
-                  subscriber,
-                  (value) => {
-                    // When we get a value, record it in our set of values.
-                    values[i] = value;
-                    if (!hasFirstValue) {
-                      // If this is our first value, record that.
-                      hasFirstValue = true;
-                      remainingFirstValues--;
-                    }
-                    if (!remainingFirstValues) {
-                      // We're not waiting for any more
-                      // first values, so we can emit!
-                      subscriber.next(valueTransform(values.slice()));
-                    }
-                  },
-                  () => {
-                    if (!--active) {
-                      // We only complete the result if we have no more active
-                      // inner observables.
-                      subscriber.complete();
-                    }
-                  }
-                )
-              );
-            },
-            subscriber
-          );
-        }
-      },
-      subscriber
-    );
+    const { length } = observables;
+    // A store for the values each observable has emitted so far. We match observable to value on index.
+    const values = new Array(length);
+    // The number of currently active subscriptions, as they complete, we decrement this number to see if
+    // we are all done combining values, so we can complete the result.
+    let active = length;
+    // The number of inner sources that still haven't emitted the first value
+    // We need to track this because all sources need to emit one value in order
+    // to start emitting values.
+    let remainingFirstValues = length;
+    // The loop to kick off subscription. We're keying everything on index `i` to relate the observables passed
+    // in to the slot in the output array or the key in the array of keys in the output dictionary.
+    for (let i = 0; i < length; i++) {
+      const source = from(observables[i]);
+      let hasFirstValue = false;
+      source.subscribe(
+        createOperatorSubscriber(
+          subscriber,
+          (value) => {
+            // When we get a value, record it in our set of values.
+            values[i] = value;
+            if (!hasFirstValue) {
+              // If this is our first value, record that.
+              hasFirstValue = true;
+              remainingFirstValues--;
+            }
+            if (!remainingFirstValues) {
+              // We're not waiting for any more
+              // first values, so we can emit!
+              subscriber.next(valueTransform(values.slice()));
+            }
+          },
+          () => {
+            if (!--active) {
+              // We only complete the result if we have no more active
+              // inner observables.
+              subscriber.complete();
+            }
+          }
+        )
+      );
+    }
   };
-}
-
-/**
- * A small utility to handle the couple of locations where we want to schedule if a scheduler was provided,
- * but we don't if there was no scheduler.
- */
-function maybeSchedule(scheduler: SchedulerLike | undefined, execute: () => void, subscription: Subscription) {
-  if (scheduler) {
-    executeSchedule(subscription, scheduler, execute);
-  } else {
-    execute();
-  }
 }

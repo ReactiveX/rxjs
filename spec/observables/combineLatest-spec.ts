@@ -41,22 +41,6 @@ describe('static combineLatest', () => {
 
     expect(results).to.deep.equal(['done']);
   });
-  
-  it('should return EMPTY if passed an empty array and scheduler as the only argument', () => {
-    const results: string[] = [];
-    combineLatest([], rxTestScheduler).subscribe({
-      next: () => {
-        throw new Error('should not emit')
-      },
-      complete: () => {
-        results.push('done');
-      }
-    });
-
-    expect(results).to.deep.equal([]);
-    rxTestScheduler.flush();
-    expect(results).to.deep.equal(['done']);
-  });
 
   it('should combineLatest the provided observables', () => {
     rxTestScheduler.run(({ hot, expectObservable }) => {
@@ -68,33 +52,6 @@ describe('static combineLatest', () => {
 
       expectObservable(combined).toBe(expected, { u: 'ad', v: 'ae', w: 'af', x: 'bf', y: 'bg', z: 'cg' });
     });
-  });
-
-  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done) => {
-    const a = of(1, 2, 3, queueScheduler);
-    const b = of(4, 5, 6, 7, 8, queueScheduler);
-    const r = [
-      [1, 4],
-      [2, 4],
-      [2, 5],
-      [3, 5],
-      [3, 6],
-      [3, 7],
-      [3, 8],
-    ];
-
-    const actual: [number, number][] = [];
-    //type definition need to be updated
-    combineLatest(a, b, queueScheduler).subscribe(
-      { next: (vals) => {
-        actual.push(vals);
-      }, error: () => {
-        done(new Error('should not be called'));
-      }, complete: () => {
-        expect(actual).to.deep.equal(r);
-        done();
-      } }
-    );
   });
 
   it('should accept array of observables', () => {
