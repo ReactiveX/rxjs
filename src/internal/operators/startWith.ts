@@ -1,7 +1,7 @@
-import { concat } from '../observable/concat';
-import { OperatorFunction, SchedulerLike, ValueFromArray } from '../types';
+import { OperatorFunction, ValueFromArray } from '../types';
 import { popScheduler } from '../util/args';
 import { Observable } from '../Observable';
+import { subscribeToArray } from '../observable/from';
 
 // Devs are more likely to pass null or undefined than they are a scheduler
 // without accompanying values. To make things easier for (naughty) devs who
@@ -10,11 +10,6 @@ import { Observable } from '../Observable';
 
 export function startWith<T>(value: null): OperatorFunction<T, T | null>;
 export function startWith<T>(value: undefined): OperatorFunction<T, T | undefined>;
-
-/** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `concatAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function startWith<T, A extends readonly unknown[] = T[]>(
-  ...valuesAndScheduler: [...A, SchedulerLike]
-): OperatorFunction<T, T | ValueFromArray<A>>;
 export function startWith<T, A extends readonly unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
 
 /**
@@ -57,12 +52,13 @@ export function startWith<T, A extends readonly unknown[] = T[]>(...values: A): 
  * @see {@link concat}
  */
 export function startWith<T, D>(...values: D[]): OperatorFunction<T, T | D> {
-  const scheduler = popScheduler(values);
   return (source) =>
     new Observable((subscriber) => {
-      // Here we can't pass `undefined` as a scheduler, because if we did, the
-      // code inside of `concat` would be confused by the `undefined`, and treat it
-      // like an invalid observable. So we have to split it two different ways.
-      (scheduler ? concat(values, source, scheduler) : concat(values, source)).subscribe(subscriber);
+      // Because this will run synchronously, we don't need to do any fancy chaining here.
+      // Just run it and check to see if we're closed before we move on.
+      subscribeToArray(values, subscriber);
+      if (!subscriber.closed) {
+        source.subscribe(subscriber);
+      }
     });
 }

@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import { startWith, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { of, Observable } from 'rxjs';
+import { of, Observable, startWith, mergeMap, take } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {startWith} */
@@ -143,21 +142,6 @@ describe('startWith', () => {
     });
   });
 
-  it('should allow unsubscribing explicitly and early', () => {
-    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  ---a--b----c--d--|');
-      const unsub = '   ---------!        ';
-      const e1subs = '  ^--------!        ';
-      const expected = 's--a--b---        ';
-      const values = { s: 's', a: 'a', b: 'b' };
-
-      const result = e1.pipe(startWith('s', testScheduler));
-
-      expectObservable(result, unsub).toBe(expected, values);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
-  });
-
   it('should not break unsubscription chains when result is unsubscribed explicitly', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  ---a--b----c--d--|');
@@ -168,50 +152,11 @@ describe('startWith', () => {
 
       const result = e1.pipe(
         mergeMap((x: string) => of(x)),
-        startWith('s', testScheduler),
+        startWith('s'),
         mergeMap((x: string) => of(x))
       );
 
       expectObservable(result, unsub).toBe(expected, values);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
-  });
-
-  it('should start with empty if given value is not specified', () => {
-    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  -a-|');
-      const e1subs = '  ^--!';
-      const expected = '-a-|';
-
-      const result = e1.pipe(startWith(testScheduler));
-
-      expectObservable(result).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
-  });
-
-  it('should accept scheduler as last argument with single value', () => {
-    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  --a--|');
-      const e1subs = '  ^----!';
-      const expected = 'x-a--|';
-
-      const result = e1.pipe(startWith(defaultStartValue, testScheduler));
-
-      expectObservable(result).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
-  });
-
-  it('should accept scheduler as last argument with multiple value', () => {
-    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  -----a--|');
-      const e1subs = '  ^-------!';
-      const expected = '(yz)-a--|';
-
-      const result = e1.pipe(startWith('y', 'z', testScheduler));
-
-      expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
