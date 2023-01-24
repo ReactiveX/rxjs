@@ -126,7 +126,6 @@ describe('index', () => {
     expect(index.mergeScan).to.exist;
     expect(index.mergeWith).to.exist;
     expect(index.min).to.exist;
-    expect(index.multicast).to.exist;
     expect(index.observeOn).to.exist;
     expect(index.pairwise).to.exist;
     expect(index.pluck).to.exist;

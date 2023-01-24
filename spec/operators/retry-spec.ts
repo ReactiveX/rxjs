@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { retry, map, take, mergeMap, concatWith, multicast, refCount } from 'rxjs/operators';
+import { retry, map, take, mergeMap, concatWith, share } from 'rxjs/operators';
 import { Observable, Observer, defer, range, of, throwError, Subject, timer, EMPTY } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -357,12 +357,7 @@ describe('retry', () => {
     const expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
 
     of(1, 2, 3)
-      .pipe(
-        concatWith(throwError(() => 'bad!')),
-        multicast(() => new Subject<number>()),
-        refCount(),
-        retry(4)
-      )
+      .pipe(concatWith(throwError(() => 'bad!')), share({ connector: () => new Subject<number>() }), retry(4))
       .subscribe({
         next(x: number) {
           expect(x).to.equal(expected.shift());

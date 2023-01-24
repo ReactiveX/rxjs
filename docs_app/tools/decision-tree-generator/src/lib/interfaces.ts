@@ -57,7 +57,6 @@ export type ApiUnion =
   | 'mergeMap'
   | 'mergeMapTo'
   | 'mergeScan'
-  | 'multicast'
   | 'NEVER'
   | 'Observable'
   | 'observeOn'

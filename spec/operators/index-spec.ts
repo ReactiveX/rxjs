@@ -49,7 +49,6 @@ describe('operators/index', () => {
     expect(index.mergeMapTo).to.exist;
     expect(index.mergeScan).to.exist;
     expect(index.min).to.exist;
-    expect(index.multicast).to.exist;
     expect(index.observeOn).to.exist;
     expect(index.pairwise).to.exist;
     expect(index.partition).to.exist;
