@@ -3,7 +3,8 @@ import { operate } from '../util/lift';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { mergeAll } from './mergeAll';
 import { popNumber, popScheduler } from '../util/args';
-import { from } from '../observable/from';
+import { scheduled } from '../scheduled/scheduled';
+import { innerFrom } from '../observable/innerFrom';
 
 /** @deprecated Replaced with {@link mergeWith}. Will be removed in v8. */
 export function merge<T, A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
@@ -26,6 +27,7 @@ export function merge<T>(...args: unknown[]): OperatorFunction<T, unknown> {
   args = argsOrArgArray(args);
 
   return operate((source, subscriber) => {
-    mergeAll(concurrent)(from([source, ...(args as ObservableInput<T>[])], scheduler)).subscribe(subscriber);
+    const sources = [source, ...(args as ObservableInput<T>[])];
+    mergeAll(concurrent)(scheduler ? scheduled(sources, scheduler) : innerFrom(sources)).subscribe(subscriber);
   });
 }
