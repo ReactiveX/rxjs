@@ -10,19 +10,27 @@ const { getPrototypeOf, prototype: objectProto, keys: getKeys } = Object;
 export function argsArgArrayOrObject<T, O extends Record<string, T>>(args: T[] | [O] | [T[]]): { args: T[]; keys: string[] | null } {
   if (args.length === 1) {
     const first = args[0];
-    if (isArray(first)) {
-      return { args: first, keys: null };
-    }
-    if (isPOJO(first)) {
-      const keys = getKeys(first);
-      return {
-        args: keys.map((key) => first[key]),
-        keys,
-      };
+    const result = arrayOrObject(first);
+    if (result) {
+      return result;
     }
   }
 
   return { args: args as T[], keys: null };
+}
+
+export function arrayOrObject<T, O extends Record<string, T>>(first: T | T[] | O) {
+  if (isArray(first)) {
+    return { args: first, keys: null };
+  }
+  if (isPOJO(first)) {
+    const keys = getKeys(first);
+    return {
+      args: keys.map((key) => first[key]),
+      keys,
+    };
+  }
+  return null;
 }
 
 function isPOJO(obj: any): obj is object {

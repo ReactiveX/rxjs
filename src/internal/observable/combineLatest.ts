@@ -1,15 +1,13 @@
 import { Observable } from '../Observable';
 import { ObservableInput, ObservedValueOf, ObservableInputTuple } from '../types';
-import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
+import { arrayOrObject } from '../util/argsArgArrayOrObject';
 import { Subscriber } from '../Subscriber';
-import { from } from './from';
 import { identity } from '../util/identity';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
-import { popResultSelector } from '../util/args';
 import { createObject } from '../util/createObject';
 import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
 import { AnyCatcher } from '../AnyCatcher';
 import { EMPTY } from './empty';
+import { from } from './from';
 
 // combineLatest(any)
 // We put this first because we need to catch cases where the user has supplied
@@ -30,14 +28,6 @@ export function combineLatest<A extends readonly unknown[]>(sources: readonly [.
 export function combineLatest<A extends readonly unknown[], R>(
   sources: readonly [...ObservableInputTuple<A>],
   resultSelector: (...values: A) => R
-): Observable<R>;
-
-// combineLatest(a, b, c)
-/** @deprecated Pass an array of sources instead. The rest-parameters signature will be removed in v8. Details: https://rxjs.dev/deprecations/array-argument */
-export function combineLatest<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
-/** @deprecated Pass an array of sources instead. The rest-parameters signature will be removed in v8. Details: https://rxjs.dev/deprecations/array-argument */
-export function combineLatest<A extends readonly unknown[], R>(
-  ...sourcesAndResultSelector: [...ObservableInputTuple<A>, (...values: A) => R]
 ): Observable<R>;
 
 // combineLatest({a, b, c})
@@ -168,18 +158,25 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  * @see {@link merge}
  * @see {@link withLatestFrom}
  *
- * @param {ObservableInput} [observables] An array of input Observables to combine with each other.
+ * @param sources An array of input Observables to combine with each other.
  * An array of Observables must be given as the first argument.
- * @param {function} [project] An optional function to project the values from
+ * @param project An optional function to project the values from
  * the combined latest values into a new value on the output Observable.
- * @return {Observable} An Observable of projected values from the most recent
+ * @return An Observable of projected values from the most recent
  * values from each input Observable, or an array of the most recent values from
  * each input Observable.
  */
-export function combineLatest<O extends ObservableInput<any>, R>(...args: any[]): Observable<R> | Observable<ObservedValueOf<O>[]> {
-  const resultSelector = popResultSelector(args);
+export function combineLatest<O extends ObservableInput<any>, R>(
+  sources: Record<string, O> | O[],
+  resultSelector?: (...value: any[]) => R
+): Observable<R> | Observable<ObservedValueOf<O>[]> {
+  const parts = arrayOrObject(sources);
 
-  const { args: observables, keys } = argsArgArrayOrObject(args);
+  if (!parts) {
+    throw new TypeError('sources must be an array or object');
+  }
+
+  const { args: observables, keys } = parts;
 
   if (observables.length === 0) {
     // If no observables are passed, or someone has passed an empty array
@@ -188,18 +185,16 @@ export function combineLatest<O extends ObservableInput<any>, R>(...args: any[])
     return EMPTY;
   }
 
-  const result = new Observable<ObservedValueOf<O>[]>(
+  return new Observable<ObservedValueOf<O>[]>(
     combineLatestInit(
       observables as ObservableInput<ObservedValueOf<O>>[],
       keys
-        ? // A handler for scrubbing the array of args into a dictionary.
-          (values) => createObject(keys, values)
-        : // A passthrough to just return the array
-          identity
+        ? (values: any[]) => createObject(keys, values)
+        : resultSelector
+        ? (values: readonly any[]) => resultSelector(...values)
+        : identity
     )
   );
-
-  return resultSelector ? (result.pipe(mapOneOrManyArgs(resultSelector)) as Observable<R>) : result;
 }
 
 export function combineLatestInit(observables: ObservableInput<any>[], valueTransform: (values: any[]) => any = identity) {
@@ -233,7 +228,7 @@ export function combineLatestInit(observables: ObservableInput<any>[], valueTran
             if (!remainingFirstValues) {
               // We're not waiting for any more
               // first values, so we can emit!
-              subscriber.next(valueTransform(values.slice()));
+              subscriber.next(valueTransform(Array.from(values)));
             }
           },
           () => {

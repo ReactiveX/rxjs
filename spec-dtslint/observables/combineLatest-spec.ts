@@ -1,69 +1,6 @@
 import { combineLatest } from 'rxjs';
 import { a$,  b$,  c$,  d$,  e$,  f$,  g$, A, B, C, D, E, F } from '../helpers';
 
-
-it('should accept 1 param', () => {
-  const o = combineLatest(a$); // $ExpectType Observable<[A]>
-});
-
-it('should accept 2 params', () => {
-  const o = combineLatest(a$, b$); // $ExpectType Observable<[A, B]>
-});
-
-it('should accept 3 params', () => {
-  const o = combineLatest(a$, b$, c$); // $ExpectType Observable<[A, B, C]>
-});
-
-it('should accept 4 params', () => {
-  const o = combineLatest(a$, b$, c$, d$); // $ExpectType Observable<[A, B, C, D]>
-});
-
-it('should accept 5 params', () => {
-  const o = combineLatest(a$, b$, c$, d$, e$); // $ExpectType Observable<[A, B, C, D, E]>
-});
-
-it('should accept 6 params', () => {
-  const o = combineLatest(a$, b$, c$, d$, e$, f$); // $ExpectType Observable<[A, B, C, D, E, F]>
-});
-
-it('should result in Observable<unknown> for 7 or more params', () => {
-  const o = combineLatest(a$, b$, c$, d$, e$, f$, g$); // $ExpectType Observable<[A, B, C, D, E, F, G]>
-});
-
-it('should accept union types', () => {
-  const u1: typeof a$ | typeof b$ = Math.random() > 0.5 ? a$ : b$;
-  const u2: typeof c$ | typeof d$ = Math.random() > 0.5 ? c$ : d$;
-  const o = combineLatest(u1, u2); // $ExpectType Observable<[A | B, C | D]>
-});
-
-it('should accept 1 param and a result selector', () => {
-  const o = combineLatest(a$, (...values) => new A()); // $ExpectType Observable<A>
-});
-
-it('should accept 2 params and a result selector', () => {
-  const o = combineLatest(a$, b$, (...values) => new A()); // $ExpectType Observable<A>
-});
-
-it('should accept 3 params and a result selector', () => {
-  const o = combineLatest(a$, b$, c$, (...values) => new A()); // $ExpectType Observable<A>
-});
-
-it('should accept 4 params and a result selector', () => {
-  const o = combineLatest(a$, b$, c$, d$, (...values) => new A()); // $ExpectType Observable<A>
-});
-
-it('should accept 5 params and a result selector', () => {
-  const o = combineLatest(a$, b$, c$, d$, e$, (...values) => new A()); // $ExpectType Observable<A>
-});
-
-it('should accept 6 params and a result selector', () => {
-  const o = combineLatest(a$, b$, c$, d$, e$, f$, (...values) => new A()); // $ExpectType Observable<A>
-});
-
-it('should accept 7 or more params and a result selector', () => {
-  const o = combineLatest(a$, b$, c$, d$, e$, f$, g$, g$, g$, (...values) => new A()); // $ExpectType Observable<A>
-});
-
 it('should accept 1 param', () => {
   const o = combineLatest([a$]); // $ExpectType Observable<[A]>
 });
