@@ -2,7 +2,7 @@ import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
@@ -74,6 +74,6 @@ export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: Observab
       })
     );
 
-    flushes && innerFrom(flushes).subscribe(createOperatorSubscriber(subscriber, () => distinctKeys.clear(), noop));
+    flushes && from(flushes).subscribe(createOperatorSubscriber(subscriber, () => distinctKeys.clear(), noop));
   });
 }

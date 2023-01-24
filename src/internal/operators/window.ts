@@ -4,7 +4,7 @@ import { Subject } from '../Subject';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 
 /**
  * Branch out the source Observable values as a nested Observable whenever
@@ -75,7 +75,7 @@ export function window<T>(windowBoundaries: ObservableInput<any>): OperatorFunct
     );
 
     // Subscribe to the window boundaries.
-    innerFrom(windowBoundaries).subscribe(
+    from(windowBoundaries).subscribe(
       createOperatorSubscriber(
         subscriber,
         () => {

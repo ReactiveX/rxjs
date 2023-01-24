@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { Subject } from '../Subject';
 import { ObservableInput, Observer, OperatorFunction, SubjectLike } from '../types';
 import { operate } from '../util/lift';
@@ -222,7 +222,7 @@ export function groupBy<T, K, R>(
               );
 
               // Start our duration notifier.
-              groupBySourceSubscriber.add(innerFrom(duration(grouped)).subscribe(durationSubscriber));
+              groupBySourceSubscriber.add(from(duration(grouped)).subscribe(durationSubscriber));
             }
           }
 

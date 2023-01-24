@@ -3,7 +3,7 @@ import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { noop } from '../util/noop';
 import { createOperatorSubscriber } from './OperatorSubscriber';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -99,7 +99,7 @@ export function debounce<T>(durationSelector: (value: T) => ObservableInput<any>
           // and we're going to emit the value.
           durationSubscriber = createOperatorSubscriber(subscriber, emit, noop);
           // Subscribe to the duration.
-          innerFrom(durationSelector(value)).subscribe(durationSubscriber);
+          from(durationSelector(value)).subscribe(durationSubscriber);
         },
         () => {
           // Source completed.

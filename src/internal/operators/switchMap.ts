@@ -1,6 +1,6 @@
 import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
@@ -87,7 +87,7 @@ export function switchMap<T, O extends ObservableInput<any>>(
           innerSubscriber?.unsubscribe();
           const outerIndex = index++;
           // Start the next inner subscription
-          innerFrom(project(value, outerIndex)).subscribe(
+          from(project(value, outerIndex)).subscribe(
             (innerSubscriber = createOperatorSubscriber(subscriber, undefined, () => {
               // The inner has completed. Null out the inner subscriber to
               // free up memory and to signal that we have no inner subscription

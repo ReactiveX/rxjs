@@ -2,7 +2,7 @@ import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 
 import { operate } from '../util/lift';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -81,7 +81,7 @@ export function audit<T>(durationSelector: (value: T) => ObservableInput<any>): 
           hasValue = true;
           lastValue = value;
           if (!durationSubscriber) {
-            innerFrom(durationSelector(value)).subscribe(
+            from(durationSelector(value)).subscribe(
               (durationSubscriber = createOperatorSubscriber(subscriber, endDuration, cleanupDuration))
             );
           }

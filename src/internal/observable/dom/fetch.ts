@@ -1,6 +1,6 @@
 import { createOperatorSubscriber } from '../../operators/OperatorSubscriber';
 import { Observable } from '../../Observable';
-import { innerFrom } from '../../observable/innerFrom';
+import { from } from '../from';
 import { ObservableInput } from '../../types';
 
 export function fromFetch<T>(
@@ -150,7 +150,7 @@ export function fromFetch<T>(
           // If we have a selector function, use it to project our response.
           // Note that any error that comes from our selector will be
           // sent to the promise `catch` below and handled.
-          innerFrom(selector(response)).subscribe(
+          from(selector(response)).subscribe(
             createOperatorSubscriber(
               subscriber,
               // Values are passed through to the subscriber

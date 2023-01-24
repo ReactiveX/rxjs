@@ -4,7 +4,7 @@ import { Subscription } from '../Subscription';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { identity } from '../util/identity';
 import { timer } from '../observable/timer';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 
 /**
  * The {@link retry} operator configuration object. `retry` either accepts a `number`
@@ -127,7 +127,7 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
                     // The user specified a retry delay.
                     // They gave us a number, use a timer, otherwise, it's a function,
                     // and we're going to call it to get a notifier.
-                    const notifier = typeof delay === 'number' ? timer(delay) : innerFrom(delay(err, soFar));
+                    const notifier = typeof delay === 'number' ? timer(delay) : from(delay(err, soFar));
                     const notifierSubscriber = createOperatorSubscriber(
                       subscriber,
                       () => {

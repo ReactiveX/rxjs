@@ -1,7 +1,7 @@
 import { OperatorFunction, ObservableInput } from '../types';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 
 /**
  * Compares all values of two observables in sequence using an optional comparator function
@@ -120,7 +120,7 @@ export function sequenceEqual<T>(
 
     // Subscribe to each source.
     source.subscribe(createSubscriber(aState, bState));
-    innerFrom(compareTo).subscribe(createSubscriber(bState, aState));
+    from(compareTo).subscribe(createSubscriber(bState, aState));
   });
 }
 

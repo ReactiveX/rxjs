@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { ObservedValueOf, ObservableInputTuple, ObservableInput } from '../types';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
-import { innerFrom } from './innerFrom';
+import { from } from './from';
 import { popResultSelector } from '../util/args';
 import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
@@ -158,7 +158,7 @@ export function forkJoin(...args: any[]): Observable<any> {
     let remainingEmissions = length;
     for (let sourceIndex = 0; sourceIndex < length; sourceIndex++) {
       let hasValue = false;
-      innerFrom(sources[sourceIndex]).subscribe(
+      from(sources[sourceIndex]).subscribe(
         createOperatorSubscriber(
           subscriber,
           (value) => {

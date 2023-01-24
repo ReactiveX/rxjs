@@ -1,7 +1,7 @@
 import { OperatorFunction, ObservableInputTuple } from '../types';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { identity } from '../util/identity';
 import { noop } from '../util/noop';
 import { popResultSelector } from '../util/args';
@@ -74,7 +74,7 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | 
     // from them. This is an important distinction because subscription constitutes
     // a side-effect.
     for (let i = 0; i < len; i++) {
-      innerFrom(inputs[i]).subscribe(
+      from(inputs[i]).subscribe(
         createOperatorSubscriber(
           subscriber,
           (value) => {

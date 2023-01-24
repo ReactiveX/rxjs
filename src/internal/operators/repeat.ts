@@ -3,7 +3,7 @@ import { EMPTY } from '../observable/empty';
 import { operate } from '../util/lift';
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { createOperatorSubscriber } from './OperatorSubscriber';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { timer } from '../observable/timer';
 
 export interface RepeatConfig {
@@ -135,7 +135,7 @@ export function repeat<T>(countOrConfig?: number | RepeatConfig): MonoTypeOperat
           sourceSub?.unsubscribe();
           sourceSub = null;
           if (delay != null) {
-            const notifier = typeof delay === 'number' ? timer(delay) : innerFrom(delay(soFar));
+            const notifier = typeof delay === 'number' ? timer(delay) : from(delay(soFar));
             const notifierSubscriber = createOperatorSubscriber(subscriber, () => {
               notifierSubscriber.unsubscribe();
               subscribeToSource();

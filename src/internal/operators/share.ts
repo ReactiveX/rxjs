@@ -1,4 +1,4 @@
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { Subject } from '../Subject';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
@@ -236,7 +236,7 @@ export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction
             dest.complete();
           },
         });
-        innerFrom(source).subscribe(connection);
+        from(source).subscribe(connection);
       }
     })(wrapperSource);
   };
@@ -263,5 +263,5 @@ function handleReset<T extends unknown[] = never[]>(
     },
   });
 
-  return innerFrom(on(...args)).subscribe(onSubscriber);
+  return from(on(...args)).subscribe(onSubscriber);
 }
