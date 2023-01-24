@@ -4,7 +4,6 @@ import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { Subscriber } from '../Subscriber';
 import { from } from './from';
 import { identity } from '../util/identity';
-import { Subscription } from '../Subscription';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { popResultSelector } from '../util/args';
 import { createObject } from '../util/createObject';
