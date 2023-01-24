@@ -52,10 +52,6 @@ it('should accept an array of Observables', () => {
 //   const o = from([of(1), ['test'], iterable]); // $__TODO__ExpectType Observable<IterableIterator<number> | Observable<number> | string[]>
 // });
 
-it('should support scheduler', () => {
-  const a = from([1, 2, 3], animationFrameScheduler); // $ExpectType Observable<number>
-});
-
 it('should accept a ReadableStream', () => {
   const stream = new ReadableStream<string>({
     pull(controller) {

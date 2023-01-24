@@ -1,9 +1,10 @@
 import { Observable } from '../Observable';
 import { ObservableInput, ObservableInputTuple, SchedulerLike } from '../types';
 import { mergeAll } from '../operators/mergeAll';
-import { from } from './from';
 import { EMPTY } from './empty';
 import { popNumber, popScheduler } from '../util/args';
+import { scheduled } from '../scheduled/scheduled';
+import { from } from './from';
 
 export function merge<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
 export function merge<A extends readonly unknown[]>(...sourcesAndConcurrency: [...ObservableInputTuple<A>, number?]): Observable<A[number]>;
@@ -97,5 +98,5 @@ export function merge(...args: (ObservableInput<unknown> | number | SchedulerLik
     ? // One source? Just return it.
       from(sources[0])
     : // Merge all sources
-      mergeAll(concurrent)(from(sources, scheduler));
+      mergeAll(concurrent)(scheduler ? scheduled(sources, scheduler) : from(sources));
 }
