@@ -1,5 +1,6 @@
 import { OperatorFunction, ValueFromArray } from '../types';
-import { Observable } from '../Observable';
+import { operate } from '../util/lift';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 // Devs are more likely to pass null or undefined than they are a scheduler
 // without accompanying values. To make things easier for (naughty) devs who
@@ -50,17 +51,12 @@ export function startWith<T, A extends readonly unknown[] = T[]>(...values: A): 
  * @see {@link concat}
  */
 export function startWith<T, D>(...values: D[]): OperatorFunction<T, T | D> {
-  return (source) =>
-    new Observable((subscriber) => {
-      for (let i = 0; i < values.length; i++) {
-        if (subscriber.closed) {
-          return;
-        }
-        subscriber.next(values[i]);
-      }
-      if (subscriber.closed) {
-        return;
-      }
-      return source.subscribe(subscriber);
-    });
+  return operate((source, subscriber) => {
+    // Because this will run synchronously, we don't need to do any fancy chaining here.
+    // Just run it and check to see if we're closed before we move on.
+    subscribeToArray(
+      values,
+      createOperatorSubscriber(subscriber, undefined, () => source.subscribe(subscriber))
+    );
+  });
 }

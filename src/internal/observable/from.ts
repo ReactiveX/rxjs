@@ -133,7 +133,7 @@ function fromInteropObservable<T>(obj: any) {
  * `from` conditionals because we *know* they're dealing with an array.
  * @param array The array to emit values from
  */
-export function fromArrayLike<T>(array: ArrayLike<T>) {
+function fromArrayLike<T>(array: ArrayLike<T>) {
   return new Observable((subscriber: Subscriber<T>) => {
     subscribeToArray(array, subscriber);
   });
