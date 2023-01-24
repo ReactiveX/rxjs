@@ -57,7 +57,6 @@ export { partition } from '../internal/operators/partition';
 export { pluck } from '../internal/operators/pluck';
 export { publish } from '../internal/operators/publish';
 export { publishBehavior } from '../internal/operators/publishBehavior';
-export { publishReplay } from '../internal/operators/publishReplay';
 export { race } from '../internal/operators/race';
 export { raceWith } from '../internal/operators/raceWith';
 export { reduce } from '../internal/operators/reduce';

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { refCount, publish, publishReplay, first } from 'rxjs/operators';
-import { NEVER, noop, Observable, Subject } from 'rxjs';
+import { refCount, publish } from 'rxjs/operators';
+import { NEVER, noop, Observable } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {refCount} */
@@ -70,44 +70,5 @@ describe('refCount', () => {
     expect((connectable as any)._refCount).to.equal(0);
     expect(unsubscribeCalled).to.be.true;
     done();
-  });
-
-  it('should not unsubscribe when a subscriber synchronously unsubscribes if other subscribers are present', () => {
-    let unsubscribeCalled = false;
-    const connectable = new Observable<boolean>((observer) => {
-      observer.next(true);
-      return () => {
-        unsubscribeCalled = true;
-      };
-    }).pipe(publishReplay(1));
-
-    const refCounted = connectable.pipe(refCount());
-
-    refCounted.subscribe();
-    refCounted.subscribe().unsubscribe();
-
-    expect((connectable as any)._refCount).to.equal(1);
-    expect(unsubscribeCalled).to.be.false;
-  });
-
-  it('should not unsubscribe when a subscriber synchronously unsubscribes if other subscribers are present and the source is a Subject', () => {
-    const arr: string[] = [];
-    const subject = new Subject<string>();
-    const connectable = subject.pipe(publishReplay(1));
-    const refCounted = connectable.pipe(refCount());
-
-    refCounted.subscribe((val) => {
-      arr.push(val);
-    });
-
-    subject.next('the number one');
-
-    refCounted.pipe(first()).subscribe().unsubscribe();
-
-    subject.next('the number two');
-
-    expect((connectable as any)._refCount).to.equal(1);
-    expect(arr[0]).to.equal('the number one');
-    expect(arr[1]).to.equal('the number two');
   });
 });

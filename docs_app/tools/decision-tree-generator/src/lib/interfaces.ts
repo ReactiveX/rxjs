@@ -68,7 +68,6 @@ export type ApiUnion =
   | 'pluck'
   | 'publish'
   | 'publishBehavior'
-  | 'publishReplay'
   | 'race'
   | 'range'
   | 'reduce'
