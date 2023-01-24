@@ -139,7 +139,7 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
  * // ...
  * ```
  *
- * @see {@link publish}
+ * @see {@link connectable}
  * @see {@link share}
  *
  * @param configOrBufferSize Maximum element count of the replay buffer or {@link ShareReplayConfig configuration}
