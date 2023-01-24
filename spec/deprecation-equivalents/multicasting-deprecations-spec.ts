@@ -1,6 +1,6 @@
 /** @prettier */
 import { Observable, ConnectableObservable, connectable, of, AsyncSubject, BehaviorSubject, ReplaySubject, Subject, merge } from 'rxjs';
-import { connect, share, multicast, publish, publishReplay, publishBehavior, refCount, repeat, retry } from 'rxjs/operators';
+import { connect, share, multicast, publish, publishBehavior, refCount, repeat, retry } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -42,30 +42,12 @@ describe('multicasting equivalent tests', () => {
       )
   );
 
-  testEquivalents(
-    'publishReplay(3, 10), refCount() and share({ connector: () => new ReplaySubject(3, 10), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })',
-    (source) => source.pipe(publishReplay(3, 10), refCount()),
-    (source) =>
-      source.pipe(
-        share({ connector: () => new ReplaySubject(3, 10), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })
-      )
-  );
-
   const fn = (source: Observable<any>) => merge(source, source);
 
   testEquivalents(
     'publish(fn) and connect({ setup: fn })',
     (source) => source.pipe(publish(fn)),
     (source) => source.pipe(connect(fn))
-  );
-
-  testEquivalents(
-    'publishReplay(3, 10, fn) and `subject = new ReplaySubject(3, 10), connect({ connector: () => subject , setup: fn })`',
-    (source) => source.pipe(publishReplay(3, 10, fn)),
-    (source) => {
-      const subject = new ReplaySubject(3, 10);
-      return source.pipe(connect(fn, { connector: () => subject }));
-    }
   );
 
   /**

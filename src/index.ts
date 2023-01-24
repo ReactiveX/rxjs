@@ -152,7 +152,6 @@ export { pairwise } from './internal/operators/pairwise';
 export { pluck } from './internal/operators/pluck';
 export { publish } from './internal/operators/publish';
 export { publishBehavior } from './internal/operators/publishBehavior';
-export { publishReplay } from './internal/operators/publishReplay';
 export { raceWith } from './internal/operators/raceWith';
 export { reduce } from './internal/operators/reduce';
 export { repeat, RepeatConfig } from './internal/operators/repeat';
