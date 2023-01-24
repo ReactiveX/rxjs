@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { publish, zip, mergeMapTo, mergeMap, tap, refCount, retry, repeat } from 'rxjs/operators';
+import { publish, zipWith, mergeMapTo, mergeMap, map, tap, refCount, retry, repeat } from 'rxjs/operators';
 import { ConnectableObservable, of, Subscription, Observable, pipe } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -75,7 +75,14 @@ describe('publish operator', () => {
         '                      ----^-------!',
         '                      --------^---!',
       ];
-      const published = source.pipe(publish((x) => x.pipe(zip(x, (a, b) => (parseInt(a) + parseInt(b)).toString()))));
+      const published = source.pipe(
+        publish((x) =>
+          x.pipe(
+            zipWith(x),
+            map(([a, b]) => (parseInt(a) + parseInt(b)).toString())
+          )
+        )
+      );
       const subscriber1 = hot('a|           ').pipe(mergeMapTo(published));
       const expected1 = '      -2-4-6----8-|';
       const subscriber2 = hot('----b|       ').pipe(mergeMapTo(published));

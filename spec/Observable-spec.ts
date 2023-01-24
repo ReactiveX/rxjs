@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { TeardownLogic } from '../src/internal/types';
 import { Observable, config, Subscription, Subscriber, Operator, NEVER, Subject, of, throwError, EMPTY } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatestWith, concatWith, mergeWith, race, zip, catchError, publish, publishLast, publishBehavior, share} from 'rxjs/operators';
+import { map, multicast, refCount, filter, count, tap, combineLatestWith, concatWith, mergeWith, race, zipWith, catchError, publish, publishLast, publishBehavior, share} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -1124,21 +1124,21 @@ describe('Observable.lift', () => {
     });
   });
 
-  it('should compose through zip', () => {
+  it('should compose through zipWith', () => {
     rxTestScheduler.run(({ cold, expectObservable }) => {
       const e1 = cold(' -a--b-----c-d-e-|');
       const e2 = cold(' --1--2-3-4---|   ');
       const expected = '--A--B----C-D|   ';
 
-      const result = MyCustomObservable.from(e1).pipe(zip(e2, (a, b) => String(a) + String(b)));
+      const result = MyCustomObservable.from(e1).pipe(zipWith(e2));
 
       expect(result instanceof MyCustomObservable).to.be.true;
 
       expectObservable(result).toBe(expected, {
-        A: 'a1',
-        B: 'b2',
-        C: 'c3',
-        D: 'd4',
+        A: ['a', '1'],
+        B: ['b', '2'],
+        C: ['c', '3'],
+        D: ['d', '4'],
       });
     });
   });
