@@ -152,8 +152,6 @@ export interface TapObserver<T> extends Observer<T> {
  * @see {@link TapObserver}
  *
  * @param observerOrNext A next handler or partial observer
- * @param error An error handler
- * @param complete A completion handler
  * @return A function that returns an Observable identical to the source, but
  * runs the specified Observer or callback(s) for each item.
  */
