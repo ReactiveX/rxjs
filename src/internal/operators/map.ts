@@ -30,7 +30,6 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * ```
  *
  * @see {@link mapTo}
- * @see {@link pluck}
  *
  * @param {function(value: T, index: number): R} project The function to apply
  * to each `value` emitted by the source Observable. The `index` parameter is

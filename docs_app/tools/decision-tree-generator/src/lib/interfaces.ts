@@ -64,7 +64,6 @@ export type ApiUnion =
   | 'pairwise'
   | 'partition'
   | 'pipe'
-  | 'pluck'
   | 'race'
   | 'range'
   | 'reduce'

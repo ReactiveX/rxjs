@@ -127,7 +127,6 @@ describe('index', () => {
     expect(index.min).to.exist;
     expect(index.observeOn).to.exist;
     expect(index.pairwise).to.exist;
-    expect(index.pluck).to.exist;
     expect(index.raceWith).to.exist;
     expect(index.reduce).to.exist;
     expect(index.repeat).to.exist;
