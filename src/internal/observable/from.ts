@@ -116,7 +116,7 @@ export function from<T>(input: ObservableInput<T>): Observable<T> {
  * Creates an RxJS Observable from an object that implements `Symbol.observable`.
  * @param obj An object that properly implements `Symbol.observable`.
  */
-export function fromInteropObservable<T>(obj: any) {
+function fromInteropObservable<T>(obj: any) {
   return new Observable((subscriber: Subscriber<T>) => {
     const obs = obj[Symbol_observable]();
     if (isFunction(obs.subscribe)) {
@@ -134,13 +134,13 @@ export function fromInteropObservable<T>(obj: any) {
  * `from` conditionals because we *know* they're dealing with an array.
  * @param array The array to emit values from
  */
-export function fromArrayLike<T>(array: ArrayLike<T>) {
+function fromArrayLike<T>(array: ArrayLike<T>) {
   return new Observable((subscriber: Subscriber<T>) => {
     subscribeToArray(array, subscriber);
   });
 }
 
-export function fromPromise<T>(promise: PromiseLike<T>) {
+function fromPromise<T>(promise: PromiseLike<T>) {
   return new Observable((subscriber: Subscriber<T>) => {
     promise
       .then(
@@ -156,7 +156,7 @@ export function fromPromise<T>(promise: PromiseLike<T>) {
   });
 }
 
-export function fromIterable<T>(iterable: Iterable<T>) {
+function fromIterable<T>(iterable: Iterable<T>) {
   return new Observable((subscriber: Subscriber<T>) => {
     for (const value of iterable) {
       subscriber.next(value);
@@ -168,13 +168,13 @@ export function fromIterable<T>(iterable: Iterable<T>) {
   });
 }
 
-export function fromAsyncIterable<T>(asyncIterable: AsyncIterable<T>) {
+function fromAsyncIterable<T>(asyncIterable: AsyncIterable<T>) {
   return new Observable((subscriber: Subscriber<T>) => {
     process(asyncIterable, subscriber).catch((err) => subscriber.error(err));
   });
 }
 
-export function fromReadableStreamLike<T>(readableStream: ReadableStreamLike<T>) {
+function fromReadableStreamLike<T>(readableStream: ReadableStreamLike<T>) {
   return fromAsyncIterable(readableStreamLikeToAsyncGenerator(readableStream));
 }
 
