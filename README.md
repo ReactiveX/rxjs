@@ -4,13 +4,9 @@
 [![npm version](https://badge.fury.io/js/rxjs.svg)](http://badge.fury.io/js/rxjs)
 [![Join the chat at https://gitter.im/Reactive-Extensions/RxJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Reactive-Extensions/RxJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# The Roadmap from RxJS 7 to 8
+# RxJS 8
 
-Curious what's next for RxJS? Follow along with [Issue 6367](https://github.com/ReactiveX/rxjs/issues/6367).
-
-# RxJS 7
-
-### FOR 6.X PLEASE GO TO [THE 6.x BRANCH](https://github.com/ReactiveX/rxjs/tree/6.x)
+### FOR 7.X PLEASE GO TO [THE 7.x BRANCH](https://github.com/ReactiveX/rxjs/tree/7.x)
 
 Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS) and is the latest production-ready version of RxJS. This rewrite is meant to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.
 
@@ -23,7 +19,8 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 
 ## Versions In This Repository
 
-- [master](https://github.com/ReactiveX/rxjs/commits/master) - This is all of the current work, which is against v7 of RxJS right now
+- [master](https://github.com/ReactiveX/rxjs/commits/master) - This is all of the current work, which is against v8 of RxJS right now
+- [6.x](https://github.com/ReactiveX/rxjs/tree/7.x) - This is the branch for version 7.X
 - [6.x](https://github.com/ReactiveX/rxjs/tree/6.x) - This is the branch for version 6.X
 
 Most PRs should be made to **master**.
