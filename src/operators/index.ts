@@ -56,7 +56,6 @@ export { pairwise } from '../internal/operators/pairwise';
 export { partition } from '../internal/operators/partition';
 export { pluck } from '../internal/operators/pluck';
 export { publish } from '../internal/operators/publish';
-export { publishBehavior } from '../internal/operators/publishBehavior';
 export { race } from '../internal/operators/race';
 export { raceWith } from '../internal/operators/raceWith';
 export { reduce } from '../internal/operators/reduce';
