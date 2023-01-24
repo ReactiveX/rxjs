@@ -1,3 +1,4 @@
+import { subscribeToArray } from '../util/subscribeToArray';
 import { isArrayLike } from '../util/isArrayLike';
 import { isPromise } from '../util/isPromise';
 import { Observable } from '../Observable';
@@ -65,19 +66,7 @@ export function fromInteropObservable<T>(obj: any) {
  */
 export function fromArrayLike<T>(array: ArrayLike<T>) {
   return new Observable((subscriber: Subscriber<T>) => {
-    // Loop over the array and emit each value. Note two things here:
-    // 1. We're making sure that the subscriber is not closed on each loop.
-    //    This is so we don't continue looping over a very large array after
-    //    something like a `take`, `takeWhile`, or other synchronous unsubscription
-    //    has already unsubscribed.
-    // 2. In this form, reentrant code can alter that array we're looping over.
-    //    This is a known issue, but considered an edge case. The alternative would
-    //    be to copy the array before executing the loop, but this has
-    //    performance implications.
-    for (let i = 0; i < array.length && !subscriber.closed; i++) {
-      subscriber.next(array[i]);
-    }
-    subscriber.complete();
+    subscribeToArray(array, subscriber);
   });
 }
 

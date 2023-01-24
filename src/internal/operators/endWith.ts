@@ -1,8 +1,8 @@
 /** prettier */
-import { fromArrayLike } from '../observable/innerFrom';
+import { subscribeToArray } from '../util/subscribeToArray';
 import { OperatorFunction, ValueFromArray } from '../types';
 import { operate } from '../util/lift';
-import { concatAll } from './concatAll';
+import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
 
 /**
  * Returns an observable that will emit all values from the source, then synchronously emit
@@ -53,6 +53,10 @@ import { concatAll } from './concatAll';
  */
 export function endWith<T, A extends readonly unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>> {
   return operate((source, subscriber) => {
-    concatAll()(fromArrayLike([source, fromArrayLike(values)])).subscribe(subscriber);
+    source.subscribe(
+      createOperatorSubscriber(subscriber, undefined, () => {
+        subscribeToArray(values as readonly ValueFromArray<A>[], subscriber);
+      })
+    );
   });
 }
