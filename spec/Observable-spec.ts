@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { TeardownLogic } from '../src/internal/types';
 import { Observable, config, Subscription, Subscriber, Operator, NEVER, Subject, of, throwError, EMPTY } from 'rxjs';
-import { map, filter, count, tap, combineLatestWith, concatWith, mergeWith, race, zipWith, catchError, share} from 'rxjs/operators';
+import { map, filter, count, tap, combineLatestWith, concatWith, mergeWith, raceWith, zipWith, catchError, share} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -867,7 +867,7 @@ describe('Observable.lift', () => {
     });
   });
 
-  it('should compose through race', () => {
+  it('should compose through raceWith', () => {
     rxTestScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const e1 = cold(' ---a-----b-----c----|');
       const e1subs = '  ^-------------------!';
@@ -876,7 +876,7 @@ describe('Observable.lift', () => {
       const expected = '---a-----b-----c----|';
 
       const result = MyCustomObservable.from<string>(e1).pipe(
-        race(e2)
+        raceWith(e2)
       );
 
       expect(result instanceof MyCustomObservable).to.be.true;
