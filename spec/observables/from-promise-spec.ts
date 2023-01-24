@@ -1,8 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { asapScheduler, from } from 'rxjs';
-
-declare const process: any;
+import { from } from 'rxjs';
 
 /** @test {fromPromise} */
 describe('from (fromPromise)', () => {
@@ -84,49 +82,6 @@ describe('from (fromPromise)', () => {
         }, complete: () => {
           done();
         } });
-  });
-
-  it('should emit a value from a resolved promise on a separate scheduler', (done) => {
-    const promise = Promise.resolve(42);
-    from(promise, asapScheduler)
-      .subscribe(
-        { next: (x) => { expect(x).to.equal(42); }, error: (x) => {
-          done(new Error('should not be called'));
-        }, complete: () => {
-          done();
-        } });
-  });
-
-  it('should raise error from a rejected promise on a separate scheduler', (done) => {
-    const promise = Promise.reject('bad');
-    from(promise, asapScheduler)
-      .subscribe(
-        { next: (x) => { done(new Error('should not be called')); }, error: (e) => {
-          expect(e).to.equal('bad');
-          done();
-        }, complete: () => {
-          done(new Error('should not be called'));
-        } });
-  });
-
-  it('should share the underlying promise with multiple subscribers on a separate scheduler', (done) => {
-    const promise = Promise.resolve(42);
-    const observable = from(promise, asapScheduler);
-
-    observable
-      .subscribe(
-        { next: (x) => { expect(x).to.equal(42); }, error: (x) => {
-          done(new Error('should not be called'));
-        } });
-    setTimeout(() => {
-      observable
-        .subscribe(
-          { next: (x) => { expect(x).to.equal(42); }, error: (x) => {
-            done(new Error('should not be called'));
-          }, complete: () => {
-            done();
-          } });
-    });
   });
 
   it('should not emit, throw or complete if immediately unsubscribed', (done) => {
