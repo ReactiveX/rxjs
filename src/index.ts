@@ -147,7 +147,6 @@ export { min } from './internal/operators/min';
 export { observeOn } from './internal/operators/observeOn';
 export { onErrorResumeNextWith } from './internal/operators/onErrorResumeNextWith';
 export { pairwise } from './internal/operators/pairwise';
-export { pluck } from './internal/operators/pluck';
 export { raceWith } from './internal/operators/raceWith';
 export { reduce } from './internal/operators/reduce';
 export { repeat, RepeatConfig } from './internal/operators/repeat';
