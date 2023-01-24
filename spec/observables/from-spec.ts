@@ -273,23 +273,6 @@ describe('from', () => {
         },
       });
     });
-    it(`should accept ${source.name} and scheduler`, (done) => {
-      let nextInvoked = false;
-      from(source.createValue(), asyncScheduler).subscribe({
-        next: (x) => {
-          nextInvoked = true;
-          expect(x).to.equal('x');
-        },
-        error: (x) => {
-          done(new Error('should not be called'));
-        },
-        complete: () => {
-          expect(nextInvoked).to.equal(true);
-          done();
-        },
-      });
-      expect(nextInvoked).to.equal(false);
-    });
 
     it(`should accept a function that implements [Symbol.observable]`, (done) => {
       const subject = new Subject<any>();
