@@ -5,7 +5,6 @@ import { expect } from 'chai';
 describe('index', () => {
   it('should export Observable', () => {
     expect(index.Observable).to.exist;
-    expect(index.ConnectableObservable).to.exist;
     // Interfaces can be checked by creating a variable of that type
     let operator: index.Operator<any, any>;
   });
@@ -135,7 +134,6 @@ describe('index', () => {
     expect(index.repeatWhen).to.exist;
     expect(index.retry).to.exist;
     expect(index.retryWhen).to.exist;
-    expect(index.refCount).to.exist;
     expect(index.sample).to.exist;
     expect(index.sampleTime).to.exist;
     expect(index.scan).to.exist;

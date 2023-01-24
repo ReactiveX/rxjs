@@ -58,7 +58,6 @@ describe('operators/index', () => {
     expect(index.repeatWhen).to.exist;
     expect(index.retry).to.exist;
     expect(index.retryWhen).to.exist;
-    expect(index.refCount).to.exist;
     expect(index.sample).to.exist;
     expect(index.sampleTime).to.exist;
     expect(index.scan).to.exist;
