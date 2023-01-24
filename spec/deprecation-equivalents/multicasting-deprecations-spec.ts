@@ -1,6 +1,6 @@
 /** @prettier */
 import { Observable, ConnectableObservable, connectable, of, AsyncSubject, BehaviorSubject, ReplaySubject, Subject, merge } from 'rxjs';
-import { connect, share, multicast, publish, refCount, repeat, retry } from 'rxjs/operators';
+import { connect, share, multicast, refCount, repeat, retry } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -25,20 +25,6 @@ describe('multicasting equivalent tests', () => {
     'multicast(new Subject()), refCount() and share({ resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })',
     (source) => source.pipe(multicast(new Subject()), refCount()),
     (source) => source.pipe(share({ resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false }))
-  );
-
-  testEquivalents(
-    'publish(), refCount() and share({ resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })',
-    (source) => source.pipe(publish(), refCount()),
-    (source) => source.pipe(share({ resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false }))
-  );
-
-  const fn = (source: Observable<any>) => merge(source, source);
-
-  testEquivalents(
-    'publish(fn) and connect({ setup: fn })',
-    (source) => source.pipe(publish(fn)),
-    (source) => source.pipe(connect(fn))
   );
 
   /**

@@ -54,7 +54,6 @@ describe('operators/index', () => {
     expect(index.pairwise).to.exist;
     expect(index.partition).to.exist;
     expect(index.pluck).to.exist;
-    expect(index.publish).to.exist;
     expect(index.reduce).to.exist;
     expect(index.repeat).to.exist;
     expect(index.repeatWhen).to.exist;

@@ -70,7 +70,7 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * as messages pushed via `next`. Also bear in mind that these messages will be sent on *every* subscription and
  * unsubscription. This is potentially dangerous, because one consumer of an Observable may unsubscribe and the server
  * might stop sending messages, since it got unsubscription message. This needs to be handled
- * on the server or using {@link publish} on a Observable returned from 'multiplex'.
+ * on the server or using {@link connectable} on a Observable returned from 'multiplex'.
  *
  * Last argument to `multiplex` is a `messageFilter` function which should return a boolean. It is used to filter out messages
  * sent by the server to only those that belong to simulated WebSocket stream. For example, server might mark these

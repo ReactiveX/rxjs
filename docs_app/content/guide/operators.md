@@ -216,7 +216,6 @@ Also see the [Join Creation Operators](#join-creation-operators) section above.
 ### Multicasting Operators
 
 - [`multicast`](/api/operators/multicast)
-- [`publish`](/api/operators/publish)
 - [`share`](/api/operators/share)
 
 ### Error Handling Operators

@@ -66,7 +66,6 @@ export type ApiUnion =
   | 'partition'
   | 'pipe'
   | 'pluck'
-  | 'publish'
   | 'race'
   | 'range'
   | 'reduce'
