@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { TeardownLogic } from '../src/internal/types';
 import { Observable, config, Subscription, Subscriber, Operator, NEVER, Subject, of, throwError, EMPTY } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatestWith, concatWith, mergeWith, race, zipWith, catchError, share} from 'rxjs/operators';
+import { map, refCount, filter, count, tap, combineLatestWith, concatWith, mergeWith, race, zipWith, catchError, share} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -759,32 +759,6 @@ describe('Observable.lift', () => {
     );
   });
 
-  it('should compose through multicast and refCount', (done) => {
-    const result = new MyCustomObservable<number>((observer) => {
-      observer.next(1);
-      observer.next(2);
-      observer.next(3);
-      observer.complete();
-    }).pipe(
-      multicast(() => new Subject<number>()),
-      refCount(),
-      map((x) => 10 * x)
-    );
-
-    expect(result instanceof MyCustomObservable).to.be.true;
-
-    const expected = [10, 20, 30];
-
-    result.subscribe(
-      { next: function (x) {
-        expect(x).to.equal(expected.shift());
-      }, error: () => {
-        done(new Error('should not be called'));
-      }, complete: () => {
-        done();
-      } }
-    );
-  });
 
   it('should composes Subjects in the simple case', () => {
     const subject = new Subject<number>();
@@ -838,70 +812,6 @@ describe('Observable.lift', () => {
 
     expect(emitted1).to.deep.equal([100, 200, 300]);
     expect(emitted2).to.deep.equal([0, 10, 20]);
-  });
-
-  /**
-   * This section outlines one of the reasons that we need to get rid of operators that return
-   * Connectable observable. Likewise it also reveals a slight design flaw in `lift`. It
-   * probably should have never tried to compose through the Subject's observer methods.
-   * If you're a user and you're reading this... NEVER try to use this feature, it's likely
-   * to go away at some point.
-   *
-   * The problem is that you can have the Subject parts, or you can have the ConnectableObservable parts,
-   * but you can't have both.
-   *
-   * NOTE: We can remove this in version 8 or 9, because we're getting rid of operators that
-   * return `ConnectableObservable`. :tada:
-   */
-  describe.skip('The lift through Connectable gaff', () => {
-    it('should compose through multicast and refCount, even if it is a Subject', () => {
-      const subject = new Subject<number>();
-
-      const result = subject.pipe(
-        multicast(() => new Subject<number>()),
-        refCount(),
-        map((x) => 10 * x)
-      ) as any as Subject<number>; // Yes, this is correct.
-
-      expect(result instanceof Subject).to.be.true;
-
-      const emitted: any[] = [];
-      result.subscribe(value => emitted.push(value));
-
-      result.next(10);
-      result.next(20);
-      result.next(30);
-
-      expect(emitted).to.deep.equal([100, 200, 300]);
-    });
-  });
-
-  it('should compose through multicast with selector function', (done) => {
-    const result = new MyCustomObservable<number>((observer) => {
-      observer.next(1);
-      observer.next(2);
-      observer.next(3);
-      observer.complete();
-    }).pipe(
-      multicast(
-        () => new Subject<number>(),
-        (shared) => shared.pipe(map((x) => 10 * x))
-      )
-    );
-
-    expect(result instanceof MyCustomObservable).to.be.true;
-
-    const expected = [10, 20, 30];
-
-    result.subscribe(
-      { next: function (x) {
-        expect(x).to.equal(expected.shift());
-      }, error: () => {
-        done(new Error('should not be called'));
-      }, complete: () => {
-        done();
-      } }
-    );
   });
 
   it('should compose through combineLatestWith', () => {

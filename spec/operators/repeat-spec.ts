@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { repeat, mergeMap, map, multicast, refCount, take } from 'rxjs/operators';
+import { repeat, mergeMap, map, share, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, Subject, Observable, timer } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -325,11 +325,7 @@ describe('repeat operator', () => {
     const expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
 
     of(1, 2, 3)
-      .pipe(
-        multicast(() => new Subject<number>()),
-        refCount(),
-        repeat(5)
-      )
+      .pipe(share({ connector: () => new Subject<number>() }), repeat(5))
       .subscribe({
         next: (x: number) => {
           expect(x).to.equal(expected.shift());

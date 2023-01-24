@@ -49,7 +49,6 @@ export { mergeMapTo } from '../internal/operators/mergeMapTo';
 export { mergeScan } from '../internal/operators/mergeScan';
 export { mergeWith } from '../internal/operators/mergeWith';
 export { min } from '../internal/operators/min';
-export { multicast } from '../internal/operators/multicast';
 export { observeOn } from '../internal/operators/observeOn';
 export { onErrorResumeNextWith } from '../internal/operators/onErrorResumeNextWith';
 export { pairwise } from '../internal/operators/pairwise';
