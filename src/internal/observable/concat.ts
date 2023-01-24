@@ -2,6 +2,7 @@ import { Observable } from '../Observable';
 import { ObservableInputTuple, SchedulerLike } from '../types';
 import { concatAll } from '../operators/concatAll';
 import { popScheduler } from '../util/args';
+import { scheduled } from '../scheduled/scheduled';
 import { from } from './from';
 
 export function concat<T extends readonly unknown[]>(...inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
@@ -111,5 +112,6 @@ export function concat<T extends readonly unknown[]>(
  * @param args Input Observables to concatenate.
  */
 export function concat(...args: any[]): Observable<unknown> {
-  return concatAll()(from(args, popScheduler(args)));
+  const scheduler = popScheduler(args);
+  return concatAll()(scheduler ? scheduled(args, scheduler) : from(args));
 }

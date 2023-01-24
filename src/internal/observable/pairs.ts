@@ -1,4 +1,5 @@
 import { Observable } from '../Observable';
+import { scheduled } from '../scheduled/scheduled';
 import { SchedulerLike } from '../types';
 import { from } from './from';
 
@@ -78,5 +79,6 @@ export function pairs(
  * @deprecated Use `from(Object.entries(obj))` instead. Will be removed in v8.
  */
 export function pairs(obj: any, scheduler?: SchedulerLike) {
-  return from(Object.entries(obj), scheduler as any);
+  const entries = Object.entries(obj);
+  return scheduler ? scheduled(entries, scheduler) : from(entries);
 }
