@@ -139,7 +139,7 @@ export function fromArrayLike<T>(array: ArrayLike<T>) {
   });
 }
 
-function fromPromise<T>(promise: PromiseLike<T>) {
+export function fromPromise<T>(promise: PromiseLike<T>) {
   return new Observable((subscriber: Subscriber<T>) => {
     promise
       .then(
@@ -205,7 +205,10 @@ export function subscribeToArray<T>(array: ArrayLike<T>, subscriber: Subscriber<
   //    be to copy the array before executing the loop, but this has
   //    performance implications.
   const length = array.length;
-  for (let i = 0; i < length && !subscriber.closed; i++) {
+  for (let i = 0; i < length; i++) {
+    if (subscriber.closed) {
+      return;
+    }
     subscriber.next(array[i]);
   }
   subscriber.complete();
