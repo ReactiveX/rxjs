@@ -132,7 +132,6 @@ describe('index', () => {
     expect(index.pluck).to.exist;
     expect(index.publish).to.exist;
     expect(index.publishBehavior).to.exist;
-    expect(index.publishLast).to.exist;
     expect(index.publishReplay).to.exist;
     expect(index.raceWith).to.exist;
     expect(index.reduce).to.exist;

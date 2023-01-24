@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { TeardownLogic } from '../src/internal/types';
 import { Observable, config, Subscription, Subscriber, Operator, NEVER, Subject, of, throwError, EMPTY } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatestWith, concatWith, mergeWith, race, zipWith, catchError, publish, publishLast, publishBehavior, share} from 'rxjs/operators';
+import { map, multicast, refCount, filter, count, tap, combineLatestWith, concatWith, mergeWith, race, zipWith, catchError, publish, publishBehavior, share} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -814,34 +814,6 @@ describe('Observable.lift', () => {
     );
   });
 
-
-  it('should compose through publishLast and refCount', (done) => {
-    const result = new MyCustomObservable<number>((observer) => {
-      observer.next(1);
-      observer.next(2);
-      observer.next(3);
-      observer.complete();
-    }).pipe(
-      publishLast(),
-      refCount(),
-      map((x) => 10 * x)
-    );
-
-    expect(result instanceof MyCustomObservable).to.be.true;
-
-    const expected = [30];
-
-    result.subscribe(
-      { next: function (x) {
-        expect(x).to.equal(expected.shift());
-      }, error: () => {
-        done(new Error('should not be called'));
-      }, complete: () => {
-        done();
-      } }
-    );
-  });
-
   it('should compose through publishBehavior and refCount', (done) => {
     const result = new MyCustomObservable<number>((observer) => {
       observer.next(1);
@@ -963,28 +935,6 @@ describe('Observable.lift', () => {
 
       const result = subject.pipe(
         publish(),
-        refCount(),
-        map((x) => 10 * x)
-      ) as any as Subject<number>; // Yes, this is correct.
-
-      expect(result instanceof Subject).to.be.true;
-
-      const emitted: any[] = [];
-      result.subscribe(value => emitted.push(value));
-
-      result.next(10);
-      result.next(20);
-      result.next(30);
-
-      expect(emitted).to.deep.equal([100, 200, 300]);
-    });
-
-
-    it('should compose through publishLast and refCount, even if it is a Subject', () => {
-      const subject = new Subject<number>();
-
-      const result = subject.pipe(
-        publishLast(),
         refCount(),
         map((x) => 10 * x)
       ) as any as Subject<number>; // Yes, this is correct.
