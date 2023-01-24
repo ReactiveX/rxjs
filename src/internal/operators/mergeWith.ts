@@ -1,5 +1,7 @@
+import { from } from '../observable/from';
+import { mergeAll } from '../operators/mergeAll';
+import { operate } from '../util/lift';
 import { ObservableInputTuple, OperatorFunction } from '../types';
-import { merge } from './merge';
 
 /**
  * Merge the values from all observables to a single observable result.
@@ -45,5 +47,7 @@ import { merge } from './merge';
 export function mergeWith<T, A extends readonly unknown[]>(
   ...otherSources: [...ObservableInputTuple<A>]
 ): OperatorFunction<T, T | A[number]> {
-  return merge(...otherSources);
+  return operate((source, subscriber) => {
+    mergeAll()(from([source, ...otherSources])).subscribe(subscriber);
+  });
 }

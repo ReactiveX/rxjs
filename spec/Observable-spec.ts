@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { TeardownLogic } from '../src/internal/types';
 import { Observable, config, Subscription, Subscriber, Operator, NEVER, Subject, of, throwError, EMPTY } from 'rxjs';
-import { map, multicast, refCount, filter, count, tap, combineLatestWith, concatWith, merge, race, zip, catchError, publish, publishLast, publishBehavior, share} from 'rxjs/operators';
+import { map, multicast, refCount, filter, count, tap, combineLatestWith, concatWith, mergeWith, race, zip, catchError, publish, publishLast, publishBehavior, share} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -1090,13 +1090,13 @@ describe('Observable.lift', () => {
       expectObservable(result).toBe(expected);
     });
   });
-  it('should compose through merge', () => {
+  it('should compose through mergeWith', () => {
     rxTestScheduler.run(({ cold, expectObservable }) => {
       const e1 = cold(' -a--b-| ');
       const e2 = cold(' --x--y-|');
       const expected = '-ax-by-|';
 
-      const result = MyCustomObservable.from(e1).pipe(merge(e2, rxTestScheduler));
+      const result = MyCustomObservable.from(e1).pipe(mergeWith(e2));
 
       expect(result instanceof MyCustomObservable).to.be.true;
 
