@@ -1,6 +1,6 @@
 import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
@@ -64,7 +64,7 @@ export function exhaustMap<T, O extends ObservableInput<any>>(
               innerSub = null;
               isComplete && subscriber.complete();
             });
-            innerFrom(project(outerValue, index++)).subscribe(innerSub);
+            from(project(outerValue, index++)).subscribe(innerSub);
           }
         },
         () => {

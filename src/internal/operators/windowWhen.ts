@@ -4,7 +4,7 @@ import { Subject } from '../Subject';
 import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { noop } from '../util/noop';
 
 /**
@@ -89,7 +89,7 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
       // Get our closing notifier.
       let closingNotifier: Observable<any>;
       try {
-        closingNotifier = innerFrom(closingSelector());
+        closingNotifier = from(closingSelector());
       } catch (err) {
         handleError(err);
         return;

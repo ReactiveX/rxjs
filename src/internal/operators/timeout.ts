@@ -4,7 +4,7 @@ import { isValidDate } from '../util/isDate';
 import { Subscription } from '../Subscription';
 import { operate } from '../util/lift';
 import { Observable } from '../Observable';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { createErrorClass } from '../util/createErrorClass';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { executeSchedule } from '../util/executeSchedule';
@@ -345,7 +345,7 @@ export function timeout<T, O extends ObservableInput<any>, M>(
         () => {
           try {
             originalSourceSubscription.unsubscribe();
-            innerFrom(
+            from(
               _with!({
                 meta,
                 lastValue,

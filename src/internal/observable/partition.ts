@@ -2,7 +2,7 @@ import { not } from '../util/not';
 import { filter } from '../operators/filter';
 import { ObservableInput } from '../types';
 import { Observable } from '../Observable';
-import { innerFrom } from './innerFrom';
+import { from } from './from';
 
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function partition<T, U extends T, A>(
@@ -81,8 +81,5 @@ export function partition<T>(
   predicate: (this: any, value: T, index: number) => boolean,
   thisArg?: any
 ): [Observable<T>, Observable<T>] {
-  return [filter(predicate, thisArg)(innerFrom(source)), filter(not(predicate, thisArg))(innerFrom(source))] as [
-    Observable<T>,
-    Observable<T>
-  ];
+  return [filter(predicate, thisArg)(from(source)), filter(not(predicate, thisArg))(from(source))] as [Observable<T>, Observable<T>];
 }

@@ -3,7 +3,7 @@ import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 import { ObservableInput, OperatorFunction } from '../types';
 import { operate } from '../util/lift';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
 import { arrRemove } from '../util/arrRemove';
@@ -69,7 +69,7 @@ export function windowToggle<T, O>(
       subscriber.error(err);
     };
 
-    innerFrom(openings).subscribe(
+    from(openings).subscribe(
       createOperatorSubscriber(
         subscriber,
         (openValue) => {
@@ -84,7 +84,7 @@ export function windowToggle<T, O>(
 
           let closingNotifier: Observable<any>;
           try {
-            closingNotifier = innerFrom(closingSelector(openValue));
+            closingNotifier = from(closingSelector(openValue));
           } catch (err) {
             handleError(err);
             return;

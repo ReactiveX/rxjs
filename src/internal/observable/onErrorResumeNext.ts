@@ -3,7 +3,7 @@ import { ObservableInputTuple } from '../types';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { OperatorSubscriber } from '../operators/OperatorSubscriber';
 import { noop } from '../util/noop';
-import { innerFrom } from './innerFrom';
+import { from } from './from';
 
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
@@ -84,7 +84,7 @@ export function onErrorResumeNext<A extends readonly unknown[]>(
       if (sourceIndex < nextSources.length) {
         let nextSource: Observable<A[number]>;
         try {
-          nextSource = innerFrom(nextSources[sourceIndex++]);
+          nextSource = from(nextSources[sourceIndex++]);
         } catch (err) {
           subscribeNext();
           return;

@@ -5,7 +5,7 @@ import { take } from './take';
 import { ignoreElements } from './ignoreElements';
 import { mapTo } from './mapTo';
 import { mergeMap } from './mergeMap';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 
 /** @deprecated The `subscriptionDelay` parameter will be removed in v8. */
 export function delayWhen<T>(
@@ -99,5 +99,5 @@ export function delayWhen<T>(
       concat(subscriptionDelay.pipe(take(1), ignoreElements()), source.pipe(delayWhen(delayDurationSelector)));
   }
 
-  return mergeMap((value, index) => innerFrom(delayDurationSelector(value, index)).pipe(take(1), mapTo(value)));
+  return mergeMap((value, index) => from(delayDurationSelector(value, index)).pipe(take(1), mapTo(value)));
 }

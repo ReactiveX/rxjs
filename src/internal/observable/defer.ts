@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { ObservedValueOf, ObservableInput } from '../types';
-import { innerFrom } from './innerFrom';
+import { from } from './from';
 
 /**
  * Creates an Observable that, on subscribe, calls an Observable factory to
@@ -16,7 +16,7 @@ import { innerFrom } from './innerFrom';
  * subscribes. It waits until an Observer subscribes to it, calls the given
  * factory function to get an Observable -- where a factory function typically
  * generates a new Observable -- and subscribes the Observer to this Observable.
- * Last but not least, an exception during the factory function call is 
+ * Last but not least, an exception during the factory function call is
  * transferred to the Observer by calling `error`.
  *
  * ## Example
@@ -51,6 +51,6 @@ import { innerFrom } from './innerFrom';
  */
 export function defer<R extends ObservableInput<any>>(observableFactory: () => R): Observable<ObservedValueOf<R>> {
   return new Observable<ObservedValueOf<R>>((subscriber) => {
-    innerFrom(observableFactory()).subscribe(subscriber);
+    from(observableFactory()).subscribe(subscriber);
   });
 }

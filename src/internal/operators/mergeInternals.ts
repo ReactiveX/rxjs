@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { Subscriber } from '../Subscriber';
 import { ObservableInput, SchedulerLike } from '../types';
 import { executeSchedule } from '../util/executeSchedule';
@@ -68,7 +68,7 @@ export function mergeInternals<T, R>(
     let innerComplete = false;
 
     // Start our inner subscription.
-    innerFrom(project(value, index++)).subscribe(
+    from(project(value, index++)).subscribe(
       createOperatorSubscriber(
         subscriber,
         (innerValue) => {

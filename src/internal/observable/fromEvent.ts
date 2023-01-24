@@ -1,4 +1,4 @@
-import { innerFrom } from '../observable/innerFrom';
+import { from } from './from';
 import { Observable } from '../Observable';
 import { mergeMap } from '../operators/mergeMap';
 import { isArrayLike } from '../util/isArrayLike';
@@ -269,9 +269,7 @@ export function fromEvent<T>(
   // event registry points, and we'd rather delegate to that when possible.
   if (!add) {
     if (isArrayLike(target)) {
-      return mergeMap((subTarget: any) => fromEvent(subTarget, eventName, options as EventListenerOptions))(
-        innerFrom(target)
-      ) as Observable<T>;
+      return mergeMap((subTarget: any) => fromEvent(subTarget, eventName, options as EventListenerOptions))(from(target)) as Observable<T>;
     }
   }
 

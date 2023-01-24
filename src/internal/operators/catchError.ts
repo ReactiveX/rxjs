@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { Subscription } from '../Subscription';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { operate } from '../util/lift';
 
@@ -114,7 +114,7 @@ export function catchError<T, O extends ObservableInput<any>>(
 
     innerSub = source.subscribe(
       createOperatorSubscriber(subscriber, undefined, undefined, (err) => {
-        handledResult = innerFrom(selector(err, catchError(selector)(source)));
+        handledResult = from(selector(err, catchError(selector)(source)));
         if (innerSub) {
           innerSub.unsubscribe();
           innerSub = null;

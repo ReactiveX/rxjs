@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 
@@ -75,7 +75,7 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => ObservableIn
         createOperatorSubscriber(subscriber, undefined, undefined, (err) => {
           if (!errors$) {
             errors$ = new Subject();
-            innerFrom(notifier(errors$)).subscribe(
+            from(notifier(errors$)).subscribe(
               createOperatorSubscriber(subscriber, () =>
                 // If we have an innerSub, this was an asynchronous call, kick off the retry.
                 // Otherwise, if we don't have an innerSub yet, that's because the inner subscription

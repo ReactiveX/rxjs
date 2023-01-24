@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { innerFrom } from '../observable/innerFrom';
+import { from } from '../observable/from';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 
@@ -63,7 +63,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
 
         // If the call to `notifier` throws, it will be caught by the OperatorSubscriber
         // In the main subscription -- in `subscribeForRepeatWhen`.
-        innerFrom(notifier(completions$)).subscribe(
+        from(notifier(completions$)).subscribe(
           createOperatorSubscriber(
             subscriber,
             () => {
