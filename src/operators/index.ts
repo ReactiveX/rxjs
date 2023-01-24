@@ -61,7 +61,6 @@ export { repeat, RepeatConfig } from '../internal/operators/repeat';
 export { repeatWhen } from '../internal/operators/repeatWhen';
 export { retry, RetryConfig } from '../internal/operators/retry';
 export { retryWhen } from '../internal/operators/retryWhen';
-export { refCount } from '../internal/operators/refCount';
 export { sample } from '../internal/operators/sample';
 export { sampleTime } from '../internal/operators/sampleTime';
 export { scan } from '../internal/operators/scan';

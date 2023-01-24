@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { TeardownLogic } from '../src/internal/types';
 import { Observable, config, Subscription, Subscriber, Operator, NEVER, Subject, of, throwError, EMPTY } from 'rxjs';
-import { map, refCount, filter, count, tap, combineLatestWith, concatWith, mergeWith, race, zipWith, catchError, share} from 'rxjs/operators';
+import { map, filter, count, tap, combineLatestWith, concatWith, mergeWith, race, zipWith, catchError, share} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
