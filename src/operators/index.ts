@@ -43,7 +43,6 @@ export { map } from '../internal/operators/map';
 export { mapTo } from '../internal/operators/mapTo';
 export { materialize } from '../internal/operators/materialize';
 export { max } from '../internal/operators/max';
-export { merge } from '../internal/operators/merge';
 export { mergeAll } from '../internal/operators/mergeAll';
 export { mergeMap } from '../internal/operators/mergeMap';
 export { mergeMapTo } from '../internal/operators/mergeMapTo';
