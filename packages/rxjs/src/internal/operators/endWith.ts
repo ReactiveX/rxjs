@@ -1,6 +1,6 @@
 /** prettier */
 import { Observable } from '../Observable';
-import { OperatorFunction, ValueFromArray } from '../types';
+import { OperatorFunction } from '../types';
 import { operate } from '../Subscriber';
 import { subscribeToArray } from '../observable/from';
 
@@ -51,14 +51,14 @@ import { subscribeToArray } from '../observable/from';
  * source, then synchronously emits the provided value(s) immediately after the
  * source completes.
  */
-export function endWith<T, A extends readonly unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>> {
+export function endWith<T, A extends readonly unknown[] = T[]>(...values: A): OperatorFunction<T, T | A[number]> {
   return (source) =>
     new Observable((destination) => {
       source.subscribe(
         operate({
           destination,
           complete: () => {
-            subscribeToArray(values as readonly ValueFromArray<A>[], destination);
+            subscribeToArray(values, destination);
           },
         })
       );

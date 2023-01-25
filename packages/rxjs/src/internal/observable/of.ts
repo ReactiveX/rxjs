@@ -1,4 +1,3 @@
-import { ValueFromArray } from '../types';
 import { Observable } from '../Observable';
 import { fromArrayLike } from './from';
 
@@ -12,7 +11,7 @@ export function of(value: undefined): Observable<undefined>;
 
 export function of(): Observable<never>;
 export function of<T>(value: T): Observable<T>;
-export function of<A extends readonly unknown[]>(...values: A): Observable<ValueFromArray<A>>;
+export function of<A extends readonly unknown[]>(...values: A): Observable<A[number]>;
 
 /**
  * Converts the arguments to an observable sequence.
