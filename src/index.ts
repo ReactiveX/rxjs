@@ -73,7 +73,6 @@ export { interval } from './internal/observable/interval';
 export { merge } from './internal/observable/merge';
 export { of } from './internal/observable/of';
 export { onErrorResumeNext } from './internal/observable/onErrorResumeNext';
-export { pairs } from './internal/observable/pairs';
 export { partition } from './internal/observable/partition';
 export { race } from './internal/observable/race';
 export { range } from './internal/observable/range';
