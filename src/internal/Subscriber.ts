@@ -68,7 +68,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @param {T} [value] The `next` value.
    * @return {void}
    */
-  next(value?: T): void {
+  next(value: T): void {
     if (this.isStopped) {
       handleStoppedNotification(nextNotification(value), this);
     } else {
@@ -203,7 +203,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
       // The first argument is a function, not an observer. The next
       // two arguments *could* be observers, or they could be empty.
       partialObserver = {
-        next: (observerOrNext ?? undefined) as (((value: T) => void) | undefined),
+        next: (observerOrNext ?? undefined) as ((value: T) => void) | undefined,
         error: error ?? undefined,
         complete: complete ?? undefined,
       };
