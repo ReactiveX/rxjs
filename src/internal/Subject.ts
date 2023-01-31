@@ -1,7 +1,7 @@
 import { Operator } from './Operator';
 import { Observable } from './Observable';
 import { Subscriber } from './Subscriber';
-import { Subscription, EMPTY_SUBSCRIPTION } from './Subscription';
+import { Subscription } from './Subscription';
 import { Observer, SubscriptionLike, TeardownLogic } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { arrRemove } from './util/arrRemove';
@@ -117,7 +117,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   protected _innerSubscribe(subscriber: Subscriber<any>) {
     const { hasError, isStopped, observers } = this;
     if (hasError || isStopped) {
-      return EMPTY_SUBSCRIPTION;
+      return Subscription.EMPTY;
     }
     this.currentObservers = null;
     observers.push(subscriber);
@@ -177,6 +177,6 @@ export class AnonymousSubject<T> extends Subject<T> {
 
   /** @internal */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
-    return this.source?.subscribe(subscriber) ?? EMPTY_SUBSCRIPTION;
+    return this.source?.subscribe(subscriber) ?? Subscription.EMPTY;
   }
 }

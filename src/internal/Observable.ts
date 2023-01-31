@@ -1,5 +1,5 @@
 import { Operator } from './Operator';
-import { Subscriber, isSubscriber } from './Subscriber';
+import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { TeardownLogic, OperatorFunction, Subscribable, Observer } from './types';
 import { observable as Symbol_observable } from './symbol/observable';
@@ -190,7 +190,7 @@ export class Observable<T> implements Subscribable<T> {
    * @method subscribe
    */
   subscribe(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null): Subscription {
-    const subscriber = isSubscriber(observerOrNext) ? observerOrNext : new Subscriber(observerOrNext);
+    const subscriber = observerOrNext instanceof Subscriber ? observerOrNext : new Subscriber(observerOrNext);
 
     const { operator, source } = this;
     subscriber.add(
