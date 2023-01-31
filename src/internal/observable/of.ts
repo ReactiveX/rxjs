@@ -80,5 +80,5 @@ export function of<A extends readonly unknown[]>(...values: A): Observable<Value
  */
 export function of<T>(...args: Array<T | SchedulerLike>): Observable<T> {
   const scheduler = popScheduler(args);
-  return scheduler ? scheduled(args as T[], scheduler) : from(args as T[]);
+  return scheduler ? scheduled(args as T[], scheduler) : fromArrayLike(args as T[]);
 }
