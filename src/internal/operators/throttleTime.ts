@@ -47,7 +47,7 @@ import { timer } from '../observable/timer';
  * internally by the optional `scheduler`.
  * @param scheduler The {@link SchedulerLike} to use for
  * managing the timers that handle the throttling. Defaults to {@link asyncScheduler}.
- * @param config a configuration object to define `leading` and
+ * @param config A configuration object to define `leading` and
  * `trailing` behavior. Defaults to `{ leading: true, trailing: false }`.
  * @return A function that returns an Observable that performs the throttle
  * operation to limit the rate of emissions from the source.
