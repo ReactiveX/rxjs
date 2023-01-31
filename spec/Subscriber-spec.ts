@@ -9,7 +9,7 @@ describe('SafeSubscriber', () => {
   it('should ignore next messages after unsubscription', () => {
     let times = 0;
 
-    const sub = new SafeSubscriber({
+    const sub = new SafeSubscriber<void>({
       next() { times += 1; }
     });
 
@@ -25,7 +25,7 @@ describe('SafeSubscriber', () => {
     let times = 0;
     let errorCalled = false;
 
-    const sub = new SafeSubscriber({
+    const sub = new SafeSubscriber<void>({
       next() { times += 1; },
       error() { errorCalled = true; }
     });
@@ -44,7 +44,7 @@ describe('SafeSubscriber', () => {
     let times = 0;
     let completeCalled = false;
 
-    const sub = new SafeSubscriber({
+    const sub = new SafeSubscriber<void>({
       next() { times += 1; },
       complete() { completeCalled = true; }
     });
