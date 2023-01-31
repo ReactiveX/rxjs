@@ -1,5 +1,5 @@
 import { asyncScheduler } from '../scheduler/async';
-import { defaultThrottleConfig, throttle } from './throttle';
+import { throttle, ThrottleConfig } from './throttle';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { timer } from '../observable/timer';
 
@@ -55,7 +55,7 @@ import { timer } from '../observable/timer';
 export function throttleTime<T>(
   duration: number,
   scheduler: SchedulerLike = asyncScheduler,
-  config = defaultThrottleConfig
+  config?: ThrottleConfig
 ): MonoTypeOperatorFunction<T> {
   const duration$ = timer(duration, scheduler);
   return throttle(() => duration$, config);

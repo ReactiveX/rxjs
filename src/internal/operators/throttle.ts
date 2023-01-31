@@ -10,11 +10,6 @@ export interface ThrottleConfig {
   trailing?: boolean;
 }
 
-export const defaultThrottleConfig: ThrottleConfig = {
-  leading: true,
-  trailing: false,
-};
-
 /**
  * Emits a value from the source Observable, then ignores subsequent source
  * values for a duration determined by another Observable, then repeats this
@@ -61,12 +56,9 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * @return A function that returns an Observable that performs the throttle
  * operation to limit the rate of emissions from the source.
  */
-export function throttle<T>(
-  durationSelector: (value: T) => ObservableInput<any>,
-  config: ThrottleConfig = defaultThrottleConfig
-): MonoTypeOperatorFunction<T> {
+export function throttle<T>(durationSelector: (value: T) => ObservableInput<any>, config?: ThrottleConfig): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
-    const { leading, trailing } = config;
+    const { leading = true, trailing = false } = config ?? {};
     let hasValue = false;
     let sendValue: T | null = null;
     let throttled: Subscription | null = null;
