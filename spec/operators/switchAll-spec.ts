@@ -309,16 +309,22 @@ describe('switchAll', () => {
     const oStream = oStreamControl.pipe(map(() => (iStream = new Subject<number>())));
     const switcher = oStream.pipe(switchAll());
     const result: number[] = [];
-    let sub = switcher.subscribe((x) => result.push(x));
+    const subscription = switcher.subscribe((x) => result.push(x));
 
     [0, 1, 2, 3, 4].forEach((n) => {
       oStreamControl.next(n); // creates inner
       iStream.complete();
     });
 
-    // Expect one child of switchAll(): The oStream
-    expect([...(sub as any)._finalizers?.values()][0]._finalizers?.size).to.equal(1);
-    sub.unsubscribe();
+    // HACK: Extracting the inner subscription.
+    const innerSubscription = [...(subscription as any)._finalizers?.values()][0];
+
+    // At this point, we expect two finalizers:
+    // 1. The finalizer for the outer subscription
+    // 2. The finalizer for the inner subscription to remove itself from the outer subscription
+    expect(innerSubscription._finalizers?.size).to.equal(2);
+
+    subscription.unsubscribe();
   });
 
   it('should not leak if we switch before child completes (prevent memory leaks #2355)', () => {
@@ -326,17 +332,25 @@ describe('switchAll', () => {
     const oStream = oStreamControl.pipe(map(() => new Subject<number>()));
     const switcher = oStream.pipe(switchAll());
     const result: number[] = [];
-    let sub = switcher.subscribe((x) => result.push(x));
+    const subscription: any = switcher.subscribe((x) => result.push(x));
 
     [0, 1, 2, 3, 4].forEach((n) => {
       oStreamControl.next(n); // creates inner
     });
-    // Expect one child of switchAll(): The oStream
-    expect([...((sub as any)._finalizers?.values() ?? [])][0]._finalizers?.size).to.equal(1);
-    // Expect two children of subscribe(): The destination and the first inner
-    // See #4106 - inner subscriptions are now added to destinations
-    expect((sub as any)._finalizers?.size).to.equal(2);
-    sub.unsubscribe();
+
+    const innerSubscription = [...subscription._finalizers?.values()][0];
+
+    // At this point, the finalizers for the inner subscription should have 2 children:
+    // 1. The finalizer for the inner subscription itself
+    // 2. The finalizer for the inner subscription to remove itself from the parent subscription.
+    expect(innerSubscription._finalizers?.size).to.equal(2);
+
+    // At this point, the finalizers for outer subscription should have 2 children:
+    // 1. The finalizer for the outer subscription.
+    // 2. The finalizer to unsubscribe the inner subscription.
+    expect(subscription._finalizers?.size).to.equal(2);
+
+    subscription.unsubscribe();
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

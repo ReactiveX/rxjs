@@ -1,7 +1,6 @@
 import { isFunction } from './util/isFunction';
 import { UnsubscriptionError } from './util/UnsubscriptionError';
 import { SubscriptionLike, TeardownLogic, Unsubscribable } from './types';
-import { arrRemove } from './util/arrRemove';
 
 /**
  * Represents a disposable resource, such as the execution of an Observable. A
@@ -28,8 +27,6 @@ export class Subscription implements SubscriptionLike {
    */
   public closed = false;
 
-  private _parentage: Subscription[] | Subscription | null = null;
-
   /**
    * The list of registered finalizers to execute upon unsubscription. Adding and removing from this
    * list occurs in the {@link #add} and {@link #remove} methods.
@@ -54,19 +51,6 @@ export class Subscription implements SubscriptionLike {
     if (!this.closed) {
       this.closed = true;
 
-      // Remove this from it's parents.
-      const { _parentage } = this;
-      if (_parentage) {
-        this._parentage = null;
-        if (Array.isArray(_parentage)) {
-          for (const parent of _parentage) {
-            parent.remove(this);
-          }
-        } else {
-          _parentage.remove(this);
-        }
-      }
-
       const { initialTeardown: initialFinalizer } = this;
       if (isFunction(initialFinalizer)) {
         try {
@@ -85,7 +69,7 @@ export class Subscription implements SubscriptionLike {
           } catch (err) {
             errors = errors ?? [];
             if (err instanceof UnsubscriptionError) {
-              errors = [...errors, ...err.errors];
+              errors.push(...err.errors);
             } else {
               errors.push(err);
             }
@@ -126,51 +110,17 @@ export class Subscription implements SubscriptionLike {
         // execute whatever finalizer is handed to it automatically.
         execFinalizer(teardown);
       } else {
-        if (teardown instanceof Subscription) {
-          // We don't add closed subscriptions, and we don't add the same subscription
-          // twice. Subscription unsubscribe is idempotent.
-          if (teardown.closed || teardown._hasParent(this)) {
-            return;
-          }
-          teardown._addParent(this);
+        if (teardown && 'add' in teardown) {
+          // If teardown is a subscription, we can make sure that if it
+          // unsubscribes first, it removes itself from this subscription.
+          teardown.add(() => {
+            this.remove(teardown);
+          });
         }
-        (this._finalizers = this._finalizers ?? new Set()).add(teardown);
+
+        this._finalizers ??= new Set();
+        this._finalizers.add(teardown);
       }
-    }
-  }
-
-  /**
-   * Checks to see if a this subscription already has a particular parent.
-   * This will signal that this subscription has already been added to the parent in question.
-   * @param parent the parent to check for
-   */
-  private _hasParent(parent: Subscription) {
-    const { _parentage } = this;
-    return _parentage === parent || (Array.isArray(_parentage) && _parentage.includes(parent));
-  }
-
-  /**
-   * Adds a parent to this subscription so it can be removed from the parent if it
-   * unsubscribes on it's own.
-   *
-   * NOTE: THIS ASSUMES THAT {@link _hasParent} HAS ALREADY BEEN CHECKED.
-   * @param parent The parent subscription to add
-   */
-  private _addParent(parent: Subscription) {
-    const { _parentage } = this;
-    this._parentage = Array.isArray(_parentage) ? (_parentage.push(parent), _parentage) : _parentage ? [_parentage, parent] : parent;
-  }
-
-  /**
-   * Called on a child when it is removed via {@link #remove}.
-   * @param parent The parent to remove
-   */
-  private _removeParent(parent: Subscription) {
-    const { _parentage } = this;
-    if (_parentage === parent) {
-      this._parentage = null;
-    } else if (Array.isArray(_parentage)) {
-      arrRemove(_parentage, parent);
     }
   }
 
@@ -186,24 +136,16 @@ export class Subscription implements SubscriptionLike {
    *
    * All finalizer instances are removed to free up memory upon unsubscription.
    *
+   * TIP: In instances you're adding and removing _Subscriptions from other Subscriptions_, you should
+   * be sure to unsubscribe or otherwise get rid of the child subscription reference as soon as you remove it.
+   * The child subscription has a reference to the parent it was added to via closure. In most cases, this
+   * a non-issue, as child subscriptions are rarely long-lived.
+   *
    * @param teardown The finalizer to remove from this subscription
    */
   remove(teardown: Exclude<TeardownLogic, void>): void {
     this._finalizers?.delete(teardown);
-
-    if (teardown instanceof Subscription) {
-      teardown._removeParent(this);
-    }
   }
-}
-
-export const EMPTY_SUBSCRIPTION = Subscription.EMPTY;
-
-export function isSubscription(value: any): value is Subscription {
-  return (
-    value instanceof Subscription ||
-    (value && 'closed' in value && isFunction(value.remove) && isFunction(value.add) && isFunction(value.unsubscribe))
-  );
 }
 
 function execFinalizer(finalizer: Unsubscribable | (() => void)) {

@@ -1,9 +1,8 @@
 import { isFunction } from './util/isFunction';
 import { Observer, ObservableNotification } from './types';
-import { isSubscription, Subscription } from './Subscription';
+import { Subscription } from './Subscription';
 import { config } from './config';
 import { reportUnhandledError } from './util/reportUnhandledError';
-import { noop } from './util/noop';
 import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories';
 import { timeoutProvider } from './scheduler/timeoutProvider';
 
@@ -18,10 +17,10 @@ import { timeoutProvider } from './scheduler/timeoutProvider';
  * @class Subscriber<T>
  */
 export class Subscriber<T> extends Subscription implements Observer<T> {
-  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
+  /** @internal */
   protected isStopped: boolean = false;
-  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
-  protected destination: Subscriber<T> | Observer<T>;
+  /** @internal */
+  protected destination: Observer<T>;
 
   /**
    * Creates an instance of an RxJS Subscriber. This is the workhorse of the library.
@@ -37,11 +36,12 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    */
   constructor(destination?: Subscriber<T> | Partial<Observer<T>> | ((value: T) => void) | null) {
     super();
-    this.destination = isSubscriber(destination) ? destination : createSafeObserver(destination);
+    // The only way we know that error reporting safety has been applied is if we own it.
+    this.destination = destination instanceof Subscriber ? destination : createSafeObserver(destination);
 
     // Automatically chain subscriptions together here.
-    // if destination is a Subscription, then it is a Subscriber.
-    if (isSubscription(destination)) {
+    // if destination appears to be one of our subscriptions, we'll chain it.
+    if (hasAddAndUnsubscribe(destination)) {
       destination.add(this);
     }
   }
@@ -165,16 +165,6 @@ function createSafeObserver<T>(observerOrNext?: Partial<Observer<T>> | ((value: 
 }
 
 /**
- * An error handler used when no error handler was supplied
- * to the SafeSubscriber -- meaning no error handler was supplied
- * do the `subscribe` call on our observable.
- * @param err The error to handle
- */
-function defaultErrorHandler(err: any) {
-  throw err;
-}
-
-/**
  * A handler for notifications that cannot be sent to a stopped subscriber.
  * @param notification The notification being sent
  * @param subscriber The stopped subscriber
@@ -184,22 +174,6 @@ function handleStoppedNotification(notification: ObservableNotification<any>, su
   onStoppedNotification && timeoutProvider.setTimeout(() => onStoppedNotification(notification, subscriber));
 }
 
-/**
- * The observer used as a stub for subscriptions where the user did not
- * pass any arguments to `subscribe`. Comes with the default error handling
- * behavior.
- */
-export const EMPTY_OBSERVER: Readonly<Observer<any>> & { closed: true } = {
-  closed: true,
-  next: noop,
-  error: defaultErrorHandler,
-  complete: noop,
-};
-
-function isObserver<T>(value: any): value is Observer<T> {
-  return value && isFunction(value.next) && isFunction(value.error) && isFunction(value.complete);
-}
-
-export function isSubscriber<T>(value: any): value is Subscriber<T> {
-  return (value && value instanceof Subscriber) || (isObserver(value) && isSubscription(value));
+function hasAddAndUnsubscribe(value: any): value is Subscription {
+  return value && isFunction(value.unsubscribe) && isFunction(value.add);
 }

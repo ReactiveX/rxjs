@@ -224,6 +224,7 @@ describe('delay', () => {
     });
   });
 
+  // TODO: We could use a more straightforward way to test this.
   it('should unsubscribe scheduled actions after execution', () => {
     testScheduler.run(({ cold, time, expectObservable, expectSubscriptions }) => {
       let subscribeSpy: any = null;
@@ -247,7 +248,13 @@ describe('delay', () => {
             counts.push(subscriber._finalizers.size);
           },
           complete() {
-            expect(counts).to.deep.equal([1, 1]);
+            // This is checking the number of finalizers on the subscribers for
+            // each delayed observable from our 2 repetitions above.
+            // We expect 2 finalizers for each repetition:
+            // 1. The finalizer for the timer subscription that the delay operator uses,
+            // 2. The finalizer that inner subscription uses to remove itself from the
+            // outer subscription's finalizers.
+            expect(counts).to.deep.equal([2, 2]);
           },
         })
       );

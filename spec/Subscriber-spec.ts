@@ -1,5 +1,5 @@
-import { expect } from 'chai';
-import { Subscriber, Observable, of, Observer } from 'rxjs';
+import {  expect } from 'chai';
+import { Subscriber, Observable, of, Observer, config } from 'rxjs';
 import { asInteropSubscriber } from './helpers/interop-helper';
 import { getRegisteredFinalizers } from './helpers/subscription';
 
@@ -143,9 +143,7 @@ describe('Subscriber', () => {
     expect(subscriber.closed).to.be.true;
     expect(getRegisteredFinalizers(subscriber).length).to.equal(0);
   });
-});
 
-describe('Subscriber', () => {
   it('should finalize and unregister all finalizers after complete', () => {
     let isTornDown = false;
     const subscriber = new Subscriber();
@@ -178,6 +176,114 @@ describe('Subscriber', () => {
 
     expect(consumer.valuesProcessed).not.to.equal(['new', 'new']);
   });
+
+  describe('error reporting for destination observers', () => {
+    afterEach(() => {
+      config.onUnhandledError = null;
+    })
+
+    it('should report errors thrown from next', (done) => {
+      config.onUnhandledError = (err) => {
+        expect(err).to.be.an.instanceOf(Error);
+        expect(err.message).to.equal('test');
+        done()
+      };
+
+      const subscriber = new Subscriber<void>({
+        next() {
+          throw new Error('test');
+        }
+      });
+
+      subscriber.next()
+    });
+
+    it('should report errors thrown from complete', (done) => {
+      config.onUnhandledError = (err) => {
+        expect(err).to.be.an.instanceOf(Error);
+        expect(err.message).to.equal('test');
+        done()
+      };
+
+      const subscriber = new Subscriber<void>({
+        complete() {
+          throw new Error('test');
+        }
+      });
+
+      subscriber.complete()
+    });
+
+    it('should report errors thrown from error', (done) => {
+      config.onUnhandledError = (err) => {
+        expect(err).to.be.an.instanceOf(Error);
+        expect(err.message).to.equal('test');
+        done()
+      };
+
+      const subscriber = new Subscriber<void>({
+        error() {
+          throw new Error('test');
+        }
+      });
+
+      subscriber.error()
+    });
+
+    it('should report errors thrown from a full observer', (done) => {
+      config.onUnhandledError = (err) => {
+        expect(err).to.be.an.instanceOf(Error);
+        expect(err.message).to.equal('thrown from next');
+        done()
+      };
+
+      const subscriber = new Subscriber<void>({
+        next() {
+          throw new Error('thrown from next');
+        },
+        error() {
+          throw new Error('thrown from error');
+        },
+        complete() {
+          throw new Error('thrown from complete');
+        }
+      });
+
+      subscriber.next()
+    });
+
+    it('should report errors thrown from a full observer even if it is also shaped like a subscription', (done) => {
+      config.onUnhandledError = (err) => {
+        expect(err).to.be.an.instanceOf(Error);
+        expect(err.message).to.equal('thrown from next');
+        done()
+      };
+
+      const subscriber = new Subscriber<void>({
+        next() {
+          throw new Error('thrown from next');
+        },
+        error() {
+          throw new Error('thrown from error');
+        },
+        complete() {
+          throw new Error('thrown from complete');
+        },
+        add() {
+          // lol
+        },
+        remove() {
+          // haha, fooled you
+        },
+        unsubscribe() {
+          // eat it, old RxJS!
+        },
+        closed: false,
+      });
+
+      subscriber.next()
+    });
+  })
 
   const FinalizationRegistry = (global as any).FinalizationRegistry;
   if (FinalizationRegistry && global.gc) {
