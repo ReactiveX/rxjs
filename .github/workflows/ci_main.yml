@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['14', '16', '18']
+        node: ['16', '18']
 
     name: Node ${{ matrix.node }} build
 
@@ -34,8 +34,8 @@ jobs:
       - name: dtslint
         run: npm run dtslint
       - name: import
-        if: ${{ matrix.node == '14' }}
+        if: ${{ matrix.node == '18' }}
         run: npm run test:import
       - name: import
-        if: ${{ matrix.node == '14' || matrix.node == '15' }}
+        if: ${{ matrix.node == '16' || matrix.node == '18' }}
         run: npm run test:esm
