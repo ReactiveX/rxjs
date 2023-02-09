@@ -121,4 +121,4 @@ fromEvent(document, 'click')
   .subscribe((count) => console.log(count));
 ```
 
-Other value producing operators are [**pluck**](../api/operators/pluck), [**pairwise**](../api/operators/pairwise), [**sample**](../api/operators/sample) etc.
+Other value producing operators are [**pairwise**](../api/operators/pairwise), [**sample**](../api/operators/sample) etc.

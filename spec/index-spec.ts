@@ -129,7 +129,6 @@ describe('index', () => {
     expect(index.multicast).to.exist;
     expect(index.observeOn).to.exist;
     expect(index.pairwise).to.exist;
-    expect(index.pluck).to.exist;
     expect(index.publish).to.exist;
     expect(index.publishBehavior).to.exist;
     expect(index.publishLast).to.exist;
