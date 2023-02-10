@@ -144,6 +144,4 @@ Because RxJS uses the least concurrency scheduler, you can pick a different sche
 
 Time-related operators like `bufferTime`, `debounceTime`, `delay`, `auditTime`, `sampleTime`, `throttleTime`, `timeInterval`, `timeout`, `timeoutWith`, `windowTime` all take a Scheduler as the last argument, and otherwise operate by default on the `asyncScheduler`.
 
-Other instance operators that take a Scheduler as argument: `cache`, `combineLatest`, `concat`, `expand`, `merge`, `startWith`.
-
-Notice that `cache` accept a Scheduler because they utilize a ReplaySubject. The constructor of a ReplaySubjects takes an optional Scheduler as the last argument because ReplaySubject may deal with time, which only makes sense in the context of a Scheduler. By default, a ReplaySubject uses the `queueScheduler` Scheduler to provide a clock.
+Other instance operators that take a Scheduler as argument: `combineLatest`, `concat`, `expand`, `merge`, `startWith`.
