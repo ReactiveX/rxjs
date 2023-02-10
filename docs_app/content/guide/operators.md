@@ -119,7 +119,7 @@ For a complete overview, see the [references page](/api).
 - [`bindCallback`](/api/index/function/bindCallback)
 - [`bindNodeCallback`](/api/index/function/bindNodeCallback)
 - [`defer`](/api/index/function/defer)
-- [`empty`](/api/index/function/empty)
+- [`EMPTY`](/api/index/const/EMPTY)
 - [`from`](/api/index/function/from)
 - [`fromEvent`](/api/index/function/fromEvent)
 - [`fromEventPattern`](/api/index/function/fromEventPattern)
