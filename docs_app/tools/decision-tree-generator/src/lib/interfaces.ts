@@ -22,7 +22,6 @@ export type ApiUnion =
   | 'catchError'
   | 'combineLatest'
   | 'concat'
-  | 'concat'
   | 'concatMap'
   | 'concatMapTo'
   | 'count'
