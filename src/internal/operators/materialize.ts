@@ -5,11 +5,11 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Represents all of the notifications from the source Observable as `next`
- * emissions marked with their original types within {@link Notification}
+ * emissions marked with their original types within {@link ObservableNotification}
  * objects.
  *
  * <span class="informal">Wraps `next`, `error` and `complete` emissions in
- * {@link Notification} objects, emitted as `next` on the output Observable.
+ * {@link ObservableNotification} objects, emitted as `next` on the output Observable.
  * </span>
  *
  * ![](materialize.png)
@@ -44,11 +44,11 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * // - Notification { kind: 'E', value: undefined, error: TypeError { message: x.toUpperCase is not a function }, hasValue: false }
  * ```
  *
- * @see {@link Notification}
+ * @see {@link ObservableNotification}
  * @see {@link dematerialize}
  *
  * @return A function that returns an Observable that emits
- * {@link Notification} objects that wrap the original emissions from the
+ * {@link ObservableNotification} objects that wrap the original emissions from the
  * source Observable with metadata.
  */
 export function materialize<T>(): OperatorFunction<T, ObservableNotification<T>> {
