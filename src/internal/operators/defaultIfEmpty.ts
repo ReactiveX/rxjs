@@ -28,7 +28,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * result.subscribe(x => console.log(x));
  * ```
  *
- * @see {@link empty}
+ * @see {@link EMPTY}
  * @see {@link last}
  *
  * @param defaultValue The default value used if the source
