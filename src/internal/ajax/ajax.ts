@@ -481,18 +481,7 @@ export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
         if (status < 400) {
           progressSubscriber?.complete?.();
 
-          let response: AjaxResponse<T>;
-          try {
-            // This can throw in IE, because we end up needing to do a JSON.parse
-            // of the response in some cases to produce object we'd expect from
-            // modern browsers.
-            response = createResponse(DOWNLOAD, event);
-          } catch (err) {
-            destination.error(err);
-            return;
-          }
-
-          destination.next(response);
+          destination.next(createResponse(DOWNLOAD, event));
           destination.complete();
         } else {
           progressSubscriber?.error?.(event);

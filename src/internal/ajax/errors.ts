@@ -42,14 +42,7 @@ export class AjaxError extends Error {
     this.request = request;
     this.status = xhr.status;
     this.responseType = xhr.responseType;
-
-    try {
-      // This can throw in IE, because we have to do a JSON.parse of
-      // the response in some cases to get the expected response property.
-      this.response = getXHRResponse(xhr);
-    } catch (err) {
-      this.response = xhr.responseText;
-    }
+    this.response = getXHRResponse(xhr);
   }
 }
 
