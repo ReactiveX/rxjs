@@ -5,7 +5,6 @@ import { Subscription } from '../Subscription';
 import { operate } from '../util/lift';
 import { Observable } from '../Observable';
 import { innerFrom } from '../observable/innerFrom';
-import { createErrorClass } from '../util/createErrorClass';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { executeSchedule } from '../util/executeSchedule';
 
@@ -52,9 +51,13 @@ export interface TimeoutInfo<T, M = unknown> {
 }
 
 /**
- * An error emitted when a timeout occurs.
+ * An error thrown by the {@link timeout} operator.
+ *
+ * @see {@link timeout}
  */
-export interface TimeoutError<T = unknown, M = unknown> extends Error {
+export class TimeoutError<T = unknown, M = unknown> extends Error {
+  name = 'TimeoutError';
+
   /**
    * The information provided to the error by the timeout
    * operation that created the error. Will be `null` if
@@ -63,37 +66,13 @@ export interface TimeoutError<T = unknown, M = unknown> extends Error {
    * you should create your own errors)
    */
   info: TimeoutInfo<T, M> | null;
-}
 
-export interface TimeoutErrorCtor {
-  /**
-   * @deprecated Internal implementation detail. Do not construct error instances.
-   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
-   */
-  new <T = unknown, M = unknown>(info?: TimeoutInfo<T, M>): TimeoutError<T, M>;
-}
+  constructor(info?: TimeoutInfo<T, M>) {
+    super('Timeout has occurred');
 
-/**
- * An error thrown by the {@link timeout} operator.
- *
- * Provided so users can use as a type and do quality comparisons.
- * We recommend you do not subclass this or create instances of this class directly.
- * If you have need of a error representing a timeout, you should
- * create your own error class and use that.
- *
- * @see {@link timeout}
- *
- * @class TimeoutError
- */
-export const TimeoutError: TimeoutErrorCtor = createErrorClass(
-  (_super) =>
-    function TimeoutErrorImpl(this: any, info: TimeoutInfo<any> | null = null) {
-      _super(this);
-      this.message = 'Timeout has occurred';
-      this.name = 'TimeoutError';
-      this.info = info;
-    }
-);
+    this.info = info ?? null;
+  }
+}
 
 /**
  * If `with` is provided, this will return an observable that will switch to a different observable if the source
