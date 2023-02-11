@@ -20,6 +20,11 @@ describe('UnsubscriptionError', () => {
         expect(err.errors).to.deep.equal([err1, err2]);
         expect(err.name).to.equal('UnsubscriptionError');
         expect(err.stack).to.be.a('string');
+        expect(err.message).to.equal(
+`2 errors occurred during unsubscription:
+  1) Error: Swiss cheese tastes amazing but smells like socks
+  2) Error: User too big to fit in tiny European elevator`
+        );
       } else {
         throw new TypeError('Invalid error type');
       }

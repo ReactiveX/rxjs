@@ -49,7 +49,7 @@ export class Subscription implements SubscriptionLike {
    * @return {void}
    */
   unsubscribe(): void {
-    let errors: any[] | undefined;
+    let errors: unknown[] | undefined;
 
     if (!this.closed) {
       this.closed = true;
