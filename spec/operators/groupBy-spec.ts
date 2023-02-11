@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 import { groupBy, delay, tap, map, take, mergeMap, materialize, skip, ignoreElements } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { ReplaySubject, of, Observable, Operator, Observer, Subject, NextNotification, ErrorNotification } from 'rxjs';
-import { createNotification } from 'rxjs/internal/NotificationFactories';
+import { ReplaySubject, of, Observable, Operator, Observer, Subject, OperatorFunction, pipe, ObservableNotification } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {groupBy} */
@@ -1537,22 +1536,14 @@ describe('groupBy operator', () => {
 /**
  * TODO: A helper operator to deal with legacy tests above that could probably be written a different way
  */
-function phonyMarbelize<T>(testScheduler: TestScheduler) {
-  return (source: Observable<T>) =>
-    source.pipe(
-      materialize(),
-      map((notification) => {
-        // Because we're hacking some weird inner-observable marbles here, we need
-        // to make sure this is all the same shape as it would be from the TestScheduler
-        // assertions
-        return {
-          frame: testScheduler.frame,
-          notification: createNotification(
-            notification.kind,
-            (notification as NextNotification<T>).value,
-            (notification as ErrorNotification).error
-          ),
-        };
-      })
-    );
+function phonyMarbelize<T>(testScheduler: TestScheduler): OperatorFunction<T, { frame: number; notification: ObservableNotification<T> }> {
+  return pipe(
+    materialize(),
+    map((notification) => {
+      // Because we're hacking some weird inner-observable marbles here, we need
+      // to make sure this is all the same shape as it would be from the TestScheduler
+      // assertions
+      return { frame: testScheduler.frame, notification };
+    })
+  );
 }
