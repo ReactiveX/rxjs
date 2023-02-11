@@ -1,15 +1,3 @@
-import { createErrorClass } from './createErrorClass';
-
-export interface EmptyError extends Error {}
-
-export interface EmptyErrorCtor {
-  /**
-   * @deprecated Internal implementation detail. Do not construct error instances.
-   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
-   */
-  new (): EmptyError;
-}
-
 /**
  * An error thrown when an Observable or a sequence was queried but has no
  * elements.
@@ -19,11 +7,11 @@ export interface EmptyErrorCtor {
  * @see {@link single}
  * @see {@link firstValueFrom}
  * @see {@link lastValueFrom}
- *
- * @class EmptyError
  */
-export const EmptyError: EmptyErrorCtor = createErrorClass((_super) => function EmptyErrorImpl(this: any) {
-  _super(this);
-  this.name = 'EmptyError';
-  this.message = 'no elements in sequence';
-});
+export class EmptyError extends Error {
+  name = 'EmptyError';
+
+  constructor() {
+    super('no elements in sequence');
+  }
+}
