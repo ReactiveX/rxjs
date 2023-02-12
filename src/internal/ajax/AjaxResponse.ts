@@ -1,5 +1,4 @@
 import { AjaxRequest, AjaxResponseType } from './types';
-import { getXHRResponse } from './getXHRResponse';
 
 /**
  * A normalized response from an AJAX request. To get the data from the response,
@@ -116,7 +115,7 @@ export class AjaxResponse<T> {
         }, {})
       : {};
 
-    this.response = getXHRResponse(xhr);
+    this.response = xhr.response;
     const { loaded, total } = originalEvent;
     this.loaded = loaded;
     this.total = total;

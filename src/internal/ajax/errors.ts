@@ -1,5 +1,4 @@
 import { AjaxRequest } from './types';
-import { getXHRResponse } from './getXHRResponse';
 import { createErrorClass } from '../util/createErrorClass';
 
 /**
@@ -63,15 +62,7 @@ export const AjaxError: AjaxErrorCtor = createErrorClass(
       this.request = request;
       this.status = xhr.status;
       this.responseType = xhr.responseType;
-      let response: any;
-      try {
-        // This can throw in IE, because we have to do a JSON.parse of
-        // the response in some cases to get the expected response property.
-        response = getXHRResponse(xhr);
-      } catch (err) {
-        response = xhr.responseText;
-      }
-      this.response = response;
+      this.response = xhr.response;
     }
 );
 
