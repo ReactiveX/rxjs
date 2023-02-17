@@ -1,5 +1,5 @@
 /** prettier */
-import { subscribeToArray } from '../util/subscribeToArray';
+import { subscribeToArray } from '../observable/from';
 import { OperatorFunction, ValueFromArray } from '../types';
 import { operate } from '../util/lift';
 import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
