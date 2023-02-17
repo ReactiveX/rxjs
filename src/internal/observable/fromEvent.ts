@@ -1,6 +1,5 @@
-import { from } from './from';
 import { Observable } from '../Observable';
-import { mergeMap } from '../operators/mergeMap';
+import { Subscriber } from '../Subscriber';
 import { isArrayLike } from '../util/isArrayLike';
 import { isFunction } from '../util/isFunction';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
@@ -240,66 +239,54 @@ export function fromEvent<T>(
     resultSelector = options;
     options = undefined;
   }
+
   if (resultSelector) {
     return fromEvent<T>(target, eventName, options as EventListenerOptions).pipe(mapOneOrManyArgs(resultSelector));
   }
 
-  // Figure out our add and remove methods. In order to do this,
-  // we are going to analyze the target in a preferred order, if
-  // the target matches a given signature, we take the two "add" and "remove"
-  // method names and apply them to a map to create opposite versions of the
-  // same function. This is because they all operate in duplicate pairs,
-  // `addListener(name, handler)`, `removeListener(name, handler)`, for example.
-  // The call only differs by method name, as to whether or not you're adding or removing.
-  const [add, remove] =
-    // If it is an EventTarget, we need to use a slightly different method than the other two patterns.
-    isEventTarget(target)
-      ? eventTargetMethods.map((methodName) => (handler: any) => target[methodName](eventName, handler, options as EventListenerOptions))
-      : // In all other cases, the call pattern is identical with the exception of the method names.
-      isNodeStyleEventEmitter(target)
-      ? nodeEventEmitterMethods.map(toCommonHandlerRegistry(target, eventName))
-      : isJQueryStyleEventEmitter(target)
-      ? jqueryMethods.map(toCommonHandlerRegistry(target, eventName))
-      : [];
+  const isValidTarget = isNodeStyleEventEmitter(target) || isJQueryStyleEventEmitter(target) || isEventTarget(target);
 
-  // If add is falsy, it's because we didn't match a pattern above.
-  // Check to see if it is an ArrayLike, because if it is, we want to
-  // try to apply fromEvent to all of it's items. We do this check last,
-  // because there are may be some types that are both ArrayLike *and* implement
-  // event registry points, and we'd rather delegate to that when possible.
-  if (!add) {
-    if (isArrayLike(target)) {
-      return mergeMap((subTarget: any) => fromEvent(subTarget, eventName, options as EventListenerOptions))(from(target)) as Observable<T>;
-    }
-  }
-
-  // If add is falsy and we made it here, it's because we didn't
-  // match any valid target objects above.
-  if (!add) {
+  if (!isValidTarget && !isArrayLike(target)) {
     throw new TypeError('Invalid event target');
   }
 
   return new Observable<T>((subscriber) => {
-    // The handler we are going to register. Forwards the event object, by itself, or
-    // an array of arguments to the event handler, if there is more than one argument,
-    // to the consumer.
+    const targets: ArrayLike<any> = !isValidTarget && isArrayLike(target) ? target : [target];
     const handler = (...args: any[]) => subscriber.next(1 < args.length ? args : args[0]);
-    // Do the work of adding the handler to the target.
-    add(handler);
-    // When we finalize, we want to remove the handler and free up memory.
-    return () => remove!(handler);
+    if (isValidTarget) {
+      // Valid event targets, even if they have a `length` property
+      // will be subscribed to as a single item.
+      doSubscribe(handler, subscriber, target, eventName, options);
+    } else {
+      // If it wasn't a valid event target, it must be an array-like.
+      // Subscribe to each item in the array-like.
+      for (let i = 0; i < targets.length && !subscriber.closed; i++) {
+        const subTarget = targets[i];
+        doSubscribe(handler, subscriber, subTarget, eventName, options);
+      }
+    }
   });
 }
 
-/**
- * Used to create `add` and `remove` functions to register and unregister event handlers
- * from a target in the most common handler pattern, where there are only two arguments.
- * (e.g.  `on(name, fn)`, `off(name, fn)`, `addListener(name, fn)`, or `removeListener(name, fn)`)
- * @param target The target we're calling methods on
- * @param eventName The event name for the event we're creating register or unregister functions for
- */
-function toCommonHandlerRegistry(target: any, eventName: string) {
-  return (methodName: string) => (handler: any) => target[methodName](eventName, handler);
+function doSubscribe(handler: (...args: any[]) => void, subscriber: Subscriber<any>, subTarget: any, eventName: string, options: any) {
+  const [addMethod, removeMethod] = getRegistryMethodNames(subTarget);
+  if (!addMethod || !removeMethod) {
+    throw new TypeError('Invalid event target');
+  }
+  subTarget[addMethod](eventName, handler, options);
+  subscriber.add(() => subTarget[removeMethod](eventName, handler, options));
+}
+
+function getRegistryMethodNames(target: any) {
+  // If it is an EventTarget, we need to use a slightly different method than the other two patterns.
+  return isEventTarget(target)
+    ? eventTargetMethods
+    : // In all other cases, the call pattern is identical with the exception of the method names.
+    isNodeStyleEventEmitter(target)
+    ? nodeEventEmitterMethods
+    : isJQueryStyleEventEmitter(target)
+    ? jqueryMethods
+    : [];
 }
 
 /**
