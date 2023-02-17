@@ -2,7 +2,7 @@ import { SchedulerLike, ValueFromArray } from '../types';
 import { Observable } from '../Observable';
 import { popScheduler } from '../util/args';
 import { scheduled } from '../scheduled/scheduled';
-import { from } from './from';
+import { fromArrayLike } from './from';
 
 // Devs are more likely to pass null or undefined than they are a scheduler
 // without accompanying values. To make things easier for (naughty) devs who
