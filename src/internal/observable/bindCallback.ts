@@ -86,13 +86,13 @@ export function bindCallback<A extends readonly unknown[], R extends readonly un
  * ```ts
  * import { bindCallback } from 'rxjs';
  *
- * const someFunction = (cb) => {
- *   cb(5, 'some string', {someProperty: 'someValue'})
+ * const someFunction = (n, s, cb) => {
+ *   cb(n, s, { someProperty: 'someValue' });
  * };
  *
  * const boundSomeFunction = bindCallback(someFunction);
- * boundSomeFunction(12, 10).subscribe(values => {
- *   console.log(values); // [22, 2]
+ * boundSomeFunction(5, 'some string').subscribe((values) => {
+ *   console.log(values); // [5, 'some string', {someProperty: 'someValue'}]
  * });
  * ```
  *
