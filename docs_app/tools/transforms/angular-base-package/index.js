@@ -11,18 +11,17 @@ const Package = require('dgeni').Package;
 const jsdocPackage = require('dgeni-packages/jsdoc');
 const nunjucksPackage = require('dgeni-packages/nunjucks');
 const linksPackage = require('../links-package');
-const examplesPackage = require('../examples-package');
 const targetPackage = require('../target-package');
 const remarkPackage = require('../remark-package');
 const postProcessPackage = require('dgeni-packages/post-process-html');
 
 const { PROJECT_ROOT, CONTENTS_PATH, OUTPUT_PATH, DOCS_OUTPUT_PATH, TEMPLATES_PATH, AIO_PATH, requireFolder } = require('../config');
 
+// prettier-ignore
 module.exports = new Package('angular-base', [
   jsdocPackage,
   nunjucksPackage,
   linksPackage,
-  examplesPackage,
   targetPackage,
   remarkPackage,
   postProcessPackage,
@@ -60,14 +59,12 @@ module.exports = new Package('angular-base', [
   })
 
   // Where do we get the source files?
-  .config(function (readFilesProcessor, collectExamples, generateKeywordsProcessor, jsonFileReader) {
+  .config(function (readFilesProcessor, generateKeywordsProcessor, jsonFileReader) {
     readFilesProcessor.fileReaders.push(jsonFileReader);
     readFilesProcessor.basePath = PROJECT_ROOT;
     readFilesProcessor.sourceFiles = [];
-    collectExamples.exampleFolders = [];
 
     generateKeywordsProcessor.ignoreWordsFile = path.resolve(__dirname, 'ignore.words');
-    generateKeywordsProcessor.docTypesToIgnore = ['example-region'];
     generateKeywordsProcessor.propertiesToIgnore = ['renderedContent'];
   })
 
@@ -125,12 +122,8 @@ module.exports = new Package('angular-base', [
     getLinkInfo.useFirstAmbiguousLink = false;
   })
 
-  .config(function (computePathsProcessor, generateKeywordsProcessor) {
+  .config(function (generateKeywordsProcessor) {
     generateKeywordsProcessor.outputFolder = 'app';
-
-    // Replace any path templates inherited from other packages
-    // (we want full and transparent control)
-    computePathsProcessor.pathTemplates = [{ docTypes: ['example-region'], getOutputPath: function () {} }];
   })
 
   .config(function (postProcessHtml, addImageDimensions, autoLinkCode, filterPipes, filterAmbiguousDirectiveAliases, filterFromInImports, filterNeverAsGeneric) {
