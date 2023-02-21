@@ -436,4 +436,4 @@ No changes.
 
 #### TestScheduler expectObservable().toEqual()
 
-- A new means of comparing the equality of to observables. If all emissions are the same, and at the same time, then they are equal. This is primarily useful for refactoring operator chains and making sure that they are equivalent.
+- A new means of comparing the equality of two observables. If all emissions are the same, and at the same time, then they are equal. This is primarily useful for refactoring operator chains and making sure that they are equivalent.
