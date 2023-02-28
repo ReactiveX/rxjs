@@ -288,4 +288,28 @@ describe('Scheduler.asap', () => {
       done();
     });
   });
+
+  it('scheduling inside of an executing action more than once should work', (done) => {
+    const results: any[] = [];
+
+    let resolve: () => void;
+    let promise = new Promise<void>((r) => resolve = r);
+
+    asapScheduler.schedule(() => {
+      results.push(1)
+      asapScheduler.schedule(() => {
+        results.push(2);
+      });
+      asapScheduler.schedule(() => {
+        results.push(3);
+        resolve();
+      });
+    });
+
+    promise.then(() => {
+      // This should always fire after two recursively scheduled microtasks.
+      expect(results).to.deep.equal([1, 2, 3]);
+      done();
+    });
+  });
 });
