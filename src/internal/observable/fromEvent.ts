@@ -251,7 +251,6 @@ export function fromEvent<T>(
   }
 
   return new Observable<T>((subscriber) => {
-    const targets: ArrayLike<any> = !isValidTarget && isArrayLike(target) ? target : [target];
     const handler = (...args: any[]) => subscriber.next(1 < args.length ? args : args[0]);
     if (isValidTarget) {
       // Valid event targets, even if they have a `length` property
@@ -260,8 +259,8 @@ export function fromEvent<T>(
     } else {
       // If it wasn't a valid event target, it must be an array-like.
       // Subscribe to each item in the array-like.
-      for (let i = 0; i < targets.length && !subscriber.closed; i++) {
-        const subTarget = targets[i];
+      for (let i = 0; i < target.length && !subscriber.closed; i++) {
+        const subTarget = target[i];
         doSubscribe(handler, subscriber, subTarget, eventName, options);
       }
     }
