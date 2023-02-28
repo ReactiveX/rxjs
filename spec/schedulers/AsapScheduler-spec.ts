@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { asapScheduler, Subscription, SchedulerAction, merge } from 'rxjs';
+import { asapScheduler, Subscription, SchedulerAction, merge, scheduled } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -153,12 +153,10 @@ describe('Scheduler.asap', () => {
     let asapExec2 = false;
     const action1 = asap.schedule(() => { asapExec1 = true; });
     const action2 = asap.schedule(() => { asapExec2 = true; });
-    expect(asap._scheduled).to.exist;
     expect(asap.actions.length).to.equal(2);
     action1.unsubscribe();
     action2.unsubscribe();
     expect(asap.actions.length).to.equal(0);
-    expect(asap._scheduled).to.equal(undefined);
     asap.schedule(() => {
       expect(asapExec1).to.equal(false);
       expect(asapExec2).to.equal(false);
@@ -230,13 +228,13 @@ describe('Scheduler.asap', () => {
     a = asapScheduler.schedule(() => {
       expect(stubFlush).to.have.callCount(1);
       c = asapScheduler.schedule(() => {
-        expect(stubFlush).to.have.callCount(2);
+        expect(stubFlush).to.have.callCount(3);
         sandbox.restore();
         done();
       });
     });
     b = asapScheduler.schedule(() => {
-      expect(stubFlush).to.have.callCount(1);
+      expect(stubFlush).to.have.callCount(2);
     });
   });
 
@@ -288,4 +286,20 @@ describe('Scheduler.asap', () => {
       done();
     });
   });
+
+  it('scheduling inside of an executing action more than once should work', (done) => {
+    const results: any[] = [];
+
+    asapScheduler.schedule(() => {
+      results.push(1)
+      asapScheduler.schedule(() => results.push(2));
+      asapScheduler.schedule(() => results.push(3));
+    });
+
+    setTimeout(() => {
+      // This should always fire after two recursively scheduled microtasks.
+      expect(results).to.deep.equal([1, 2, 3]);
+      done() 
+    })
+  })
 });

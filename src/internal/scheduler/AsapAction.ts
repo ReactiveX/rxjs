@@ -19,7 +19,7 @@ export class AsapAction<T> extends AsyncAction<T> {
     // If a microtask has already been scheduled, don't schedule another
     // one. If a microtask hasn't been scheduled yet, schedule one now. Return
     // the current scheduled microtask id.
-    return scheduler._scheduled || (scheduler._scheduled = immediateProvider.setImmediate(scheduler.flush.bind(scheduler, undefined)));
+    return immediateProvider.setImmediate(scheduler.flush.bind(scheduler, undefined));
   }
 
   protected recycleAsyncId(scheduler: AsapScheduler, id?: TimerHandle, delay: number = 0): TimerHandle | undefined {
@@ -32,10 +32,8 @@ export class AsapAction<T> extends AsyncAction<T> {
     // If the scheduler queue has no remaining actions with the same async id,
     // cancel the requested microtask and set the scheduled flag to undefined
     // so the next AsapAction will request its own.
-    const { actions } = scheduler;
-    if (id != null && actions[actions.length - 1]?.id !== id) {
+    if (id != null) {
       immediateProvider.clearImmediate(id);
-      scheduler._scheduled = undefined;
     }
     // Return undefined so the action knows to request a new async id if it's rescheduled.
     return undefined;
