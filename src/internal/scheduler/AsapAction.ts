@@ -16,9 +16,6 @@ export class AsapAction<T> extends AsyncAction<T> {
     }
     // Push the action to the end of the scheduler queue.
     scheduler.actions.push(this);
-    // If a microtask has already been scheduled, don't schedule another
-    // one. If a microtask hasn't been scheduled yet, schedule one now. Return
-    // the current scheduled microtask id.
     return immediateProvider.setImmediate(scheduler.flush.bind(scheduler, undefined));
   }
 
@@ -29,9 +26,7 @@ export class AsapAction<T> extends AsyncAction<T> {
     if (delay != null ? delay > 0 : this.delay > 0) {
       return super.recycleAsyncId(scheduler, id, delay);
     }
-    // If the scheduler queue has no remaining actions with the same async id,
-    // cancel the requested microtask and set the scheduled flag to undefined
-    // so the next AsapAction will request its own.
+
     if (id != null) {
       immediateProvider.clearImmediate(id);
     }
