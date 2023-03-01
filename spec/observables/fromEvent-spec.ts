@@ -21,6 +21,7 @@ describe('fromEvent', () => {
 
       const target = {
         addEventListener: (eventType: any, listener: any) => {
+          // Here we're just simulating some event target that emits to events after delay1 and delay2.
           timer(delay1, delay2).pipe(mapTo('ev'), take(2), concatWith(NEVER)).subscribe(listener);
         },
         removeEventListener: (): void => void 0,
@@ -417,6 +418,50 @@ describe('fromEvent', () => {
       fromEvent(obj, 'foo').subscribe();
       done();
     }).to.not.throw(TypeError);
+  });
+
+  it('should throw on subscription if one of the items in an ArrayLike is not a valid event target', (done) => {
+    const nodeList = {
+      [0]: {
+        addEventListener() {
+          /* noop */
+        },
+        removeEventListener() {
+          /* noop */
+        },
+      },
+      [1]: {
+        addEventListener() {
+          /* noop */
+        },
+        removeEventListener() {
+          /* noop */
+        },
+      },
+      [2]: {
+        notAnEventTargetLOL: true,
+      },
+      [3]: {
+        addEventListener() {
+          /* noop */
+        },
+        removeEventListener() {
+          /* noop */
+        },
+      },
+      length: 4,
+    };
+
+    // @ts-expect-error We're testing this for the rebels that don't type check properly.
+    const source = fromEvent(nodeList, 'cool-event-name-bro');
+
+    source.subscribe({
+      error: (err) => {
+        expect(err).to.be.an.instanceOf(TypeError);
+        expect(err.message).to.equal('Invalid event target');
+        done();
+      },
+    });
   });
 
   it('should handle adding events to an arraylike of targets', () => {
