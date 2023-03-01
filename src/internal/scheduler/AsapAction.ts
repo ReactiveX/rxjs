@@ -35,7 +35,9 @@ export class AsapAction<T> extends AsyncAction<T> {
     const { actions } = scheduler;
     if (id != null && actions[actions.length - 1]?.id !== id) {
       immediateProvider.clearImmediate(id);
-      scheduler._scheduled = undefined;
+      if (scheduler._scheduled === id) {
+        scheduler._scheduled = undefined;
+      }
     }
     // Return undefined so the action knows to request a new async id if it's rescheduled.
     return undefined;
