@@ -90,7 +90,10 @@ export function windowToggle<T, O>(
             return;
           }
 
-          subscriber.next(window.asObservable());
+          // TODO: We should probably make this `.asObservable()`, but we've historically
+          // had windows throw an `ObjectUnsubscribedError` if you try to subscribe to them
+          // late. We should probably change that: (https://github.com/ReactiveX/rxjs/issues/7200)
+          subscriber.next(window);
 
           closingSubscription.add(closingNotifier.subscribe(createOperatorSubscriber(subscriber, closeWindow, noop, handleError)));
         },

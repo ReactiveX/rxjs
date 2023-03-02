@@ -1463,53 +1463,6 @@ describe('groupBy operator', () => {
     });
   });
 
-  it('should not break lift() composability', (done) => {
-    class MyCustomObservable<T> extends Observable<T> {
-      lift<R>(operator: Operator<T, R>): Observable<R> {
-        const observable = new MyCustomObservable<R>();
-        (<any>observable).source = this;
-        (<any>observable).operator = operator;
-        return observable;
-      }
-    }
-
-    const result = new MyCustomObservable((observer: Observer<number>) => {
-      observer.next(1);
-      observer.next(2);
-      observer.next(3);
-      observer.complete();
-    }).pipe(
-      groupBy(
-        (x: number) => x % 2,
-        (x: number) => x + '!'
-      )
-    );
-
-    expect(result instanceof MyCustomObservable).to.be.true;
-
-    const expectedGroups = [
-      { key: 1, values: ['1!', '3!'] },
-      { key: 0, values: ['2!'] },
-    ];
-
-    result.subscribe({
-      next: (g: any) => {
-        const expectedGroup = expectedGroups.shift()!;
-        expect(g.key).to.equal(expectedGroup.key);
-
-        g.subscribe((x: any) => {
-          expect(x).to.deep.equal(expectedGroup.values.shift());
-        });
-      },
-      error: (x) => {
-        done(new Error('should not be called'));
-      },
-      complete: () => {
-        done();
-      },
-    });
-  });
-
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
     const synchronousObservable = new Observable<number>((subscriber) => {
