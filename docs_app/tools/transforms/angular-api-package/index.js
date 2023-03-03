@@ -12,6 +12,7 @@ const typeScriptPackage = require('dgeni-packages/typescript');
 const { API_SOURCE_PATH, API_TEMPLATES_PATH, MARBLE_IMAGES_PATH, MARBLE_IMAGES_WEB_PATH,
   requireFolder } = require('../config');
 
+// prettier-ignore
 module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
 
   // Register the processors
@@ -55,7 +56,7 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
   })
 
   // Where do we get the source files?
-  .config(function(readTypeScriptModules, readFilesProcessor, collectExamples, tsParser) {
+  .config(function(readTypeScriptModules, readFilesProcessor, tsParser) {
 
     // Tell TypeScript how to load modules that start with `@angular`
     tsParser.options.paths = { '@angular/*': [API_SOURCE_PATH + '/*'] };
@@ -84,7 +85,6 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
         fileReader: 'exampleFileReader'
       }
     ];
-    collectExamples.exampleFolders.push('examples');
   })
 
   // Configure jsdoc-style tag parsing
@@ -96,7 +96,6 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
 
   // Additional jsdoc config (for RxJS source)
   .config(function(parseTagsProcessor) {
-    parseTagsProcessor.tagDefinitions.push({ name: 'example', aliases: ['examples'], multi: true, docProperty: 'examples' });
     parseTagsProcessor.tagDefinitions.push({ name: 'owner' });
     parseTagsProcessor.tagDefinitions.push({ name: 'static' });
     parseTagsProcessor.tagDefinitions.push({ name: 'nocollapse' });

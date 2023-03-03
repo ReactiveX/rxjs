@@ -38,7 +38,6 @@ you are working on.
 * angular-api-package
 * angular-content-package
 * content-package
-* examples-package
 * links-package
 * post-process-package
 * remark-package
