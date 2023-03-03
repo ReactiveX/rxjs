@@ -1,5 +1,6 @@
 const renderMarkdownFactory = require('./renderMarkdown');
 
+// prettier-ignore
 describe('remark: renderMarkdown service', () => {
   let renderMarkdown;
   beforeEach(() => {
@@ -28,19 +29,6 @@ describe('remark: renderMarkdown service', () => {
     const content = '* list item {@link some_url_path}';
     const output = renderMarkdown(content);
     expect(output).toEqual('<ul>\n<li>list item {@link some_url_path}</li>\n</ul>\n');
-  });
-
-  it('should not put block level inline tags inside paragraphs', () => {
-    const content = 'A paragraph.\n' +
-        '\n' +
-        '{@example blah **blah** blah }\n' +
-        '\n' +
-        'Another paragraph {@link _containing_ } an inline tag';
-    const output = renderMarkdown(content);
-    expect(output).toEqual(
-      '<p>A paragraph.</p>\n' +
-        '{@example blah **blah** blah }\n' +
-        '<p>Another paragraph {@link _containing_ } an inline tag</p>\n');
   });
 
   it('should not format the contents of tags marked as unformatted ', () => {

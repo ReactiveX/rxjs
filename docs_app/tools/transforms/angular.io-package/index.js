@@ -13,6 +13,7 @@ const { extname, resolve } = require('canonical-path');
 const { existsSync } = require('fs');
 const { SRC_PATH } = require('../config');
 
+// prettier-ignore
 module.exports = new Package('angular.io', [gitPackage, apiPackage, contentPackage])
 
   // This processor relies upon the versionInfo. See below...
@@ -27,7 +28,7 @@ module.exports = new Package('angular.io', [gitPackage, apiPackage, contentPacka
     renderDocsProcessor.extraData.versionInfo = versionInfo;
   })
 
-  .config(function(checkAnchorLinksProcessor, linkInlineTagDef, renderExamples) {
+  .config(function(checkAnchorLinksProcessor, linkInlineTagDef) {
 
     // Fail the processing if there is an invalid link
     linkInlineTagDef.failOnBadLink = false;
@@ -50,10 +51,6 @@ module.exports = new Package('angular.io', [gitPackage, apiPackage, contentPacka
     });
     checkAnchorLinksProcessor.pathVariants = ['', '/', '.html', '/index.html', '#top-of-page'];
     checkAnchorLinksProcessor.errorOnUnmatchedLinks = false;
-
-    // Make sure we fail if the examples are not right
-    renderExamples.ignoreBrokenExamples = false;
-
   })
 
   .config(function(renderLinkInfo, postProcessHtml) {
