@@ -15,8 +15,6 @@ export interface NotFoundErrorCtor {
  * observable sequence.
  *
  * @see {@link operators/single}
- *
- * @class NotFoundError
  */
 export const NotFoundError: NotFoundErrorCtor = createErrorClass(
   (_super) =>

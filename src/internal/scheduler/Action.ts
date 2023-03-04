@@ -13,8 +13,6 @@ import { SchedulerAction } from '../types';
  *   schedule(state?: T, delay: number = 0): Subscription;
  * }
  * ```
- *
- * @class Action<T>
  */
 export class Action<T> extends Subscription {
   constructor(scheduler: Scheduler, work: (this: SchedulerAction<T>, state?: T) => void) {

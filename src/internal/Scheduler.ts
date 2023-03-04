@@ -17,7 +17,6 @@ import { dateTimestampProvider } from './scheduler/dateTimestampProvider';
  * }
  * ```
  *
- * @class Scheduler
  * @deprecated Scheduler is an internal implementation detail of RxJS, and
  * should not be used directly. Rather, create your own class and implement
  * {@link SchedulerLike}. Will be made internal in v8.

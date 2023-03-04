@@ -149,9 +149,6 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 }
 
-/**
- * @class AnonymousSubject<T>
- */
 export class AnonymousSubject<T> extends Subject<T> {
   constructor(
     /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */

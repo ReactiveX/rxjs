@@ -7,8 +7,6 @@ import { pipeFromArray } from './util/pipe';
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
  * of RxJS.
- *
- * @class Observable<T>
  */
 export class Observable<T> implements Subscribable<T> {
   /**

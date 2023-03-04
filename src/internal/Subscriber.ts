@@ -13,8 +13,6 @@ import { timeoutProvider } from './scheduler/timeoutProvider';
  * a Subscriber, in order to provide Subscription-like capabilities such as
  * `unsubscribe`. Subscriber is a common type in RxJS, and crucial for
  * implementing operators, but it is rarely used as a public API.
- *
- * @class Subscriber<T>
  */
 export class Subscriber<T> extends Subscription implements Observer<T> {
   /** @internal */

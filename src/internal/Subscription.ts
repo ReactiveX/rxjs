@@ -11,8 +11,6 @@ import { SubscriptionLike, TeardownLogic, Unsubscribable } from './types';
  * method, which will attach a child Subscription to the current Subscription.
  * When a Subscription is unsubscribed, all its children (and its grandchildren)
  * will be unsubscribed as well.
- *
- * @class Subscription
  */
 export class Subscription implements SubscriptionLike {
   public static EMPTY = (() => {

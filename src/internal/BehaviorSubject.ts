@@ -5,8 +5,6 @@ import { Subscription } from './Subscription';
 /**
  * A variant of Subject that requires an initial value and emits its current
  * value whenever it is subscribed to.
- *
- * @class BehaviorSubject<T>
  */
 export class BehaviorSubject<T> extends Subject<T> {
   constructor(private _value: T) {
