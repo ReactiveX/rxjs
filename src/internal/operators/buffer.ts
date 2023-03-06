@@ -47,19 +47,7 @@ export function buffer<T>(closingNotifier: ObservableInput<any>): OperatorFuncti
     // The current buffered values.
     let currentBuffer: T[] = [];
 
-    // Subscribe to our source.
-    source.subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        (value) => currentBuffer.push(value),
-        () => {
-          subscriber.next(currentBuffer);
-          subscriber.complete();
-        }
-      )
-    );
-
-    // Subscribe to the closing notifier.
+    // Subscribe to the closing notifier first.
     from(closingNotifier).subscribe(
       createOperatorSubscriber(
         subscriber,
@@ -70,6 +58,18 @@ export function buffer<T>(closingNotifier: ObservableInput<any>): OperatorFuncti
           subscriber.next(b);
         },
         noop
+      )
+    );
+
+    // Subscribe to our source.
+    source.subscribe(
+      createOperatorSubscriber(
+        subscriber,
+        (value) => currentBuffer.push(value),
+        () => {
+          subscriber.next(currentBuffer);
+          subscriber.complete();
+        }
       )
     );
 

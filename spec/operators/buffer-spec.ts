@@ -317,11 +317,11 @@ describe('Observable.prototype.buffer', () => {
     });
 
     subject.next(1);
-    expect(results).to.deep.equal([[1]]);
+    expect(results).to.deep.equal([[]]);
     subject.next(2);
-    expect(results).to.deep.equal([[1], [2]]);
+    expect(results).to.deep.equal([[], [1]]);
     subject.complete();
-    expect(results).to.deep.equal([[1], [2], [], 'complete']);
+    expect(results).to.deep.equal([[], [1], [2], 'complete']);
   });
 
   it('should buffer when Promise resolves', (done) => {
