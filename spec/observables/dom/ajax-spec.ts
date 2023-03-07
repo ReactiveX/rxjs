@@ -330,37 +330,6 @@ describe('ajax', () => {
     expect(complete).to.be.true;
   });
 
-  it('should fail if fails to parse response in older IE', () => {
-    let error: any;
-    const obj: AjaxConfig = {
-      url: '/flibbertyJibbet',
-      method: '',
-    };
-
-    // No `response` property on the object (for older IE).
-    MockXMLHttpRequest.noResponseProp = true;
-
-    ajax(obj).subscribe({
-      next: () => {
-        throw new Error('should not next');
-      },
-      error: (err: any) => {
-        error = err;
-      },
-      complete: () => {
-        throw new Error('should not complete');
-      },
-    });
-
-    MockXMLHttpRequest.mostRecent.respondWith({
-      status: 207,
-      responseText: 'Wee! I am text, but should be valid JSON!',
-    });
-
-    expect(error instanceof SyntaxError).to.be.true;
-    expect(error.message).to.equal('Unexpected token W in JSON at position 0');
-  });
-
   it('should fail on 404', () => {
     let error: any;
     const obj: AjaxConfig = {
@@ -1583,11 +1552,6 @@ class MockXHREventTarget {
 class MockXMLHttpRequest extends MockXHREventTarget {
   static readonly DONE = 4;
 
-  /**
-   * Set to `true` to test IE code paths.
-   */
-  static noResponseProp = false;
-
   private static requests: Array<MockXMLHttpRequest> = [];
   private static recentRequest: MockXMLHttpRequest;
 
@@ -1600,7 +1564,6 @@ class MockXMLHttpRequest extends MockXHREventTarget {
   }
 
   static clearRequest(): void {
-    MockXMLHttpRequest.noResponseProp = false;
     MockXMLHttpRequest.requests.length = 0;
     MockXMLHttpRequest.recentRequest = null!;
   }
@@ -1639,9 +1602,6 @@ class MockXMLHttpRequest extends MockXHREventTarget {
     super();
     MockXMLHttpRequest.recentRequest = this;
     MockXMLHttpRequest.requests.push(this);
-    if (MockXMLHttpRequest.noResponseProp) {
-      delete this['response'];
-    }
   }
 
   // @ts-ignore: Property has no initializer and is not definitely assigned
@@ -1753,11 +1713,6 @@ class MockXMLHttpRequest extends MockXHREventTarget {
       default:
         this.response = response.responseText;
         break;
-    }
-
-    // We're testing old IE, forget all of that response property stuff.
-    if (MockXMLHttpRequest.noResponseProp) {
-      delete this['response'];
     }
 
     this.triggerEvent('load', { type: 'load', total: response.total ?? 0, loaded: response.loaded ?? 0 });
