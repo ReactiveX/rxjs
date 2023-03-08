@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { Subject, ObjectUnsubscribedError, Observable, AsyncSubject, Observer, of, config, throwError, concat, Subscription } from 'rxjs';
+import { Subject, Observable, AsyncSubject, Observer, of, config, Subscription } from 'rxjs';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
-import { catchError, delay, map, mergeMap } from 'rxjs/operators';
+import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -345,33 +345,35 @@ describe('Subject', () => {
     subscription2.unsubscribe();
     subject.unsubscribe();
 
-    expect(() => {
-      subject.subscribe(
-        { next: function (x) {
+    
+    const subscription = subject.subscribe(
+      { 
+        next: function (x) {
           results3.push(x);
-        }, error: function (err) {
+        }, 
+        error: function (err) {
           expect(false).to.equal('should not throw error: ' + err.toString());
-        } }
-      );
-    }).to.throw(ObjectUnsubscribedError);
+        }
+      }
+    );
+
+    expect(subscription.closed).to.be.true;
 
     expect(results1).to.deep.equal([1, 2, 3, 4, 5]);
     expect(results2).to.deep.equal([3, 4, 5]);
     expect(results3).to.deep.equal([]);
   });
 
-  it('should not allow values to be nexted after it is unsubscribed', (done) => {
+  it('should not allow values to be nexted after it is unsubscribed', () => {
     const subject = new Subject<string>();
-    const expected = ['foo'];
-
-    subject.subscribe(function (x) {
-      expect(x).to.equal(expected.shift());
-    });
+    const results: any[] = []
+    subject.subscribe(x => results.push(x));
 
     subject.next('foo');
     subject.unsubscribe();
-    expect(() => subject.next('bar')).to.throw(ObjectUnsubscribedError);
-    done();
+    subject.next('bar')
+
+    expect(results).to.deep.equal(['foo']);
   });
 
   it('should clean out unsubscribed subscribers', (done) => {
@@ -552,21 +554,22 @@ describe('Subject', () => {
     source.subscribe(subject);
   });
 
-  it('should throw ObjectUnsubscribedError when emit after unsubscribed', () => {
+  it('should be closed after unsubscribed', () => {
     const subject = new Subject<string>();
     subject.unsubscribe();
+    expect(subject.closed).to.be.true;
+  });
 
-    expect(() => {
-      subject.next('a');
-    }).to.throw(ObjectUnsubscribedError);
+  it('should be closed after error', () => {
+    const subject = new Subject<string>();
+    subject.error('bad');
+    expect(subject.closed).to.be.true;
+  });
 
-    expect(() => {
-      subject.error('a');
-    }).to.throw(ObjectUnsubscribedError);
-
-    expect(() => {
-      subject.complete();
-    }).to.throw(ObjectUnsubscribedError);
+  it('should be closed after complete', () => {
+    const subject = new Subject<string>();
+    subject.complete();
+    expect(subject.closed).to.be.true;
   });
 
   it('should not next after completed', () => {

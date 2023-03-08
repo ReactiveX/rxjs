@@ -56,8 +56,8 @@ export class ReplaySubject<T> extends Subject<T> {
   }
 
   next(value: T): void {
-    const { isStopped, _buffer, _infiniteTimeWindow, _timestampProvider, _windowTime } = this;
-    if (!isStopped) {
+    const { _closed, _buffer, _infiniteTimeWindow, _timestampProvider, _windowTime } = this;
+    if (!_closed) {
       _buffer.push(value);
       !_infiniteTimeWindow && _buffer.push(_timestampProvider.now() + _windowTime);
     }
@@ -67,7 +67,6 @@ export class ReplaySubject<T> extends Subject<T> {
 
   /** @internal */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
-    this._throwIfClosed();
     this._trimBuffer();
 
     const subscription = this._innerSubscribe(subscriber);

@@ -2,7 +2,6 @@ import { Observable } from './Observable';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { Observer, SubscriptionLike, TeardownLogic } from './types';
-import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 
 /**
  * A Subject is a special type of Observable that allows values to be
@@ -12,7 +11,15 @@ import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
  * Subject, and you can call next to feed values as well as error and complete.
  */
 export class Subject<T> extends Observable<T> implements SubscriptionLike {
-  closed = false;
+  /** @internal */
+  _closed = false;
+
+  /**
+   * Will return true if this subject has been closed and is no longer accepting new values.
+   */
+  get closed() {
+    return this._closed;
+  }
 
   private currentObservers = new Map<Subscription, Observer<T>>();
 
@@ -52,21 +59,13 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     super();
   }
 
-  /** @internal */
-  protected _throwIfClosed() {
-    if (this.closed) {
-      throw new ObjectUnsubscribedError();
-    }
-  }
-
   protected _clearObservers() {
     this.currentObservers.clear();
     this.observerSnapshot = undefined;
   }
 
   next(value: T) {
-    this._throwIfClosed();
-    if (!this.isStopped) {
+    if (!this._closed) {
       const { observers } = this;
       const len = observers.length;
       for (let i = 0; i < len; i++) {
@@ -76,9 +75,8 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   error(err: any) {
-    this._throwIfClosed();
-    if (!this.isStopped) {
-      this.hasError = this.isStopped = true;
+    if (!this._closed) {
+      this.hasError = this._closed = true;
       this.thrownError = err;
       const { observers } = this;
       const len = observers.length;
@@ -90,9 +88,8 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   complete() {
-    this._throwIfClosed();
-    if (!this.isStopped) {
-      this.isStopped = true;
+    if (!this._closed) {
+      this._closed = true;
       const { observers } = this;
       const len = observers.length;
       for (let i = 0; i < len; i++) {
@@ -103,7 +100,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   unsubscribe() {
-    this.isStopped = this.closed = true;
+    this._closed = true;
     this._clearObservers();
   }
 
@@ -113,23 +110,21 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   /** @internal */
   protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
-    this._throwIfClosed();
     return super._trySubscribe(subscriber);
   }
 
   /** @internal */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
-    // this._throwIfClosed();
     this._checkFinalizedStatuses(subscriber);
     return this._innerSubscribe(subscriber);
   }
 
   /** @internal */
   protected _innerSubscribe(subscriber: Subscriber<any>) {
-    const { hasError, isStopped, currentObservers } = this;
-    if (hasError || isStopped) {
+    if (this.hasError || this._closed) {
       return Subscription.EMPTY;
     }
+    const { currentObservers } = this;
     const subscription = new Subscription(() => {
       currentObservers.delete(subscription);
       this.observerSnapshot = undefined;
@@ -141,10 +136,10 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   /** @internal */
   protected _checkFinalizedStatuses(subscriber: Subscriber<any>) {
-    const { hasError, thrownError, isStopped } = this;
+    const { hasError, thrownError, _closed } = this;
     if (hasError) {
       subscriber.error(thrownError);
-    } else if (isStopped) {
+    } else if (_closed) {
       subscriber.complete();
     }
   }
