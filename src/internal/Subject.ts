@@ -36,9 +36,6 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
-  isStopped = false;
-
-  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   hasError = false;
 
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
