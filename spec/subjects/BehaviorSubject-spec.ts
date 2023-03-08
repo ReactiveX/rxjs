@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { BehaviorSubject, Subject, ObjectUnsubscribedError, of } from 'rxjs';
+import { BehaviorSubject, Subject, of } from 'rxjs';
 import { tap, mergeMapTo } from 'rxjs/operators';
 import { asInteropSubject } from '../helpers/interop-helper';
 import { TestScheduler } from 'rxjs/testing';
@@ -26,12 +26,27 @@ describe('BehaviorSubject', () => {
     }).to.throw(Error, 'derp');
   });
 
-  it('should throw an ObjectUnsubscribedError if getValue() is called and the BehaviorSubject has been unsubscribed', () => {
+  it('should be closed if unsubscribed', () => {
     const subject = new BehaviorSubject('hi there');
     subject.unsubscribe();
-    expect(() => {
-      subject.getValue();
-    }).to.throw(ObjectUnsubscribedError);
+    expect(subject.closed).to.be.true;
+  });
+
+  it('should not be closed if not unsubscribed', () => {
+    const subject = new BehaviorSubject('hi there');
+    expect(subject.closed).to.be.false;
+  });
+
+  it('should be closed if it has received an error', () => {
+    const subject = new BehaviorSubject('hi there');
+    subject.error(new Error('derp'));
+    expect(subject.closed).to.be.true;
+  });
+
+  it('should be closed if it has received a complete notification', () => {
+    const subject = new BehaviorSubject('hi there');
+    subject.complete();
+    expect(subject.closed).to.be.true;
   });
 
   it('should have a getValue() method to retrieve the current value', () => {

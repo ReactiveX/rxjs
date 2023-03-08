@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Observable, NEVER, of, ObjectUnsubscribedError, EMPTY } from 'rxjs';
+import { Observable, NEVER, of, EMPTY } from 'rxjs';
 import { windowToggle, tap, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -243,7 +243,7 @@ describe('windowToggle', () => {
     });
   });
 
-  it('should dispose window Subjects if the outer is unsubscribed early', () => {
+  it('should close window Subjects if the outer is unsubscribed early', () => {
     rxTestScheduler.run(({ hot, cold, expectObservable, expectSubscriptions, time }) => {
       const open = cold(' o-------------------------|');
       const e1 = hot('    --a--b--c--d--e--f--g--h--|');
@@ -265,9 +265,8 @@ describe('windowToggle', () => {
       expectObservable(result, unsub).toBe(expected, values);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       rxTestScheduler.schedule(() => {
-        expect(() => {
-          window.subscribe();
-        }).to.throw(ObjectUnsubscribedError);
+        const subscription = window.subscribe();
+        expect(subscription.closed).to.be.true;
       }, late);
     });
   });

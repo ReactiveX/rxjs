@@ -3,7 +3,6 @@ import {
   ArgumentOutOfRangeError,
   EmptyError,
   NotFoundError,
-  ObjectUnsubscribedError,
   SequenceError,
   TimeoutError,
   UnsubscriptionError
@@ -15,7 +14,6 @@ it('should deprecate error construction', () => {
   error = new ArgumentOutOfRangeError(); // $ExpectDeprecation
   error = new EmptyError(); // $ExpectDeprecation
   error = new NotFoundError('message'); // $ExpectDeprecation
-  error = new ObjectUnsubscribedError(); // $ExpectDeprecation
   error = new SequenceError('message'); // $ExpectDeprecation
   error = new TimeoutError(); // $ExpectDeprecation
   error = new UnsubscriptionError([]); // $ExpectDeprecation
@@ -28,7 +26,6 @@ it('should not deprecate instanceof use', () => {
   b = error instanceof ArgumentOutOfRangeError; // $ExpectNoDeprecation
   b = error instanceof EmptyError; // $ExpectNoDeprecation
   b = error instanceof NotFoundError; // $ExpectNoDeprecation
-  b = error instanceof ObjectUnsubscribedError; // $ExpectNoDeprecation
   b = error instanceof SequenceError; // $ExpectNoDeprecation
   b = error instanceof TimeoutError; // $ExpectNoDeprecation
   b = error instanceof UnsubscriptionError; // $ExpectNoDeprecation
