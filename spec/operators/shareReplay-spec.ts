@@ -305,41 +305,6 @@ describe('shareReplay', () => {
     });
   });
 
-  it('should not break lift() composability', (done) => {
-    class MyCustomObservable<T> extends Observable<T> {
-      lift<R>(operator: Operator<T, R>): Observable<R> {
-        const observable = new MyCustomObservable<R>();
-        (<any>observable).source = this;
-        (<any>observable).operator = operator;
-        return observable;
-      }
-    }
-
-    const result = new MyCustomObservable((observer: Observer<number>) => {
-      observer.next(1);
-      observer.next(2);
-      observer.next(3);
-      observer.complete();
-    }).pipe(shareReplay());
-
-    expect(result instanceof MyCustomObservable).to.be.true;
-
-    const expected = [1, 2, 3];
-
-    result.subscribe({
-      next(n: any) {
-        expect(expected.length).to.be.greaterThan(0);
-        expect(n).to.equal(expected.shift());
-      },
-      error() {
-        done(new Error('should not be called'));
-      },
-      complete() {
-        done();
-      },
-    });
-  });
-
   it('should not skip values on a sync source', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const a = from(['a', 'b', 'c', 'd']);

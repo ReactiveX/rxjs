@@ -237,7 +237,7 @@ describe('delay', () => {
       const result = e1.pipe(
         repeatWhen((notifications) => {
           const delayed = notifications.pipe(delay(t));
-          subscribeSpy = sinon.spy((delayed as any)['source'], 'subscribe');
+          subscribeSpy = sinon.spy(notifications as any, 'subscribe');
           return delayed;
         }),
         skip(1),

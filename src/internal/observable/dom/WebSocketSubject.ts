@@ -2,7 +2,6 @@ import { Subject, AnonymousSubject } from '../../Subject';
 import { Subscriber } from '../../Subscriber';
 import { Observable } from '../../Observable';
 import { Subscription } from '../../Subscription';
-import { Operator } from '../../Operator';
 import { ReplaySubject } from '../../ReplaySubject';
 import { Observer, NextObserver } from '../../types';
 
@@ -168,7 +167,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     super();
     if (urlConfigOrSource instanceof Observable) {
       this.destination = destination;
-      this.source = urlConfigOrSource as Observable<T>;
+      this._source = urlConfigOrSource as Observable<T>;
     } else {
       const config = (this._config = { ...DEFAULT_WEBSOCKET_CONFIG });
       this._output = new Subject<T>();
@@ -191,17 +190,9 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     }
   }
 
-  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
-  lift<R>(operator: Operator<T, R>): WebSocketSubject<R> {
-    const sock = new WebSocketSubject<R>(this._config as WebSocketSubjectConfig<any>, this.destination as any);
-    sock.operator = operator;
-    sock.source = this;
-    return sock;
-  }
-
   private _resetState() {
     this._socket = null;
-    if (!this.source) {
+    if (!this._source) {
       this.destination = new ReplaySubject();
     }
     this._output = new Subject<T>();
@@ -366,9 +357,9 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
   /** @internal */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
-    const { source } = this;
-    if (source) {
-      return source.subscribe(subscriber);
+    const { _source } = this;
+    if (_source) {
+      return _source.subscribe(subscriber);
     }
     if (!this._socket) {
       this._connectSocket();

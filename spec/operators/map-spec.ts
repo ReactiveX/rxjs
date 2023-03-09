@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { map, tap, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { of, Observable, identity } from 'rxjs';
+import { of, Observable, identity, Observer } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 // function shortcuts
@@ -278,5 +278,30 @@ describe('map', () => {
     });
 
     expect(sideEffects).to.deep.equal([0, 1, 2]);
+  });
+
+  describe(/* why u */ 'no lift' /* bro? */, () => {
+    it('can operate on any Observable-shaped object', () => {
+      const source = {
+        subscribe(observer: Observer<number>) {
+          observer.next(1);
+          observer.next(2);
+          observer.next(3);
+          observer.complete();
+          return {
+            unsubscribe() {
+              // noop
+            },
+          };
+        },
+      };
+      const results: any[] = [];
+
+      map((x: number) => x + '!!!')(source as any).subscribe((value: string) => {
+        results.push(value);
+      });
+
+      expect(results).to.deep.equal(['1!!!', '2!!!', '3!!!']);
+    });
   });
 });

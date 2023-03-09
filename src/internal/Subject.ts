@@ -1,4 +1,3 @@
-import { Operator } from './Operator';
 import { Observable } from './Observable';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
@@ -40,13 +39,6 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   constructor() {
     // NOTE: This must be here to obscure Observable's constructor.
     super();
-  }
-
-  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
-  lift<R>(operator: Operator<T, R>): Observable<R> {
-    const subject = new AnonymousSubject(this, this);
-    subject.operator = operator as any;
-    return subject as any;
   }
 
   /** @internal */
@@ -108,7 +100,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   /** @internal */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
-    this._throwIfClosed();
+    // this._throwIfClosed();
     this._checkFinalizedStatuses(subscriber);
     return this._innerSubscribe(subscriber);
   }
@@ -144,9 +136,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
    * @return {Observable} Observable that the Subject casts to
    */
   asObservable(): Observable<T> {
-    const observable: any = new Observable<T>();
-    observable.source = this;
-    return observable;
+    return new Observable((subscriber) => this.subscribe(subscriber));
   }
 }
 
@@ -157,10 +147,10 @@ export class AnonymousSubject<T> extends Subject<T> {
   constructor(
     /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
     public destination?: Observer<T>,
-    source?: Observable<T>
+    /** @internal */
+    protected _source?: Observable<T>
   ) {
     super();
-    this.source = source;
   }
 
   next(value: T) {
@@ -177,6 +167,6 @@ export class AnonymousSubject<T> extends Subject<T> {
 
   /** @internal */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
-    return this.source?.subscribe(subscriber) ?? Subscription.EMPTY;
+    return this._source?.subscribe(subscriber) ?? Subscription.EMPTY;
   }
 }

@@ -1,4 +1,3 @@
-import { Operator } from './Operator';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { TeardownLogic, OperatorFunction, Subscribable, Observer } from './types';
@@ -13,16 +12,6 @@ import { pipeFromArray } from './util/pipe';
  */
 export class Observable<T> implements Subscribable<T> {
   /**
-   * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
-   */
-  source: Observable<any> | undefined;
-
-  /**
-   * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
-   */
-  operator: Operator<any, T> | undefined;
-
-  /**
    * @constructor
    * @param {Function} subscribe the function that is called when the Observable is
    * initially subscribed to. This function is given a Subscriber, to which new values
@@ -33,24 +22,6 @@ export class Observable<T> implements Subscribable<T> {
     if (subscribe) {
       this._subscribe = subscribe;
     }
-  }
-
-  /**
-   * Creates a new Observable, with this Observable instance as the source, and the passed
-   * operator defined as the new observable's operator.
-   * @method lift
-   * @param operator the operator defining the operation to take on the observable
-   * @return a new observable with the Operator applied
-   * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
-   * If you have implemented an operator using `lift`, it is recommended that you create an
-   * operator by simply returning `new Observable()` directly. See "Creating new operators from
-   * scratch" section here: https://rxjs.dev/guide/operators
-   */
-  lift<R>(operator?: Operator<T, R>): Observable<R> {
-    const observable = new Observable<R>();
-    observable.source = this;
-    observable.operator = operator;
-    return observable;
   }
 
   /**
@@ -191,23 +162,7 @@ export class Observable<T> implements Subscribable<T> {
    */
   subscribe(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null): Subscription {
     const subscriber = observerOrNext instanceof Subscriber ? observerOrNext : new Subscriber(observerOrNext);
-
-    const { operator, source } = this;
-    subscriber.add(
-      operator
-        ? // We're dealing with a subscription in the
-          // operator chain to one of our lifted operators.
-          operator.call(subscriber, source)
-        : source
-        ? // If `source` has a value, but `operator` does not, something that
-          // had intimate knowledge of our API, like our `Subject`, must have
-          // set it. We're going to just call `_subscribe` directly.
-          this._subscribe(subscriber)
-        : // In all other cases, we're likely wrapping a user-provided initializer
-          // function, so we need to catch errors and handle them appropriately.
-          this._trySubscribe(subscriber)
-    );
-
+    subscriber.add(this._trySubscribe(subscriber));
     return subscriber;
   }
 
@@ -286,8 +241,8 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /** @internal */
-  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
-    return this.source?.subscribe(subscriber);
+  protected _subscribe(_subscriber: Subscriber<any>): TeardownLogic {
+    return;
   }
 
   /**
