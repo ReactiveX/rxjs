@@ -46,7 +46,6 @@ module.exports = new Package('angular-base', [
   .factory(require('./services/filterPipes'))
   .factory(require('./services/filterAmbiguousDirectiveAliases'))
   .factory(require('./services/filterFromInImports'))
-  .factory(require('./services/filterNeverAsGeneric'))
   .factory(require('./services/getImageDimensions'))
 
   .factory(require('./post-processors/add-image-dimensions'))
@@ -141,12 +140,11 @@ module.exports = new Package('angular-base', [
     autoLinkCode,
     filterPipes,
     filterAmbiguousDirectiveAliases,
-    filterFromInImports,
-    filterNeverAsGeneric
+    filterFromInImports
   ) {
     addImageDimensions.basePath = path.resolve(AIO_PATH, 'src');
     autoLinkCode.customFilters = [filterPipes, filterAmbiguousDirectiveAliases];
-    autoLinkCode.wordFilters = [filterFromInImports, filterNeverAsGeneric];
+    autoLinkCode.wordFilters = [filterFromInImports];
     postProcessHtml.plugins = [
       require('./post-processors/autolink-headings'),
       addImageDimensions,
