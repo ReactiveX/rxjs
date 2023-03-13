@@ -70,7 +70,11 @@ import { isValidDate } from '../util/isDate';
  *
  * ### Known Limitations
  *
- * - The {@link asyncScheduler} uses `setTimeout` which has limitations for how far in the future it can be scheduled.
+ * - The {@link asyncScheduler} uses [`setTimeout`](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout)
+ * internally which has limitation for how far in the future it can be scheduled. The `delay` used by `setTimeout`
+ * uses 32-bit signed integer internally. This causes an integer overflow when using delays larger than 2,147,483,647
+ * ms (about 24.8 days), [resulting in the timeout being executed
+ * immediately](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout#maximum_delay_value).
  *
  * - If a `scheduler` is provided that returns a timestamp other than an epoch from `now()`, and
  * a `Date` object is passed to the `dueTime` argument, the calculation for when the first emission
