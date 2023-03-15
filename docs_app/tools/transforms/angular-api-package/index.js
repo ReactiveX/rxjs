@@ -96,7 +96,6 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
 
   // Additional jsdoc config (for RxJS source)
   .config(function(parseTagsProcessor) {
-    parseTagsProcessor.tagDefinitions.push({ name: 'nocollapse' });
     // Replace the Catharsis type parsing, as it doesn't understand TypeScript type annotations (i.e. `foo(x: SomeType)`), with a simpler dummy transform
     const typeTags = parseTagsProcessor.tagDefinitions.filter(tagDef => ['param', 'returns', 'type', 'private', 'property', 'protected', 'public'].indexOf(tagDef.name) !== -1);
     typeTags.forEach(typeTag => typeTag.transforms[0] = function dummyTypeTransform(doc, tag, value) {

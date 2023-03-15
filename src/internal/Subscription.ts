@@ -15,7 +15,6 @@ import { SubscriptionLike, TeardownLogic, Unsubscribable } from './types';
  * @class Subscription
  */
 export class Subscription implements SubscriptionLike {
-  /** @nocollapse */
   public static EMPTY = (() => {
     const empty = new Subscription();
     empty.closed = true;
