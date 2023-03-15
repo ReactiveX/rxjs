@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { mergeMap, map, delay, take } from 'rxjs/operators';
-import { asapScheduler, defer, Observable, from, of, timer } from 'rxjs';
+import { asapScheduler, defer, Observable, from, of, scheduled, timer } from 'rxjs';
 import { asInteropObservable } from '../helpers/interop-helper';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -838,7 +838,7 @@ describe('mergeMap', () => {
     const results: (number | string)[] = [];
 
     of(1)
-      .pipe(mergeMap(() => defer(() => of(2, asapScheduler)).pipe(mergeMap(() => defer(() => of(3, asapScheduler))))))
+      .pipe(mergeMap(() => defer(() => scheduled([2], asapScheduler)).pipe(mergeMap(() => defer(() => scheduled([3], asapScheduler))))))
       .subscribe({
         next(value: any) {
           results.push(value);

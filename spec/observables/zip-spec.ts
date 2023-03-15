@@ -1,6 +1,6 @@
 /** @prettier */
 import { expect } from 'chai';
-import { queueScheduler as rxQueueScheduler, zip, from, of } from 'rxjs';
+import { queueScheduler as rxQueueScheduler, zip, from, scheduled } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -591,8 +591,8 @@ describe('zip', () => {
   });
 
   it('should combine an immediately-scheduled source with an immediately-scheduled second', (done) => {
-    const a = of(1, 2, 3, queueScheduler);
-    const b = of(4, 5, 6, 7, 8, queueScheduler);
+    const a = scheduled([1, 2, 3], queueScheduler);
+    const b = scheduled([4, 5, 6, 7, 8], queueScheduler);
     const r = [
       [1, 4],
       [2, 5],

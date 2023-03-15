@@ -1,7 +1,5 @@
-import { SchedulerLike, ValueFromArray } from '../types';
+import { ValueFromArray } from '../types';
 import { Observable } from '../Observable';
-import { popScheduler } from '../util/args';
-import { scheduled } from '../scheduled/scheduled';
 import { fromArrayLike } from './from';
 
 // Devs are more likely to pass null or undefined than they are a scheduler
@@ -12,14 +10,7 @@ import { fromArrayLike } from './from';
 export function of(value: null): Observable<null>;
 export function of(value: undefined): Observable<undefined>;
 
-/** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled`. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function of(scheduler: SchedulerLike): Observable<never>;
-/** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled`. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function of<A extends readonly unknown[]>(...valuesAndScheduler: [...A, SchedulerLike]): Observable<ValueFromArray<A>>;
-
 export function of(): Observable<never>;
-/** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
-export function of<T>(): Observable<T>;
 export function of<T>(value: T): Observable<T>;
 export function of<A extends readonly unknown[]>(...values: A): Observable<ValueFromArray<A>>;
 
@@ -74,11 +65,10 @@ export function of<A extends readonly unknown[]>(...values: A): Observable<Value
  * @see {@link from}
  * @see {@link range}
  *
- * @param {...T} values A comma separated list of arguments you want to be emitted
- * @return {Observable} An Observable that emits the arguments
+ * @param values A comma separated list of arguments you want to be emitted
+ * @return An Observable that emits the arguments
  * described above and then completes.
  */
-export function of<T>(...args: Array<T | SchedulerLike>): Observable<T> {
-  const scheduler = popScheduler(args);
-  return scheduler ? scheduled(args as T[], scheduler) : fromArrayLike(args as T[]);
+export function of<T>(...values: T[]): Observable<T> {
+  return fromArrayLike<T>(values);
 }

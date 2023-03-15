@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
 import { lowerCaseO } from '../helpers/test-helper';
-import { asyncScheduler, queueScheduler, concat, of, defer, Observable } from 'rxjs';
+import { asyncScheduler, queueScheduler, concat, of, scheduled, defer, Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -390,8 +390,8 @@ describe('static concat', () => {
   });
 
   it('should concat an immediately-scheduled source with an immediately-scheduled second', (done) => {
-    const a = of(1, 2, 3, queueScheduler);
-    const b = of(4, 5, 6, 7, 8, queueScheduler);
+    const a = scheduled([1, 2, 3], queueScheduler);
+    const b = scheduled([4, 5, 6, 7, 8], queueScheduler);
     const r = [1, 2, 3, 4, 5, 6, 7, 8];
 
     concat(a, b, queueScheduler).subscribe({
