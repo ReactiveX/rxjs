@@ -155,7 +155,6 @@ export class Observable<T> implements Subscribable<T> {
    * the error will be thrown asynchronously as unhandled.
    * @param {Function} complete (optional) A handler for a terminal event resulting from successful completion.
    * @return {Subscription} a subscription reference to the registered handlers
-   * @method subscribe
    */
   subscribe(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null): Subscription {
     const subscriber = observerOrNext instanceof Subscriber ? observerOrNext : new Subscriber(observerOrNext);
@@ -244,7 +243,6 @@ export class Observable<T> implements Subscribable<T> {
 
   /**
    * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
-   * @method Symbol.observable
    * @return {Observable} this instance of the observable
    */
   [Symbol_observable]() {
@@ -323,7 +321,6 @@ export class Observable<T> implements Subscribable<T> {
 
   /**
    * Used to stitch together functional operators into a chain.
-   * @method pipe
    * @return {Observable} the Observable result of all of the operators having
    * been called in the order they were passed in.
    *
