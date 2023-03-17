@@ -3,10 +3,10 @@ import { UnaryFunction } from '../types';
 
 type PipeParameters<T extends any[], U extends any[] = []> = T extends [
   UnaryFunction<any, infer FR> | infer F,
-  UnaryFunction<infer SA, infer SR> | infer S,
+  UnaryFunction<any, infer SR>,
   ...infer R
 ]
-  ? PipeParameters<[[FR] extends [SA] ? S : UnaryFunction<FR, SR>, ...R], [...U, F]>
+  ? PipeParameters<[UnaryFunction<FR, SR>, ...R], [...U, F]>
   : T extends [any]
   ? [...U, ...T]
   : [];
