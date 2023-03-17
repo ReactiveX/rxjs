@@ -1,24 +1,20 @@
 import { identity } from './identity';
 import { UnaryFunction } from '../types';
 
-type PipeParameters<T extends any[], U extends any[] = []> = T extends [infer F, infer S, ...infer R]
-  ? F extends UnaryFunction<any, infer FR>
-    ? S extends UnaryFunction<infer SA, infer SR>
-      ? [FR] extends [SA]
-        ? PipeParameters<[S, ...R], [...U, F]>
-        : PipeParameters<[UnaryFunction<FR, SR>, ...R], [...U, F]>
-      : never
-    : never
+type PipeParameters<T extends any[], U extends any[] = []> = T extends [
+  UnaryFunction<any, infer FR> | infer F,
+  UnaryFunction<infer SA, infer SR> | infer S,
+  ...infer R
+]
+  ? PipeParameters<[[FR] extends [SA] ? S : UnaryFunction<FR, SR>, ...R], [...U, F]>
   : T extends [any]
   ? [...U, ...T]
   : [];
 
-type PipeReturnType<T extends Array<UnaryFunction<any, any>>> = T extends [infer F, ...any[]] | [...any[], infer L]
-  ? F extends UnaryFunction<infer FA, any>
-    ? L extends UnaryFunction<any, infer LR>
-      ? UnaryFunction<FA, LR>
-      : never
-    : never
+type PipeReturnType<T extends Array<UnaryFunction<any, any>>> = T extends
+  | [UnaryFunction<infer FA, any>, ...any[]]
+  | [...any[], UnaryFunction<any, infer LR>]
+  ? UnaryFunction<FA, LR>
   : never;
 
 export function pipe(): typeof identity;
