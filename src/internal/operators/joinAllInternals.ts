@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { ObservableInput, OperatorFunction } from '../types';
+import { ObservableInput } from '../types';
 import { identity } from '../util/identity';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { pipe } from '../util/pipe';
