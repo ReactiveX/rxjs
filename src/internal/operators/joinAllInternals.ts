@@ -20,9 +20,9 @@ export function joinAllInternals<T, R>(joinFn: (sources: ObservableInput<T>[]) =
   return pipe(
     // Collect all inner sources into an array, and emit them when the
     // source completes.
-    toArray() as OperatorFunction<ObservableInput<T>, ObservableInput<T>[]>,
+    toArray<ObservableInput<T>>(),
     // Run the join function on the collected array of inner sources.
-    mergeMap((sources) => joinFn(sources)),
+    mergeMap<ObservableInput<T>[], Observable<T>>((sources) => joinFn(sources)),
     // If a projection function was supplied, apply it to each result.
     project ? mapOneOrManyArgs(project) : (identity as any)
   );
