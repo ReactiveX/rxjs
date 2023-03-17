@@ -7,8 +7,8 @@ type PipeParameters<T extends any[], U extends any[] = []> = T extends [infer F,
       ? [FR] extends [SA]
         ? PipeParameters<[S, ...R], [...U, F]>
         : PipeParameters<[UnaryFunction<FR, SR>, ...R], [...U, F]>
-      : [...U, ...T]
-    : [...U, ...T]
+      : never
+    : never
   : T extends [any]
   ? [...U, ...T]
   : [];
