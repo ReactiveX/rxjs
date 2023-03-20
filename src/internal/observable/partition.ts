@@ -64,17 +64,17 @@ export function partition<T>(source: ObservableInput<T>, predicate: (value: T, i
  *
  * @see {@link filter}
  *
- * @param {function(value: T, index: number): boolean} predicate A function that
- * evaluates each value emitted by the source Observable. If it returns `true`,
- * the value is emitted on the first Observable in the returned array, if
- * `false` the value is emitted on the second Observable in the array. The
- * `index` parameter is the number `i` for the i-th source emission that has
- * happened since the subscription, starting from the number `0`.
- * @param {any} [thisArg] An optional argument to determine the value of `this`
- * in the `predicate` function.
- * @return {[Observable<T>, Observable<T>]} An array with two Observables: one
- * with values that passed the predicate, and another with values that did not
- * pass the predicate.
+ * @param source The source `ObservableInput` that will be split into a tuple of
+ * two Observable elements.
+ * @param predicate A function that evaluates each value emitted by the source
+ * Observable. If it returns `true`, the value is emitted on the first Observable
+ * in the returned array, if `false` the value is emitted on the second Observable
+ * in the array. The `index` parameter is the number `i` for the i-th source
+ * emission that has happened since the subscription, starting from the number `0`.
+ * @param thisArg An optional argument to determine the value of `this` in the
+ * `predicate` function.
+ * @return An array with two Observables: one with values that passed the
+ * predicate, and another with values that did not pass the predicate.
  */
 export function partition<T>(
   source: ObservableInput<T>,

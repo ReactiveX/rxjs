@@ -41,18 +41,17 @@ import { UnaryFunction } from '../types';
  *
  * @see {@link filter}
  *
- * @param {function(value: T, index: number): boolean} predicate A function that
- * evaluates each value emitted by the source Observable. If it returns `true`,
- * the value is emitted on the first Observable in the returned array, if
- * `false` the value is emitted on the second Observable in the array. The
- * `index` parameter is the number `i` for the i-th source emission that has
- * happened since the subscription, starting from the number `0`.
- * @param {any} [thisArg] An optional argument to determine the value of `this`
- * in the `predicate` function.
+ * @param predicate A function that evaluates each value emitted by the source
+ * Observable. If it returns `true`, the value is emitted on the first Observable
+ * in the returned array, if `false` the value is emitted on the second Observable
+ * in the array. The `index` parameter is the number `i` for the i-th source
+ * emission that has happened since the subscription, starting from the number `0`.
+ * @param thisArg An optional argument to determine the value of `this` in the
+ * `predicate` function.
  * @return A function that returns an array with two Observables: one with
  * values that passed the predicate, and another with values that did not pass
  * the predicate.
- * @deprecated Replaced with the `partition` static creation function. Will be removed in v8.
+ * @deprecated Replaced with the {@link partition} static creation function. Will be removed in v8.
  */
 export function partition<T>(
   predicate: (value: T, index: number) => boolean,

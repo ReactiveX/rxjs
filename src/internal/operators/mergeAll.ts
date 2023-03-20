@@ -56,8 +56,8 @@ import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
  * @see {@link switchMap}
  * @see {@link zipAll}
  *
- * @param {number} [concurrent=Infinity] Maximum number of inner
- * Observables being subscribed to concurrently.
+ * @param concurrent Maximum number of inner Observables being subscribed to
+ * concurrently.
  * @return A function that returns an Observable that emits values coming from
  * all the inner Observables emitted by the source Observable.
  */

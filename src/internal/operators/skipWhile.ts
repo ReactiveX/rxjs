@@ -45,7 +45,7 @@ export function skipWhile<T>(predicate: (value: T, index: number) => boolean): M
  * @see {@link skipUntil}
  * @see {@link skipLast}
  *
- * @param {Function} predicate - A function to test each item emitted from the source Observable.
+ * @param predicate A function to test each item emitted from the source Observable.
  * @return A function that returns an Observable that begins emitting items
  * emitted by the source Observable when the specified predicate becomes false.
  */

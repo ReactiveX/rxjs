@@ -80,13 +80,15 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * @see {@link from}
  * @see {@link Observable}
  *
- * @param {S} initialState Initial state.
- * @param {function (state: S): boolean} condition Condition to terminate generation (upon returning false).
- * @param {function (state: S): S} iterate Iteration step function.
- * @param {function (state: S): T} resultSelector Selector function for results produced in the sequence. (deprecated)
- * @param {SchedulerLike} [scheduler] A {@link SchedulerLike} on which to run the generator loop. If not provided, defaults to emit immediately.
- * @returns {Observable<T>} The generated sequence.
- * @deprecated Instead of passing separate arguments, use the options argument. Signatures taking separate arguments will be removed in v8.
+ * @param initialState Initial state.
+ * @param condition Condition to terminate generation (upon returning false).
+ * @param iterate Iteration step function.
+ * @param resultSelector Selector function for results produced in the sequence.
+ * @param scheduler A {@link SchedulerLike} on which to run the generator loop.
+ * If not provided, defaults to emit immediately.
+ * @returns The generated sequence.
+ * @deprecated Instead of passing separate arguments, use the options argument.
+ * Signatures taking separate arguments will be removed in v8.
  */
 export function generate<T, S>(
   initialState: S,
@@ -230,13 +232,14 @@ export function generate<T, S>(
  *
  * @see {@link from}
  *
- * @param {S} initialState Initial state.
- * @param {function (state: S): boolean} condition Condition to terminate generation (upon returning false).
- * @param {function (state: S): S} iterate Iteration step function.
- * @param {function (state: S): T} [resultSelector] Selector function for results produced in the sequence.
- * @param {Scheduler} [scheduler] A {@link Scheduler} on which to run the generator loop. If not provided, defaults to emitting immediately.
- * @return {Observable<T>} The generated sequence.
- * @deprecated Instead of passing separate arguments, use the options argument. Signatures taking separate arguments will be removed in v8.
+ * @param initialState Initial state.
+ * @param condition Condition to terminate generation (upon returning false).
+ * @param iterate Iteration step function.
+ * @param scheduler A {@link Scheduler} on which to run the generator loop. If not
+ * provided, defaults to emitting immediately.
+ * @return The generated sequence.
+ * @deprecated Instead of passing separate arguments, use the options argument.
+ * Signatures taking separate arguments will be removed in v8.
  */
 export function generate<S>(
   initialState: S,
@@ -282,8 +285,8 @@ export function generate<S>(
  * @see {@link from}
  * @see {@link Observable}
  *
- * @param {GenerateBaseOptions<S>} options Object that must contain initialState, iterate and might contain condition and scheduler.
- * @returns {Observable<S>} The generated sequence.
+ * @param options Object that must contain initialState, iterate and might contain condition and scheduler.
+ * @returns The generated sequence.
  */
 export function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
 
@@ -325,8 +328,8 @@ export function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
  * @see {@link from}
  * @see {@link Observable}
  *
- * @param {GenerateOptions<T, S>} options Object that must contain initialState, iterate, resultSelector and might contain condition and scheduler.
- * @returns {Observable<T>} The generated sequence.
+ * @param options Object that must contain initialState, iterate, resultSelector and might contain condition and scheduler.
+ * @returns The generated sequence.
  */
 export function generate<T, S>(options: GenerateOptions<T, S>): Observable<T>;
 

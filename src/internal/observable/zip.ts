@@ -45,8 +45,10 @@ export function zip<A extends readonly unknown[], R>(
  * // { age: 29, name: 'Beer', isDev: false }
  * ```
  *
- * @param sources
- * @return {Observable<R>}
+ * @param args Any number of `ObservableInput`s provided either as an array or as an object
+ * to combine with each other.
+ * @return An Observable of array values of the values emitted at the same index from each
+ * individual `ObservableInput`.
  */
 export function zip(...args: unknown[]): Observable<unknown> {
   const resultSelector = popResultSelector(args);

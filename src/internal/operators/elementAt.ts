@@ -44,12 +44,12 @@ import { take } from './take';
  * @see {@link take}
  *
  * @throws {ArgumentOutOfRangeError} When using `elementAt(i)`, it delivers an
- * ArgumentOutOfRangeError to the Observer's `error` callback if `i < 0` or the
+ * `ArgumentOutOfRangeError` to the Observer's `error` callback if `i < 0` or the
  * Observable has completed before emitting the i-th `next` notification.
  *
- * @param {number} index Is the number `i` for the i-th source emission that has
- * happened since the subscription, starting from the number `0`.
- * @param {T} [defaultValue] The default value returned for missing indices.
+ * @param index Is the number `i` for the i-th source emission that has happened
+ * since the subscription, starting from the number `0`.
+ * @param defaultValue The default value returned for missing indices.
  * @return A function that returns an Observable that emits a single item, if
  * it is found. Otherwise, it will emit the default value if given. If not, it
  * emits an error.

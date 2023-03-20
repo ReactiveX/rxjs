@@ -158,13 +158,11 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  * @see {@link merge}
  * @see {@link withLatestFrom}
  *
- * @param sources An array of input Observables to combine with each other.
- * An array of Observables must be given as the first argument.
- * @param project An optional function to project the values from
- * the combined latest values into a new value on the output Observable.
- * @return An Observable of projected values from the most recent
- * values from each input Observable, or an array of the most recent values from
- * each input Observable.
+ * @param args Any number of `ObservableInput`s provided either as an array or as an object
+ * to combine with each other. If the last parameter is the function, it will be used to project the
+ * values from the combined latest values into a new value on the output Observable.
+ * @return An Observable of projected values from the most recent values from each `ObservableInput`,
+ * or an array of the most recent values from each `ObservableInput`.
  */
 export function combineLatest<O extends ObservableInput<any>, R>(
   sources: Record<string, O> | O[],

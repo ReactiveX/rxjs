@@ -51,9 +51,8 @@ import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
  * @see {@link mergeMap}
  * @see {@link switchMap}
  *
- * @param {function(value: T, ?index: number): ObservableInput} project A function
- * that, when applied to an item emitted by the source Observable, returns an
- * Observable.
+ * @param project A function that, when applied to an item emitted by the source
+ * Observable, returns an Observable.
  * @return A function that returns an Observable that emits the result of
  * applying the projection function to each item emitted by the source Observable
  * and taking values from each projected inner Observable sequentially.

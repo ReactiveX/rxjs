@@ -47,8 +47,8 @@ import { arrRemove } from '../util/arrRemove';
  * @see {@link pairwise}
  * @see {@link windowCount}
  *
- * @param {number} bufferSize The maximum size of the buffer emitted.
- * @param {number} [startBufferEvery] Interval at which to start a new buffer.
+ * @param bufferSize The maximum size of the buffer emitted.
+ * @param startBufferEvery Interval at which to start a new buffer.
  * For example if `startBufferEvery` is `2`, then a new buffer will be started
  * on every other value from the source. A new buffer is started at the
  * beginning of the source by default.

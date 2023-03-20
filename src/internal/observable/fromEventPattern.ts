@@ -125,18 +125,15 @@ export function fromEventPattern<T>(
  * @see {@link bindCallback}
  * @see {@link bindNodeCallback}
  *
- * @param {function(handler: Function): any} addHandler A function that takes
- * a `handler` function as argument and attaches it somehow to the actual
- * source of events.
- * @param {function(handler: Function, token?: any): void} [removeHandler] A function that
- * takes a `handler` function as an argument and removes it from the event source. If `addHandler`
- * returns some kind of token, `removeHandler` function will have it as a second parameter.
- * @param {function(...args: any): T} [project] A function to
- * transform results. It takes the arguments from the event handler and
- * should return a single value.
- * @return {Observable<T>} Observable which, when an event happens, emits first parameter
- * passed to registered event handler. Alternatively it emits whatever project function returns
- * at that moment.
+ * @param addHandler A function that takes a `handler` function as argument and attaches it
+ * somehow to the actual source of events.
+ * @param removeHandler A function that takes a `handler` function as an argument and removes
+ * it from the event source. If `addHandler` returns some kind of token, `removeHandler` function
+ * will have it as a second parameter.
+ * @param resultSelector A function to transform results. It takes the arguments from the event
+ * handler and should return a single value.
+ * @return Observable which, when an event happens, emits first parameter passed to registered
+ * event handler. Alternatively it emits whatever project function returns at that moment.
  */
 export function fromEventPattern<T>(
   addHandler: (handler: NodeEventHandler) => any,

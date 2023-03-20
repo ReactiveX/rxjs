@@ -10,7 +10,7 @@ import { pipeFromArray } from './util/pipe';
  */
 export class Observable<T> implements Subscribable<T> {
   /**
-   * @param {Function} subscribe the function that is called when the Observable is
+   * @param subscribe The function that is called when the Observable is
    * initially subscribed to. This function is given a Subscriber, to which new values
    * can be `next`ed, or an `error` method can be called to raise an error, or
    * `complete` can be called to notify of a successful completion.
@@ -148,13 +148,9 @@ export class Observable<T> implements Subscribable<T> {
    * // 'unsubscribed!' after 2.5s
    * ```
    *
-   * @param {Observer|Function} observerOrNext (optional) Either an observer with methods to be called,
-   * or the first of three possible handlers, which is the handler for each value emitted from the subscribed
-   * Observable.
-   * @param {Function} error (optional) A handler for a terminal event resulting from an error. If no error handler is provided,
-   * the error will be thrown asynchronously as unhandled.
-   * @param {Function} complete (optional) A handler for a terminal event resulting from successful completion.
-   * @return {Subscription} a subscription reference to the registered handlers
+   * @param observerOrNext Either an {@link Observer} with some or all callback methods,
+   * or the `next` handler that is called for each value emitted from the subscribed Observable.
+   * @return A subscription reference to the registered handlers.
    */
   subscribe(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null): Subscription {
     const subscriber = observerOrNext instanceof Subscriber ? observerOrNext : new Subscriber(observerOrNext);
@@ -214,9 +210,9 @@ export class Observable<T> implements Subscribable<T> {
    * // 'Total: 6'
    * ```
    *
-   * @param next a handler for each value emitted by the observable
-   * @return a promise that either resolves on observable completion or
-   *  rejects with the handled error
+   * @param next A handler for each value emitted by the observable.
+   * @return A promise that either resolves on observable completion or
+   * rejects with the handled error.
    */
   forEach(next: (value: T) => void): Promise<void> {
     return new Promise<void>((resolve, reject) => {
@@ -243,7 +239,7 @@ export class Observable<T> implements Subscribable<T> {
 
   /**
    * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
-   * @return {Observable} this instance of the observable
+   * @return This instance of the observable.
    */
   [Symbol_observable]() {
     return this;
@@ -321,8 +317,6 @@ export class Observable<T> implements Subscribable<T> {
 
   /**
    * Used to stitch together functional operators into a chain.
-   * @return {Observable} the Observable result of all of the operators having
-   * been called in the order they were passed in.
    *
    * ## Example
    *
@@ -337,6 +331,9 @@ export class Observable<T> implements Subscribable<T> {
    *   )
    *   .subscribe(x => console.log(x));
    * ```
+   *
+   * @return The Observable result of all the operators having been called
+   * in the order they were passed in.
    */
   pipe(...operations: OperatorFunction<any, any>[]): Observable<any> {
     return pipeFromArray(operations)(this);

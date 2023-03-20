@@ -41,8 +41,8 @@ export function findIndex<T>(predicate: (value: T, index: number, source: Observ
  * @see {@link first}
  * @see {@link take}
  *
- * @param {function(value: T, index: number, source: Observable<T>): boolean} predicate
- * A function called with each item to test for condition matching.
+ * @param predicate A function called with each item to test for condition
+ * matching.
  * @return A function that returns an Observable that emits the index of the
  * first item that matches the condition.
  */

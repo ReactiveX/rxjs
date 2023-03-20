@@ -46,12 +46,11 @@ export function range(start: number, count: number | undefined, scheduler: Sched
  * @see {@link timer}
  * @see {@link interval}
  *
- * @param {number} [start=0] The value of the first integer in the sequence.
- * @param {number} count The number of sequential integers to generate.
- * @param {SchedulerLike} [scheduler] A {@link SchedulerLike} to use for scheduling
- * the emissions of the notifications.
- * @return {Observable} An Observable of numbers that emits a finite range of
- * sequential integers.
+ * @param start The value of the first integer in the sequence.
+ * @param count The number of sequential integers to generate.
+ * @param scheduler A {@link SchedulerLike} to use for scheduling the emissions
+ * of the notifications.
+ * @return An Observable of numbers that emits a finite range of sequential integers.
  */
 export function range(start: number, count?: number, scheduler?: SchedulerLike): Observable<number> {
   if (count == null) {
