@@ -56,11 +56,7 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
   })
 
   // Where do we get the source files?
-  .config(function (readTypeScriptModules, tsParser) {
-    // Tell TypeScript how to load modules that start with `@angular`
-    tsParser.options.paths = { '@angular/*': [API_SOURCE_PATH + '/*'] };
-    tsParser.options.baseUrl = '.';
-
+  .config(function (readTypeScriptModules) {
     // API files are typescript
     readTypeScriptModules.basePath = API_SOURCE_PATH;
     readTypeScriptModules.ignoreExportsMatching = [/^[_ɵ]|^VERSION$/];
