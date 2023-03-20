@@ -8,7 +8,6 @@ export class AsyncScheduler extends Scheduler {
   /**
    * A flag to indicate whether the Scheduler is currently executing a batch of
    * queued actions.
-   * @type {boolean}
    * @internal
    */
   public _active: boolean = false;
@@ -16,7 +15,6 @@ export class AsyncScheduler extends Scheduler {
    * An internal ID used to track the latest asynchronous task such as those
    * coming from `setTimeout`, `setInterval`, `requestAnimationFrame`, and
    * others.
-   * @type {any}
    * @internal
    */
   public _scheduled: TimerHandle | undefined;
