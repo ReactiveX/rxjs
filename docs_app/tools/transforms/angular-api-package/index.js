@@ -9,6 +9,7 @@ const Package = require('dgeni').Package;
 
 const basePackage = require('../angular-base-package');
 const typeScriptPackage = require('dgeni-packages/typescript');
+// prettier-ignore
 const { API_SOURCE_PATH, API_TEMPLATES_PATH, MARBLE_IMAGES_PATH, MARBLE_IMAGES_WEB_PATH,
   requireFolder } = require('../config');
 
@@ -55,7 +56,7 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
   })
 
   // Where do we get the source files?
-  .config(function(readTypeScriptModules, readFilesProcessor, tsParser) {
+  .config(function(readTypeScriptModules, tsParser) {
 
     // Tell TypeScript how to load modules that start with `@angular`
     tsParser.options.paths = { '@angular/*': [API_SOURCE_PATH + '/*'] };
@@ -74,15 +75,6 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
       'fetch/index.ts',
       'webSocket/index.ts',
       'testing/index.ts'
-    ];
-
-    // API Examples
-    readFilesProcessor.sourceFiles = [
-      {
-        basePath: API_SOURCE_PATH,
-        include: API_SOURCE_PATH + '/examples/**/*',
-        fileReader: 'exampleFileReader'
-      }
     ];
   })
 
