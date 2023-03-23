@@ -38,6 +38,7 @@ export { Subscription } from './internal/Subscription';
 export { Subscriber } from './internal/Subscriber';
 
 /* Utils */
+export { r } from './internal/util/r';
 export { pipe } from './internal/util/pipe';
 export { noop } from './internal/util/noop';
 export { identity } from './internal/util/identity';
