@@ -3,7 +3,6 @@ import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { Observer, SubscriptionLike, TeardownLogic } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
-import { arrRemove } from './util/arrRemove';
 
 /**
  * A Subject is a special type of Observable that allows values to be
@@ -15,10 +14,19 @@ import { arrRemove } from './util/arrRemove';
 export class Subject<T> extends Observable<T> implements SubscriptionLike {
   closed = false;
 
-  private currentObservers: Observer<T>[] | null = null;
+  private currentObservers = new Map<Subscription, Observer<T>>();
+
+  private dirtySnapshotedObservers = false;
+  private snapshotedObservers: Observer<T>[] = [];
 
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
-  observers: Observer<T>[] = [];
+  get observers(): Observer<T>[] {
+    if (this.dirtySnapshotedObservers) {
+      this.snapshotedObservers = Array.from(this.currentObservers.values());
+      this.dirtySnapshotedObservers = false;
+    }
+    return this.snapshotedObservers;
+  }
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   isStopped = false;
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
@@ -51,10 +59,11 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   next(value: T) {
     this._throwIfClosed();
     if (!this.isStopped) {
-      if (!this.currentObservers) {
-        this.currentObservers = Array.from(this.observers);
+      if (this.dirtySnapshotedObservers) {
+        this.snapshotedObservers = Array.from(this.currentObservers.values());
+        this.dirtySnapshotedObservers = false;
       }
-      for (const observer of this.currentObservers) {
+      for (const observer of this.snapshotedObservers) {
         observer.next(value);
       }
     }
@@ -65,10 +74,16 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     if (!this.isStopped) {
       this.hasError = this.isStopped = true;
       this.thrownError = err;
-      const { observers } = this;
-      while (observers.length) {
-        observers.shift()!.error(err);
+      const { currentObservers } = this;
+      if (this.dirtySnapshotedObservers) {
+        this.snapshotedObservers = Array.from(currentObservers.values());
+        this.dirtySnapshotedObservers = false;
       }
+      for (const observer of this.snapshotedObservers) {
+        observer.error(err);
+      }
+      currentObservers.clear();
+      this.snapshotedObservers = [];
     }
   }
 
@@ -76,20 +91,25 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     this._throwIfClosed();
     if (!this.isStopped) {
       this.isStopped = true;
-      const { observers } = this;
-      while (observers.length) {
-        observers.shift()!.complete();
+      const { currentObservers } = this;
+      if (this.dirtySnapshotedObservers) {
+        this.snapshotedObservers = Array.from(currentObservers.values());
+        this.dirtySnapshotedObservers = false;
       }
+      for (const observer of this.snapshotedObservers) {
+        observer.complete();
+      }
+      currentObservers.clear();
+      this.snapshotedObservers = [];
     }
   }
 
   unsubscribe() {
     this.isStopped = this.closed = true;
-    this.observers = this.currentObservers = null!;
   }
 
   get observed() {
-    return this.observers?.length > 0;
+    return this.currentObservers.size > 0;
   }
 
   /** @internal */
@@ -107,16 +127,17 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   /** @internal */
   protected _innerSubscribe(subscriber: Subscriber<any>) {
-    const { hasError, isStopped, observers } = this;
+    const { hasError, isStopped, currentObservers } = this;
     if (hasError || isStopped) {
       return Subscription.EMPTY;
     }
-    this.currentObservers = null;
-    observers.push(subscriber);
-    return new Subscription(() => {
-      this.currentObservers = null;
-      arrRemove(observers, subscriber);
+    const subscription = new Subscription(() => {
+      currentObservers.delete(subscription);
+      this.dirtySnapshotedObservers = true;
     });
+    currentObservers.set(subscription, subscriber);
+    this.dirtySnapshotedObservers = true;
+    return subscription;
   }
 
   /** @internal */

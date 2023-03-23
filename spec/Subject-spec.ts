@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Subject, ObjectUnsubscribedError, Observable, AsyncSubject, Observer, of, config, throwError, concat } from 'rxjs';
+import { Subject, ObjectUnsubscribedError, Observable, AsyncSubject, Observer, of, config, throwError, concat, Subscription } from 'rxjs';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
 import { catchError, delay, map, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
@@ -681,6 +681,47 @@ describe('Subject', () => {
         expect(true).to.be.false;
       }
       expect(true).to.be.true;
+    });
+  });
+
+  describe('many subscribers', () => {
+    it('should be able to subscribe and unsubscribe huge amounts of subscribers', () => {
+      let numResultsReceived = 0;
+      const allSubscriptions: Subscription[] = [];
+      const source = new Subject<number>();
+      const numSubscribers = 100000;
+      for (let index = 0 ; index !== numSubscribers ; ++index) {
+        allSubscriptions.push(source.subscribe(() => {
+          ++numResultsReceived;
+        }));
+      }
+      expect(numResultsReceived).to.eq(0);
+      expect(source.observed).to.be.true;
+      source.next(42);
+      expect(numResultsReceived).to.eq(numSubscribers);
+      expect(source.observed).to.be.true;
+      for (const subscription of allSubscriptions) {
+        subscription.unsubscribe();
+      }
+      expect(numResultsReceived).to.eq(numSubscribers);
+      expect(source.observed).to.be.false;
+    });
+  });
+
+  describe('re-rentrant subscribers', () => {
+    it('should handle re-entrant subscribers', () => {
+      const seenValues: number[] = [];
+      const source = new Subject<number>();
+      source.subscribe((value) => {
+        seenValues.push(value);
+        source.subscribe(nestedValue => {
+          seenValues.push(nestedValue);
+        });
+      });
+      source.next(1);
+      source.next(2);
+      source.next(3);
+      expect(seenValues).to.deep.eq([1, 2, 2, 3, 3, 3]);
     });
   });
 });
