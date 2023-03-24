@@ -81,7 +81,7 @@ export interface TapObserver<T> extends Observer<T> {
  *
  * Tap is designed to allow the developer a designated place to perform side effects. While you _could_ perform side-effects
  * inside of a `map` or a `mergeMap`, that would make their mapping functions impure, which isn't always a big deal, but will
- * make it so you can't do things like memoize those functions. The `tap` operator is designed solely for such side-effects to
+ * make it so you can't do things like memorize those functions. The `tap` operator is designed solely for such side-effects to
  * help you remove side-effects from other operations.
  *
  * For any notification, next, error, or complete, `tap` will call the appropriate callback you have provided to it, via a function
