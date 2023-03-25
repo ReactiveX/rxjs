@@ -11,15 +11,22 @@ import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
  * Every Subject is an Observable and an Observer. You can subscribe to a
  * Subject, and you can call next to feed values as well as error and complete.
  */
-export class Subject<T> extends Observable<T> implements SubscriptionLike {
+export class Subject<T> extends Observable<T> implements 
+SubscriptionLike {
   closed = false;
 
-  private currentObservers = new Map<Subscription, Observer<T>>();
+  /**
+   * This is an optimization point. We use this to cache an array of
+   * the current observers so we don't have to create a new iterator
+   * or clone the array when processing emissions from the subject
+   * in order to prevent reentrant behavior (where, for example, a `next` event
+   * causes code to synchronously add a new observer to the subject)
+   */
+  private currentObservers: Observer<T>[] | null = null;
 
-  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
-  get observers(): Observer<T>[] {
-    return Array.from(this.currentObservers.values());
-  }
+  /** @internal */
+  observers = new Map<Subscription, Observer>()
+
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   isStopped = false;
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
@@ -52,8 +59,13 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   next(value: T) {
     this._throwIfClosed();
     if (!this.isStopped) {
-      for (const observer of this.currentObservers.values()) {
-        observer.next(value);
+      if (!this.currentObservers) {
+        this.currentObservers = Array.from(this.observers.values());
+      }
+      const { currentObservers } = this
+      const len = currentObservers.length
+      for (let i = 0; i < len; i++) {
+        currentObservers[i].next(value);
       }
     }
   }
@@ -63,11 +75,11 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     if (!this.isStopped) {
       this.hasError = this.isStopped = true;
       this.thrownError = err;
-      const { currentObservers } = this;
-      for (const observer of currentObservers.values()) {
-        observer.error(err);
+      const { currentObservers } = this
+      const len = currentObservers.length
+      for (let i = 0; i < len; i++) {
+        currentObservers[i].error(err);
       }
-      currentObservers.clear();
     }
   }
 
@@ -75,20 +87,22 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     this._throwIfClosed();
     if (!this.isStopped) {
       this.isStopped = true;
-      const { currentObservers } = this;
-      for (const observer of currentObservers.values()) {
-        observer.complete();
+      const { currentObservers } = this
+      const len = currentObservers.length
+      for (let i = 0; i < len; i++) {
+        currentObservers[i].complete();
       }
-      currentObservers.clear();
     }
   }
 
   unsubscribe() {
     this.isStopped = this.closed = true;
+    this.observers.clear()
+    this.currentObservers = null;
   }
 
   get observed() {
-    return this.currentObservers.size > 0;
+    return this.observers.size > 0;
   }
 
   /** @internal */
@@ -106,14 +120,15 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   /** @internal */
   protected _innerSubscribe(subscriber: Subscriber<any>) {
-    const { hasError, isStopped, currentObservers } = this;
+    const { hasError, isStopped, observers } = this;
     if (hasError || isStopped) {
       return Subscription.EMPTY;
     }
     const subscription = new Subscription(() => {
-      currentObservers.delete(subscription);
+      this.currentObservers = null;
+      observers.delete(subscription)
     });
-    currentObservers.set(subscription, subscriber);
+    observers.set(subscription, subscriber);
     return subscription;
   }
 
