@@ -75,10 +75,8 @@ SubscriptionLike {
     if (!this.isStopped) {
       this.hasError = this.isStopped = true;
       this.thrownError = err;
-      const { currentObservers } = this
-      const len = currentObservers.length
-      for (let i = 0; i < len; i++) {
-        currentObservers[i].error(err);
+      for (const observer of this.observers.values()) {
+        observer.error(err)
       }
     }
   }
@@ -87,10 +85,8 @@ SubscriptionLike {
     this._throwIfClosed();
     if (!this.isStopped) {
       this.isStopped = true;
-      const { currentObservers } = this
-      const len = currentObservers.length
-      for (let i = 0; i < len; i++) {
-        currentObservers[i].complete();
+      for (const observer of this.observers.values()) {
+        observer.complete()
       }
     }
   }
