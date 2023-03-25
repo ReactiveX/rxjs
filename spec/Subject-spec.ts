@@ -684,6 +684,21 @@ describe('Subject', () => {
     });
   });
 
+  it('should handle re-entrant subscribers the same after the move to Maps', () => {
+    const subject = new Subject<number>();
+    const results: any[] = [];
+
+    subject.subscribe(one => results.push({ one }))
+    subject.subscribe(two => {
+      results.push({ two })
+      subject.subscribe(three => results.push({ three }))
+    })
+
+    subject.next(42);
+
+    expect(results).to.deep.equal([{ one: 42 }, { two: 42 }])
+  })
+
   describe('many subscribers', () => {
     it('should be able to subscribe and unsubscribe huge amounts of subscribers', () => {
       let numResultsReceived = 0;
