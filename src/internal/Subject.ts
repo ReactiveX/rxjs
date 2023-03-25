@@ -25,7 +25,7 @@ SubscriptionLike {
   private currentObservers: Observer<T>[] | null = null;
 
   /** @internal */
-  observers = new Map<Subscription, Observer>()
+  observers = new Map<Subscription, Observer<T>>()
 
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   isStopped = false;
