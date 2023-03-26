@@ -21,6 +21,7 @@ describe('operators/index', () => {
     expect(index.defaultIfEmpty).to.exist;
     expect(index.delay).to.exist;
     expect(index.delayWhen).to.exist;
+    expect(index.delayEach).to.exist;
     expect(index.dematerialize).to.exist;
     expect(index.distinct).to.exist;
     expect(index.distinctUntilChanged).to.exist;

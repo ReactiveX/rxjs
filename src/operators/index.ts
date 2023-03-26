@@ -19,6 +19,7 @@ export { debounce } from '../internal/operators/debounce';
 export { debounceTime } from '../internal/operators/debounceTime';
 export { defaultIfEmpty } from '../internal/operators/defaultIfEmpty';
 export { delay } from '../internal/operators/delay';
+export { delayEach } from '../internal/operators/delayEach';
 export { delayWhen } from '../internal/operators/delayWhen';
 export { dematerialize } from '../internal/operators/dematerialize';
 export { distinct } from '../internal/operators/distinct';

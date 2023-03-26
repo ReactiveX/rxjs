@@ -227,6 +227,7 @@ Also see the [Join Creation Operators](#join-creation-operators) section above.
 - [`tap`](/api/operators/tap)
 - [`delay`](/api/operators/delay)
 - [`delayWhen`](/api/operators/delayWhen)
+- [`delayEach`](/api/operators/delayEach)
 - [`dematerialize`](/api/operators/dematerialize)
 - [`materialize`](/api/operators/materialize)
 - [`observeOn`](/api/operators/observeOn)
