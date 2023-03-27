@@ -64,8 +64,17 @@ module.exports = new Package('angular-base', [
     readFilesProcessor.basePath = PROJECT_ROOT;
     readFilesProcessor.sourceFiles = [];
 
-    generateKeywordsProcessor.ignoreWordsFile = path.resolve(__dirname, 'ignore.words');
-    generateKeywordsProcessor.propertiesToIgnore = ['renderedContent'];
+    generateKeywordsProcessor.ignoreWords = require(path.resolve(__dirname, 'ignore-words'));
+    generateKeywordsProcessor.docTypesToIgnore = [
+      undefined,
+      'json-doc',
+      'api-list-data',
+      'api-list-data',
+      'contributors-json',
+      'navigation-json',
+      'announcements-json',
+    ];
+    generateKeywordsProcessor.propertiesToIgnore = ['basePath', 'renderedContent', 'docType', 'searchTitle'];
   })
 
   // Where do we write the output files?
@@ -126,7 +135,15 @@ module.exports = new Package('angular-base', [
     generateKeywordsProcessor.outputFolder = 'app';
   })
 
-  .config(function (postProcessHtml, addImageDimensions, autoLinkCode, filterPipes, filterAmbiguousDirectiveAliases, filterFromInImports, filterNeverAsGeneric) {
+  .config(function (
+    postProcessHtml,
+    addImageDimensions,
+    autoLinkCode,
+    filterPipes,
+    filterAmbiguousDirectiveAliases,
+    filterFromInImports,
+    filterNeverAsGeneric
+  ) {
     addImageDimensions.basePath = path.resolve(AIO_PATH, 'src');
     autoLinkCode.customFilters = [filterPipes, filterAmbiguousDirectiveAliases];
     autoLinkCode.wordFilters = [filterFromInImports, filterNeverAsGeneric];
