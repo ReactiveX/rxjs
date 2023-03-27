@@ -4,33 +4,25 @@ Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
 */
 
-import {NgZone} from '@angular/core';
-import {Observable} from 'rxjs';
-
-export interface WebWorkerMessage {
-  type: string;
-  payload: any;
-  id?: number;
-}
+import { NgZone } from '@angular/core';
+import { Observable } from 'rxjs';
+import { WebWorkerMessage } from './web-worker-message';
 
 export class WebWorkerClient {
   private nextId = 0;
 
-  static create(workerUrl: string, zone: NgZone) {
-    return new WebWorkerClient(new Worker(workerUrl), zone);
+  static create(worker: Worker, zone: NgZone) {
+    return new WebWorkerClient(worker, zone);
   }
 
-  private constructor(private worker: Worker, private zone: NgZone) {
-  }
+  private constructor(private worker: Worker, private zone: NgZone) {}
 
   sendMessage<T>(type: string, payload?: any): Observable<T> {
-
-    return new Observable<T>(subscriber => {
-
+    return new Observable<T>((subscriber) => {
       const id = this.nextId++;
 
       const handleMessage = (response: MessageEvent) => {
-        const {type: responseType, id: responseId, payload: responsePayload} = response.data as WebWorkerMessage;
+        const { type: responseType, id: responseId, payload: responsePayload } = response.data as WebWorkerMessage;
         if (type === responseType && id === responseId) {
           this.zone.run(() => {
             subscriber.next(responsePayload);
@@ -49,7 +41,7 @@ export class WebWorkerClient {
       this.worker.addEventListener('error', handleError);
 
       // Post the message to the web worker
-      this.worker.postMessage({type, id, payload});
+      this.worker.postMessage({ type, id, payload });
 
       // At completion/error unwire the event listeners
       return () => {
