@@ -164,7 +164,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 ##### useDeprecatedNextContext
 
-- In RxJS 6, a little used feature allowed users to access the `subscriber` directly as `this` within a call to the `next` handler. The problem with this is it incurred heavy performance penalties. That behavior has been changed (because it wasn't really documented and it was barely ever used) to not change the `this` context of any user-provided subscription handlers. If you need to get that feature back, you can switch it on with this flag. Note this behavior will be removed completely in version 8.
+- In RxJS 6, a little-used feature allowed users to access the `subscriber` directly as `this` within a call to the `next` handler. The problem with this is it incurred heavy performance penalties. That behavior has been changed (because it wasn't really documented and it was barely ever used) to not change the `this` context of any user-provided subscription handlers. If you need to get that feature back, you can switch it on with this flag. Note this behavior will be removed completely in version 8.
 
 #### connectable
 
@@ -172,7 +172,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 #### firstValueFrom
 
-- A better, more tree-shakable replacement for `toPromise()` (which is now deprecated). This function allows the user to convert any `Observable` in to a `Promise` that will resolve when the source observable emits its first value. If the source observable closes without emitting a value, the returned promise will reject with an `EmptyError`, or it will resolve with a configured `defaultValue`. For more information, see the [deprecation guide](/deprecations/to-promise).
+- A better, more tree-shakable replacement for `toPromise()` (which is now deprecated). This function allows the user to convert any `Observable` into a `Promise` that will resolve when the source observable emits its first value. If the source observable closes without emitting a value, the returned promise will reject with an `EmptyError`, or it will resolve with a configured `defaultValue`. For more information, see the [deprecation guide](/deprecations/to-promise).
 
 #### lastValueFrom
 
@@ -342,7 +342,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 #### takeLast
 
-- `takeLast` now has runtime assertions that throw `TypeError`s for invalid arguments. Calling takeLast without arguments or with an argument that is `NaN` will throw a `TypeError`.
+- `takeLast` now has runtime assertions that throw `TypeError`s for invalid arguments. Calling `takeLast` without arguments or with an argument that is `NaN` will throw a `TypeError`.
 
 #### throttle
 
@@ -368,7 +368,7 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 - Generic signatures have changed. Do not explicitly pass generics.
 - Still deprecated, use the new `zipWith`.
-- `zip` operators will no longer iterate provided iterables "as needed", instead the iterables will be treated as push-streams just like they would be everywhere else in RxJS. This means that passing an endless iterable will result in the thread locking up, as it will endlessly try to read from that iterable. This puts us in-line with all other Rx implementations. To work around this, it is probably best to use `map` or some combination of `map` and `zip`. For example, `zip(source$, iterator)` could be `source$.pipe(map(value => [value, iterator.next().value]))`.
+- `zip` operators will no longer iterate provided iterables "as needed", instead the iterables will be treated as push-streams just like they would be everywhere else in RxJS. This means that passing an endless iterable will result in the thread locking up, as it will endlessly try to read from that iterable. This puts us in line with all other Rx implementations. To work around this, it is probably best to use `map` or some combination of `map` and `zip`. For example, `zip(source$, iterator)` could be `source$.pipe(map(value => [value, iterator.next().value]))`.
 
 ### New Features
 
@@ -394,14 +394,14 @@ This document contains a detailed list of changes between RxJS 6.x and RxJS 7.x,
 
 #### ajax
 
-- `ajax` body serialization will now use default XHR behavior in all cases. If the body is a `Blob`, `ArrayBuffer`, any array buffer view (like a byte sequence, e.g. `Uint8Array`, etc), `FormData`, `URLSearchParams`, `string`, or `ReadableStream`, default handling is use. If the `body` is otherwise `typeof` `"object"`, then it will be converted to JSON via `JSON.stringify`, and the `Content-Type` header will be set to `application/json;charset=utf-8`. All other types will emit an error.
+- `ajax` body serialization will now use default XHR behavior in all cases. If the body is a `Blob`, `ArrayBuffer`, any array buffer view (like a byte sequence, e.g. `Uint8Array`, etc), `FormData`, `URLSearchParams`, `string`, or `ReadableStream`, default handling is used. If the `body` is otherwise `typeof` `"object"`, then it will be converted to JSON via `JSON.stringify`, and the `Content-Type` header will be set to `application/json;charset=utf-8`. All other types will emit an error.
 - The `Content-Type` header passed to `ajax` configuration no longer has any effect on the serialization behavior of the AJAX request.
 - For TypeScript users, `AjaxRequest` is no longer the type that should be explicitly used to create an `ajax`. It is now `AjaxConfig`, although the two types are compatible, only `AjaxConfig` has `progressSubscriber` and `createXHR`.
-- Ajax implementation drops support for IE10 and lower. This puts us in-line with other implementations and helps clean up code in this area
+- Ajax implementation drops support for IE10 and lower. This puts us in line with other implementations and helps clean up code in this area
 
 #### AjaxRequest
 
-- `AjaxRequest` is no longer used to type the configuration argument for calls to `ajax`. The new type is `AjaxConfig`. This was done to disambiguate two very similar types with different use cases. `AjaxRequest` is still there, but properties have changed, and it is used to show what final request information was send as part of an event response.
+- `AjaxRequest` is no longer used to type the configuration argument for calls to `ajax`. The new type is `AjaxConfig`. This was done to disambiguate two very similar types with different use cases. `AjaxRequest` is still there, but properties have changed, and it is used to show what final request information was sent as part of an event response.
 
 ### New Features
 
