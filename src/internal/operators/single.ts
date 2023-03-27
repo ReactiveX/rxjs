@@ -15,7 +15,7 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  * predicate is provided, then it will assert that the observable
  * only emits one value.
  *
- * In the source Observable did not emit `next` before completion, it
+ * If the source Observable did not emit `next` before completion, it
  * will emit an {@link EmptyError} to the Observer's `error` callback.
  *
  * In the event that two values are found that match the predicate,
