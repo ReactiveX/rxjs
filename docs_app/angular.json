@@ -217,7 +217,6 @@
       }
     }
   },
-  "defaultProject": "site",
   "schematics": {
     "@schematics/angular:component": {
       "inlineStyle": true,
@@ -227,5 +226,8 @@
     "@schematics/angular:directive": {
       "prefix": "aio"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

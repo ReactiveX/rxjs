@@ -385,20 +385,20 @@ describe('AppComponent', () => {
 
       it('should select the version that matches the deploy mode', async () => {
         await setupSelectorForTesting();
-        expect(selectComponent.selected.title).toContain('stable');
+        expect(selectComponent.selected?.title).toContain('stable');
         await setupSelectorForTesting('next');
-        expect(selectComponent.selected.title).toContain('next');
+        expect(selectComponent.selected?.title).toContain('next');
         await setupSelectorForTesting('archive');
-        expect(selectComponent.selected.title).toContain('v4');
+        expect(selectComponent.selected?.title).toContain('v4');
       });
 
       it('should add the current raw version string to the selected version', async () => {
         await setupSelectorForTesting();
-        expect(selectComponent.selected.title).toContain(`(v${component.versionInfo.raw})`);
+        expect(selectComponent.selected?.title).toContain(`(v${component.versionInfo.raw})`);
         await setupSelectorForTesting('next');
-        expect(selectComponent.selected.title).toContain(`(v${component.versionInfo.raw})`);
+        expect(selectComponent.selected?.title).toContain(`(v${component.versionInfo.raw})`);
         await setupSelectorForTesting('archive');
-        expect(selectComponent.selected.title).toContain(`(v${component.versionInfo.raw})`);
+        expect(selectComponent.selected?.title).toContain(`(v${component.versionInfo.raw})`);
       });
 
       // Older docs versions have an href

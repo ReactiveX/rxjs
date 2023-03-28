@@ -75,10 +75,10 @@ const sideNavView = 'SideNav';
         <aio-nav-menu
           *ngIf="!isSideBySide"
           [nodes]="topMenuNarrowNodes"
-          [currentNode]="currentNodes?.TopBarNarrow"
+          [currentNode]="currentNodes.TopBarNarrow"
           [isWide]="false"
         ></aio-nav-menu>
-        <aio-nav-menu [nodes]="sideNavNodes" [currentNode]="currentNodes?.SideNav" [isWide]="isSideBySide"></aio-nav-menu>
+        <aio-nav-menu [nodes]="sideNavNodes" [currentNode]="currentNodes.SideNav" [isWide]="isSideBySide"></aio-nav-menu>
 
         <div class="doc-version">
           <aio-select (change)="onDocVersionChange($event.index)" [options]="docVersions" [selected]="currentDocVersion"></aio-select>
