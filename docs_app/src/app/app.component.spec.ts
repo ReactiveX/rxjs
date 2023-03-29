@@ -3,7 +3,7 @@ import { inject, ComponentFixture, TestBed, fakeAsync, tick, flushMicrotasks } f
 import { Title } from '@angular/platform-browser';
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatLegacyProgressBar as MatProgressBar } from '@angular/material/legacy-progress-bar';
 import { MatSidenav } from '@angular/material/sidenav';
 import { By } from '@angular/platform-browser';
 
