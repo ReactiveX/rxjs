@@ -28,7 +28,7 @@
 
 - Type signatures tightened up around `Notification` and `dematerialize`, may uncover issues with invalid types passed to those operators.
 
-- Experimental support for `for await` as been removed. Use https://github.com/benlesh/rxjs-for-await instead.
+- Experimental support for `for await` has been removed. Use https://github.com/benlesh/rxjs-for-await instead.
 
 - `ReplaySubject` no longer schedules emissions when a scheduler is provided. If you need that behavior,
   please compose in `observeOn` using `pipe`, for example: `new ReplaySubject(2, 3000).pipe(observeOn(asap))`
