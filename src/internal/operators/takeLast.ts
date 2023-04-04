@@ -48,7 +48,7 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
     : operate((source, subscriber) => {
         // This is a ring buffer that will hold our values
         let ring = new Array<T>(count);
-        // This counter is how we
+        // This counter is how we track where we are at in the ring buffer.
         let counter = 0;
         source.subscribe(
           createOperatorSubscriber(
