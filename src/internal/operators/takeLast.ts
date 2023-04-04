@@ -46,40 +46,40 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
   return count <= 0
     ? () => EMPTY
     : operate((source, subscriber) => {
-      // This is a ring buffer that will hold our values
-      let ring = new Array<T>(count)
-      // This counter is how we 
-      let counter = 0
-      source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value) => {
-            ring[counter++ % count] = value
-          },
-          () => {
-            // We need to loop through our ring buffer.
-            // If we haven't filled the buffer yet, we can start at zero.
-            const start = count <= counter ? counter : 0
-            // Only need to emit however many values we've seen,
-            // up to the expected count
-            const total = Math.min(count, counter)
-            for (let n = 0; n < total; n++) {
-              // The tricky bit here is we're incrementing `n`, and moving
-              // through our ring buffer, starting at the `start` index we
-              // found above. The `% count` will "wrap" us around to read
-              // the remaining values, if necessary.
-              subscriber.next(ring[(start + n) % count])
+        // This is a ring buffer that will hold our values
+        let ring = new Array<T>(count);
+        // This counter is how we
+        let counter = 0;
+        source.subscribe(
+          createOperatorSubscriber(
+            subscriber,
+            (value) => {
+              ring[counter++ % count] = value;
+            },
+            () => {
+              // We need to loop through our ring buffer.
+              // If we haven't filled the buffer yet, we can start at zero.
+              const start = count <= counter ? counter : 0;
+              // Only need to emit however many values we've seen,
+              // up to the expected count
+              const total = Math.min(count, counter);
+              for (let n = 0; n < total; n++) {
+                // The tricky bit here is we're incrementing `n`, and moving
+                // through our ring buffer, starting at the `start` index we
+                // found above. The `% count` will "wrap" us around to read
+                // the remaining values, if necessary.
+                subscriber.next(ring[(start + n) % count]);
+              }
+              // All done. This will also trigger clean up.
+              subscriber.complete();
+            },
+            // Errors are passed through to the consumer
+            undefined,
+            () => {
+              // During finalization release the values in our buffer.
+              ring = null!;
             }
-            // All done. This will also trigger clean up.
-            subscriber.complete();
-          },
-          // Errors are passed through to the consumer
-          undefined,
-          () => {
-            // During finalization release the values in our buffer.
-            ring = null!;
-          }
-        )
-      );
-    });
+          )
+        );
+      });
 }
