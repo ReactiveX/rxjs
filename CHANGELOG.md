@@ -1,3 +1,144 @@
+# [8.0.0-alpha.8](https://github.com/reactivex/rxjs/compare/8.0.0-alpha.7...8.0.0-alpha.8) (2023-04-04)
+
+### Bug Fixes
+
+- **asapScheduler:** No longer stops after scheduling twice during flush ([#7198](https://github.com/reactivex/rxjs/issues/7198)) ([414a692](https://github.com/reactivex/rxjs/commit/414a692db7744d9ec2e3d8ac14536fd48d65dc14)), closes [ReactiveX#7196](https://github.com/ReactiveX/issues/7196)
+- **buffer:** subscribe to the closing notifier before the source ([#7185](https://github.com/reactivex/rxjs/issues/7185)) ([f37be62](https://github.com/reactivex/rxjs/commit/f37be627b6742c9ae666e40f9035b51596971fc0))
+- **elementAt:** Reentrant errors no longer supercede results ([6146604](https://github.com/reactivex/rxjs/commit/6146604c790657137d5d07290ed5f9b870cc965c)), closes [#5487](https://github.com/reactivex/rxjs/issues/5487)
+- **first/take:** behave properly with reentrant errors and completions ([65bff45](https://github.com/reactivex/rxjs/commit/65bff4554abf75eaa5a8b3a74648f9313edcc0ef)), closes [#5487](https://github.com/reactivex/rxjs/issues/5487)
+- **subjects:** All subjects will now correctly be `closed` after `complete()` and `error()`. Removed `ObjectUnsubscribedError`. Unsubscribed subjects will no longer throw. ([c71d2fc](https://github.com/reactivex/rxjs/commit/c71d2fc1b7822b89986665e1825cc58ee3d5e1f6)), closes [#7200](https://github.com/reactivex/rxjs/issues/7200) [#7209](https://github.com/reactivex/rxjs/issues/7209)
+- **takeWhile:** reentrant errors and completions behave properly ([f83d7e3](https://github.com/reactivex/rxjs/commit/f83d7e3c1c941ccd1c2bc6322f0ba1c3fa3adb88)), closes [#5487](https://github.com/reactivex/rxjs/issues/5487)
+- **windowWhen:** don't signal on complete ([67992c4](https://github.com/reactivex/rxjs/commit/67992c49c861c05e94812d578d9549116a4dc35d)), closes [#6876](https://github.com/reactivex/rxjs/issues/6876)
+
+### Features
+
+- **ajax:** Drop IE support ([#7184](https://github.com/reactivex/rxjs/issues/7184)) ([4e14361](https://github.com/reactivex/rxjs/commit/4e14361b287411d4d1a3216aab685edc8b5f0abb))
+- **combineLatest:** remove deprecated combineLatest scheduler signature ([82bff35](https://github.com/reactivex/rxjs/commit/82bff350c1b7c1d6c02629288bb5a2d698238afa))
+- **combineLatest:** remove deprecated spread signature ([#7168](https://github.com/reactivex/rxjs/issues/7168)) ([f03c8bf](https://github.com/reactivex/rxjs/commit/f03c8bf9869052ee96e72334306f3a14d3bc9f33))
+- **combineLatest:** removed deprecated `combineLatest` operator ([d6bf2cb](https://github.com/reactivex/rxjs/commit/d6bf2cbb5646687f419ed6cc8b61ed463a5bffc3))
+- **concat:** removed deprecated `concat` operator ([#7162](https://github.com/reactivex/rxjs/issues/7162)) ([3807dae](https://github.com/reactivex/rxjs/commit/3807dae39044b5b3f6caa2694aef408bb5a9b5e1))
+- **concatMap:** removed deprecated concatMap(project, resultSelector) call pattern ([674bf01](https://github.com/reactivex/rxjs/commit/674bf017d836e1c5537f505eb7bd7a07811d4d84))
+- **concatMapTo:** removed deprecated concatMapTo(observable, resultSelector) call pattern ([d552e22](https://github.com/reactivex/rxjs/commit/d552e22b721787e454283258f05b286a0a1e5f65))
+- **endWith:** removed deprecated `endWith(value, scheduler)` call pattern ([#7163](https://github.com/reactivex/rxjs/issues/7163)) ([1ad9425](https://github.com/reactivex/rxjs/commit/1ad9425b21d900c40d307f0f34e25f20c8dd79f3))
+- **exhaustMap:** removed deprecated exhaustMap(project, resultSelector) call pattern ([04269d4](https://github.com/reactivex/rxjs/commit/04269d4a5909180e6938ce7b19697441c3f2152c))
+- **find:** removed deprecated find(predicate, thisArg) call pattern ([25215c7](https://github.com/reactivex/rxjs/commit/25215c7a8d1213922a9ee831d44afae45cd975b7))
+- **findIndex:** removed deprecated findIndex(predicate, thisArg) call pattern ([cd54089](https://github.com/reactivex/rxjs/commit/cd540898314bf9f01d3921520150e39545f95e0d))
+- **from:** Remove deprecated scheduler signature. ([f64eb63](https://github.com/reactivex/rxjs/commit/f64eb6321af65518377c3ac7184d7fc1c8bb64fc))
+- **map:** removed deprecated `map(project, thisArg)` call pattern ([#7158](https://github.com/reactivex/rxjs/issues/7158)) ([d7eab2b](https://github.com/reactivex/rxjs/commit/d7eab2baf928f22d9806ed17b4da5e0e7eb8c690))
+- **mergeMap:** removed deprecated mergeMap(project, resultSelector) call pattern ([8f9a5e3](https://github.com/reactivex/rxjs/commit/8f9a5e3d7389c3dc60b7d09666792387b4460479))
+- **mergeMapTo:** removed deprecated mergeMapTo(observable, resultSelector) call pattern ([b5a91c9](https://github.com/reactivex/rxjs/commit/b5a91c9e4ad5ce85cfd91bcb42f11f916c297a08))
+- **observable:** removed deprecated `pairs` function ([071b448](https://github.com/reactivex/rxjs/commit/071b448e590316f65256e3db55619eae76fbb0d3))
+- **Observable:** RxJS doesn't even lift. ([#7202](https://github.com/reactivex/rxjs/issues/7202)) ([e0bdccf](https://github.com/reactivex/rxjs/commit/e0bdccf1ee3578ada0a47155109d95405a2e5765)), closes [#7201](https://github.com/reactivex/rxjs/issues/7201)
+- **operator:** removed deprecated `combineAll` operator ([981c9c8](https://github.com/reactivex/rxjs/commit/981c9c8538705e225b4ec8e81e6665424c421d6c))
+- **operator:** removed deprecated `exhaust` operator ([6965b8a](https://github.com/reactivex/rxjs/commit/6965b8a6da84734df4f6c32e26d73c4259802cdc))
+- **operator:** removed deprecated `flatMap` operator ([099a4f1](https://github.com/reactivex/rxjs/commit/099a4f1ac0a748ca7d01da90b8c37a986c846bc8))
+- **operator:** removed deprecated `merge` operator ([f97c73d](https://github.com/reactivex/rxjs/commit/f97c73d412586afc29482efadbdcd4ff98de4654))
+- **operator:** removed deprecated `multicast` operator ([709be5a](https://github.com/reactivex/rxjs/commit/709be5a28f1cc8b435688d23b6ca6f65cb3efea7))
+- **operator:** removed deprecated `onErrorResumeNext` operator ([de7becf](https://github.com/reactivex/rxjs/commit/de7becfe1dd62f881fc724d841ac8bff06e6062a))
+- **operator:** removed deprecated `pluck` operator ([fd1936d](https://github.com/reactivex/rxjs/commit/fd1936de0d25bbcdc3a73dcf3fc4a8d454b64e73))
+- **operator:** removed deprecated `publish` operator ([2cd2b88](https://github.com/reactivex/rxjs/commit/2cd2b88aa75d4cab314172720db02ba7d4c43cce))
+- **operator:** removed deprecated `publishBehavior` operator ([a65f878](https://github.com/reactivex/rxjs/commit/a65f8782a8453a09681f8a5f11b3ed543095af54))
+- **operator:** removed deprecated `publishLast` operator ([3ea5f99](https://github.com/reactivex/rxjs/commit/3ea5f991f4dcb070e53b00d8f001360db48f67bf))
+- **operator:** removed deprecated `publishReplay` operator ([5dd12e4](https://github.com/reactivex/rxjs/commit/5dd12e4985c083cd32919f7070cdaa213466353c))
+- **operator:** removed deprecated `race` operator ([8fd5ced](https://github.com/reactivex/rxjs/commit/8fd5ced782b24703760d46fdc47d72fc88dbce02))
+- **operator:** removed deprecated `refCount` operator ([e477847](https://github.com/reactivex/rxjs/commit/e477847b916fd8bf014bfc64371816ed3eb26b02))
+- **operator:** removed deprecated `zip` operator ([7404cbf](https://github.com/reactivex/rxjs/commit/7404cbfd1f69b491001b2a42ca5e18ac19bac34a))
+- **scheduler:** removed deprecated `animationFrame` constant ([138688b](https://github.com/reactivex/rxjs/commit/138688b710adc1e2aecb46fc4135da28b10d4575))
+- **scheduler:** removed deprecated `asap` constant ([edac583](https://github.com/reactivex/rxjs/commit/edac583ad3585632b28747f97ffa15bcd7e496a1))
+- **Subject:** `isStopped`, `observers`, `hasError`, and `thrownError` no longer in public API. ([d734be4](https://github.com/reactivex/rxjs/commit/d734be479efa2b063be8930f3ffcd5558252a1d0))
+- Dropping support for Node 14. ([b171f35](https://github.com/reactivex/rxjs/commit/b171f354927dd57ac3e74cf2d3774bcfed4f142e))
+- Reduction in size of core piece `Subscriber` and `Subscription`. ([f7f7e8c](https://github.com/reactivex/rxjs/commit/f7f7e8c04e4fd288f311e9f69b54c6da67dedeea))
+- **scheduler:** removed deprecated `asyncScheduler` constant ([3c0553b](https://github.com/reactivex/rxjs/commit/3c0553b32a9b6b04a34ae6908080d120a067d168))
+- **scheduler:** removed deprecated `queueScheduler` constant ([b7b9edf](https://github.com/reactivex/rxjs/commit/b7b9edf35871888de69fd7bf0b1c9527687defa3))
+- **switchMap:** removed deprecated switchMap(project, resultSelector) call pattern ([9a907d6](https://github.com/reactivex/rxjs/commit/9a907d62cdf7a1155b1029afd9e51a34f2472375))
+- **switchMapTo:** removed deprecated switchMapTo(observable, resultSelector) call pattern ([f14f633](https://github.com/reactivex/rxjs/commit/f14f633b6b3540ed0d3b0a5dec7596387cd69efb))
+- **throwError:** removed deprecated throwError(error) call pattern ([f140eee](https://github.com/reactivex/rxjs/commit/f140eee70d3a8a1e696d1efe83f93772f7ff9825))
+- **throwError:** removed deprecated throwError(errorFactory, scheduler) call pattern ([f031611](https://github.com/reactivex/rxjs/commit/f031611cb868a451752d7e64b7ec971db5fd8158))
+- **types:** removed deprecated `ObservableLike` interface ([e8134e4](https://github.com/reactivex/rxjs/commit/e8134e4e07e0aca7e94bc3ead8279e7756ad968b))
+- **types:** removed deprecated `ObservedValuesFromArray` interface ([e80a182](https://github.com/reactivex/rxjs/commit/e80a18299e25530c2cc44c2001039baec83ae069))
+- RxJS updated to TypeScript 4.9 ([76c38f7](https://github.com/reactivex/rxjs/commit/76c38f75cdc166948fd92d94740d187bf787bc03))
+
+### Performance Improvements
+
+- **endWith:** simplify the implementation of the `endWith` operator ([#7165](https://github.com/reactivex/rxjs/issues/7165)) ([5de4796](https://github.com/reactivex/rxjs/commit/5de47962ac5823fa17dcd4340707239912c47c4d))
+- **Subject:** create one less subscription on subscribe ([79d5ae4](https://github.com/reactivex/rxjs/commit/79d5ae464fc234422883b5204112cc2fef401ec7))
+- **Subject:** subscription, unsubscription, and nexting improved ~4x ([#7240](https://github.com/reactivex/rxjs/issues/7240)) ([dbbae80](https://github.com/reactivex/rxjs/commit/dbbae809fec30796517d0c76d367e36705618f85))
+
+### BREAKING CHANGES
+
+- **combineLatest:** `combineLatest` no longer accepts a spread of ObservableInputs. Use an array instead. If you need `combineLatest(a$, b$, c$)`, use `combineLatest([a$, b$, c$])` instead.
+- **Subject:** `isStopped`, `observers`, `thrownError` and `hasError` are no longer part of the public API. The only known use case for any of these was detecting that a Subject was observed, like so: `if (subject.observers.length > 0)`. That shouldn't be done. Instead use `if (subject.observed)`.
+- **subjects:** `ObjectUnsubscribedError` is no longer exported. The constructor was long deprecated. If you need a similar error, you can construct and throw your own. RxJS no longer throws this error.
+- **subjects:** `Subject#closed` is no longer writeable. That was never an intended API. If you need to silently close a `Subject`, call `Subject#unsubscribe()`.
+- **subjects:** Windows from `windowToggle` will no longer through if leaked and subscribed outside of the main subscription. There's no real use case for this behavior. If you find you needed this behavior, please file and issue.
+- **Observable:** `Observable#lift`, `Observable#source`, and `Observable#operator` is no longer a part of the API. These were never meant to be public and have been deprecated for more than 3 years.
+- **ajax:** `ajax` no longer supports IE
+- **buffer:** Weird patterns where an observable is used to notify buffers of itself will result in a first emission of `[]`. If you need to buffer an array with itself, just use `map(x => [x])`. If that doesn't work, feel free to file a use case as an issue. `skip(1)` would be the other workaround.
+- **elementAt:** If a the source synchronously errors after it recieves a completion from `elementAt`, the error will no longer be emitted. This is a bug fix, but may be a breaking change for those relying on this behavior. If you need to mimic the behavior, you'll need to throw the error before `elementAt` finds the element at the index.
+- **first/take:** If a the source synchronously errors after `take` or `first` notice a completion, the error will no longer be emitted. This is a bug fix, but may be a breaking change for those relying on this behavior. If you need to mimic the behavior, you'll need to throw the error before `take` or `first` notice the completion.
+- **takeWhile:** If a the source synchronously errors after it recieves a completion notification, the error will no longer be emitted. This is a bug fix, but may be a breaking change for those relying on this behavior. If you need to mimic the behavior, you'll need to throw the error before the takeWhile notifier is notified.
+- **observable:** The `pairs` function is no longer available. Use `from(Object.entries(obj))` instead `pairs(obj)`.
+- **operator:** The `pluck('foo', 'bar')` operator is no longer available. Use `map(x => x?.foo?.bar)`.
+- **operator:** The `race` operator is no longer available. Use `raceWith`.
+- **operator:** The `refCount` operator is no longer available. [Multicasting](https://rxjs.dev/deprecations/multicasting#refcount).
+- **operator:** The `ConnectableObservable` observable is no longer available. [Multicasting](https://rxjs.dev/deprecations/multicasting#connectableobservable).
+- **operator:** The `multicast` operator is no longer available. Use `share({ connector: () => new Subject() })` or `connectable(source$, {connector: () => new Subject() })` [Multicasting](https://rxjs.dev/deprecations/multicasting#multicast).
+- **operator:** The `publish` operator is no longer available. Use `share({ resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })` or ` connectable(source$, { connector: () => new Subject(), resetOnDisconnect: false })`. [Multicasting](https://rxjs.dev/deprecations/multicasting#publish).
+- **operator:** The `publishBehavior` operator is no longer available. Use `share({ connector: () => new BehaviorSubject(0), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })` or `connectable(source$, { connector: () => new BehaviorSubject(0), resetOnDisconnect: false })`. [Multicasting](https://rxjs.dev/deprecations/multicasting#publishbehavior).
+- **operator:** The `publishReplay` operator is no longer available. Use `share({ connector: () => new ReplaySubject(1), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })` or `connectable(source$, { connector: () => new ReplaySubject(1), resetOnDisconnect: false })` [Multicasting](https://rxjs.dev/deprecations/multicasting#publishreplay).
+- **operator:** The `publishLast` operator is no longer available. Use `share({ connector: () => new AsyncSubject(), resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false })` or `connectable(source$, { connector: () => new AsyncSubject(), resetOnDisconnect: false })`. [Multicasting](https://rxjs.dev/deprecations/multicasting#publishlast).
+- **operator:** The `zip` operator is no longer available. Use `zipWith`.
+- **operator:** The `merge` operator is no longer available. Use `mergeWith`.
+- Node 14 is no longer supported in version 8. End of life for Node 14 is April 30, 2023. There's no reason for RxJS version 8 to support it, as we won't even be out of beta at that point.
+- Deprecated `subscriber.isStopped` has been made internal. Use `subscriber.closed` or create a custom observer that tracks `isStopped` state.
+- Deprecated `subscriber.destination` has been made internal. If you need to access the subscriber's destination for some reason, you will have to trap the value ahead of time. If this is something you really need, please file and issue and bring it to our attention. There shouldn't be any use cases for this.
+- **from:** `from` no longer supports passing a scheduler as the second argument. Use `scheduled` instead.
+- **combineLatest:** The deprecated signature of combineLatest that accepted a scheduler as the last argument has been removed. If you wanted `combineLatest([a$, b$], scheduler)`, you'll now need to use `combineLatest([scheduled(a$, scheduler), scheduled(b$, scheduler)])`.
+- **operator:** The `onErrorResumeNext` operator is no longer available. Use `onErrorResumeNextWith`.
+- **scheduler:** The `async` constant is no longer available. Use `asyncScheduler`.
+- **scheduler:** The `queue` constant is no longer available. Use `queueScheduler`.
+- **scheduler:** The `asap` constant is no longer available. Use `asapScheduler`.
+- **operator:** The `exhaust` operator is no longer available. Use `exhaustAll`.
+- **operator:** The `flatMap` operator is no longer available. Use `mergeMap`.
+- **operator:** The `combineAll` operator is no longer available. Use `combineLatestAll`.
+- **types:** The `ObservedValuesFromArray` interface is no longer available. Use `ObservedValueUnionFromArray`.
+- **types:** The `ObservableLike` interface is no longer available. Use `InteropObservable`.
+- **scheduler:** The `animationFrame` constant is no longer available. Use `animationFrameScheduler`.
+- **map:** `map(project, thisArg)` call pattern is no longer available. Use Function#bind method: `map(project.bind(thisArg))`
+
+- chore(map): update dtslint
+- **endWith:** `endWith(value, scheduler)` call pattern is no longer available. [Read more](https://rxjs.dev/deprecations/scheduler-argument).
+
+- refactor(endWith): use concatAll and fromeArrayLike
+
+- refactor: Use `operate`. Ensure variables are properly wrapped before `concat`-ing
+
+- refactor: Remove unused declarations.
+
+Make lint happy
+
+Co-authored-by: Ben Lesh <ben@benlesh.com>
+
+- **concat:** The `concat` operator is no longer available. Use `concatWith`.
+
+- refactor(concatWith): Use `innerFrom` instead of `from`.
+
+Co-authored-by: Ben Lesh <ben@benlesh.com>
+
+- **combineLatest:** The `combineLatest` operator is no longer available. Use `combineLatestWith`.
+- **throwError:** `throwError(errorFactory, scheduler)` call pattern is no longer available. [Read more](https://rxjs.dev/deprecations/scheduler-argument).
+- **throwError:** `throwError(error)` call pattern is no longer available. Use `throwError(() => error)`
+- **findIndex:** `findIndex(predicate, thisArg)` call pattern is no longer available. Use `findIndex(predicate.bind(thisArg))`
+- **find:** `find(predicate, thisArg)` call pattern is no longer available. Use `find(predicate.bind(thisArg))`
+- **switchMap:** `switchMap(project, resultSelector)` call pattern is no longer available. [Read more](https://rxjs.dev/deprecations/resultSelector).
+- **switchMapTo:** `switchMapTo(observable, resultSelector)` call pattern is no longer available. [Read more](https://rxjs.dev/deprecations/resultSelector).
+- **mergeMap:** `mergeMap(project, resultSelector)` call pattern is no longer available. [Read more](https://rxjs.dev/deprecations/resultSelector).
+- **exhaustMap:** `exhaustMap(project, resultSelector)` call pattern is no longer available. [Read more](https://rxjs.dev/deprecations/resultSelector).
+- **mergeMapTo:** `mergeMapTo(observable, resultSelector)` call pattern is no longer available. [Read more](https://rxjs.dev/deprecations/resultSelector).
+- **concatMap:** `concatMap(project, resultSelector)` call pattern is no longer available. [Read more](https://rxjs.dev/deprecations/resultSelector).
+- **concatMapTo:** `concatMapTo(observable, resultSelector)` call pattern is no longer available. [Read more](https://rxjs.dev/deprecations/resultSelector).
+- RxJS is now being built with TypeScript 4.9 and we assume that TS 4.9 or higher will be used with our types. At the time of this writing the risk is around the existence of the `ReadableStream` type in TypeScript. If that's not supported in your version of TypeScript, you might be able to work around this issue by defining a global ReadableStream type.
+
 # [8.0.0-alpha.7](https://github.com/reactivex/rxjs/compare/7.8.0...8.0.0-alpha.7) (2022-12-15)
 
 Merged in changes from 7.8.0
