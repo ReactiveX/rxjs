@@ -106,11 +106,6 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   /** @internal */
-  protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
-    return super._trySubscribe(subscriber);
-  }
-
-  /** @internal */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
     this._checkFinalizedStatuses(subscriber);
     return this._innerSubscribe(subscriber);
