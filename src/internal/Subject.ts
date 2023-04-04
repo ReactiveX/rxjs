@@ -1,7 +1,7 @@
 import { Observable } from './Observable';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
-import { Observer, SubscriptionLike, TeardownLogic } from './types';
+import { Observer, SubscriptionLike } from './types';
 
 /**
  * A Subject is a special type of Observable that allows values to be
@@ -21,7 +21,8 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     return this._closed;
   }
 
-  private currentObservers = new Map<Subscription, Observer<T>>();
+  private _observerCounter = 0;
+  private currentObservers = new Map<number, Observer<T>>();
 
   /**
    * This is used to track a known array of observers, so we don't have to
@@ -117,13 +118,15 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
       return Subscription.EMPTY;
     }
     const { currentObservers } = this;
-    const subscription = new Subscription(() => {
-      currentObservers.delete(subscription);
+
+    const observerId = this._observerCounter++;
+    currentObservers.set(observerId, subscriber);
+    this.observerSnapshot = undefined;
+    subscriber.add(() => {
+      currentObservers.delete(observerId);
       this.observerSnapshot = undefined;
     });
-    currentObservers.set(subscription, subscriber);
-    this.observerSnapshot = undefined;
-    return subscription;
+    return subscriber;
   }
 
   /** @internal */
