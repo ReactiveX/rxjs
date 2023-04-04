@@ -16,21 +16,24 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   private currentObservers = new Map<Subscription, Observer<T>>();
 
-  private dirtySnapshotedObservers = false;
-  private snapshotedObservers: Observer<T>[] = [];
+  /**
+   * This is used to track a known array of observers, so we don't have to
+   * clone them while iterating to prevent reentrant behaviors.
+   * (for example, what if the subject is subscribed to when nexting to an observer)
+   */
+  private observerSnapshot: Observer<T>[] | undefined;
+
+  /** @internal */
+  get observers(): Observer<T>[] {
+    return (this.observerSnapshot ??= Array.from(this.currentObservers.values()));
+  }
 
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
-  get observers(): Observer<T>[] {
-    if (this.dirtySnapshotedObservers) {
-      this.snapshotedObservers = Array.from(this.currentObservers.values());
-      this.dirtySnapshotedObservers = false;
-    }
-    return this.snapshotedObservers;
-  }
-  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   isStopped = false;
+
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   hasError = false;
+
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   thrownError: any = null;
 
@@ -56,15 +59,18 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     }
   }
 
+  protected _clearObservers() {
+    this.currentObservers.clear();
+    this.observerSnapshot = undefined;
+  }
+
   next(value: T) {
     this._throwIfClosed();
     if (!this.isStopped) {
-      if (this.dirtySnapshotedObservers) {
-        this.snapshotedObservers = Array.from(this.currentObservers.values());
-        this.dirtySnapshotedObservers = false;
-      }
-      for (const observer of this.snapshotedObservers) {
-        observer.next(value);
+      const { observers } = this;
+      const len = observers.length;
+      for (let i = 0; i < len; i++) {
+        observers[i].next(value);
       }
     }
   }
@@ -74,16 +80,12 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     if (!this.isStopped) {
       this.hasError = this.isStopped = true;
       this.thrownError = err;
-      const { currentObservers } = this;
-      if (this.dirtySnapshotedObservers) {
-        this.snapshotedObservers = Array.from(currentObservers.values());
-        this.dirtySnapshotedObservers = false;
+      const { observers } = this;
+      const len = observers.length;
+      for (let i = 0; i < len; i++) {
+        observers[i].error(err);
       }
-      for (const observer of this.snapshotedObservers) {
-        observer.error(err);
-      }
-      currentObservers.clear();
-      this.snapshotedObservers = [];
+      this._clearObservers();
     }
   }
 
@@ -91,21 +93,18 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     this._throwIfClosed();
     if (!this.isStopped) {
       this.isStopped = true;
-      const { currentObservers } = this;
-      if (this.dirtySnapshotedObservers) {
-        this.snapshotedObservers = Array.from(currentObservers.values());
-        this.dirtySnapshotedObservers = false;
+      const { observers } = this;
+      const len = observers.length;
+      for (let i = 0; i < len; i++) {
+        observers[i].complete();
       }
-      for (const observer of this.snapshotedObservers) {
-        observer.complete();
-      }
-      currentObservers.clear();
-      this.snapshotedObservers = [];
+      this._clearObservers();
     }
   }
 
   unsubscribe() {
     this.isStopped = this.closed = true;
+    this._clearObservers();
   }
 
   get observed() {
@@ -133,10 +132,10 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     }
     const subscription = new Subscription(() => {
       currentObservers.delete(subscription);
-      this.dirtySnapshotedObservers = true;
+      this.observerSnapshot = undefined;
     });
     currentObservers.set(subscription, subscriber);
-    this.dirtySnapshotedObservers = true;
+    this.observerSnapshot = undefined;
     return subscription;
   }
 
