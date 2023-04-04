@@ -3,7 +3,6 @@ import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { Observer, SubscriptionLike, TeardownLogic } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
-import { arrRemove } from './util/arrRemove';
 
 /**
  * A Subject is a special type of Observable that allows values to be
@@ -15,14 +14,26 @@ import { arrRemove } from './util/arrRemove';
 export class Subject<T> extends Observable<T> implements SubscriptionLike {
   closed = false;
 
-  private currentObservers: Observer<T>[] | null = null;
+  private currentObservers = new Map<Subscription, Observer<T>>();
+
+  /**
+   * This is used to track a known array of observers, so we don't have to
+   * clone them while iterating to prevent reentrant behaviors.
+   * (for example, what if the subject is subscribed to when nexting to an observer)
+   */
+  private observerSnapshot: Observer<T>[] | undefined;
+
+  /** @internal */
+  get observers(): Observer<T>[] {
+    return (this.observerSnapshot ??= Array.from(this.currentObservers.values()));
+  }
 
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
-  observers: Observer<T>[] = [];
-  /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   isStopped = false;
+
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   hasError = false;
+
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   thrownError: any = null;
 
@@ -48,14 +59,18 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     }
   }
 
+  protected _clearObservers() {
+    this.currentObservers.clear();
+    this.observerSnapshot = undefined;
+  }
+
   next(value: T) {
     this._throwIfClosed();
     if (!this.isStopped) {
-      if (!this.currentObservers) {
-        this.currentObservers = Array.from(this.observers);
-      }
-      for (const observer of this.currentObservers) {
-        observer.next(value);
+      const { observers } = this;
+      const len = observers.length;
+      for (let i = 0; i < len; i++) {
+        observers[i].next(value);
       }
     }
   }
@@ -66,9 +81,11 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
       this.hasError = this.isStopped = true;
       this.thrownError = err;
       const { observers } = this;
-      while (observers.length) {
-        observers.shift()!.error(err);
+      const len = observers.length;
+      for (let i = 0; i < len; i++) {
+        observers[i].error(err);
       }
+      this._clearObservers();
     }
   }
 
@@ -77,19 +94,21 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     if (!this.isStopped) {
       this.isStopped = true;
       const { observers } = this;
-      while (observers.length) {
-        observers.shift()!.complete();
+      const len = observers.length;
+      for (let i = 0; i < len; i++) {
+        observers[i].complete();
       }
+      this._clearObservers();
     }
   }
 
   unsubscribe() {
     this.isStopped = this.closed = true;
-    this.observers = this.currentObservers = null!;
+    this._clearObservers();
   }
 
   get observed() {
-    return this.observers?.length > 0;
+    return this.currentObservers.size > 0;
   }
 
   /** @internal */
@@ -107,16 +126,17 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   /** @internal */
   protected _innerSubscribe(subscriber: Subscriber<any>) {
-    const { hasError, isStopped, observers } = this;
+    const { hasError, isStopped, currentObservers } = this;
     if (hasError || isStopped) {
       return Subscription.EMPTY;
     }
-    this.currentObservers = null;
-    observers.push(subscriber);
-    return new Subscription(() => {
-      this.currentObservers = null;
-      arrRemove(observers, subscriber);
+    const subscription = new Subscription(() => {
+      currentObservers.delete(subscription);
+      this.observerSnapshot = undefined;
     });
+    currentObservers.set(subscription, subscriber);
+    this.observerSnapshot = undefined;
+    return subscription;
   }
 
   /** @internal */
