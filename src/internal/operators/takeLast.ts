@@ -46,34 +46,38 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
   return count <= 0
     ? () => EMPTY
     : operate((source, subscriber) => {
-        // This buffer will hold the values we are going to emit
-        // when the source completes. Since we only want to take the
-        // last N values, we can't emit until we're sure we're not getting
-        // any more values.
-        let buffer: T[] = [];
+        // This is a ring buffer that will hold our values
+        let ring = new Array<T>(count);
+        // This counter is how we track where we are at in the ring buffer.
+        let counter = 0;
         source.subscribe(
           createOperatorSubscriber(
             subscriber,
             (value) => {
-              // Add the most recent value onto the end of our buffer.
-              buffer.push(value);
-              // If our buffer is now larger than the number of values we
-              // want to take, we remove the oldest value from the buffer.
-              count < buffer.length && buffer.shift();
+              ring[counter++ % count] = value;
             },
             () => {
-              // The source completed, we now know what are last values
-              // are, emit them in the order they were received.
-              for (const value of buffer) {
-                subscriber.next(value);
+              // We need to loop through our ring buffer.
+              // If we haven't filled the buffer yet, we can start at zero.
+              const start = count <= counter ? counter : 0;
+              // Only need to emit however many values we've seen,
+              // up to the expected count
+              const total = Math.min(count, counter);
+              for (let n = 0; n < total; n++) {
+                // The tricky bit here is we're incrementing `n`, and moving
+                // through our ring buffer, starting at the `start` index we
+                // found above. The `% count` will "wrap" us around to read
+                // the remaining values, if necessary.
+                subscriber.next(ring[(start + n) % count]);
               }
+              // All done. This will also trigger clean up.
               subscriber.complete();
             },
             // Errors are passed through to the consumer
             undefined,
             () => {
               // During finalization release the values in our buffer.
-              buffer = null!;
+              ring = null!;
             }
           )
         );
