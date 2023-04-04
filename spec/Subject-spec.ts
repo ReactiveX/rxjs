@@ -1,9 +1,10 @@
 import { expect } from 'chai';
-import { Subject, Observable, AsyncSubject, Observer, of, config, Subscription } from 'rxjs';
+import { Subject, Observable, AsyncSubject, Observer, of, config, Subscription, Subscriber, noop } from 'rxjs';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
+import { OperatorSubscriber } from 'rxjs/internal/operators/OperatorSubscriber';
 
 /** @test {Subject} */
 describe('Subject', () => {
@@ -727,6 +728,26 @@ describe('Subject', () => {
       expect(seenValues).to.deep.eq([1, 2, 2, 3, 3, 3]);
     });
   });
+
+  it('should behave properly when subscribed to more than once by the same OperatorSubscriber', () => {
+    const subject = new Subject<number>();
+    const destination = new Subscriber();
+    const results: any[] = [];
+    const subscriber = new OperatorSubscriber(destination, (value) => {
+      results.push(value);
+    }, () => {
+      results.push('complete');
+    }, noop);
+    
+    subject.subscribe(subscriber);
+    subject.subscribe(subscriber);
+    subject.next(1);
+    subject.next(2);
+    subject.complete();
+
+    expect(results).to.deep.equal([1, 1, 2, 2, 'complete']);
+  });
+
 });
 
 describe('AnonymousSubject', () => {
