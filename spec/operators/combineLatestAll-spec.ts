@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { queueScheduler, of } from 'rxjs';
+import { queueScheduler, of, scheduled } from 'rxjs';
 import { combineLatestAll, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -544,8 +544,8 @@ describe('combineLatestAll operator', () => {
   });
 
   it('should combine two immediately-scheduled observables', (done) => {
-    const a = of(1, 2, 3, queueScheduler);
-    const b = of(4, 5, 6, 7, 8, queueScheduler);
+    const a = scheduled([1, 2, 3], queueScheduler);
+    const b = scheduled([4, 5, 6, 7, 8], queueScheduler);
     const r = [
       [1, 4],
       [2, 4],
@@ -556,7 +556,7 @@ describe('combineLatestAll operator', () => {
       [3, 8],
     ];
 
-    of(a, b, queueScheduler)
+    scheduled([a, b], queueScheduler)
       .pipe(combineLatestAll())
       .subscribe({
         next: (vals) => {

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { mergeAll, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { throwError, from, of, queueScheduler, Observable } from 'rxjs';
+import { throwError, from, of, scheduled, queueScheduler, Observable } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {mergeAll} */
@@ -542,11 +542,11 @@ describe('mergeAll', () => {
   });
 
   it('should merge two immediately-scheduled observables', (done) => {
-    const a = of(1, 2, 3, queueScheduler);
-    const b = of(4, 5, 6, 7, 8, queueScheduler);
+    const a = scheduled([1, 2, 3], queueScheduler);
+    const b = scheduled([4, 5, 6, 7, 8], queueScheduler);
     const r = [1, 2, 4, 3, 5, 6, 7, 8];
 
-    of(a, b, queueScheduler)
+    scheduled([a, b], queueScheduler)
       .pipe(mergeAll())
       .subscribe({
         next: (val) => {
