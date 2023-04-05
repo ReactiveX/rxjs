@@ -395,14 +395,16 @@ export class Observable<T> implements Subscribable<T> {
       hasError = true;
       error = err;
       while (deferreds.length) {
-        deferreds.shift()![1](err);
+        const [_, reject] = deferreds.shift()!;
+        reject(err);
       }
     };
 
     const handleComplete = () => {
       completed = true;
       while (deferreds.length) {
-        deferreds.shift()![0]({ value: undefined, done: true });
+        const [resolve] = deferreds.shift()!;
+        resolve({ value: undefined, done: true });
       }
     };
 
@@ -413,7 +415,8 @@ export class Observable<T> implements Subscribable<T> {
           subscription = this.subscribe({
             next: (value) => {
               if (deferreds.length) {
-                deferreds.shift()![0]({ value, done: false });
+                const [resolve] = deferreds.shift()!;
+                resolve({ value, done: false });
               } else {
                 values.push(value);
               }

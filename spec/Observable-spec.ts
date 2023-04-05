@@ -711,11 +711,20 @@ describe('Observable', () => {
     });
 
     it('should unsubscribe if the for-await-of loop is broken', async () => {
+      let activeSubscriptions = 0;
+
       const source = new Observable<number>((subscriber) => {
+        activeSubscriptions++;
+
         subscriber.next(1);
         subscriber.next(2);
-        subscriber.next(3);
-        subscriber.complete();
+        
+        // NOTE that we are NOT calling `subscriber.complete()` here.
+        // therefore the teardown below would never be called naturally
+        // by the observable unless it was unsubscribed.
+        return () => {
+          activeSubscriptions--;
+        }
       });
 
       const results: number[] = [];
@@ -725,6 +734,7 @@ describe('Observable', () => {
       }
 
       expect(results).to.deep.equal([1]);
+      expect(activeSubscriptions).to.equal(0);
     });
 
     it('should unsubscribe if the for-await-of loop is broken with a thrown error', async () => {
@@ -757,15 +767,17 @@ describe('Observable', () => {
       });
 
       const results: number[] = [];
+      let thrownError: any;
 
       try {
         for await (const value of source) {
           results.push(value);
         }
       } catch (err: any) {
-        expect(err.message).to.equal('wee');
+        thrownError = err;
       }
 
+      expect(thrownError?.message).to.equal('wee')
       expect(results).to.deep.equal([1, 2]);
     });
 
