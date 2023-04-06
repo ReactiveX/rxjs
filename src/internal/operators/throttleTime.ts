@@ -1,5 +1,5 @@
 import { asyncScheduler } from '../scheduler/async';
-import { defaultThrottleConfig, throttle } from './throttle';
+import { throttle, ThrottleConfig } from './throttle';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { timer } from '../observable/timer';
 
@@ -47,7 +47,7 @@ import { timer } from '../observable/timer';
  * internally by the optional `scheduler`.
  * @param scheduler The {@link SchedulerLike} to use for
  * managing the timers that handle the throttling. Defaults to {@link asyncScheduler}.
- * @param config a configuration object to define `leading` and
+ * @param config A configuration object to define `leading` and
  * `trailing` behavior. Defaults to `{ leading: true, trailing: false }`.
  * @return A function that returns an Observable that performs the throttle
  * operation to limit the rate of emissions from the source.
@@ -55,7 +55,7 @@ import { timer } from '../observable/timer';
 export function throttleTime<T>(
   duration: number,
   scheduler: SchedulerLike = asyncScheduler,
-  config = defaultThrottleConfig
+  config?: ThrottleConfig
 ): MonoTypeOperatorFunction<T> {
   const duration$ = timer(duration, scheduler);
   return throttle(() => duration$, config);

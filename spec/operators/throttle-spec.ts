@@ -398,7 +398,7 @@ describe('throttle', () => {
         ];
         const expected = '-a---y----b---x---x---x---|';
 
-        const result = e1.pipe(throttle(() => e2, { leading: true, trailing: true }));
+        const result = e1.pipe(throttle(() => e2, { trailing: true }));
 
         expectObservable(result).toBe(expected);
         expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -414,7 +414,7 @@ describe('throttle', () => {
         const n1Subs = ['--^------------------!     '];
         const exp = '    --x------------------|     ';
 
-        const result = s1.pipe(throttle(() => n1, { leading: true, trailing: true }));
+        const result = s1.pipe(throttle(() => n1, { trailing: true }));
         expectObservable(result).toBe(exp);
         expectSubscriptions(s1.subscriptions).toBe(s1Subs);
         expectSubscriptions(n1.subscriptions).toBe(n1Subs);
@@ -433,7 +433,7 @@ describe('throttle', () => {
         ];
         const expected = '-a--------x---(y|)';
 
-        const result = e1.pipe(throttle(() => e2, { leading: true, trailing: true }));
+        const result = e1.pipe(throttle(() => e2, { trailing: true }));
 
         expectObservable(result).toBe(expected);
         expectSubscriptions(e1.subscriptions).toBe(e1subs);
