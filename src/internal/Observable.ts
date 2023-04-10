@@ -386,12 +386,12 @@ export class Observable<T> implements Subscribable<T> {
   [Symbol.asyncIterator](): AsyncGenerator<T, void, void> {
     let subscription: Subscription | undefined;
     let hasError = false;
-    let error: any;
+    let error: unknown;
     let completed = false;
     const values: T[] = [];
-    const deferreds: [(value: any) => void, (reason: any) => void][] = [];
+    const deferreds: [(value: IteratorResult<T>) => void, (reason: unknown) => void][] = [];
 
-    const handleError = (err: any) => {
+    const handleError = (err: unknown) => {
       hasError = true;
       error = err;
       while (deferreds.length) {
