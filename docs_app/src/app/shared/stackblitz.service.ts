@@ -1,6 +1,6 @@
-import StackBlitzkSDK from '@stackblitz/sdk';
+import StackBlitzSDK from '@stackblitz/sdk';
 import { Injectable } from '@angular/core';
-import { Project } from '@stackblitz/sdk/typings/interfaces';
+import { Project } from '@stackblitz/sdk/types/interfaces';
 
 interface StackBlitzExampleConfig {
   code: string;
@@ -8,42 +8,44 @@ interface StackBlitzExampleConfig {
   html?: string;
   dependencies: {
     [name: string]: string;
-  }
+  };
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StackblitzService {
   openProject(config: StackBlitzExampleConfig) {
-    const codeExtension: 'js' | string= {
-      'ts': 'ts',
-      'typescript': 'ts'
-    }[config.language] || 'js';
+    const codeExtension: 'js' | string =
+      {
+        ts: 'ts',
+        typescript: 'ts',
+      }[config.language] || 'js';
 
-    const template: Project['template'] = codeExtension === 'ts'
-      ? 'typescript'
-      : 'javascript';
+    const template: Project['template'] = codeExtension === 'ts' ? 'typescript' : 'javascript';
 
-    StackBlitzkSDK.openProject({
-      files: {
-        'index.html': config.html || '',
-        [`index.${codeExtension}`]: config.code
-      },
-      title: 'RxJS example',
-      description: 'RxJS example',
-      template,
-      tags: ['rxjs', 'demo'],
-      dependencies: config.dependencies,
-      settings: {
-        compile: {
-          trigger: 'auto',
-          action: 'refresh',
-          clearConsole: true,
+    StackBlitzSDK.openProject(
+      {
+        files: {
+          'index.html': config.html || '',
+          [`index.${codeExtension}`]: config.code,
         },
+        title: 'RxJS example',
+        description: 'RxJS example',
+        template,
+        tags: ['rxjs', 'demo'],
+        dependencies: config.dependencies,
+        settings: {
+          compile: {
+            trigger: 'auto',
+            action: 'refresh',
+            clearConsole: true,
+          },
+        },
+      },
+      {
+        devToolsHeight: 50,
       }
-    }, {
-        devToolsHeight: 50
-    });
+    );
   }
 }
