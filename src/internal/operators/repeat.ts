@@ -6,7 +6,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 import { timer } from '../observable/timer';
 
-export interface RepeatConfig {
+export interface RepeatConfig<V> {
   /**
    * The number of times to repeat the source. Defaults to `Infinity`.
    */
@@ -14,11 +14,11 @@ export interface RepeatConfig {
 
   /**
    * If a `number`, will delay the repeat of the source by that number of milliseconds.
-   * If a function, it will provide the number of times the source has been subscribed to,
+   * If a function, it will provide the number of times the source has been subscribed to as first param,and the lastValue as second param.
    * and the return value should be a valid observable input that will notify when the source
    * should be repeated. If the notifier observable is empty, the result will complete.
    */
-  delay?: number | ((count: number) => ObservableInput<any>);
+  delay?: number | ((count: number, value: V) => ObservableInput<any>);
 }
 
 /**
@@ -113,9 +113,9 @@ export interface RepeatConfig {
  * @param count The number of times the source Observable items are repeated, a count of 0 will yield
  * an empty Observable.
  */
-export function repeat<T>(countOrConfig?: number | RepeatConfig): MonoTypeOperatorFunction<T> {
+export function repeat<T>(countOrConfig?: number | RepeatConfig<T>): MonoTypeOperatorFunction<T> {
   let count = Infinity;
-  let delay: RepeatConfig['delay'];
+  let delay: RepeatConfig<T>['delay'];
 
   if (countOrConfig != null) {
     if (typeof countOrConfig === 'object') {
@@ -129,13 +129,13 @@ export function repeat<T>(countOrConfig?: number | RepeatConfig): MonoTypeOperat
     ? () => EMPTY
     : operate((source, subscriber) => {
         let soFar = 0;
+        let lastValue: T;
         let sourceSub: Subscription | null;
-
         const resubscribe = () => {
           sourceSub?.unsubscribe();
           sourceSub = null;
           if (delay != null) {
-            const notifier = typeof delay === 'number' ? timer(delay) : from(delay(soFar));
+            const notifier = typeof delay === 'number' ? timer(delay) : from(delay(soFar, lastValue));
             const notifierSubscriber = createOperatorSubscriber(subscriber, () => {
               notifierSubscriber.unsubscribe();
               subscribeToSource();
@@ -149,17 +149,21 @@ export function repeat<T>(countOrConfig?: number | RepeatConfig): MonoTypeOperat
         const subscribeToSource = () => {
           let syncUnsub = false;
           sourceSub = source.subscribe(
-            createOperatorSubscriber(subscriber, undefined, () => {
-              if (++soFar < count) {
-                if (sourceSub) {
-                  resubscribe();
+            createOperatorSubscriber(
+              subscriber,
+              (value) => (lastValue = value),
+              () => {
+                if (++soFar < count) {
+                  if (sourceSub) {
+                    resubscribe();
+                  } else {
+                    syncUnsub = true;
+                  }
                 } else {
-                  syncUnsub = true;
+                  subscriber.complete();
                 }
-              } else {
-                subscriber.complete();
               }
-            })
+            )
           );
 
           if (syncUnsub) {
