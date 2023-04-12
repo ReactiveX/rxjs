@@ -204,9 +204,13 @@ export function fromEvent<T, R>(
  * ```ts
  * import { fromEvent } from 'rxjs';
  *
- * const clicksInDocument = fromEvent(document, 'click', true); // note optional configuration parameter
- *                                                              // which will be passed to addEventListener
- * const clicksInDiv = fromEvent(someDivInDocument, 'click');
+ * const div = document.createElement('div');
+ * div.style.cssText = 'width: 200px; height: 200px; background: #09c;';
+ * document.body.appendChild(div);
+ *
+ * // note optional configuration parameter which will be passed to addEventListener
+ * const clicksInDocument = fromEvent(document, 'click', { capture: true });
+ * const clicksInDiv = fromEvent(div, 'click');
  *
  * clicksInDocument.subscribe(() => console.log('document'));
  * clicksInDiv.subscribe(() => console.log('div'));
