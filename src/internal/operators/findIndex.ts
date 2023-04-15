@@ -47,5 +47,5 @@ export function findIndex<T>(predicate: (value: T, index: number, source: Observ
  * first item that matches the condition.
  */
 export function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, number> {
-  return (source) => new Observable((subscriber) => createFind(predicate, 'index')(source, subscriber));
+  return (source) => new Observable((subscriber) => createFind(predicate, 'index', source, subscriber));
 }

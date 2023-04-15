@@ -50,28 +50,31 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
  * matches the condition.
  */
 export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, T | undefined> {
-  return (source) => new Observable((subscriber) => createFind(predicate, 'value')(source, subscriber));
+  return (source) => new Observable((subscriber) => createFind(predicate, 'value', source, subscriber));
 }
 
-export function createFind<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, emit: 'value' | 'index') {
+export function createFind<T>(
+  predicate: (value: T, index: number, source: Observable<T>) => boolean,
+  emit: 'value' | 'index',
+  source: Observable<T>,
+  subscriber: Subscriber<any>
+) {
   const findIndex = emit === 'index';
-  return (source: Observable<T>, subscriber: Subscriber<any>) => {
-    let index = 0;
-    source.subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        (value) => {
-          const i = index++;
-          if (predicate(value, i, source)) {
-            subscriber.next(findIndex ? i : value);
-            subscriber.complete();
-          }
-        },
-        () => {
-          subscriber.next(findIndex ? -1 : undefined);
+  let index = 0;
+  source.subscribe(
+    createOperatorSubscriber(
+      subscriber,
+      (value) => {
+        const i = index++;
+        if (predicate(value, i, source)) {
+          subscriber.next(findIndex ? i : value);
           subscriber.complete();
         }
-      )
-    );
-  };
+      },
+      () => {
+        subscriber.next(findIndex ? -1 : undefined);
+        subscriber.complete();
+      }
+    )
+  );
 }
