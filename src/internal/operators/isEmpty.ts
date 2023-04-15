@@ -1,5 +1,5 @@
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -64,19 +64,20 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * indicating whether the source Observable was empty or not.
  */
 export function isEmpty<T>(): OperatorFunction<T, boolean> {
-  return operate((source, subscriber) => {
-    source.subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        () => {
-          subscriber.next(false);
-          subscriber.complete();
-        },
-        () => {
-          subscriber.next(true);
-          subscriber.complete();
-        }
-      )
-    );
-  });
+  return (source) =>
+    new Observable((subscriber) => {
+      source.subscribe(
+        createOperatorSubscriber(
+          subscriber,
+          () => {
+            subscriber.next(false);
+            subscriber.complete();
+          },
+          () => {
+            subscriber.next(true);
+            subscriber.complete();
+          }
+        )
+      );
+    });
 }

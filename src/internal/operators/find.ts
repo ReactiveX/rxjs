@@ -1,7 +1,6 @@
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { OperatorFunction, TruthyTypesOf } from '../types';
-import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 export function find<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
@@ -51,7 +50,7 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
  * matches the condition.
  */
 export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, T | undefined> {
-  return operate(createFind(predicate, 'value'));
+  return (source) => new Observable((subscriber) => createFind(predicate, 'value')(source, subscriber));
 }
 
 export function createFind<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, emit: 'value' | 'index') {

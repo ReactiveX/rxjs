@@ -1,5 +1,5 @@
 import { OperatorFunction, ObservableInput } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { noop } from '../util/noop';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
@@ -43,39 +43,40 @@ import { from } from '../observable/from';
  * of values.
  */
 export function buffer<T>(closingNotifier: ObservableInput<any>): OperatorFunction<T, T[]> {
-  return operate((source, subscriber) => {
-    // The current buffered values.
-    let currentBuffer: T[] = [];
+  return (source) =>
+    new Observable((subscriber) => {
+      // The current buffered values.
+      let currentBuffer: T[] = [];
 
-    // Subscribe to the closing notifier first.
-    from(closingNotifier).subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        () => {
-          // Start a new buffer and emit the previous one.
-          const b = currentBuffer;
-          currentBuffer = [];
-          subscriber.next(b);
-        },
-        noop
-      )
-    );
+      // Subscribe to the closing notifier first.
+      from(closingNotifier).subscribe(
+        createOperatorSubscriber(
+          subscriber,
+          () => {
+            // Start a new buffer and emit the previous one.
+            const b = currentBuffer;
+            currentBuffer = [];
+            subscriber.next(b);
+          },
+          noop
+        )
+      );
 
-    // Subscribe to our source.
-    source.subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        (value) => currentBuffer.push(value),
-        () => {
-          subscriber.next(currentBuffer);
-          subscriber.complete();
-        }
-      )
-    );
+      // Subscribe to our source.
+      source.subscribe(
+        createOperatorSubscriber(
+          subscriber,
+          (value) => currentBuffer.push(value),
+          () => {
+            subscriber.next(currentBuffer);
+            subscriber.complete();
+          }
+        )
+      );
 
-    return () => {
-      // Ensure buffered values are released on finalization.
-      currentBuffer = null!;
-    };
-  });
+      return () => {
+        // Ensure buffered values are released on finalization.
+        currentBuffer = null!;
+      };
+    });
 }

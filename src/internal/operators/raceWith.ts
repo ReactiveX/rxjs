@@ -1,6 +1,6 @@
 import { OperatorFunction, ObservableInputTuple } from '../types';
 import { raceInit } from '../observable/race';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { identity } from '../util/identity';
 
 /**
@@ -34,7 +34,8 @@ export function raceWith<T, A extends readonly unknown[]>(
 ): OperatorFunction<T, T | A[number]> {
   return !otherSources.length
     ? identity
-    : operate((source, subscriber) => {
-        raceInit<T | A[number]>([source, ...otherSources])(subscriber);
-      });
+    : (source) =>
+        new Observable((subscriber) => {
+          raceInit<T | A[number]>([source, ...otherSources])(subscriber);
+        });
 }

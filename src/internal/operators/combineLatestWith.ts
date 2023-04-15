@@ -1,5 +1,5 @@
 import { combineLatestInit } from '../observable/combineLatest';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { Cons, ObservableInputTuple, OperatorFunction } from '../types';
 
 /**
@@ -45,5 +45,5 @@ import { Cons, ObservableInputTuple, OperatorFunction } from '../types';
 export function combineLatestWith<T, A extends readonly unknown[]>(
   ...otherSources: [...ObservableInputTuple<A>]
 ): OperatorFunction<T, Cons<T, A>> {
-  return operate((source, subscriber) => combineLatestInit([source, ...otherSources])(subscriber));
+  return (source) => new Observable((subscriber) => combineLatestInit([source, ...otherSources])(subscriber));
 }

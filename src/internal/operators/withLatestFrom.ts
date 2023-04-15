@@ -1,5 +1,5 @@
 import { OperatorFunction, ObservableInputTuple } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 import { identity } from '../util/identity';
@@ -58,53 +58,54 @@ export function withLatestFrom<T, O extends unknown[], R>(
 export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | any[]> {
   const project = popResultSelector(inputs) as ((...args: any[]) => R) | undefined;
 
-  return operate((source, subscriber) => {
-    const len = inputs.length;
-    const otherValues = new Array(len);
-    // An array of whether or not the other sources have emitted. Matched with them by index.
-    // TODO: At somepoint, we should investigate the performance implications here, and look
-    // into using a `Set()` and checking the `size` to see if we're ready.
-    let hasValue = inputs.map(() => false);
-    // Flipped true when we have at least one value from all other sources and
-    // we are ready to start emitting values.
-    let ready = false;
+  return (source) =>
+    new Observable((subscriber) => {
+      const len = inputs.length;
+      const otherValues = new Array(len);
+      // An array of whether or not the other sources have emitted. Matched with them by index.
+      // TODO: At somepoint, we should investigate the performance implications here, and look
+      // into using a `Set()` and checking the `size` to see if we're ready.
+      let hasValue = inputs.map(() => false);
+      // Flipped true when we have at least one value from all other sources and
+      // we are ready to start emitting values.
+      let ready = false;
 
-    // Other sources. Note that here we are not checking `subscriber.closed`,
-    // this causes all inputs to be subscribed to, even if nothing can be emitted
-    // from them. This is an important distinction because subscription constitutes
-    // a side-effect.
-    for (let i = 0; i < len; i++) {
-      from(inputs[i]).subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value) => {
-            otherValues[i] = value;
-            if (!ready && !hasValue[i]) {
-              // If we're not ready yet, flag to show this observable has emitted.
-              hasValue[i] = true;
-              // Intentionally terse code.
-              // If all of our other observables have emitted, set `ready` to `true`,
-              // so we know we can start emitting values, then clean up the `hasValue` array,
-              // because we don't need it anymore.
-              (ready = hasValue.every(identity)) && (hasValue = null!);
-            }
-          },
-          // Completing one of the other sources has
-          // no bearing on the completion of our result.
-          noop
-        )
+      // Other sources. Note that here we are not checking `subscriber.closed`,
+      // this causes all inputs to be subscribed to, even if nothing can be emitted
+      // from them. This is an important distinction because subscription constitutes
+      // a side-effect.
+      for (let i = 0; i < len; i++) {
+        from(inputs[i]).subscribe(
+          createOperatorSubscriber(
+            subscriber,
+            (value) => {
+              otherValues[i] = value;
+              if (!ready && !hasValue[i]) {
+                // If we're not ready yet, flag to show this observable has emitted.
+                hasValue[i] = true;
+                // Intentionally terse code.
+                // If all of our other observables have emitted, set `ready` to `true`,
+                // so we know we can start emitting values, then clean up the `hasValue` array,
+                // because we don't need it anymore.
+                (ready = hasValue.every(identity)) && (hasValue = null!);
+              }
+            },
+            // Completing one of the other sources has
+            // no bearing on the completion of our result.
+            noop
+          )
+        );
+      }
+
+      // Source subscription
+      source.subscribe(
+        createOperatorSubscriber(subscriber, (value) => {
+          if (ready) {
+            // We have at least one value from the other sources. Go ahead and emit.
+            const values = [value, ...otherValues];
+            subscriber.next(project ? project(...values) : values);
+          }
+        })
       );
-    }
-
-    // Source subscription
-    source.subscribe(
-      createOperatorSubscriber(subscriber, (value) => {
-        if (ready) {
-          // We have at least one value from the other sources. Go ahead and emit.
-          const values = [value, ...otherValues];
-          subscriber.next(project ? project(...values) : values);
-        }
-      })
-    );
-  });
+    });
 }

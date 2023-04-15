@@ -1,7 +1,7 @@
 import { Subscriber } from '../Subscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { from } from '../observable/from';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -51,27 +51,28 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
 export function exhaustMap<T, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O
 ): OperatorFunction<T, ObservedValueOf<O>> {
-  return operate((source, subscriber) => {
-    let index = 0;
-    let innerSub: Subscriber<T> | null = null;
-    let isComplete = false;
-    source.subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        (outerValue) => {
-          if (!innerSub) {
-            innerSub = createOperatorSubscriber(subscriber, undefined, () => {
-              innerSub = null;
-              isComplete && subscriber.complete();
-            });
-            from(project(outerValue, index++)).subscribe(innerSub);
+  return (source) =>
+    new Observable((subscriber) => {
+      let index = 0;
+      let innerSub: Subscriber<T> | null = null;
+      let isComplete = false;
+      source.subscribe(
+        createOperatorSubscriber(
+          subscriber,
+          (outerValue) => {
+            if (!innerSub) {
+              innerSub = createOperatorSubscriber(subscriber, undefined, () => {
+                innerSub = null;
+                isComplete && subscriber.complete();
+              });
+              from(project(outerValue, index++)).subscribe(innerSub);
+            }
+          },
+          () => {
+            isComplete = true;
+            !innerSub && subscriber.complete();
           }
-        },
-        () => {
-          isComplete = true;
-          !innerSub && subscriber.complete();
-        }
-      )
-    );
-  });
+        )
+      );
+    });
 }

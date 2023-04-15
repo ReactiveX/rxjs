@@ -1,5 +1,5 @@
 import { MonoTypeOperatorFunction } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 
 /**
  * Returns an Observable that mirrors the source Observable, but will call a specified function when
@@ -63,8 +63,9 @@ import { operate } from '../util/lift';
  * will call the specified function on termination.
  */
 export function finalize<T>(callback: () => void): MonoTypeOperatorFunction<T> {
-  return operate((source, subscriber) => {
-    source.subscribe(subscriber);
-    subscriber.add(callback);
-  });
+  return (source) =>
+    new Observable((subscriber) => {
+      source.subscribe(subscriber);
+      subscriber.add(callback);
+    });
 }

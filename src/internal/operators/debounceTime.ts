@@ -1,7 +1,7 @@
 import { asyncScheduler } from '../scheduler/async';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -62,69 +62,70 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * if they occur too frequently.
  */
 export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyncScheduler): MonoTypeOperatorFunction<T> {
-  return operate((source, subscriber) => {
-    let activeTask: Subscription | null = null;
-    let lastValue: T | null = null;
-    let lastTime: number | null = null;
-    let scheduling = false;
+  return (source) =>
+    new Observable((subscriber) => {
+      let activeTask: Subscription | null = null;
+      let lastValue: T | null = null;
+      let lastTime: number | null = null;
+      let scheduling = false;
 
-    const emit = () => {
-      if (scheduling || activeTask) {
-        // We have a value! Free up memory first, then emit the value.
-        if (activeTask) {
-          activeTask.unsubscribe();
-          activeTask = null;
-        }
-        const value = lastValue!;
-        lastValue = null;
-        subscriber.next(value);
-      }
-    };
-    function emitWhenIdle(this: SchedulerAction<unknown>) {
-      // This is called `dueTime` after the first value
-      // but we might have received new values during this window!
-
-      const targetTime = lastTime! + dueTime;
-      const now = scheduler.now();
-      if (now < targetTime) {
-        // On that case, re-schedule to the new target
-        activeTask = this.schedule(undefined, targetTime - now);
-        subscriber.add(activeTask);
-        return;
-      }
-
-      emit();
-    }
-
-    source.subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        (value: T) => {
-          lastValue = value;
-          lastTime = scheduler.now();
-
-          // Only set up a task if it's not already up
-          if (!activeTask) {
-            scheduling = true;
-            activeTask = scheduler.schedule(emitWhenIdle, dueTime);
-            scheduling = false;
-            // Set activeTask as intermediary Subscription to handle synchronous schedulers
-            subscriber.add(activeTask);
+      const emit = () => {
+        if (scheduling || activeTask) {
+          // We have a value! Free up memory first, then emit the value.
+          if (activeTask) {
+            activeTask.unsubscribe();
+            activeTask = null;
           }
-        },
-        () => {
-          // Source completed.
-          // Emit any pending debounced values then complete
-          emit();
-          subscriber.complete();
-        },
-        // Pass all errors through to consumer.
-        undefined,
-        () => {
-          // Finalization.
-          lastValue = activeTask = null;
+          const value = lastValue!;
+          lastValue = null;
+          subscriber.next(value);
         }
-      )
-    );
-  });
+      };
+      function emitWhenIdle(this: SchedulerAction<unknown>) {
+        // This is called `dueTime` after the first value
+        // but we might have received new values during this window!
+
+        const targetTime = lastTime! + dueTime;
+        const now = scheduler.now();
+        if (now < targetTime) {
+          // On that case, re-schedule to the new target
+          activeTask = this.schedule(undefined, targetTime - now);
+          subscriber.add(activeTask);
+          return;
+        }
+
+        emit();
+      }
+
+      source.subscribe(
+        createOperatorSubscriber(
+          subscriber,
+          (value: T) => {
+            lastValue = value;
+            lastTime = scheduler.now();
+
+            // Only set up a task if it's not already up
+            if (!activeTask) {
+              scheduling = true;
+              activeTask = scheduler.schedule(emitWhenIdle, dueTime);
+              scheduling = false;
+              // Set activeTask as intermediary Subscription to handle synchronous schedulers
+              subscriber.add(activeTask);
+            }
+          },
+          () => {
+            // Source completed.
+            // Emit any pending debounced values then complete
+            emit();
+            subscriber.complete();
+          },
+          // Pass all errors through to consumer.
+          undefined,
+          () => {
+            // Finalization.
+            lastValue = activeTask = null;
+          }
+        )
+      );
+    });
 }

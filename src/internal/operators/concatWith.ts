@@ -1,7 +1,7 @@
 import { ObservableInputTuple, OperatorFunction } from '../types';
 import { from } from '../observable/from';
 import { concatAll } from '../operators/concatAll';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 
 /**
  * Emits all of the values from the source observable, then, once it completes, subscribes
@@ -46,7 +46,8 @@ import { operate } from '../util/lift';
 export function concatWith<T, A extends readonly unknown[]>(
   ...otherSources: [...ObservableInputTuple<A>]
 ): OperatorFunction<T, T | A[number]> {
-  return operate((source, subscriber) => {
-    concatAll()(from([source, ...otherSources])).subscribe(subscriber);
-  });
+  return (source) =>
+    new Observable((subscriber) => {
+      concatAll()(from([source, ...otherSources])).subscribe(subscriber);
+    });
 }

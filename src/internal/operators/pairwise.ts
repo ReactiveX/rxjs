@@ -1,5 +1,5 @@
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -46,16 +46,17 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * consecutive values from the source Observable.
  */
 export function pairwise<T>(): OperatorFunction<T, [T, T]> {
-  return operate((source, subscriber) => {
-    let prev: T;
-    let hasPrev = false;
-    source.subscribe(
-      createOperatorSubscriber(subscriber, (value) => {
-        const p = prev;
-        prev = value;
-        hasPrev && subscriber.next([p, value]);
-        hasPrev = true;
-      })
-    );
-  });
+  return (source) =>
+    new Observable((subscriber) => {
+      let prev: T;
+      let hasPrev = false;
+      source.subscribe(
+        createOperatorSubscriber(subscriber, (value) => {
+          const p = prev;
+          prev = value;
+          hasPrev && subscriber.next([p, value]);
+          hasPrev = true;
+        })
+      );
+    });
 }

@@ -1,6 +1,6 @@
 import { reduce } from './reduce';
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 
 const arrReducer = (arr: any[], value: any) => (arr.push(value), arr);
 
@@ -38,7 +38,8 @@ export function toArray<T>(): OperatorFunction<T, T[]> {
   // Because arrays are mutable, and we're mutating the array in this
   // reducer process, we have to encapsulate the creation of the initial
   // array within this `operate` function.
-  return operate((source, subscriber) => {
-    reduce(arrReducer, [] as T[])(source).subscribe(subscriber);
-  });
+  return (source) =>
+    new Observable((subscriber) => {
+      reduce(arrReducer, [] as T[])(source).subscribe(subscriber);
+    });
 }

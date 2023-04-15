@@ -1,7 +1,7 @@
 import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { from } from '../observable/from';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
@@ -51,46 +51,47 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * emissions from the source Observable.
  */
 export function audit<T>(durationSelector: (value: T) => ObservableInput<any>): MonoTypeOperatorFunction<T> {
-  return operate((source, subscriber) => {
-    let hasValue = false;
-    let lastValue: T | null = null;
-    let durationSubscriber: Subscriber<any> | null = null;
-    let isComplete = false;
+  return (source) =>
+    new Observable((subscriber) => {
+      let hasValue = false;
+      let lastValue: T | null = null;
+      let durationSubscriber: Subscriber<any> | null = null;
+      let isComplete = false;
 
-    const endDuration = () => {
-      durationSubscriber?.unsubscribe();
-      durationSubscriber = null;
-      if (hasValue) {
-        hasValue = false;
-        const value = lastValue!;
-        lastValue = null;
-        subscriber.next(value);
-      }
-      isComplete && subscriber.complete();
-    };
-
-    const cleanupDuration = () => {
-      durationSubscriber = null;
-      isComplete && subscriber.complete();
-    };
-
-    source.subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        (value) => {
-          hasValue = true;
-          lastValue = value;
-          if (!durationSubscriber) {
-            from(durationSelector(value)).subscribe(
-              (durationSubscriber = createOperatorSubscriber(subscriber, endDuration, cleanupDuration))
-            );
-          }
-        },
-        () => {
-          isComplete = true;
-          (!hasValue || !durationSubscriber || durationSubscriber.closed) && subscriber.complete();
+      const endDuration = () => {
+        durationSubscriber?.unsubscribe();
+        durationSubscriber = null;
+        if (hasValue) {
+          hasValue = false;
+          const value = lastValue!;
+          lastValue = null;
+          subscriber.next(value);
         }
-      )
-    );
-  });
+        isComplete && subscriber.complete();
+      };
+
+      const cleanupDuration = () => {
+        durationSubscriber = null;
+        isComplete && subscriber.complete();
+      };
+
+      source.subscribe(
+        createOperatorSubscriber(
+          subscriber,
+          (value) => {
+            hasValue = true;
+            lastValue = value;
+            if (!durationSubscriber) {
+              from(durationSelector(value)).subscribe(
+                (durationSubscriber = createOperatorSubscriber(subscriber, endDuration, cleanupDuration))
+              );
+            }
+          },
+          () => {
+            isComplete = true;
+            (!hasValue || !durationSubscriber || durationSubscriber.closed) && subscriber.complete();
+          }
+        )
+      );
+    });
 }
