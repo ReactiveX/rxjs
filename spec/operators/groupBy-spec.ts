@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { groupBy, delay, tap, map, take, mergeMap, materialize, skip, ignoreElements } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { ReplaySubject, of, Observable, Operator, Observer, Subject, NextNotification, ErrorNotification } from 'rxjs';
+import { ReplaySubject, of, Observable, Subject, NextNotification, ErrorNotification } from 'rxjs';
 import { createNotification } from 'rxjs/internal/NotificationFactories';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -534,8 +534,8 @@ describe('groupBy operator', () => {
     });
   });
 
-  it('should allow the outer to be unsubscribed early but inners continue', () => {
-    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
+  it('should unsubscribe inner subscriptions when the result unsubscribes', () => {
+    testScheduler.run(({ cold, hot, expectObservable }) => {
       const values = {
         a: '  foo',
         b: ' FoO ',
@@ -551,10 +551,10 @@ describe('groupBy operator', () => {
         l: '    fOo    ',
       };
       const e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
-      const unsub = '         ---------!                ';
-      const expected = '      --w---x---                ';
-      const w = cold('        a-b---d---------i-----l-| ', values);
-      const x = cold('            c-------g-h---------| ', values);
+      const unsub = '        ----------!                ';
+      const expected = '     --w---x----                ';
+      const w = cold('         a-b---d--                ', values);
+      const x = cold('             c----                ', values);
       const expectedValues = { w: w, x: x };
 
       const source = e1.pipe(groupBy((val: string) => val.toLowerCase().trim()));
@@ -884,7 +884,7 @@ describe('groupBy operator', () => {
     });
   });
 
-  it('should allow using a durationSelector, and outer unsubscribed early', () => {
+  it('should allow using a durationSelector, and unsub from outer and inner at the same time', () => {
     testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
       const values = {
         a: '  foo',
@@ -904,8 +904,8 @@ describe('groupBy operator', () => {
       const unsub = '        -----------!               ';
       const expected = '     --v---w---x-               ';
       const v = cold('         a-b---(d|)               ', values);
-      const w = cold('             c-------g-(h|)       ', values);
-      const x = cold('                 e---------j-(k|) ', values);
+      const w = cold('             c-----               ', values);
+      const x = cold('                 e-               ', values);
       const expectedValues = { v: v, w: w, x: x };
 
       const source = e1.pipe(

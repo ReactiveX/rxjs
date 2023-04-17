@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { from } from '../observable/from';
 import { Subject } from '../Subject';
 import { ObservableInput, Observer, OperatorFunction, SubjectLike } from '../types';
-import { createOperatorSubscriber, OperatorSubscriber } from './OperatorSubscriber';
+import { createOperatorSubscriber } from './OperatorSubscriber';
 
 export interface BasicGroupByOptions<K, T> {
   element?: undefined;
@@ -165,12 +165,6 @@ export function groupBy<T, K, R>(
       // next call from the source.
       const handleError = (err: any) => notify((consumer) => consumer.error(err));
 
-      // The number of actively subscribed groups
-      let activeGroups = 0;
-
-      // Whether or not teardown was attempted on this subscription.
-      let teardownAttempted = false;
-
       // Capturing a reference to this, because we need a handle to it
       // in `createGroupedObservable` below. This is what we use to
       // subscribe to our source observable. This sometimes needs to be unsubscribed
@@ -178,7 +172,7 @@ export function groupBy<T, K, R>(
       // in cases where a user unsubscribes from the main resulting subscription, but
       // still has groups from this subscription subscribed and would expect values from it
       // Consider:  `source.pipe(groupBy(fn), take(2))`.
-      const groupBySourceSubscriber = new OperatorSubscriber(
+      const groupBySourceSubscriber = createOperatorSubscriber(
         subscriber,
         (value: T) => {
           // Because we have to notify all groups of any errors that occur in here,
@@ -240,14 +234,7 @@ export function groupBy<T, K, R>(
         // When the source subscription is _finally_ torn down, release the subjects and keys
         // in our groups Map, they may be quite large and we don't want to keep them around if we
         // don't have to.
-        () => groups.clear(),
-        () => {
-          teardownAttempted = true;
-          // We only kill our subscription to the source if we have
-          // no active groups. As stated above, consider this scenario:
-          // source$.pipe(groupBy(fn), take(2)).
-          return activeGroups === 0;
-        }
+        () => groups.clear()
       );
 
       // Subscribe to the source
@@ -259,17 +246,7 @@ export function groupBy<T, K, R>(
        * @param groupSubject The subject that fuels the group
        */
       function createGroupedObservable(key: K, groupSubject: SubjectLike<any>) {
-        const result: any = new Observable<T>((groupSubscriber) => {
-          activeGroups++;
-          const innerSub = groupSubject.subscribe(groupSubscriber);
-          return () => {
-            innerSub.unsubscribe();
-            // We can kill the subscription to our source if we now have no more
-            // active groups subscribed, and a finalization was already attempted on
-            // the source.
-            --activeGroups === 0 && teardownAttempted && groupBySourceSubscriber.unsubscribe();
-          };
-        });
+        const result: any = new Observable<T>((groupSubscriber) => groupSubject.subscribe(groupSubscriber));
         result.key = key;
         return result;
       }
