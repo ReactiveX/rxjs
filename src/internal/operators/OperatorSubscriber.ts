@@ -26,7 +26,7 @@ export function createOperatorSubscriber<T>(
  * A generic helper for allowing operators to be created with a Subscriber and
  * use closures to capture necessary state from the operator function itself.
  */
-export class OperatorSubscriber<T> extends Subscriber<T> {
+class OperatorSubscriber<T> extends Subscriber<T> {
   /**
    * Creates an instance of an `OperatorSubscriber`.
    * @param destination The downstream subscriber.

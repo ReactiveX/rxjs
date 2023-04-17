@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { ObservableInputTuple } from '../types';
 import { argsOrArgArray } from '../util/argsOrArgArray';
-import { OperatorSubscriber } from '../operators/OperatorSubscriber';
+import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
 import { noop } from '../util/noop';
 import { from } from './from';
 
@@ -89,7 +89,7 @@ export function onErrorResumeNext<A extends readonly unknown[]>(
           subscribeNext();
           return;
         }
-        const innerSubscriber = new OperatorSubscriber(subscriber, undefined, noop, noop);
+        const innerSubscriber = createOperatorSubscriber(subscriber, undefined, noop, noop);
         nextSource.subscribe(innerSubscriber);
         innerSubscriber.add(subscribeNext);
       } else {
