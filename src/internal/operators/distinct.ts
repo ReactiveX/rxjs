@@ -1,5 +1,5 @@
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
 import { from } from '../observable/from';
@@ -62,18 +62,19 @@ import { from } from '../observable/from';
  * source Observable with distinct values.
  */
 export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: ObservableInput<any>): MonoTypeOperatorFunction<T> {
-  return operate((source, subscriber) => {
-    const distinctKeys = new Set();
-    source.subscribe(
-      createOperatorSubscriber(subscriber, (value) => {
-        const key = keySelector ? keySelector(value) : value;
-        if (!distinctKeys.has(key)) {
-          distinctKeys.add(key);
-          subscriber.next(value);
-        }
-      })
-    );
+  return (source) =>
+    new Observable((subscriber) => {
+      const distinctKeys = new Set();
+      source.subscribe(
+        createOperatorSubscriber(subscriber, (value) => {
+          const key = keySelector ? keySelector(value) : value;
+          if (!distinctKeys.has(key)) {
+            distinctKeys.add(key);
+            subscriber.next(value);
+          }
+        })
+      );
 
-    flushes && from(flushes).subscribe(createOperatorSubscriber(subscriber, () => distinctKeys.clear(), noop));
-  });
+      flushes && from(flushes).subscribe(createOperatorSubscriber(subscriber, () => distinctKeys.clear(), noop));
+    });
 }

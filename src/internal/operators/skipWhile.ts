@@ -1,5 +1,5 @@
 import { Falsy, MonoTypeOperatorFunction, OperatorFunction } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 export function skipWhile<T>(predicate: BooleanConstructor): OperatorFunction<T, Extract<T, Falsy> extends never ? never : T>;
@@ -50,11 +50,12 @@ export function skipWhile<T>(predicate: (value: T, index: number) => boolean): M
  * emitted by the source Observable when the specified predicate becomes false.
  */
 export function skipWhile<T>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T> {
-  return operate((source, subscriber) => {
-    let taking = false;
-    let index = 0;
-    source.subscribe(
-      createOperatorSubscriber(subscriber, (value) => (taking || (taking = !predicate(value, index++))) && subscriber.next(value))
-    );
-  });
+  return (source) =>
+    new Observable((subscriber) => {
+      let taking = false;
+      let index = 0;
+      source.subscribe(
+        createOperatorSubscriber(subscriber, (value) => (taking || (taking = !predicate(value, index++))) && subscriber.next(value))
+      );
+    });
 }

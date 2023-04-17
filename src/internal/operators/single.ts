@@ -4,7 +4,6 @@ import { EmptyError } from '../util/EmptyError';
 import { MonoTypeOperatorFunction, OperatorFunction, TruthyTypesOf } from '../types';
 import { SequenceError } from '../util/SequenceError';
 import { NotFoundError } from '../util/NotFoundError';
-import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 export function single<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
@@ -87,31 +86,32 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  * emitted by the source Observable that matches the predicate.
  */
 export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T> {
-  return operate((source, subscriber) => {
-    let hasValue = false;
-    let singleValue: T;
-    let seenValue = false;
-    let index = 0;
-    source.subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        (value) => {
-          seenValue = true;
-          if (!predicate || predicate(value, index++, source)) {
-            hasValue && subscriber.error(new SequenceError('Too many matching values'));
-            hasValue = true;
-            singleValue = value;
+  return (source) =>
+    new Observable((subscriber) => {
+      let hasValue = false;
+      let singleValue: T;
+      let seenValue = false;
+      let index = 0;
+      source.subscribe(
+        createOperatorSubscriber(
+          subscriber,
+          (value) => {
+            seenValue = true;
+            if (!predicate || predicate(value, index++, source)) {
+              hasValue && subscriber.error(new SequenceError('Too many matching values'));
+              hasValue = true;
+              singleValue = value;
+            }
+          },
+          () => {
+            if (hasValue) {
+              subscriber.next(singleValue);
+              subscriber.complete();
+            } else {
+              subscriber.error(seenValue ? new NotFoundError('No matching values') : new EmptyError());
+            }
           }
-        },
-        () => {
-          if (hasValue) {
-            subscriber.next(singleValue);
-            subscriber.complete();
-          } else {
-            subscriber.error(seenValue ? new NotFoundError('No matching values') : new EmptyError());
-          }
-        }
-      )
-    );
-  });
+        )
+      );
+    });
 }

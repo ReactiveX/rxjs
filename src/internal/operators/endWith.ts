@@ -1,7 +1,7 @@
 /** prettier */
 import { subscribeToArray } from '../observable/from';
 import { OperatorFunction, ValueFromArray } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
 
 /**
@@ -52,11 +52,12 @@ import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
  * source completes.
  */
 export function endWith<T, A extends readonly unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>> {
-  return operate((source, subscriber) => {
-    source.subscribe(
-      createOperatorSubscriber(subscriber, undefined, () => {
-        subscribeToArray(values as readonly ValueFromArray<A>[], subscriber);
-      })
-    );
-  });
+  return (source) =>
+    new Observable((subscriber) => {
+      source.subscribe(
+        createOperatorSubscriber(subscriber, undefined, () => {
+          subscribeToArray(values as readonly ValueFromArray<A>[], subscriber);
+        })
+      );
+    });
 }

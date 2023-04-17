@@ -1,5 +1,5 @@
 import { ObservableInputTuple, OperatorFunction, Cons } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { zip } from '../observable/zip';
 
 /**
@@ -26,7 +26,8 @@ import { zip } from '../observable/zip';
  * array.
  */
 export function zipWith<T, A extends readonly unknown[]>(...otherInputs: [...ObservableInputTuple<A>]): OperatorFunction<T, Cons<T, A>> {
-  return operate((source, subscriber) => {
-    zip<[T, ...A]>(source, ...otherInputs).subscribe(subscriber);
-  });
+  return (source) =>
+    new Observable((subscriber) => {
+      zip<[T, ...A]>(source, ...otherInputs).subscribe(subscriber);
+    });
 }

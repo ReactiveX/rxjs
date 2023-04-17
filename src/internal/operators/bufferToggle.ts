@@ -1,6 +1,6 @@
 import { Subscription } from '../Subscription';
 import { OperatorFunction, ObservableInput } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { from } from '../observable/from';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { noop } from '../util/noop';
@@ -53,50 +53,51 @@ export function bufferToggle<T, O>(
   openings: ObservableInput<O>,
   closingSelector: (value: O) => ObservableInput<any>
 ): OperatorFunction<T, T[]> {
-  return operate((source, subscriber) => {
-    const buffers: T[][] = [];
+  return (source) =>
+    new Observable((subscriber) => {
+      const buffers: T[][] = [];
 
-    // Subscribe to the openings notifier first
-    from(openings).subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        (openValue) => {
-          const buffer: T[] = [];
-          buffers.push(buffer);
-          // We use this composite subscription, so that
-          // when the closing notifier emits, we can tear it down.
-          const closingSubscription = new Subscription();
+      // Subscribe to the openings notifier first
+      from(openings).subscribe(
+        createOperatorSubscriber(
+          subscriber,
+          (openValue) => {
+            const buffer: T[] = [];
+            buffers.push(buffer);
+            // We use this composite subscription, so that
+            // when the closing notifier emits, we can tear it down.
+            const closingSubscription = new Subscription();
 
-          const emitBuffer = () => {
-            arrRemove(buffers, buffer);
-            subscriber.next(buffer);
-            closingSubscription.unsubscribe();
-          };
+            const emitBuffer = () => {
+              arrRemove(buffers, buffer);
+              subscriber.next(buffer);
+              closingSubscription.unsubscribe();
+            };
 
-          // The line below will add the subscription to the parent subscriber *and* the closing subscription.
-          closingSubscription.add(from(closingSelector(openValue)).subscribe(createOperatorSubscriber(subscriber, emitBuffer, noop)));
-        },
-        noop
-      )
-    );
+            // The line below will add the subscription to the parent subscriber *and* the closing subscription.
+            closingSubscription.add(from(closingSelector(openValue)).subscribe(createOperatorSubscriber(subscriber, emitBuffer, noop)));
+          },
+          noop
+        )
+      );
 
-    source.subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        (value) => {
-          // Value from our source. Add it to all pending buffers.
-          for (const buffer of buffers) {
-            buffer.push(value);
+      source.subscribe(
+        createOperatorSubscriber(
+          subscriber,
+          (value) => {
+            // Value from our source. Add it to all pending buffers.
+            for (const buffer of buffers) {
+              buffer.push(value);
+            }
+          },
+          () => {
+            // Source complete. Emit all pending buffers.
+            while (buffers.length > 0) {
+              subscriber.next(buffers.shift()!);
+            }
+            subscriber.complete();
           }
-        },
-        () => {
-          // Source complete. Emit all pending buffers.
-          while (buffers.length > 0) {
-            subscriber.next(buffers.shift()!);
-          }
-          subscriber.complete();
-        }
-      )
-    );
-  });
+        )
+      );
+    });
 }

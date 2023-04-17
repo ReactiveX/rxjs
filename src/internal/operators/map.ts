@@ -1,5 +1,5 @@
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -39,17 +39,18 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * source Observable transformed by the given `project` function.
  */
 export function map<T, R>(project: (value: T, index: number) => R): OperatorFunction<T, R> {
-  return operate((source, subscriber) => {
-    // The index of the value from the source. Used with projection.
-    let index = 0;
-    // Subscribe to the source, all errors and completions are sent along
-    // to the consumer.
-    source.subscribe(
-      createOperatorSubscriber(subscriber, (value: T) => {
-        // Call the projection function with the appropriate this context,
-        // and send the resulting value to the consumer.
-        subscriber.next(project(value, index++));
-      })
-    );
-  });
+  return (source) =>
+    new Observable((subscriber) => {
+      // The index of the value from the source. Used with projection.
+      let index = 0;
+      // Subscribe to the source, all errors and completions are sent along
+      // to the consumer.
+      source.subscribe(
+        createOperatorSubscriber(subscriber, (value: T) => {
+          // Call the projection function with the appropriate this context,
+          // and send the resulting value to the consumer.
+          subscriber.next(project(value, index++));
+        })
+      );
+    });
 }

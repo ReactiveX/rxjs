@@ -1,6 +1,6 @@
 import { MonoTypeOperatorFunction, Observer } from '../types';
 import { isFunction } from '../util/isFunction';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { identity } from '../util/identity';
 
@@ -160,35 +160,36 @@ export function tap<T>(observerOrNext?: Partial<TapObserver<T>> | ((value: T) =>
   const tapObserver: Partial<TapObserver<T>> | null | undefined = isFunction(observerOrNext) ? { next: observerOrNext } : observerOrNext;
 
   return tapObserver
-    ? operate((source, subscriber) => {
-        tapObserver.subscribe?.();
-        let isUnsub = true;
-        source.subscribe(
-          createOperatorSubscriber(
-            subscriber,
-            (value) => {
-              tapObserver.next?.(value);
-              subscriber.next(value);
-            },
-            () => {
-              isUnsub = false;
-              tapObserver.complete?.();
-              subscriber.complete();
-            },
-            (err) => {
-              isUnsub = false;
-              tapObserver.error?.(err);
-              subscriber.error(err);
-            },
-            () => {
-              if (isUnsub) {
-                tapObserver.unsubscribe?.();
+    ? (source) =>
+        new Observable((subscriber) => {
+          tapObserver.subscribe?.();
+          let isUnsub = true;
+          source.subscribe(
+            createOperatorSubscriber(
+              subscriber,
+              (value) => {
+                tapObserver.next?.(value);
+                subscriber.next(value);
+              },
+              () => {
+                isUnsub = false;
+                tapObserver.complete?.();
+                subscriber.complete();
+              },
+              (err) => {
+                isUnsub = false;
+                tapObserver.error?.(err);
+                subscriber.error(err);
+              },
+              () => {
+                if (isUnsub) {
+                  tapObserver.unsubscribe?.();
+                }
+                tapObserver.finalize?.();
               }
-              tapObserver.finalize?.();
-            }
-          )
-        );
-      })
+            )
+          );
+        })
     : // Tap was called with no valid tap observer or handler
       // (e.g. `tap(null)` or `tap()`)
       // so we're going to just mirror the source.

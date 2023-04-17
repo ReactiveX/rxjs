@@ -1,6 +1,5 @@
 import { Observable } from '../Observable';
 import { Falsy, OperatorFunction } from '../types';
-import { operate } from '../util/lift';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 export function every<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
@@ -45,22 +44,23 @@ export function every<T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
   thisArg?: any
 ): OperatorFunction<T, boolean> {
-  return operate((source, subscriber) => {
-    let index = 0;
-    source.subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        (value) => {
-          if (!predicate.call(thisArg, value, index++, source)) {
-            subscriber.next(false);
+  return (source) =>
+    new Observable((subscriber) => {
+      let index = 0;
+      source.subscribe(
+        createOperatorSubscriber(
+          subscriber,
+          (value) => {
+            if (!predicate.call(thisArg, value, index++, source)) {
+              subscriber.next(false);
+              subscriber.complete();
+            }
+          },
+          () => {
+            subscriber.next(true);
             subscriber.complete();
           }
-        },
-        () => {
-          subscriber.next(true);
-          subscriber.complete();
-        }
-      )
-    );
-  });
+        )
+      );
+    });
 }

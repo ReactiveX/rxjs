@@ -1,5 +1,5 @@
 import { OperatorFunction } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { arrRemove } from '../util/arrRemove';
 
@@ -59,62 +59,63 @@ export function bufferCount<T>(bufferSize: number, startBufferEvery: number | nu
   // opening and closing on the bufferSize itself.
   startBufferEvery = startBufferEvery ?? bufferSize;
 
-  return operate((source, subscriber) => {
-    let buffers: T[][] = [];
-    let count = 0;
+  return (source) =>
+    new Observable((subscriber) => {
+      let buffers: T[][] = [];
+      let count = 0;
 
-    source.subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        (value) => {
-          let toEmit: T[][] | null = null;
+      source.subscribe(
+        createOperatorSubscriber(
+          subscriber,
+          (value) => {
+            let toEmit: T[][] | null = null;
 
-          // Check to see if we need to start a buffer.
-          // This will start one at the first value, and then
-          // a new one every N after that.
-          if (count++ % startBufferEvery! === 0) {
-            buffers.push([]);
-          }
-
-          // Push our value into our active buffers.
-          for (const buffer of buffers) {
-            buffer.push(value);
-            // Check to see if we're over the bufferSize
-            // if we are, record it so we can emit it later.
-            // If we emitted it now and removed it, it would
-            // mutate the `buffers` array while we're looping
-            // over it.
-            if (bufferSize <= buffer.length) {
-              toEmit = toEmit ?? [];
-              toEmit.push(buffer);
+            // Check to see if we need to start a buffer.
+            // This will start one at the first value, and then
+            // a new one every N after that.
+            if (count++ % startBufferEvery! === 0) {
+              buffers.push([]);
             }
-          }
 
-          if (toEmit) {
-            // We have found some buffers that are over the
-            // `bufferSize`. Emit them, and remove them from our
-            // buffers list.
-            for (const buffer of toEmit) {
-              arrRemove(buffers, buffer);
+            // Push our value into our active buffers.
+            for (const buffer of buffers) {
+              buffer.push(value);
+              // Check to see if we're over the bufferSize
+              // if we are, record it so we can emit it later.
+              // If we emitted it now and removed it, it would
+              // mutate the `buffers` array while we're looping
+              // over it.
+              if (bufferSize <= buffer.length) {
+                toEmit = toEmit ?? [];
+                toEmit.push(buffer);
+              }
+            }
+
+            if (toEmit) {
+              // We have found some buffers that are over the
+              // `bufferSize`. Emit them, and remove them from our
+              // buffers list.
+              for (const buffer of toEmit) {
+                arrRemove(buffers, buffer);
+                subscriber.next(buffer);
+              }
+            }
+          },
+          () => {
+            // When the source completes, emit all of our
+            // active buffers.
+            for (const buffer of buffers) {
               subscriber.next(buffer);
             }
+            subscriber.complete();
+          },
+          // Pass all errors through to consumer.
+          undefined,
+          () => {
+            // Clean up our memory when we finalize
+            buffers = null!;
           }
-        },
-        () => {
-          // When the source completes, emit all of our
-          // active buffers.
-          for (const buffer of buffers) {
-            subscriber.next(buffer);
-          }
-          subscriber.complete();
-        },
-        // Pass all errors through to consumer.
-        undefined,
-        () => {
-          // Clean up our memory when we finalize
-          buffers = null!;
-        }
-      )
-    );
-  });
+        )
+      );
+    });
 }

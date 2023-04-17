@@ -1,6 +1,6 @@
 import { MonoTypeOperatorFunction } from '../types';
 import { identity } from '../util/identity';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 export function distinctUntilChanged<T>(comparator?: (previous: T, current: T) => boolean): MonoTypeOperatorFunction<T>;
@@ -145,36 +145,37 @@ export function distinctUntilChanged<T, K>(
   // for `undefined`.
   comparator = comparator ?? defaultCompare;
 
-  return operate((source, subscriber) => {
-    // The previous key, used to compare against keys selected
-    // from new arrivals to determine "distinctiveness".
-    let previousKey: K;
-    // Whether or not this is the first value we've gotten.
-    let first = true;
+  return (source) =>
+    new Observable((subscriber) => {
+      // The previous key, used to compare against keys selected
+      // from new arrivals to determine "distinctiveness".
+      let previousKey: K;
+      // Whether or not this is the first value we've gotten.
+      let first = true;
 
-    source.subscribe(
-      createOperatorSubscriber(subscriber, (value) => {
-        // We always call the key selector.
-        const currentKey = keySelector(value);
+      source.subscribe(
+        createOperatorSubscriber(subscriber, (value) => {
+          // We always call the key selector.
+          const currentKey = keySelector(value);
 
-        // If it's the first value, we always emit it.
-        // Otherwise, we compare this key to the previous key, and
-        // if the comparer returns false, we emit.
-        if (first || !comparator!(previousKey, currentKey)) {
-          // Update our state *before* we emit the value
-          // as emission can be the source of re-entrant code
-          // in functional libraries like this. We only really
-          // need to do this if it's the first value, or if the
-          // key we're tracking in previous needs to change.
-          first = false;
-          previousKey = currentKey;
+          // If it's the first value, we always emit it.
+          // Otherwise, we compare this key to the previous key, and
+          // if the comparer returns false, we emit.
+          if (first || !comparator!(previousKey, currentKey)) {
+            // Update our state *before* we emit the value
+            // as emission can be the source of re-entrant code
+            // in functional libraries like this. We only really
+            // need to do this if it's the first value, or if the
+            // key we're tracking in previous needs to change.
+            first = false;
+            previousKey = currentKey;
 
-          // Emit the value!
-          subscriber.next(value);
-        }
-      })
-    );
-  });
+            // Emit the value!
+            subscriber.next(value);
+          }
+        })
+      );
+    });
 }
 
 function defaultCompare(a: any, b: any) {

@@ -1,5 +1,5 @@
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { mergeInternals } from './mergeInternals';
 
 /**
@@ -61,5 +61,5 @@ export function mergeMap<T, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
   concurrent: number = Infinity
 ): OperatorFunction<T, ObservedValueOf<O>> {
-  return operate((source, subscriber) => mergeInternals(source, subscriber, project, concurrent));
+  return (source) => new Observable((subscriber) => mergeInternals(source, subscriber, project, concurrent));
 }

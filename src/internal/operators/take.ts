@@ -1,6 +1,6 @@
 import { MonoTypeOperatorFunction } from '../types';
 import { EMPTY } from '../observable/empty';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
@@ -49,17 +49,18 @@ export function take<T>(count: number): MonoTypeOperatorFunction<T> {
   return count <= 0
     ? // If we are taking no values, that's empty.
       () => EMPTY
-    : operate((source, subscriber) => {
-        let seen = 0;
-        const operatorSubscriber = createOperatorSubscriber<T>(subscriber, (value) => {
-          if (++seen < count) {
-            subscriber.next(value);
-          } else {
-            operatorSubscriber.unsubscribe();
-            subscriber.next(value);
-            subscriber.complete();
-          }
+    : (source) =>
+        new Observable((subscriber) => {
+          let seen = 0;
+          const operatorSubscriber = createOperatorSubscriber<T>(subscriber, (value) => {
+            if (++seen < count) {
+              subscriber.next(value);
+            } else {
+              operatorSubscriber.unsubscribe();
+              subscriber.next(value);
+              subscriber.complete();
+            }
+          });
+          source.subscribe(operatorSubscriber);
         });
-        source.subscribe(operatorSubscriber);
-      });
 }

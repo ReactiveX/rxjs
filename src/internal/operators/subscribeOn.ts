@@ -1,5 +1,5 @@
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 
 /**
  * Asynchronously subscribes Observers to this Observable on the specified {@link SchedulerLike}.
@@ -61,7 +61,8 @@ import { operate } from '../util/lift';
  * subscriptions happen on the specified {@link SchedulerLike}.
  */
 export function subscribeOn<T>(scheduler: SchedulerLike, delay: number = 0): MonoTypeOperatorFunction<T> {
-  return operate((source, subscriber) => {
-    subscriber.add(scheduler.schedule(() => source.subscribe(subscriber), delay));
-  });
+  return (source) =>
+    new Observable((subscriber) => {
+      subscriber.add(scheduler.schedule(() => source.subscribe(subscriber), delay));
+    });
 }

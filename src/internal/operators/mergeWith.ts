@@ -1,6 +1,6 @@
 import { from } from '../observable/from';
 import { mergeAll } from '../operators/mergeAll';
-import { operate } from '../util/lift';
+import { Observable } from '../Observable';
 import { ObservableInputTuple, OperatorFunction } from '../types';
 
 /**
@@ -47,7 +47,8 @@ import { ObservableInputTuple, OperatorFunction } from '../types';
 export function mergeWith<T, A extends readonly unknown[]>(
   ...otherSources: [...ObservableInputTuple<A>]
 ): OperatorFunction<T, T | A[number]> {
-  return operate((source, subscriber) => {
-    mergeAll()(from([source, ...otherSources])).subscribe(subscriber);
-  });
+  return (source) =>
+    new Observable((subscriber) => {
+      mergeAll()(from([source, ...otherSources])).subscribe(subscriber);
+    });
 }
