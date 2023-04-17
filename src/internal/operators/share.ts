@@ -140,15 +140,7 @@ export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
  */
 export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction<T> {
   const { connector = () => new Subject<T>(), resetOnError = true, resetOnComplete = true, resetOnRefCountZero = true } = options;
-  // It's necessary to use a wrapper here, as the _operator_ must be
-  // referentially transparent. Otherwise, it cannot be used in calls to the
-  // static `pipe` function - to create a partial pipeline.
-  //
-  // The _operator function_ - the function returned by the _operator_ - will
-  // not be referentially transparent - as it shares its source - but the
-  // _operator function_ is called when the complete pipeline is composed via a
-  // call to a source observable's `pipe` method - not when the static `pipe`
-  // function is called.
+
   return (source) => {
     let connection: Subscriber<T> | undefined;
     let resetConnection: Subscription | undefined;

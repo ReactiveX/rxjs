@@ -16,7 +16,7 @@ export function scanInternals<V, A, S>(
   seed: S,
   hasSeed: boolean,
   emitOnNext: boolean,
-  emitBeforeComplete: undefined | true,
+  emitBeforeComplete: boolean,
   source: Observable<V>,
   subscriber: Subscriber<any>
 ) {
@@ -52,11 +52,12 @@ export function scanInternals<V, A, S>(
       },
       // If an onComplete was given, call it, otherwise
       // just pass through the complete notification to the consumer.
-      emitBeforeComplete &&
-        (() => {
-          hasState && subscriber.next(state);
-          subscriber.complete();
-        })
+      emitBeforeComplete
+        ? () => {
+            hasState && subscriber.next(state);
+            subscriber.complete();
+          }
+        : undefined
     )
   );
 }
