@@ -5,6 +5,7 @@ import { Observable, config, Subscription, Subscriber, Operator, NEVER, Subject,
 import { map, filter, count, tap, combineLatestWith, concatWith, mergeWith, raceWith, zipWith, catchError, share} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
+import { result } from 'lodash';
 
 function expectFullObserver(val: any) {
   expect(val).to.be.a('object');
@@ -690,5 +691,252 @@ describe('Observable', () => {
     expect(thrownError).to.be.an.instanceOf(RangeError);
     expect(thrownError.message).to.equal('Maximum call stack size exceeded');
   });
-});
 
+
+  describe('As an async iterable', () => {
+    it('should be able to be used with for-await-of', async () => {
+      const source = new Observable<number>((subscriber) => {
+        subscriber.next(1);
+        subscriber.next(2);
+        subscriber.next(3);
+        subscriber.complete();
+      });
+
+      const results: number[] = [];
+      for await (const value of source) {
+        results.push(value);
+      }
+
+      expect(results).to.deep.equal([1, 2, 3]);
+    });
+
+    it('should unsubscribe if the for-await-of loop is broken', async () => {
+      let activeSubscriptions = 0;
+
+      const source = new Observable<number>((subscriber) => {
+        activeSubscriptions++;
+
+        subscriber.next(1);
+        subscriber.next(2);
+        
+        // NOTE that we are NOT calling `subscriber.complete()` here.
+        // therefore the teardown below would never be called naturally
+        // by the observable unless it was unsubscribed.
+        return () => {
+          activeSubscriptions--;
+        }
+      });
+
+      const results: number[] = [];
+      for await (const value of source) {
+        results.push(value);
+        break;
+      }
+
+      expect(results).to.deep.equal([1]);
+      expect(activeSubscriptions).to.equal(0);
+    });
+
+    it('should unsubscribe if the for-await-of loop is broken with a thrown error', async () => {
+      const source = new Observable<number>((subscriber) => {
+        subscriber.next(1);
+        subscriber.next(2);
+        subscriber.next(3);
+        subscriber.complete();
+      });
+
+      const results: number[] = [];
+
+      try {
+        for await (const value of source) {
+          results.push(value);
+          throw new Error('wee')
+        }
+      } catch {
+        // Ignore
+      }
+
+      expect(results).to.deep.equal([1]);
+    });
+
+    it('should cause the async iterator to throw if the observable errors', async () => {
+      const source = new Observable<number>((subscriber) => {
+        subscriber.next(1);
+        subscriber.next(2);
+        subscriber.error(new Error('wee'));
+      });
+
+      const results: number[] = [];
+      let thrownError: any;
+
+      try {
+        for await (const value of source) {
+          results.push(value);
+        }
+      } catch (err: any) {
+        thrownError = err;
+      }
+
+      expect(thrownError?.message).to.equal('wee')
+      expect(results).to.deep.equal([1, 2]);
+    });
+
+    it('should handle situations where many promises are nexted out of the async iterator, but not awaited', async () => {
+      const subject = new Subject<number>();
+
+      const results: any[] = [];
+
+      const asyncIterator = subject[Symbol.asyncIterator]();
+
+      // Queue up three promises, but don't await them.
+      const first = asyncIterator.next().then((result) => {
+        results.push(result.value);
+      });
+
+      const second = asyncIterator.next().then((result) => {
+        results.push(result.value);
+      });
+
+      const third = asyncIterator.next().then((result) => {
+        results.push(result.value);
+      });
+
+      // Now let's progressively supply values to the promises.
+      expect(results).to.deep.equal([]);
+
+      subject.next(1);
+      await first;
+      expect(results).to.deep.equal([1]);
+
+      subject.next(2);
+      await second;
+      expect(results).to.deep.equal([1, 2]);
+
+      subject.next(3);
+      await third;
+      expect(results).to.deep.equal([1, 2, 3]);
+    });
+
+    it ('should handle situations where values from the observable are arriving faster than the are being consumed by the async iterator', async () => {
+      const subject = new Subject<number>();
+
+      const results: any[] = [];
+
+      const asyncIterator = subject[Symbol.asyncIterator]();
+
+      // start the subscription
+      const first = asyncIterator.next().then((result) => {
+        results.push(result.value);
+      });
+      subject.next(1);
+      await first
+      expect(results).to.deep.equal([1]);
+
+      // push values through the observable that aren't yet consumed by the async iterator
+      subject.next(2);
+      subject.next(3);
+
+      // now consume the values that were pushed through the observable
+      results.push((await asyncIterator.next()).value);
+      expect(results).to.deep.equal([1, 2]);
+
+      results.push((await asyncIterator.next()).value);
+      expect(results).to.deep.equal([1, 2, 3]);
+    });
+
+    it('should resolve all pending promises from the async iterable if the observable completes', async () => {
+      const subject = new Subject<number>();
+
+      const results: any[] = [];
+
+      const asyncIterator = subject[Symbol.asyncIterator]();
+
+      // Queue up three promises, but don't await them.
+      const allPending = Promise.all([
+        asyncIterator.next(),
+        asyncIterator.next(),
+        asyncIterator.next(),
+      ]).then((allResults) => {
+        results.push(...allResults)
+      })
+
+      expect(results).to.deep.equal([]);
+
+      // Complete and make sure those promises are resolved.
+      subject.complete();
+      await allPending;
+      expect(results).to.deep.equal([
+        { value: undefined, done: true },
+        { value: undefined, done: true },
+        { value: undefined, done: true },
+      ]);
+    });
+
+    it('should reject all pending promises from the async iterable if the observable errors', async () => {
+      const subject = new Subject<number>();
+
+      const results: any[] = [];
+
+      const asyncIterator = subject[Symbol.asyncIterator]();
+
+      // Queue up three promises, but don't await them.
+      const allPending = Promise.all([
+        asyncIterator.next().catch((err: any) => results.push(err)),
+        asyncIterator.next().catch((err: any) => results.push(err)),
+        asyncIterator.next().catch((err: any) => results.push(err)),
+      ])
+
+      expect(results).to.deep.equal([]);
+
+      // Complete and make sure those promises are resolved.
+      subject.error(new Error('wee'));
+      await allPending;
+      expect(results.length).to.equal(3);
+      expect(results[0]).to.be.an.instanceof(Error);
+      expect(results[0].message).to.equal('wee');
+      expect(results[1]).to.be.an.instanceOf(Error);
+      expect(results[1].message).to.equal('wee');
+      expect(results[2]).to.be.an.instanceOf(Error);
+      expect(results[2].message).to.equal('wee');
+    });
+
+    it('should unsubscribe from the source observable if `return` is called on the generator returned by Symbol.asyncIterator', async () => {
+      let state = 'idle';
+      const source = new Observable<number>((subscriber) => {
+        state = 'subscribed';
+        return () => {
+          state = 'unsubscribed';
+        }
+      });
+
+      const asyncIterator = source[Symbol.asyncIterator]();
+      expect(state).to.equal('idle');
+      asyncIterator.next();
+      expect(state).to.equal('subscribed');
+      asyncIterator.return();
+      expect(state).to.equal('unsubscribed');
+    });
+
+    it('should unsubscribe from the source observable if `throw` is called on the generator returned by Symbol.asyncIterator', async () => {
+      let state = 'idle';
+      const source = new Observable<number>((subscriber) => {
+        state = 'subscribed';
+        subscriber.next(0)
+        return () => {
+          state = 'unsubscribed';
+        }
+      });
+
+      const asyncIterator = source[Symbol.asyncIterator]();
+      expect(state).to.equal('idle');
+      await asyncIterator.next();
+      expect(state).to.equal('subscribed');
+      try {
+        await asyncIterator.throw(new Error('wee!'));
+      } catch (err: any) {
+        expect(err.message).to.equal('wee!');
+      }
+      expect(state).to.equal('unsubscribed');
+    });
+  });
+});
