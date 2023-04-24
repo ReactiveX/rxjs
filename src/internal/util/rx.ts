@@ -3,23 +3,23 @@ import { Observable } from '../Observable';
 import { ObservableInput, UnaryFunction } from '../types';
 import { pipeFromArray } from './pipe';
 
-export function r<T, A>(source: ObservableInput<A>): Observable<A>;
-export function r<T, A, B>(source: ObservableInput<A>, fn2: UnaryFunction<Observable<A>, B>): B;
-export function r<T, A, B, C>(source: ObservableInput<A>, fn2: UnaryFunction<Observable<A>, B>, fn3: UnaryFunction<B, C>): C;
-export function r<T, A, B, C, D>(
+export function rx<T, A>(source: ObservableInput<A>): Observable<A>;
+export function rx<T, A, B>(source: ObservableInput<A>, fn2: UnaryFunction<Observable<A>, B>): B;
+export function rx<T, A, B, C>(source: ObservableInput<A>, fn2: UnaryFunction<Observable<A>, B>, fn3: UnaryFunction<B, C>): C;
+export function rx<T, A, B, C, D>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
   fn4: UnaryFunction<C, D>
 ): D;
-export function r<T, A, B, C, D, E>(
+export function rx<T, A, B, C, D, E>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
   fn4: UnaryFunction<C, D>,
   fn5: UnaryFunction<D, E>
 ): E;
-export function r<T, A, B, C, D, E, F>(
+export function rx<T, A, B, C, D, E, F>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
@@ -27,7 +27,7 @@ export function r<T, A, B, C, D, E, F>(
   fn5: UnaryFunction<D, E>,
   fn6: UnaryFunction<E, F>
 ): F;
-export function r<T, A, B, C, D, E, F, G>(
+export function rx<T, A, B, C, D, E, F, G>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
@@ -36,7 +36,7 @@ export function r<T, A, B, C, D, E, F, G>(
   fn6: UnaryFunction<E, F>,
   fn7: UnaryFunction<F, G>
 ): G;
-export function r<T, A, B, C, D, E, F, G, H>(
+export function rx<T, A, B, C, D, E, F, G, H>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
@@ -46,7 +46,7 @@ export function r<T, A, B, C, D, E, F, G, H>(
   fn7: UnaryFunction<F, G>,
   fn8: UnaryFunction<G, H>
 ): H;
-export function r<T, A, B, C, D, E, F, G, H, I>(
+export function rx<T, A, B, C, D, E, F, G, H, I>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
@@ -57,7 +57,7 @@ export function r<T, A, B, C, D, E, F, G, H, I>(
   fn8: UnaryFunction<G, H>,
   fn9: UnaryFunction<H, I>
 ): I;
-export function r<T, A, B, C, D, E, F, G, H, I>(
+export function rx<T, A, B, C, D, E, F, G, H, I>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
@@ -107,7 +107,7 @@ export function r<T, A, B, C, D, E, F, G, H, I>(
  * });
  * ````
  */
-export function r(...args: unknown[]): unknown {
+export function rx(...args: unknown[]): unknown {
   const [source, ...fns] = args as [ObservableInput<unknown>, ...UnaryFunction<any, any>[]];
   return pipeFromArray(fns)(from(source));
 }

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { map, Observable, pipe, r } from 'rxjs';
+import { map, Observable, pipe, rx } from 'rxjs';
 
 describe('pipe', () => {
   it('should exist', () => {
@@ -37,7 +37,7 @@ describe('r', () => {
     const a = [1, 2, 3];
     const results: any[] = [];
     
-    r(a, map(x => x + 1)).subscribe({
+    rx(a, map(x => x + 1)).subscribe({
       next: value => results.push(value),
       complete: () => {
         results.push('done');
@@ -50,7 +50,7 @@ describe('r', () => {
     const a = [1, 2, 3];
     const results: any[] = [];
     
-    r(a).subscribe({
+    rx(a).subscribe({
       next: value => results.push(value),
       complete: () => {
         results.push('done');
@@ -61,7 +61,7 @@ describe('r', () => {
 
   it('should allow any kind of custom piping', () => {
     const a = [1, 2, 3];
-    const result = r(a, map(x => x + 1), source => source instanceof Observable)
+    const result = rx(a, map(x => x + 1), source => source instanceof Observable)
     expect(result).to.be.true;
   });
 });
