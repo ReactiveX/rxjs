@@ -4,23 +4,25 @@ import { identity } from '../util/identity';
 
 /**
  * Converts a higher-order Observable into a first-order Observable
- * producing values only from the most recent observable sequence
+ * producing values only from the most recent Observable sequence.
  *
- * <span class="informal">Flattens an Observable-of-Observables.</span>
+ * <span class="informal">Flattens an Observable-of-Observables by subscribing to the next inner
+ * Observables and potentially unsubscribing from the current inner Observable.</span>
  *
  * ![](switchAll.png)
  *
- * `switchAll` subscribes to a source that is an observable of observables, also known as a
- * "higher-order observable" (or `Observable<Observable<T>>`). It subscribes to the most recently
- * provided "inner observable" emitted by the source, unsubscribing from any previously subscribed
- * to inner observable, such that only the most recent inner observable may be subscribed to at
- * any point in time. The resulting observable returned by `switchAll` will only complete if the
- * source observable completes, *and* any currently subscribed to inner observable also has completed,
- * if there are any.
+ * `switchAll` subscribes to a source that is an Observable of Observables, also known as a
+ * "higher-order Observable" (or `Observable<Observable<T>>`). It subscribes to the most recently
+ * provided "inner Observable" emitted by the source, unsubscribing from any previously subscribed
+ * to inner Observable, such that only the most recent inner Observable may be subscribed to at
+ * any point in time. The resulting Observable returned by `switchAll` will only complete if the
+ * source Observable completes, *and* any currently subscribed to inner Observable also has completed,
+ * if there are any. Any error delivered by the inner Observable will be immediately emitted on the
+ * output Observable.
  *
  * ## Examples
  *
- * Spawn a new interval observable for each click event, but for every new
+ * Spawn a new interval Observable for each click event, but for every new
  * click, cancel the previous interval and subscribe to the new one
  *
  * ```ts
