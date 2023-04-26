@@ -1,3 +1,10 @@
+## [7.8.1](https://github.com/reactivex/rxjs/compare/7.8.0...7.8.1) (2023-04-26)
+
+### Bug Fixes
+
+- **asapScheduler:** No longer stops after scheduling twice during flush ([#7198](https://github.com/reactivex/rxjs/issues/7198)) ([1b52405](https://github.com/reactivex/rxjs/commit/1b524057b4db157814bfd04ad7d10c999afdccfa)), closes [ReactiveX#7196](https://github.com/ReactiveX/issues/7196)
+- **throttle:** properly handle default ThrottleConfig values ([#7176](https://github.com/reactivex/rxjs/issues/7176)) ([ceb821c](https://github.com/reactivex/rxjs/commit/ceb821cfd81ca29b0d764b86a03f1e9f1eaa0999))
+
 # [7.8.0](https://github.com/reactivex/rxjs/compare/7.7.0...7.8.0) (2022-12-15)
 
 ### Features
