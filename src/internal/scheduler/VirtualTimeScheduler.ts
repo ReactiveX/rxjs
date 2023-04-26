@@ -36,7 +36,6 @@ export class VirtualTimeScheduler extends AsyncScheduler {
   /**
    * Prompt the Scheduler to execute all of its queued actions, therefore
    * clearing its queue.
-   * @return {void}
    */
   public flush(): void {
     const { actions, maxFrames } = this;

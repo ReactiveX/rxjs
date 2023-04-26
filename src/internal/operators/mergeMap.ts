@@ -48,11 +48,9 @@ import { mergeInternals } from './mergeInternals';
  * @see {@link mergeScan}
  * @see {@link switchMap}
  *
- * @param {function(value: T, ?index: number): ObservableInput} project A function
- * that, when applied to an item emitted by the source Observable, returns an
- * Observable.
- * @param {number} [concurrent=Infinity] Maximum number of input
- * Observables being subscribed to concurrently.
+ * @param project A function that, when applied to an item emitted by the source
+ * Observable, returns an Observable.
+ * @param concurrent Maximum number of `ObservableInput`s being subscribed to concurrently.
  * @return A function that returns an Observable that emits the result of
  * applying the projection function to each item emitted by the source Observable
  * and merging the results of the Observables obtained from this transformation.

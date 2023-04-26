@@ -137,11 +137,9 @@ export function forkJoin<T extends Record<string, ObservableInput<any>>>(
  * @see {@link combineLatest}
  * @see {@link zip}
  *
- * @param {...ObservableInput} args Any number of Observables provided either as an array or as an arguments
+ * @param args Any number of `ObservableInput`s provided either as an array or as an object
  * passed directly to the operator.
- * @param {function} [project] Function that takes values emitted by input Observables and returns value
- * that will appear in resulting Observable instead of default array.
- * @return {Observable} Observable emitting either an array of last values emitted by passed Observables
+ * @return Observable emitting either an array of last values emitted by passed Observables
  * or value from project function.
  */
 export function forkJoin(...args: any[]): Observable<any> {

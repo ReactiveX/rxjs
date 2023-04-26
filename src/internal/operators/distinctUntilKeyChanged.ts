@@ -1,16 +1,16 @@
 import { distinctUntilChanged } from './distinctUntilChanged';
 import { MonoTypeOperatorFunction } from '../types';
 
-/* tslint:disable:max-line-length */
 export function distinctUntilKeyChanged<T>(key: keyof T): MonoTypeOperatorFunction<T>;
 export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (x: T[K], y: T[K]) => boolean): MonoTypeOperatorFunction<T>;
-/* tslint:enable:max-line-length */
 
 /**
- * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,
- * using a property accessed by using the key provided to check if the two items are distinct.
+ * Returns an Observable that emits all items emitted by the source Observable that
+ * are distinct by comparison from the previous item, using a property accessed by
+ * using the key provided to check if the two items are distinct.
  *
- * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
+ * If a comparator function is provided, then it will be called for each item to
+ * test for whether that value should be emitted or not.
  *
  * If a comparator function is not provided, an equality check is used by default.
  *
@@ -61,11 +61,15 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  * @see {@link distinct}
  * @see {@link distinctUntilChanged}
  *
- * @param {string} key String key for object property lookup on each item.
- * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.
- * @return A function that returns an Observable that emits items from the
- * source Observable with distinct values based on the key specified.
+ * @param key String key for object property lookup on each item.
+ * @param compare Optional comparison function called to test if an item is distinct
+ * from the previous item in the source.
+ * @return A function that returns an Observable that emits items from the source
+ * Observable with distinct values based on the key specified.
  */
-export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare?: (x: T[K], y: T[K]) => boolean): MonoTypeOperatorFunction<T> {
-  return distinctUntilChanged((x: T, y: T) => compare ? compare(x[key], y[key]) : x[key] === y[key]);
+export function distinctUntilKeyChanged<T, K extends keyof T>(
+  key: K,
+  compare?: (x: T[K], y: T[K]) => boolean
+): MonoTypeOperatorFunction<T> {
+  return distinctUntilChanged((x: T, y: T) => (compare ? compare(x[key], y[key]) : x[key] === y[key]));
 }

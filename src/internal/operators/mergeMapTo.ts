@@ -34,10 +34,10 @@ import { mergeMap } from './mergeMap';
  * @see {@link mergeScan}
  * @see {@link switchMapTo}
  *
- * @param {ObservableInput} innerObservable An Observable to replace each value from
- * the source Observable.
- * @param {number} [concurrent=Infinity] Maximum number of input
- * Observables being subscribed to concurrently.
+ * @param innerObservable An `ObservableInput` to replace each value from the
+ * source Observable.
+ * @param concurrent Maximum number of input Observables being subscribed to
+ * concurrently.
  * @return A function that returns an Observable that emits items from the
  * given `innerObservable`.
  * @deprecated Will be removed in v9. Use {@link mergeMap} instead: `mergeMap(() => result)`

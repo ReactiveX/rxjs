@@ -24,11 +24,9 @@ import { EMPTY } from './empty';
  *
  * @see {@link defer}
  *
- * @param {function(): ISubscription} resourceFactory A function which creates any resource object
- * that implements `unsubscribe` method.
- * @param {function(resource: ISubscription): Observable<T>} observableFactory A function which
- * creates an Observable, that can use injected resource object.
- * @return {Observable<T>} An Observable that behaves the same as Observable returned by `observableFactory`, but
+ * @param resourceFactory A function which creates any resource object that implements `unsubscribe` method.
+ * @param observableFactory A function which creates an Observable, that can use injected resource object.
+ * @return An Observable that behaves the same as Observable returned by `observableFactory`, but
  * which - when completed, errored or unsubscribed - will also call `unsubscribe` on created resource object.
  */
 export function using<T extends ObservableInput<any>>(

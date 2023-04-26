@@ -43,11 +43,11 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
  * @see {@link takeUntil}
  * @see {@link skip}
  *
- * @param {function(value: T, index: number): boolean} predicate A function that
- * evaluates a value emitted by the source Observable and returns a boolean.
- * Also takes the (zero-based) index as the second argument.
- * @param {boolean} inclusive When set to `true` the value that caused
- * `predicate` to return `false` will also be emitted.
+ * @param predicate A function that evaluates a value emitted by the source
+ * Observable and returns a boolean. Also takes the (zero-based) index as the
+ * second argument.
+ * @param inclusive When set to `true` the value that caused `predicate` to
+ * return `false` will also be emitted.
  * @return A function that returns an Observable that emits values from the
  * source Observable so long as each value satisfies the condition defined by
  * the `predicate`, then completes.

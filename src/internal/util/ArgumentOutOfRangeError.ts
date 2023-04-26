@@ -17,8 +17,6 @@ export interface ArgumentOutOfRangeErrorCtor {
  * @see {@link elementAt}
  * @see {@link take}
  * @see {@link takeLast}
- *
- * @class ArgumentOutOfRangeError
  */
 export const ArgumentOutOfRangeError: ArgumentOutOfRangeErrorCtor = createErrorClass(
   (_super) =>

@@ -11,11 +11,8 @@ import { SubscriptionLike, TeardownLogic, Unsubscribable } from './types';
  * method, which will attach a child Subscription to the current Subscription.
  * When a Subscription is unsubscribed, all its children (and its grandchildren)
  * will be unsubscribed as well.
- *
- * @class Subscription
  */
 export class Subscription implements SubscriptionLike {
-  /** @nocollapse */
   public static EMPTY = (() => {
     const empty = new Subscription();
     empty.closed = true;
@@ -43,7 +40,6 @@ export class Subscription implements SubscriptionLike {
    * Disposes the resources held by the subscription. May, for instance, cancel
    * an ongoing Observable execution or cancel any other type of work that
    * started when the Subscription was created.
-   * @return {void}
    */
   unsubscribe(): void {
     let errors: any[] | undefined;

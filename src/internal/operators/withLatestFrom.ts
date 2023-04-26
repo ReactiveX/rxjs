@@ -44,13 +44,14 @@ export function withLatestFrom<T, O extends unknown[], R>(
  *
  * @see {@link combineLatest}
  *
- * @param {ObservableInput} other An input Observable to combine with the source
- * Observable. More than one input Observables may be given as argument.
- * @param {Function} [project] Projection function for combining values
- * together. Receives all values in order of the Observables passed, where the
- * first parameter is a value from the source Observable. (e.g.
- * `a.pipe(withLatestFrom(b, c), map(([a1, b1, c1]) => a1 + b1 + c1))`). If this is not
- * passed, arrays will be emitted on the output Observable.
+ * @param inputs An input Observable to combine with the source Observable. More
+ * than one input Observables may be given as argument. If the last parameter is
+ * a function, it will be used as a projection function for combining values
+ * together. When the function is called, it receives all values in order of the
+ * Observables passed, where the first parameter is a value from the source
+ * Observable. (e.g.
+ * `a.pipe(withLatestFrom(b, c), map(([a1, b1, c1]) => a1 + b1 + c1))`). If this
+ * is not passed, arrays will be emitted on the output Observable.
  * @return A function that returns an Observable of projected values from the
  * most recent values from each input Observable, or an array of the most
  * recent values from each input Observable.

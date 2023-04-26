@@ -13,8 +13,6 @@ import { timeoutProvider } from './scheduler/timeoutProvider';
  * a Subscriber, in order to provide Subscription-like capabilities such as
  * `unsubscribe`. Subscriber is a common type in RxJS, and crucial for
  * implementing operators, but it is rarely used as a public API.
- *
- * @class Subscriber<T>
  */
 export class Subscriber<T> extends Subscription implements Observer<T> {
   /** @internal */
@@ -50,8 +48,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * The {@link Observer} callback to receive notifications of type `next` from
    * the Observable, with a value. The Observable may call this method 0 or more
    * times.
-   * @param {T} [value] The `next` value.
-   * @return {void}
+   * @param value The `next` value.
    */
   next(value?: T): void {
     if (this.isStopped) {
@@ -65,8 +62,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * The {@link Observer} callback to receive notifications of type `error` from
    * the Observable, with an attached `Error`. Notifies the Observer that
    * the Observable has experienced an error condition.
-   * @param {any} [err] The `error` exception.
-   * @return {void}
+   * @param err The `error` exception.
    */
   error(err?: any): void {
     if (this.isStopped) {
@@ -81,7 +77,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * The {@link Observer} callback to receive a valueless notification of type
    * `complete` from the Observable. Notifies the Observer that the Observable
    * has finished sending push-based notifications.
-   * @return {void}
    */
   complete(): void {
     if (this.isStopped) {
@@ -166,8 +161,8 @@ function createSafeObserver<T>(observerOrNext?: Partial<Observer<T>> | ((value: 
 
 /**
  * A handler for notifications that cannot be sent to a stopped subscriber.
- * @param notification The notification being sent
- * @param subscriber The stopped subscriber
+ * @param notification The notification being sent.
+ * @param subscriber The stopped subscriber.
  */
 function handleStoppedNotification(notification: ObservableNotification<any>, subscriber: Subscriber<any>) {
   const { onStoppedNotification } = config;

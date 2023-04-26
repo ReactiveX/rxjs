@@ -51,9 +51,8 @@ export function reduce<V, A, S = A>(accumulator: (acc: A | S, value: V, index: n
  * @see {@link mergeScan}
  * @see {@link scan}
  *
- * @param {function(acc: A, value: V, index: number): A} accumulator The accumulator function
- * called on each source value.
- * @param {A} [seed] The initial accumulation value.
+ * @param accumulator The accumulator function called on each source value.
+ * @param seed The initial accumulation value.
  * @return A function that returns an Observable that emits a single value that
  * is the result of accumulating the values emitted by the source Observable.
  */

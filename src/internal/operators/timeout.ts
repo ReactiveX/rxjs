@@ -81,8 +81,6 @@ export interface TimeoutErrorCtor {
  * create your own error class and use that.
  *
  * @see {@link timeout}
- *
- * @class TimeoutError
  */
 export const TimeoutError: TimeoutErrorCtor = createErrorClass(
   (_super) =>

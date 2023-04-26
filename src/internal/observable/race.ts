@@ -45,8 +45,8 @@ export function race<T extends readonly unknown[]>(...inputs: [...ObservableInpu
  * // a series of 'fast one'
  * ```
  *
- * @param {...Observables} ...observables sources used to race for which Observable emits first.
- * @return {Observable} an Observable that mirrors the output of the first Observable to emit an item.
+ * @param sources Used to race for which `ObservableInput` emits first.
+ * @return An Observable that mirrors the output of the first Observable to emit an item.
  */
 export function race<T>(...sources: (ObservableInput<T> | ObservableInput<T>[])[]): Observable<any> {
   sources = argsOrArgArray(sources);

@@ -59,9 +59,8 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * @see {@link switchAll}
  * @see {@link switchMapTo}
  *
- * @param {function(value: T, index: number): ObservableInput} project A function
- * that, when applied to an item emitted by the source Observable, returns an
- * Observable.
+ * @param project A function that, when applied to an item emitted by the source
+ * Observable, returns an Observable.
  * @return A function that returns an Observable that emits the result of
  * applying the projection function to each item emitted by the source Observable
  * and taking only the values from the most recently projected inner Observable.
