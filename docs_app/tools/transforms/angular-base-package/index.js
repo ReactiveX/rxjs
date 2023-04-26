@@ -11,7 +11,6 @@ const Package = require('dgeni').Package;
 const jsdocPackage = require('dgeni-packages/jsdoc');
 const nunjucksPackage = require('dgeni-packages/nunjucks');
 const linksPackage = require('../links-package');
-const targetPackage = require('../target-package');
 const remarkPackage = require('../remark-package');
 const postProcessPackage = require('dgeni-packages/post-process-html');
 
@@ -22,7 +21,6 @@ module.exports = new Package('angular-base', [
   jsdocPackage,
   nunjucksPackage,
   linksPackage,
-  targetPackage,
   remarkPackage,
   postProcessPackage,
 ])
@@ -80,15 +78,6 @@ module.exports = new Package('angular-base', [
   // Where do we write the output files?
   .config(function (writeFilesProcessor) {
     writeFilesProcessor.outputFolder = DOCS_OUTPUT_PATH;
-  })
-
-  // Target environments
-  .config(function (targetEnvironments) {
-    const ALLOWED_LANGUAGES = ['ts', 'js', 'dart'];
-    const TARGET_LANGUAGE = 'ts';
-
-    ALLOWED_LANGUAGES.forEach((target) => targetEnvironments.addAllowed(target));
-    targetEnvironments.activate(TARGET_LANGUAGE);
   })
 
   // Configure nunjucks rendering of docs via templates

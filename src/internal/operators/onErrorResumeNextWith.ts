@@ -76,7 +76,7 @@ export function onErrorResumeNextWith<T, A extends readonly unknown[]>(
  * @see {@link concat}
  * @see {@link catchError}
  *
- * @param {...ObservableInput} sources Observables passed either directly or as an array.
+ * @param sources `ObservableInput`s passed either directly or as an array.
  * @return A function that returns an Observable that emits values from source
  * Observable, but - if it errors - subscribes to the next passed Observable
  * and so on, until it completes or runs out of Observables.

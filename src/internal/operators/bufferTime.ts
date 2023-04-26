@@ -7,7 +7,6 @@ import { asyncScheduler } from '../scheduler/async';
 import { popScheduler } from '../util/args';
 import { executeSchedule } from '../util/executeSchedule';
 
-/* tslint:disable:max-line-length */
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
 export function bufferTime<T>(
   bufferTimeSpan: number,
@@ -20,7 +19,6 @@ export function bufferTime<T>(
   maxBufferSize: number,
   scheduler?: SchedulerLike
 ): OperatorFunction<T, T[]>;
-/* tslint:enable:max-line-length */
 
 /**
  * Buffers the source Observable values for a specific time period.
@@ -67,12 +65,11 @@ export function bufferTime<T>(
  * @see {@link bufferWhen}
  * @see {@link windowTime}
  *
- * @param {number} bufferTimeSpan The amount of time to fill each buffer array.
- * @param {number} [bufferCreationInterval] The interval at which to start new
- * buffers.
- * @param {number} [maxBufferSize] The maximum buffer size.
- * @param {SchedulerLike} [scheduler=async] The scheduler on which to schedule the
- * intervals that determine buffer boundaries.
+ * @param bufferTimeSpan The amount of time to fill each buffer array.
+ * @param otherArgs Other configuration arguments such as:
+ * - `bufferCreationInterval` - the interval at which to start new buffers;
+ * - `maxBufferSize` - the maximum buffer size;
+ * - `scheduler` - the scheduler on which to schedule the intervals that determine buffer boundaries.
  * @return A function that returns an Observable of arrays of buffered values.
  */
 export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): OperatorFunction<T, T[]> {

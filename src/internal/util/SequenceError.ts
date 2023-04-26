@@ -15,8 +15,6 @@ export interface SequenceErrorCtor {
  * values arriving on the observable.
  *
  * @see {@link operators/single}
- *
- * @class SequenceError
  */
 export const SequenceError: SequenceErrorCtor = createErrorClass(
   (_super) =>

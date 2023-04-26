@@ -37,9 +37,8 @@ import { noop } from '../util/noop';
  * @see {@link takeWhile}
  * @see {@link skip}
  *
- * @param {Observable} notifier The Observable whose first emitted value will
- * cause the output Observable of `takeUntil` to stop emitting values from the
- * source Observable.
+ * @param notifier The `ObservableInput` whose first emitted value will cause the output
+ * Observable of `takeUntil` to stop emitting values from the source Observable.
  * @return A function that returns an Observable that emits the values from the
  * source Observable until `notifier` emits its first value.
  */

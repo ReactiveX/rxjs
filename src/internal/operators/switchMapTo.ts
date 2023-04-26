@@ -47,8 +47,8 @@ export function switchMapTo<T, R, O extends ObservableInput<unknown>>(
  * @see {@link switchMap}
  * @see {@link mergeMapTo}
  *
- * @param {ObservableInput} innerObservable An Observable to replace each value from
- * the source Observable.
+ * @param innerObservable An `ObservableInput` to replace each value from the
+ * source Observable.
  * @return A function that returns an Observable that emits items from the
  * given `innerObservable` (and optionally transformed through the deprecated
  * `resultSelector`) every time a value is emitted on the source Observable,

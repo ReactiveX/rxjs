@@ -84,7 +84,6 @@ export class AsyncAction<T> extends Action<T> {
 
   /**
    * Immediately executes this action and the `work` it contains.
-   * @return {any}
    */
   public execute(state: T, delay: number): any {
     if (this.closed) {

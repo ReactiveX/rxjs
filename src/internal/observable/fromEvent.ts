@@ -227,12 +227,15 @@ export function fromEvent<T, R>(
  * @see {@link bindNodeCallback}
  * @see {@link fromEventPattern}
  *
- * @param {FromEventTarget<T>} target The DOM EventTarget, Node.js
- * EventEmitter, JQuery-like event target, NodeList or HTMLCollection to attach the event handler to.
- * @param {string} eventName The event name of interest, being emitted by the
- * `target`.
- * @param {EventListenerOptions} [options] Options to pass through to addEventListener
- * @return {Observable<T>}
+ * @param target The DOM EventTarget, Node.js EventEmitter, JQuery-like event target,
+ * NodeList or HTMLCollection to attach the event handler to.
+ * @param eventName The event name of interest, being emitted by the `target`.
+ * @param options Options to pass through to the underlying `addListener`,
+ * `addEventListener` or `on` functions.
+ * @param resultSelector A mapping function used to transform events. It takes the
+ * arguments from the event handler and should return a single value.
+ * @return An Observable emitting events registered through `target`'s
+ * listener handlers.
  */
 export function fromEvent<T>(
   target: any,

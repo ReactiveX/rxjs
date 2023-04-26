@@ -61,11 +61,10 @@ import { mergeInternals } from './mergeInternals';
  * @see {@link scan}
  * @see {@link switchScan}
  *
- * @param {function(acc: R, value: T): Observable<R>} accumulator
- * The accumulator function called on each source value.
+ * @param accumulator The accumulator function called on each source value.
  * @param seed The initial accumulation value.
- * @param {number} [concurrent=Infinity] Maximum number of
- * input Observables being subscribed to concurrently.
+ * @param concurrent Maximum number of input Observables being subscribed to
+ * concurrently.
  * @return A function that returns an Observable of the accumulated values.
  */
 export function mergeScan<T, R>(

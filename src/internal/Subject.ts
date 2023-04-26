@@ -31,7 +31,6 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   /**
    * Creates a "subject" by basically gluing an observer to an observable.
    *
-   * @nocollapse
    * @deprecated Recommended you do not use. Will be removed at some point in the future. Plans for replacement still under discussion.
    */
   static create: (...args: any[]) => any = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
@@ -148,7 +147,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
    * Creates a new Observable with this Subject as the source. You can do this
    * to create custom Observer-side logic of the Subject and conceal it from
    * code that uses the Observable.
-   * @return {Observable} Observable that the Subject casts to
+   * @return Observable that this Subject casts to.
    */
   asObservable(): Observable<T> {
     const observable: any = new Observable<T>();
@@ -157,9 +156,6 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 }
 
-/**
- * @class AnonymousSubject<T>
- */
 export class AnonymousSubject<T> extends Subject<T> {
   constructor(
     /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */

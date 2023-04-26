@@ -153,9 +153,8 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * // socket connection closes.
  * ```
  *
- * @param {string|WebSocketSubjectConfig} urlConfigOrSource The WebSocket endpoint as an url or an object with
- * configuration and additional Observers.
- * @return {WebSocketSubject} Subject which allows to both send and receive messages via WebSocket connection.
+ * @param urlConfigOrSource The WebSocket endpoint as an url or an object with configuration and additional Observers.
+ * @return Subject which allows to both send and receive messages via WebSocket connection.
  */
 export function webSocket<T>(urlConfigOrSource: string | WebSocketSubjectConfig<T>): WebSocketSubject<T> {
   return new WebSocketSubject<T>(urlConfigOrSource);

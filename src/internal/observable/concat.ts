@@ -108,7 +108,7 @@ export function concat<T extends readonly unknown[]>(
  * @see {@link startWith}
  * @see {@link endWith}
  *
- * @param args Input Observables to concatenate.
+ * @param args `ObservableInput`s to concatenate.
  */
 export function concat(...args: any[]): Observable<unknown> {
   return concatAll()(from(args, popScheduler(args)));

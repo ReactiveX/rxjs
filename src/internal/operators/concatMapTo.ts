@@ -64,8 +64,8 @@ export function concatMapTo<T, R, O extends ObservableInput<unknown>>(
  * @see {@link mergeMapTo}
  * @see {@link switchMapTo}
  *
- * @param {ObservableInput} innerObservable An Observable to replace each value from
- * the source Observable.
+ * @param innerObservable An `ObservableInput` to replace each value from the
+ * source Observable.
  * @return A function that returns an Observable of values merged together by
  * joining the passed Observable with itself, one after the other, for each
  * value emitted from the source.

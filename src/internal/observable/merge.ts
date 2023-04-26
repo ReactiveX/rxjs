@@ -79,13 +79,11 @@ export function merge<A extends readonly unknown[]>(
  * @see {@link mergeMapTo}
  * @see {@link mergeScan}
  *
- * @param {...ObservableInput} observables Input Observables to merge together.
- * @param {number} [concurrent=Infinity] Maximum number of input
- * Observables being subscribed to concurrently.
- * @param {SchedulerLike} [scheduler=null] The {@link SchedulerLike} to use for managing
- * concurrency of input Observables.
- * @return {Observable} an Observable that emits items that are the result of
- * every input Observable.
+ * @param args `ObservableInput`s to merge together. If the last parameter
+ * is of type number, `merge` will use it to limit number of concurrently
+ * subscribed `ObservableInput`s. If the last parameter is {@link SchedulerLike},
+ * it will be used for scheduling the emission of values.
+ * @return An Observable that emits items that are the result of every input Observable.
  */
 export function merge(...args: (ObservableInput<unknown> | number | SchedulerLike)[]): Observable<unknown> {
   const scheduler = popScheduler(args);

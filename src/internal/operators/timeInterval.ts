@@ -38,7 +38,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * // { value: 2, interval: 1000 }
  * ```
  *
- * @param {SchedulerLike} [scheduler] Scheduler used to get the current time.
+ * @param scheduler Scheduler used to get the current time.
  * @return A function that returns an Observable that emits information about
  * value and interval.
  */

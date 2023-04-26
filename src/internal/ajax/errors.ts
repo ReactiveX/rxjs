@@ -6,8 +6,6 @@ import { createErrorClass } from '../util/createErrorClass';
  * A normalized AJAX error.
  *
  * @see {@link ajax}
- *
- * @class AjaxError
  */
 export interface AjaxError extends Error {
   /**
@@ -51,7 +49,6 @@ export interface AjaxErrorCtor {
  * is an `instanceof AjaxError`. DO NOT create new instances of `AjaxError` with
  * the constructor.
  *
- * @class AjaxError
  * @see {@link ajax}
  */
 export const AjaxError: AjaxErrorCtor = createErrorClass(
@@ -92,7 +89,6 @@ export interface AjaxTimeoutErrorCtor {
  * `instanceof AjaxTimeoutError`. DO NOT use the constructor to create an instance of
  * this type.
  *
- * @class AjaxTimeoutError
  * @see {@link ajax}
  */
 export const AjaxTimeoutError: AjaxTimeoutErrorCtor = (() => {

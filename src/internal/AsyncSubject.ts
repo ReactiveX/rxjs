@@ -4,8 +4,6 @@ import { Subscriber } from './Subscriber';
 /**
  * A variant of Subject that only emits a value when it completes. It will emit
  * its latest value to all its observers on completion.
- *
- * @class AsyncSubject<T>
  */
 export class AsyncSubject<T> extends Subject<T> {
   private _value: T | null = null;

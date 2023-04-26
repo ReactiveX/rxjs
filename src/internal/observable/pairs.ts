@@ -69,12 +69,10 @@ export function pairs(
  * In IE, you will need to polyfill `Object.entries` in order to use this.
  * [MDN has a polyfill here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries)
  *
- * @param {Object} obj The object to inspect and turn into an
- * Observable sequence.
- * @param {Scheduler} [scheduler] An optional IScheduler to schedule
- * when resulting Observable will emit values.
- * @returns {(Observable<Array<string|T>>)} An observable sequence of
- * [key, value] pairs from the object.
+ * @param obj The object to inspect and turn into an Observable sequence.
+ * @param scheduler An optional IScheduler to schedule when resulting
+ * Observable will emit values.
+ * @returns An observable sequence of [key, value] pairs from the object.
  * @deprecated Use `from(Object.entries(obj))` instead. Will be removed in v8.
  */
 export function pairs(obj: any, scheduler?: SchedulerLike) {

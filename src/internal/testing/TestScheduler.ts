@@ -41,7 +41,6 @@ export class TestScheduler extends VirtualTimeScheduler {
    * The number of virtual time units each character in a marble diagram represents. If
    * the test scheduler is being used in "run mode", via the `run` method, this is temporarily
    * set to `1` for the duration of the `run` block, then set back to whatever value it was.
-   * @nocollapse
    */
   static frameTimeFactor = 10;
 
@@ -221,7 +220,6 @@ export class TestScheduler extends VirtualTimeScheduler {
     });
   }
 
-  /** @nocollapse */
   static parseMarblesAsSubscriptions(marbles: string | null, runMode = false): SubscriptionLog {
     if (typeof marbles !== 'string') {
       return new SubscriptionLog(Infinity);
@@ -319,7 +317,6 @@ export class TestScheduler extends VirtualTimeScheduler {
     }
   }
 
-  /** @nocollapse */
   static parseMarbles(
     marbles: string,
     values?: any,

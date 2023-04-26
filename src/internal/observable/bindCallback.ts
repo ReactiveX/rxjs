@@ -71,7 +71,8 @@ export function bindCallback<A extends readonly unknown[], R extends readonly un
  *
  * ## Examples
  *
- * ### Convert jQuery's getJSON to an Observable API
+ * Convert jQuery's getJSON to an Observable API
+ *
  * ```ts
  * import { bindCallback } from 'rxjs';
  * import * as jQuery from 'jquery';
@@ -82,7 +83,8 @@ export function bindCallback<A extends readonly unknown[], R extends readonly un
  * result.subscribe(x => console.log(x), e => console.error(e));
  * ```
  *
- * ### Receive an array of arguments passed to a callback
+ * Receive an array of arguments passed to a callback
+ *
  * ```ts
  * import { bindCallback } from 'rxjs';
  *
@@ -96,7 +98,8 @@ export function bindCallback<A extends readonly unknown[], R extends readonly un
  * });
  * ```
  *
- * ### Compare behaviour with and without async Scheduler
+ * Compare behaviour with and without `asyncScheduler`
+ *
  * ```ts
  * import { bindCallback, asyncScheduler } from 'rxjs';
  *
@@ -117,7 +120,8 @@ export function bindCallback<A extends readonly unknown[], R extends readonly un
  * // I was async!
  * ```
  *
- * ### Use bindCallback on an object method
+ * Use `bindCallback` on an object method
+ *
  * ```ts
  * import { bindCallback } from 'rxjs';
  *
@@ -130,11 +134,11 @@ export function bindCallback<A extends readonly unknown[], R extends readonly un
  * @see {@link bindNodeCallback}
  * @see {@link from}
  *
- * @param {function} func A function with a callback as the last parameter.
- * @param {SchedulerLike} [scheduler] The scheduler on which to schedule the
- * callbacks.
- * @return {function(...params: *): Observable} A function which returns the
- * Observable that delivers the same values the callback would deliver.
+ * @param callbackFunc A function with a callback as the last parameter.
+ * @param resultSelector A mapping function used to transform callback events.
+ * @param scheduler The scheduler on which to schedule the callbacks.
+ * @return A function which returns the Observable that delivers the same
+ * values the callback would deliver.
  */
 export function bindCallback(
   callbackFunc: (...args: [...any[], (...res: any) => void]) => void,

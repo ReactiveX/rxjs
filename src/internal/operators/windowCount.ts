@@ -57,12 +57,11 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * @see {@link windowWhen}
  * @see {@link bufferCount}
  *
- * @param {number} windowSize The maximum number of values emitted by each
- * window.
- * @param {number} [startWindowEvery] Interval at which to start a new window.
- * For example if `startWindowEvery` is `2`, then a new window will be started
- * on every other value from the source. A new window is started at the
- * beginning of the source by default.
+ * @param windowSize The maximum number of values emitted by each window.
+ * @param startWindowEvery Interval at which to start a new window. For example
+ * if `startWindowEvery` is `2`, then a new window will be started on every
+ * other value from the source. A new window is started at the beginning of the
+ * source by default.
  * @return A function that returns an Observable of windows, which in turn are
  * Observable of values.
  */

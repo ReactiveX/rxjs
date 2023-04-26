@@ -43,12 +43,11 @@ import { innerFrom } from './innerFrom';
  *
  * @see {@link Observable}
  *
- * @param {function(): ObservableInput} observableFactory The Observable
- * factory function to invoke for each Observer that subscribes to the output
- * Observable. May also return a Promise, which will be converted on the fly
- * to an Observable.
- * @return {Observable} An Observable whose Observers' subscriptions trigger
- * an invocation of the given Observable factory function.
+ * @param observableFactory The Observable factory function to invoke for each
+ * Observer that subscribes to the output Observable. May also return any
+ * `ObservableInput`, which will be converted on the fly to an Observable.
+ * @return An Observable whose Observers' subscriptions trigger an invocation of the
+ * given Observable factory function.
  */
 export function defer<R extends ObservableInput<any>>(observableFactory: () => R): Observable<ObservedValueOf<R>> {
   return new Observable<ObservedValueOf<R>>((subscriber) => {

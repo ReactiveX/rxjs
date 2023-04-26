@@ -51,12 +51,11 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  * @see {@link throttle}
  * @see {@link throttleTime}
  *
- * @param {number} dueTime The timeout duration in milliseconds (or the time
- * unit determined internally by the optional `scheduler`) for the window of
- * time required to wait for emission silence before emitting the most recent
- * source value.
- * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
- * managing the timers that handle the timeout for each value.
+ * @param dueTime The timeout duration in milliseconds (or the time unit determined
+ * internally by the optional `scheduler`) for the window of time required to wait
+ * for emission silence before emitting the most recent source value.
+ * @param scheduler The {@link SchedulerLike} to use for managing the timers that
+ * handle the timeout for each value.
  * @return A function that returns an Observable that delays the emissions of
  * the source Observable by the specified `dueTime`, and may drop some values
  * if they occur too frequently.

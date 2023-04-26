@@ -94,10 +94,10 @@ export function from<O extends ObservableInput<any>>(input: O, scheduler: Schedu
  * @see {@link fromEvent}
  * @see {@link fromEventPattern}
  *
- * @param {ObservableInput<T>} A subscription object, a Promise, an Observable-like,
+ * @param input A subscription object, a Promise, an Observable-like,
  * an Array, an iterable, or an array-like object to be converted.
- * @param {SchedulerLike} An optional {@link SchedulerLike} on which to schedule the emission of values.
- * @return {Observable<T>}
+ * @param scheduler An optional {@link SchedulerLike} on which to schedule the emission of values.
+ * @return An Observable converted from {@link ObservableInput}.
  */
 export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): Observable<T> {
   return scheduler ? scheduled(input, scheduler) : innerFrom(input);

@@ -184,10 +184,8 @@ export class Notification<T> {
   /**
    * A shortcut to create a Notification instance of the type `next` from a
    * given value.
-   * @param {T} value The `next` value.
-   * @return {Notification<T>} The "next" Notification representing the
-   * argument.
-   * @nocollapse
+   * @param value The `next` value.
+   * @return The "next" Notification representing the argument.
    * @deprecated It is NOT recommended to create instances of `Notification` directly.
    * Rather, try to create POJOs matching the signature outlined in {@link ObservableNotification}.
    * For example: `{ kind: 'N', value: 1 }`, `{ kind: 'E', error: new Error('bad') }`, or `{ kind: 'C' }`.
@@ -200,10 +198,8 @@ export class Notification<T> {
   /**
    * A shortcut to create a Notification instance of the type `error` from a
    * given error.
-   * @param {any} [err] The `error` error.
-   * @return {Notification<T>} The "error" Notification representing the
-   * argument.
-   * @nocollapse
+   * @param err The `error` error.
+   * @return The "error" Notification representing the argument.
    * @deprecated It is NOT recommended to create instances of `Notification` directly.
    * Rather, try to create POJOs matching the signature outlined in {@link ObservableNotification}.
    * For example: `{ kind: 'N', value: 1 }`, `{ kind: 'E', error: new Error('bad') }`, or `{ kind: 'C' }`.
@@ -215,8 +211,7 @@ export class Notification<T> {
 
   /**
    * A shortcut to create a Notification instance of the type `complete`.
-   * @return {Notification<any>} The valueless "complete" Notification.
-   * @nocollapse
+   * @return The valueless "complete" Notification.
    * @deprecated It is NOT recommended to create instances of `Notification` directly.
    * Rather, try to create POJOs matching the signature outlined in {@link ObservableNotification}.
    * For example: `{ kind: 'N', value: 1 }`, `{ kind: 'E', error: new Error('bad') }`, or `{ kind: 'C' }`.

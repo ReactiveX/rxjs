@@ -52,10 +52,10 @@ import { timer } from '../observable/timer';
  * @see {@link audit}
  * @see {@link auditTime}
  *
- * @param {number|Date} due The delay duration in milliseconds (a `number`) or
- * a `Date` until which the emission of the source items is delayed.
- * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
- * managing the timers that handle the time-shift for each item.
+ * @param due The delay duration in milliseconds (a `number`) or a `Date` until
+ * which the emission of the source items is delayed.
+ * @param scheduler The {@link SchedulerLike} to use for managing the timers
+ * that handle the time-shift for each item.
  * @return A function that returns an Observable that delays the emissions of
  * the source Observable by the specified timeout or Date.
  */

@@ -78,7 +78,7 @@ export function publish<T, O extends ObservableInput<any>>(selector: (shared: Ob
  * @see {@link publishReplay}
  * @see {@link publishBehavior}
  *
- * @param {Function} [selector] - Optional selector function which can use the multicasted source sequence as many times
+ * @param selector Optional selector function which can use the multicasted source sequence as many times
  * as needed, without causing multiple subscriptions to the source sequence.
  * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.
  * @return A function that returns a ConnectableObservable that upon connection

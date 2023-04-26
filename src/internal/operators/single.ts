@@ -16,15 +16,15 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  * predicate is provided, then it will assert that the observable
  * only emits one value.
  *
- * In the event that the observable is empty, it will throw an
- * {@link EmptyError}.
+ * If the source Observable did not emit `next` before completion, it
+ * will emit an {@link EmptyError} to the Observer's `error` callback.
  *
  * In the event that two values are found that match the predicate,
  * or when there are two values emitted and no predicate, it will
- * throw a {@link SequenceError}
+ * emit a {@link SequenceError} to the Observer's `error` callback.
  *
  * In the event that no values match the predicate, if one is provided,
- * it will throw a {@link NotFoundError}
+ * it will emit a {@link NotFoundError} to the Observer's `error` callback.
  *
  * ## Example
  *
@@ -77,12 +77,16 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  * @see {@link findIndex}
  * @see {@link elementAt}
  *
- * @throws {NotFoundError} Delivers an NotFoundError to the Observer's `error`
+ * @throws {NotFoundError} Delivers a `NotFoundError` to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
- * @throws {SequenceError} Delivers a SequenceError if more than one value is emitted that matches the
- * provided predicate. If no predicate is provided, will deliver a SequenceError if more
- * than one value comes from the source
- * @param {Function} predicate - A predicate function to evaluate items emitted by the source Observable.
+ * @throws {SequenceError} Delivers a `SequenceError` if more than one value is
+ * emitted that matches the provided predicate. If no predicate is provided, it
+ * will deliver a `SequenceError` if more than one value comes from the source.
+ * @throws {EmptyError} Delivers an `EmptyError` if no values were `next`ed prior
+ * to completion.
+ *
+ * @param predicate A predicate function to evaluate items emitted by the source
+ * Observable.
  * @return A function that returns an Observable that emits the single item
  * emitted by the source Observable that matches the predicate.
  */

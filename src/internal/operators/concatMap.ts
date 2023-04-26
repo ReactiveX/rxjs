@@ -68,9 +68,8 @@ export function concatMap<T, R, O extends ObservableInput<any>>(
  * @see {@link mergeMap}
  * @see {@link switchMap}
  *
- * @param {function(value: T, ?index: number): ObservableInput} project A function
- * that, when applied to an item emitted by the source Observable, returns an
- * Observable.
+ * @param project A function that, when applied to an item emitted by the source
+ * Observable, returns an Observable.
  * @return A function that returns an Observable that emits the result of
  * applying the projection function (and the optional deprecated
  * `resultSelector`) to each item emitted by the source Observable and taking

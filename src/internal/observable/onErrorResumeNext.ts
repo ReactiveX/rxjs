@@ -5,11 +5,8 @@ import { OperatorSubscriber } from '../operators/OperatorSubscriber';
 import { noop } from '../util/noop';
 import { innerFrom } from './innerFrom';
 
-/* tslint:disable:max-line-length */
 export function onErrorResumeNext<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
 export function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
-
-/* tslint:enable:max-line-length */
 
 /**
  * When any of the provided Observable emits a complete or an error notification, it immediately subscribes to the next one
@@ -69,8 +66,8 @@ export function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...
  * @see {@link concat}
  * @see {@link catchError}
  *
- * @param {...ObservableInput} sources Observables (or anything that *is* observable) passed either directly or as an array.
- * @return {Observable} An Observable that concatenates all sources, one after the other,
+ * @param sources `ObservableInput`s passed either directly or as an array.
+ * @return An Observable that concatenates all sources, one after the other,
  * ignoring all errors, such that any error causes it to move on to the next source.
  */
 export function onErrorResumeNext<A extends readonly unknown[]>(

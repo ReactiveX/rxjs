@@ -58,7 +58,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  *
  * @param notifier Function that receives an Observable of notifications with which a
  * user can `complete` or `error`, aborting the retry.
- * @return A function that returns an `ObservableInput` that mirrors the source
+ * @return A function that returns an Observable that mirrors the source
  * Observable with the exception of an `error`.
  * @deprecated Will be removed in v9 or v10, use {@link retry}'s `delay` option instead.
  * Will be removed in v9 or v10. Use {@link retry}'s {@link RetryConfig#delay delay} option instead.

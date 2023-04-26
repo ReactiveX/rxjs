@@ -74,7 +74,9 @@ export function bindNodeCallback<A extends readonly unknown[], R extends readonl
  * is falsy, it still won't appear in array emitted by Observable.
  *
  * ## Examples
- * ###  Read a file from the filesystem and get the data as an Observable
+ *
+ *  Read a file from the filesystem and get the data as an Observable
+ *
  * ```ts
  * import * as fs from 'fs';
  * const readFileAsObservable = bindNodeCallback(fs.readFile);
@@ -82,7 +84,8 @@ export function bindNodeCallback<A extends readonly unknown[], R extends readonl
  * result.subscribe(x => console.log(x), e => console.error(e));
  * ```
  *
- * ### Use on function calling callback with multiple arguments
+ * Use on function calling callback with multiple arguments
+ *
  * ```ts
  * someFunction((err, a, b) => {
  *   console.log(err); // null
@@ -96,7 +99,8 @@ export function bindNodeCallback<A extends readonly unknown[], R extends readonl
  * });
  * ```
  *
- * ### Use on function calling callback in regular style
+ * Use on function calling callback in regular style
+ *
  * ```ts
  * someFunction(a => {
  *   console.log(a); // 5
@@ -112,12 +116,11 @@ export function bindNodeCallback<A extends readonly unknown[], R extends readonl
  * @see {@link bindCallback}
  * @see {@link from}
  *
- * @param {function} func Function with a Node.js-style callback as the last parameter.
- * @param {SchedulerLike} [scheduler] The scheduler on which to schedule the
- * callbacks.
- * @return {function(...params: *): Observable} A function which returns the
- * Observable that delivers the same values the Node.js callback would
- * deliver.
+ * @param callbackFunc Function with a Node.js-style callback as the last parameter.
+ * @param resultSelector A mapping function used to transform callback events.
+ * @param scheduler The scheduler on which to schedule the callbacks.
+ * @return A function which returns the Observable that delivers the same values the
+ * Node.js callback would deliver.
  */
 export function bindNodeCallback(
   callbackFunc: (...args: [...any[], (err: any, ...res: any) => void]) => void,

@@ -39,9 +39,9 @@ export class ReplaySubject<T> extends Subject<T> {
   private _infiniteTimeWindow = true;
 
   /**
-   * @param bufferSize The size of the buffer to replay on subscription
-   * @param windowTime The amount of time the buffered items will stay buffered
-   * @param timestampProvider An object with a `now()` method that provides the current timestamp. This is used to
+   * @param _bufferSize The size of the buffer to replay on subscription
+   * @param _windowTime The amount of time the buffered items will stay buffered
+   * @param _timestampProvider An object with a `now()` method that provides the current timestamp. This is used to
    * calculate the amount of time something has been buffered.
    */
   constructor(

@@ -11,8 +11,6 @@ import { errorContext } from './util/errorContext';
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
  * of RxJS.
- *
- * @class Observable<T>
  */
 export class Observable<T> implements Subscribable<T> {
   /**
@@ -26,8 +24,7 @@ export class Observable<T> implements Subscribable<T> {
   operator: Operator<any, T> | undefined;
 
   /**
-   * @constructor
-   * @param {Function} subscribe the function that is called when the Observable is
+   * @param subscribe The function that is called when the Observable is
    * initially subscribed to. This function is given a Subscriber, to which new values
    * can be `next`ed, or an `error` method can be called to raise an error, or
    * `complete` can be called to notify of a successful completion.
@@ -42,11 +39,8 @@ export class Observable<T> implements Subscribable<T> {
   // fight against TypeScript here so Subject can have a different static create signature
   /**
    * Creates a new Observable by calling the Observable constructor
-   * @owner Observable
-   * @method create
-   * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
-   * @return {Observable} a new observable
-   * @nocollapse
+   * @param subscribe the subscriber function to be passed to the Observable constructor
+   * @return A new observable.
    * @deprecated Use `new Observable()` instead. Will be removed in v8.
    */
   static create: (...args: any[]) => any = <T>(subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) => {
@@ -56,9 +50,8 @@ export class Observable<T> implements Subscribable<T> {
   /**
    * Creates a new Observable, with this Observable instance as the source, and the passed
    * operator defined as the new observable's operator.
-   * @method lift
    * @param operator the operator defining the operation to take on the observable
-   * @return a new observable with the Operator applied
+   * @return A new observable with the Operator applied.
    * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
    * If you have implemented an operator using `lift`, it is recommended that you create an
    * operator by simply returning `new Observable()` directly. See "Creating new operators from
@@ -201,14 +194,12 @@ export class Observable<T> implements Subscribable<T> {
    * // 'unsubscribed!' after 2.5s
    * ```
    *
-   * @param {Observer|Function} observerOrNext (optional) Either an observer with methods to be called,
-   * or the first of three possible handlers, which is the handler for each value emitted from the subscribed
-   * Observable.
-   * @param {Function} error (optional) A handler for a terminal event resulting from an error. If no error handler is provided,
+   * @param observerOrNext Either an {@link Observer} with some or all callback methods,
+   * or the `next` handler that is called for each value emitted from the subscribed Observable.
+   * @param error A handler for a terminal event resulting from an error. If no error handler is provided,
    * the error will be thrown asynchronously as unhandled.
-   * @param {Function} complete (optional) A handler for a terminal event resulting from successful completion.
-   * @return {Subscription} a subscription reference to the registered handlers
-   * @method subscribe
+   * @param complete A handler for a terminal event resulting from successful completion.
+   * @return A subscription reference to the registered handlers.
    */
   subscribe(
     observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null,
@@ -290,9 +281,9 @@ export class Observable<T> implements Subscribable<T> {
    * // 'Total: 6'
    * ```
    *
-   * @param next a handler for each value emitted by the observable
-   * @return a promise that either resolves on observable completion or
-   *  rejects with the handled error
+   * @param next A handler for each value emitted by the observable.
+   * @return A promise that either resolves on observable completion or
+   * rejects with the handled error.
    */
   forEach(next: (value: T) => void): Promise<void>;
 
@@ -336,8 +327,7 @@ export class Observable<T> implements Subscribable<T> {
 
   /**
    * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
-   * @method Symbol.observable
-   * @return {Observable} this instance of the observable
+   * @return This instance of the observable.
    */
   [Symbol_observable]() {
     return this;
@@ -415,9 +405,6 @@ export class Observable<T> implements Subscribable<T> {
 
   /**
    * Used to stitch together functional operators into a chain.
-   * @method pipe
-   * @return {Observable} the Observable result of all of the operators having
-   * been called in the order they were passed in.
    *
    * ## Example
    *
@@ -432,6 +419,9 @@ export class Observable<T> implements Subscribable<T> {
    *   )
    *   .subscribe(x => console.log(x));
    * ```
+   *
+   * @return The Observable result of all the operators having been called
+   * in the order they were passed in.
    */
   pipe(...operations: OperatorFunction<any, any>[]): Observable<any> {
     return pipeFromArray(operations)(this);
@@ -456,7 +446,6 @@ export class Observable<T> implements Subscribable<T> {
    * this situation, look into adding something like {@link timeout}, {@link take},
    * {@link takeWhile}, or {@link takeUntil} amongst others.
    *
-   * @method toPromise
    * @param [promiseCtor] a constructor function used to instantiate
    * the Promise
    * @return A Promise that resolves with the last value emit, or

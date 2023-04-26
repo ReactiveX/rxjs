@@ -36,11 +36,10 @@ export function map<T, R, A>(project: (this: A, value: T, index: number) => R, t
  * @see {@link mapTo}
  * @see {@link pluck}
  *
- * @param {function(value: T, index: number): R} project The function to apply
- * to each `value` emitted by the source Observable. The `index` parameter is
- * the number `i` for the i-th emission that has happened since the
- * subscription, starting from the number `0`.
- * @param {any} [thisArg] An optional argument to define what `this` is in the
+ * @param project The function to apply to each `value` emitted by the source
+ * Observable. The `index` parameter is the number `i` for the i-th emission
+ * that has happened since the subscription, starting from the number `0`.
+ * @param thisArg An optional argument to define what `this` is in the
  * `project` function.
  * @return A function that returns an Observable that emits the values from the
  * source Observable transformed by the given `project` function.

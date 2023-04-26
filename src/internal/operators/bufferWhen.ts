@@ -39,8 +39,8 @@ import { innerFrom } from '../observable/innerFrom';
  * @see {@link bufferToggle}
  * @see {@link windowWhen}
  *
- * @param {function(): Observable} closingSelector A function that takes no
- * arguments and returns an Observable that signals buffer closure.
+ * @param closingSelector A function that takes no arguments and returns an
+ * Observable that signals buffer closure.
  * @return A function that returns an Observable of arrays of buffered values.
  */
 export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, T[]> {

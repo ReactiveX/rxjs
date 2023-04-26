@@ -34,8 +34,8 @@ export function first<T, D = T>(
  *
  * If called with no arguments, `first` emits the first value of the source
  * Observable, then completes. If called with a `predicate` function, `first`
- * emits the first value of the source that matches the specified condition. Throws an error if
- * `defaultValue` was not provided and a matching element is not found.
+ * emits the first value of the source that matches the specified condition. Emits an error
+ * notification if `defaultValue` was not provided and a matching element is not found.
  *
  * ## Examples
  *
@@ -66,15 +66,16 @@ export function first<T, D = T>(
  * @see {@link filter}
  * @see {@link find}
  * @see {@link take}
+ * @see {@link last}
  *
- * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
+ * @throws {EmptyError} Delivers an `EmptyError` to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
- * This is how `first()` is different from {@link take}(1) which completes instead.
+ * This is how `first()` is different from `take(1)` which completes instead.
  *
- * @param {function(value: T, index: number, source: Observable<T>): boolean} [predicate]
- * An optional function called with each item to test for condition matching.
- * @param {D} [defaultValue] The default value emitted in case no valid value
- * was found on the source.
+ * @param predicate An optional function called with each item to test for condition
+ * matching.
+ * @param defaultValue The default value emitted in case no valid value was found on
+ * the source.
  * @return A function that returns an Observable that emits the first item that
  * matches the condition.
  */

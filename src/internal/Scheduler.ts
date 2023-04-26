@@ -17,7 +17,6 @@ import { dateTimestampProvider } from './scheduler/dateTimestampProvider';
  * }
  * ```
  *
- * @class Scheduler
  * @deprecated Scheduler is an internal implementation detail of RxJS, and
  * should not be used directly. Rather, create your own class and implement
  * {@link SchedulerLike}. Will be made internal in v8.
@@ -33,7 +32,7 @@ export class Scheduler implements SchedulerLike {
    * A getter method that returns a number representing the current time
    * (at the time this function was called) according to the scheduler's own
    * internal clock.
-   * @return {number} A number that represents the current time. May or may not
+   * @return A number that represents the current time. May or may not
    * have a relation to wall-clock time. May or may not refer to a time unit
    * (e.g. milliseconds).
    */
@@ -47,14 +46,13 @@ export class Scheduler implements SchedulerLike {
    * The given arguments will be processed an stored as an Action object in a
    * queue of actions.
    *
-   * @param {function(state: ?T): ?Subscription} work A function representing a
-   * task, or some unit of work to be executed by the Scheduler.
-   * @param {number} [delay] Time to wait before executing the work, where the
-   * time unit is implicit and defined by the Scheduler itself.
-   * @param {T} [state] Some contextual data that the `work` function uses when
-   * called by the Scheduler.
-   * @return {Subscription} A subscription in order to be able to unsubscribe
-   * the scheduled work.
+   * @param work A function representing a task, or some unit of work to be
+   * executed by the Scheduler.
+   * @param delay Time to wait before executing the work, where the time unit is
+   * implicit and defined by the Scheduler itself.
+   * @param state Some contextual data that the `work` function uses when called
+   * by the Scheduler.
+   * @return A subscription in order to be able to unsubscribe the scheduled work.
    */
   public schedule<T>(work: (this: SchedulerAction<T>, state?: T) => void, delay: number = 0, state?: T): Subscription {
     return new this.schedulerActionCtor<T>(this, work).schedule(state, delay);

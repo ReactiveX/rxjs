@@ -6,11 +6,9 @@ import { innerFrom } from '../observable/innerFrom';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { operate } from '../util/lift';
 
-/* tslint:disable:max-line-length */
 export function catchError<T, O extends ObservableInput<any>>(
   selector: (err: any, caught: Observable<T>) => O
 ): OperatorFunction<T, T | ObservedValueOf<O>>;
-/* tslint:enable:max-line-length */
 
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.
@@ -98,9 +96,9 @@ export function catchError<T, O extends ObservableInput<any>>(
  * @see {@link retry }
  * @see {@link retryWhen}
  *
- * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which
- * is the source observable, in case you'd like to "retry" that observable by returning it again. Whatever observable
- * is returned by the `selector` will be used to continue the observable chain.
+ * @param selector A function that takes as arguments `err`, which is the error, and `caught`, which
+ * is the source observable, in case you'd like to "retry" that observable by returning it again.
+ * Whatever observable is returned by the `selector` will be used to continue the observable chain.
  * @return A function that returns an Observable that originates from either
  * the source or the Observable returned by the `selector` function.
  */

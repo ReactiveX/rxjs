@@ -44,9 +44,10 @@ import { innerFrom } from '../observable/innerFrom';
  * @see {@link windowToggle}
  * @see {@link bufferWhen}
  *
- * @param {function(): Observable} closingSelector A function that takes no
- * arguments and returns an Observable that signals (on either `next` or
- * `complete`) when to close the previous window and start a new one.
+ * @param closingSelector A function that takes no arguments and returns an
+ * {@link ObservableInput} (that gets converted to Observable) that signals
+ * (on either `next` or `complete`) when to close the previous window and
+ * start a new one.
  * @return A function that returns an Observable of windows, which in turn are
  * Observables.
  */

@@ -27,9 +27,9 @@ export function last<T, D = T>(
  *
  * ![](last.png)
  *
- * It will throw an error if the source completes without notification or one that matches the predicate. It
- * returns the last value or if a predicate is provided last value that matches the predicate. It returns the
- * given default value if no notification is emitted or matches the predicate.
+ * It will emit an error notification if the source completes without notification or one that matches
+ * the predicate. It returns the last value or if a predicate is provided last value that matches the
+ * predicate. It returns the given default value if no notification is emitted or matches the predicate.
  *
  * ## Examples
  *
@@ -65,16 +65,17 @@ export function last<T, D = T>(
  * @see {@link skipUntil}
  * @see {@link skipLast}
  * @see {@link skipWhile}
+ * @see {@link first}
  *
- * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
+ * @throws {EmptyError} Delivers an `EmptyError` to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
- * @param {function} [predicate] - The condition any source emitted item has to satisfy.
- * @param {any} [defaultValue] - An optional default value to provide if last
- * predicate isn't met or no values were emitted.
+ *
+ * @param predicate The condition any source emitted item has to satisfy.
+ * @param defaultValue An optional default value to provide if last `predicate`
+ * isn't met or no values were emitted.
  * @return A function that returns an Observable that emits only the last item
- * satisfying the given condition from the source, or a NoSuchElementException
- * if no such items are emitted.
- * @throws - Throws if no items that match the predicate are emitted by the source Observable.
+ * satisfying the given condition from the source, or an error notification
+ * with an `EmptyError` object if no such items are emitted.
  */
 export function last<T, D>(
   predicate?: ((value: T, index: number, source: Observable<T>) => boolean) | null,

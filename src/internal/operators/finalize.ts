@@ -58,7 +58,7 @@ import { operate } from '../util/lift';
  * // '[finalize] Called'
  * ```
  *
- * @param {function} callback Function to be called when source terminates.
+ * @param callback Function to be called when source terminates.
  * @return A function that returns an Observable that mirrors the source, but
  * will call the specified function on termination.
  */

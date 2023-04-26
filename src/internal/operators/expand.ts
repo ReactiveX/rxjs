@@ -59,12 +59,11 @@ export function expand<T, O extends ObservableInput<unknown>>(
  * @see {@link mergeMap}
  * @see {@link mergeScan}
  *
- * @param {function(value: T, index: number) => Observable} project A function
- * that, when applied to an item emitted by the source or the output Observable,
- * returns an Observable.
- * @param {number} [concurrent=Infinity] Maximum number of input
- * Observables being subscribed to concurrently.
- * @param {SchedulerLike} [scheduler=null] The {@link SchedulerLike} to use for subscribing to
+ * @param project A function that, when applied to an item emitted by the source
+ * or the output Observable, returns an Observable.
+ * @param concurrent Maximum number of input Observables being subscribed to
+ * concurrently.
+ * @param scheduler The {@link SchedulerLike} to use for subscribing to
  * each projected inner Observable.
  * @return A function that returns an Observable that emits the source values
  * and also result of applying the projection function to each value emitted on

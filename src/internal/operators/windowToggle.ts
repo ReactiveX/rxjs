@@ -46,12 +46,10 @@ import { arrRemove } from '../util/arrRemove';
  * @see {@link windowWhen}
  * @see {@link bufferToggle}
  *
- * @param {Observable<O>} openings An observable of notifications to start new
- * windows.
- * @param {function(value: O): Observable} closingSelector A function that takes
- * the value emitted by the `openings` observable and returns an Observable,
- * which, when it emits a next notification, signals that the
- * associated window should complete.
+ * @param openings An observable of notifications to start new windows.
+ * @param closingSelector A function that takes the value emitted by the
+ * `openings` observable and returns an Observable, which, when it emits a next
+ * notification, signals that the associated window should complete.
  * @return A function that returns an Observable of windows, which in turn are
  * Observables.
  */

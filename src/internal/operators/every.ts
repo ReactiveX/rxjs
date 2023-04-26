@@ -36,8 +36,8 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
  *   .subscribe(x => console.log(x)); // -> false
  * ```
  *
- * @param {function} predicate A function for determining if an item meets a specified condition.
- * @param {any} [thisArg] Optional object to use for `this` in the callback.
+ * @param predicate A function for determining if an item meets a specified condition.
+ * @param thisArg Optional object to use for `this` in the callback.
  * @return A function that returns an Observable of booleans that determines if
  * all items of the source Observable meet the condition specified.
  */

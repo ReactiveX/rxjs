@@ -73,9 +73,9 @@ export function of<A extends readonly unknown[]>(...values: A): Observable<Value
  * @see {@link from}
  * @see {@link range}
  *
- * @param {...T} values A comma separated list of arguments you want to be emitted
- * @return {Observable} An Observable that emits the arguments
- * described above and then completes.
+ * @param args A comma separated list of arguments you want to be emitted.
+ * @return An Observable that synchronously emits the arguments described
+ * above and then immediately completes.
  */
 export function of<T>(...args: Array<T | SchedulerLike>): Observable<T> {
   const scheduler = popScheduler(args);

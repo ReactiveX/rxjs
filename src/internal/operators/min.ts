@@ -3,8 +3,9 @@ import { MonoTypeOperatorFunction } from '../types';
 import { isFunction } from '../util/isFunction';
 
 /**
- * The Min operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
- * and when source Observable completes it emits a single item: the item with the smallest value.
+ * The `min` operator operates on an Observable that emits numbers (or items that
+ * can be compared with a provided function), and when source Observable completes
+ * it emits a single item: the item with the smallest value.
  *
  * ![](min.png)
  *
@@ -43,8 +44,8 @@ import { isFunction } from '../util/isFunction';
  *
  * @see {@link max}
  *
- * @param {Function} [comparer] - Optional comparer function that it will use instead of its default to compare the
- * value of two items.
+ * @param comparer Optional comparer function that it will use instead of its
+ * default to compare the value of two items.
  * @return A function that returns an Observable that emits item with the
  * smallest value.
  */
