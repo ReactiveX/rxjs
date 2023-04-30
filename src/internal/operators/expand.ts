@@ -3,21 +3,21 @@ import { Observable } from '../Observable';
 import { mergeInternals } from './mergeInternals';
 
 /* tslint:disable:max-line-length */
-export function expand<T, O extends ObservableInput<unknown>>(
-  project: (value: T, index: number) => O,
+export function expand<T, O>(
+  project: (value: T | O, index: number) => ObservableInput<O>,
   concurrent?: number,
   scheduler?: SchedulerLike
-): OperatorFunction<T, ObservedValueOf<O>>;
+): OperatorFunction<T, O>;
 /**
  * @deprecated The `scheduler` parameter will be removed in v8. If you need to schedule the inner subscription,
  * use `subscribeOn` within the projection function: `expand((value) => fn(value).pipe(subscribeOn(scheduler)))`.
  * Details: Details: https://rxjs.dev/deprecations/scheduler-argument
  */
-export function expand<T, O extends ObservableInput<unknown>>(
-  project: (value: T, index: number) => O,
+export function expand<T, O>(
+  project: (value: T | O, index: number) => ObservableInput<O>,
   concurrent: number | undefined,
   scheduler: SchedulerLike
-): OperatorFunction<T, ObservedValueOf<O>>;
+): OperatorFunction<T, O>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -70,11 +70,11 @@ export function expand<T, O extends ObservableInput<unknown>>(
  * the output Observable and merging the results of the Observables obtained
  * from this transformation.
  */
-export function expand<T, O extends ObservableInput<unknown>>(
-  project: (value: T, index: number) => O,
+export function expand<T, O>(
+  project: (value: T | O, index: number) => ObservableInput<O>,
   concurrent = Infinity,
   scheduler?: SchedulerLike
-): OperatorFunction<T, ObservedValueOf<O>> {
+): OperatorFunction<T, O> {
   concurrent = (concurrent || 0) < 1 ? Infinity : concurrent;
   return (source) =>
     new Observable((subscriber) =>
@@ -83,8 +83,7 @@ export function expand<T, O extends ObservableInput<unknown>>(
         source,
         subscriber,
 
-        // HACK: Cast because TypeScript seems to get confused here.
-        project as (value: T, index: number) => ObservableInput<ObservedValueOf<O>>,
+        project,
         concurrent,
 
         // onBeforeNext
