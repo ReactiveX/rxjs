@@ -8,6 +8,7 @@ import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFramePr
 import { immediateProvider } from 'rxjs/internal/scheduler/immediateProvider';
 import { intervalProvider } from 'rxjs/internal/scheduler/intervalProvider';
 import { timeoutProvider } from 'rxjs/internal/scheduler/timeoutProvider';
+import { observableMatcher } from '../helpers/observableMatcher';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -208,6 +209,36 @@ describe('TestScheduler', () => {
     });
   });
 
+  describe('end-to-end helper tests', () => {
+    let testScheduler: TestScheduler;
+
+    beforeEach(() => {
+      testScheduler = new TestScheduler(observableMatcher);
+    });
+
+    it('should be awesome', () => {
+      testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+        const values = { a: 1, b: 2 };
+        const myObservable = cold('---a---b--|', values);
+        const subs =              '^---------!';
+        expectObservable(myObservable).toBe('---a---b--|', values);
+        expectSubscriptions(myObservable.subscriptions).toBe(subs);
+      });
+    });
+
+    it('should support testing metastreams', () => {
+      testScheduler.run(({ cold, hot, expectObservable }) => {
+        const x = cold('-a-b|');
+        const y = cold('-c-d|');
+        const myObservable = hot('---x---y----|', { x: x, y: y });
+        const expected =         '---x---y----|';
+        const expectedx = cold('-a-b|');
+        const expectedy = cold('-c-d|');
+        expectObservable(myObservable).toBe(expected, { x: expectedx, y: expectedy });
+      });
+    });
+  });
+
   describe('jasmine helpers', () => {
     describe('rxTestScheduler', () => {
       it('should exist', () => {
@@ -328,26 +359,6 @@ describe('TestScheduler', () => {
         const source = cold('---a---b-|');
         const subs =       ['----------'];
         expectSubscriptions(source.subscriptions).toBe(subs);
-      });
-    });
-
-    describe('end-to-end helper tests', () => {
-      it('should be awesome', () => {
-        const values = { a: 1, b: 2 };
-        const myObservable = cold('---a---b--|', values);
-        const subs =              '^---------!';
-        expectObservable(myObservable).toBe('---a---b--|', values);
-        expectSubscriptions(myObservable.subscriptions).toBe(subs);
-      });
-
-      it('should support testing metastreams', () => {
-        const x = cold('-a-b|');
-        const y = cold('-c-d|');
-        const myObservable = hot('---x---y----|', { x: x, y: y });
-        const expected =         '---x---y----|';
-        const expectedx = cold('-a-b|');
-        const expectedy = cold('-c-d|');
-        expectObservable(myObservable).toBe(expected, { x: expectedx, y: expectedy });
       });
     });
   });
