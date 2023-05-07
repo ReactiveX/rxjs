@@ -1,3 +1,4 @@
+/** @prettier */
 import { expect } from 'chai';
 import { SchedulerAction, VirtualAction, VirtualTimeScheduler } from 'rxjs';
 
@@ -66,14 +67,18 @@ describe('VirtualTimeScheduler', () => {
     let count = 0;
     const expected = [100, 200, 300];
 
-    v.schedule<string>(function (this: SchedulerAction<string>, state?: string) {
-      if (++count === 3) {
-        return;
-      }
-      const virtualAction = this as VirtualAction<string>;
-      expect(virtualAction.delay).to.equal(expected.shift());
-      this.schedule(state, virtualAction.delay);
-    }, 100, 'test');
+    v.schedule<string>(
+      function (this: SchedulerAction<string>, state?: string) {
+        if (++count === 3) {
+          return;
+        }
+        const virtualAction = this as VirtualAction<string>;
+        expect(virtualAction.delay).to.equal(expected.shift());
+        this.schedule(state, virtualAction.delay);
+      },
+      100,
+      'test'
+    );
 
     v.flush();
     expect(count).to.equal(3);
@@ -83,11 +88,7 @@ describe('VirtualTimeScheduler', () => {
     const v = new VirtualTimeScheduler();
     const messages: string[] = [];
 
-    const action: VirtualAction<string> = <VirtualAction<string>> v.schedule(
-      state => messages.push(state!),
-      10,
-      'first message'
-    );
+    const action: VirtualAction<string> = <VirtualAction<string>>v.schedule((state) => messages.push(state!), 10, 'first message');
 
     action.schedule('second message', 10);
     v.flush();
@@ -103,17 +104,13 @@ describe('VirtualTimeScheduler', () => {
     const actualMessages: string[] = [];
 
     messages.forEach((message, index) => {
-      v.schedule(
-        state => actualMessages.push(state!),
-        index * MAX_FRAMES,
-        message
-      );
+      v.schedule((state) => actualMessages.push(state!), index * MAX_FRAMES, message);
     });
 
     v.flush();
 
     expect(actualMessages).to.deep.equal(['first message', 'second message']);
-    expect(v.actions.map(a => a.state)).to.deep.equal(['third message']);
+    expect(v.actions.map((a) => a.state)).to.deep.equal(['third message']);
   });
 
   it('should pick up actions execution where it left off after reaching previous maxFrames limit', function () {
@@ -124,11 +121,7 @@ describe('VirtualTimeScheduler', () => {
     const actualMessages: string[] = [];
 
     messages.forEach((message, index) => {
-      v.schedule(
-        state => actualMessages.push(state!),
-        index * MAX_FRAMES,
-        message
-      );
+      v.schedule((state) => actualMessages.push(state!), index * MAX_FRAMES, message);
     });
 
     v.flush();
