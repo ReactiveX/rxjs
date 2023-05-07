@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 import * as chai from 'chai';
-import { TestScheduler } from 'rxjs/testing';
 
 //tslint:disable:no-var-requires no-require-imports
 const commonInterface = require('mocha/lib/interfaces/common');
@@ -32,9 +31,6 @@ module.exports = function (suite: any) {
     context.beforeEach = common.beforeEach;
     context.afterEach = common.afterEach;
     context.run = mocha.options.delay && common.runWithSuite(suite);
-
-    //setting up per-context test scheduler
-    context.rxTestScheduler = null;
 
     /**
      * Describe a "suite" with the given `title`
@@ -131,27 +127,8 @@ module.exports = function (suite: any) {
      */
 
     const it = context.it = context.specify = function (title: any, fn: any) {
-      context.rxTestScheduler = null;
-      let modified = fn;
-
-      if (fn && fn.length === 0) {
-        modified = function () {
-          context.rxTestScheduler = new TestScheduler(observableMatcher);
-
-          try {
-            fn();
-            context.rxTestScheduler.flush();
-          } finally {
-            context.rxTestScheduler = null;
-          }
-        };
-      }
-
       const suite = suites[0];
-      if (suite.pending) {
-        modified = null;
-      }
-      const test = new (<any>Test)(title, modified);
+      const test = new (<any>Test)(title, fn);
       test.file = file;
       suite.addTest(test);
       return test;
