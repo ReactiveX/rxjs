@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, NEVER, EMPTY, Subject, of, merge, animationFrameScheduler, asapScheduler, asyncScheduler, interval } from 'rxjs';
+import { Observable, Subject, of, merge, animationFrameScheduler, asapScheduler, asyncScheduler, interval } from 'rxjs';
 import { delay, debounceTime, concatMap, mergeMap, mapTo, take } from 'rxjs/operators';
 import { nextNotification, COMPLETE_NOTIFICATION, errorNotification } from 'rxjs/internal/NotificationFactories';
 import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
@@ -239,130 +238,6 @@ describe('TestScheduler', () => {
     });
   });
 
-  describe('jasmine helpers', () => {
-    describe('rxTestScheduler', () => {
-      it('should exist', () => {
-        expect(rxTestScheduler).to.be.an.instanceof(TestScheduler);
-      });
-    });
-
-    describe('cold()', () => {
-      it('should exist', () => {
-        expect(cold).to.exist;
-        expect(cold).to.be.a('function');
-      });
-
-      it('should create a cold observable', () => {
-        const expected = [1, 2];
-        const source = cold('-a-b-|', { a: 1, b: 2 });
-        source.subscribe({ next: (x: number) => {
-          expect(x).to.equal(expected.shift());
-        }, complete: () => {
-          expect(expected.length).to.equal(0);
-        } });
-        expectObservable(source).toBe('-a-b-|', { a: 1, b: 2 });
-      });
-    });
-
-    describe('hot()', () => {
-      it('should exist', () => {
-        expect(hot).to.exist;
-        expect(hot).to.be.a('function');
-      });
-
-      it('should create a hot observable', () => {
-        const source = hot('---^-a-b-|', { a: 1, b: 2 });
-        expect(source).to.be.an.instanceOf(Subject);
-        expectObservable(source).toBe('--a-b-|', { a: 1, b: 2 });
-      });
-    });
-
-    describe('time()', () => {
-      it('should exist', () => {
-        expect(time).to.exist;
-        expect(time).to.be.a('function');
-      });
-
-      it('should parse a simple time marble string to a number', () => {
-        expect(time('-----|')).to.equal(50);
-      });
-    });
-
-    describe('expectObservable()', () => {
-      it('should exist', () => {
-        expect(expectObservable).to.exist;
-        expect(expectObservable).to.be.a('function');
-      });
-
-      it('should return an object with a toBe function', () => {
-        expect(expectObservable(of(1)).toBe).to.be.a('function');
-      });
-
-      it('should append to flushTests array', () => {
-        expectObservable(EMPTY);
-        expect((<any>rxTestScheduler).flushTests.length).to.equal(1);
-      });
-
-      it('should handle empty', () => {
-        expectObservable(EMPTY).toBe('|', {});
-      });
-
-      it('should handle never', () => {
-        expectObservable(NEVER).toBe('-', {});
-        expectObservable(NEVER).toBe('---', {});
-      });
-
-      it('should accept an unsubscription marble diagram', () => {
-        const source = hot('---^-a-b-|');
-        const unsubscribe  =  '---!';
-        const expected =      '--a';
-        expectObservable(source, unsubscribe).toBe(expected);
-      });
-
-      it('should accept a subscription marble diagram', () => {
-        const source = hot('-a-b-c|');
-        const subscribe =  '---^';
-        const expected =   '---b-c|';
-        expectObservable(source, subscribe).toBe(expected);
-      });
-    });
-
-    describe('expectSubscriptions()', () => {
-      it('should exist', () => {
-        expect(expectSubscriptions).to.exist;
-        expect(expectSubscriptions).to.be.a('function');
-      });
-
-      it('should return an object with a toBe function', () => {
-        expect(expectSubscriptions([]).toBe).to.be.a('function');
-      });
-
-      it('should append to flushTests array', () => {
-        expectSubscriptions([]);
-        expect((<any>rxTestScheduler).flushTests.length).to.equal(1);
-      });
-
-      it('should assert subscriptions of a cold observable', () => {
-        const source = cold('---a---b-|');
-        const subs =        '^--------!';
-        expectSubscriptions(source.subscriptions).toBe(subs);
-        source.subscribe();
-      });
-
-      it('should support empty subscription marbles', () => {
-        const source = cold('---a---b-|');
-        const subs =        '----------';
-        expectSubscriptions(source.subscriptions).toBe(subs);
-      });
-
-      it('should support empty subscription marbles within arrays', () => {
-        const source = cold('---a---b-|');
-        const subs =       ['----------'];
-        expectSubscriptions(source.subscriptions).toBe(subs);
-      });
-    });
-  });
-
   describe('TestScheduler.run()', () => {
     const assertDeepEquals = (actual: any, expected: any) => {
       expect(actual).deep.equal(expected);
@@ -408,7 +283,7 @@ describe('TestScheduler', () => {
         expect(expectObservable).to.be.a('function');
         expect(expectSubscriptions).to.be.a('function');
 
-      const obs1 = cold('-a-c-e|');
+        const obs1 = cold('-a-c-e|');
         const obs2 = hot(' ^-b-d-f|');
         const output = merge(obs1, obs2);
         const expected = ' -abcdef|';
