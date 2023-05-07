@@ -1,3 +1,4 @@
+/** @prettier */
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { queueScheduler, Subscription, merge } from 'rxjs';
@@ -23,10 +24,7 @@ describe('Scheduler.queue', () => {
       const tb = time(' --------|    ');
       const expected = '----a---b----';
 
-      const result = merge(
-        a.pipe(delay(ta, queue)),
-        b.pipe(delay(tb, queue))
-      );
+      const result = merge(a.pipe(delay(ta, queue)), b.pipe(delay(tb, queue)));
       expectObservable(result).toBe(expected);
     });
   });
@@ -36,17 +34,21 @@ describe('Scheduler.queue', () => {
     const fakeTimer = sandbox.useFakeTimers();
 
     let asyncExec = false;
-    let state: Array<number> = [];
+    const state: Array<number> = [];
 
-    queue.schedule(function (index) {
-      state.push(index!);
-      if (index === 0) {
-        this.schedule(1, 100);
-      } else if (index === 1) {
-        asyncExec = true;
-        this.schedule(2, 0);
-      }
-    }, 0, 0);
+    queue.schedule(
+      function (index) {
+        state.push(index!);
+        if (index === 0) {
+          this.schedule(1, 100);
+        } else if (index === 1) {
+          asyncExec = true;
+          this.schedule(2, 0);
+        }
+      },
+      0,
+      0
+    );
 
     expect(asyncExec).to.be.false;
     expect(state).to.be.deep.equal([0]);
@@ -67,9 +69,15 @@ describe('Scheduler.queue', () => {
     try {
       queue.schedule(() => {
         actions.push(
-          queue.schedule(() => { throw new Error('oops'); }),
-          queue.schedule(() => { action2Exec = true; }),
-          queue.schedule(() => { action3Exec = true; })
+          queue.schedule(() => {
+            throw new Error('oops');
+          }),
+          queue.schedule(() => {
+            action2Exec = true;
+          }),
+          queue.schedule(() => {
+            action3Exec = true;
+          })
         );
       });
     } catch (e) {
