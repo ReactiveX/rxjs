@@ -1,21 +1,16 @@
 module.exports = function (wallaby) {
-  return ({
-    files: [
-      'tsconfig.base.json',
-      'tsconfig.json',
-      'src/**/*.ts',
-      { pattern: 'spec/helpers/!(*-spec).ts', instrument: false, load: true }
-    ],
+  return {
+    files: ['tsconfig.base.json', 'tsconfig.json', 'src/**/*.ts', { pattern: 'spec/helpers/!(*-spec).ts', instrument: false, load: true }],
 
     tests: ['spec/**/*-spec.ts'],
 
     testFramework: {
       type: 'mocha',
-      path: 'mocha'
+      path: 'mocha',
     },
 
     env: {
-      type: 'node'
+      type: 'node',
     },
 
     workers: { initial: 2, regular: 1 },
@@ -23,8 +18,8 @@ module.exports = function (wallaby) {
     compilers: {
       '**/*.ts?(x)': wallaby.compilers.typeScript({
         module: 'commonjs',
-        target: 'esnext'
-      })
+        target: 'esnext',
+      }),
     },
 
     setup: function (w) {
@@ -45,10 +40,8 @@ module.exports = function (wallaby) {
         delete global.asDiagram;
       }
 
-      var mocha = wallaby.testFramework;
       var path = require('path');
       require(path.resolve(w.projectCacheDir, 'spec/helpers/setup'));
-      mocha.ui(path.resolve(w.projectCacheDir, 'spec/helpers/testScheduler-ui'));
-    }
-  });
+    },
+  };
 };
