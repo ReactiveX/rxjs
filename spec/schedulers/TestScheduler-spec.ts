@@ -687,12 +687,22 @@ describe('TestScheduler', () => {
         });
       });
 
-      it('should throw if not given good marble input', () => {
+      it('should throw if not given good marble input (#)', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
 
         testScheduler.run(({ time }) => {
           expect(() => {
             time('-a-b-#');
+          }).to.throw();
+        });
+      });
+
+      it('should throw if not given good marble input (!)', () => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+
+        testScheduler.run(({ time }) => {
+          expect(() => {
+            time('-a-b-!');
           }).to.throw();
         });
       });
