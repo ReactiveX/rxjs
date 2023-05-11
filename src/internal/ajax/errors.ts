@@ -8,7 +8,7 @@ import { AjaxRequest } from './types';
  *
  * @see {@link ajax}
  */
-class AjaxError extends Error {
+export class AjaxError extends Error {
   /**
    * The XHR instance associated with the error.
    */
