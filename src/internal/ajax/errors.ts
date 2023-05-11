@@ -1,46 +1,4 @@
 import { AjaxRequest } from './types';
-import { createErrorClass } from '../util/createErrorClass';
-
-/**
- * A normalized AJAX error.
- *
- * @see {@link ajax}
- */
-export interface AjaxError extends Error {
-  /**
-   * The XHR instance associated with the error.
-   */
-  xhr: XMLHttpRequest;
-
-  /**
-   * The AjaxRequest associated with the error.
-   */
-  request: AjaxRequest;
-
-  /**
-   * The HTTP status code, if the request has completed. If not,
-   * it is set to `0`.
-   */
-  status: number;
-
-  /**
-   * The responseType (e.g. 'json', 'arraybuffer', or 'xml').
-   */
-  responseType: XMLHttpRequestResponseType;
-
-  /**
-   * The response data.
-   */
-  response: any;
-}
-
-export interface AjaxErrorCtor {
-  /**
-   * @deprecated Internal implementation detail. Do not construct error instances.
-   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
-   */
-  new (message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError;
-}
 
 /**
  * Thrown when an error occurs during an AJAX request.
@@ -50,18 +8,47 @@ export interface AjaxErrorCtor {
  *
  * @see {@link ajax}
  */
-export const AjaxError: AjaxErrorCtor = createErrorClass(
-  (_super) =>
-    function AjaxErrorImpl(this: any, message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
-      this.message = message;
-      this.name = 'AjaxError';
-      this.xhr = xhr;
-      this.request = request;
-      this.status = xhr.status;
-      this.responseType = xhr.responseType;
-      this.response = xhr.response;
-    }
-);
+class AjaxError extends Error {
+  /**
+   * The XHR instance associated with the error.
+   */
+  readonly xhr: XMLHttpRequest;
+
+  /**
+   * The AjaxRequest associated with the error.
+   */
+  readonly request: AjaxRequest;
+
+  /**
+   * The HTTP status code, if the request has completed. If not,
+   * it is set to `0`.
+   */
+  readonly status: number;
+
+  /**
+   * The responseType (e.g. 'json', 'arraybuffer', or 'xml').
+   */
+  readonly responseType: XMLHttpRequestResponseType;
+
+  /**
+   * The response data.
+   */
+  readonly response: any;
+
+  /**
+   * @deprecated Internal implementation detail. Do not construct error instances.
+   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
+   */
+  constructor(message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
+    super(message);
+    this.name = 'AjaxError';
+    this.xhr = xhr;
+    this.request = request;
+    this.status = xhr.status;
+    this.responseType = xhr.responseType;
+    this.response = xhr.response;
+  }
+}
 
 export interface AjaxTimeoutError extends AjaxError {}
 
