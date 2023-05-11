@@ -50,16 +50,6 @@ class AjaxError extends Error {
   }
 }
 
-export interface AjaxTimeoutError extends AjaxError {}
-
-export interface AjaxTimeoutErrorCtor {
-  /**
-   * @deprecated Internal implementation detail. Do not construct error instances.
-   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
-   */
-  new (xhr: XMLHttpRequest, request: AjaxRequest): AjaxTimeoutError;
-}
-
 /**
  * Thrown when an AJAX request times out. Not to be confused with {@link TimeoutError}.
  *
@@ -69,12 +59,13 @@ export interface AjaxTimeoutErrorCtor {
  *
  * @see {@link ajax}
  */
-export const AjaxTimeoutError: AjaxTimeoutErrorCtor = (() => {
-  function AjaxTimeoutErrorImpl(this: any, xhr: XMLHttpRequest, request: AjaxRequest) {
-    AjaxError.call(this, 'ajax timeout', xhr, request);
+export class AjaxTimeoutError extends AjaxError {
+  /**
+   * @deprecated Internal implementation detail. Do not construct error instances.
+   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
+   */
+  constructor(xhr: XMLHttpRequest, request: AjaxRequest) {
+    super('ajax timeout', xhr, request);
     this.name = 'AjaxTimeoutError';
-    return this;
   }
-  AjaxTimeoutErrorImpl.prototype = Object.create(AjaxError.prototype);
-  return AjaxTimeoutErrorImpl;
-})() as any;
+}
