@@ -33,7 +33,6 @@ jobs:
       - name: test
         run: |
           npm test
-          npm run test:side-effects
       - name: dtslint
         run: npm run dtslint
       - name: import

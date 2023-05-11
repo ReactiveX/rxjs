@@ -26,5 +26,5 @@ jobs:
         run: |
           npm install -g npm@latest
           npm ci
-          npm install --legacy-peer-deps --no-save typescript@latest tslib@latest @types/node@latest
+          npm install --legacy-peer-deps --no-save typescript@latest @types/node@latest
           npm run compile
