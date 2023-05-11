@@ -4,7 +4,6 @@ import { isValidDate } from '../util/isDate';
 import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
 import { from } from '../observable/from';
-import { createErrorClass } from '../util/createErrorClass';
 import { createOperatorSubscriber } from './OperatorSubscriber';
 import { executeSchedule } from '../util/executeSchedule';
 
@@ -51,28 +50,6 @@ export interface TimeoutInfo<T, M = unknown> {
 }
 
 /**
- * An error emitted when a timeout occurs.
- */
-export interface TimeoutError<T = unknown, M = unknown> extends Error {
-  /**
-   * The information provided to the error by the timeout
-   * operation that created the error. Will be `null` if
-   * used directly in non-RxJS code with an empty constructor.
-   * (Note that using this constructor directly is not recommended,
-   * you should create your own errors)
-   */
-  info: TimeoutInfo<T, M> | null;
-}
-
-export interface TimeoutErrorCtor {
-  /**
-   * @deprecated Internal implementation detail. Do not construct error instances.
-   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
-   */
-  new <T = unknown, M = unknown>(info?: TimeoutInfo<T, M>): TimeoutError<T, M>;
-}
-
-/**
  * An error thrown by the {@link timeout} operator.
  *
  * Provided so users can use as a type and do quality comparisons.
@@ -82,15 +59,21 @@ export interface TimeoutErrorCtor {
  *
  * @see {@link timeout}
  */
-export const TimeoutError: TimeoutErrorCtor = createErrorClass(
-  (_super) =>
-    function TimeoutErrorImpl(this: any, info: TimeoutInfo<any> | null = null) {
-      _super(this);
-      this.message = 'Timeout has occurred';
-      this.name = 'TimeoutError';
-      this.info = info;
-    }
-);
+export class TimeoutError<T, M> extends Error {
+  /**
+   * @param info The information provided to the error by the timeout
+   * operation that created the error. Will be `null` if
+   * used directly in non-RxJS code with an empty constructor.
+   * (Note that using this constructor directly is not recommended,
+   * you should create your own errors)
+   *  @deprecated Internal implementation detail. Do not construct error instances.
+   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
+   */
+  constructor(public info: TimeoutInfo<T, M> | null = null) {
+    super('Timeout has occurred');
+    this.name = 'TimeoutError';
+  }
+}
 
 /**
  * If `with` is provided, this will return an observable that will switch to a different observable if the source
