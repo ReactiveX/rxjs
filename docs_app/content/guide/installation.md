@@ -9,9 +9,10 @@ npm install rxjs
 ```
 
 By default, RxJS 7.x will provide different variants of the code based on the consumer:
-* When RxJS 7.x is used on Node.js regardless of whether it is consumed via `require` or `import`, CommonJS code targeting ES5 will be provided for execution.
-* When RxJS 7.4+ is used via a bundler targeting a browser (or other non-Node.js platform) ES module code targeting ES5 will be provided by default with the option to use ES2015 code.
-7.x versions prior to 7.4.0 will only provide ES5 code.
+
+- When RxJS 7.x is used on Node.js regardless of whether it is consumed via `require` or `import`, CommonJS code targeting ES5 will be provided for execution.
+- When RxJS 7.4+ is used via a bundler targeting a browser (or other non-Node.js platform) ES module code targeting ES5 will be provided by default with the option to use ES2015 code.
+  7.x versions prior to 7.4.0 will only provide ES5 code.
 
 If the target browsers for a project support ES2015+ or the bundle process supports down-leveling to ES5 then the bundler can optionally be configured to allow the ES2015 RxJS code to be used instead.
 You can enable support for using the ES2015 RxJS code by configuring a bundler to use the `es2015` custom export condition during module resolution.
@@ -52,11 +53,3 @@ If you are using npm version 2, you need to specify the library version explicit
 ```shell
 npm install @reactivex/rxjs@7.3.0
 ```
-
-## CDN
-
-For CDN, you can use [unpkg](https://unpkg.com/):
-
-[https://unpkg.com/rxjs@^7/dist/bundles/rxjs.umd.min.js](https://unpkg.com/rxjs@%5E7/dist/bundles/rxjs.umd.min.js)
-
-To import what you need, please {@link guide/importing#cdn check out this} guide.
