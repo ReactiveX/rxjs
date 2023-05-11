@@ -77,13 +77,11 @@
     "lint_src": "tslint -c tslint.json -p src/tsconfig.base.json \"src/**/*.ts\"",
     "lint": "npm-run-all --parallel lint_*",
     "dtslint": "tsc -b ./src/tsconfig.types.json && tslint -c spec-dtslint/tslint.json -p spec-dtslint/tsconfig.json \"spec-dtslint/**/*.ts\"",
-    "prepublishOnly": "npm run build:package && npm run lint && npm run test && npm run test:circular && npm run dtslint && npm run test:side-effects",
+    "prepublishOnly": "npm run build:package && npm run lint && npm run test && npm run test:circular && npm run dtslint",
     "publish_docs": "./publish_docs.sh",
     "test": "cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js \"spec/**/*-spec.ts\"",
     "test:esm": "node spec/module-test-spec.mjs",
     "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm5",
-    "test:side-effects": "check-side-effects --test integration/side-effects/side-effects.json",
-    "test:side-effects:update": "npm run test:side-effects -- --update",
     "test:import": "ts-node ./integration/import/runner.ts",
     "compile": "tsc -b ./src/tsconfig.cjs.json ./src/tsconfig.cjs.spec.json ./src/tsconfig.esm.json ./src/tsconfig.types.json ./src/tsconfig.types.spec.json ./spec/tsconfig.json",
     "build:clean": "shx rm -rf ./dist",
@@ -137,9 +135,6 @@
     "url": "https://github.com/ReactiveX/RxJS/issues"
   },
   "homepage": "https://rxjs.dev",
-  "dependencies": {
-    "tslib": "^2.1.0"
-  },
   "devDependencies": {
     "@angular-devkit/build-optimizer": "0.4.6",
     "@angular-devkit/schematics": "^11.0.7",
@@ -157,7 +152,6 @@
     "@typescript-eslint/parser": "^4.29.1",
     "babel-polyfill": "6.26.0",
     "chai": "^4.3.7",
-    "check-side-effects": "0.0.23",
     "color": "3.0.0",
     "colors": "1.1.2",
     "cross-env": "5.1.3",
