@@ -45,10 +45,10 @@ import { range, filter, map } from 'rxjs';
 
 range(1, 200)
   .pipe(
-    filter(x => x % 2 === 1),
-    map(x => x + x)
+    filter((x) => x % 2 === 1),
+    map((x) => x + x)
   )
-  .subscribe(x => console.log(x));
+  .subscribe((x) => console.log(x));
 ```
 
 If you're using RxJS version below 7.2, you can pull in any operator you need from one spot, under `'rxjs/operators'`.
@@ -59,30 +59,10 @@ import { filter, map } from 'rxjs/operators';
 
 range(1, 200)
   .pipe(
-    filter(x => x % 2 === 1),
-    map(x => x + x)
+    filter((x) => x % 2 === 1),
+    map((x) => x + x)
   )
-  .subscribe(x => console.log(x));
-```
-
-### CDN
-
-For CDN, you can use [unpkg](https://unpkg.com/):
-
-[https://unpkg.com/rxjs@^7/dist/bundles/rxjs.umd.min.js](https://unpkg.com/rxjs@%5E7/dist/bundles/rxjs.umd.min.js)
-
-The global namespace for rxjs is `rxjs`:
-
-```js
-const { range } = rxjs;
-const { filter, map } = rxjs.operators;
-
-range(1, 200)
-  .pipe(
-    filter(x => x % 2 === 1),
-    map(x => x + x)
-  )
-  .subscribe(x => console.log(x));
+  .subscribe((x) => console.log(x));
 ```
 
 ## Goals
