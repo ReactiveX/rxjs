@@ -1,4 +1,4 @@
-import { OperatorFunction, ObservableInput, ObservedValueOf, SchedulerLike } from '../types';
+import { OperatorFunction, ObservableInput, SchedulerLike } from '../types';
 import { Observable } from '../Observable';
 import { mergeInternals } from './mergeInternals';
 
