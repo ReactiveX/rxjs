@@ -81,7 +81,6 @@
   },
   "scripts": {
     "changelog": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s",
-    "build:spec:browser": "echo \"Browser test is not working currently\" && exit -1 && webpack --config spec/support/webpack.mocha.config.js",
     "lint_spec": "tslint -c spec/tslint.json -p spec/tsconfig.json \"spec/**/*.ts\"",
     "lint_src": "tslint -c tslint.json -p src/tsconfig.base.json \"src/**/*.ts\"",
     "lint": "npm-run-all --parallel lint_*",
@@ -90,7 +89,6 @@
     "publish_docs": "./publish_docs.sh",
     "test": "cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js \"spec/**/*-spec.ts\"",
     "test:esm": "node spec/module-test-spec.mjs",
-    "test:browser": "echo \"Browser test is not working currently\" && exit -1 && npm-run-all build:spec:browser && opn spec/support/mocha-browser-runner.html",
     "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm5",
     "test:systemjs": "node integration/systemjs/systemjs-compatibility-spec.js",
     "test:side-effects": "check-side-effects --test integration/side-effects/side-effects.json",
@@ -181,7 +179,6 @@
     "eslint-plugin-jasmine": "^2.10.1",
     "form-data": "^3.0.0",
     "fs-extra": "^8.1.0",
-    "glob": "7.1.2",
     "google-closure-compiler-js": "20170218.0.0",
     "husky": "^4.2.5",
     "klaw-sync": "3.0.2",
@@ -191,7 +188,6 @@
     "mocha": "^10.2.0",
     "nodemon": "^1.9.2",
     "npm-run-all": "4.1.2",
-    "opn-cli": "3.1.0",
     "platform": "1.3.5",
     "prettier": "^2.5.1",
     "promise": "8.0.1",
@@ -213,8 +209,7 @@
     "tslint-no-unused-expression-chai": "0.0.3",
     "typescript": "~4.9.4",
     "validate-commit-msg": "2.14.0",
-    "web-streams-polyfill": "^3.0.2",
-    "webpack": "^4.31.0"
+    "web-streams-polyfill": "^3.0.2"
   },
   "files": [
     "dist/bundles",
