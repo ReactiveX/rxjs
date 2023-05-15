@@ -83,7 +83,7 @@ export function rx<T, A, B, C, D, E, F, G, H, I>(
  * The following are equivalent:
  *
  * ```ts
- * r(source, map(x => x + 1), filter(x => x % 2 === 0));
+ * rx(source, map(x => x + 1), filter(x => x % 2 === 0));
  * pipe(from(source), map(x => x + 1), filter(x => x % 2 === 0));
  * pipe(source, from, map(x => x + 1), filter(x => x % 2 === 0));
  * ```
