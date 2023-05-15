@@ -32,7 +32,7 @@ describe('pipe', () => {
   });
 });
 
-describe('r', () => {
+describe('rx', () => {
   it('should work like pipe, convert the first argument to an observable', () => {
     const a = [1, 2, 3];
     const results: any[] = [];
