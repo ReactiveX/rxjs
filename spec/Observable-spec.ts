@@ -638,6 +638,15 @@ describe('Observable', () => {
       const result = source.pipe();
       expect(result).to.equal(source);
     });
+
+    it('should allow any kind of piped function', () => {
+      const source = of('test');
+      const result = source.pipe(
+        source => source instanceof Observable, 
+        isObservable => isObservable ? 'Well hello, there.' : 'Huh?'
+      );
+      expect(result).to.equal('Well hello, there.');
+    })
   });
 
   it('should not swallow internal errors', (done) => {

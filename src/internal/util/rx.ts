@@ -3,23 +3,23 @@ import { Observable } from '../Observable';
 import { ObservableInput, UnaryFunction } from '../types';
 import { pipeFromArray } from './pipe';
 
-export function rx<T, A>(source: ObservableInput<A>): Observable<A>;
-export function rx<T, A, B>(source: ObservableInput<A>, fn2: UnaryFunction<Observable<A>, B>): B;
-export function rx<T, A, B, C>(source: ObservableInput<A>, fn2: UnaryFunction<Observable<A>, B>, fn3: UnaryFunction<B, C>): C;
-export function rx<T, A, B, C, D>(
+export function rx<A>(source: ObservableInput<A>): Observable<A>;
+export function rx<A, B>(source: ObservableInput<A>, fn2: UnaryFunction<Observable<A>, B>): B;
+export function rx<A, B, C>(source: ObservableInput<A>, fn2: UnaryFunction<Observable<A>, B>, fn3: UnaryFunction<B, C>): C;
+export function rx<A, B, C, D>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
   fn4: UnaryFunction<C, D>
 ): D;
-export function rx<T, A, B, C, D, E>(
+export function rx<A, B, C, D, E>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
   fn4: UnaryFunction<C, D>,
   fn5: UnaryFunction<D, E>
 ): E;
-export function rx<T, A, B, C, D, E, F>(
+export function rx<A, B, C, D, E, F>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
@@ -27,7 +27,7 @@ export function rx<T, A, B, C, D, E, F>(
   fn5: UnaryFunction<D, E>,
   fn6: UnaryFunction<E, F>
 ): F;
-export function rx<T, A, B, C, D, E, F, G>(
+export function rx<A, B, C, D, E, F, G>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
@@ -36,7 +36,7 @@ export function rx<T, A, B, C, D, E, F, G>(
   fn6: UnaryFunction<E, F>,
   fn7: UnaryFunction<F, G>
 ): G;
-export function rx<T, A, B, C, D, E, F, G, H>(
+export function rx<A, B, C, D, E, F, G, H>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
@@ -46,7 +46,7 @@ export function rx<T, A, B, C, D, E, F, G, H>(
   fn7: UnaryFunction<F, G>,
   fn8: UnaryFunction<G, H>
 ): H;
-export function rx<T, A, B, C, D, E, F, G, H, I>(
+export function rx<A, B, C, D, E, F, G, H, I>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
@@ -57,7 +57,7 @@ export function rx<T, A, B, C, D, E, F, G, H, I>(
   fn8: UnaryFunction<G, H>,
   fn9: UnaryFunction<H, I>
 ): I;
-export function rx<T, A, B, C, D, E, F, G, H, I>(
+export function rx<A, B, C, D, E, F, G, H, I>(
   source: ObservableInput<A>,
   fn2: UnaryFunction<Observable<A>, B>,
   fn3: UnaryFunction<B, C>,
@@ -67,7 +67,7 @@ export function rx<T, A, B, C, D, E, F, G, H, I>(
   fn7: UnaryFunction<F, G>,
   fn8: UnaryFunction<G, H>,
   fn9: UnaryFunction<H, I>,
-  ...fns: UnaryFunction<any, any>[]
+  ...fns: UnaryFunction<unknown, unknown>[]
 ): unknown;
 
 /**
@@ -83,21 +83,23 @@ export function rx<T, A, B, C, D, E, F, G, H, I>(
  * The following are equivalent:
  *
  * ```ts
+ * // Where `source` is any valid `ObservableInput`.
+ * // A (observable, promise, array, async iterable, etc.)
  * rx(source, map(x => x + 1), filter(x => x % 2 === 0));
- * pipe(from(source), map(x => x + 1), filter(x => x % 2 === 0));
- * pipe(source, from, map(x => x + 1), filter(x => x % 2 === 0));
+ * pipe(map(x => x + 1), filter(x => x % 2 === 0))(from(source));
+ * pipe(from, map(x => x + 1), filter(x => x % 2 === 0))(source);
  * ```
  *
- * Furthermore, `r` can be used to create an observable and pipe it in any number of ways. For example:
+ * Furthermore, `rx` can be used to create an observable and pipe it in any number of ways. For example:
  *
  * ```ts
- * const subscription = r(
+ * const subscription = rx(
  *   of(1, 2, 3),
  *   source => source.subscribe(x => console.log(x)),
  * );
  *
  * // or even something like this:
- * const promise = r(
+ * const promise = rx(
  *   of(1, 2, 3),
  *   async (source) => {
  *     const result = [];
@@ -106,8 +108,11 @@ export function rx<T, A, B, C, D, E, F, G, H, I>(
  *   },
  * });
  * ````
+ *
+ * @param source Any valid observable source.
+ * @param fns Any number of unary functions, starting with a unary function that accepts an observable as its only argument.
+ * @returns The result of the last function, or an observable if no functions are provided for the second argument and beyond.
  */
-export function rx(...args: unknown[]): unknown {
-  const [source, ...fns] = args as [ObservableInput<unknown>, ...UnaryFunction<any, any>[]];
+export function rx(source: ObservableInput<unknown>, ...fns: UnaryFunction<any, unknown>[]): unknown {
   return pipeFromArray(fns)(from(source));
 }
