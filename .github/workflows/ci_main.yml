@@ -31,8 +31,7 @@ jobs:
       - name: build
         run: npm run build:package
       - name: test
-        run: |
-          npm test
+        run: npm test
       - name: dtslint
         run: npm run dtslint
       - name: import
