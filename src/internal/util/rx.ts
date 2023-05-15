@@ -76,7 +76,7 @@ export function rx<T, A, B, C, D, E, F, G, H, I>(
  * all functions have been called, and the result of the last function is returned.
  *
  * This means it can be used for anything involving unary functions, just so long as the first unary function accepts an observable as its argument,
- * and as long as the first argument to `r()` is a valid {@link ObservableInput}.
+ * and as long as the first argument to `rx()` is a valid {@link ObservableInput}.
  *
  * This is the same as an ordinary functional {@link pipe}, except it has an implicit `from` as the second argument.
  *
