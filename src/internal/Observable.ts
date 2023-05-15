@@ -313,7 +313,7 @@ export class Observable<T> implements Subscribable<T> {
     op6: UnaryFunction<E, F>,
     op7: UnaryFunction<F, G>,
     op8: UnaryFunction<G, H>,
-    op9: UnaryFunction<H, Observable<I>>,
+    op9: UnaryFunction<H, I>,
     ...operations: OperatorFunction<any, any>[]
   ): Observable<unknown>;
   pipe<A, B, C, D, E, F, G, H, I>(
