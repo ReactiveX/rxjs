@@ -4,7 +4,7 @@ import { AnonymousSubject } from 'rxjs/internal/Subject';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
-import { OperatorSubscriber } from 'rxjs/internal/operators/OperatorSubscriber';
+import { createOperatorSubscriber } from 'rxjs/internal/operators/OperatorSubscriber';
 
 /** @test {Subject} */
 describe('Subject', () => {
@@ -733,7 +733,7 @@ describe('Subject', () => {
     const subject = new Subject<number>();
     const destination = new Subscriber();
     const results: any[] = [];
-    const subscriber = new OperatorSubscriber(destination, (value) => {
+    const subscriber = createOperatorSubscriber(destination, (value) => {
       results.push(value);
     }, () => {
       results.push('complete');
