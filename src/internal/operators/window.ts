@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { OperatorFunction, ObservableInput } from '../types';
 import { Subject } from '../Subject';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { noop } from '../util/noop';
 import { from } from '../observable/from';
 
@@ -51,40 +51,40 @@ import { from } from '../observable/from';
  */
 export function window<T>(windowBoundaries: ObservableInput<any>): OperatorFunction<T, Observable<T>> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let windowSubject: Subject<T> = new Subject<T>();
 
-      subscriber.next(windowSubject.asObservable());
+      destination.next(windowSubject.asObservable());
 
       const errorHandler = (err: any) => {
         windowSubject.error(err);
-        subscriber.error(err);
+        destination.error(err);
       };
 
       // Subscribe to our source
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value) => windowSubject?.next(value),
-          () => {
+        operate({
+          destination,
+          next: (value) => windowSubject?.next(value),
+          complete: () => {
             windowSubject.complete();
-            subscriber.complete();
+            destination.complete();
           },
-          errorHandler
-        )
+          error: errorHandler,
+        })
       );
 
       // Subscribe to the window boundaries.
       from(windowBoundaries).subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          () => {
+        operate({
+          destination,
+          next: () => {
             windowSubject.complete();
-            subscriber.next((windowSubject = new Subject()));
+            destination.next((windowSubject = new Subject()));
           },
-          noop,
-          errorHandler
-        )
+          complete: noop,
+          error: errorHandler,
+        })
       );
 
       return () => {
