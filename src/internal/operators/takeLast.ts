@@ -1,7 +1,7 @@
 import { EMPTY } from '../observable/empty';
 import { MonoTypeOperatorFunction } from '../types';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 /**
  * Waits for the source to complete, then emits the last N values from the source,
@@ -46,18 +46,18 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
   return count <= 0
     ? () => EMPTY
     : (source) =>
-        new Observable((subscriber) => {
+        new Observable((destination) => {
           // This is a ring buffer that will hold our values
           let ring = new Array<T>(count);
           // This counter is how we track where we are at in the ring buffer.
           let counter = 0;
           source.subscribe(
-            createOperatorSubscriber(
-              subscriber,
-              (value) => {
+            operate({
+              destination,
+              next: (value) => {
                 ring[counter++ % count] = value;
               },
-              () => {
+              complete: () => {
                 // We need to loop through our ring buffer.
                 // If we haven't filled the buffer yet, we can start at zero.
                 const start = count <= counter ? counter : 0;
@@ -69,18 +69,16 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
                   // through our ring buffer, starting at the `start` index we
                   // found above. The `% count` will "wrap" us around to read
                   // the remaining values, if necessary.
-                  subscriber.next(ring[(start + n) % count]);
+                  destination.next(ring[(start + n) % count]);
                 }
                 // All done. This will also trigger clean up.
-                subscriber.complete();
+                destination.complete();
               },
-              // Errors are passed through to the consumer
-              undefined,
-              () => {
+              finalize: () => {
                 // During finalization release the values in our buffer.
                 ring = null!;
-              }
-            )
+              },
+            })
           );
         });
 }
