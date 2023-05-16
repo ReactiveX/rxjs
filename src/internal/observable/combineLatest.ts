@@ -1,10 +1,9 @@
 import { Observable } from '../Observable';
 import { ObservableInput, ObservedValueOf, ObservableInputTuple } from '../types';
 import { arrayOrObject } from '../util/argsArgArrayOrObject';
-import { Subscriber } from '../Subscriber';
+import { Subscriber, operate } from '../Subscriber';
 import { identity } from '../util/identity';
 import { createObject } from '../util/createObject';
-import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
 import { AnyCatcher } from '../AnyCatcher';
 import { EMPTY } from './empty';
 import { from } from './from';
@@ -196,7 +195,7 @@ export function combineLatest<O extends ObservableInput<any>, R>(
 }
 
 export function combineLatestInit(observables: ObservableInput<any>[], valueTransform: (values: any[]) => any = identity) {
-  return (subscriber: Subscriber<any>) => {
+  return (destination: Subscriber<any>) => {
     const { length } = observables;
     // A store for the values each observable has emitted so far. We match observable to value on index.
     const values = new Array(length);
@@ -213,9 +212,9 @@ export function combineLatestInit(observables: ObservableInput<any>[], valueTran
       const source = from(observables[i]);
       let hasFirstValue = false;
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value) => {
+        operate({
+          destination,
+          next: (value) => {
             // When we get a value, record it in our set of values.
             values[i] = value;
             if (!hasFirstValue) {
@@ -226,17 +225,17 @@ export function combineLatestInit(observables: ObservableInput<any>[], valueTran
             if (!remainingFirstValues) {
               // We're not waiting for any more
               // first values, so we can emit!
-              subscriber.next(valueTransform(Array.from(values)));
+              destination.next(valueTransform(Array.from(values)));
             }
           },
-          () => {
+          complete: () => {
             if (!--active) {
               // We only complete the result if we have no more active
               // inner observables.
-              subscriber.complete();
+              destination.complete();
             }
-          }
-        )
+          },
+        })
       );
     }
   };
