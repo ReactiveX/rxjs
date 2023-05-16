@@ -1,8 +1,7 @@
-import { Subscriber } from '../Subscriber';
+import { Subscriber, operate } from '../Subscriber';
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { Observable } from '../Observable';
 import { noop } from '../util/noop';
-import { createOperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 
 /**
@@ -65,7 +64,7 @@ import { from } from '../observable/from';
  */
 export function debounce<T>(durationSelector: (value: T) => ObservableInput<any>): MonoTypeOperatorFunction<T> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let hasValue = false;
       let lastValue: T | null = null;
       // The subscriber/subscription for the current debounce, if there is one.
@@ -82,14 +81,14 @@ export function debounce<T>(durationSelector: (value: T) => ObservableInput<any>
           hasValue = false;
           const value = lastValue!;
           lastValue = null;
-          subscriber.next(value);
+          destination.next(value);
         }
       };
 
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value: T) => {
+        operate({
+          destination,
+          next: (value: T) => {
             // Cancel any pending debounce duration. We don't
             // need to null it out here yet tho, because we're just going
             // to create another one in a few lines.
@@ -98,23 +97,21 @@ export function debounce<T>(durationSelector: (value: T) => ObservableInput<any>
             lastValue = value;
             // Capture our duration subscriber, so we can unsubscribe it when we're notified
             // and we're going to emit the value.
-            durationSubscriber = createOperatorSubscriber(subscriber, emit, noop);
+            durationSubscriber = operate({ destination, next: emit, complete: noop });
             // Subscribe to the duration.
             from(durationSelector(value)).subscribe(durationSubscriber);
           },
-          () => {
+          complete: () => {
             // Source completed.
             // Emit any pending debounced values then complete
             emit();
-            subscriber.complete();
+            destination.complete();
           },
-          // Pass all errors through to consumer
-          undefined,
-          () => {
+          finalize: () => {
             // Finalization.
             lastValue = durationSubscriber = null;
-          }
-        )
+          },
+        })
       );
     });
 }
