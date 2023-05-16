@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { pipe } from 'rxjs';
+import { map, Observable, pipe, rx } from 'rxjs';
 
 describe('pipe', () => {
   it('should exist', () => {

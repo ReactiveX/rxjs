@@ -1,5 +1,4 @@
-import { Observable, of, OperatorFunction } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
+import { Observable, of, OperatorFunction, map, filter } from 'rxjs';
 
 function a<I extends string, O extends string>(input: I, output: O): OperatorFunction<I, O>;
 function a<I, O extends string>(output: O): OperatorFunction<I, O>;
@@ -30,7 +29,7 @@ function a<I, O extends string>(output: O): OperatorFunction<I, O>;
  * @param {string} output The `OperatorFunction` output type parameter
  */
 function a<I, O extends string>(inputOrOutput: I | O, output?: O): OperatorFunction<I, O> {
-  return mapTo<I, O>(output === undefined ? inputOrOutput as O : output);
+  return map(() => output === undefined ? inputOrOutput as O : output);
 }
 
 describe('pipe', () => {
@@ -126,4 +125,10 @@ describe('pipe', () => {
     const customOperator = () => <T>(a: Observable<T>) => a;
     const o = of('foo').pipe(customOperator()); // $ExpectType Observable<string>
   });
+
+  it('should infer properly for any reasonable pipe chain', () => {
+    const o1 = of('foo').pipe(source => source.toString(), s => s.length, n => n + 1); // $ExpectType number
+    const o2 = of(123).pipe(map(n => n + '?'), source => source.subscribe()); // $ExpectType Subscription
+    const o3 = of('test').pipe(map(n => n + ':' + n), filter(n => n < 30)); // $ExpectError
+  })
 });
