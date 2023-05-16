@@ -4,7 +4,7 @@ import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
@@ -65,31 +65,36 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  */
 export function retryWhen<T>(notifier: (errors: Observable<any>) => ObservableInput<any>): MonoTypeOperatorFunction<T> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let innerSub: Subscription | null;
       let syncResub = false;
       let errors$: Subject<any>;
 
       const subscribeForRetryWhen = () => {
         innerSub = source.subscribe(
-          createOperatorSubscriber(subscriber, undefined, undefined, (err) => {
-            if (!errors$) {
-              errors$ = new Subject();
-              from(notifier(errors$)).subscribe(
-                createOperatorSubscriber(subscriber, () =>
-                  // If we have an innerSub, this was an asynchronous call, kick off the retry.
-                  // Otherwise, if we don't have an innerSub yet, that's because the inner subscription
-                  // call hasn't even returned yet. We've arrived here synchronously.
-                  // So we flag that we want to resub, such that we can ensure finalization
-                  // happens before we resubscribe.
-                  innerSub ? subscribeForRetryWhen() : (syncResub = true)
-                )
-              );
-            }
-            if (errors$) {
-              // We have set up the notifier without error.
-              errors$.next(err);
-            }
+          operate({
+            destination,
+            error: (err) => {
+              if (!errors$) {
+                errors$ = new Subject();
+                from(notifier(errors$)).subscribe(
+                  operate({
+                    destination,
+                    next: () =>
+                      // If we have an innerSub, this was an asynchronous call, kick off the retry.
+                      // Otherwise, if we don't have an innerSub yet, that's because the inner subscription
+                      // call hasn't even returned yet. We've arrived here synchronously.
+                      // So we flag that we want to resub, such that we can ensure finalization
+                      // happens before we resubscribe.
+                      innerSub ? subscribeForRetryWhen() : (syncResub = true),
+                  })
+                );
+              }
+              if (errors$) {
+                // We have set up the notifier without error.
+                errors$.next(err);
+              }
+            },
           })
         );
 
