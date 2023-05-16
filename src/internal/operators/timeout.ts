@@ -4,7 +4,7 @@ import { isValidDate } from '../util/isDate';
 import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
 import { from } from '../observable/from';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { executeSchedule } from '../util/executeSchedule';
 
 export interface TimeoutConfig<T, O extends ObservableInput<unknown> = ObservableInput<T>, M = unknown> {
@@ -303,7 +303,7 @@ export function timeout<T, O extends ObservableInput<any>, M>(
   }
 
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       // This subscription encapsulates our subscription to the
       // source for this operator. We're capturing it separately,
       // because if there is a `with` observable to fail over to,
@@ -321,7 +321,7 @@ export function timeout<T, O extends ObservableInput<any>, M>(
       let seen = 0;
       const startTimer = (delay: number) => {
         timerSubscription = executeSchedule(
-          subscriber,
+          destination,
           scheduler,
           () => {
             try {
@@ -332,9 +332,9 @@ export function timeout<T, O extends ObservableInput<any>, M>(
                   lastValue,
                   seen,
                 })
-              ).subscribe(subscriber);
+              ).subscribe(destination);
             } catch (err) {
-              subscriber.error(err);
+              destination.error(err);
             }
           },
           delay
@@ -342,28 +342,26 @@ export function timeout<T, O extends ObservableInput<any>, M>(
       };
 
       originalSourceSubscription = source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value: T) => {
+        operate({
+          destination,
+          next: (value: T) => {
             // clear the timer so we can emit and start another one.
             timerSubscription?.unsubscribe();
             seen++;
             // Emit
-            subscriber.next((lastValue = value));
+            destination.next((lastValue = value));
             // null | undefined are both < 0. Thanks, JavaScript.
             each! > 0 && startTimer(each!);
           },
-          undefined,
-          undefined,
-          () => {
+          finalize: () => {
             if (!timerSubscription?.closed) {
               timerSubscription?.unsubscribe();
             }
             // Be sure not to hold the last value in memory after unsubscription
             // it could be quite large.
             lastValue = null;
-          }
-        )
+          },
+        })
       );
 
       // Intentionally terse code.
