@@ -2,7 +2,7 @@ import { Subscription } from '../Subscription';
 import { EMPTY } from '../observable/empty';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { from } from '../observable/from';
 import { timer } from '../observable/timer';
 
@@ -128,7 +128,7 @@ export function repeat<T>(countOrConfig?: number | RepeatConfig): MonoTypeOperat
   return count <= 0
     ? () => EMPTY
     : (source) =>
-        new Observable((subscriber) => {
+        new Observable((destination) => {
           let soFar = 0;
           let sourceSub: Subscription | null;
 
@@ -137,9 +137,12 @@ export function repeat<T>(countOrConfig?: number | RepeatConfig): MonoTypeOperat
             sourceSub = null;
             if (delay != null) {
               const notifier = typeof delay === 'number' ? timer(delay) : from(delay(soFar));
-              const notifierSubscriber = createOperatorSubscriber(subscriber, () => {
-                notifierSubscriber.unsubscribe();
-                subscribeToSource();
+              const notifierSubscriber = operate({
+                destination,
+                next: () => {
+                  notifierSubscriber.unsubscribe();
+                  subscribeToSource();
+                },
               });
               notifier.subscribe(notifierSubscriber);
             } else {
@@ -150,16 +153,19 @@ export function repeat<T>(countOrConfig?: number | RepeatConfig): MonoTypeOperat
           const subscribeToSource = () => {
             let syncUnsub = false;
             sourceSub = source.subscribe(
-              createOperatorSubscriber(subscriber, undefined, () => {
-                if (++soFar < count) {
-                  if (sourceSub) {
-                    resubscribe();
+              operate({
+                destination,
+                complete: () => {
+                  if (++soFar < count) {
+                    if (sourceSub) {
+                      resubscribe();
+                    } else {
+                      syncUnsub = true;
+                    }
                   } else {
-                    syncUnsub = true;
+                    destination.complete();
                   }
-                } else {
-                  subscriber.complete();
-                }
+                },
               })
             );
 
