@@ -2,7 +2,7 @@ import { from } from '../observable/from';
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { Observable } from '../Observable';
 import { noop } from '../util/noop';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 /**
  * Emits the most recently emitted value from the source Observable whenever
@@ -46,28 +46,31 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  */
 export function sample<T>(notifier: ObservableInput<any>): MonoTypeOperatorFunction<T> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let hasValue = false;
       let lastValue: T | null = null;
       source.subscribe(
-        createOperatorSubscriber(subscriber, (value) => {
-          hasValue = true;
-          lastValue = value;
+        operate({
+          destination,
+          next: (value) => {
+            hasValue = true;
+            lastValue = value;
+          },
         })
       );
       from(notifier).subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          () => {
+        operate({
+          destination,
+          next: () => {
             if (hasValue) {
               hasValue = false;
               const value = lastValue!;
               lastValue = null;
-              subscriber.next(value);
+              destination.next(value);
             }
           },
-          noop
-        )
+          complete: noop,
+        })
       );
     });
 }
