@@ -2,7 +2,7 @@ import { Subscription } from '../Subscription';
 import { OperatorFunction, ObservableInput } from '../types';
 import { Observable } from '../Observable';
 import { from } from '../observable/from';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { noop } from '../util/noop';
 import { arrRemove } from '../util/arrRemove';
 
@@ -54,14 +54,14 @@ export function bufferToggle<T, O>(
   closingSelector: (value: O) => ObservableInput<any>
 ): OperatorFunction<T, T[]> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       const buffers: T[][] = [];
 
       // Subscribe to the openings notifier first
       from(openings).subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (openValue) => {
+        operate({
+          destination,
+          next: (openValue) => {
             const buffer: T[] = [];
             buffers.push(buffer);
             // We use this composite subscription, so that
@@ -70,34 +70,34 @@ export function bufferToggle<T, O>(
 
             const emitBuffer = () => {
               arrRemove(buffers, buffer);
-              subscriber.next(buffer);
+              destination.next(buffer);
               closingSubscription.unsubscribe();
             };
 
             // The line below will add the subscription to the parent subscriber *and* the closing subscription.
-            closingSubscription.add(from(closingSelector(openValue)).subscribe(createOperatorSubscriber(subscriber, emitBuffer, noop)));
+            closingSubscription.add(from(closingSelector(openValue)).subscribe(operate({ destination, next: emitBuffer, complete: noop })));
           },
-          noop
-        )
+          complete: noop,
+        })
       );
 
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value) => {
+        operate({
+          destination,
+          next: (value) => {
             // Value from our source. Add it to all pending buffers.
             for (const buffer of buffers) {
               buffer.push(value);
             }
           },
-          () => {
+          complete: () => {
             // Source complete. Emit all pending buffers.
             while (buffers.length > 0) {
-              subscriber.next(buffers.shift()!);
+              destination.next(buffers.shift()!);
             }
-            subscriber.complete();
-          }
-        )
+            destination.complete();
+          },
+        })
       );
     });
 }
