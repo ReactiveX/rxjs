@@ -1,7 +1,7 @@
 import { Subscription } from '../Subscription';
 import { OperatorFunction, SchedulerLike } from '../types';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { arrRemove } from '../util/arrRemove';
 import { asyncScheduler } from '../scheduler/async';
 import { popScheduler } from '../util/args';
@@ -78,7 +78,7 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
   const maxBufferSize = (otherArgs[1] as number) || Infinity;
 
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       // The active buffers, their related subscriptions, and removal functions.
       let bufferRecords: { buffer: T[]; subs: Subscription }[] | null = [];
       // If true, it means that every time we emit a buffer, we want to start a new buffer
@@ -95,7 +95,7 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
         const { buffer, subs } = record;
         subs.unsubscribe();
         arrRemove(bufferRecords, record);
-        subscriber.next(buffer);
+        destination.next(buffer);
         restartOnEmit && startBuffer();
       };
 
@@ -107,7 +107,7 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
       const startBuffer = () => {
         if (bufferRecords) {
           const subs = new Subscription();
-          subscriber.add(subs);
+          destination.add(subs);
           const buffer: T[] = [];
           const record = {
             buffer,
@@ -122,16 +122,16 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
         // The user passed both a bufferTimeSpan (required), and a creation interval
         // That means we need to start new buffers on the interval, and those buffers need
         // to wait the required time span before emitting.
-        executeSchedule(subscriber, scheduler, startBuffer, bufferCreationInterval, true);
+        executeSchedule(destination, scheduler, startBuffer, bufferCreationInterval, true);
       } else {
         restartOnEmit = true;
       }
 
       startBuffer();
 
-      const bufferTimeSubscriber = createOperatorSubscriber(
-        subscriber,
-        (value: T) => {
+      const bufferTimeSubscriber = operate({
+        destination,
+        next: (value: T) => {
           // Copy the records, so if we need to remove one we
           // don't mutate the array. It's hard, but not impossible to
           // set up a buffer time that could mutate the array and
@@ -145,21 +145,19 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
             maxBufferSize <= buffer.length && emit(record);
           }
         },
-        () => {
+        complete: () => {
           // The source completed, emit all of the active
           // buffers we have before we complete.
           while (bufferRecords?.length) {
-            subscriber.next(bufferRecords.shift()!.buffer);
+            destination.next(bufferRecords.shift()!.buffer);
           }
           bufferTimeSubscriber?.unsubscribe();
-          subscriber.complete();
-          subscriber.unsubscribe();
+          destination.complete();
+          destination.unsubscribe();
         },
-        // Pass all errors through to consumer.
-        undefined,
         // Clean up
-        () => (bufferRecords = null)
-      );
+        finalize: () => (bufferRecords = null),
+      });
 
       source.subscribe(bufferTimeSubscriber);
     });
