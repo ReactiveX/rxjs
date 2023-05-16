@@ -1,7 +1,7 @@
 import { MonoTypeOperatorFunction, Observer } from '../types';
 import { isFunction } from '../util/isFunction';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { identity } from '../util/identity';
 
 /**
@@ -161,33 +161,33 @@ export function tap<T>(observerOrNext?: Partial<TapObserver<T>> | ((value: T) =>
 
   return tapObserver
     ? (source) =>
-        new Observable((subscriber) => {
+        new Observable((destination) => {
           tapObserver.subscribe?.();
           let isUnsub = true;
           source.subscribe(
-            createOperatorSubscriber(
-              subscriber,
-              (value) => {
+            operate({
+              destination,
+              next: (value) => {
                 tapObserver.next?.(value);
-                subscriber.next(value);
+                destination.next(value);
               },
-              () => {
-                isUnsub = false;
-                tapObserver.complete?.();
-                subscriber.complete();
-              },
-              (err) => {
+              error: (err) => {
                 isUnsub = false;
                 tapObserver.error?.(err);
-                subscriber.error(err);
+                destination.error(err);
               },
-              () => {
+              complete: () => {
+                isUnsub = false;
+                tapObserver.complete?.();
+                destination.complete();
+              },
+              finalize: () => {
                 if (isUnsub) {
                   tapObserver.unsubscribe?.();
                 }
                 tapObserver.finalize?.();
-              }
-            )
+              },
+            })
           );
         })
     : // Tap was called with no valid tap observer or handler
