@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { ObservableInputTuple } from '../types';
 import { argsOrArgArray } from '../util/argsOrArgArray';
-import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { noop } from '../util/noop';
 import { from } from './from';
 
@@ -75,7 +75,7 @@ export function onErrorResumeNext<A extends readonly unknown[]>(
 ): Observable<A[number]> {
   const nextSources: ObservableInputTuple<A> = argsOrArgArray(sources) as any;
 
-  return new Observable((subscriber) => {
+  return new Observable((destination) => {
     let sourceIndex = 0;
     const subscribeNext = () => {
       if (sourceIndex < nextSources.length) {
@@ -86,11 +86,11 @@ export function onErrorResumeNext<A extends readonly unknown[]>(
           subscribeNext();
           return;
         }
-        const innerSubscriber = createOperatorSubscriber(subscriber, undefined, noop, noop);
+        const innerSubscriber = operate({ destination, error: noop, complete: noop });
         nextSource.subscribe(innerSubscriber);
         innerSubscriber.add(subscribeNext);
       } else {
-        subscriber.complete();
+        destination.complete();
       }
     };
     subscribeNext();
