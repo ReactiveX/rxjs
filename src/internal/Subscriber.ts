@@ -251,6 +251,26 @@ export interface OperateConfig<In, Out> extends SubscriberOverrides<In> {
   destination: Subscriber<Out>;
 }
 
+/**
+ * Creates a new {@link Subscriber} instance that passes notifications on to the
+ * supplied `destination`. The overrides provided in the `config` argument for
+ * `next`, `error`, and `complete` will be called in such a way that any
+ * errors are caught and forwarded to the destination's `error` handler. The returned
+ * `Subscriber` will be "chained" to the `destination` such that when `unsubscribe` is
+ * called on the `destination`, the returned `Subscriber` will also be unsubscribed.
+ *
+ * Advanced: This ensures that subscriptions are properly wired up prior to starting the
+ * subcription logic. This prevents "synchronous firehose" scenarios where an
+ * inner observable from a flattening operation cannot be stopped by a downstream
+ * terminal operator like `take`.
+ *
+ * This is a utility designed to be used to create new operators for observables.
+ *
+ * For examples, please see our code base.
+ *
+ * @param config The configuration for creating a new subscriber for an operator.
+ * @returns A new subscriber that is chained to the destination.
+ */
 export function operate<In, Out>({ destination, ...subscriberOverrides }: OperateConfig<In, Out>) {
   return new Subscriber(destination, subscriberOverrides);
 }
