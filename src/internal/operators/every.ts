@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { Falsy, OperatorFunction } from '../types';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 export function every<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
@@ -45,22 +45,22 @@ export function every<T>(
   thisArg?: any
 ): OperatorFunction<T, boolean> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let index = 0;
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value) => {
+        operate({
+          destination,
+          next: (value) => {
             if (!predicate.call(thisArg, value, index++, source)) {
-              subscriber.next(false);
-              subscriber.complete();
+              destination.next(false);
+              destination.complete();
             }
           },
-          () => {
-            subscriber.next(true);
-            subscriber.complete();
-          }
-        )
+          complete: () => {
+            destination.next(true);
+            destination.complete();
+          },
+        })
       );
     });
 }
