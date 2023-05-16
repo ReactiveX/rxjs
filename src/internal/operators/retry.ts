@@ -1,7 +1,7 @@
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { identity } from '../util/identity';
 import { timer } from '../observable/timer';
 import { from } from '../observable/from';
@@ -95,24 +95,22 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
   return count <= 0
     ? identity
     : (source) =>
-        new Observable((subscriber) => {
+        new Observable((destination) => {
           let soFar = 0;
           let innerSub: Subscription | null;
           const subscribeForRetry = () => {
             let syncUnsub = false;
             innerSub = source.subscribe(
-              createOperatorSubscriber(
-                subscriber,
-                (value) => {
+              operate({
+                destination,
+                next: (value) => {
                   // If we're resetting on success
                   if (resetOnSuccess) {
                     soFar = 0;
                   }
-                  subscriber.next(value);
+                  destination.next(value);
                 },
-                // Completions are passed through to consumer.
-                undefined,
-                (err) => {
+                error: (err) => {
                   if (soFar++ < count) {
                     // We are still under our retry count
                     const resub = () => {
@@ -130,21 +128,21 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
                       // They gave us a number, use a timer, otherwise, it's a function,
                       // and we're going to call it to get a notifier.
                       const notifier = typeof delay === 'number' ? timer(delay) : from(delay(err, soFar));
-                      const notifierSubscriber = createOperatorSubscriber(
-                        subscriber,
-                        () => {
+                      const notifierSubscriber = operate({
+                        destination,
+                        next: () => {
                           // After we get the first notification, we
                           // unsubscribe from the notifier, because we don't want anymore
                           // and we resubscribe to the source.
                           notifierSubscriber.unsubscribe();
                           resub();
                         },
-                        () => {
+                        complete: () => {
                           // The notifier completed without emitting.
                           // The author is telling us they want to complete.
-                          subscriber.complete();
-                        }
-                      );
+                          destination.complete();
+                        },
+                      });
                       notifier.subscribe(notifierSubscriber);
                     } else {
                       // There was no notifier given. Just resub immediately.
@@ -153,10 +151,10 @@ export function retry<T>(configOrCount: number | RetryConfig = Infinity): MonoTy
                   } else {
                     // We're past our maximum number of retries.
                     // Just send along the error.
-                    subscriber.error(err);
+                    destination.error(err);
                   }
-                }
-              )
+                },
+              })
             );
             if (syncUnsub) {
               innerSub.unsubscribe();
