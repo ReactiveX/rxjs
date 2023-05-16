@@ -1,8 +1,7 @@
-import { Subscriber } from '../Subscriber';
+import { Subscriber, operate } from '../Subscriber';
 import { ObservableInput, OperatorFunction } from '../types';
 import { Observable } from '../Observable';
 import { noop } from '../util/noop';
-import { createOperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 
 /**
@@ -67,7 +66,13 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
         b && subscriber.next(b);
 
         // Get a new closing notifier and subscribe to it.
-        from(closingSelector()).subscribe((closingSubscriber = createOperatorSubscriber(subscriber, openBuffer, noop)));
+        from(closingSelector()).subscribe(
+          (closingSubscriber = operate({
+            destination: subscriber,
+            next: openBuffer,
+            complete: noop,
+          }))
+        );
       };
 
       // Start the first buffer.
@@ -75,21 +80,19 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
 
       // Subscribe to our source.
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
+        operate({
+          destination: subscriber,
           // Add every new value to the current buffer.
-          (value) => buffer?.push(value),
+          next: (value) => buffer?.push(value),
           // When we complete, emit the buffer if we have one,
           // then complete the result.
-          () => {
+          complete: () => {
             buffer && subscriber.next(buffer);
             subscriber.complete();
           },
-          // Pass all errors through to consumer.
-          undefined,
           // Release memory on finalization
-          () => (buffer = closingSubscriber = null!)
-        )
+          finalize: () => (buffer = closingSubscriber = null!),
+        })
       );
     });
 }

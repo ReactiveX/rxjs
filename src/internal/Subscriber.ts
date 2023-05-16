@@ -137,7 +137,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.closed) {
       this.isStopped = true;
       super.unsubscribe();
-      this.destination = null!;
     }
   }
 
