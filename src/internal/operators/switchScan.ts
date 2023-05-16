@@ -1,7 +1,7 @@
 import { ObservableInput, ObservedValueOf, OperatorFunction } from '../types';
 import { switchMap } from './switchMap';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 // TODO: Generate a marble diagram for these docs.
 
@@ -27,7 +27,7 @@ export function switchScan<T, R, O extends ObservableInput<any>>(
   seed: R
 ): OperatorFunction<T, ObservedValueOf<O>> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       // The state we will keep up to date to pass into our
       // accumulator function at each new value from the source.
       let state = seed;
@@ -40,10 +40,13 @@ export function switchScan<T, R, O extends ObservableInput<any>>(
         // our previous state, the value and the index.
         (value: T, index) => accumulator(state, value, index)
       )(source).subscribe(
-        createOperatorSubscriber(subscriber, (innerValue) => {
-          // Update our state with the flattened value.
-          state = innerValue;
-          subscriber.next(innerValue);
+        operate({
+          destination,
+          next: (innerValue) => {
+            // Update our state with the flattened value.
+            state = innerValue;
+            destination.next(innerValue);
+          },
         })
       );
 
