@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { from } from '../observable/from';
 import { Subject } from '../Subject';
 import { ObservableInput, Observer, OperatorFunction, SubjectLike } from '../types';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 export interface BasicGroupByOptions<K, T> {
   element?: undefined;
@@ -144,7 +144,7 @@ export function groupBy<T, K, R>(
   connector?: () => SubjectLike<any>
 ): OperatorFunction<T, GroupedObservable<K, R>> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let element: ((value: any) => any) | void;
       if (!elementOrOptions || typeof elementOrOptions === 'function') {
         element = elementOrOptions as (value: any) => any;
@@ -158,7 +158,7 @@ export function groupBy<T, K, R>(
       // Used for notifying all groups and the subscriber in the same way.
       const notify = (cb: (group: Observer<any>) => void) => {
         groups.forEach(cb);
-        cb(subscriber);
+        cb(destination);
       };
 
       // Used to handle errors from the source, AND errors that occur during the
@@ -172,9 +172,9 @@ export function groupBy<T, K, R>(
       // in cases where a user unsubscribes from the main resulting subscription, but
       // still has groups from this subscription subscribed and would expect values from it
       // Consider:  `source.pipe(groupBy(fn), take(2))`.
-      const groupBySourceSubscriber = createOperatorSubscriber(
-        subscriber,
-        (value: T) => {
+      const groupBySourceSubscriber = operate({
+        destination,
+        next: (value: T) => {
           // Because we have to notify all groups of any errors that occur in here,
           // we have to add our own try/catch to ensure that those errors are propagated.
           // OperatorSubscriber will only send the error to the main subscriber.
@@ -190,30 +190,24 @@ export function groupBy<T, K, R>(
               // because the grouped observable has special semantics around reference counting
               // to ensure we don't sever our connection to the source prematurely.
               const grouped = createGroupedObservable(key, group);
-              subscriber.next(grouped);
+              destination.next(grouped);
 
               if (duration) {
-                const durationSubscriber = createOperatorSubscriber(
+                const durationSubscriber = operate({
                   // Providing the group here ensures that it is disposed of -- via `unsubscribe` --
                   // when the duration subscription is torn down. That is important, because then
                   // if someone holds a handle to the grouped observable and tries to subscribe to it
                   // after the connection to the source has been severed, they will get an
                   // `ObjectUnsubscribedError` and know they can't possibly get any notifications.
-                  group as any,
-                  () => {
+                  destination: group as any,
+                  next: () => {
                     // Our duration notified! We can complete the group.
                     // The group will be removed from the map in the finalization phase.
                     group!.complete();
                     durationSubscriber?.unsubscribe();
                   },
-                  // Completions are also sent to the group, but just the group.
-                  undefined,
-                  // Errors on the duration subscriber are sent to the group
-                  // but only the group. They are not sent to the main subscription.
-                  undefined,
-                  // Finalization: Remove this group from our map.
-                  () => groups.delete(key)
-                );
+                  finalize: () => groups.delete(key),
+                });
 
                 // Start our duration notifier.
                 groupBySourceSubscriber.add(from(duration(grouped)).subscribe(durationSubscriber));
@@ -226,16 +220,16 @@ export function groupBy<T, K, R>(
             handleError(err);
           }
         },
-        // Source completes.
-        () => notify((consumer) => consumer.complete()),
         // Error from the source.
-        handleError,
+        error: handleError,
+        // Source completes.
+        complete: () => notify((consumer) => consumer.complete()),
         // Free up memory.
         // When the source subscription is _finally_ torn down, release the subjects and keys
         // in our groups Map, they may be quite large and we don't want to keep them around if we
         // don't have to.
-        () => groups.clear()
-      );
+        finalize: () => groups.clear(),
+      });
 
       // Subscribe to the source
       source.subscribe(groupBySourceSubscriber);
