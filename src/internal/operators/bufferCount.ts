@@ -1,6 +1,6 @@
 import { OperatorFunction } from '../types';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { arrRemove } from '../util/arrRemove';
 
 /**
@@ -60,14 +60,14 @@ export function bufferCount<T>(bufferSize: number, startBufferEvery: number | nu
   startBufferEvery = startBufferEvery ?? bufferSize;
 
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let buffers: T[][] = [];
       let count = 0;
 
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value) => {
+        operate({
+          destination,
+          next: (value) => {
             let toEmit: T[][] | null = null;
 
             // Check to see if we need to start a buffer.
@@ -97,25 +97,23 @@ export function bufferCount<T>(bufferSize: number, startBufferEvery: number | nu
               // buffers list.
               for (const buffer of toEmit) {
                 arrRemove(buffers, buffer);
-                subscriber.next(buffer);
+                destination.next(buffer);
               }
             }
           },
-          () => {
+          complete: () => {
             // When the source completes, emit all of our
             // active buffers.
             for (const buffer of buffers) {
-              subscriber.next(buffer);
+              destination.next(buffer);
             }
-            subscriber.complete();
+            destination.complete();
           },
-          // Pass all errors through to consumer.
-          undefined,
-          () => {
+          finalize: () => {
             // Clean up our memory when we finalize
             buffers = null!;
-          }
-        )
+          },
+        })
       );
     });
 }
