@@ -3,7 +3,7 @@ import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 import { ObservableInput, OperatorFunction } from '../types';
 import { from } from '../observable/from';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { noop } from '../util/noop';
 import { arrRemove } from '../util/arrRemove';
 
@@ -57,20 +57,20 @@ export function windowToggle<T, O>(
   closingSelector: (openValue: O) => ObservableInput<any>
 ): OperatorFunction<T, Observable<T>> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       const windows: Subject<T>[] = [];
 
       const handleError = (err: any) => {
         while (0 < windows.length) {
           windows.shift()!.error(err);
         }
-        subscriber.error(err);
+        destination.error(err);
       };
 
       from(openings).subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (openValue) => {
+        operate({
+          destination,
+          next: (openValue) => {
             const window = new Subject<T>();
             windows.push(window);
             const closingSubscription = new Subscription();
@@ -91,19 +91,28 @@ export function windowToggle<T, O>(
             // TODO: We should probably make this `.asObservable()`, but we've historically
             // had windows throw an `ObjectUnsubscribedError` if you try to subscribe to them
             // late. We should probably change that: (https://github.com/ReactiveX/rxjs/issues/7200)
-            subscriber.next(window);
+            destination.next(window);
 
-            closingSubscription.add(closingNotifier.subscribe(createOperatorSubscriber(subscriber, closeWindow, noop, handleError)));
+            closingSubscription.add(
+              closingNotifier.subscribe(
+                operate({
+                  destination,
+                  next: closeWindow,
+                  error: handleError,
+                  complete: noop,
+                })
+              )
+            );
           },
-          noop
-        )
+          complete: noop,
+        })
       );
 
       // Subscribe to the source to get things started.
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value: T) => {
+        operate({
+          destination,
+          next: (value: T) => {
             // Copy the windows array before we emit to
             // make sure we don't have issues with reentrant code.
             const windowsCopy = windows.slice();
@@ -111,15 +120,15 @@ export function windowToggle<T, O>(
               window.next(value);
             }
           },
-          () => {
+          error: handleError,
+          complete: () => {
             // Complete all of our windows before we complete.
             while (0 < windows.length) {
               windows.shift()!.complete();
             }
-            subscriber.complete();
+            destination.complete();
           },
-          handleError,
-          () => {
+          finalize: () => {
             // Add this finalization so that all window subjects are
             // disposed of. This way, if a user tries to subscribe
             // to a window *after* the outer subscription has been unsubscribed,
@@ -128,8 +137,8 @@ export function windowToggle<T, O>(
             while (0 < windows.length) {
               windows.shift()!.unsubscribe();
             }
-          }
-        )
+          },
+        })
       );
     });
 }
