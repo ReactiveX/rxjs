@@ -3,7 +3,7 @@ import { asyncScheduler } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { Observer, OperatorFunction, SchedulerLike } from '../types';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { arrRemove } from '../util/arrRemove';
 import { popScheduler } from '../util/args';
 import { executeSchedule } from '../util/executeSchedule';
@@ -108,7 +108,7 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
   const maxWindowSize = (otherArgs[1] as number) || Infinity;
 
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       // The active windows, their related subscriptions, and removal functions.
       let windowRecords: WindowRecord<T>[] | null = [];
       // If true, it means that every time we close a window, we want to start a new window.
@@ -130,7 +130,7 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
       const startWindow = () => {
         if (windowRecords) {
           const subs = new Subscription();
-          subscriber.add(subs);
+          destination.add(subs);
           const window = new Subject<T>();
           const record = {
             window,
@@ -138,7 +138,7 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
             seen: 0,
           };
           windowRecords.push(record);
-          subscriber.next(window.asObservable());
+          destination.next(window.asObservable());
           executeSchedule(subs, scheduler, () => closeWindow(record), windowTimeSpan);
         }
       };
@@ -147,7 +147,7 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
         // The user passed both a windowTimeSpan (required), and a creation interval
         // That means we need to start new window on the interval, and those windows need
         // to wait the required time span before completing.
-        executeSchedule(subscriber, scheduler, startWindow, windowCreationInterval, true);
+        executeSchedule(destination, scheduler, startWindow, windowCreationInterval, true);
       } else {
         restartOnClose = true;
       }
@@ -168,14 +168,14 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
        */
       const terminate = (cb: (consumer: Observer<any>) => void) => {
         loop(({ window }) => cb(window));
-        cb(subscriber);
-        subscriber.unsubscribe();
+        cb(destination);
+        destination.unsubscribe();
       };
 
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value: T) => {
+        operate({
+          destination,
+          next: (value: T) => {
             // Notify all windows of the value.
             loop((record) => {
               record.window.next(value);
@@ -183,11 +183,11 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
               maxWindowSize <= ++record.seen && closeWindow(record);
             });
           },
-          // Complete the windows and the downstream subscriber and clean up.
-          () => terminate((consumer) => consumer.complete()),
           // Notify the windows and the downstream subscriber of the error and clean up.
-          (err) => terminate((consumer) => consumer.error(err))
-        )
+          error: (err) => terminate((consumer) => consumer.error(err)),
+          // Complete the windows and the downstream subscriber and clean up.
+          complete: () => terminate((consumer) => consumer.complete()),
+        })
       );
 
       // Additional finalization. This will be called when the
