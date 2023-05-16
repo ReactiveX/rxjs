@@ -3,8 +3,7 @@ import { from } from './from';
 import { Subscription } from '../Subscription';
 import { ObservableInput, ObservableInputTuple } from '../types';
 import { argsOrArgArray } from '../util/argsOrArgArray';
-import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
-import { Subscriber } from '../Subscriber';
+import { Subscriber, operate } from '../Subscriber';
 
 export function race<T extends readonly unknown[]>(inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
 export function race<T extends readonly unknown[]>(...inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
@@ -60,26 +59,29 @@ export function race<T>(...sources: (ObservableInput<T> | ObservableInput<T>[])[
  * @param sources The sources to race
  */
 export function raceInit<T>(sources: ObservableInput<T>[]) {
-  return (subscriber: Subscriber<T>) => {
+  return (destination: Subscriber<T>) => {
     let subscriptions: Subscription[] = [];
 
     // Subscribe to all of the sources. Note that we are checking `subscriptions` here
     // Is is an array of all actively "racing" subscriptions, and it is `null` after the
     // race has been won. So, if we have racer that synchronously "wins", this loop will
     // stop before it subscribes to any more.
-    for (let i = 0; subscriptions && !subscriber.closed && i < sources.length; i++) {
+    for (let i = 0; subscriptions && !destination.closed && i < sources.length; i++) {
       subscriptions.push(
         from(sources[i] as ObservableInput<T>).subscribe(
-          createOperatorSubscriber(subscriber, (value) => {
-            if (subscriptions) {
-              // We're still racing, but we won! So unsubscribe
-              // all other subscriptions that we have, except this one.
-              for (let s = 0; s < subscriptions.length; s++) {
-                s !== i && subscriptions[s].unsubscribe();
+          operate({
+            destination,
+            next: (value) => {
+              if (subscriptions) {
+                // We're still racing, but we won! So unsubscribe
+                // all other subscriptions that we have, except this one.
+                for (let s = 0; s < subscriptions.length; s++) {
+                  s !== i && subscriptions[s].unsubscribe();
+                }
+                subscriptions = null!;
               }
-              subscriptions = null!;
-            }
-            subscriber.next(value);
+              destination.next(value);
+            },
           })
         )
       );
