@@ -3,7 +3,7 @@ import { ObservedValueOf, ObservableInputTuple, ObservableInput } from '../types
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
 import { from } from './from';
 import { popResultSelector } from '../util/args';
-import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { createObject } from '../util/createObject';
 import { AnyCatcher } from '../AnyCatcher';
@@ -145,10 +145,10 @@ export function forkJoin<T extends Record<string, ObservableInput<any>>>(
 export function forkJoin(...args: any[]): Observable<any> {
   const resultSelector = popResultSelector(args);
   const { args: sources, keys } = argsArgArrayOrObject(args);
-  const result = new Observable((subscriber) => {
+  const result = new Observable((destination) => {
     const { length } = sources;
     if (!length) {
-      subscriber.complete();
+      destination.complete();
       return;
     }
     const values = new Array(length);
@@ -157,26 +157,25 @@ export function forkJoin(...args: any[]): Observable<any> {
     for (let sourceIndex = 0; sourceIndex < length; sourceIndex++) {
       let hasValue = false;
       from(sources[sourceIndex]).subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value) => {
+        operate({
+          destination,
+          next: (value) => {
             if (!hasValue) {
               hasValue = true;
               remainingEmissions--;
             }
             values[sourceIndex] = value;
           },
-          () => remainingCompletions--,
-          undefined,
-          () => {
+          complete: () => remainingCompletions--,
+          finalize: () => {
             if (!remainingCompletions || !hasValue) {
               if (!remainingEmissions) {
-                subscriber.next(keys ? createObject(keys, values) : values);
+                destination.next(keys ? createObject(keys, values) : values);
               }
-              subscriber.complete();
+              destination.complete();
             }
-          }
-        )
+          },
+        })
       );
     }
   });
