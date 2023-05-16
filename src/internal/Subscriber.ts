@@ -6,6 +6,13 @@ import { reportUnhandledError } from './util/reportUnhandledError';
 import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories';
 import { timeoutProvider } from './scheduler/timeoutProvider';
 
+export interface SubscriberOverrides<T> {
+  next?: (value: T) => void;
+  error?: (err: any) => void;
+  complete?: () => void;
+  finalize?: () => void;
+}
+
 /**
  * Implements the {@link Observer} interface and extends the
  * {@link Subscription} class. While the {@link Observer} is the public API for
@@ -20,11 +27,22 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   /** @internal */
   protected destination: Observer<T>;
 
+  /** @internal */
+  protected readonly _nextOverride: ((value: T) => void) | null = null;
+  /** @internal */
+  protected readonly _errorOverride: ((err: any) => void) | null = null;
+  /** @internal */
+  protected readonly _completeOverride: (() => void) | null = null;
+
+  constructor(destination?: Subscriber<T> | Partial<Observer<T>> | ((value: T) => void) | null);
+
+  constructor(destination: Subscriber<any> | Partial<Observer<any>> | ((value: any) => void) | null, overrides: SubscriberOverrides<T>);
+
   /**
    * Creates an instance of an RxJS Subscriber. This is the workhorse of the library.
    *
    * If another instance of Subscriber is passed in, it will automatically wire up unsubscription
-   * between this instnace and the passed in instance.
+   * between this instance and the passed in instance.
    *
    * If a partial or full observer is passed in, it will be wrapped and appropriate safeguards will be applied.
    *
@@ -32,10 +50,31 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    *
    * @param destination A subscriber, partial observer, or function that receives the next value.
    */
-  constructor(destination?: Subscriber<T> | Partial<Observer<T>> | ((value: T) => void) | null) {
-    super();
+  constructor(destination?: Subscriber<T> | Partial<Observer<T>> | ((value: T) => void) | null, overrides?: SubscriberOverrides<T>) {
+    super(overrides?.finalize);
+
     // The only way we know that error reporting safety has been applied is if we own it.
     this.destination = destination instanceof Subscriber ? destination : createSafeObserver(destination);
+
+    this._nextOverride = overrides?.next ?? null;
+    this._errorOverride = overrides?.error ?? null;
+    this._completeOverride = overrides?.complete ?? null;
+
+    // It's important - for performance reasons - that all of this class's
+    // members are initialized and that they are always initialized in the same
+    // order. This will ensure that all Subscriber instances have the
+    // same hidden class in V8. This, in turn, will help keep the number of
+    // hidden classes involved in property accesses within the base class as
+    // low as possible. If the number of hidden classes involved exceeds four,
+    // the property accesses will become megamorphic and performance penalties
+    // will be incurred - i.e. inline caches won't be used.
+    //
+    // The reasons for ensuring all instances have the same hidden class are
+    // further discussed in this blog post from Benedikt Meurer:
+    // https://benediktmeurer.de/2018/03/23/impact-of-polymorphism-on-component-based-frameworks-like-react/
+    this._next = this._nextOverride ? overrideNext : this._next;
+    this._error = this._errorOverride ? overrideError : this._error;
+    this._complete = this._completeOverride ? overrideComplete : this._complete;
 
     // Automatically chain subscriptions together here.
     // if destination appears to be one of our subscriptions, we'll chain it.
@@ -116,6 +155,34 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 }
 
+function overrideNext<T>(this: Subscriber<T>, value: T): void {
+  try {
+    this._nextOverride!(value);
+  } catch (err) {
+    this.destination.error(err);
+  }
+}
+
+function overrideError(this: Subscriber<unknown>, err: any): void {
+  try {
+    this._errorOverride!(err);
+  } catch (error) {
+    this.destination.error(error);
+  } finally {
+    this.unsubscribe();
+  }
+}
+
+function overrideComplete(this: Subscriber<unknown>): void {
+  try {
+    this._completeOverride!();
+  } catch (error) {
+    this.destination.error(error);
+  } finally {
+    this.unsubscribe();
+  }
+}
+
 class ConsumerObserver<T> implements Observer<T> {
   constructor(private partialObserver: Partial<Observer<T>>) {}
 
@@ -171,4 +238,12 @@ function handleStoppedNotification(notification: ObservableNotification<any>, su
 
 function hasAddAndUnsubscribe(value: any): value is Subscription {
   return value && isFunction(value.unsubscribe) && isFunction(value.add);
+}
+
+export interface OperateConfig<In, Out> extends SubscriberOverrides<In> {
+  destination: Subscriber<Out>;
+}
+
+export function operate<In, Out>({ destination, ...subscriberOverrides }: OperateConfig<In, Out>) {
+  return new Subscriber(destination, subscriberOverrides);
 }
