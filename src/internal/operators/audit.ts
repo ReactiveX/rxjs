@@ -1,9 +1,8 @@
-import { Subscriber } from '../Subscriber';
+import { Subscriber, operate } from '../Subscriber';
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
 
 import { Observable } from '../Observable';
 import { from } from '../observable/from';
-import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Ignores source values for a duration determined by another Observable, then
@@ -52,7 +51,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  */
 export function audit<T>(durationSelector: (value: T) => ObservableInput<any>): MonoTypeOperatorFunction<T> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let hasValue = false;
       let lastValue: T | null = null;
       let durationSubscriber: Subscriber<any> | null = null;
@@ -65,33 +64,37 @@ export function audit<T>(durationSelector: (value: T) => ObservableInput<any>): 
           hasValue = false;
           const value = lastValue!;
           lastValue = null;
-          subscriber.next(value);
+          destination.next(value);
         }
-        isComplete && subscriber.complete();
+        isComplete && destination.complete();
       };
 
       const cleanupDuration = () => {
         durationSubscriber = null;
-        isComplete && subscriber.complete();
+        isComplete && destination.complete();
       };
 
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value) => {
+        operate({
+          destination,
+          next: (value) => {
             hasValue = true;
             lastValue = value;
             if (!durationSubscriber) {
               from(durationSelector(value)).subscribe(
-                (durationSubscriber = createOperatorSubscriber(subscriber, endDuration, cleanupDuration))
+                (durationSubscriber = operate({
+                  destination,
+                  next: endDuration,
+                  complete: cleanupDuration,
+                }))
               );
             }
           },
-          () => {
+          complete: () => {
             isComplete = true;
-            (!hasValue || !durationSubscriber || durationSubscriber.closed) && subscriber.complete();
-          }
-        )
+            (!hasValue || !durationSubscriber || durationSubscriber.closed) && destination.complete();
+          },
+        })
       );
     });
 }
