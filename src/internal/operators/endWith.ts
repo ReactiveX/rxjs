@@ -2,7 +2,7 @@
 import { subscribeToArray } from '../observable/from';
 import { OperatorFunction, ValueFromArray } from '../types';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 /**
  * Returns an observable that will emit all values from the source, then synchronously emit
@@ -53,10 +53,13 @@ import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
  */
 export function endWith<T, A extends readonly unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       source.subscribe(
-        createOperatorSubscriber(subscriber, undefined, () => {
-          subscribeToArray(values as readonly ValueFromArray<A>[], subscriber);
+        operate({
+          destination,
+          complete: () => {
+            subscribeToArray(values as readonly ValueFromArray<A>[], destination);
+          },
         })
       );
     });
