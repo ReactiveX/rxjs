@@ -1,6 +1,6 @@
 import { OperatorFunction, ObservableInput } from '../types';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { from } from '../observable/from';
 
 /**
@@ -65,7 +65,7 @@ export function sequenceEqual<T>(
   comparator: (a: T, b: T) => boolean = (a, b) => a === b
 ): OperatorFunction<T, boolean> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       // The state for the source observable
       const aState = createState<T>();
       // The state for the compareTo observable;
@@ -73,8 +73,8 @@ export function sequenceEqual<T>(
 
       /** A utility to emit and complete */
       const emit = (isEqual: boolean) => {
-        subscriber.next(isEqual);
-        subscriber.complete();
+        destination.next(isEqual);
+        destination.complete();
       };
 
       /**
@@ -83,9 +83,9 @@ export function sequenceEqual<T>(
        * is used for both streams.
        */
       const createSubscriber = (selfState: SequenceState<T>, otherState: SequenceState<T>) => {
-        const sequenceEqualSubscriber = createOperatorSubscriber(
-          subscriber,
-          (a: T) => {
+        const sequenceEqualSubscriber = operate<T, boolean>({
+          destination,
+          next: (a) => {
             const { buffer, complete } = otherState;
             if (buffer.length === 0) {
               // If there's no values in the other buffer
@@ -102,7 +102,7 @@ export function sequenceEqual<T>(
               !comparator(a, buffer.shift()!) && emit(false);
             }
           },
-          () => {
+          complete: () => {
             // Or observable completed
             selfState.complete = true;
             const { complete, buffer } = otherState;
@@ -113,8 +113,8 @@ export function sequenceEqual<T>(
             complete && emit(buffer.length === 0);
             // Be sure to clean up our stream as soon as possible if we can.
             sequenceEqualSubscriber?.unsubscribe();
-          }
-        );
+          },
+        });
 
         return sequenceEqualSubscriber;
       };
