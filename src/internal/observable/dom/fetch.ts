@@ -1,4 +1,4 @@
-import { createOperatorSubscriber } from '../../operators/OperatorSubscriber';
+import { operate } from '../../Subscriber';
 import { Observable } from '../../Observable';
 import { from } from '../from';
 import { ObservableInput } from '../../types';
@@ -99,7 +99,7 @@ export function fromFetch<T>(
   } = {}
 ): Observable<Response | T> {
   const { selector, ...init } = initWithSelector;
-  return new Observable<Response | T>((subscriber) => {
+  return new Observable<Response | T>((destination) => {
     // Our controller for aborting this fetch.
     // Any externally provided AbortSignal will have to call
     // abort on this controller when signaled, because the
@@ -128,7 +128,7 @@ export function fromFetch<T>(
           }
         };
         outerSignal.addEventListener('abort', outerSignalHandler);
-        subscriber.add(() => outerSignal.removeEventListener('abort', outerSignalHandler));
+        destination.add(() => outerSignal.removeEventListener('abort', outerSignalHandler));
       }
     }
 
@@ -141,7 +141,7 @@ export function fromFetch<T>(
 
     const handleError = (err: any) => {
       abortable = false;
-      subscriber.error(err);
+      destination.error(err);
     };
 
     fetch(input, perSubscriberInit)
@@ -151,22 +151,20 @@ export function fromFetch<T>(
           // Note that any error that comes from our selector will be
           // sent to the promise `catch` below and handled.
           from(selector(response)).subscribe(
-            createOperatorSubscriber(
-              subscriber,
-              // Values are passed through to the subscriber
-              undefined,
+            operate({
+              destination,
               // The projected response is complete.
-              () => {
+              complete: () => {
                 abortable = false;
-                subscriber.complete();
+                destination.complete();
               },
-              handleError
-            )
+              error: handleError,
+            })
           );
         } else {
           abortable = false;
-          subscriber.next(response);
-          subscriber.complete();
+          destination.next(response);
+          destination.complete();
         }
       })
       .catch(handleError);
