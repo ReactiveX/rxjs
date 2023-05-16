@@ -1,7 +1,7 @@
 import { MonoTypeOperatorFunction } from '../types';
 import { EMPTY } from '../observable/empty';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 /**
  * Emits only the first `count` values emitted by the source Observable.
@@ -50,16 +50,19 @@ export function take<T>(count: number): MonoTypeOperatorFunction<T> {
     ? // If we are taking no values, that's empty.
       () => EMPTY
     : (source) =>
-        new Observable((subscriber) => {
+        new Observable((destination) => {
           let seen = 0;
-          const operatorSubscriber = createOperatorSubscriber<T>(subscriber, (value) => {
-            if (++seen < count) {
-              subscriber.next(value);
-            } else {
-              operatorSubscriber.unsubscribe();
-              subscriber.next(value);
-              subscriber.complete();
-            }
+          const operatorSubscriber = operate<T, T>({
+            destination,
+            next: (value) => {
+              if (++seen < count) {
+                destination.next(value);
+              } else {
+                operatorSubscriber.unsubscribe();
+                destination.next(value);
+                destination.complete();
+              }
+            },
           });
           source.subscribe(operatorSubscriber);
         });
