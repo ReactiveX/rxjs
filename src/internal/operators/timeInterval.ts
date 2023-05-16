@@ -1,7 +1,7 @@
 import { asyncScheduler } from '../scheduler/async';
 import { SchedulerLike, OperatorFunction } from '../types';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 /**
  * Emits an object containing the current value, and the time that has
@@ -44,14 +44,17 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  */
 export function timeInterval<T>(scheduler: SchedulerLike = asyncScheduler): OperatorFunction<T, TimeInterval<T>> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let last = scheduler.now();
       source.subscribe(
-        createOperatorSubscriber(subscriber, (value) => {
-          const now = scheduler.now();
-          const interval = now - last;
-          last = now;
-          subscriber.next(new TimeInterval(value, interval));
+        operate({
+          destination,
+          next: (value) => {
+            const now = scheduler.now();
+            const interval = now - last;
+            last = now;
+            destination.next(new TimeInterval(value, interval));
+          },
         })
       );
     });
