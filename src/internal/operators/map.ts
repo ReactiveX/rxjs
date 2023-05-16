@@ -1,6 +1,6 @@
 import { OperatorFunction } from '../types';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 /**
  * Applies a given `project` function to each value emitted by the source
@@ -39,16 +39,19 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  */
 export function map<T, R>(project: (value: T, index: number) => R): OperatorFunction<T, R> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       // The index of the value from the source. Used with projection.
       let index = 0;
       // Subscribe to the source, all errors and completions are sent along
       // to the consumer.
       source.subscribe(
-        createOperatorSubscriber(subscriber, (value: T) => {
-          // Call the projection function with the appropriate this context,
-          // and send the resulting value to the consumer.
-          subscriber.next(project(value, index++));
+        operate({
+          destination,
+          next: (value: T) => {
+            // Call the projection function with the appropriate this context,
+            // and send the resulting value to the consumer.
+            destination.next(project(value, index++));
+          },
         })
       );
     });

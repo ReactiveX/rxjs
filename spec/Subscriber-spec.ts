@@ -1,5 +1,6 @@
 import {  expect } from 'chai';
-import { Subscriber, Observable, of, Observer, config } from 'rxjs';
+import { Subscriber, Observable, of, Observer, config, operate } from 'rxjs';
+import * as sinon from 'sinon';
 import { asInteropSubscriber } from './helpers/interop-helper';
 import { getRegisteredFinalizers } from './helpers/subscription';
 
@@ -310,4 +311,131 @@ describe('Subscriber', () => {
   } else {
     console.warn(`No support for FinalizationRegistry in Node ${process.version}`);
   }
+});
+
+describe('operate', () => {
+  it('should create a Subscriber that passes next calls through to the destination by default', () => {
+    const next = sinon.spy();
+    const destination = new Subscriber<string>({
+      next,
+    });
+
+    const subscriber = operate({
+      destination,
+    })
+
+    subscriber.next('foo');
+    expect(next).to.have.been.calledOnceWithExactly('foo');
+  });
+
+  it('should catch any errors in the next override, and pass them to the error handler on the destination', () => {
+    const error = sinon.spy();
+    const destination = new Subscriber<string>({
+      error,
+    });
+
+    const subscriber = operate({
+      destination,
+      next() {
+        throw 'boop!'
+      },
+    })
+
+    subscriber.next('foo');
+    expect(error).to.have.been.calledOnceWithExactly('boop!');
+  });
+
+  it('should pass errors passed to the result through to the destination error handler by default', () => {
+    const error = sinon.spy();
+    const finalizer = sinon.spy();
+
+    const destination = new Subscriber<string>({
+      error,
+    });
+    destination.add(finalizer);
+
+    const subscriber = operate({
+      destination,
+    })
+
+    subscriber.error('boop!');
+    expect(error).to.have.been.calledOnceWithExactly('boop!');
+    expect(finalizer).to.have.been.calledOnce;
+  });
+
+  it('should pass errors that are thrown by the error override through to the destination, and finalize the subscriber', () => {
+    const error = sinon.spy();
+    const finalizer = sinon.spy();
+
+    const destination = new Subscriber<string>({
+      error,
+    });
+    destination.add(finalizer);
+
+    const subscriber = operate({
+      destination,
+      error() {
+        throw 'boop!'
+      }
+    });
+
+    subscriber.error('no boop for you');
+    expect(error).to.have.been.calledOnceWithExactly('boop!');
+    expect(finalizer).to.have.been.calledOnce;
+  });
+
+  it('should pass complete calls through to the destination by default', () => {
+    const complete = sinon.spy();
+    const finalizer = sinon.spy();
+
+    const destination = new Subscriber<string>({
+      complete,
+    });
+    destination.add(finalizer);
+
+    const subscriber = operate({
+      destination,
+    });
+
+    subscriber.complete();
+    expect(complete).to.have.been.calledOnce;
+    expect(finalizer).to.have.been.calledOnce;
+  });
+
+  it('should catch any errors in the complete override and pass them to the destination complete handler as finalize', () => {
+    const complete = sinon.spy();
+    const finalizer = sinon.spy();
+    const error = sinon.spy();
+
+    const destination = new Subscriber<string>({
+      complete,
+      error,
+    });
+    destination.add(finalizer);
+
+    const subscriber = operate({
+      destination,
+      complete() {
+        throw 'boop!'
+      }
+    });
+
+    subscriber.complete();
+    expect(complete).not.to.have.been.called;
+    expect(finalizer).to.have.been.calledOnce;
+    expect(error).to.have.been.calledOnceWithExactly('boop!');
+  });
+
+  it('should return a subscriber that, when unsubscribed, will finalize the destination', () => {
+    const finalizer = sinon.spy();
+    const destination = new Subscriber<string>({});
+    destination.add(finalizer);
+
+    const subscriber = operate({
+      destination,
+    });
+
+    destination.unsubscribe();
+    expect(finalizer).to.have.been.calledOnce;
+  });
 });
