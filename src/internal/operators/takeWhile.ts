@@ -1,6 +1,6 @@
 import { OperatorFunction, MonoTypeOperatorFunction, TruthyTypesOf } from '../types';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 export function takeWhile<T>(predicate: BooleanConstructor, inclusive: true): MonoTypeOperatorFunction<T>;
 export function takeWhile<T>(predicate: BooleanConstructor, inclusive: false): OperatorFunction<T, TruthyTypesOf<T>>;
@@ -54,18 +54,21 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
  */
 export function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive = false): MonoTypeOperatorFunction<T> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let index = 0;
-      const operatorSubscriber = createOperatorSubscriber<T>(subscriber, (value) => {
-        if (predicate(value, index++)) {
-          subscriber.next(value);
-        } else {
-          operatorSubscriber.unsubscribe();
-          if (inclusive) {
-            subscriber.next(value);
+      const operatorSubscriber = operate({
+        destination,
+        next: (value: T) => {
+          if (predicate(value, index++)) {
+            destination.next(value);
+          } else {
+            operatorSubscriber.unsubscribe();
+            if (inclusive) {
+              destination.next(value);
+            }
+            destination.complete();
           }
-          subscriber.complete();
-        }
+        },
       });
 
       source.subscribe(operatorSubscriber);
