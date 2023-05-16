@@ -1,8 +1,7 @@
-import { Subscriber } from '../Subscriber';
+import { Subscriber, operate } from '../Subscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { from } from '../observable/from';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -69,7 +68,7 @@ export function switchMap<T, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O
 ): OperatorFunction<T, ObservedValueOf<O>> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let innerSubscriber: Subscriber<ObservedValueOf<O>> | null = null;
       let index = 0;
       // Whether or not the source subscription has completed
@@ -77,31 +76,34 @@ export function switchMap<T, O extends ObservableInput<any>>(
 
       // We only complete the result if the source is complete AND we don't have an active inner subscription.
       // This is called both when the source completes and when the inners complete.
-      const checkComplete = () => isComplete && !innerSubscriber && subscriber.complete();
+      const checkComplete = () => isComplete && !innerSubscriber && destination.complete();
 
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value) => {
+        operate({
+          destination,
+          next: (value) => {
             // Cancel the previous inner subscription if there was one
             innerSubscriber?.unsubscribe();
             const outerIndex = index++;
             // Start the next inner subscription
             from(project(value, outerIndex)).subscribe(
-              (innerSubscriber = createOperatorSubscriber(subscriber, undefined, () => {
-                // The inner has completed. Null out the inner subscriber to
-                // free up memory and to signal that we have no inner subscription
-                // currently.
-                innerSubscriber = null!;
-                checkComplete();
+              (innerSubscriber = operate({
+                destination,
+                complete: () => {
+                  // The inner has completed. Null out the inner subscriber to
+                  // free up memory and to signal that we have no inner subscription
+                  // currently.
+                  innerSubscriber = null!;
+                  checkComplete();
+                },
               }))
             );
           },
-          () => {
+          complete: () => {
             isComplete = true;
             checkComplete();
-          }
-        )
+          },
+        })
       );
     });
 }
