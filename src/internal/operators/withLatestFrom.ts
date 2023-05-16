@@ -1,6 +1,6 @@
 import { OperatorFunction, ObservableInputTuple } from '../types';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { from } from '../observable/from';
 import { identity } from '../util/identity';
 import { noop } from '../util/noop';
@@ -60,7 +60,7 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | 
   const project = popResultSelector(inputs) as ((...args: any[]) => R) | undefined;
 
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       const len = inputs.length;
       const otherValues = new Array(len);
       // An array of whether or not the other sources have emitted. Matched with them by index.
@@ -77,9 +77,9 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | 
       // a side-effect.
       for (let i = 0; i < len; i++) {
         from(inputs[i]).subscribe(
-          createOperatorSubscriber(
-            subscriber,
-            (value) => {
+          operate({
+            destination,
+            next: (value) => {
               otherValues[i] = value;
               if (!ready && !hasValue[i]) {
                 // If we're not ready yet, flag to show this observable has emitted.
@@ -93,19 +93,22 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | 
             },
             // Completing one of the other sources has
             // no bearing on the completion of our result.
-            noop
-          )
+            complete: noop,
+          })
         );
       }
 
       // Source subscription
       source.subscribe(
-        createOperatorSubscriber(subscriber, (value) => {
-          if (ready) {
-            // We have at least one value from the other sources. Go ahead and emit.
-            const values = [value, ...otherValues];
-            subscriber.next(project ? project(...values) : values);
-          }
+        operate({
+          destination,
+          next: (value) => {
+            if (ready) {
+              // We have at least one value from the other sources. Go ahead and emit.
+              const values = [value, ...otherValues];
+              destination.next(project ? project(...values) : values);
+            }
+          },
         })
       );
     });
