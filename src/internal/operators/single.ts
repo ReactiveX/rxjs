@@ -4,7 +4,7 @@ import { EmptyError } from '../util/EmptyError';
 import { MonoTypeOperatorFunction, OperatorFunction, TruthyTypesOf } from '../types';
 import { SequenceError } from '../util/SequenceError';
 import { NotFoundError } from '../util/NotFoundError';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 export function single<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
@@ -91,31 +91,31 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  */
 export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let hasValue = false;
       let singleValue: T;
       let seenValue = false;
       let index = 0;
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value) => {
+        operate({
+          destination,
+          next: (value) => {
             seenValue = true;
             if (!predicate || predicate(value, index++, source)) {
-              hasValue && subscriber.error(new SequenceError('Too many matching values'));
+              hasValue && destination.error(new SequenceError('Too many matching values'));
               hasValue = true;
               singleValue = value;
             }
           },
-          () => {
+          complete: () => {
             if (hasValue) {
-              subscriber.next(singleValue);
-              subscriber.complete();
+              destination.next(singleValue);
+              destination.complete();
             } else {
-              subscriber.error(seenValue ? new NotFoundError('No matching values') : new EmptyError());
+              destination.error(seenValue ? new NotFoundError('No matching values') : new EmptyError());
             }
-          }
-        )
+          },
+        })
       );
     });
 }
