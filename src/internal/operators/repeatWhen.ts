@@ -4,7 +4,7 @@ import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 
 import { MonoTypeOperatorFunction, ObservableInput } from '../types';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source
@@ -42,7 +42,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  */
 export function repeatWhen<T>(notifier: (notifications: Observable<void>) => ObservableInput<any>): MonoTypeOperatorFunction<T> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let innerSub: Subscription | null;
       let syncResub = false;
       let completions$: Subject<void>;
@@ -52,7 +52,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
       /**
        * Checks to see if we can complete the result, completes it, and returns `true` if it was completed.
        */
-      const checkComplete = () => isMainComplete && isNotifierComplete && (subscriber.complete(), true);
+      const checkComplete = () => isMainComplete && isNotifierComplete && (destination.complete(), true);
       /**
        * Gets the subject to send errors through. If it doesn't exist,
        * we know we need to setup the notifier.
@@ -64,9 +64,9 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
           // If the call to `notifier` throws, it will be caught by the OperatorSubscriber
           // In the main subscription -- in `subscribeForRepeatWhen`.
           from(notifier(completions$)).subscribe(
-            createOperatorSubscriber(
-              subscriber,
-              () => {
+            operate({
+              destination,
+              next: () => {
                 if (innerSub) {
                   subscribeForRepeatWhen();
                 } else {
@@ -77,11 +77,11 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
                   syncResub = true;
                 }
               },
-              () => {
+              complete: () => {
                 isNotifierComplete = true;
                 checkComplete();
-              }
-            )
+              },
+            })
           );
         }
         return completions$;
@@ -91,14 +91,17 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
         isMainComplete = false;
 
         innerSub = source.subscribe(
-          createOperatorSubscriber(subscriber, undefined, () => {
-            isMainComplete = true;
-            // Check to see if we are complete, and complete if so.
-            // If we are not complete. Get the subject. This calls the `notifier` function.
-            // If that function fails, it will throw and `.next()` will not be reached on this
-            // line. The thrown error is caught by the _complete handler in this
-            // `OperatorSubscriber` and handled appropriately.
-            !checkComplete() && getCompletionSubject().next();
+          operate({
+            destination,
+            complete: () => {
+              isMainComplete = true;
+              // Check to see if we are complete, and complete if so.
+              // If we are not complete. Get the subject. This calls the `notifier` function.
+              // If that function fails, it will throw and `.next()` will not be reached on this
+              // line. The thrown error is caught by the _complete handler in this
+              // `OperatorSubscriber` and handled appropriately.
+              !checkComplete() && getCompletionSubject().next();
+            },
           })
         );
 
