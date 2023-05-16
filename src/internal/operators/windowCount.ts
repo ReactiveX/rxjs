@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { OperatorFunction } from '../types';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 /**
  * Branch out the source Observable values as a nested Observable with each
@@ -68,18 +68,18 @@ export function windowCount<T>(windowSize: number, startWindowEvery: number = 0)
   const startEvery = startWindowEvery > 0 ? startWindowEvery : windowSize;
 
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let windows = [new Subject<T>()];
       let starts: number[] = [];
       let count = 0;
 
       // Open the first window.
-      subscriber.next(windows[0].asObservable());
+      destination.next(windows[0].asObservable());
 
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value: T) => {
+        operate({
+          destination,
+          next: (value: T) => {
             // Emit the value through all current windows.
             // We don't need to create a new window yet, we
             // do that as soon as we close one.
@@ -104,26 +104,26 @@ export function windowCount<T>(windowSize: number, startWindowEvery: number = 0)
             if (++count % startEvery === 0) {
               const window = new Subject<T>();
               windows.push(window);
-              subscriber.next(window.asObservable());
+              destination.next(window.asObservable());
             }
           },
-          () => {
-            while (windows.length > 0) {
-              windows.shift()!.complete();
-            }
-            subscriber.complete();
-          },
-          (err) => {
+          error: (err) => {
             while (windows.length > 0) {
               windows.shift()!.error(err);
             }
-            subscriber.error(err);
+            destination.error(err);
           },
-          () => {
+          complete: () => {
+            while (windows.length > 0) {
+              windows.shift()!.complete();
+            }
+            destination.complete();
+          },
+          finalize: () => {
             starts = null!;
             windows = null!;
-          }
-        )
+          },
+        })
       );
     });
 }
