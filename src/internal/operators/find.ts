@@ -1,7 +1,6 @@
 import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
+import { Subscriber, operate } from '../Subscriber';
 import { OperatorFunction, TruthyTypesOf } from '../types';
-import { createOperatorSubscriber } from './OperatorSubscriber';
 
 export function find<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export function find<T, S extends T>(
@@ -56,24 +55,24 @@ export function createFind<T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
   emit: 'value' | 'index',
   source: Observable<T>,
-  subscriber: Subscriber<any>
+  destination: Subscriber<any>
 ) {
   const findIndex = emit === 'index';
   let index = 0;
   source.subscribe(
-    createOperatorSubscriber(
-      subscriber,
-      (value) => {
+    operate({
+      destination,
+      next: (value) => {
         const i = index++;
         if (predicate(value, i, source)) {
-          subscriber.next(findIndex ? i : value);
-          subscriber.complete();
+          destination.next(findIndex ? i : value);
+          destination.complete();
         }
       },
-      () => {
-        subscriber.next(findIndex ? -1 : undefined);
-        subscriber.complete();
-      }
-    )
+      complete: () => {
+        destination.next(findIndex ? -1 : undefined);
+        destination.complete();
+      },
+    })
   );
 }
