@@ -1,8 +1,7 @@
-import { Subscriber } from '../Subscriber';
+import { Subscriber, operate } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { ObservableInput, OperatorFunction } from '../types';
-import { createOperatorSubscriber } from './OperatorSubscriber';
 import { from } from '../observable/from';
 import { noop } from '../util/noop';
 
@@ -55,7 +54,7 @@ import { noop } from '../util/noop';
  */
 export function windowWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, Observable<T>> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let window: Subject<T> | null;
       let closingSubscriber: Subscriber<any> | undefined;
 
@@ -65,7 +64,7 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
        */
       const handleError = (err: any) => {
         window!.error(err);
-        subscriber.error(err);
+        destination.error(err);
       };
 
       /**
@@ -84,7 +83,7 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
 
         // Start the new window.
         window = new Subject<T>();
-        subscriber.next(window.asObservable());
+        destination.next(window.asObservable());
 
         // Get our closing notifier.
         let closingNotifier: Observable<any>;
@@ -99,7 +98,14 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
         // to capture the subscriber (aka Subscription)
         // so we can clean it up when we close the window
         // and open a new one.
-        closingNotifier.subscribe((closingSubscriber = createOperatorSubscriber(subscriber, openWindow, noop, handleError)));
+        closingNotifier.subscribe(
+          (closingSubscriber = operate({
+            destination,
+            next: openWindow,
+            error: handleError,
+            complete: noop,
+          }))
+        );
       };
 
       // Start the first window.
@@ -107,22 +113,22 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
 
       // Subscribe to the source
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value) => window!.next(value),
-          () => {
+        operate({
+          destination,
+          next: (value) => window!.next(value),
+          error: handleError,
+          complete: () => {
             // The source completed, close the window and complete.
             window!.complete();
-            subscriber.complete();
+            destination.complete();
           },
-          handleError,
-          () => {
+          finalize: () => {
             // Be sure to clean up our closing subscription
             // when this tears down.
             closingSubscriber?.unsubscribe();
             window = null!;
-          }
-        )
+          },
+        })
       );
     });
 }
