@@ -1,15 +1,14 @@
 import { Observable } from '../Observable';
 import { from } from '../observable/from';
-import { Subscriber } from '../Subscriber';
+import { Subscriber, operate } from '../Subscriber';
 import { ObservableInput, SchedulerLike } from '../types';
 import { executeSchedule } from '../util/executeSchedule';
-import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * A process embodying the general "merge" strategy. This is used in
  * `mergeMap` and `mergeScan` because the logic is otherwise nearly identical.
  * @param source The original source observable
- * @param subscriber The consumer subscriber
+ * @param destination The consumer subscriber
  * @param project The projection function to get our inner sources
  * @param concurrent The number of concurrent inner subscriptions
  * @param onBeforeNext Additional logic to apply before nexting to our consumer
@@ -20,7 +19,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  */
 export function mergeInternals<T, R>(
   source: Observable<T>,
-  subscriber: Subscriber<R>,
+  destination: Subscriber<R>,
   project: (value: T, index: number) => ObservableInput<R>,
   concurrent: number,
   onBeforeNext?: (innerValue: R) => void,
@@ -45,7 +44,7 @@ export function mergeInternals<T, R>(
     // and we don't have any active inner subscriptions, then we can
     // Emit the state and complete.
     if (isComplete && !buffer.length && !active) {
-      subscriber.complete();
+      destination.complete();
     }
   };
 
@@ -56,7 +55,7 @@ export function mergeInternals<T, R>(
     // If we're expanding, we need to emit the outer values and the inner values
     // as the inners will "become outers" in a way as they are recursively fed
     // back to the projection mechanism.
-    expand && subscriber.next(value as any);
+    expand && destination.next(value as any);
 
     // Increment the number of active subscriptions so we can track it
     // against our concurrency limit later.
@@ -69,9 +68,9 @@ export function mergeInternals<T, R>(
 
     // Start our inner subscription.
     from(project(value, index++)).subscribe(
-      createOperatorSubscriber(
-        subscriber,
-        (innerValue) => {
+      operate({
+        destination,
+        next: (innerValue) => {
           // `mergeScan` has additional handling here. For example
           // taking the inner value and updating state.
           onBeforeNext?.(innerValue);
@@ -82,17 +81,15 @@ export function mergeInternals<T, R>(
             outerNext(innerValue as any);
           } else {
             // Otherwise, emit the inner value.
-            subscriber.next(innerValue);
+            destination.next(innerValue);
           }
         },
-        () => {
+        complete: () => {
           // Flag that we have completed, so we know to check the buffer
           // during finalization.
           innerComplete = true;
         },
-        // Errors are passed to the destination.
-        undefined,
-        () => {
+        finalize: () => {
           // During finalization, if the inner completed (it wasn't errored or
           // cancelled), then we want to try the next item in the buffer if
           // there is one.
@@ -116,7 +113,7 @@ export function mergeInternals<T, R>(
                 // for when we want to start our inner subscription. Otherwise, we just start
                 // are next inner subscription.
                 if (innerSubScheduler) {
-                  executeSchedule(subscriber, innerSubScheduler, () => doInnerSub(bufferedValue));
+                  executeSchedule(destination, innerSubScheduler, () => doInnerSub(bufferedValue));
                 } else {
                   doInnerSub(bufferedValue);
                 }
@@ -124,20 +121,24 @@ export function mergeInternals<T, R>(
               // Check to see if we can complete, and complete if so.
               checkComplete();
             } catch (err) {
-              subscriber.error(err);
+              destination.error(err);
             }
           }
-        }
-      )
+        },
+      })
     );
   };
 
   // Subscribe to our source observable.
   source.subscribe(
-    createOperatorSubscriber(subscriber, outerNext, () => {
-      // Outer completed, make a note of it, and check to see if we can complete everything.
-      isComplete = true;
-      checkComplete();
+    operate({
+      destination,
+      next: outerNext,
+      complete: () => {
+        // Outer completed, make a note of it, and check to see if we can complete everything.
+        isComplete = true;
+        checkComplete();
+      },
     })
   );
 

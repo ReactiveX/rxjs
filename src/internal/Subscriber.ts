@@ -33,6 +33,8 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   protected readonly _errorOverride: ((err: any) => void) | null = null;
   /** @internal */
   protected readonly _completeOverride: (() => void) | null = null;
+  /** @internal */
+  protected readonly _onFinalize: (() => void) | null = null;
 
   /**
    * @deprecated Do not create instances of `Subscriber` directly. Use {@link operate} instead.
@@ -58,7 +60,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * @deprecated Do not create instances of `Subscriber` directly. Use {@link operate} instead.
    */
   constructor(destination?: Subscriber<T> | Partial<Observer<T>> | ((value: T) => void) | null, overrides?: SubscriberOverrides<T>) {
-    super(overrides?.finalize);
+    super();
 
     // The only way we know that error reporting safety has been applied is if we own it.
     this.destination = destination instanceof Subscriber ? destination : createSafeObserver(destination);
@@ -66,6 +68,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     this._nextOverride = overrides?.next ?? null;
     this._errorOverride = overrides?.error ?? null;
     this._completeOverride = overrides?.complete ?? null;
+    this._onFinalize = overrides?.finalize ?? null;
 
     // It's important - for performance reasons - that all of this class's
     // members are initialized and that they are always initialized in the same
@@ -137,6 +140,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.closed) {
       this.isStopped = true;
       super.unsubscribe();
+      this._onFinalize?.();
     }
   }
 
