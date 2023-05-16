@@ -1,6 +1,5 @@
 import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { Subscriber, operate } from '../Subscriber';
 
 /**
  * A basic scan operation. This is used for `scan` and `reduce`.
@@ -18,7 +17,7 @@ export function scanInternals<V, A, S>(
   emitOnNext: boolean,
   emitBeforeComplete: boolean,
   source: Observable<V>,
-  subscriber: Subscriber<any>
+  destination: Subscriber<any>
 ) {
   // Whether or not we have state yet. This will only be
   // false before the first value arrives if we didn't get
@@ -33,9 +32,9 @@ export function scanInternals<V, A, S>(
 
   // Subscribe to our source. All errors and completions are passed through.
   source.subscribe(
-    createOperatorSubscriber(
-      subscriber,
-      (value) => {
+    operate({
+      destination,
+      next: (value) => {
         // Always increment the index.
         const i = index++;
         // Set the state
@@ -48,16 +47,16 @@ export function scanInternals<V, A, S>(
             ((hasState = true), value);
 
         // Maybe send it to the consumer.
-        emitOnNext && subscriber.next(state);
+        emitOnNext && destination.next(state);
       },
       // If an onComplete was given, call it, otherwise
       // just pass through the complete notification to the consumer.
-      emitBeforeComplete
+      complete: emitBeforeComplete
         ? () => {
-            hasState && subscriber.next(state);
-            subscriber.complete();
+            hasState && destination.next(state);
+            destination.complete();
           }
-        : undefined
-    )
+        : undefined,
+    })
   );
 }
