@@ -1,8 +1,7 @@
 import { OperatorFunction } from '../types';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { noop } from '../util/noop';
-import { Subscriber } from '../Subscriber';
 
 /**
  * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.
@@ -41,7 +40,7 @@ import { Subscriber } from '../Subscriber';
  */
 export function ignoreElements(): OperatorFunction<unknown, never> {
   return (source) =>
-    new Observable((subscriber) => {
-      source.subscribe(createOperatorSubscriber(subscriber as Subscriber<unknown>, noop));
+    new Observable((destination) => {
+      source.subscribe(operate({ destination, next: noop }));
     });
 }
