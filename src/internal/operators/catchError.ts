@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { Subscription } from '../Subscription';
 import { from } from '../observable/from';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 export function catchError<T, O extends ObservableInput<any>>(
   selector: (err: any, caught: Observable<T>) => O
@@ -104,23 +104,26 @@ export function catchError<T, O extends ObservableInput<any>>(
   selector: (err: any, caught: Observable<T>) => O
 ): OperatorFunction<T, T | ObservedValueOf<O>> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let innerSub: Subscription | null = null;
       let syncUnsub = false;
       let handledResult: Observable<ObservedValueOf<O>>;
 
       innerSub = source.subscribe(
-        createOperatorSubscriber(subscriber, undefined, undefined, (err) => {
-          handledResult = from(selector(err, catchError(selector)(source)));
-          if (innerSub) {
-            innerSub.unsubscribe();
-            innerSub = null;
-            handledResult.subscribe(subscriber);
-          } else {
-            // We don't have an innerSub yet, that means the error was synchronous
-            // because the subscribe call hasn't returned yet.
-            syncUnsub = true;
-          }
+        operate({
+          destination,
+          error: (err) => {
+            handledResult = from(selector(err, catchError(selector)(source)));
+            if (innerSub) {
+              innerSub.unsubscribe();
+              innerSub = null;
+              handledResult.subscribe(destination);
+            } else {
+              // We don't have an innerSub yet, that means the error was synchronous
+              // because the subscribe call hasn't returned yet.
+              syncUnsub = true;
+            }
+          },
         })
       );
 
@@ -132,7 +135,7 @@ export function catchError<T, O extends ObservableInput<any>>(
         // next observable.
         innerSub.unsubscribe();
         innerSub = null;
-        handledResult!.subscribe(subscriber);
+        handledResult!.subscribe(destination);
       }
     });
 }
