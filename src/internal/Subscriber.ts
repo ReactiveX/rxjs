@@ -34,8 +34,14 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   /** @internal */
   protected readonly _completeOverride: (() => void) | null = null;
 
+  /**
+   * @deprecated Do not create instances of `Subscriber` directly. Use {@link operate} instead.
+   */
   constructor(destination?: Subscriber<T> | Partial<Observer<T>> | ((value: T) => void) | null);
 
+  /**
+   * @internal
+   */
   constructor(destination: Subscriber<any> | Partial<Observer<any>> | ((value: any) => void) | null, overrides: SubscriberOverrides<T>);
 
   /**
@@ -49,6 +55,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * If a next-handler function is passed in, it will be wrapped and appropriate safeguards will be applied.
    *
    * @param destination A subscriber, partial observer, or function that receives the next value.
+   * @deprecated Do not create instances of `Subscriber` directly. Use {@link operate} instead.
    */
   constructor(destination?: Subscriber<T> | Partial<Observer<T>> | ((value: T) => void) | null, overrides?: SubscriberOverrides<T>) {
     super(overrides?.finalize);
