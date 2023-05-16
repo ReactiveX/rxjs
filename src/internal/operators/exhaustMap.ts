@@ -1,8 +1,7 @@
-import { Subscriber } from '../Subscriber';
+import { Subscriber, operate } from '../Subscriber';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { from } from '../observable/from';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
 
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -51,27 +50,30 @@ export function exhaustMap<T, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O
 ): OperatorFunction<T, ObservedValueOf<O>> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let index = 0;
       let innerSub: Subscriber<T> | null = null;
       let isComplete = false;
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (outerValue) => {
+        operate({
+          destination,
+          next: (outerValue) => {
             if (!innerSub) {
-              innerSub = createOperatorSubscriber(subscriber, undefined, () => {
-                innerSub = null;
-                isComplete && subscriber.complete();
+              innerSub = operate({
+                destination,
+                complete: () => {
+                  innerSub = null;
+                  isComplete && destination.complete();
+                },
               });
               from(project(outerValue, index++)).subscribe(innerSub);
             }
           },
-          () => {
+          complete: () => {
             isComplete = true;
-            !innerSub && subscriber.complete();
-          }
-        )
+            !innerSub && destination.complete();
+          },
+        })
       );
     });
 }
