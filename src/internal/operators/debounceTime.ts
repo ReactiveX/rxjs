@@ -2,7 +2,7 @@ import { asyncScheduler } from '../scheduler/async';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike } from '../types';
 import { Observable } from '../Observable';
-import { createOperatorSubscriber } from './OperatorSubscriber';
+import { operate } from '../Subscriber';
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -62,7 +62,7 @@ import { createOperatorSubscriber } from './OperatorSubscriber';
  */
 export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyncScheduler): MonoTypeOperatorFunction<T> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       let activeTask: Subscription | null = null;
       let lastValue: T | null = null;
       let lastTime: number | null = null;
@@ -77,7 +77,7 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
           }
           const value = lastValue!;
           lastValue = null;
-          subscriber.next(value);
+          destination.next(value);
         }
       };
       function emitWhenIdle(this: SchedulerAction<unknown>) {
@@ -89,7 +89,7 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
         if (now < targetTime) {
           // On that case, re-schedule to the new target
           activeTask = this.schedule(undefined, targetTime - now);
-          subscriber.add(activeTask);
+          destination.add(activeTask);
           return;
         }
 
@@ -97,9 +97,9 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
       }
 
       source.subscribe(
-        createOperatorSubscriber(
-          subscriber,
-          (value: T) => {
+        operate({
+          destination,
+          next: (value: T) => {
             lastValue = value;
             lastTime = scheduler.now();
 
@@ -109,22 +109,20 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
               activeTask = scheduler.schedule(emitWhenIdle, dueTime);
               scheduling = false;
               // Set activeTask as intermediary Subscription to handle synchronous schedulers
-              subscriber.add(activeTask);
+              destination.add(activeTask);
             }
           },
-          () => {
+          complete: () => {
             // Source completed.
             // Emit any pending debounced values then complete
             emit();
-            subscriber.complete();
+            destination.complete();
           },
-          // Pass all errors through to consumer.
-          undefined,
-          () => {
+          finalize: () => {
             // Finalization.
             lastValue = activeTask = null;
-          }
-        )
+          },
+        })
       );
     });
 }
