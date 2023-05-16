@@ -3,7 +3,7 @@ import { ObservableInputTuple } from '../types';
 import { from } from './from';
 import { argsOrArgArray } from '../util/argsOrArgArray';
 import { EMPTY } from './empty';
-import { createOperatorSubscriber } from '../operators/OperatorSubscriber';
+import { operate } from '../Subscriber';
 import { popResultSelector } from '../util/args';
 
 export function zip<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A>;
@@ -56,7 +56,7 @@ export function zip(...args: unknown[]): Observable<unknown> {
   const sources = argsOrArgArray(args) as Observable<unknown>[];
 
   return sources.length
-    ? new Observable<unknown[]>((subscriber) => {
+    ? new Observable<unknown[]>((destination) => {
         // A collection of buffers of values from each source.
         // Keyed by the same index with which the sources were passed in.
         let buffers: unknown[][] = sources.map(() => []);
@@ -67,18 +67,18 @@ export function zip(...args: unknown[]): Observable<unknown> {
         let completed = sources.map(() => false);
 
         // When everything is done, release the arrays above.
-        subscriber.add(() => {
+        destination.add(() => {
           buffers = completed = null!;
         });
 
         // Loop over our sources and subscribe to each one. The index `i` is
         // especially important here, because we use it in closures below to
         // access the related buffers and completion properties
-        for (let sourceIndex = 0; !subscriber.closed && sourceIndex < sources.length; sourceIndex++) {
+        for (let sourceIndex = 0; !destination.closed && sourceIndex < sources.length; sourceIndex++) {
           from(sources[sourceIndex]).subscribe(
-            createOperatorSubscriber(
-              subscriber,
-              (value) => {
+            operate({
+              destination,
+              next: (value) => {
                 buffers[sourceIndex].push(value);
                 // if every buffer has at least one value in it, then we
                 // can shift out the oldest value from each buffer and emit
@@ -86,25 +86,25 @@ export function zip(...args: unknown[]): Observable<unknown> {
                 if (buffers.every((buffer) => buffer.length)) {
                   const result: any = buffers.map((buffer) => buffer.shift()!);
                   // Emit the array. If theres' a result selector, use that.
-                  subscriber.next(resultSelector ? resultSelector(...result) : result);
+                  destination.next(resultSelector ? resultSelector(...result) : result);
                   // If any one of the sources is both complete and has an empty buffer
                   // then we complete the result. This is because we cannot possibly have
                   // any more values to zip together.
                   if (buffers.some((buffer, i) => !buffer.length && completed[i])) {
-                    subscriber.complete();
+                    destination.complete();
                   }
                 }
               },
-              () => {
+              complete: () => {
                 // This source completed. Mark it as complete so we can check it later
                 // if we have to.
                 completed[sourceIndex] = true;
                 // But, if this complete source has nothing in its buffer, then we
                 // can complete the result, because we can't possibly have any more
                 // values from this to zip together with the other values.
-                !buffers[sourceIndex].length && subscriber.complete();
-              }
-            )
+                !buffers[sourceIndex].length && destination.complete();
+              },
+            })
           );
         }
 
