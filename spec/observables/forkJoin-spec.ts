@@ -1,6 +1,6 @@
 /** @prettier */
 import { expect } from 'chai';
-import { finalize, forkJoin, map, of, timer } from 'rxjs';
+import { EmptyError, finalize, forkJoin, map, of, timer } from 'rxjs';
 import { lowerCaseO } from '../helpers/test-helper';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -123,9 +123,9 @@ describe('forkJoin', () => {
         const s2 = hot('  (b|)');
         const s3 = lowerCaseO();
         const e1 = forkJoin([s1, s2, s3]);
-        const expected = '|';
+        const expected = '#';
 
-        expectObservable(e1).toBe(expected);
+        expectObservable(e1).toBe(expected, undefined, new EmptyError());
       });
     });
 
@@ -158,32 +158,32 @@ describe('forkJoin', () => {
         const s2 = hot('  (b|)');
         const s3 = hot('  ------------------|');
         const e1 = forkJoin([s1, s2, s3]);
-        const expected = '------------------|';
+        const expected = '------------------#';
 
-        expectObservable(e1).toBe(expected);
+        expectObservable(e1).toBe(expected, undefined, new EmptyError());
       });
     });
 
-    it('should complete early if any of source is empty and completes before than others', () => {
+    it('should error with EmptyError if any of source is empty and completes before than others', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const s1 = hot('  --a--b--c--d--|');
         const s2 = hot('  (b|)');
         const s3 = hot('  ---------|');
         const e1 = forkJoin([s1, s2, s3]);
-        const expected = '---------|';
+        const expected = '---------#';
 
-        expectObservable(e1).toBe(expected);
+        expectObservable(e1).toBe(expected, undefined, new EmptyError());
       });
     });
 
-    it('should complete when all sources are empty', () => {
+    it('should error on the first empty source', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const s1 = hot('  --------------|');
         const s2 = hot('  ---------|');
         const e1 = forkJoin([s1, s2]);
-        const expected = '---------|';
+        const expected = '---------#';
 
-        expectObservable(e1).toBe(expected);
+        expectObservable(e1).toBe(expected, undefined, new EmptyError());
       });
     });
 
@@ -212,9 +212,9 @@ describe('forkJoin', () => {
         const s1 = hot('  --------------');
         const s2 = hot('  ------|');
         const e1 = forkJoin([s1, s2]);
-        const expected = '------|';
+        const expected = '------#';
 
-        expectObservable(e1).toBe(expected);
+        expectObservable(e1).toBe(expected, undefined, new EmptyError());
       });
     });
 
@@ -371,16 +371,16 @@ describe('forkJoin', () => {
       });
     });
 
-    it('should accept empty lowercase-o observables', () => {
+    it('should error for empty lowercase-o observables', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const e1 = forkJoin({
           foo: hot('      --a--b--c--d--|'),
           bar: hot('      (b|)'),
           baz: lowerCaseO(),
         });
-        const expected = '|';
+        const expected = '#';
 
-        expectObservable(e1).toBe(expected);
+        expectObservable(e1).toBe(expected, undefined, new EmptyError());
       });
     });
 
@@ -409,42 +409,41 @@ describe('forkJoin', () => {
       });
     });
 
-    it('should not emit if any of source observable is empty', () => {
+    it('should error with EmptyError if any of source observable is empty', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const e1 = forkJoin({
           foo: hot('      --a--b--c--d--|'),
           bar: hot('      (b|)'),
           baz: hot('      ------------------|'),
         });
-        const expected = '------------------|';
+        const expected = '------------------#';
 
-        expectObservable(e1).toBe(expected);
+        expectObservable(e1).toBe(expected, undefined, new EmptyError());
       });
     });
 
-    // TODO: This seems odd. Filed an issue for discussion here: https://github.com/ReactiveX/rxjs/issues/5561
-    it('should complete early if any of source is empty and completes before than others', () => {
+    it('should error with EmptyError if any of source is empty and completes before than others', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const e1 = forkJoin({
           foo: hot('      --a--b--c--d--|'),
           bar: hot('      (b|)'),
           baz: hot('      ---------|'),
         });
-        const expected = '---------|';
+        const expected = '---------#';
 
-        expectObservable(e1).toBe(expected);
+        expectObservable(e1).toBe(expected, undefined, new EmptyError());
       });
     });
 
-    it('should complete when all sources are empty', () => {
+    it('should error when the first source returns that is empty, even if all sources are empty', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const e1 = forkJoin({
           foo: hot('      --------------|'),
           bar: hot('      ---------|'),
         });
-        const expected = '---------|';
+        const expected = '---------#';
 
-        expectObservable(e1).toBe(expected);
+        expectObservable(e1).toBe(expected, undefined, new EmptyError());
       });
     });
 
@@ -471,15 +470,15 @@ describe('forkJoin', () => {
       });
     });
 
-    it('should complete when one of the sources never completes but other completes without values', () => {
+    it('should error when one of the sources never completes but other completes without values', () => {
       rxTestScheduler.run(({ hot, expectObservable }) => {
         const e1 = forkJoin({
           foo: hot('      --------------'),
           bar: hot('      ------|'),
         });
-        const expected = '------|';
+        const expected = '------#';
 
-        expectObservable(e1).toBe(expected);
+        expectObservable(e1).toBe(expected, undefined, new EmptyError());
       });
     });
 
@@ -593,6 +592,19 @@ describe('forkJoin', () => {
           expect(values).to.deep.equal([[1]]);
           done();
         },
+      });
+    });
+
+    it('should error on early completion of an inner observable', () => {
+      rxTestScheduler.run(({ hot, expectObservable }) => {
+        const e1 = forkJoin({
+          foo: hot('      --a--b--c--d--|'),
+          bar: hot('      ---|'),
+          baz: hot('      --1--2--3--|'),
+        });
+        const expected = '---#';
+
+        expectObservable(e1).toBe(expected, null, new EmptyError());
       });
     });
   });

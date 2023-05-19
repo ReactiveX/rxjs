@@ -7,6 +7,7 @@ import { operate } from '../Subscriber';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
 import { createObject } from '../util/createObject';
 import { AnyCatcher } from '../AnyCatcher';
+import { EmptyError } from '../util/EmptyError';
 
 // forkJoin(any)
 // We put this first because we need to catch cases where the user has supplied
@@ -169,10 +170,12 @@ export function forkJoin(...args: any[]): Observable<any> {
           complete: () => remainingCompletions--,
           finalize: () => {
             if (!remainingCompletions || !hasValue) {
-              if (!remainingEmissions) {
+              if (remainingEmissions === 0) {
                 destination.next(keys ? createObject(keys, values) : values);
+                destination.complete();
+              } else {
+                destination.error(new EmptyError());
               }
-              destination.complete();
             }
           },
         })
