@@ -17,3 +17,18 @@ it('should not break the inference of type', () => {
     ignoreElements(),
   );
 });
+
+it('should not break the inference of types when piped in a larger chain', () => {
+  const o$ = of('a string').pipe(
+    tap((o) => {
+      const t = o; // $ExpectType string
+    }),
+    tap((o) => {
+      const t = o; // $ExpectType string
+    }),
+    ignoreElements(),
+    tap((o) => {
+      const t = o; // $ExpectType never
+    }),
+  );
+});
