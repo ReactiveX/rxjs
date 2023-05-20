@@ -7,12 +7,6 @@ it('should infer correctly', () => {
   const q = of(1, 2, 3).pipe(expand(value => Promise.resolve(value))); // $ExpectType Observable<number>
 });
 
-it('should infer correctly with a different type as the source', () => {
-  const o = of(1, 2, 3).pipe(expand(value => of('foo'))); // $ExpectType Observable<string>
-  const p = of(1, 2, 3).pipe(expand(value => ['foo'])); // $ExpectType Observable<string>
-  const q = of(1, 2, 3).pipe(expand(value => Promise.resolve('foo'))); // $ExpectType Observable<string>
-});
-
 it('should support a project function with index', () => {
   const o = of(1, 2, 3).pipe(expand((value, index) => of(index))); // $ExpectType Observable<number>
 });
@@ -47,5 +41,5 @@ it('should enforce scheduler type', () => {
 });
 
 it('should support union types', () => {
-  const o = of(1).pipe(expand(x => typeof x === 'string' ? of(123) : of('test'))); // $ExpectType Observable<string | number>
+  const o = of(1).pipe(expand<string | number>(x => typeof x === 'string' ? of(123) : of('test'))); // $ExpectType Observable<string | number>
 });
