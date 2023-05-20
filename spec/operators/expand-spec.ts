@@ -511,7 +511,7 @@ describe('expand', () => {
 
     synchronousObservable
       .pipe(
-        expand(() => EMPTY),
+        expand((_) => EMPTY),
         take(3)
       )
       .subscribe(() => {
