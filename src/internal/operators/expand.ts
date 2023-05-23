@@ -7,7 +7,7 @@ export function expand<T>(
   project: (value: T, index: number) => ObservableInput<T>,
   concurrent?: number,
   scheduler?: SchedulerLike
-): OperatorFunction<T, T>;
+): MonotypeOperatorFunction<T>;
 /**
  * @deprecated The `scheduler` parameter will be removed in v8. If you need to schedule the inner subscription,
  * use `subscribeOn` within the projection function: `expand((value) => fn(value).pipe(subscribeOn(scheduler)))`.
