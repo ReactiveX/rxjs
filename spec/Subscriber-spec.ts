@@ -402,7 +402,7 @@ describe('operate', () => {
     expect(finalizer).to.have.been.calledOnce;
   });
 
-  it('should catch any errors in the complete override and pass them to the destination complete handler as finalize', () => {
+  it('should catch any errors in the complete override and pass them to the destination complete handler and finalize', () => {
     const complete = sinon.spy();
     const finalizer = sinon.spy();
     const error = sinon.spy();
