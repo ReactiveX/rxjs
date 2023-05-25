@@ -1,6 +1,7 @@
+import { Observable } from '../Observable';
+import { subscribeToArray } from '../observable/from';
+import { operate } from '../Subscriber';
 import { OperatorFunction, ValueFromArray } from '../types';
-import { operate } from '../util/lift';
-import { createOperatorSubscriber } from './OperatorSubscriber';
 
 export function startWith<T>(value: null): OperatorFunction<T, T | null>;
 export function startWith<T>(value: undefined): OperatorFunction<T, T | undefined>;
@@ -46,10 +47,8 @@ export function startWith<T, A extends readonly unknown[] = T[]>(...values: A): 
  * @see {@link concat}
  */
 export function startWith<T, D>(...values: D[]): OperatorFunction<T, T | D> {
-  return operate((source, subscriber) => {
-    subscribeToArray(
-      values,
-      createOperatorSubscriber(subscriber, undefined, () => source.subscribe(subscriber))
-    );
-  });
+  return (source) =>
+    new Observable((destination) => {
+      subscribeToArray(values, operate({ destination, complete: () => source.subscribe(destination) }));
+    });
 }
