@@ -26,9 +26,7 @@
       "severity": "warn",
       "from": {},
       "to": {
-        "dependencyTypes": [
-          "core"
-        ],
+        "dependencyTypes": ["core"],
         "path": "^(punycode|domain)$"
       }
     },
@@ -38,9 +36,7 @@
       "severity": "warn",
       "from": {},
       "to": {
-        "dependencyTypes": [
-          "deprecated"
-        ]
+        "dependencyTypes": ["deprecated"]
       }
     },
     {
@@ -51,9 +47,7 @@
         "path": "^(src|app|lib)"
       },
       "to": {
-        "dependencyTypes": [
-          "npm-dev"
-        ]
+        "dependencyTypes": ["npm-dev"]
       }
     },
     {
@@ -64,11 +58,7 @@
         "pathNot": "^node_modules"
       },
       "to": {
-        "dependencyTypes": [
-          "undetermined",
-          "npm-no-pkg",
-          "npm-unknown"
-        ],
+        "dependencyTypes": ["undetermined", "npm-no-pkg", "npm-unknown"],
         "pathNot": "^electron"
       }
     },
@@ -78,9 +68,7 @@
       "severity": "error",
       "from": {},
       "to": {
-        "dependencyTypes": [
-          "npm-peer"
-        ]
+        "dependencyTypes": ["npm-peer"]
       }
     },
     {
@@ -97,7 +85,7 @@
       "severity": "error",
       "comment": "Error in case we have circular dependencies",
       "from": {
-        "path": "^dist/esm5"
+        "path": "^dist/esm"
       },
       "to": {
         "circular": true
