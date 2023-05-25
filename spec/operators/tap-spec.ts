@@ -314,6 +314,168 @@ describe('tap', () => {
     expect(sideEffects).to.deep.equal([0, 1, 2]);
   });
 
+  it('should support assertion functions without breaking previous behavior', () => {
+    // assertion functions with interfaces and classes
+    {
+      interface Bar {
+        bar?: string;
+      }
+      interface Baz {
+        baz?: number;
+      }
+      class Foo implements Bar, Baz {
+        constructor(public bar: string = 'name', public baz: number = 42) {}
+      }
+
+      const ensureBar = (x: unknown): asserts x is Bar => {
+        if (!x || (<Bar>x).bar === undefined) {
+          throw new Error('not a Bar');
+        }
+      };
+
+      const foo: Foo = new Foo();
+      // with handler
+      of(foo)
+        .pipe(tap((foo) => foo.baz))
+        .subscribe((x) => [x.baz, x.baz]); // x is still Foo
+      of(foo)
+        .pipe(tap(ensureBar))
+        .subscribe((x) => x.bar); // x is Bar!
+      // with observer
+      of(foo)
+        .pipe(
+          tap({
+            next: (foo) => foo.baz,
+          })
+        )
+        .subscribe((x) => [x.bar, x.baz]); // x is still Foo
+      of(foo)
+        .pipe(
+          tap({
+            next: ensureBar,
+          })
+        )
+        .subscribe((x) => x.bar); // x is Bar!
+
+      const foobar: Bar = new Foo(); // type is interface, not the class
+      // with handler
+      of(foobar)
+        .pipe(tap((foobar) => foobar.bar))
+        .subscribe((x) => x.bar); // <-- x is still Bar
+      of(foobar)
+        .pipe(tap(ensureBar))
+        .subscribe((x) => x.bar); // <--- x is Bar!
+      // with observer
+      of(foobar)
+        .pipe(
+          tap({
+            next: (foobar) => foobar.bar,
+          })
+        )
+        .subscribe((x) => x.bar); // x is still Bar
+      of(foobar)
+        .pipe(
+          tap({
+            next: ensureBar,
+          })
+        )
+        .subscribe((x) => x.bar); // x is Bar!
+
+      const barish = { bar: 'quack', baz: 42 }; // type can quack like a Bar
+      // with handler
+      of(barish)
+        .pipe(tap((x) => x.bar))
+        .subscribe((x) => [x.bar, x.baz]); // x is still { bar: string; baz: number; }
+      of(barish)
+        .pipe(tap(ensureBar))
+        .subscribe((bar) => bar.bar); // x is Bar!
+      // with observer
+      of(barish)
+        .pipe(
+          tap({
+            next: (x) => x.bar,
+          })
+        )
+        .subscribe((x) => [x.bar, x.baz]); // x is still { bar: string; baz: number; }
+      of(barish)
+        .pipe(
+          tap({
+            next: ensureBar,
+          })
+        )
+        .subscribe((x) => x.bar); // x is Bar!
+    }
+
+    // assertion functions with primitive types
+    {
+      const stringOrNumberObservable: Observable<string | number> = of(1, 'aaa', 3, 'bb');
+
+      // This assertion function will narrow a `string | number` to a string in the examples below
+      const ensureString = (x: string | number): asserts x is string => {
+        if (typeof x !== 'string') {
+          throw new Error('not a String');
+        }
+      };
+
+      // with handler
+      stringOrNumberObservable
+        .pipe(tap(ensureString))
+        .subscribe({
+          next: (s) => s.length, // s is string
+          error(ex: any) {
+            expect(ex.message).to.equal('not a String');
+          },
+        });
+      // with observer
+      stringOrNumberObservable
+        .pipe(
+          tap({
+            next: ensureString,
+          })
+        )
+        .subscribe({
+          next: (s) => s.length, // s is string
+          error(ex: any) {
+            expect(ex.message).to.equal('not a String');
+          },
+        });
+
+      // In contrast, this type of regular function still maintains the original type
+      stringOrNumberObservable
+        .pipe(
+          tap((x) => {
+            if (typeof x !== 'number') {
+              throw new Error('not a Number');
+            }
+          })
+        )
+        .subscribe({
+          next: (x) => x, // x is still string | number
+          error(ex: any) {
+            expect(ex.message).to.equal('not a Number');
+          },
+        });
+
+      // Similarly, regular Observer also still maintains the original type
+      stringOrNumberObservable
+        .pipe(
+          tap({
+            next(x) {
+              if (typeof x !== 'number') {
+                throw new Error('not a Number');
+              }
+            },
+          })
+        )
+        .subscribe({
+          next: (x) => x, // x is still string | number
+          error(ex: any) {
+            expect(ex.message).to.equal('not a Number');
+          },
+        });
+    }
+  });
+
   describe('lifecycle handlers', () => {
     it('should support an unsubscribe event that fires before finalize', () => {
       const results: any[] = [];

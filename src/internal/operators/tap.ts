@@ -1,4 +1,4 @@
-import { MonoTypeOperatorFunction, Observer } from '../types';
+import { MonoTypeOperatorFunction, Observer, OperatorFunction } from '../types';
 import { isFunction } from '../util/isFunction';
 import { Observable } from '../Observable';
 import { operate } from '../Subscriber';
@@ -71,6 +71,13 @@ export interface TapObserver<T> extends Observer<T> {
    */
   finalize: () => void;
 }
+
+export interface TapObserverWithAsserts<T, S extends T> extends Omit<TapObserver<T>, 'next'> {
+  next: (value: T) => asserts value is S;
+}
+
+export function tap<T, S extends T>(observerOrNext?: Partial<TapObserverWithAsserts<T, S>> | ((value: T) => asserts value is S)): OperatorFunction<T, S>;
+export function tap<T>(observerOrNext?: Partial<TapObserver<T>> | ((value: T) => void) | null): MonoTypeOperatorFunction<T>;
 
 /**
  * Used to perform side-effects for notifications from the source observable

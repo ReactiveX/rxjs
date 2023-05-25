@@ -11,8 +11,20 @@ it('should accept partial observer', () => {
   const c = of(1, 2, 3).pipe(tap({ complete: () => { } })); // $ExpectType Observable<number>
 });
 
+it('should support a user-defined assertion function', () => {
+  const o = of(1, 2, 3).pipe(tap((value: number): asserts value is 1 => { /* assertion code */ })); // $ExpectType Observable<1>
+});
+
+it('should support a partial observer with user-defined assertion function', () => {
+  const o = of(1, 2, 3).pipe(tap({ next: (value: number): asserts value is 1 => { /* assertion code */ }})); // $ExpectType Observable<1>
+});
+
 it('should enforce type for next observer function', () => {
   const a = of(1, 2, 3).pipe(tap({ next: (x: string) => { } })); // $ExpectError
+});
+
+it('should enforce type for next observer assertion function', () => {
+  const o = of(1, 2, 3).pipe(tap({ next: (value: string): asserts value is 1 => { /* assertion code */ }})); // $ExpectError
 });
 
 it('should deprecate the multi-argument usage', () => {
