@@ -12,8 +12,7 @@ import { SearchResults } from 'app/search/interfaces';
 import { SearchService } from 'app/search/search.service';
 import { TocService } from 'app/shared/toc.service';
 
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, first, map } from 'rxjs';
 import { Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 

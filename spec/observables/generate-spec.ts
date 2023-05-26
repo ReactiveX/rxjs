@@ -1,8 +1,7 @@
 /** @prettier */
 import { TestScheduler } from 'rxjs/testing';
 import { expect } from 'chai';
-import { generate } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { generate, take } from 'rxjs';
 import { Subscriber } from 'rxjs/internal/Subscriber';
 import { observableMatcher } from '../helpers/observableMatcher';
 

@@ -1,4 +1,4 @@
-import { mergeWith } from 'rxjs/operators';
+import { mergeWith } from 'rxjs';
 import { a$, b$, c$, d$, e$, f$, g$, h$} from '../helpers';
 
 it('should accept N args', () => {

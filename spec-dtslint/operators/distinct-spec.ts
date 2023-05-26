@@ -1,6 +1,5 @@
-import { of } from 'rxjs';
+import { of, distinct } from 'rxjs';
 import { asInteropObservable } from '../../spec/helpers/interop-helper';
-import { distinct } from 'rxjs/operators';
 import { ReadableStreamLike } from '../../src/internal/types';
 
 it('should infer correctly', () => {

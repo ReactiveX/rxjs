@@ -1,5 +1,4 @@
-import { of, Subject, GroupedObservable } from 'rxjs';
-import { groupBy, mergeMap } from 'rxjs/operators';
+import { of, Subject, GroupedObservable, groupBy, mergeMap } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(groupBy(value => value.toString())); // $ExpectType Observable<GroupedObservable<string, number>>

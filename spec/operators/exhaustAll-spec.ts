@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import { exhaustAll, mergeMap, take } from 'rxjs/operators';
+import { of, Observable, exhaustAll, mergeMap, take } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { of, Observable } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {exhaustAll} */

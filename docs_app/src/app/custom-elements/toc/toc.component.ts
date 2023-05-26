@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { asapScheduler as asap, combineLatest, Subject } from 'rxjs';
-import { startWith, subscribeOn, takeUntil } from 'rxjs/operators';
+import { asapScheduler as asap, combineLatest, Subject, startWith, subscribeOn, takeUntil } from 'rxjs';
 
 import { ScrollService } from 'app/shared/scroll.service';
 import { TocItem, TocService } from 'app/shared/toc.service';

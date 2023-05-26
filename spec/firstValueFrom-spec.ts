@@ -1,6 +1,5 @@
-import { interval, firstValueFrom, EMPTY, EmptyError, throwError, of, Observable } from 'rxjs';
+import { interval, firstValueFrom, EMPTY, EmptyError, throwError, of, Observable, finalize } from 'rxjs';
 import { expect } from 'chai';
-import { finalize } from 'rxjs/operators';
 
 describe('firstValueFrom', () => {
   it('should emit the first value as a promise', async () => {

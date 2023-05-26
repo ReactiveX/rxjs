@@ -1,8 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 
-import { asapScheduler, Observable, of, timer } from 'rxjs';
-import { catchError, observeOn, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { asapScheduler, Observable, of, timer, catchError, observeOn, switchMap, takeUntil, tap } from 'rxjs';
 
 import { DocumentContents, FILE_NOT_FOUND_ID, FETCHING_ERROR_ID } from 'app/documents/document.service';
 import { Logger } from 'app/shared/logger.service';

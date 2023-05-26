@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { windowCount } from 'rxjs/operators';
+import { of, windowCount } from 'rxjs';
 
 it('should infer correctly', () => {
   of('test').pipe(windowCount(1)); // $ExpectType Observable<Observable<string>>

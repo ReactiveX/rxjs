@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { share } from 'rxjs/operators';
+import { of, share } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of('foo', 'bar', 'baz').pipe(share()); // $ExpectType Observable<string>

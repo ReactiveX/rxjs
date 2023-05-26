@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { of, distinctUntilChanged } from 'rxjs';
 
 interface Person { name: string; }
 const sample: Person = { name: 'Tim' };

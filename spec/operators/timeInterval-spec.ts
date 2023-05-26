@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import { timeInterval, map, mergeMap, take } from 'rxjs/operators';
+import { of, Observable, timeInterval, map, mergeMap, take } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { of, Observable } from 'rxjs';
 import { TimeInterval } from 'rxjs/internal/operators/timeInterval';
 import { observableMatcher } from '../helpers/observableMatcher';
 

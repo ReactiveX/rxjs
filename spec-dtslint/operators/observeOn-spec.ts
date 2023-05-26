@@ -1,5 +1,4 @@
-import { of, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { of, asyncScheduler, observeOn } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of('apple', 'banana', 'peach').pipe(observeOn(asyncScheduler)); // $ExpectType Observable<string>

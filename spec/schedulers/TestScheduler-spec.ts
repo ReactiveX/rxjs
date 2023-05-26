@@ -1,8 +1,22 @@
 /** @prettier */
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, Subject, of, merge, animationFrameScheduler, asapScheduler, asyncScheduler, interval } from 'rxjs';
-import { delay, debounceTime, concatMap, mergeMap, mapTo, take } from 'rxjs/operators';
+import {
+  Observable,
+  Subject,
+  of,
+  merge,
+  animationFrameScheduler,
+  asapScheduler,
+  asyncScheduler,
+  interval,
+  delay,
+  debounceTime,
+  concatMap,
+  mergeMap,
+  mapTo,
+  take,
+} from 'rxjs';
 import { nextNotification, COMPLETE_NOTIFICATION, errorNotification } from 'rxjs/internal/NotificationFactories';
 import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
 import { immediateProvider } from 'rxjs/internal/scheduler/immediateProvider';

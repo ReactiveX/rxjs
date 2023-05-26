@@ -1,6 +1,5 @@
-import { interval, lastValueFrom, EMPTY, EmptyError, throwError, of } from 'rxjs';
+import { interval, lastValueFrom, EMPTY, EmptyError, throwError, of, finalize, take } from 'rxjs';
 import { expect } from 'chai';
-import { finalize, take } from 'rxjs/operators';
 
 describe('lastValueFrom', () => {
   it('should emit the last value as a promise', async () => {

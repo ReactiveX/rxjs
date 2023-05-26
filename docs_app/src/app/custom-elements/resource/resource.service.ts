@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ConnectableObservable, Observable } from 'rxjs';
-import { map, publishLast } from 'rxjs/operators';
+import { ConnectableObservable, Observable, map, publishLast } from 'rxjs';
 
 import { Category, Resource, SubCategory } from './resource.model';
 import { CONTENT_URL_PREFIX } from 'app/documents/document.service';

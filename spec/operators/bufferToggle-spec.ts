@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { of, concat, timer, EMPTY } from 'rxjs';
-import { bufferToggle, mergeMap, mapTo } from 'rxjs/operators';
+import { of, concat, timer, EMPTY, bufferToggle, mergeMap, mapTo } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 

@@ -1,6 +1,5 @@
 /** @prettier */
-import { race, of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { race, of, mergeMap } from 'rxjs';
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';

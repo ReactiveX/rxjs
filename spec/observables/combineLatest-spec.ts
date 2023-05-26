@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { combineLatest, of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { combineLatest, of, map, mergeMap } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -61,7 +60,7 @@ describe('static combineLatest', () => {
 
       const combined = combineLatest({a: firstSource, b: secondSource}).pipe(
         map(({a, b}) => '' + a + b)
-      );  
+      );
 
       expectObservable(combined).toBe(expected, {u: 'ad', v: 'ae', w: 'af', x: 'bf', y: 'bg', z: 'cg'});
     });
@@ -548,7 +547,7 @@ describe('static combineLatest', () => {
       const values = { x: 'bf', y: 'cf', z: 'cg' };
 
       const result = combineLatest([
-        e1.pipe(mergeMap((x) => of(x))), 
+        e1.pipe(mergeMap((x) => of(x))),
         e2.pipe(mergeMap((x) => of(x)))
       ], (x, y) => x + y).pipe(
         mergeMap((x) => of(x))

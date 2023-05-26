@@ -1,7 +1,6 @@
-import { observeOn, mergeMap, take } from 'rxjs/operators';
+import { of, Observable, queueScheduler, observeOn, mergeMap, take } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { expect } from 'chai';
-import { of, Observable, queueScheduler } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {observeOn} */

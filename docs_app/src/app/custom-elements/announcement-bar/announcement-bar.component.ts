@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs';
 import { Logger } from 'app/shared/logger.service';
 import { CONTENT_URL_PREFIX } from 'app/documents/document.service';
 const announcementsPath = CONTENT_URL_PREFIX + 'announcements.json';

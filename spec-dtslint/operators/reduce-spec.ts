@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { reduce } from 'rxjs/operators';
+import { of, reduce } from 'rxjs';
 
 it('should enforce parameter', () => {
   const a = of(1, 2, 3).pipe(reduce()); // $ExpectError

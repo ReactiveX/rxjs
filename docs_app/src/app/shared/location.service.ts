@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Location, PlatformLocation } from '@angular/common';
 
-import { ReplaySubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { ReplaySubject, map, tap } from 'rxjs';
 
 import { GaService } from 'app/shared/ga.service';
 import { SwUpdatesService } from 'app/sw-updates/sw-updates.service';

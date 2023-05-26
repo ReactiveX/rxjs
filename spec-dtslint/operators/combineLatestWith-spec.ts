@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { combineLatestWith } from 'rxjs/operators';
+import { of, combineLatestWith } from 'rxjs';
 
 describe('combineLatestWith', () => {
   describe('without project parameter', () => {

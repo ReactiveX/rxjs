@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { ignoreElements, tap } from 'rxjs/operators';
+import { of, ignoreElements, tap } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(ignoreElements()); // $ExpectType Observable<never>

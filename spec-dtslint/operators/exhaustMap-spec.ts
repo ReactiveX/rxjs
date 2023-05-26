@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { exhaustMap } from 'rxjs/operators';
+import { of, exhaustMap } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(exhaustMap(p => of(Boolean(p)))); // $ExpectType Observable<boolean>

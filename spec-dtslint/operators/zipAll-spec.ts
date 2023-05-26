@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { zipAll } from 'rxjs/operators';
+import { of, zipAll } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(of(1, 2, 3)).pipe(zipAll()); // $ExpectType Observable<number[]>

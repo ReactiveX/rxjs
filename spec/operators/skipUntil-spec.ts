@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { concat, defer, of, Subject, Observable, interval } from 'rxjs';
-import { skipUntil, mergeMap, take } from 'rxjs/operators';
+import { concat, defer, of, Subject, Observable, interval, skipUntil, mergeMap, take } from 'rxjs';
 import { asInteropObservable } from '../helpers/interop-helper';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';

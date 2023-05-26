@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/internal/testing/TestScheduler';
 import { observableMatcher } from '../helpers/observableMatcher';
-import { throttle, mergeMap, take } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { of, Observable, throttle, mergeMap, take } from 'rxjs';
 
 /** @test {throttle} */
 describe('throttle', () => {

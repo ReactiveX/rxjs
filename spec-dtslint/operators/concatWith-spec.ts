@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { concatWith } from 'rxjs/operators';
+import { of, concatWith } from 'rxjs';
 import { a$, b$, c$, d$, e$ } from 'helpers';
 
 it('should support rest params', () => {

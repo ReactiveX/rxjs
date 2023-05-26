@@ -1,8 +1,7 @@
 /** @prettier  */
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { asapScheduler, Subscription, SchedulerAction, merge } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { asapScheduler, Subscription, SchedulerAction, merge, delay } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 import { immediateProvider } from 'rxjs/internal/scheduler/immediateProvider';

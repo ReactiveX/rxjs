@@ -1,5 +1,4 @@
-import { of, NEVER } from 'rxjs';
-import { bufferToggle } from 'rxjs/operators';
+import { of, NEVER, bufferToggle } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(bufferToggle(of('a', 'b', 'c'), value => of(new Date()))); // $ExpectType Observable<number[]>

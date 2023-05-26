@@ -1,8 +1,22 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { shareReplay, mergeMapTo, retry, take } from 'rxjs/operators';
+import {
+  Observable,
+  Operator,
+  Observer,
+  of,
+  from,
+  defer,
+  pipe,
+  combineLatest,
+  firstValueFrom,
+  BehaviorSubject,
+  shareReplay,
+  mergeMapTo,
+  retry,
+  take,
+} from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, Operator, Observer, of, from, defer, pipe, combineLatest, firstValueFrom, BehaviorSubject } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {shareReplay} */

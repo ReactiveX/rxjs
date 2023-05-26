@@ -1,5 +1,4 @@
-import { of, timer } from 'rxjs';
-import { debounce } from 'rxjs/operators';
+import { of, timer, debounce } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(debounce(() => timer(47))); // $ExpectType Observable<number>

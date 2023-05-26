@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { onErrorResumeNextWith } from 'rxjs/operators';
+import { of, onErrorResumeNextWith } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of('apple', 'banana', 'peach').pipe(onErrorResumeNextWith()); // $ExpectType Observable<string>

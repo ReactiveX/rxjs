@@ -1,5 +1,4 @@
-import { of, asyncScheduler } from 'rxjs';
-import { timeout } from 'rxjs/operators';
+import { of, asyncScheduler, timeout } from 'rxjs';
 import { A, a$, b$, c$ } from '../helpers';
 
 it('should infer correctly', () => {
@@ -56,7 +55,7 @@ it('Check config arguments', () => {
 
 it('should support a union', () => {
   const o = a$.pipe( // $ExpectType Observable<A | B | C>
-    timeout({ 
+    timeout({
       with: () => Math.random() > 0.5 ? b$ : c$
     })
   );

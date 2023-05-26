@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { BehaviorSubject, Subject, of } from 'rxjs';
-import { tap, mergeMapTo } from 'rxjs/operators';
+import { BehaviorSubject, Subject, of, tap, mergeMapTo } from 'rxjs';
 import { asInteropSubject } from '../helpers/interop-helper';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';

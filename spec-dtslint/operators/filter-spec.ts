@@ -1,5 +1,4 @@
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable, of, filter, map } from 'rxjs';
 
 it('should support a predicate', () => {
   const o = of(1, 2, 3).pipe(filter(value => value < 3)); // $ExpectType Observable<number>

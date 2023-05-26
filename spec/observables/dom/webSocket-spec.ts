@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { webSocket } from 'rxjs/webSocket';
-import { map, retry, take, repeat, takeWhile } from 'rxjs/operators';
+import { map, retry, take, repeat, takeWhile } from 'rxjs';
 
 const root: any = (typeof globalThis !== 'undefined' && globalThis)
   || (typeof self !== 'undefined' && self)

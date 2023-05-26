@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import { timeout, mergeMap, take, concatWith } from 'rxjs/operators';
+import { TimeoutError, of, Observable, NEVER, timeout, mergeMap, take, concatWith } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { TimeoutError, of, Observable, NEVER } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {timeout} */

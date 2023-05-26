@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { retry } from 'rxjs/operators';
+import { of, retry } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(retry()); // $ExpectType Observable<number>

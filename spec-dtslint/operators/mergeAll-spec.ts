@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { mergeAll } from 'rxjs/operators';
+import { of, mergeAll } from 'rxjs';
 import { a$, b$ } from '../helpers';
 
 it('should infer correctly with sources of same type', () => {

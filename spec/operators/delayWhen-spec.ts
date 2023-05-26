@@ -1,5 +1,4 @@
-import { of, EMPTY, interval, take } from 'rxjs';
-import { delayWhen, tap } from 'rxjs/operators';
+import { of, EMPTY, interval, take, delayWhen, tap } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 import { expect } from 'chai';

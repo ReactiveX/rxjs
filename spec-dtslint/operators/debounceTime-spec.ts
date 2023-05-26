@@ -1,5 +1,4 @@
-import { of, asyncScheduler } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { of, asyncScheduler, debounceTime } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(debounceTime(47)); // $ExpectType Observable<number>

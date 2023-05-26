@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import { of, takeWhile } from 'rxjs';
 
 it('should support a user-defined type guard', () => {
   const o = of('foo').pipe(takeWhile((s): s is 'foo' => true)); // $ExpectType Observable<"foo">

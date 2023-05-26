@@ -1,5 +1,4 @@
-import { of, asyncScheduler } from 'rxjs';
-import { timeInterval } from 'rxjs/operators';
+import { of, asyncScheduler, timeInterval } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of('a', 'b', 'c').pipe(timeInterval()); // $ExpectType Observable<TimeInterval<string>>

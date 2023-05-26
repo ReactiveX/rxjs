@@ -1,5 +1,4 @@
-import { of, Observable } from 'rxjs';
-import { single } from 'rxjs/operators';
+import { of, Observable, single } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of('foo').pipe(single()); // $ExpectType Observable<string>

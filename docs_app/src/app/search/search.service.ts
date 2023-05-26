@@ -5,8 +5,7 @@ can be found in the LICENSE file at http://angular.io/license
 */
 
 import { NgZone, Injectable } from '@angular/core';
-import { ConnectableObservable, Observable, race, ReplaySubject, timer } from 'rxjs';
-import { concatMap, first, publishReplay } from 'rxjs/operators';
+import { ConnectableObservable, Observable, race, ReplaySubject, timer, concatMap, first, publishReplay } from 'rxjs';
 import { WebWorkerClient } from 'app/shared/web-worker';
 import { SearchResults } from 'app/search/interfaces';
 

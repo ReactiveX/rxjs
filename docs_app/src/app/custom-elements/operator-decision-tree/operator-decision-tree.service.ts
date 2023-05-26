@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { filter, map, mapTo, shareReplay, catchError } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, of, filter, map, mapTo, shareReplay, catchError } from 'rxjs';
 import { OperatorDecisionTree, OperatorTreeNode, State } from './interfaces';
 import { OperatorDecisionTreeDataService } from './operator-decision-tree-data.service';
 import { isInitialDecision, nodeHasOptions, treeIsErrorFree } from './utils';

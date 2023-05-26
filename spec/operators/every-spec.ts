@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import { every, mergeMap } from 'rxjs/operators';
+import { of, Observable, Observer, every, mergeMap } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { of, Observable, Observer } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {every} */

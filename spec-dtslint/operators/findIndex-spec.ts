@@ -1,5 +1,4 @@
-import { of, Observable } from 'rxjs';
-import { findIndex } from 'rxjs/operators';
+import { of, Observable, findIndex } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of('foo', 'bar', 'baz').pipe(findIndex(p => p === 'foo')); // $ExpectType Observable<number>

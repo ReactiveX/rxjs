@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { throwIfEmpty } from 'rxjs/operators';
+import { of, throwIfEmpty } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of('a', 'b', 'c').pipe(throwIfEmpty()); // $ExpectType Observable<string>

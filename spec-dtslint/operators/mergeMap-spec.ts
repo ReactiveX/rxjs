@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { of, mergeMap } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(mergeMap(p => of(Boolean(p)))); // $ExpectType Observable<boolean>

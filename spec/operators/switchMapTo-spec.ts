@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { Observable, of } from 'rxjs';
-import { switchMapTo, mergeMap, take } from 'rxjs/operators';
+import { Observable, of, switchMapTo, mergeMap, take } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 

@@ -1,5 +1,4 @@
-import { of, asyncScheduler } from 'rxjs';
-import { timeoutWith } from 'rxjs/operators';
+import { of, asyncScheduler, timeoutWith } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of('a', 'b', 'c').pipe(timeoutWith(10, of(1, 2, 3))); // $ExpectType Observable<string | number>

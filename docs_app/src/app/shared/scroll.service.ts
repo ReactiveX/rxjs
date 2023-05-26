@@ -1,7 +1,6 @@
 import { DOCUMENT, Location, PlatformLocation, PopStateEvent, ViewportScroller } from '@angular/common';
 import { Injectable, Inject } from '@angular/core';
-import { fromEvent } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { fromEvent, debounceTime } from 'rxjs';
 
 type ScrollPosition = [number, number];
 interface ScrollPositionPopStateEvent extends PopStateEvent {

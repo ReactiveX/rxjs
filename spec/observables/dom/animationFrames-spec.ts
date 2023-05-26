@@ -1,8 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { animationFrames } from 'rxjs';
-import { mergeMapTo, take, takeUntil } from 'rxjs/operators';
+import { animationFrames, mergeMapTo, take, takeUntil } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../../helpers/observableMatcher';
 import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';

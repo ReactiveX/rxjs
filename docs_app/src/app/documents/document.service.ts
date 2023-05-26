@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { AsyncSubject, Observable, of } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { AsyncSubject, Observable, of, catchError, switchMap, tap } from 'rxjs';
 
 import { DocumentContents } from './document-contents';
 export { DocumentContents } from './document-contents';

@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { find } from 'rxjs/operators';
+import { of, find } from 'rxjs';
 
 it('should support a user-defined type guard', () => {
   const o = of('foo').pipe(find((s): s is 'foo' => true)); // $ExpectType Observable<"foo" | undefined>

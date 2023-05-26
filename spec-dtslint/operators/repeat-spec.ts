@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { repeat } from 'rxjs/operators';
+import { of, repeat } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of('a', 'b', 'c').pipe(repeat()); // $ExpectType Observable<string>

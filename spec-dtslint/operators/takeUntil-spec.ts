@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { of, takeUntil } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(takeUntil(of(1, 2, 3))); // $ExpectType Observable<number>

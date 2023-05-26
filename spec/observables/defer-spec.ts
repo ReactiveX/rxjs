@@ -1,7 +1,6 @@
 /** @prettier */
 import { expect } from 'chai';
-import { defer, of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { defer, of, mergeMap } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 

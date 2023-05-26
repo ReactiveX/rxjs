@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { repeatWhen, map, mergeMap, takeUntil, takeWhile, take } from 'rxjs/operators';
-import { of, EMPTY, Observable, Subscriber } from 'rxjs';
+import { of, EMPTY, Observable, Subscriber, repeatWhen, map, mergeMap, takeUntil, takeWhile, take } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 

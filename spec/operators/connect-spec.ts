@@ -1,5 +1,4 @@
-import { BehaviorSubject, merge } from 'rxjs';
-import { connect, delay } from 'rxjs/operators';
+import { BehaviorSubject, merge, connect, delay } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 

@@ -7,8 +7,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatSidenav } from '@angular/material/sidenav';
 import { By } from '@angular/platform-browser';
 
-import { of, timer } from 'rxjs';
-import { first, mapTo } from 'rxjs/operators';
+import { of, timer, first, mapTo } from 'rxjs';
 
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';

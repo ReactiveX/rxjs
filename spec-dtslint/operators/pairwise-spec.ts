@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { pairwise } from 'rxjs/operators';
+import { of, pairwise } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of('apple', 'banana', 'peach').pipe(pairwise()); // $ExpectType Observable<[string, string]>

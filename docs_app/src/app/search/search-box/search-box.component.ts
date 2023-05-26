@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
 import { LocationService } from 'app/shared/location.service';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 /**
  * This component provides a text box to type a search query that will be sent to the SearchService.

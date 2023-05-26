@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import { Subject, Observable, AsyncSubject, Observer, of, config, Subscription, Subscriber, noop, operate } from 'rxjs';
+import { Subject, Observable, AsyncSubject, Observer, of, config, Subscription, Subscriber, noop, operate, delay } from 'rxjs';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
-import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -345,12 +344,12 @@ describe('Subject', () => {
     subscription2.unsubscribe();
     subject.unsubscribe();
 
-    
+
     const subscription = subject.subscribe(
-      { 
+      {
         next: function (x) {
           results3.push(x);
-        }, 
+        },
         error: function (err) {
           expect(false).to.equal('should not throw error: ' + err.toString());
         }
@@ -670,7 +669,7 @@ describe('Subject', () => {
         expect(err.message).to.equal('Boom!');
         done();
       };
-      
+
       const source = new Subject<number>();
       source.subscribe();
       source.subscribe(() => {
@@ -733,16 +732,16 @@ describe('Subject', () => {
     const destination = new Subscriber();
     const results: any[] = [];
     const subscriber = operate({
-      destination, 
+      destination,
       next: (value) => {
         results.push(value);
-      }, 
+      },
       error: noop,
       complete: () => {
         results.push('complete');
-      }, 
+      },
     });
-    
+
     subject.subscribe(subscriber);
     subject.subscribe(subscriber);
     subject.next(1);

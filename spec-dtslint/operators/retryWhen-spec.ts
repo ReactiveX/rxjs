@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { retryWhen } from 'rxjs/operators';
+import { of, retryWhen } from 'rxjs';
 import { asInteropObservable } from '../../spec/helpers/interop-helper';
 
 it('should infer correctly', () => {

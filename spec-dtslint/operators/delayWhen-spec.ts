@@ -1,5 +1,4 @@
-import { of, NEVER } from 'rxjs';
-import { delayWhen } from 'rxjs/operators';
+import { of, NEVER, delayWhen } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(delayWhen(() => of('a', 'b', 'c'))); // $ExpectType Observable<number>

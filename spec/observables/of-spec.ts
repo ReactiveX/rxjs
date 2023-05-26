@@ -1,8 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
-import { of } from 'rxjs';
+import { of, concatMap, delay, concatAll } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { concatMap, delay, concatAll } from 'rxjs/operators';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {of} */

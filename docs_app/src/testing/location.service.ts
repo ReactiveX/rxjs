@@ -1,5 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, map } from 'rxjs';
 
 export class MockLocationService {
   urlSubject = new BehaviorSubject<string>(this.initialUrl);

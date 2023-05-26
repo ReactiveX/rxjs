@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { switchScan } from 'rxjs/operators';
+import { of, switchScan } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(switchScan((acc: boolean, v: number) => of(Boolean(v)), false)); // $ExpectType Observable<boolean>

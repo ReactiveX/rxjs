@@ -1,6 +1,5 @@
-import { sampleTime, mergeMap } from 'rxjs/operators';
+import { of, sampleTime, mergeMap } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { of } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {sampleTime} */

@@ -3,7 +3,7 @@ import { Logger } from 'app/shared/logger.service';
 import { PrettyPrinter } from './pretty-printer.service';
 import { CopierService } from 'app/shared/copier.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 import { StackblitzService } from 'app/shared/stackblitz.service';
 import version from '../../../../tools/stackblitz/rxjs.version';
 

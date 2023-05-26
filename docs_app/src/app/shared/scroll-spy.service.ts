@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { fromEvent, Observable, ReplaySubject, Subject } from 'rxjs';
-import { auditTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { fromEvent, Observable, ReplaySubject, Subject, auditTime, distinctUntilChanged, takeUntil } from 'rxjs';
 
 import { ScrollService } from 'app/shared/scroll.service';
 

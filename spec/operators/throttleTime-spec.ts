@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import { throttleTime, take, map, mergeMap } from 'rxjs/operators';
+import { of, concat, timer, throttleTime, take, map, mergeMap } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { of, concat, timer } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {throttleTime} */

@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { sample } from 'rxjs/operators';
+import { of, sample } from 'rxjs';
 import { asInteropObservable } from '../../spec/helpers/interop-helper';
 
 it('should enforce parameter', () => {

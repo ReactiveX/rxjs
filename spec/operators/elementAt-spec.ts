@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import { elementAt, mergeMap, tap } from 'rxjs/operators';
+import { ArgumentOutOfRangeError, of, range, Observable, Subject, merge, elementAt, mergeMap, tap } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { ArgumentOutOfRangeError, of, range, Observable, Subject, merge } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {elementAt} */

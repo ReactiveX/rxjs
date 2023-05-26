@@ -1,5 +1,4 @@
-import { of, asyncScheduler  } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
+import { of, asyncScheduler, shareReplay } from 'rxjs';
 
 it('should accept an individual bufferSize parameter', () => {
   const o = of(1, 2, 3).pipe(shareReplay(1)); // $ExpectType Observable<number>

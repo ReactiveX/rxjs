@@ -1,5 +1,4 @@
-import { of, Observable } from 'rxjs';
-import { count } from 'rxjs/operators';
+import { of, Observable, count } from 'rxjs';
 
 it('should always infer number', () => {
   const o = of(1, 2, 3).pipe(count(x => x > 1)); // $ExpectType Observable<number>

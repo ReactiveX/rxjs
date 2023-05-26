@@ -1,8 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
 import { lowerCaseO } from '../helpers/test-helper';
-import { asyncScheduler, queueScheduler, concat, of, scheduled, defer, Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { asyncScheduler, queueScheduler, concat, of, scheduled, defer, Observable, mergeMap } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 

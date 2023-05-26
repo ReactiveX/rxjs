@@ -1,4 +1,4 @@
-import { raceWith } from 'rxjs/operators';
+import { raceWith } from 'rxjs';
 import { a$, b, b$, c, c$, d$, e$, f$ } from '../helpers';
 
 describe('raceWith', () => {

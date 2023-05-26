@@ -1,5 +1,4 @@
-import { toArray, mergeMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, toArray, mergeMap } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 

@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { skip } from 'rxjs/operators';
+import { of, skip } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of('foo', 'bar', 'baz').pipe(skip(7)); // $ExpectType Observable<string>

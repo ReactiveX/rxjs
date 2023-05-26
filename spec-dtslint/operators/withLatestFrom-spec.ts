@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { withLatestFrom } from 'rxjs/operators';
+import { of, withLatestFrom } from 'rxjs';
 
 describe('withLatestFrom', () => {
   describe('without project parameter', () => {
@@ -155,7 +154,7 @@ describe('withLatestFrom', () => {
     /*
      * The following test does not typecheck because the project function is missing a third parameter.
      * If such an issue occurs in a consumer code base the fix is to specify the missing parameters.
-     * 
+     *
      * It looks like this is a TS bug.
      */
     // it('should infer correct parameters with fewer arguments to project function', () => {

@@ -1,7 +1,6 @@
 import { ApplicationRef, Injectable, OnDestroy } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
-import { concat, interval, NEVER, Observable, Subject } from 'rxjs';
-import { first, map, takeUntil, tap } from 'rxjs/operators';
+import { concat, interval, NEVER, Observable, Subject, first, map, takeUntil, tap } from 'rxjs';
 
 import { Logger } from 'app/shared/logger.service';
 

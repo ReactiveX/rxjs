@@ -1,6 +1,17 @@
 import { expect } from 'chai';
-import { asapScheduler, concat, config, defer, EMPTY, NEVER, Observable, of, scheduled, Subject, throwError, pipe } from 'rxjs';
 import {
+  asapScheduler,
+  concat,
+  config,
+  defer,
+  EMPTY,
+  NEVER,
+  Observable,
+  of,
+  scheduled,
+  Subject,
+  throwError,
+  pipe,
   map,
   mergeMap,
   mergeMapTo,
@@ -15,7 +26,7 @@ import {
   tap,
   toArray,
   withLatestFrom,
-} from 'rxjs/operators';
+} from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 import { SinonSpy, spy } from 'sinon';

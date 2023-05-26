@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { lowerCaseO } from '../helpers/test-helper';
-import { withLatestFrom, mergeMap, delay } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, withLatestFrom, mergeMap, delay } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 

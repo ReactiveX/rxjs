@@ -1,5 +1,4 @@
-import { of, asyncScheduler } from 'rxjs';
-import { sampleTime } from 'rxjs/operators';
+import { of, asyncScheduler, sampleTime } from 'rxjs';
 
 it('should enforce period parameter', () => {
   const a = of(1, 2, 3).pipe(sampleTime()); // $ExpectError

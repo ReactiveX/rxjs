@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { endWith } from 'rxjs/operators';
+import { of, endWith } from 'rxjs';
 import { A, B, a, b, c, d, e, f, g, h } from '../helpers';
 
 it('should infer type for N values', () => {

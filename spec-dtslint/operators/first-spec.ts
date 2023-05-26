@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { of, first } from 'rxjs';
 
 const isFooBar = (value: string): value is 'foo' | 'bar' => /^(foo|bar)$/.test(value);
 

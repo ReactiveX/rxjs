@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { zipAll, mergeMap } from 'rxjs/operators';
-import { queueScheduler, of, zip, scheduled } from 'rxjs';
+import { queueScheduler, of, zip, scheduled, zipAll, mergeMap } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 

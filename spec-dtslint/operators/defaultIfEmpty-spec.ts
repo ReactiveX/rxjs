@@ -1,5 +1,4 @@
-import { EMPTY, of } from 'rxjs';
-import { defaultIfEmpty, map } from 'rxjs/operators';
+import { EMPTY, of, defaultIfEmpty, map } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(defaultIfEmpty()); // $ExpectError

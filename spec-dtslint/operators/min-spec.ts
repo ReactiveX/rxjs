@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { min } from 'rxjs/operators';
+import { of, min } from 'rxjs';
 
 it('should infer correctly', () => {
     const a = of(1, 2, 3).pipe(min()); // $ExpectType Observable<number>

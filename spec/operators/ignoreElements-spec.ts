@@ -1,6 +1,5 @@
-import { ignoreElements, mergeMap } from 'rxjs/operators';
+import { of, ignoreElements, mergeMap } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { of } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {ignoreElements} */

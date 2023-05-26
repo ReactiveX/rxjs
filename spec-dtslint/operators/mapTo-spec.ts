@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
+import { of, mapTo } from 'rxjs';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(mapTo(47)); // $ExpectType Observable<number>

@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { distinctUntilKeyChanged } from 'rxjs/operators';
+import { of, distinctUntilKeyChanged } from 'rxjs';
 
 const sample = {name: 'foobar', num: 42};
 

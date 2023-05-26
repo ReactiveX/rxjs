@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { connect } from 'rxjs/operators';
+import { of, connect } from 'rxjs';
 import { a$, b$ } from '../helpers';
 
 it('should infer from a union', () => {

@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { window } from 'rxjs/operators';
+import { of, window } from 'rxjs';
 
 it('should infer correctly', () => {
   of(1).pipe(window(of('1'))); // $ExpectType Observable<Observable<number>>

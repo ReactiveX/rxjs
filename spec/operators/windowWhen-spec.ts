@@ -1,5 +1,4 @@
-import { windowWhen, mergeMap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { Observable, of, windowWhen, mergeMap } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 

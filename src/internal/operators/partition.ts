@@ -25,8 +25,7 @@ import { UnaryFunction } from '../types';
  * Partition click events into those on DIV elements and those elsewhere
  *
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { partition } from 'rxjs/operators';
+ * import { fromEvent, partition } from 'rxjs';
  *
  * const div = document.createElement('div');
  * div.style.cssText = 'width: 200px; height: 200px; background: #09c;';

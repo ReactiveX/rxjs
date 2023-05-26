@@ -1,8 +1,7 @@
 import { expect } from 'chai';
-import { NEVER, of, Subject, queueScheduler } from 'rxjs';
+import { NEVER, of, Subject, queueScheduler, debounceTime, mergeMap, startWith } from 'rxjs';
 import { AnimationFrameAction } from 'rxjs/internal/scheduler/AnimationFrameAction';
 import { AnimationFrameScheduler } from 'rxjs/internal/scheduler/AnimationFrameScheduler';
-import { debounceTime, mergeMap, startWith } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { VirtualTimeScheduler } from '../../src/internal/scheduler/VirtualTimeScheduler';
 import { observableMatcher } from '../helpers/observableMatcher';

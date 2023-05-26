@@ -2,8 +2,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { fromEventPattern, noop, NEVER, timer } from 'rxjs';
-import { mapTo, take, concatWith } from 'rxjs/operators';
+import { fromEventPattern, noop, NEVER, timer, mapTo, take, concatWith } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 

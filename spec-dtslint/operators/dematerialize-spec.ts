@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { dematerialize } from 'rxjs/operators';
+import { of, dematerialize } from 'rxjs';
 
 
 it('should infer correctly', () => {

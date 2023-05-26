@@ -1,6 +1,5 @@
 /** @prettier */
-import { takeUntil, mergeMap, tap } from 'rxjs/operators';
-import { of, EMPTY, Subject, merge } from 'rxjs';
+import { of, EMPTY, Subject, merge, takeUntil, mergeMap, tap } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
