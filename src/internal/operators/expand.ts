@@ -3,7 +3,7 @@ import { Observable } from '../Observable';
 import { mergeInternals } from './mergeInternals';
 
 /* tslint:disable:max-line-length */
-export function expand<I, O extends I = I>(
+export function expand<I, O = I>(
   project: (value: I | O, index: number) => ObservableInput<O>,
   concurrent?: number,
   scheduler?: SchedulerLike
@@ -13,7 +13,7 @@ export function expand<I, O extends I = I>(
  * use `subscribeOn` within the projection function: `expand((value) => fn(value).pipe(subscribeOn(scheduler)))`.
  * Details: Details: https://rxjs.dev/deprecations/scheduler-argument
  */
-export function expand<I, O extends I = I>(
+export function expand<I, O = I>(
   project: (value: I | O, index: number) => ObservableInput<O>,
   concurrent: number | undefined,
   scheduler: SchedulerLike
@@ -70,7 +70,7 @@ export function expand<I, O extends I = I>(
  * the output Observable and merging the results of the Observables obtained
  * from this transformation.
  */
-export function expand<I, O extends I = I>(
+export function expand<I, O = I>(
   project: (value: I | O, index: number) => ObservableInput<O>,
   concurrent = Infinity,
   scheduler?: SchedulerLike
