@@ -7,6 +7,10 @@ it('should infer correctly', () => {
   const q = of(1, 2, 3).pipe(expand(value => Promise.resolve(value))); // $ExpectType Observable<number>
 });
 
+it('should infer correctly with output type extending input type', () => {
+  const o = of(1).pipe(expand((value: number | string) => of(value.toString()))); // $ExpectType Observable<string | number>
+});
+
 it('should support a project function with index', () => {
   const o = of(1, 2, 3).pipe(expand((value, index) => of(index))); // $ExpectType Observable<number>
 });
