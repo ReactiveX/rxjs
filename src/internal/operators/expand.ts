@@ -1,23 +1,23 @@
-import { ObservableInput, SchedulerLike, MonoTypeOperatorFunction } from '../types';
+import { ObservableInput, SchedulerLike, OperatorFunction } from '../types';
 import { Observable } from '../Observable';
 import { mergeInternals } from './mergeInternals';
 
 /* tslint:disable:max-line-length */
-export function expand<T>(
-  project: (value: T, index: number) => ObservableInput<T>,
+export function expand<I, O extends I = I>(
+  project: (value: I | O, index: number) => ObservableInput<O>,
   concurrent?: number,
   scheduler?: SchedulerLike
-): MonoTypeOperatorFunction<T>;
+): OperatorFunction<I, I | O>;
 /**
  * @deprecated The `scheduler` parameter will be removed in v8. If you need to schedule the inner subscription,
  * use `subscribeOn` within the projection function: `expand((value) => fn(value).pipe(subscribeOn(scheduler)))`.
  * Details: Details: https://rxjs.dev/deprecations/scheduler-argument
  */
-export function expand<T>(
-  project: (value: T, index: number) => ObservableInput<T>,
+export function expand<I, O extends I = I>(
+  project: (value: I | O, index: number) => ObservableInput<O>,
   concurrent: number | undefined,
   scheduler: SchedulerLike
-): MonoTypeOperatorFunction<T>;
+): OperatorFunction<I, I | O>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -70,11 +70,11 @@ export function expand<T>(
  * the output Observable and merging the results of the Observables obtained
  * from this transformation.
  */
-export function expand<T>(
-  project: (value: T, index: number) => ObservableInput<T>,
+export function expand<I, O extends I = I>(
+  project: (value: I | O, index: number) => ObservableInput<O>,
   concurrent = Infinity,
   scheduler?: SchedulerLike
-): MonoTypeOperatorFunction<T> {
+): OperatorFunction<I, I | O> {
   concurrent = (concurrent || 0) < 1 ? Infinity : concurrent;
   return (source) =>
     new Observable((subscriber) =>
