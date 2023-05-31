@@ -7,8 +7,24 @@ it('should infer correctly', () => {
   const q = of(1, 2, 3).pipe(expand(value => Promise.resolve(value))); // $ExpectType Observable<number>
 });
 
-it('should infer correctly with output type extending input type', () => {
+it('should infer correctly specifying value argument type', () => {
   const o = of(1).pipe(expand((value: number | string) => of(value.toString()))); // $ExpectType Observable<string | number>
+});
+
+it('should infer correctly with specifying different input/output types', () => {
+  const o = of(1).pipe(expand<number, string>((value) => of(value.toString()))); // $ExpectType Observable<string | number>
+});
+
+it('should enforce project output type to be assignable with its generic', () => {
+  const o = of(1).pipe(expand<number, string>((value) => of(value))); // $ExpectError
+});
+
+it('should enforce project input type to be assignable with upstream', () => {
+  const o = of(1).pipe(expand((value: string) => of(value))); // $ExpectError
+});
+
+it('should enforce project input/output types compatibility by default', () => {
+  const o = of(1).pipe(expand((value) => of(value.toString()))); // $ExpectError
 });
 
 it('should support a project function with index', () => {
