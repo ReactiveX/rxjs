@@ -1,5 +1,3 @@
-/** @prettier */
-
 import { config } from '../src/internal/config';
 import { expect } from 'chai';
 import { Observable } from 'rxjs';

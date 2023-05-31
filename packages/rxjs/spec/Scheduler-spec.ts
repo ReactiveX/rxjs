@@ -22,13 +22,17 @@ describe('Scheduler.queue', () => {
     let call1 = false;
     let call2 = false;
     (queue as QueueScheduler)._active = false;
-    queue.schedule(function (state) {
-      call1 = state!.call1;
-      call2 = state!.call2;
-      if (!call2) {
-        this.schedule({ call1: true, call2: true });
-      }
-    }, 0, { call1: true, call2: false });
+    queue.schedule(
+      function (state) {
+        call1 = state!.call1;
+        call2 = state!.call2;
+        if (!call2) {
+          this.schedule({ call1: true, call2: true });
+        }
+      },
+      0,
+      { call1: true, call2: false }
+    );
     expect(call1).to.be.true;
     expect(call2).to.be.true;
   });

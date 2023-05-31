@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { SchedulerAction, VirtualAction, VirtualTimeScheduler } from 'rxjs';
 

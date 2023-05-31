@@ -57,7 +57,7 @@ describe('Subscription', () => {
       main.add({
         unsubscribe() {
           isCalled = true;
-        }
+        },
       });
       main.unsubscribe();
       expect(isCalled).to.be.true;
@@ -70,7 +70,7 @@ describe('Subscription', () => {
       main.add({
         unsubscribe() {
           isCalled = true;
-        }
+        },
       });
       expect(isCalled).to.be.true;
     });
@@ -107,8 +107,8 @@ describe('Subscription', () => {
       const unsubscribable = {
         unsubscribe() {
           isCalled = true;
-        }
-      }
+        },
+      };
       main.add(unsubscribable);
       main.remove(unsubscribable);
       main.unsubscribe();
@@ -164,12 +164,12 @@ describe('Subscription', () => {
       const source2 = new Observable(() => {
         return () => {
           finalizers.push(2);
-          sub.add(<any>({
+          sub.add(<any>{
             unsubscribe: () => {
               expect(sub.closed).to.be.true;
               throw new Error('Who is your daddy, and what does he do?');
-            }
-          }));
+            },
+          });
         };
       });
 
@@ -204,10 +204,18 @@ describe('Subscription', () => {
 
     it('should unsubscribe from all parents', () => {
       // https://github.com/ReactiveX/rxjs/issues/6351
-      const a = new Subscription(() => { /* noop */});
-      const b = new Subscription(() => { /* noop */});
-      const c = new Subscription(() => { /* noop */});
-      const d = new Subscription(() => { /* noop */});
+      const a = new Subscription(() => {
+        /* noop */
+      });
+      const b = new Subscription(() => {
+        /* noop */
+      });
+      const c = new Subscription(() => {
+        /* noop */
+      });
+      const d = new Subscription(() => {
+        /* noop */
+      });
       a.add(d);
       b.add(d);
       c.add(d);
@@ -237,11 +245,10 @@ describe('Subscription[Symbol.dispose] implementation', () => {
     // This is just a sanity check.
     const callback = sinon.spy();
     const subscription = new Subscription();
-    
+
     subscription.add(callback);
     subscription[Symbol.dispose]();
     expect(callback).to.have.been.calledOnce;
     expect(subscription.closed).to.be.true;
   });
 });
-

@@ -1,4 +1,3 @@
-/** @prettier */
 import { TeardownLogic } from 'rxjs';
 
 export function getRegisteredFinalizers(subscription: any): Exclude<TeardownLogic, void>[] {

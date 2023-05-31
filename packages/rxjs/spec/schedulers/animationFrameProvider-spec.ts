@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFrameProvider';
 

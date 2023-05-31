@@ -4,7 +4,6 @@ import { map, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-
 /** @test {combineLatest} */
 describe('static combineLatest', () => {
   let rxTestScheduler: TestScheduler;
@@ -17,11 +16,11 @@ describe('static combineLatest', () => {
     const results: string[] = [];
     combineLatest([]).subscribe({
       next: () => {
-        throw new Error('should not emit')
+        throw new Error('should not emit');
       },
       complete: () => {
         results.push('done');
-      }
+      },
     });
 
     expect(results).to.deep.equal(['done']);
@@ -31,11 +30,11 @@ describe('static combineLatest', () => {
     const results: string[] = [];
     combineLatest({}).subscribe({
       next: () => {
-        throw new Error('should not emit')
+        throw new Error('should not emit');
       },
       complete: () => {
         results.push('done');
-      }
+      },
     });
 
     expect(results).to.deep.equal(['done']);
@@ -55,15 +54,13 @@ describe('static combineLatest', () => {
 
   it('should accept a dictionary of observables', () => {
     rxTestScheduler.run(({ hot, expectObservable }) => {
-      const firstSource =  hot('----a----b----c----|');
+      const firstSource = hot('----a----b----c----|');
       const secondSource = hot('--d--e--f--g--|');
       const expected = '        ----uv--wx-y--z----|';
 
-      const combined = combineLatest({a: firstSource, b: secondSource}).pipe(
-        map(({a, b}) => '' + a + b)
-      );  
+      const combined = combineLatest({ a: firstSource, b: secondSource }).pipe(map(({ a, b }) => '' + a + b));
 
-      expectObservable(combined).toBe(expected, {u: 'ad', v: 'ae', w: 'af', x: 'bf', y: 'bg', z: 'cg'});
+      expectObservable(combined).toBe(expected, { u: 'ad', v: 'ae', w: 'af', x: 'bf', y: 'bg', z: 'cg' });
     });
   });
 
@@ -547,10 +544,7 @@ describe('static combineLatest', () => {
       const unsub = '      ---------!    ';
       const values = { x: 'bf', y: 'cf', z: 'cg' };
 
-      const result = combineLatest([
-        e1.pipe(mergeMap((x) => of(x))), 
-        e2.pipe(mergeMap((x) => of(x)))
-      ], (x, y) => x + y).pipe(
+      const result = combineLatest([e1.pipe(mergeMap((x) => of(x))), e2.pipe(mergeMap((x) => of(x)))], (x, y) => x + y).pipe(
         mergeMap((x) => of(x))
       );
 

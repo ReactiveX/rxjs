@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { timeoutProvider } from 'rxjs/internal/scheduler/timeoutProvider';
 

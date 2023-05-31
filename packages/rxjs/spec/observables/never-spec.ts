@@ -1,4 +1,3 @@
-/** @prettier */
 import { NEVER } from 'rxjs';
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';

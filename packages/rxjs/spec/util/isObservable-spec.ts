@@ -9,8 +9,12 @@ describe('isObservable', () => {
 
   it('should return true for an observable that comes from another RxJS 5+ library', () => {
     const o: any = {
-      lift() { /* noop */ },
-      subscribe() { /* noop */ },
+      lift() {
+        /* noop */
+      },
+      subscribe() {
+        /* noop */
+      },
     };
 
     expect(isObservable(o)).to.be.true;
@@ -18,7 +22,9 @@ describe('isObservable', () => {
 
   it('should NOT return true for any old subscribable', () => {
     const o: any = {
-      subscribe() { /* noop */ },
+      subscribe() {
+        /* noop */
+      },
     };
 
     expect(isObservable(o)).to.be.false;
@@ -31,5 +37,4 @@ describe('isObservable', () => {
   it('should return false for a number', () => {
     expect(isObservable(1)).to.be.false;
   });
-
 });

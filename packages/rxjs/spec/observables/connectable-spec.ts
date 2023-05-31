@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { connectable, of, ReplaySubject } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
