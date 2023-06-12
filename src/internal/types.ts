@@ -31,6 +31,12 @@ export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Obs
 
 export type FactoryOrValue<T> = T | (() => T);
 
+/**
+ * A function type interface that describes a function that accepts and returns a parameter of the same type.
+ *
+ * It only works with a single type of data. Input and output value must be of the same type.
+ *
+ */
 export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> {}
 
 /**
