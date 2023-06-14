@@ -44,38 +44,37 @@ export class Subscription implements SubscriptionLike {
   unsubscribe(): void {
     let errors: any[] | undefined;
 
-    if (!this.closed) {
-      this.closed = true;
+    if (this.closed) return;
+    this.closed = true;
 
-      const { initialTeardown: initialFinalizer } = this;
-      if (isFunction(initialFinalizer)) {
-        try {
-          initialFinalizer();
-        } catch (e) {
-          errors = e instanceof UnsubscriptionError ? e.errors : [e];
-        }
+    const { initialTeardown: initialFinalizer } = this;
+    if (isFunction(initialFinalizer)) {
+      try {
+        initialFinalizer();
+      } catch (e) {
+        errors = e instanceof UnsubscriptionError ? e.errors : [e];
       }
+    }
 
-      const { _finalizers } = this;
-      if (_finalizers) {
-        this._finalizers = null;
-        for (const finalizer of _finalizers) {
-          try {
-            execFinalizer(finalizer);
-          } catch (err) {
-            errors = errors ?? [];
-            if (err instanceof UnsubscriptionError) {
-              errors.push(...err.errors);
-            } else {
-              errors.push(err);
-            }
+    const { _finalizers } = this;
+    if (_finalizers) {
+      this._finalizers = null;
+      for (const finalizer of _finalizers) {
+        try {
+          execFinalizer(finalizer);
+        } catch (err) {
+          errors = errors ?? [];
+          if (err instanceof UnsubscriptionError) {
+            errors.push(...err.errors);
+          } else {
+            errors.push(err);
           }
         }
       }
+    }
 
-      if (errors) {
-        throw new UnsubscriptionError(errors);
-      }
+    if (errors) {
+      throw new UnsubscriptionError(errors);
     }
   }
 
@@ -100,23 +99,22 @@ export class Subscription implements SubscriptionLike {
   add(teardown: TeardownLogic): void {
     // Only add the finalizer if it's not undefined
     // and don't add a subscription to itself.
-    if (teardown && teardown !== this) {
-      if (this.closed) {
-        // If this subscription is already closed,
-        // execute whatever finalizer is handed to it automatically.
-        execFinalizer(teardown);
-      } else {
-        if (teardown && 'add' in teardown) {
-          // If teardown is a subscription, we can make sure that if it
-          // unsubscribes first, it removes itself from this subscription.
-          teardown.add(() => {
-            this.remove(teardown);
-          });
-        }
-
-        this._finalizers ??= new Set();
-        this._finalizers.add(teardown);
+    if (!teardown || teardown === this) return;
+    if (this.closed) {
+      // If this subscription is already closed,
+      // execute whatever finalizer is handed to it automatically.
+      execFinalizer(teardown);
+    } else {
+      if (teardown && 'add' in teardown) {
+        // If teardown is a subscription, we can make sure that if it
+        // unsubscribes first, it removes itself from this subscription.
+        teardown.add(() => {
+          this.remove(teardown);
+        });
       }
+
+      this._finalizers ??= new Set();
+      this._finalizers.add(teardown);
     }
   }
 
