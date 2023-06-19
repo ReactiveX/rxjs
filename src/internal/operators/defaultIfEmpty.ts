@@ -37,6 +37,19 @@ import { operate } from '../Subscriber';
  * specified `defaultValue` if the source Observable emits no items, or the
  * values emitted by the source Observable.
  */
+
+
+// To make things easier for (naughty) devs who use the
+// `strictNullChecks: false` TypeScript compiler option, these
+// overloads with explicit null and undefined values are included.
+
+export function defaultIfEmpty<T, R extends null>(
+  defaultValue: R
+): (source: Observable<T>) => Observable<T | null>;
+export function defaultIfEmpty<T, R extends undefined>(
+  defaultValue: R
+): (source: Observable<T>) => Observable<T | undefined>;
+
 export function defaultIfEmpty<T, R>(defaultValue: R): OperatorFunction<T, T | R> {
   return (source) =>
     new Observable((destination) => {
