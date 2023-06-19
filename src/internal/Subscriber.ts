@@ -123,7 +123,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * times.
    * @param value The `next` value.
    */
-  next(value?: T): void {
+  next(value: T): void {
     if (this.isStopped) {
       handleStoppedNotification(nextNotification(value), this);
     } else {
