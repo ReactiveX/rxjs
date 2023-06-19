@@ -132,3 +132,10 @@ describe('pipe', () => {
     const o3 = of('test').pipe(map(n => n + ':' + n), filter(n => n < 30)); // $ExpectError
   })
 });
+
+it('should provide the proper types to the subscriber', () => {
+  const o1$ = new Observable<number>(subscriber => {
+    const next = subscriber.next; // $ExpectType (value: number) => void
+    subscriber.next(); // $ExpectError
+  });
+});
