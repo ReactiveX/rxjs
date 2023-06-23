@@ -46,17 +46,22 @@ describe('merge operator', () => {
     });
   });
 
-  it('should merge a source with a second, when the second is just a plain array', () => {
-    const source$ = of(1, 2, 3);
-    const arrayInput = [4, 5, 6, 7, 8];
-    const results: any[] = [];
+  it('should merge a source with a second, when the second is just a plain array', (done) => {
+    const a = of(1, 2, 3);
+    const b = [4, 5, 6, 7, 8];
+    const r = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    source$.pipe(mergeWith(arrayInput)).subscribe({
-      next: (val) => results.push(val),
-      complete: () => results.push('done'),
+    a.pipe(mergeWith(b)).subscribe({
+      next: (val) => {
+        expect(val).to.equal(r.shift());
+      },
+      error: () => {
+        done(new Error('should not be called'));
+      },
+      complete: () => {
+        done();
+      },
     });
-
-    expect(results).to.equal([1, 2, 3, 4, 5, 6, 7, 8, 'done'])
   });
 
   it('should merge cold and cold', () => {
