@@ -31,6 +31,7 @@ export class BehaviorSubject<T> extends Subject<T> {
   }
 
   next(value: T): void {
-    super.next((this._value = this._valueFold(this._value, value)));
+    this._value = this._valueFold(this._value, value);
+    super.next(value);
   }
 }
