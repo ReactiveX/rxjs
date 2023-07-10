@@ -75,10 +75,10 @@ Every JavaScript Function is a Pull system. The function is a Producer of data, 
 
 ES2015 introduced [generator functions and iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*) (`function*`), another type of Pull system. Code that calls `iterator.next()` is the Consumer, "pulling" out _multiple_ values from the iterator (the Producer).
 
-|          | Producer                                   | Consumer                                    |
-| -------- | ------------------------------------------ | ------------------------------------------- |
-| **Pull** | **Passive:** produces data when requested. | **Active:** decides when data is requested. |
-| **Push** | **Active:** produces data at its own pace. | **Passive:** reacts to received data.       |
+|          | Producer                                   |
+| -------- | ------------------------------------------ |
+| **Pull** | **Passive:** produces data when requested. |
+| **Push** | **Active:** produces data at its own pace. |
 
 **What is Push?** In Push systems, the Producer determines when to send data to the Consumer. The Consumer is unaware of when it will receive that data.
 
