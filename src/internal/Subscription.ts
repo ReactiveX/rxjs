@@ -144,7 +144,7 @@ export class Subscription implements SubscriptionLike {
   }
 }
 
-// Even though Subscriptoin only conditionally implements `Symbol.dispose`
+// Even though Subscription only conditionally implements `Symbol.dispose`
 // if it's available, we still need to declare it here so that TypeScript
 // knows that it exists on the prototype when it is available.
 export interface Subscription {
