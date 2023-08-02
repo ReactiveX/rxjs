@@ -408,7 +408,7 @@ subscription.unsubscribe();
 
 <span class="informal">When you subscribe, you get back a Subscription, which represents the ongoing execution. Just call `unsubscribe()` to cancel the execution.</span>
 
-Each Observable must define how to dispose resources of that execution when we create the Observable using `create()`. You can do that by returning a custom `unsubscribe` function from within `function subscribe()`.
+Each Observable must define how to dispose resources of that execution when we create the Observable using `new Observable(function subscribe() {...})`. You can do that by returning a custom `unsubscribe` function from within `function subscribe()`.
 
 For instance, this is how we clear an interval execution set with `setInterval`:
 
