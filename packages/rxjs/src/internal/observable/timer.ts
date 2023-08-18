@@ -3,6 +3,7 @@ import type { SchedulerLike } from '../types.js';
 import { asyncScheduler } from '../scheduler/async.js';
 import { isScheduler } from '../util/isScheduler.js';
 import { isValidDate } from '../util/isDate.js';
+import { executeSchedule } from '../util/executeSchedule.js';
 
 /**
  * Creates an observable that will wait for a specified time period, or exact date, before
@@ -167,20 +168,32 @@ export function timer(
     let n = 0;
 
     // Start the timer.
-    return scheduler.schedule(function () {
-      if (!subscriber.closed) {
-        // Emit the next value and increment.
+    return executeSchedule(
+      subscriber,
+      scheduler,
+      () => {
+        // Emit the first value and schedule the next.
         subscriber.next(n++);
 
         if (0 <= intervalDuration) {
           // If we have a interval after the initial timer,
           // reschedule with the period.
-          this.schedule(undefined, intervalDuration);
+          executeSchedule(
+            subscriber,
+            scheduler,
+            () => {
+              // Emit the interval values.
+              subscriber.next(n++);
+            },
+            intervalDuration,
+            true
+          );
         } else {
           // We didn't have an interval. So just complete.
           subscriber.complete();
         }
-      }
-    }, due);
+      },
+      due
+    );
   });
 }

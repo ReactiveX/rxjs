@@ -1,7 +1,8 @@
 import { asyncScheduler } from '../scheduler/async.js';
-import type { Subscription} from '../Observable.js';
+import type { Subscription } from '../Observable.js';
 import { Observable, operate } from '../Observable.js';
-import type { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike } from '../types.js';
+import type { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
+import { executeSchedule } from '../util/executeSchedule.js';
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -62,64 +63,40 @@ import type { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike } from '.
 export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyncScheduler): MonoTypeOperatorFunction<T> {
   return (source) =>
     new Observable((destination) => {
-      let activeTask: Subscription | null = null;
-      let lastValue: T | null = null;
-      let lastTime: number | null = null;
-      let scheduling = false;
-
-      const emit = () => {
-        if (scheduling || activeTask) {
-          // We have a value! Free up memory first, then emit the value.
-          if (activeTask) {
-            activeTask.unsubscribe();
-            activeTask = null;
-          }
-          const value = lastValue!;
-          lastValue = null;
-          destination.next(value);
-        }
-      };
-      function emitWhenIdle(this: SchedulerAction<unknown>) {
-        // This is called `dueTime` after the first value
-        // but we might have received new values during this window!
-
-        const targetTime = lastTime! + dueTime;
-        const now = scheduler.now();
-        if (now < targetTime) {
-          // On that case, re-schedule to the new target
-          activeTask = this.schedule(undefined, targetTime - now);
-          destination.add(activeTask);
-          return;
-        }
-
-        emit();
-      }
+      let lastValue: T;
+      let activeTask: Subscription | void;
 
       source.subscribe(
         operate({
           destination,
           next: (value: T) => {
             lastValue = value;
-            lastTime = scheduler.now();
+            // Clear any pending task and schedule a new one.
+            activeTask?.unsubscribe();
 
-            // Only set up a task if it's not already up
-            if (!activeTask) {
-              scheduling = true;
-              activeTask = scheduler.schedule(emitWhenIdle, dueTime);
-              scheduling = false;
-              // Set activeTask as intermediary Subscription to handle synchronous schedulers
-              destination.add(activeTask);
-            }
+            activeTask = executeSchedule(
+              destination,
+              scheduler,
+              () => {
+                activeTask = undefined;
+                const v = lastValue;
+                lastValue = null!;
+                destination.next(v);
+              },
+              dueTime
+            );
           },
           complete: () => {
             // Source completed.
             // Emit any pending debounced values then complete
-            emit();
+            if (activeTask) {
+              destination.next(lastValue);
+            }
             destination.complete();
           },
           finalize: () => {
             // Finalization.
-            lastValue = activeTask = null;
+            lastValue = activeTask = null!;
           },
         })
       );
