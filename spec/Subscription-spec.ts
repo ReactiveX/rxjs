@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { Observable, UnsubscriptionError, Subscription, merge } from 'rxjs';
+import sinon = require('sinon');
 
 /** @test {Subscription} */
 describe('Subscription', () => {
@@ -225,3 +226,22 @@ describe('Subscription', () => {
     });
   });
 });
+
+describe('Subscription[Symbol.dispose] implementation', () => {
+  it('should be the same as unsubscribe', () => {
+    const subscription = new Subscription();
+    expect(subscription[Symbol.dispose]).to.equal(subscription.unsubscribe);
+  });
+
+  it('should call a teardown when unsubscribed', () => {
+    // This is just a sanity check.
+    const callback = sinon.spy();
+    const subscription = new Subscription();
+    
+    subscription.add(callback);
+    subscription[Symbol.dispose]();
+    expect(callback).to.have.been.calledOnce;
+    expect(subscription.closed).to.be.true;
+  });
+});
+
