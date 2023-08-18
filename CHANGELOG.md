@@ -1,3 +1,14 @@
+# [8.0.0-alpha.11](https://github.com/reactivex/rxjs/compare/8.0.0-alpha.10...8.0.0-alpha.11) (2023-08-18)
+
+### Bug Fixes
+
+- **Subscriber:** next method no longer has optional value argument ([#7290](https://github.com/reactivex/rxjs/issues/7290)) ([1c5673f](https://github.com/reactivex/rxjs/commit/1c5673fb49b54bfa4cd780b93c97182643c8217b)), closes [#2852](https://github.com/reactivex/rxjs/issues/2852)
+
+### Features
+
+- **cjs:** output ES2022 ([#7319](https://github.com/reactivex/rxjs/issues/7319)) ([bc2e9c2](https://github.com/reactivex/rxjs/commit/bc2e9c2b8043c7d75b50aa5c0daa9243cf3674ac))
+- **Subscription:** Subscription now implements `Symbol.dispose` if it's available ([#7305](https://github.com/reactivex/rxjs/issues/7305)) ([9bb0341](https://github.com/reactivex/rxjs/commit/9bb03419be3048e573c69932b44d4672864e6ba0))
+
 # [8.0.0-alpha.10](https://github.com/reactivex/rxjs/compare/8.0.0-alpha.7...8.0.0-alpha.10) (2023-05-25)
 
 ### Bug Fixes
