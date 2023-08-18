@@ -1,4 +1,4 @@
-import type { Subscriber} from '../Observable.js';
+import type { Subscriber } from '../Observable.js';
 import { Observable, isArrayLike, isFunction } from '../Observable.js';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
 
@@ -252,7 +252,7 @@ export function fromEvent<T>(
   }
 
   if (resultSelector) {
-    return fromEvent<T>(target, eventName as string, options as EventListenerOptions).pipe(mapOneOrManyArgs(resultSelector));
+    return mapOneOrManyArgs(resultSelector)(fromEvent<T>(target, eventName as string, options as EventListenerOptions));
   }
 
   const isValidTarget = isNodeStyleEventEmitter(target) || isJQueryStyleEventEmitter(target) || isEventTarget(target);

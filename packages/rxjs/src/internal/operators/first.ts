@@ -1,11 +1,8 @@
-import type { Observable } from '../Observable.js';
+import { Observable, operate } from '../Observable.js';
 import { EmptyError } from '../util/EmptyError.js';
 import type { OperatorFunction, TruthyTypesOf } from '../types.js';
 import { filter } from './filter.js';
 import { take } from './take.js';
-import { defaultIfEmpty } from './defaultIfEmpty.js';
-import { throwIfEmpty } from './throwIfEmpty.js';
-import { identity } from '../util/identity.js';
 
 export function first<T, D = T>(predicate?: null, defaultValue?: D): OperatorFunction<T, T | D>;
 export function first<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
@@ -84,10 +81,31 @@ export function first<T, D>(
   defaultValue?: D
 ): OperatorFunction<T, T | D> {
   const hasDefaultValue = arguments.length >= 2;
-  return (source: Observable<T>) =>
-    source.pipe(
-      predicate ? filter((v, i) => predicate(v, i, source)) : identity,
-      take(1),
-      hasDefaultValue ? defaultIfEmpty(defaultValue!) : throwIfEmpty(() => new EmptyError())
-    );
+  return (source) =>
+    new Observable((destination) => {
+      let index = 0;
+      const operatorSubscriber = operate<T, T | D>({
+        destination,
+        next: (value) => {
+          const passed = predicate ? predicate(value, index++, source) : true;
+          if (passed) {
+            // We want to unsubscribe from the source as soon as we know
+            // we can. This will prevent reentrancy issues if calling
+            // `destination.next()` happens to emit another value from source.
+            operatorSubscriber.unsubscribe();
+            destination.next(value);
+            destination.complete();
+          }
+        },
+        complete: () => {
+          if (hasDefaultValue) {
+            destination.next(defaultValue!);
+            destination.complete();
+          } else {
+            destination.error(new EmptyError());
+          }
+        },
+      });
+      source.subscribe(operatorSubscriber);
+    });
 }

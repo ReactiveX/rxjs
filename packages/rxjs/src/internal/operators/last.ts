@@ -1,11 +1,6 @@
-import type { Observable } from '../Observable.js';
+import { Observable, operate } from '../Observable.js';
 import { EmptyError } from '../util/EmptyError.js';
 import type { OperatorFunction, TruthyTypesOf } from '../types.js';
-import { filter } from './filter.js';
-import { takeLast } from './takeLast.js';
-import { throwIfEmpty } from './throwIfEmpty.js';
-import { defaultIfEmpty } from './defaultIfEmpty.js';
-import { identity } from '../util/identity.js';
 
 export function last<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export function last<T, D>(predicate: BooleanConstructor, defaultValue: D): OperatorFunction<T, TruthyTypesOf<T> | D>;
@@ -83,9 +78,31 @@ export function last<T, D>(
 ): OperatorFunction<T, T | D> {
   const hasDefaultValue = arguments.length >= 2;
   return (source: Observable<T>) =>
-    source.pipe(
-      predicate ? filter((v, i) => predicate(v, i, source)) : identity,
-      takeLast(1),
-      hasDefaultValue ? defaultIfEmpty(defaultValue!) : throwIfEmpty(() => new EmptyError())
-    );
+    new Observable((destination) => {
+      let index = 0;
+      let found = false;
+      let lastValue: T | D | undefined;
+      source.subscribe(
+        operate({
+          destination,
+          next(value) {
+            if (!predicate || predicate(value, index++, source)) {
+              found = true;
+              lastValue = value;
+            }
+          },
+          complete() {
+            if (found) {
+              destination.next(lastValue!);
+              destination.complete();
+            } else if (hasDefaultValue) {
+              destination.next(defaultValue!);
+              destination.complete();
+            } else {
+              destination.error(new EmptyError());
+            }
+          },
+        })
+      );
+    });
 }

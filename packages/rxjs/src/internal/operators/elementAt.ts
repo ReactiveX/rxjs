@@ -1,9 +1,6 @@
 import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError.js';
-import type { Observable } from '../Observable.js';
+import { Observable, operate } from '../Observable.js';
 import type { OperatorFunction } from '../types.js';
-import { filter } from './filter.js';
-import { throwIfEmpty } from './throwIfEmpty.js';
-import { defaultIfEmpty } from './defaultIfEmpty.js';
 import { take } from './take.js';
 
 /**
@@ -60,9 +57,29 @@ export function elementAt<T, D = T>(index: number, defaultValue?: D): OperatorFu
   }
   const hasDefaultValue = arguments.length >= 2;
   return (source: Observable<T>) =>
-    source.pipe(
-      filter((v, i) => i === index),
-      take(1),
-      hasDefaultValue ? defaultIfEmpty(defaultValue!) : throwIfEmpty(() => new ArgumentOutOfRangeError())
-    );
+    new Observable((destination) => {
+      let i = 0;
+      const operatorSubscriber = operate<T, T | D>({
+        destination,
+        next: (value) => {
+          if (i++ === index) {
+            // We want to unsubscribe from the source as soon as we know
+            // we can. This will prevent reentrancy issues if calling
+            // `destination.next()` happens to emit another value from source.
+            operatorSubscriber.unsubscribe();
+            destination.next(value);
+            destination.complete();
+          }
+        },
+        complete: () => {
+          if (!hasDefaultValue) {
+            destination.error(new ArgumentOutOfRangeError());
+          } else {
+            destination.next(defaultValue!);
+            destination.complete();
+          }
+        },
+      });
+      source.subscribe(operatorSubscriber);
+    });
 }

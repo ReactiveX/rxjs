@@ -107,7 +107,7 @@ export function fromFetch<T>(
     // This flag exists to make sure we don't `abort()` the fetch upon tearing down
     // this observable after emitting a Response. Aborting in such circumstances
     // would also abort subsequent methods - like `json()` - that could be called
-    // on the Response. Consider: `fromFetch().pipe(take(1), mergeMap(res => res.json()))`
+    // on the Response. Consider: `rx(fromFetch(), take(1), mergeMap(res => res.json()))`
     let abortable = true;
 
     // If the user provided an init configuration object,

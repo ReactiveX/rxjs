@@ -138,7 +138,7 @@ export function fromEventPattern<T>(
   resultSelector?: (...args: any[]) => T
 ): Observable<T | T[]> {
   if (resultSelector) {
-    return fromEventPattern<T>(addHandler, removeHandler).pipe(mapOneOrManyArgs(resultSelector));
+    return mapOneOrManyArgs(resultSelector)(fromEventPattern<T>(addHandler, removeHandler));
   }
 
   return new Observable<T | T[]>((subscriber) => {

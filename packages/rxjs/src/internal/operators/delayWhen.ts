@@ -1,11 +1,11 @@
-import type { Observable} from '../Observable.js';
-import { from } from '../Observable.js';
+import type { Observable } from '../Observable.js';
 import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
 import { concat } from '../observable/concat.js';
 import { take } from './take.js';
 import { ignoreElements } from './ignoreElements.js';
-import { mapTo } from './mapTo.js';
 import { mergeMap } from './mergeMap.js';
+import { rx } from '../util/rx.js';
+import { map } from './map.js';
 
 /** @deprecated The `subscriptionDelay` parameter will be removed in v8. */
 export function delayWhen<T>(
@@ -96,8 +96,15 @@ export function delayWhen<T>(
   if (subscriptionDelay) {
     // DEPRECATED PATH
     return (source: Observable<T>) =>
-      concat(subscriptionDelay.pipe(take(1), ignoreElements()), source.pipe(delayWhen(delayDurationSelector)));
+      concat(rx(subscriptionDelay, take(1), ignoreElements()), rx(source, delayWhen(delayDurationSelector)));
   }
 
-  return mergeMap((value, index) => from(delayDurationSelector(value, index)).pipe(take(1), mapTo(value)));
+  return mergeMap(
+    (value, index) =>
+      rx(
+        delayDurationSelector(value, index),
+        take(1),
+        map(() => value)
+      ) as Observable<T>
+  );
 }
