@@ -8,7 +8,6 @@ import { OperatorDecisionTreeService } from './operator-decision-tree.service';
 @Component({
   selector: 'aio-operator-decision-tree',
   template: `
-    <h1 class="mat-heading" tabindex="0">Operator Decision Tree</h1>
     <ng-container *ngIf="!(hasError$ | async); else hasErrorTemplate">
       <h2 class="mat-subheading-2" tabindex="0">
         {{ currentSentence$ | async }}
