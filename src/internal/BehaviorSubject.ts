@@ -7,7 +7,7 @@ import { Subscription } from './Subscription';
  * value whenever it is subscribed to.
  */
 export class BehaviorSubject<T> extends Subject<T> {
-  constructor(private _value: T) {
+  constructor(private _value: T, private readonly _valueFold: (currentValue: T, newValue: T) => T = (_, v) => v) {
     super();
   }
 
@@ -31,6 +31,7 @@ export class BehaviorSubject<T> extends Subject<T> {
   }
 
   next(value: T): void {
-    super.next((this._value = value));
+    this._value = this._valueFold(this._value, value);
+    super.next(value);
   }
 }
