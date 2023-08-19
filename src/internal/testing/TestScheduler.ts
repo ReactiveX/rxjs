@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { ColdObservable } from './ColdObservable';
 import { HotObservable } from './HotObservable';
 import { TestMessage } from './TestMessage';
-import { SubscriptionLog } from './SubscriptionLog';
+import { SubscriptionLog } from './subscription-logging';
 import { Subscription } from '../Subscription';
 import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler';
 import { ObservableNotification } from '../types';
