@@ -3,32 +3,27 @@ import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { Scheduler } from '../Scheduler';
 import { TestMessage } from './TestMessage';
-import { SubscriptionLog } from './SubscriptionLog';
-import { SubscriptionLoggable } from './SubscriptionLoggable';
-import { applyMixins } from '../util/applyMixins';
 import { observeNotification } from '../Notification';
+import { logSubscribedFrame, logUnsubscribedFrame, SubscriptionLog } from './subscription-logging';
 
-export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable {
+export class HotObservable<T> extends Subject<T> {
   public subscriptions: SubscriptionLog[] = [];
-  scheduler: Scheduler;
-  // @ts-ignore: Property has no initializer and is not definitely assigned
-  logSubscribedFrame: () => number;
-  // @ts-ignore: Property has no initializer and is not definitely assigned
-  logUnsubscribedFrame: (index: number) => void;
 
-  constructor(public messages: TestMessage[], scheduler: Scheduler) {
+  logSubscribedFrame = logSubscribedFrame;
+
+  logUnsubscribedFrame = logUnsubscribedFrame;
+
+  constructor(public messages: TestMessage[], public scheduler: Scheduler) {
     super();
-    this.scheduler = scheduler;
   }
 
   /** @internal */
   protected _subscribe(subscriber: Subscriber<any>): Subscription {
-    const subject: HotObservable<T> = this;
-    const index = subject.logSubscribedFrame();
+    const index = this.logSubscribedFrame();
     const subscription = new Subscription();
     subscription.add(
       new Subscription(() => {
-        subject.logUnsubscribedFrame(index);
+        this.logUnsubscribedFrame(index);
       })
     );
     subscription.add(super._subscribe(subscriber));
@@ -36,18 +31,10 @@ export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable
   }
 
   setup() {
-    const subject = this;
-    const messagesLength = subject.messages.length;
-    /* tslint:disable:no-var-keyword */
-    for (let i = 0; i < messagesLength; i++) {
-      (() => {
-        const { notification, frame } = subject.messages[i];
-        /* tslint:enable */
-        subject.scheduler.schedule(() => {
-          observeNotification(notification, subject);
-        }, frame);
-      })();
+    for (const { notification, frame } of this.messages) {
+      this.scheduler.schedule(() => {
+        observeNotification(notification, this);
+      }, frame);
     }
   }
 }
-applyMixins(HotObservable, [SubscriptionLoggable]);

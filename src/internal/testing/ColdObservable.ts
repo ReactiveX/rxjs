@@ -1,35 +1,30 @@
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { Scheduler } from '../Scheduler';
 import { TestMessage } from './TestMessage';
-import { SubscriptionLog } from './SubscriptionLog';
-import { SubscriptionLoggable } from './SubscriptionLoggable';
-import { applyMixins } from '../util/applyMixins';
 import { Subscriber } from '../Subscriber';
 import { observeNotification } from '../Notification';
+import { SchedulerLike, TeardownLogic } from '../types';
+import { logSubscribedFrame, logUnsubscribedFrame, SubscriptionLog } from './subscription-logging';
 
-export class ColdObservable<T> extends Observable<T> implements SubscriptionLoggable {
+export class ColdObservable<T> extends Observable<T> {
   public subscriptions: SubscriptionLog[] = [];
-  scheduler: Scheduler;
-  // @ts-ignore: Property has no initializer and is not definitely assigned
-  logSubscribedFrame: () => number;
-  // @ts-ignore: Property has no initializer and is not definitely assigned
-  logUnsubscribedFrame: (index: number) => void;
+  logSubscribedFrame = logSubscribedFrame;
+  logUnsubscribedFrame = logUnsubscribedFrame;
 
-  constructor(public messages: TestMessage[], scheduler: Scheduler) {
-    super(function (this: Observable<T>, subscriber: Subscriber<any>) {
-      const observable: ColdObservable<T> = this as any;
-      const index = observable.logSubscribedFrame();
-      const subscription = new Subscription();
-      subscription.add(
-        new Subscription(() => {
-          observable.logUnsubscribedFrame(index);
-        })
-      );
-      observable.scheduleMessages(subscriber);
-      return subscription;
-    });
-    this.scheduler = scheduler;
+  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
+    const index = this.logSubscribedFrame();
+    const subscription = new Subscription();
+    subscription.add(
+      new Subscription(() => {
+        this.logUnsubscribedFrame(index);
+      })
+    );
+    this.scheduleMessages(subscriber);
+    return subscription;
+  }
+
+  constructor(public messages: TestMessage[], public scheduler: SchedulerLike) {
+    super();
   }
 
   scheduleMessages(subscriber: Subscriber<any>) {
@@ -39,7 +34,10 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
       subscriber.add(
         this.scheduler.schedule(
           (state) => {
-            const { message: { notification }, subscriber: destination } = state!;
+            const {
+              message: { notification },
+              subscriber: destination,
+            } = state!;
             observeNotification(notification, destination);
           },
           message.frame,
@@ -49,4 +47,3 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
     }
   }
 }
-applyMixins(ColdObservable, [SubscriptionLoggable]);
