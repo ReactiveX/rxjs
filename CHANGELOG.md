@@ -1,3 +1,9 @@
+# [8.0.0-alpha.12](https://github.com/reactivex/rxjs/compare/8.0.0-alpha.11...8.0.0-alpha.12) (2023-08-19)
+
+### Bug Fixes
+
+- **TestScheduler:** no longer throws errors finding `logSubscribedFrame` in some CJS environments. ([#7325](https://github.com/reactivex/rxjs/issues/7325)) ([e01d3c1](https://github.com/reactivex/rxjs/commit/e01d3c10ec475018c029296b1e660448fae44478))
+
 # [8.0.0-alpha.11](https://github.com/reactivex/rxjs/compare/8.0.0-alpha.10...8.0.0-alpha.11) (2023-08-18)
 
 ### Bug Fixes
