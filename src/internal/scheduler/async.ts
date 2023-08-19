@@ -2,10 +2,9 @@ import { AsyncAction } from './AsyncAction';
 import { AsyncScheduler } from './AsyncScheduler';
 
 /**
+ * An asynchronous scheduler that schedules tasks on the JavaScript event loop queue.
  *
- * Async Scheduler
- *
- * <span class="informal">Schedule task as if you used setTimeout(task, duration)</span>
+ * <span class="informal">Schedules a task as if you used `setTimeout(task, duration)`.</span>
  *
  * `asyncScheduler` scheduler schedules tasks asynchronously, by putting them on the JavaScript
  * event loop queue. It is best used to delay tasks in time or to schedule tasks repeating
@@ -46,6 +45,13 @@ import { AsyncScheduler } from './AsyncScheduler';
  * // 2 after 5s
  * // 3 after 6s
  * ```
+ *
+ * ### Known Limitation
+ *
+ * The {@link asyncScheduler} uses [`setTimeout`](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout)
+ * internally which has limitation for how far in the future it can be scheduled. The `delay` used by `setTimeout`
+ * uses 32-bit signed integer internally. This causes an integer overflow when using delays larger than 2,147,483,647
+ * ms (about 24.8 days), [resulting in the timeout being executed
+ * immediately](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout#maximum_delay_value).
  */
-
 export const asyncScheduler = new AsyncScheduler(AsyncAction);
