@@ -350,7 +350,12 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
         const { deserializer } = this._config;
         observer.next(deserializer!(e));
       } catch (err) {
+        this._resetState();
         observer.error(err);
+        if (socket && (socket.readyState === 1 || socket.readyState === 0)) {
+          // close the socket after the observer so additional WebSocket events do not race to end the observer
+          socket.close();
+        }
       }
     };
   }
