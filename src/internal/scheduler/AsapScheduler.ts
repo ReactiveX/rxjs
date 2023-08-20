@@ -4,7 +4,15 @@ import { AsyncScheduler } from './AsyncScheduler';
 export class AsapScheduler extends AsyncScheduler {
   public flush(action?: AsyncAction<any>): void {
     this._active = true;
+
+    const { actions } = this;
+    let error: any;
+    action = action || actions.shift()!;
+
     // The async id that effects a call to flush is stored in _scheduled.
+    // But in case of nested asyncScheduler calls _scheduled could be cleared,
+    // so we take flushId from the first action to guarantee execution of all
+    // actions with the same id.
     // Before executing an action, it's necessary to check the action's async
     // id to determine whether it's supposed to be executed in the current
     // flush.
@@ -13,12 +21,8 @@ export class AsapScheduler extends AsyncScheduler {
     // are removed from the actions array and that can shift actions that are
     // scheduled to be executed in a subsequent flush into positions at which
     // they are executed within the current flush.
-    const flushId = this._scheduled;
+    const flushId = this._scheduled ?? action.id;
     this._scheduled = undefined;
-
-    const { actions } = this;
-    let error: any;
-    action = action || actions.shift()!;
 
     do {
       if ((error = action.execute(action.state, action.delay))) {
