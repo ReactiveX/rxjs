@@ -29,7 +29,7 @@ export interface Option {
 })
 export class SelectComponent implements OnInit {
   @Input()
-  selected: Option;
+  selected?: Option;
 
   @Input()
   options: Option[];

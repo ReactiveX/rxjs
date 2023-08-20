@@ -9,37 +9,37 @@ import { SwUpdatesService } from 'app/sw-updates/sw-updates.service';
 
 @Injectable()
 export class LocationService {
-
   private readonly urlParser = document.createElement('a');
   private urlSubject = new ReplaySubject<string>(1);
   private swUpdateActivated = false;
 
-  currentUrl = this.urlSubject
-    .pipe(map(url => this.stripSlashes(url)));
+  currentUrl = this.urlSubject.pipe(map((url) => this.stripSlashes(url)));
 
   currentPath = this.currentUrl.pipe(
-    map(url => (url.match(/[^?#]*/) || [])[0]),  // strip query and hash
-    tap(path => this.gaService.locationChanged(path)),
+    map((url) => (url.match(/[^?#]*/) || [''])[0]), // strip query and hash
+    tap((path) => this.gaService.locationChanged(path))
   );
 
   constructor(
     private gaService: GaService,
     private location: Location,
     private platformLocation: PlatformLocation,
-    swUpdates: SwUpdatesService) {
-
+    swUpdates: SwUpdatesService
+  ) {
     this.urlSubject.next(location.path(true));
 
-    this.location.subscribe(state => {
+    this.location.subscribe((state) => {
       return this.urlSubject.next(state.url || '');
     });
 
-    swUpdates.updateActivated.subscribe(() => this.swUpdateActivated = true);
+    swUpdates.updateActivated.subscribe(() => (this.swUpdateActivated = true));
   }
 
   // TODO: ignore if url-without-hash-or-search matches current location?
-  go(url: string|null|undefined) {
-    if (!url) { return; }
+  go(url: string | null | undefined) {
+    if (!url) {
+      return;
+    }
     url = this.stripSlashes(url);
     if (/^http/.test(url) || this.swUpdateActivated) {
       // Has http protocol so leave the site
@@ -64,28 +64,29 @@ export class LocationService {
   }
 
   search() {
-    const search: { [index: string]: string|undefined; } = {};
+    const search: { [index: string]: string | undefined } = {};
     const path = this.location.path();
     const q = path.indexOf('?');
     if (q > -1) {
       try {
-          const params = path.substr(q + 1).split('&');
-          params.forEach(p => {
-            const pair = p.split('=');
-            if (pair[0]) {
-              search[decodeURIComponent(pair[0])] = pair[1] && decodeURIComponent(pair[1]);
-            }
-          });
-      } catch (e) { /* don't care */ }
+        const params = path.substr(q + 1).split('&');
+        params.forEach((p) => {
+          const pair = p.split('=');
+          if (pair[0]) {
+            search[decodeURIComponent(pair[0])] = pair[1] && decodeURIComponent(pair[1]);
+          }
+        });
+      } catch (e) {
+        /* don't care */
+      }
     }
     return search;
   }
 
-  setSearch(label: string, params: { [key: string]: string|undefined}) {
+  setSearch(label: string, params: { [key: string]: string | undefined }) {
     const search = Object.keys(params).reduce((acc, key) => {
       const value = params[key];
-      return (value === undefined) ? acc :
-        acc += (acc ? '&' : '?') + `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+      return value === undefined ? acc : (acc += (acc ? '&' : '?') + `${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
     }, '');
 
     this.platformLocation.replaceState({}, label, this.platformLocation.pathname + search);
@@ -114,7 +115,6 @@ export class LocationService {
    */
 
   handleAnchorClick(anchor: HTMLAnchorElement, button = 0, ctrlKey = false, metaKey = false) {
-
     // Check for modifier keys and non-left-button, which indicate the user wants to control navigation
     if (button !== 0 || ctrlKey || metaKey) {
       return true;
@@ -137,8 +137,7 @@ export class LocationService {
     this.urlParser.href = relativeUrl;
 
     // don't navigate if external link or has extension
-    if ( anchor.href !== this.urlParser.href ||
-         !/\/[^/.]*$/.test(pathname) ) {
+    if (anchor.href !== this.urlParser.href || !/\/[^/.]*$/.test(pathname)) {
       return true;
     }
 

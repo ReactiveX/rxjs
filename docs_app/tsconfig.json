@@ -13,7 +13,7 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "noUnusedLocals": true,
-    "target": "es2015",
+    "target": "ES2022",
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -21,7 +21,8 @@
       "es2016",
       "dom"
     ],
-    "module": "esnext"
+    "module": "esnext",
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "strictTemplates": true,

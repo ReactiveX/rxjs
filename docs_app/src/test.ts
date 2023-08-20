@@ -7,8 +7,6 @@ import {
     platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
 
-declare const require: any;
-
 // Reflect.metadata polyfill is only needed in the JIT mode which we use only for unit tests
 import 'core-js/es/reflect';
 // import 'core-js/es7/reflect';
@@ -20,7 +18,3 @@ getTestBed().initTestEnvironment(
     teardown: { destroyAfterEach: false }
 }
 );
-// Then we find all the tests.
-const context = require.context('./', true, /\.spec\.ts$/);
-// And load the modules.
-context.keys().map(context);

@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChil
 import { Logger } from 'app/shared/logger.service';
 import { PrettyPrinter } from './pretty-printer.service';
 import { CopierService } from 'app/shared/copier.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { tap } from 'rxjs/operators';
 import { StackblitzService } from 'app/shared/stackblitz.service';
 import version from '../../../../tools/stackblitz/rxjs.version';
