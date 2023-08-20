@@ -5,10 +5,15 @@ import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SubjectLike, ObservableInput } from '../types';
 
+/**
+ * The {@link share} operator configuration object interface.
+ */
 export interface ShareConfig<T> {
   /**
    * The factory used to create the subject that will connect the source observable to
    * multicast consumers.
+   *
+   * If not provided, defaults to: `() => new Subject<T>()`.
    */
   connector?: () => SubjectLike<T>;
   /**
@@ -20,6 +25,8 @@ export interface ShareConfig<T> {
    * {@link ReplaySubject} will also push its buffered values before pushing the error.
    * It is also possible to pass a notifier factory returning an `ObservableInput` instead which grants more fine-grained
    * control over how and when the reset should happen. This allows behaviors like conditional or delayed resets.
+   *
+   * If not provided, defaults to: `true`.
    */
   resetOnError?: boolean | ((error: any) => ObservableInput<any>);
   /**
@@ -30,6 +37,8 @@ export interface ShareConfig<T> {
    * or resubscriptions will resubscribe to that same subject.
    * It is also possible to pass a notifier factory returning an `ObservableInput` instead which grants more fine-grained
    * control over how and when the reset should happen. This allows behaviors like conditional or delayed resets.
+   *
+   * If not provided, defaults to: `true`.
    */
   resetOnComplete?: boolean | (() => ObservableInput<any>);
   /**
@@ -41,6 +50,8 @@ export interface ShareConfig<T> {
    * will remain connected to the source, and new subscriptions to the result will be connected through that same subject.
    * It is also possible to pass a notifier factory returning an `ObservableInput` instead which grants more fine-grained
    * control over how and when the reset should happen. This allows behaviors like conditional or delayed resets.
+   *
+   * If not provided, defaults to: `true`.
    */
   resetOnRefCountZero?: boolean | (() => ObservableInput<any>);
 }
@@ -52,7 +63,8 @@ export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
 /**
  * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one
  * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will
- * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.
+ * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream
+ * {@link guide/glossary-and-semantics#hot hot}.
  *
  * The subscription to the underlying source Observable can be reset (unsubscribe and resubscribe for new subscribers),
  * if the subscriber count to the shared observable drops to 0, or if the source Observable errors or completes. It is
@@ -135,7 +147,10 @@ export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
  * ```
  *
  * @see {@link shareReplay}
+ * @see {@link ShareConfig}
  *
+ * @param options A configuration object used to configure things like {@link ShareConfig#connector connector}
+ * and various reset options.
  * @return A function that returns an Observable that mirrors the source.
  */
 export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction<T> {
