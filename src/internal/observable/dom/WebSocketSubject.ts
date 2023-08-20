@@ -294,7 +294,10 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
               const { serializer } = this._config;
               socket!.send(serializer!(x!));
             } catch (e) {
-              this.destination!.error(e);
+              this.destination!.error({
+                code: 1000,
+              });
+              observer.error(e);
             }
           }
         },
