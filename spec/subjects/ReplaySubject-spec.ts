@@ -1,6 +1,7 @@
+/** @prettier */
 import { expect } from 'chai';
-import { ReplaySubject, Subject, of } from 'rxjs';
-import { mergeMapTo, tap } from 'rxjs/operators';
+import { firstValueFrom, of, ReplaySubject, Subject } from 'rxjs';
+import { mergeMap, take, tap, toArray } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -128,13 +129,13 @@ describe('ReplaySubject', () => {
         }
 
         const sourceTemplate = ' -1-2-3----4------5-6---7--8----9--|';
-        const subscriber1 = hot('------(a|)                         ').pipe(mergeMapTo(replaySubject));
+        const subscriber1 = hot('------(a|)                         ').pipe(mergeMap(() => replaySubject));
         const unsub1 = '         ---------------------!             ';
         const expected1 = '      ------(23)4------5-6--             ';
-        const subscriber2 = hot('------------(b|)                   ').pipe(mergeMapTo(replaySubject));
+        const subscriber2 = hot('------------(b|)                   ').pipe(mergeMap(() => replaySubject));
         const unsub2 = '         -------------------------!         ';
         const expected2 = '      ------------(34)-5-6---7--         ';
-        const subscriber3 = hot('---------------------------(c|)    ').pipe(mergeMapTo(replaySubject));
+        const subscriber3 = hot('---------------------------(c|)    ').pipe(mergeMap(() => replaySubject));
         const expected3 = '      ---------------------------(78)9--|';
 
         expectObservable(
@@ -160,7 +161,7 @@ describe('ReplaySubject', () => {
         }
 
         const sourceTemplate = ' -1-2-3--4--|';
-        const subscriber1 = hot('---------------(a|) ').pipe(mergeMapTo(replaySubject));
+        const subscriber1 = hot('---------------(a|) ').pipe(mergeMap(() => replaySubject));
         const expected1 = '      ---------------(34|)';
 
         expectObservable(
@@ -258,13 +259,13 @@ describe('ReplaySubject', () => {
         }
 
         const sourceTemplate = ' -1-2-3----4------5-6----7-8----9--|';
-        const subscriber1 = hot('------(a|)                         ').pipe(mergeMapTo(replaySubject));
+        const subscriber1 = hot('------(a|)                         ').pipe(mergeMap(() => replaySubject));
         const unsub1 = '         ---------------------!             ';
         const expected1 = '      ------(23)4------5-6--             ';
-        const subscriber2 = hot('------------(b|)                   ').pipe(mergeMapTo(replaySubject));
+        const subscriber2 = hot('------------(b|)                   ').pipe(mergeMap(() => replaySubject));
         const unsub2 = '         -------------------------!         ';
         const expected2 = '      ------------4----5-6----7-         ';
-        const subscriber3 = hot('---------------------------(c|)    ').pipe(mergeMapTo(replaySubject));
+        const subscriber3 = hot('---------------------------(c|)    ').pipe(mergeMap(() => replaySubject));
         const expected3 = '      ---------------------------(78)9--|';
 
         expectObservable(
@@ -290,7 +291,7 @@ describe('ReplaySubject', () => {
         }
 
         const sourceTemplate = ' -1-2-3----4|';
-        const subscriber1 = hot('-------------(a|)').pipe(mergeMapTo(replaySubject));
+        const subscriber1 = hot('-------------(a|)').pipe(mergeMap(() => replaySubject));
         const expected1 = '      -------------(4|)';
 
         expectObservable(
@@ -314,7 +315,7 @@ describe('ReplaySubject', () => {
         }
 
         const sourceTemplate = ' 1234-------|';
-        const subscriber1 = hot('----(a|)').pipe(mergeMapTo(replaySubject));
+        const subscriber1 = hot('----(a|)').pipe(mergeMap(() => replaySubject));
         const expected1 = '      ----(34)---|';
 
         expectObservable(
@@ -369,5 +370,37 @@ describe('ReplaySubject', () => {
       error: () => results.push('E'),
     });
     expect(results).to.deep.equal([1, 2, 'E']);
+  });
+
+  it('should emit buffered values before forwarding source emissions', () => {
+    const subject = new ReplaySubject<number>();
+    subject.next(1);
+    subject.next(2);
+
+    const results: number[] = [];
+
+    subject.pipe(take(4)).subscribe((value) => {
+      results.push(value);
+      subject.next(value + 2);
+    });
+
+    expect(results).to.deep.equal([1, 2, 3, 4]);
+  });
+
+  it('ReplaySubject wtf ???', async () => {
+    const subject = new ReplaySubject<number>();
+    subject.next(1);
+    subject.next(2);
+
+    const results = await firstValueFrom(
+      subject.pipe(
+        take(4),
+        tap((value) => subject.next(value + 2)),
+        toArray()
+      )
+    );
+
+    // results is [7] ?? wat?
+    expect(results).to.deep.equal([1, 2, 3, 4]);
   });
 });
