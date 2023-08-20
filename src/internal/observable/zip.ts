@@ -90,7 +90,7 @@ export function zip(...args: unknown[]): Observable<unknown> {
                   // If any one of the sources is both complete and has an empty buffer
                   // then we complete the result. This is because we cannot possibly have
                   // any more values to zip together.
-                  if (buffers.some((buffer, i) => !buffer.length && completed[i])) {
+                  if (buffers?.some((buffer, i) => !buffer.length && completed[i])) {
                     destination.complete();
                   }
                 }
