@@ -5,7 +5,6 @@ import { Observable, config, Subscription, Subscriber, Operator, NEVER, Subject,
 import { map, filter, count, tap, combineLatestWith, concatWith, mergeWith, raceWith, zipWith, catchError, share} from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
-import { result } from 'lodash';
 
 function expectFullObserver(val: any) {
   expect(val).to.be.a('object');
@@ -643,7 +642,7 @@ describe('Observable', () => {
     it('should allow any kind of piped function', () => {
       const source = of('test');
       const result = source.pipe(
-        source => source instanceof Observable, 
+        source => source instanceof Observable,
         isObservable => isObservable ? 'Well hello, there.' : 'Huh?'
       );
       expect(result).to.equal('Well hello, there.');
@@ -727,7 +726,7 @@ describe('Observable', () => {
 
         subscriber.next(1);
         subscriber.next(2);
-        
+
         // NOTE that we are NOT calling `subscriber.complete()` here.
         // therefore the teardown below would never be called naturally
         // by the observable unless it was unsubscribed.
