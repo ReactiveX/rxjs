@@ -77,12 +77,15 @@ export function fromEvent<T, R>(
   resultSelector: (event: T) => R
 ): Observable<R>;
 
-export function fromEvent(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<unknown>;
+export function fromEvent(
+  target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>,
+  eventName: string | symbol
+): Observable<unknown>;
 /** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
-export function fromEvent<T>(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<T>;
+export function fromEvent<T>(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string | symbol): Observable<T>;
 export function fromEvent<R>(
   target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>,
-  eventName: string,
+  eventName: string | symbol,
   resultSelector: (...args: any[]) => R
 ): Observable<R>;
 
@@ -238,7 +241,7 @@ export function fromEvent<T, R>(
  */
 export function fromEvent<T>(
   target: any,
-  eventName: string,
+  eventName: string | symbol,
   options?: EventListenerOptions | ((...args: any[]) => T),
   resultSelector?: (...args: any[]) => T
 ): Observable<T> {
@@ -248,7 +251,7 @@ export function fromEvent<T>(
   }
 
   if (resultSelector) {
-    return fromEvent<T>(target, eventName, options as EventListenerOptions).pipe(mapOneOrManyArgs(resultSelector));
+    return fromEvent<T>(target, eventName as string, options as EventListenerOptions).pipe(mapOneOrManyArgs(resultSelector));
   }
 
   const isValidTarget = isNodeStyleEventEmitter(target) || isJQueryStyleEventEmitter(target) || isEventTarget(target);
@@ -274,7 +277,13 @@ export function fromEvent<T>(
   });
 }
 
-function doSubscribe(handler: (...args: any[]) => void, subscriber: Subscriber<any>, subTarget: any, eventName: string, options: any) {
+function doSubscribe(
+  handler: (...args: any[]) => void,
+  subscriber: Subscriber<any>,
+  subTarget: any,
+  eventName: string | symbol,
+  options: any
+) {
   const [addMethod, removeMethod] = getRegistryMethodNames(subTarget);
   if (!addMethod || !removeMethod) {
     throw new TypeError('Invalid event target');

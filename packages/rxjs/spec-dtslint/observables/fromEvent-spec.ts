@@ -56,6 +56,13 @@ it('should support a node-style source', () => {
   const b = fromEvent<B>(nodeStyleSource, "exit"); // $ExpectType Observable<B>
 });
 
+it('should support a node-style source and symbol eventName', () => {
+  const SYMBOL_EVENT = Symbol();
+  const source: NodeStyleEventEmitter = nodeStyleSource;
+  const a = fromEvent(nodeStyleSource, SYMBOL_EVENT); // $ExpectType Observable<unknown>
+  const b = fromEvent<B>(nodeStyleSource, SYMBOL_EVENT); // $ExpectType Observable<B>
+});
+
 it('should deprecate explicit type parameters for a node-style source', () => {
   const source: NodeStyleEventEmitter = nodeStyleSource;
   const a = fromEvent(nodeStyleSource, "exit"); // $ExpectNoDeprecation
