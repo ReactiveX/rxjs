@@ -53,5 +53,11 @@ if (!(Symbol as any).observable) {
   }
 }(global));
 
+// Polyfill Symbol.dispose for testing
+if (typeof Symbol.dispose !== 'symbol') {
+  (Symbol as any).dispose = Symbol('dispose polyfill');
+}
+
+
 //setup sinon-chai
 chai.use(sinonChai);

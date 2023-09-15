@@ -1,6 +1,6 @@
 {
   "name": "rxjs",
-  "version": "8.0.0-alpha.9",
+  "version": "8.0.0-alpha.12",
   "description": "Reactive Extensions for modern JavaScript",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -81,7 +81,7 @@
     "publish_docs": "./publish_docs.sh",
     "test": "cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js \"spec/**/*-spec.ts\"",
     "test:esm": "node spec/module-test-spec.mjs",
-    "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm5",
+    "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm",
     "test:import": "ts-node ./integration/import/runner.ts",
     "compile": "tsc -b ./src/tsconfig.cjs.json ./src/tsconfig.cjs.spec.json ./src/tsconfig.esm.json ./src/tsconfig.types.json ./src/tsconfig.types.spec.json ./spec/tsconfig.json",
     "build:clean": "shx rm -rf ./dist",

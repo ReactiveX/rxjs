@@ -144,10 +144,28 @@ export class Subscription implements SubscriptionLike {
   }
 }
 
+// Even though Subscription only conditionally implements `Symbol.dispose`
+// if it's available, we still need to declare it here so that TypeScript
+// knows that it exists on the prototype when it is available.
+export interface Subscription {
+  [Symbol.dispose](): void;
+}
+
+if (typeof Symbol.dispose === 'symbol') {
+  Subscription.prototype[Symbol.dispose] = Subscription.prototype.unsubscribe;
+}
+
 function execFinalizer(finalizer: Unsubscribable | (() => void)) {
   if (isFunction(finalizer)) {
     finalizer();
   } else {
     finalizer.unsubscribe();
+  }
+}
+
+// Ensure that `Symbol.dispose` is defined in TypeScript
+declare global {
+  interface SymbolConstructor {
+    readonly dispose: unique symbol;
   }
 }
