@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['16', '18']
+        node: ['16', '18', '20']
 
     name: Node ${{ matrix.node }} build
 
@@ -24,24 +24,23 @@ jobs:
           cache: npm
       - name: install
         run: |
-          npm install -g npm@latest
-          npm ci
-      - name: lint
-        run: npm run lint
-      - name: build
-        run: npm run build:package
-      - name: test
-        run: npm test
-      - name: dtslint
-        run: npm run dtslint
-      - name: import
-        if: ${{ matrix.node == '18' }}
-        run: npm run test:import
-      - name: import
-        if: ${{ matrix.node == '16' || matrix.node == '18' }}
-        run: npm run test:esm
-      - name: docs
-        run: |
-          cd docs_app
-          npm run setup
-          npm run build
+          npm install -g yarn@latest
+          yarn install
+      - name: rxjs lint
+        run: yarn workspaces rxjs lint
+      - name: rxjs build
+        run: yarn workspaces rxjs build
+      - name: rxjs test
+        run: yarn workspaces rxjs test
+      - name: rxjs dtslint
+        run: yarn workspaces rxjs dtslint
+      - name: rxjs test:import
+        if: ${{ matrix.node == '18' || matrix.node == '20' }}
+        run: yarn workspaces rxjs test:import
+      - name: rxjs test:esm
+        if: ${{ matrix.node == '16' || matrix.node == '18' || matrix.node == '20' }}
+        run: yarn workspaces rxjs test:esm
+      - name: rxjs.dev build
+        run: yarn workspaces rxjs.dev build --prod
+      - name: rxjs.dev test
+        run: yarn workspaces rxjs.dev test --watch=false --browsers=ChromeHeadless
