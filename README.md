@@ -31,7 +31,7 @@ By contributing or commenting on issues in this repository, whether you've read 
 
 ## Development
 
-Because of [this issue]() we're using `yarn`.
+Because of [this issue](https://github.com/npm/rfcs/issues/287#issuecomment-1727960500) we're using `yarn`. (Basically the docs app uses `@types/jasmine`, and the package uses `@types/mocha` and they get hoisted to the top level by `npm install` with workspaces, and then TypeScript vomits everywhere when you try to build).
 
 1. `cd` to the repository root
 2. `yarn install` to install all dependencies
