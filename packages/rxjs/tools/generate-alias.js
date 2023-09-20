@@ -26,5 +26,9 @@ aliasRoot.forEach((alias) => {
     sideEffects: false,
   };
 
-  fs.writeJSON(path.resolve(__dirname, `../package/rxjs/${alias}/package.json`), pkgManifest, { spaces: 2 });
+  const packagePath = path.resolve(__dirname, `../${alias}/package.json`);
+
+  console.log(`Writing: ${packagePath}`);
+
+  fs.writeJSON(packagePath, pkgManifest, { spaces: 2 });
 });
