@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['16', '18', '20']
+        node: ['18', '20']
 
     name: Node ${{ matrix.node }} build
 
@@ -27,20 +27,20 @@ jobs:
           npm install -g yarn@latest
           yarn install
       - name: rxjs lint
-        run: yarn workspaces rxjs lint
+        run: yarn workspace rxjs lint
       - name: rxjs build
-        run: yarn workspaces rxjs build
+        run: yarn workspace rxjs build
       - name: rxjs test
-        run: yarn workspaces rxjs test
+        run: yarn workspace rxjs test
       - name: rxjs dtslint
-        run: yarn workspaces rxjs dtslint
+        run: yarn workspace rxjs dtslint
       - name: rxjs test:import
         if: ${{ matrix.node == '18' || matrix.node == '20' }}
-        run: yarn workspaces rxjs test:import
+        run: yarn workspace rxjs test:import
       - name: rxjs test:esm
-        if: ${{ matrix.node == '16' || matrix.node == '18' || matrix.node == '20' }}
-        run: yarn workspaces rxjs test:esm
+        if: ${{ matrix.node == '18' || matrix.node == '20' }}
+        run: yarn workspace rxjs test:esm
       - name: rxjs.dev build
-        run: yarn workspaces rxjs.dev build --prod
+        run: yarn workspace rxjs.dev build --prod
       - name: rxjs.dev test
-        run: yarn workspaces rxjs.dev test --watch=false --browsers=ChromeHeadless
+        run: yarn workspace rxjs.dev test --watch=false --browsers=ChromeHeadless

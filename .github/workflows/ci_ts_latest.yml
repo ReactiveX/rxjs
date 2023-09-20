@@ -26,5 +26,5 @@ jobs:
         run: |
           npm install -g yarn@latest
           yarn install
-          yarn add typescript@latest @types/node@latest --peer --no-save
+          yarn workspace rxjs add typescript@latest @types/node@latest --peer --no-save
           yarn workspace rxjs compile
