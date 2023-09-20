@@ -1,5 +1,4 @@
 import { config } from '../config';
-import { timeoutProvider } from '../scheduler/timeoutProvider';
 
 /**
  * Handles an error on another job either with the user-configured {@link onUnhandledError},
@@ -11,7 +10,7 @@ import { timeoutProvider } from '../scheduler/timeoutProvider';
  * @param err the error to report
  */
 export function reportUnhandledError(err: any) {
-  timeoutProvider.setTimeout(() => {
+  setTimeout(() => {
     const { onUnhandledError } = config;
     if (onUnhandledError) {
       // Execute the user-configured error handler.

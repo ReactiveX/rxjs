@@ -18,24 +18,11 @@ import {
 } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
-import { SinonSpy, spy } from 'sinon';
+import { spy } from 'sinon';
 
 const syncNotify = of(1);
 const asapNotify = scheduled(syncNotify, asapScheduler);
 const syncError = throwError(() => new Error());
-
-function spyOnUnhandledError(fn: (spy: SinonSpy) => void): void {
-  const prevOnUnhandledError = config.onUnhandledError;
-
-  try {
-    const onUnhandledError = spy();
-    config.onUnhandledError = onUnhandledError;
-
-    fn(onUnhandledError);
-  } finally {
-    config.onUnhandledError = prevOnUnhandledError;
-  }
-}
 
 /** @test {share} */
 describe('share', () => {
@@ -810,9 +797,22 @@ describe('share', () => {
       });
     });
 
-    it('should not reset on refCount 0 if reset notifier errors before emitting any value', () => {
-      spyOnUnhandledError((onUnhandledError) => {
+    describe('when config.onUnhandledError is set', () => {
+      afterEach(() => {
+        config.onUnhandledError = null;
+      });
+
+      it('should not reset on refCount 0 if reset notifier errors before emitting any value', (done) => {
         const error = new Error();
+        let calls = 0;
+
+        config.onUnhandledError = spy((err) => {
+          calls++;
+          expect(err).to.equal(error);
+          if (calls === 2) {
+            done();
+          }
+        });
 
         rxTest.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
           const source = hot('       ---1---2---3---4---(5 )---|');
@@ -830,16 +830,15 @@ describe('share', () => {
           expectObservable(result, subscription).toBe(expected);
           expectSubscriptions(source.subscriptions).toBe(sourceSubs);
         });
-
-        expect(onUnhandledError).to.have.been.calledTwice;
-        expect(onUnhandledError.getCall(0)).to.have.been.calledWithExactly(error);
-        expect(onUnhandledError.getCall(1)).to.have.been.calledWithExactly(error);
       });
-    });
 
-    it('should not reset on error if reset notifier errors before emitting any value', () => {
-      spyOnUnhandledError((onUnhandledError) => {
+      it('should not reset on error if reset notifier errors before emitting any value', (done) => {
         const error = new Error();
+
+        config.onUnhandledError = spy((err) => {
+          expect(err).to.equal(error);
+          done();
+        });
 
         rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
           const source = cold('    ---1---2---#   ');
@@ -856,89 +855,86 @@ describe('share', () => {
           expectObservable(result, subscription).toBe(expected);
           expectSubscriptions(source.subscriptions).toBe(sourceSubs);
         });
-
-        expect(onUnhandledError).to.have.been.calledOnce;
-        expect(onUnhandledError.getCall(0)).to.have.been.calledWithExactly(error);
       });
     });
 
-    it('should not reset on complete if reset notifier errors before emitting any value', () => {
-      spyOnUnhandledError((onUnhandledError) => {
-        const error = new Error();
+    it('should not reset on complete if reset notifier errors before emitting any value', (done) => {
+      const error = new Error();
 
-        rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
-          const source = cold('    ---1---2---|   ');
-          const sourceSubs = '     ^----------!   ';
-          const expected = '       ---1---2------|';
-          const subscription = '   ^--------------';
-          const firstPause = cold('       -------|');
-          const reset = cold('                --# ', undefined, error);
-
-          const sharedSource = source.pipe(share({ resetOnComplete: () => reset, resetOnRefCountZero: false }), take(2));
-
-          const result = concat(sharedSource, firstPause, sharedSource);
-
-          expectObservable(result, subscription).toBe(expected);
-          expectSubscriptions(source.subscriptions).toBe(sourceSubs);
-        });
-
-        expect(onUnhandledError).to.have.been.calledOnce;
-        expect(onUnhandledError.getCall(0)).to.have.been.calledWithExactly(error);
+      config.onUnhandledError = spy((err) => {
+        expect(err).to.equal(error);
+        done();
       });
-    });
 
-    it('should not call "resetOnRefCountZero" on error', () => {
       rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
-        const resetOnRefCountZero = spy(() => EMPTY);
+        const source = cold('    ---1---2---|   ');
+        const sourceSubs = '     ^----------!   ';
+        const expected = '       ---1---2------|';
+        const subscription = '   ^--------------';
+        const firstPause = cold('       -------|');
+        const reset = cold('                --# ', undefined, error);
 
-        const source = cold('    ---1---(2#)                ');
-        // source: '                           ---1---(2#)  '
-        const sourceSubs = [
-          '                      ^------(! )                ',
-          // break the line, please
-          '                      -------(- )---^------(! )  ',
-        ];
-        const expected = '       ---1---(2 )------1---(2#)  ';
-        const subscription = '   ^------(- )----------(- )  ';
-        const firstPause = cold('       (- )---|            ');
-        const reset = cold('            (- )-r              ');
-        // reset: '                                   (- )-r'
-
-        const sharedSource = source.pipe(share({ resetOnError: () => reset, resetOnRefCountZero }));
-
-        const result = concat(sharedSource.pipe(onErrorResumeNextWith(firstPause)), sharedSource);
-
-        expectObservable(result, subscription).toBe(expected);
-        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
-        expect(resetOnRefCountZero).to.not.have.been.called;
-      });
-    });
-
-    it('should not call "resetOnRefCountZero" on complete', () => {
-      rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
-        const resetOnRefCountZero = spy(() => EMPTY);
-
-        const source = cold('    ---1---(2|)                ');
-        // source: '                           ---1---(2|)  '
-        const sourceSubs = [
-          '                      ^------(! )                ',
-          // break the line, please
-          '                      -------(- )---^------(! )  ',
-        ];
-        const expected = '       ---1---(2 )------1---(2|)  ';
-        const subscription = '   ^------(- )----------(- )  ';
-        const firstPause = cold('       (- )---|            ');
-        const reset = cold('            (- )-r              ');
-        // reset: '                                   (- )-r'
-
-        const sharedSource = source.pipe(share({ resetOnComplete: () => reset, resetOnRefCountZero }));
+        const sharedSource = source.pipe(share({ resetOnComplete: () => reset, resetOnRefCountZero: false }), take(2));
 
         const result = concat(sharedSource, firstPause, sharedSource);
 
         expectObservable(result, subscription).toBe(expected);
         expectSubscriptions(source.subscriptions).toBe(sourceSubs);
-        expect(resetOnRefCountZero).to.not.have.been.called;
       });
+    });
+  });
+
+  it('should not call "resetOnRefCountZero" on error', () => {
+    rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const resetOnRefCountZero = spy(() => EMPTY);
+
+      const source = cold('    ---1---(2#)                ');
+      // source: '                           ---1---(2#)  '
+      const sourceSubs = [
+        '                      ^------(! )                ',
+        // break the line, please
+        '                      -------(- )---^------(! )  ',
+      ];
+      const expected = '       ---1---(2 )------1---(2#)  ';
+      const subscription = '   ^------(- )----------(- )  ';
+      const firstPause = cold('       (- )---|            ');
+      const reset = cold('            (- )-r              ');
+      // reset: '                                   (- )-r'
+
+      const sharedSource = source.pipe(share({ resetOnError: () => reset, resetOnRefCountZero }));
+
+      const result = concat(sharedSource.pipe(onErrorResumeNextWith(firstPause)), sharedSource);
+
+      expectObservable(result, subscription).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expect(resetOnRefCountZero).to.not.have.been.called;
+    });
+  });
+
+  it('should not call "resetOnRefCountZero" on complete', () => {
+    rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const resetOnRefCountZero = spy(() => EMPTY);
+
+      const source = cold('    ---1---(2|)                ');
+      // source: '                           ---1---(2|)  '
+      const sourceSubs = [
+        '                      ^------(! )                ',
+        // break the line, please
+        '                      -------(- )---^------(! )  ',
+      ];
+      const expected = '       ---1---(2 )------1---(2|)  ';
+      const subscription = '   ^------(- )----------(- )  ';
+      const firstPause = cold('       (- )---|            ');
+      const reset = cold('            (- )-r              ');
+      // reset: '                                   (- )-r'
+
+      const sharedSource = source.pipe(share({ resetOnComplete: () => reset, resetOnRefCountZero }));
+
+      const result = concat(sharedSource, firstPause, sharedSource);
+
+      expectObservable(result, subscription).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+      expect(resetOnRefCountZero).to.not.have.been.called;
     });
   });
 });
