@@ -81,4 +81,4 @@ range(1, 200)
 
 ## Adding documentation
 
-We appreciate all contributions to the documentation of any type. All of the information needed to get the docs app up and running locally as well as how to contribute can be found in the [documentation directory](./apps/rxjs.dev).
+We appreciate all contributions to the documentation of any type. All of the information needed to get the docs app up and running locally as well as how to contribute can be found in the [documentation directory](apps/rxjs.dev).
