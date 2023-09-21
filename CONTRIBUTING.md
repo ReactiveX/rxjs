@@ -123,7 +123,7 @@ from the main (upstream) repository:
 - The documentation is auto-generated directly from the source code.
 - In short: From the source code we generate JSON documents, describing each operator, function ... and render this JSON within an Angular application
 - The folder `rxjs.dev` contains everything you need for building and developing the docs
-- The [Documentation README](../../apps/rxjs.dev/README.md) will support you
+- The [Documentation README](apps/rxjs.dev/README.md) will support you
 - After a PR is merged to master the docs will be published to https://rxjs.dev/
 
 ## Unit Tests
