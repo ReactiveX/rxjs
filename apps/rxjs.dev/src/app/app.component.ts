@@ -231,22 +231,15 @@ export class AppComponent implements OnInit {
     combineLatest(
       this.navigationService.versionInfo,
       this.navigationService.navigationViews.pipe(map((views) => views['docVersions']))
-    ).subscribe({
-      next: ([versionInfo, versions]) => {
-        this.docVersions = [...versions];
+    ).subscribe(([versionInfo, versions]) => {
+      this.docVersions = [...versions];
 
-        // Find the current version - either title matches the current deployment mode
-        // or its title matches the major version of the current version info
-        console.log(this.docVersions);
-
-        this.currentDocVersion = this.docVersions.find(
-          (version) => version.title === this.deployment.mode || version.title === `v${versionInfo.major}`
-        )!;
-        this.currentDocVersion.title += ` (v${versionInfo.raw})`;
-      },
-      error: (err) => {
-        console.error(err);
-      },
+      // Find the current version - either title matches the current deployment mode
+      // or its title matches the major version of the current version info
+      this.currentDocVersion = this.docVersions.find(
+        (version) => version.title === this.deployment.mode || version.title === `v${versionInfo.major}`
+      )!;
+      this.currentDocVersion.title += ` (v${versionInfo.raw})`;
     });
 
     this.navigationService.navigationViews.subscribe((views) => {
