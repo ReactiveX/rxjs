@@ -1,7 +1,7 @@
 const { resolve } = require('path');
 const { readdirSync } = require('fs');
 
-const PROJECT_ROOT = resolve(__dirname, '../../../..');
+const PROJECT_ROOT = resolve(__dirname, '../../../../packages/rxjs');
 const AIO_PATH = resolve(PROJECT_ROOT, 'apps/rxjs.dev');
 const TEMPLATES_PATH = resolve(AIO_PATH, 'tools/transforms/templates');
 const API_TEMPLATES_PATH = resolve(TEMPLATES_PATH, 'api');
