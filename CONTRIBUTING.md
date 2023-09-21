@@ -130,7 +130,7 @@ from the main (upstream) repository:
 
 Unit tests are located under the [spec directory](/spec). Unit tests over synchronous operators and operations
 can be written in a standard [chai](https://www.chaijs.com/) style. Unit tests written against any
-asynchronous operator should be written in [Marble Test Style outlined in detail here](../../apps/rxjs.dev/content/guide/testing/marble-testing.md).
+asynchronous operator should be written in [Marble Test Style outlined in detail here](apps/rxjs.dev/content/guide/testing/marble-testing.md).
 
 Each operator under test must be in its own file to cover the following cases:
 
