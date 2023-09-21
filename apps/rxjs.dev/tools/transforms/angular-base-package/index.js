@@ -37,7 +37,7 @@ module.exports = new Package('angular-base', [
 
   // overrides base packageInfo and returns the one for the 'angular/angular' repo.
   .factory('packageInfo', function () {
-    return require(path.resolve(PROJECT_ROOT, './packages/rxjs/package.json'));
+    return require(path.resolve(PROJECT_ROOT, 'package.json'));
   })
   .factory(require('./readers/json'))
   .factory(require('./services/copyFolder'))
