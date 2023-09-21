@@ -27,7 +27,7 @@ Contents
 ---
 
 - Related documents
-  - [Creating Operators](../../apps/rxjs.dev/content/guide/operators.md#creating-custom-operators)
+  - [Creating Operators](apps/rxjs.dev/content/guide/operators.md#creating-custom-operators)
   - [Writing Marble Tests](../../apps/rxjs.dev/content/guide/testing/marble-testing.md)
 
 ---
