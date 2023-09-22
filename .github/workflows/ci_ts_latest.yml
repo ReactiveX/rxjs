@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['18']
+        node: ['20']
 
     name: ts@latest
 
@@ -24,7 +24,7 @@ jobs:
           cache: npm
       - name: build
         run: |
-          npm install -g npm@latest
-          npm ci
-          npm install --legacy-peer-deps --no-save typescript@latest @types/node@latest
-          npm run compile
+          npm install -g yarn@latest
+          yarn install
+          yarn workspace rxjs add typescript@latest @types/node@latest --peer --no-save
+          yarn workspace rxjs compile

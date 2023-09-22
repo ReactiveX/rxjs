@@ -27,8 +27,8 @@ Contents
 ---
 
 - Related documents
-  - [Creating Operators](docs_app/content/guide/operators.md#creating-custom-operators)
-  - [Writing Marble Tests](docs_app/content/guide/testing/marble-testing.md)
+  - [Creating Operators](apps/rxjs.dev/content/guide/operators.md#creating-custom-operators)
+  - [Writing Marble Tests](apps/rxjs.dev/content/guide/testing/marble-testing.md)
 
 ---
 
@@ -122,15 +122,15 @@ from the main (upstream) repository:
 
 - The documentation is auto-generated directly from the source code.
 - In short: From the source code we generate JSON documents, describing each operator, function ... and render this JSON within an Angular application
-- The folder `docs_app` contains everything you need for building and developing the docs
-- The [Documentation README](docs_app/README.md) will support you
+- The folder `apps/rxjs.dev` contains everything you need for building and developing the docs
+- The [Documentation README](apps/rxjs.dev/README.md) will support you
 - After a PR is merged to master the docs will be published to https://rxjs.dev/
 
 ## Unit Tests
 
 Unit tests are located under the [spec directory](/spec). Unit tests over synchronous operators and operations
 can be written in a standard [chai](https://www.chaijs.com/) style. Unit tests written against any
-asynchronous operator should be written in [Marble Test Style outlined in detail here](docs_app/content/guide/testing/marble-testing.md).
+asynchronous operator should be written in [Marble Test Style outlined in detail here](apps/rxjs.dev/content/guide/testing/marble-testing.md).
 
 Each operator under test must be in its own file to cover the following cases:
 
@@ -184,7 +184,7 @@ Macro performance tests can be run by hosting the root directory with any web se
 then running:
 
 ```sh
-npm run build_all
+yarn build_all
 protractor protractor.conf.js
 ```
 
@@ -196,7 +196,7 @@ relative performance of our operators versus prior versions. All operators shoul
 Micro performance test can be run with:
 
 ```sh
-npm run build_all
+yarn build_all
 node perf/micro
 ```
 
@@ -210,7 +210,7 @@ node perf/micro zip
 
 We have very precise rules over how our git commit messages can be formatted. This leads to **more
 readable messages** that are easy to follow when looking through the **project history**. But also,
-we use the git commit messages to **generate the RxJS change log**. Helper script `npm run commit`
+we use the git commit messages to **generate the RxJS change log**. Helper script `yarn commit`
 provides command line based wizard to format commit message easily.
 
 ### Commit Message Format
