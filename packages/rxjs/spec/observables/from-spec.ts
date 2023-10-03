@@ -1,8 +1,8 @@
 /** @prettier */
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { asyncScheduler, of, from, Observer, observable, Subject, noop, Subscription } from 'rxjs';
-import { first, concatMap, delay, take, tap } from 'rxjs/operators';
+import { asyncScheduler, of, from, Observer, observable, Subject, noop, Subscription, forkJoin } from 'rxjs';
+import { first, concatMap, delay, take, tap, single } from 'rxjs/operators';
 import { ReadableStream } from 'web-streams-polyfill';
 import { observableMatcher } from '../helpers/observableMatcher';
 
@@ -41,6 +41,62 @@ describe('from', () => {
     };
 
     expect(r).to.throw();
+  });
+
+  it('should create observable from async function', (done) => {
+    const returnValue = 'from async';
+    const fun = async () => {
+      return returnValue;
+    };
+
+    from(fun).pipe(single((_, index) => index === 0)).subscribe({
+      complete: () => done()
+    });
+  });
+
+  it('should create observable from sync function', (done) => {
+    const returnValue = 'from async';
+    const fun = () => {
+      return returnValue;
+    };
+
+    from(fun).pipe(single((_, index) => index === 0)).subscribe({
+      complete: () => done()
+    });
+  });
+
+  it('should call sync function on every subscription', (done) => {
+    let calledTimes = 0;
+    const fun = () => {
+      calledTimes++;
+    };
+
+    forkJoin([
+      from(fun),
+      from(fun)
+    ]).subscribe({
+      complete: () => {
+        expect(calledTimes).to.eq(2);
+        done();
+      }
+    });
+  });
+
+  it('should call async function on every subscription', (done) => {
+    let calledTimes = 0;
+    const fun = async () => {
+      calledTimes++;
+    };
+
+    forkJoin([
+      from(fun),
+      from(fun)
+    ]).subscribe({
+      complete: () => {
+        expect(calledTimes).to.eq(2);
+        done();
+      }
+    });
   });
 
   it('should finalize an AsyncGenerator', (done) => {

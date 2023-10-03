@@ -11,15 +11,18 @@ import { Subscriber } from '../Subscriber';
 import { isFunction } from '../util/isFunction';
 import { reportUnhandledError } from '../util/reportUnhandledError';
 import { observable as Symbol_observable } from '../symbol/observable';
+import { defer } from './defer';
 
 /**
- * Creates an Observable from an Array, an array-like object, a Promise, an iterable object, or an Observable-like object.
+ * Creates an Observable from an Array, an array-like object, a Function, an async-fuction,
+ * a Promise, an iterable object, or an Observable-like object.
  *
  * <span class="informal">Converts almost anything to an Observable.</span>
  *
  * ![](from.png)
  *
- * `from` converts various other objects and data types into Observables. It also converts a Promise, an array-like, or an
+ * `from` converts various other objects and data types into Observables. It also converts a Function, an async-function, 
+ * a Promise, an array-like, or an
  * <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable" target="_blank">iterable</a>
  * object into an Observable that emits the items in that promise, array, or iterable. A String, in this context, is treated
  * as an array of characters. Observable-like objects (contains a function named with the ES2015 Symbol for Observable) can also be
@@ -78,7 +81,7 @@ import { observable as Symbol_observable } from '../symbol/observable';
  * @see {@link fromEventPattern}
  * @see {@link scheduled}
  *
- * @param input A subscription object, a Promise, an Observable-like,
+ * @param input A subscription object, a Promise, a Function, an async-function, an Observable-like,
  * an Array, an iterable, async iterable, or an array-like object to be converted.
  */
 
@@ -93,6 +96,9 @@ export function from<T>(input: ObservableInput<T>): Observable<T> {
     }
     if (isArrayLike(input)) {
       return fromArrayLike(input);
+    }
+    if (isFunction(input)) {
+      return fromFunction(input);
     }
     if (isPromise(input)) {
       return fromPromise(input);
@@ -152,6 +158,13 @@ export function fromPromise<T>(promise: PromiseLike<T>) {
         (err: any) => subscriber.error(err)
       )
       .then(null, reportUnhandledError);
+  });
+}
+
+function fromFunction<T>(func: () => T) {
+  return defer(() => {
+    const value = func();
+    return fromPromise(Promise.resolve(value));
   });
 }
 

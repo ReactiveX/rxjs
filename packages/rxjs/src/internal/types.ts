@@ -98,6 +98,7 @@ export interface Subscribable<T> {
 export type ObservableInput<T> =
   | Observable<T>
   | InteropObservable<T>
+  | (() => unknown)
   | AsyncIterable<T>
   | PromiseLike<T>
   | ArrayLike<T>
