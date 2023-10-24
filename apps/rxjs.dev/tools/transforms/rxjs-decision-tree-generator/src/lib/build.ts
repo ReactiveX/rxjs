@@ -14,12 +14,12 @@ import { decisionTreeReducer } from './decisionTreeReducer';
  * @requires decisionTreeReducer
  * @returns {DecisionTree}
  */
-export function build(apiList: FlattenedApiList, tree: TreeNodeRaw[]): DecisionTree {
+export function build(apiList: FlattenedApiList, tree: TreeNodeRaw[], log: { warn: (message: string) => void }): DecisionTree {
   const nodesWithUniqueIds = addUniqueId(tree);
   const initialOption = extractInitialSequence(nodesWithUniqueIds);
 
   return {
-    ...decisionTreeReducer(nodesWithUniqueIds, apiList),
-    [initialOption.id]: { ...initialOption }
+    ...decisionTreeReducer(nodesWithUniqueIds, apiList, log),
+    [initialOption.id]: { ...initialOption },
   };
 }
