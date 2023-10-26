@@ -33,7 +33,6 @@ module.exports = new Package('angular-base', [
   .processor(require('./processors/fixInternalDocumentLinks'))
   .processor(require('./processors/copyContentAssets'))
   .processor(require('./processors/renderLinkInfo'))
-  .processor(require('./processors/checkOperator'))
 
   // overrides base packageInfo and returns the one for the 'angular/angular' repo.
   .factory('packageInfo', function () {

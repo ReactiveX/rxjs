@@ -68,7 +68,8 @@ describe('addImageDimensions post-processor', () => {
       docType: 'a',
       renderedContent: '<img src="missing">'
     }];
-    expect(() => processor.$process(docs)).toThrowError('Unable to load src in image tag `<img src="missing">` - doc (a) ');
+    processor.$process(docs);
+    expect(log.warn).toHaveBeenCalledWith('Unable to load src in image tag `<img src="missing">` - doc (a) ');
     expect(getImageDimensionsSpy).toHaveBeenCalledWith('base/path', 'missing');
   });
 

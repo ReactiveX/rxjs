@@ -29,14 +29,6 @@ function createPackage(changedFile) {
     console.log(`Building guide doc: ${guideName}.md`);
     return require('./guide-package').createPackage(guideName);
   }
-
-  const apiExamplesMatch = /^packages\/examples\/([^/]+)\//.exec(changedFile);
-  const apiMatch = /^packages\/([^/]+)\//.exec(changedFile);
-  if (apiExamplesMatch || apiMatch) {
-    const packageName = (apiExamplesMatch && apiExamplesMatch[1]) || apiMatch[1];
-    console.log('Building API docs for', packageName);
-    return require('./api-package').createPackage(packageName);
-  }
 }
 
 module.exports = {
