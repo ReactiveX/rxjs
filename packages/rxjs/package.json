@@ -78,7 +78,7 @@
     "lint": "npm-run-all --parallel lint_*",
     "dtslint": "tsc -b ./src/tsconfig.types.json && tslint -c spec-dtslint/tslint.json -p spec-dtslint/tsconfig.json \"spec-dtslint/**/*.ts\"",
     "prepublishOnly": "yarn build && yarn lint && yarn test && yarn test:circular && yarn dtslint && yarn copy_common_package_files",
-    "test": "cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js \"spec/**/*-spec.ts\"",
+    "test": "yarn build && cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js \"spec/**/*-spec.ts\"",
     "test:esm": "node spec/module-test-spec.mjs",
     "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm",
     "test:import": "ts-node ./integration/import/runner.ts",

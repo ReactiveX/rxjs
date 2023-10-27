@@ -7,8 +7,8 @@ import { observableToBeFn, subscriptionLogsToBeFn } from '../../src/internal/tes
 declare const global: any;
 
 export function hot(marbles: string, values?: void, error?: any): HotObservable<string>;
-export function hot<V>(marbles: string, values?: { [index: string]: V; }, error?: any): HotObservable<V>;
-export function hot<V>(marbles: string, values?: { [index: string]: V; } | void, error?: any): HotObservable<any> {
+export function hot<V>(marbles: string, values?: { [index: string]: V }, error?: any): HotObservable<V>;
+export function hot<V>(marbles: string, values?: { [index: string]: V } | void, error?: any): HotObservable<any> {
   if (!global.rxTestScheduler) {
     throw 'tried to use hot() in async test';
   }
@@ -16,7 +16,7 @@ export function hot<V>(marbles: string, values?: { [index: string]: V; } | void,
 }
 
 export function cold(marbles: string, values?: void, error?: any): ColdObservable<string>;
-export function cold<V>(marbles: string, values?: { [index: string]: V; }, error?: any): ColdObservable<V>;
+export function cold<V>(marbles: string, values?: { [index: string]: V }, error?: any): ColdObservable<V>;
 export function cold(marbles: string, values?: any, error?: any): ColdObservable<any> {
   if (!global.rxTestScheduler) {
     throw 'tried to use cold() in async test';
@@ -24,15 +24,14 @@ export function cold(marbles: string, values?: any, error?: any): ColdObservable
   return global.rxTestScheduler.createColdObservable.apply(global.rxTestScheduler, arguments);
 }
 
-export function expectObservable(observable: Observable<any>,
-                                 unsubscriptionMarbles: string | null = null): ({ toBe: observableToBeFn }) {
+export function expectObservable(observable: Observable<any>, unsubscriptionMarbles: string | null = null): { toBe: observableToBeFn } {
   if (!global.rxTestScheduler) {
     throw 'tried to use expectObservable() in async test';
   }
   return global.rxTestScheduler.expectObservable.apply(global.rxTestScheduler, arguments);
 }
 
-export function expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]): ({ toBe: subscriptionLogsToBeFn }) {
+export function expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]): { toBe: subscriptionLogsToBeFn } {
   if (!global.rxTestScheduler) {
     throw 'tried to use expectSubscriptions() in async test';
   }

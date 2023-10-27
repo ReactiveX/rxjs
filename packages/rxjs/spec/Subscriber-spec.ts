@@ -1,4 +1,4 @@
-import {  expect } from 'chai';
+import { expect } from 'chai';
 import { Subscriber, Observable, of, Observer, config, operate } from 'rxjs';
 import * as sinon from 'sinon';
 import { asInteropSubscriber } from './helpers/interop-helper';
@@ -10,7 +10,9 @@ describe('Subscriber', () => {
     let times = 0;
 
     const sub = new Subscriber<void>({
-      next() { times += 1; }
+      next() {
+        times += 1;
+      },
     });
 
     sub.next();
@@ -26,8 +28,12 @@ describe('Subscriber', () => {
     let errorCalled = false;
 
     const sub = new Subscriber<void>({
-      next() { times += 1; },
-      error() { errorCalled = true; }
+      next() {
+        times += 1;
+      },
+      error() {
+        errorCalled = true;
+      },
     });
 
     sub.next();
@@ -45,8 +51,12 @@ describe('Subscriber', () => {
     let completeCalled = false;
 
     const sub = new Subscriber<void>({
-      next() { times += 1; },
-      complete() { completeCalled = true; }
+      next() {
+        times += 1;
+      },
+      complete() {
+        completeCalled = true;
+      },
     });
 
     sub.next();
@@ -61,7 +71,9 @@ describe('Subscriber', () => {
 
   it('should not be closed when other subscriber with same observer instance completes', () => {
     const observer = {
-      next: function () { /*noop*/ }
+      next: function () {
+        /*noop*/
+      },
     };
 
     const sub1 = new Subscriber(observer);
@@ -79,7 +91,7 @@ describe('Subscriber', () => {
     const observer = {
       complete: (...args: Array<any>) => {
         argument = args;
-      }
+      },
     };
 
     const sub1 = new Subscriber(observer);
@@ -94,11 +106,11 @@ describe('Subscriber', () => {
     let subscriptionUnsubscribed = false;
 
     const subscriber = new Subscriber();
-    subscriber.add(() => subscriberUnsubscribed = true);
+    subscriber.add(() => (subscriberUnsubscribed = true));
 
-    const source = new Observable<void>(() => () => observableUnsubscribed = true);
+    const source = new Observable<void>(() => () => (observableUnsubscribed = true));
     const subscription = source.subscribe(asInteropSubscriber(subscriber));
-    subscription.add(() => subscriptionUnsubscribed = true);
+    subscription.add(() => (subscriptionUnsubscribed = true));
     subscriber.unsubscribe();
 
     expect(observableUnsubscribed).to.be.true;
@@ -122,7 +134,7 @@ describe('Subscriber', () => {
   it('should close, unsubscribe, and unregister all finalizers after complete', () => {
     let isUnsubscribed = false;
     const subscriber = new Subscriber();
-    subscriber.add(() => isUnsubscribed = true);
+    subscriber.add(() => (isUnsubscribed = true));
     subscriber.complete();
     expect(isUnsubscribed).to.be.true;
     expect(subscriber.closed).to.be.true;
@@ -136,9 +148,9 @@ describe('Subscriber', () => {
         // Mischief managed!
         // Adding this handler here to prevent the call to error from
         // throwing, since it will have an error handler now.
-      }
+      },
     });
-    subscriber.add(() => isTornDown = true);
+    subscriber.add(() => (isTornDown = true));
     subscriber.error(new Error('test'));
     expect(isTornDown).to.be.true;
     expect(subscriber.closed).to.be.true;
@@ -148,7 +160,9 @@ describe('Subscriber', () => {
   it('should finalize and unregister all finalizers after complete', () => {
     let isTornDown = false;
     const subscriber = new Subscriber();
-    subscriber.add(() => { isTornDown = true });
+    subscriber.add(() => {
+      isTornDown = true;
+    });
     subscriber.complete();
     expect(isTornDown).to.be.true;
     expect(getRegisteredFinalizers(subscriber).length).to.equal(0);
@@ -169,7 +183,7 @@ describe('Subscriber', () => {
           this.valuesProcessed.push(value);
         }
       }
-    };
+    }
 
     const consumer = new CustomConsumer();
 
@@ -181,61 +195,61 @@ describe('Subscriber', () => {
   describe('error reporting for destination observers', () => {
     afterEach(() => {
       config.onUnhandledError = null;
-    })
+    });
 
     it('should report errors thrown from next', (done) => {
       config.onUnhandledError = (err) => {
         expect(err).to.be.an.instanceOf(Error);
         expect(err.message).to.equal('test');
-        done()
+        done();
       };
 
       const subscriber = new Subscriber<void>({
         next() {
           throw new Error('test');
-        }
+        },
       });
 
-      subscriber.next()
+      subscriber.next();
     });
 
     it('should report errors thrown from complete', (done) => {
       config.onUnhandledError = (err) => {
         expect(err).to.be.an.instanceOf(Error);
         expect(err.message).to.equal('test');
-        done()
+        done();
       };
 
       const subscriber = new Subscriber<void>({
         complete() {
           throw new Error('test');
-        }
+        },
       });
 
-      subscriber.complete()
+      subscriber.complete();
     });
 
     it('should report errors thrown from error', (done) => {
       config.onUnhandledError = (err) => {
         expect(err).to.be.an.instanceOf(Error);
         expect(err.message).to.equal('test');
-        done()
+        done();
       };
 
       const subscriber = new Subscriber<void>({
         error() {
           throw new Error('test');
-        }
+        },
       });
 
-      subscriber.error()
+      subscriber.error();
     });
 
     it('should report errors thrown from a full observer', (done) => {
       config.onUnhandledError = (err) => {
         expect(err).to.be.an.instanceOf(Error);
         expect(err.message).to.equal('thrown from next');
-        done()
+        done();
       };
 
       const subscriber = new Subscriber<void>({
@@ -247,17 +261,17 @@ describe('Subscriber', () => {
         },
         complete() {
           throw new Error('thrown from complete');
-        }
+        },
       });
 
-      subscriber.next()
+      subscriber.next();
     });
 
     it('should report errors thrown from a full observer even if it is also shaped like a subscription', (done) => {
       config.onUnhandledError = (err) => {
         expect(err).to.be.an.instanceOf(Error);
         expect(err.message).to.equal('thrown from next');
-        done()
+        done();
       };
 
       const subscriber = new Subscriber<void>({
@@ -282,18 +296,23 @@ describe('Subscriber', () => {
         closed: false,
       });
 
-      subscriber.next()
+      subscriber.next();
     });
-  })
+  });
 
   const FinalizationRegistry = (global as any).FinalizationRegistry;
   if (FinalizationRegistry && global.gc) {
-
     it('should not leak the destination', (done) => {
       let observer: Observer<number> | undefined = {
-        next() { /* noop */ },
-        error() { /* noop */ },
-        complete() { /* noop */ }
+        next() {
+          /* noop */
+        },
+        error() {
+          /* noop */
+        },
+        complete() {
+          /* noop */
+        },
       };
 
       const registry = new FinalizationRegistry((value: any) => {
@@ -307,7 +326,6 @@ describe('Subscriber', () => {
       observer = undefined;
       global.gc?.();
     });
-
   } else {
     console.warn(`No support for FinalizationRegistry in Node ${process.version}`);
   }
@@ -322,7 +340,7 @@ describe('operate', () => {
 
     const subscriber = operate({
       destination,
-    })
+    });
 
     subscriber.next('foo');
     expect(next).to.have.been.calledOnceWithExactly('foo');
@@ -337,9 +355,9 @@ describe('operate', () => {
     const subscriber = operate({
       destination,
       next() {
-        throw 'boop!'
+        throw 'boop!';
       },
-    })
+    });
 
     subscriber.next('foo');
     expect(error).to.have.been.calledOnceWithExactly('boop!');
@@ -356,7 +374,7 @@ describe('operate', () => {
 
     const subscriber = operate({
       destination,
-    })
+    });
 
     subscriber.error('boop!');
     expect(error).to.have.been.calledOnceWithExactly('boop!');
@@ -375,8 +393,8 @@ describe('operate', () => {
     const subscriber = operate({
       destination,
       error() {
-        throw 'boop!'
-      }
+        throw 'boop!';
+      },
     });
 
     subscriber.error('no boop for you');
@@ -416,8 +434,8 @@ describe('operate', () => {
     const subscriber = operate({
       destination,
       complete() {
-        throw 'boop!'
-      }
+        throw 'boop!';
+      },
     });
 
     subscriber.complete();

@@ -43,8 +43,12 @@ describe('scheduled', () => {
     const results: any[] = [];
     const input = Promise.resolve('x'); // strings are iterables
     scheduled(input, testScheduler).subscribe({
-      next(value) { results.push(value); },
-      complete() { results.push('done'); },
+      next(value) {
+        results.push(value);
+      },
+      complete() {
+        results.push('done');
+      },
     });
 
     expect(results).to.deep.equal([]);

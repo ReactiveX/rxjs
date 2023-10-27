@@ -1,5 +1,5 @@
 /** @prettier */
-import * as index from '../src/index';
+import * as index from 'rxjs';
 import { expect } from 'chai';
 
 describe('index', () => {
