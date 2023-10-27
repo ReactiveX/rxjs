@@ -4,7 +4,6 @@ import { Subscription } from './Subscription';
 import { config } from './config';
 import { reportUnhandledError } from './util/reportUnhandledError';
 import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories';
-import { timeoutProvider } from './scheduler/timeoutProvider';
 
 export interface SubscriberOverrides<T> {
   /**
@@ -267,7 +266,7 @@ function createSafeObserver<T>(observerOrNext?: Partial<Observer<T>> | ((value: 
  */
 function handleStoppedNotification(notification: ObservableNotification<any>, subscriber: Subscriber<any>) {
   const { onStoppedNotification } = config;
-  onStoppedNotification && timeoutProvider.setTimeout(() => onStoppedNotification(notification, subscriber));
+  onStoppedNotification && setTimeout(() => onStoppedNotification(notification, subscriber));
 }
 
 function hasAddAndUnsubscribe(value: any): value is Subscription {
