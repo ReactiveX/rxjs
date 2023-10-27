@@ -4,7 +4,7 @@ import { AnimationFrameAction } from 'rxjs/internal/scheduler/AnimationFrameActi
 import { AnimationFrameScheduler } from 'rxjs/internal/scheduler/AnimationFrameScheduler';
 import { debounceTime, mergeMap, startWith } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { VirtualTimeScheduler } from '../../src/internal/scheduler/VirtualTimeScheduler';
+import { VirtualTimeScheduler } from 'rxjs/internal/scheduler/VirtualTimeScheduler';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {debounceTime} */

@@ -1,5 +1,5 @@
 module.exports = {
-  require: ['ts-node/register', 'spec/support/mocha-path-mappings.js', 'spec/helpers/setup.ts'],
+  require: ['ts-node/register', 'spec/helpers/setup.ts'],
   reporter: 'dot',
   extensions: ['ts', 'js'],
   timeout: 5000,
