@@ -1,13 +1,11 @@
-const assert = require('assert').strict;
-
-const rx = require('rxjs');
-const operators = require('rxjs/operators');
-const ajax = require('rxjs/ajax');
-const webSocket = require('rxjs/webSocket');
-const rxFetch = require('rxjs/fetch');
-const testing = require('rxjs/testing');
-
-const coldObservable = require('rxjs/internal/testing/ColdObservable');
+import { strict as assert } from 'assert';
+import * as rx from 'rxjs';
+import * as operators from 'rxjs/operators';
+import * as ajax from 'rxjs/ajax';
+import * as webSocket from 'rxjs/webSocket';
+import * as rxFetch from 'rxjs/fetch';
+import * as testing from 'rxjs/testing';
+import * as coldObservable from 'rxjs/internal/testing/ColdObservable';
 
 assert.ok(rx, 'main export should exists');
 assert.ok(operators, 'operator export should exists');
