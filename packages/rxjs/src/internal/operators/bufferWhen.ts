@@ -1,8 +1,8 @@
-import { Subscriber, operate } from '../Subscriber';
-import { ObservableInput, OperatorFunction } from '../types';
-import { Observable } from '../Observable';
-import { noop } from '../util/noop';
-import { from } from '../observable/from';
+import { Subscriber, operate } from '../Subscriber.js';
+import { ObservableInput, OperatorFunction } from '../types.js';
+import { Observable } from '../Observable.js';
+import { noop } from '../util/noop.js';
+import { from } from '../observable/from.js';
 
 /**
  * Buffers the source Observable values, using a factory function of closing

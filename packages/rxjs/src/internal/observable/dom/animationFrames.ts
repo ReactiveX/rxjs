@@ -1,7 +1,7 @@
-import { Observable } from '../../Observable';
-import { TimestampProvider } from '../../types';
-import { performanceTimestampProvider } from '../../scheduler/performanceTimestampProvider';
-import { animationFrameProvider } from '../../scheduler/animationFrameProvider';
+import { Observable } from '../../Observable.js';
+import { TimestampProvider } from '../../types.js';
+import { performanceTimestampProvider } from '../../scheduler/performanceTimestampProvider.js';
+import { animationFrameProvider } from '../../scheduler/animationFrameProvider.js';
 
 /**
  * An observable of animation frames

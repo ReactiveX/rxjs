@@ -1,6 +1,6 @@
-import { ObservableInputTuple, OperatorFunction } from '../types';
-import { argsOrArgArray } from '../util/argsOrArgArray';
-import { onErrorResumeNext as oERNCreate } from '../observable/onErrorResumeNext';
+import { ObservableInputTuple, OperatorFunction } from '../types.js';
+import { argsOrArgArray } from '../util/argsOrArgArray.js';
+import { onErrorResumeNext as oERNCreate } from '../observable/onErrorResumeNext.js';
 
 export function onErrorResumeNextWith<T, A extends readonly unknown[]>(
   sources: [...ObservableInputTuple<A>]

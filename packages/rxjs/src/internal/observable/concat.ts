@@ -1,9 +1,9 @@
-import { Observable } from '../Observable';
-import { ObservableInputTuple, SchedulerLike } from '../types';
-import { concatAll } from '../operators/concatAll';
-import { popScheduler } from '../util/args';
-import { scheduled } from '../scheduled/scheduled';
-import { from } from './from';
+import { Observable } from '../Observable.js';
+import { ObservableInputTuple, SchedulerLike } from '../types.js';
+import { concatAll } from '../operators/concatAll.js';
+import { popScheduler } from '../util/args.js';
+import { scheduled } from '../scheduled/scheduled.js';
+import { from } from './from.js';
 
 export function concat<T extends readonly unknown[]>(...inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
 export function concat<T extends readonly unknown[]>(

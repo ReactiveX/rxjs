@@ -1,8 +1,8 @@
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
-import { isArrayLike } from '../util/isArrayLike';
-import { isFunction } from '../util/isFunction';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
+import { Observable } from '../Observable.js';
+import { Subscriber } from '../Subscriber.js';
+import { isArrayLike } from '../util/isArrayLike.js';
+import { isFunction } from '../util/isFunction.js';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
 
 // These constants are used to create handler registry functions using array mapping below.
 const nodeEventEmitterMethods = ['addListener', 'removeListener'] as const;

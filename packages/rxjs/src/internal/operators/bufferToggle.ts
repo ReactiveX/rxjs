@@ -1,10 +1,10 @@
-import { Subscription } from '../Subscription';
-import { OperatorFunction, ObservableInput } from '../types';
-import { Observable } from '../Observable';
-import { from } from '../observable/from';
-import { operate } from '../Subscriber';
-import { noop } from '../util/noop';
-import { arrRemove } from '../util/arrRemove';
+import { Subscription } from '../Subscription.js';
+import { OperatorFunction, ObservableInput } from '../types.js';
+import { Observable } from '../Observable.js';
+import { from } from '../observable/from.js';
+import { operate } from '../Subscriber.js';
+import { noop } from '../util/noop.js';
+import { arrRemove } from '../util/arrRemove.js';
 
 /**
  * Buffers the source Observable values starting from an emission from

@@ -1,8 +1,8 @@
-import { AsyncAction } from './AsyncAction';
-import { Subscription } from '../Subscription';
-import { QueueScheduler } from './QueueScheduler';
-import { SchedulerAction } from '../types';
-import { TimerHandle } from './timerHandle';
+import { AsyncAction } from './AsyncAction.js';
+import { Subscription } from '../Subscription.js';
+import { QueueScheduler } from './QueueScheduler.js';
+import { SchedulerAction } from '../types.js';
+import { TimerHandle } from './timerHandle.js';
 
 export class QueueAction<T> extends AsyncAction<T> {
   constructor(protected scheduler: QueueScheduler, protected work: (this: SchedulerAction<T>, state?: T) => void) {

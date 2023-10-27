@@ -1,10 +1,10 @@
-import { Observable } from '../Observable';
-import { from } from '../observable/from';
-import { Subject } from '../Subject';
-import { Subscription } from '../Subscription';
+import { Observable } from '../Observable.js';
+import { from } from '../observable/from.js';
+import { Subject } from '../Subject.js';
+import { Subscription } from '../Subscription.js';
 
-import { MonoTypeOperatorFunction, ObservableInput } from '../types';
-import { operate } from '../Subscriber';
+import { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
+import { operate } from '../Subscriber.js';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable

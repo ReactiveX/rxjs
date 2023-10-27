@@ -1,6 +1,6 @@
-import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
-import { exhaustMap } from './exhaustMap';
-import { identity } from '../util/identity';
+import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types.js';
+import { exhaustMap } from './exhaustMap.js';
+import { identity } from '../util/identity.js';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping

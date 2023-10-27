@@ -1,7 +1,7 @@
-import { MonoTypeOperatorFunction } from '../types';
-import { EMPTY } from '../observable/empty';
-import { Observable } from '../Observable';
-import { operate } from '../Subscriber';
+import { MonoTypeOperatorFunction } from '../types.js';
+import { EMPTY } from '../observable/empty.js';
+import { Observable } from '../Observable.js';
+import { operate } from '../Subscriber.js';
 
 /**
  * Emits only the first `count` values emitted by the source Observable.

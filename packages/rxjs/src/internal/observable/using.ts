@@ -1,7 +1,7 @@
-import { Observable } from '../Observable';
-import { Unsubscribable, ObservableInput, ObservedValueOf } from '../types';
-import { from } from './from';
-import { EMPTY } from './empty';
+import { Observable } from '../Observable.js';
+import { Unsubscribable, ObservableInput, ObservedValueOf } from '../types.js';
+import { from } from './from.js';
+import { EMPTY } from './empty.js';
 
 /**
  * Creates an Observable that uses a resource which will be disposed at the same time as the Observable.

@@ -1,5 +1,5 @@
 import { ErrorHandler, ReflectiveInjector } from '@angular/core';
-import { Logger } from './logger.service';
+import { Logger } from './logger.service.js';
 
 describe('logger service', () => {
   let logSpy: jasmine.Spy;
@@ -10,10 +10,7 @@ describe('logger service', () => {
   beforeEach(() => {
     logSpy = spyOn(console, 'log');
     warnSpy = spyOn(console, 'warn');
-    const injector = ReflectiveInjector.resolveAndCreate([
-      Logger,
-      { provide: ErrorHandler, useClass: MockErrorHandler }
-    ]);
+    const injector = ReflectiveInjector.resolveAndCreate([Logger, { provide: ErrorHandler, useClass: MockErrorHandler }]);
     logger = injector.get(Logger);
     errorHandler = injector.get(ErrorHandler);
   });
@@ -40,7 +37,6 @@ describe('logger service', () => {
     });
   });
 });
-
 
 class MockErrorHandler implements ErrorHandler {
   handleError = jasmine.createSpy('handleError');

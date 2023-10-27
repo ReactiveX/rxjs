@@ -1,5 +1,5 @@
-import { Observable } from '../Observable';
-import { Subscriber, operate } from '../Subscriber';
+import { Observable } from '../Observable.js';
+import { Subscriber, operate } from '../Subscriber.js';
 
 /**
  * A basic scan operation. This is used for `scan` and `reduce`.

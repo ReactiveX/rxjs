@@ -1,4 +1,3 @@
-import { AsyncScheduler } from './AsyncScheduler';
+import { AsyncScheduler } from './AsyncScheduler.js';
 
-export class QueueScheduler extends AsyncScheduler {
-}
+export class QueueScheduler extends AsyncScheduler {}

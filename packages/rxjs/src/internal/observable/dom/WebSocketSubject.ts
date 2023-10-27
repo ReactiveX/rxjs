@@ -1,9 +1,9 @@
-import { Subject, AnonymousSubject } from '../../Subject';
-import { Subscriber } from '../../Subscriber';
-import { Observable } from '../../Observable';
-import { Subscription } from '../../Subscription';
-import { ReplaySubject } from '../../ReplaySubject';
-import { Observer, NextObserver } from '../../types';
+import { Subject, AnonymousSubject } from '../../Subject.js';
+import { Subscriber } from '../../Subscriber.js';
+import { Observable } from '../../Observable.js';
+import { Subscription } from '../../Subscription.js';
+import { ReplaySubject } from '../../ReplaySubject.js';
+import { Observer, NextObserver } from '../../types.js';
 
 /**
  * WebSocketSubjectConfig is a plain Object that allows us to make our

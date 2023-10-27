@@ -1,8 +1,8 @@
-import { OperatorFunction, ObservableInput, ObservedValueOf, SubjectLike } from '../types';
-import { Observable } from '../Observable';
-import { Subject } from '../Subject';
-import { from } from '../observable/from';
-import { fromSubscribable } from '../observable/fromSubscribable';
+import { OperatorFunction, ObservableInput, ObservedValueOf, SubjectLike } from '../types.js';
+import { Observable } from '../Observable.js';
+import { Subject } from '../Subject.js';
+import { from } from '../observable/from.js';
+import { fromSubscribable } from '../observable/fromSubscribable.js';
 
 /**
  * An object used to configure {@link connect} operator.

@@ -1,8 +1,8 @@
 // https://github.com/microsoft/TypeScript/issues/40462#issuecomment-689879308
 /// <reference lib="esnext.asynciterable" />
 
-import { Observable } from './Observable';
-import { Subscription } from './Subscription';
+import { Observable } from './Observable.js';
+import { Subscription } from './Subscription.js';
 
 /**
  * Note: This will add Symbol.observable globally for all TypeScript users,

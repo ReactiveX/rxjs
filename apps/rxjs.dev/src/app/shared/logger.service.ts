@@ -1,10 +1,8 @@
 import { ErrorHandler, Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
-
+import { environment } from '../../environments/environment.js';
 
 @Injectable()
 export class Logger {
-
   constructor(private errorHandler: ErrorHandler) {}
 
   log(value: any, ...rest: any[]) {

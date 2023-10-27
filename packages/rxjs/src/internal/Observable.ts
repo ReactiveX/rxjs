@@ -1,8 +1,8 @@
-import { Subscriber } from './Subscriber';
-import { Subscription } from './Subscription';
-import { TeardownLogic, UnaryFunction, Subscribable, Observer, OperatorFunction } from './types';
-import { observable as Symbol_observable } from './symbol/observable';
-import { pipeFromArray } from './util/pipe';
+import { Subscriber } from './Subscriber.js';
+import { Subscription } from './Subscription.js';
+import { TeardownLogic, UnaryFunction, Subscribable, Observer, OperatorFunction } from './types.js';
+import { observable as Symbol_observable } from './symbol/observable.js';
+import { pipeFromArray } from './util/pipe.js';
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
  * of RxJS.

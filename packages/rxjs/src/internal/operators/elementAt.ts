@@ -1,10 +1,10 @@
-import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
-import { Observable } from '../Observable';
-import { OperatorFunction } from '../types';
-import { filter } from './filter';
-import { throwIfEmpty } from './throwIfEmpty';
-import { defaultIfEmpty } from './defaultIfEmpty';
-import { take } from './take';
+import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError.js';
+import { Observable } from '../Observable.js';
+import { OperatorFunction } from '../types.js';
+import { filter } from './filter.js';
+import { throwIfEmpty } from './throwIfEmpty.js';
+import { defaultIfEmpty } from './defaultIfEmpty.js';
+import { take } from './take.js';
 
 /**
  * Emits the single value at the specified `index` in a sequence of emissions

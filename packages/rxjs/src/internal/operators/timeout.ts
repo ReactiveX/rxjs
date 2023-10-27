@@ -1,11 +1,11 @@
-import { asyncScheduler } from '../scheduler/async';
-import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
-import { isValidDate } from '../util/isDate';
-import { Subscription } from '../Subscription';
-import { Observable } from '../Observable';
-import { from } from '../observable/from';
-import { operate } from '../Subscriber';
-import { executeSchedule } from '../util/executeSchedule';
+import { asyncScheduler } from '../scheduler/async.js';
+import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ObservableInput, ObservedValueOf } from '../types.js';
+import { isValidDate } from '../util/isDate.js';
+import { Subscription } from '../Subscription.js';
+import { Observable } from '../Observable.js';
+import { from } from '../observable/from.js';
+import { operate } from '../Subscriber.js';
+import { executeSchedule } from '../util/executeSchedule.js';
 
 export interface TimeoutConfig<T, O extends ObservableInput<unknown> = ObservableInput<T>, M = unknown> {
   /**

@@ -1,4 +1,4 @@
-import { AjaxRequest } from './types';
+import { AjaxRequest } from './types.js';
 
 /**
  * Thrown when an error occurs during an AJAX request.

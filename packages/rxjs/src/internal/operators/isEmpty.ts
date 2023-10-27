@@ -1,6 +1,6 @@
-import { OperatorFunction } from '../types';
-import { Observable } from '../Observable';
-import { operate } from '../Subscriber';
+import { OperatorFunction } from '../types.js';
+import { Observable } from '../Observable.js';
+import { operate } from '../Subscriber.js';
 
 /**
  * Emits `false` if the input Observable emits any values, or emits `true` if the

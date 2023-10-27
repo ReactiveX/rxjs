@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { Component, DebugElement } from '@angular/core';
 import { Location } from '@angular/common';
 
-import { LiveExampleComponent, EmbeddedStackblitzComponent } from './live-example.component';
+import { LiveExampleComponent, EmbeddedStackblitzComponent } from './live-example.component.js';
 
 const defaultTestPath = '/test';
 
@@ -17,22 +17,26 @@ describe('LiveExampleComponent', () => {
 
   @Component({
     selector: 'aio-host-comp',
-    template: `<live-example></live-example>`
+    template: `<live-example></live-example>`,
   })
-  class HostComponent { }
+  class HostComponent {}
 
   class TestLocation {
-    path() { return testPath; }
+    path() {
+      return testPath;
+    }
   }
 
   function getAnchors() {
-    return liveExampleDe.queryAll(By.css('a')).map(de => de.nativeElement as HTMLAnchorElement);
+    return liveExampleDe.queryAll(By.css('a')).map((de) => de.nativeElement as HTMLAnchorElement);
   }
 
-  function getHrefs() { return getAnchors().map(a => a.href); }
+  function getHrefs() {
+    return getAnchors().map((a) => a.href);
+  }
 
   function setHostTemplate(template: string) {
-    TestBed.overrideComponent(HostComponent, {set: {template}});
+    TestBed.overrideComponent(HostComponent, { set: { template } });
   }
 
   function testComponent(testFn: () => void) {
@@ -49,19 +53,19 @@ describe('LiveExampleComponent', () => {
   //////// tests ////////
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ HostComponent, LiveExampleComponent, EmbeddedStackblitzComponent ],
-      providers: [
-        { provide: Location, useClass: TestLocation }
-      ]
+      declarations: [HostComponent, LiveExampleComponent, EmbeddedStackblitzComponent],
+      providers: [{ provide: Location, useClass: TestLocation }],
     })
-    // Disable the <iframe> within the EmbeddedStackblitzComponent
-    .overrideComponent(EmbeddedStackblitzComponent, {set: {template: 'NO IFRAME'}});
+      // Disable the <iframe> within the EmbeddedStackblitzComponent
+      .overrideComponent(EmbeddedStackblitzComponent, { set: { template: 'NO IFRAME' } });
 
     testPath = defaultTestPath;
   });
 
   describe('when not embedded', () => {
-    function getLiveExampleAnchor() { return getAnchors()[0]; }
+    function getLiveExampleAnchor() {
+      return getAnchors()[0];
+    }
 
     it('should create LiveExampleComponent', () => {
       testComponent(() => {
@@ -148,7 +152,8 @@ describe('LiveExampleComponent', () => {
       testComponent(() => {
         const hrefs = getHrefs();
         expect(hrefs.length).toBe(1, 'only the zip anchor');
-        expect(hrefs[0]).toContain('.zip');      });
+        expect(hrefs[0]).toContain('.zip');
+      });
     });
 
     it('should have default title when no title attribute or content', () => {
@@ -192,15 +197,14 @@ describe('LiveExampleComponent', () => {
   });
 
   describe('when embedded', () => {
-
     function getDownloadAnchor() {
       const anchor = liveExampleDe.query(By.css('p > a'));
-      return anchor && anchor.nativeElement as HTMLAnchorElement;
+      return anchor && (anchor.nativeElement as HTMLAnchorElement);
     }
 
     function getEmbeddedStackblitzComponent() {
       const compDe = liveExampleDe.query(By.directive(EmbeddedStackblitzComponent));
-      return compDe && compDe.componentInstance as EmbeddedStackblitzComponent;
+      return compDe && (compDe.componentInstance as EmbeddedStackblitzComponent);
     }
 
     it('should have hidden, embedded stackblitz', () => {

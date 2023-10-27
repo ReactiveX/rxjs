@@ -1,5 +1,5 @@
-import { AnimationFrameAction } from './AnimationFrameAction';
-import { AnimationFrameScheduler } from './AnimationFrameScheduler';
+import { AnimationFrameAction } from './AnimationFrameAction.js';
+import { AnimationFrameScheduler } from './AnimationFrameScheduler.js';
 
 /**
  *

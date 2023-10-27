@@ -1,6 +1,6 @@
-import { OperatorFunction, ObservableInput, ObservedValueOf, SchedulerLike } from '../types';
-import { Observable } from '../Observable';
-import { mergeInternals } from './mergeInternals';
+import { OperatorFunction, ObservableInput, ObservedValueOf, SchedulerLike } from '../types.js';
+import { Observable } from '../Observable.js';
+import { mergeInternals } from './mergeInternals.js';
 
 /* tslint:disable:max-line-length */
 export function expand<T, O extends ObservableInput<unknown>>(

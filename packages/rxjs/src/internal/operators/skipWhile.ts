@@ -1,6 +1,6 @@
-import { Falsy, MonoTypeOperatorFunction, OperatorFunction } from '../types';
-import { Observable } from '../Observable';
-import { operate } from '../Subscriber';
+import { Falsy, MonoTypeOperatorFunction, OperatorFunction } from '../types.js';
+import { Observable } from '../Observable.js';
+import { operate } from '../Subscriber.js';
 
 export function skipWhile<T>(predicate: BooleanConstructor): OperatorFunction<T, Extract<T, Falsy> extends never ? never : T>;
 export function skipWhile<T>(predicate: (value: T, index: number) => true): OperatorFunction<T, never>;

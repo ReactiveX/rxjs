@@ -1,6 +1,6 @@
-import { SchedulerLike } from '../types';
-import { isFunction } from './isFunction';
-import { isScheduler } from './isScheduler';
+import { SchedulerLike } from '../types.js';
+import { isFunction } from './isFunction.js';
+import { isScheduler } from './isScheduler.js';
 
 function last<T>(arr: T[]): T | undefined {
   return arr[arr.length - 1];

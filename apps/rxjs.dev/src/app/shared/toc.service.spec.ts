@@ -4,7 +4,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 
 import { ScrollItem, ScrollSpyInfo, ScrollSpyService } from 'app/shared/scroll-spy.service';
-import { TocItem, TocService } from './toc.service';
+import { TocItem, TocService } from './toc.service.js';
 
 describe('TocService', () => {
   let injector: ReflectiveInjector;
@@ -29,22 +29,22 @@ describe('TocService', () => {
     ]);
     scrollSpyService = injector.get(ScrollSpyService);
     tocService = injector.get(TocService);
-    tocService.tocList.subscribe(tocList => lastTocList = tocList);
+    tocService.tocList.subscribe((tocList) => (lastTocList = tocList));
   });
 
   describe('tocList', () => {
     it('should emit the latest value to new subscribers', () => {
       const expectedValue1 = createTocItem('Heading A');
       const expectedValue2 = createTocItem('Heading B');
-      let value1: TocItem[]|undefined;
-      let value2: TocItem[]|undefined;
+      let value1: TocItem[] | undefined;
+      let value2: TocItem[] | undefined;
 
       tocService.tocList.next([]);
-      tocService.tocList.subscribe(v => value1 = v);
+      tocService.tocList.subscribe((v) => (value1 = v));
       expect(value1).toEqual([]);
 
       tocService.tocList.next([expectedValue1, expectedValue2]);
-      tocService.tocList.subscribe(v => value2 = v);
+      tocService.tocList.subscribe((v) => (value2 = v));
       expect(value2).toEqual([expectedValue1, expectedValue2]);
     });
 
@@ -53,13 +53,13 @@ describe('TocService', () => {
       const expectedValue2 = createTocItem('Heading B');
       const emittedValues: TocItem[][] = [];
 
-      tocService.tocList.subscribe(v => emittedValues.push(v));
-      tocService.tocList.subscribe(v => emittedValues.push(v));
+      tocService.tocList.subscribe((v) => emittedValues.push(v));
+      tocService.tocList.subscribe((v) => emittedValues.push(v));
       tocService.tocList.next([expectedValue1, expectedValue2]);
 
       expect(emittedValues).toEqual([
         [expectedValue1, expectedValue2],
-        [expectedValue1, expectedValue2]
+        [expectedValue1, expectedValue2],
       ]);
     });
   });
@@ -68,13 +68,13 @@ describe('TocService', () => {
     it('should emit the active heading index (or null)', () => {
       const indices: (number | null)[] = [];
 
-      tocService.activeItemIndex.subscribe(i => indices.push(i));
+      tocService.activeItemIndex.subscribe((i) => indices.push(i));
       callGenToc();
 
-      scrollSpyService.$lastInfo.active.next({index: 42} as ScrollItem);
-      scrollSpyService.$lastInfo.active.next({index: 0} as ScrollItem);
+      scrollSpyService.$lastInfo.active.next({ index: 42 } as ScrollItem);
+      scrollSpyService.$lastInfo.active.next({ index: 0 } as ScrollItem);
       scrollSpyService.$lastInfo.active.next(null);
-      scrollSpyService.$lastInfo.active.next({index: 7} as ScrollItem);
+      scrollSpyService.$lastInfo.active.next({ index: 7 } as ScrollItem);
 
       expect(indices).toEqual([null, 42, 0, null, 7]);
     });
@@ -82,11 +82,11 @@ describe('TocService', () => {
     it('should reset the active index (and unspy) when calling `reset()`', () => {
       const indices: (number | null)[] = [];
 
-      tocService.activeItemIndex.subscribe(i => indices.push(i));
+      tocService.activeItemIndex.subscribe((i) => indices.push(i));
 
       callGenToc();
       const unspy = scrollSpyService.$lastInfo.unspy;
-      scrollSpyService.$lastInfo.active.next({index: 42} as ScrollItem);
+      scrollSpyService.$lastInfo.active.next({ index: 42 } as ScrollItem);
 
       expect(unspy).not.toHaveBeenCalled();
       expect(indices).toEqual([null, 42]);
@@ -100,11 +100,11 @@ describe('TocService', () => {
     it('should reset the active index (and unspy) when a new `tocList` is requested', () => {
       const indices: (number | null)[] = [];
 
-      tocService.activeItemIndex.subscribe(i => indices.push(i));
+      tocService.activeItemIndex.subscribe((i) => indices.push(i));
 
       callGenToc();
       const unspy1 = scrollSpyService.$lastInfo.unspy;
-      scrollSpyService.$lastInfo.active.next({index: 1} as ScrollItem);
+      scrollSpyService.$lastInfo.active.next({ index: 1 } as ScrollItem);
 
       expect(unspy1).not.toHaveBeenCalled();
       expect(indices).toEqual([null, 1]);
@@ -116,13 +116,13 @@ describe('TocService', () => {
 
       callGenToc();
       const unspy2 = scrollSpyService.$lastInfo.unspy;
-      scrollSpyService.$lastInfo.active.next({index: 3} as ScrollItem);
+      scrollSpyService.$lastInfo.active.next({ index: 3 } as ScrollItem);
 
       expect(unspy2).not.toHaveBeenCalled();
       expect(indices).toEqual([null, 1, null, null, 3]);
 
       callGenToc();
-      scrollSpyService.$lastInfo.active.next({index: 4} as ScrollItem);
+      scrollSpyService.$lastInfo.active.next({ index: 4 } as ScrollItem);
 
       expect(unspy2).toHaveBeenCalled();
       expect(indices).toEqual([null, 1, null, null, 3, null, 4]);
@@ -131,17 +131,17 @@ describe('TocService', () => {
     it('should emit the active index for the latest `tocList`', () => {
       const indices: (number | null)[] = [];
 
-      tocService.activeItemIndex.subscribe(i => indices.push(i));
+      tocService.activeItemIndex.subscribe((i) => indices.push(i));
 
       callGenToc();
       const activeSubject1 = scrollSpyService.$lastInfo.active;
-      activeSubject1.next({index: 1} as ScrollItem);
-      activeSubject1.next({index: 2} as ScrollItem);
+      activeSubject1.next({ index: 1 } as ScrollItem);
+      activeSubject1.next({ index: 2 } as ScrollItem);
 
       callGenToc();
       const activeSubject2 = scrollSpyService.$lastInfo.active;
-      activeSubject2.next({index: 3} as ScrollItem);
-      activeSubject2.next({index: 4} as ScrollItem);
+      activeSubject2.next({ index: 3 } as ScrollItem);
+      activeSubject2.next({ index: 4 } as ScrollItem);
 
       expect(indices).toEqual([null, 1, 2, null, 3, 4]);
     });
@@ -196,7 +196,8 @@ describe('TocService', () => {
     beforeEach(() => {
       docId = 'fizz/buzz';
 
-      docEl = callGenToc(`
+      docEl = callGenToc(
+        `
         <h1>Fun with TOC</h1>
 
         <h2 id="heading-one-special-id">Heading one</h2>
@@ -225,7 +226,9 @@ describe('TocService', () => {
         <h2 id="h2-6">H2 6</h2>
           <p>h2 toc 7</p>
           <h3 id="h3-6a">H3 6a</h3> <p>h3 toc 8</p>
-      `, docId);
+      `,
+        docId
+      );
 
       headings = docEl.querySelectorAll('h1,h2,h3,h4') as NodeListOf<HTMLHeadingElement>;
     });
@@ -235,27 +238,27 @@ describe('TocService', () => {
       expect(lastTocList.length).toEqual(headings.length - 2);
     });
 
-    it('should have href with docId and heading\'s id', () => {
-      const tocItem = lastTocList.find(item => item.title === 'Heading one')!;
+    it("should have href with docId and heading's id", () => {
+      const tocItem = lastTocList.find((item) => item.title === 'Heading one')!;
       expect(tocItem.href).toEqual(`${docId}#heading-one-special-id`);
     });
 
     it('should have level "h1" for an <h1>', () => {
-      const tocItem = lastTocList.find(item => item.title === 'Fun with TOC')!;
+      const tocItem = lastTocList.find((item) => item.title === 'Fun with TOC')!;
       expect(tocItem.level).toEqual('h1');
     });
 
     it('should have level "h2" for an <h2>', () => {
-      const tocItem = lastTocList.find(item => item.title === 'Heading one')!;
+      const tocItem = lastTocList.find((item) => item.title === 'Heading one')!;
       expect(tocItem.level).toEqual('h2');
     });
 
     it('should have level "h3" for an <h3>', () => {
-      const tocItem = lastTocList.find(item => item.title === 'H3 3a')!;
+      const tocItem = lastTocList.find((item) => item.title === 'H3 3a')!;
       expect(tocItem.level).toEqual('h3');
     });
 
-    it('should have title which is heading\'s textContent ', () => {
+    it("should have title which is heading's textContent ", () => {
       const heading = headings[3];
       const tocItem = lastTocList[3];
       expect(heading.textContent).toEqual(tocItem.title);
@@ -264,8 +267,7 @@ describe('TocService', () => {
     it('should have "SafeHtml" content which is heading\'s innerHTML ', () => {
       const heading = headings[3];
       const content = lastTocList[3].content;
-      expect((<TestSafeHtml>content).changingThisBreaksApplicationSecurity)
-        .toEqual(heading.innerHTML);
+      expect((<TestSafeHtml>content).changingThisBreaksApplicationSecurity).toEqual(heading.innerHTML);
     });
 
     it('should calculate and set id of heading without an id', () => {
@@ -274,7 +276,7 @@ describe('TocService', () => {
     });
 
     it('should have href with docId and calculated heading id', () => {
-      const tocItem = lastTocList.find(item => item.title === 'H2 Two')!;
+      const tocItem = lastTocList.find((item) => item.title === 'H2 Two')!;
       expect(tocItem.href).toEqual(`${docId}#h2-two`);
     });
 
@@ -286,7 +288,7 @@ describe('TocService', () => {
     });
 
     it('should avoid repeating an id when calculating', () => {
-      const tocItems = lastTocList.filter(item => item.title === 'H2 4 repeat');
+      const tocItems = lastTocList.filter((item) => item.title === 'H2 4 repeat');
       expect(tocItems[0].href).toEqual(`${docId}#h2-4-repeat`, 'first');
       expect(tocItems[1].href).toEqual(`${docId}#h2-4-repeat-2`, 'second');
     });
@@ -300,14 +302,17 @@ describe('TocService', () => {
       docId = 'fizz/buzz/';
 
       // An almost-actual <h2> ... with extra whitespace
-      callGenToc(`
+      callGenToc(
+        `
         <h2 id="setup-to-develop-locally">
           Setup to <a href="moo">develop</a> <i>locally</i>.
           <a class="header-link" href="tutorial/toh-pt1#setup-to-develop-locally" aria-hidden="true">
             <span class="icon icon-link"></span>
           </a>
         </h2>
-      `, docId);
+      `,
+        docId
+      );
 
       tocItem = lastTocList[0];
     });
@@ -321,15 +326,12 @@ describe('TocService', () => {
     });
 
     it('should have removed anchor link from tocItem html content', () => {
-      expect((<TestSafeHtml>tocItem.content)
-        .changingThisBreaksApplicationSecurity)
-        .toEqual('Setup to develop <i>locally</i>.');
+      expect((<TestSafeHtml>tocItem.content).changingThisBreaksApplicationSecurity).toEqual('Setup to develop <i>locally</i>.');
     });
 
-    it('should have bypassed HTML sanitizing of heading\'s innerHTML ', () => {
+    it("should have bypassed HTML sanitizing of heading's innerHTML ", () => {
       const domSanitizer: TestDomSanitizer = injector.get(DomSanitizer);
-      expect(domSanitizer.bypassSecurityTrustHtml)
-        .toHaveBeenCalledWith('Setup to develop <i>locally</i>.');
+      expect(domSanitizer.bypassSecurityTrustHtml).toHaveBeenCalledWith('Setup to develop <i>locally</i>.');
     });
   });
 });
@@ -340,20 +342,21 @@ interface TestSafeHtml extends SafeHtml {
 }
 
 class TestDomSanitizer {
-  bypassSecurityTrustHtml = jasmine.createSpy('bypassSecurityTrustHtml')
-    .and.callFake((html: string) => {
-      return {
-        changingThisBreaksApplicationSecurity: html,
-        getTypeName: () => 'HTML',
-      } as TestSafeHtml;
-    });
+  bypassSecurityTrustHtml = jasmine.createSpy('bypassSecurityTrustHtml').and.callFake((html: string) => {
+    return {
+      changingThisBreaksApplicationSecurity: html,
+      getTypeName: () => 'HTML',
+    } as TestSafeHtml;
+  });
 }
 
 class MockScrollSpyService {
-  private $$lastInfo: {
-    active: Subject<ScrollItem | null>,
-    unspy: jasmine.Spy,
-  } | undefined;
+  private $$lastInfo:
+    | {
+        active: Subject<ScrollItem | null>;
+        unspy: jasmine.Spy;
+      }
+    | undefined;
 
   get $lastInfo() {
     if (!this.$$lastInfo) {
@@ -363,14 +366,13 @@ class MockScrollSpyService {
   }
 
   spyOn(headings: HTMLHeadingElement[]): ScrollSpyInfo {
-    return this.$$lastInfo = {
+    return (this.$$lastInfo = {
       active: new Subject<ScrollItem | null>(),
       unspy: jasmine.createSpy('unspy'),
-    };
+    });
   }
 }
 
 function createTocItem(title: string, level = 'h2', href = '', content = title) {
   return { title, href, level, content };
 }
-

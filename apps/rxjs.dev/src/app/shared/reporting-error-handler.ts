@@ -1,5 +1,5 @@
 import { ErrorHandler, Inject, Injectable } from '@angular/core';
-import { WindowToken } from './window';
+import { WindowToken } from './window.js';
 
 /**
  * Extend the default error handling to report errors to an external service - e.g Google Analytics.
@@ -8,7 +8,6 @@ import { WindowToken } from './window';
  */
 @Injectable()
 export class ReportingErrorHandler extends ErrorHandler {
-
   constructor(@Inject(WindowToken) private window: Window) {
     super();
   }
@@ -18,7 +17,6 @@ export class ReportingErrorHandler extends ErrorHandler {
    * @param error Information about the error.
    */
   handleError(error: string | Error) {
-
     try {
       super.handleError(error);
     } catch (e) {

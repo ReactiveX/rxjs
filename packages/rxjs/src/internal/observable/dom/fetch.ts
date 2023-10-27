@@ -1,7 +1,7 @@
-import { operate } from '../../Subscriber';
-import { Observable } from '../../Observable';
-import { from } from '../from';
-import { ObservableInput } from '../../types';
+import { operate } from '../../Subscriber.js';
+import { Observable } from '../../Observable.js';
+import { from } from '../from.js';
+import { ObservableInput } from '../../types.js';
 
 export function fromFetch<T>(
   input: string | Request,

@@ -1,7 +1,7 @@
-import { Action } from './scheduler/Action';
-import { Subscription } from './Subscription';
-import { SchedulerLike, SchedulerAction } from './types';
-import { dateTimestampProvider } from './scheduler/dateTimestampProvider';
+import { Action } from './scheduler/Action.js';
+import { Subscription } from './Subscription.js';
+import { SchedulerLike, SchedulerAction } from './types.js';
+import { dateTimestampProvider } from './scheduler/dateTimestampProvider.js';
 
 /**
  * An execution context and a data structure to order tasks and schedule their

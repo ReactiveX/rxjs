@@ -1,12 +1,12 @@
-import { Subject } from '../Subject';
-import { asyncScheduler } from '../scheduler/async';
-import { Observable } from '../Observable';
-import { Subscription } from '../Subscription';
-import { Observer, OperatorFunction, SchedulerLike } from '../types';
-import { operate } from '../Subscriber';
-import { arrRemove } from '../util/arrRemove';
-import { popScheduler } from '../util/args';
-import { executeSchedule } from '../util/executeSchedule';
+import { Subject } from '../Subject.js';
+import { asyncScheduler } from '../scheduler/async.js';
+import { Observable } from '../Observable.js';
+import { Subscription } from '../Subscription.js';
+import { Observer, OperatorFunction, SchedulerLike } from '../types.js';
+import { operate } from '../Subscriber.js';
+import { arrRemove } from '../util/arrRemove.js';
+import { popScheduler } from '../util/args.js';
+import { executeSchedule } from '../util/executeSchedule.js';
 
 export function windowTime<T>(windowTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(

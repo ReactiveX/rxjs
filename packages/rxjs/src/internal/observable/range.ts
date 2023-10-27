@@ -1,6 +1,6 @@
-import { SchedulerLike } from '../types';
-import { Observable } from '../Observable';
-import { EMPTY } from './empty';
+import { SchedulerLike } from '../types.js';
+import { Observable } from '../Observable.js';
+import { EMPTY } from './empty.js';
 
 export function range(start: number, count?: number): Observable<number>;
 

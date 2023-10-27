@@ -1,13 +1,6 @@
-import { Omit } from './helpers';
+import { Omit } from './helpers.js';
 
-export type DocType =
-  | 'all'
-  | 'class'
-  | 'const'
-  | 'enum'
-  | 'function'
-  | 'interface'
-  | 'type-alias';
+export type DocType = 'all' | 'class' | 'const' | 'enum' | 'function' | 'interface' | 'type-alias';
 
 export type ApiUnion =
   | 'audit'

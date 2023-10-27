@@ -1,8 +1,8 @@
-import { not } from '../util/not';
-import { filter } from '../operators/filter';
-import { ObservableInput } from '../types';
-import { Observable } from '../Observable';
-import { from } from './from';
+import { not } from '../util/not.js';
+import { filter } from '../operators/filter.js';
+import { ObservableInput } from '../types.js';
+import { Observable } from '../Observable.js';
+import { from } from './from.js';
 
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function partition<T, U extends T, A>(

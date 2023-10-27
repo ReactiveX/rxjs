@@ -1,11 +1,11 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SelectComponent, Option } from './select.component';
+import { SelectComponent, Option } from './select.component.js';
 
 const options = [
   { title: 'Option A', value: 'option-a' },
-  { title: 'Option B', value: 'option-b' }
+  { title: 'Option B', value: 'option-b' },
 ];
 
 let host: HostComponent;
@@ -13,10 +13,9 @@ let fixture: ComponentFixture<HostComponent>;
 let element: DebugElement;
 
 describe('SelectComponent', () => {
-
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ SelectComponent, HostComponent ],
+      declarations: [SelectComponent, HostComponent],
     });
   });
 
@@ -92,7 +91,7 @@ describe('SelectComponent', () => {
     });
 
     it('should select the current option when enter is pressed', () => {
-      const e = new KeyboardEvent('keydown', {bubbles: true, cancelable: true, key: 'Enter'});
+      const e = new KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: 'Enter' });
       getOptions()[0].dispatchEvent(e);
       fixture.detectChanges();
       expect(host.onChange).toHaveBeenCalledWith({ option: options[0], index: 0 });
@@ -101,7 +100,7 @@ describe('SelectComponent', () => {
     });
 
     it('should select the current option when space is pressed', () => {
-      const e = new KeyboardEvent('keydown', {bubbles: true, cancelable: true, key: ' '});
+      const e = new KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: ' ' });
       getOptions()[0].dispatchEvent(e);
       fixture.detectChanges();
       expect(host.onChange).toHaveBeenCalledWith({ option: options[0], index: 0 });
@@ -130,16 +129,9 @@ describe('SelectComponent', () => {
   });
 });
 
-
-
 @Component({
-  template: `
-    <aio-select (change)="onChange($event)"
-              [options]="options"
-              [selected]="selected"
-              [label]="label"
-              [showSymbol]="showSymbol">
-    </aio-select>`
+  template: ` <aio-select (change)="onChange($event)" [options]="options" [selected]="selected" [label]="label" [showSymbol]="showSymbol">
+  </aio-select>`,
 })
 class HostComponent {
   onChange = jasmine.createSpy('onChange');
@@ -153,11 +145,11 @@ function getButton(): HTMLButtonElement {
   return element.query(By.css('button')).nativeElement;
 }
 
-function getOptionContainer(): HTMLUListElement|null {
+function getOptionContainer(): HTMLUListElement | null {
   const de = element.query(By.css('ul'));
   return de && de.nativeElement;
 }
 
 function getOptions(): HTMLLIElement[] {
-  return element.queryAll(By.css('li')).map(de => de.nativeElement);
+  return element.queryAll(By.css('li')).map((de) => de.nativeElement);
 }

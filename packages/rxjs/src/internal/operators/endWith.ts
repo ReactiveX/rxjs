@@ -1,8 +1,8 @@
 /** prettier */
-import { Observable } from '../Observable';
-import { OperatorFunction, ValueFromArray } from '../types';
-import { operate } from '../Subscriber';
-import { subscribeToArray } from '../observable/from';
+import { Observable } from '../Observable.js';
+import { OperatorFunction, ValueFromArray } from '../types.js';
+import { operate } from '../Subscriber.js';
+import { subscribeToArray } from '../observable/from.js';
 
 /**
  * Returns an observable that will emit all values from the source, then synchronously emit

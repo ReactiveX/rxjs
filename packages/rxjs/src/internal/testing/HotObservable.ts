@@ -1,10 +1,10 @@
-import { Subject } from '../Subject';
-import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { Scheduler } from '../Scheduler';
-import { TestMessage } from './TestMessage';
-import { observeNotification } from '../Notification';
-import { logSubscribedFrame, logUnsubscribedFrame, SubscriptionLog } from './subscription-logging';
+import { Subject } from '../Subject.js';
+import { Subscriber } from '../Subscriber.js';
+import { Subscription } from '../Subscription.js';
+import { Scheduler } from '../Scheduler.js';
+import { TestMessage } from './TestMessage.js';
+import { observeNotification } from '../Notification.js';
+import { logSubscribedFrame, logUnsubscribedFrame, SubscriptionLog } from './subscription-logging.js';
 
 export class HotObservable<T> extends Subject<T> {
   public subscriptions: SubscriptionLog[] = [];

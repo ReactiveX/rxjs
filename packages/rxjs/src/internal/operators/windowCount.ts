@@ -1,7 +1,7 @@
-import { Observable } from '../Observable';
-import { Subject } from '../Subject';
-import { OperatorFunction } from '../types';
-import { operate } from '../Subscriber';
+import { Observable } from '../Observable.js';
+import { Subject } from '../Subject.js';
+import { OperatorFunction } from '../types.js';
+import { operate } from '../Subscriber.js';
 
 /**
  * Branch out the source Observable values as a nested Observable with each

@@ -1,10 +1,10 @@
-import { Observable } from '../Observable';
-import { ObservableInputTuple } from '../types';
-import { from } from './from';
-import { argsOrArgArray } from '../util/argsOrArgArray';
-import { EMPTY } from './empty';
-import { operate } from '../Subscriber';
-import { popResultSelector } from '../util/args';
+import { Observable } from '../Observable.js';
+import { ObservableInputTuple } from '../types.js';
+import { from } from './from.js';
+import { argsOrArgArray } from '../util/argsOrArgArray.js';
+import { EMPTY } from './empty.js';
+import { operate } from '../Subscriber.js';
+import { popResultSelector } from '../util/args.js';
 
 export function zip<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A>;
 export function zip<A extends readonly unknown[], R>(

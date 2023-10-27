@@ -1,8 +1,8 @@
-import { AsyncAction } from './AsyncAction';
-import { AnimationFrameScheduler } from './AnimationFrameScheduler';
-import { SchedulerAction } from '../types';
-import { animationFrameProvider } from './animationFrameProvider';
-import { TimerHandle } from './timerHandle';
+import { AsyncAction } from './AsyncAction.js';
+import { AnimationFrameScheduler } from './AnimationFrameScheduler.js';
+import { SchedulerAction } from '../types.js';
+import { animationFrameProvider } from './animationFrameProvider.js';
+import { TimerHandle } from './timerHandle.js';
 
 export class AnimationFrameAction<T> extends AsyncAction<T> {
   constructor(protected scheduler: AnimationFrameScheduler, protected work: (this: SchedulerAction<T>, state?: T) => void) {

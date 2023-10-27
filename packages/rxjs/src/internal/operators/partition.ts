@@ -1,7 +1,7 @@
-import { not } from '../util/not';
-import { filter } from './filter';
-import { Observable } from '../Observable';
-import { UnaryFunction } from '../types';
+import { not } from '../util/not.js';
+import { filter } from './filter.js';
+import { Observable } from '../Observable.js';
+import { UnaryFunction } from '../types.js';
 
 /**
  * Splits the source Observable into two, one with values that satisfy a

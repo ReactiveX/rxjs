@@ -1,8 +1,8 @@
-import { Observable } from '../Observable';
-import { from } from '../observable/from';
-import { Subscriber, operate } from '../Subscriber';
-import { ObservableInput, SchedulerLike } from '../types';
-import { executeSchedule } from '../util/executeSchedule';
+import { Observable } from '../Observable.js';
+import { from } from '../observable/from.js';
+import { Subscriber, operate } from '../Subscriber.js';
+import { ObservableInput, SchedulerLike } from '../types.js';
+import { executeSchedule } from '../util/executeSchedule.js';
 
 /**
  * A process embodying the general "merge" strategy. This is used in

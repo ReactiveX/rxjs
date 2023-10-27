@@ -1,13 +1,13 @@
-import { Observable } from '../Observable';
-import { ObservedValueOf, ObservableInputTuple, ObservableInput } from '../types';
-import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject';
-import { from } from './from';
-import { popResultSelector } from '../util/args';
-import { operate } from '../Subscriber';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
-import { createObject } from '../util/createObject';
-import { AnyCatcher } from '../AnyCatcher';
-import { EmptyError } from '../util/EmptyError';
+import { Observable } from '../Observable.js';
+import { ObservedValueOf, ObservableInputTuple, ObservableInput } from '../types.js';
+import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject.js';
+import { from } from './from.js';
+import { popResultSelector } from '../util/args.js';
+import { operate } from '../Subscriber.js';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
+import { createObject } from '../util/createObject.js';
+import { AnyCatcher } from '../AnyCatcher.js';
+import { EmptyError } from '../util/EmptyError.js';
 
 // forkJoin(any)
 // We put this first because we need to catch cases where the user has supplied

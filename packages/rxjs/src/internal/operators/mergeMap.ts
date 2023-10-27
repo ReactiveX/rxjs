@@ -1,6 +1,6 @@
-import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
-import { Observable } from '../Observable';
-import { mergeInternals } from './mergeInternals';
+import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.js';
+import { Observable } from '../Observable.js';
+import { mergeInternals } from './mergeInternals.js';
 
 /**
  * Projects each source value to an Observable which is merged in the output

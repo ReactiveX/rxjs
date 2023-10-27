@@ -1,5 +1,5 @@
-import { AsyncAction } from './AsyncAction';
-import { AsyncScheduler } from './AsyncScheduler';
+import { AsyncAction } from './AsyncAction.js';
+import { AsyncScheduler } from './AsyncScheduler.js';
 
 export class AnimationFrameScheduler extends AsyncScheduler {
   public flush(action?: AsyncAction<any>): void {

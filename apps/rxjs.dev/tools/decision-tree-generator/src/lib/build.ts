@@ -1,7 +1,7 @@
-import { addUniqueId } from './addUniqueId';
-import { extractInitialSequence } from './extractInitialSequence';
-import { FlattenedApiList, DecisionTree, TreeNodeRaw } from './interfaces';
-import { decisionTreeReducer } from './decisionTreeReducer';
+import { addUniqueId } from './addUniqueId.js';
+import { extractInitialSequence } from './extractInitialSequence.js';
+import { FlattenedApiList, DecisionTree, TreeNodeRaw } from './interfaces.js';
+import { decisionTreeReducer } from './decisionTreeReducer.js';
 
 /**
  * Main build script, outputs the decision tree.
@@ -20,6 +20,6 @@ export function build(apiList: FlattenedApiList, tree: TreeNodeRaw[]): DecisionT
 
   return {
     ...decisionTreeReducer(nodesWithUniqueIds, apiList),
-    [initialOption.id]: { ...initialOption }
+    [initialOption.id]: { ...initialOption },
   };
 }

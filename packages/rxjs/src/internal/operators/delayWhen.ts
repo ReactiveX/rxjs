@@ -1,11 +1,11 @@
-import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, ObservableInput } from '../types';
-import { concat } from '../observable/concat';
-import { take } from './take';
-import { ignoreElements } from './ignoreElements';
-import { mapTo } from './mapTo';
-import { mergeMap } from './mergeMap';
-import { from } from '../observable/from';
+import { Observable } from '../Observable.js';
+import { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
+import { concat } from '../observable/concat.js';
+import { take } from './take.js';
+import { ignoreElements } from './ignoreElements.js';
+import { mapTo } from './mapTo.js';
+import { mergeMap } from './mergeMap.js';
+import { from } from '../observable/from.js';
 
 /** @deprecated The `subscriptionDelay` parameter will be removed in v8. */
 export function delayWhen<T>(

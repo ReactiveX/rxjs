@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BehaviorSubject } from 'rxjs';
 
-import { TopMenuComponent } from './top-menu.component';
+import { TopMenuComponent } from './top-menu.component.js';
 import { NavigationService, NavigationViews } from 'app/navigation/navigation.service';
 
 describe('TopMenuComponent', () => {
@@ -11,10 +11,8 @@ describe('TopMenuComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ TopMenuComponent ],
-      providers: [
-        { provide: NavigationService, useClass: TestNavigationService }
-      ]
+      declarations: [TopMenuComponent],
+      providers: [{ provide: NavigationService, useClass: TestNavigationService }],
     });
   });
 
@@ -33,8 +31,8 @@ describe('TopMenuComponent', () => {
 class TestNavigationService {
   navJson = {
     TopBar: [
-      {url: 'api', title: 'API' },
-      {url: 'features', title: 'Features' }
+      { url: 'api', title: 'API' },
+      { url: 'features', title: 'Features' },
     ],
   };
 

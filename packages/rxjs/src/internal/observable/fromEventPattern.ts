@@ -1,7 +1,7 @@
-import { Observable } from '../Observable';
-import { isFunction } from '../util/isFunction';
-import { NodeEventHandler } from './fromEvent';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
+import { Observable } from '../Observable.js';
+import { isFunction } from '../util/isFunction.js';
+import { NodeEventHandler } from './fromEvent.js';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
 
 /* tslint:disable:max-line-length */
 export function fromEventPattern<T>(

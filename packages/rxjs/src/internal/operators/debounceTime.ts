@@ -1,8 +1,8 @@
-import { asyncScheduler } from '../scheduler/async';
-import { Subscription } from '../Subscription';
-import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike } from '../types';
-import { Observable } from '../Observable';
-import { operate } from '../Subscriber';
+import { asyncScheduler } from '../scheduler/async.js';
+import { Subscription } from '../Subscription.js';
+import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike } from '../types.js';
+import { Observable } from '../Observable.js';
+import { operate } from '../Subscriber.js';
 
 /**
  * Emits a notification from the source Observable only after a particular time span

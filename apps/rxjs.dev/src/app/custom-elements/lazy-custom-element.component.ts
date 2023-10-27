@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { Logger } from 'app/shared/logger.service';
-import { ElementsLoader } from './elements-loader';
+import { ElementsLoader } from './elements-loader.js';
 
 @Component({
   selector: 'aio-lazy-ce',
@@ -9,11 +9,7 @@ import { ElementsLoader } from './elements-loader';
 export class LazyCustomElementComponent implements OnInit {
   @Input() selector = '';
 
-  constructor(
-    private elementRef: ElementRef,
-    private elementsLoader: ElementsLoader,
-    private logger: Logger,
-  ) {}
+  constructor(private elementRef: ElementRef, private elementsLoader: ElementsLoader, private logger: Logger) {}
 
   ngOnInit() {
     if (!this.selector || /[^\w-]/.test(this.selector)) {

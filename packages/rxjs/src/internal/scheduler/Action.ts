@@ -1,6 +1,6 @@
-import { Scheduler } from '../Scheduler';
-import { Subscription } from '../Subscription';
-import { SchedulerAction } from '../types';
+import { Scheduler } from '../Scheduler.js';
+import { Subscription } from '../Subscription.js';
+import { SchedulerAction } from '../types.js';
 
 /**
  * A unit of work to be executed in a `scheduler`. An action is typically

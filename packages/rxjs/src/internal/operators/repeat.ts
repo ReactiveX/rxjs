@@ -1,10 +1,10 @@
-import { Subscription } from '../Subscription';
-import { EMPTY } from '../observable/empty';
-import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, ObservableInput } from '../types';
-import { operate } from '../Subscriber';
-import { from } from '../observable/from';
-import { timer } from '../observable/timer';
+import { Subscription } from '../Subscription.js';
+import { EMPTY } from '../observable/empty.js';
+import { Observable } from '../Observable.js';
+import { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
+import { operate } from '../Subscriber.js';
+import { from } from '../observable/from.js';
+import { timer } from '../observable/timer.js';
 
 export interface RepeatConfig {
   /**

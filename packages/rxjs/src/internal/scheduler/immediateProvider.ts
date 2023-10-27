@@ -1,5 +1,5 @@
-import { Immediate } from '../util/Immediate';
-import type { TimerHandle } from './timerHandle';
+import { Immediate } from '../util/Immediate.js';
+import type { TimerHandle } from './timerHandle.js';
 const { setImmediate, clearImmediate } = Immediate;
 
 type SetImmediateFunction = (handler: () => void, ...args: any[]) => TimerHandle;

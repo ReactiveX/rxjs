@@ -1,5 +1,5 @@
-import { mergeAll } from './mergeAll';
-import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types';
+import { mergeAll } from './mergeAll.js';
+import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types.js';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by

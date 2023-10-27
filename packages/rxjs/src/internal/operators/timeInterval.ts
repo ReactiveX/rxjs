@@ -1,7 +1,7 @@
-import { asyncScheduler } from '../scheduler/async';
-import { SchedulerLike, OperatorFunction } from '../types';
-import { Observable } from '../Observable';
-import { operate } from '../Subscriber';
+import { asyncScheduler } from '../scheduler/async.js';
+import { SchedulerLike, OperatorFunction } from '../types.js';
+import { Observable } from '../Observable.js';
+import { operate } from '../Subscriber.js';
 
 /**
  * Emits an object containing the current value, and the time that has

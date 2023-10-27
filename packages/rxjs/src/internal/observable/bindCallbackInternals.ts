@@ -1,10 +1,10 @@
-import { SchedulerLike } from '../types';
-import { isScheduler } from '../util/isScheduler';
-import { Observable } from '../Observable';
-import { subscribeOn } from '../operators/subscribeOn';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs';
-import { observeOn } from '../operators/observeOn';
-import { AsyncSubject } from '../AsyncSubject';
+import { SchedulerLike } from '../types.js';
+import { isScheduler } from '../util/isScheduler.js';
+import { Observable } from '../Observable.js';
+import { subscribeOn } from '../operators/subscribeOn.js';
+import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
+import { observeOn } from '../operators/observeOn.js';
+import { AsyncSubject } from '../AsyncSubject.js';
 
 export function bindCallbackInternals(
   isNodeStyle: boolean,

@@ -1,6 +1,6 @@
-import { Observable } from '../Observable';
-import { OperatorFunction } from '../types';
-import { scanInternals } from './scanInternals';
+import { Observable } from '../Observable.js';
+import { OperatorFunction } from '../types.js';
+import { scanInternals } from './scanInternals.js';
 
 export function scan<V, A = V>(accumulator: (acc: A | V, value: V, index: number) => A): OperatorFunction<V, V | A>;
 export function scan<V, A>(accumulator: (acc: A, value: V, index: number) => A, seed: A): OperatorFunction<V, A>;

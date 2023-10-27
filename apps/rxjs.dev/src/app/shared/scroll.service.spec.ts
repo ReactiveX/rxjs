@@ -4,7 +4,7 @@ import { DOCUMENT } from '@angular/common';
 import { MockLocationStrategy, SpyLocation } from '@angular/common/testing';
 import { fakeAsync, tick } from '@angular/core/testing';
 
-import { ScrollService, topMargin } from './scroll.service';
+import { ScrollService, topMargin } from './scroll.service.js';
 
 describe('ScrollService', () => {
   const topOfPageElem = {} as Element;
@@ -25,23 +25,20 @@ describe('ScrollService', () => {
   }
 
   class MockElement {
-    getBoundingClientRect = jasmine.createSpy('Element getBoundingClientRect')
-                                   .and.returnValue({top: 0});
+    getBoundingClientRect = jasmine.createSpy('Element getBoundingClientRect').and.returnValue({ top: 0 });
     scrollIntoView = jasmine.createSpy('Element scrollIntoView');
   }
 
-  const viewportScrollerStub = jasmine.createSpyObj(
-    'viewportScroller',
-    ['getScrollPosition', 'scrollToPosition']);
+  const viewportScrollerStub = jasmine.createSpyObj('viewportScroller', ['getScrollPosition', 'scrollToPosition']);
 
   beforeEach(() => {
     injector = ReflectiveInjector.resolveAndCreate([
-        ScrollService,
-        { provide: Location, useClass: SpyLocation },
-        { provide: DOCUMENT, useClass: MockDocument },
-        { provide: PlatformLocation, useClass: MockPlatformLocation },
-        { provide: ViewportScroller, useValue: viewportScrollerStub },
-        { provide: LocationStrategy, useClass: MockLocationStrategy }
+      ScrollService,
+      { provide: Location, useClass: SpyLocation },
+      { provide: DOCUMENT, useClass: MockDocument },
+      { provide: PlatformLocation, useClass: MockPlatformLocation },
+      { provide: ViewportScroller, useValue: viewportScrollerStub },
+      { provide: LocationStrategy, useClass: MockLocationStrategy },
     ]);
     platformLocation = injector.get(PlatformLocation);
     document = injector.get(DOCUMENT);
@@ -81,8 +78,8 @@ describe('ScrollService', () => {
       expect(document.querySelector).toHaveBeenCalled();
     });
 
-    it('should be calculated based on the top-bar\'s height + margin', () => {
-      (document.querySelector as jasmine.Spy).and.returnValue({clientHeight: 50});
+    it("should be calculated based on the top-bar's height + margin", () => {
+      (document.querySelector as jasmine.Spy).and.returnValue({ clientHeight: 50 });
       expect(scrollService.topOffset).toBe(50 + topMargin);
     });
 
@@ -94,9 +91,9 @@ describe('ScrollService', () => {
       expect(document.querySelector).not.toHaveBeenCalled();
     });
 
-    it('should retrieve the top-bar\'s height again after resize', () => {
+    it("should retrieve the top-bar's height again after resize", () => {
       let clientHeight = 50;
-      (document.querySelector as jasmine.Spy).and.callFake(() => ({clientHeight}));
+      (document.querySelector as jasmine.Spy).and.callFake(() => ({ clientHeight }));
 
       expect(scrollService.topOffset).toBe(50 + topMargin);
       expect(document.querySelector).toHaveBeenCalled();
@@ -141,8 +138,7 @@ describe('ScrollService', () => {
       platformLocation.hash = '';
 
       const topOfPage = new MockElement();
-      document.getElementById.and
-              .callFake((id: string) => id === 'top-of-page' ? topOfPage : null);
+      document.getElementById.and.callFake((id: string) => (id === 'top-of-page' ? topOfPage : null));
 
       scrollService.scroll();
       expect(topOfPage.scrollIntoView).toHaveBeenCalled();
@@ -193,12 +189,12 @@ describe('ScrollService', () => {
       const getBoundingClientRect = element.getBoundingClientRect as jasmine.Spy;
       const topOffset = scrollService.topOffset;
 
-      getBoundingClientRect.and.returnValue({top: topOffset + 100});
+      getBoundingClientRect.and.returnValue({ top: topOffset + 100 });
       scrollService.scrollToElement(element);
       expect(element.scrollIntoView).toHaveBeenCalledTimes(1);
       expect(window.scrollBy).toHaveBeenCalledWith(0, 100);
 
-      getBoundingClientRect.and.returnValue({top: topOffset - 10});
+      getBoundingClientRect.and.returnValue({ top: topOffset - 10 });
       scrollService.scrollToElement(element);
       expect(element.scrollIntoView).toHaveBeenCalledTimes(2);
       expect(window.scrollBy).toHaveBeenCalledWith(0, -10);
@@ -231,9 +227,7 @@ describe('ScrollService', () => {
   describe('#scrollToTop', () => {
     it('should scroll to top', () => {
       const topOfPageElement = new MockElement() as any as Element;
-      document.getElementById.and.callFake(
-        (id: string) => id === 'top-of-page' ? topOfPageElement : null
-      );
+      document.getElementById.and.callFake((id: string) => (id === 'top-of-page' ? topOfPageElement : null));
 
       scrollService.scrollToTop();
       expect(topOfPageElement.scrollIntoView).toHaveBeenCalled();
@@ -254,59 +248,60 @@ describe('ScrollService', () => {
   });
 
   describe('#needToFixScrollPosition', async () => {
-    it('should return true when popState event was fired after a back navigation if the browser supports ' +
-      'scrollRestoration`. Otherwise, needToFixScrollPosition() returns false', () => {
+    it(
+      'should return true when popState event was fired after a back navigation if the browser supports ' +
+        'scrollRestoration`. Otherwise, needToFixScrollPosition() returns false',
+      () => {
+        if (scrollService.supportManualScrollRestoration) {
+          location.go('/initial-url1');
+          // We simulate a scroll down
+          location.replaceState('/initial-url1', 'hack', { scrollPosition: [2000, 0] });
+          location.go('/initial-url2');
+          location.back();
 
-      if (scrollService.supportManualScrollRestoration) {
-        location.go('/initial-url1');
-        // We simulate a scroll down
-        location.replaceState('/initial-url1', 'hack', {scrollPosition: [2000, 0]});
-        location.go('/initial-url2');
-        location.back();
+          expect(scrollService.poppedStateScrollPosition).toEqual([2000, 0]);
+          expect(scrollService.needToFixScrollPosition()).toBe(true);
+        } else {
+          location.go('/initial-url1');
+          location.go('/initial-url2');
+          location.back();
 
-        expect(scrollService.poppedStateScrollPosition).toEqual([2000, 0]);
-        expect(scrollService.needToFixScrollPosition()).toBe(true);
-      } else {
-        location.go('/initial-url1');
-        location.go('/initial-url2');
-        location.back();
-
-        expect(scrollService.poppedStateScrollPosition).toBe(null);
-        expect(scrollService.needToFixScrollPosition()).toBe(false);
+          expect(scrollService.poppedStateScrollPosition).toBe(null);
+          expect(scrollService.needToFixScrollPosition()).toBe(false);
+        }
       }
+    );
 
-    });
+    it(
+      'should return true when popState event was fired after a forward navigation if the browser supports ' +
+        'scrollRestoration`. Otherwise, needToFixScrollPosition() returns false',
+      () => {
+        if (scrollService.supportManualScrollRestoration) {
+          location.go('/initial-url1');
+          location.go('/initial-url2');
+          // We simulate a scroll down
+          location.replaceState('/initial-url1', 'hack', { scrollPosition: [2000, 0] });
 
-    it('should return true when popState event was fired after a forward navigation if the browser supports ' +
-      'scrollRestoration`. Otherwise, needToFixScrollPosition() returns false', () => {
+          location.back();
+          scrollService.poppedStateScrollPosition = [0, 0];
+          location.forward();
 
-      if (scrollService.supportManualScrollRestoration) {
-        location.go('/initial-url1');
-        location.go('/initial-url2');
-        // We simulate a scroll down
-        location.replaceState('/initial-url1', 'hack', {scrollPosition: [2000, 0]});
+          expect(scrollService.poppedStateScrollPosition).toEqual([2000, 0]);
+          expect(scrollService.needToFixScrollPosition()).toBe(true);
+        } else {
+          location.go('/initial-url1');
+          location.go('/initial-url2');
+          location.back();
+          location.forward();
 
-        location.back();
-        scrollService.poppedStateScrollPosition = [0, 0];
-        location.forward();
-
-        expect(scrollService.poppedStateScrollPosition).toEqual([2000, 0]);
-        expect(scrollService.needToFixScrollPosition()).toBe(true);
-      } else {
-        location.go('/initial-url1');
-        location.go('/initial-url2');
-        location.back();
-        location.forward();
-
-        expect(scrollService.poppedStateScrollPosition).toBe(null);
-        expect(scrollService.needToFixScrollPosition()).toBe(false);
+          expect(scrollService.poppedStateScrollPosition).toBe(null);
+          expect(scrollService.needToFixScrollPosition()).toBe(false);
+        }
       }
-
-    });
+    );
   });
 
   describe('#scrollAfterRender', async () => {
-
     let scrollSpy: jasmine.Spy;
     let scrollToTopSpy: jasmine.Spy;
     let needToFixScrollPositionSpy: jasmine.Spy;
@@ -323,7 +318,6 @@ describe('ScrollService', () => {
       getStoredScrollPositionSpy = spyOn(scrollService, 'getStoredScrollPosition');
       isLocationWithHashSpy = spyOn(scrollService, 'isLocationWithHash');
     });
-
 
     it('should call `scroll` when we navigate to a location with anchor', fakeAsync(() => {
       needToFixScrollPositionSpy.and.returnValue(false);

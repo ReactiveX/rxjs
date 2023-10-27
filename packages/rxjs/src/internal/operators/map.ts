@@ -1,6 +1,6 @@
-import { OperatorFunction } from '../types';
-import { Observable } from '../Observable';
-import { operate } from '../Subscriber';
+import { OperatorFunction } from '../types.js';
+import { Observable } from '../Observable.js';
+import { operate } from '../Subscriber.js';
 
 /**
  * Applies a given `project` function to each value emitted by the source
