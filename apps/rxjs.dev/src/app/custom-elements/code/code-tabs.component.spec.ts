@@ -4,8 +4,8 @@ import { Logger } from 'app/shared/logger.service';
 import { MockLogger } from 'testing/logger.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { CodeTabsComponent } from './code-tabs.component.js';
-import { CodeTabsModule } from './code-tabs.module.js';
+import { CodeTabsComponent } from './code-tabs.component';
+import { CodeTabsModule } from './code-tabs.module';
 
 @Component({
   selector: 'aio-host-comp',
@@ -14,7 +14,9 @@ import { CodeTabsModule } from './code-tabs.module.js';
       <code-pane class="class-A" language="language-A" linenums="linenums-A" path="path-A" region="region-A" header="header-A">
         Code example 1
       </code-pane>
-      <code-pane class="class-B" language="language-B" path="path-B" region="region-B" header="header-B"> Code example 2 </code-pane>
+      <code-pane class="class-B" language="language-B" path="path-B" region="region-B" header="header-B">
+        Code example 2
+      </code-pane>
     </code-tabs>
   `,
 })

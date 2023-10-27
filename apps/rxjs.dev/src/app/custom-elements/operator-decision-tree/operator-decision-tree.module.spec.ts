@@ -1,4 +1,4 @@
-import { OperatorDecisionTreeModule } from './operator-decision-tree.module.js';
+import { OperatorDecisionTreeModule } from './operator-decision-tree.module';
 
 describe('OperatorDecisionTreeModule', () => {
   let chooseYourOwnOperatorModule: OperatorDecisionTreeModule;

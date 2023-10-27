@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 
-import { environment } from '../../environments/environment.js';
+import { environment } from '../../environments/environment';
 import { WindowToken } from 'app/shared/window';
 
 @Injectable()
@@ -10,10 +10,11 @@ import { WindowToken } from 'app/shared/window';
  * Associates data with a GA "property" from the environment (`gaId`).
  */
 export class GaService {
+
   private previousUrl: string;
 
   constructor(@Inject(WindowToken) private window: Window) {
-    this.ga('create', environment['gaId'], 'auto');
+    this.ga('create', environment['gaId'] , 'auto');
   }
 
   locationChanged(url: string) {
@@ -22,9 +23,7 @@ export class GaService {
 
   sendPage(url: string) {
     // Won't re-send if the url hasn't changed.
-    if (url === this.previousUrl) {
-      return;
-    }
+    if (url === this.previousUrl) { return; }
     this.previousUrl = url;
     this.ga('set', 'page', '/' + url);
     this.ga('send', 'pageview');

@@ -1,4 +1,4 @@
-import { generateUniqueId } from './generateUniqueId.js';
+import { generateUniqueId } from './generateUniqueId';
 
 describe('generateUniqueId', () => {
   describe('when called', () => {

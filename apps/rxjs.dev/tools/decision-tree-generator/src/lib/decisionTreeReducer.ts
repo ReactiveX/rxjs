@@ -1,5 +1,10 @@
 import chalk from 'chalk';
-import { DecisionTree, FlattenedApiList, FlattenedApiNode, TreeNode } from './interfaces.js';
+import {
+  DecisionTree,
+  FlattenedApiList,
+  FlattenedApiNode,
+  TreeNode
+} from './interfaces';
 
 /**
  * Recursively walks the tree and pulls relevant information from the API list.
@@ -10,20 +15,23 @@ import { DecisionTree, FlattenedApiList, FlattenedApiNode, TreeNode } from './in
  * @param {FlattenedApiList} apiList
  * @returns {DecisionTree}
  */
-export function decisionTreeReducer(tree: TreeNode[], apiList: FlattenedApiList): DecisionTree {
+export function decisionTreeReducer(
+  tree: TreeNode[],
+  apiList: FlattenedApiList
+): DecisionTree {
   return tree.reduce((acc, curr) => {
     let nested;
     let treeNode: TreeNode = {
       // there might not be options, grab what we know is available
       id: curr.id,
-      label: curr.label,
+      label: curr.label
     };
 
     if (curr.options) {
       // we are still deciding
       treeNode = {
         ...treeNode,
-        options: curr.options,
+        options: curr.options
       };
     }
 
@@ -31,12 +39,15 @@ export function decisionTreeReducer(tree: TreeNode[], apiList: FlattenedApiList)
       // we found the function/operator we want to use
       const apiNode: FlattenedApiNode = apiList[treeNode.label];
       if (!apiNode) {
-        console.log(chalk.yellow('Decision Tree Generator - (reducer) - warning:'), `Label does not exist in API List: ${treeNode.label}`);
+        console.log(
+          chalk.yellow('Decision Tree Generator - (reducer) - warning:'),
+          `Label does not exist in API List: ${treeNode.label}`
+        );
       }
 
       treeNode = {
         ...treeNode,
-        ...apiNode, // helps to build uri, used in Angular template
+        ...apiNode // helps to build uri, used in Angular template
       };
     }
 
@@ -44,7 +55,7 @@ export function decisionTreeReducer(tree: TreeNode[], apiList: FlattenedApiList)
       // if we need to point at a method of a class, like Observable.create, helps to build uri
       treeNode = {
         ...treeNode,
-        method: curr.method,
+        method: curr.method
       };
     }
 
@@ -56,7 +67,7 @@ export function decisionTreeReducer(tree: TreeNode[], apiList: FlattenedApiList)
     return {
       ...acc,
       ...nested,
-      [treeNode.id]: treeNode,
+      [treeNode.id]: treeNode
     };
   }, {});
 }

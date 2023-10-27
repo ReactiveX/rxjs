@@ -1,20 +1,21 @@
 import { ErrorHandler } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
-import { CustomIconRegistry, SvgIconInfo } from './custom-icon-registry.js';
+import { CustomIconRegistry, SvgIconInfo } from './custom-icon-registry';
 
 describe('CustomIconRegistry', () => {
   it('should get the SVG element for a preloaded icon from the cache', () => {
     const mockHttp: any = {};
     const mockSanitizer: any = {};
     const mockDocument: any = {};
-    const svgSrc =
-      '<svg xmlns="http://www.w3.org/2000/svg" focusable="false" ' +
-      'viewBox="0 0 24 24"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/></svg>';
-    const svgIcons: SvgIconInfo[] = [{ name: 'test_icon', svgSource: svgSrc }];
+    const svgSrc = '<svg xmlns="http://www.w3.org/2000/svg" focusable="false" ' +
+                 'viewBox="0 0 24 24"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/></svg>';
+    const svgIcons: SvgIconInfo[] = [
+      { name: 'test_icon', svgSource: svgSrc }
+    ];
     const errorHandler = new ErrorHandler();
     const registry = new CustomIconRegistry(mockHttp, mockSanitizer, mockDocument, svgIcons, errorHandler);
-    let svgElement: SVGElement | undefined;
-    registry.getNamedSvgIcon('test_icon').subscribe((el) => (svgElement = el));
+    let svgElement: SVGElement|undefined;
+    registry.getNamedSvgIcon('test_icon').subscribe(el => svgElement = el);
     expect(svgElement).toEqual(createSvg(svgSrc));
   });
 
@@ -22,10 +23,11 @@ describe('CustomIconRegistry', () => {
     const mockHttp: any = {};
     const mockSanitizer: any = {};
     const mockDocument: any = {};
-    const svgSrc =
-      '<svg xmlns="http://www.w3.org/2000/svg" focusable="false" ' +
-      'viewBox="0 0 24 24"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/></svg>';
-    const svgIcons: SvgIconInfo[] = [{ name: 'test_icon', svgSource: svgSrc }];
+    const svgSrc = '<svg xmlns="http://www.w3.org/2000/svg" focusable="false" ' +
+                 'viewBox="0 0 24 24"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/></svg>';
+    const svgIcons: SvgIconInfo[] = [
+      { name: 'test_icon', svgSource: svgSrc }
+    ];
     spyOn(MatIconRegistry.prototype, 'getNamedSvgIcon');
     const errorHandler = new ErrorHandler();
     const registry = new CustomIconRegistry(mockHttp, mockSanitizer, mockDocument, svgIcons, errorHandler);

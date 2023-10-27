@@ -2,8 +2,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, OnDestroy } from '@angular/core';
 import { ScrollService } from 'app/shared/scroll.service';
 import { Observable } from 'rxjs';
-import { OperatorTreeNode } from './interfaces.js';
-import { OperatorDecisionTreeService } from './operator-decision-tree.service.js';
+import { OperatorTreeNode } from './interfaces';
+import { OperatorDecisionTreeService } from './operator-decision-tree.service';
 
 @Component({
   selector: 'aio-operator-decision-tree',

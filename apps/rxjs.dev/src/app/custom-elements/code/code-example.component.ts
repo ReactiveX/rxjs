@@ -1,6 +1,6 @@
 /* tslint:disable component-selector */
 import { Component, HostBinding, ElementRef, ViewChild, Input, AfterViewInit } from '@angular/core';
-import { CodeComponent } from './code.component.js';
+import { CodeComponent } from './code.component';
 
 /**
  * An embeddable code block that displays nicely formatted code.
@@ -18,16 +18,14 @@ import { CodeComponent } from './code.component.js';
   template: `
     <!-- Content projection is used to get the content HTML provided to this component -->
     <div #content style="display: none"><ng-content></ng-content></div>
-    <header *ngIf="header">{{ header }}</header>
-    <aio-code
-      [ngClass]="classes"
-      [language]="language"
-      [linenums]="linenums"
-      [path]="path"
-      [region]="region"
-      [hideCopy]="hidecopy"
-      [header]="header"
-    >
+    <header *ngIf="header">{{header}}</header>
+    <aio-code [ngClass]="classes"
+              [language]="language"
+              [linenums]="linenums"
+              [path]="path"
+              [region]="region"
+              [hideCopy]="hidecopy"
+              [header]="header">
     </aio-code>
   `,
 })
@@ -48,9 +46,7 @@ export class CodeExampleComponent implements AfterViewInit {
       'simple-code': !this.header,
     };
   }
-  get header(): string {
-    return this._header;
-  }
+  get header(): string { return this._header; }
   private _header: string;
 
   @Input()
@@ -58,9 +54,7 @@ export class CodeExampleComponent implements AfterViewInit {
     this._path = path;
     this.isAvoid = this.path.indexOf('.avoid.') !== -1;
   }
-  get path(): string {
-    return this._path;
-  }
+  get path(): string { return this._path; }
   private _path = '';
 
   @Input()
@@ -68,9 +62,7 @@ export class CodeExampleComponent implements AfterViewInit {
     // Coerce the boolean value.
     this._hidecopy = hidecopy != null && `${hidecopy}` !== 'false';
   }
-  get hidecopy(): boolean {
-    return this._hidecopy;
-  }
+  get hidecopy(): boolean { return this._hidecopy; }
   private _hidecopy: boolean;
 
   @Input('hide-copy')
