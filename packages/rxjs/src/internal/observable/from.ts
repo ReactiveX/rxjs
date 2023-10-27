@@ -10,7 +10,6 @@ import { isReadableStreamLike, readableStreamLikeToAsyncGenerator } from '../uti
 import { Subscriber } from '../Subscriber.js';
 import { isFunction } from '../util/isFunction.js';
 import { reportUnhandledError } from '../util/reportUnhandledError.js';
-import { observable as Symbol_observable } from '../symbol/observable.js';
 
 /**
  * Creates an Observable from an Array, an array-like object, a Promise, an iterable object, or an Observable-like object.
@@ -117,7 +116,7 @@ export function from<T>(input: ObservableInput<T>): Observable<T> {
  */
 function fromInteropObservable<T>(obj: any) {
   return new Observable((subscriber: Subscriber<T>) => {
-    const obs = obj[Symbol_observable]();
+    const obs = obj[Symbol.observable ?? '@@observable']();
     if (isFunction(obs.subscribe)) {
       return obs.subscribe(subscriber);
     }

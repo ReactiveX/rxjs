@@ -16,7 +16,6 @@
 export { Observable } from './internal/Observable.js';
 export { GroupedObservable } from './internal/operators/groupBy.js';
 export { Operator } from './internal/Operator.js';
-export { observable } from './internal/symbol/observable.js';
 export { animationFrames } from './internal/observable/dom/animationFrames.js';
 
 /* Subjects */
