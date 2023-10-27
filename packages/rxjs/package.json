@@ -81,7 +81,7 @@
     "test": "yarn build && cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js \"spec/**/*-spec.ts\"",
     "test:esm": "node spec/module-test-spec.mjs",
     "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm",
-    "test:import": "ts-node ./integration/import/runner.ts",
+    "test:import": "node integration/import/runner.js",
     "compile": "tsc -b ./src/tsconfig.cjs.json ./src/tsconfig.cjs.spec.json ./src/tsconfig.esm.json ./src/tsconfig.types.json ./src/tsconfig.types.spec.json ./spec/tsconfig.json",
     "build:clean": "shx rm -rf ./dist",
     "build": "yarn build:clean && yarn compile && node ./tools/generate-alias.js",
