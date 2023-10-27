@@ -165,10 +165,14 @@ function isSubscriptionLogArray(input: unknown): input is SubscriptionLog[] {
 }
 
 function isArrayOf<T>(input: unknown, propName: keyof T): input is T[] {
-  if (!Array.isArray(input)) return false;
+  if (!Array.isArray(input)) {
+    return false;
+  }
 
   // An empty array could match any type of array.
-  if (input.length === 0) return true;
+  if (input.length === 0) {
+    return true;
+  }
 
   const first = input[0];
   return typeof first === 'object' && first && propName in first;
