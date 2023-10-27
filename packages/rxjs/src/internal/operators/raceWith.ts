@@ -1,7 +1,7 @@
-import { OperatorFunction, ObservableInputTuple } from '../types';
-import { raceInit } from '../observable/race';
-import { Observable } from '../Observable';
-import { identity } from '../util/identity';
+import { OperatorFunction, ObservableInputTuple } from '../types.js';
+import { raceInit } from '../observable/race.js';
+import { Observable } from '../Observable.js';
+import { identity } from '../util/identity.js';
 
 /**
  * Creates an Observable that mirrors the first source Observable to emit a next,

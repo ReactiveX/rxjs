@@ -6,8 +6,7 @@ import { MockLocationService } from 'testing/location.service';
 import { SearchResults } from 'app/search/interfaces';
 import { SearchResultsComponent } from 'app/shared/search-results/search-results.component';
 import { SearchService } from 'app/search/search.service';
-import { FileNotFoundSearchComponent } from './file-not-found-search.component';
-
+import { FileNotFoundSearchComponent } from './file-not-found-search.component.js';
 
 describe('FileNotFoundSearchComponent', () => {
   let fixture: ComponentFixture<FileNotFoundSearchComponent>;
@@ -15,13 +14,9 @@ describe('FileNotFoundSearchComponent', () => {
   let searchResultSubject: Subject<SearchResults>;
 
   beforeEach(() => {
-
     TestBed.configureTestingModule({
-      declarations: [ FileNotFoundSearchComponent, SearchResultsComponent ],
-      providers: [
-        { provide: LocationService, useValue: new MockLocationService('base/initial-url?some-query') },
-        SearchService
-      ]
+      declarations: [FileNotFoundSearchComponent, SearchResultsComponent],
+      providers: [{ provide: LocationService, useValue: new MockLocationService('base/initial-url?some-query') }, SearchService],
     });
 
     fixture = TestBed.createComponent(FileNotFoundSearchComponent);
@@ -39,7 +34,7 @@ describe('FileNotFoundSearchComponent', () => {
     const searchResultsComponent = fixture.debugElement.query(By.directive(SearchResultsComponent)).componentInstance;
     expect(searchResultsComponent.searchResults).toBe(null);
 
-    const results = { query: 'base initial url', results: []};
+    const results = { query: 'base initial url', results: [] };
     searchResultSubject.next(results);
     fixture.detectChanges();
     expect(searchResultsComponent.searchResults).toEqual(results);

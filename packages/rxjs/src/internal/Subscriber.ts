@@ -1,9 +1,9 @@
-import { isFunction } from './util/isFunction';
-import { Observer, ObservableNotification } from './types';
-import { Subscription } from './Subscription';
-import { config } from './config';
-import { reportUnhandledError } from './util/reportUnhandledError';
-import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories';
+import { isFunction } from './util/isFunction.js';
+import { Observer, ObservableNotification } from './types.js';
+import { Subscription } from './Subscription.js';
+import { config } from './config.js';
+import { reportUnhandledError } from './util/reportUnhandledError.js';
+import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories.js';
 
 export interface SubscriberOverrides<T> {
   /**

@@ -1,11 +1,11 @@
-import { Observable } from '../Observable';
-import { EmptyError } from '../util/EmptyError';
-import { OperatorFunction, TruthyTypesOf } from '../types';
-import { filter } from './filter';
-import { takeLast } from './takeLast';
-import { throwIfEmpty } from './throwIfEmpty';
-import { defaultIfEmpty } from './defaultIfEmpty';
-import { identity } from '../util/identity';
+import { Observable } from '../Observable.js';
+import { EmptyError } from '../util/EmptyError.js';
+import { OperatorFunction, TruthyTypesOf } from '../types.js';
+import { filter } from './filter.js';
+import { takeLast } from './takeLast.js';
+import { throwIfEmpty } from './throwIfEmpty.js';
+import { defaultIfEmpty } from './defaultIfEmpty.js';
+import { identity } from '../util/identity.js';
 
 export function last<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export function last<T, D>(predicate: BooleanConstructor, defaultValue: D): OperatorFunction<T, TruthyTypesOf<T> | D>;

@@ -1,10 +1,10 @@
-import { Observable } from '../Observable';
-import { Subscription } from '../Subscription';
-import { TestMessage } from './TestMessage';
-import { Subscriber } from '../Subscriber';
-import { observeNotification } from '../Notification';
-import { SchedulerLike, TeardownLogic } from '../types';
-import { logSubscribedFrame, logUnsubscribedFrame, SubscriptionLog } from './subscription-logging';
+import { Observable } from '../Observable.js';
+import { Subscription } from '../Subscription.js';
+import { TestMessage } from './TestMessage.js';
+import { Subscriber } from '../Subscriber.js';
+import { observeNotification } from '../Notification.js';
+import { SchedulerLike, TeardownLogic } from '../types.js';
+import { logSubscribedFrame, logUnsubscribedFrame, SubscriptionLog } from './subscription-logging.js';
 
 export class ColdObservable<T> extends Observable<T> {
   public subscriptions: SubscriptionLog[] = [];

@@ -1,4 +1,4 @@
-import { Subscription } from '../Subscription';
+import { Subscription } from '../Subscription.js';
 
 interface AnimationFrameProvider {
   schedule(callback: FrameRequestCallback): Subscription;

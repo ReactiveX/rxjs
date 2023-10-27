@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SearchBoxComponent } from './search-box.component';
+import { SearchBoxComponent } from './search-box.component.js';
 import { LocationService } from 'app/shared/location.service';
 import { MockLocationService } from 'testing/location.service';
 
 @Component({
-  template: '<aio-search-box (onSearch)="searchHandler($event)" (onFocus)="focusHandler($event)"></aio-search-box>'
+  template: '<aio-search-box (onSearch)="searchHandler($event)" (onFocus)="focusHandler($event)"></aio-search-box>',
 })
 class HostComponent {
   searchHandler = jasmine.createSpy('searchHandler');
@@ -20,10 +20,8 @@ describe('SearchBoxComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchBoxComponent, HostComponent ],
-      providers: [
-        { provide: LocationService, useFactory: () => new MockLocationService('') }
-      ]
+      declarations: [SearchBoxComponent, HostComponent],
+      providers: [{ provide: LocationService, useFactory: () => new MockLocationService('') }],
     });
   });
 
@@ -35,15 +33,16 @@ describe('SearchBoxComponent', () => {
   });
 
   describe('initialisation', () => {
-    it('should get the current search query from the location service',
-          fakeAsync(inject([LocationService], (location: MockLocationService) => {
-      location.search.and.returnValue({ search: 'initial search' });
-      component.ngOnInit();
-      expect(location.search).toHaveBeenCalled();
-      tick(300);
-      expect(host.searchHandler).toHaveBeenCalledWith('initial search');
-      expect(component.searchBox.nativeElement.value).toEqual('initial search');
-    })));
+    it('should get the current search query from the location service', fakeAsync(
+      inject([LocationService], (location: MockLocationService) => {
+        location.search.and.returnValue({ search: 'initial search' });
+        component.ngOnInit();
+        expect(location.search).toHaveBeenCalled();
+        tick(300);
+        expect(host.searchHandler).toHaveBeenCalledWith('initial search');
+        expect(component.searchBox.nativeElement.value).toEqual('initial search');
+      })
+    ));
   });
 
   describe('onSearch', () => {
@@ -85,7 +84,7 @@ describe('SearchBoxComponent', () => {
     it('should trigger a search', () => {
       const input = fixture.debugElement.query(By.css('input'));
       spyOn(component, 'doSearch');
-      input.triggerEventHandler('input', { });
+      input.triggerEventHandler('input', {});
       expect(component.doSearch).toHaveBeenCalled();
     });
   });
@@ -94,7 +93,7 @@ describe('SearchBoxComponent', () => {
     it('should trigger a search', () => {
       const input = fixture.debugElement.query(By.css('input'));
       spyOn(component, 'doSearch');
-      input.triggerEventHandler('keyup', { });
+      input.triggerEventHandler('keyup', {});
       expect(component.doSearch).toHaveBeenCalled();
     });
   });
@@ -103,7 +102,7 @@ describe('SearchBoxComponent', () => {
     it('should trigger the onFocus event', () => {
       const input = fixture.debugElement.query(By.css('input'));
       input.nativeElement.value = 'some query (focus)';
-      input.triggerEventHandler('focus', { });
+      input.triggerEventHandler('focus', {});
       expect(host.focusHandler).toHaveBeenCalledWith('some query (focus)');
     });
   });
@@ -112,7 +111,7 @@ describe('SearchBoxComponent', () => {
     it('should trigger a search', () => {
       const input = fixture.debugElement.query(By.css('input'));
       spyOn(component, 'doSearch');
-      input.triggerEventHandler('click', { });
+      input.triggerEventHandler('click', {});
       expect(component.doSearch).toHaveBeenCalled();
     });
   });

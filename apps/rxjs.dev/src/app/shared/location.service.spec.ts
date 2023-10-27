@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 
 import { GaService } from 'app/shared/ga.service';
 import { SwUpdatesService } from 'app/sw-updates/sw-updates.service';
-import { LocationService } from './location.service';
+import { LocationService } from './location.service.js';
 
 describe('LocationService', () => {
   let injector: ReflectiveInjector;
@@ -15,22 +15,21 @@ describe('LocationService', () => {
 
   beforeEach(() => {
     injector = ReflectiveInjector.resolveAndCreate([
-        LocationService,
-        Location,
-        { provide: GaService, useClass: TestGaService },
-        { provide: LocationStrategy, useClass: MockLocationStrategy },
-        { provide: PlatformLocation, useClass: MockPlatformLocation },
-        { provide: SwUpdatesService, useClass: MockSwUpdatesService }
+      LocationService,
+      Location,
+      { provide: GaService, useClass: TestGaService },
+      { provide: LocationStrategy, useClass: MockLocationStrategy },
+      { provide: PlatformLocation, useClass: MockPlatformLocation },
+      { provide: SwUpdatesService, useClass: MockSwUpdatesService },
     ]);
 
-    location  = injector.get(LocationStrategy);
-    service  = injector.get(LocationService);
-    swUpdates  = injector.get(SwUpdatesService);
+    location = injector.get(LocationStrategy);
+    service = injector.get(LocationService);
+    swUpdates = injector.get(SwUpdatesService);
   });
 
   describe('currentUrl', () => {
     it('should emit the latest url at the time it is subscribed to', () => {
-
       location.simulatePopState('/initial-url1');
       location.simulatePopState('/initial-url2');
       location.simulatePopState('/initial-url3');
@@ -39,8 +38,8 @@ describe('LocationService', () => {
       location.simulatePopState('/next-url2');
       location.simulatePopState('/next-url3');
 
-      let initialUrl: string|undefined;
-      service.currentUrl.subscribe(url => initialUrl = url);
+      let initialUrl: string | undefined;
+      service.currentUrl.subscribe((url) => (initialUrl = url));
       expect(initialUrl).toEqual('next-url3');
     });
 
@@ -50,18 +49,13 @@ describe('LocationService', () => {
       location.simulatePopState('/initial-url3');
 
       const urls: string[] = [];
-      service.currentUrl.subscribe(url => urls.push(url));
+      service.currentUrl.subscribe((url) => urls.push(url));
 
       location.simulatePopState('/next-url1');
       location.simulatePopState('/next-url2');
       location.simulatePopState('/next-url3');
 
-      expect(urls).toEqual([
-        'initial-url3',
-        'next-url1',
-        'next-url2',
-        'next-url3'
-      ]);
+      expect(urls).toEqual(['initial-url3', 'next-url1', 'next-url2', 'next-url3']);
     });
 
     it('should pass only the latest and later urls to each subscriber', () => {
@@ -70,45 +64,32 @@ describe('LocationService', () => {
       location.simulatePopState('/initial-url3');
 
       const urls1: string[] = [];
-      service.currentUrl.subscribe(url => urls1.push(url));
+      service.currentUrl.subscribe((url) => urls1.push(url));
 
       location.simulatePopState('/next-url1');
       location.simulatePopState('/next-url2');
 
       const urls2: string[] = [];
-      service.currentUrl.subscribe(url => urls2.push(url));
+      service.currentUrl.subscribe((url) => urls2.push(url));
 
       location.simulatePopState('/next-url3');
 
-      expect(urls1).toEqual([
-        'initial-url3',
-        'next-url1',
-        'next-url2',
-        'next-url3'
-      ]);
+      expect(urls1).toEqual(['initial-url3', 'next-url1', 'next-url2', 'next-url3']);
 
-      expect(urls2).toEqual([
-        'next-url2',
-        'next-url3'
-      ]);
+      expect(urls2).toEqual(['next-url2', 'next-url3']);
     });
 
     it('should strip leading and trailing slashes', () => {
       const urls: string[] = [];
 
-      service.currentUrl.subscribe(u => urls.push(u));
+      service.currentUrl.subscribe((u) => urls.push(u));
 
       location.simulatePopState('///some/url1///');
       location.simulatePopState('///some/url2///?foo=bar');
       location.simulatePopState('///some/url3///#baz');
       location.simulatePopState('///some/url4///?foo=bar#baz');
 
-      expect(urls.slice(-4)).toEqual([
-        'some/url1',
-        'some/url2?foo=bar',
-        'some/url3#baz',
-        'some/url4?foo=bar#baz'
-      ]);
+      expect(urls.slice(-4)).toEqual(['some/url1', 'some/url2?foo=bar', 'some/url3#baz', 'some/url4?foo=bar#baz']);
     });
   });
 
@@ -116,43 +97,33 @@ describe('LocationService', () => {
     it('should strip leading and trailing slashes off the url', () => {
       const paths: string[] = [];
 
-      service.currentPath.subscribe(p => paths.push(p));
+      service.currentPath.subscribe((p) => paths.push(p));
 
       location.simulatePopState('///initial/url1///');
       location.simulatePopState('///initial/url2///?foo=bar');
       location.simulatePopState('///initial/url3///#baz');
       location.simulatePopState('///initial/url4///?foo=bar#baz');
 
-      expect(paths.slice(-4)).toEqual([
-        'initial/url1',
-        'initial/url2',
-        'initial/url3',
-        'initial/url4'
-      ]);
+      expect(paths.slice(-4)).toEqual(['initial/url1', 'initial/url2', 'initial/url3', 'initial/url4']);
     });
 
     it('should not strip other slashes off the url', () => {
       const paths: string[] = [];
 
-      service.currentPath.subscribe(p => paths.push(p));
+      service.currentPath.subscribe((p) => paths.push(p));
 
       location.simulatePopState('initial///url1');
       location.simulatePopState('initial///url2?foo=bar');
       location.simulatePopState('initial///url3#baz');
       location.simulatePopState('initial///url4?foo=bar#baz');
 
-      expect(paths.slice(-4)).toEqual([
-        'initial///url1',
-        'initial///url2',
-        'initial///url3',
-        'initial///url4'
-      ]);
+      expect(paths.slice(-4)).toEqual(['initial///url1', 'initial///url2', 'initial///url3', 'initial///url4']);
     });
 
     it('should strip the query off the url', () => {
-      let path: string|undefined;
+      let path: string | undefined;
 
-      service.currentPath.subscribe(p => path = p);
+      service.currentPath.subscribe((p) => (path = p));
 
       location.simulatePopState('/initial/url1?foo=bar');
 
@@ -162,15 +133,12 @@ describe('LocationService', () => {
     it('should strip the hash fragment off the url', () => {
       const paths: string[] = [];
 
-      service.currentPath.subscribe(p => paths.push(p));
+      service.currentPath.subscribe((p) => paths.push(p));
 
       location.simulatePopState('/initial/url1#foo');
       location.simulatePopState('/initial/url2?foo=bar#baz');
 
-      expect(paths.slice(-2)).toEqual([
-        'initial/url1',
-        'initial/url2'
-      ]);
+      expect(paths.slice(-2)).toEqual(['initial/url1', 'initial/url2']);
     });
 
     it('should emit the latest path at the time it is subscribed to', () => {
@@ -182,8 +150,8 @@ describe('LocationService', () => {
       location.simulatePopState('/next/url2');
       location.simulatePopState('/next/url3');
 
-      let initialPath: string|undefined;
-      service.currentPath.subscribe(path => initialPath = path);
+      let initialPath: string | undefined;
+      service.currentPath.subscribe((path) => (initialPath = path));
 
       expect(initialPath).toEqual('next/url3');
     });
@@ -194,18 +162,13 @@ describe('LocationService', () => {
       location.simulatePopState('/initial/url3');
 
       const paths: string[] = [];
-      service.currentPath.subscribe(path => paths.push(path));
+      service.currentPath.subscribe((path) => paths.push(path));
 
       location.simulatePopState('/next/url1');
       location.simulatePopState('/next/url2');
       location.simulatePopState('/next/url3');
 
-      expect(paths).toEqual([
-        'initial/url3',
-        'next/url1',
-        'next/url2',
-        'next/url3'
-      ]);
+      expect(paths).toEqual(['initial/url3', 'next/url1', 'next/url2', 'next/url3']);
     });
 
     it('should pass only the latest and later paths to each subscriber', () => {
@@ -214,32 +177,23 @@ describe('LocationService', () => {
       location.simulatePopState('/initial/url3');
 
       const paths1: string[] = [];
-      service.currentPath.subscribe(path => paths1.push(path));
+      service.currentPath.subscribe((path) => paths1.push(path));
 
       location.simulatePopState('/next/url1');
       location.simulatePopState('/next/url2');
 
       const paths2: string[] = [];
-      service.currentPath.subscribe(path => paths2.push(path));
+      service.currentPath.subscribe((path) => paths2.push(path));
 
       location.simulatePopState('/next/url3');
 
-      expect(paths1).toEqual([
-        'initial/url3',
-        'next/url1',
-        'next/url2',
-        'next/url3'
-      ]);
+      expect(paths1).toEqual(['initial/url3', 'next/url1', 'next/url2', 'next/url3']);
 
-      expect(paths2).toEqual([
-        'next/url2',
-        'next/url3'
-      ]);
+      expect(paths2).toEqual(['next/url2', 'next/url3']);
     });
   });
 
   describe('go', () => {
-
     it('should update the location', () => {
       service.go('some-new-url');
       expect(location.internalPath).toEqual('some-new-url');
@@ -250,18 +204,15 @@ describe('LocationService', () => {
       const urls: string[] = [];
       service.go('some-initial-url');
 
-      service.currentUrl.subscribe(url => urls.push(url));
+      service.currentUrl.subscribe((url) => urls.push(url));
       service.go('some-new-url');
-      expect(urls).toEqual([
-        'some-initial-url',
-        'some-new-url'
-      ]);
+      expect(urls).toEqual(['some-initial-url', 'some-new-url']);
     });
 
     it('should strip leading and trailing slashes', () => {
-      let url: string|undefined;
+      let url: string | undefined;
 
-      service.currentUrl.subscribe(u => url = u);
+      service.currentUrl.subscribe((u) => (url = u));
       service.go('/some/url/');
 
       expect(location.internalPath).toEqual('some/url');
@@ -270,16 +221,16 @@ describe('LocationService', () => {
     });
 
     it('should ignore empty URL string', () => {
-        const initialUrl = 'some/url';
-        const goExternalSpy = spyOn(service, 'goExternal');
-        let url: string|undefined;
+      const initialUrl = 'some/url';
+      const goExternalSpy = spyOn(service, 'goExternal');
+      let url: string | undefined;
 
-        service.go(initialUrl);
-        service.currentUrl.subscribe(u => url = u);
+      service.go(initialUrl);
+      service.currentUrl.subscribe((u) => (url = u));
 
-        service.go('');
-        expect(url).toEqual(initialUrl, 'should not have re-navigated locally');
-        expect(goExternalSpy).not.toHaveBeenCalled();
+      service.go('');
+      expect(url).toEqual(initialUrl, 'should not have re-navigated locally');
+      expect(goExternalSpy).not.toHaveBeenCalled();
     });
 
     it('should leave the site for external url that starts with "http"', () => {
@@ -305,13 +256,12 @@ describe('LocationService', () => {
     });
 
     it('should not update currentUrl for external url that starts with "http"', () => {
-      let localUrl: string|undefined;
+      let localUrl: string | undefined;
       spyOn(service, 'goExternal');
-      service.currentUrl.subscribe(url => localUrl = url);
+      service.currentUrl.subscribe((url) => (localUrl = url));
       service.go('https://some/far/away/land');
       expect(localUrl).toBeFalsy('should not set local url');
     });
-
   });
 
   describe('search', () => {
@@ -322,10 +272,10 @@ describe('LocationService', () => {
 
     it('should cope with an empty query', () => {
       location.simulatePopState('a/b/c');
-      expect(service.search()).toEqual({ });
+      expect(service.search()).toEqual({});
 
       location.simulatePopState('x/y/z?');
-      expect(service.search()).toEqual({ });
+      expect(service.search()).toEqual({});
 
       location.simulatePopState('x/y/z?x=');
       expect(service.search()).toEqual({ x: '' });
@@ -548,7 +498,6 @@ describe('LocationService', () => {
   });
 
   describe('google analytics - GaService#locationChanged', () => {
-
     let gaLocationChanged: jasmine.Spy;
 
     beforeEach(() => {
@@ -559,7 +508,7 @@ describe('LocationService', () => {
     });
 
     it('should call locationChanged with initial URL', () => {
-      const initialUrl = location.path().replace(/^\/+/, '');  // strip leading slashes
+      const initialUrl = location.path().replace(/^\/+/, ''); // strip leading slashes
 
       expect(gaLocationChanged.calls.count()).toBe(1, 'gaService.locationChanged');
       const args = gaLocationChanged.calls.first().args;
@@ -592,9 +541,7 @@ describe('LocationService', () => {
       const args = gaLocationChanged.calls.argsFor(1);
       expect(args[0]).toBe('next-url');
     });
-
   });
-
 });
 
 /// Test Helpers ///

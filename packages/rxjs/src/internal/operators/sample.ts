@@ -1,8 +1,8 @@
-import { from } from '../observable/from';
-import { MonoTypeOperatorFunction, ObservableInput } from '../types';
-import { Observable } from '../Observable';
-import { noop } from '../util/noop';
-import { operate } from '../Subscriber';
+import { from } from '../observable/from.js';
+import { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
+import { Observable } from '../Observable.js';
+import { noop } from '../util/noop.js';
+import { operate } from '../Subscriber.js';
 
 /**
  * Emits the most recently emitted value from the source Observable whenever

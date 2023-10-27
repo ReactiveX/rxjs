@@ -1,5 +1,5 @@
-import { distinctUntilChanged } from './distinctUntilChanged';
-import { MonoTypeOperatorFunction } from '../types';
+import { distinctUntilChanged } from './distinctUntilChanged.js';
+import { MonoTypeOperatorFunction } from '../types.js';
 
 export function distinctUntilKeyChanged<T>(key: keyof T): MonoTypeOperatorFunction<T>;
 export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (x: T[K], y: T[K]) => boolean): MonoTypeOperatorFunction<T>;

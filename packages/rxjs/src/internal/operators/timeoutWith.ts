@@ -1,7 +1,7 @@
-import { asyncScheduler } from '../scheduler/async';
-import { isValidDate } from '../util/isDate';
-import { ObservableInput, OperatorFunction, SchedulerLike } from '../types';
-import { timeout } from './timeout';
+import { asyncScheduler } from '../scheduler/async.js';
+import { isValidDate } from '../util/isDate.js';
+import { ObservableInput, OperatorFunction, SchedulerLike } from '../types.js';
+import { timeout } from './timeout.js';
 
 /** @deprecated Replaced with {@link timeout}. Instead of `timeoutWith(someDate, a$, scheduler)`, use the configuration object
  * `timeout({ first: someDate, with: () => a$, scheduler })`. Will be removed in v8. */

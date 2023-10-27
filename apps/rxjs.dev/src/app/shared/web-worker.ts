@@ -6,7 +6,7 @@ can be found in the LICENSE file at http://angular.io/license
 
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
-import { WebWorkerMessage } from './web-worker-message';
+import { WebWorkerMessage } from './web-worker-message.js';
 
 export class WebWorkerClient {
   private nextId = 0;

@@ -1,5 +1,5 @@
-import { Subscription } from '../Subscription';
-import { SchedulerAction, SchedulerLike } from '../types';
+import { Subscription } from '../Subscription.js';
+import { SchedulerAction, SchedulerLike } from '../types.js';
 
 export function executeSchedule(
   parentSubscription: Subscription,

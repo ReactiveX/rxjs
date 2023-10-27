@@ -1,4 +1,4 @@
-import { TimestampProvider } from '../types';
+import { TimestampProvider } from '../types.js';
 
 interface PerformanceTimestampProvider extends TimestampProvider {
   delegate: TimestampProvider | undefined;

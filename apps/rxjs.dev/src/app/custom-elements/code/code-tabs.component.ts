@@ -1,6 +1,6 @@
 /* tslint:disable component-selector */
 import { AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { CodeComponent } from './code.component';
+import { CodeComponent } from './code.component.js';
 
 export interface TabInfo {
   class: string | null;

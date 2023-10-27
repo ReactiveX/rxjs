@@ -1,18 +1,18 @@
-import { scheduleObservable } from './scheduleObservable';
-import { schedulePromise } from './schedulePromise';
-import { scheduleArray } from './scheduleArray';
-import { scheduleIterable } from './scheduleIterable';
-import { scheduleAsyncIterable } from './scheduleAsyncIterable';
-import { isInteropObservable } from '../util/isInteropObservable';
-import { isPromise } from '../util/isPromise';
-import { isArrayLike } from '../util/isArrayLike';
-import { isIterable } from '../util/isIterable';
-import { ObservableInput, SchedulerLike } from '../types';
-import { Observable } from '../Observable';
-import { isAsyncIterable } from '../util/isAsyncIterable';
-import { createInvalidObservableTypeError } from '../util/throwUnobservableError';
-import { isReadableStreamLike } from '../util/isReadableStreamLike';
-import { scheduleReadableStreamLike } from './scheduleReadableStreamLike';
+import { scheduleObservable } from './scheduleObservable.js';
+import { schedulePromise } from './schedulePromise.js';
+import { scheduleArray } from './scheduleArray.js';
+import { scheduleIterable } from './scheduleIterable.js';
+import { scheduleAsyncIterable } from './scheduleAsyncIterable.js';
+import { isInteropObservable } from '../util/isInteropObservable.js';
+import { isPromise } from '../util/isPromise.js';
+import { isArrayLike } from '../util/isArrayLike.js';
+import { isIterable } from '../util/isIterable.js';
+import { ObservableInput, SchedulerLike } from '../types.js';
+import { Observable } from '../Observable.js';
+import { isAsyncIterable } from '../util/isAsyncIterable.js';
+import { createInvalidObservableTypeError } from '../util/throwUnobservableError.js';
+import { isReadableStreamLike } from '../util/isReadableStreamLike.js';
+import { scheduleReadableStreamLike } from './scheduleReadableStreamLike.js';
 
 /**
  * Converts from a common {@link ObservableInput} type to an observable where subscription and emissions

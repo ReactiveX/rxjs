@@ -1,5 +1,5 @@
-import { Observable } from '../Observable';
-import { SchedulerLike } from '../types';
+import { Observable } from '../Observable.js';
+import { SchedulerLike } from '../types.js';
 
 export function scheduleArray<T>(input: ArrayLike<T>, scheduler: SchedulerLike) {
   return new Observable<T>((subscriber) => {

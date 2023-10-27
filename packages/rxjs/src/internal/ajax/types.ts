@@ -1,4 +1,4 @@
-import { PartialObserver } from '../types';
+import { PartialObserver } from '../types.js';
 
 /**
  * Valid Ajax direction types. Prefixes the event `type` in the

@@ -1,1 +1,1 @@
-export { fromFetch } from '../internal/observable/dom/fetch';
+export { fromFetch } from '../internal/observable/dom/fetch.js';

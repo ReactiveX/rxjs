@@ -1,6 +1,6 @@
-import { SchedulerLike } from '../types';
-import { Observable } from '../Observable';
-import { executeSchedule } from '../util/executeSchedule';
+import { SchedulerLike } from '../types.js';
+import { Observable } from '../Observable.js';
+import { executeSchedule } from '../util/executeSchedule.js';
 
 export function scheduleAsyncIterable<T>(input: AsyncIterable<T>, scheduler: SchedulerLike) {
   if (!input) {

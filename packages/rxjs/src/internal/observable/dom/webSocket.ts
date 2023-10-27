@@ -1,4 +1,4 @@
-import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
+import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject.js';
 
 /**
  * Wrapper around the w3c-compatible WebSocket object provided by the browser.

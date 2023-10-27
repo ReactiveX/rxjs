@@ -1,6 +1,6 @@
-import { build } from './build';
-import { mockFlatApiList, mockRawTreeNodes } from './fixtures';
-import { treeNodeCount } from './helpers';
+import { build } from './build.js';
+import { mockFlatApiList, mockRawTreeNodes } from './fixtures.js';
+import { treeNodeCount } from './helpers.js';
 
 describe('build', () => {
   const tree = build(mockFlatApiList, mockRawTreeNodes);

@@ -1,5 +1,5 @@
-import { identity } from './identity';
-import { UnaryFunction } from '../types';
+import { identity } from './identity.js';
+import { UnaryFunction } from '../types.js';
 
 export function pipe(): typeof identity;
 export function pipe<T, A>(fn1: UnaryFunction<T, A>): UnaryFunction<T, A>;

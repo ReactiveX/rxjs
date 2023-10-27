@@ -1,5 +1,5 @@
-import { TreeNode, TreeNodeRaw } from './interfaces';
-import { generateUniqueId } from './generateUniqueId';
+import { TreeNode, TreeNodeRaw } from './interfaces.js';
+import { generateUniqueId } from './generateUniqueId.js';
 
 /**
  * Recursively walks the tree and adds unique ids.
@@ -13,12 +13,12 @@ import { generateUniqueId } from './generateUniqueId';
  * @returns {Tree}
  */
 export function addUniqueId(tree: TreeNodeRaw[], depth = 0): TreeNode[] {
-  return tree.map(node => {
+  return tree.map((node) => {
     let treeNode: TreeNode;
     treeNode = {
       label: node.label,
       id: generateUniqueId(),
-      depth // used later in extractInitialSequence to determine the initial options
+      depth, // used later in extractInitialSequence to determine the initial options
     };
 
     if (node.children) {
@@ -26,14 +26,14 @@ export function addUniqueId(tree: TreeNodeRaw[], depth = 0): TreeNode[] {
       treeNode = {
         ...treeNode,
         children,
-        options: children.map(({ id }) => id)
+        options: children.map(({ id }) => id),
       };
     }
 
     if (node.method) {
       treeNode = {
         ...treeNode,
-        method: node.method
+        method: node.method,
       };
     }
 

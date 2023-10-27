@@ -1,7 +1,7 @@
-import { OperatorFunction } from '../types';
-import { Observable } from '../Observable';
-import { operate } from '../Subscriber';
-import { noop } from '../util/noop';
+import { OperatorFunction } from '../types.js';
+import { Observable } from '../Observable.js';
+import { operate } from '../Subscriber.js';
+import { noop } from '../util/noop.js';
 
 /**
  * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.

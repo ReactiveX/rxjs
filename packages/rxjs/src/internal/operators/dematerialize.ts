@@ -1,7 +1,7 @@
-import { observeNotification } from '../Notification';
-import { OperatorFunction, ObservableNotification, ValueFromNotification } from '../types';
-import { Observable } from '../Observable';
-import { operate } from '../Subscriber';
+import { observeNotification } from '../Notification.js';
+import { OperatorFunction, ObservableNotification, ValueFromNotification } from '../types.js';
+import { Observable } from '../Observable.js';
+import { operate } from '../Subscriber.js';
 
 /**
  * Converts an Observable of {@link ObservableNotification} objects into the emissions

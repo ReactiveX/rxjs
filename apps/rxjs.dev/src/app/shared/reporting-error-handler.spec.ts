@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { WindowToken } from 'app/shared/window';
 import { AppModule } from 'app/app.module';
 
-import { ReportingErrorHandler } from './reporting-error-handler';
+import { ReportingErrorHandler } from './reporting-error-handler.js';
 
 describe('ReportingErrorHandler service', () => {
   let handler: ReportingErrorHandler;
@@ -16,7 +16,7 @@ describe('ReportingErrorHandler service', () => {
 
     const injector = ReflectiveInjector.resolveAndCreate([
       { provide: ErrorHandler, useClass: ReportingErrorHandler },
-      { provide: WindowToken, useFactory: () => ({ onerror: onerrorSpy }) }
+      { provide: WindowToken, useFactory: () => ({ onerror: onerrorSpy }) },
     ]);
     handler = injector.get(ErrorHandler);
   });

@@ -1,6 +1,6 @@
-import { Observable } from '../Observable';
-import { Falsy, OperatorFunction } from '../types';
-import { operate } from '../Subscriber';
+import { Observable } from '../Observable.js';
+import { Falsy, OperatorFunction } from '../types.js';
+import { operate } from '../Subscriber.js';
 
 export function every<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */

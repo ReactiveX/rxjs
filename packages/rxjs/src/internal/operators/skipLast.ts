@@ -1,7 +1,7 @@
-import { MonoTypeOperatorFunction } from '../types';
-import { identity } from '../util/identity';
-import { Observable } from '../Observable';
-import { operate } from '../Subscriber';
+import { MonoTypeOperatorFunction } from '../types.js';
+import { identity } from '../util/identity.js';
+import { Observable } from '../Observable.js';
+import { operate } from '../Subscriber.js';
 
 /**
  * Skip a specified number of values before the completion of an observable.

@@ -1,4 +1,4 @@
-import type { TimerHandle } from './timerHandle';
+import type { TimerHandle } from './timerHandle.js';
 type SetTimeoutFunction = (handler: () => void, timeout?: number, ...args: any[]) => TimerHandle;
 type ClearTimeoutFunction = (handle: TimerHandle) => void;
 

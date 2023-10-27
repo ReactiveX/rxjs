@@ -1,9 +1,7 @@
-import { OperatorTreeNodeWithOptions } from './interfaces';
+import { OperatorTreeNodeWithOptions } from './interfaces.js';
 
 export function isInitialDecision(previousBranchIds: string[]): boolean {
-  return (
-    previousBranchIds.includes('initial') && previousBranchIds.length === 1
-  );
+  return previousBranchIds.includes('initial') && previousBranchIds.length === 1;
 }
 
 export function treeIsErrorFree(tree): boolean {

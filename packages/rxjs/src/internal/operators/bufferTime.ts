@@ -1,11 +1,11 @@
-import { Subscription } from '../Subscription';
-import { OperatorFunction, SchedulerLike } from '../types';
-import { Observable } from '../Observable';
-import { operate } from '../Subscriber';
-import { arrRemove } from '../util/arrRemove';
-import { asyncScheduler } from '../scheduler/async';
-import { popScheduler } from '../util/args';
-import { executeSchedule } from '../util/executeSchedule';
+import { Subscription } from '../Subscription.js';
+import { OperatorFunction, SchedulerLike } from '../types.js';
+import { Observable } from '../Observable.js';
+import { operate } from '../Subscriber.js';
+import { arrRemove } from '../util/arrRemove.js';
+import { asyncScheduler } from '../scheduler/async.js';
+import { popScheduler } from '../util/args.js';
+import { executeSchedule } from '../util/executeSchedule.js';
 
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
 export function bufferTime<T>(

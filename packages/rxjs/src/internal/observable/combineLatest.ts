@@ -1,12 +1,12 @@
-import { Observable } from '../Observable';
-import { ObservableInput, ObservedValueOf, ObservableInputTuple } from '../types';
-import { arrayOrObject } from '../util/argsArgArrayOrObject';
-import { Subscriber, operate } from '../Subscriber';
-import { identity } from '../util/identity';
-import { createObject } from '../util/createObject';
-import { AnyCatcher } from '../AnyCatcher';
-import { EMPTY } from './empty';
-import { from } from './from';
+import { Observable } from '../Observable.js';
+import { ObservableInput, ObservedValueOf, ObservableInputTuple } from '../types.js';
+import { arrayOrObject } from '../util/argsArgArrayOrObject.js';
+import { Subscriber, operate } from '../Subscriber.js';
+import { identity } from '../util/identity.js';
+import { createObject } from '../util/createObject.js';
+import { AnyCatcher } from '../AnyCatcher.js';
+import { EMPTY } from './empty.js';
+import { from } from './from.js';
 
 // combineLatest(any)
 // We put this first because we need to catch cases where the user has supplied

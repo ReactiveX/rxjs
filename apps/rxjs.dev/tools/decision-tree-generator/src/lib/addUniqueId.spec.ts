@@ -1,6 +1,6 @@
-import { addUniqueId } from './addUniqueId';
-import { TreeNode } from './interfaces';
-import { mockRawTreeNodes } from './fixtures';
+import { addUniqueId } from './addUniqueId.js';
+import { TreeNode } from './interfaces.js';
+import { mockRawTreeNodes } from './fixtures.js';
 
 describe('addUniqueId', () => {
   describe('when called with three raw nodes', () => {
@@ -21,17 +21,19 @@ describe('addUniqueId', () => {
         expect(tree).toHaveLength(mockRawTreeNodes.length);
       });
       it('should return an array of tree nodes that have unique ids', () => {
-        tree.forEach(node => {
+        tree.forEach((node) => {
           expect(node).toEqual(baseProperties);
 
           if (!node.children) {
             expect(node).not.toHaveProperty('options');
           } else {
-            expect(node).toEqual(expect.objectContaining({
-              children: expect.any(Array),
-              options: expect.any(Array),
-            }));
-            node.children.forEach(child => {
+            expect(node).toEqual(
+              expect.objectContaining({
+                children: expect.any(Array),
+                options: expect.any(Array),
+              })
+            );
+            node.children.forEach((child) => {
               expect(child).toEqual(baseProperties);
             });
           }

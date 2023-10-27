@@ -1,8 +1,8 @@
-import { TreeNodeRaw, FlattenedApiList, ApiListNode } from './interfaces';
+import { TreeNodeRaw, FlattenedApiList, ApiListNode } from './interfaces.js';
 
 export const mockRawTreeNodes: TreeNodeRaw[] = [
   {
-    label: 'map'
+    label: 'map',
   },
   {
     label: 'just a label',
@@ -11,35 +11,35 @@ export const mockRawTreeNodes: TreeNodeRaw[] = [
         label: 'yet another label',
         children: [
           {
-            label: 'concat'
-          }
-        ]
-      }
-    ]
+            label: 'concat',
+          },
+        ],
+      },
+    ],
   },
   {
     label: 'Observable',
-    method: 'fakeMethod'
-  }
+    method: 'fakeMethod',
+  },
 ];
 
 export const mockFlatApiList = {
   map: {
     docType: 'function',
-    path: 'fakePath'
+    path: 'fakePath',
   },
   mapTo: {
     docType: 'function',
-    path: 'fakePath'
+    path: 'fakePath',
   },
   concat: {
     docType: 'function',
-    path: 'fakePath'
+    path: 'fakePath',
   },
   Observable: {
     docType: 'class',
-    path: 'fakePath'
-  }
+    path: 'fakePath',
+  },
 } as FlattenedApiList;
 
 // TODO consider using the real API list
@@ -54,7 +54,7 @@ export const mockRawApiListWithDeprecatedRefs: ApiListNode[] = [
         path: 'api/index/function/empty',
         docType: 'function',
         stability: 'deprecated',
-        securityRisk: false
+        securityRisk: false,
       },
       {
         name: 'empty',
@@ -62,7 +62,7 @@ export const mockRawApiListWithDeprecatedRefs: ApiListNode[] = [
         path: 'api/index/const/EMPTY',
         docType: 'const',
         stability: '',
-        securityRisk: false
+        securityRisk: false,
       },
       {
         name: 'concat',
@@ -70,9 +70,9 @@ export const mockRawApiListWithDeprecatedRefs: ApiListNode[] = [
         path: 'api/index/function/concat',
         docType: 'function',
         stability: '',
-        securityRisk: false
-      }
-    ]
+        securityRisk: false,
+      },
+    ],
   },
   {
     name: 'bar',
@@ -84,7 +84,7 @@ export const mockRawApiListWithDeprecatedRefs: ApiListNode[] = [
         path: 'api/index/function/never',
         docType: 'function',
         stability: 'deprecated',
-        securityRisk: false
+        securityRisk: false,
       },
       {
         name: 'never',
@@ -92,7 +92,7 @@ export const mockRawApiListWithDeprecatedRefs: ApiListNode[] = [
         path: 'api/index/const/NEVER',
         docType: 'const',
         stability: '',
-        securityRisk: false
+        securityRisk: false,
       },
       {
         name: 'map',
@@ -100,8 +100,8 @@ export const mockRawApiListWithDeprecatedRefs: ApiListNode[] = [
         path: 'api/index/function/map',
         docType: 'function',
         stability: '',
-        securityRisk: false
-      }
-    ]
-  }
+        securityRisk: false,
+      },
+    ],
+  },
 ];

@@ -1,4 +1,4 @@
-import { CompleteNotification, NextNotification, ErrorNotification } from './types';
+import { CompleteNotification, NextNotification, ErrorNotification } from './types.js';
 
 /**
  * A completion object optimized for memory use and created to be the

@@ -1,4 +1,4 @@
-import { isStable } from './helpers';
+import { isStable } from './helpers.js';
 
 describe('isStable', () => {
   describe('when passed anything but the string "deprecated"', () => {

@@ -1,8 +1,8 @@
 /** @prettier */
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
-import { executeSchedule } from '../util/executeSchedule';
-import { Observable } from '../Observable';
-import { operate } from '../Subscriber';
+import { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
+import { executeSchedule } from '../util/executeSchedule.js';
+import { Observable } from '../Observable.js';
+import { operate } from '../Subscriber.js';
 
 /**
  * Re-emits all notifications from source Observable with specified scheduler.

@@ -1,5 +1,5 @@
-import { Subject } from './Subject';
-import { Subscriber } from './Subscriber';
+import { Subject } from './Subject.js';
+import { Subscriber } from './Subscriber.js';
 
 /**
  * A variant of Subject that only emits a value when it completes. It will emit

@@ -1,8 +1,8 @@
-import { MonoTypeOperatorFunction, Observer } from '../types';
-import { isFunction } from '../util/isFunction';
-import { Observable } from '../Observable';
-import { operate } from '../Subscriber';
-import { identity } from '../util/identity';
+import { MonoTypeOperatorFunction, Observer } from '../types.js';
+import { isFunction } from '../util/isFunction.js';
+import { Observable } from '../Observable.js';
+import { operate } from '../Subscriber.js';
+import { identity } from '../util/identity.js';
 
 /**
  * An extension to the {@link Observer} interface used only by the {@link tap} operator.

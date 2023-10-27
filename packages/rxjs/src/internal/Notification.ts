@@ -1,4 +1,4 @@
-import { PartialObserver, ObservableNotification } from './types';
+import { PartialObserver, ObservableNotification } from './types.js';
 
 /**
  * Executes the appropriate handler on a passed `observer` given the `kind` of notification.

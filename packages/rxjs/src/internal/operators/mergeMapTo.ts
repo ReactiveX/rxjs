@@ -1,5 +1,5 @@
-import { OperatorFunction, ObservedValueOf, ObservableInput } from '../types';
-import { mergeMap } from './mergeMap';
+import { OperatorFunction, ObservedValueOf, ObservableInput } from '../types.js';
+import { mergeMap } from './mergeMap.js';
 
 /**
  * Projects each source value to the same Observable which is merged multiple

@@ -1,7 +1,7 @@
-import { ObservableInputTuple, OperatorFunction } from '../types';
-import { from } from '../observable/from';
-import { concatAll } from '../operators/concatAll';
-import { Observable } from '../Observable';
+import { ObservableInputTuple, OperatorFunction } from '../types.js';
+import { from } from '../observable/from.js';
+import { concatAll } from '../operators/concatAll.js';
+import { Observable } from '../Observable.js';
 
 /**
  * Emits all of the values from the source observable, then, once it completes, subscribes

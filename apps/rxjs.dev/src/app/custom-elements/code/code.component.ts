@@ -1,11 +1,11 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { Logger } from 'app/shared/logger.service';
-import { PrettyPrinter } from './pretty-printer.service';
+import { PrettyPrinter } from './pretty-printer.service.js';
 import { CopierService } from 'app/shared/copier.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { tap } from 'rxjs/operators';
 import { StackblitzService } from 'app/shared/stackblitz.service';
-import version from '../../../../tools/stackblitz/rxjs.version';
+import version from '../../../../tools/stackblitz/rxjs.version.js';
 
 /**
  * If linenums is not set, this is the default maximum number of lines that

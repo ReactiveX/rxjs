@@ -1,4 +1,4 @@
-import { config } from '../config';
+import { config } from '../config.js';
 
 /**
  * Handles an error on another job either with the user-configured {@link onUnhandledError},

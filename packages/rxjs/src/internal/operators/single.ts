@@ -1,10 +1,10 @@
-import { Observable } from '../Observable';
-import { EmptyError } from '../util/EmptyError';
+import { Observable } from '../Observable.js';
+import { EmptyError } from '../util/EmptyError.js';
 
-import { MonoTypeOperatorFunction, OperatorFunction, TruthyTypesOf } from '../types';
-import { SequenceError } from '../util/SequenceError';
-import { NotFoundError } from '../util/NotFoundError';
-import { operate } from '../Subscriber';
+import { MonoTypeOperatorFunction, OperatorFunction, TruthyTypesOf } from '../types.js';
+import { SequenceError } from '../util/SequenceError.js';
+import { NotFoundError } from '../util/NotFoundError.js';
+import { operate } from '../Subscriber.js';
 
 export function single<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;

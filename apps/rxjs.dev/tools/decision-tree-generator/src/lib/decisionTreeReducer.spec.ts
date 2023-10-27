@@ -1,14 +1,14 @@
-import { decisionTreeReducer } from './decisionTreeReducer';
-import { mockFlatApiList, mockRawTreeNodes } from './fixtures';
-import { addUniqueId } from './addUniqueId';
-import { rawNodesWithMethodCount } from './helpers';
+import { decisionTreeReducer } from './decisionTreeReducer.js';
+import { mockFlatApiList, mockRawTreeNodes } from './fixtures.js';
+import { addUniqueId } from './addUniqueId.js';
+import { rawNodesWithMethodCount } from './helpers.js';
 
 describe('decisionTreeReducer', () => {
   const tree = decisionTreeReducer(addUniqueId(mockRawTreeNodes), mockFlatApiList);
   describe('all nodes', () => {
     const baseProperties = expect.objectContaining({
       id: expect.any(String),
-      label: expect.any(String)
+      label: expect.any(String),
     });
 
     it('should have base properties', () => {
@@ -22,11 +22,8 @@ describe('decisionTreeReducer', () => {
     describe('that have options', () => {
       it('should have an options property that is an array of strings', () => {
         for (const key in tree) {
-          if (
-            tree.hasOwnProperty(key) &&
-            tree[key].options
-          ) {
-            tree[key].options.forEach(option => {
+          if (tree.hasOwnProperty(key) && tree[key].options) {
+            tree[key].options.forEach((option) => {
               expect(typeof option).toBe('string');
             });
           }
@@ -37,20 +34,14 @@ describe('decisionTreeReducer', () => {
     describe('when a node does not have options', () => {
       it('should not have an options property', () => {
         for (const key in tree) {
-          if (
-            tree.hasOwnProperty(key) &&
-            !tree[key].options
-          ) {
+          if (tree.hasOwnProperty(key) && !tree[key].options) {
             expect(tree[key]).not.toHaveProperty('options');
           }
         }
       });
       it('should have a docType and a path', () => {
         for (const key in tree) {
-          if (
-            tree.hasOwnProperty(key) &&
-            !tree[key].options
-          ) {
+          if (tree.hasOwnProperty(key) && !tree[key].options) {
             expect(tree[key]).toHaveProperty('docType');
             expect(tree[key]).toHaveProperty('path');
           }
@@ -61,8 +52,8 @@ describe('decisionTreeReducer', () => {
         const treeNodesMissingInApiList = [
           ...mockRawTreeNodes,
           {
-            label: 'foo'
-          }
+            label: 'foo',
+          },
         ];
         it('should call a console.log', () => {
           const spy = jest.spyOn(console, 'log');
@@ -77,10 +68,7 @@ describe('decisionTreeReducer', () => {
       it('should have a method property', () => {
         let count = 0;
         for (const key in tree) {
-          if (
-            tree.hasOwnProperty(key) &&
-            tree[key].method
-          ) {
+          if (tree.hasOwnProperty(key) && tree[key].method) {
             count++;
           }
         }

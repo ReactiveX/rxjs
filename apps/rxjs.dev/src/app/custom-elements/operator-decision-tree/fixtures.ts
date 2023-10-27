@@ -1,38 +1,34 @@
-import {
-  OperatorDecisionTree,
-  OperatorTreeNode,
-  OperatorTreeNodeWithOptions
-} from './interfaces';
+import { OperatorDecisionTree, OperatorTreeNode, OperatorTreeNodeWithOptions } from './interfaces.js';
 
 export const treeNodeStubWithOptionsA: OperatorTreeNodeWithOptions = {
   id: 'treeNodeStubWithOptionsA',
   label: 'someLabelA',
-  options: ['treeNodeStubWithOptionsB']
+  options: ['treeNodeStubWithOptionsB'],
 };
 
 export const treeNodeStubWithOptionsB: OperatorTreeNodeWithOptions = {
   id: 'treeNodeStubWithOptionsB',
   label: 'someLabelB',
-  options: ['treeNodeStubNoOptions']
+  options: ['treeNodeStubNoOptions'],
 };
 
 export const treeNodeStubNoOptions: OperatorTreeNode = {
   id: 'treeNodeStubNoOptions',
   label: 'somelabelNoOptions',
   path: 'some/path/NoOptions',
-  docType: 'someDocTypeNoOptions'
+  docType: 'someDocTypeNoOptions',
 };
 
 export const treeNodeInitialStub = {
   initial: {
     id: 'initial',
-    options: ['treeNodeStubWithOptionsA']
-  }
+    options: ['treeNodeStubWithOptionsA'],
+  },
 };
 
 export const treeStub: OperatorDecisionTree = {
   [treeNodeStubWithOptionsA.id]: treeNodeStubWithOptionsA,
   [treeNodeStubWithOptionsB.id]: treeNodeStubWithOptionsB,
   [treeNodeStubNoOptions.id]: treeNodeStubNoOptions,
-  ...treeNodeInitialStub
+  ...treeNodeInitialStub,
 };

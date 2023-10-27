@@ -1,5 +1,5 @@
-import { Observable } from '../Observable';
-import { noop } from '../util/noop';
+import { Observable } from '../Observable.js';
+import { noop } from '../util/noop.js';
 
 /**
  * An Observable that emits no items to the Observer and never completes.

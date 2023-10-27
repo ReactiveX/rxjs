@@ -1,5 +1,5 @@
-import { Observable } from './Observable';
-import { EmptyError } from './util/EmptyError';
+import { Observable } from './Observable.js';
+import { EmptyError } from './util/EmptyError.js';
 
 export interface LastValueFromConfig<T> {
   defaultValue: T;

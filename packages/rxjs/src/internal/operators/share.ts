@@ -1,9 +1,9 @@
-import { Observable } from '../Observable';
-import { from } from '../observable/from';
-import { Subject } from '../Subject';
-import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { MonoTypeOperatorFunction, SubjectLike, ObservableInput } from '../types';
+import { Observable } from '../Observable.js';
+import { from } from '../observable/from.js';
+import { Subject } from '../Subject.js';
+import { Subscriber } from '../Subscriber.js';
+import { Subscription } from '../Subscription.js';
+import { MonoTypeOperatorFunction, SubjectLike, ObservableInput } from '../types.js';
 
 export interface ShareConfig<T> {
   /**

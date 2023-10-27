@@ -1,7 +1,7 @@
-import { from } from '../observable/from';
-import { Observable } from '../Observable';
-import { ObservableInput, UnaryFunction } from '../types';
-import { pipeFromArray } from './pipe';
+import { from } from '../observable/from.js';
+import { Observable } from '../Observable.js';
+import { ObservableInput, UnaryFunction } from '../types.js';
+import { pipeFromArray } from './pipe.js';
 
 export function rx<A>(source: ObservableInput<A>): Observable<A>;
 export function rx<A, B>(source: ObservableInput<A>, fn2: UnaryFunction<Observable<A>, B>): B;

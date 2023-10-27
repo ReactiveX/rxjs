@@ -1,6 +1,6 @@
-import { ObservableInputTuple, OperatorFunction, Cons } from '../types';
-import { Observable } from '../Observable';
-import { zip } from '../observable/zip';
+import { ObservableInputTuple, OperatorFunction, Cons } from '../types.js';
+import { Observable } from '../Observable.js';
+import { zip } from '../observable/zip.js';
 
 /**
  * Subscribes to the source, and the observable inputs provided as arguments, and combines their values, by index, into arrays.

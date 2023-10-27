@@ -1,5 +1,5 @@
-import { Subscriber } from './Subscriber';
-import { TeardownLogic } from './types';
+import { Subscriber } from './Subscriber.js';
+import { TeardownLogic } from './types.js';
 
 /***
  * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.

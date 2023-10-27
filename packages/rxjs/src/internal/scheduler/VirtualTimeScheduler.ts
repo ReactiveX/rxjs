@@ -1,8 +1,8 @@
-import { AsyncAction } from './AsyncAction';
-import { Subscription } from '../Subscription';
-import { AsyncScheduler } from './AsyncScheduler';
-import { SchedulerAction } from '../types';
-import { TimerHandle } from './timerHandle';
+import { AsyncAction } from './AsyncAction.js';
+import { Subscription } from '../Subscription.js';
+import { AsyncScheduler } from './AsyncScheduler.js';
+import { SchedulerAction } from '../types.js';
+import { TimerHandle } from './timerHandle.js';
 
 export class VirtualTimeScheduler extends AsyncScheduler {
   /** @deprecated Not used in VirtualTimeScheduler directly. Will be removed in v8. */

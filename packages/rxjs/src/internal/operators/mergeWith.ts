@@ -1,7 +1,7 @@
-import { from } from '../observable/from';
-import { mergeAll } from '../operators/mergeAll';
-import { Observable } from '../Observable';
-import { ObservableInputTuple, OperatorFunction } from '../types';
+import { from } from '../observable/from.js';
+import { mergeAll } from '../operators/mergeAll.js';
+import { Observable } from '../Observable.js';
+import { ObservableInputTuple, OperatorFunction } from '../types.js';
 
 /**
  * Merge the values from all observables to a single observable result.

@@ -1,7 +1,7 @@
-import { OperatorFunction } from '../types';
-import { Observable } from '../Observable';
-import { operate } from '../Subscriber';
-import { arrRemove } from '../util/arrRemove';
+import { OperatorFunction } from '../types.js';
+import { Observable } from '../Observable.js';
+import { operate } from '../Subscriber.js';
+import { arrRemove } from '../util/arrRemove.js';
 
 /**
  * Buffers the source Observable values until the size hits the maximum
