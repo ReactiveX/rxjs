@@ -2,14 +2,15 @@ import { ReflectiveInjector } from '@angular/core';
 
 import { of } from 'rxjs';
 
-import { ContributorGroup } from './contributors.model.js';
-import { ContributorListComponent } from './contributor-list.component.js';
-import { ContributorService } from './contributor.service.js';
+import { ContributorGroup } from './contributors.model';
+import { ContributorListComponent } from './contributor-list.component';
+import { ContributorService } from './contributor.service';
 import { LocationService } from 'app/shared/location.service';
 
 // Testing the component class behaviors, independent of its template
 // Let e2e tests verify how it displays.
 describe('ContributorListComponent', () => {
+
   let component: ContributorListComponent;
   let injector: ReflectiveInjector;
   let contributorService: TestContributorService;
@@ -19,8 +20,8 @@ describe('ContributorListComponent', () => {
   beforeEach(() => {
     injector = ReflectiveInjector.resolveAndCreate([
       ContributorListComponent,
-      { provide: ContributorService, useClass: TestContributorService },
-      { provide: LocationService, useClass: TestLocationService },
+      {provide: ContributorService, useClass: TestContributorService },
+      {provide: LocationService, useClass: TestLocationService }
     ]);
 
     locationService = injector.get(LocationService);
@@ -72,22 +73,21 @@ describe('ContributorListComponent', () => {
   });
 
   //// Test Helpers ////
-  function getComponent(): ContributorListComponent {
+  function  getComponent(): ContributorListComponent {
     const comp = injector.get(ContributorListComponent);
     comp.ngOnInit();
     return comp;
   }
 
-  interface SearchResult {
-    [index: string]: string;
-  }
+  interface SearchResult { [index: string]: string; };
 
   class TestLocationService {
     searchResult: SearchResult = {};
     search = jasmine.createSpy('search').and.callFake(() => this.searchResult);
-    setSearch = jasmine.createSpy('setSearch').and.callFake((label: string, result: SearchResult) => {
-      this.searchResult = result;
-    });
+    setSearch = jasmine.createSpy('setSearch')
+      .and.callFake((label: string, result: SearchResult) => {
+        this.searchResult = result;
+      });
   }
 
   class TestContributorService {

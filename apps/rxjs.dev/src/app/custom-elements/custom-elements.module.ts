@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
-import { ROUTES } from '@angular/router';
-import { ElementsLoader } from './elements-loader.js';
+import { ROUTES} from '@angular/router';
+import { ElementsLoader } from './elements-loader';
 import {
   ELEMENT_MODULE_LOAD_CALLBACKS,
   ELEMENT_MODULE_LOAD_CALLBACKS_AS_ROUTES,
-  ELEMENT_MODULE_LOAD_CALLBACKS_TOKEN,
-} from './element-registry.js';
-import { LazyCustomElementComponent } from './lazy-custom-element.component.js';
+  ELEMENT_MODULE_LOAD_CALLBACKS_TOKEN
+} from './element-registry';
+import { LazyCustomElementComponent } from './lazy-custom-element.component';
 
 @NgModule({
-  declarations: [LazyCustomElementComponent],
-  exports: [LazyCustomElementComponent],
+  declarations: [ LazyCustomElementComponent ],
+  exports: [ LazyCustomElementComponent ],
   providers: [
     ElementsLoader,
     { provide: ELEMENT_MODULE_LOAD_CALLBACKS_TOKEN, useValue: ELEMENT_MODULE_LOAD_CALLBACKS },
@@ -21,4 +21,4 @@ import { LazyCustomElementComponent } from './lazy-custom-element.component.js';
     { provide: ROUTES, useValue: ELEMENT_MODULE_LOAD_CALLBACKS_AS_ROUTES, multi: true },
   ],
 })
-export class CustomElementsModule {}
+export class CustomElementsModule { }

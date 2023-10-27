@@ -1,9 +1,9 @@
 import { NgModule, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContributorListComponent } from './contributor-list.component.js';
-import { ContributorService } from './contributor.service.js';
-import { ContributorComponent } from './contributor.component.js';
-import { WithCustomElementComponent } from '../element-registry.js';
+import { ContributorListComponent } from './contributor-list.component';
+import { ContributorService } from './contributor.service';
+import { ContributorComponent } from './contributor.component';
+import { WithCustomElementComponent } from '../element-registry';
 
 @NgModule({
   imports: [CommonModule],

@@ -1,8 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { PlatformLocation } from '@angular/common';
 
-import { Category } from './resource.model.js';
-import { ResourceService } from './resource.service.js';
+import { Category } from './resource.model';
+import { ResourceService } from './resource.service';
 
 @Component({
   selector: 'aio-resource-list',

@@ -2,14 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-import { NavItemComponent } from './nav-item.component.js';
+import { NavItemComponent } from './nav-item.component';
 import { NavigationNode } from 'app/navigation/navigation.model';
 
 describe('NavItemComponent', () => {
+
   // Testing the component class behaviors, independent of its template
   // No dependencies. Just new it and test :)
   // Let e2e tests verify how it displays.
   describe('(class-only)', () => {
+
     let component: NavItemComponent;
 
     let selectedNodes: NavigationNode[];
@@ -26,13 +28,14 @@ describe('NavItemComponent', () => {
     }
 
     beforeEach(() => {
+
       component = new NavItemComponent();
       setClassesSpy = spyOn(component, 'setClasses').and.callThrough();
 
       // Selected nodes is the selected node and its header ancestors
       selectedNodes = [
-        { title: 'a' }, // selected node: an item or a header
-        { title: 'parent' }, // selected node's header parent
+        { title: 'a' },           // selected node: an item or a header
+        { title: 'parent' },      // selected node's header parent
         { title: 'grandparent' }, // selected node's header grandparent
       ];
       component.selectedNodes = selectedNodes;
@@ -57,13 +60,16 @@ describe('NavItemComponent', () => {
 
       it('with other than a selected node or ancestor', () => {
         initialize({ title: 'x' });
-        expect(component.classes).toEqual({ 'level-1': true, collapsed: true, expanded: false, selected: false });
+        expect(component.classes).toEqual(
+          { 'level-1': true, collapsed: true, expanded: false, selected: false }
+        );
       });
     });
 
     describe('when becomes a non-selected node', () => {
+
       // this node won't be the selected node when ngOnChanges() called
-      beforeEach(() => (component.node = { title: 'x' }));
+      beforeEach(() => component.node = { title: 'x' });
 
       it('should de-select if previously selected', () => {
         component.isSelected = true;
@@ -87,8 +93,9 @@ describe('NavItemComponent', () => {
     });
 
     describe('when becomes a selected node', () => {
+
       // this node will be the selected node when ngOnChanges() called
-      beforeEach(() => (component.node = selectedNodes[0]));
+      beforeEach(() => component.node = selectedNodes[0]);
 
       it('should select when previously not selected', () => {
         component.isSelected = false;
@@ -108,8 +115,9 @@ describe('NavItemComponent', () => {
     });
 
     describe('when becomes a selected ancestor node', () => {
+
       // this node will be a selected node ancestor header when ngOnChanges() called
-      beforeEach(() => (component.node = selectedNodes[2]));
+      beforeEach(() => component.node = selectedNodes[2]);
 
       it('should select when previously not selected', () => {
         component.isSelected = false;
@@ -167,13 +175,17 @@ describe('NavItemComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [NavItemComponent],
-        schemas: [NO_ERRORS_SCHEMA],
+        schemas: [NO_ERRORS_SCHEMA]
       });
       fixture = TestBed.createComponent(NavItemComponent);
       component = fixture.componentInstance;
       component.node = {
         title: 'x',
-        children: [{ title: 'a' }, { title: 'b', hidden: true }, { title: 'c' }],
+        children: [
+          { title: 'a' },
+          { title: 'b', hidden: true},
+          { title: 'c' }
+        ]
       };
     });
 
@@ -190,14 +202,14 @@ describe('NavItemComponent', () => {
       fixture.detectChanges();
       let children = fixture.debugElement.queryAll(By.directive(NavItemComponent));
       expect(children.length).toEqual(2, 'when IsWide is true');
-      children.forEach((child) => expect(child.componentInstance.isWide).toBe(true));
+      children.forEach(child => expect(child.componentInstance.isWide).toBe(true));
 
       component.isWide = false;
       component.ngOnChanges();
       fixture.detectChanges();
       children = fixture.debugElement.queryAll(By.directive(NavItemComponent));
       expect(children.length).toEqual(2, 'when IsWide is false');
-      children.forEach((child) => expect(child.componentInstance.isWide).toBe(false));
+      children.forEach(child => expect(child.componentInstance.isWide).toBe(false));
     });
   });
 });

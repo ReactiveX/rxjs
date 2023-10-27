@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CodeExampleComponent } from './code-example.component.js';
-import { CodeExampleModule } from './code-example.module.js';
+import { CodeExampleComponent } from './code-example.component';
+import { CodeExampleModule } from './code-example.module';
 import { Logger } from 'app/shared/logger.service';
 import { MockLogger } from 'testing/logger.service';
 
@@ -13,9 +13,13 @@ describe('CodeExampleComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CodeExampleModule],
-      declarations: [HostComponent],
-      providers: [{ provide: Logger, useClass: MockLogger }],
+      imports: [ CodeExampleModule ],
+      declarations: [
+        HostComponent,
+      ],
+      providers: [
+        { provide: Logger, useClass: MockLogger },
+      ]
     });
 
     fixture = TestBed.createComponent(HostComponent);
@@ -34,7 +38,7 @@ describe('CodeExampleComponent', () => {
     expect(fixture.nativeElement.querySelector('header')).toBeTruthy();
     expect(codeExampleComponent.classes).toEqual({
       'headed-code': true,
-      'simple-code': false,
+      'simple-code': false
     });
 
     codeExampleComponent.header = '';
@@ -44,12 +48,13 @@ describe('CodeExampleComponent', () => {
     expect(fixture.nativeElement.querySelector('header')).toBeFalsy();
     expect(codeExampleComponent.classes).toEqual({
       'headed-code': false,
-      'simple-code': true,
+      'simple-code': true
     });
   });
 
   it('should set avoidFile class if path has .avoid.', () => {
-    const codeExampleComponentElement: HTMLElement = fixture.nativeElement.querySelector('code-example');
+    const codeExampleComponentElement: HTMLElement =
+        fixture.nativeElement.querySelector('code-example');
 
     expect(codeExampleComponent.path).toBe('code-path');
     expect(codeExampleComponentElement.className.indexOf('avoidFile') === -1).toBe(true);
@@ -81,9 +86,9 @@ describe('CodeExampleComponent', () => {
   selector: 'aio-host-comp',
   template: `
     <code-example [header]="header" [path]="path" [hidecopy]="hidecopy">
-      {{ code }}
+      {{code}}
     </code-example>
-  `,
+  `
 })
 class HostComponent {
   code = `const foo = "bar";`;
@@ -91,5 +96,5 @@ class HostComponent {
   path = 'code-path';
   hidecopy: boolean | string = false;
 
-  @ViewChild(CodeExampleComponent, { static: true }) codeExampleComponent: CodeExampleComponent;
+  @ViewChild(CodeExampleComponent, {static: true}) codeExampleComponent: CodeExampleComponent;
 }

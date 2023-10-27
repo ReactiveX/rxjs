@@ -4,8 +4,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AsyncSubject, Observable, of } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 
-import { DocumentContents } from './document-contents.js';
-export { DocumentContents } from './document-contents.js';
+import { DocumentContents } from './document-contents';
+export { DocumentContents } from './document-contents';
 
 import { LocationService } from 'app/shared/location.service';
 import { Logger } from 'app/shared/logger.service';
@@ -30,13 +30,17 @@ const FETCHING_ERROR_CONTENTS = (path: string) => `
 
 @Injectable()
 export class DocumentService {
+
   private cache = new Map<string, Observable<DocumentContents>>();
 
   currentDocument: Observable<DocumentContents>;
 
-  constructor(private logger: Logger, private http: HttpClient, location: LocationService) {
+  constructor(
+    private logger: Logger,
+    private http: HttpClient,
+    location: LocationService) {
     // Whenever the URL changes we try to get the appropriate doc
-    this.currentDocument = location.currentPath.pipe(switchMap((path) => this.getDocument(path)));
+    this.currentDocument = location.currentPath.pipe(switchMap(path => this.getDocument(path)));
   }
 
   private getDocument(url: string) {
@@ -54,9 +58,9 @@ export class DocumentService {
 
     this.logger.log('fetching document from', requestPath);
     this.http
-      .get<DocumentContents>(requestPath, { responseType: 'json' })
+      .get<DocumentContents>(requestPath, {responseType: 'json'})
       .pipe(
-        tap((data) => {
+        tap(data => {
           if (!data || typeof data !== 'object') {
             this.logger.log('received invalid data:', data);
             throw Error('Invalid data');
@@ -64,7 +68,7 @@ export class DocumentService {
         }),
         catchError((error: HttpErrorResponse) => {
           return error.status === 404 ? this.getFileNotFoundDoc(id) : this.getErrorDoc(id, error);
-        })
+        }),
       )
       .subscribe(subject);
 
@@ -79,7 +83,7 @@ export class DocumentService {
     } else {
       return of({
         id: FILE_NOT_FOUND_ID,
-        contents: 'Document not found',
+        contents: 'Document not found'
       });
     }
   }

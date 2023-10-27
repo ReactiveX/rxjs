@@ -1,4 +1,4 @@
-import { NavMenuComponent } from './nav-menu.component.js';
+import { NavMenuComponent } from './nav-menu.component';
 import { NavigationNode } from 'app/navigation/navigation.service';
 
 // Testing the component class behaviors, independent of its template
@@ -7,8 +7,9 @@ import { NavigationNode } from 'app/navigation/navigation.service';
 describe('NavMenuComponent (class-only)', () => {
   it('should filter out hidden nodes', () => {
     const component = new NavMenuComponent();
-    const nodes: NavigationNode[] = [{ title: 'a' }, { title: 'b', hidden: true }, { title: 'c' }];
+    const nodes: NavigationNode[] =
+      [ { title: 'a' }, { title: 'b', hidden: true}, { title: 'c'} ];
     component.nodes = nodes;
-    expect(component.filteredNodes).toEqual([nodes[0], nodes[2]]);
+    expect(component.filteredNodes).toEqual([ nodes[0], nodes[2] ]);
   });
 });

@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LocationService } from 'app/shared/location.service';
 import { MockLocationService } from 'testing/location.service';
-import { CurrentLocationComponent } from './current-location.component.js';
+import { CurrentLocationComponent } from './current-location.component';
+
 
 describe('CurrentLocationComponent', () => {
   let element: HTMLElement;
@@ -12,8 +13,10 @@ describe('CurrentLocationComponent', () => {
     locationService = new MockLocationService('initial/url');
 
     TestBed.configureTestingModule({
-      declarations: [CurrentLocationComponent],
-      providers: [{ provide: LocationService, useValue: locationService }],
+      declarations: [ CurrentLocationComponent ],
+      providers: [
+        { provide: LocationService, useValue: locationService }
+      ]
     });
 
     fixture = TestBed.createComponent(CurrentLocationComponent);

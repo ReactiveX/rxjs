@@ -1,6 +1,6 @@
-import { extractInitialSequence } from './extractInitialSequence.js';
-import { addUniqueId } from './addUniqueId.js';
-import { mockRawTreeNodes } from './fixtures.js';
+import { extractInitialSequence } from './extractInitialSequence';
+import { addUniqueId } from './addUniqueId';
+import { mockRawTreeNodes } from './fixtures';
 
 const tree = addUniqueId(mockRawTreeNodes);
 const initialSequence = extractInitialSequence(tree);
@@ -10,7 +10,7 @@ describe('extractInitialSequence', () => {
     it('will return an object that has an id of initial', () => {
       expect(initialSequence).toMatchObject({
         id: 'initial',
-        options: expect.any(Array),
+        options: expect.any(Array)
       });
     });
 

@@ -2,7 +2,7 @@
 /// <reference lib="webworker" />
 import * as lunr from 'lunr';
 
-import { WebWorkerMessage } from '../shared/web-worker-message.js';
+import { WebWorkerMessage } from '../shared/web-worker-message';
 
 const SEARCH_TERMS_URL = '/generated/docs/app/search-data.json';
 let index: lunr.Index;

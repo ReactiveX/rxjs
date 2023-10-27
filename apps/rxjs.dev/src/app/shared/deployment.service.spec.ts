@@ -2,7 +2,7 @@ import { ReflectiveInjector } from '@angular/core';
 import { environment } from 'environments/environment';
 import { LocationService } from 'app/shared/location.service';
 import { MockLocationService } from 'testing/location.service';
-import { Deployment } from './deployment.service.js';
+import { Deployment } from './deployment.service';
 
 describe('Deployment service', () => {
   describe('mode', () => {
@@ -25,5 +25,8 @@ describe('Deployment service', () => {
 });
 
 function getInjector() {
-  return ReflectiveInjector.resolveAndCreate([Deployment, { provide: LocationService, useFactory: () => new MockLocationService('') }]);
+  return ReflectiveInjector.resolveAndCreate([
+    Deployment,
+    { provide: LocationService, useFactory: () => new MockLocationService('') }
+  ]);
 }

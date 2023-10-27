@@ -1,6 +1,6 @@
 import { ElementRef } from '@angular/core';
 
-import { AttrMap, getAttrs, getAttrValue, getBoolFromAttribute, boolFromValue } from './attribute-utils.js';
+import { AttrMap, getAttrs, getAttrValue, getBoolFromAttribute, boolFromValue } from './attribute-utils';
 
 describe('Attribute Utilities', () => {
   let testEl: HTMLElement;
@@ -17,7 +17,7 @@ describe('Attribute Utilities', () => {
       b: 'true',
       c: 'false',
       d: 'foo',
-      'd-e': '',
+      'd-e': ''
     };
 
     it('should get attr map from getAttrs(element)', () => {
@@ -73,9 +73,11 @@ describe('Attribute Utilities', () => {
       expect(getAttrValue(attrMap, '')).toBeUndefined();
       expect(getAttrValue(attrMap, ['', 'x'])).toBeUndefined();
     });
+
   });
 
   describe('boolFromValue', () => {
+
     it('should return true for "" as in present but unassigned attr "a"', () => {
       expect(boolFromValue('')).toBe(true);
     });
@@ -94,6 +96,7 @@ describe('Attribute Utilities', () => {
     it('should return true for "False" because case-sensitive', () => {
       expect(boolFromValue('False')).toBe(true);
     });
+
 
     it('should return false by default as in undefined attr "x"', () => {
       expect(boolFromValue(undefined)).toBe(false);

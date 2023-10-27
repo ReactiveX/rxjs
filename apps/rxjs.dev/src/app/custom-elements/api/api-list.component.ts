@@ -11,7 +11,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 
 import { LocationService } from 'app/shared/location.service';
-import { ApiSection, ApiService } from './api.service.js';
+import { ApiSection, ApiService } from './api.service';
 
 import { Option } from 'app/shared/select/select.component';
 import { map } from 'rxjs/operators';

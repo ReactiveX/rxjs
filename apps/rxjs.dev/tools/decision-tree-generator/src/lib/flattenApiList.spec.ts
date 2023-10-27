@@ -1,6 +1,6 @@
-import { flattenApiList } from './flattenApiList.js';
-import { mockRawApiListWithDeprecatedRefs } from './fixtures.js';
-import { validApiRefCount } from './helpers.js';
+import { flattenApiList } from './flattenApiList';
+import { mockRawApiListWithDeprecatedRefs } from './fixtures';
+import { validApiRefCount } from './helpers';
 
 describe('flattenApiList', () => {
   describe('when a API reference is deprecated', () => {
@@ -11,3 +11,5 @@ describe('flattenApiList', () => {
     });
   });
 });
+
+
