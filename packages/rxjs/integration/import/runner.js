@@ -1,27 +1,41 @@
 const path = require('path');
-const { exec } = require('child_process');
+const { spawn } = require('child_process');
 const projectRoot = process.cwd();
 const rxjsRoot = path.join(__dirname, '../../');
 const fixturesDirectory = path.join(__dirname, 'fixtures');
 const rxjsVersion = require(path.join(rxjsRoot, 'package.json')).version;
 const tgzPath = path.join(rxjsRoot, `rxjs-${rxjsVersion}.tgz`);
 
-const FIXTURES = ['commonjs', 'esm'];
+const FIXTURES = ['commonjs', 'esm', 'browser'];
 
-/**
- * Runs a command in the shell
- * @param {string} cmd
- * @returns {Promise<void>}
- */
-function execAsync(cmd, cwd = projectRoot) {
+function execAsync(cmd, cwd = '.') {
   return new Promise((resolve, reject) => {
     console.log(`${cwd}$ ${cmd}`);
-    exec(cmd, { cwd }, (code, stdout, stderr) => {
-      if (code !== 0 && code !== null) {
-        reject({ std: stderr, code });
+
+    // Split the cmd into base command and arguments for spawn
+    const [command, ...args] = cmd.split(' ');
+    const child = spawn(command, args, { cwd, shell: true });
+
+    // Stream child process stdout to the console
+    child.stdout.on('data', (data) => {
+      process.stdout.write(data);
+    });
+
+    // Stream child process stderr to the console
+    child.stderr.on('data', (data) => {
+      process.stderr.write(data);
+    });
+
+    child.on('close', (code) => {
+      if (code !== 0) {
+        reject(new Error(`Command failed with exit code ${code}`));
       } else {
-        resolve({ std: stdout, code });
+        resolve({ code });
       }
+    });
+
+    child.on('error', (error) => {
+      reject(error);
     });
   });
 }
