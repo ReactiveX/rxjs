@@ -6,8 +6,16 @@ const fixturesDirectory = path.join(__dirname, 'fixtures');
 const rxjsVersion = require(path.join(rxjsRoot, 'package.json')).version;
 const tgzPath = path.join(rxjsRoot, `rxjs-${rxjsVersion}.tgz`);
 
+// These are the fixtures to run the import test against
+// they map to directories in the fixtures directory
 const FIXTURES = ['commonjs', 'esm', 'browser'];
 
+/**
+ * Executes a command in a child process and streams the output to the console
+ * @param {string} cmd The command to execute
+ * @param {string} cwd The working directory to execute the command in
+ * @returns a promise that resolves when the command completes
+ */
 function execAsync(cmd, cwd = '.') {
   return new Promise((resolve, reject) => {
     console.log(`${cwd}$ ${cmd}`);
@@ -40,52 +48,48 @@ function execAsync(cmd, cwd = '.') {
   });
 }
 
-// Should return the .tgz file path
-async function buildAndPackageRxJS() {
-  await execAsync('yarn build && npm pack', rxjsRoot);
-}
-
-async function cleanUp(fixturePath) {
-  try {
-    await execAsync('yarn remove rxjs', fixturePath);
-    await execAsync('rm -rf ./node_modules ./package-lock.json ./yarn.lock', fixturePath);
-  } catch (err) {
-    console.warn('fixtured not cleaned up', err);
-  }
-}
-
 async function main() {
   try {
     console.log('Building and packaging RxJS...');
     try {
-      await buildAndPackageRxJS();
+      await execAsync('yarn build && npm pack', rxjsRoot);
     } catch (err) {
       console.error('❌ Failed to build and package RxJS!');
       console.error(err);
       throw err;
     }
 
+    // We want to allow all of the fixtures to run, so we don't want to throw
+    // instead we want to collect the failed fixtures and throw at the end
     const failedFixtures = [];
 
     for (const fixtureName of FIXTURES) {
       const fixturePath = path.join(fixturesDirectory, fixtureName);
+
       try {
+        console.log('\n');
         console.log(`Running ${fixtureName}...`);
-        console.log(`Installing ${tgzPath}...`);
         await execAsync(`yarn install && yarn add ${tgzPath}`, fixturePath);
-        console.log(`Running tests...`);
         await execAsync('yarn test', fixturePath);
         console.log(`✅ ${fixtureName} import test passed!`);
       } catch (err) {
         console.error(`❌ ${fixtureName} import test failed!`);
         console.error(err);
+
+        // This fixture failed, so add it to the failed fixtures list
         failedFixtures.push(fixtureName);
       } finally {
-        await cleanUp(fixturePath);
+        try {
+          await execAsync('yarn remove rxjs', fixturePath);
+          await execAsync('rm -rf ./node_modules ./package-lock.json ./yarn.lock', fixturePath);
+        } catch (err) {
+          console.warn('fixtured not cleaned up', err);
+        }
       }
     }
 
     if (failedFixtures.length) {
+      // If any of the fixtures failed, throw an error
       throw new Error(`${failedFixtures.length} fixture(s) failed!`);
     }
   } finally {

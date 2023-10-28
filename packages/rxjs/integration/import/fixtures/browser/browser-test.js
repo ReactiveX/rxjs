@@ -6,6 +6,16 @@ import { TestScheduler } from './node_modules/rxjs/dist/esm/testing/index.js';
 
 let success = true;
 
+const assert = (condition, message) => {
+  if (condition) {
+    // show a green check mark emoji
+    console.log(`✅ ${message}`);
+  } else {
+    success = false;
+    console.log(`❌ ${message}`);
+  }
+};
+
 console.log('Hello from the browser!');
 
 assert(Observable, 'Observable should exist');
@@ -23,13 +33,3 @@ from([1, 2, 3]).subscribe((x) => {
 assert(results.length === 3, 'from should work');
 
 window.reportDone(success);
-
-function assert(condition, message) {
-  if (condition) {
-    // show a green check mark emoji
-    console.log(`✅ ${message}`);
-  } else {
-    success = false;
-    console.log(`❌ ${message}`);
-  }
-}
