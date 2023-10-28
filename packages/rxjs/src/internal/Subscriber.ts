@@ -291,7 +291,7 @@ export interface OperateConfig<In, Out> extends SubscriberOverrides<In> {
  * called on the `destination`, the returned `Subscriber` will also be unsubscribed.
  *
  * Advanced: This ensures that subscriptions are properly wired up prior to starting the
- * subcription logic. This prevents "synchronous firehose" scenarios where an
+ * subscription logic. This prevents "synchronous firehose" scenarios where an
  * inner observable from a flattening operation cannot be stopped by a downstream
  * terminal operator like `take`.
  *
