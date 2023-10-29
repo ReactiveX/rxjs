@@ -152,12 +152,10 @@ const WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT =
 export type WebSocketMessage = string | ArrayBuffer | Blob | ArrayBufferView;
 
 export class WebSocketSubject<T> extends AnonymousSubject<T> {
-  // @ts-ignore: Property has no initializer and is not definitely assigned
-  private _config: WebSocketSubjectConfig<T>;
+  private _config!: WebSocketSubjectConfig<T>;
 
   /** @internal */
-  // @ts-ignore: Property has no initializer and is not definitely assigned
-  _output: Subject<T>;
+  _output!: Subject<T>;
 
   private _socket: WebSocket | null = null;
 
@@ -215,15 +213,14 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
    * from the server for the output stream.
    */
   multiplex(subMsg: () => any, unsubMsg: () => any, messageFilter: (value: T) => boolean) {
-    const self = this;
     return new Observable((observer: Observer<T>) => {
       try {
-        self.next(subMsg());
+        this.next(subMsg());
       } catch (err) {
         observer.error(err);
       }
 
-      const subscription = self.subscribe({
+      const subscription = this.subscribe({
         next: (x) => {
           try {
             if (messageFilter(x)) {
@@ -239,7 +236,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
       return () => {
         try {
-          self.next(unsubMsg());
+          this.next(unsubMsg());
         } catch (err) {
           observer.error(err);
         }

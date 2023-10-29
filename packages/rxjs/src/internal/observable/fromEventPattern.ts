@@ -2,7 +2,6 @@ import { Observable, isFunction } from '../Observable.js';
 import { NodeEventHandler } from './fromEvent.js';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
 
-/* tslint:disable:max-line-length */
 export function fromEventPattern<T>(
   addHandler: (handler: NodeEventHandler) => any,
   removeHandler?: (handler: NodeEventHandler, signal?: any) => void
@@ -12,7 +11,6 @@ export function fromEventPattern<T>(
   removeHandler?: (handler: NodeEventHandler, signal?: any) => void,
   resultSelector?: (...args: any[]) => T
 ): Observable<T>;
-/* tslint:enable:max-line-length */
 
 /**
  * Creates an Observable from an arbitrary API for registering event handlers.

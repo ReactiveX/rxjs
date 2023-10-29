@@ -665,7 +665,7 @@ describe('Observable.prototype.concatMap', () => {
   });
 
   function arrayRepeat(value: string, times: number) {
-    let results = [];
+    const results = [];
     for (let i = 0; i < times; i++) {
       results.push(value);
     }

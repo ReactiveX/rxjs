@@ -17,7 +17,10 @@ export type NodeEventHandler = (...args: any[]) => void;
 // not use the same arguments or return EventEmitter values
 // such as React Native
 export interface NodeCompatibleEventEmitter {
+  // this should probably be `void | unknown` eventually
+  // eslint-disable-next-line @typescript-eslint/ban-types
   addListener(eventName: string, handler: NodeEventHandler): void | {};
+  // eslint-disable-next-line @typescript-eslint/ban-types
   removeListener(eventName: string, handler: NodeEventHandler): void | {};
 }
 

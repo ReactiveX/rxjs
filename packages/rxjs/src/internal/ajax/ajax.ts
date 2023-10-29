@@ -391,10 +391,8 @@ export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
       body,
     };
 
-    let xhr: XMLHttpRequest;
-
     // Create our XHR so we can get started.
-    xhr = init.createXHR ? init.createXHR() : new XMLHttpRequest();
+    const xhr = init.createXHR ? init.createXHR() : new XMLHttpRequest();
 
     {
       ///////////////////////////////////////////////////

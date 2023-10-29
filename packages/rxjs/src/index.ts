@@ -5,12 +5,12 @@
 // https://github.com/microsoft/TypeScript/issues/43034
 //////////////////////////////////////////////////////////
 
-// tslint:disable: no-reference
+/* eslint-disable @typescript-eslint/triple-slash-reference */
 // It's tempting to add references to all of the deep-import locations, but
 // adding references to those that require DOM types breaks Node projects.
 /// <reference path="./operators/index.ts" />
 /// <reference path="./testing/index.ts" />
-// tslint:enable: no-reference
+/* eslint-enable @typescript-eslint/triple-slash-reference */
 
 /* Core */
 export {

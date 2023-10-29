@@ -25,6 +25,7 @@ it('should handle observable inputs okay', () => {
   const o1 = onErrorResumeNext([1, 2, 3, 'test'], Promise.resolve(true)); // $ExpectType Observable<string | number | boolean>
   const o2 = onErrorResumeNext( // $ExpecType Observable<string>
     (function* () {
+      yield 'foo';
       return 'test';
     })()
   );

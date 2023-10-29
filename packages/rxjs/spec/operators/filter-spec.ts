@@ -363,8 +363,6 @@ describe('filter', () => {
   });
 
   it('should support type guards without breaking previous behavior', () => {
-    // tslint:disable no-unused-variable
-
     // type guards with interfaces and classes
     {
       interface Bar {
@@ -418,8 +416,6 @@ describe('filter', () => {
       xs.pipe(filter((x) => typeof x === 'number')).subscribe((x) => x); // x is still string | number
       xs.pipe(filter((x, i) => typeof x === 'number' && x > i)).subscribe((x) => x); // x is still string | number
     }
-
-    // tslint:disable enable
   });
 
   it('should support Boolean as a predicate', () => {

@@ -75,7 +75,7 @@ describe('onErrorResumeNext', () => {
   });
 
   it('should call finalize after each sync observable', () => {
-    let results: any[] = [];
+    const results: any[] = [];
 
     onErrorResumeNext(
       of(1).pipe(finalize(() => results.push('finalize 1'))),

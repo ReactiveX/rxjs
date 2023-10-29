@@ -317,7 +317,7 @@ describe('switchAll', () => {
     });
 
     // HACK: Extracting the inner subscription.
-    const innerSubscription = [...(subscription as any)._finalizers?.values()][0];
+    const innerSubscription = [...(subscription as any)._finalizers!.values()][0];
 
     // At this point, we expect two finalizers:
     // 1. The finalizer for the outer subscription
@@ -338,7 +338,7 @@ describe('switchAll', () => {
       oStreamControl.next(n); // creates inner
     });
 
-    const innerSubscription = [...subscription._finalizers?.values()][0];
+    const innerSubscription = [...subscription._finalizers!.values()][0];
 
     // At this point, the finalizers for the inner subscription should have 2 children:
     // 1. The finalizer for the inner subscription itself

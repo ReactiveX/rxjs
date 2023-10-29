@@ -1577,7 +1577,6 @@ class MockXMLHttpRequest extends MockXHREventTarget {
   public async: boolean = true;
 
   protected status: any;
-  // @ts-ignore: Property has no initializer and is not definitely assigned
   protected responseText: string | undefined;
   protected response: any = undefined;
 
@@ -1587,14 +1586,10 @@ class MockXMLHttpRequest extends MockXHREventTarget {
   requestHeaders: any = {};
   withCredentials: boolean = false;
 
-  // @ts-ignore: Property has no initializer and is not definitely assigned
-  onreadystatechange: (e: ProgressEvent) => any;
-  // @ts-ignore: Property has no initializer and is not definitely assigned
-  onerror: (e: ErrorEvent) => any;
-  // @ts-ignore: Property has no initializer and is not definitely assigned
-  onprogress: (e: ProgressEvent) => any;
-  // @ts-ignore: Property has no initializer and is not definitely assigned
-  ontimeout: (e: ProgressEvent) => any;
+  onreadystatechange!: (e: ProgressEvent) => any;
+  onerror!: (e: ErrorEvent) => any;
+  onprogress!: (e: ProgressEvent) => any;
+  ontimeout!: (e: ProgressEvent) => any;
 
   upload: XMLHttpRequestUpload = new MockXHREventTarget() as any;
 
@@ -1604,8 +1599,7 @@ class MockXMLHttpRequest extends MockXHREventTarget {
     MockXMLHttpRequest.requests.push(this);
   }
 
-  // @ts-ignore: Property has no initializer and is not definitely assigned
-  timeout: number;
+  timeout!: number;
 
   send(data: any): void {
     this.data = data;

@@ -785,7 +785,6 @@ export class Observable<T> implements Subscribable<T> {
     return this;
   }
 
-  /* tslint:disable:max-line-length */
   pipe(): Observable<T>;
   pipe<A>(op1: UnaryFunction<Observable<T>, A>): A;
   pipe<A, B>(op1: UnaryFunction<Observable<T>, A>, op2: UnaryFunction<A, B>): B;
@@ -860,7 +859,6 @@ export class Observable<T> implements Subscribable<T> {
     op9: UnaryFunction<H, I>,
     ...operations: UnaryFunction<any, any>[]
   ): unknown;
-  /* tslint:enable:max-line-length */
 
   /**
    * Used to stitch together functional operators into a chain.

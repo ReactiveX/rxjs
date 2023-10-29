@@ -306,6 +306,7 @@ export function timeout<T, O extends ObservableInput<any>, M>(
       // because if there is a `with` observable to fail over to,
       // we want to unsubscribe from our original subscription, and
       // hand of the subscription to that one.
+      // eslint-disable-next-line prefer-const
       let originalSourceSubscription: Subscription;
       // The subscription for our timeout timer. This changes
       // every time we get a new value.

@@ -36,7 +36,7 @@ describe('throwError', () => {
 
   it('should accept a factory function', () => {
     let calls = 0;
-    let errors: any[] = [];
+    const errors: any[] = [];
 
     const source = throwError(() => ({
       call: ++calls,

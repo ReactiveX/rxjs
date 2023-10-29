@@ -7,7 +7,7 @@ import { ReadableStream } from 'web-streams-polyfill';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 function getArguments<T>(...args: T[]) {
-  return arguments;
+  return args;
 }
 
 /** @test {from} */
@@ -36,7 +36,6 @@ describe('from', () => {
 
   it('should throw for non observable object', () => {
     const r = () => {
-      // tslint:disable-next-line:no-any needed for the test
       from({} as any).subscribe();
     };
 
@@ -116,6 +115,7 @@ describe('from', () => {
   it('should finalize an AsyncGenerator on unsubscribe', (done) => {
     const results: any[] = [];
     const sideEffects: any[] = [];
+    // eslint-disable-next-line prefer-const
     let subscription: Subscription;
 
     async function* gen() {
@@ -177,7 +177,7 @@ describe('from', () => {
   });
 
   const fakeArrayObservable = <T>(...values: T[]) => {
-    let arr: any = ['bad array!'];
+    const arr: any = ['bad array!'];
     arr[Symbol.observable ?? '@@observable'] = () => {
       return {
         subscribe: (observer: Observer<T>) => {
@@ -203,7 +203,6 @@ describe('from', () => {
     },
   });
 
-  // tslint:disable-next-line:no-any it's silly to define all of these types.
   const sources: Array<{ name: string; createValue: () => any }> = [
     { name: 'observable', createValue: () => of('x') },
     { name: 'observable-like', createValue: () => fakervable('x') },

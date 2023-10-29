@@ -9,7 +9,7 @@ import { observableMatcher } from '../helpers/observableMatcher';
 describe('bindCallback', () => {
   describe('when not scheduled', () => {
     it('should emit undefined from a callback without arguments', () => {
-      function callback(cb: Function) {
+      function callback(cb: () => void) {
         cb();
       }
       const boundCallback = bindCallback(callback);
@@ -28,7 +28,7 @@ describe('bindCallback', () => {
     });
 
     it('should support a resultSelector', () => {
-      function callback(datum: number, cb: Function) {
+      function callback(datum: number, cb: (v: unknown) => void) {
         cb(datum);
       }
 
@@ -49,7 +49,7 @@ describe('bindCallback', () => {
     });
 
     it('should support a resultSelector if its void', () => {
-      function callback(datum: number, cb: Function) {
+      function callback(datum: number, cb: (v: unknown) => void) {
         cb(datum);
       }
 
@@ -106,7 +106,7 @@ describe('bindCallback', () => {
       const throwSpy = sinon.spy();
       const completeSpy = sinon.spy();
       let timeout: ReturnType<typeof setTimeout>;
-      function callback(datum: number, cb: Function) {
+      function callback(datum: number, cb: (v: unknown) => void) {
         // Need to cb async in order for the unsub to trigger
         timeout = setTimeout(() => {
           cb(datum);
@@ -161,7 +161,7 @@ describe('bindCallback', () => {
     });
 
     it('should emit undefined from a callback without arguments', () => {
-      function callback(cb: Function) {
+      function callback(cb: () => void) {
         cb();
       }
       const boundCallback = bindCallback(callback, rxTestScheduler);
@@ -219,7 +219,7 @@ describe('bindCallback', () => {
 
     it('should error if callback throws', () => {
       const expected = new Error('haha no callback for you');
-      function callback(datum: number, cb: Function): never {
+      function callback(datum: number, cb: () => void): never {
         throw expected;
       }
       const boundCallback = bindCallback(callback, rxTestScheduler);
@@ -299,7 +299,7 @@ describe('bindCallback', () => {
 
     it('should not even call the callbackFn if scheduled and immediately unsubscribed', () => {
       let calls = 0;
-      function callback(datum: number, cb: Function) {
+      function callback(datum: number, cb: (v: unknown) => void) {
         calls++;
         cb(datum);
       }

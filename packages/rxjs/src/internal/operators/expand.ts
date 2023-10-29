@@ -2,7 +2,6 @@ import { OperatorFunction, ObservableInput, ObservedValueOf, SchedulerLike } fro
 import { Observable } from '../Observable.js';
 import { mergeInternals } from './mergeInternals.js';
 
-/* tslint:disable:max-line-length */
 export function expand<T, O extends ObservableInput<unknown>>(
   project: (value: T, index: number) => O,
   concurrent?: number,
@@ -18,7 +17,6 @@ export function expand<T, O extends ObservableInput<unknown>>(
   concurrent: number | undefined,
   scheduler: SchedulerLike
 ): OperatorFunction<T, ObservedValueOf<O>>;
-/* tslint:enable:max-line-length */
 
 /**
  * Recursively projects each source value to an Observable which is merged in
