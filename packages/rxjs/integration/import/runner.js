@@ -8,7 +8,14 @@ const tgzPath = path.join(rxjsRoot, `rxjs-${rxjsVersion}.tgz`);
 
 // These are the fixtures to run the import test against
 // they map to directories in the fixtures directory
-const FIXTURES = ['commonjs', 'esm', 'browser', 'vite-bundle'];
+const FIXTURES = [
+  //
+  'commonjs',
+  'esm',
+  'browser',
+  'vite-bundle',
+  'webpack-bundle',
+];
 
 /**
  * Executes a command in a child process and streams the output to the console

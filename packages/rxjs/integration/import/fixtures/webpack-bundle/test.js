@@ -1,26 +1,26 @@
-import puppeteer from 'puppeteer';
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { createServer } from 'vite';
+const puppeteer = require('puppeteer');
+const Webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+const webpackConfig = require('./webpack.config.js');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
 
 async function main() {
+  console.log('Starting Webpack Server...');
+  const compiler = Webpack(webpackConfig);
+  const devServerOptions = { ...webpackConfig.devServer, open: false };
+  const server = new WebpackDevServer(devServerOptions, compiler);
+  await server.start();
+
+  console.log('Webpack server listening on port', 8080);
+
   console.log('Starting puppeteer...');
   const timeout = setTimeout(() => {
     console.error('Operation timed out.');
     browser.close();
     process.exit(1);
   }, 10000);
-
-  const viteServer = await createServer({
-    server: {},
-  });
-
-  await viteServer.listen();
-
-  console.log('Vite server listening on port', viteServer.config.server.port);
 
   const browser = await puppeteer.launch({
     // args: ['--allow-file-access-from-files'],
@@ -59,7 +59,7 @@ async function main() {
     }
   });
 
-  const url = `http://localhost:${viteServer.config.server.port}/`;
+  const url = `http://localhost:${webpackConfig.devServer.port}/`;
   console.log(`Navigating to ${url}...`);
   await page.goto(url);
 
