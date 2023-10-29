@@ -1,11 +1,11 @@
 import { Observable } from '../Observable';
 import { subscribeToArray } from '../observable/from';
 import { operate } from '../Subscriber';
-import { OperatorFunction, ValueFromArray } from '../types';
+import { OperatorFunction } from '../types';
 
 export function startWith<T>(value: null): OperatorFunction<T, T | null>;
 export function startWith<T>(value: undefined): OperatorFunction<T, T | undefined>;
-export function startWith<T, A extends readonly unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
+export function startWith<T, A extends readonly unknown[] = T[]>(...values: A): OperatorFunction<T, T | A[number]>;
 
 /**
  * Returns an observable that, at the moment of subscription, will synchronously emit all

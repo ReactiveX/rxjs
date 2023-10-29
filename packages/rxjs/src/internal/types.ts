@@ -293,6 +293,7 @@ export type Tail<X extends readonly any[]> = ((...args: X) => any) extends (arg:
  * Extracts the generic value from an Array type.
  * If you have `T extends Array<any>`, and pass a `string[]` to it,
  * `ValueFromArray<T>` will return the actual type of `string`.
+ * @deprecated Will be removed in v9 or v10. Use `T[number]` instead `ValueFromArray<T>`.
  */
 export type ValueFromArray<A extends readonly unknown[]> = A extends Array<infer T> ? T : never;
 
