@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { TeardownLogic } from '../src/internal/types';
 import { Observable, config, Subscription, Subscriber, Operator, NEVER, Subject, of, throwError, EMPTY } from 'rxjs';
-import { map, filter, count, tap, combineLatestWith, concatWith, mergeWith, raceWith, zipWith, catchError, share} from 'rxjs/operators';
+import { map, filter, count, tap, combineLatestWith, concatWith, mergeWith, raceWith, zipWith, catchError, share } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 import { result } from 'lodash';
@@ -30,11 +30,12 @@ describe('Observable', () => {
       observer.complete();
     });
 
-    source.subscribe(
-      { next: function (x) {
+    source.subscribe({
+      next: function (x) {
         expect(x).to.equal(1);
-      }, complete: done }
-    );
+      },
+      complete: done,
+    });
   });
 
   it('should send errors thrown in the constructor down the error path', (done) => {
@@ -70,7 +71,7 @@ describe('Observable', () => {
     });
 
     it('should reject promise when in error', (done) => {
-      throwError(() => ('bad'))
+      throwError(() => 'bad')
         .forEach(() => {
           done(new Error('should not be called'));
         })
@@ -178,13 +179,17 @@ describe('Observable', () => {
       const results: any[] = [];
       const next = function (value: string) {
         results.push(value);
-      }
-      next.bind = () => { /* lol */};
+      };
+      next.bind = () => {
+        /* lol */
+      };
 
       const complete = function () {
         results.push('done');
-      }
-      complete.bind = () => { /* lol */};
+      };
+      complete.bind = () => {
+        /* lol */
+      };
 
       source.subscribe({ next, complete });
       expect(results).to.deep.equal(['Hi', 'done']);
@@ -195,7 +200,7 @@ describe('Observable', () => {
       const results: any[] = [];
       const error = function (value: string) {
         results.push(value);
-      }
+      };
 
       source.subscribe({ error });
       expect(results).to.deep.equal(['an error']);
@@ -218,15 +223,16 @@ describe('Observable', () => {
       let mutatedByNext = false;
       let mutatedByComplete = false;
 
-      source.subscribe(
-        { next: (x) => {
+      source.subscribe({
+        next: (x) => {
           nexted = x;
           mutatedByNext = true;
-        }, complete: () => {
+        },
+        complete: () => {
           completed = true;
           mutatedByComplete = true;
-        } }
-      );
+        },
+      });
 
       expect(mutatedByNext).to.be.true;
       expect(mutatedByComplete).to.be.true;
@@ -387,15 +393,16 @@ describe('Observable', () => {
         };
       })
         .pipe(tap(() => (times += 1)))
-        .subscribe(
-          { next: function () {
+        .subscribe({
+          next: function () {
             if (times === 2) {
               subscription.unsubscribe();
             }
-          }, error: function () {
+          },
+          error: function () {
             errorCalled = true;
-          } }
-        );
+          },
+        });
     });
 
     it('should ignore complete messages after unsubscription', (done) => {
@@ -419,15 +426,16 @@ describe('Observable', () => {
         };
       })
         .pipe(tap(() => (times += 1)))
-        .subscribe(
-          { next: function () {
+        .subscribe({
+          next: function () {
             if (times === 2) {
               subscription.unsubscribe();
             }
-          }, complete: function () {
+          },
+          complete: function () {
             completeCalled = true;
-          } }
-        );
+          },
+        });
     });
 
     describe('when called with an anonymous observer', () => {
@@ -463,7 +471,7 @@ describe('Observable', () => {
             },
           };
 
-          throwError(() => ('bad')).subscribe(o);
+          throwError(() => 'bad').subscribe(o);
         }
       );
 
@@ -592,12 +600,13 @@ describe('Observable', () => {
       });
 
       badObservable.subscribe({
-        error: () => { /* do nothing */ }
+        error: () => {
+          /* do nothing */
+        },
       });
 
       expect(called).to.be.true;
     });
-
 
     it('should handle empty string sync errors', () => {
       const badObservable = new Observable(() => {
@@ -609,7 +618,7 @@ describe('Observable', () => {
         error: (err) => {
           caught = true;
           expect(err).to.equal('');
-        }
+        },
       });
       expect(caught).to.be.true;
     });
@@ -627,11 +636,12 @@ describe('Observable', () => {
           map((x) => x + x),
           map((x) => x + '!!!')
         )
-        .subscribe(
-          { next: (x) => {
+        .subscribe({
+          next: (x) => {
             expect(x).to.equal('testtest!!!');
-          }, complete: done }
-        );
+          },
+          complete: done,
+        });
     });
 
     it('should return the same observable if there are no arguments', () => {
@@ -643,11 +653,11 @@ describe('Observable', () => {
     it('should allow any kind of piped function', () => {
       const source = of('test');
       const result = source.pipe(
-        source => source instanceof Observable, 
-        isObservable => isObservable ? 'Well hello, there.' : 'Huh?'
+        (source) => source instanceof Observable,
+        (isObservable) => (isObservable ? 'Well hello, there.' : 'Huh?')
       );
       expect(result).to.equal('Well hello, there.');
-    })
+    });
   });
 
   it('should not swallow internal errors', (done) => {
@@ -658,29 +668,29 @@ describe('Observable', () => {
       done();
     };
 
-    new Observable(subscriber => {
+    new Observable((subscriber) => {
       subscriber.error('test');
       throw 'bad';
     }).subscribe({
-      error: err => {
+      error: (err) => {
         expect(err).to.equal('test');
-      }
+      },
     });
   });
 
   // Discussion here: https://github.com/ReactiveX/rxjs/issues/5370
   it.skip('should handle sync errors within a test scheduler', () => {
     const observable = of(4).pipe(
-      map(n => {
-          if (n === 4) {
-            throw 'four!';
+      map((n) => {
+        if (n === 4) {
+          throw 'four!';
         }
         return n;
       }),
-      catchError((err, source) => source),
+      catchError((err, source) => source)
     );
 
-    rxTestScheduler.run(helpers => {
+    rxTestScheduler.run((helpers) => {
       const { expectObservable } = helpers;
       expectObservable(observable).toBe('-');
     });
@@ -694,13 +704,12 @@ describe('Observable', () => {
 
     let thrownError: any = undefined;
     source.subscribe({
-      error: err => thrownError = err
+      error: (err) => (thrownError = err),
     });
 
     expect(thrownError).to.be.an.instanceOf(RangeError);
     expect(thrownError.message).to.equal('Maximum call stack size exceeded');
   });
-
 
   describe('As an async iterable', () => {
     it('should be able to be used with for-await-of', async () => {
@@ -727,13 +736,13 @@ describe('Observable', () => {
 
         subscriber.next(1);
         subscriber.next(2);
-        
+
         // NOTE that we are NOT calling `subscriber.complete()` here.
         // therefore the teardown below would never be called naturally
         // by the observable unless it was unsubscribed.
         return () => {
           activeSubscriptions--;
-        }
+        };
       });
 
       const results: number[] = [];
@@ -759,7 +768,7 @@ describe('Observable', () => {
       try {
         for await (const value of source) {
           results.push(value);
-          throw new Error('wee')
+          throw new Error('wee');
         }
       } catch {
         // Ignore
@@ -786,7 +795,7 @@ describe('Observable', () => {
         thrownError = err;
       }
 
-      expect(thrownError?.message).to.equal('wee')
+      expect(thrownError?.message).to.equal('wee');
       expect(results).to.deep.equal([1, 2]);
     });
 
@@ -826,7 +835,7 @@ describe('Observable', () => {
       expect(results).to.deep.equal([1, 2, 3]);
     });
 
-    it ('should handle situations where values from the observable are arriving faster than the are being consumed by the async iterator', async () => {
+    it('should handle situations where values from the observable are arriving faster than the are being consumed by the async iterator', async () => {
       const subject = new Subject<number>();
 
       const results: any[] = [];
@@ -838,7 +847,7 @@ describe('Observable', () => {
         results.push(result.value);
       });
       subject.next(1);
-      await first
+      await first;
       expect(results).to.deep.equal([1]);
 
       // push values through the observable that aren't yet consumed by the async iterator
@@ -861,13 +870,9 @@ describe('Observable', () => {
       const asyncIterator = subject[Symbol.asyncIterator]();
 
       // Queue up three promises, but don't await them.
-      const allPending = Promise.all([
-        asyncIterator.next(),
-        asyncIterator.next(),
-        asyncIterator.next(),
-      ]).then((allResults) => {
-        results.push(...allResults)
-      })
+      const allPending = Promise.all([asyncIterator.next(), asyncIterator.next(), asyncIterator.next()]).then((allResults) => {
+        results.push(...allResults);
+      });
 
       expect(results).to.deep.equal([]);
 
@@ -893,7 +898,7 @@ describe('Observable', () => {
         asyncIterator.next().catch((err: any) => results.push(err)),
         asyncIterator.next().catch((err: any) => results.push(err)),
         asyncIterator.next().catch((err: any) => results.push(err)),
-      ])
+      ]);
 
       expect(results).to.deep.equal([]);
 
@@ -915,7 +920,7 @@ describe('Observable', () => {
         state = 'subscribed';
         return () => {
           state = 'unsubscribed';
-        }
+        };
       });
 
       const asyncIterator = source[Symbol.asyncIterator]();
@@ -930,10 +935,10 @@ describe('Observable', () => {
       let state = 'idle';
       const source = new Observable<number>((subscriber) => {
         state = 'subscribed';
-        subscriber.next(0)
+        subscriber.next(0);
         return () => {
           state = 'unsubscribed';
-        }
+        };
       });
 
       const asyncIterator = source[Symbol.asyncIterator]();

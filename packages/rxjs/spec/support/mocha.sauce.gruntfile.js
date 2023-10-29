@@ -7,19 +7,19 @@ module.exports = function (grunt) {
         args: ['./mocha.sauce.runner.js'],
         options: {
           wait: true,
-          cwd: './'
-        }
-      }
+          cwd: './',
+        },
+      },
     },
 
     connect: {
       server: {
         options: {
           base: '../../',
-          port: 9876
-        }
-      }
-    }
+          port: 9876,
+        },
+      },
+    },
   });
 
   var parentcwd = process.cwd();

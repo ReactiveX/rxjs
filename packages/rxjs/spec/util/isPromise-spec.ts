@@ -29,5 +29,4 @@ describe('isPromise', () => {
   it('should return false for a string', () => {
     expect(isPromise('1')).to.be.false;
   });
-
 });

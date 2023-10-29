@@ -4,15 +4,9 @@
   "printWidth": 140,
   "overrides": [
     {
-      "files": ["spec/**/*.ts", "spec-dtslint/**/*.ts"],
+      "files": ["packages/rxjs/spec-dtslint/**/*.ts"],
       "options": {
         "requirePragma": true
-      }
-    },
-    {
-      "files": ["spec/operators/**/*.ts", "spec/subjects/**/*.ts"],
-      "options": {
-        "requirePragma": false
       }
     }
   ]

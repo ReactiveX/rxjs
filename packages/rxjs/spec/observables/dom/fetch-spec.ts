@@ -1,9 +1,7 @@
 import { fromFetch } from 'rxjs/fetch';
 import { expect } from 'chai';
 
-const root: any = (typeof globalThis !== 'undefined' && globalThis)
-  || (typeof self !== 'undefined' && self)
-  || global;
+const root: any = (typeof globalThis !== 'undefined' && globalThis) || (typeof self !== 'undefined' && self) || global;
 
 const OK_RESPONSE = {
   ok: true,
@@ -82,7 +80,7 @@ class MockAbortSignal {
 
 interface MockFetch {
   (input: string | Request, init?: RequestInit): Promise<Response>;
-  calls: { input: string | Request, init: RequestInit | undefined }[];
+  calls: { input: string | Request; init: RequestInit | undefined }[];
   reset(): void;
   respondWith: Response;
 }
@@ -120,7 +118,7 @@ describe('fromFetch', () => {
     expect(MockAbortController.created).to.equal(0);
 
     fetch$.subscribe({
-      next: response => {
+      next: (response) => {
         expect(response).to.equal(OK_RESPONSE);
       },
       error: done,
@@ -135,7 +133,7 @@ describe('fromFetch', () => {
           expect(mockFetch.calls[0].init!.signal!.aborted).to.be.false;
           done();
         }, 0);
-      }
+      },
     });
   });
 
@@ -143,7 +141,7 @@ describe('fromFetch', () => {
     mockFetch.respondWith = {
       ok: false,
       status: 400,
-      body: 'Bad stuff here'
+      body: 'Bad stuff here',
     } as any as Response;
 
     const fetch$ = fromFetch('/foo');
@@ -151,11 +149,11 @@ describe('fromFetch', () => {
     expect(MockAbortController.created).to.equal(0);
 
     fetch$.subscribe({
-      next: response => {
+      next: (response) => {
         expect(response).to.equal(mockFetch.respondWith);
       },
       complete: done,
-      error: done
+      error: done,
     });
 
     expect(MockAbortController.created).to.equal(1);
@@ -201,7 +199,7 @@ describe('fromFetch', () => {
   });
 
   it('should allow passing of init object', (done) => {
-    const fetch$ = fromFetch('/foo', {method: 'HEAD'});
+    const fetch$ = fromFetch('/foo', { method: 'HEAD' });
     fetch$.subscribe({
       error: done,
       complete: done,
@@ -210,7 +208,7 @@ describe('fromFetch', () => {
   });
 
   it('should add a signal to internal init object without mutating the passed init object', (done) => {
-    const myInit = {method: 'DELETE'};
+    const myInit = { method: 'DELETE' };
     const fetch$ = fromFetch('/bar', myInit);
     fetch$.subscribe({
       error: done,
@@ -226,10 +224,10 @@ describe('fromFetch', () => {
     const signal = controller.signal as any;
     const fetch$ = fromFetch('/foo', { signal });
     const subscription = fetch$.subscribe({
-      error: err => {
+      error: (err) => {
         expect(err).to.be.instanceof(MockDOMException);
         done();
-      }
+      },
     });
     controller.abort();
     expect(mockFetch.calls[0].init!.signal!.aborted).to.be.true;
@@ -243,10 +241,10 @@ describe('fromFetch', () => {
     const signal = controller.signal as any;
     const fetch$ = fromFetch('/foo', { signal });
     const subscription = fetch$.subscribe({
-      error: err => {
+      error: (err) => {
         expect(err).to.be.instanceof(MockDOMException);
         done();
-      }
+      },
     });
     expect(mockFetch.calls[0].init!.signal!.aborted).to.be.true;
     // The subscription will not be closed until the error fires when the promise resolves.
@@ -271,16 +269,16 @@ describe('fromFetch', () => {
   it('should support a selector', (done) => {
     mockFetch.respondWith = {
       ...OK_RESPONSE,
-      text: () => Promise.resolve('bar')
+      text: () => Promise.resolve('bar'),
     };
     const fetch$ = fromFetch('/foo', {
-      selector: response => response.text()
+      selector: (response) => response.text(),
     });
     expect(mockFetch.calls.length).to.equal(0);
     expect(MockAbortController.created).to.equal(0);
 
     fetch$.subscribe({
-      next: text => {
+      next: (text) => {
         expect(text).to.equal('bar');
       },
       error: done,
@@ -295,17 +293,17 @@ describe('fromFetch', () => {
           expect(mockFetch.calls[0].init!.signal!.aborted).to.be.false;
           done();
         }, 0);
-      }
+      },
     });
   });
 
   it('should abort when unsubscribed and a selector is specified', () => {
     mockFetch.respondWith = {
       ...OK_RESPONSE,
-      text: () => Promise.resolve('bar')
+      text: () => Promise.resolve('bar'),
     };
     const fetch$ = fromFetch('/foo', {
-      selector: response => response.text()
+      selector: (response) => response.text(),
     });
     expect(mockFetch.calls.length).to.equal(0);
     expect(MockAbortController.created).to.equal(0);

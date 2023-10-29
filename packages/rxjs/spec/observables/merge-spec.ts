@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { lowerCaseO } from '../helpers/test-helper';
 import { TestScheduler } from 'rxjs/testing';

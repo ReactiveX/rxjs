@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { intervalProvider } from 'rxjs/internal/scheduler/intervalProvider';
 

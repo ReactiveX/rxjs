@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { queueScheduler as rxQueueScheduler, zip, from, scheduled } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';

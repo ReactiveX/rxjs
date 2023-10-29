@@ -6,10 +6,9 @@ describe('using', () => {
   it('should dispose of the resource when the subscription is disposed', (done) => {
     let disposed = false;
     const source = using(
-      () => new Subscription(() => disposed = true),
+      () => new Subscription(() => (disposed = true)),
       (resource) => range(0, 3)
-    )
-    .pipe(take(2));
+    ).pipe(take(2));
 
     source.subscribe();
 
@@ -25,16 +24,24 @@ describe('using', () => {
 
     let disposed = false;
     const e1 = using(
-      () => new Subscription(() => disposed = true),
-      (resource) => new Promise((resolve: any) => { resolve(expected); }));
+      () => new Subscription(() => (disposed = true)),
+      (resource) =>
+        new Promise((resolve: any) => {
+          resolve(expected);
+        })
+    );
 
-    e1.subscribe({ next: x => {
-      expect(x).to.equal(expected);
-    }, error: (x) => {
-      done(new Error('should not be called'));
-    }, complete: () => {
-      done();
-    } });
+    e1.subscribe({
+      next: (x) => {
+        expect(x).to.equal(expected);
+      },
+      error: (x) => {
+        done(new Error('should not be called'));
+      },
+      complete: () => {
+        done();
+      },
+    });
   });
 
   it('should accept factory returns promise rejects', (done) => {
@@ -42,17 +49,25 @@ describe('using', () => {
 
     let disposed = false;
     const e1 = using(
-      () => new Subscription(() => disposed = true),
-      (resource) => new Promise((resolve: any, reject: any) => { reject(expected); }));
+      () => new Subscription(() => (disposed = true)),
+      (resource) =>
+        new Promise((resolve: any, reject: any) => {
+          reject(expected);
+        })
+    );
 
-    e1.subscribe({ next: x => {
-      done(new Error('should not be called'));
-    }, error: (x) => {
-      expect(x).to.equal(expected);
-      done();
-    }, complete: () => {
-      done(new Error('should not be called'));
-    } });
+    e1.subscribe({
+      next: (x) => {
+        done(new Error('should not be called'));
+      },
+      error: (x) => {
+        expect(x).to.equal(expected);
+        done();
+      },
+      complete: () => {
+        done(new Error('should not be called'));
+      },
+    });
   });
 
   it('should raise error when resource factory throws', (done) => {
@@ -68,14 +83,18 @@ describe('using', () => {
       }
     );
 
-    source.subscribe({ next: (x) => {
-      done(new Error('should not be called'));
-    }, error: (x) => {
-      expect(x).to.equal(expectedError);
-      done();
-    }, complete: () => {
-      done(new Error('should not be called'));
-    } });
+    source.subscribe({
+      next: (x) => {
+        done(new Error('should not be called'));
+      },
+      error: (x) => {
+        expect(x).to.equal(expectedError);
+        done();
+      },
+      complete: () => {
+        done(new Error('should not be called'));
+      },
+    });
   });
 
   it('should raise error when observable factory throws', (done) => {
@@ -83,19 +102,23 @@ describe('using', () => {
     let disposed = false;
 
     const source = using(
-      () => new Subscription(() => disposed = true),
+      () => new Subscription(() => (disposed = true)),
       (resource) => {
         throw error;
       }
     );
 
-    source.subscribe({ next: (x) => {
-      done(new Error('should not be called'));
-    }, error: (x) => {
-      expect(x).to.equal(error);
-      done();
-    }, complete: () => {
-      done(new Error('should not be called'));
-    } });
+    source.subscribe({
+      next: (x) => {
+        done(new Error('should not be called'));
+      },
+      error: (x) => {
+        expect(x).to.equal(error);
+        done();
+      },
+      complete: () => {
+        done(new Error('should not be called'));
+      },
+    });
   });
 });

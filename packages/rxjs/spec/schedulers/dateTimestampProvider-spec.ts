@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { dateTimestampProvider } from 'rxjs/internal/scheduler/dateTimestampProvider';
 

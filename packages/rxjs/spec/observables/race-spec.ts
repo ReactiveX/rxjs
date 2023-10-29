@@ -1,4 +1,3 @@
-/** @prettier */
 import { race, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { expect } from 'chai';

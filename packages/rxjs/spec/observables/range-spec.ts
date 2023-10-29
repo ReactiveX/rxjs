@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { asapScheduler as asap, range, of } from 'rxjs';

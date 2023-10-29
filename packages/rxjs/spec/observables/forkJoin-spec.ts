@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { EmptyError, finalize, forkJoin, map, of, timer } from 'rxjs';
 import { lowerCaseO } from '../helpers/test-helper';

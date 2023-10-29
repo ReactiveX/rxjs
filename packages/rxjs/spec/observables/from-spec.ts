@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
 import { asyncScheduler, of, from, Observer, observable, Subject, noop, Subscription } from 'rxjs';

@@ -1,4 +1,3 @@
-/** @prettier */
 import { onErrorResumeNext, of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { expect } from 'chai';

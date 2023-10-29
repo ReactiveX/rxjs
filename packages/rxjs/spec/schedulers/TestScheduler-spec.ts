@@ -1,4 +1,3 @@
-/** @prettier */
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
 import { Observable, Subject, of, merge, animationFrameScheduler, asapScheduler, asyncScheduler, interval } from 'rxjs';

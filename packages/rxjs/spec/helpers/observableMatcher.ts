@@ -4,16 +4,19 @@ import * as chai from 'chai';
 function stringify(x: any): string {
   return JSON.stringify(x, function (key: string, value: any) {
     if (Array.isArray(value)) {
-      return '[' + value
-        .map(function (i) {
+      return (
+        '[' +
+        value.map(function (i) {
           return '\n\t' + stringify(i);
-        }) + '\n]';
+        }) +
+        '\n]'
+      );
     }
     return value;
   })
-  .replace(/\\"/g, '"')
-  .replace(/\\t/g, '\t')
-  .replace(/\\n/g, '\n');
+    .replace(/\\"/g, '"')
+    .replace(/\\t/g, '\t')
+    .replace(/\\n/g, '\n');
 }
 
 function deleteErrorNotificationStack(marble: any) {
@@ -37,10 +40,10 @@ export function observableMatcher(actual: any, expected: any) {
     }
 
     let message = '\nExpected \n';
-    actual.forEach((x: any) => message += `\t${stringify(x)}\n`);
+    actual.forEach((x: any) => (message += `\t${stringify(x)}\n`));
 
     message += '\t\nto deep equal \n';
-    expected.forEach((x: any) => message += `\t${stringify(x)}\n`);
+    expected.forEach((x: any) => (message += `\t${stringify(x)}\n`));
 
     chai.assert(passed, message);
   } else {
