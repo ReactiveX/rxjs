@@ -22,7 +22,7 @@ There were two reasons for actually deprecating those parameters:
 - [mergeMap](/api/operators/mergeMap)
 - [mergeMapTo](/api/operators/mergeMapTo)
 - [switchMap](/api/operators/switchMap)
-- [swithMapTo](/api/operators/switchMapTo)
+- [switchMapTo](/api/operators/switchMapTo)
 
 ## How to Refactor
 
