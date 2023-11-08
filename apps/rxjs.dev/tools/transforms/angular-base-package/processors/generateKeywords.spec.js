@@ -38,9 +38,9 @@ describe('generateKeywords processor', () => {
   it('should ignore internal and private exports', async () => {
     const processor = createProcessor();
     const docs = await processor.$process([
-      { docType: 'class', name: 'PublicExport' },
-      { docType: 'class', name: 'PrivateExport', privateExport: true },
-      { docType: 'class', name: 'InternalExport', internal: true },
+      { docType: 'class', name: 'PublicExport', path: '' },
+      { docType: 'class', name: 'PrivateExport', privateExport: true, path: '' },
+      { docType: 'class', name: 'InternalExport', internal: true, path: '' },
     ]);
     expect(docs[docs.length - 1].data.pages).toEqual([jasmine.objectContaining({ title: 'PublicExport', type: 'class' })]);
   });
@@ -49,9 +49,9 @@ describe('generateKeywords processor', () => {
     const processor = createProcessor();
     processor.docTypesToIgnore = ['interface'];
     const docs = await processor.$process([
-      { docType: 'class', name: 'Class' },
-      { docType: 'interface', name: 'Interface' },
-      { docType: 'content', name: 'Guide' },
+      { docType: 'class', name: 'Class', path: '' },
+      { docType: 'interface', name: 'Interface', path: '' },
+      { docType: 'content', name: 'Guide', path: '' },
     ]);
     expect(docs[docs.length - 1].data.pages).toEqual([
       jasmine.objectContaining({ title: 'Class', type: 'class' }),
@@ -63,8 +63,8 @@ describe('generateKeywords processor', () => {
     const processor = createProcessor();
     processor.propertiesToIgnore = ['docType', 'ignore'];
     const docs = await processor.$process([
-      { docType: 'class', name: 'FooClass', ignore: 'ignore this content' },
-      { docType: 'interface', name: 'BarInterface', capture: 'capture this content' },
+      { docType: 'class', name: 'FooClass', ignore: 'ignore this content', path: '' },
+      { docType: 'interface', name: 'BarInterface', capture: 'capture this content', path: '' },
     ]);
     expect(docs[docs.length - 1].data).toEqual({
       dictionary: 'fooclass barinterfac captur content',
@@ -87,6 +87,7 @@ describe('generateKeywords processor', () => {
           <td>Content inside a table</td>
         </tr>
       </table>`,
+        path: '',
       },
     ]);
     expect(docs[docs.length - 1].data).toEqual({
@@ -98,10 +99,10 @@ describe('generateKeywords processor', () => {
   it('should compute `doc.searchTitle` from the doc properties if not already provided', async () => {
     const processor = createProcessor();
     const docs = await processor.$process([
-      { docType: 'class', name: 'A', searchTitle: 'searchTitle A', title: 'title A', vFile: { headings: { h1: ['vFile A'] } } },
-      { docType: 'class', name: 'B', title: 'title B', vFile: { headings: { h1: ['vFile B'] } } },
-      { docType: 'class', name: 'C', vFile: { title: 'vFile C', headings: { h1: ['vFile C'] } } },
-      { docType: 'class', name: 'D' },
+      { docType: 'class', name: 'A', searchTitle: 'searchTitle A', title: 'title A', vFile: { headings: { h1: ['vFile A'] } }, path: '' },
+      { docType: 'class', name: 'B', title: 'title B', vFile: { headings: { h1: ['vFile B'] } }, path: '' },
+      { docType: 'class', name: 'C', vFile: { title: 'vFile C', headings: { h1: ['vFile C'] } }, path: '' },
+      { docType: 'class', name: 'D', path: '' },
     ]);
     expect(docs[docs.length - 1].data.pages).toEqual([
       jasmine.objectContaining({ title: 'searchTitle A' }),
@@ -113,7 +114,7 @@ describe('generateKeywords processor', () => {
 
   it('should use `doc.searchTitle` as the title in the search index', async () => {
     const processor = createProcessor();
-    const docs = await processor.$process([{ docType: 'class', name: 'PublicExport', searchTitle: 'class PublicExport' }]);
+    const docs = await processor.$process([{ docType: 'class', name: 'PublicExport', searchTitle: 'class PublicExport', path: '' }]);
     const keywordsDoc = docs[docs.length - 1];
     expect(keywordsDoc.data.pages).toEqual([jasmine.objectContaining({ title: 'class PublicExport', type: 'class' })]);
   });
@@ -126,6 +127,7 @@ describe('generateKeywords processor', () => {
         name: 'PublicExport',
         searchTitle: 'class PublicExport',
         vFile: { headings: { h2: ['Important heading', 'Secondary heading'] } },
+        path: '',
       },
     ]);
     const keywordsDoc = docs[docs.length - 1];
@@ -146,6 +148,7 @@ describe('generateKeywords processor', () => {
         content: 'Some content with ngClass in it.',
         members: [{ name: 'instanceMethodA' }, { name: 'instancePropertyA' }, { name: 'instanceMethodB' }, { name: 'instancePropertyB' }],
         statics: [{ name: 'staticMethodA' }, { name: 'staticPropertyA' }, { name: 'staticMethodB' }, { name: 'staticPropertyB' }],
+        path: '',
       },
     ]);
     const keywordsDoc = docs[docs.length - 1];
@@ -171,6 +174,7 @@ describe('generateKeywords processor', () => {
         content: 'Some content with ngClass in it.',
         members: [{ name: 'some' }, { name: 'none' }, { name: 'get' }, { name: 'put' }],
         statics: [{ name: 'zero' }, { name: 'one' }, { name: 'next' }, { name: 'index' }],
+        path: '',
       },
     ]);
     const keywordsDoc = docs[docs.length - 1];
@@ -191,11 +195,13 @@ describe('generateKeywords processor', () => {
       name: 'ParentClass',
       members: [{ name: 'parentMember1' }],
       statics: [{ name: 'parentMember2' }],
+      path: '',
     };
     const parentInterface = {
       docType: 'interface',
       name: 'ParentInterface',
       members: [{ name: 'parentMember3' }],
+      path: '',
     };
 
     const childClass = {
@@ -205,6 +211,7 @@ describe('generateKeywords processor', () => {
       statics: [{ name: 'childMember2' }],
       extendsClauses: [{ doc: parentClass }],
       implementsClauses: [{ doc: parentInterface }],
+      path: '',
     };
     const docs = await processor.$process([childClass, parentClass, parentInterface]);
     const keywordsDoc = docs[docs.length - 1];
@@ -234,11 +241,13 @@ describe('generateKeywords processor', () => {
       name: 'ParentClass',
       members: [{ name: 'one' }],
       statics: [{ name: 'zero' }],
+      path: '',
     };
     const parentInterface = {
       docType: 'interface',
       name: 'ParentInterface',
       members: [{ name: 'index' }],
+      path: '',
     };
 
     const childClass = {
@@ -248,6 +257,7 @@ describe('generateKeywords processor', () => {
       statics: [{ name: 'get' }],
       extendsClauses: [{ doc: parentClass }],
       implementsClauses: [{ doc: parentInterface }],
+      path: '',
     };
     const docs = await processor.$process([childClass, parentClass, parentInterface]);
     const keywordsDoc = docs[docs.length - 1];
@@ -279,6 +289,7 @@ describe('generateKeywords processor', () => {
         searchTitle: 'ngController',
         vFile: { headings: { h2: ['ngModel'] } },
         content: 'Some content with ngClass in it.',
+        path: '',
       },
     ]);
     const keywordsDoc = docs[docs.length - 1];
@@ -301,6 +312,7 @@ describe('generateKeywords processor', () => {
         name: 'SomeClass',
         description: 'The is the documentation for the SomeClass API.',
         vFile: { headings: { h1: ['SomeClass'], h2: ['Some heading'] } },
+        path: '',
       },
       {
         docType: 'class',
@@ -308,6 +320,7 @@ describe('generateKeywords processor', () => {
         description: 'description',
         members: [{ name: 'member1' }],
         deprecated: true,
+        path: '',
       },
     ]);
     const keywordsDoc = docs[docs.length - 1];
@@ -315,12 +328,14 @@ describe('generateKeywords processor', () => {
       dictionary: 'class someclass document api head someclass2 descript member1',
       pages: [
         {
+          path: '',
           title: 'SomeClass',
           type: 'class',
           headings: [1, 4],
           keywords: [0, 1, 2, 1, 3],
         },
         {
+          path: '',
           title: 'SomeClass2',
           type: 'class',
           keywords: [0, 5, 6],
