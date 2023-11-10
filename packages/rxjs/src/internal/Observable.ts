@@ -1240,13 +1240,27 @@ export enum ObservableInputType {
 }
 
 export function getObservableInputType(input: unknown): ObservableInputType {
-  if (input instanceof Observable) return ObservableInputType.Own;
-  if (isInteropObservable(input)) return ObservableInputType.InteropObservable;
-  if (isArrayLike(input)) return ObservableInputType.ArrayLike;
-  if (isPromise(input)) return ObservableInputType.Promise;
-  if (isAsyncIterable(input)) return ObservableInputType.AsyncIterable;
-  if (isIterable(input)) return ObservableInputType.Iterable;
-  if (isReadableStreamLike(input)) return ObservableInputType.ReadableStreamLike;
+  if (input instanceof Observable) {
+    return ObservableInputType.Own;
+  }
+  if (isInteropObservable(input)) {
+    return ObservableInputType.InteropObservable;
+  }
+  if (isArrayLike(input)) {
+    return ObservableInputType.ArrayLike;
+  }
+  if (isPromise(input)) {
+    return ObservableInputType.Promise;
+  }
+  if (isAsyncIterable(input)) {
+    return ObservableInputType.AsyncIterable;
+  }
+  if (isIterable(input)) {
+    return ObservableInputType.Iterable;
+  }
+  if (isReadableStreamLike(input)) {
+    return ObservableInputType.ReadableStreamLike;
+  }
   throw new TypeError(
     `You provided ${
       input !== null && typeof input === 'object' ? 'an invalid object' : `'${input}'`
