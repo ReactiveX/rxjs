@@ -12,7 +12,6 @@ import {
   ObservedValueOf,
   ReadableStreamLike,
 } from './types.js';
-import { UnsubscriptionError } from './util/UnsubscriptionError.js';
 import { isArrayLike } from './util/isArrayLike.js';
 import { isAsyncIterable } from './util/isAsyncIterable.js';
 import { isFunction } from './util/isFunction.js';
@@ -21,6 +20,26 @@ import { isIterable } from './util/isIterable.js';
 import { isPromise } from './util/isPromise.js';
 import { isReadableStreamLike, readableStreamLikeToAsyncGenerator } from './util/isReadableStreamLike.js';
 import { createInvalidObservableTypeError } from './util/throwUnobservableError.js';
+
+/**
+ * An error thrown when one or more errors have occurred during the
+ * `unsubscribe` of a {@link Subscription}.
+ */
+export class UnsubscriptionError extends Error {
+  /**
+   * @deprecated Internal implementation detail. Do not construct error instances.
+   * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
+   */
+  constructor(public errors: any[]) {
+    super(
+      errors
+        ? `${errors.length} errors occurred during unsubscription:
+${errors.map((err, i) => `${i + 1}) ${err.toString()}`).join('\n  ')}`
+        : ''
+    );
+    this.name = 'UnsubscriptionError';
+  }
+}
 
 /**
  * Represents a disposable resource, such as the execution of an Observable. A

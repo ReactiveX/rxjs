@@ -13,7 +13,17 @@
 // tslint:enable: no-reference
 
 /* Core */
-export { Observable, from, config, GlobalConfig, Subscription, Subscriber, SubscriberOverrides, operate } from './internal/Observable.js';
+export {
+  Observable,
+  from,
+  config,
+  GlobalConfig,
+  Subscription,
+  Subscriber,
+  SubscriberOverrides,
+  operate,
+  UnsubscriptionError,
+} from './internal/Observable.js';
 
 /* Observables */
 export { GroupedObservable } from './internal/operators/groupBy.js';
@@ -51,7 +61,6 @@ export { EmptyError } from './internal/util/EmptyError.js';
 export { NotFoundError } from './internal/util/NotFoundError.js';
 export { SequenceError } from './internal/util/SequenceError.js';
 export { TimeoutError } from './internal/operators/timeout.js';
-export { UnsubscriptionError } from './internal/util/UnsubscriptionError.js';
 
 /* Static observable creation exports */
 export { bindCallback } from './internal/observable/bindCallback.js';
