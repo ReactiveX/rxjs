@@ -1,6 +1,5 @@
-import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../NotificationFactories.js';
 import { OperatorFunction, ObservableNotification } from '../types.js';
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate, COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Observable.js';
 
 /**
  * Represents all of the notifications from the source Observable as `next`
