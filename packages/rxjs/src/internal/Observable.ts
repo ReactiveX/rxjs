@@ -1,7 +1,6 @@
 import { Subscriber } from './Subscriber.js';
 import { Subscription } from './Subscription.js';
 import { TeardownLogic, UnaryFunction, Subscribable, Observer, OperatorFunction } from './types.js';
-import { observable as Symbol_observable } from './symbol/observable.js';
 import { pipeFromArray } from './util/pipe.js';
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -240,7 +239,7 @@ export class Observable<T> implements Subscribable<T> {
    * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
    * @return This instance of the observable.
    */
-  [Symbol_observable]() {
+  [Symbol.observable ?? '@@observable']() {
     return this;
   }
 

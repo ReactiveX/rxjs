@@ -1,7 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { asyncScheduler, of, from, Observer, observable, Subject, noop, Subscription } from 'rxjs';
+import { of, from, Observer, Subject, noop, Subscription } from 'rxjs';
 import { first, concatMap, delay, take, tap } from 'rxjs/operators';
 import { ReadableStream } from 'web-streams-polyfill';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -166,7 +166,7 @@ describe('from', () => {
   });
 
   const fakervable = <T>(...values: T[]) => ({
-    [observable]: () => ({
+    [Symbol.observable ?? '@@observable']: () => ({
       subscribe: (observer: Observer<T>) => {
         for (const value of values) {
           observer.next(value);
@@ -178,7 +178,7 @@ describe('from', () => {
 
   const fakeArrayObservable = <T>(...values: T[]) => {
     let arr: any = ['bad array!'];
-    arr[observable] = () => {
+    arr[Symbol.observable ?? '@@observable'] = () => {
       return {
         subscribe: (observer: Observer<T>) => {
           for (const value of values) {
@@ -277,7 +277,7 @@ describe('from', () => {
     it(`should accept a function that implements [Symbol.observable]`, (done) => {
       const subject = new Subject<any>();
       const handler: any = (arg: any) => subject.next(arg);
-      handler[observable] = () => subject;
+      handler[Symbol.observable ?? '@@observable'] = () => subject;
       let nextInvoked = false;
 
       from(handler as any)

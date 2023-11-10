@@ -1,13 +1,12 @@
 import { expect } from 'chai';
 import { Observable, of, Subscriber } from 'rxjs';
-import { observable as symbolObservable } from 'rxjs/internal/symbol/observable';
 import { asInteropObservable, asInteropSubscriber } from './interop-helper';
 
 describe('interop helper', () => {
   it('should simulate interop observables', () => {
     const observable: any = asInteropObservable(of(42));
     expect(observable).to.not.be.instanceOf(Observable);
-    expect(observable[symbolObservable]).to.be.a('function');
+    expect(observable[Symbol.observable ?? '@@observable']).to.be.a('function');
   });
 
   it('should simulate interop subscribers', () => {
