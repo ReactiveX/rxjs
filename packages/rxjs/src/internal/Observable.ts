@@ -19,7 +19,6 @@ import { isInteropObservable } from './util/isInteropObservable.js';
 import { isIterable } from './util/isIterable.js';
 import { isPromise } from './util/isPromise.js';
 import { isReadableStreamLike, readableStreamLikeToAsyncGenerator } from './util/isReadableStreamLike.js';
-import { createInvalidObservableTypeError } from './util/throwUnobservableError.js';
 
 /**
  * An error thrown when one or more errors have occurred during the
@@ -1112,31 +1111,23 @@ export function reportUnhandledError(err: any) {
 
 export function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>>;
 export function from<T>(input: ObservableInput<T>): Observable<T> {
-  if (input instanceof Observable) {
-    return input;
-  }
-  if (input != null) {
-    if (isInteropObservable(input)) {
+  const type = getObservableInputType(input);
+  switch (type) {
+    case ObservableInputType.Own:
+      return input as Observable<T>;
+    case ObservableInputType.InteropObservable:
       return fromInteropObservable(input);
-    }
-    if (isArrayLike(input)) {
-      return fromArrayLike(input);
-    }
-    if (isPromise(input)) {
-      return fromPromise(input);
-    }
-    if (isAsyncIterable(input)) {
-      return fromAsyncIterable(input);
-    }
-    if (isIterable(input)) {
-      return fromIterable(input);
-    }
-    if (isReadableStreamLike(input)) {
-      return fromReadableStreamLike(input);
-    }
+    case ObservableInputType.ArrayLike:
+      return fromArrayLike(input as ArrayLike<T>);
+    case ObservableInputType.Promise:
+      return fromPromise(input as PromiseLike<T>);
+    case ObservableInputType.AsyncIterable:
+      return fromAsyncIterable(input as AsyncIterable<T>);
+    case ObservableInputType.Iterable:
+      return fromIterable(input as Iterable<T>);
+    case ObservableInputType.ReadableStreamLike:
+      return fromReadableStreamLike(input as ReadableStreamLike<T>);
   }
-
-  throw createInvalidObservableTypeError(input);
 }
 
 /**
@@ -1240,4 +1231,29 @@ export function subscribeToArray<T>(array: ArrayLike<T>, subscriber: Subscriber<
     subscriber.next(array[i]);
   }
   subscriber.complete();
+}
+
+export enum ObservableInputType {
+  Own,
+  InteropObservable,
+  ArrayLike,
+  Promise,
+  AsyncIterable,
+  Iterable,
+  ReadableStreamLike,
+}
+
+export function getObservableInputType(input: unknown): ObservableInputType {
+  if (input instanceof Observable) return ObservableInputType.Own;
+  if (isInteropObservable(input)) return ObservableInputType.InteropObservable;
+  if (isArrayLike(input)) return ObservableInputType.ArrayLike;
+  if (isPromise(input)) return ObservableInputType.Promise;
+  if (isAsyncIterable(input)) return ObservableInputType.AsyncIterable;
+  if (isIterable(input)) return ObservableInputType.Iterable;
+  if (isReadableStreamLike(input)) return ObservableInputType.ReadableStreamLike;
+  throw new TypeError(
+    `You provided ${
+      input !== null && typeof input === 'object' ? 'an invalid object' : `'${input}'`
+    } where a stream was expected. You can provide an Observable, Promise, ReadableStream, Array, AsyncIterable, or Iterable.`
+  );
 }
