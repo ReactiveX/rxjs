@@ -1,7 +1,7 @@
 import { Subscriber } from './Subscriber.js';
 import { Subscription } from './Subscription.js';
 import { TeardownLogic, UnaryFunction, Subscribable, Observer, OperatorFunction } from './types.js';
-import { pipeFromArray } from './util/pipe.js';
+
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
  * of RxJS.
@@ -341,7 +341,7 @@ export class Observable<T> implements Subscribable<T> {
    * in the order they were passed in.
    */
   pipe(...operations: UnaryFunction<any, any>[]): unknown {
-    return pipeFromArray(operations)(this);
+    return operations.reduce(pipeReducer, this as any);
   }
 
   /**
@@ -465,4 +465,8 @@ export class Observable<T> implements Subscribable<T> {
       },
     };
   }
+}
+
+function pipeReducer(prev: any, fn: UnaryFunction<any, any>) {
+  return fn(prev);
 }
