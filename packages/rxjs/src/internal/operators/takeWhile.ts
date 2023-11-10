@@ -1,6 +1,5 @@
 import { OperatorFunction, MonoTypeOperatorFunction, TruthyTypesOf } from '../types.js';
-import { Observable } from '../Observable.js';
-import { operate } from '../Subscriber.js';
+import { Observable, operate } from '../Observable.js';
 
 export function takeWhile<T>(predicate: BooleanConstructor, inclusive: true): MonoTypeOperatorFunction<T>;
 export function takeWhile<T>(predicate: BooleanConstructor, inclusive: false): OperatorFunction<T, TruthyTypesOf<T>>;

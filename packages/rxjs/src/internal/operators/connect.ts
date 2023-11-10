@@ -1,7 +1,6 @@
 import { OperatorFunction, ObservableInput, ObservedValueOf, SubjectLike } from '../types.js';
-import { Observable } from '../Observable.js';
+import { Observable, from } from '../Observable.js';
 import { Subject } from '../Subject.js';
-import { from } from '../observable/from.js';
 import { fromSubscribable } from '../observable/fromSubscribable.js';
 
 /**

@@ -1,4 +1,4 @@
-import { from } from '../observable/from.js';
+import { from } from '../Observable.js';
 import { observeOn } from '../operators/observeOn.js';
 import { subscribeOn } from '../operators/subscribeOn.js';
 import { SchedulerLike } from '../types.js';

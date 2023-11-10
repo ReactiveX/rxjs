@@ -1,9 +1,7 @@
-import { Observable } from '../Observable.js';
+import { Observable, operate, from } from '../Observable.js';
 import { ObservableInputTuple } from '../types.js';
 import { argsOrArgArray } from '../util/argsOrArgArray.js';
-import { operate } from '../Subscriber.js';
 import { noop } from '../util/noop.js';
-import { from } from './from.js';
 
 export function onErrorResumeNext<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
 export function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;

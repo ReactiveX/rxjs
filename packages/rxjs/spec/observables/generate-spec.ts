@@ -3,7 +3,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { expect } from 'chai';
 import { generate } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { Subscriber } from 'rxjs/internal/Subscriber';
+import { Subscriber } from 'rxjs/internal/Observable';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 function err(): any {

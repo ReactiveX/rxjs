@@ -1,7 +1,5 @@
-import { Subscription } from '../Subscription.js';
+import { Subscription, Observable, operate } from '../Observable.js';
 import { OperatorFunction, SchedulerLike } from '../types.js';
-import { Observable } from '../Observable.js';
-import { operate } from '../Subscriber.js';
 import { arrRemove } from '../util/arrRemove.js';
 import { asyncScheduler } from '../scheduler/async.js';
 import { popScheduler } from '../util/args.js';

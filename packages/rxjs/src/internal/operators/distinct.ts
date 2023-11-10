@@ -1,8 +1,6 @@
 import { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
-import { Observable } from '../Observable.js';
-import { operate } from '../Subscriber.js';
+import { Observable, operate, from } from '../Observable.js';
 import { noop } from '../util/noop.js';
-import { from } from '../observable/from.js';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.

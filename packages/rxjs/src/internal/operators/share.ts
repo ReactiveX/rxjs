@@ -1,8 +1,5 @@
-import { Observable } from '../Observable.js';
-import { from } from '../observable/from.js';
+import { Observable, Subscriber, Subscription, from } from '../Observable.js';
 import { Subject } from '../Subject.js';
-import { Subscriber } from '../Subscriber.js';
-import { Subscription } from '../Subscription.js';
 import { MonoTypeOperatorFunction, SubjectLike, ObservableInput } from '../types.js';
 
 export interface ShareConfig<T> {

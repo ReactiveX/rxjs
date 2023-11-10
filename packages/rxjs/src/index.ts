@@ -12,8 +12,10 @@
 /// <reference path="./testing/index.ts" />
 // tslint:enable: no-reference
 
-/* Observable */
-export { Observable } from './internal/Observable.js';
+/* Core */
+export { Observable, from, config, GlobalConfig, Subscription, Subscriber, SubscriberOverrides, operate } from './internal/Observable.js';
+
+/* Observables */
 export { GroupedObservable } from './internal/operators/groupBy.js';
 export { Operator } from './internal/Operator.js';
 export { animationFrames } from './internal/observable/dom/animationFrames.js';
@@ -32,17 +34,12 @@ export { animationFrameScheduler } from './internal/scheduler/animationFrame.js'
 export { VirtualTimeScheduler, VirtualAction } from './internal/scheduler/VirtualTimeScheduler.js';
 export { Scheduler } from './internal/Scheduler.js';
 
-/* Subscription */
-export { Subscription } from './internal/Subscription.js';
-export { Subscriber, SubscriberOverrides } from './internal/Subscriber.js';
-
 /* Utils */
 export { rx } from './internal/util/rx.js';
 export { pipe } from './internal/util/pipe.js';
 export { noop } from './internal/util/noop.js';
 export { identity } from './internal/util/identity.js';
 export { isObservable } from './internal/util/isObservable.js';
-export { operate } from './internal/Subscriber.js';
 
 /* Promise Conversion */
 export { lastValueFrom } from './internal/lastValueFrom.js';
@@ -64,7 +61,6 @@ export { concat } from './internal/observable/concat.js';
 export { connectable } from './internal/observable/connectable.js';
 export { defer } from './internal/observable/defer.js';
 export { forkJoin } from './internal/observable/forkJoin.js';
-export { from } from './internal/observable/from.js';
 export { fromEvent } from './internal/observable/fromEvent.js';
 export { fromEventPattern } from './internal/observable/fromEventPattern.js';
 export { generate } from './internal/observable/generate.js';
@@ -88,9 +84,6 @@ export { NEVER } from './internal/observable/never.js';
 
 /* Types */
 export * from './internal/types.js';
-
-/* Config */
-export { config, GlobalConfig } from './internal/config.js';
 
 /* Operators */
 export { audit } from './internal/operators/audit.js';

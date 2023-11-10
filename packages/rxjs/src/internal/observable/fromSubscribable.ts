@@ -1,5 +1,4 @@
-import { Observable } from '../Observable.js';
-import { Subscriber } from '../Subscriber.js';
+import { Observable, Subscriber } from '../Observable.js';
 import { Subscribable } from '../types.js';
 
 /**

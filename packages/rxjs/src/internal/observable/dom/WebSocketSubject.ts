@@ -1,7 +1,5 @@
 import { Subject, AnonymousSubject } from '../../Subject.js';
-import { Subscriber } from '../../Subscriber.js';
-import { Observable } from '../../Observable.js';
-import { Subscription } from '../../Subscription.js';
+import { Subscriber, Observable, Subscription } from '../../Observable.js';
 import { ReplaySubject } from '../../ReplaySubject.js';
 import { Observer, NextObserver } from '../../types.js';
 

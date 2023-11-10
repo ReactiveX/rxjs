@@ -1,9 +1,6 @@
-import { Observable } from '../Observable.js';
-import { from } from './from.js';
-import { Subscription } from '../Subscription.js';
+import { Observable, from, Subscription, Subscriber, operate } from '../Observable.js';
 import { ObservableInput, ObservableInputTuple } from '../types.js';
 import { argsOrArgArray } from '../util/argsOrArgArray.js';
-import { Subscriber, operate } from '../Subscriber.js';
 
 export function race<T extends readonly unknown[]>(inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
 export function race<T extends readonly unknown[]>(...inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;

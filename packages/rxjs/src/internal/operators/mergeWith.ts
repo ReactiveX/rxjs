@@ -1,6 +1,5 @@
-import { from } from '../observable/from.js';
+import { Observable, from } from '../Observable.js';
 import { mergeAll } from '../operators/mergeAll.js';
-import { Observable } from '../Observable.js';
 import { ObservableInputTuple, OperatorFunction } from '../types.js';
 
 /**

@@ -1,5 +1,4 @@
-import { Observable } from '../Observable.js';
-import { Subscriber } from '../Subscriber.js';
+import { Observable, Subscriber } from '../Observable.js';
 import { isArrayLike } from '../util/isArrayLike.js';
 import { isFunction } from '../util/isFunction.js';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';

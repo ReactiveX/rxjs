@@ -1,6 +1,6 @@
 import { Action } from './Action.js';
 import { SchedulerAction } from '../types.js';
-import { Subscription } from '../Subscription.js';
+import { Subscription } from '../Observable.js';
 import { AsyncScheduler } from './AsyncScheduler.js';
 import { intervalProvider } from './intervalProvider.js';
 import { arrRemove } from '../util/arrRemove.js';
