@@ -1,6 +1,6 @@
 import { reduce } from './reduce.js';
 import { MonoTypeOperatorFunction } from '../types.js';
-import { isFunction } from '../util/isFunction.js';
+import { isFunction } from '../Observable.js';
 
 /**
  * The `min` operator operates on an Observable that emits numbers (or items that

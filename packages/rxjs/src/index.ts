@@ -23,6 +23,7 @@ export {
   SubscriberOverrides,
   operate,
   UnsubscriptionError,
+  isObservable,
 } from './internal/Observable.js';
 
 /* Observables */
@@ -49,7 +50,6 @@ export { rx } from './internal/util/rx.js';
 export { pipe } from './internal/util/pipe.js';
 export { noop } from './internal/util/noop.js';
 export { identity } from './internal/util/identity.js';
-export { isObservable } from './internal/util/isObservable.js';
 
 /* Promise Conversion */
 export { lastValueFrom } from './internal/lastValueFrom.js';

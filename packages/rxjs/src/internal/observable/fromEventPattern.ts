@@ -1,5 +1,4 @@
-import { Observable } from '../Observable.js';
-import { isFunction } from '../util/isFunction.js';
+import { Observable, isFunction } from '../Observable.js';
 import { NodeEventHandler } from './fromEvent.js';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
 
