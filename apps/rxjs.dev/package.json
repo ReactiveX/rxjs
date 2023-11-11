@@ -29,7 +29,7 @@
     "docs-test": "npx ts-node -P tsconfig.docs.json tools/transforms/test.js",
     "docs-decision-tree": "ts-node -P tools/decision-tree-generator/tsconfig.json tools/decision-tree-generator/main.ts",
     "firebase-utils-test": "jasmine-ts tools/firebase-test-utils/*.spec.ts",
-    "tools-lint": "tslint -c \"tools/tslint.json\" \"tools/firebase-test-utils/**/*.ts\"",
+    "tools-lint": "eslint tools/firebase-test-utils",
     "tools-test": "./scripts/deploy-to-firebase.test.sh && yarn docs-test && yarn firebase-utils-test",
     "preserve-and-sync": "yarn docs",
     "serve-and-sync": "concurrently --kill-others \"yarn docs-watch --watch-only\" \"yarn start\"",

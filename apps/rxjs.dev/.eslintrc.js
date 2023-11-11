@@ -4,7 +4,7 @@ module.exports = {
     {
       files: ['*.ts'],
       parserOptions: {
-        project: ['./tsconfig.json', './tests/e2e/tsconfig.json'],
+        project: ['./tsconfig.json', './tests/e2e/tsconfig.e2e.json'],
         createDefaultProgram: true,
         tsconfigRootDir: __dirname,
       },
