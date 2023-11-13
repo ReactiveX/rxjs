@@ -1,6 +1,4 @@
-import { Observable } from '../Observable.js';
-import { subscribeToArray } from '../observable/from.js';
-import { operate } from '../Subscriber.js';
+import { Observable, subscribeToArray, operate } from '../Observable.js';
 import { OperatorFunction, ValueFromArray } from '../types.js';
 
 export function startWith<T>(value: null): OperatorFunction<T, T | null>;

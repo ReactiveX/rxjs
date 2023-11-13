@@ -1,7 +1,5 @@
 import { OperatorFunction, ObservableInput } from '../types.js';
-import { Observable } from '../Observable.js';
-import { operate } from '../Subscriber.js';
-import { from } from '../observable/from.js';
+import { Observable, operate, from } from '../Observable.js';
 
 /**
  * Compares all values of two observables in sequence using an optional comparator function

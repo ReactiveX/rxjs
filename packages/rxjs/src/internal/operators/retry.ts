@@ -1,10 +1,7 @@
 import { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
-import { Observable } from '../Observable.js';
-import { Subscription } from '../Subscription.js';
-import { operate } from '../Subscriber.js';
+import { Observable, Subscription, operate, from } from '../Observable.js';
 import { identity } from '../util/identity.js';
 import { timer } from '../observable/timer.js';
-import { from } from '../observable/from.js';
 
 /**
  * The {@link retry} operator configuration object. `retry` either accepts a `number`

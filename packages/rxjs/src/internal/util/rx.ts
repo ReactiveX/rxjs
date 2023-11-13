@@ -1,7 +1,5 @@
-import { from } from '../observable/from.js';
-import { Observable } from '../Observable.js';
+import { Observable, from } from '../Observable.js';
 import { ObservableInput, UnaryFunction } from '../types.js';
-import { pipeFromArray } from './pipe.js';
 
 export function rx<A>(source: ObservableInput<A>): Observable<A>;
 export function rx<A, B>(source: ObservableInput<A>, fn2: UnaryFunction<Observable<A>, B>): B;
@@ -114,5 +112,9 @@ export function rx<A, B, C, D, E, F, G, H, I>(
  * @returns The result of the last function, or an observable if no functions are provided for the second argument and beyond.
  */
 export function rx(source: ObservableInput<unknown>, ...fns: UnaryFunction<any, unknown>[]): unknown {
-  return pipeFromArray(fns)(from(source));
+  return fns.reduce(pipeReducer, from(source));
+}
+
+function pipeReducer(prev: any, fn: UnaryFunction<any, any>) {
+  return fn(prev);
 }

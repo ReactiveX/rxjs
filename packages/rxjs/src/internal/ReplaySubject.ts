@@ -1,7 +1,6 @@
 import { Subject } from './Subject.js';
 import { TimestampProvider } from './types.js';
-import { Subscriber } from './Subscriber.js';
-import { Subscription } from './Subscription.js';
+import { Subscriber, Subscription } from './Observable.js';
 import { dateTimestampProvider } from './scheduler/dateTimestampProvider.js';
 
 /**

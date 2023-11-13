@@ -1,7 +1,6 @@
 import { ObservableInput, ObservedValueOf, OperatorFunction } from '../types.js';
 import { switchMap } from './switchMap.js';
-import { Observable } from '../Observable.js';
-import { operate } from '../Subscriber.js';
+import { Observable, operate } from '../Observable.js';
 
 // TODO: Generate a marble diagram for these docs.
 

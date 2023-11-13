@@ -1,4 +1,4 @@
-import { Subscriber } from './Subscriber.js';
+import { Subscriber } from './Observable.js';
 import { TeardownLogic } from './types.js';
 
 /***

@@ -1,7 +1,4 @@
-import { Observable } from '../Observable.js';
-import { Subscriber } from '../Subscriber.js';
-import { isArrayLike } from '../util/isArrayLike.js';
-import { isFunction } from '../util/isFunction.js';
+import { Observable, Subscriber, isArrayLike, isFunction } from '../Observable.js';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
 
 // These constants are used to create handler registry functions using array mapping below.

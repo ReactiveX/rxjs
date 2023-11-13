@@ -1,6 +1,5 @@
-import { Observable } from './Observable.js';
+import { Observable, Subscriber } from './Observable.js';
 import { EmptyError } from './util/EmptyError.js';
-import { Subscriber } from './Subscriber.js';
 
 export interface FirstValueFromConfig<T> {
   defaultValue: T;

@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { expect } from 'chai';
-import { isPromise } from 'rxjs/internal/util/isPromise';
+import { isPromise } from 'rxjs/internal/Observable';
 
 describe('isPromise', () => {
   it('should return true for new Promise', () => {
@@ -29,5 +29,4 @@ describe('isPromise', () => {
   it('should return false for a string', () => {
     expect(isPromise('1')).to.be.false;
   });
-
 });

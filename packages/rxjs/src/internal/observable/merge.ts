@@ -1,10 +1,9 @@
-import { Observable } from '../Observable.js';
+import { Observable, from } from '../Observable.js';
 import { ObservableInput, ObservableInputTuple, SchedulerLike } from '../types.js';
 import { mergeAll } from '../operators/mergeAll.js';
 import { EMPTY } from './empty.js';
 import { popNumber, popScheduler } from '../util/args.js';
 import { scheduled } from '../scheduled/scheduled.js';
-import { from } from './from.js';
 
 export function merge<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
 export function merge<A extends readonly unknown[]>(...sourcesAndConcurrency: [...ObservableInputTuple<A>, number?]): Observable<A[number]>;

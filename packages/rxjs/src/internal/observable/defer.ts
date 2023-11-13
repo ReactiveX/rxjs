@@ -1,6 +1,5 @@
-import { Observable } from '../Observable.js';
+import { Observable, from } from '../Observable.js';
 import { ObservedValueOf, ObservableInput } from '../types.js';
-import { from } from './from.js';
 
 /**
  * Creates an Observable that, on subscribe, calls an Observable factory to

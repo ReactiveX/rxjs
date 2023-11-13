@@ -1,7 +1,6 @@
-import { identity } from './identity.js';
 import { UnaryFunction } from '../types.js';
 
-export function pipe(): typeof identity;
+export function pipe(): <T>(x: T) => T;
 export function pipe<T, A>(fn1: UnaryFunction<T, A>): UnaryFunction<T, A>;
 export function pipe<T, A, B>(fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>): UnaryFunction<T, B>;
 export function pipe<T, A, B, C>(fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>, fn3: UnaryFunction<B, C>): UnaryFunction<T, C>;
@@ -76,20 +75,9 @@ export function pipe<T, A, B, C, D, E, F, G, H, I>(
  * passes the result to the next one, passes that result to the next one, and so on.
  */
 export function pipe(...fns: Array<UnaryFunction<any, any>>): UnaryFunction<any, any> {
-  return pipeFromArray(fns);
+  return fns.length === 1 ? fns[0] : (input: any) => fns.reduce(pipeReducer, input);
 }
 
-/** @internal */
-export function pipeFromArray(fns: UnaryFunction<unknown, unknown>[]): UnaryFunction<unknown, unknown> {
-  if (fns.length === 0) {
-    return identity as UnaryFunction<any, any>;
-  }
-
-  if (fns.length === 1) {
-    return fns[0];
-  }
-
-  return function piped(input) {
-    return fns.reduce((prev, fn) => fn(prev), input);
-  };
+function pipeReducer(prev: any, fn: UnaryFunction<any, any>): any {
+  return fn(prev);
 }

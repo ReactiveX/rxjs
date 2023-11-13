@@ -1,8 +1,7 @@
 /** @prettier */
 
-import { config } from 'rxjs/internal/config';
 import { expect } from 'chai';
-import { Observable } from 'rxjs';
+import { Observable, config } from 'rxjs';
 import { timeoutProvider } from 'rxjs/internal/scheduler/timeoutProvider';
 
 describe('config', () => {

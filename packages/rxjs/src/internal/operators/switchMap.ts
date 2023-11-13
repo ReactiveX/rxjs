@@ -1,7 +1,5 @@
-import { Subscriber, operate } from '../Subscriber.js';
+import { Observable, from, Subscriber, operate } from '../Observable.js';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.js';
-import { from } from '../observable/from.js';
-import { Observable } from '../Observable.js';
 
 /**
  * Projects each source value to an Observable which is merged in the output

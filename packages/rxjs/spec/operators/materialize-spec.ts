@@ -3,7 +3,7 @@ import { materialize, map, mergeMap, take } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
-import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from 'rxjs/internal/NotificationFactories';
+import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from 'rxjs/internal/Observable';
 
 /** @test {materialize} */
 describe('materialize', () => {

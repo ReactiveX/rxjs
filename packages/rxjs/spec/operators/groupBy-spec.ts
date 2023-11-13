@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { groupBy, delay, tap, map, take, mergeMap, materialize, skip, ignoreElements } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { ReplaySubject, of, Observable, Subject, NextNotification, ErrorNotification } from 'rxjs';
-import { createNotification } from 'rxjs/internal/NotificationFactories';
+import { createNotification } from 'rxjs/internal/Observable';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {groupBy} */

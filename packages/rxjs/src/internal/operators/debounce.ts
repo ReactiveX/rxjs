@@ -1,8 +1,6 @@
-import { Subscriber, operate } from '../Subscriber.js';
+import { Subscriber, operate, Observable, from } from '../Observable.js';
 import { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
-import { Observable } from '../Observable.js';
 import { noop } from '../util/noop.js';
-import { from } from '../observable/from.js';
 
 /**
  * Emits a notification from the source Observable only after a particular time span

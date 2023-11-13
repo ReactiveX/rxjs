@@ -3,15 +3,8 @@ import { schedulePromise } from './schedulePromise.js';
 import { scheduleArray } from './scheduleArray.js';
 import { scheduleIterable } from './scheduleIterable.js';
 import { scheduleAsyncIterable } from './scheduleAsyncIterable.js';
-import { isInteropObservable } from '../util/isInteropObservable.js';
-import { isPromise } from '../util/isPromise.js';
-import { isArrayLike } from '../util/isArrayLike.js';
-import { isIterable } from '../util/isIterable.js';
-import { ObservableInput, SchedulerLike } from '../types.js';
-import { Observable } from '../Observable.js';
-import { isAsyncIterable } from '../util/isAsyncIterable.js';
-import { createInvalidObservableTypeError } from '../util/throwUnobservableError.js';
-import { isReadableStreamLike } from '../util/isReadableStreamLike.js';
+import { InteropObservable, ObservableInput, SchedulerLike } from '../types.js';
+import { Observable, ObservableInputType, getObservableInputType } from '../Observable.js';
 import { scheduleReadableStreamLike } from './scheduleReadableStreamLike.js';
 
 /**
@@ -26,25 +19,20 @@ import { scheduleReadableStreamLike } from './scheduleReadableStreamLike.js';
  * the returned observable.
  */
 export function scheduled<T>(input: ObservableInput<T>, scheduler: SchedulerLike): Observable<T> {
-  if (input != null) {
-    if (isInteropObservable(input)) {
-      return scheduleObservable(input, scheduler);
-    }
-    if (isArrayLike(input)) {
-      return scheduleArray(input, scheduler);
-    }
-    if (isPromise(input)) {
-      return schedulePromise(input, scheduler);
-    }
-    if (isAsyncIterable(input)) {
-      return scheduleAsyncIterable(input, scheduler);
-    }
-    if (isIterable(input)) {
-      return scheduleIterable(input, scheduler);
-    }
-    if (isReadableStreamLike(input)) {
-      return scheduleReadableStreamLike(input, scheduler);
-    }
+  const type = getObservableInputType(input);
+  switch (type) {
+    case ObservableInputType.Own:
+    case ObservableInputType.InteropObservable:
+      return scheduleObservable(input as InteropObservable<T>, scheduler);
+    case ObservableInputType.Promise:
+      return schedulePromise(input as Promise<T>, scheduler);
+    case ObservableInputType.ArrayLike:
+      return scheduleArray(input as ArrayLike<T>, scheduler);
+    case ObservableInputType.Iterable:
+      return scheduleIterable(input as Iterable<T>, scheduler);
+    case ObservableInputType.AsyncIterable:
+      return scheduleAsyncIterable(input as AsyncIterable<T>, scheduler);
+    case ObservableInputType.ReadableStreamLike:
+      return scheduleReadableStreamLike(input as ReadableStream<T>, scheduler);
   }
-  throw createInvalidObservableTypeError(input);
 }
