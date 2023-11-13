@@ -352,7 +352,8 @@ describe('fromEvent', () => {
     };
 
     function selector(x: number, y: number, z: number) {
-      return [].slice.call(x, y, z);
+      // eslint-disable-next-line prefer-rest-params
+      return [].slice.call(arguments);
     }
 
     fromEvent(obj, 'click', selector)
