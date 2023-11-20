@@ -57,15 +57,15 @@ class MockAbortController {
 }
 
 class MockAbortSignal {
-  private _listeners: Function[] = [];
+  private _listeners: Array<() => unknown> = [];
 
   aborted = false;
 
-  addEventListener(name: 'abort', handler: Function) {
+  addEventListener(name: 'abort', handler: () => unknown) {
     this._listeners.push(handler);
   }
 
-  removeEventListener(name: 'abort', handler: Function) {
+  removeEventListener(name: 'abort', handler: () => unknown) {
     const index = this._listeners.indexOf(handler);
     if (index >= 0) {
       this._listeners.splice(index, 1);

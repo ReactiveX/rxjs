@@ -117,6 +117,7 @@ describe('defer', () => {
 
   it('should error when factory throws', (done) => {
     const e1 = defer(() => {
+      // eslint-disable-next-line no-constant-condition
       if (1 + 2 === 3) {
         throw 'error';
       }

@@ -9,8 +9,7 @@ import { TimerHandle } from './timerHandle.js';
 export class AsyncAction<T> extends Action<T> {
   public id: TimerHandle | undefined;
   public state?: T;
-  // @ts-ignore: Property has no initializer and is not definitely assigned
-  public delay: number;
+  public delay!: number;
   protected pending: boolean = false;
 
   constructor(protected scheduler: AsyncScheduler, protected work: (this: SchedulerAction<T>, state?: T) => void) {

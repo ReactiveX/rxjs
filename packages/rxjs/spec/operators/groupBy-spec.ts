@@ -30,7 +30,7 @@ describe('groupBy operator', () => {
     return str.split('').reverse().join('');
   }
 
-  function mapObject(obj: Record<string, any>, fn: Function) {
+  function mapObject<T>(obj: Record<string, T>, fn: (val: T) => unknown) {
     const out: Record<string, any> = {};
     for (const p in obj) {
       if (obj.hasOwnProperty(p)) {
@@ -104,7 +104,7 @@ describe('groupBy operator', () => {
         })
       )
       .subscribe((g: any) => {
-        let group = { key: g.key, values: [] as number[] };
+        const group = { key: g.key, values: [] as number[] };
 
         g.subscribe((x: any) => {
           group.values.push(x);

@@ -149,8 +149,6 @@ describe('last', () => {
   });
 
   it('should support type guards without breaking previous behavior', () => {
-    // tslint:disable no-unused-variable
-
     // type guards with interfaces and classes
     {
       interface Bar {
@@ -222,7 +220,5 @@ describe('last', () => {
       // boolean predicates preserve the type
       xs.pipe(last((x) => typeof x === 'string')).subscribe((x) => x); // x is still string | number
     }
-
-    // tslint:disable enable
   });
 });

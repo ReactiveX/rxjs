@@ -39,11 +39,11 @@ describe('fromEvent', () => {
     let offHandler;
 
     const obj = {
-      on: (a: string, b: Function) => {
+      on: (a: string, b: (...args: unknown[]) => any) => {
         onEventName = a;
         onHandler = b;
       },
-      off: (a: string, b: Function) => {
+      off: (a: string, b: (...args: unknown[]) => any) => {
         offEventName = a;
         offHandler = b;
       },
@@ -158,11 +158,11 @@ describe('fromEvent', () => {
     let offHandler;
 
     const obj = {
-      addListener: (a: string, b: Function) => {
+      addListener: (a: string, b: (...args: unknown[]) => any) => {
         onEventName = a;
         onHandler = b;
       },
-      removeListener: (a: string, b: Function) => {
+      removeListener: (a: string, b: (...args: unknown[]) => any) => {
         offEventName = a;
         offHandler = b;
       },
@@ -219,7 +219,7 @@ describe('fromEvent', () => {
   it('should pass through events that occur', (done) => {
     let send: any;
     const obj = {
-      on: (name: string, handler: Function) => {
+      on: (name: string, handler: (...args: unknown[]) => any) => {
         send = handler;
       },
       off: () => {
@@ -247,7 +247,7 @@ describe('fromEvent', () => {
   it('should pass through events that occur and use the selector if provided', (done) => {
     let send: any;
     const obj = {
-      on: (name: string, handler: Function) => {
+      on: (name: string, handler: (t: string, ...args: unknown[]) => any) => {
         send = handler;
       },
       off: () => {
@@ -279,7 +279,7 @@ describe('fromEvent', () => {
   it('should not fail if no event arguments are passed and the selector does not return', (done) => {
     let send: any;
     const obj = {
-      on: (name: string, handler: Function) => {
+      on: (name: string, handler: (...args: unknown[]) => any) => {
         send = handler;
       },
       off: () => {
@@ -311,7 +311,7 @@ describe('fromEvent', () => {
   it('should return a value from the selector if no event arguments are passed', (done) => {
     let send: any;
     const obj = {
-      on: (name: string, handler: Function) => {
+      on: (name: string, handler: (...args: unknown[]) => any) => {
         send = handler;
       },
       off: () => {
@@ -343,7 +343,7 @@ describe('fromEvent', () => {
   it('should pass multiple arguments to selector from event emitter', (done) => {
     let send: any;
     const obj = {
-      on: (name: string, handler: Function) => {
+      on: (name: string, handler: (t: number, ...args: unknown[]) => any) => {
         send = handler;
       },
       off: () => {
@@ -352,6 +352,7 @@ describe('fromEvent', () => {
     };
 
     function selector(x: number, y: number, z: number) {
+      // eslint-disable-next-line prefer-rest-params
       return [].slice.call(arguments);
     }
 
@@ -375,7 +376,7 @@ describe('fromEvent', () => {
   it('should emit multiple arguments from event as an array', (done) => {
     let send: any;
     const obj = {
-      on: (name: string, handler: Function) => {
+      on: (name: string, handler: (...args: unknown[]) => any) => {
         send = handler;
       },
       off: () => {

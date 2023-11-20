@@ -182,8 +182,6 @@ describe('find', () => {
   });
 
   it('should support type guards without breaking previous behavior', () => {
-    // tslint:disable no-unused-variable
-
     // type guards with interfaces and classes
     {
       interface Bar {
@@ -237,8 +235,6 @@ describe('find', () => {
       xs.pipe(find((x) => typeof x === 'number')).subscribe((x) => x); // x is still string | number
       xs.pipe(find((x, i) => typeof x === 'number' && x > i)).subscribe((x) => x); // x is still string | number
     }
-
-    // tslint:disable enable
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

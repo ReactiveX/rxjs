@@ -652,7 +652,7 @@ describe('webSocket', () => {
         );
 
       // Setup socket and send messages
-      let socket = MockWebSocket.lastSocket;
+      const socket = MockWebSocket.lastSocket;
       socket.open();
       socketMessages.forEach((msg, i) => {
         if (i === 1) {
@@ -706,7 +706,7 @@ describe('webSocket', () => {
       );
 
       // Setup socket and send messages
-      let socket = MockWebSocket.lastSocket;
+      const socket = MockWebSocket.lastSocket;
       socket.open();
       socketMessages.forEach((msg) => {
         socket.triggerMessage(JSON.stringify(msg));

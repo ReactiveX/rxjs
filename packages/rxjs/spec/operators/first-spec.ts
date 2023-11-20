@@ -235,8 +235,6 @@ describe('first', () => {
   });
 
   it('should support type guards without breaking previous behavior', () => {
-    // tslint:disable no-unused-variable
-
     // type guards with interfaces and classes
     {
       interface Bar {
@@ -308,8 +306,6 @@ describe('first', () => {
       // boolean predicates preserve the type
       xs.pipe(first((x) => typeof x === 'string')).subscribe((x) => x); // x is still string | number
     }
-
-    // tslint:disable enable
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

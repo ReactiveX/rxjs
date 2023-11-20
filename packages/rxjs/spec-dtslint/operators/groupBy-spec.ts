@@ -14,7 +14,6 @@ it('should support a duration selector', () => {
 });
 
 it('should infer type of duration selector based on element selector', () => {
-  /* tslint:disable-next-line:max-line-length */
   const o = of(1, 2, 3).pipe(groupBy(value => value.toString(), value => Boolean(value), (value: GroupedObservable<string, boolean>) => value)); // $ExpectType Observable<GroupedObservable<string, boolean>>
 });
 

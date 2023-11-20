@@ -185,19 +185,15 @@ describe('Scheduler.animationFrame', () => {
     const sandbox = sinon.createSandbox();
     const stubFlush = sandbox.stub(animationFrameScheduler, 'flush').callThrough();
 
-    let a: Subscription;
-    let b: Subscription;
-    let c: Subscription;
-
-    a = animationFrameScheduler.schedule(() => {
+    animationFrameScheduler.schedule(() => {
       expect(stubFlush).to.have.callCount(1);
-      c = animationFrameScheduler.schedule(() => {
+      animationFrameScheduler.schedule(() => {
         expect(stubFlush).to.have.callCount(2);
         sandbox.restore();
         done();
       });
     });
-    b = animationFrameScheduler.schedule(() => {
+    animationFrameScheduler.schedule(() => {
       expect(stubFlush).to.have.callCount(1);
     });
   });
@@ -206,13 +202,12 @@ describe('Scheduler.animationFrame', () => {
     const sandbox = sinon.createSandbox();
     const stubFlush = sandbox.stub(animationFrameScheduler, 'flush').callThrough();
 
-    let a: Subscription;
+    // eslint-disable-next-line prefer-const
     let b: Subscription;
-    let c: Subscription;
 
-    a = animationFrameScheduler.schedule(() => {
+    animationFrameScheduler.schedule(() => {
       expect(stubFlush).to.have.callCount(1);
-      c = animationFrameScheduler.schedule(() => {
+      animationFrameScheduler.schedule(() => {
         expect(stubFlush).to.have.callCount(2);
         sandbox.restore();
         done();
@@ -228,13 +223,9 @@ describe('Scheduler.animationFrame', () => {
     const sandbox = sinon.createSandbox();
     const cancelAnimationFrameStub = sandbox.stub(animationFrameProvider, 'cancelAnimationFrame').callThrough();
 
-    let a: Subscription;
-    let b: Subscription;
-    let c: Subscription;
-
-    a = animationFrameScheduler.schedule(() => {
+    animationFrameScheduler.schedule(() => {
       expect(animationFrameScheduler.actions).to.have.length(1);
-      c = animationFrameScheduler.schedule(() => {
+      const c = animationFrameScheduler.schedule(() => {
         done(new Error('Unexpected execution of c'));
       });
       expect(animationFrameScheduler.actions).to.have.length(2);
@@ -245,7 +236,7 @@ describe('Scheduler.animationFrame', () => {
       expect(animationFrameScheduler.actions).to.have.length(1);
       expect(cancelAnimationFrameStub).to.have.callCount(1);
     });
-    b = animationFrameScheduler.schedule(() => {
+    animationFrameScheduler.schedule(() => {
       sandbox.restore();
       done();
     });

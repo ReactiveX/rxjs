@@ -235,19 +235,15 @@ describe('Scheduler.asap', () => {
     const sandbox = sinon.createSandbox();
     const stubFlush = sandbox.stub(asapScheduler, 'flush').callThrough();
 
-    let a: Subscription;
-    let b: Subscription;
-    let c: Subscription;
-
-    a = asapScheduler.schedule(() => {
+    asapScheduler.schedule(() => {
       expect(stubFlush).to.have.callCount(1);
-      c = asapScheduler.schedule(() => {
+      asapScheduler.schedule(() => {
         expect(stubFlush).to.have.callCount(2);
         sandbox.restore();
         done();
       });
     });
-    b = asapScheduler.schedule(() => {
+    asapScheduler.schedule(() => {
       expect(stubFlush).to.have.callCount(1);
     });
   });
@@ -256,13 +252,12 @@ describe('Scheduler.asap', () => {
     const sandbox = sinon.createSandbox();
     const stubFlush = sandbox.stub(asapScheduler, 'flush').callThrough();
 
-    let a: Subscription;
+    // eslint-disable-next-line prefer-const
     let b: Subscription;
-    let c: Subscription;
 
-    a = asapScheduler.schedule(() => {
+    asapScheduler.schedule(() => {
       expect(stubFlush).to.have.callCount(1);
-      c = asapScheduler.schedule(() => {
+      asapScheduler.schedule(() => {
         expect(stubFlush).to.have.callCount(2);
         sandbox.restore();
         done();
@@ -278,11 +273,9 @@ describe('Scheduler.asap', () => {
     const sandbox = sinon.createSandbox();
     const clearImmediateStub = sandbox.stub(immediateProvider, 'clearImmediate').callThrough();
 
-    let a: Subscription;
-    let b: Subscription;
     let c: Subscription;
 
-    a = asapScheduler.schedule(() => {
+    asapScheduler.schedule(() => {
       expect(asapScheduler.actions).to.have.length(1);
       c = asapScheduler.schedule(() => {
         done(new Error('Unexpected execution of c'));
@@ -295,7 +288,7 @@ describe('Scheduler.asap', () => {
       expect(asapScheduler.actions).to.have.length(1);
       expect(clearImmediateStub).to.have.callCount(1);
     });
-    b = asapScheduler.schedule(() => {
+    asapScheduler.schedule(() => {
       sandbox.restore();
       done();
     });

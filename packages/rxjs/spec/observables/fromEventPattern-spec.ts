@@ -50,7 +50,7 @@ describe('fromEventPattern', () => {
   });
 
   it('should work without optional removeHandler', () => {
-    const addHandler: (h: Function) => any = sinon.spy();
+    const addHandler: (h: () => any) => any = sinon.spy();
     fromEventPattern(addHandler).subscribe(noop);
 
     expect(addHandler).calledOnce;
@@ -83,7 +83,8 @@ describe('fromEventPattern', () => {
     let target: any;
     const trigger = function (...args: any[]) {
       if (target) {
-        target.apply(null, arguments);
+        // eslint-disable-next-line prefer-spread
+        target.apply(null, args);
       }
     };
 

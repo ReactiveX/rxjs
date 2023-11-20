@@ -167,7 +167,7 @@ describe('single operator', () => {
       const e1subs = '  ^----------!';
       const expected = '-----------(b|)';
 
-      let indices: number[] = [];
+      const indices: number[] = [];
       const predicate = function (value: string, index: number) {
         indices.push(index);
         return value === 'b';

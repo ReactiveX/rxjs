@@ -232,7 +232,7 @@ describe('AsyncSubject', () => {
 
   it('should allow reentrant subscriptions', () => {
     const subject = new AsyncSubject<number>();
-    let results: any[] = [];
+    const results: any[] = [];
 
     subject.subscribe({
       next: (value) => {

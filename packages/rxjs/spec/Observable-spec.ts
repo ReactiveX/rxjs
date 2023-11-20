@@ -270,7 +270,7 @@ describe('Observable', () => {
         };
       });
 
-      let observer = {
+      const observer = {
         next: function () {
           /*noop*/
         },

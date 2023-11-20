@@ -15,7 +15,7 @@ describe('bindNodeCallback', () => {
 
   describe('when not scheduled', () => {
     it('should emit undefined when callback is called without success arguments', () => {
-      function callback(cb: Function) {
+      function callback(cb: (v: unknown) => void) {
         cb(null);
       }
 
@@ -88,7 +88,7 @@ describe('bindNodeCallback', () => {
     it('should raise error from callback', () => {
       const error = new Error();
 
-      function callback(cb: Function) {
+      function callback(cb: (v: unknown) => void) {
         cb(error);
       }
 
@@ -164,7 +164,7 @@ describe('bindNodeCallback', () => {
 
   describe('when scheduled', () => {
     it('should emit undefined when callback is called without success arguments', () => {
-      function callback(cb: Function) {
+      function callback(cb: (v: unknown) => void) {
         cb(null);
       }
 
@@ -245,7 +245,7 @@ describe('bindNodeCallback', () => {
     it('should raise error from callback', () => {
       const error = new Error();
 
-      function callback(cb: Function) {
+      function callback(cb: (v: unknown) => void) {
         cb(error);
       }
 
@@ -368,7 +368,7 @@ describe('bindNodeCallback', () => {
 
   it('should not even call the callbackFn if scheduled and immediately unsubscribed', () => {
     let calls = 0;
-    function callback(datum: number, cb: Function) {
+    function callback(datum: number, cb: (a: unknown, b: number) => void) {
       calls++;
       cb(null, datum);
     }

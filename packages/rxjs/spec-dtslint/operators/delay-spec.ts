@@ -6,7 +6,7 @@ it('should infer correctly', () => {
 });
 
 it('should support date parameter', () => {
-  const o = of(1, 2, 3).pipe(delay(new Date(2018, 09, 18))); // $ExpectType Observable<number>
+  const o = of(1, 2, 3).pipe(delay(new Date(2018, 9, 18))); // $ExpectType Observable<number>
 });
 
 it('should support a scheduler', () => {

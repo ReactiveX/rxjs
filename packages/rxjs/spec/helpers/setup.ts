@@ -10,6 +10,7 @@ if (typeof Symbol !== 'function') {
   const symbolFn: any = (description: string) =>
     `Symbol_${id++} ${description} (RxJS Testing Polyfill)`;
 
+  // eslint-disable-next-line no-global-assign
   Symbol = symbolFn;
 }
 
@@ -36,7 +37,7 @@ if (!(Symbol as any).observable) {
   }
 
   if (!window.requestAnimationFrame) {
-      window.requestAnimationFrame = (callback: Function, element: any) => {
+      window.requestAnimationFrame = (callback: (...args: unknown[]) => any, element: any) => {
           const currTime = new Date().getTime();
           const timeToCall = Math.max(0, 16 - (currTime - lastTime));
           const id = window.setTimeout(() => { callback(currTime + timeToCall); },
