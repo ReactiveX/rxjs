@@ -154,38 +154,32 @@ export type WebSocketMessage = string | ArrayBuffer | Blob | ArrayBufferView;
 export class WebSocketSubject<T> extends Subject<T> {
   private _config!: WebSocketSubjectConfig<T>;
 
-  /** @internal */
-  _output!: Subject<T>;
+  private _output: Subject<T>;
 
   private _socket: WebSocket | null = null;
 
-  private destination: Observer<T> | undefined = undefined;
+  private destination: Observer<T>;
 
   private _source: Observable<T> | undefined = undefined;
 
-  constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T> | Observable<T>, destination?: Observer<T>) {
+  constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T>) {
     super();
-    if (urlConfigOrSource instanceof Observable) {
-      this.destination = destination;
-      this._source = urlConfigOrSource as Observable<T>;
-    } else {
-      const userConfig = typeof urlConfigOrSource === 'string' ? { url: urlConfigOrSource } : urlConfigOrSource;
-      this._config = {
-        ...DEFAULT_WEBSOCKET_CONFIG,
-        // Setting this here because a previous version of this allowed
-        // WebSocket to be polyfilled later than DEFAULT_WEBSOCKET_CONFIG
-        // was defined.
-        WebSocketCtor: WebSocket,
-        ...userConfig,
-      };
+    const userConfig = typeof urlConfigOrSource === 'string' ? { url: urlConfigOrSource } : urlConfigOrSource;
+    this._config = {
+      ...DEFAULT_WEBSOCKET_CONFIG,
+      // Setting this here because a previous version of this allowed
+      // WebSocket to be polyfilled later than DEFAULT_WEBSOCKET_CONFIG
+      // was defined.
+      WebSocketCtor: WebSocket,
+      ...userConfig,
+    };
 
-      if (!this._config.WebSocketCtor) {
-        throw new Error('no WebSocket constructor can be found');
-      }
-
-      this._output = new Subject<T>();
-      this.destination = new ReplaySubject();
+    if (!this._config.WebSocketCtor) {
+      throw new Error('no WebSocket constructor can be found');
     }
+
+    this._output = new Subject<T>();
+    this.destination = new ReplaySubject();
   }
 
   private _resetState() {
@@ -339,15 +333,15 @@ export class WebSocketSubject<T> extends Subject<T> {
   }
 
   next(value: T) {
-    this.destination?.next?.(value);
+    this.destination.next(value);
   }
 
   error(err: any) {
-    this.destination?.error?.(err);
+    this.destination.error(err);
   }
 
   complete() {
-    this.destination?.complete?.();
+    this.destination.complete();
   }
 
   /** @internal */
