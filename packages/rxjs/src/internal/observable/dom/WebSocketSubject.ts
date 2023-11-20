@@ -243,13 +243,6 @@ export class WebSocketSubject<T> extends Subject<T> {
       return;
     }
 
-    const subscription = new Subscription(() => {
-      this._socket = null;
-      if (socket && socket.readyState === 1) {
-        socket.close();
-      }
-    });
-
     socket.onopen = (evt: Event) => {
       const { _socket } = this;
       if (!_socket) {
@@ -262,8 +255,11 @@ export class WebSocketSubject<T> extends Subject<T> {
         openObserver.next(evt);
       }
 
-      const queue = this._input;
+      const previousInput = this._input;
 
+      // We switch over now to passthrough all messages directly to the
+      // to the socket, where previously we were queuing them up with
+      // a ReplaySubject.
       this._input = new Subscriber({
         next: (x: T) => {
           if (socket!.readyState === 1) {
@@ -297,8 +293,11 @@ export class WebSocketSubject<T> extends Subject<T> {
         },
       });
 
-      if (queue && queue instanceof ReplaySubject) {
-        subscription.add((queue as ReplaySubject<T>).subscribe(this._input));
+      // If the _input was a ReplaySubject before, when we
+      // subscribe right now, it will synchronously emit all
+      // of the buffered values.
+      if (previousInput instanceof ReplaySubject) {
+        previousInput.subscribe(this._input);
       }
     };
 
