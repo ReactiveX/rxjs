@@ -1,4 +1,3 @@
-import { Subject } from '../../Subject.js';
 import { Subscriber, Observable, Subscription, operate } from '../../Observable.js';
 import { NextObserver } from '../../types.js';
 
@@ -153,8 +152,6 @@ export type WebSocketMessage = string | ArrayBuffer | Blob | ArrayBufferView;
 export class WebSocketSubject<T> extends Observable<T> {
   private _config!: WebSocketSubjectConfig<T>;
 
-  private _output: Subject<T>;
-
   private _socket: WebSocket | null = null;
 
   private _inputBuffer: T[] = [];
@@ -164,6 +161,14 @@ export class WebSocketSubject<T> extends Observable<T> {
   private _error: any;
 
   private _isComplete = false;
+
+  private _subscriberCounter = 0;
+
+  private _subscribers = new Map<number, Subscriber<T>>();
+
+  get observed() {
+    return this._subscribers.size > 0;
+  }
 
   constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T>) {
     super();
@@ -180,13 +185,12 @@ export class WebSocketSubject<T> extends Observable<T> {
     if (!this._config.WebSocketCtor) {
       throw new Error('no WebSocket constructor can be found');
     }
-
-    this._output = new Subject<T>();
   }
 
   private _resetState() {
     this._socket = null;
-    this._output = new Subject<T>();
+    this._subscriberCounter = 0;
+    this._subscribers.clear();
     this._inputBuffer = [];
     this._hasError = false;
     this._isComplete = false;
@@ -230,9 +234,28 @@ export class WebSocketSubject<T> extends Observable<T> {
     });
   }
 
+  #outputNext(value: T) {
+    for (const subscriber of Array.from(this._subscribers.values())) {
+      subscriber.next(value);
+    }
+  }
+
+  #outputError(err: any) {
+    const subscribers = Array.from(this._subscribers.values());
+    for (const subscriber of subscribers) {
+      subscriber.error(err);
+    }
+  }
+
+  #outputComplete() {
+    const subscribers = Array.from(this._subscribers.values());
+    for (const subscriber of subscribers) {
+      subscriber.complete();
+    }
+  }
+
   private _connectSocket() {
     const { WebSocketCtor, protocol, url, binaryType } = this._config;
-    const { _output } = this;
 
     let socket: WebSocket | null = null;
     try {
@@ -241,17 +264,14 @@ export class WebSocketSubject<T> extends Observable<T> {
       if (binaryType) {
         this._socket.binaryType = binaryType;
       }
-    } catch (e) {
-      _output.error(e);
+    } catch (err) {
+      this.#outputError(err);
       return;
     }
 
     socket.onopen = (evt) => {
-      const { _socket } = this;
-
-      if (!_socket) {
-        socket!.close();
-        this._resetState();
+      if (socket !== this._socket) {
+        socket?.close();
         return;
       }
 
@@ -269,31 +289,33 @@ export class WebSocketSubject<T> extends Observable<T> {
     };
 
     socket.onerror = (e: Event) => {
-      this._resetState();
-      _output.error(e);
+      if (socket !== this._socket) {
+        return;
+      }
+
+      this.#outputError(e);
     };
 
     socket.onclose = (e: CloseEvent) => {
-      if (socket === this._socket) {
-        this._resetState();
+      if (socket !== this._socket) {
+        return;
       }
-      const { closeObserver } = this._config;
-      if (closeObserver) {
-        closeObserver.next(e);
-      }
+
+      this._config.closeObserver?.next(e);
+
       if (e.wasClean) {
-        _output.complete();
+        this.#outputComplete();
       } else {
-        _output.error(e);
+        this.#outputError(e);
       }
     };
 
     socket.onmessage = (e: MessageEvent) => {
       try {
         const { deserializer } = this._config;
-        _output.next(deserializer!(e));
+        this.#outputNext(deserializer!(e));
       } catch (err) {
-        _output.error(err);
+        this.#outputError(err);
       }
     };
   }
@@ -305,13 +327,7 @@ export class WebSocketSubject<T> extends Observable<T> {
       try {
         this._socket.send(this._config.serializer!(value));
       } catch (err: any) {
-        this._config.closingObserver?.next(undefined);
-        if (err?.code) {
-          this._socket.close(err.code, err.reason);
-        } else {
-          this._output.error(new TypeError(WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT));
-        }
-        this._resetState();
+        this.error(err);
       }
     }
   }
@@ -322,7 +338,7 @@ export class WebSocketSubject<T> extends Observable<T> {
       if (err?.code) {
         this._socket?.close(err.code, err.reason);
       } else {
-        this._output.error(new TypeError(WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT));
+        this.#outputError(new TypeError(WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT));
       }
       this._resetState();
     } else {
@@ -333,12 +349,19 @@ export class WebSocketSubject<T> extends Observable<T> {
 
   complete() {
     if (this._socket?.readyState === 1) {
-      this._config.closingObserver?.next(undefined);
-      this._socket.close();
-      this._resetState();
+      this.#closeSocket();
     } else {
       this._isComplete = true;
     }
+  }
+
+  #closeSocket() {
+    const { _socket } = this;
+    this._config.closingObserver?.next(undefined);
+    if (_socket && _socket.readyState <= 1) {
+      _socket.close();
+    }
+    this._resetState();
   }
 
   /** @internal */
@@ -346,23 +369,22 @@ export class WebSocketSubject<T> extends Observable<T> {
     if (!this._socket) {
       this._connectSocket();
     }
-    this._output.subscribe(subscriber);
+    const subscriberId = this._subscriberCounter++;
+    this._subscribers.set(subscriberId, subscriber);
     subscriber.add(() => {
-      const { _socket } = this;
-      if (this._output.observers.length === 0) {
-        if (_socket && (_socket.readyState === 1 || _socket.readyState === 0)) {
-          _socket.close();
-        }
-        this._resetState();
+      this._subscribers.delete(subscriberId);
+      if (!this.observed) {
+        this.#closeSocket();
       }
     });
     return subscriber;
   }
 
   unsubscribe() {
-    const { _socket } = this;
-    if (_socket && (_socket.readyState === 1 || _socket.readyState === 0)) {
-      _socket.close();
+    const subscribers = Array.from(this._subscribers.values());
+    this._subscribers.clear();
+    for (const subscriber of subscribers) {
+      subscriber.unsubscribe();
     }
     this._resetState();
   }
