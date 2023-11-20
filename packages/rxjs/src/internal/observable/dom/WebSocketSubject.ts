@@ -160,8 +160,6 @@ export class WebSocketSubject<T> extends Subject<T> {
 
   private _input: Observer<T>;
 
-  private _source: Observable<T> | undefined = undefined;
-
   constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T>) {
     super();
     const userConfig = typeof urlConfigOrSource === 'string' ? { url: urlConfigOrSource } : urlConfigOrSource;
@@ -184,9 +182,7 @@ export class WebSocketSubject<T> extends Subject<T> {
 
   private _resetState() {
     this._socket = null;
-    if (!this._source) {
-      this._input = new ReplaySubject();
-    }
+    this._input = new ReplaySubject();
     this._output = new Subject<T>();
   }
 
@@ -345,10 +341,6 @@ export class WebSocketSubject<T> extends Subject<T> {
 
   /** @internal */
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
-    const { _source } = this;
-    if (_source) {
-      return _source.subscribe(subscriber);
-    }
     if (!this._socket) {
       this._connectSocket();
     }
