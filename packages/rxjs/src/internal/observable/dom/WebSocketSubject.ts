@@ -1,5 +1,5 @@
 import { Subject, AnonymousSubject } from '../../Subject.js';
-import { Subscriber, Observable, Subscription } from '../../Observable.js';
+import { Subscriber, Observable, Subscription, operate } from '../../Observable.js';
 import { ReplaySubject } from '../../ReplaySubject.js';
 import { Observer, NextObserver } from '../../types.js';
 
@@ -165,23 +165,21 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       this.destination = destination;
       this._source = urlConfigOrSource as Observable<T>;
     } else {
-      const config = (this._config = { ...DEFAULT_WEBSOCKET_CONFIG });
-      this._output = new Subject<T>();
-      if (typeof urlConfigOrSource === 'string') {
-        config.url = urlConfigOrSource;
-      } else {
-        for (const key in urlConfigOrSource) {
-          if (urlConfigOrSource.hasOwnProperty(key)) {
-            (config as any)[key] = (urlConfigOrSource as any)[key];
-          }
-        }
-      }
+      const userConfig = typeof urlConfigOrSource === 'string' ? { url: urlConfigOrSource } : urlConfigOrSource;
+      this._config = {
+        ...DEFAULT_WEBSOCKET_CONFIG,
+        // Setting this here because a previous version of this allowed
+        // WebSocket to be polyfilled later than DEFAULT_WEBSOCKET_CONFIG
+        // was defined.
+        WebSocketCtor: WebSocket,
+        ...userConfig,
+      };
 
-      if (!config.WebSocketCtor && WebSocket) {
-        config.WebSocketCtor = WebSocket;
-      } else if (!config.WebSocketCtor) {
+      if (!this._config.WebSocketCtor) {
         throw new Error('no WebSocket constructor can be found');
       }
+
+      this._output = new Subject<T>();
       this.destination = new ReplaySubject();
     }
   }
