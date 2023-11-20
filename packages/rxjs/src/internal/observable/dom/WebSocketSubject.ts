@@ -158,7 +158,7 @@ export class WebSocketSubject<T> extends Subject<T> {
 
   private _socket: WebSocket | null = null;
 
-  private destination: Observer<T>;
+  private _input: Observer<T>;
 
   private _source: Observable<T> | undefined = undefined;
 
@@ -179,13 +179,13 @@ export class WebSocketSubject<T> extends Subject<T> {
     }
 
     this._output = new Subject<T>();
-    this.destination = new ReplaySubject();
+    this._input = new ReplaySubject();
   }
 
   private _resetState() {
     this._socket = null;
     if (!this._source) {
-      this.destination = new ReplaySubject();
+      this._input = new ReplaySubject();
     }
     this._output = new Subject<T>();
   }
@@ -229,7 +229,7 @@ export class WebSocketSubject<T> extends Subject<T> {
 
   private _connectSocket() {
     const { WebSocketCtor, protocol, url, binaryType } = this._config;
-    const observer = this._output;
+    const { _output } = this;
 
     let socket: WebSocket | null = null;
     try {
@@ -239,7 +239,7 @@ export class WebSocketSubject<T> extends Subject<T> {
         this._socket.binaryType = binaryType;
       }
     } catch (e) {
-      observer.error(e);
+      _output.error(e);
       return;
     }
 
@@ -262,16 +262,16 @@ export class WebSocketSubject<T> extends Subject<T> {
         openObserver.next(evt);
       }
 
-      const queue = this.destination;
+      const queue = this._input;
 
-      this.destination = new Subscriber({
+      this._input = new Subscriber({
         next: (x: T) => {
           if (socket!.readyState === 1) {
             try {
               const { serializer } = this._config;
               socket!.send(serializer!(x!));
             } catch (e) {
-              this.destination!.error(e);
+              this._input!.error(e);
             }
           }
         },
@@ -283,7 +283,7 @@ export class WebSocketSubject<T> extends Subject<T> {
           if (err && err.code) {
             socket!.close(err.code, err.reason);
           } else {
-            observer.error(new TypeError(WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT));
+            _output.error(new TypeError(WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT));
           }
           this._resetState();
         },
@@ -298,13 +298,13 @@ export class WebSocketSubject<T> extends Subject<T> {
       });
 
       if (queue && queue instanceof ReplaySubject) {
-        subscription.add((queue as ReplaySubject<T>).subscribe(this.destination));
+        subscription.add((queue as ReplaySubject<T>).subscribe(this._input));
       }
     };
 
     socket.onerror = (e: Event) => {
       this._resetState();
-      observer.error(e);
+      _output.error(e);
     };
 
     socket.onclose = (e: CloseEvent) => {
@@ -316,32 +316,32 @@ export class WebSocketSubject<T> extends Subject<T> {
         closeObserver.next(e);
       }
       if (e.wasClean) {
-        observer.complete();
+        _output.complete();
       } else {
-        observer.error(e);
+        _output.error(e);
       }
     };
 
     socket.onmessage = (e: MessageEvent) => {
       try {
         const { deserializer } = this._config;
-        observer.next(deserializer!(e));
+        _output.next(deserializer!(e));
       } catch (err) {
-        observer.error(err);
+        _output.error(err);
       }
     };
   }
 
   next(value: T) {
-    this.destination.next(value);
+    this._input.next(value);
   }
 
   error(err: any) {
-    this.destination.error(err);
+    this._input.error(err);
   }
 
   complete() {
-    this.destination.complete();
+    this._input.complete();
   }
 
   /** @internal */
