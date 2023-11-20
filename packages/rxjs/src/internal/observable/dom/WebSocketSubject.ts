@@ -213,25 +213,19 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   multiplex(subMsg: () => any, unsubMsg: () => any, messageFilter: (value: T) => boolean) {
     return new Observable<T>((destination) => {
       this.next(subMsg());
-
-      const subscription = this.subscribe({
-        next: (x) => {
-          try {
+      destination.add(() => {
+        this.next(unsubMsg());
+      });
+      this.subscribe(
+        operate({
+          destination,
+          next: (x) => {
             if (messageFilter(x)) {
               destination.next(x);
             }
-          } catch (err) {
-            destination.error(err);
-          }
-        },
-        error: (err) => destination.error(err),
-        complete: () => destination.complete(),
-      });
-
-      return () => {
-        this.next(unsubMsg());
-        subscription.unsubscribe();
-      };
+          },
+        })
+      );
     });
   }
 
