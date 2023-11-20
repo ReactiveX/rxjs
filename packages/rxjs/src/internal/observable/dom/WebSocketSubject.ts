@@ -1,4 +1,4 @@
-import { Subject, AnonymousSubject } from '../../Subject.js';
+import { Subject } from '../../Subject.js';
 import { Subscriber, Observable, Subscription, operate } from '../../Observable.js';
 import { ReplaySubject } from '../../ReplaySubject.js';
 import { Observer, NextObserver } from '../../types.js';
@@ -151,13 +151,17 @@ const WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT =
 
 export type WebSocketMessage = string | ArrayBuffer | Blob | ArrayBufferView;
 
-export class WebSocketSubject<T> extends AnonymousSubject<T> {
+export class WebSocketSubject<T> extends Subject<T> {
   private _config!: WebSocketSubjectConfig<T>;
 
   /** @internal */
   _output!: Subject<T>;
 
   private _socket: WebSocket | null = null;
+
+  private destination: Observer<T> | undefined = undefined;
+
+  private _source: Observable<T> | undefined = undefined;
 
   constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T> | Observable<T>, destination?: Observer<T>) {
     super();
@@ -332,6 +336,18 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
         observer.error(err);
       }
     };
+  }
+
+  next(value: T) {
+    this.destination?.next?.(value);
+  }
+
+  error(err: any) {
+    this.destination?.error?.(err);
+  }
+
+  complete() {
+    this.destination?.complete?.();
   }
 
   /** @internal */
