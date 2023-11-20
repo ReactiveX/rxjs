@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { Subject, Observable, AsyncSubject, Observer, of, config, Subscription, Subscriber, noop, operate } from 'rxjs';
-import { AnonymousSubject } from 'rxjs/internal/Subject';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
@@ -448,104 +447,6 @@ describe('Subject', () => {
     expect(subject.observed).to.equal(false);
   });
 
-  it('should have a static create function that works', () => {
-    expect(Subject.create).to.be.a('function');
-    const source = of(1, 2, 3, 4, 5);
-    const nexts: number[] = [];
-    const output: any[] = [];
-
-    let error: any;
-    let complete = false;
-    let outputComplete = false;
-
-    const destination = {
-      closed: false,
-      next: function (x: number) {
-        nexts.push(x);
-      },
-      error: function (err: any) {
-        error = err;
-        this.closed = true;
-      },
-      complete: function () {
-        complete = true;
-        this.closed = true;
-      },
-    };
-
-    const sub: Subject<any> = Subject.create(destination, source);
-
-    sub.subscribe({
-      next: function (x: number) {
-        output.push(x);
-      },
-      complete: () => {
-        outputComplete = true;
-      },
-    });
-
-    sub.next('a');
-    sub.next('b');
-    sub.next('c');
-    sub.complete();
-
-    expect(nexts).to.deep.equal(['a', 'b', 'c']);
-    expect(complete).to.be.true;
-    expect(error).to.be.a('undefined');
-
-    expect(output).to.deep.equal([1, 2, 3, 4, 5]);
-    expect(outputComplete).to.be.true;
-  });
-
-  it('should have a static create function that works also to raise errors', () => {
-    expect(Subject.create).to.be.a('function');
-    const source = of(1, 2, 3, 4, 5);
-    const nexts: number[] = [];
-    const output: number[] = [];
-
-    let error: any;
-    let complete = false;
-    let outputComplete = false;
-
-    const destination = {
-      closed: false,
-      next: function (x: number) {
-        nexts.push(x);
-      },
-      error: function (err: any) {
-        error = err;
-        this.closed = true;
-      },
-      complete: function () {
-        complete = true;
-        this.closed = true;
-      },
-    };
-
-    const sub: Subject<any> = Subject.create(destination, source);
-
-    sub.subscribe({
-      next: function (x: number) {
-        output.push(x);
-      },
-      complete: () => {
-        outputComplete = true;
-      },
-    });
-
-    sub.next('a');
-    sub.next('b');
-    sub.next('c');
-    sub.error('boom');
-
-    expect(nexts).to.deep.equal(['a', 'b', 'c']);
-    expect(complete).to.be.false;
-    expect(error).to.equal('boom');
-
-    expect(output).to.deep.equal([1, 2, 3, 4, 5]);
-    expect(outputComplete).to.be.true;
-  });
-
   it('should be an Observer which can be given to Observable.subscribe', (done) => {
     const source = of(1, 2, 3, 4, 5);
     const subject = new Subject<number>();
@@ -779,32 +680,5 @@ describe('Subject', () => {
     subject.complete();
 
     expect(results).to.deep.equal([1, 1, 2, 2, 'complete']);
-  });
-});
-
-describe('AnonymousSubject', () => {
-  it('should be exposed', () => {
-    expect(AnonymousSubject).to.be.a('function');
-  });
-
-  it('should not be eager', () => {
-    let subscribed = false;
-
-    const subject = Subject.create(
-      null,
-      new Observable((observer: Observer<any>) => {
-        subscribed = true;
-        const subscription = of('x').subscribe(observer);
-        return () => {
-          subscription.unsubscribe();
-        };
-      })
-    );
-
-    const observable = subject.asObservable();
-    expect(subscribed).to.be.false;
-
-    observable.subscribe();
-    expect(subscribed).to.be.true;
   });
 });

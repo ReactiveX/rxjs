@@ -40,15 +40,6 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
   thrownError: any = null;
 
-  /**
-   * Creates a "subject" by basically gluing an observer to an observable.
-   *
-   * @deprecated Recommended you do not use. Will be removed at some point in the future. Plans for replacement still under discussion.
-   */
-  static create: (...args: any[]) => any = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
-    return new AnonymousSubject<T>(destination, source);
-  };
-
   constructor() {
     // NOTE: This must be here to obscure Observable's constructor.
     super();
@@ -144,33 +135,5 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
    */
   asObservable(): Observable<T> {
     return new Observable((subscriber) => this.subscribe(subscriber));
-  }
-}
-
-export class AnonymousSubject<T> extends Subject<T> {
-  constructor(
-    /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
-    public destination?: Observer<T>,
-    /** @internal */
-    protected _source?: Observable<T>
-  ) {
-    super();
-  }
-
-  next(value: T) {
-    this.destination?.next?.(value);
-  }
-
-  error(err: any) {
-    this.destination?.error?.(err);
-  }
-
-  complete() {
-    this.destination?.complete?.();
-  }
-
-  /** @internal */
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
-    return this._source?.subscribe(subscriber) ?? Subscription.EMPTY;
   }
 }
