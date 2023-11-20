@@ -239,40 +239,35 @@ export class WebSocketSubject<T> extends Subject<T> {
       return;
     }
 
-    socket.onopen = (evt: Event) => {
+    socket.onopen = (evt) => {
       const { _socket } = this;
+
       if (!_socket) {
         socket!.close();
         this._resetState();
         return;
       }
-      const { openObserver } = this._config;
-      if (openObserver) {
-        openObserver.next(evt);
-      }
+
+      this._config.openObserver?.next(evt);
 
       const previousInput = this._input;
 
       // We switch over now to passthrough all messages directly to the
       // to the socket, where previously we were queuing them up with
       // a ReplaySubject.
-      this._input = new Subscriber({
-        next: (x: T) => {
+      this._input = new Subscriber<T>({
+        next: (x) => {
           if (socket!.readyState === 1) {
             try {
-              const { serializer } = this._config;
-              socket!.send(serializer!(x!));
+              socket!.send(this._config.serializer!(x));
             } catch (e) {
-              this._input!.error(e);
+              this._input.error(e);
             }
           }
         },
         error: (err: any) => {
-          const { closingObserver } = this._config;
-          if (closingObserver) {
-            closingObserver.next(undefined);
-          }
-          if (err && err.code) {
+          this._config.closingObserver?.next(undefined);
+          if (err?.code) {
             socket!.close(err.code, err.reason);
           } else {
             _output.error(new TypeError(WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT));
@@ -280,10 +275,7 @@ export class WebSocketSubject<T> extends Subject<T> {
           this._resetState();
         },
         complete: () => {
-          const { closingObserver } = this._config;
-          if (closingObserver) {
-            closingObserver.next(undefined);
-          }
+          this._config.closingObserver?.next(undefined);
           socket!.close();
           this._resetState();
         },
@@ -293,6 +285,8 @@ export class WebSocketSubject<T> extends Subject<T> {
       // subscribe right now, it will synchronously emit all
       // of the buffered values.
       if (previousInput instanceof ReplaySubject) {
+        // Note that since `_input` is a `Subscriber`, this will
+        // automatically wire up the subscription.
         previousInput.subscribe(this._input);
       }
     };
