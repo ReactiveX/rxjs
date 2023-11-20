@@ -150,7 +150,7 @@ const WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT =
 
 export type WebSocketMessage = string | ArrayBuffer | Blob | ArrayBufferView;
 
-export class WebSocketSubject<T> extends Subject<T> {
+export class WebSocketSubject<T> extends Observable<T> {
   private _config!: WebSocketSubjectConfig<T>;
 
   private _output: Subject<T>;
@@ -365,6 +365,5 @@ export class WebSocketSubject<T> extends Subject<T> {
       _socket.close();
     }
     this._resetState();
-    super.unsubscribe();
   }
 }
