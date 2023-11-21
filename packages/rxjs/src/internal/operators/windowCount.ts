@@ -1,6 +1,6 @@
 import { Observable, operate } from '../Observable.js';
 import { Subject } from '../Subject.js';
-import { OperatorFunction } from '../types.js';
+import type { OperatorFunction } from '../types.js';
 
 /**
  * Branch out the source Observable values as a nested Observable with each

@@ -1,6 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
-import { SchedulerAction, VirtualAction, VirtualTimeScheduler } from 'rxjs';
+import type { SchedulerAction} from 'rxjs';
+import { VirtualAction, VirtualTimeScheduler } from 'rxjs';
 
 /** @test {VirtualTimeScheduler} */
 describe('VirtualTimeScheduler', () => {

@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { asInteropObservable } from '../../spec/helpers/interop-helper';
 import { distinct } from 'rxjs/operators';
-import { ReadableStreamLike } from '../../src/internal/types';
+import type { ReadableStreamLike } from '../../src/internal/types';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(distinct()); // $ExpectType Observable<number>

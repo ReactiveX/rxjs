@@ -1,4 +1,4 @@
-import { ObservableInputTuple, OperatorFunction } from '../types.js';
+import type { ObservableInputTuple, OperatorFunction } from '../types.js';
 import { Observable, from } from '../Observable.js';
 import { concatAll } from '../operators/concatAll.js';
 

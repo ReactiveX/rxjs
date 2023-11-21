@@ -1,5 +1,5 @@
 import { observeNotification } from '../Notification.js';
-import { OperatorFunction, ObservableNotification, ValueFromNotification } from '../types.js';
+import type { OperatorFunction, ObservableNotification, ValueFromNotification } from '../types.js';
 import { Observable, operate } from '../Observable.js';
 
 /**

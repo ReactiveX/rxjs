@@ -1,5 +1,5 @@
 import { reduce } from './reduce.js';
-import { MonoTypeOperatorFunction } from '../types.js';
+import type { MonoTypeOperatorFunction } from '../types.js';
 import { isFunction } from '../Observable.js';
 
 /**

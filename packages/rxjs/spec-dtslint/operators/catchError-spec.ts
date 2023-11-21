@@ -1,4 +1,5 @@
-import { of, Observable, EMPTY } from 'rxjs';
+import type { Observable} from 'rxjs';
+import { of, EMPTY } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 it('should infer correctly', () => {

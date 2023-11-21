@@ -1,4 +1,4 @@
-import { ObservableNotification } from '../types.js';
+import type { ObservableNotification } from '../types.js';
 
 export interface TestMessage {
   frame: number;

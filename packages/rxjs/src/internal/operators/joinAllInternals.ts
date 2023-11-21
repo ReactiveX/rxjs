@@ -1,5 +1,5 @@
-import { Observable } from '../Observable.js';
-import { ObservableInput, OperatorFunction } from '../types.js';
+import type { Observable } from '../Observable.js';
+import type { ObservableInput, OperatorFunction } from '../types.js';
 import { identity } from '../util/identity.js';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
 import { pipe } from '../util/pipe.js';

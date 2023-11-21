@@ -1,6 +1,6 @@
 import { map } from '../operators/map.js';
 import { Observable } from '../Observable.js';
-import { AjaxConfig, AjaxRequest, AjaxDirection, ProgressEventType } from './types.js';
+import type { AjaxConfig, AjaxRequest, AjaxDirection, ProgressEventType } from './types.js';
 import { AjaxResponse } from './AjaxResponse.js';
 import { AjaxTimeoutError, AjaxError } from './errors.js';
 

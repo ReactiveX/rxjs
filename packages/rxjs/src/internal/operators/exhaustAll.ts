@@ -1,4 +1,4 @@
-import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types.js';
+import type { OperatorFunction, ObservableInput, ObservedValueOf } from '../types.js';
 import { exhaustMap } from './exhaustMap.js';
 import { identity } from '../util/identity.js';
 

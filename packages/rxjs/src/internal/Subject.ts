@@ -1,5 +1,6 @@
-import { Observable, Subscriber, Subscription } from './Observable.js';
-import { Observer, SubscriptionLike } from './types.js';
+import type { Subscriber} from './Observable.js';
+import { Observable, Subscription } from './Observable.js';
+import type { Observer, SubscriptionLike } from './types.js';
 
 /**
  * A Subject is a special type of Observable that allows values to be

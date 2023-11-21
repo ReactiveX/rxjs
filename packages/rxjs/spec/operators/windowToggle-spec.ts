@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { Observable, NEVER, of, EMPTY } from 'rxjs';
+import type { Observable} from 'rxjs';
+import { NEVER, of, EMPTY } from 'rxjs';
 import { windowToggle, tap, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';

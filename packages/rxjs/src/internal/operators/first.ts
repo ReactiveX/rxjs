@@ -1,6 +1,6 @@
-import { Observable } from '../Observable.js';
+import type { Observable } from '../Observable.js';
 import { EmptyError } from '../util/EmptyError.js';
-import { OperatorFunction, TruthyTypesOf } from '../types.js';
+import type { OperatorFunction, TruthyTypesOf } from '../types.js';
 import { filter } from './filter.js';
 import { take } from './take.js';
 import { defaultIfEmpty } from './defaultIfEmpty.js';

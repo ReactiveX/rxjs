@@ -1,9 +1,10 @@
-import { Observable, Subscriber, operate, from } from '../Observable.js';
-import { ObservableInput, ObservedValueOf, ObservableInputTuple } from '../types.js';
+import type { Subscriber} from '../Observable.js';
+import { Observable, operate, from } from '../Observable.js';
+import type { ObservableInput, ObservedValueOf, ObservableInputTuple } from '../types.js';
 import { arrayOrObject } from '../util/argsArgArrayOrObject.js';
 import { identity } from '../util/identity.js';
 import { createObject } from '../util/createObject.js';
-import { AnyCatcher } from '../AnyCatcher.js';
+import type { AnyCatcher } from '../AnyCatcher.js';
 import { EMPTY } from './empty.js';
 
 // combineLatest(any)

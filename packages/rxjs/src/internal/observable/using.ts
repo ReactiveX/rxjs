@@ -1,5 +1,5 @@
 import { Observable, from } from '../Observable.js';
-import { Unsubscribable, ObservableInput, ObservedValueOf } from '../types.js';
+import type { Unsubscribable, ObservableInput, ObservedValueOf } from '../types.js';
 import { EMPTY } from './empty.js';
 
 /**

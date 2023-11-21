@@ -1,5 +1,6 @@
 import { bindCallback } from 'rxjs';
-import { a,  b,  c,  d,  e,  f,  g, A, B, C, D, E, F, G } from '../helpers';
+import type { A, B, C, D, E, F, G } from '../helpers';
+import { a,  b,  c,  d,  e,  f,  g } from '../helpers';
 
 describe('callbackFunc', () => {
   const f0 = (cb: () => void) => {

@@ -1,5 +1,5 @@
 import { ReplaySubject } from '../ReplaySubject.js';
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
+import type { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
 import { share } from './share.js';
 
 export interface ShareReplayConfig {

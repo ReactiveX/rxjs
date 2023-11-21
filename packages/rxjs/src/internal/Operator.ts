@@ -1,5 +1,5 @@
-import { Subscriber } from './Observable.js';
-import { TeardownLogic } from './types.js';
+import type { Subscriber } from './Observable.js';
+import type { TeardownLogic } from './types.js';
 
 /***
  * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.

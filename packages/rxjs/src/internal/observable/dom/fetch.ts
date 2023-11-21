@@ -1,5 +1,5 @@
 import { operate, Observable, from } from '../../Observable.js';
-import { ObservableInput } from '../../types.js';
+import type { ObservableInput } from '../../types.js';
 
 export function fromFetch<T>(
   input: string | Request,

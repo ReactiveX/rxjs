@@ -1,4 +1,4 @@
-import { AsyncAction } from './AsyncAction.js';
+import type { AsyncAction } from './AsyncAction.js';
 import { AsyncScheduler } from './AsyncScheduler.js';
 
 export class AsapScheduler extends AsyncScheduler {

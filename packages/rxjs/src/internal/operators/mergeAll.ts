@@ -1,6 +1,6 @@
 import { mergeMap } from './mergeMap.js';
 import { identity } from '../util/identity.js';
-import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types.js';
+import type { OperatorFunction, ObservableInput, ObservedValueOf } from '../types.js';
 
 /**
  * Converts a higher-order Observable into a first-order Observable which

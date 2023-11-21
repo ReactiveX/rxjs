@@ -1,4 +1,4 @@
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
+import type { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
 import { Observable } from '../Observable.js';
 
 /**

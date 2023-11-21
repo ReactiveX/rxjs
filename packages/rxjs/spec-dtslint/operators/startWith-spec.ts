@@ -1,5 +1,6 @@
 import { of, startWith  } from 'rxjs';
-import { A, B, a, b, c, d, e, f, g, h } from '../helpers';
+import type { A, B} from '../helpers';
+import { a, b, c, d, e, f, g, h } from '../helpers';
 
 it('should infer correctly with N values', () => {
   const r0 = of(a).pipe(startWith()); // $ExpectType Observable<A>

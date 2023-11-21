@@ -1,4 +1,4 @@
-import { SchedulerLike } from '../types.js';
+import type { SchedulerLike } from '../types.js';
 import { isFunction } from '../Observable.js';
 import { isScheduler } from './isScheduler.js';
 

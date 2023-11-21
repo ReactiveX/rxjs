@@ -1,6 +1,6 @@
-import { Observable } from '../Observable.js';
+import type { Observable } from '../Observable.js';
 import { identity } from '../util/identity.js';
-import { ObservableInput, SchedulerLike } from '../types.js';
+import type { ObservableInput, SchedulerLike } from '../types.js';
 import { isScheduler } from '../util/isScheduler.js';
 import { defer } from './defer.js';
 import { scheduleIterable } from '../scheduled/scheduleIterable.js';

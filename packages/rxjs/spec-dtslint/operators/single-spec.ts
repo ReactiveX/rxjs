@@ -1,4 +1,5 @@
-import { of, Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { single } from 'rxjs/operators';
 
 it('should infer correctly', () => {

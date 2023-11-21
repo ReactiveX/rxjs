@@ -1,6 +1,7 @@
 import { window, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { EMPTY, of, Observable, interval } from 'rxjs';
+import type { Observable} from 'rxjs';
+import { EMPTY, of, interval } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 import { expect } from 'chai';
 

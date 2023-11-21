@@ -1,4 +1,4 @@
-import { OperatorFunction } from '../types.js';
+import type { OperatorFunction } from '../types.js';
 import { reduce } from './reduce.js';
 
 /**

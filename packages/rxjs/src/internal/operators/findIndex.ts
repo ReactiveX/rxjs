@@ -1,5 +1,5 @@
 import { Observable } from '../Observable.js';
-import { Falsy, OperatorFunction } from '../types.js';
+import type { Falsy, OperatorFunction } from '../types.js';
 import { createFind } from './find.js';
 
 export function findIndex<T>(predicate: BooleanConstructor): OperatorFunction<T, T extends Falsy ? -1 : number>;

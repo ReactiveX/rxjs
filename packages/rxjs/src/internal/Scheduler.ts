@@ -1,6 +1,6 @@
-import { Action } from './scheduler/Action.js';
-import { Subscription } from './Observable.js';
-import { SchedulerLike, SchedulerAction } from './types.js';
+import type { Action } from './scheduler/Action.js';
+import type { Subscription } from './Observable.js';
+import type { SchedulerLike, SchedulerAction } from './types.js';
 import { dateTimestampProvider } from './scheduler/dateTimestampProvider.js';
 
 /**

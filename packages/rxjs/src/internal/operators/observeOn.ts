@@ -1,4 +1,4 @@
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
+import type { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
 import { executeSchedule } from '../util/executeSchedule.js';
 import { Observable, operate } from '../Observable.js';
 

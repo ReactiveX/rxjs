@@ -1,6 +1,7 @@
-import { Observable, from, Subscription, operate } from '../Observable.js';
+import type { Subscription} from '../Observable.js';
+import { Observable, from, operate } from '../Observable.js';
 import { Subject } from '../Subject.js';
-import { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
+import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source

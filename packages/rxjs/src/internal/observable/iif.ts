@@ -1,6 +1,6 @@
-import { Observable } from '../Observable.js';
+import type { Observable } from '../Observable.js';
 import { defer } from './defer.js';
-import { ObservableInput } from '../types.js';
+import type { ObservableInput } from '../types.js';
 
 /**
  * Checks a boolean at subscription time, and chooses between one of two observable sources

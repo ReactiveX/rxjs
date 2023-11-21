@@ -1,4 +1,4 @@
-import { OperatorFunction } from '../types.js';
+import type { OperatorFunction } from '../types.js';
 import { Observable, operate } from '../Observable.js';
 import { arrRemove } from '../util/arrRemove.js';
 

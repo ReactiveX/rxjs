@@ -1,7 +1,7 @@
 import { asyncScheduler } from '../scheduler/async.js';
 import { audit } from './audit.js';
 import { timer } from '../observable/timer.js';
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
+import type { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
 
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent

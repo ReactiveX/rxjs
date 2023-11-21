@@ -1,4 +1,5 @@
-import { pipe, UnaryFunction, of, Observable } from 'rxjs';
+import type { UnaryFunction, Observable } from 'rxjs';
+import { pipe, of } from 'rxjs';
 
 /**
  * Used to keep the tests uncluttered.

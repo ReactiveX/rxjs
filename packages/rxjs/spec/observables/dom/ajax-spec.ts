@@ -1,7 +1,8 @@
 /** @prettier */
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { ajax, AjaxConfig, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
+import type { AjaxConfig, AjaxResponse} from 'rxjs/ajax';
+import { ajax, AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
 import { TestScheduler } from 'rxjs/testing';
 import { noop } from 'rxjs';
 import * as nodeFormData from 'form-data';

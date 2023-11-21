@@ -1,5 +1,5 @@
 import { Observable, subscribeToArray, operate } from '../Observable.js';
-import { OperatorFunction, ValueFromArray } from '../types.js';
+import type { OperatorFunction, ValueFromArray } from '../types.js';
 
 export function startWith<T>(value: null): OperatorFunction<T, T | null>;
 export function startWith<T>(value: undefined): OperatorFunction<T, T | undefined>;

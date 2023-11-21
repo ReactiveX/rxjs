@@ -1,5 +1,6 @@
-import { Subscriber, operate, Observable, from } from '../Observable.js';
-import { ObservableInput, OperatorFunction } from '../types.js';
+import type { Subscriber} from '../Observable.js';
+import { operate, Observable, from } from '../Observable.js';
+import type { ObservableInput, OperatorFunction } from '../types.js';
 import { noop } from '../util/noop.js';
 
 /**

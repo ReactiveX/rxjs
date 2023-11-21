@@ -1,5 +1,6 @@
-import { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
-import { Observable, Subscription, operate, from } from '../Observable.js';
+import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
+import type { Subscription} from '../Observable.js';
+import { Observable, operate, from } from '../Observable.js';
 import { identity } from '../util/identity.js';
 import { timer } from '../observable/timer.js';
 

@@ -1,6 +1,6 @@
 import { asyncScheduler } from '../scheduler/async.js';
 import { isValidDate } from '../util/isDate.js';
-import { ObservableInput, OperatorFunction, SchedulerLike } from '../types.js';
+import type { ObservableInput, OperatorFunction, SchedulerLike } from '../types.js';
 import { timeout } from './timeout.js';
 
 /** @deprecated Replaced with {@link timeout}. Instead of `timeoutWith(someDate, a$, scheduler)`, use the configuration object
