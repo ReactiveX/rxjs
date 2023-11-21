@@ -26,10 +26,16 @@ aio-api-list {
         margin-top: 16px;
       }
     }
+
+    label.show-deprecated {
+      margin-left: auto;
+      width: unset;
+    }
 }
 
 .api-filter {
   display: flex;
+  align-items: center;
   margin: 0 auto;
 
   @media (max-width: 600px) {

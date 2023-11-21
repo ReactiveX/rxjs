@@ -20,6 +20,7 @@ class SearchCriteria {
   query? = '';
   status? = 'all';
   type? = 'all';
+  includeDeprecated? = true;
 }
 
 @Component({
@@ -31,6 +32,11 @@ class SearchCriteria {
         <input #filter placeholder="Filter" aria-label="Filter" (input)="setQuery(filter.value)" />
         <i class="material-icons">search</i>
       </div>
+
+      <label class="form-select-button show-deprecated">
+        Show deprecated:
+        <input type="checkbox" aria-label="Show Deprecated" [(ngModel)]="includeDeprecated" (change)="onIncludeDeprecatedChange()" />
+      </label>
     </div>
 
     <article class="api-list-container l-content-small docs-content">
@@ -62,6 +68,7 @@ export class ApiListComponent implements OnInit {
 
   status: Option;
   type: Option;
+  includeDeprecated: boolean;
 
   // API types
   types: Option[] = [
@@ -99,6 +106,10 @@ export class ApiListComponent implements OnInit {
     this.setSearchCriteria({ query: (query || '').toLowerCase().trim() });
   }
 
+  onIncludeDeprecatedChange() {
+    this.setSearchCriteria({ includeDeprecated: this.includeDeprecated });
+  }
+
   setStatus(status: Option) {
     this.toggleStatusMenu();
     this.status = status;
@@ -121,9 +132,9 @@ export class ApiListComponent implements OnInit {
 
   //////// Private //////////
 
-  private filterSection(section: ApiSection, { query, status, type }: SearchCriteria) {
+  private filterSection(section: ApiSection, { query, status, type, includeDeprecated }: SearchCriteria) {
     const items = section.items!.filter((item) => {
-      return matchesType() && matchesStatus() && matchesQuery();
+      return matchesType() && matchesStatus() && matchesQuery() && matchesStability();
 
       function matchesQuery() {
         return !query || section.name.indexOf(query) !== -1 || item.name.indexOf(query) !== -1;
@@ -136,6 +147,10 @@ export class ApiListComponent implements OnInit {
       function matchesType() {
         return type === 'all' || type === item.docType;
       }
+
+      function matchesStability() {
+        return includeDeprecated || item.stability !== 'deprecated';
+      }
     });
 
     // If there are no items we still return an empty array if the section name matches and the type is 'package'
@@ -144,7 +159,7 @@ export class ApiListComponent implements OnInit {
 
   // Get initial search criteria from URL search params
   private initializeSearchCriteria() {
-    const { query, status, type } = this.locationService.search();
+    const { query, status, type, includeDeprecated } = this.locationService.search();
 
     const q = (query || '').toLowerCase();
     // Hack: can't bind to query because input cursor always forced to end-of-line.
@@ -152,22 +167,25 @@ export class ApiListComponent implements OnInit {
 
     this.status = this.statuses.find((x) => x.value === status) || this.statuses[0];
     this.type = this.types.find((x) => x.value === type) || this.types[0];
+    this.includeDeprecated = includeDeprecated === 'false' ? false : true;
 
     this.searchCriteria = {
       query: q,
       status: this.status.value,
       type: this.type.value,
+      includeDeprecated: this.includeDeprecated,
     };
 
     this.criteriaSubject.next(this.searchCriteria);
   }
 
   private setLocationSearch() {
-    const { query, status, type } = this.searchCriteria;
+    const { query, status, type, includeDeprecated } = this.searchCriteria;
     const params = {
       query: query ? query : undefined,
       status: status !== 'all' ? status : undefined,
       type: type !== 'all' ? type : undefined,
+      includeDeprecated: includeDeprecated ? undefined : 'false',
     };
 
     this.locationService.setSearch('API Search', params);
