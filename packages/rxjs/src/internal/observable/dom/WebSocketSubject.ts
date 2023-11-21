@@ -98,23 +98,23 @@ import { NextObserver } from '../../types.js';
  * // Connection ok
  * ```
  */
-export interface WebSocketSubjectConfig<T> {
+export interface WebSocketSubjectConfig<In, Out = In> {
   /** The url of the socket server to connect to */
   url: string;
   /** The protocol to use to connect */
   protocol?: string | Array<string>;
   /** @deprecated Will be removed in v8. Use {@link deserializer} instead. */
-  resultSelector?: (e: MessageEvent) => T;
+  resultSelector?: (e: MessageEvent) => Out;
   /**
    * A serializer used to create messages from passed values before the
    * messages are sent to the server. Defaults to JSON.stringify.
    */
-  serializer?: (value: T) => WebSocketMessage;
+  serializer?: (value: In) => WebSocketMessage;
   /**
    * A deserializer used for messages arriving on the socket from the
    * server. Defaults to JSON.parse.
    */
-  deserializer?: (e: MessageEvent) => T;
+  deserializer?: (e: MessageEvent) => Out;
   /**
    * An Observer that watches when open events occur on the underlying web socket.
    */
@@ -148,12 +148,13 @@ const WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT =
 
 export type WebSocketMessage = string | ArrayBuffer | Blob | ArrayBufferView;
 
-export class WebSocketSubject<T> extends Observable<T> {
-  private _config: WebSocketSubjectConfig<T> & Required<Pick<WebSocketSubjectConfig<T>, 'WebSocketCtor' | 'serializer' | 'deserializer'>>;
+export class WebSocketSubject<In, Out = In> extends Observable<Out> {
+  private _config: WebSocketSubjectConfig<In, Out> &
+    Required<Pick<WebSocketSubjectConfig<In, Out>, 'WebSocketCtor' | 'serializer' | 'deserializer'>>;
 
   private _socket: WebSocket | null = null;
 
-  private _inputBuffer: T[] = [];
+  private _inputBuffer: In[] = [];
 
   private _hasError = false;
 
@@ -163,13 +164,13 @@ export class WebSocketSubject<T> extends Observable<T> {
 
   private _subscriberCounter = 0;
 
-  private _subscribers = new Map<number, Subscriber<T>>();
+  private _subscribers = new Map<number, Subscriber<Out>>();
 
   get observed() {
     return this._subscribers.size > 0;
   }
 
-  constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T>) {
+  constructor(urlConfigOrSource: string | WebSocketSubjectConfig<In, Out>) {
     super();
     const userConfig = typeof urlConfigOrSource === 'string' ? { url: urlConfigOrSource } : urlConfigOrSource;
     this._config = {
@@ -214,8 +215,8 @@ export class WebSocketSubject<T> extends Observable<T> {
    * @param messageFilter A predicate for selecting the appropriate messages
    * from the server for the output stream.
    */
-  multiplex(subMsg: () => any, unsubMsg: () => any, messageFilter: (value: T) => boolean) {
-    return new Observable<T>((destination) => {
+  multiplex(subMsg: () => In, unsubMsg: () => In, messageFilter: (value: Out) => boolean) {
+    return new Observable<Out>((destination) => {
       this.next(subMsg());
       destination.add(() => {
         this.next(unsubMsg());
@@ -233,7 +234,7 @@ export class WebSocketSubject<T> extends Observable<T> {
     });
   }
 
-  #outputNext(value: T) {
+  #outputNext(value: Out) {
     for (const subscriber of Array.from(this._subscribers.values())) {
       subscriber.next(value);
     }
@@ -318,7 +319,7 @@ export class WebSocketSubject<T> extends Observable<T> {
     };
   }
 
-  next(value: T) {
+  next(value: In) {
     if (this._socket?.readyState !== 1) {
       this._inputBuffer.push(value);
     } else {
@@ -363,7 +364,7 @@ export class WebSocketSubject<T> extends Observable<T> {
   }
 
   /** @internal */
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: Subscriber<Out>): Subscription {
     if (!this._socket) {
       this._connectSocket();
     }
