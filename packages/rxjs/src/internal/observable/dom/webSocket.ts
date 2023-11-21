@@ -89,7 +89,7 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject.js'
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
  *
- * const subject = webSocket('ws://localhost:8081');
+ * const subject = webSocket<string>('ws://localhost:8081');
  *
  * subject.subscribe({
  *   next: msg => console.log('message received: ' + msg), // Called whenever there is a message from the server.
@@ -103,7 +103,15 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject.js'
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
  *
- * const subject = webSocket('ws://localhost:8081');
+ * interface SendMsg {
+ *  message: string;
+ * }
+ *
+ * interface RespMsg {
+ *  data: any;
+ * }
+ *
+ * const subject = webSocket<SendMsg, RespMsg>('ws://localhost:8081');
  *
  * subject.subscribe();
  * // Note that at least one consumer has to subscribe to the created subject - otherwise "nexted" values will be just buffered and not sent,
@@ -123,7 +131,21 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject.js'
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
  *
- * const subject = webSocket('ws://localhost:8081');
+ * interface SubMsg {
+ *  subscribe: string;
+ * }
+ *
+ * interface UnsubMsg {
+ *  unsubscribe: string;
+ * }
+ *
+ * interface RespMsg {
+ *  type: string;
+ *  data: any;
+ * }
+ *
+ *
+ * const subject = webSocket<SubMsg | UnsubMsg, RespMsg>('ws://localhost:8081');
  *
  * const observableA = subject.multiplex(
  *   () => ({ subscribe: 'A' }), // When server gets this message, it will start sending messages for 'A'...
@@ -156,6 +178,6 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject.js'
  * @param urlConfigOrSource The WebSocket endpoint as an url or an object with configuration and additional Observers.
  * @return Subject which allows to both send and receive messages via WebSocket connection.
  */
-export function webSocket<T>(urlConfigOrSource: string | WebSocketSubjectConfig<T>): WebSocketSubject<T> {
-  return new WebSocketSubject<T>(urlConfigOrSource);
+export function webSocket<In, Out = In>(urlConfigOrSource: string | WebSocketSubjectConfig<In, Out>): WebSocketSubject<In, Out> {
+  return new WebSocketSubject<In, Out>(urlConfigOrSource);
 }
