@@ -106,6 +106,12 @@ export class ApiListComponent implements OnInit {
     this.setSearchCriteria({ query: (query || '').toLowerCase().trim() });
   }
 
+  // NOTE includeDeprecated is model bound - the following method is used for testing
+  setIncludeDeprecated(includeDeprecated: boolean) {
+    this.includeDeprecated = includeDeprecated;
+    this.onIncludeDeprecatedChange();
+  }
+
   onIncludeDeprecatedChange() {
     this.setSearchCriteria({ includeDeprecated: this.includeDeprecated });
   }

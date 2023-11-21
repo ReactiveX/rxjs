@@ -42,6 +42,18 @@ describe('ApiListComponent', () => {
     });
   }
 
+  /**
+   * Expectation Utility: Assert that filteredSections has no items
+   *
+   * Subscribes to `filteredSections` and performs expectation within subscription callback.
+   */
+  function expectNoItems() {
+    component.filteredSections.subscribe(filtered => {
+      expect(filtered.some(section => !!section.items)).toBeFalsy();
+    });
+  }
+
+
 
   describe('#filteredSections', () => {
 
@@ -95,11 +107,17 @@ describe('ApiListComponent', () => {
       });
     });
 
-    it('should have no sections and no items visible when there is no match', () => {
+    it('should have no sections or items visible when there is no query match', () => {
       component.setQuery('fizzbuzz');
-      component.filteredSections.subscribe(filtered => {
-        expect(filtered.some(section => !!section.items)).toBeFalsy();
-      });
+
+      expectNoItems();
+    });
+
+    it('should have no sections or items visible when there is no non-deprecated match', () => {
+      component.setQuery('function_1');
+      component.setIncludeDeprecated(false);
+
+      expectNoItems();
     });
   });
 
@@ -182,6 +200,20 @@ describe('ApiListComponent', () => {
       expect(search.query).toBe('foo');
     });
 
+    it('should have includeDeprecated', () => {
+      component.setIncludeDeprecated(false);
+
+      const search = locationService.setSearch.calls.mostRecent().args[1];
+      expect(search.includeDeprecated).toBe('false');
+    });
+
+    it('should not have includeDeprecated', () => {
+      component.setIncludeDeprecated(true);
+
+      const search = locationService.setSearch.calls.mostRecent().args[1];
+      expect(search.includeDeprecated).toBe(undefined);
+    });
+
     it('should keep last of multiple query settings (in lowercase)', () => {
       component.setQuery('foo');
       component.setQuery('fooBar');
@@ -190,15 +222,17 @@ describe('ApiListComponent', () => {
       expect(search.query).toBe('foobar');
     });
 
-    it('should have query, status, and type', () => {
+    it('should have query, status, type, and includeDeprecated', () => {
       component.setQuery('foo');
       component.setStatus({value: 'stable', title: 'Stable'});
       component.setType({value: 'class', title: 'Class'});
+      component.setIncludeDeprecated(false);
 
       const search = locationService.setSearch.calls.mostRecent().args[1];
       expect(search.query).toBe('foo');
       expect(search.status).toBe('stable');
       expect(search.type).toBe('class');
+      expect(search.includeDeprecated).toBe('false');
     });
   });
 });
