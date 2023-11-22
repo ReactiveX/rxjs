@@ -13,22 +13,12 @@
 /* eslint-enable @typescript-eslint/triple-slash-reference */
 
 /* Core */
-export {
-  Observable,
-  from,
-  config,
-  GlobalConfig,
-  Subscription,
-  Subscriber,
-  SubscriberOverrides,
-  operate,
-  UnsubscriptionError,
-  isObservable,
-} from './internal/Observable.js';
+export type { GlobalConfig, SubscriberOverrides } from './internal/Observable.js';
+export { Observable, from, config, Subscription, Subscriber, operate, UnsubscriptionError, isObservable } from './internal/Observable.js';
 
 /* Observables */
-export { GroupedObservable } from './internal/operators/groupBy.js';
-export { Operator } from './internal/Operator.js';
+export type { GroupedObservable } from './internal/operators/groupBy.js';
+export type { Operator } from './internal/Operator.js';
 export { animationFrames } from './internal/observable/dom/animationFrames.js';
 
 /* Subjects */
@@ -109,7 +99,8 @@ export { concatAll } from './internal/operators/concatAll.js';
 export { concatMap } from './internal/operators/concatMap.js';
 export { concatMapTo } from './internal/operators/concatMapTo.js';
 export { concatWith } from './internal/operators/concatWith.js';
-export { connect, ConnectConfig } from './internal/operators/connect.js';
+export type { ConnectConfig } from './internal/operators/connect.js';
+export { connect } from './internal/operators/connect.js';
 export { count } from './internal/operators/count.js';
 export { debounce } from './internal/operators/debounce.js';
 export { debounceTime } from './internal/operators/debounceTime.js';
@@ -131,7 +122,8 @@ export { finalize } from './internal/operators/finalize.js';
 export { find } from './internal/operators/find.js';
 export { findIndex } from './internal/operators/findIndex.js';
 export { first } from './internal/operators/first.js';
-export { groupBy, BasicGroupByOptions, GroupByOptionsWithElement } from './internal/operators/groupBy.js';
+export type { BasicGroupByOptions, GroupByOptionsWithElement } from './internal/operators/groupBy.js';
+export { groupBy } from './internal/operators/groupBy.js';
 export { ignoreElements } from './internal/operators/ignoreElements.js';
 export { isEmpty } from './internal/operators/isEmpty.js';
 export { last } from './internal/operators/last.js';
@@ -150,16 +142,20 @@ export { onErrorResumeNextWith } from './internal/operators/onErrorResumeNextWit
 export { pairwise } from './internal/operators/pairwise.js';
 export { raceWith } from './internal/operators/raceWith.js';
 export { reduce } from './internal/operators/reduce.js';
-export { repeat, RepeatConfig } from './internal/operators/repeat.js';
+export type { RepeatConfig } from './internal/operators/repeat.js';
+export { repeat } from './internal/operators/repeat.js';
 export { repeatWhen } from './internal/operators/repeatWhen.js';
-export { retry, RetryConfig } from './internal/operators/retry.js';
+export type { RetryConfig } from './internal/operators/retry.js';
+export { retry } from './internal/operators/retry.js';
 export { retryWhen } from './internal/operators/retryWhen.js';
 export { sample } from './internal/operators/sample.js';
 export { sampleTime } from './internal/operators/sampleTime.js';
 export { scan } from './internal/operators/scan.js';
 export { sequenceEqual } from './internal/operators/sequenceEqual.js';
-export { share, ShareConfig } from './internal/operators/share.js';
-export { shareReplay, ShareReplayConfig } from './internal/operators/shareReplay.js';
+export type { ShareConfig } from './internal/operators/share.js';
+export { share } from './internal/operators/share.js';
+export type { ShareReplayConfig } from './internal/operators/shareReplay.js';
+export { shareReplay } from './internal/operators/shareReplay.js';
 export { single } from './internal/operators/single.js';
 export { skip } from './internal/operators/skip.js';
 export { skipLast } from './internal/operators/skipLast.js';
@@ -175,12 +171,15 @@ export { take } from './internal/operators/take.js';
 export { takeLast } from './internal/operators/takeLast.js';
 export { takeUntil } from './internal/operators/takeUntil.js';
 export { takeWhile } from './internal/operators/takeWhile.js';
-export { tap, TapObserver } from './internal/operators/tap.js';
-export { throttle, ThrottleConfig } from './internal/operators/throttle.js';
+export type { TapObserver } from './internal/operators/tap.js';
+export { tap } from './internal/operators/tap.js';
+export type { ThrottleConfig } from './internal/operators/throttle.js';
+export { throttle } from './internal/operators/throttle.js';
 export { throttleTime } from './internal/operators/throttleTime.js';
 export { throwIfEmpty } from './internal/operators/throwIfEmpty.js';
 export { timeInterval } from './internal/operators/timeInterval.js';
-export { timeout, TimeoutConfig, TimeoutInfo } from './internal/operators/timeout.js';
+export type { TimeoutConfig, TimeoutInfo } from './internal/operators/timeout.js';
+export { timeout } from './internal/operators/timeout.js';
 export { timeoutWith } from './internal/operators/timeoutWith.js';
 export { timestamp } from './internal/operators/timestamp.js';
 export { toArray } from './internal/operators/toArray.js';
