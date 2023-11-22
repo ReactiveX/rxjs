@@ -35,10 +35,8 @@ jobs:
       - name: rxjs dtslint
         run: yarn workspace rxjs dtslint
       - name: rxjs test:import
-        if: ${{ matrix.node == '18' || matrix.node == '20' }}
         run: yarn workspace rxjs test:import
       - name: rxjs test:esm
-        if: ${{ matrix.node == '18' || matrix.node == '20' }}
         run: yarn workspace rxjs test:esm
       - name: rxjs.dev build
         run: yarn workspace rxjs.dev build --prod
