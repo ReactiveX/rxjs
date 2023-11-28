@@ -1,5 +1,6 @@
-import { Observable, from } from '../Observable.js';
-import { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
+import type { Observable} from '../Observable.js';
+import { from } from '../Observable.js';
+import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
 import { concat } from '../observable/concat.js';
 import { take } from './take.js';
 import { ignoreElements } from './ignoreElements.js';

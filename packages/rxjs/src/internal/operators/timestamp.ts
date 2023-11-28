@@ -1,4 +1,4 @@
-import { OperatorFunction, TimestampProvider, Timestamp } from '../types.js';
+import type { OperatorFunction, TimestampProvider, Timestamp } from '../types.js';
 import { dateTimestampProvider } from '../scheduler/dateTimestampProvider.js';
 import { map } from './map.js';
 

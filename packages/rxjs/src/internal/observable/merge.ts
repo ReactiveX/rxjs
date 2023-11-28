@@ -1,5 +1,6 @@
-import { Observable, from } from '../Observable.js';
-import { ObservableInput, ObservableInputTuple, SchedulerLike } from '../types.js';
+import type { Observable} from '../Observable.js';
+import { from } from '../Observable.js';
+import type { ObservableInput, ObservableInputTuple, SchedulerLike } from '../types.js';
 import { mergeAll } from '../operators/mergeAll.js';
 import { EMPTY } from './empty.js';
 import { popNumber, popScheduler } from '../util/args.js';

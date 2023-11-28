@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { queueScheduler as queue } from 'rxjs';
-import { QueueScheduler } from 'rxjs/internal/scheduler/QueueScheduler';
+import type { QueueScheduler } from 'rxjs/internal/scheduler/QueueScheduler';
 
 /** @test {Scheduler} */
 describe('Scheduler.queue', () => {

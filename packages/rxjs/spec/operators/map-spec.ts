@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import { map, tap, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { of, Observable, identity, Observer } from 'rxjs';
+import type { Observer } from 'rxjs';
+import { of, Observable, identity } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 // function shortcuts

@@ -1,4 +1,4 @@
-import { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
+import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
 import { Observable, operate, from } from '../Observable.js';
 import { noop } from '../util/noop.js';
 

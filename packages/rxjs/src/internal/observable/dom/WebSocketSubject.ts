@@ -1,5 +1,6 @@
-import { Subscriber, Observable, Subscription, operate } from '../../Observable.js';
-import { NextObserver } from '../../types.js';
+import type { Subscriber, Subscription} from '../../Observable.js';
+import { Observable, operate } from '../../Observable.js';
+import type { NextObserver } from '../../types.js';
 
 /**
  * WebSocketSubjectConfig is a plain Object that allows us to make our

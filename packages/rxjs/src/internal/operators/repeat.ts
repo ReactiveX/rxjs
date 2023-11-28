@@ -1,6 +1,7 @@
-import { Observable, operate, Subscription, from } from '../Observable.js';
+import type { Subscription} from '../Observable.js';
+import { Observable, operate, from } from '../Observable.js';
 import { EMPTY } from '../observable/empty.js';
-import { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
+import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
 import { timer } from '../observable/timer.js';
 
 export interface RepeatConfig {

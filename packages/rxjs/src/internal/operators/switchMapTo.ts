@@ -1,5 +1,5 @@
 import { switchMap } from './switchMap.js';
-import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.js';
+import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.js';
 
 /**
  * Projects each source value to the same Observable which is flattened multiple

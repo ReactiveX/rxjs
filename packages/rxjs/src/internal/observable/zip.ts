@@ -1,5 +1,5 @@
 import { Observable, from, operate } from '../Observable.js';
-import { ObservableInputTuple } from '../types.js';
+import type { ObservableInputTuple } from '../types.js';
 import { argsOrArgArray } from '../util/argsOrArgArray.js';
 import { EMPTY } from './empty.js';
 import { popResultSelector } from '../util/args.js';

@@ -1,5 +1,6 @@
-import { Observable, Subscriber } from '../Observable.js';
-import { Subscribable } from '../types.js';
+import type { Subscriber } from '../Observable.js';
+import { Observable } from '../Observable.js';
+import type { Subscribable } from '../types.js';
 
 /**
  * Used to convert a subscribable to an observable.

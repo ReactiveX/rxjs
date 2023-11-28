@@ -1,4 +1,4 @@
-import { MonoTypeOperatorFunction } from '../types.js';
+import type { MonoTypeOperatorFunction } from '../types.js';
 import { filter } from './filter.js';
 
 /**

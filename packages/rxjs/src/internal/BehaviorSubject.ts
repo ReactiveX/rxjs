@@ -1,5 +1,5 @@
 import { Subject } from './Subject.js';
-import { Subscriber, Subscription } from './Observable.js';
+import type { Subscriber, Subscription } from './Observable.js';
 
 /**
  * A variant of Subject that requires an initial value and emits its current

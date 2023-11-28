@@ -1,10 +1,11 @@
-import { Observable, Subscription, COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Observable.js';
+import type { Subscription} from '../Observable.js';
+import { Observable, COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Observable.js';
 import { ColdObservable } from './ColdObservable.js';
 import { HotObservable } from './HotObservable.js';
-import { TestMessage } from './TestMessage.js';
+import type { TestMessage } from './TestMessage.js';
 import { SubscriptionLog } from './subscription-logging.js';
 import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler.js';
-import { ObservableNotification } from '../types.js';
+import type { ObservableNotification } from '../types.js';
 import { dateTimestampProvider } from '../scheduler/dateTimestampProvider.js';
 import { performanceTimestampProvider } from '../scheduler/performanceTimestampProvider.js';
 import { animationFrameProvider } from '../scheduler/animationFrameProvider.js';

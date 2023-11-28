@@ -1,4 +1,5 @@
-import { of, Subject, GroupedObservable } from 'rxjs';
+import type { GroupedObservable } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { groupBy, mergeMap } from 'rxjs/operators';
 
 it('should infer correctly', () => {

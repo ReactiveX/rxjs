@@ -1,5 +1,5 @@
 import { Observable } from '../Observable.js';
-import { SchedulerLike } from '../types.js';
+import type { SchedulerLike } from '../types.js';
 import { asyncScheduler } from '../scheduler/async.js';
 import { isScheduler } from '../util/isScheduler.js';
 import { isValidDate } from '../util/isDate.js';

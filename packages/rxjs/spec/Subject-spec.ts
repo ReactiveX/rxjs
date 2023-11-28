@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { Subject, Observable, AsyncSubject, Observer, of, config, Subscription, Subscriber, noop, operate } from 'rxjs';
+import type { Subscription} from 'rxjs';
+import { Subject, Observable, AsyncSubject, of, config, Subscriber, noop, operate } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';

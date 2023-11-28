@@ -1,4 +1,4 @@
-import { OperatorFunction } from '../types.js';
+import type { OperatorFunction } from '../types.js';
 import { map } from './map.js';
 
 /** @deprecated To be removed in v9. Use {@link map} instead: `map(() => value)`. */

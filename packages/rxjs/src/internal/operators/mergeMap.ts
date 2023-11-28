@@ -1,4 +1,4 @@
-import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.js';
+import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.js';
 import { Observable } from '../Observable.js';
 import { mergeInternals } from './mergeInternals.js';
 

@@ -1,4 +1,4 @@
-import { SchedulerLike } from '../types.js';
+import type { SchedulerLike } from '../types.js';
 import { Observable } from '../Observable.js';
 import { EMPTY } from './empty.js';
 

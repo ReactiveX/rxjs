@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable.js';
-import { TimestampProvider } from '../../types.js';
+import type { TimestampProvider } from '../../types.js';
 import { performanceTimestampProvider } from '../../scheduler/performanceTimestampProvider.js';
 import { animationFrameProvider } from '../../scheduler/animationFrameProvider.js';
 

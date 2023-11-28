@@ -1,6 +1,6 @@
 /* @prettier */
-import { Observable } from '../Observable.js';
-import { SchedulerLike } from '../types.js';
+import type { Observable } from '../Observable.js';
+import type { SchedulerLike } from '../types.js';
 import { bindCallbackInternals } from './bindCallbackInternals.js';
 
 export function bindNodeCallback(

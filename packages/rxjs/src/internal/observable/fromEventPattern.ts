@@ -1,5 +1,5 @@
 import { Observable, isFunction } from '../Observable.js';
-import { NodeEventHandler } from './fromEvent.js';
+import type { NodeEventHandler } from './fromEvent.js';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
 
 export function fromEventPattern<T>(

@@ -1,5 +1,5 @@
 import { reduce } from './reduce.js';
-import { OperatorFunction } from '../types.js';
+import type { OperatorFunction } from '../types.js';
 import { Observable } from '../Observable.js';
 
 const arrReducer = (arr: any[], value: any) => (arr.push(value), arr);

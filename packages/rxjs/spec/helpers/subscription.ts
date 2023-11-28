@@ -1,5 +1,5 @@
 /** @prettier */
-import { TeardownLogic } from 'rxjs';
+import type { TeardownLogic } from 'rxjs';
 
 export function getRegisteredFinalizers(subscription: any): Exclude<TeardownLogic, void>[] {
   if ('_finalizers' in subscription) {

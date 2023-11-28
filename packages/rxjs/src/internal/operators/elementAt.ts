@@ -1,6 +1,6 @@
 import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError.js';
-import { Observable } from '../Observable.js';
-import { OperatorFunction } from '../types.js';
+import type { Observable } from '../Observable.js';
+import type { OperatorFunction } from '../types.js';
 import { filter } from './filter.js';
 import { throwIfEmpty } from './throwIfEmpty.js';
 import { defaultIfEmpty } from './defaultIfEmpty.js';

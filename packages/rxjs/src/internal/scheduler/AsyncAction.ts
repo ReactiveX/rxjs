@@ -1,10 +1,10 @@
 import { Action } from './Action.js';
-import { SchedulerAction } from '../types.js';
-import { Subscription } from '../Observable.js';
-import { AsyncScheduler } from './AsyncScheduler.js';
+import type { SchedulerAction } from '../types.js';
+import type { Subscription } from '../Observable.js';
+import type { AsyncScheduler } from './AsyncScheduler.js';
 import { intervalProvider } from './intervalProvider.js';
 import { arrRemove } from '../util/arrRemove.js';
-import { TimerHandle } from './timerHandle.js';
+import type { TimerHandle } from './timerHandle.js';
 
 export class AsyncAction<T> extends Action<T> {
   public id: TimerHandle | undefined;

@@ -1,4 +1,5 @@
-import { Observable, Subject, Subscriber, Subscription } from 'rxjs';
+import type { Observable, Subject, Subscription } from 'rxjs';
+import { Subscriber } from 'rxjs';
 
 /**
  * Returns an observable that will be deemed by this package's implementation

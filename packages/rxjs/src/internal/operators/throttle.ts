@@ -1,5 +1,6 @@
-import { Observable, operate, from, Subscription } from '../Observable.js';
-import { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
+import type { Subscription } from '../Observable.js';
+import { Observable, operate, from } from '../Observable.js';
+import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
 
 /**
  * An object interface used by {@link throttle} or {@link throttleTime} that ensure

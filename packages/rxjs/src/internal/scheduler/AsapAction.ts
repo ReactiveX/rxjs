@@ -1,8 +1,8 @@
 import { AsyncAction } from './AsyncAction.js';
-import { AsapScheduler } from './AsapScheduler.js';
-import { SchedulerAction } from '../types.js';
+import type { AsapScheduler } from './AsapScheduler.js';
+import type { SchedulerAction } from '../types.js';
 import { immediateProvider } from './immediateProvider.js';
-import { TimerHandle } from './timerHandle.js';
+import type { TimerHandle } from './timerHandle.js';
 
 export class AsapAction<T> extends AsyncAction<T> {
   constructor(protected scheduler: AsapScheduler, protected work: (this: SchedulerAction<T>, state?: T) => void) {

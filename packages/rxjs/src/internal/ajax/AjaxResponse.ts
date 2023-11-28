@@ -1,4 +1,4 @@
-import { AjaxRequest, AjaxResponseType } from './types.js';
+import type { AjaxRequest, AjaxResponseType } from './types.js';
 
 /**
  * A normalized response from an AJAX request. To get the data from the response,

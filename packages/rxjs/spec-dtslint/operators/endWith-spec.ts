@@ -1,6 +1,7 @@
 import { of } from 'rxjs';
 import { endWith } from 'rxjs/operators';
-import { A, B, a, b, c, d, e, f, g, h } from '../helpers';
+import type { A, B} from '../helpers';
+import { a, b, c, d, e, f, g, h } from '../helpers';
 
 it('should infer type for N values', () => {
   const r0 = of(a).pipe(endWith()); // $ExpectType Observable<A>

@@ -1,5 +1,6 @@
-import { Observable, Subscription, operate, from } from '../Observable.js';
-import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.js';
+import type { Subscription} from '../Observable.js';
+import { Observable, operate, from } from '../Observable.js';
+import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.js';
 
 export function catchError<T, O extends ObservableInput<any>>(
   selector: (err: any, caught: Observable<T>) => O

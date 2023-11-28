@@ -1,11 +1,11 @@
 import { fromEvent } from 'rxjs';
-import {
+import type {
   HasEventTargetAddRemove,
   NodeStyleEventEmitter,
   NodeCompatibleEventEmitter,
   JQueryStyleEventEmitter
 } from '../../src/internal/observable/fromEvent';
-import { B } from '../helpers';
+import type { B } from '../helpers';
 
 declare const eventTargetSource: EventTarget;
 

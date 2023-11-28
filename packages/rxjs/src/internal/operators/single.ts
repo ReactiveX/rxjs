@@ -1,7 +1,7 @@
 import { Observable, operate } from '../Observable.js';
 import { EmptyError } from '../util/EmptyError.js';
 
-import { MonoTypeOperatorFunction, OperatorFunction, TruthyTypesOf } from '../types.js';
+import type { MonoTypeOperatorFunction, OperatorFunction, TruthyTypesOf } from '../types.js';
 import { SequenceError } from '../util/SequenceError.js';
 import { NotFoundError } from '../util/NotFoundError.js';
 

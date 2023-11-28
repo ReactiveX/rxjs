@@ -1,5 +1,5 @@
 import { Observable, isFunction } from '../Observable.js';
-import { SchedulerLike } from '../types.js';
+import type { SchedulerLike } from '../types.js';
 import { iterator as Symbol_iterator } from '../symbol/iterator.js';
 import { executeSchedule } from '../util/executeSchedule.js';
 

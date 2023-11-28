@@ -1,10 +1,10 @@
 import { Observable, from, operate } from '../Observable.js';
-import { ObservedValueOf, ObservableInputTuple, ObservableInput } from '../types.js';
+import type { ObservedValueOf, ObservableInputTuple, ObservableInput } from '../types.js';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject.js';
 import { popResultSelector } from '../util/args.js';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
 import { createObject } from '../util/createObject.js';
-import { AnyCatcher } from '../AnyCatcher.js';
+import type { AnyCatcher } from '../AnyCatcher.js';
 import { EmptyError } from '../util/EmptyError.js';
 
 // forkJoin(any)

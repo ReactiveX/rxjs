@@ -1,5 +1,5 @@
 import { scanInternals } from './scanInternals.js';
-import { OperatorFunction } from '../types.js';
+import type { OperatorFunction } from '../types.js';
 import { Observable } from '../Observable.js';
 
 export function reduce<V, A = V>(accumulator: (acc: A | V, value: V, index: number) => A): OperatorFunction<V, V | A>;

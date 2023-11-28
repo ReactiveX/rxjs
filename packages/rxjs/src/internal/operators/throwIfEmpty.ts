@@ -1,5 +1,5 @@
 import { EmptyError } from '../util/EmptyError.js';
-import { MonoTypeOperatorFunction } from '../types.js';
+import type { MonoTypeOperatorFunction } from '../types.js';
 import { Observable, operate } from '../Observable.js';
 
 /**

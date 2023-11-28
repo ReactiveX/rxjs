@@ -1,5 +1,5 @@
 import { EMPTY } from '../observable/empty.js';
-import { MonoTypeOperatorFunction } from '../types.js';
+import type { MonoTypeOperatorFunction } from '../types.js';
 import { Observable, operate } from '../Observable.js';
 
 /**

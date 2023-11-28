@@ -1,4 +1,4 @@
-import { MonoTypeOperatorFunction } from '../types.js';
+import type { MonoTypeOperatorFunction } from '../types.js';
 import { identity } from '../util/identity.js';
 import { Observable, operate } from '../Observable.js';
 

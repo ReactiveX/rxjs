@@ -1,9 +1,11 @@
 import { Subject } from '../Subject.js';
-import { Subscriber, Subscription } from '../Observable.js';
-import { Scheduler } from '../Scheduler.js';
-import { TestMessage } from './TestMessage.js';
+import type { Subscriber} from '../Observable.js';
+import { Subscription } from '../Observable.js';
+import type { Scheduler } from '../Scheduler.js';
+import type { TestMessage } from './TestMessage.js';
 import { observeNotification } from '../Notification.js';
-import { logSubscribedFrame, logUnsubscribedFrame, SubscriptionLog } from './subscription-logging.js';
+import type { SubscriptionLog } from './subscription-logging.js';
+import { logSubscribedFrame, logUnsubscribedFrame } from './subscription-logging.js';
 
 export class HotObservable<T> extends Subject<T> {
   public subscriptions: SubscriptionLog[] = [];

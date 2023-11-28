@@ -1,4 +1,4 @@
-import { OperatorFunction, ObservableInputTuple } from '../types.js';
+import type { OperatorFunction, ObservableInputTuple } from '../types.js';
 import { Observable, operate, from } from '../Observable.js';
 import { identity } from '../util/identity.js';
 import { noop } from '../util/noop.js';

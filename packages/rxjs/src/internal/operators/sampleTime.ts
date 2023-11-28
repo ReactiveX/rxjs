@@ -1,5 +1,5 @@
 import { asyncScheduler } from '../scheduler/async.js';
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
+import type { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
 import { sample } from './sample.js';
 import { interval } from '../observable/interval.js';
 

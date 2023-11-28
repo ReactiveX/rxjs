@@ -1,4 +1,4 @@
-import { OperatorFunction, MonoTypeOperatorFunction, TruthyTypesOf } from '../types.js';
+import type { OperatorFunction, MonoTypeOperatorFunction, TruthyTypesOf } from '../types.js';
 import { Observable, operate } from '../Observable.js';
 
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */

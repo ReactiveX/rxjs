@@ -1,7 +1,8 @@
 /** @prettier */
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { of, from, Observer, Subject, noop, Subscription } from 'rxjs';
+import type { Observer, Subscription } from 'rxjs';
+import { of, from, Subject, noop } from 'rxjs';
 import { first, concatMap, delay, take, tap } from 'rxjs/operators';
 import { ReadableStream } from 'web-streams-polyfill';
 import { observableMatcher } from '../helpers/observableMatcher';

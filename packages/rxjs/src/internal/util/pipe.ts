@@ -1,4 +1,4 @@
-import { UnaryFunction } from '../types.js';
+import type { UnaryFunction } from '../types.js';
 
 export function pipe(): <T>(x: T) => T;
 export function pipe<T, A>(fn1: UnaryFunction<T, A>): UnaryFunction<T, A>;

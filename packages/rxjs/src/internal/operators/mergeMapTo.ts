@@ -1,4 +1,4 @@
-import { OperatorFunction, ObservedValueOf, ObservableInput } from '../types.js';
+import type { OperatorFunction, ObservedValueOf, ObservableInput } from '../types.js';
 import { mergeMap } from './mergeMap.js';
 
 /**

@@ -1,4 +1,4 @@
-import {
+import type {
   Observable,
   ObservedValueOf,
   ObservedValueUnionFromArray,
@@ -7,7 +7,7 @@ import {
   Head,
   Tail
 } from 'rxjs';
-import { A, B, C } from './helpers';
+import type { A, B, C } from './helpers';
 
 describe('ObservedValueOf', () => {
   it('should infer from an observable', () => {

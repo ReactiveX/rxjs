@@ -1,6 +1,7 @@
 /** @prettier */
 import { expect } from 'chai';
-import { Observable, partition, of } from 'rxjs';
+import type { Observable} from 'rxjs';
+import { partition, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';

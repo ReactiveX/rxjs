@@ -1,6 +1,6 @@
-import { Observable } from '../Observable.js';
+import type { Observable } from '../Observable.js';
 import { asyncScheduler } from '../scheduler/async.js';
-import { SchedulerLike } from '../types.js';
+import type { SchedulerLike } from '../types.js';
 import { timer } from './timer.js';
 
 /**

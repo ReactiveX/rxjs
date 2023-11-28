@@ -1,4 +1,4 @@
-import { OperatorFunction, ObservableInput, ObservedValueOf, SubjectLike } from '../types.js';
+import type { OperatorFunction, ObservableInput, ObservedValueOf, SubjectLike } from '../types.js';
 import { Observable, from } from '../Observable.js';
 import { Subject } from '../Subject.js';
 import { fromSubscribable } from '../observable/fromSubscribable.js';

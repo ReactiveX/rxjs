@@ -1,5 +1,5 @@
 import { Subject } from './Subject.js';
-import { Subscriber } from './Observable.js';
+import type { Subscriber } from './Observable.js';
 
 /**
  * A variant of Subject that only emits a value when it completes. It will emit

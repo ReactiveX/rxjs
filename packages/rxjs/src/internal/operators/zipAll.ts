@@ -1,4 +1,4 @@
-import { OperatorFunction, ObservableInput } from '../types.js';
+import type { OperatorFunction, ObservableInput } from '../types.js';
 import { zip } from '../observable/zip.js';
 import { joinAllInternals } from './joinAllInternals.js';
 

@@ -1,4 +1,4 @@
-import { ObservableInputTuple, OperatorFunction } from '../types.js';
+import type { ObservableInputTuple, OperatorFunction } from '../types.js';
 import { argsOrArgArray } from '../util/argsOrArgArray.js';
 import { onErrorResumeNext as oERNCreate } from '../observable/onErrorResumeNext.js';
 

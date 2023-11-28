@@ -1,5 +1,5 @@
 import { Subscription, Observable, operate, from } from '../Observable.js';
-import { OperatorFunction, ObservableInput } from '../types.js';
+import type { OperatorFunction, ObservableInput } from '../types.js';
 import { noop } from '../util/noop.js';
 import { arrRemove } from '../util/arrRemove.js';
 

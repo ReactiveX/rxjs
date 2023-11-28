@@ -1,4 +1,4 @@
-import { ObservableInput, ObservedValueOf, OperatorFunction } from '../types.js';
+import type { ObservableInput, ObservedValueOf, OperatorFunction } from '../types.js';
 import { switchMap } from './switchMap.js';
 import { Observable, operate } from '../Observable.js';
 

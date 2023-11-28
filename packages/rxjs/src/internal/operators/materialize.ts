@@ -1,4 +1,4 @@
-import { OperatorFunction, ObservableNotification } from '../types.js';
+import type { OperatorFunction, ObservableNotification } from '../types.js';
 import { Observable, operate, COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Observable.js';
 
 /**

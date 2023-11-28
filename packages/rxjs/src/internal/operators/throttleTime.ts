@@ -1,6 +1,7 @@
 import { asyncScheduler } from '../scheduler/async.js';
-import { throttle, ThrottleConfig } from './throttle.js';
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
+import type { ThrottleConfig } from './throttle.js';
+import { throttle } from './throttle.js';
+import type { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
 import { timer } from '../observable/timer.js';
 
 /**

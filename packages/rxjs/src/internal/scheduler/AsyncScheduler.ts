@@ -1,7 +1,7 @@
 import { Scheduler } from '../Scheduler.js';
-import { Action } from './Action.js';
-import { AsyncAction } from './AsyncAction.js';
-import { TimerHandle } from './timerHandle.js';
+import type { Action } from './Action.js';
+import type { AsyncAction } from './AsyncAction.js';
+import type { TimerHandle } from './timerHandle.js';
 
 export class AsyncScheduler extends Scheduler {
   public actions: Array<AsyncAction<any>> = [];

@@ -1,6 +1,6 @@
 import { Observable, from, operate } from '../Observable.js';
 import { Subject } from '../Subject.js';
-import { ObservableInput, Observer, OperatorFunction, SubjectLike } from '../types.js';
+import type { ObservableInput, Observer, OperatorFunction, SubjectLike } from '../types.js';
 
 export interface BasicGroupByOptions<K, T> {
   element?: undefined;
