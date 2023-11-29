@@ -10,7 +10,7 @@ const compat = new eslintrc.FlatCompat({ baseDirectory: __dirname });
 //   "eslint.experimental.useFlatConfig": true
 
 module.exports = [
-  { ignores: ['**/dist', '**/vite-bundle', '**/assets'] },
+  { ignores: ['**/dist', '**/vite-bundle', '**/assets', 'apps/rxjs.dev/tools/transforms/**/*.template.js'] },
   js.configs.recommended,
   ...compat.extends('plugin:@typescript-eslint/recommended'),
   {
