@@ -33,9 +33,6 @@ module.exports = [
   },
   {
     files: ['**/*.ts', '**/*.mts'],
-    languageOptions: {
-      parserOptions: { project: true, tsconfigRootDir: path.resolve('./packages/rxjs') },
-    },
     plugins: {
       jsdoc,
     },
@@ -47,6 +44,12 @@ module.exports = [
       '@typescript-eslint/consistent-type-exports': 'error',
       'jsdoc/check-alignment': 'error',
       'jsdoc/no-types': 'error',
+    },
+  },
+  {
+    files: ['packages/rxjs/**/*.ts', 'packages/rxjs/**/*.mts'],
+    languageOptions: {
+      parserOptions: { project: true, tsconfigRootDir: path.resolve(__dirname, './packages/rxjs') },
     },
   },
   {
@@ -65,7 +68,7 @@ module.exports = [
     languageOptions: {
       parserOptions: {
         project: true,
-        tsconfigRootDir: path.resolve('./apps/rxjs.dev'),
+        tsconfigRootDir: path.resolve(__dirname, './apps/rxjs.dev'),
       },
     },
     rules: {
@@ -94,7 +97,6 @@ module.exports = [
     languageOptions: {
       parserOptions: {
         project: ['tests/e2e/tsconfig.e2e.json'],
-        tsconfigRootDir: path.resolve('./apps/rxjs.dev'),
       },
     },
   },
