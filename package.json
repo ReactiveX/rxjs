@@ -18,8 +18,13 @@
     "node": "^18.13.0 || ^20.9.0"
   },
   "packageManager": "yarn@1.22.21",
+  "scripts": {
+    "prepare-packages": "yarn nx run-many -t build,lint,test:circular,dtslint,copy_common_package_files --exclude rxjs.dev",
+    "release": "node scripts/release.js"
+  },
   "dependencies": {},
   "devDependencies": {
-    "lerna": "^7.3.0"
+    "@nx/js": "17.2.0-beta.11",
+    "nx": "17.2.0-beta.11"
   }
 }

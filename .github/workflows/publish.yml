@@ -1,0 +1,53 @@
+name: publish
+
+on:
+  # Run manually using the GitHub UI
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish'
+        required: false
+        default: ''
+  # ...or whenever a GitHub release gets created
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # needed for provenance data generation
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # include tags
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: 20
+
+      - name: Prepare packages for publishing
+        run: yarn prepare-packages
+
+      - name: Apply updated version to packages
+        run: |
+          # Use the version from the workflow input if it's set, otherwise use the tag name from the release
+          VERSION=${{ github.event.inputs.version || github.ref_name }}
+          yarn nx release version $VERSION
+
+      - name: Publish packages to npm
+        run: |
+          if [[ $GITHUB_REF == 'refs/heads/7.x' ]]; then
+            yarn nx release publish --registry https://registry.npmjs.org --tag latest
+          elif [[ $GITHUB_REF == 'refs/heads/master' ]]; then
+            yarn nx release publish --registry https://registry.npmjs.org --tag next
+          else
+            echo "Branch not recognized for publishing, should be either '7.x' or 'master'"
+            exit 1
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true

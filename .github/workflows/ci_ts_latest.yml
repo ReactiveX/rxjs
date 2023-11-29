@@ -17,14 +17,14 @@ jobs:
     name: ts@latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install-dependencies
         with:
           node-version: ${{ matrix.node }}
-          cache: npm
+
       - name: build
         run: |
-          npm install -g yarn@latest
-          yarn install
           yarn workspace rxjs add typescript@latest @types/node@latest --peer --no-save
           yarn workspace rxjs compile

@@ -1,12 +1,21 @@
-const fs = require('fs');
+// @ts-check
 
-// Load the packages from the package.json workspaces
-const packageJson = JSON.parse(fs.readFileSync('package.json'));
-const packages = packageJson.workspaces;
+const { copyFileSync } = require('fs');
+const { createProjectGraphAsync, joinPathFragments, workspaceRoot } = require('@nx/devkit');
 
-packages
-  .filter((path) => path.startsWith('packages'))
-  .forEach((packagePath) => {
-    fs.copyFileSync('LICENSE.txt', `${packagePath}/LICENSE.txt`);
-    fs.copyFileSync('CODE_OF_CONDUCT.md', `${packagePath}/CODE_OF_CONDUCT.md`);
-  });
+const getWorkspacePath = (...pathFragments) => joinPathFragments(workspaceRoot, ...pathFragments);
+
+(async () => {
+  const projectGraph = await createProjectGraphAsync();
+
+  for (const projectConfig of Object.values(projectGraph.nodes)) {
+    const projectRoot = projectConfig.data.root;
+    if (!projectRoot.startsWith('packages')) {
+      continue;
+    }
+    copyFileSync(getWorkspacePath('LICENSE.txt'), getWorkspacePath(projectRoot, `LICENSE.txt`));
+    copyFileSync(getWorkspacePath('CODE_OF_CONDUCT.md'), getWorkspacePath(projectRoot, `CODE_OF_CONDUCT.md`));
+  }
+
+  process.exit(0);
+})();
