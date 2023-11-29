@@ -7,12 +7,12 @@ import { decisionTreeReducer } from './decisionTreeReducer';
  * Main build script, outputs the decision tree.
  *
  * @export
- * @param {FlattenedApiList} apiList
- * @param {Tree} tree
+ * @param apiList
+ * @param tree
  * @requires addUniqueId
  * @requires extractInitialSequence
  * @requires decisionTreeReducer
- * @returns {DecisionTree}
+ * @returns
  */
 export function build(apiList: FlattenedApiList, tree: TreeNodeRaw[]): DecisionTree {
   const nodesWithUniqueIds = addUniqueId(tree);

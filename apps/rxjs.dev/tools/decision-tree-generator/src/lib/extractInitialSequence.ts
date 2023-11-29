@@ -4,8 +4,8 @@ import { TreeNode } from './interfaces';
  * Strip out initial sequence and add to tree
  *
  * @export
- * @param {Tree} tree
- * @returns {{id: string, options: string[]}}
+ * @param tree
+ * @returns
  */
 export function extractInitialSequence(tree: TreeNode[]): {id: string, options: string[]} {
   return {

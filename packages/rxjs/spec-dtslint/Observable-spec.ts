@@ -26,8 +26,8 @@ function a<I, O extends string>(output: O): OperatorFunction<I, O>;
  * );
  * ```
  *
- * @param {string} input The `OperatorFunction` input type parameter
- * @param {string} output The `OperatorFunction` output type parameter
+ * @param input The `OperatorFunction` input type parameter
+ * @param output The `OperatorFunction` output type parameter
  */
 function a<I, O extends string>(inputOrOutput: I | O, output?: O): OperatorFunction<I, O> {
   return map(() => output === undefined ? inputOrOutput as O : output);

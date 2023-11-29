@@ -5,7 +5,7 @@ import { randomBytes } from 'crypto';
  *
  * @export
  * @requires crypto:randomByes
- * @returns {string}
+ * @returns
  */
 export function generateUniqueId(): string {
   return randomBytes(2).toString('hex');

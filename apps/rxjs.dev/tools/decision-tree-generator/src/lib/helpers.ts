@@ -6,8 +6,8 @@ export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
  * We don't want to point people to deprecated API references.
  *
  * @export
- * @param {string} stability
- * @returns {boolean}
+ * @param stability
+ * @returns
  */
 export function isStable(stability: string): boolean {
   return stability !== 'deprecated';
@@ -17,7 +17,7 @@ export function isStable(stability: string): boolean {
  * Recursively count the number of tree nodes
  *
  * @export
- * @param {*} tree
+ * @param tree
  * @returns
  */
 export function treeNodeCount(tree) {
@@ -36,11 +36,11 @@ export function treeNodeCount(tree) {
  * Recursively count the number of nodes with a method
  *
  * @export
- * @param {*} tree
+ * @param tree
  * @returns
  */
 export function rawNodesWithMethodCount(tree) {
-  return tree.filter(node => {
+  return tree.filter((node) => {
     let childHadMethod: boolean;
 
     if (node.method) {
@@ -55,13 +55,12 @@ export function rawNodesWithMethodCount(tree) {
   }).length;
 }
 
-
 /**
  * Recursively count valid API references
  * Deprecated API refs are invalid
  *
  * @export
- * @param {*} apiList
+ * @param apiList
  * @returns
  */
 export function validApiRefCount(apiList): number {

@@ -11,9 +11,9 @@ import {
  * Helps build the view model.
  *
  * @export
- * @param {Tree} tree
- * @param {FlattenedApiList} apiList
- * @returns {DecisionTree}
+ * @param tree
+ * @param apiList
+ * @returns
  */
 export function decisionTreeReducer(
   tree: TreeNode[],

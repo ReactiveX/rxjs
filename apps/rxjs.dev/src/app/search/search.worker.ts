@@ -40,7 +40,7 @@ interface EncodedPage {
 addEventListener('message', handleMessage);
 
 const customLunr = function (config: lunr.ConfigFunction) {
-  var builder = new lunr.Builder();
+  const builder = new lunr.Builder();
   builder.pipeline.add(lunr.trimmer, lunr.stemmer);
   builder.searchPipeline.add(lunr.stemmer);
   config.call(builder, builder);

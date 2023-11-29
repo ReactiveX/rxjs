@@ -6,9 +6,9 @@ import { isStable } from './helpers';
  * Makes navigation easier.
  *
  * @export
- * @param {ApiListNode[]} [apiList=[]]
+ * @param [apiList=[]]
  * @requires isStable
- * @returns {FlattenedApiList}
+ * @returns
  * @todo create better type lenses - inference is not working well here
  */
 export function flattenApiList(apiList: ApiListNode[]): FlattenedApiList {

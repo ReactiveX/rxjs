@@ -15,8 +15,8 @@ import { pipe, of } from 'rxjs';
  * a('0', '1'), a('#', '2') // Error '1' is not compatible with '#'
  * ```
  *
- * @param {string} input The `UnaryFunction` input type parameter
- * @param {string} output The `UnaryFunction` output type parameter
+ * @param input The `UnaryFunction` input type parameter
+ * @param output The `UnaryFunction` output type parameter
  */
 function a<I extends string, O extends string>(input: I, output: O): UnaryFunction<I, O> {
   return i => output;
