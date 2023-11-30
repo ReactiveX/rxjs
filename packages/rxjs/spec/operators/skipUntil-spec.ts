@@ -4,6 +4,7 @@ import { skipUntil, mergeMap, take } from 'rxjs/operators';
 import { asInteropObservable } from '../helpers/interop-helper';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
+import * as sinon from 'sinon';
 
 /** @test {skipUntil} */
 describe('skipUntil', () => {
@@ -369,6 +370,8 @@ describe('skipUntil', () => {
   });
 
   it('should skip until Promise resolves', (done) => {
+    const sandbox = sinon.createSandbox();
+    const fakeTimers = sandbox.useFakeTimers();
     const e1 = interval(3).pipe(take(5));
     const expected = [2, 3, 4];
 
@@ -379,9 +382,12 @@ describe('skipUntil', () => {
       error: () => done(new Error('should not be called')),
       complete: () => {
         expect(expected.length).to.equal(0);
+        sandbox.restore();
         done();
       },
     });
+
+    fakeTimers.tickAsync(15);
   });
 
   it('should raise error when Promise rejects', (done) => {

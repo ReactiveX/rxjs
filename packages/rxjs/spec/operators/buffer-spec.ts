@@ -3,6 +3,7 @@ import { EMPTY, NEVER, throwError, of, Subject, interval } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 
 /** @test {buffer} */
 describe('Observable.prototype.buffer', () => {
@@ -325,6 +326,8 @@ describe('Observable.prototype.buffer', () => {
   });
 
   it('should buffer when Promise resolves', (done) => {
+    const sandbox = sinon.createSandbox();
+    const fakeTimers = sandbox.useFakeTimers();
     const e1 = interval(3).pipe(take(5));
     const expected = [
       [0, 1],
@@ -338,9 +341,12 @@ describe('Observable.prototype.buffer', () => {
       error: () => done(new Error('should not be called')),
       complete: () => {
         expect(expected.length).to.equal(0);
+        sandbox.restore();
         done();
       },
     });
+
+    fakeTimers.tickAsync(15);
   });
 
   it('should raise error when Promise rejects', (done) => {
