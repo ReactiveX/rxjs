@@ -75,7 +75,6 @@
     "changelog": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s",
     "lint": "eslint --ext=ts,js src spec spec-dtslint",
     "dtslint": "npm run lint && tsc -b ./src/tsconfig.types.json",
-    "prepublishOnly": "yarn build && yarn lint && yarn test && yarn test:circular && yarn dtslint && yarn copy_common_package_files",
     "test": "yarn build && cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js \"spec/**/*-spec.ts\"",
     "test:esm": "node spec/module-test-spec.mjs",
     "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm",
@@ -89,7 +88,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/reactivex/rxjs.git"
+    "url": "https://github.com/reactivex/rxjs.git",
+    "directory": "packages/rxjs"
   },
   "keywords": [
     "Rx",

@@ -17,15 +17,13 @@ jobs:
     name: Node ${{ matrix.node }} build
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install-dependencies
         with:
           node-version: ${{ matrix.node }}
-          cache: npm
-      - name: install
-        run: |
-          npm install -g yarn@latest
-          yarn install
+
       - name: rxjs lint
         run: yarn workspace rxjs lint
       - name: rxjs build
