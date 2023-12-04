@@ -23,7 +23,7 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: install
         run: |
-          npm install -g npm@latest
+          npm --version
           npm ci
       - name: lint
         run: npm run lint
