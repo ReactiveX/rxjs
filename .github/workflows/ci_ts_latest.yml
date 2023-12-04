@@ -3,6 +3,8 @@ name: CI (ts@latest)
 on:
   pull_request:
     types: ['opened', 'reopened', 'synchronize']
+    # Legacy v7 is incompatible with latest TS
+    branches-ignore: ['7.x']
 
 permissions:
   contents: read
