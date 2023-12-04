@@ -25,7 +25,7 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: build
         run: |
-          npm --version
+          npm install -g npm@latest
           npm ci
           npm install --legacy-peer-deps --no-save typescript@latest tslib@latest @types/node@latest
           npm run compile
