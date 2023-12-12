@@ -707,5 +707,32 @@ describe('TestScheduler', () => {
         });
       });
     });
+
+    it('should unsubscribe source with toBe', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+      let disposed = false;
+      testScheduler.run(({ expectObservable }) => {
+        expectObservable(new Observable((_) => () => (disposed = true)), '^!').toBe('');
+      });
+      expect(disposed).to.be.true;
+    });
+
+    it('should unsubscribe source with toEqual', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+      let disposed = false;
+      testScheduler.run(({ cold, expectObservable }) => {
+        expectObservable(new Observable((_) => () => (disposed = true)), '^!').toEqual(cold(''));
+      });
+      expect(disposed).to.be.true;
+    });
+
+    it('should unsubscribe the expected observable with toEqual', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+      let disposed = false;
+      testScheduler.run(({ cold, expectObservable }) => {
+        expectObservable(cold(''), '^!').toEqual(new Observable((_) => () => (disposed = true)));
+      });
+      expect(disposed).to.be.true;
+    });
   });
 });
