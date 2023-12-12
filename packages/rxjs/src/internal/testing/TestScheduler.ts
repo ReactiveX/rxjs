@@ -1,4 +1,4 @@
-import type { Subscription} from '../Observable.js';
+import { Subscription } from '../Observable.js';
 import { Observable, COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Observable.js';
 import { ColdObservable } from './ColdObservable.js';
 import { HotObservable } from './HotObservable.js';
@@ -135,22 +135,24 @@ export class TestScheduler extends VirtualTimeScheduler {
     const subscriptionParsed = TestScheduler.parseMarblesAsSubscriptions(subscriptionMarbles, this.runMode);
     const subscriptionFrame = subscriptionParsed.subscribedFrame === Infinity ? 0 : subscriptionParsed.subscribedFrame;
     const unsubscriptionFrame = subscriptionParsed.unsubscribedFrame;
-    let subscription: Subscription;
+    const subscription = new Subscription();
 
     this.schedule(() => {
-      subscription = observable.subscribe({
-        next: (x) => {
-          // Support Observable-of-Observables
-          const value = x instanceof Observable ? this.materializeInnerObservable(x, this.frame) : x;
-          actual.push({ frame: this.frame, notification: nextNotification(value) });
-        },
-        error: (error) => {
-          actual.push({ frame: this.frame, notification: errorNotification(error) });
-        },
-        complete: () => {
-          actual.push({ frame: this.frame, notification: COMPLETE_NOTIFICATION });
-        },
-      });
+      subscription.add(
+        observable.subscribe({
+          next: (x) => {
+            // Support Observable-of-Observables
+            const value = x instanceof Observable ? this.materializeInnerObservable(x, this.frame) : x;
+            actual.push({ frame: this.frame, notification: nextNotification(value) });
+          },
+          error: (error) => {
+            actual.push({ frame: this.frame, notification: errorNotification(error) });
+          },
+          complete: () => {
+            actual.push({ frame: this.frame, notification: COMPLETE_NOTIFICATION });
+          },
+        })
+      );
     }, subscriptionFrame);
 
     if (unsubscriptionFrame !== Infinity) {
@@ -169,19 +171,21 @@ export class TestScheduler extends VirtualTimeScheduler {
         flushTest.ready = true;
         flushTest.expected = [];
         this.schedule(() => {
-          subscription = other.subscribe({
-            next: (x) => {
-              // Support Observable-of-Observables
-              const value = x instanceof Observable ? this.materializeInnerObservable(x, this.frame) : x;
-              flushTest.expected!.push({ frame: this.frame, notification: nextNotification(value) });
-            },
-            error: (error) => {
-              flushTest.expected!.push({ frame: this.frame, notification: errorNotification(error) });
-            },
-            complete: () => {
-              flushTest.expected!.push({ frame: this.frame, notification: COMPLETE_NOTIFICATION });
-            },
-          });
+          subscription.add(
+            other.subscribe({
+              next: (x) => {
+                // Support Observable-of-Observables
+                const value = x instanceof Observable ? this.materializeInnerObservable(x, this.frame) : x;
+                flushTest.expected!.push({ frame: this.frame, notification: nextNotification(value) });
+              },
+              error: (error) => {
+                flushTest.expected!.push({ frame: this.frame, notification: errorNotification(error) });
+              },
+              complete: () => {
+                flushTest.expected!.push({ frame: this.frame, notification: COMPLETE_NOTIFICATION });
+              },
+            })
+          );
         }, subscriptionFrame);
       },
     };

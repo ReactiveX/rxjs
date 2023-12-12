@@ -707,5 +707,30 @@ describe('TestScheduler', () => {
         });
       });
     });
+
+    describe('TestScheduler', () => {
+      let testScheduler: TestScheduler;
+      let disposed = false;
+
+      beforeEach(() => {
+        testScheduler = new TestScheduler(assertDeepEquals);
+        disposed = false;
+      });
+
+      it('should unsubscribe toBe', () => {
+        testScheduler.run(({ expectObservable }) => {
+          expectObservable(new Observable((_) => () => (disposed = true)), '^!').toBe('');
+        });
+        expect(disposed).to.be.true;
+      });
+
+      // This fails.
+      it('should unsubscribe toEqual', () => {
+        testScheduler.run(({ cold, expectObservable }) => {
+          expectObservable(new Observable((_) => () => (disposed = true)), '^!').toEqual(cold(''));
+        });
+        expect(disposed).to.be.true;
+      });
+    });
   });
 });
