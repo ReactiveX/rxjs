@@ -708,29 +708,31 @@ describe('TestScheduler', () => {
       });
     });
 
-    describe('TestScheduler', () => {
-      let testScheduler: TestScheduler;
+    it('should unsubscribe source with toBe', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
       let disposed = false;
-
-      beforeEach(() => {
-        testScheduler = new TestScheduler(assertDeepEquals);
-        disposed = false;
+      testScheduler.run(({ expectObservable }) => {
+        expectObservable(new Observable((_) => () => (disposed = true)), '^!').toBe('');
       });
+      expect(disposed).to.be.true;
+    });
 
-      it('should unsubscribe toBe', () => {
-        testScheduler.run(({ expectObservable }) => {
-          expectObservable(new Observable((_) => () => (disposed = true)), '^!').toBe('');
-        });
-        expect(disposed).to.be.true;
+    it('should unsubscribe source with toEqual', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+      let disposed = false;
+      testScheduler.run(({ cold, expectObservable }) => {
+        expectObservable(new Observable((_) => () => (disposed = true)), '^!').toEqual(cold(''));
       });
+      expect(disposed).to.be.true;
+    });
 
-      // This fails.
-      it('should unsubscribe toEqual', () => {
-        testScheduler.run(({ cold, expectObservable }) => {
-          expectObservable(new Observable((_) => () => (disposed = true)), '^!').toEqual(cold(''));
-        });
-        expect(disposed).to.be.true;
+    it('should unsubscribe the expected observable with toEqual', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+      let disposed = false;
+      testScheduler.run(({ cold, expectObservable }) => {
+        expectObservable(cold(''), '^!').toEqual(new Observable((_) => () => (disposed = true)));
       });
+      expect(disposed).to.be.true;
     });
   });
 });
