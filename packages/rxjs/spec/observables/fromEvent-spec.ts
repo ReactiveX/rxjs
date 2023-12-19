@@ -121,6 +121,39 @@ describe('fromEvent', () => {
     expect(offHandler).to.equal(onHandler);
   });
 
+  it('should pass symbol to "addListener" and "removeListener"', () => {
+    let onEventName;
+    let onHandler;
+    let offEventName;
+    let offHandler;
+
+    const SYMBOL_EVENT = Symbol();
+
+    const obj = {
+      addListener(a: string | symbol, b: (...args: any[]) => void) {
+        onEventName = a;
+        onHandler = b;
+        return this;
+      },
+      removeListener(a: string | symbol, b: (...args: any[]) => void) {
+        offEventName = a;
+        offHandler = b;
+        return this;
+      },
+    };
+
+    const subscription = fromEvent(obj, SYMBOL_EVENT).subscribe(() => {
+      //noop
+    });
+
+    subscription.unsubscribe();
+
+    expect(onEventName).to.equal(SYMBOL_EVENT);
+    expect(typeof onHandler).to.equal('function');
+    expect(offEventName).to.equal(onEventName);
+    expect(offHandler).to.equal(onHandler);
+  });
+
   it('should setup an event observable on objects with "addListener" and "removeListener" returning nothing', () => {
     let onEventName;
     let onHandler;
