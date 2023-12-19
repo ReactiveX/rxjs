@@ -64,4 +64,29 @@ describe('scheduled', () => {
       done();
     });
   });
+
+  it('should handle scheduling a promise that unsubscribes prior to complete', (done) => {
+    const results: any[] = [];
+    const input = Promise.resolve('x'); // strings are iterables
+    const subscription = scheduled(input, testScheduler).subscribe({
+      next(value) { 
+        results.push(value); 
+        subscription.unsubscribe();
+      },
+      complete() { results.push('done'); },
+    });
+
+    expect(results).to.deep.equal([]);
+
+    // Promises force async, so we can't schedule synchronously, no matter what.
+    testScheduler.flush();
+    expect(results).to.deep.equal([]);
+
+    Promise.resolve().then(() => {
+      // NOW it should work, as the other promise should have resolved.
+      testScheduler.flush();
+      expect(results).to.deep.equal(['x']);
+      done();
+    });
+  });
 });
