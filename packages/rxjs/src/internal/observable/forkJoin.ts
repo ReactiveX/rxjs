@@ -180,5 +180,5 @@ export function forkJoin(...args: any[]): Observable<any> {
       );
     }
   });
-  return resultSelector ? result.pipe(mapOneOrManyArgs(resultSelector)) : result;
+  return resultSelector ? mapOneOrManyArgs(resultSelector)(result) : result;
 }

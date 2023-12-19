@@ -169,7 +169,7 @@ export function groupBy<T, K, R>(
       // out-of-band with our `subscriber` which is the downstream subscriber, or destination,
       // in cases where a user unsubscribes from the main resulting subscription, but
       // still has groups from this subscription subscribed and would expect values from it
-      // Consider:  `source.pipe(groupBy(fn), take(2))`.
+      // Consider:  `rx(source, groupBy(fn), take(2))`.
       const groupBySourceSubscriber = operate({
         destination,
         next: (value: T) => {

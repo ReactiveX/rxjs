@@ -1,10 +1,9 @@
 import type { SchedulerLike } from '../types.js';
 import { isScheduler } from '../util/isScheduler.js';
 import { Observable } from '../Observable.js';
-import { subscribeOn } from '../operators/subscribeOn.js';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
-import { observeOn } from '../operators/observeOn.js';
 import { AsyncSubject } from '../AsyncSubject.js';
+import { scheduled } from '../scheduled/scheduled.js';
 
 export function bindCallbackInternals(
   isNodeStyle: boolean,
@@ -18,9 +17,9 @@ export function bindCallbackInternals(
     } else {
       // The user provided a result selector.
       return function (this: any, ...args: any[]) {
-        return (bindCallbackInternals(isNodeStyle, callbackFunc, scheduler) as any)
-          .apply(this, args)
-          .pipe(mapOneOrManyArgs(resultSelector as any));
+        return mapOneOrManyArgs(resultSelector as any)(
+          (bindCallbackInternals(isNodeStyle, callbackFunc, scheduler) as any).apply(this, args)
+        );
       };
     }
   }
@@ -29,9 +28,7 @@ export function bindCallbackInternals(
   // to compose that behavior for the user.
   if (scheduler) {
     return function (this: any, ...args: any[]) {
-      return (bindCallbackInternals(isNodeStyle, callbackFunc) as any)
-        .apply(this, args)
-        .pipe(subscribeOn(scheduler!), observeOn(scheduler!));
+      return scheduled((bindCallbackInternals(isNodeStyle, callbackFunc) as any).apply(this, args), scheduler!);
     };
   }
 
