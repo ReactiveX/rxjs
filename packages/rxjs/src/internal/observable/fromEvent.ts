@@ -1,4 +1,4 @@
-import type { Subscriber} from '../Observable.js';
+import type { Subscriber } from '../Observable.js';
 import { Observable, isArrayLike, isFunction } from '../Observable.js';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
 
@@ -82,7 +82,6 @@ export function fromEvent(
   target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>,
   eventName: string | symbol
 ): Observable<unknown>;
-/** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
 export function fromEvent<T>(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string | symbol): Observable<T>;
 export function fromEvent<R>(
   target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>,
@@ -94,7 +93,6 @@ export function fromEvent(
   target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>,
   eventName: string
 ): Observable<unknown>;
-/** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
 export function fromEvent<T>(target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>, eventName: string): Observable<T>;
 export function fromEvent<R>(
   target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>,
