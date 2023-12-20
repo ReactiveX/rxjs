@@ -39,15 +39,7 @@ jobs:
           yarn nx release version $VERSION
 
       - name: Publish packages to npm
-        run: |
-          if [[ $GITHUB_REF == 'refs/heads/7.x' ]]; then
-            yarn nx release publish --registry https://registry.npmjs.org --tag latest
-          elif [[ $GITHUB_REF == 'refs/heads/master' ]]; then
-            yarn nx release publish --registry https://registry.npmjs.org --tag next
-          else
-            echo "Branch not recognized for publishing, should be either '7.x' or 'master'"
-            exit 1
-          fi
+        run: node ./scripts/publish.js
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
