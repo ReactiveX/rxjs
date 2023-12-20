@@ -61,11 +61,15 @@ const yargs = require('nx/node_modules/yargs');
     await releaseChangelog({
       versionData: projectsVersionData,
       version: workspaceVersion,
-      interactive: 'workspace',
+      interactive: 'all',
       gitRemote: options.gitRemote,
       dryRun: options.dryRun,
       verbose: options.verbose,
     });
+
+    if (!options.dryRun) {
+      console.log('Check GitHub: https://github.com/ReactiveX/rxjs/actions/workflows/publish.yml');
+    }
 
     process.exit(0);
   } catch (err) {
