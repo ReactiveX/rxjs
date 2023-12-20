@@ -32,6 +32,12 @@ const yargs = require('nx/node_modules/yargs');
       })
       .parseAsync();
 
+    if (!options.dryRun) {
+      if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
+        throw new Error(`GH_TOKEN or GITHUB_TOKEN environment variable must be set in order to run a real release`);
+      }
+    }
+
     // Prepare the packages for publishing
     execSync('yarn prepare-packages', {
       stdio: 'inherit',
