@@ -1,4 +1,4 @@
-import type { Observable } from '../Observable.js';
+import type { Observable } from '@rxjs/observable';
 import { asyncScheduler } from '../scheduler/async.js';
 import type { SchedulerLike } from '../types.js';
 import { timer } from './timer.js';

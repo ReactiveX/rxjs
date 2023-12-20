@@ -1,4 +1,4 @@
-import type { Subscription } from '../Observable.js';
+import type { Subscription } from '@rxjs/observable';
 import type { SchedulerAction, SchedulerLike } from '../types.js';
 
 export function executeSchedule(

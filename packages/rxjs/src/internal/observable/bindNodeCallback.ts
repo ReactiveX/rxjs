@@ -1,5 +1,5 @@
 /* @prettier */
-import type { Observable } from '../Observable.js';
+import type { Observable } from '@rxjs/observable';
 import type { SchedulerLike } from '../types.js';
 import { bindCallbackInternals } from './bindCallbackInternals.js';
 

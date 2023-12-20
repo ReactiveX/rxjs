@@ -1,4 +1,4 @@
-import { Observable, from, operate } from '../Observable.js';
+import { Observable, from, operate } from '@rxjs/observable';
 import type { ObservableInputTuple } from '../types.js';
 import { argsOrArgArray } from '../util/argsOrArgArray.js';
 import { EMPTY } from './empty.js';

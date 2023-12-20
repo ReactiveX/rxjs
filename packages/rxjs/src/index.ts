@@ -13,8 +13,8 @@
 /* eslint-enable @typescript-eslint/triple-slash-reference */
 
 /* Core */
-export type { GlobalConfig, SubscriberOverrides } from './internal/Observable.js';
-export { Observable, from, config, Subscription, Subscriber, operate, UnsubscriptionError, isObservable } from './internal/Observable.js';
+export type { GlobalConfig, SubscriberOverrides } from '@rxjs/observable';
+export { Observable, from, config, Subscription, Subscriber, operate, UnsubscriptionError, isObservable } from '@rxjs/observable';
 
 /* Observables */
 export type { GroupedObservable } from './internal/operators/groupBy.js';
@@ -66,7 +66,6 @@ export { generate } from './internal/observable/generate.js';
 export { iif } from './internal/observable/iif.js';
 export { interval } from './internal/observable/interval.js';
 export { merge } from './internal/observable/merge.js';
-export { of } from './internal/observable/of.js';
 export { onErrorResumeNext } from './internal/observable/onErrorResumeNext.js';
 export { partition } from './internal/observable/partition.js';
 export { race } from './internal/observable/race.js';

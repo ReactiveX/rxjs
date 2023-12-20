@@ -1,5 +1,5 @@
-import type { Observable, Subscriber} from '../Observable.js';
-import { operate } from '../Observable.js';
+import type { Observable, Subscriber } from '@rxjs/observable';
+import { operate } from '@rxjs/observable';
 
 /**
  * A basic scan operation. This is used for `scan` and `reduce`.

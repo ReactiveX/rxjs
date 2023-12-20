@@ -1,4 +1,4 @@
-import { Observable, from, operate } from '../Observable.js';
+import { Observable, from, operate } from '@rxjs/observable';
 import type { ObservedValueOf, ObservableInputTuple, ObservableInput } from '../types.js';
 import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject.js';
 import { popResultSelector } from '../util/args.js';

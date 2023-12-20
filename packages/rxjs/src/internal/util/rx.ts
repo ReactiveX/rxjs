@@ -1,5 +1,5 @@
-import type { Observable} from '../Observable.js';
-import { from } from '../Observable.js';
+import type { Observable } from '@rxjs/observable';
+import { from } from '@rxjs/observable';
 import type { ObservableInput, UnaryFunction } from '../types.js';
 
 export function rx<A>(source: ObservableInput<A>): Observable<A>;

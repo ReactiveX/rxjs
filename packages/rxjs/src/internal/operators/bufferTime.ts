@@ -1,4 +1,4 @@
-import { Subscription, Observable, operate } from '../Observable.js';
+import { Subscription, Observable, operate } from '@rxjs/observable';
 import type { OperatorFunction, SchedulerLike } from '../types.js';
 import { arrRemove } from '../util/arrRemove.js';
 import { asyncScheduler } from '../scheduler/async.js';

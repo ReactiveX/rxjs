@@ -1,6 +1,6 @@
 import { EMPTY } from '../observable/empty.js';
 import type { MonoTypeOperatorFunction } from '../types.js';
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 
 /**
  * Waits for the source to complete, then emits the last N values from the source,

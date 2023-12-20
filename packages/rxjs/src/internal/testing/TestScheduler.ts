@@ -1,5 +1,5 @@
-import { Subscription } from '../Observable.js';
-import { Observable, COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Observable.js';
+import { Subscription, Observable } from '@rxjs/observable';
+import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '@rxjs/observable/internal/utils.js';
 import { ColdObservable } from './ColdObservable.js';
 import { HotObservable } from './HotObservable.js';
 import type { TestMessage } from './TestMessage.js';

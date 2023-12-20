@@ -1,4 +1,4 @@
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 import type { Falsy, OperatorFunction } from '../types.js';
 
 export function every<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;

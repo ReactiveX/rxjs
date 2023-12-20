@@ -1,6 +1,6 @@
 import { not } from '../util/not.js';
 import { filter } from './filter.js';
-import type { Observable } from '../Observable.js';
+import type { Observable } from '@rxjs/observable';
 import type { UnaryFunction } from '../types.js';
 
 /**

@@ -1,5 +1,5 @@
 import type { Action } from './scheduler/Action.js';
-import type { Subscription } from './Observable.js';
+import type { Subscription } from '@rxjs/observable';
 import type { SchedulerLike, SchedulerAction } from './types.js';
 import { dateTimestampProvider } from './scheduler/dateTimestampProvider.js';
 

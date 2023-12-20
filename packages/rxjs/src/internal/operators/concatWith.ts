@@ -1,5 +1,5 @@
 import type { ObservableInputTuple, OperatorFunction } from '../types.js';
-import { Observable, from } from '../Observable.js';
+import { Observable, from } from '@rxjs/observable';
 import { concatAll } from '../operators/concatAll.js';
 
 /**

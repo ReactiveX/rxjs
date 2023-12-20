@@ -1,4 +1,4 @@
-import type { Observable } from '../Observable.js';
+import type { Observable } from '@rxjs/observable';
 import { defer } from './defer.js';
 import type { ObservableInput } from '../types.js';
 

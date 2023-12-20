@@ -1,5 +1,6 @@
-import type { OperatorFunction, ObservableNotification } from '../types.js';
-import { Observable, operate, COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '../Observable.js';
+import type { OperatorFunction, ObservableNotification } from '@rxjs/observable';
+import { Observable, operate } from '@rxjs/observable';
+import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '@rxjs/observable/internal/utils.js';
 
 /**
  * Represents all of the notifications from the source Observable as `next`

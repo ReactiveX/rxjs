@@ -1,6 +1,6 @@
 import { Subject } from './Subject.js';
 import type { TimestampProvider } from './types.js';
-import type { Subscriber, Subscription } from './Observable.js';
+import type { Subscriber, Subscription } from '@rxjs/observable';
 import { dateTimestampProvider } from './scheduler/dateTimestampProvider.js';
 
 /**

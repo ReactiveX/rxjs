@@ -1,5 +1,5 @@
-import type { Observable} from './Observable.js';
-import { Subscriber } from './Observable.js';
+import type { Observable } from '@rxjs/observable';
+import { Subscriber } from '@rxjs/observable';
 import { EmptyError } from './util/EmptyError.js';
 
 export interface FirstValueFromConfig<T> {

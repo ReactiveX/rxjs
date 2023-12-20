@@ -1,4 +1,4 @@
-import { Observable } from '../../Observable.js';
+import { Observable } from '@rxjs/observable';
 import type { TimestampProvider } from '../../types.js';
 import { performanceTimestampProvider } from '../../scheduler/performanceTimestampProvider.js';
 import { animationFrameProvider } from '../../scheduler/animationFrameProvider.js';

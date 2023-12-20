@@ -1,5 +1,5 @@
 import type { MonoTypeOperatorFunction } from '../types.js';
-import { Observable } from '../Observable.js';
+import { Observable } from '@rxjs/observable';
 
 /**
  * Returns an Observable that mirrors the source Observable, but will call a specified function when

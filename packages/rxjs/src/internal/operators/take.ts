@@ -1,6 +1,6 @@
 import type { MonoTypeOperatorFunction } from '../types.js';
 import { EMPTY } from '../observable/empty.js';
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 
 /**
  * Emits only the first `count` values emitted by the source Observable.

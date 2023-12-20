@@ -1,5 +1,6 @@
 /** prettier */
-import { Observable, operate, subscribeToArray } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
+import { subscribeToArray } from '@rxjs/observable/internal/Observable.js';
 import type { OperatorFunction, ValueFromArray } from '../types.js';
 
 /**

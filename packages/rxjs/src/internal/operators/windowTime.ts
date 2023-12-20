@@ -1,6 +1,6 @@
 import { Subject } from '../Subject.js';
 import { asyncScheduler } from '../scheduler/async.js';
-import { Observable, operate, Subscription } from '../Observable.js';
+import { Observable, operate, Subscription } from '@rxjs/observable';
 import type { Observer, OperatorFunction, SchedulerLike } from '../types.js';
 import { arrRemove } from '../util/arrRemove.js';
 import { popScheduler } from '../util/args.js';
