@@ -3,6 +3,21 @@
 const { prerelease, valid } = require('semver');
 const { releasePublish } = require('nx/src/command-line/release');
 
+/**
+ * Maps git branch names to npm dist tags. If master is an alpha/beta release,
+ * then it should be mapped to 'next'. Similarly there should be one record for
+ * the 'latest' tag.
+ */
+const DIST_TAGS = {
+  'refs/heads/7.x': 'latest',
+  'refs/heads/master': 'next',
+};
+
+if (!Object.values(DIST_TAGS).includes('latest')) {
+  console.error(`Invalid DIST_TAGS:\n${JSON.stringify(DIST_TAGS, null, 2)}`);
+  throw new Error("DIST_TAGS must contain a mapping for 'latest'");
+}
+
 (async () => {
   try {
     let npmDistTag;
@@ -11,10 +26,10 @@ const { releasePublish } = require('nx/src/command-line/release');
     if (process.env.GITHUB_EVENT_NAME === 'release') {
       const tag = process.env.GITHUB_REF;
       if (!tag) {
-        throw new Error('Error: No tag found on GITHUB_REF');
+        throw new Error('No tag found in environment variable GITHUB_REF');
       }
       if (!valid(tag)) {
-        throw new Error(`Error: Git tag ${tag} is not a valid semver version`);
+        throw new Error(`Git tag '${tag}' pulled from environment variable GITHUB_REF is not a valid semver version`);
       }
       if (isPrerelease(tag)) {
         npmDistTag = 'next';
@@ -27,19 +42,20 @@ const { releasePublish } = require('nx/src/command-line/release');
     if (process.env.GITHUB_EVENT_NAME === 'workflow_dispatch') {
       const branch = process.env.GITHUB_REF;
       if (!branch) {
-        throw new Error('Error: No branch found on GITHUB_REF');
+        throw new Error('No branch found in environment variable GITHUB_REF');
       }
-      if (branch === 'refs/heads/7.x') {
-        npmDistTag = 'latest';
-      } else if (branch === 'refs/heads/master') {
-        npmDistTag = 'next';
-      } else {
-        throw new Error(`Error: Branch '${branch}' not recognized for manual publishing, should be either '7.x' or 'master'`);
+
+      npmDistTag = DIST_TAGS[branch];
+
+      if (!npmDistTag) {
+        throw new Error(
+          `Branch '${branch}' found in environment variable GITHUB_REF is not recognized for manual publishing, should be either '7.x' or 'master'`
+        );
       }
     }
 
     if (!npmDistTag) {
-      throw new Error(`Error: No npm dist tag could be derived from the current environment`);
+      throw new Error('No npm dist tag could be derived from the current environment');
     }
 
     await releasePublish({
