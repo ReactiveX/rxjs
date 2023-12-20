@@ -42,7 +42,7 @@ The act of cleaning up resources used by a producer. This is guaranteed to happe
 
 ### Unsubscription
 
-The act of a [consumer](#consumer) telling a [producer](#producer) is is no longer interested in receiving values. Causes [Finalization](#finalization)
+The act of a [consumer](#consumer) telling a [producer](#producer) is no longer interested in receiving values. Causes [Finalization](#finalization)
 
 ### Observation
 
