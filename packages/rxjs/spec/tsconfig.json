@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../dist/spec",
+    "module": "CommonJS"
+  },
+  "references": [
+    {
+      "path": "../src/tsconfig.types.spec.json"
+    }
+  ]
+}

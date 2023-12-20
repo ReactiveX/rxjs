@@ -1,0 +1,40 @@
+name: Install Dependencies
+description: 'Prepares the repo by installing dependencies'
+inputs:
+  node-version:
+    description: 'The node version to setup'
+    required: true
+  registry-url:
+    description: 'Define registry-url'
+    required: false
+    default: 'https://registry.npmjs.org'
+
+# outputs: - no outputs
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Use Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        registry-url: ${{ inputs.registry-url }}
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - uses: actions/cache@v3
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+      shell: bash
+      env:
+        YARN_CACHE_FOLDER: ${{ steps.yarn-cache-dir-path.outputs.dir }}

@@ -11,28 +11,28 @@ node_modules/
 typings/
 
 # Generated
-/dist/
-/dist-compat/
-tmp/
-coverage/
-img/
-spec-js/
-spec-build/
-.out/
-.tmp/
+dist/
 
 # Import location artifacts
-/ajax/
-/fetch/
-/operators/
-/testing/
-/webSocket/
+packages/rxjs/ajax/
+packages/rxjs/fetch/
+packages/rxjs/operators/
+packages/rxjs/testing/
+packages/rxjs/webSocket/
+
+# Copied Package Files
+packages/**/LICENSE.txt
+packages/**/CODE_OF_CONDUCT.md
 
 # Misc
 npm-debug.log
 .DS_STORE
 *.tgz
 .eslintcache
+package-lock.json
 
 integration/import/**/rx.json
 integration/import/**/operators.json
+
+
+.nx/cache
