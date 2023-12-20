@@ -34,7 +34,7 @@ const { releasePublish } = require('nx/src/command-line/release');
       } else if (branch === 'refs/heads/master') {
         npmDistTag = 'next';
       } else {
-        throw new Error(`Error: Branch not recognized for manual publishing, should be either '7.x' or 'master'`);
+        throw new Error(`Error: Branch '${branch}' not recognized for manual publishing, should be either '7.x' or 'master'`);
       }
     }
 
