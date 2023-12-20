@@ -401,7 +401,7 @@ export class Observable<T> implements Subscribable<T> {
     op9: OperatorFunction<H, I>,
     ...operations: OperatorFunction<any, any>[]
   ): Observable<unknown>;
-  pipe<T>(...operations: readonly OperatorFunction<T, T>[]): Observable<T>;
+  pipe(...operations: readonly OperatorFunction<T, T>[]): Observable<T>;
   /* tslint:enable:max-line-length */
 
   /**
