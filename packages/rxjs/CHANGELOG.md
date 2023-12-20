@@ -1,39 +1,3 @@
-## 8.0.0-alpha.13
-
-### 🚀 Features
-
-- support web standard modules
-
-- ⚠️ remove `Symbol.observable` export
-
-- ⚠️ **Subject.create:** Removed the deprecated `Subject.create` method.
-
-- ⚠️ **WebSocketSubject:** no longer extends `Subject`.
-
-- **webSocket:** now allows input and output typing to differ
-
-### 🩹 Fixes
-
-- **config:** onStoppedNotification and onUnhandledError will now always async dispatch
-
-- **TestScheduler:** explicit unsubscribe works properly with toEqual
-
-- **fromEvent:** `fromEvent` now handles symbols as event names
-
-- **fromEvent:** passing a generic parameter is no longer deprecated
-
-#### ⚠️ Breaking Changes
-
-- `observable` (the `Symbol.observable` symbol instance) is no longer exported. Use a polyfill like `symbol-observable`, or use `Symbol.observable ?? '@@observable'` as a workaround."
-- **Subject.create:** Removed the deprecated `Subject.create` method. If you need to create an object that is "half Observable, half Observer", you'll need to either bolt `next`, `error`, and `complete` handlers onto an `Observable` and property type the return... or you'll need to create your own class that is backed by an `Observable`. In any case, if the `Observer` and the `Observable` are so unrelated that you have to bolt them together, you're probably better off with those two objects separately. This is why `Subject.create` has been deprecated for so long.
-- **WebSocketSubject:** `WebSocketSubject` is no longer `instanceof Subject`. Check for `instanceof WebSocketSubject` instead.
-
-### ❤️ Thank You
-
-- Ben Lesh
-- Dmitry Demensky
-- tmair
-
 # [8.0.0-alpha.12](https://github.com/reactivex/rxjs/compare/8.0.0-alpha.11...8.0.0-alpha.12) (2023-08-19)
 
 ### Bug Fixes
