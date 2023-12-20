@@ -28,25 +28,30 @@ const yargs = require('nx/node_modules/yargs');
       .option('gitRemote', {
         description: 'The name of the git remote to push the release to, defaults to origin',
         type: 'string',
-        default: 'origin',
       })
       .parseAsync();
-
     if (!options.dryRun) {
       if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
         throw new Error(`GH_TOKEN or GITHUB_TOKEN environment variable must be set in order to run a real release`);
       }
-      if (options.gitRemote !== 'upstream') {
-        throw new Error(
-          `Expected --gitRemote to be set to "upstream" when running a real release. Add --gitRemote=upstream to the release command.`
-        );
-      }
     }
+
+    if (!options.gitRemote) {
+      options.gitRemote = getRemoteFor('git@github.com:ReactiveX/rxjs.git');
+    }
+
+    console.log();
+    console.info(`********* Release Options **********`);
+    console.info(`version   : ${options.version ?? 'use conventional commits'}`);
+    console.info(`dryRun    : ${options.dryRun} ${options.dryRun ? '😅' : '🚨🚨🚨'}`);
+    console.info(`verbose   : ${options.verbose}`);
+    console.info(`gitRemote : ${options.gitRemote}`);
+    console.log();
 
     // Prepare the packages for publishing
     execSync('yarn prepare-packages', {
       stdio: 'inherit',
-      maxBuffer: 1024 * 1000000,
+      maxBuffer: 1024 * 1024 * 1024, // 1GB
     });
 
     const { workspaceVersion, projectsVersionData } = await releaseVersion({
@@ -77,3 +82,21 @@ const yargs = require('nx/node_modules/yargs');
     process.exit(1);
   }
 })();
+
+/**
+ * Gets the name of the git remote for the given URL, if
+ * the remote is not found an error is thrown.
+ * @param {string} url
+ * @returns The name of the git remote for the given URL
+ */
+function getRemoteFor(url) {
+  const stdout = execSync('git remote -v').toString();
+  const lines = stdout.split('\n');
+  for (const line of lines) {
+    const parts = line.split(/\s+/);
+    if (parts.length > 1 && parts[1] === url) {
+      return parts[0];
+    }
+  }
+  throw new Error(`Could not find remote for "${url}"`);
+}
