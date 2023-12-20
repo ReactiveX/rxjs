@@ -36,6 +36,11 @@ const yargs = require('nx/node_modules/yargs');
       if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
         throw new Error(`GH_TOKEN or GITHUB_TOKEN environment variable must be set in order to run a real release`);
       }
+      if (options.gitRemote !== 'upstream') {
+        throw new Error(
+          `Expected --gitRemote to be set to "upstream" when running a real release. Add --gitRemote=upstream to the release command.`
+        );
+      }
     }
 
     // Prepare the packages for publishing
