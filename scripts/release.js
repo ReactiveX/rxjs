@@ -25,6 +25,11 @@ const yargs = require('nx/node_modules/yargs');
         type: 'boolean',
         default: false,
       })
+      .option('gitRemote', {
+        description: 'The name of the git remote to push the release to, defaults to origin',
+        type: 'string',
+        default: 'origin',
+      })
       .parseAsync();
 
     // Prepare the packages for publishing
@@ -46,6 +51,7 @@ const yargs = require('nx/node_modules/yargs');
       versionData: projectsVersionData,
       version: workspaceVersion,
       interactive: 'workspace',
+      gitRemote: options.gitRemote,
       dryRun: options.dryRun,
       verbose: options.verbose,
     });
