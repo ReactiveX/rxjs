@@ -10,4 +10,4 @@ If you have discovered a security vulnerability in this project, please report i
 
 Please disclose it at [security advisory](https://github.com/ReactiveX/rxjs/security/advisories/new).
 
-Although we will be working to solve any security issue as fast as possible, it is also important to notice that, in accordance with Apache 2.0 terms, no rxjs contributor can be liable for damages, including the ones caused by a security issue.
+Although we will be working to solve any security issue as fast as possible, it is also important to notice that, in accordance with Apache 2.0 terms, no RxJS contributor can be liable for damages, including the ones caused by a security issue.
