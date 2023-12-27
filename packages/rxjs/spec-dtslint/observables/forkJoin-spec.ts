@@ -1,4 +1,4 @@
-import { a$, b$, c$ } from 'helpers';
+import { a$, b$, c$ } from '../helpers';
 import { of, forkJoin } from 'rxjs';
 
 describe('deprecated rest args', () => {

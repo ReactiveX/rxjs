@@ -1,5 +1,5 @@
 import { firstValueFrom } from 'rxjs';
-import { a$ } from 'helpers';
+import { a$ } from './helpers';
 
 describe('firstValueFrom', () => {
   it('should infer the element type', () => {
