@@ -16,43 +16,36 @@
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "node": "./dist/cjs/index.js",
       "require": "./dist/cjs/index.js",
       "default": "./dist/esm/index.js"
     },
     "./ajax": {
       "types": "./dist/types/ajax/index.d.ts",
-      "node": "./dist/cjs/ajax/index.js",
       "require": "./dist/cjs/ajax/index.js",
       "default": "./dist/esm/ajax/index.js"
     },
     "./fetch": {
       "types": "./dist/types/fetch/index.d.ts",
-      "node": "./dist/cjs/fetch/index.js",
       "require": "./dist/cjs/fetch/index.js",
       "default": "./dist/esm/fetch/index.js"
     },
     "./operators": {
       "types": "./dist/types/operators/index.d.ts",
-      "node": "./dist/cjs/operators/index.js",
       "require": "./dist/cjs/operators/index.js",
       "default": "./dist/esm/operators/index.js"
     },
     "./testing": {
       "types": "./dist/types/testing/index.d.ts",
-      "node": "./dist/cjs/testing/index.js",
       "require": "./dist/cjs/testing/index.js",
       "default": "./dist/esm/testing/index.js"
     },
     "./webSocket": {
       "types": "./dist/types/webSocket/index.d.ts",
-      "node": "./dist/cjs/webSocket/index.js",
       "require": "./dist/cjs/webSocket/index.js",
       "default": "./dist/esm/webSocket/index.js"
     },
     "./internal/*": {
       "types": "./dist/types/internal/*.d.ts",
-      "node": "./dist/cjs/internal/*.js",
       "require": "./dist/cjs/internal/*.js",
       "default": "./dist/esm/internal/*.js"
     },
