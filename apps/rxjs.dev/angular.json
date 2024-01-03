@@ -1,12 +1,17 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "$schema": "../../node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "cli": {
+    "packageManager": "yarn",
+    "analytics": false
+  },
   "newProjectRoot": "projects",
   "projects": {
     "site": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
+      "prefix": "aio",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -14,7 +19,7 @@
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
             "webWorkerTsConfig": "tsconfig.worker.json",
             "namedChunks": true,
             "polyfills": "src/polyfills.ts",
@@ -36,15 +41,21 @@
                 "output": "/assets/js"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
             "sourceMap": true,
-            "optimization": false
+            "optimization": {
+              "fonts": true,
+              "scripts": true,
+              "styles": {
+                "inlineCritical": false,
+                "minify": true
+              }
+            },
+            "outputHashing": "all"
           },
           "configurations": {
             "fast": {
@@ -175,11 +186,9 @@
             "main": "src/test.ts",
             "karmaConfig": "src/karma.conf.js",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
+            "tsConfig": "tsconfig.spec.json",
             "scripts": [],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "assets": [
               "src/img",
               "src/assets",
@@ -199,14 +208,13 @@
               }
             ]
           }
-        }
-      }
-    },
-    "site-e2e": {
-      "root": "e2e",
-      "sourceRoot": "e2e",
-      "projectType": "application",
-      "architect": {
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/!(generated)/**/*.ts", "src/!(generated)/**/*.html", "tests/**/*.ts"]
+          }
+        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
@@ -219,13 +227,12 @@
   },
   "defaultProject": "site",
   "schematics": {
+    "@schematics/angular:application": {
+      "strict": true
+    },
     "@schematics/angular:component": {
       "inlineStyle": true,
-      "prefix": "aio",
       "style": "scss"
-    },
-    "@schematics/angular:directive": {
-      "prefix": "aio"
     }
   }
 }

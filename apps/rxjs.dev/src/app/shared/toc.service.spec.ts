@@ -264,7 +264,7 @@ describe('TocService', () => {
     it('should have "SafeHtml" content which is heading\'s innerHTML ', () => {
       const heading = headings[3];
       const content = lastTocList[3].content;
-      expect((<TestSafeHtml>content).changingThisBreaksApplicationSecurity)
+      expect((content as TestSafeHtml).changingThisBreaksApplicationSecurity)
         .toEqual(heading.innerHTML);
     });
 
@@ -321,7 +321,7 @@ describe('TocService', () => {
     });
 
     it('should have removed anchor link from tocItem html content', () => {
-      expect((<TestSafeHtml>tocItem.content)
+      expect((tocItem.content as TestSafeHtml)
         .changingThisBreaksApplicationSecurity)
         .toEqual('Setup to develop <i>locally</i>.');
     });
@@ -341,18 +341,16 @@ interface TestSafeHtml extends SafeHtml {
 
 class TestDomSanitizer {
   bypassSecurityTrustHtml = jasmine.createSpy('bypassSecurityTrustHtml')
-    .and.callFake((html: string) => {
-      return {
+    .and.callFake((html: string) => ({
         changingThisBreaksApplicationSecurity: html,
         getTypeName: () => 'HTML',
-      } as TestSafeHtml;
-    });
+      } as TestSafeHtml));
 }
 
 class MockScrollSpyService {
   private $$lastInfo: {
-    active: Subject<ScrollItem | null>,
-    unspy: jasmine.Spy,
+    active: Subject<ScrollItem | null>;
+    unspy: jasmine.Spy;
   } | undefined;
 
   get $lastInfo() {

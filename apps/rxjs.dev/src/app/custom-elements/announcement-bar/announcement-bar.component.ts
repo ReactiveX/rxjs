@@ -46,6 +46,7 @@ export interface Announcement {
   template: `
   <div class="homepage-container" *ngIf="announcement">
     <div class="announcement-bar">
+      <!-- eslint-disable-next-line @angular-eslint/template/accessibility-alt-text -->
       <img [src]="announcement.imageUrl">
       <p [innerHTML]="announcement.message"></p>
       <a class="button" [href]="announcement.linkUrl">Learn More</a>

@@ -13,5 +13,5 @@ import { Component, Input } from '@angular/core';
   </mat-expansion-panel> `,
 })
 export class ExpandableSectionComponent {
-  @Input() title;
+  @Input() title: string;
 }

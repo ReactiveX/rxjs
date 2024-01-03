@@ -39,8 +39,8 @@ interface EncodedPage {
 
 addEventListener('message', handleMessage);
 
-const customLunr = function (config: lunr.ConfigFunction) {
-  var builder = new lunr.Builder();
+const customLunr = function(config: lunr.ConfigFunction) {
+  const builder = new lunr.Builder();
   builder.pipeline.add(lunr.trimmer, lunr.stemmer);
   builder.searchPipeline.add(lunr.stemmer);
   config.call(builder, builder);
@@ -53,7 +53,7 @@ function createIndex(loadIndexFn: IndexLoader): lunr.Index {
   // The lunr typings are missing QueryLexer so we have to add them here manually.
   const queryLexer = (lunr as any as { QueryLexer: { termSeparator: RegExp } }).QueryLexer;
   queryLexer.termSeparator = lunr.tokenizer.separator = /\s+/;
-  return customLunr(function () {
+  return customLunr(function() {
     this.ref('path');
     this.field('topics', { boost: 15 });
     this.field('title', { boost: 10 });
@@ -88,7 +88,7 @@ function handleMessage(message: { data: WebWorkerMessage }): void {
 function makeRequest(url: string, callback: (response: any) => void): void {
   // The JSON file that is loaded should be an array of PageInfo:
   const searchDataRequest = new XMLHttpRequest();
-  searchDataRequest.onload = function () {
+  searchDataRequest.onload = function() {
     callback(JSON.parse(this.responseText));
   };
   searchDataRequest.open('GET', url);
@@ -128,6 +128,7 @@ function queryIndex(query: string): PageInfo[] {
       let results = index.query((queryBuilder) => {
         queryBuilder.term(lunr.tokenizer(query), {
           fields: ['title'],
+          // eslint-disable-next-line no-bitwise
           wildcard: lunr.Query.wildcard.TRAILING | lunr.Query.wildcard.LEADING,
           usePipeline: true,
           presence: lunr.Query.presence.REQUIRED,

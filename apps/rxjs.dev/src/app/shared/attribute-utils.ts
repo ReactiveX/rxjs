@@ -8,6 +8,7 @@ export interface AttrMap {
 /**
  * Get attribute map from element or ElementRef `attributes`.
  * Attribute map keys are forced lowercase for case-insensitive lookup.
+ *
  * @param el The source of the attributes.
  */
 export function getAttrs(el:  HTMLElement | ElementRef): AttrMap {
@@ -21,6 +22,7 @@ export function getAttrs(el:  HTMLElement | ElementRef): AttrMap {
 
 /**
  * Return the attribute that matches `attr`.
+ *
  * @param attr Name of the attribute or a string of candidate attribute names.
  */
 export function getAttrValue(attrs: AttrMap, attr: string | string[]): string | undefined {
@@ -33,6 +35,7 @@ export function getAttrValue(attrs: AttrMap, attr: string | string[]): string | 
 
 /**
  * Return the boolean state of an attribute value (if supplied)
+ *
  * @param attrValue The string value of some attribute (or undefined if attribute not present).
  * @param def Default boolean value when attribute is undefined.
  */
@@ -42,6 +45,7 @@ export function boolFromValue(attrValue: string | undefined, def: boolean = fals
 
 /**
  * Return the boolean state of attribute from an element
+ *
  * @param el The source of the attributes.
  * @param atty Name of the attribute or a string of candidate attribute names.
  * @param def Default boolean value when attribute is undefined.

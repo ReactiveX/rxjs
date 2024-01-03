@@ -20,7 +20,7 @@ describe('DocViewerComponent', () => {
   let parentComponent: TestParentComponent;
   let docViewerEl: HTMLElement;
   let docViewer: TestDocViewerComponent;
-  let metaServiceMock: jasmine.SpyObj<Meta>
+  let metaServiceMock: jasmine.SpyObj<Meta>;
 
   const safeFlushAsapScheduler = () => asapScheduler.actions.length && asapScheduler.flush();
 
@@ -48,7 +48,7 @@ describe('DocViewerComponent', () => {
     let renderSpy: jasmine.Spy;
 
     const setCurrentDoc = (newDoc: TestParentComponent['currentDoc']) => {
-      
+
       parentComponent.currentDoc =  newDoc; // set default with id if parameter is not defined
       parentFixture.detectChanges();  // Run change detection to propagate the new doc to `DocViewer`.
       safeFlushAsapScheduler();  // Flush `asapScheduler` to trigger `DocViewer#render()`.

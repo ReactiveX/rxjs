@@ -35,7 +35,8 @@ export class SelectComponent implements OnInit {
   options: Option[];
 
   @Output()
-  change = new EventEmitter<{ option: Option; index: number }>();
+  // eslint-disable-next-line @angular-eslint/no-output-native
+  change = new EventEmitter<{ option: Option, index: number }>();
 
   @Input()
   showSymbol = false;

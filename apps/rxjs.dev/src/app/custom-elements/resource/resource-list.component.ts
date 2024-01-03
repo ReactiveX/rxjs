@@ -11,12 +11,14 @@ import { ResourceService } from './resource.service';
       <div class="l-flex--column">
         <div class="showcase" *ngFor="let category of categories">
           <header class="c-resource-header">
+            <!-- eslint-disable-next-line @angular-eslint/template/accessibility-elements-content -->
             <a class="h-anchor-offset" id="{{ category.id }}"></a>
             <h2>{{ category.title }}</h2>
           </header>
 
           <div class="shadow-1">
             <div *ngFor="let subCategory of category.subCategories">
+            <!-- eslint-disable-next-line @angular-eslint/template/accessibility-elements-content -->
               <a class="h-anchor-offset" id="{{ subCategory.id }}"></a>
               <h3 class="subcategory-title">{{ subCategory.title }}</h3>
 

@@ -7,7 +7,9 @@ const LOCAL_STORAGE_NAMESPACE = 'aio-notification/';
 
 @Component({
   selector: 'aio-notification',
-  template: `<span class="content" (click)="contentClick()">
+  template: `
+  <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events -->
+  <span class="content" (click)="contentClick()">
       <ng-content></ng-content>
     </span>
 

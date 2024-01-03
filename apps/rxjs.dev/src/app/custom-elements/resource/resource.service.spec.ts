@@ -86,64 +86,63 @@ describe('ResourceService', () => {
 });
 
 function getTestResources() {
-  // tslint:disable:quotemark
   return {
-    "Cat 3": {
-      "order": 3,
-      "subCategories": {
-        "Cat3 SubCat1": {
-          "order": 2,
-          "resources": {
-            "Cat3 SubCat1 Res1": {
-              "desc": "Meetup in Barcelona, Spain. ",
-              "rev": true,
-              "title": "Angular Beers",
-              "url": "http://www.meetup.com/AngularJS-Beers/"
+    'Cat 3': {
+      order: 3,
+      subCategories: {
+        'Cat3 SubCat1': {
+          order: 2,
+          resources: {
+            'Cat3 SubCat1 Res1': {
+              desc: 'Meetup in Barcelona, Spain. ',
+              rev: true,
+              title: 'Angular Beers',
+              url: 'http://www.meetup.com/AngularJS-Beers/'
             },
-            "Cat3 SubCat1 Res2": {
-              "desc": "Angular Camps in Barcelona, Spain.",
-              "rev": true,
-              "title": "Angular Camp",
-              "url": "http://angularcamp.org/"
+            'Cat3 SubCat1 Res2': {
+              desc: 'Angular Camps in Barcelona, Spain.',
+              rev: true,
+              title: 'Angular Camp',
+              url: 'http://angularcamp.org/'
             }
           }
         },
-        "Cat3 SubCat2": {
-          "order": 1,
-          "resources": {
-            "Cat3 SubCat2 Res1": {
-              "desc": "A community index of components and libraries",
-              "rev": true,
-              "title": "Catalog of Angular Components & Libraries",
-              "url": "https://a/b/c"
+        'Cat3 SubCat2': {
+          order: 1,
+          resources: {
+            'Cat3 SubCat2 Res1': {
+              desc: 'A community index of components and libraries',
+              rev: true,
+              title: 'Catalog of Angular Components & Libraries',
+              url: 'https://a/b/c'
             }
           }
         },
       }
     },
-    "Cat 1": {
-      "order": 1,
-      "subCategories": {
-        "Cat1 SubCat1": {
-          "order": 1,
-          "resources": {
-            "S S S": {
-              "desc": "SSS",
-              "rev": true,
-              "title": "Sssss",
-              "url": "http://s/s/s"
+    'Cat 1': {
+      order: 1,
+      subCategories: {
+        'Cat1 SubCat1': {
+          order: 1,
+          resources: {
+            'S S S': {
+              desc: 'SSS',
+              rev: true,
+              title: 'Sssss',
+              url: 'http://s/s/s'
             },
-            "A A A": {
-             "desc": "AAA",
-              "rev": true,
-              "title": "Aaaa",
-              "url": "http://a/a/a"
+            'A A A': {
+             desc: 'AAA',
+              rev: true,
+              title: 'Aaaa',
+              url: 'http://a/a/a'
             },
-            "Z Z Z": {
-             "desc": "ZZZ",
-              "rev": true,
-              "title": "Zzzzz",
-              "url": "http://z/z/z"
+            'Z Z Z': {
+             desc: 'ZZZ',
+              rev: true,
+              title: 'Zzzzz',
+              url: 'http://z/z/z'
             }
           }
         },

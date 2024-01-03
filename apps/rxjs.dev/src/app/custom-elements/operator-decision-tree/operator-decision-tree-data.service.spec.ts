@@ -21,11 +21,11 @@ describe('OperatorDecisionTreeDataService', () => {
     it('should get the decision-tree-data.json', () => {
       service.getDecisionTree$().subscribe(
         data => expect(data).toBe(treeStub)
-      )
-      const req = httpTestingController.expectOne('/generated/docs/app/decision-tree-data.json')
-      expect(req.request.method).toEqual('GET')
+      );
+      const req = httpTestingController.expectOne('/generated/docs/app/decision-tree-data.json');
+      expect(req.request.method).toEqual('GET');
 
-      req.flush(treeStub)
+      req.flush(treeStub);
       httpTestingController.verify();
     });
   });

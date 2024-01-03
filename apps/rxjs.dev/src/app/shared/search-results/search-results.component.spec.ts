@@ -23,11 +23,7 @@ describe('SearchResultsComponent', () => {
       { path: 'api/c', title: 'API C' },
     ]
       // fill it out to exceed 10 guide pages
-      .concat(
-        'nmlkjihgfe'.split('').map((l) => {
-          return { path: 'guide/' + l, title: 'Guide ' + l };
-        })
-      )
+      .concat('nmlkjihgfe'.split('').map((l) => ({ path: 'guide/' + l, title: 'Guide ' + l })))
       // add these empty fields to satisfy interface
       .map((r) => ({ ...{ keywords: '', titleWords: '', type: '' }, ...r }));
 
@@ -35,7 +31,7 @@ describe('SearchResultsComponent', () => {
   }
 
   function compareTitle(l: SearchResult, r: SearchResult) {
-    return l.title!.toUpperCase() > r.title!.toUpperCase() ? 1 : -1;
+    return l.title?.toUpperCase() > r.title?.toUpperCase() ? 1 : -1;
   }
 
   function setSearchResults(query: string, results: SearchResult[]) {

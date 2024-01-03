@@ -1,36 +1,49 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "importHelpers": true,
-    "strict": true,
-    "noImplicitAny": false,
-    "strictPropertyInitialization": false,
-    "skipLibCheck": true,
-    "outDir": "./dist/out-tsc",
     "baseUrl": "src",
+    "outDir": "./out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    // NOTE: Intentionally deviate from default Angular CLI settings
+    //       (due to many violations and uglier syntax).
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "noUnusedLocals": true,
-    "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2017",
+    "module": "es2020",
     "lib": [
-      "es2016",
+      "es2020",
       "dom"
     ],
-    "module": "esnext"
-  },
-  "angularCompilerOptions": {
-    "strictTemplates": true,
+    "skipLibCheck": true,
+    // disabled because this is on by default in tsc 2.7 breaking our codebase - we need to refactor
+    "strictPropertyInitialization": false
   },
   "exclude": [
-    "content",
-    "tools",
     "aio-builds-setup",
+    "content",
+    "dist",
     "node_modules",
-    "scripts"
-  ]
+    "out-tsc",
+    "scripts",
+    "tools"
+  ],
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "disableTypeScriptVersionCheck": true,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
 }

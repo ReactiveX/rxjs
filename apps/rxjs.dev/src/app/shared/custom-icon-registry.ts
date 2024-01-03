@@ -36,13 +36,13 @@ interface SvgIconMap {
 export class CustomIconRegistry extends MatIconRegistry {
   private preloadedSvgElements: SvgIconMap = {};
 
-  constructor(http: HttpClient, sanitizer: DomSanitizer, @Optional() @Inject(DOCUMENT) document,
+  constructor(http: HttpClient, sanitizer: DomSanitizer, @Optional() @Inject(DOCUMENT) document: Document,
               @Inject(SVG_ICONS) svgIcons: SvgIconInfo[], errorHandler: ErrorHandler) {
     super(http, sanitizer, document, errorHandler);
     this.loadSvgElements(svgIcons);
   }
 
-  getNamedSvgIcon(iconName: string, namespace?: string) {
+  override getNamedSvgIcon(iconName: string, namespace?: string) {
     if (this.preloadedSvgElements[iconName]) {
       return of(this.preloadedSvgElements[iconName].cloneNode(true) as SVGElement);
     }

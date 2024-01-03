@@ -50,6 +50,7 @@ const ZIP_BASE = CONTENT_URL_PREFIX + 'zips/';
  *   // ~/resources/live-examples/toh-pt1/minimal.stackblitz.json
  */
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'live-example',
   template: `
     <!-- Content projection is used to get the content HTML provided to the component. -->
@@ -151,7 +152,7 @@ export class LiveExampleComponent implements AfterContentInit {
  */
 @Component({
   selector: 'aio-embedded-stackblitz',
-  template: `<iframe #iframe frameborder="0" width="100%" height="100%"></iframe>`,
+  template: '<iframe #iframe frameborder="0" width="100%" height="100%"></iframe>',
   styles: ['iframe { min-height: 400px; }'],
 })
 export class EmbeddedStackblitzComponent implements AfterViewInit {

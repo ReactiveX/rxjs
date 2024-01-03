@@ -63,7 +63,7 @@ describe('NavigationService', () => {
     const sideNav: NavigationNode[] = [{ title: 'a', tooltip: 'a tip' }, { title: 'b' }, { title: 'c!' }, { url: 'foo', title: '' }];
 
     beforeEach(() => {
-      navService.navigationViews.subscribe((views) => (view = views['sideNav']));
+      navService.navigationViews.subscribe((views) => (view = views.sideNav));
       httpMock.expectOne({}).flush({ sideNav });
     });
 
@@ -129,7 +129,7 @@ describe('NavigationService', () => {
           view: 'SideNav',
           nodes: [sideNavNodes[0].children![0], sideNavNodes[0]],
         },
-      });
+      } as any);
 
       locationService.go('d');
       expect(currentNodes).toEqual({
@@ -138,7 +138,7 @@ describe('NavigationService', () => {
           view: 'SideNav',
           nodes: [sideNavNodes[0].children![0].children![1], sideNavNodes[0].children![0], sideNavNodes[0]],
         },
-      });
+      } as any);
 
       locationService.go('f');
       expect(currentNodes).toEqual({
@@ -222,7 +222,7 @@ describe('NavigationService', () => {
 
       expectedDocVersions = docVersions.map((v) => ({ ...v, ...{ tooltip: v.title + '.' } }));
 
-      navService.navigationViews.subscribe((views) => (actualDocVersions = views['docVersions']));
+      navService.navigationViews.subscribe((views) => (actualDocVersions = views.docVersions));
     });
 
     it('should extract the docVersions', () => {

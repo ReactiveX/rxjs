@@ -30,7 +30,9 @@ export class SearchBoxComponent implements OnInit {
   private searchSubject = new Subject<string>();
 
   @ViewChild('searchBox', {static: true}) searchBox: ElementRef;
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() onSearch = this.searchSubject.pipe(distinctUntilChanged(), debounceTime(this.searchDebounce));
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() onFocus = new EventEmitter<string>();
 
   constructor(private locationService: LocationService) { }
@@ -39,7 +41,7 @@ export class SearchBoxComponent implements OnInit {
    * When we first show this search box we trigger a search if there is a search query in the URL
    */
   ngOnInit() {
-    const query = this.locationService.search()['search'];
+    const query = this.locationService.search().search;
     if (query) {
       this.query = query;
       this.doSearch();

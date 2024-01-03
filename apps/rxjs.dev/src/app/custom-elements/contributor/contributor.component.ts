@@ -35,6 +35,7 @@ import { CONTENT_URL_PREFIX } from 'app/documents/document.service';
             </div>
         </div>
 
+        <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events -->
         <div class="card-back" *ngIf="person.isFlipped" (click)="flipCard(person)">
             <h3>{{person.name}}</h3>
             <p class="contributor-bio">{{person.bio}}</p>
