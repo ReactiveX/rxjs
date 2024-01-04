@@ -53,7 +53,9 @@ export class TocService {
     const div: HTMLDivElement = this.document.createElement('div');
     div.innerHTML = heading.innerHTML;
     const anchorLinks: NodeListOf<HTMLAnchorElement> = div.querySelectorAll('a');
-    for (const anchorLink of anchorLinks) {
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    for (let i = 0; i < anchorLinks.length; i++) {
+      const anchorLink = anchorLinks[i];
       if (!anchorLink.classList.contains('header-link')) {
         // this is an anchor that contains actual content that we want to keep
         // move the contents of the anchor into its parent
