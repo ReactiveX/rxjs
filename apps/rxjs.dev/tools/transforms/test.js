@@ -13,5 +13,5 @@
 
 const Jasmine = require('jasmine');
 const jasmine = new Jasmine({ projectBaseDir: __dirname });
-jasmine.loadConfig({ spec_files: ['**/*.spec.js'] });
+jasmine.loadConfig({ spec_files: ['**/*.spec.{js,ts}'] });
 jasmine.execute();

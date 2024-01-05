@@ -41,7 +41,7 @@ export function treeNodeCount(tree) {
  */
 export function rawNodesWithMethodCount(tree) {
   return tree.filter(node => {
-    let childHadMethod: boolean;
+    let childHadMethod = false;
 
     if (node.method) {
       return node;

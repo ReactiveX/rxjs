@@ -7,7 +7,7 @@ describe('flattenApiList', () => {
     const flattenedApiList = flattenApiList(mockRawApiListWithDeprecatedRefs);
     const validRefCount = validApiRefCount(mockRawApiListWithDeprecatedRefs);
     it('should return a flat list with only stable refs', () => {
-      expect(Object.keys(flattenedApiList)).toHaveLength(validRefCount);
+      expect(Object.keys(flattenedApiList).length).toBe(validRefCount);
     });
   });
 });

@@ -12,6 +12,7 @@ const DOCS_OUTPUT_PATH = resolve(OUTPUT_PATH, 'docs');
 const API_SOURCE_PATH = resolve(PROJECT_ROOT, 'packages/rxjs/src');
 const MARBLE_IMAGES_PATH = resolve(SRC_PATH, 'assets/images/marble-diagrams');
 const MARBLE_IMAGES_WEB_PATH = 'assets/images/marble-diagrams';
+const DECISION_TREE_PATH = resolve(CONTENTS_PATH, 'operator-decision-tree.yml');
 
 function requireFolder(dirname, folderPath) {
   const absolutePath = resolve(dirname, folderPath);
@@ -32,5 +33,6 @@ module.exports = {
   API_SOURCE_PATH,
   MARBLE_IMAGES_PATH,
   MARBLE_IMAGES_WEB_PATH,
+  DECISION_TREE_PATH,
   requireFolder,
 };

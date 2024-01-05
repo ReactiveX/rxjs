@@ -11,7 +11,7 @@ const apiPackage = require('../angular-api-package');
 const contentPackage = require('../angular-content-package');
 const { extname, resolve } = require('canonical-path');
 const { existsSync } = require('fs');
-const { SRC_PATH } = require('../config');
+const { SRC_PATH, DOCS_OUTPUT_PATH, DECISION_TREE_PATH } = require('../config');
 // prettier-ignore
 module.exports = new Package('angular.io', [gitPackage, apiPackage, contentPackage])
 
@@ -19,6 +19,7 @@ module.exports = new Package('angular.io', [gitPackage, apiPackage, contentPacka
   .processor(require('./processors/processNavigationMap'))
   .processor(require('./processors/createOverviewDump'))
   .processor(require('./processors/cleanGeneratedFiles'))
+  .processor(require('../rxjs-decision-tree-generator'))
 
   // We don't include this in the angular-base package because the `versionInfo` stuff
   // accesses the file system and git, which is slow.
@@ -54,4 +55,8 @@ module.exports = new Package('angular.io', [gitPackage, apiPackage, contentPacka
 
   .config(function(renderLinkInfo, postProcessHtml) {
     renderLinkInfo.docTypes = postProcessHtml.docTypes;
+  })
+  .config(function(decisionTreeGenerator) {
+    decisionTreeGenerator.outputFolder = DOCS_OUTPUT_PATH + '/app';
+    decisionTreeGenerator.decisionTreeFile = DECISION_TREE_PATH;
   });
