@@ -28,7 +28,7 @@ export function decisionTreeReducer(tree: TreeNode[], apiList: FlattenedApiList,
 
     if (!curr.options) {
       // we found the function/operator we want to use
-      const apiNode: FlattenedApiNode = apiList[treeNode.label!];
+      const apiNode: FlattenedApiNode = apiList[treeNode.label! as keyof FlattenedApiList];
       if (!apiNode) {
         log.warn(`Decision Tree Generator - (reducer) - warning: Label does not exist in API List: ${treeNode.label}`);
       }

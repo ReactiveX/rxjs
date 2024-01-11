@@ -1,3 +1,5 @@
+import { ApiListNode, TreeNodeRaw } from './interfaces';
+
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 /**
@@ -20,7 +22,7 @@ export function isStable(stability: string): boolean {
  * @param {*} tree
  * @returns
  */
-export function treeNodeCount(tree) {
+export function treeNodeCount(tree: TreeNodeRaw[]) {
   return tree.reduce((acc: number, curr) => {
     let childSum: number;
     if (curr.children) {
@@ -39,8 +41,8 @@ export function treeNodeCount(tree) {
  * @param {*} tree
  * @returns
  */
-export function rawNodesWithMethodCount(tree) {
-  return tree.filter(node => {
+export function rawNodesWithMethodCount(tree: TreeNodeRaw[]): number {
+  return tree.filter((node) => {
     let childHadMethod = false;
 
     if (node.method) {
@@ -48,13 +50,12 @@ export function rawNodesWithMethodCount(tree) {
     }
 
     if (node.children) {
-      childHadMethod = rawNodesWithMethodCount(node.children);
+      childHadMethod = rawNodesWithMethodCount(node.children) > 0;
     }
 
     return childHadMethod;
   }).length;
 }
-
 
 /**
  * Recursively count valid API references
@@ -64,7 +65,7 @@ export function rawNodesWithMethodCount(tree) {
  * @param {*} apiList
  * @returns
  */
-export function validApiRefCount(apiList): number {
+export function validApiRefCount(apiList: ApiListNode[]): number {
   return apiList.reduce((acc, curr) => {
     const itemCount = curr.items.reduce((a, node) => {
       if (node.stability === 'deprecated') {
