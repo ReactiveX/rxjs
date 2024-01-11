@@ -14,6 +14,7 @@ import { CodeComponent } from './code.component';
  * ```
  */
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'code-example',
   template: `
     <!-- Content projection is used to get the content HTML provided to this component -->
@@ -30,7 +31,7 @@ import { CodeComponent } from './code.component';
   `,
 })
 export class CodeExampleComponent implements AfterViewInit {
-  classes: {};
+  classes: Record<string, boolean>;
 
   @Input() language: string;
 
@@ -65,11 +66,13 @@ export class CodeExampleComponent implements AfterViewInit {
   get hidecopy(): boolean { return this._hidecopy; }
   private _hidecopy: boolean;
 
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('hide-copy')
   set hyphenatedHideCopy(hidecopy: boolean) {
     this.hidecopy = hidecopy;
   }
 
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('hideCopy')
   set capitalizedHideCopy(hidecopy: boolean) {
     this.hidecopy = hidecopy;

@@ -4,9 +4,10 @@ import { ContributorService } from './contributor.service';
 import { LocationService } from 'app/shared/location.service';
 
 @Component({
-  selector: `aio-contributor-list`,
+  selector: 'aio-contributor-list',
   template: `
   <div class="flex-center group-buttons">
+  <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events -->
     <a *ngFor="let name of groupNames"
        [class.selected]="name == selectedGroup.name"
        class="button mat-button filter-button"
@@ -28,7 +29,7 @@ export class ContributorListComponent implements OnInit {
     private locationService: LocationService) { }
 
   ngOnInit() {
-    const groupName =  this.locationService.search()['group'] || '';
+    const groupName =  this.locationService.search().group || '';
     // no need to unsubscribe because `contributors` completes
     this.contributorService.contributors
       .subscribe(grps => {

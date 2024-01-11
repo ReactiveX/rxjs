@@ -98,6 +98,7 @@ export class ScrollService {
   /**
    * When we load a document, we have to scroll to the correct position depending on whether this is a new location,
    * a back/forward in the history, or a refresh
+   *
    * @param delay before we scroll to the good position
    */
   scrollAfterRender(delay: number) {

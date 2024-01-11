@@ -66,9 +66,7 @@ export class DocumentService {
             throw Error('Invalid data');
           }
         }),
-        catchError((error: HttpErrorResponse) => {
-          return error.status === 404 ? this.getFileNotFoundDoc(id) : this.getErrorDoc(id, error);
-        }),
+        catchError((error: HttpErrorResponse) => error.status === 404 ? this.getFileNotFoundDoc(id) : this.getErrorDoc(id, error)),
       )
       .subscribe(subject);
 

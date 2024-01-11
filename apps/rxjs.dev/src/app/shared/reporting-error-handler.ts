@@ -15,9 +15,10 @@ export class ReportingErrorHandler extends ErrorHandler {
 
   /**
    * Send error info to Google Analytics, in addition to the default handling.
+   *
    * @param error Information about the error.
    */
-  handleError(error: string | Error) {
+  override handleError(error: string | Error) {
 
     try {
       super.handleError(error);

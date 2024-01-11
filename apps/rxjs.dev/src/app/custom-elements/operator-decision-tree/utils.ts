@@ -1,4 +1,4 @@
-import { OperatorTreeNodeWithOptions } from './interfaces';
+import { OperatorDecisionTree, OperatorTreeNode, OperatorTreeNodeWithOptions } from './interfaces';
 
 export function isInitialDecision(previousBranchIds: string[]): boolean {
   return (
@@ -6,10 +6,10 @@ export function isInitialDecision(previousBranchIds: string[]): boolean {
   );
 }
 
-export function treeIsErrorFree(tree): boolean {
+export function treeIsErrorFree(tree: OperatorDecisionTree): boolean {
   return !tree.error;
 }
 
-export function nodeHasOptions(node): node is OperatorTreeNodeWithOptions {
+export function nodeHasOptions(node: OperatorTreeNode): node is OperatorTreeNodeWithOptions {
   return !!node.options;
 }

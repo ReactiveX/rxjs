@@ -28,9 +28,7 @@ export class OperatorDecisionTreeService {
       isInitialDecision(previousBranchIds)
         ? 'Start by choosing an option from the list below.'
         : `${previousBranchIds
-            .map(entityId => {
-              return tree[entityId].label;
-            })
+            .map(entityId => tree[entityId].label)
             .join(' ')}...`.trim()
     )
   );
@@ -39,13 +37,11 @@ export class OperatorDecisionTreeService {
     this.tree$,
     this.state$
   ).pipe(
-    filter(([tree, state]) => {
-      return (
+    filter(([tree, state]) => (
         treeIsErrorFree(tree) &&
         !!tree[state.currentBranchId] &&
         !!tree[state.currentBranchId].options
-      );
-    }),
+      )),
     map(([tree, state]) => {
       // Project is currently using TypeScript 2.9.2
       // With TS 3.1+ this can be done better if we map to [tree, node] and typeguard with a tuple in a filter
@@ -53,7 +49,7 @@ export class OperatorDecisionTreeService {
       const node = tree[state.currentBranchId];
       return nodeHasOptions(node)
         ? node.options.map(option => tree[option])
-        : tree['initial'].options.map(option => tree[option]);
+        : tree.initial.options.map(option => tree[option]);
     })
   );
 

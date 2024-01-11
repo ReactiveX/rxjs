@@ -4,7 +4,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ReplaySubject } from 'rxjs';
 import { ScrollSpyInfo, ScrollSpyService } from 'app/shared/scroll-spy.service';
 
-
 export interface TocItem {
   content: SafeHtml;
   href: string;
@@ -19,10 +18,7 @@ export class TocService {
   activeItemIndex = new ReplaySubject<number | null>(1);
   private scrollSpyInfo: ScrollSpyInfo | null = null;
 
-  constructor(
-      @Inject(DOCUMENT) private document: any,
-      private domSanitizer: DomSanitizer,
-      private scrollSpyService: ScrollSpyService) { }
+  constructor(@Inject(DOCUMENT) private document: any, private domSanitizer: DomSanitizer, private scrollSpyService: ScrollSpyService) {}
 
   genToc(docElement?: Element, docId = '') {
     this.resetScrollSpyInfo();
@@ -34,7 +30,7 @@ export class TocService {
 
     const headings = this.findTocHeadings(docElement);
     const idMap = new Map<string, number>();
-    const tocList = headings.map(heading => ({
+    const tocList = headings.map((heading) => ({
       content: this.extractHeadingSafeHtml(heading),
       href: `${docId}#${this.getId(heading, idMap)}`,
       level: heading.tagName.toLowerCase(),
@@ -44,7 +40,7 @@ export class TocService {
     this.tocList.next(tocList);
 
     this.scrollSpyInfo = this.scrollSpyService.spyOn(headings);
-    this.scrollSpyInfo.active.subscribe(item => this.activeItemIndex.next(item && item.index));
+    this.scrollSpyInfo.active.subscribe((item) => this.activeItemIndex.next(item && item.index));
   }
 
   reset() {
@@ -57,6 +53,7 @@ export class TocService {
     const div: HTMLDivElement = this.document.createElement('div');
     div.innerHTML = heading.innerHTML;
     const anchorLinks: NodeListOf<HTMLAnchorElement> = div.querySelectorAll('a');
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < anchorLinks.length; i++) {
       const anchorLink = anchorLinks[i];
       if (!anchorLink.classList.contains('header-link')) {

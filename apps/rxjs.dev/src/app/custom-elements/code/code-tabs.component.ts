@@ -20,6 +20,7 @@ export interface TabInfo {
  * The optional `linenums` attribute is the default `linenums` for each code pane.
  */
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'code-tabs',
   template: `
     <!-- Use content projection so that the provided HTML's code-panes can be split into tabs -->

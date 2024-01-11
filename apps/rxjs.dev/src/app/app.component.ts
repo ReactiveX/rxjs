@@ -193,7 +193,7 @@ export class AppComponent implements OnInit {
     private scrollService: ScrollService,
     private searchService: SearchService,
     private tocService: TocService,
-    @Inject(DOCUMENT) private dom
+    @Inject(DOCUMENT) private dom: Document
   ) {}
 
   ngOnInit() {
@@ -230,7 +230,7 @@ export class AppComponent implements OnInit {
     // Compute the version picker list from the current version and the versions in the navigation map
     combineLatest(
       this.navigationService.versionInfo,
-      this.navigationService.navigationViews.pipe(map((views) => views['docVersions']))
+      this.navigationService.navigationViews.pipe(map((views) => views.docVersions))
     ).subscribe(([versionInfo, versions]) => {
       this.docVersions = [...versions];
 
@@ -243,10 +243,10 @@ export class AppComponent implements OnInit {
     });
 
     this.navigationService.navigationViews.subscribe((views) => {
-      this.footerNodes = views['Footer'] || [];
-      this.sideNavNodes = views['SideNav'] || [];
-      this.topMenuNodes = views['TopBar'] || [];
-      this.topMenuNarrowNodes = views['TopBarNarrow'] || this.topMenuNodes;
+      this.footerNodes = views.Footer || [];
+      this.sideNavNodes = views.SideNav || [];
+      this.topMenuNodes = views.TopBar || [];
+      this.topMenuNarrowNodes = views.TopBarNarrow || this.topMenuNodes;
     });
 
     this.navigationService.versionInfo.subscribe((vi) => (this.versionInfo = vi));
@@ -305,7 +305,7 @@ export class AppComponent implements OnInit {
     }
 
     const head = this.dom.getElementsByTagName('head')[0];
-    let element: HTMLLinkElement = this.dom.querySelector(`link[rel='canonical']`) || null;
+    let element: HTMLLinkElement | null = this.dom.querySelector('link[rel=\'canonical\']') || null;
     if (element === null) {
       element = this.dom.createElement('link') as HTMLLinkElement;
       head.appendChild(element);

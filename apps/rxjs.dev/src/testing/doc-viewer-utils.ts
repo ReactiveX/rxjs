@@ -17,12 +17,12 @@ import { ElementsLoader } from 'app/custom-elements/elements-loader';
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export class TestDocViewerComponent extends DocViewerComponent {
-  currViewContainer: HTMLElement;
-  nextViewContainer: HTMLElement;
+  override currViewContainer: HTMLElement;
+  override nextViewContainer: HTMLElement;
 
-  prepareTitleAndToc(targetElem: HTMLElement, docId: string): () => void { return null as any; }
-  render(doc: DocumentContents): Observable<void> { return null as any; }
-  swapViews(onInsertedCb?: () => void): Observable<void> { return null as any; }
+  override prepareTitleAndToc(targetElem: HTMLElement, docId: string): () => void { return null as any; }
+  override render(doc: DocumentContents): Observable<void> { return null as any; }
+  override swapViews(onInsertedCb?: () => void): Observable<void> { return null as any; }
 }
 
 

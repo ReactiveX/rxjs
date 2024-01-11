@@ -5,6 +5,7 @@ import { CopierService } from 'app/shared/copier.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { tap } from 'rxjs/operators';
 import { StackblitzService } from 'app/shared/stackblitz.service';
+// @ts-expect-error
 import version from '../../../../tools/stackblitz/rxjs.version';
 
 /**
@@ -139,7 +140,7 @@ export class CodeComponent implements OnChanges {
       .pipe(tap(() => this.codeFormatted.emit()))
       .subscribe(
         (c) => this.setCodeHtml(c),
-        (err) => {
+        () => {
           /* ignore failure to format */
         }
       );
