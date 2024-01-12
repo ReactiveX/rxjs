@@ -1,3 +1,13 @@
+## 8.0.0-alpha.14
+
+### 🩹 Fixes
+
+- **rxjs:** removed unnecessary peer deps
+
+### ❤️ Thank You
+
+- Ben Lesh
+
 ## 8.0.0-alpha.13
 
 ### 🚀 Features
