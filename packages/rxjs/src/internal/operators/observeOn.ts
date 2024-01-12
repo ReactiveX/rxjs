@@ -1,6 +1,6 @@
 import type { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
 import { executeSchedule } from '../util/executeSchedule.js';
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 
 /**
  * Re-emits all notifications from source Observable with specified scheduler.

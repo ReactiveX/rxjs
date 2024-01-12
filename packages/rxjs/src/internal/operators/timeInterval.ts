@@ -1,6 +1,6 @@
 import { asyncScheduler } from '../scheduler/async.js';
 import type { SchedulerLike, OperatorFunction } from '../types.js';
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 
 /**
  * Emits an object containing the current value, and the time that has

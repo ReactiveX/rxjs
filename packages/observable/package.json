@@ -1,0 +1,135 @@
+{
+  "name": "@rxjs/observable",
+  "version": "8.0.0-alpha.13",
+  "description": "Reactive Extensions for modern JavaScript",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "index.d.ts",
+  "typesVersions": {
+    ">=4.2": {
+      "*": [
+        "dist/types/*"
+      ]
+    }
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "node": "./dist/cjs/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/esm/index.js"
+    },
+    "./internal/*": {
+      "types": "./dist/types/internal/*.d.ts",
+      "node": "./dist/cjs/internal/*.js",
+      "require": "./dist/cjs/internal/*.js",
+      "default": "./dist/esm/internal/*.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "(src|spec)/**/*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,css,md}": "prettier --write"
+  },
+  "scripts": {
+    "changelog": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s",
+    "lint": "eslint --ext=ts,js src spec spec-dtslint",
+    "dtslint": "npm run lint && tsc -b ./src/tsconfig.types.json",
+    "test": "yarn build && cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config ../rxjs/src/support/.mocharc.js \"src/**/*-spec.ts\"",
+    "compile": "tsc -b ./src/tsconfig.cjs.json ./src/tsconfig.cjs.spec.json ./src/tsconfig.esm.json ./src/tsconfig.types.json ./src/tsconfig.types.spec.json",
+    "build:clean": "shx rm -rf ./dist",
+    "build": "yarn build:clean && yarn compile",
+    "copy_common_package_files": "node ../../scripts/copy-common-package-files.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactivex/rxjs.git",
+    "directory": "packages/rxjs"
+  },
+  "keywords": [
+    "Rx",
+    "RxJS",
+    "ReactiveX",
+    "ReactiveExtensions",
+    "Streams",
+    "Observables",
+    "Observable",
+    "Stream"
+  ],
+  "author": "Ben Lesh <ben@benlesh.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ReactiveX/RxJS/issues"
+  },
+  "homepage": "https://rxjs.dev",
+  "devDependencies": {
+    "@swc/core": "^1.2.128",
+    "@swc/helpers": "^0.3.2",
+    "@types/chai": "^4.2.11",
+    "@types/lodash": "^4.14.198",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^14.14.6",
+    "@types/shelljs": "^0.8.8",
+    "@types/sinon": "^10.0.13",
+    "@types/sinon-chai": "^3.2.9",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "@typescript-eslint/parser": "^6.9.0",
+    "chai": "^4.3.7",
+    "color": "3.0.0",
+    "colors": "1.1.2",
+    "cross-env": "5.1.3",
+    "cz-conventional-changelog": "1.2.0",
+    "dependency-cruiser": "^9.12.0",
+    "eslint": "^8.52.0",
+    "form-data": "^3.0.0",
+    "fs-extra": "^8.1.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "lodash": "^4.17.21",
+    "mocha": "^10.2.0",
+    "nodemon": "^1.9.2",
+    "npm-run-all": "4.1.2",
+    "prettier": "^2.5.1",
+    "shelljs": "^0.8.4",
+    "shx": "^0.3.2",
+    "sinon": "^15.0.1",
+    "sinon-chai": "^3.7.0",
+    "source-map-support": "0.5.3",
+    "ts-node": "^10.9.1",
+    "typescript": "~4.9.4",
+    "validate-commit-msg": "2.14.0",
+    "web-streams-polyfill": "^3.0.2"
+  },
+  "files": [
+    "dist/cjs/**/!(*.tsbuildinfo)",
+    "dist/esm/**/!(*.tsbuildinfo)",
+    "dist/types/**/!(*.tsbuildinfo)",
+    "src",
+    "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
+    "LICENSE.txt",
+    "package.json",
+    "README.md",
+    "tsconfig.json"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "validate-commit-msg"
+    }
+  },
+  "peerDependencies": {
+    "@types/node": "^20.6.3",
+    "typescript": "^5.2.2"
+  }
+}

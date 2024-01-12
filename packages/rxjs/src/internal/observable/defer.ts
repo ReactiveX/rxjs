@@ -1,4 +1,4 @@
-import { Observable, from } from '../Observable.js';
+import { Observable, from } from '@rxjs/observable';
 import type { ObservedValueOf, ObservableInput } from '../types.js';
 
 /**

@@ -1,6 +1,6 @@
 import type { MonoTypeOperatorFunction } from '../types.js';
 import { identity } from '../util/identity.js';
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 
 export function distinctUntilChanged<T>(comparator?: (previous: T, current: T) => boolean): MonoTypeOperatorFunction<T>;
 export function distinctUntilChanged<T, K>(

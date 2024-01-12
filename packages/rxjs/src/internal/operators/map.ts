@@ -1,5 +1,5 @@
 import type { OperatorFunction } from '../types.js';
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 
 /**
  * Applies a given `project` function to each value emitted by the source

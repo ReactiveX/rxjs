@@ -1,4 +1,4 @@
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 import { Subject } from '../Subject.js';
 import type { OperatorFunction } from '../types.js';
 

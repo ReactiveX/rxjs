@@ -1,6 +1,6 @@
 import { Subject } from '../Subject.js';
-import type { Subscriber} from '../Observable.js';
-import { Subscription } from '../Observable.js';
+import type { Subscriber } from '@rxjs/observable';
+import { Subscription } from '@rxjs/observable';
 import type { Scheduler } from '../Scheduler.js';
 import type { TestMessage } from './TestMessage.js';
 import { observeNotification } from '../Notification.js';

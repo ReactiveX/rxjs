@@ -4,8 +4,8 @@ import { scheduleArray } from './scheduleArray.js';
 import { scheduleIterable } from './scheduleIterable.js';
 import { scheduleAsyncIterable } from './scheduleAsyncIterable.js';
 import type { InteropObservable, ObservableInput, SchedulerLike } from '../types.js';
-import type { Observable} from '../Observable.js';
-import { ObservableInputType, getObservableInputType } from '../Observable.js';
+import type { Observable } from '@rxjs/observable';
+import { ObservableInputType, getObservableInputType } from '@rxjs/observable/internal/getObservableInputType.js';
 import { scheduleReadableStreamLike } from './scheduleReadableStreamLike.js';
 
 /**

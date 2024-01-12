@@ -1,6 +1,6 @@
 import { asyncScheduler } from '../scheduler/async.js';
-import type { Subscription } from '../Observable.js';
-import { Observable, operate } from '../Observable.js';
+import type { Subscription } from '@rxjs/observable';
+import { Observable, operate } from '@rxjs/observable';
 import type { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
 import { executeSchedule } from '../util/executeSchedule.js';
 

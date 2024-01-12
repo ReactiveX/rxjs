@@ -1,7 +1,7 @@
 import type { Connectable, ObservableInput, SubjectLike } from '../types.js';
 import { Subject } from '../Subject.js';
-import type { Subscription} from '../Observable.js';
-import { Observable } from '../Observable.js';
+import type { Subscription } from '@rxjs/observable';
+import { Observable } from '@rxjs/observable';
 import { defer } from './defer.js';
 
 export interface ConnectableConfig<T> {

@@ -1,6 +1,6 @@
 import type { OperatorFunction, ObservableInputTuple } from '../types.js';
 import { raceInit } from '../observable/race.js';
-import { Observable } from '../Observable.js';
+import { Observable } from '@rxjs/observable';
 import { identity } from '../util/identity.js';
 
 /**

@@ -1,4 +1,4 @@
-import type { Observable } from './Observable.js';
+import type { Observable } from '@rxjs/observable';
 import { EmptyError } from './util/EmptyError.js';
 
 export interface LastValueFromConfig<T> {

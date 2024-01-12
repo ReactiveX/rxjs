@@ -1,5 +1,5 @@
 import type { OperatorFunction } from '../types.js';
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 
 /**
  * Groups pairs of consecutive emissions together and emits them as an array of
