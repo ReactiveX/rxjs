@@ -24,9 +24,13 @@ if (!Object.values(DIST_TAGS).includes('latest')) {
 
     // Publishing was triggered via an GitHub release being created (almost certainly via our `yarn release` script)
     if (process.env.GITHUB_EVENT_NAME === 'release') {
-      const tag = process.env.GITHUB_REF;
+      let tag = process.env.GITHUB_REF;
       if (!tag) {
         throw new Error('No tag found in environment variable GITHUB_REF');
+      }
+      if (!valid(tag) && /^refs\/tags\//.test(tag)) {
+        // It might be a full ref tag name instead of just a version, so try to get the version from the tag
+        tag = tag.split('/').pop();
       }
       if (!valid(tag)) {
         throw new Error(`Git tag '${tag}' pulled from environment variable GITHUB_REF is not a valid semver version`);
