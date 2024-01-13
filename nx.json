@@ -13,6 +13,7 @@
     }
   },
   "release": {
+    "projects": ["rxjs"],
     "releaseTagPattern": "{version}",
     "changelog": {
       "git": {
@@ -25,15 +26,10 @@
       },
       "projectChangelogs": true
     },
-    "groups": {
-      "npm": {
-        "projects": ["rxjs"],
-        "version": {
-          "generatorOptions": {
-            "currentVersionResolver": "git-tag",
-            "specifierSource": "conventional-commits"
-          }
-        }
+    "version": {
+      "generatorOptions": {
+        "currentVersionResolver": "git-tag",
+        "specifierSource": "conventional-commits"
       }
     }
   }
