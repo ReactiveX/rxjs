@@ -13,27 +13,19 @@
     }
   },
   "release": {
+    "projects": ["rxjs"],
     "releaseTagPattern": "{version}",
     "changelog": {
-      "git": {
-        "commit": true,
-        "tag": true
-      },
       "workspaceChangelog": {
         "createRelease": "github",
         "file": false
       },
       "projectChangelogs": true
     },
-    "groups": {
-      "npm": {
-        "projects": ["rxjs"],
-        "version": {
-          "generatorOptions": {
-            "currentVersionResolver": "git-tag",
-            "specifierSource": "conventional-commits"
-          }
-        }
+    "version": {
+      "generatorOptions": {
+        "currentVersionResolver": "git-tag",
+        "specifierSource": "conventional-commits"
       }
     }
   }

@@ -56,8 +56,6 @@ const yargs = require('nx/node_modules/yargs');
 
     const { workspaceVersion, projectsVersionData } = await releaseVersion({
       specifier: options.version,
-      // stage package.json updates to be committed later by the changelog command
-      stageChanges: true,
       dryRun: options.dryRun,
       verbose: options.verbose,
     });
