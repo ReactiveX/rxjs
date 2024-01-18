@@ -27,4 +27,4 @@ jobs:
       - name: build
         run: |
           yarn workspace rxjs add typescript@latest @types/node@latest --peer --no-save
-          yarn workspace rxjs compile
+          yarn nx compile rxjs
