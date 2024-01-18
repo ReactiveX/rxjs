@@ -1,4 +1,4 @@
-import { Observable, subscribeToArray, operate } from '../Observable.js';
+import { Observable, subscribeToArray, operate } from '@rxjs/observable';
 import type { OperatorFunction, ValueFromArray } from '../types.js';
 
 export function startWith<T>(value: null): OperatorFunction<T, T | null>;

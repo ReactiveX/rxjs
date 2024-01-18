@@ -1,4 +1,4 @@
-import { Observable, from } from '../Observable.js';
+import { Observable, from } from '@rxjs/observable';
 import type { Unsubscribable, ObservableInput, ObservedValueOf } from '../types.js';
 import { EMPTY } from './empty.js';
 

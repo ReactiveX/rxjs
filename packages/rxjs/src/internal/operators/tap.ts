@@ -1,5 +1,5 @@
 import type { MonoTypeOperatorFunction, Observer } from '../types.js';
-import { Observable, operate, isFunction } from '../Observable.js';
+import { Observable, operate, isFunction } from '@rxjs/observable';
 import { identity } from '../util/identity.js';
 
 /**

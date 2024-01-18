@@ -1,5 +1,5 @@
-import type { Subscriber} from './Observable.js';
-import { Observable, Subscription } from './Observable.js';
+import type { Subscriber} from '@rxjs/observable';
+import { Observable, Subscription } from '@rxjs/observable';
 import type { Observer, SubscriptionLike } from './types.js';
 
 /**

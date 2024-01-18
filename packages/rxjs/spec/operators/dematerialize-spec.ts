@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import type { ObservableNotification} from 'rxjs';
 import { of, Observable } from 'rxjs';
-import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from 'rxjs/internal/Observable';
+import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from '@rxjs/observable';
 import { dematerialize, map, mergeMap, materialize, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';

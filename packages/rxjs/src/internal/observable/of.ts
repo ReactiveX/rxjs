@@ -1,6 +1,6 @@
 import type { ValueFromArray } from '../types.js';
-import type { Observable} from '../Observable.js';
-import { fromArrayLike } from '../Observable.js';
+import type { Observable} from '@rxjs/observable';
+import { fromArrayLike } from '@rxjs/observable';
 
 // Devs are more likely to pass null or undefined than they are a scheduler
 // without accompanying values. To make things easier for (naughty) devs who

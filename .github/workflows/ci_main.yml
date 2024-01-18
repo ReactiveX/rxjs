@@ -24,6 +24,9 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: Build, test and lint all projects (except website)
+        run: yarn nx run-many -t build lint test --exclude=rxjs.dev
+
       - name: rxjs lint
         run: yarn workspace rxjs lint
       - name: rxjs build

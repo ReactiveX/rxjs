@@ -1,4 +1,4 @@
-import { Observable, from } from '../Observable.js';
+import { Observable, from } from '@rxjs/observable';
 import { mergeAll } from '../operators/mergeAll.js';
 import type { ObservableInputTuple, OperatorFunction } from '../types.js';
 

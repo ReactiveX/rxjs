@@ -12,9 +12,9 @@
 /// <reference path="./testing/index.ts" />
 /* eslint-enable @typescript-eslint/triple-slash-reference */
 
-/* Core */
-export type { GlobalConfig, SubscriberOverrides } from './internal/Observable.js';
-export { Observable, from, config, Subscription, Subscriber, operate, UnsubscriptionError, isObservable } from './internal/Observable.js';
+/* Re-export from @rxjs/observable */
+export type { GlobalConfig, SubscriberOverrides } from '@rxjs/observable';
+export { Observable, from, config, Subscription, Subscriber, operate, UnsubscriptionError, isObservable } from '@rxjs/observable';
 
 /* Observables */
 export type { GroupedObservable } from './internal/operators/groupBy.js';

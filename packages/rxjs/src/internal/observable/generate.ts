@@ -1,4 +1,4 @@
-import type { Observable } from '../Observable.js';
+import type { Observable } from '@rxjs/observable';
 import { identity } from '../util/identity.js';
 import type { ObservableInput, SchedulerLike } from '../types.js';
 import { isScheduler } from '../util/isScheduler.js';

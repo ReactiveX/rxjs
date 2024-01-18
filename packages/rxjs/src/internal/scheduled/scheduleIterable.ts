@@ -1,4 +1,4 @@
-import { Observable, isFunction } from '../Observable.js';
+import { Observable, isFunction } from '@rxjs/observable';
 import type { SchedulerLike } from '../types.js';
 import { iterator as Symbol_iterator } from '../symbol/iterator.js';
 import { executeSchedule } from '../util/executeSchedule.js';

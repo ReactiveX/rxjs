@@ -1,5 +1,5 @@
 import { AsyncAction } from './AsyncAction.js';
-import { Subscription } from '../Observable.js';
+import { Subscription } from '@rxjs/observable';
 import { AsyncScheduler } from './AsyncScheduler.js';
 import type { SchedulerAction } from '../types.js';
 import type { TimerHandle } from './timerHandle.js';

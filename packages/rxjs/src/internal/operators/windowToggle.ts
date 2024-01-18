@@ -1,4 +1,4 @@
-import { Observable, Subscription, from, operate } from '../Observable.js';
+import { Observable, Subscription, from, operate } from '@rxjs/observable';
 import { Subject } from '../Subject.js';
 import type { ObservableInput, OperatorFunction } from '../types.js';
 import { noop } from '../util/noop.js';

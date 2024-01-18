@@ -1,4 +1,4 @@
-import { Observable } from '../Observable.js';
+import { Observable } from '@rxjs/observable';
 
 /**
  * A simple Observable that emits no items to the Observer and immediately

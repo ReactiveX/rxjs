@@ -1,5 +1,5 @@
 import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError.js';
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 import type { OperatorFunction } from '../types.js';
 import { take } from './take.js';
 

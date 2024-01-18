@@ -1,4 +1,4 @@
-import { Observable, isFunction } from '../Observable.js';
+import { Observable, isFunction } from '@rxjs/observable';
 import type { NodeEventHandler } from './fromEvent.js';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
 

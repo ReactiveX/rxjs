@@ -1,4 +1,4 @@
-import type { Observable } from '../Observable.js';
+import type { Observable } from '@rxjs/observable';
 import type { ObservableInput, OperatorFunction } from '../types.js';
 import { identity } from '../util/identity.js';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';

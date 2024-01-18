@@ -1,6 +1,6 @@
 import { reduce } from './reduce.js';
 import type { OperatorFunction } from '../types.js';
-import { Observable } from '../Observable.js';
+import { Observable } from '@rxjs/observable';
 
 const arrReducer = (arr: any[], value: any) => (arr.push(value), arr);
 
