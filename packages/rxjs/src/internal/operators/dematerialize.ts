@@ -1,6 +1,6 @@
 import { observeNotification } from '../Notification.js';
 import type { OperatorFunction, ObservableNotification, ValueFromNotification } from '../types.js';
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 
 /**
  * Converts an Observable of {@link ObservableNotification} objects into the emissions

@@ -1,5 +1,5 @@
 import type { ObservableInputTuple, OperatorFunction, Cons } from '../types.js';
-import { Observable } from '../Observable.js';
+import { Observable } from '@rxjs/observable';
 import { zip } from '../observable/zip.js';
 
 /**

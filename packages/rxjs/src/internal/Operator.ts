@@ -1,4 +1,4 @@
-import type { Subscriber } from './Observable.js';
+import type { Subscriber } from '@rxjs/observable';
 import type { TeardownLogic } from './types.js';
 
 /***

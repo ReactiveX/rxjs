@@ -1,4 +1,4 @@
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 import { EmptyError } from '../util/EmptyError.js';
 import type { OperatorFunction, TruthyTypesOf } from '../types.js';
 

@@ -1,5 +1,5 @@
 import type { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
-import { Observable } from '../Observable.js';
+import { Observable } from '@rxjs/observable';
 
 /**
  * Asynchronously subscribes Observers to this Observable on the specified {@link SchedulerLike}.

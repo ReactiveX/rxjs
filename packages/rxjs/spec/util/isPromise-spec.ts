@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { expect } from 'chai';
-import { isPromise } from 'rxjs/internal/Observable';
+import { isPromise } from '@rxjs/observable';
 
 describe('isPromise', () => {
   it('should return true for new Promise', () => {

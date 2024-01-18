@@ -3,7 +3,7 @@ import { groupBy, delay, tap, map, take, mergeMap, materialize, skip, ignoreElem
 import { TestScheduler } from 'rxjs/testing';
 import type { NextNotification, ErrorNotification } from 'rxjs';
 import { ReplaySubject, of, Observable, Subject } from 'rxjs';
-import { createNotification } from 'rxjs/internal/Observable';
+import { createNotification } from '@rxjs/observable';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {groupBy} */

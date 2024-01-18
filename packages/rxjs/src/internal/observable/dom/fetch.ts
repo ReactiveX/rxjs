@@ -1,4 +1,4 @@
-import { operate, Observable, from } from '../../Observable.js';
+import { operate, Observable, from } from '@rxjs/observable';
 import type { ObservableInput } from '../../types.js';
 
 export function fromFetch<T>(

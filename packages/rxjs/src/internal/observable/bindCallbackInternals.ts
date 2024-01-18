@@ -1,6 +1,6 @@
 import type { SchedulerLike } from '../types.js';
 import { isScheduler } from '../util/isScheduler.js';
-import { Observable } from '../Observable.js';
+import { Observable } from '@rxjs/observable';
 import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.js';
 import { AsyncSubject } from '../AsyncSubject.js';
 import { scheduled } from '../scheduled/scheduled.js';

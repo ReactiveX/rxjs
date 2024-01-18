@@ -1,4 +1,4 @@
-import { Observable } from '../Observable.js';
+import { Observable } from '@rxjs/observable';
 import type { Falsy, OperatorFunction } from '../types.js';
 import { createFind } from './find.js';
 

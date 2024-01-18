@@ -1,5 +1,5 @@
-import type { Observable} from '../Observable.js';
-import { from } from '../Observable.js';
+import type { Observable} from '@rxjs/observable';
+import { from } from '@rxjs/observable';
 import type { ObservableInputTuple, SchedulerLike } from '../types.js';
 import { concatAll } from '../operators/concatAll.js';
 import { popScheduler } from '../util/args.js';

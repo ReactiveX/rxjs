@@ -1,4 +1,4 @@
-import { Observable } from '../Observable.js';
+import { Observable } from '@rxjs/observable';
 
 /**
  * Creates an observable that will create an error instance and push it to the consumer as an error

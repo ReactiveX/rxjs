@@ -1,4 +1,4 @@
-import { Observable } from '../Observable.js';
+import { Observable } from '@rxjs/observable';
 import type { OperatorFunction } from '../types.js';
 import { scanInternals } from './scanInternals.js';
 

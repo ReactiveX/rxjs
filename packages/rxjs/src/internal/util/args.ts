@@ -1,5 +1,5 @@
 import type { SchedulerLike } from '../types.js';
-import { isFunction } from '../Observable.js';
+import { isFunction } from '@rxjs/observable';
 import { isScheduler } from './isScheduler.js';
 
 function last<T>(arr: T[]): T | undefined {

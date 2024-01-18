@@ -1,4 +1,4 @@
-import type { Observable } from '../Observable.js';
+import type { Observable } from '@rxjs/observable';
 import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
 import { concat } from '../observable/concat.js';
 import { take } from './take.js';

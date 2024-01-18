@@ -1,5 +1,5 @@
 import type { OperatorFunction, ObservableInputTuple } from '../types.js';
-import { Observable, operate, from } from '../Observable.js';
+import { Observable, operate, from } from '@rxjs/observable';
 import { identity } from '../util/identity.js';
 import { noop } from '../util/noop.js';
 import { popResultSelector } from '../util/args.js';

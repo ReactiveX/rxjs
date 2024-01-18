@@ -1,4 +1,4 @@
-import { from } from '../Observable.js';
+import { from } from '@rxjs/observable';
 import { observeOn } from '../operators/observeOn.js';
 import { subscribeOn } from '../operators/subscribeOn.js';
 import type { InteropObservable, SchedulerLike } from '../types.js';

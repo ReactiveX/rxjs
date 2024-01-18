@@ -1,5 +1,5 @@
-import type { OperatorFunction, ObservableInput, ObservedValueOf } from '../types.js';
-import { Observable } from '../Observable.js';
+import { Observable } from '@rxjs/observable';
+import type { ObservableInput, ObservedValueOf, OperatorFunction, SchedulerLike } from '../types.js';
 import { mergeInternals } from './mergeInternals.js';
 
 export function expand<T, O extends ObservableInput<unknown>>(

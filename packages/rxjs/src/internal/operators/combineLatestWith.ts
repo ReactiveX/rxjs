@@ -1,5 +1,5 @@
 import { combineLatestInit } from '../observable/combineLatest.js';
-import { Observable } from '../Observable.js';
+import { Observable } from '@rxjs/observable';
 import type { Cons, ObservableInputTuple, OperatorFunction } from '../types.js';
 
 /**

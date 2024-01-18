@@ -1,5 +1,5 @@
 import type { OperatorFunction } from '../types.js';
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 import { noop } from '../util/noop.js';
 
 /**

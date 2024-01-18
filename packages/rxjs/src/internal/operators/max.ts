@@ -1,6 +1,6 @@
 import { reduce } from './reduce.js';
 import type { MonoTypeOperatorFunction } from '../types.js';
-import { isFunction } from '../Observable.js';
+import { isFunction } from '@rxjs/observable';
 
 /**
  * The `max` operator operates on an Observable that emits numbers (or items that

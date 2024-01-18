@@ -1,5 +1,5 @@
 import type { OperatorFunction } from '../types.js';
-import { Observable, operate } from '../Observable.js';
+import { Observable, operate } from '@rxjs/observable';
 
 /**
  * Emits `false` if the input Observable emits any values, or emits `true` if the

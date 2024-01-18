@@ -18,15 +18,19 @@
   },
   "packageManager": "yarn@1.22.21",
   "scripts": {
-    "prepare-packages": "yarn nx run-many -t build,lint,test:circular,dtslint,copy_common_package_files --exclude rxjs.dev",
+    "prepare-packages": "yarn nx test @rxjs/observable && yarn nx run-many -t build,lint,test:circular,dtslint,copy_common_package_files --exclude rxjs.dev",
     "release": "node scripts/release.js"
   },
   "devDependencies": {
-    "@nx/js": "17.3.0-beta.4",
+    "@nx/eslint-plugin": "17.3.0-beta.5",
+    "@nx/js": "17.3.0-beta.5",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
     "cz-conventional-changelog": "1.2.0",
+    "eslint": "^8.56.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
-    "nx": "17.3.0-beta.4",
+    "nx": "17.3.0-beta.5",
     "ts-node": "^10.9.2",
     "tshy": "^1.11.0",
     "typescript": "~5.3.3",

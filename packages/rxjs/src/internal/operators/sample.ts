@@ -1,4 +1,4 @@
-import { Observable, from, operate } from '../Observable.js';
+import { Observable, from, operate } from '@rxjs/observable';
 import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
 import { noop } from '../util/noop.js';
 

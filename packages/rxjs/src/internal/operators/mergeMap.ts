@@ -1,5 +1,5 @@
 import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.js';
-import { Observable } from '../Observable.js';
+import { Observable } from '@rxjs/observable';
 import { mergeInternals } from './mergeInternals.js';
 
 /**
