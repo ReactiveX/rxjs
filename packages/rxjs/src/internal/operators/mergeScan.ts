@@ -77,7 +77,7 @@ export function mergeScan<T, R>(
       // The accumulated state.
       let state = seed;
 
-      return mergeInternals(
+      mergeInternals(
         source,
         subscriber,
         (value, index) => accumulator(state, value, index),
@@ -85,9 +85,11 @@ export function mergeScan<T, R>(
         (value) => {
           state = value;
         },
-        false,
-        undefined,
-        () => (state = null!)
+        false
       );
+
+      return () => {
+        state = null!;
+      };
     });
 }
