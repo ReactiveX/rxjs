@@ -1,1 +1,1 @@
-export class Observable {}
+export { Observable } from './observable.js';

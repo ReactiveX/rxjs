@@ -14,8 +14,9 @@
   "types": "./dist/commonjs/index.d.ts",
   "type": "module",
   "scripts": {
-    "test": "node index.js",
-    "build": "tshy"
+    "build": "tshy",
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
