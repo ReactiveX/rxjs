@@ -1,9 +1,8 @@
 {
-  "name": "rxjs",
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/rxjs",
+      "packages/*",
       "apps/rxjs.dev"
     ],
     "nohoist": [
@@ -25,6 +24,29 @@
   "dependencies": {},
   "devDependencies": {
     "@nx/js": "17.3.0-beta.4",
-    "nx": "17.3.0-beta.4"
+    "nx": "17.3.0-beta.4",
+    "cz-conventional-changelog": "1.2.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "validate-commit-msg": "2.14.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "validate-commit-msg"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "(src|spec)/**/*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,css,md}": "prettier --write"
   }
 }
