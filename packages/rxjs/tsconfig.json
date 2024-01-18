@@ -9,13 +9,11 @@
     "moduleResolution": "node",
     "stripInternal": true,
     "noEmit": true,
-    "lib": [
-      "esnext",
-      "dom"
-    ],
+    "lib": ["esnext", "dom"],
     "target": "esnext",
     "baseUrl": ".",
     "paths": {
+      "@rxjs/observable": ["../../observable/src/index"],
       "rxjs": ["./src/index"],
       "rxjs/operators": ["./src/operators/index"],
       "rxjs/testing": ["./src/testing/index"],
