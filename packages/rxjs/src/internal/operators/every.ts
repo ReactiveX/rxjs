@@ -2,16 +2,6 @@ import { Observable, operate } from '../Observable.js';
 import type { Falsy, OperatorFunction } from '../types.js';
 
 export function every<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
-/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
-export function every<T>(
-  predicate: BooleanConstructor,
-  thisArg: any
-): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
-/** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
-export function every<T, A>(
-  predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
-  thisArg: A
-): OperatorFunction<T, boolean>;
 export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, boolean>;
 
 /**
@@ -39,10 +29,7 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
  * @return A function that returns an Observable of booleans that determines if
  * all items of the source Observable meet the condition specified.
  */
-export function every<T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  thisArg?: any
-): OperatorFunction<T, boolean> {
+export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, boolean> {
   return (source) =>
     new Observable((destination) => {
       let index = 0;
@@ -50,7 +37,7 @@ export function every<T>(
         operate({
           destination,
           next: (value) => {
-            if (!predicate.call(thisArg, value, index++, source)) {
+            if (!predicate(value, index++, source)) {
               destination.next(false);
               destination.complete();
             }
