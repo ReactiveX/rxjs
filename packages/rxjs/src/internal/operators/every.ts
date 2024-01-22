@@ -33,20 +33,25 @@ export function every<T>(predicate: (value: T, index: number) => boolean): Opera
   return (source) =>
     new Observable((destination) => {
       let index = 0;
-      source.subscribe(
-        operate({
-          destination,
-          next: (value) => {
-            if (!predicate(value, index++)) {
-              destination.next(false);
-              destination.complete();
-            }
-          },
-          complete: () => {
-            destination.next(true);
+
+      const subscriber = operate({
+        destination,
+        next: (value: T) => {
+          if (!predicate(value, index++)) {
+            // To prevent re-entrancy issues, we unsubscribe from the
+            // source as soon as possible. Because the `next` right below it
+            // could cause us to re-enter before we get to `complete()`.
+            subscriber.unsubscribe();
+            destination.next(false);
             destination.complete();
-          },
-        })
-      );
+          }
+        },
+        complete: () => {
+          destination.next(true);
+          destination.complete();
+        },
+      });
+
+      source.subscribe(subscriber);
     });
 }

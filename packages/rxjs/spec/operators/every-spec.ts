@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { every, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import type { Observer } from 'rxjs';
-import { of, Observable } from 'rxjs';
+import { of, Observable, Subject } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
 /** @test {every} */
@@ -300,5 +300,25 @@ describe('every', () => {
       expectObservable(e1.pipe(every(predicate))).toBe(expected, { x: true });
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
+  });
+
+  it('should handle reentrancy properly', () => {
+    const subject = new Subject<number>();
+    const results: any[] = [];
+    let n = 0;
+
+    subject.pipe(every(() => false)).subscribe({
+      next: (result) => {
+        results.push(result);
+        if (n < 3) {
+          subject.next(n++);
+        }
+      },
+      complete: () => results.push('done'),
+    });
+
+    subject.next(n);
+
+    expect(results).to.deep.equal([false, 'done']);
   });
 });
