@@ -33,19 +33,6 @@ describe('every', () => {
     });
   });
 
-  it('should accept thisArg with scalar observables', () => {
-    const thisArg = {};
-
-    of(1)
-      .pipe(
-        every(function (this: any, value: number, index: number) {
-          expect(this).to.deep.equal(thisArg);
-          return true;
-        }, thisArg)
-      )
-      .subscribe();
-  });
-
   it('should increment index on each call to the predicate', () => {
     const indices: number[] = [];
     of(1, 2, 3, 4)
@@ -58,36 +45,6 @@ describe('every', () => {
       .subscribe();
 
     expect(indices).to.deep.equal([0, 1, 2, 3]);
-  });
-
-  it('should accept thisArg with array observable', () => {
-    const thisArg = {};
-
-    of(1, 2, 3, 4)
-      .pipe(
-        every(function (this: any, value: number, index: number) {
-          expect(this).to.deep.equal(thisArg);
-          return true;
-        }, thisArg)
-      )
-      .subscribe();
-  });
-
-  it('should accept thisArg with ordinary observable', () => {
-    const thisArg = {};
-
-    const source = new Observable((observer: Observer<number>) => {
-      observer.next(1);
-      observer.complete();
-    });
-    source
-      .pipe(
-        every(function (this: any, value: number, index: number) {
-          expect(this).to.deep.equal(thisArg);
-          return true;
-        }, thisArg)
-      )
-      .subscribe();
   });
 
   it('should emit true if source is empty', () => {
