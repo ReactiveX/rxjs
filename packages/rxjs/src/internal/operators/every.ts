@@ -2,7 +2,7 @@ import { Observable, operate } from '../Observable.js';
 import type { Falsy, OperatorFunction } from '../types.js';
 
 export function every<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
-export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, boolean>;
+export function every<T>(predicate: (value: T, index: number) => boolean): OperatorFunction<T, boolean>;
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
@@ -29,7 +29,7 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
  * @return A function that returns an Observable of booleans that determines if
  * all items of the source Observable meet the condition specified.
  */
-export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, boolean> {
+export function every<T>(predicate: (value: T, index: number) => boolean): OperatorFunction<T, boolean> {
   return (source) =>
     new Observable((destination) => {
       let index = 0;
@@ -37,7 +37,7 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
         operate({
           destination,
           next: (value) => {
-            if (!predicate(value, index++, source)) {
+            if (!predicate(value, index++)) {
               destination.next(false);
               destination.complete();
             }
