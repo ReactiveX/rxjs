@@ -1,21 +1,10 @@
-import type { OperatorFunction, ObservableInput, ObservedValueOf, SchedulerLike } from '../types.js';
+import type { OperatorFunction, ObservableInput, ObservedValueOf } from '../types.js';
 import { Observable } from '../Observable.js';
 import { mergeInternals } from './mergeInternals.js';
 
 export function expand<T, O extends ObservableInput<unknown>>(
   project: (value: T, index: number) => O,
-  concurrent?: number,
-  scheduler?: SchedulerLike
-): OperatorFunction<T, ObservedValueOf<O>>;
-/**
- * @deprecated The `scheduler` parameter will be removed in v8. If you need to schedule the inner subscription,
- * use `subscribeOn` within the projection function: `expand((value) => fn(value).pipe(subscribeOn(scheduler)))`.
- * Details: Details: https://rxjs.dev/deprecations/scheduler-argument
- */
-export function expand<T, O extends ObservableInput<unknown>>(
-  project: (value: T, index: number) => O,
-  concurrent: number | undefined,
-  scheduler: SchedulerLike
+  concurrent?: number
 ): OperatorFunction<T, ObservedValueOf<O>>;
 
 /**
@@ -70,8 +59,7 @@ export function expand<T, O extends ObservableInput<unknown>>(
  */
 export function expand<T, O extends ObservableInput<unknown>>(
   project: (value: T, index: number) => O,
-  concurrent = Infinity,
-  scheduler?: SchedulerLike
+  concurrent = Infinity
 ): OperatorFunction<T, ObservedValueOf<O>> {
   concurrent = (concurrent || 0) < 1 ? Infinity : concurrent;
   return (source) =>
@@ -89,8 +77,7 @@ export function expand<T, O extends ObservableInput<unknown>>(
         undefined,
 
         // Expand-specific
-        true, // Use expand path
-        scheduler // Inner subscription scheduler
+        true // Use expand path
       )
     );
 }

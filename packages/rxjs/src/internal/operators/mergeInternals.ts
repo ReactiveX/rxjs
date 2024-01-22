@@ -1,7 +1,6 @@
-import type { Observable, Subscriber} from '../Observable.js';
+import type { Observable, Subscriber } from '../Observable.js';
 import { from, operate } from '../Observable.js';
-import type { ObservableInput, SchedulerLike } from '../types.js';
-import { executeSchedule } from '../util/executeSchedule.js';
+import type { ObservableInput } from '../types.js';
 
 /**
  * A process embodying the general "merge" strategy. This is used in
@@ -22,9 +21,7 @@ export function mergeInternals<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,
   concurrent: number,
   onBeforeNext?: (innerValue: R) => void,
-  expand?: boolean,
-  innerSubScheduler?: SchedulerLike,
-  additionalFinalizer?: () => void
+  expand?: boolean
 ) {
   // Buffered values, in the event of going over our concurrency limit
   const buffer: T[] = [];
@@ -107,15 +104,7 @@ export function mergeInternals<T, R>(
               // next conditional, if there were any more inner subscriptions
               // to start.
               while (buffer.length && active < concurrent) {
-                const bufferedValue = buffer.shift()!;
-                // Particularly for `expand`, we need to check to see if a scheduler was provided
-                // for when we want to start our inner subscription. Otherwise, we just start
-                // are next inner subscription.
-                if (innerSubScheduler) {
-                  executeSchedule(destination, innerSubScheduler, () => doInnerSub(bufferedValue));
-                } else {
-                  doInnerSub(bufferedValue);
-                }
+                doInnerSub(buffer.shift()!);
               }
               // Check to see if we can complete, and complete if so.
               checkComplete();
@@ -140,10 +129,4 @@ export function mergeInternals<T, R>(
       },
     })
   );
-
-  // Additional finalization (for when the destination is torn down).
-  // Other finalization is added implicitly via subscription above.
-  return () => {
-    additionalFinalizer?.();
-  };
 }
