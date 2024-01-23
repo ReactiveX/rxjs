@@ -45,18 +45,3 @@ it('should handle the Boolean constructor', () => {
   const d = of(NaN, NaN, NaN).pipe(every(Boolean)); // $ExpectType Observable<boolean>
   const e = of(0, 1, 0).pipe(every(Boolean)); // $ExpectType Observable<boolean>
 })
-
-it('should support this', () => {
-  const thisArg = { limit: 5 };
-  const a = of(1, 2, 3).pipe(every(function (val) {
-    const limit = this.limit; // $ExpectType number
-    return val < limit;
-  }, thisArg));
-});
-
-it('should deprecate thisArg usage', () => {
-  const a = of(1, 2, 3).pipe(every(Boolean)); // $ExpectNoDeprecation
-  const b = of(1, 2, 3).pipe(every(Boolean, {})); // $ExpectDeprecation
-  const c = of(1, 2, 3).pipe(every((value) => Boolean(value))); // $ExpectNoDeprecation
-  const d = of(1, 2, 3).pipe(every((value) => Boolean(value), {})); // $ExpectDeprecation
-});
