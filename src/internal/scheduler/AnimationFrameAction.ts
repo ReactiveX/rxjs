@@ -33,7 +33,7 @@ export class AnimationFrameAction<T> extends AsyncAction<T> {
     // cancel the requested animation frame and set the scheduled flag to
     // undefined so the next AnimationFrameAction will request its own.
     const { actions } = scheduler;
-    if (id != null && actions[actions.length - 1]?.id !== id) {
+    if (id != null && id === scheduler._scheduled && actions[actions.length - 1]?.id !== id) {
       animationFrameProvider.cancelAnimationFrame(id as number);
       scheduler._scheduled = undefined;
     }
