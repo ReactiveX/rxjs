@@ -14,8 +14,8 @@ export class AnimationFrameScheduler extends AsyncScheduler {
     // scheduled to be executed in a subsequent flush into positions at which
     // they are executed within the current flush.
     let flushId;
-    if (action?.id) {
-      flushId = action?.id;
+    if (action) {
+      flushId = action.id;
     } else {
       flushId = this._scheduled;
       this._scheduled = undefined;
