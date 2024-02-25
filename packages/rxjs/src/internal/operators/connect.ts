@@ -89,7 +89,7 @@ const DEFAULT_CONFIG: ConnectConfig<unknown> = {
  *
  * @param selector A function used to set up the multicast. Gives you a multicast observable
  * that is not yet connected. With that, you're expected to create and return
- * and Observable, that when subscribed to, will utilize the multicast observable.
+ * an Observable, that when subscribed to, will utilize the multicast observable.
  * After this function is executed -- and its return value subscribed to -- the
  * operator will subscribe to the source, and the connection will be made.
  * @param config The configuration object for `connect`.
