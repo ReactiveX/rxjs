@@ -15,6 +15,7 @@ import type {
   ErrorNotification,
   NextNotification,
 } from './types.js';
+import { createInvalidObservableTypeError } from './util/throwUnobservableError.js';
 
 /**
  * An error thrown when one or more errors have occurred during the
@@ -1259,11 +1260,7 @@ export function getObservableInputType(input: unknown): ObservableInputType {
   if (isReadableStreamLike(input)) {
     return ObservableInputType.ReadableStreamLike;
   }
-  throw new TypeError(
-    `You provided ${
-      input !== null && typeof input === 'object' ? 'an invalid object' : `'${input}'`
-    } where a stream was expected. You can provide an Observable, Promise, ReadableStream, Array, AsyncIterable, or Iterable.`
-  );
+  throw createInvalidObservableTypeError(input);
 }
 
 /**
