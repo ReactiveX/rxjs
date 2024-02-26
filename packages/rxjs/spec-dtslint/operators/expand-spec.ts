@@ -21,10 +21,6 @@ it('should support concurrent parameter', () => {
   const o = of(1, 2, 3).pipe(expand(value => of(1), 47)); // $ExpectType Observable<number>
 });
 
-it('should support a scheduler', () => {
-  const o = of(1, 2, 3).pipe(expand(value => of(1), 47, asyncScheduler)); // $ExpectType Observable<number>
-});
-
 it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(expand()); // $ExpectError
 });

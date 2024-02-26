@@ -74,7 +74,6 @@
   "scripts": {
     "changelog": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s",
     "lint": "eslint --ext=ts,js src spec spec-dtslint",
-    "dtslint": "npm run lint && tsc -b ./src/tsconfig.types.json",
     "test": "yarn build && cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js \"spec/**/*-spec.ts\"",
     "test:esm": "node spec/module-test-spec.mjs",
     "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm",
@@ -83,7 +82,6 @@
     "build:clean": "shx rm -rf ./dist",
     "build": "yarn build:clean && yarn compile && node ./tools/generate-alias.js",
     "watch": "nodemon -w \"src/\" -w \"spec/\" -e ts -x npm test",
-    "watch:dtslint": "nodemon -w \"src/\" -w \"spec-dtslint/\" -e ts -x yarn dtslint",
     "copy_common_package_files": "node ../../scripts/copy-common-package-files.js"
   },
   "repository": {
@@ -143,8 +141,8 @@
     "@types/shelljs": "^0.8.8",
     "@types/sinon": "^10.0.13",
     "@types/sinon-chai": "^3.2.9",
-    "@typescript-eslint/eslint-plugin": "^6.9.0",
-    "@typescript-eslint/parser": "^6.9.0",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
     "chai": "^4.3.7",
     "color": "3.0.0",
     "colors": "1.1.2",
@@ -152,6 +150,7 @@
     "cz-conventional-changelog": "1.2.0",
     "dependency-cruiser": "^9.12.0",
     "eslint": "^8.52.0",
+    "eslint-plugin-expect-type": "^0.3.0",
     "form-data": "^3.0.0",
     "fs-extra": "^8.1.0",
     "husky": "^4.2.5",

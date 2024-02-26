@@ -30,8 +30,6 @@ jobs:
         run: yarn workspace rxjs build
       - name: rxjs test
         run: yarn workspace rxjs test
-      - name: rxjs dtslint
-        run: yarn workspace rxjs dtslint
       - name: rxjs test:import
         run: yarn workspace rxjs test:import
       - name: rxjs test:esm
