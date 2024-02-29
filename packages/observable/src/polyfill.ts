@@ -4,11 +4,10 @@ import { Observable } from './observable.js';
 // the environment may be a web worker, Node.js, or a browser
 // we need to use the correct global context
 
-// @ts-ignore
 const _globalThis = typeof globalThis !== 'undefined' ? globalThis : typeof self !== 'undefined' ? self : global;
 
-// @ts-ignore
+// @ts-expect-error we're adding a property to the global object here
 if (typeof _globalThis.Observable !== 'function') {
-  // @ts-ignore
+  // @ts-expect-error we're adding a property to the global object here
   _globalThis.Observable = Observable;
 }
