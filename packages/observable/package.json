@@ -17,7 +17,8 @@
     "build": "tshy",
     "lint": "eslint ./src",
     "test": "vitest --run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:wpt": "node ./scripts/web-platform-tests.mjs"
   },
   "repository": {
     "type": "git",
