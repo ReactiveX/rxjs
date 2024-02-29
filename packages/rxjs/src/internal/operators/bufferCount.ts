@@ -63,6 +63,11 @@ export function bufferCount<T>(bufferSize: number, startBufferEvery: number | nu
       let buffers: T[][] = [];
       let count = 0;
 
+      destination.add(() => {
+        // Clean up our memory when we finalize
+        buffers = null!;
+      });
+
       source.subscribe(
         operate({
           destination,
@@ -107,10 +112,6 @@ export function bufferCount<T>(bufferSize: number, startBufferEvery: number | nu
               destination.next(buffer);
             }
             destination.complete();
-          },
-          finalize: () => {
-            // Clean up our memory when we finalize
-            buffers = null!;
           },
         })
       );

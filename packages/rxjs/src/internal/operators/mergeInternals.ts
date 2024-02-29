@@ -57,11 +57,6 @@ export function mergeInternals<T, R>(
     // against our concurrency limit later.
     active++;
 
-    // A flag used to show that the inner observable completed.
-    // This is checked during finalization to see if we should
-    // move to the next item in the buffer, if there is on.
-    let innerComplete = false;
-
     // Start our inner subscription.
     from(project(value, index++)).subscribe(
       operate({
@@ -81,37 +76,18 @@ export function mergeInternals<T, R>(
           }
         },
         complete: () => {
-          // Flag that we have completed, so we know to check the buffer
-          // during finalization.
-          innerComplete = true;
-        },
-        finalize: () => {
-          // During finalization, if the inner completed (it wasn't errored or
-          // cancelled), then we want to try the next item in the buffer if
-          // there is one.
-          if (innerComplete) {
-            // We have to wrap this in a try/catch because it happens during
-            // finalization, possibly asynchronously, and we want to pass
-            // any errors that happen (like in a projection function) to
-            // the outer Subscriber.
-            try {
-              // INNER SOURCE COMPLETE
-              // Decrement the active count to ensure that the next time
-              // we try to call `doInnerSub`, the number is accurate.
-              active--;
-              // If we have more values in the buffer, try to process those
-              // Note that this call will increment `active` ahead of the
-              // next conditional, if there were any more inner subscriptions
-              // to start.
-              while (buffer.length && active < concurrent) {
-                doInnerSub(buffer.shift()!);
-              }
-              // Check to see if we can complete, and complete if so.
-              checkComplete();
-            } catch (err) {
-              destination.error(err);
-            }
+          // Decrement the active count to ensure that the next time
+          // we try to call `doInnerSub`, the number is accurate.
+          active--;
+          // If we have more values in the buffer, try to process those
+          // Note that this call will increment `active` ahead of the
+          // next conditional, if there were any more inner subscriptions
+          // to start.
+          while (buffer.length && active < concurrent) {
+            doInnerSub(buffer.shift()!);
           }
+          // Check to see if we can complete, and complete if so.
+          checkComplete();
         },
       })
     );

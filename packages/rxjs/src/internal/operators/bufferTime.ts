@@ -83,6 +83,10 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
       // this is only really used for when *just* the buffer time span is passed.
       let restartOnEmit = false;
 
+      destination.add(() => {
+        bufferRecords = null;
+      });
+
       /**
        * Does the work of emitting the buffer from the record, ensuring that the
        * record is removed before the emission so reentrant code (from some custom scheduling, perhaps)
@@ -153,8 +157,6 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
           destination.complete();
           destination.unsubscribe();
         },
-        // Clean up
-        finalize: () => (bufferRecords = null),
       });
 
       source.subscribe(bufferTimeSubscriber);

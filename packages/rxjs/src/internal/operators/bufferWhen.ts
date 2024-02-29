@@ -1,4 +1,4 @@
-import type { Subscriber} from '@rxjs/observable';
+import type { Subscriber } from '@rxjs/observable';
 import { operate, Observable, from } from '@rxjs/observable';
 import type { ObservableInput, OperatorFunction } from '../types.js';
 import { noop } from '../util/noop.js';
@@ -43,13 +43,17 @@ import { noop } from '../util/noop.js';
  */
 export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): OperatorFunction<T, T[]> {
   return (source) =>
-    new Observable((subscriber) => {
+    new Observable((destination) => {
       // The buffer we keep and emit.
       let buffer: T[] | null = null;
       // A reference to the subscriber used to subscribe to
       // the closing notifier. We need to hold this so we can
       // end the subscription after the first notification.
       let closingSubscriber: Subscriber<T> | null = null;
+
+      destination.add(() => {
+        buffer = closingSubscriber = null!;
+      });
 
       // Ends the previous closing notifier subscription, so it
       // terminates after the first emission, then emits
@@ -62,12 +66,12 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
         // emit the buffer if we have one, and start a new buffer.
         const b = buffer;
         buffer = [];
-        b && subscriber.next(b);
+        b && destination.next(b);
 
         // Get a new closing notifier and subscribe to it.
         from(closingSelector()).subscribe(
           (closingSubscriber = operate({
-            destination: subscriber,
+            destination,
             next: openBuffer,
             complete: noop,
           }))
@@ -80,17 +84,15 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
       // Subscribe to our source.
       source.subscribe(
         operate({
-          destination: subscriber,
+          destination,
           // Add every new value to the current buffer.
           next: (value) => buffer?.push(value),
           // When we complete, emit the buffer if we have one,
           // then complete the result.
           complete: () => {
-            buffer && subscriber.next(buffer);
-            subscriber.complete();
+            buffer && destination.next(buffer);
+            destination.complete();
           },
-          // Release memory on finalization
-          finalize: () => (buffer = closingSubscriber = null!),
         })
       );
     });
