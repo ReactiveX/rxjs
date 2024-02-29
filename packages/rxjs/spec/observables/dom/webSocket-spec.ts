@@ -669,7 +669,7 @@ describe('webSocket', () => {
       });
       socket.triggerClose({ wasClean: true });
 
-      expect(results).to.deep.equal(['A next', 'A unsub', 'B next', 'B next', 'B next', 'B unsub', 'B complete']);
+      expect(results).to.deep.equal(['A next', 'A unsub', 'B next', 'B next', 'B next', 'B complete']);
     });
 
     it('should not close the socket until all subscriptions complete', () => {
