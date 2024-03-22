@@ -1,6 +1,6 @@
 The `operator-decision-tree` module requires `decision-tree-data.json`, which is hosted at `/generated/app`.
 
-The JSON is generated via the `apps/rxjs.dev/tools/decision-tree-generator`.
+The JSON is generated via `apps/rxjs.dev/content/operator-decision-tree.yml`.
 
 # TODO
 
