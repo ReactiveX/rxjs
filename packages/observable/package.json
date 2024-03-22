@@ -38,25 +38,11 @@
     "exports": {
       "./package.json": "./package.json",
       ".": "./src/index.ts"
-    },
-    "esmDialects": [
-      "browser"
-    ],
-    "commonjsDialects": [
-      "webpack"
-    ]
+    }
   },
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "browser": {
-        "types": "./dist/browser/index.d.ts",
-        "default": "./dist/browser/index.js"
-      },
-      "webpack": {
-        "types": "./dist/webpack/index.d.ts",
-        "default": "./dist/webpack/index.js"
-      },
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
