@@ -238,7 +238,7 @@ export interface SubscriberOverrides<T> {
  */
 export class Subscriber<T> extends Subscription implements Observer<T> {
   /** @internal */
-  protected isStopped: boolean = false;
+  protected isStopped = false;
   /** @internal */
   protected destination: Observer<T>;
 
