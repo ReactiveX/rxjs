@@ -1,4 +1,4 @@
-import type { Subscriber} from '@rxjs/observable';
+import type { Subscriber } from '@rxjs/observable';
 import { operate, Observable, from } from '@rxjs/observable';
 import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
 import { noop } from '../util/noop.js';
@@ -69,6 +69,10 @@ export function debounce<T>(durationSelector: (value: T) => ObservableInput<any>
       // The subscriber/subscription for the current debounce, if there is one.
       let durationSubscriber: Subscriber<any> | null = null;
 
+      destination.add(() => {
+        lastValue = durationSubscriber = null;
+      });
+
       const emit = () => {
         // Unsubscribe any current debounce subscription we have,
         // we only cared about the first notification from it, and we
@@ -105,10 +109,6 @@ export function debounce<T>(durationSelector: (value: T) => ObservableInput<any>
             // Emit any pending debounced values then complete
             emit();
             destination.complete();
-          },
-          finalize: () => {
-            // Finalization.
-            lastValue = durationSubscriber = null;
           },
         })
       );

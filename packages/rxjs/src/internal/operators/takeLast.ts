@@ -50,6 +50,12 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
           let ring = new Array<T>(count);
           // This counter is how we track where we are at in the ring buffer.
           let counter = 0;
+
+          destination.add(() => {
+            // During finalization release the values in our buffer.
+            ring = null!;
+          });
+
           source.subscribe(
             operate({
               destination,
@@ -72,10 +78,6 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
                 }
                 // All done. This will also trigger clean up.
                 destination.complete();
-              },
-              finalize: () => {
-                // During finalization release the values in our buffer.
-                ring = null!;
               },
             })
           );

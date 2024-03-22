@@ -1,7 +1,7 @@
 import { asyncScheduler } from '../scheduler/async.js';
 import type { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ObservableInput, ObservedValueOf } from '../types.js';
 import { isValidDate } from '../util/isDate.js';
-import type { Subscription} from '@rxjs/observable';
+import type { Subscription } from '@rxjs/observable';
 import { Observable, from, operate } from '@rxjs/observable';
 import { executeSchedule } from '../util/executeSchedule.js';
 
@@ -318,6 +318,14 @@ export function timeout<T, O extends ObservableInput<any>, M>(
       // A bit of state we pass to the with and error factories to
       // tell how many values we have seen so far.
       let seen = 0;
+
+      destination.add(() => {
+        timerSubscription?.unsubscribe();
+        // Be sure not to hold the last value in memory after unsubscription
+        // it could be quite large.
+        lastValue = null;
+      });
+
       const startTimer = (delay: number) => {
         timerSubscription = executeSchedule(
           destination,
@@ -351,12 +359,6 @@ export function timeout<T, O extends ObservableInput<any>, M>(
             destination.next((lastValue = value));
             // null | undefined are both < 0. Thanks, JavaScript.
             each! > 0 && startTimer(each!);
-          },
-          finalize: () => {
-            timerSubscription?.unsubscribe();
-            // Be sure not to hold the last value in memory after unsubscription
-            // it could be quite large.
-            lastValue = null;
           },
         })
       );

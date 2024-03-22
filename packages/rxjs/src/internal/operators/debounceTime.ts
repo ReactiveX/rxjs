@@ -66,6 +66,10 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
       let lastValue: T;
       let activeTask: Subscription | void;
 
+      destination.add(() => {
+        lastValue = activeTask = null!;
+      });
+
       source.subscribe(
         operate({
           destination,
@@ -93,10 +97,6 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
               destination.next(lastValue);
             }
             destination.complete();
-          },
-          finalize: () => {
-            // Finalization.
-            lastValue = activeTask = null!;
           },
         })
       );

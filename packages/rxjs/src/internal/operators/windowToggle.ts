@@ -57,6 +57,17 @@ export function windowToggle<T, O>(
     new Observable((destination) => {
       const windows: Subject<T>[] = [];
 
+      destination.add(() => {
+        // Add this finalization so that all window subjects are
+        // disposed of. This way, if a user tries to subscribe
+        // to a window *after* the outer subscription has been unsubscribed,
+        // they will get an error, instead of waiting forever to
+        // see if a value arrives.
+        while (0 < windows.length) {
+          windows.shift()!.unsubscribe();
+        }
+      });
+
       const handleError = (err: any) => {
         while (0 < windows.length) {
           windows.shift()!.error(err);
@@ -124,16 +135,6 @@ export function windowToggle<T, O>(
               windows.shift()!.complete();
             }
             destination.complete();
-          },
-          finalize: () => {
-            // Add this finalization so that all window subjects are
-            // disposed of. This way, if a user tries to subscribe
-            // to a window *after* the outer subscription has been unsubscribed,
-            // they will get an error, instead of waiting forever to
-            // see if a value arrives.
-            while (0 < windows.length) {
-              windows.shift()!.unsubscribe();
-            }
           },
         })
       );

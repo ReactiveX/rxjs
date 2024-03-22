@@ -220,12 +220,6 @@ export interface SubscriberOverrides<T> {
    * will be handled and passed to the destination's `error` method.
    */
   complete?: () => void;
-  /**
-   * If provided, this function will be called after all teardown has occurred
-   * for this {@link Subscriber}. This is generally used for cleanup purposes
-   * during operator development.
-   */
-  finalize?: () => void;
 }
 
 /**
@@ -248,8 +242,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   protected readonly _errorOverride: ((err: any) => void) | null = null;
   /** @internal */
   protected readonly _completeOverride: (() => void) | null = null;
-  /** @internal */
-  protected readonly _onFinalize: (() => void) | null = null;
 
   /**
    * @deprecated Do not create instances of `Subscriber` directly. Use {@link operate} instead.
@@ -283,7 +275,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     this._nextOverride = overrides?.next ?? null;
     this._errorOverride = overrides?.error ?? null;
     this._completeOverride = overrides?.complete ?? null;
-    this._onFinalize = overrides?.finalize ?? null;
 
     // It's important - for performance reasons - that all of this class's
     // members are initialized and that they are always initialized in the same
@@ -355,7 +346,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.closed) {
       this.isStopped = true;
       super.unsubscribe();
-      this._onFinalize?.();
     }
   }
 
@@ -364,19 +354,13 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 
   protected _error(err: any): void {
-    try {
-      this.destination.error(err);
-    } finally {
-      this.unsubscribe();
-    }
+    this.unsubscribe();
+    this.destination.error(err);
   }
 
   protected _complete(): void {
-    try {
-      this.destination.complete();
-    } finally {
-      this.unsubscribe();
-    }
+    this.unsubscribe();
+    this.destination.complete();
   }
 }
 
@@ -428,22 +412,20 @@ function overrideNext<T>(this: Subscriber<T>, value: T): void {
 }
 
 function overrideError(this: Subscriber<unknown>, err: any): void {
+  this.unsubscribe();
   try {
     this._errorOverride!(err);
   } catch (error) {
     this.destination.error(error);
-  } finally {
-    this.unsubscribe();
   }
 }
 
 function overrideComplete(this: Subscriber<unknown>): void {
+  this.unsubscribe();
   try {
     this._completeOverride!();
   } catch (error) {
     this.destination.error(error);
-  } finally {
-    this.unsubscribe();
   }
 }
 

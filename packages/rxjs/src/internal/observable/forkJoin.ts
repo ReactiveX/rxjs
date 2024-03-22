@@ -165,9 +165,9 @@ export function forkJoin(...args: any[]): Observable<any> {
             }
             values[sourceIndex] = value;
           },
-          complete: () => remainingCompletions--,
-          finalize: () => {
-            if (!remainingCompletions || !hasValue) {
+          complete: () => {
+            remainingCompletions--;
+            if (remainingCompletions <= 0 || !hasValue) {
               if (remainingEmissions === 0) {
                 destination.next(keys ? createObject(keys, values) : values);
                 destination.complete();

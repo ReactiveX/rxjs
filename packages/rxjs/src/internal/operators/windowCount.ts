@@ -69,8 +69,11 @@ export function windowCount<T>(windowSize: number, startWindowEvery: number = 0)
   return (source) =>
     new Observable((destination) => {
       let windows = [new Subject<T>()];
-      let starts: number[] = [];
       let count = 0;
+
+      destination.add(() => {
+        windows = null!;
+      });
 
       // Open the first window.
       destination.next(windows[0].asObservable());
@@ -117,10 +120,6 @@ export function windowCount<T>(windowSize: number, startWindowEvery: number = 0)
               windows.shift()!.complete();
             }
             destination.complete();
-          },
-          finalize: () => {
-            starts = null!;
-            windows = null!;
           },
         })
       );

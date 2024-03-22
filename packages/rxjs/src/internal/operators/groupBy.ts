@@ -153,6 +153,11 @@ export function groupBy<T, K, R>(
       // A lookup for the groups that we have so far.
       const groups = new Map<K, SubjectLike<any>>();
 
+      destination.add(() => {
+        // Free up memory.
+        groups.clear();
+      });
+
       // Used for notifying all groups and the subscriber in the same way.
       const notify = (cb: (group: Observer<any>) => void) => {
         groups.forEach(cb);
@@ -202,9 +207,18 @@ export function groupBy<T, K, R>(
                     // Our duration notified! We can complete the group.
                     // The group will be removed from the map in the finalization phase.
                     group!.complete();
+                    groups.delete(key);
                     durationSubscriber?.unsubscribe();
                   },
-                  finalize: () => groups.delete(key),
+                  error: (err) => {
+                    group!.error(err);
+                    groups.delete(key);
+                    durationSubscriber?.unsubscribe();
+                  },
+                  complete: () => {
+                    groups.delete(key);
+                    durationSubscriber?.unsubscribe();
+                  },
                 });
 
                 // Start our duration notifier.
@@ -222,11 +236,6 @@ export function groupBy<T, K, R>(
         error: handleError,
         // Source completes.
         complete: () => notify((consumer) => consumer.complete()),
-        // Free up memory.
-        // When the source subscription is _finally_ torn down, release the subjects and keys
-        // in our groups Map, they may be quite large and we don't want to keep them around if we
-        // don't have to.
-        finalize: () => groups.clear(),
       });
 
       // Subscribe to the source
