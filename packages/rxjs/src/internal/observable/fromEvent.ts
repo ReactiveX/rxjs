@@ -260,7 +260,12 @@ export function fromEvent<T>(
   }
 
   return new Observable<T>((subscriber) => {
-    const handler = (...args: any[]) => subscriber.next(1 < args.length ? args : args[0]);
+    const handler = (...args: any[]) => {
+      subscriber.next(1 < args.length ? args : args[0]);
+      if(!isFunction(options) && options?.once){
+        subscriber.complete();
+      }
+    };
     if (isValidTarget) {
       // Valid event targets, even if they have a `length` property
       // will be subscribed to as a single item.
