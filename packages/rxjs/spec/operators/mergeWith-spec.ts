@@ -1,11 +1,11 @@
 import { expect } from 'chai';
-import { mergeWith, map, mergeAll, take } from 'rxjs/operators';
+import { mergeWith, map, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { queueScheduler, of, scheduled, Observable } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 
-/** @test {merge} */
-describe('merge operator', () => {
+/** @test {mergeWith} */
+describe('mergeWith', () => {
   let rxTestScheduler: TestScheduler;
 
   beforeEach(() => {
@@ -31,6 +31,24 @@ describe('merge operator', () => {
   it('should merge a source with a second', (done) => {
     const a = of(1, 2, 3);
     const b = of(4, 5, 6, 7, 8);
+    const r = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    a.pipe(mergeWith(b)).subscribe({
+      next: (val) => {
+        expect(val).to.equal(r.shift());
+      },
+      error: () => {
+        done(new Error('should not be called'));
+      },
+      complete: () => {
+        done();
+      },
+    });
+  });
+
+  it('should merge a source with a second, when the second is just a plain array', (done) => {
+    const a = of(1, 2, 3);
+    const b = [4, 5, 6, 7, 8];
     const r = [1, 2, 3, 4, 5, 6, 7, 8];
 
     a.pipe(mergeWith(b)).subscribe({
@@ -302,38 +320,6 @@ describe('merge operator', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
-  });
-});
-
-describe('mergeAll operator', () => {
-  it('should merge two observables', (done) => {
-    const a = of(1, 2, 3);
-    const b = of(4, 5, 6, 7, 8);
-    const r = [1, 2, 3, 4, 5, 6, 7, 8];
-
-    of(a, b)
-      .pipe(mergeAll())
-      .subscribe({
-        next: (val) => {
-          expect(val).to.equal(r.shift());
-        },
-        complete: done,
-      });
-  });
-
-  it('should merge two immediately-scheduled observables', (done) => {
-    const a = scheduled([1, 2, 3], queueScheduler);
-    const b = scheduled([4, 5, 6, 7, 8], queueScheduler);
-    const r = [1, 2, 4, 3, 5, 6, 7, 8];
-
-    scheduled([a, b], queueScheduler)
-      .pipe(mergeAll())
-      .subscribe({
-        next: (val) => {
-          expect(val).to.equal(r.shift());
-        },
-        complete: done,
-      });
   });
 
   it('should stop listening to a synchronous observable when unsubscribed', () => {

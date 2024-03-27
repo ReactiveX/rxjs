@@ -556,6 +556,21 @@ describe('mergeAll', () => {
       });
   });
 
+  it('should merge an observable and an observable input (array)', (done) => {
+    const a = of(1, 2, 3);
+    const b = [4, 5, 6, 7, 8];
+    const r = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    of(a, b)
+      .pipe(mergeAll())
+      .subscribe({
+        next: (val) => {
+          expect(val).to.equal(r.shift());
+        },
+        complete: done,
+      });
+  });
+
   it('should stop listening to a synchronous observable when unsubscribed', () => {
     const sideEffects: number[] = [];
     const synchronousObservable = new Observable<number>((subscriber) => {
