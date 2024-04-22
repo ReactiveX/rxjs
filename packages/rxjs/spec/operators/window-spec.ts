@@ -4,6 +4,7 @@ import type { Observable} from 'rxjs';
 import { EMPTY, of, interval } from 'rxjs';
 import { observableMatcher } from '../helpers/observableMatcher';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 
 /** @test {window} */
 describe('window', () => {
@@ -284,6 +285,8 @@ describe('window', () => {
   });
 
   it('should window when Promise resolves', (done) => {
+    const sandbox = sinon.createSandbox();
+    const fakeTimers = sandbox.useFakeTimers();
     const e1 = interval(3).pipe(take(5));
     let pos = 0;
     const result: number[][] = [[], []];
@@ -302,9 +305,11 @@ describe('window', () => {
       error: () => done(new Error('should not be called')),
       complete: () => {
         expect(result).to.deep.equal(expected);
+        sandbox.restore();
         done();
       },
     });
+    fakeTimers.tickAsync(15);
   });
 
   it('should raise error when Promise rejects', (done) => {
