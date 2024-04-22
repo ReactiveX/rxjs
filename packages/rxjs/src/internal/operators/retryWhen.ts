@@ -56,8 +56,7 @@ import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
  * user can `complete` or `error`, aborting the retry.
  * @return A function that returns an Observable that mirrors the source
  * Observable with the exception of an `error`.
- * @deprecated Will be removed in v9 or v10, use {@link retry}'s `delay` option instead.
- * Will be removed in v9 or v10. Use {@link retry}'s {@link RetryConfig#delay delay} option instead.
+ * @deprecated Will be removed in v9 or v10. Use {@link retry}'s {@link RetryConfig#delay delay} option instead.
  * Instead of `retryWhen(() => notify$)`, use: `retry({ delay: () => notify$ })`.
  */
 export function retryWhen<T>(notifier: (errors: Observable<any>) => ObservableInput<any>): MonoTypeOperatorFunction<T> {
