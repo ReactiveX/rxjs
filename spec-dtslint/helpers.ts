@@ -32,3 +32,35 @@ export const g$ = of(new G());
 export const h$ = of(new H());
 export const i$ = of(new I());
 export const j$ = of(new J());
+
+interface Subscription {
+  closed: boolean;
+  unsubscribe(): void;
+}
+interface SubscriptionObserver<T> {
+  closed: boolean;
+  next(value: T): void;
+  error(errorValue: any): void;
+  complete(): void;
+}
+type Subscriber<T> = (observer: SubscriptionObserver<T>) => void | (() => void) | Subscription;
+
+interface Observer<T> {
+  start?(subscription: Subscription): any;
+  next?(value: T): void;
+  error?(errorValue: any): void;
+  complete?(): void;
+}
+
+export declare class CompatObservable<T> {
+  constructor(subscriber: Subscriber<T>);
+
+  subscribe(observer: Observer<T>): Subscription;
+  subscribe(
+      onNext: (value: T) => void,
+      onError?: (error: any) => void,
+      onComplete?: () => void,
+  ): Subscription;
+
+  [Symbol.observable](): CompatObservable<T>;
+}
