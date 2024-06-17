@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="en"><head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <meta charset="utf-8">
+  <title>RxJS</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" type="image/x-icon" href="assets/images/favicons/favicon.ico">
+  <!--<link rel="icon" type="image/png" href="assets/images/favicons/favicon-32x32.png"-->
+        <!--sizes="32x32">-->
+  <!--<link rel="icon" type="image/png" href="assets/images/favicons/favicon-194x194.png"-->
+        <!--sizes="194x194">-->
+  <!--<link rel="icon" type="image/png" href="assets/images/favicons/favicon-96x96.png"-->
+        <!--sizes="96x96">-->
+  <!--<link rel="icon" type="image/png" href="assets/images/favicons/favicon-16x16.png"-->
+        <!--sizes="16x16">-->
+  <!--<link rel="apple-touch-icon" sizes="144x144" href="assets/images/favicons/apple-touch-icon-144x144.png">-->
+  <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/images/favicons/apple-touch-icon-144x144.png">-->
+
+  <!-- NOTE: These need to be kept in sync with `ngsw-config.json`. -->
+  <style type="text/css">@font-face{font-family:'Material Icons';font-style:normal;font-weight:400;src:url(https://fonts.gstatic.com/s/materialicons/v142/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');}.material-icons{font-family:'Material Icons';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;-webkit-font-feature-settings:'liga';-webkit-font-smoothing:antialiased;}</style>
+  <style type="text/css">@font-face{font-family:'Droid Sans Mono';font-style:normal;font-weight:400;src:url(https://fonts.gstatic.com/s/droidsansmono/v20/6NUO8FuJNQ2MbkrZ5-J8lKFrp7pRef2rUGIW9g.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}</style>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- -->
+
+  <link rel="manifest" href="pwa-manifest.json">
+  <meta name="theme-color" content="#d81b60">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="translucent">
+
+  <script>
+    // Dynamically, preemptively, add `noindex`, which will be removed when the doc is ready and valid
+    var tag = document.createElement('meta'); tag.name = 'robots'; tag.content = 'noindex';
+    document.head.appendChild(tag);
+  </script>
+
+  <!-- Google Analytics -->
+  <script>
+  // Note this is a customised version of the GA tracking snippet
+  // See the comments below for more info
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;
+  ~i.name.indexOf('NG_DEFER_BOOTSTRAP')|| // only load library if not running e2e tests
+  m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  </script>
+  <!-- End Google Analytics -->
+
+  <script>
+    // Report fatal errors to Google Analytics
+    window.onerror = function() {
+      ga('send', 'exception', {exDescription: formatError.apply(null, arguments), exFatal: true});
+
+      function formatError(msg, url, line, col, e) {
+        var stack;
+        msg = msg.replace(/^Error: /, '');
+        if (e) {
+          stack = e.stack
+              // strip the leading "Error: " from the stack trace
+              .replace(/^Error: /, '')
+              // strip the message from the stack trace, if present
+              .replace(msg + '\n', '')
+              // strip leading spaces
+              .replace(/^ +/gm, '')
+              // strip all leading "at " for each frame
+              .replace(/^at /gm, '')
+              // replace long urls with just the last segment: `filename:line:column`
+              .replace(/(?: \(|@)http.+\/([^/)]+)\)?(?:\n|$)/gm, '@$1\n')
+              // replace "eval code" in Edge
+              .replace(/ *\(eval code(:\d+:\d+)\)(?:\n|$)/gm, '@???$1\n')
+        } else {
+          line = line || '?';
+          col = col || '?';
+          stack = url + ':' + line + ':' + col;
+        }
+        return (msg + '\n' + stack).substr(0, 150);
+      }
+    };
+  </script>
+
+  <script>
+    if (!Object.assign) {
+      // polyfill other non-evergreen browsers in a blocking way
+      var polyfillUrl = "https://cdn.polyfill.io/v2/polyfill.min.js?features=default,Array.prototype.find&flags=gated&unknown=polyfill";
+
+      // send a blocking XHR to fetch the polyfill
+      // then append it to the document so that its eval-ed synchronously
+      // this is required because the method used for IE is not reliable with other non-evergreen browsers
+      var xhr = new XMLHttpRequest();
+      xhr.addEventListener("load", function() {
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        var code = this.responseText;
+        s.appendChild(document.createTextNode(code));
+        document.head.appendChild(s);
+      });
+      xhr.open("GET", polyfillUrl, false);
+      xhr.send();
+    }
+  </script>
+
+  <script>
+    //load CE polyfill
+    //HACK: webpack's html plugin mangles the document.write calls if we don't trick it.
+
+    //load the ES5 shim for browsers with native CE support
+    function loadCustomElementsShim(){
+      document.write('<scri' + 'pt src="assets/js/native-shim.js"><' + '/script>');
+    }
+
+    //load the full custom elements polyfill for browsers without support
+    function loadCustomElementsPolyfill(){
+      document.write('<scri' + 'pt src="assets/js/custom-elements.min.js"><' + '/script>');
+    }
+    //detect if we have native CE support
+    if(!window.customElements){
+      loadCustomElementsPolyfill();
+    }
+    else {
+      loadCustomElementsShim();
+    }
+  </script>
+
+<style>body{font-family:Roboto,Helvetica Neue Light,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;margin:0;color:#333;font-size:14px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}html,body{height:100%}body{background-color:#fafafa}@media print{*{box-shadow:none!important}}body::-webkit-scrollbar{height:6px;width:6px}body::-webkit-scrollbar-track{-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,.3)}body::-webkit-scrollbar-thumb{background-color:#6e6e6e;outline:1px solid #333}</style><link rel="stylesheet" href="styles.aa263d31fded4b20.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.aa263d31fded4b20.css"></noscript></head>
+<body>
+
+  <aio-shell></aio-shell>
+
+  <noscript>
+    <div class="background-sky hero"></div>
+    <section id="intro">
+      <div class="hero-logo">
+        <img src="assets/images/favicons/favicon-192x192.png" width="250" height="250" alt="RxJS logo">
+      </div>
+      <div class="headline-container">
+        <h2 class="hero-headline">RxJS</h2>
+        <span class="hero-subheadline">Reactive Extensions Library for JavaScript</span>
+      </div>
+    </section>
+    <h2 style="color: red; text-align: center;">
+      <b><i>This website requires JavaScript.</i></b>
+    </h2>
+  </noscript>
+  <script src="assets/js/devtools-welcome.js"></script>
+<script src="runtime.526a848392429881.js" type="module"></script><script src="polyfills.ae879fa2f1c03517.js" type="module"></script><script src="main.883e0039dd1dc52d.js" type="module"></script>
+
+</body></html>
