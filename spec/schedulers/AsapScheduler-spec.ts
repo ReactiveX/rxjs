@@ -66,7 +66,7 @@ describe('Scheduler.asap', () => {
     const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     // callThrough is missing from the declarations installed by the typings tool in stable
-    const stubSetInterval = (<any> sandbox.stub(global, 'setInterval')).callThrough();
+    const stubSetInterval = (<any> sandbox.stub(fakeTimer, 'setInterval')).callThrough();
     const period = 50;
     const state = { index: 0, period };
     type State = typeof state;
@@ -92,7 +92,7 @@ describe('Scheduler.asap', () => {
     const sandbox = sinon.createSandbox();
     const fakeTimer = sandbox.useFakeTimers();
     // callThrough is missing from the declarations installed by the typings tool in stable
-    const stubSetInterval = (<any> sandbox.stub(global, 'setInterval')).callThrough();
+    const stubSetInterval = (<any> sandbox.stub(fakeTimer, 'setInterval')).callThrough();
     const period = 50;
     const state = { index: 0, period };
     type State = typeof state;
@@ -146,6 +146,12 @@ describe('Scheduler.asap', () => {
         }
       }
     }, 0, 0);
+  });
+
+  it('should schedule asap actions from a delayed one', (done) => {
+    asap.schedule(() => {
+      asap.schedule(() => { done(); });
+    }, 1);
   });
 
   it('should cancel the setImmediate if all scheduled actions unsubscribe before it executes', (done) => {
