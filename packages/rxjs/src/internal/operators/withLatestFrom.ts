@@ -41,6 +41,7 @@ export function withLatestFrom<T, O extends unknown[], R>(
  * ```
  *
  * @see {@link combineLatest}
+ * @see {@link sample}
  *
  * @param inputs An input Observable to combine with the source Observable. More
  * than one input Observables may be given as argument. If the last parameter is
