@@ -1,7 +1,5 @@
 {
-  "affected": {
-    "defaultBase": "master"
-  },
+  "defaultBase": "master",
   "nxCloudAccessToken": "OWE4MTMzMTEtNDZlZi00MWMwLWJkYmEtN2EwYTQ1ZWNjMzRkfHJlYWQ=",
   "targetDefaults": {
     "build": {
@@ -50,10 +48,7 @@
       "projectChangelogs": true
     },
     "version": {
-      "generatorOptions": {
-        "currentVersionResolver": "git-tag",
-        "specifierSource": "conventional-commits"
-      }
+      "conventionalCommits": true
     }
   }
 }
