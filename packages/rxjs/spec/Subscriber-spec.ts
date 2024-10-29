@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import type { Observer} from 'rxjs';
+import type { Observer } from 'rxjs';
 import { Subscriber, Observable, of, config, operate } from 'rxjs';
 import * as sinon from 'sinon';
 import { asInteropSubscriber } from './helpers/interop-helper';
@@ -301,35 +301,40 @@ describe('Subscriber', () => {
     });
   });
 
-  const FinalizationRegistry = (global as any).FinalizationRegistry;
-  if (FinalizationRegistry && global.gc) {
-    it('should not leak the destination', (done) => {
-      let observer: Observer<number> | undefined = {
-        next() {
-          /* noop */
-        },
-        error() {
-          /* noop */
-        },
-        complete() {
-          /* noop */
-        },
-      };
+  it('should not leak the destination', function (done) {
+    this.timeout(10000);
 
-      const registry = new FinalizationRegistry((value: any) => {
-        expect(value).to.equal('observer');
-        done();
-      });
-      registry.register(observer, 'observer');
+    const observer: Observer<number> | undefined = {
+      next() {
+        /* noop */
+      },
+      error() {
+        /* noop */
+      },
+      complete() {
+        /* noop */
+      },
+    };
 
-      const subscription = of(42).subscribe(observer);
+    /**
+     * Use WeakRef instead of FinalizationRegistry (as was originally used). Per MDN, FinalizationRegistry is not a deterministic enough mechanism
+     * on which to base reliable tests: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry
+     */
+    const weakRef = new WeakRef(observer);
 
-      observer = undefined;
+    // Subscribe to the observable which will complete and unsubscribe automatically. This should not cause any remaining references to the observer after garbage collection.
+    of(42).subscribe(observer);
+
+    setTimeout(() => {
       global.gc?.();
-    });
-  } else {
-    console.warn(`No support for FinalizationRegistry in Node ${process.version}`);
-  }
+
+      if (weakRef.deref() === undefined) {
+        done();
+      } else {
+        done(new Error('Observer was not garbage collected - possible memory leak'));
+      }
+    }, 1000);
+  });
 });
 
 describe('operate', () => {
