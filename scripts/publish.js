@@ -1,7 +1,7 @@
 // @ts-check
 
 const { prerelease, valid } = require('semver');
-const { releasePublish } = require('nx/src/command-line/release');
+const { releasePublish } = require('nx/release');
 
 /**
  * Maps git branch names to npm dist tags. If master is an alpha/beta release,
