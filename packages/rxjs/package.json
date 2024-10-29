@@ -61,7 +61,7 @@
   "scripts": {
     "lint": "eslint --ext=ts,js src spec spec-dtslint",
     "dtslint": "npm run lint && tsc -b ./src/tsconfig.types.json",
-    "test": "cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js \"spec/**/*-spec.ts\"",
+    "test": "cross-env TS_NODE_PROJECT=tsconfig.mocha.json node --expose-gc ../../node_modules/.bin/_mocha --config spec/support/.mocharc.js \"spec/**/*-spec.ts\"",
     "test:esm": "node spec/module-test-spec.mjs",
     "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm",
     "test:import": "node integration/import/runner.js",
