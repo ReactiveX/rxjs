@@ -106,3 +106,4 @@ export { windowWhen } from '../internal/operators/windowWhen.js';
 export { withLatestFrom } from '../internal/operators/withLatestFrom.js';
 export { zipAll } from '../internal/operators/zipAll.js';
 export { zipWith } from '../internal/operators/zipWith.js';
+export { toModel } from '../internal/operators/toModel.js';

@@ -10,6 +10,9 @@ export type Constructor<T> = { new (...args: any[]): T };
  *
  * @param {Constructor<T>} Constructor - The constructor function used to create model instances from emitted values.
  * @returns {MonoTypeOperatorFunction<T>} A function that takes an observable and transforms its emitted values.
+ *
+ * @author Yusuf Alamu Musa
+ * @version 1.0
  */
 export function toModel<T>(Constructor: Constructor<T>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) =>
