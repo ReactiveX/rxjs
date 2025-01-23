@@ -165,11 +165,15 @@ describe('Scheduler.animationFrame', () => {
     let runDelayed = false;
     let runFirst = false;
     animationFrame.schedule(() => {
-      animationFrame.schedule(() => { runFirst = true; });
       animationFrame.schedule(() => {
         if (!runDelayed) {
           done(new Error('Delayed action did not run'));
-        } else if (!runFirst) {
+          return;
+        }
+        runFirst = true;
+      });
+      animationFrame.schedule(() => {
+        if (!runFirst) {
           done(new Error('First action did not run'));
         } else {
           done();
@@ -177,7 +181,9 @@ describe('Scheduler.animationFrame', () => {
       });
 
       // This action will execute before the next frame because the delay is less than the one of the frame
-      animationFrame.schedule(() => { runDelayed = true; }, 1);
+      animationFrame.schedule(() => {
+        runDelayed = true;
+      }, 1);
     });
   });
 
