@@ -141,6 +141,52 @@ describe('Scheduler.animationFrame', () => {
     }
   });
 
+  it('should schedule next frame actions from a delayed one', (done) => {
+    animationFrame.schedule(() => {
+      animationFrame.schedule(() => { done(); });
+    }, 1);
+  });
+
+  it('should schedule 2 actions for a subsequent frame', (done) => {
+    let runFirst = false;
+    animationFrame.schedule(() => {
+      animationFrame.schedule(() => { runFirst = true; });
+      animationFrame.schedule(() => {
+        if (runFirst) {
+          done();
+        } else {
+          done(new Error('First action did not run'));
+        }
+      });
+    });
+  });
+
+  it('should handle delayed action without affecting next frame actions', (done) => {
+    let runDelayed = false;
+    let runFirst = false;
+    animationFrame.schedule(() => {
+      animationFrame.schedule(() => {
+        if (!runDelayed) {
+          done(new Error('Delayed action did not run'));
+          return;
+        }
+        runFirst = true;
+      });
+      animationFrame.schedule(() => {
+        if (!runFirst) {
+          done(new Error('First action did not run'));
+        } else {
+          done();
+        }
+      });
+
+      // This action will execute before the next frame because the delay is less than the one of the frame
+      animationFrame.schedule(() => {
+        runDelayed = true;
+      }, 1);
+    });
+  });
+
   it('should not execute rescheduled actions when flushing', (done) => {
     let flushCount = 0;
     let scheduledIndices: number[] = [];

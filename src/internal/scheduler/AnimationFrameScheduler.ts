@@ -13,8 +13,13 @@ export class AnimationFrameScheduler extends AsyncScheduler {
     // are removed from the actions array and that can shift actions that are
     // scheduled to be executed in a subsequent flush into positions at which
     // they are executed within the current flush.
-    const flushId = this._scheduled;
-    this._scheduled = undefined;
+    let flushId;
+    if (action) {
+      flushId = action.id;
+    } else {
+      flushId = this._scheduled;
+      this._scheduled = undefined;
+    }
 
     const { actions } = this;
     let error: any;
