@@ -4,15 +4,13 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {
-        "@nx/enforce-module-boundaries": "off"
-      }
+      "parserOptions": {
+        "project": ["./packages/observable/tsconfig.json"]
+      },
+      "rules": {}
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "parserOptions": {
-        "project": ["./packages/rxjs/tsconfig.json"]
-      },
       "rules": {}
     },
     {
@@ -24,12 +22,6 @@
       "parser": "jsonc-eslint-parser",
       "rules": {
         "@nx/dependency-checks": ["error"]
-      }
-    },
-    {
-      "files": "spec/**/*.js",
-      "rules": {
-        "@typescript-eslint/no-var-requires": "off"
       }
     }
   ]
