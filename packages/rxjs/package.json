@@ -1,81 +1,28 @@
 {
   "name": "rxjs",
   "version": "8.0.0-alpha.14",
-  "description": "Reactive Extensions for modern JavaScript",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "index.d.ts",
-  "typesVersions": {
-    ">=4.2": {
-      "*": [
-        "dist/types/*"
-      ]
-    }
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/reactivex/rxjs/issues"
   },
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "node": "./dist/cjs/index.js",
-      "require": "./dist/cjs/index.js",
-      "default": "./dist/esm/index.js"
-    },
-    "./ajax": {
-      "types": "./dist/types/ajax/index.d.ts",
-      "node": "./dist/cjs/ajax/index.js",
-      "require": "./dist/cjs/ajax/index.js",
-      "default": "./dist/esm/ajax/index.js"
-    },
-    "./fetch": {
-      "types": "./dist/types/fetch/index.d.ts",
-      "node": "./dist/cjs/fetch/index.js",
-      "require": "./dist/cjs/fetch/index.js",
-      "default": "./dist/esm/fetch/index.js"
-    },
-    "./operators": {
-      "types": "./dist/types/operators/index.d.ts",
-      "node": "./dist/cjs/operators/index.js",
-      "require": "./dist/cjs/operators/index.js",
-      "default": "./dist/esm/operators/index.js"
-    },
-    "./testing": {
-      "types": "./dist/types/testing/index.d.ts",
-      "node": "./dist/cjs/testing/index.js",
-      "require": "./dist/cjs/testing/index.js",
-      "default": "./dist/esm/testing/index.js"
-    },
-    "./webSocket": {
-      "types": "./dist/types/webSocket/index.d.ts",
-      "node": "./dist/cjs/webSocket/index.js",
-      "require": "./dist/cjs/webSocket/index.js",
-      "default": "./dist/esm/webSocket/index.js"
-    },
-    "./internal/*": {
-      "types": "./dist/types/internal/*.d.ts",
-      "node": "./dist/cjs/internal/*.js",
-      "require": "./dist/cjs/internal/*.js",
-      "default": "./dist/esm/internal/*.js"
-    },
-    "./package.json": "./package.json"
-  },
+  "homepage": "https://rxjs.dev",
+  "author": "Ben Lesh <ben@benlesh.com>",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/commonjs/index.js",
+  "types": "./dist/commonjs/index.d.ts",
+  "type": "module",
   "scripts": {
-    "lint": "eslint --ext=ts,js src spec spec-dtslint",
-    "dtslint": "npm run lint && tsc -b ./src/tsconfig.types.json",
-    "test": "cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js \"spec/**/*-spec.ts\"",
-    "test:esm": "node spec/module-test-spec.mjs",
-    "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm",
-    "test:import": "node integration/import/runner.js",
-    "compile": "tsc -b ./src/tsconfig.cjs.json ./src/tsconfig.cjs.spec.json ./src/tsconfig.esm.json ./src/tsconfig.types.json ./src/tsconfig.types.spec.json ./spec/tsconfig.json",
-    "build:clean": "shx rm -rf ./dist",
-    "build": "yarn build:clean && yarn compile && node ./tools/generate-alias.js",
-    "watch": "nodemon -w \"src/\" -w \"spec/\" -e ts -x npm test",
-    "watch:dtslint": "nodemon -w \"src/\" -w \"spec-dtslint/\" -e ts -x yarn dtslint",
-    "copy_common_package_files": "node ../../scripts/copy-common-package-files.js"
+    "build": "tshy",
+    "lint": "eslint ./src",
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ReactiveX/rxjs.git",
-    "directory": "packages/rxjs"
+    "url": "https://github.com/reactivex/rxjs.git",
+    "directory": "packages/observable"
   },
   "keywords": [
     "Rx",
@@ -87,100 +34,300 @@
     "Observable",
     "Stream"
   ],
-  "author": "Ben Lesh <ben@benlesh.com>",
-  "contributors": [
-    {
-      "name": "Ben Lesh",
-      "email": "ben@benlesh.com"
+  "tshy": {
+    "exports": {
+      "./package.json": "./package.json",
+      ".": [
+        "./src/animation-frames.ts",
+        "./src/behavior-subject.ts",
+        "./src/buffer.ts",
+        "./src/buffered-values-from.ts",
+        "./src/cold-observable.ts",
+        "./src/cold-subject.ts",
+        "./src/combine-latest.ts",
+        "./src/combine.ts",
+        "./src/concat.ts",
+        "./src/create.ts",
+        "./src/debounce.ts",
+        "./src/default-if-empty.ts",
+        "./src/each-value-from.ts",
+        "./src/exhaust-map.ts",
+        "./src/index.ts",
+        "./src/interval.ts",
+        "./src/merge-map.ts",
+        "./src/merge.ts",
+        "./src/pipe.ts",
+        "./src/race.ts",
+        "./src/repeat.ts",
+        "./src/replay-subject.ts",
+        "./src/retry.ts",
+        "./src/scan.ts",
+        "./src/skip-last.ts",
+        "./src/skip-while.ts",
+        "./src/subject.ts",
+        "./src/switch-map.ts",
+        "./src/take-last.ts",
+        "./src/take-while.ts",
+        "./src/throttle.ts",
+        "./src/timeout.ts",
+        "./src/timer.ts",
+        "./src/with-latest-from.ts",
+        "./src/zip.ts"
+      ]
     },
-    {
-      "name": "Paul Taylor",
-      "email": "paul.e.taylor@me.com"
-    },
-    {
-      "name": "Jeff Cross",
-      "email": "crossj@google.com"
-    },
-    {
-      "name": "Matthew Podwysocki",
-      "email": "matthewp@microsoft.com"
-    },
-    {
-      "name": "OJ Kwon",
-      "email": "kwon.ohjoong@gmail.com"
-    },
-    {
-      "name": "Andre Staltz",
-      "email": "andre@staltz.com"
-    }
-  ],
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/ReactiveX/RxJS/issues"
+    "esmDialects": [
+      "browser"
+    ],
+    "commonjsDialects": [
+      "webpack"
+    ]
   },
-  "homepage": "https://rxjs.dev",
-  "dependencies": {
-    "@rxjs/observable": "8.0.0-alpha.14"
-  },
-  "devDependencies": {
-    "@swc/core": "^1.2.128",
-    "@swc/helpers": "^0.3.2",
-    "@types/chai": "^4.2.11",
-    "@types/lodash": "^4.14.198",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^14.14.6",
-    "@types/shelljs": "^0.8.8",
-    "@types/sinon": "^10.0.13",
-    "@types/sinon-chai": "^3.2.9",
-    "chai": "^4.3.7",
-    "color": "3.0.0",
-    "colors": "1.1.2",
-    "cross-env": "5.1.3",
-    "dependency-cruiser": "^9.12.0",
-    "form-data": "^3.0.0",
-    "fs-extra": "^8.1.0",
-    "lodash": "^4.17.21",
-    "mocha": "^10.2.0",
-    "nodemon": "^1.9.2",
-    "npm-run-all": "4.1.2",
-    "prettier": "^2.5.1",
-    "shelljs": "^0.8.4",
-    "shx": "^0.3.2",
-    "sinon": "^15.0.1",
-    "sinon-chai": "^3.7.0",
-    "source-map-support": "0.5.3",
-    "web-streams-polyfill": "^3.0.2"
-  },
-  "files": [
-    "dist/cjs/**/!(*.tsbuildinfo)",
-    "dist/esm/**/!(*.tsbuildinfo)",
-    "dist/types/**/!(*.tsbuildinfo)",
-    "ajax",
-    "fetch",
-    "operators",
-    "testing",
-    "webSocket",
-    "src",
-    "CHANGELOG.md",
-    "CODE_OF_CONDUCT.md",
-    "LICENSE.txt",
-    "package.json",
-    "README.md",
-    "tsconfig.json"
-  ],
-  "nx": {
-    "targets": {
-      "test": {
-        "dependsOn": [
-          "build"
-        ],
-        "cache": false
-      },
-      "compile": {
-        "dependsOn": [
-          "^build"
-        ]
-      }
+  "exports": {
+    "./animation-frames": {
+      "browser": "./dist/browser/animation-frames.js",
+      "webpack": "./dist/webpack/animation-frames.js",
+      "import": "./dist/esm/animation-frames.js",
+      "require": "./dist/commonjs/animation-frames.js",
+      "types": "./dist/types/animation-frames.d.ts"
+    },
+    "./behavior-subject": {
+      "browser": "./dist/browser/behavior-subject.js",
+      "webpack": "./dist/webpack/behavior-subject.js",
+      "import": "./dist/esm/behavior-subject.js",
+      "require": "./dist/commonjs/behavior-subject.js",
+      "types": "./dist/types/behavior-subject.d.ts"
+    },
+    "./buffer": {
+      "browser": "./dist/browser/buffer.js",
+      "webpack": "./dist/webpack/buffer.js",
+      "import": "./dist/esm/buffer.js",
+      "require": "./dist/commonjs/buffer.js",
+      "types": "./dist/types/buffer.d.ts"
+    },
+    "./buffered-values-from": {
+      "browser": "./dist/browser/buffered-values-from.js",
+      "webpack": "./dist/webpack/buffered-values-from.js",
+      "import": "./dist/esm/buffered-values-from.js",
+      "require": "./dist/commonjs/buffered-values-from.js",
+      "types": "./dist/types/buffered-values-from.d.ts"
+    },
+    "./cold-observable": {
+      "browser": "./dist/browser/cold-observable.js",
+      "webpack": "./dist/webpack/cold-observable.js",
+      "import": "./dist/esm/cold-observable.js",
+      "require": "./dist/commonjs/cold-observable.js",
+      "types": "./dist/types/cold-observable.d.ts"
+    },
+    "./cold-subject": {
+      "browser": "./dist/browser/cold-subject.js",
+      "webpack": "./dist/webpack/cold-subject.js",
+      "import": "./dist/esm/cold-subject.js",
+      "require": "./dist/commonjs/cold-subject.js",
+      "types": "./dist/types/cold-subject.d.ts"
+    },
+    "./combine": {
+      "browser": "./dist/browser/combine.js",
+      "webpack": "./dist/webpack/combine.js",
+      "import": "./dist/esm/combine.js",
+      "require": "./dist/commonjs/combine.js",
+      "types": "./dist/types/combine.d.ts"
+    },
+    "./combine-latest": {
+      "browser": "./dist/browser/combine-latest.js",
+      "webpack": "./dist/webpack/combine-latest.js",
+      "import": "./dist/esm/combine-latest.js",
+      "require": "./dist/commonjs/combine-latest.js",
+      "types": "./dist/types/combine-latest.d.ts"
+    },
+    "./concat": {
+      "browser": "./dist/browser/concat.js",
+      "webpack": "./dist/webpack/concat.js",
+      "import": "./dist/esm/concat.js",
+      "require": "./dist/commonjs/concat.js",
+      "types": "./dist/types/concat.d.ts"
+    },
+    "./create": {
+      "browser": "./dist/browser/create.js",
+      "webpack": "./dist/webpack/create.js",
+      "import": "./dist/esm/create.js",
+      "require": "./dist/commonjs/create.js",
+      "types": "./dist/types/create.d.ts"
+    },
+    "./debounce": {
+      "browser": "./dist/browser/debounce.js",
+      "webpack": "./dist/webpack/debounce.js",
+      "import": "./dist/esm/debounce.js",
+      "require": "./dist/commonjs/debounce.js",
+      "types": "./dist/types/debounce.d.ts"
+    },
+    "./default-if-empty": {
+      "browser": "./dist/browser/default-if-empty.js",
+      "webpack": "./dist/webpack/default-if-empty.js",
+      "import": "./dist/esm/default-if-empty.js",
+      "require": "./dist/commonjs/default-if-empty.js",
+      "types": "./dist/types/default-if-empty.d.ts"
+    },
+    "./each-value-from": {
+      "browser": "./dist/browser/each-value-from.js",
+      "webpack": "./dist/webpack/each-value-from.js",
+      "import": "./dist/esm/each-value-from.js",
+      "require": "./dist/commonjs/each-value-from.js",
+      "types": "./dist/types/each-value-from.d.ts"
+    },
+    "./exhaust-map": {
+      "browser": "./dist/browser/exhaust-map.js",
+      "webpack": "./dist/webpack/exhaust-map.js",
+      "import": "./dist/esm/exhaust-map.js",
+      "require": "./dist/commonjs/exhaust-map.js",
+      "types": "./dist/types/exhaust-map.d.ts"
+    },
+    "./index": {
+      "browser": "./dist/browser/index.js",
+      "webpack": "./dist/webpack/index.js",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/commonjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./interval": {
+      "browser": "./dist/browser/interval.js",
+      "webpack": "./dist/webpack/interval.js",
+      "import": "./dist/esm/interval.js",
+      "require": "./dist/commonjs/interval.js",
+      "types": "./dist/types/interval.d.ts"
+    },
+    "./merge": {
+      "browser": "./dist/browser/merge.js",
+      "webpack": "./dist/webpack/merge.js",
+      "import": "./dist/esm/merge.js",
+      "require": "./dist/commonjs/merge.js",
+      "types": "./dist/types/merge.d.ts"
+    },
+    "./merge-map": {
+      "browser": "./dist/browser/merge-map.js",
+      "webpack": "./dist/webpack/merge-map.js",
+      "import": "./dist/esm/merge-map.js",
+      "require": "./dist/commonjs/merge-map.js",
+      "types": "./dist/types/merge-map.d.ts"
+    },
+    "./package.json": "./package.json",
+    "./pipe": {
+      "browser": "./dist/browser/pipe.js",
+      "webpack": "./dist/webpack/pipe.js",
+      "import": "./dist/esm/pipe.js",
+      "require": "./dist/commonjs/pipe.js",
+      "types": "./dist/types/pipe.d.ts"
+    },
+    "./race": {
+      "browser": "./dist/browser/race.js",
+      "webpack": "./dist/webpack/race.js",
+      "import": "./dist/esm/race.js",
+      "require": "./dist/commonjs/race.js",
+      "types": "./dist/types/race.d.ts"
+    },
+    "./repeat": {
+      "browser": "./dist/browser/repeat.js",
+      "webpack": "./dist/webpack/repeat.js",
+      "import": "./dist/esm/repeat.js",
+      "require": "./dist/commonjs/repeat.js",
+      "types": "./dist/types/repeat.d.ts"
+    },
+    "./replay-subject": {
+      "browser": "./dist/browser/replay-subject.js",
+      "webpack": "./dist/webpack/replay-subject.js",
+      "import": "./dist/esm/replay-subject.js",
+      "require": "./dist/commonjs/replay-subject.js",
+      "types": "./dist/types/replay-subject.d.ts"
+    },
+    "./retry": {
+      "browser": "./dist/browser/retry.js",
+      "webpack": "./dist/webpack/retry.js",
+      "import": "./dist/esm/retry.js",
+      "require": "./dist/commonjs/retry.js",
+      "types": "./dist/types/retry.d.ts"
+    },
+    "./scan": {
+      "browser": "./dist/browser/scan.js",
+      "webpack": "./dist/webpack/scan.js",
+      "import": "./dist/esm/scan.js",
+      "require": "./dist/commonjs/scan.js",
+      "types": "./dist/types/scan.d.ts"
+    },
+    "./skip-last": {
+      "browser": "./dist/browser/skip-last.js",
+      "webpack": "./dist/webpack/skip-last.js",
+      "import": "./dist/esm/skip-last.js",
+      "require": "./dist/commonjs/skip-last.js",
+      "types": "./dist/types/skip-last.d.ts"
+    },
+    "./skip-while": {
+      "browser": "./dist/browser/skip-while.js",
+      "webpack": "./dist/webpack/skip-while.js",
+      "import": "./dist/esm/skip-while.js",
+      "require": "./dist/commonjs/skip-while.js",
+      "types": "./dist/types/skip-while.d.ts"
+    },
+    "./subject": {
+      "browser": "./dist/browser/subject.js",
+      "webpack": "./dist/webpack/subject.js",
+      "import": "./dist/esm/subject.js",
+      "require": "./dist/commonjs/subject.js",
+      "types": "./dist/types/subject.d.ts"
+    },
+    "./switch-map": {
+      "browser": "./dist/browser/switch-map.js",
+      "webpack": "./dist/webpack/switch-map.js",
+      "import": "./dist/esm/switch-map.js",
+      "require": "./dist/commonjs/switch-map.js",
+      "types": "./dist/types/switch-map.d.ts"
+    },
+    "./take-last": {
+      "browser": "./dist/browser/take-last.js",
+      "webpack": "./dist/webpack/take-last.js",
+      "import": "./dist/esm/take-last.js",
+      "require": "./dist/commonjs/take-last.js",
+      "types": "./dist/types/take-last.d.ts"
+    },
+    "./take-while": {
+      "browser": "./dist/browser/take-while.js",
+      "webpack": "./dist/webpack/take-while.js",
+      "import": "./dist/esm/take-while.js",
+      "require": "./dist/commonjs/take-while.js",
+      "types": "./dist/types/take-while.d.ts"
+    },
+    "./throttle": {
+      "browser": "./dist/browser/throttle.js",
+      "webpack": "./dist/webpack/throttle.js",
+      "import": "./dist/esm/throttle.js",
+      "require": "./dist/commonjs/throttle.js",
+      "types": "./dist/types/throttle.d.ts"
+    },
+    "./timeout": {
+      "browser": "./dist/browser/timeout.js",
+      "webpack": "./dist/webpack/timeout.js",
+      "import": "./dist/esm/timeout.js",
+      "require": "./dist/commonjs/timeout.js",
+      "types": "./dist/types/timeout.d.ts"
+    },
+    "./timer": {
+      "browser": "./dist/browser/timer.js",
+      "webpack": "./dist/webpack/timer.js",
+      "import": "./dist/esm/timer.js",
+      "require": "./dist/commonjs/timer.js",
+      "types": "./dist/types/timer.d.ts"
+    },
+    "./with-latest-from": {
+      "browser": "./dist/browser/with-latest-from.js",
+      "webpack": "./dist/webpack/with-latest-from.js",
+      "import": "./dist/esm/with-latest-from.js",
+      "require": "./dist/commonjs/with-latest-from.js",
+      "types": "./dist/types/with-latest-from.d.ts"
+    },
+    "./zip": {
+      "browser": "./dist/browser/zip.js",
+      "webpack": "./dist/webpack/zip.js",
+      "import": "./dist/esm/zip.js",
+      "require": "./dist/commonjs/zip.js",
+      "types": "./dist/types/zip.d.ts"
     }
   }
 }
