@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 
 export const skipLast: unique symbol = Symbol('skipLast');
@@ -9,10 +8,7 @@ declare global {
   }
 }
 
-Observable.prototype[skipLast] = function <T>(
-  this: Observable<T>,
-  amount = 1
-): Observable<T> {
+Observable.prototype[skipLast] = function <T>(this: Observable<T>, amount = 1): Observable<T> {
   return this[create]((subscriber) => {
     let ring = new Array<T>(amount);
     let seen = 0;

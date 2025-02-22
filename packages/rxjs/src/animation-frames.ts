@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 
 export const animationFrames: unique symbol = Symbol('animationFrames');
@@ -20,9 +19,7 @@ declare global {
 
 Observable[animationFrames] = animationFramesImpl;
 
-function animationFramesImpl(
-  this: ObservableCtor
-): Observable<AnimationFrameInfo> {
+function animationFramesImpl(this: ObservableCtor): Observable<AnimationFrameInfo> {
   return this[create]((subscriber) => {
     let id = 0;
     const start = Date.now();

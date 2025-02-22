@@ -1,12 +1,7 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { combine } from './combine';
 import { isObservableInstance } from './util/ctor-helpers.js';
 
-type CombineLatestValues<
-  Sources extends
-    | readonly ObservableValue<any>[]
-    | { [key: string]: ObservableValue<any> }
-> = {
+type CombineLatestValues<Sources extends readonly ObservableValue<any>[] | { [key: string]: ObservableValue<any> }> = {
   [K in keyof Sources]: Sources[K] extends ObservableValue<infer T> ? T : never;
 };
 
@@ -14,11 +9,7 @@ export const combineLatest: unique symbol = Symbol('combineLatest');
 
 declare global {
   interface ObservableCtor {
-    [combineLatest]: <
-      Sources extends
-        | readonly ObservableValue<any>[]
-        | { [key: string]: ObservableValue<any> }
-    >(
+    [combineLatest]: <Sources extends readonly ObservableValue<any>[] | { [key: string]: ObservableValue<any> }>(
       sources: Sources,
       config?: { requireAllValues?: boolean }
     ) => Observable<CombineLatestValues<Sources>>;
@@ -35,26 +26,18 @@ declare global {
 Observable[combineLatest] = combineLatestImpl;
 Observable.prototype[combineLatest] = combineLatestImpl;
 
-function combineLatestImpl<
-  Sources extends
-    | readonly ObservableValue<any>[]
-    | { [key: string]: ObservableValue<any> }
->(
+function combineLatestImpl<Sources extends readonly ObservableValue<any>[] | { [key: string]: ObservableValue<any> }>(
   this: ObservableCtor | Observable<any>,
   sources: Sources,
   config?: { requireAllValues?: boolean }
 ): Observable<CombineLatestValues<Sources>> {
   const { requireAllValues = true } = config ?? {};
 
-  let actualSources:
-    | readonly ObservableValue<any>[]
-    | { [key: string]: ObservableValue<any> };
+  let actualSources: readonly ObservableValue<any>[] | { [key: string]: ObservableValue<any> };
 
   if (isObservableInstance(this)) {
     if (!Array.isArray(sources)) {
-      throw new TypeError(
-        'Must combine observable instance with an array of observable values'
-      );
+      throw new TypeError('Must combine observable instance with an array of observable values');
     }
     actualSources = [this, ...sources];
   } else {
@@ -76,14 +59,10 @@ function combineLatestImpl<
         source: actualSources[key],
         requireFirstValue: requireAllValues,
       }))
-    ).map((values) =>
-      Object.fromEntries(keys.map((key, i) => [key, values[i]]))
-    ) as any;
+    ).map((values) => Object.fromEntries(keys.map((key, i) => [key, values[i]]))) as any;
   }
 }
 
-function isSourceArray(
-  sources: any
-): sources is readonly ObservableValue<any>[] {
+function isSourceArray(sources: any): sources is readonly ObservableValue<any>[] {
   return Array.isArray(sources);
 }

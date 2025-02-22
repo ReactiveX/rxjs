@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 class ColdSubscriber<T> implements Subscriber<T> {
   #abortController = new AbortController();
   #destination: Partial<Observer<T>> | null = null;
@@ -14,10 +13,7 @@ class ColdSubscriber<T> implements Subscriber<T> {
     return this.#signal;
   }
 
-  constructor(
-    maybeObserver: Partial<Observer<T>> | ((value: T) => void) | null = null,
-    parentSignal?: AbortSignal
-  ) {
+  constructor(maybeObserver: Partial<Observer<T>> | ((value: T) => void) | null = null, parentSignal?: AbortSignal) {
     this.#destination =
       typeof maybeObserver === 'function'
         ? {
@@ -25,9 +21,7 @@ class ColdSubscriber<T> implements Subscriber<T> {
           }
         : maybeObserver;
 
-    this.#signal = parentSignal
-      ? AbortSignal.any([parentSignal, this.#abortController.signal])
-      : this.#abortController.signal;
+    this.#signal = parentSignal ? AbortSignal.any([parentSignal, this.#abortController.signal]) : this.#abortController.signal;
 
     this.#signal.addEventListener(
       'abort',
@@ -90,10 +84,7 @@ export class ColdObservable<T> extends Observable<T> {
     this.#init = init;
   }
 
-  subscribe(
-    maybeObserver?: Partial<Observer<T>> | ((value: T) => void) | null,
-    config?: SubscribeOptions
-  ) {
+  subscribe(maybeObserver?: Partial<Observer<T>> | ((value: T) => void) | null, config?: SubscribeOptions) {
     const subscriber = new ColdSubscriber(maybeObserver, config?.signal);
     try {
       this.#init(subscriber);

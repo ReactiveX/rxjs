@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { Deferred } from './util/deferred';
 
 export function bufferedValuesFrom<T>(
@@ -11,9 +10,7 @@ export function bufferedValuesFrom<T>(
   const { minimumBufferSize = 1, maximumBufferSize = Infinity } = config ?? {};
 
   if (maximumBufferSize < minimumBufferSize) {
-    throw new RangeError(
-      `maximumBufferSize ${maximumBufferSize} cannot be less than minimumBufferSize ${minimumBufferSize}`
-    );
+    throw new RangeError(`maximumBufferSize ${maximumBufferSize} cannot be less than minimumBufferSize ${minimumBufferSize}`);
   }
 
   return {

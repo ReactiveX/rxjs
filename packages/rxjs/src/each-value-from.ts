@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { Deferred } from './util/deferred';
 
 export function eachValueFrom<T>(input: Observable<T>): AsyncIterable<T> {

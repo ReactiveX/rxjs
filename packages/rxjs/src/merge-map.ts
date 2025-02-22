@@ -1,14 +1,10 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 
 export const mergeMap: unique symbol = Symbol('mergeMap');
 
 declare global {
   interface Observable<T> {
-    mergeMap: <R>(
-      mapper: (value: T, index: number) => ObservableValue<R>,
-      options?: { concurrent?: number }
-    ) => Observable<R>;
+    mergeMap: <R>(mapper: (value: T, index: number) => ObservableValue<R>, options?: { concurrent?: number }) => Observable<R>;
   }
 }
 

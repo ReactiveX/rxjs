@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 
 export const timeout: unique symbol = Symbol('timeout');
@@ -30,12 +29,7 @@ Observable.prototype[timeout] = function <T, W, M>(
   }
 ): Observable<T | W> {
   return this[create]((subscriber) => {
-    const {
-      first,
-      each = null,
-      with: _with = timeoutErrorFactory,
-      meta = null!,
-    } = config;
+    const { first, each = null, with: _with = timeoutErrorFactory, meta = null! } = config;
     let seen = 0;
     let lastValue: T | null = null;
 
@@ -44,10 +38,7 @@ Observable.prototype[timeout] = function <T, W, M>(
     const startTimer = (delay: number) => {
       timerController = new AbortController();
 
-      const signal = AbortSignal.any([
-        subscriber.signal,
-        timerController.signal,
-      ]);
+      const signal = AbortSignal.any([subscriber.signal, timerController.signal]);
 
       const id = setTimeout(() => {
         timerController = null;
@@ -86,12 +77,7 @@ Observable.prototype[timeout] = function <T, W, M>(
     });
 
     if (seen === 0) {
-      const initialDelay =
-        first != null
-          ? typeof first === 'number'
-            ? first
-            : +first - Date.now()
-          : each ?? 0;
+      const initialDelay = first != null ? (typeof first === 'number' ? first : +first - Date.now()) : (each ?? 0);
 
       startTimer(initialDelay);
     }

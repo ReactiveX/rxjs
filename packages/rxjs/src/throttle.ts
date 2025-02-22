@@ -1,14 +1,10 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 
 export const throttle: unique symbol = Symbol('throttle');
 
 declare global {
   interface Observable<T> {
-    [throttle]: (
-      delay: number | ((value: T, index: number) => ObservableValue<any>),
-      config?: ThrottleConfig
-    ) => Observable<T>;
+    [throttle]: (delay: number | ((value: T, index: number) => ObservableValue<any>), config?: ThrottleConfig) => Observable<T>;
   }
 }
 
@@ -53,10 +49,7 @@ Observable.prototype[throttle] = function <T>(
 
     const startThrottle = (value: T) => {
       innerController = new AbortController();
-      const signal = AbortSignal.any([
-        subscriber.signal,
-        innerController.signal,
-      ]);
+      const signal = AbortSignal.any([subscriber.signal, innerController.signal]);
 
       if (typeof delay === 'number') {
         const id = setTimeout(endThrottling, delay);

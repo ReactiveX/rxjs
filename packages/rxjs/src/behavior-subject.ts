@@ -1,13 +1,9 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { ColdSubject } from './cold-subject';
 
 class BehaviorSubject<T> extends ColdSubject<T> {
   #currentValue: T;
 
-  constructor(
-    init: undefined | ((subscriber: Subscriber<T>) => void),
-    initialValue: T
-  ) {
+  constructor(init: undefined | ((subscriber: Subscriber<T>) => void), initialValue: T) {
     super(init);
     this.#currentValue = initialValue;
   }

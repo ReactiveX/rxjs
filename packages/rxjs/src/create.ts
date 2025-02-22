@@ -1,9 +1,4 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
-import {
-  getInstanceCtor,
-  getStaticCtor,
-  isObservableInstance,
-} from './util/ctor-helpers.js';
+import { getInstanceCtor, getStaticCtor, isObservableInstance } from './util/ctor-helpers.js';
 
 export const create: unique symbol = Symbol('create');
 
@@ -20,12 +15,7 @@ declare global {
 Observable[create] = createImpl;
 Observable.prototype[create] = createImpl;
 
-function createImpl<T>(
-  this: any,
-  init: (subscriber: Subscriber<T>) => void
-): Observable<T> {
-  const ObservableCtor = isObservableInstance(this)
-    ? getInstanceCtor(this)
-    : getStaticCtor(this);
+function createImpl<T>(this: any, init: (subscriber: Subscriber<T>) => void): Observable<T> {
+  const ObservableCtor = isObservableInstance(this) ? getInstanceCtor(this) : getStaticCtor(this);
   return new ObservableCtor(init);
 }

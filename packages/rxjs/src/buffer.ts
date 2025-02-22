@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 
 export const buffer: unique symbol = Symbol.for('buffer');
@@ -26,13 +25,7 @@ Observable.prototype[buffer] = function <T>(
   }
 ): Observable<T[]> {
   return this[create]((subscriber) => {
-    const {
-      delay = Infinity,
-      maxSize = Infinity,
-      emitEmpty = false,
-      emitRemainingOnComplete = true,
-      emitRemainingOnError = true,
-    } = config;
+    const { delay = Infinity, maxSize = Infinity, emitEmpty = false, emitRemainingOnComplete = true, emitRemainingOnError = true } = config;
     let buffer: T[] | null = null;
     let done = false;
 
@@ -51,10 +44,7 @@ Observable.prototype[buffer] = function <T>(
 
       notifierController = new AbortController();
 
-      const signal = AbortSignal.any([
-        notifierController.signal,
-        subscriber.signal,
-      ]);
+      const signal = AbortSignal.any([notifierController.signal, subscriber.signal]);
 
       if (typeof delay === 'number') {
         const id = setTimeout(emitBuffer, delay);

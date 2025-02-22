@@ -1,14 +1,10 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 
 export const switchMap: unique symbol = Symbol('switchMap');
 
 declare global {
   interface Observable<T> {
-    [switchMap]: <R>(
-      mapper: (value: T, index: number) => ObservableValue<T>,
-      options?: { concurrent?: number }
-    ) => Observable<R>;
+    [switchMap]: <R>(mapper: (value: T, index: number) => ObservableValue<T>, options?: { concurrent?: number }) => Observable<R>;
   }
 }
 
@@ -39,10 +35,7 @@ Observable.prototype[switchMap] = function <T, R>(
 
           const innerController = new AbortController();
           active.push(innerController);
-          const signal = AbortSignal.any([
-            subscriber.signal,
-            innerController.signal,
-          ]);
+          const signal = AbortSignal.any([subscriber.signal, innerController.signal]);
 
           let source: Observable<R>;
 

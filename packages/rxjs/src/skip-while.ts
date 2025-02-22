@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 
 export const skipWhile: unique symbol = Symbol('skipWhile');
@@ -6,18 +5,13 @@ export const skipWhile: unique symbol = Symbol('skipWhile');
 declare global {
   interface Observable<T> {
     [skipWhile]: {
-      <R extends T>(
-        predicate: (value: T, index: number) => value is R
-      ): Observable<Exclude<T, R>>;
+      <R extends T>(predicate: (value: T, index: number) => value is R): Observable<Exclude<T, R>>;
       (predicate: (value: T, index: number) => boolean): Observable<T>;
     };
   }
 }
 
-Observable.prototype[skipWhile] = function <T>(
-  this: Observable<T>,
-  predicate: (value: T, index: number) => boolean
-): Observable<T> {
+Observable.prototype[skipWhile] = function <T>(this: Observable<T>, predicate: (value: T, index: number) => boolean): Observable<T> {
   return this[create]((subscriber) => {
     let index = 0;
     let skipping = true;

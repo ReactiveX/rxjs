@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 
 export const timer: unique symbol = Symbol('timer');
@@ -12,11 +11,7 @@ declare global {
   }
 }
 
-Observable[timer] = function timerImpl(
-  this: ObservableCtor,
-  delay: number,
-  interval?: number
-): Observable<number> {
+Observable[timer] = function timerImpl(this: ObservableCtor, delay: number, interval?: number): Observable<number> {
   return this[create]((subscriber) => {
     let n = 0;
 

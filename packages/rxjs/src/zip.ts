@@ -1,11 +1,5 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
-type ObservedValuesOfWithFill<
-  Sources extends readonly ObservableValue<any>[],
-  Fill
-> = {
-  [K in keyof Sources]: Sources[K] extends ObservableValue<infer T>
-    ? T | Fill
-    : never;
+type ObservedValuesOfWithFill<Sources extends readonly ObservableValue<any>[], Fill> = {
+  [K in keyof Sources]: Sources[K] extends ObservableValue<infer T> ? T | Fill : never;
 };
 
 interface ZipState {
@@ -13,10 +7,7 @@ interface ZipState {
   complete: boolean;
 }
 
-export function zip<
-  Sources extends readonly ObservableValue<any>[],
-  Fill = never
->(
+export function zip<Sources extends readonly ObservableValue<any>[], Fill = never>(
   sources: Sources,
   config?: {
     fillAfterComplete?: Fill;
@@ -36,23 +27,12 @@ export function zip<
       Observable.from(sources[i]).subscribe(
         {
           next: (value) => {
-            const everyOtherSourceHasAValue = state.every(
-              ({ buffer }, sourceIndex) =>
-                sourceIndex === i || buffer.length > 0
-            );
+            const everyOtherSourceHasAValue = state.every(({ buffer }, sourceIndex) => sourceIndex === i || buffer.length > 0);
 
-            const isFillTime =
-              shouldFill &&
-              state.every(
-                ({ complete }, sourceIndex) => sourceIndex === i || complete
-              );
+            const isFillTime = shouldFill && state.every(({ complete }, sourceIndex) => sourceIndex === i || complete);
 
             if (everyOtherSourceHasAValue || isFillTime) {
-              subscriber.next(
-                state.map(({ buffer }, bufferIndex) =>
-                  bufferIndex === i ? value : buffer.shift() ?? fillValue!
-                ) as any
-              );
+              subscriber.next(state.map(({ buffer }, bufferIndex) => (bufferIndex === i ? value : (buffer.shift() ?? fillValue!))) as any);
             } else {
               state[i].buffer.push(value);
             }
@@ -61,15 +41,8 @@ export function zip<
           complete: () => {
             state[i].complete = true;
 
-            while (
-              shouldFill &&
-              state.every(
-                ({ complete, buffer }) => complete || buffer.length > 0
-              )
-            ) {
-              subscriber.next(
-                state.map(({ buffer }) => buffer.shift() ?? fillValue) as any
-              );
+            while (shouldFill && state.every(({ complete, buffer }) => complete || buffer.length > 0)) {
+              subscriber.next(state.map(({ buffer }) => buffer.shift() ?? fillValue) as any);
             }
             const allComplete = state.every(({ complete }) => complete);
 

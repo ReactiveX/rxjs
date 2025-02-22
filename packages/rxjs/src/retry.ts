@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 import './observable-polyfill';
 
@@ -8,9 +7,7 @@ declare global {
   interface Observable<T> {
     [retry](config?: {
       count?: number;
-      delay?:
-        | number
-        | ((error: any, retryCount: number) => ObservableValue<any>);
+      delay?: number | ((error: any, retryCount: number) => ObservableValue<any>);
       resetOnSuccess?: boolean;
     }): Observable<T>;
   }
@@ -20,18 +17,11 @@ Observable.prototype[retry] = function <T>(
   this: Observable<T>,
   config?: {
     count?: number;
-    delay?:
-      | null
-      | number
-      | ((error: any, retryCount: number) => ObservableValue<any>);
+    delay?: null | number | ((error: any, retryCount: number) => ObservableValue<any>);
     resetOnSuccess?: boolean;
   }
 ) {
-  const {
-    count = Infinity,
-    delay = null,
-    resetOnSuccess = true,
-  } = config ?? {};
+  const { count = Infinity, delay = null, resetOnSuccess = true } = config ?? {};
 
   return this[create]((subscriber) => {
     let retriesRemaining = count;
@@ -64,9 +54,7 @@ Observable.prototype[retry] = function <T>(
                   let result: Observable<any>;
 
                   try {
-                    result = Observable.from(
-                      delay(error, count - retriesRemaining)
-                    );
+                    result = Observable.from(delay(error, count - retriesRemaining));
                   } catch (error) {
                     subscriber.error(error);
                     return;
