@@ -1,3 +1,11 @@
+## [7.8.2](https://github.com/reactivex/rxjs/compare/7.8.1...7.8.2) (2025-02-22)
+
+### Bug Fixes
+
+- **animationFrameScheduler:** some tasks are never flushed and sometimes it breaks completely ([#7444](https://github.com/reactivex/rxjs/issues/7444)) ([8bbfa4e](https://github.com/reactivex/rxjs/commit/8bbfa4efd15f6572316d5b2b05b2f49ded69a3ca))
+- **mergeWith:** works correctly with an Array ([#7281](https://github.com/reactivex/rxjs/issues/7281)) ([27855c6](https://github.com/reactivex/rxjs/commit/27855c635ca74107352ae3336944433a328c0b41))
+- **subscriber:** strict type signature for next method ([#7172](https://github.com/reactivex/rxjs/issues/7172)) ([0e2ef5e](https://github.com/reactivex/rxjs/commit/0e2ef5e1142699b028bc3624aae9b24c3e3aaccf))
+
 ## [7.8.1](https://github.com/reactivex/rxjs/compare/7.8.0...7.8.1) (2023-04-26)
 
 ### Bug Fixes
