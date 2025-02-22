@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { ColdSubject } from './cold-subject';
 
 interface ReplaySubjectConfig {
@@ -13,10 +12,7 @@ class ReplaySubject<T> extends ColdSubject<T> {
   readonly #size: number;
   readonly #maxAge: number;
 
-  constructor(
-    init?: (subscriber: Subscriber<T>) => void,
-    config?: ReplaySubjectConfig
-  ) {
+  constructor(init?: (subscriber: Subscriber<T>) => void, config?: ReplaySubjectConfig) {
     super(init);
     const { size = Infinity, maxAge = Infinity } = config ?? {};
     this.#size = size;
@@ -26,9 +22,7 @@ class ReplaySubject<T> extends ColdSubject<T> {
   #scheduleAgeFlush() {
     setTimeout(() => {
       const tooOld = Date.now() - this.#maxAge;
-      const indexOfOldestAllowedItem = this.#bufferTimestamps.findIndex(
-        (timestamp) => tooOld < timestamp
-      );
+      const indexOfOldestAllowedItem = this.#bufferTimestamps.findIndex((timestamp) => tooOld < timestamp);
       const indexOfLastAgedOutItem = indexOfOldestAllowedItem - 1;
       if (indexOfLastAgedOutItem >= 0) {
         this.#bufferTimestamps.splice(0, indexOfLastAgedOutItem + 1);

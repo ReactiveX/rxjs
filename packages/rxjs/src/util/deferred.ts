@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 export class Deferred<T> {
   readonly resolve: (value: T | PromiseLike<T>) => void;
   readonly reject: (reason?: any) => void;

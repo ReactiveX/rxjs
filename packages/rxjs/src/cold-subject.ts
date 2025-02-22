@@ -1,11 +1,7 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { ColdObservable } from './cold-observable';
 import { SubjectLike } from './util/types';
 
-export class ColdSubject<In, Out = In>
-  extends ColdObservable<Out>
-  implements SubjectLike<In, Out>
-{
+export class ColdSubject<In, Out = In> extends ColdObservable<Out> implements SubjectLike<In, Out> {
   #complete = false;
   #hasError = false;
   #error: any = null;

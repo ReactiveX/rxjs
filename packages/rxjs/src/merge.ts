@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
 import { ObservableArrayToValueUnion } from './util/types';
@@ -29,9 +28,7 @@ function mergeImpl<T, Sources extends readonly ObservableValue<any>[]>(
   sources: Sources,
   config?: { concurrency?: number }
 ): Observable<ObservableArrayToValueUnion<Sources>> {
-  const actualSources = isObservableInstance(this)
-    ? [this, ...sources]
-    : sources;
+  const actualSources = isObservableInstance(this) ? [this, ...sources] : sources;
 
   return this[create]((subscriber) => {
     const { concurrency = Infinity } = config ?? {};

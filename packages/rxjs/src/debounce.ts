@@ -1,13 +1,10 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 
 export const debounce: unique symbol = Symbol('debounce');
 
 declare global {
   interface Observable<T> {
-    [debounce]: (
-      delay: number | ((value: T, index: number) => ObservableValue<any>)
-    ) => Observable<T>;
+    [debounce]: (delay: number | ((value: T, index: number) => ObservableValue<any>)) => Observable<T>;
   }
 }
 
@@ -27,10 +24,7 @@ Observable.prototype[debounce] = function <T>(
 
           innerController?.abort();
           innerController = new AbortController();
-          const signal = AbortSignal.any([
-            subscriber.signal,
-            innerController.signal,
-          ]);
+          const signal = AbortSignal.any([subscriber.signal, innerController.signal]);
 
           if (typeof delay === 'number') {
             const id = setTimeout(() => {

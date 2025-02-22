@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 export function isObservableInstance<T>(value: any): value is Observable<T> {
   return value != null && value instanceof Observable;
 }

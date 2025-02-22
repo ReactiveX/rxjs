@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 
 export const takeLast: unique symbol = Symbol('takeLast');
@@ -9,10 +8,7 @@ declare global {
   }
 }
 
-Observable.prototype[takeLast] = function <T>(
-  this: Observable<T>,
-  amount = 1
-): Observable<T> {
+Observable.prototype[takeLast] = function <T>(this: Observable<T>, amount = 1): Observable<T> {
   return this[create]((subscriber) => {
     let ring = new Array<T>(amount);
     let counter = 0;

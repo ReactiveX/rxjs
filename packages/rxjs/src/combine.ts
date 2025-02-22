@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
 
@@ -12,15 +11,11 @@ declare global {
   }
 
   interface ObservableCtor {
-    [combine]: <Config extends readonly CombineItem<any>[]>(
-      config: Config
-    ) => Observable<CombineValues<Config>>;
+    [combine]: <Config extends readonly CombineItem<any>[]>(config: Config) => Observable<CombineValues<Config>>;
   }
 
   interface Observable<T> {
-    [combine]: <Config extends readonly CombineItem<any>[]>(
-      config: Config
-    ) => Observable<[T, ...CombineValues<Config>]>;
+    [combine]: <Config extends readonly CombineItem<any>[]>(config: Config) => Observable<[T, ...CombineValues<Config>]>;
   }
 }
 
@@ -47,14 +42,12 @@ function combineImpl<Config extends readonly CombineItem<any>[]>(
     : [...config];
 
   return this[create]((subscriber) => {
-    const state: CombineState[] = actualConfig.map(
-      ({ causesEmit = true, requireFirstValue = true }) => ({
-        causesEmit,
-        ready: !requireFirstValue,
-        value: undefined,
-        complete: false,
-      })
-    );
+    const state: CombineState[] = actualConfig.map(({ causesEmit = true, requireFirstValue = true }) => ({
+      causesEmit,
+      ready: !requireFirstValue,
+      value: undefined,
+      complete: false,
+    }));
 
     let allReady = state.every(({ ready }) => ready);
 

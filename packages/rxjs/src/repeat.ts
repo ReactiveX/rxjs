@@ -1,14 +1,10 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 
 export const repeat: unique symbol = Symbol('repeat');
 
 declare global {
   interface Observable<T> {
-    [repeat]: (config?: {
-      count?: number;
-      delay?: number | ((repeatCount: number) => ObservableValue<any>);
-    }) => Observable<T>;
+    [repeat]: (config?: { count?: number; delay?: number | ((repeatCount: number) => ObservableValue<any>) }) => Observable<T>;
   }
 }
 
@@ -50,10 +46,7 @@ Observable.prototype[repeat] = function <T>(
                   id = setTimeout(startSub, delay);
                 } else {
                   const innerController = new AbortController();
-                  const signal = AbortSignal.any([
-                    innerController.signal,
-                    subscriber.signal,
-                  ]);
+                  const signal = AbortSignal.any([innerController.signal, subscriber.signal]);
                   let notifier: Observable<any>;
                   try {
                     notifier = Observable.from(delay(++repeatCount));

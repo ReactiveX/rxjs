@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
 import { ObservableArrayToValueUnion } from './util/types';
@@ -7,15 +6,11 @@ export const race: unique symbol = Symbol('race');
 
 declare global {
   interface ObservableCtor {
-    [race]: <Sources extends readonly ObservableValue<any>[]>(
-      sources: Sources
-    ) => Observable<ObservableArrayToValueUnion<Sources>>;
+    [race]: <Sources extends readonly ObservableValue<any>[]>(sources: Sources) => Observable<ObservableArrayToValueUnion<Sources>>;
   }
 
   interface Observable<T> {
-    [race]: <Sources extends readonly ObservableValue<any>[]>(
-      sources: Sources
-    ) => Observable<T | ObservableArrayToValueUnion<Sources>>;
+    [race]: <Sources extends readonly ObservableValue<any>[]>(sources: Sources) => Observable<T | ObservableArrayToValueUnion<Sources>>;
   }
 }
 
@@ -26,11 +21,7 @@ function raceImpl<Sources extends readonly ObservableValue<any>[]>(
   this: ObservableCtor | Observable<any>,
   sources: Sources
 ): Observable<ObservableArrayToValueUnion<Sources>> {
-  const actualSources: readonly ObservableValue<any>[] = isObservableInstance(
-    this
-  )
-    ? [this, ...sources]
-    : [...sources];
+  const actualSources: readonly ObservableValue<any>[] = isObservableInstance(this) ? [this, ...sources] : [...sources];
 
   return this[create]((subscriber) => {
     let innerControllers: AbortController[] | null = [];
@@ -40,10 +31,7 @@ function raceImpl<Sources extends readonly ObservableValue<any>[]>(
 
       const handleError = (error: any) => subscriber.error(error);
 
-      const signal = AbortSignal.any([
-        subscriber.signal,
-        innerController.signal,
-      ]);
+      const signal = AbortSignal.any([subscriber.signal, innerController.signal]);
 
       Observable.from(source).subscribe(
         {

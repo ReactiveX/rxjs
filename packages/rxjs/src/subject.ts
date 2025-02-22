@@ -1,4 +1,3 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { SubjectLike } from './util/types';
 
 export class Subject<T> extends Observable<T> implements SubjectLike<T> {

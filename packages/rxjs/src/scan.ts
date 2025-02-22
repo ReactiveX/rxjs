@@ -1,14 +1,10 @@
-// COPYRIGHT (c) 2025 Ben Lesh <ben@benlesh.com> All rights reserved
 import { create } from './create.js';
 
 export const scan: unique symbol = Symbol('scan');
 
 declare global {
   interface Observable<T> {
-    [scan]: <R>(
-      reducer: (state: R, value: T, index: number) => R,
-      initialValue: R
-    ) => Observable<R>;
+    [scan]: <R>(reducer: (state: R, value: T, index: number) => R, initialValue: R) => Observable<R>;
   }
 }
 
