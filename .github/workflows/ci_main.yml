@@ -11,6 +11,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      # Prevent GitHub from canceling all in-progress jobs when a matrix job fails
+      fail-fast: false
       matrix:
         node: ['18', '20']
 

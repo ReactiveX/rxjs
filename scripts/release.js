@@ -1,7 +1,7 @@
 // @ts-check
 
 const { execSync } = require('node:child_process');
-const { releaseChangelog, releaseVersion } = require('nx/src/command-line/release');
+const { releaseChangelog, releaseVersion } = require('nx/release');
 // There are multiple copies of outdated yargs in the workspace, access a known modern one
 const yargs = require('nx/node_modules/yargs');
 
