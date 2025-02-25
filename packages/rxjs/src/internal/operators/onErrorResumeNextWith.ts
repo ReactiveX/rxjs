@@ -10,7 +10,7 @@ export function onErrorResumeNextWith<T, A extends readonly unknown[]>(
 ): OperatorFunction<T, T | A[number]>;
 
 /**
- * When any of the provided Observable emits an complete or error notification, it immediately subscribes to the next one
+ * When any of the provided Observable emits a complete or error notification, it immediately subscribes to the next one
  * that was passed.
  *
  * <span class="informal">Execute series of Observables, subscribes to next one on error or complete.</span>
