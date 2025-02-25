@@ -7,7 +7,7 @@ import {
   Head,
   Tail
 } from 'rxjs';
-import { A, B, C } from './helpers';
+import { A, B, C, CompatObservable } from './helpers';
 
 describe('ObservedValueOf', () => {
   it('should infer from an observable', () => {
@@ -23,6 +23,11 @@ describe('ObservedValueOf', () => {
   it('should infer from a promise', () => {
     let explicit: ObservedValueOf<Promise<A>>;
     let inferred = explicit!; // $ExpectType A
+  });
+
+  it('should infer from an compatible observable', () => {
+    let explicit: ObservedValueOf<CompatObservable<A>>;
+    const inferred = explicit!; // $ExpectType A
   });
 });
 

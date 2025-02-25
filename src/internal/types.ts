@@ -97,6 +97,11 @@ export interface Subscribable<T> {
   subscribe(observer: Partial<Observer<T>>): Unsubscribable;
 }
 
+export interface InteropSubscribable<T> {
+  subscribe(observer: Partial<Observer<T>>): Unsubscribable;
+  subscribe(onNext?: (value: T) => void, onError?: (error: any) => void, onComplete?: () => void): Subscription;
+}
+
 /**
  * Valid types that can be converted to observables.
  */
@@ -118,7 +123,7 @@ export type ObservableLike<T> = InteropObservable<T>;
  * An object that implements the `Symbol.observable` interface.
  */
 export interface InteropObservable<T> {
-  [Symbol.observable]: () => Subscribable<T>;
+  [Symbol.observable]: () => Subscribable<T> | InteropSubscribable<T>;
 }
 
 /* NOTIFICATIONS */
