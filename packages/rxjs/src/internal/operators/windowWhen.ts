@@ -1,4 +1,4 @@
-import type { Subscriber} from '@rxjs/observable';
+import type { Subscriber } from '@rxjs/observable';
 import { operate, Observable, from } from '@rxjs/observable';
 import { Subject } from '../Subject.js';
 import type { ObservableInput, OperatorFunction } from '../types.js';
@@ -56,6 +56,13 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
     new Observable((destination) => {
       let window: Subject<T> | null;
       let closingSubscriber: Subscriber<any> | undefined;
+
+      destination.add(() => {
+        // Be sure to clean up our closing subscription
+        // when this tears down.
+        closingSubscriber?.unsubscribe();
+        window = null!;
+      });
 
       /**
        * When we get an error, we have to notify both the
@@ -120,12 +127,6 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
             // The source completed, close the window and complete.
             window!.complete();
             destination.complete();
-          },
-          finalize: () => {
-            // Be sure to clean up our closing subscription
-            // when this tears down.
-            closingSubscriber?.unsubscribe();
-            window = null!;
           },
         })
       );

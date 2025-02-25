@@ -162,6 +162,14 @@ export function tap<T>(observerOrNext?: Partial<TapObserver<T>> | ((value: T) =>
         new Observable((destination) => {
           tapObserver.subscribe?.();
           let isUnsub = true;
+
+          destination.add(() => {
+            if (isUnsub) {
+              tapObserver.unsubscribe?.();
+            }
+            tapObserver.finalize?.();
+          });
+
           source.subscribe(
             operate({
               destination,
@@ -178,12 +186,6 @@ export function tap<T>(observerOrNext?: Partial<TapObserver<T>> | ((value: T) =>
                 isUnsub = false;
                 tapObserver.complete?.();
                 destination.complete();
-              },
-              finalize: () => {
-                if (isUnsub) {
-                  tapObserver.unsubscribe?.();
-                }
-                tapObserver.finalize?.();
               },
             })
           );

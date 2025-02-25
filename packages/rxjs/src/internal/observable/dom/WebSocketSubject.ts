@@ -1,4 +1,4 @@
-import type { Subscriber, Subscription} from '@rxjs/observable';
+import type { Subscriber, Subscription } from '@rxjs/observable';
 import { Observable, operate } from '@rxjs/observable';
 import type { NextObserver } from '../../types.js';
 
@@ -219,8 +219,11 @@ export class WebSocketSubject<In, Out = In> extends Observable<Out> {
   multiplex(subMsg: () => In, unsubMsg: () => In, messageFilter: (value: Out) => boolean) {
     return new Observable<Out>((destination) => {
       this.next(subMsg());
+      let isUnsub = true;
       destination.add(() => {
-        this.next(unsubMsg());
+        if (isUnsub) {
+          this.next(unsubMsg());
+        }
       });
       this.subscribe(
         operate({
@@ -229,6 +232,14 @@ export class WebSocketSubject<In, Out = In> extends Observable<Out> {
             if (messageFilter(x)) {
               destination.next(x);
             }
+          },
+          error: (err) => {
+            isUnsub = false;
+            destination.error(err);
+          },
+          complete: () => {
+            isUnsub = false;
+            destination.complete();
           },
         })
       );

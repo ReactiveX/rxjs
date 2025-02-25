@@ -83,6 +83,10 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
       // this is only really used for when *just* the buffer time span is passed.
       let restartOnEmit = false;
 
+      destination.add(() => {
+        bufferRecords = null;
+      });
+
       /**
        * Does the work of emitting the buffer from the record, ensuring that the
        * record is removed before the emission so reentrant code (from some custom scheduling, perhaps)
@@ -127,36 +131,33 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
 
       startBuffer();
 
-      const bufferTimeSubscriber = operate({
-        destination,
-        next: (value: T) => {
-          // Copy the records, so if we need to remove one we
-          // don't mutate the array. It's hard, but not impossible to
-          // set up a buffer time that could mutate the array and
-          // cause issues here.
-          const recordsCopy = bufferRecords!.slice();
-          for (const record of recordsCopy) {
-            // Loop over all buffers and
-            const { buffer } = record;
-            buffer.push(value);
-            // If the buffer is over the max size, we need to emit it.
-            maxBufferSize <= buffer.length && emit(record);
-          }
-        },
-        complete: () => {
-          // The source completed, emit all of the active
-          // buffers we have before we complete.
-          while (bufferRecords?.length) {
-            destination.next(bufferRecords.shift()!.buffer);
-          }
-          bufferTimeSubscriber?.unsubscribe();
-          destination.complete();
-          destination.unsubscribe();
-        },
-        // Clean up
-        finalize: () => (bufferRecords = null),
-      });
-
-      source.subscribe(bufferTimeSubscriber);
+      source.subscribe(
+        operate({
+          destination,
+          next: (value: T) => {
+            // Copy the records, so if we need to remove one we
+            // don't mutate the array. It's hard, but not impossible to
+            // set up a buffer time that could mutate the array and
+            // cause issues here.
+            const recordsCopy = bufferRecords!.slice();
+            for (const record of recordsCopy) {
+              // Loop over all buffers and
+              const { buffer } = record;
+              buffer.push(value);
+              // If the buffer is over the max size, we need to emit it.
+              maxBufferSize <= buffer.length && emit(record);
+            }
+          },
+          complete: () => {
+            // The source completed, emit all of the active
+            // buffers we have before we complete.
+            while (bufferRecords?.length) {
+              destination.next(bufferRecords.shift()!.buffer);
+            }
+            destination.complete();
+            destination.unsubscribe();
+          },
+        })
+      );
     });
 }
