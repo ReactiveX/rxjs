@@ -35,6 +35,7 @@ import { noop } from '../util/noop.js';
  * @see {@link debounce}
  * @see {@link sampleTime}
  * @see {@link throttle}
+ * @see {@link withLatestFrom}
  *
  * @param notifier The `ObservableInput` to use for sampling the
  * source Observable.
