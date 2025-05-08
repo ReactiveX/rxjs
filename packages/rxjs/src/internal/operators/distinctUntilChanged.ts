@@ -4,7 +4,7 @@ import { Observable, operate } from '@rxjs/observable';
 
 export function distinctUntilChanged<T>(comparator?: (previous: T, current: T) => boolean): MonoTypeOperatorFunction<T>;
 export function distinctUntilChanged<T, K>(
-  comparator: (previous: K, current: K) => boolean,
+  comparator: ((previous: K, current: K) => boolean) | undefined,
   keySelector: (value: T) => K
 ): MonoTypeOperatorFunction<T>;
 
