@@ -637,19 +637,25 @@ export class TestScheduler extends VirtualTimeScheduler {
   }
 
   /**
-   * The `run` method performs the test in 'run mode' - in which schedulers
-   * used within the test automatically delegate to the `TestScheduler`. That
-   * is, in 'run mode' there is no need to explicitly pass a `TestScheduler`
-   * instance to observable creators or operators.
+   * Delegates all global timer and animation providers to the current {@link TestScheduler} instance.
+   * Intended for manual usage outside of {@link run}, it enables deterministic control over scheduling
+   * and time-based operations in tests.
    *
-   * @see {@link /guide/testing/marble-testing}
+   * Returns a `dispose` function that must be called to restore the original environment.
+   * Also implements `[Symbol.dispose]` for compatibility with the ECMAScript resource disposal protocol.
    */
-  run<T>(callback: (helpers: RunHelpers) => T): T {
+  delegate({
+    frameTimeFactor = TestScheduler.frameTimeFactor,
+    maxFrames = Infinity,
+  }: {
+    frameTimeFactor?: number;
+    maxFrames?: number;
+  } = {}) {
     const prevFrameTimeFactor = TestScheduler.frameTimeFactor;
     const prevMaxFrames = this.maxFrames;
 
-    TestScheduler.frameTimeFactor = 1;
-    this.maxFrames = Infinity;
+    TestScheduler.frameTimeFactor = frameTimeFactor;
+    this.maxFrames = maxFrames;
     this.runMode = true;
 
     const animator = this.createAnimator();
@@ -662,20 +668,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     timeoutProvider.delegate = delegates.timeout;
     performanceTimestampProvider.delegate = this;
 
-    const helpers: RunHelpers = {
-      cold: this.createColdObservable.bind(this),
-      hot: this.createHotObservable.bind(this),
-      flush: this.flush.bind(this),
-      time: this.createTime.bind(this),
-      expectObservable: this.expectObservable.bind(this),
-      expectSubscriptions: this.expectSubscriptions.bind(this),
-      animate: animator.animate,
-    };
-    try {
-      const ret = callback(helpers);
-      this.flush();
-      return ret;
-    } finally {
+    const dispose = () => {
       TestScheduler.frameTimeFactor = prevFrameTimeFactor;
       this.maxFrames = prevMaxFrames;
       this.runMode = false;
@@ -685,6 +678,46 @@ export class TestScheduler extends VirtualTimeScheduler {
       intervalProvider.delegate = undefined;
       timeoutProvider.delegate = undefined;
       performanceTimestampProvider.delegate = undefined;
+    };
+
+    return {
+      dispose,
+      // @ts-expect-error for compatibility with the ECMAScript resource disposal protocol
+      [Symbol.dispose ?? 'dispose']: dispose,
+      animate: animator.animate,
+    };
+  }
+
+  /**
+   * The `run` method performs the test in 'run mode' - in which schedulers
+   * used within the test automatically delegate to the `TestScheduler`. That
+   * is, in 'run mode' there is no need to explicitly pass a `TestScheduler`
+   * instance to observable creators or operators.
+   *
+   * @see {@link /guide/testing/marble-testing}
+   */
+  run<T>(callback: (helpers: RunHelpers) => T): T {
+    const delegates = this.delegate({
+      frameTimeFactor: 1,
+      maxFrames: Infinity,
+    });
+
+    const helpers: RunHelpers = {
+      cold: this.createColdObservable.bind(this),
+      hot: this.createHotObservable.bind(this),
+      flush: this.flush.bind(this),
+      time: this.createTime.bind(this),
+      expectObservable: this.expectObservable.bind(this),
+      expectSubscriptions: this.expectSubscriptions.bind(this),
+      animate: delegates.animate,
+    };
+
+    try {
+      const ret = callback(helpers);
+      this.flush();
+      return ret;
+    } finally {
+      delegates.dispose();
     }
   }
 }
