@@ -1,5 +1,4 @@
-import type { Observable} from '@rxjs/observable';
-import { Subscriber } from '@rxjs/observable';
+import { Observable, operate } from '@rxjs/observable';
 import { EmptyError } from './util/EmptyError.js';
 
 export interface FirstValueFromConfig<T> {
@@ -56,20 +55,23 @@ export function firstValueFrom<T>(source: Observable<T>): Promise<T>;
 export function firstValueFrom<T, D>(source: Observable<T>, config?: FirstValueFromConfig<D>): Promise<T | D> {
   const hasConfig = typeof config === 'object';
   return new Promise<T | D>((resolve, reject) => {
-    const subscriber = new Subscriber({
-      next: (value: T) => {
-        resolve(value);
-        subscriber.unsubscribe();
-      },
-      error: reject,
-      complete: () => {
-        if (hasConfig) {
-          resolve(config!.defaultValue);
-        } else {
-          reject(new EmptyError());
-        }
-      },
+    new Observable((destination) => {
+      const subscriber = operate({
+        destination,
+        next: (value: T) => {
+          resolve(value);
+          subscriber.unsubscribe();
+        },
+        error: reject,
+        complete: () => {
+          if (hasConfig) {
+            resolve(config!.defaultValue);
+          } else {
+            reject(new EmptyError());
+          }
+        },
+      });
+      source.subscribe(subscriber);
     });
-    source.subscribe(subscriber);
   });
 }
