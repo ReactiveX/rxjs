@@ -23,11 +23,9 @@ import { startWith, catchError, map } from 'rxjs/operators';
 export function query<T>() {
   return (source$: Observable<T>): Observable<QueryResult<T>> => {
     return source$.pipe(
-        map((data) => ({ isLoading: false, data, error: null })),
-        catchError((error) =>
-          of({ isLoading: false, data: null, error })
-        ),
-        startWith({ isLoading: true, data: null, error: null })
-      )
-  }
+      map((data) => ({ isLoading: false, data, error: null })),
+      catchError((error) => of({ isLoading: false, data: null, error })),
+      startWith({ isLoading: true, data: null, error: null })
+    );
+  };
 }
