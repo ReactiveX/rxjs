@@ -140,6 +140,7 @@ export { min } from './internal/operators/min.js';
 export { observeOn } from './internal/operators/observeOn.js';
 export { onErrorResumeNextWith } from './internal/operators/onErrorResumeNextWith.js';
 export { pairwise } from './internal/operators/pairwise.js';
+export { query } from './internal/operators/query.js';
 export { raceWith } from './internal/operators/raceWith.js';
 export { reduce } from './internal/operators/reduce.js';
 export type { RepeatConfig } from './internal/operators/repeat.js';

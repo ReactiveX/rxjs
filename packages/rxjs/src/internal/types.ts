@@ -72,6 +72,17 @@ export interface TimeInterval<T> {
   interval: number;
 }
 
+/**
+ * The result of a query.
+ * 
+ * @see {@link query}
+ */
+export interface QueryResult<T> {
+  isLoading: boolean;
+  data: T | null;
+  error: any;
+}
+
 /* SUBSCRIPTION INTERFACES */
 
 export interface Unsubscribable {
