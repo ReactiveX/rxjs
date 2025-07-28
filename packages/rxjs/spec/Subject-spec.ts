@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import type { Subscription} from 'rxjs';
-import { Subject, Observable, AsyncSubject, of, config, Subscriber, noop, operate } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Subject, Observable, AsyncSubject, BehaviorSubject, ReplaySubject, of, config, Subscriber, noop, operate } from 'rxjs';
+import { delay, map } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from './helpers/observableMatcher';
 
@@ -586,6 +586,101 @@ describe('Subject', () => {
       observable.subscribe({ next: (x) => results.push(x), complete: () => results.push('done') });
 
       expect(results).to.deep.equal([42, 'done']);
+    });
+  });
+
+  describe('pipe method behavior', () => {
+    it('should not expose next method on piped observables from Subject', () => {
+      const subject = new Subject<number>();
+      const piped = subject.pipe(map(x => x * 2));
+
+      // The piped observable should be an Observable, not a Subject
+      expect(piped).to.be.instanceOf(Observable);
+      expect(piped).to.not.be.instanceOf(Subject);
+
+      // The piped observable should not have a next method
+      expect((piped as any).next).to.be.undefined;
+    });
+
+    it('should fix the problematic behavior (Issue #7543)', () => {
+      const subject = new Subject<number>();
+      const piped = subject.pipe(map(x => x * 2));
+
+      const results: number[] = [];
+      const originalResults: number[] = [];
+
+      subject.subscribe(value => originalResults.push(value));
+      piped.subscribe(value => results.push(value));
+
+      // This should work
+      subject.next(1);
+      expect(originalResults).to.deep.equal([1]);
+      expect(results).to.deep.equal([2]);
+
+      // This should NOT work and now it doesn't
+      expect(typeof (piped as any).next).to.equal('undefined');
+
+      // Verify that trying to call next on piped observable throws an error
+      expect(() => (piped as any).next(3)).to.throw();
+    });
+
+    it('should return the same object when pipe() is called with no arguments', () => {
+      const subject = new Subject<number>();
+      const result = subject.pipe();
+
+      // pipe() with no args should still return the same object for backward compatibility
+      expect(result).to.equal(subject);
+      expect(typeof (result as any).next).to.equal('function');
+    });
+
+    it('should work correctly with multiple operators', () => {
+      const subject = new Subject<number>();
+      const piped = subject.pipe(
+        map(x => x * 2),
+        map(x => x + 1)
+      );
+
+      // Should be a pure Observable
+      expect(piped).to.be.instanceOf(Observable);
+      expect(piped).to.not.be.instanceOf(Subject);
+      expect((piped as any).next).to.be.undefined;
+
+      const results: number[] = [];
+      piped.subscribe(value => results.push(value));
+
+      subject.next(5);
+      expect(results).to.deep.equal([11]); // (5 * 2) + 1 = 11
+    });
+
+    it('should work correctly with BehaviorSubject', () => {
+      const subject = new BehaviorSubject<number>(0);
+      const piped = subject.pipe(map(x => x * 2));
+
+      // Should be a pure Observable
+      expect(piped).to.be.instanceOf(Observable);
+      expect(piped).to.not.be.instanceOf(BehaviorSubject);
+      expect((piped as any).next).to.be.undefined;
+      expect((piped as any).getValue).to.be.undefined;
+    });
+
+    it('should work correctly with ReplaySubject', () => {
+      const subject = new ReplaySubject<number>(2);
+      const piped = subject.pipe(map(x => x * 2));
+
+      // Should be a pure Observable
+      expect(piped).to.be.instanceOf(Observable);
+      expect(piped).to.not.be.instanceOf(ReplaySubject);
+      expect((piped as any).next).to.be.undefined;
+    });
+
+    it('should work correctly with AsyncSubject', () => {
+      const subject = new AsyncSubject<number>();
+      const piped = subject.pipe(map(x => x * 2));
+
+      // Should be a pure Observable
+      expect(piped).to.be.instanceOf(Observable);
+      expect(piped).to.not.be.instanceOf(AsyncSubject);
+      expect((piped as any).next).to.be.undefined;
     });
   });
 

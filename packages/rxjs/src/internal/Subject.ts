@@ -137,4 +137,17 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   asObservable(): Observable<T> {
     return new Observable((subscriber) => this.subscribe(subscriber));
   }
+
+  /**
+   * Override pipe method to ensure that when operations are provided,
+   * the result is a pure Observable without Subject-specific methods.
+   * This fixes issue #7543 where .next() was available on piped observables.
+   */
+  pipe(...operations: any[]): any {
+    if (operations.length === 0) {
+      return this;
+    }
+    // Use asObservable() to ensure the result is a pure Observable
+    return this.asObservable().pipe(...operations);
+  }
 }
