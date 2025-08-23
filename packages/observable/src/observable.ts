@@ -1319,7 +1319,13 @@ function isIterable(input: any): input is Iterable<any> {
 }
 
 export function isArrayLike<T>(x: any): x is ArrayLike<T> {
-  return x && typeof x.length === 'number' && !isFunction(x);
+  return (
+    x &&
+    typeof x.length === 'number' &&
+    !isFunction(x) &&
+    x.length >= 0 &&
+    (x.length === 0 || (typeof x !== 'string' && 0 in x))
+  );
 }
 
 /**
