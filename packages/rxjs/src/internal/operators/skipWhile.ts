@@ -11,8 +11,7 @@ export function skipWhile<T>(predicate: (value: T, index: number) => boolean): M
  *
  * ![](skipWhile.png)
  *
- * Skips all the notifications with a truthy predicate. It will not skip the notifications when the predicate is falsy.
- * It can also be skipped using index. Once the predicate is true, it will not be called again.
+ * Skips all the notifications where the given predicate returns a truthy value. Once the predicate is falsey, it will not be called again, and all further notifications will be emitted.
  *
  * ## Example
  *
