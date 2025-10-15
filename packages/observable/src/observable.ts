@@ -1,19 +1,19 @@
 import type {
-  TeardownLogic,
-  UnaryFunction,
-  Subscribable,
-  Observer,
-  OperatorFunction,
-  Unsubscribable,
-  SubscriptionLike,
-  ObservableNotification,
-  ObservableInput,
-  ObservedValueOf,
-  ReadableStreamLike,
-  InteropObservable,
   CompleteNotification,
   ErrorNotification,
+  InteropObservable,
   NextNotification,
+  ObservableInput,
+  ObservableNotification,
+  ObservedValueOf,
+  Observer,
+  OperatorFunction,
+  ReadableStreamLike,
+  Subscribable,
+  SubscriptionLike,
+  TeardownLogic,
+  UnaryFunction,
+  Unsubscribable,
 } from './types.js';
 
 /**
@@ -1318,9 +1318,18 @@ function isIterable(input: any): input is Iterable<any> {
   return isFunction(input?.[Symbol.iterator]);
 }
 
-export function isArrayLike<T>(x: any): x is ArrayLike<T> {
-  return x && typeof x.length === 'number' && !isFunction(x);
+export function isArrayLike<T>(x: unknown): x is ArrayLike<T> {
+  if (x == null) return false;
+
+  const type = typeof x;
+  if (type === 'function' || type === 'string') return false;
+
+  if (typeof (x as any)[Symbol.iterator] === 'function') return false;
+
+  const keys = Reflect.ownKeys(x as object);
+  return keys.some(k => typeof k === 'string' && /^\d+$/.test(k));
 }
+
 
 /**
  * Tests to see if the object is an RxJS {@link Observable}
