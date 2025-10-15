@@ -1318,18 +1318,25 @@ function isIterable(input: any): input is Iterable<any> {
   return isFunction(input?.[Symbol.iterator]);
 }
 
+/**
+ * Determines whether a value is "array-like".
+ * @param obj x The value to test.
+ */
 export function isArrayLike<T>(x: unknown): x is ArrayLike<T> {
-  if (x == null) return false;
+  if (x == null) return false; // null ou undefined → falso
 
   const type = typeof x;
   if (type === 'function' || type === 'string') return false;
 
-  if (typeof (x as any)[Symbol.iterator] === 'function') return false;
+  if (type !== 'object') return false;
 
-  const keys = Reflect.ownKeys(x as object);
-  return keys.some(k => typeof k === 'string' && /^\d+$/.test(k));
+  const lengthValue = Reflect.get(x as object, 'length');
+  if (typeof lengthValue !== 'number' || !Number.isFinite(lengthValue) || lengthValue < 0) {
+    return false;
+  }
+
+  return lengthValue === 0 || Reflect.has(x as object, 0);
 }
-
 
 /**
  * Tests to see if the object is an RxJS {@link Observable}

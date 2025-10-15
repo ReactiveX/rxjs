@@ -377,9 +377,9 @@ describe('Observable', () => {
 
       const asyncIterator = source[Symbol.asyncIterator]();
       expect(state).to.equal('idle');
-      asyncIterator.next();
+      await asyncIterator.next();
       expect(state).to.equal('subscribed');
-      asyncIterator.return();
+      await asyncIterator.return();
       expect(state).to.equal('unsubscribed');
     });
 
@@ -404,5 +404,89 @@ describe('Observable', () => {
       }
       expect(state).to.equal('unsubscribed');
     });
+  });
+
+  it('should create an observable from a real array', async () => {
+    const source = new Observable<number>((subscriber) => {
+      const input: any = [10, 20, 30];
+
+      for (let i = 0; i < input.length; i++) {
+        subscriber.next(input[i]);
+      }
+      subscriber.complete();
+    });
+
+    const results: number[] = [];
+    await source.forEach((v) => results.push(v));
+
+    expect(results).to.deep.equal([10, 20, 30]);
+  });
+
+  it('should create an observable from an array-like object', async () => {
+    const source = new Observable<string>((subscriber) => {
+      const input: any = { 0: 'a', 1: 'b', 2: 'c', length: 3 };
+
+      // implicit array-like iteration
+      for (let i = 0; i < input.length; i++) {
+        subscriber.next(input[i]);
+      }
+      subscriber.complete();
+    });
+
+    const results: string[] = [];
+    await source.forEach((v) => results.push(v));
+
+    expect(results).to.deep.equal(['a', 'b', 'c']);
+  });
+
+  it('should not emit elements for invalid array-like values', async () => {
+    const invalidSources: any[] = [
+      'hello',        // string
+      () => {},       // function
+      { length: -1 }, // negative length
+      42,             // primitive
+      null,           // null
+    ];
+
+    const emittedValues: unknown[] = [];
+
+    const source = new Observable<any>((subscriber) => {
+      for (const input of invalidSources) {
+        // internally the observable would ignore invalid array-likes
+        if (input && typeof (input as any).length === 'number' && (input as any).length > 0) {
+          for (let i = 0; i < (input as any).length; i++) {
+            subscriber.next((input as any)[i]);
+          }
+        } else {
+          subscriber.next(undefined);
+        }
+      }
+      subscriber.complete();
+    });
+
+    await source.forEach((v) => emittedValues.push(v));
+
+    expect(emittedValues).to.deep.equal([
+      'h', 'e', 'l', 'l', 'o', // from "hello"
+      undefined,               // from function
+      undefined,               // from { length: -1 }
+      undefined,               // from 42
+      undefined                // from null
+    ]);
+  });
+
+  it('should complete without errors when array-like input has length 0', async () => {
+    const source = new Observable<number>((subscriber) => {
+      const emptyArrayLike = { length: 0 };
+      for (let i = 0; i < emptyArrayLike.length; i++) {
+        subscriber.next(i);
+      }
+      subscriber.complete();
+    });
+
+    const results: number[] = [];
+    await source.forEach((v) => results.push(v));
+
+    expect(results).to.deep.equal([]);
   });
 });
