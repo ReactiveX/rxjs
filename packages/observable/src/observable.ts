@@ -1,19 +1,19 @@
 import type {
-  TeardownLogic,
-  UnaryFunction,
-  Subscribable,
-  Observer,
-  OperatorFunction,
-  Unsubscribable,
-  SubscriptionLike,
-  ObservableNotification,
-  ObservableInput,
-  ObservedValueOf,
-  ReadableStreamLike,
-  InteropObservable,
   CompleteNotification,
   ErrorNotification,
+  InteropObservable,
   NextNotification,
+  ObservableInput,
+  ObservableNotification,
+  ObservedValueOf,
+  Observer,
+  OperatorFunction,
+  ReadableStreamLike,
+  Subscribable,
+  SubscriptionLike,
+  TeardownLogic,
+  UnaryFunction,
+  Unsubscribable,
 } from './types.js';
 
 /**
@@ -1318,8 +1318,24 @@ function isIterable(input: any): input is Iterable<any> {
   return isFunction(input?.[Symbol.iterator]);
 }
 
-export function isArrayLike<T>(x: any): x is ArrayLike<T> {
-  return x && typeof x.length === 'number' && !isFunction(x);
+/**
+ * Determines whether a value is "array-like".
+ * @param obj x The value to test.
+ */
+export function isArrayLike<T>(x: unknown): x is ArrayLike<T> {
+  if (x == null) return false; // null or undefined
+
+  const type = typeof x;
+  if (type === 'function' || type === 'string') return false;
+
+  if (type !== 'object') return false;
+
+  const lengthValue = Reflect.get(x as object, 'length');
+  if (typeof lengthValue !== 'number' || !Number.isFinite(lengthValue) || lengthValue < 0) {
+    return false;
+  }
+
+  return lengthValue === 0 || Reflect.has(x as object, 0);
 }
 
 /**
