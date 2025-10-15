@@ -1323,7 +1323,7 @@ function isIterable(input: any): input is Iterable<any> {
  * @param obj x The value to test.
  */
 export function isArrayLike<T>(x: unknown): x is ArrayLike<T> {
-  if (x == null) return false; // null ou undefined → falso
+  if (x == null) return false; // null or undefined
 
   const type = typeof x;
   if (type === 'function' || type === 'string') return false;
