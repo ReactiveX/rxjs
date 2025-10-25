@@ -5,11 +5,11 @@ import type { SchedulerAction } from '../types.js';
 import type { TimerHandle } from './timerHandle.js';
 
 export class QueueAction<T> extends AsyncAction<T> {
-  constructor(protected scheduler: QueueScheduler, protected work: (this: SchedulerAction<T>, state?: T) => void) {
+  constructor(protected override scheduler: QueueScheduler, protected override work: (this: SchedulerAction<T>, state?: T) => void) {
     super(scheduler, work);
   }
 
-  public schedule(state?: T, delay: number = 0): Subscription {
+  public override schedule(state?: T, delay: number = 0): Subscription {
     if (delay > 0) {
       return super.schedule(state, delay);
     }
@@ -19,11 +19,11 @@ export class QueueAction<T> extends AsyncAction<T> {
     return this;
   }
 
-  public execute(state: T, delay: number): any {
+  public override execute(state: T, delay: number): any {
     return delay > 0 || this.closed ? super.execute(state, delay) : this._execute(state, delay);
   }
 
-  protected requestAsyncId(scheduler: QueueScheduler, id?: TimerHandle, delay: number = 0): TimerHandle {
+  protected override requestAsyncId(scheduler: QueueScheduler, id?: TimerHandle, delay: number = 0): TimerHandle {
     // If delay exists and is greater than 0, or if the delay is null (the
     // action wasn't rescheduled) but was originally scheduled as an async
     // action, then recycle as an async action.

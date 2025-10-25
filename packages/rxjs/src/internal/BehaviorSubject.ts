@@ -15,7 +15,7 @@ export class BehaviorSubject<T> extends Subject<T> {
   }
 
   /** @internal */
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected override _subscribe(subscriber: Subscriber<T>): Subscription {
     const subscription = super._subscribe(subscriber);
     !subscription.closed && subscriber.next(this._value);
     return subscription;
@@ -29,7 +29,7 @@ export class BehaviorSubject<T> extends Subject<T> {
     return _value;
   }
 
-  next(value: T): void {
+  override next(value: T): void {
     super.next((this._value = value));
   }
 }

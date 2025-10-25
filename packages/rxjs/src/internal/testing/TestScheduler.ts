@@ -41,7 +41,7 @@ export class TestScheduler extends VirtualTimeScheduler {
    * the test scheduler is being used in "run mode", via the `run` method, this is temporarily
    * set to `1` for the duration of the `run` block, then set back to whatever value it was.
    */
-  static frameTimeFactor = 10;
+  static override frameTimeFactor = 10;
 
   /**
    * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
@@ -206,7 +206,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     };
   }
 
-  flush() {
+  override flush() {
     const hotObservables = this.hotObservables;
     while (hotObservables.length > 0) {
       hotObservables.shift()!.setup();

@@ -11,7 +11,7 @@ export class ColdObservable<T> extends Observable<T> {
   logSubscribedFrame = logSubscribedFrame;
   logUnsubscribedFrame = logUnsubscribedFrame;
 
-  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
+  protected override _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     const index = this.logSubscribedFrame();
     const subscription = new Subscription();
     subscription.add(

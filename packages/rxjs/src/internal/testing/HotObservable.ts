@@ -19,7 +19,7 @@ export class HotObservable<T> extends Subject<T> {
   }
 
   /** @internal */
-  protected _subscribe(subscriber: Subscriber<any>): Subscription {
+  protected override _subscribe(subscriber: Subscriber<any>): Subscription {
     const index = this.logSubscribedFrame();
     const subscription = new Subscription();
     subscription.add(

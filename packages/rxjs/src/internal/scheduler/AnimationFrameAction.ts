@@ -5,11 +5,11 @@ import { animationFrameProvider } from './animationFrameProvider.js';
 import type { TimerHandle } from './timerHandle.js';
 
 export class AnimationFrameAction<T> extends AsyncAction<T> {
-  constructor(protected scheduler: AnimationFrameScheduler, protected work: (this: SchedulerAction<T>, state?: T) => void) {
+  constructor(protected override scheduler: AnimationFrameScheduler, protected override work: (this: SchedulerAction<T>, state?: T) => void) {
     super(scheduler, work);
   }
 
-  protected requestAsyncId(scheduler: AnimationFrameScheduler, id?: TimerHandle, delay: number = 0): TimerHandle {
+  protected override requestAsyncId(scheduler: AnimationFrameScheduler, id?: TimerHandle, delay: number = 0): TimerHandle {
     // If delay is greater than 0, request as an async action.
     if (delay !== null && delay > 0) {
       return super.requestAsyncId(scheduler, id, delay);
@@ -22,7 +22,7 @@ export class AnimationFrameAction<T> extends AsyncAction<T> {
     return scheduler._scheduled || (scheduler._scheduled = animationFrameProvider.requestAnimationFrame(() => scheduler.flush(undefined)));
   }
 
-  protected recycleAsyncId(scheduler: AnimationFrameScheduler, id?: TimerHandle, delay: number = 0): TimerHandle | undefined {
+  protected override recycleAsyncId(scheduler: AnimationFrameScheduler, id?: TimerHandle, delay: number = 0): TimerHandle | undefined {
     // If delay exists and is greater than 0, or if the delay is null (the
     // action wasn't rescheduled) but was originally scheduled as an async
     // action, then recycle as an async action.
