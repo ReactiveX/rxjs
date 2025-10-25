@@ -67,7 +67,7 @@
     "test:import": "node integration/import/runner.js",
     "compile": "tsc -b ./src/tsconfig.cjs.json ./src/tsconfig.cjs.spec.json ./src/tsconfig.esm.json ./src/tsconfig.types.json ./src/tsconfig.types.spec.json ./spec/tsconfig.json",
     "build:clean": "shx rm -rf ./dist",
-    "build": "yarn build:clean && yarn compile && node ./tools/generate-alias.js",
+    "build": "yarn build:clean && yarn compile && node ./tools/generate-alias.cjs",
     "watch": "nodemon -w \"src/\" -w \"spec/\" -e ts -x npm test",
     "watch:dtslint": "nodemon -w \"src/\" -w \"spec-dtslint/\" -e ts -x yarn dtslint",
     "copy_common_package_files": "node ../../scripts/copy-common-package-files.js"
