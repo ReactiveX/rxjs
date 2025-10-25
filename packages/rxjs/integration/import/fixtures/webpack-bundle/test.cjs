@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const Webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const webpackConfig = require('./webpack.config.js');
+const webpackConfig = require('./webpack.config.cjs');
 
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = dirname(__filename);
