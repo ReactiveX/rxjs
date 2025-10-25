@@ -61,13 +61,13 @@
   "scripts": {
     "lint": "eslint --ext=ts,js src spec spec-dtslint",
     "dtslint": "npm run lint && tsc -b ./src/tsconfig.types.json",
-    "test": "cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.js \"spec/**/*-spec.ts\"",
+    "test": "cross-env TS_NODE_PROJECT=tsconfig.mocha.json mocha --config spec/support/.mocharc.cjs \"spec/**/*-spec.ts\"",
     "test:esm": "node spec/module-test-spec.mjs",
     "test:circular": "dependency-cruiser --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm",
-    "test:import": "node integration/import/runner.js",
+    "test:import": "node integration/import/runner.cjs",
     "compile": "tsc -b ./src/tsconfig.cjs.json ./src/tsconfig.cjs.spec.json ./src/tsconfig.esm.json ./src/tsconfig.types.json ./src/tsconfig.types.spec.json ./spec/tsconfig.json",
     "build:clean": "shx rm -rf ./dist",
-    "build": "yarn build:clean && yarn compile && node ./tools/generate-alias.js",
+    "build": "yarn build:clean && yarn compile && node ./tools/generate-alias.cjs",
     "watch": "nodemon -w \"src/\" -w \"spec/\" -e ts -x npm test",
     "watch:dtslint": "nodemon -w \"src/\" -w \"spec-dtslint/\" -e ts -x yarn dtslint",
     "copy_common_package_files": "node ../../scripts/copy-common-package-files.js"
