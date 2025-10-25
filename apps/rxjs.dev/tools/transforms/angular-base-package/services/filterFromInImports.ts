@@ -11,7 +11,7 @@
  * unfiltered, thus it will get the link to
  * /api/index/function/from
  */
-module.exports = function filterFromInImports(): (words: string[], index: number) => boolean {
+function filterFromInImports(): (words: string[], index: number) => boolean {
   return (words: string[], index: number) => {
     const previousWord = words[index - 1];
     const nextWord = words[index + 1];
@@ -19,3 +19,5 @@ module.exports = function filterFromInImports(): (words: string[], index: number
     return words[index] === 'from' && /}/.test(previousWord) && /'/.test(nextWord);
   };
 };
+
+export = filterFromInImports
