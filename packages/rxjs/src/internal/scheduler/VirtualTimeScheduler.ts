@@ -37,7 +37,7 @@ export class VirtualTimeScheduler extends AsyncScheduler {
    * Prompt the Scheduler to execute all of its queued actions, therefore
    * clearing its queue.
    */
-  public flush(): void {
+  public override flush(): void {
     const { actions, maxFrames } = this;
     let error: any;
     let action: AsyncAction<any> | undefined;
@@ -64,15 +64,15 @@ export class VirtualAction<T> extends AsyncAction<T> {
   protected active: boolean = true;
 
   constructor(
-    protected scheduler: VirtualTimeScheduler,
-    protected work: (this: SchedulerAction<T>, state?: T) => void,
+    protected override scheduler: VirtualTimeScheduler,
+    protected override work: (this: SchedulerAction<T>, state?: T) => void,
     protected index: number = (scheduler.index += 1)
   ) {
     super(scheduler, work);
     this.index = scheduler.index = index;
   }
 
-  public schedule(state?: T, delay: number = 0): Subscription {
+  public override schedule(state?: T, delay: number = 0): Subscription {
     if (Number.isFinite(delay)) {
       if (!this.id) {
         return super.schedule(state, delay);
@@ -92,7 +92,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
     }
   }
 
-  protected requestAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): TimerHandle {
+  protected override requestAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): TimerHandle {
     this.delay = scheduler.frame + delay;
     const { actions } = scheduler;
     actions.push(this);
@@ -100,11 +100,11 @@ export class VirtualAction<T> extends AsyncAction<T> {
     return 1;
   }
 
-  protected recycleAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): TimerHandle | undefined {
+  protected override recycleAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): TimerHandle | undefined {
     return undefined;
   }
 
-  protected _execute(state: T, delay: number): any {
+  protected override _execute(state: T, delay: number): any {
     if (this.active === true) {
       return super._execute(state, delay);
     }

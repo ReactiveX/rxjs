@@ -3,7 +3,7 @@
  **/
 
 import * as chai from 'chai';
-import * as sinonChai from 'sinon-chai';
+import sinonChai from 'sinon-chai';
 
 if (typeof Symbol !== 'function') {
   let id = 0;

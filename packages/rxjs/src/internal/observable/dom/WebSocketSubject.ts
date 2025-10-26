@@ -365,7 +365,7 @@ export class WebSocketSubject<In, Out = In> extends Observable<Out> {
   }
 
   /** @internal */
-  protected _subscribe(subscriber: Subscriber<Out>): Subscription {
+  protected override _subscribe(subscriber: Subscriber<Out>): Subscription {
     if (!this._socket) {
       this._connectSocket();
     }

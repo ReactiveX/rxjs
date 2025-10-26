@@ -1459,8 +1459,8 @@ describe('groupBy operator', () => {
       // Just to get the test going.
       expectObservable(result, unsub).toBe('-');
       // Our two groups should error immediately upon subscription.
-      expectObservable(subjects.a).toBe('-');
-      expectObservable(subjects.b).toBe('-');
+      expectObservable(subjects['a']).toBe('-');
+      expectObservable(subjects['b']).toBe('-');
     });
   });
 

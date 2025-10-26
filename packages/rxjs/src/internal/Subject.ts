@@ -96,7 +96,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   }
 
   /** @internal */
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected override _subscribe(subscriber: Subscriber<T>): Subscription {
     this._checkFinalizedStatuses(subscriber);
     return this._innerSubscribe(subscriber);
   }

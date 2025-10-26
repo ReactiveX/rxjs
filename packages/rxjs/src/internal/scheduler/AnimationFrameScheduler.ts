@@ -2,7 +2,7 @@ import type { AsyncAction } from './AsyncAction.js';
 import { AsyncScheduler } from './AsyncScheduler.js';
 
 export class AnimationFrameScheduler extends AsyncScheduler {
-  public flush(action?: AsyncAction<any>): void {
+  public override flush(action?: AsyncAction<any>): void {
     this._active = true;
     // The async id that effects a call to flush is stored in _scheduled.
     // Before executing an action, it's necessary to check the action's async
