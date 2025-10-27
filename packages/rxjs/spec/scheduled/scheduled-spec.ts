@@ -1,7 +1,7 @@
 import { scheduled, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { lowerCaseO } from '../helpers/test-helper';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { lowerCaseO } from '../helpers/test-helper.js';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 import { expect } from 'chai';
 
 describe('scheduled', () => {

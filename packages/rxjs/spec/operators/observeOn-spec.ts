@@ -2,7 +2,7 @@ import { observeOn, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { expect } from 'chai';
 import { of, Observable, queueScheduler } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {observeOn} */
 describe('observeOn', () => {

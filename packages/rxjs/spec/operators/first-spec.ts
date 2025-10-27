@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 import { first, mergeMap, delay, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of, from, Observable, Subject, EmptyError, merge } from 'rxjs';

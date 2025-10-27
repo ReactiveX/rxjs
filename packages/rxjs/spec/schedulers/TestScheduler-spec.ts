@@ -8,7 +8,7 @@ import { animationFrameProvider } from 'rxjs/internal/scheduler/animationFramePr
 import { immediateProvider } from 'rxjs/internal/scheduler/immediateProvider';
 import { intervalProvider } from 'rxjs/internal/scheduler/intervalProvider';
 import { timeoutProvider } from 'rxjs/internal/scheduler/timeoutProvider';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {TestScheduler} */
 describe('TestScheduler', () => {

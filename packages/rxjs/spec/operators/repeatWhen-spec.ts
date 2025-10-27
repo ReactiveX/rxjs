@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { repeatWhen, map, mergeMap, takeUntil, takeWhile, take } from 'rxjs/operators';
 import { of, EMPTY, Observable, Subscriber } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {repeatWhen} */
 describe('repeatWhen operator', () => {

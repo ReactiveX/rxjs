@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { EMPTY, NEVER, of, timer, defer, Observable, throwError } from 'rxjs';
 import { raceWith, mergeMap, map, finalize, startWith, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {raceWith} */
 describe('raceWith operator', () => {

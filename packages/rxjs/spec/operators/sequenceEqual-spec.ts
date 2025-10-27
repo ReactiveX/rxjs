@@ -1,6 +1,6 @@
 import { sequenceEqual } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 const booleans = { T: true, F: false };
 

@@ -1,7 +1,7 @@
 import { of, throwError, interval, scheduled, asapScheduler, Subject } from 'rxjs';
 import { bufferTime, mergeMap, take, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 import { expect } from 'chai';
 
 /** @test {bufferTime} */

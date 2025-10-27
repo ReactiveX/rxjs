@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
 import { of, Observable, startWith, mergeMap, take } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {startWith} */
 describe('startWith', () => {

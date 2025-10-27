@@ -3,7 +3,7 @@ import { tap, mergeMap, take } from 'rxjs/operators';
 import type { Observer} from 'rxjs';
 import { Subject, of, throwError, EMPTY, Observable, noop } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {tap} */
 describe('tap', () => {

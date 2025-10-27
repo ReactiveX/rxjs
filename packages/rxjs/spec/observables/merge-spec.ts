@@ -1,10 +1,10 @@
 /** @prettier */
 import { expect } from 'chai';
-import { lowerCaseO } from '../helpers/test-helper';
+import { lowerCaseO } from '../helpers/test-helper.js';
 import { TestScheduler } from 'rxjs/testing';
 import { merge, of, Observable, defer, asyncScheduler } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {merge} */
 describe('static merge(...observables)', () => {

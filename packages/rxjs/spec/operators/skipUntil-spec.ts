@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import { concat, defer, of, Subject, Observable, interval } from 'rxjs';
 import { skipUntil, mergeMap, take } from 'rxjs/operators';
-import { asInteropObservable } from '../helpers/interop-helper';
+import { asInteropObservable } from '../helpers/interop-helper.js';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {skipUntil} */
 describe('skipUntil', () => {

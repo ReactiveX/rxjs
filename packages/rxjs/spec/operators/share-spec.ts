@@ -17,7 +17,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 import { spy } from 'sinon';
 
 const syncNotify = of(1);

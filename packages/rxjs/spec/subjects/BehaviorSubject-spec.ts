@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import { BehaviorSubject, Subject, of } from 'rxjs';
 import { tap, mergeMapTo } from 'rxjs/operators';
-import { asInteropSubject } from '../helpers/interop-helper';
+import { asInteropSubject } from '../helpers/interop-helper.js';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {BehaviorSubject} */
 describe('BehaviorSubject', () => {

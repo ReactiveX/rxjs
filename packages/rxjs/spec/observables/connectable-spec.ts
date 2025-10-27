@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { connectable, of, ReplaySubject } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 describe('connectable', () => {
   let testScheduler: TestScheduler;

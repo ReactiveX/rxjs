@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { skipWhile, mergeMap, tap, take } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {skipWhile} */
 describe('skipWhile', () => {

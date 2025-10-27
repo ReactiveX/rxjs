@@ -2,7 +2,7 @@
 import { NEVER } from 'rxjs';
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {NEVER} */
 describe('NEVER', () => {

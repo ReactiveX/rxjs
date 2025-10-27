@@ -3,7 +3,7 @@ import { every, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import type { Observer } from 'rxjs';
 import { of, Observable, Subject } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {every} */
 describe('every', () => {

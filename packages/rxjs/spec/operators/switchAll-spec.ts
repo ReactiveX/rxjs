@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { Observable, of, NEVER, queueScheduler, Subject, scheduled } from 'rxjs';
 import { map, switchAll, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {switch} */
 describe('switchAll', () => {

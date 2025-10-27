@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { fromEvent, NEVER, timer } from 'rxjs';
 import { mapTo, take, concatWith } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {fromEvent} */
 describe('fromEvent', () => {

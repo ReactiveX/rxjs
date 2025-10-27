@@ -4,7 +4,7 @@ import { NEVER, interval, asapScheduler, animationFrameScheduler, queueScheduler
 import { TestScheduler } from 'rxjs/testing';
 import { take } from 'rxjs/operators';
 import * as sinon from 'sinon';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {interval} */
 describe('interval', () => {

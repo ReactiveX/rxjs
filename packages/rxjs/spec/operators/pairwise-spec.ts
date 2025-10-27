@@ -2,7 +2,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { pairwise, take } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { expect } from 'chai';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {pairwise} */
 describe('pairwise operator', () => {

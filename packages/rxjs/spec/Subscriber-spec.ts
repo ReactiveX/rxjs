@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import type { Observer} from 'rxjs';
 import { Subscriber, Observable, of, config, operate } from 'rxjs';
 import * as sinon from 'sinon';
-import { asInteropSubscriber } from './helpers/interop-helper';
-import { getRegisteredFinalizers } from './helpers/subscription';
+import { asInteropSubscriber } from './helpers/interop-helper.js';
+import { getRegisteredFinalizers } from './helpers/subscription.js';
 
 /** @test {Subscriber} */
 describe('Subscriber', () => {

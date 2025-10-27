@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import { asapScheduler as asap, range, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { concatMap, delay } from 'rxjs/operators';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {range} */
 describe('range', () => {
