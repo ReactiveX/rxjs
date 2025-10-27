@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { of, concat, timer, EMPTY } from 'rxjs';
 import { bufferToggle, mergeMap, mapTo } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {bufferToggle} */
 describe('bufferToggle operator', () => {

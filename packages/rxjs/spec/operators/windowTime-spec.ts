@@ -2,7 +2,7 @@ import { windowTime, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import type { Observable } from 'rxjs';
 import { of } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {windowTime} */
 describe('windowTime', () => {

@@ -3,7 +3,7 @@ import { expand, mergeMap, map, take, toArray } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import type { Observer, InteropObservable } from 'rxjs';
 import { EMPTY, Observable, of, asapScheduler, asyncScheduler } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {expand} */
 describe('expand', () => {

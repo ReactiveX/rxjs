@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { shareReplay, mergeMapTo, retry, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { Observable, Operator, Observer, of, from, defer, pipe, combineLatest, firstValueFrom, BehaviorSubject } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {shareReplay} */
 describe('shareReplay', () => {

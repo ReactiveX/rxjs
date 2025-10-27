@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { concat, defer, Observable, of } from 'rxjs';
 import { switchScan, map, mergeMap, takeWhile } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {switchScan} */
 describe('switchScan', () => {

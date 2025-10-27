@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { Subject, of, Observable } from 'rxjs';
 import { bufferCount, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {bufferCount} */
 describe('bufferCount operator', () => {

@@ -4,7 +4,7 @@ import { TestScheduler } from 'rxjs/testing';
 import type { NextNotification, ErrorNotification } from 'rxjs';
 import { ReplaySubject, of, Observable, Subject } from 'rxjs';
 import { createNotification } from '@rxjs/observable';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {groupBy} */
 describe('groupBy operator', () => {

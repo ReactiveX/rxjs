@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { Observable, of, Subscriber } from 'rxjs';
-import { asInteropObservable, asInteropSubscriber } from './interop-helper';
+import { asInteropObservable, asInteropSubscriber } from './interop-helper.js';
 
 describe('interop helper', () => {
   it('should simulate interop observables', () => {

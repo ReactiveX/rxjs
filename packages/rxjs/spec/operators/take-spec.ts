@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { config, merge, Observable, of, Subject } from 'rxjs';
 import { finalize, mergeMap, take, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {take} */
 describe('take', () => {

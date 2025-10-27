@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { iif, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 describe('iif', () => {
   let rxTestScheduler: TestScheduler;

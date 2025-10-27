@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 // TODO: import was changed due to the fact that at startup the test referred to rxjs from node_modules
-import { Immediate, TestTools } from '../../src/internal/util/Immediate';
+import { Immediate, TestTools } from '../../src/internal/util/Immediate.js';
 
 describe('Immediate', () => {
   it('should schedule on the next microtask', (done) => {

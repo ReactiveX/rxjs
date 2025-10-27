@@ -2,7 +2,7 @@ import { window, mergeMap, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import type { Observable} from 'rxjs';
 import { EMPTY, of, interval } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 import { expect } from 'chai';
 
 /** @test {window} */

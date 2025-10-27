@@ -4,7 +4,7 @@ import type { Observable} from 'rxjs';
 import { partition, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {partition} */
 describe('partition', () => {

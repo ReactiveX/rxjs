@@ -3,7 +3,7 @@ import { onErrorResumeNext, of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 describe('onErrorResumeNext', () => {
   let rxTestScheduler: TestScheduler;

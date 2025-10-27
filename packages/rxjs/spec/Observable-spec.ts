@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { Observable, config, Subscription, Subject, of, throwError, EMPTY } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from './helpers/observableMatcher';
+import { observableMatcher } from './helpers/observableMatcher.js';
 
 // function expectFullObserver(val: any) {
 //   expect(val).to.be.a('object');

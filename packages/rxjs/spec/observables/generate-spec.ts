@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { generate } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Subscriber } from '@rxjs/observable';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 function err(): any {
   throw 'error';

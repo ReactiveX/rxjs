@@ -1,7 +1,7 @@
 import { buffer, mergeMap, take, window, toArray } from 'rxjs/operators';
 import { EMPTY, NEVER, throwError, of, Subject, interval } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 import { expect } from 'chai';
 
 /** @test {buffer} */

@@ -3,7 +3,7 @@ import { race, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {race} */
 describe('race', () => {

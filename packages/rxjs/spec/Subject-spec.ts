@@ -3,7 +3,7 @@ import type { Subscription} from 'rxjs';
 import { Subject, Observable, AsyncSubject, of, config, Subscriber, noop, operate } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from './helpers/observableMatcher';
+import { observableMatcher } from './helpers/observableMatcher.js';
 
 /** @test {Subject} */
 describe('Subject', () => {

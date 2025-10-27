@@ -3,7 +3,7 @@ import { retry, map, take, mergeMap, concatWith, share } from 'rxjs/operators';
 import type { Observer} from 'rxjs';
 import { Observable, defer, range, of, throwError, Subject, timer, EMPTY } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {retry} */
 describe('retry', () => {

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { elementAt, mergeMap, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { ArgumentOutOfRangeError, of, range, Observable, Subject, merge } from 'rxjs';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {elementAt} */
 describe('elementAt', () => {

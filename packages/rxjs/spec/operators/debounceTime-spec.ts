@@ -5,7 +5,7 @@ import { AnimationFrameScheduler } from 'rxjs/internal/scheduler/AnimationFrameS
 import { debounceTime, mergeMap, startWith } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { VirtualTimeScheduler } from 'rxjs/internal/scheduler/VirtualTimeScheduler';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 /** @test {debounceTime} */
 describe('debounceTime', () => {

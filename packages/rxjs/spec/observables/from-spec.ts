@@ -5,7 +5,7 @@ import type { Observer, Subscription } from 'rxjs';
 import { of, from, Subject, noop } from 'rxjs';
 import { first, concatMap, delay, take, tap } from 'rxjs/operators';
 import { ReadableStream } from 'web-streams-polyfill';
-import { observableMatcher } from '../helpers/observableMatcher';
+import { observableMatcher } from '../helpers/observableMatcher.js';
 
 function getArguments<T>(...args: T[]) {
   return args;
