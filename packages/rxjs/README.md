@@ -2,6 +2,7 @@
 
 ![CI](https://github.com/reactivex/rxjs/workflows/CI/badge.svg)
 [![npm version](https://badge.fury.io/js/rxjs.svg)](http://badge.fury.io/js/rxjs)
+![minimum node version](https://img.shields.io/node/v/rxjs.svg)
 [![Join the chat at https://gitter.im/Reactive-Extensions/RxJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Reactive-Extensions/RxJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # RxJS 8
