@@ -4,7 +4,7 @@ import { Observable, operate } from '@rxjs/observable';
 
 export function distinctUntilChanged<T>(comparator?: (previous: T, current: T) => boolean): MonoTypeOperatorFunction<T>;
 export function distinctUntilChanged<T, K>(
-  comparator: (previous: K, current: K) => boolean,
+  comparator: ((previous: K, current: K) => boolean) | null | undefined,
   keySelector: (value: T) => K
 ): MonoTypeOperatorFunction<T>;
 
@@ -136,7 +136,7 @@ export function distinctUntilChanged<T, K>(
  * source Observable with distinct values.
  */
 export function distinctUntilChanged<T, K>(
-  comparator?: (previous: K, current: K) => boolean,
+  comparator: ((previous: K, current: K) => boolean) | null | undefined,
   keySelector: (value: T) => K = identity as (value: T) => K
 ): MonoTypeOperatorFunction<T> {
   // We've been allowing `null` do be passed as the `compare`, so we can't do
