@@ -1,0 +1,63 @@
+class Todo {
+    constructor(text, priority, status = "pending") {
+        this.id = Date.now().toString();
+        this.text = text;
+        this.priority = priority;
+        this.status = status;
+        this.createdAt = new Date().toISOString();
+    }
+}
+
+class TodoManager {
+    constructor() {
+        this.todos = [];
+    }
+
+    addTodo(text, priority) {
+        const t = new Todo(text, priority);
+        this.todos.push(t);
+        return t;
+    }
+
+    listTodos() {
+        return this.todos;
+    }
+
+    deleteTodo(id) {
+        this.todos = this.todos.filter(t => t.id !== id);
+    }
+
+    markDone(id) {
+        const todo = this.todos.find(t => t.id === id);
+        if (todo) todo.status = "done";
+    }
+
+    search(query) {
+        return this.todos.filter(t => t.text.toLowerCase().includes(query.toLowerCase()));
+    }
+
+    sortByPriority() {
+        return [...this.todos].sort((a, b) => a.priority - b.priority);
+    }
+
+    sortByDate() {
+        return [...this.todos].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    }
+}
+
+const manager = new TodoManager();
+
+manager.addTodo("Learn JavaScript", 1);
+manager.addTodo("Read a book", 3);
+manager.addTodo("Complete assignment", 2);
+
+console.log("All Todos:", manager.listTodos());
+console.log("Search 'learn':", manager.search("learn"));
+console.log("Sort by Priority:", manager.sortByPriority());
+console.log("Sort by Date:", manager.sortByDate());
+
+manager.markDone(manager.listTodos()[0].id);
+console.log("After marking done:", manager.listTodos());
+
+manager.deleteTodo(manager.listTodos()[1].id);
+console.log("After delete:", manager.listTodos());
