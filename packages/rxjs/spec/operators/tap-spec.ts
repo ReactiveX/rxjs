@@ -325,7 +325,7 @@ describe('tap', () => {
           tap({
             subscribe: () => results.push('subscribe'),
             next: (value) => results.push(`next ${value}`),
-            error: (err) => results.push(`error: ${err.message}`),
+            error: (err) => results.push(`error: ${err}`),
             complete: () => results.push('complete'),
             unsubscribe: () => results.push('unsubscribe'),
             finalize: () => results.push('finalize'),
@@ -351,7 +351,7 @@ describe('tap', () => {
           tap({
             subscribe: () => results.push('subscribe'),
             next: (value) => results.push(`next ${value}`),
-            error: (err) => results.push(`error: ${err.message}`),
+            error: (err) => results.push(`error: ${err}`),
             complete: () => results.push('complete'),
             unsubscribe: () => results.push('unsubscribe'),
             finalize: () => results.push('finalize'),
@@ -378,7 +378,7 @@ describe('tap', () => {
           tap({
             subscribe: () => results.push('subscribe'),
             next: (value) => results.push(`next ${value}`),
-            error: (err) => results.push(`error: ${err.message}`),
+            error: (err) => results.push(`error: ${err}`),
             complete: () => results.push('complete'),
             unsubscribe: () => results.push('unsubscribe'),
             finalize: () => results.push('finalize'),
