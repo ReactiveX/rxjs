@@ -382,7 +382,7 @@ describe('Subject', () => {
         results3.push(x);
       },
       error: function (err) {
-        expect(false).to.equal('should not throw error: ' + err.toString());
+        expect(false).to.equal(`should not throw error: ${err}`);
       },
     });
 
