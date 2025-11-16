@@ -487,7 +487,7 @@ class ConsumerObserver<T> implements Observer<T> {
 }
 
 function createSafeObserver<T>(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null): Observer<T> {
-  return new ConsumerObserver(!observerOrNext || isFunction(observerOrNext) ? { next: observerOrNext ?? undefined } : observerOrNext);
+  return new ConsumerObserver(!observerOrNext || typeof observerOrNext === 'function' ? { next: observerOrNext ?? undefined } : observerOrNext);
 }
 
 /**
@@ -1239,6 +1239,11 @@ export enum ObservableInputType {
 }
 
 export function getObservableInputType(input: unknown): ObservableInputType {
+  if (typeof input !== 'object' || input === null) {
+    throw new TypeError(
+    `You provided '${input}' where a stream was expected. You can provide an Observable, Promise, ReadableStream, Array, AsyncIterable, or Iterable.`
+    );
+  }
   if (input instanceof Observable) {
     return ObservableInputType.Own;
   }
@@ -1261,9 +1266,7 @@ export function getObservableInputType(input: unknown): ObservableInputType {
     return ObservableInputType.ReadableStreamLike;
   }
   throw new TypeError(
-    `You provided ${
-      input !== null && typeof input === 'object' ? 'an invalid object' : `'${input}'`
-    } where a stream was expected. You can provide an Observable, Promise, ReadableStream, Array, AsyncIterable, or Iterable.`
+    `You provided an invalid object where a stream was expected. You can provide an Observable, Promise, ReadableStream, Array, AsyncIterable, or Iterable.`
   );
 }
 
@@ -1271,12 +1274,16 @@ export function getObservableInputType(input: unknown): ObservableInputType {
  * Returns true if the object is a function.
  * @param value The value to check
  */
-export function isFunction(value: any): value is (...args: any[]) => any {
+export function isFunction(value: unknown): value is (...args: unknown[]) => unknown {
   return typeof value === 'function';
 }
 
-function isAsyncIterable<T>(obj: any): obj is AsyncIterable<T> {
-  return Symbol.asyncIterator && isFunction(obj?.[Symbol.asyncIterator]);
+function hasMethod(value: object, method: string | symbol): boolean {
+  return isFunction(Reflect.get(value, method));
+}
+
+function isAsyncIterable<T>(obj: object): obj is AsyncIterable<T> {
+  return Symbol.asyncIterator && hasMethod(obj, Symbol.asyncIterator);
 }
 
 export async function* readableStreamLikeToAsyncGenerator<T>(readableStream: ReadableStreamLike<T>): AsyncGenerator<T> {
@@ -1294,42 +1301,42 @@ export async function* readableStreamLikeToAsyncGenerator<T>(readableStream: Rea
   }
 }
 
-function isReadableStreamLike<T>(obj: any): obj is ReadableStreamLike<T> {
+function isReadableStreamLike<T>(obj: object): obj is ReadableStreamLike<T> {
   // We don't want to use instanceof checks because they would return
   // false for instances from another Realm, like an <iframe>.
-  return isFunction(obj?.getReader);
+  return hasMethod(obj, 'getReader');
 }
 
 /**
  * Tests to see if the object is "thennable".
  * @param value the object to test
  */
-export function isPromise(value: any): value is PromiseLike<any> {
-  return isFunction(value?.then);
+export function isPromise(value: unknown): value is PromiseLike<unknown> {
+  return typeof value === 'object' && !!value && hasMethod(value, 'then');
 }
 
 /** Identifies an input as being Observable (but not necessary an Rx Observable) */
-function isInteropObservable(input: any): input is InteropObservable<any> {
-  return isFunction(input[Symbol.observable ?? '@@observable']);
+function isInteropObservable<T = unknown>(input: object): input is InteropObservable<T> {
+  return hasMethod(input, Symbol.observable ?? '@@observable');
 }
 
 /** Identifies an input as being an Iterable */
-function isIterable(input: any): input is Iterable<any> {
-  return isFunction(input?.[Symbol.iterator]);
+function isIterable(input: object): input is Iterable<unknown> {
+  return hasMethod(input, Symbol.iterator);
 }
 
-export function isArrayLike<T>(x: any): x is ArrayLike<T> {
-  return x && typeof x.length === 'number' && !isFunction(x);
+export function isArrayLike<T>(x: unknown): x is ArrayLike<T> {
+  return typeof x === 'object' && !!x && 'length' in x && typeof x.length === 'number';
 }
 
 /**
  * Tests to see if the object is an RxJS {@link Observable}
  * @param obj the object to test
  */
-export function isObservable(obj: any): obj is Observable<unknown> {
+export function isObservable(obj: unknown): obj is Observable<unknown> {
   // The !! is to ensure that this publicly exposed function returns
   // `false` if something like `null` or `0` is passed.
-  return !!obj && (obj instanceof Observable || (isFunction(obj.lift) && isFunction(obj.subscribe)));
+  return !!obj && (obj instanceof Observable || (hasMethod(obj, 'lift') && hasMethod(obj, 'subscribe')));
 }
 
 /**
