@@ -201,7 +201,7 @@ describe('Subscriber', () => {
     it('should report errors thrown from next', (done) => {
       config.onUnhandledError = (err) => {
         expect(err).to.be.an.instanceOf(Error);
-        expect(err.message).to.equal('test');
+        expect(err instanceof Error && err.message).to.equal('test');
         done();
       };
 
@@ -217,7 +217,7 @@ describe('Subscriber', () => {
     it('should report errors thrown from complete', (done) => {
       config.onUnhandledError = (err) => {
         expect(err).to.be.an.instanceOf(Error);
-        expect(err.message).to.equal('test');
+        expect(err instanceof Error && err.message).to.equal('test');
         done();
       };
 
@@ -233,7 +233,7 @@ describe('Subscriber', () => {
     it('should report errors thrown from error', (done) => {
       config.onUnhandledError = (err) => {
         expect(err).to.be.an.instanceOf(Error);
-        expect(err.message).to.equal('test');
+        expect(err instanceof Error && err.message).to.equal('test');
         done();
       };
 
@@ -249,7 +249,7 @@ describe('Subscriber', () => {
     it('should report errors thrown from a full observer', (done) => {
       config.onUnhandledError = (err) => {
         expect(err).to.be.an.instanceOf(Error);
-        expect(err.message).to.equal('thrown from next');
+        expect(err instanceof Error && err.message).to.equal('thrown from next');
         done();
       };
 
@@ -271,7 +271,7 @@ describe('Subscriber', () => {
     it('should report errors thrown from a full observer even if it is also shaped like a subscription', (done) => {
       config.onUnhandledError = (err) => {
         expect(err).to.be.an.instanceOf(Error);
-        expect(err.message).to.equal('thrown from next');
+        expect(err instanceof Error && err.message).to.equal('thrown from next');
         done();
       };
 

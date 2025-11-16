@@ -596,7 +596,7 @@ describe('Subject', () => {
 
     it('should not synchronously error when nexted into', (done) => {
       config.onUnhandledError = (err) => {
-        expect(err.message).to.equal('Boom!');
+        expect(err instanceof Error && err.message).to.equal('Boom!');
         done();
       };
 
