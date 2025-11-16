@@ -1,8 +1,8 @@
 /** @prettier */
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import type { AjaxConfig, AjaxResponse} from 'rxjs/ajax';
-import { ajax, AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
+import type { AjaxConfig } from 'rxjs/ajax';
+import { ajax, AjaxError, AjaxResponse, AjaxTimeoutError } from 'rxjs/ajax';
 import { TestScheduler } from 'rxjs/testing';
 import { noop } from 'rxjs';
 import * as nodeFormData from 'form-data';
@@ -479,7 +479,8 @@ describe('ajax', () => {
     };
 
     ajax(obj).subscribe({
-      next: (x: any) => {
+      next: (x) => {
+        expect(x instanceof AjaxResponse).to.be.true;
         expect(x.status).to.equal(200);
         expect(x.xhr.method).to.equal('GET');
         expect(x.xhr.async).to.equal(true);
@@ -515,6 +516,7 @@ describe('ajax', () => {
         throw 'should not have been called';
       },
       error: (e) => {
+        expect(e instanceof AjaxTimeoutError).to.be.true;
         expect(e.status).to.equal(0);
         expect(e.xhr.method).to.equal('GET');
         expect(e.xhr.async).to.equal(true);
