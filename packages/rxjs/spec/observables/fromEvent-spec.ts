@@ -492,7 +492,7 @@ describe('fromEvent', () => {
     source.subscribe({
       error: (err) => {
         expect(err).to.be.an.instanceOf(TypeError);
-        expect(err.message).to.equal('Invalid event target');
+        expect(err instanceof TypeError && err.message).to.equal('Invalid event target');
         done();
       },
     });

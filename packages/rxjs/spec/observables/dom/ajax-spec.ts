@@ -292,7 +292,7 @@ describe('ajax', () => {
       next: () => {
         done(new Error('should not be called'));
       },
-      error: (e: Error) => {
+      error: (e) => {
         expect(e).to.be.equal(expected);
         done();
       },
@@ -663,7 +663,7 @@ describe('ajax', () => {
         next: () => {
           done(new Error('should not be called'));
         },
-        error: (e: Error) => {
+        error: (e) => {
           expect(e).to.be.equal(expected);
           done();
         },

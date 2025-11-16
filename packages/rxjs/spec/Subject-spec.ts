@@ -520,7 +520,7 @@ describe('Subject', () => {
   it('should not next after error', () => {
     const error = new Error('wut?');
     const subject = new Subject<string>();
-    const results: string[] = [];
+    const results: unknown[] = [];
     subject.subscribe({ next: (x) => results.push(x), error: (err) => results.push(err) });
     subject.next('a');
     subject.error(error);
