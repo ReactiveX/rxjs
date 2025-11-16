@@ -358,10 +358,10 @@ describe('Observable', () => {
         for await (const value of source) {
           results.push(value);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         thrownError = err;
       }
-
+      expect(thrownError instanceof Error).to.be.true;
       expect(thrownError?.message).to.equal('wee');
       expect(results).to.deep.equal([1, 2]);
     });

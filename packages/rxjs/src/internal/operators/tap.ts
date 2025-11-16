@@ -1,5 +1,5 @@
 import type { MonoTypeOperatorFunction, Observer } from '../types.js';
-import { Observable, operate, isFunction } from '@rxjs/observable';
+import { Observable, operate } from '@rxjs/observable';
 import { identity } from '../util/identity.js';
 
 /**
@@ -155,7 +155,7 @@ export interface TapObserver<T> extends Observer<T> {
  */
 export function tap<T>(observerOrNext?: Partial<TapObserver<T>> | ((value: T) => void) | null): MonoTypeOperatorFunction<T> {
   // Just need to see if it's a function or a partial observer.
-  const tapObserver: Partial<TapObserver<T>> | null | undefined = isFunction(observerOrNext) ? { next: observerOrNext } : observerOrNext;
+  const tapObserver: Partial<TapObserver<T>> | null | undefined = typeof observerOrNext === 'function' ? { next: observerOrNext } : observerOrNext;
 
   return tapObserver
     ? (source) =>

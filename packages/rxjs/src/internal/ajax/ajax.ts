@@ -410,7 +410,7 @@ export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
        * @param type The type of event we're treating as an error
        * @param errorFactory A function that creates the type of error to emit.
        */
-      const addErrorEvent = (type: string, errorFactory: () => any) => {
+      const addErrorEvent = (type: string, errorFactory: () => Error) => {
         xhr.addEventListener(type, () => {
           const error = errorFactory();
           progressSubscriber?.error?.(error);
@@ -576,34 +576,34 @@ function extractContentTypeAndMaybeSerializeBody(body: any, headers: Record<stri
 
 const _toString = Object.prototype.toString;
 
-function toStringCheck(obj: any, name: string): boolean {
+function toStringCheck(obj: unknown, name: string): boolean {
   return _toString.call(obj) === `[object ${name}]`;
 }
 
-function isArrayBuffer(body: any): body is ArrayBuffer {
+function isArrayBuffer(body: unknown): body is ArrayBuffer {
   return toStringCheck(body, 'ArrayBuffer');
 }
 
-function isFile(body: any): body is File {
+function isFile(body: unknown): body is File {
   return toStringCheck(body, 'File');
 }
 
-function isBlob(body: any): body is Blob {
+function isBlob(body: unknown): body is Blob {
   return toStringCheck(body, 'Blob');
 }
 
-function isArrayBufferView(body: any): body is ArrayBufferView {
+function isArrayBufferView(body: unknown): body is ArrayBufferView {
   return typeof ArrayBuffer !== 'undefined' && ArrayBuffer.isView(body);
 }
 
-function isFormData(body: any): body is FormData {
+function isFormData(body: unknown): body is FormData {
   return typeof FormData !== 'undefined' && body instanceof FormData;
 }
 
-function isURLSearchParams(body: any): body is URLSearchParams {
+function isURLSearchParams(body: unknown): body is URLSearchParams {
   return typeof URLSearchParams !== 'undefined' && body instanceof URLSearchParams;
 }
 
-function isReadableStream(body: any): body is ReadableStream {
+function isReadableStream(body: unknown): body is ReadableStream {
   return typeof ReadableStream !== 'undefined' && body instanceof ReadableStream;
 }

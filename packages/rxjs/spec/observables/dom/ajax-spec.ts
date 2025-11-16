@@ -1,8 +1,8 @@
 /** @prettier */
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import type { AjaxConfig, AjaxResponse} from 'rxjs/ajax';
-import { ajax, AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
+import type { AjaxConfig } from 'rxjs/ajax';
+import { ajax, AjaxError, AjaxResponse, AjaxTimeoutError } from 'rxjs/ajax';
 import { TestScheduler } from 'rxjs/testing';
 import { noop } from 'rxjs';
 import * as nodeFormData from 'form-data';
@@ -292,7 +292,7 @@ describe('ajax', () => {
       next: () => {
         done(new Error('should not be called'));
       },
-      error: (e: Error) => {
+      error: (e) => {
         expect(e).to.be.equal(expected);
         done();
       },
@@ -479,10 +479,15 @@ describe('ajax', () => {
     };
 
     ajax(obj).subscribe({
-      next: (x: any) => {
+      next: (x) => {
+        expect(x instanceof AjaxResponse).to.be.true;
+        if (!(x instanceof AjaxResponse))
+          return; // type-narrowing that @types/chai can't do
+
         expect(x.status).to.equal(200);
-        expect(x.xhr.method).to.equal('GET');
-        expect(x.xhr.async).to.equal(true);
+        // fields only in MockXMLHttpRequest:
+        expect('method' in x.xhr && x.xhr.method).to.equal('GET');
+        expect('async' in x.xhr && x.xhr.async).to.equal(true);
         expect(x.xhr.timeout).to.equal(10);
         expect(x.xhr.responseType).to.equal('text');
       },
@@ -515,9 +520,14 @@ describe('ajax', () => {
         throw 'should not have been called';
       },
       error: (e) => {
+        expect(e instanceof AjaxTimeoutError).to.be.true;
+        if (!(e instanceof AjaxTimeoutError))
+          return; // type-narrowing that @types/chai can't do
+
         expect(e.status).to.equal(0);
-        expect(e.xhr.method).to.equal('GET');
-        expect(e.xhr.async).to.equal(true);
+        // fields only in MockXMLHttpRequest:
+        expect('method' in e.xhr && e.xhr.method).to.equal('GET');
+        expect('async' in e.xhr && e.xhr.async).to.equal(true);
         expect(e.xhr.timeout).to.equal(10);
         expect(e.xhr.responseType).to.equal('text');
       },
@@ -663,7 +673,7 @@ describe('ajax', () => {
         next: () => {
           done(new Error('should not be called'));
         },
-        error: (e: Error) => {
+        error: (e) => {
           expect(e).to.be.equal(expected);
           done();
         },

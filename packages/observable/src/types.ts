@@ -130,7 +130,7 @@ export interface NextNotification<T> {
 export interface ErrorNotification {
   /** The kind of notification. Always "E" */
   kind: 'E';
-  error: any;
+  error: unknown;
 }
 
 /**
@@ -151,21 +151,21 @@ export type ObservableNotification<T> = NextNotification<T> | ErrorNotification 
 export interface NextObserver<T> {
   closed?: boolean;
   next: (value: T) => void;
-  error?: (err: any) => void;
+  error?: (err: unknown) => void;
   complete?: () => void;
 }
 
 export interface ErrorObserver<T> {
   closed?: boolean;
   next?: (value: T) => void;
-  error: (err: any) => void;
+  error: (err: unknown) => void;
   complete?: () => void;
 }
 
 export interface CompletionObserver<T> {
   closed?: boolean;
   next?: (value: T) => void;
-  error?: (err: any) => void;
+  error?: (err: unknown) => void;
   complete: () => void;
 }
 
@@ -196,7 +196,7 @@ export interface Observer<T> {
    *
    * For more info, please refer to {@link guide/glossary-and-semantics#error this guide}.
    */
-  error: (err: any) => void;
+  error: (err: unknown) => void;
   /**
    * A callback function that gets called by the producer if and when it has no more
    * values to provide (by calling `next` callback function). This means that no error
@@ -237,15 +237,15 @@ export interface TimestampProvider {
 }
 
 /**
- * Extracts the type from an `ObservableInput<any>`. If you have
- * `O extends ObservableInput<any>` and you pass in `Observable<number>`, or
+ * Extracts the type from an `ObservableInput<unknown>`. If you have
+ * `O extends ObservableInput<unknown>` and you pass in `Observable<number>`, or
  * `Promise<number>`, etc, it will type as `number`.
  */
 export type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;
 
 /**
- * Extracts a union of element types from an `ObservableInput<any>[]`.
- * If you have `O extends ObservableInput<any>[]` and you pass in
+ * Extracts a union of element types from an `ObservableInput<unknown>[]`.
+ * If you have `O extends ObservableInput<unknown>[]` and you pass in
  * `Observable<string>[]` or `Promise<string>[]` you would get
  * back a type of `string`.
  * If you pass in `[Observable<string>, Observable<number>]` you would
@@ -254,8 +254,8 @@ export type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;
 export type ObservedValueUnionFromArray<X> = X extends Array<ObservableInput<infer T>> ? T : never;
 
 /**
- * Extracts a tuple of element types from an `ObservableInput<any>[]`.
- * If you have `O extends ObservableInput<any>[]` and you pass in
+ * Extracts a tuple of element types from an `ObservableInput<unknown>[]`.
+ * If you have `O extends ObservableInput<unknown>[]` and you pass in
  * `[Observable<string>, Observable<number>]` you would get back a type
  * of `[string, number]`.
  */
@@ -274,23 +274,23 @@ export type ObservableInputTuple<T> = {
  * Constructs a new tuple with the specified type at the head.
  * If you declare `Cons<A, [B, C]>` you will get back `[A, B, C]`.
  */
-export type Cons<X, Y extends readonly any[]> = ((arg: X, ...rest: Y) => any) extends (...args: infer U) => any ? U : never;
+export type Cons<X, Y extends readonly unknown[]> = ((arg: X, ...rest: Y) => unknown) extends (...args: infer U) => unknown ? U : never;
 
 /**
  * Extracts the head of a tuple.
  * If you declare `Head<[A, B, C]>` you will get back `A`.
  */
-export type Head<X extends readonly any[]> = ((...args: X) => any) extends (arg: infer U, ...rest: any[]) => any ? U : never;
+export type Head<X extends readonly unknown[]> = ((...args: X) => unknown) extends (arg: infer U, ...rest: unknown[]) => unknown ? U : never;
 
 /**
  * Extracts the tail of a tuple.
  * If you declare `Tail<[A, B, C]>` you will get back `[B, C]`.
  */
-export type Tail<X extends readonly any[]> = ((...args: X) => any) extends (arg: any, ...rest: infer U) => any ? U : never;
+export type Tail<X extends readonly unknown[]> = ((...args: X) => unknown) extends (arg: unknown, ...rest: infer U) => unknown ? U : never;
 
 /**
  * Extracts the generic value from an Array type.
- * If you have `T extends Array<any>`, and pass a `string[]` to it,
+ * If you have `T extends Array<unknown>`, and pass a `string[]` to it,
  * `ValueFromArray<T>` will return the actual type of `string`.
  */
 export type ValueFromArray<A extends readonly unknown[]> = A extends Array<infer T> ? T : never;
@@ -299,7 +299,7 @@ export type ValueFromArray<A extends readonly unknown[]> = A extends Array<infer
  * Gets the value type from an {@link ObservableNotification}, if possible.
  */
 export type ValueFromNotification<T> = T extends { kind: 'N' | 'E' | 'C' }
-  ? T extends NextNotification<any>
+  ? T extends NextNotification<unknown>
     ? T extends { value: infer V }
       ? V
       : undefined

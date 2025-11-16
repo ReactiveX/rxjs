@@ -382,7 +382,7 @@ describe('Subject', () => {
         results3.push(x);
       },
       error: function (err) {
-        expect(false).to.equal('should not throw error: ' + err.toString());
+        expect(false).to.equal(`should not throw error: ${err}`);
       },
     });
 
@@ -520,7 +520,7 @@ describe('Subject', () => {
   it('should not next after error', () => {
     const error = new Error('wut?');
     const subject = new Subject<string>();
-    const results: string[] = [];
+    const results: unknown[] = [];
     subject.subscribe({ next: (x) => results.push(x), error: (err) => results.push(err) });
     subject.next('a');
     subject.error(error);
@@ -596,7 +596,7 @@ describe('Subject', () => {
 
     it('should not synchronously error when nexted into', (done) => {
       config.onUnhandledError = (err) => {
-        expect(err.message).to.equal('Boom!');
+        expect(err instanceof Error && err.message).to.equal('Boom!');
         done();
       };
 

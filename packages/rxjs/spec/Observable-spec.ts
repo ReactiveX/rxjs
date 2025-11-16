@@ -195,8 +195,8 @@ describe('Observable', () => {
 
     it('should work with handlers with hacked bind methods, in the error case', () => {
       const source = throwError(() => 'an error');
-      const results: any[] = [];
-      const error = function (value: string) {
+      const results: unknown[] = [];
+      const error = function (value: unknown) {
         results.push(value);
       };
 

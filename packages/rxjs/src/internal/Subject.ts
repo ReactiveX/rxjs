@@ -39,7 +39,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   hasError = false;
 
   /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
-  thrownError: any = null;
+  thrownError: unknown = null;
 
   constructor() {
     // NOTE: This must be here to obscure Observable's constructor.
@@ -61,7 +61,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     }
   }
 
-  error(err: any) {
+  error(err: unknown) {
     if (!this._closed) {
       this.hasError = this._closed = true;
       this.thrownError = err;

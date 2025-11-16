@@ -325,7 +325,7 @@ describe('from', () => {
 
     from(erroringIterator).subscribe({
       next: (x) => results.push(x),
-      error: (err) => results.push(err.message),
+      error: (err) => results.push(err instanceof Error && err.message),
     });
 
     expect(results).to.deep.equal([0, 1, 2, 'bad']);

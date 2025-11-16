@@ -120,7 +120,7 @@ describe('ReplaySubject', () => {
         function feedNextIntoSubject(x: string) {
           replaySubject.next(x);
         }
-        function feedErrorIntoSubject(err: string) {
+        function feedErrorIntoSubject(err: unknown) {
           replaySubject.error(err);
         }
         function feedCompleteIntoSubject() {
@@ -152,7 +152,7 @@ describe('ReplaySubject', () => {
         function feedNextIntoSubject(x: string) {
           replaySubject.next(x);
         }
-        function feedErrorIntoSubject(err: string) {
+        function feedErrorIntoSubject(err: unknown) {
           replaySubject.error(err);
         }
         function feedCompleteIntoSubject() {

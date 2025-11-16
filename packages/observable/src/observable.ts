@@ -25,11 +25,11 @@ export class UnsubscriptionError extends Error {
    * @deprecated Internal implementation detail. Do not construct error instances.
    * Cannot be tagged as internal: https://github.com/ReactiveX/rxjs/issues/6269
    */
-  constructor(public errors: any[]) {
+  constructor(public errors: unknown[]) {
     super(
       errors
         ? `${errors.length} errors occurred during unsubscription:
-  ${errors.map((err, i) => `${i + 1}) ${err.toString()}`).join('\n  ')}`
+  ${errors.map((err, i) => `${i + 1}) ${err}`).join('\n  ')}`
         : ''
     );
     this.name = 'UnsubscriptionError';
@@ -76,7 +76,7 @@ export class Subscription implements SubscriptionLike {
    * started when the Subscription was created.
    */
   unsubscribe(): void {
-    let errors: any[] | undefined;
+    let errors: unknown[] | undefined;
 
     if (!this.closed) {
       this.closed = true;
@@ -213,7 +213,7 @@ export interface SubscriberOverrides<T> {
    * the destination's `error` method.
    * @param err An error that has been thrown by the source observable.
    */
-  error?: (err: any) => void;
+  error?: (err: unknown) => void;
   /**
    * If provided, this function will be called whenever the {@link Subscriber}'s
    * `complete` method is called. If an error is thrown within this function, it
@@ -245,7 +245,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   /** @internal */
   protected readonly _nextOverride: ((value: T) => void) | null = null;
   /** @internal */
-  protected readonly _errorOverride: ((err: any) => void) | null = null;
+  protected readonly _errorOverride: ((err: unknown) => void) | null = null;
   /** @internal */
   protected readonly _completeOverride: (() => void) | null = null;
   /** @internal */
@@ -259,7 +259,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   /**
    * @internal
    */
-  constructor(destination: Subscriber<any> | Partial<Observer<any>> | ((value: any) => void) | null, overrides: SubscriberOverrides<T>);
+  constructor(destination: Subscriber<any> | Partial<Observer<unknown>> | ((value: unknown) => void) | null, overrides: SubscriberOverrides<T>);
 
   /**
    * Creates an instance of an RxJS Subscriber. This is the workhorse of the library.
@@ -303,7 +303,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
 
     // Automatically chain subscriptions together here.
     // if destination appears to be one of our subscriptions, we'll chain it.
-    if (hasAddAndUnsubscribe(destination)) {
+    if (typeof destination === "object" && hasAddAndUnsubscribe(destination)) {
       destination.add(this);
     }
   }
@@ -328,7 +328,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * the Observable has experienced an error condition.
    * @param err The `error` exception.
    */
-  error(err?: any): void {
+  error(err?: unknown): void {
     if (this.isStopped) {
       handleStoppedNotification(errorNotification(err), this);
     } else {
@@ -363,7 +363,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     this.destination.next(value);
   }
 
-  protected _error(err: any): void {
+  protected _error(err: unknown): void {
     try {
       this.destination.error(err);
     } finally {
@@ -404,7 +404,7 @@ export interface GlobalConfig {
    * we do not want errors thrown in this user-configured handler to interfere with the
    * behavior of the library.
    */
-  onUnhandledError: ((err: any) => void) | null;
+  onUnhandledError: ((err: unknown) => void) | null;
 
   /**
    * A registration point for notifications that cannot be sent to subscribers because they
@@ -416,7 +416,7 @@ export interface GlobalConfig {
    * we do not want errors thrown in this user-configured handler to interfere with the
    * behavior of the library.
    */
-  onStoppedNotification: ((notification: ObservableNotification<any>, subscriber: Subscriber<any>) => void) | null;
+  onStoppedNotification: ((notification: ObservableNotification<unknown>, subscriber: Subscriber<unknown>) => void) | null;
 }
 
 function overrideNext<T>(this: Subscriber<T>, value: T): void {
@@ -427,7 +427,7 @@ function overrideNext<T>(this: Subscriber<T>, value: T): void {
   }
 }
 
-function overrideError(this: Subscriber<unknown>, err: any): void {
+function overrideError(this: Subscriber<unknown>, err: unknown): void {
   try {
     this._errorOverride!(err);
   } catch (error) {
@@ -461,7 +461,7 @@ class ConsumerObserver<T> implements Observer<T> {
     }
   }
 
-  error(err: any): void {
+  error(err: unknown): void {
     const { partialObserver } = this;
     if (partialObserver.error) {
       try {
@@ -487,7 +487,7 @@ class ConsumerObserver<T> implements Observer<T> {
 }
 
 function createSafeObserver<T>(observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null): Observer<T> {
-  return new ConsumerObserver(!observerOrNext || isFunction(observerOrNext) ? { next: observerOrNext ?? undefined } : observerOrNext);
+  return new ConsumerObserver(!observerOrNext || typeof observerOrNext === 'function' ? { next: observerOrNext ?? undefined } : observerOrNext);
 }
 
 /**
@@ -495,13 +495,13 @@ function createSafeObserver<T>(observerOrNext?: Partial<Observer<T>> | ((value: 
  * @param notification The notification being sent.
  * @param subscriber The stopped subscriber.
  */
-function handleStoppedNotification(notification: ObservableNotification<any>, subscriber: Subscriber<any>) {
+function handleStoppedNotification(notification: ObservableNotification<unknown>, subscriber: Subscriber<any>) {
   const { onStoppedNotification } = config;
   onStoppedNotification && setTimeout(() => onStoppedNotification(notification, subscriber));
 }
 
-function hasAddAndUnsubscribe(value: any): value is Subscription {
-  return value && isFunction(value.unsubscribe) && isFunction(value.add);
+function hasAddAndUnsubscribe(value: object | null): value is Subscription {
+  return value !== null && hasMethod(value, 'unsubscribe') && hasMethod(value, 'add');
 }
 
 export interface OperateConfig<In, Out> extends SubscriberOverrides<In> {
@@ -773,7 +773,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /** @internal */
-  protected _subscribe(_subscriber: Subscriber<any>): TeardownLogic {
+  protected _subscribe(_subscriber: Subscriber<T>): TeardownLogic {
     return;
   }
 
@@ -845,7 +845,7 @@ export class Observable<T> implements Subscribable<T> {
     op7: UnaryFunction<F, G>,
     op8: UnaryFunction<G, H>,
     op9: UnaryFunction<H, I>,
-    ...operations: OperatorFunction<any, any>[]
+    ...operations: OperatorFunction<unknown, unknown>[]
   ): Observable<unknown>;
   pipe<A, B, C, D, E, F, G, H, I>(
     op1: UnaryFunction<Observable<T>, A>,
@@ -857,7 +857,7 @@ export class Observable<T> implements Subscribable<T> {
     op7: UnaryFunction<F, G>,
     op8: UnaryFunction<G, H>,
     op9: UnaryFunction<H, I>,
-    ...operations: UnaryFunction<any, any>[]
+    ...operations: UnaryFunction<unknown, unknown>[]
   ): unknown;
 
   /**
@@ -880,8 +880,8 @@ export class Observable<T> implements Subscribable<T> {
    * @return The Observable result of all the operators having been called
    * in the order they were passed in.
    */
-  pipe(...operations: UnaryFunction<any, any>[]): unknown {
-    return operations.reduce(pipeReducer, this as any);
+  pipe(...operations: UnaryFunction<any, unknown>[]): unknown {
+    return operations.reduce(pipeReducer, this);
   }
 
   /**
@@ -1007,7 +1007,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 }
 
-function pipeReducer(prev: any, fn: UnaryFunction<any, any>) {
+function pipeReducer(prev: unknown, fn: UnaryFunction<unknown, unknown>) {
   return fn(prev);
 }
 
@@ -1020,7 +1020,7 @@ function pipeReducer(prev: any, fn: UnaryFunction<any, any>) {
  *
  * @param err the error to report
  */
-export function reportUnhandledError(err: any) {
+export function reportUnhandledError(err: unknown) {
   setTimeout(() => {
     const { onUnhandledError } = config;
     if (onUnhandledError) {
@@ -1103,13 +1103,15 @@ export function reportUnhandledError(err: any) {
  * an Array, an iterable, async iterable, or an array-like object to be converted.
  */
 
-export function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>>;
+export function from<O extends ObservableInput<unknown>>(input: O): Observable<ObservedValueOf<O>>;
 export function from<T>(input: ObservableInput<T>): Observable<T> {
   const type = getObservableInputType(input);
   switch (type) {
     case ObservableInputType.Own:
       return input as Observable<T>;
     case ObservableInputType.InteropObservable:
+      if (!isInteropObservable<T>(input))
+        throw new Error('unreachable error for type-narrowing');
       return fromInteropObservable(input);
     case ObservableInputType.ArrayLike:
       return fromArrayLike(input as ArrayLike<T>);
@@ -1128,14 +1130,10 @@ export function from<T>(input: ObservableInput<T>): Observable<T> {
  * Creates an RxJS Observable from an object that implements `Symbol.observable`.
  * @param obj An object that properly implements `Symbol.observable`.
  */
-function fromInteropObservable<T>(obj: any) {
+function fromInteropObservable<T>(obj: InteropObservable<T>) {
   return new Observable((subscriber: Subscriber<T>) => {
-    const obs = obj[Symbol.observable ?? '@@observable']();
-    if (isFunction(obs.subscribe)) {
-      return obs.subscribe(subscriber);
-    }
-    // Should be caught by observable subscribe function error handling.
-    throw new TypeError('Provided object does not correctly implement Symbol.observable');
+    const obs = Reflect.get(obj, Symbol.observable ?? '@@observable')();
+    return obs.subscribe(subscriber);
   });
 }
 
@@ -1162,7 +1160,7 @@ export function fromPromise<T>(promise: PromiseLike<T>) {
             subscriber.complete();
           }
         },
-        (err: any) => subscriber.error(err)
+        (err: unknown) => subscriber.error(err)
       )
       .then(null, reportUnhandledError);
   });
@@ -1239,6 +1237,11 @@ export enum ObservableInputType {
 }
 
 export function getObservableInputType(input: unknown): ObservableInputType {
+  if (typeof input !== 'object' || input === null) {
+    throw new TypeError(
+    `You provided '${input}' where a stream was expected. You can provide an Observable, Promise, ReadableStream, Array, AsyncIterable, or Iterable.`
+    );
+  }
   if (input instanceof Observable) {
     return ObservableInputType.Own;
   }
@@ -1261,9 +1264,7 @@ export function getObservableInputType(input: unknown): ObservableInputType {
     return ObservableInputType.ReadableStreamLike;
   }
   throw new TypeError(
-    `You provided ${
-      input !== null && typeof input === 'object' ? 'an invalid object' : `'${input}'`
-    } where a stream was expected. You can provide an Observable, Promise, ReadableStream, Array, AsyncIterable, or Iterable.`
+    `You provided an invalid object where a stream was expected. You can provide an Observable, Promise, ReadableStream, Array, AsyncIterable, or Iterable.`
   );
 }
 
@@ -1271,12 +1272,16 @@ export function getObservableInputType(input: unknown): ObservableInputType {
  * Returns true if the object is a function.
  * @param value The value to check
  */
-export function isFunction(value: any): value is (...args: any[]) => any {
+export function isFunction(value: unknown): value is (...args: unknown[]) => unknown {
   return typeof value === 'function';
 }
 
-function isAsyncIterable<T>(obj: any): obj is AsyncIterable<T> {
-  return Symbol.asyncIterator && isFunction(obj?.[Symbol.asyncIterator]);
+function hasMethod(value: object, method: string | symbol): boolean {
+  return isFunction(Reflect.get(value, method));
+}
+
+function isAsyncIterable<T>(obj: object): obj is AsyncIterable<T> {
+  return Symbol.asyncIterator && hasMethod(obj, Symbol.asyncIterator);
 }
 
 export async function* readableStreamLikeToAsyncGenerator<T>(readableStream: ReadableStreamLike<T>): AsyncGenerator<T> {
@@ -1294,42 +1299,42 @@ export async function* readableStreamLikeToAsyncGenerator<T>(readableStream: Rea
   }
 }
 
-function isReadableStreamLike<T>(obj: any): obj is ReadableStreamLike<T> {
+function isReadableStreamLike<T>(obj: object): obj is ReadableStreamLike<T> {
   // We don't want to use instanceof checks because they would return
   // false for instances from another Realm, like an <iframe>.
-  return isFunction(obj?.getReader);
+  return hasMethod(obj, 'getReader');
 }
 
 /**
  * Tests to see if the object is "thennable".
  * @param value the object to test
  */
-export function isPromise(value: any): value is PromiseLike<any> {
-  return isFunction(value?.then);
+export function isPromise(value: unknown): value is PromiseLike<unknown> {
+  return typeof value === 'object' && !!value && hasMethod(value, 'then');
 }
 
 /** Identifies an input as being Observable (but not necessary an Rx Observable) */
-function isInteropObservable(input: any): input is InteropObservable<any> {
-  return isFunction(input[Symbol.observable ?? '@@observable']);
+function isInteropObservable<T = unknown>(input: object): input is InteropObservable<T> {
+  return hasMethod(input, Symbol.observable ?? '@@observable');
 }
 
 /** Identifies an input as being an Iterable */
-function isIterable(input: any): input is Iterable<any> {
-  return isFunction(input?.[Symbol.iterator]);
+function isIterable(input: object): input is Iterable<unknown> {
+  return hasMethod(input, Symbol.iterator);
 }
 
-export function isArrayLike<T>(x: any): x is ArrayLike<T> {
-  return x && typeof x.length === 'number' && !isFunction(x);
+export function isArrayLike<T>(x: unknown): x is ArrayLike<T> {
+  return typeof x === 'object' && !!x && 'length' in x && typeof x.length === 'number';
 }
 
 /**
  * Tests to see if the object is an RxJS {@link Observable}
  * @param obj the object to test
  */
-export function isObservable(obj: any): obj is Observable<unknown> {
+export function isObservable(obj: unknown): obj is Observable<unknown> {
   // The !! is to ensure that this publicly exposed function returns
   // `false` if something like `null` or `0` is passed.
-  return !!obj && (obj instanceof Observable || (isFunction(obj.lift) && isFunction(obj.subscribe)));
+  return !!obj && (obj instanceof Observable || (hasMethod(obj, 'lift') && hasMethod(obj, 'subscribe')));
 }
 
 /**
@@ -1344,8 +1349,8 @@ export const COMPLETE_NOTIFICATION = (() => createNotification('C', undefined, u
  * as other notifications.
  * @internal
  */
-export function errorNotification(error: any): ErrorNotification {
-  return createNotification('E', undefined, error) as any;
+export function errorNotification(error: unknown): ErrorNotification {
+  return createNotification('E', undefined, error);
 }
 
 /**
@@ -1358,13 +1363,13 @@ export function nextNotification<T>(value: T) {
 }
 
 export function createNotification<T>(kind: 'N', value: T, error: undefined): { kind: 'N'; value: T; error: undefined };
-export function createNotification<T>(kind: 'E', value: undefined, error: any): { kind: 'E'; value: undefined; error: any };
+export function createNotification<T>(kind: 'E', value: undefined, error: unknown): { kind: 'E'; value: undefined; error: unknown };
 export function createNotification<T>(kind: 'C', value: undefined, error: undefined): { kind: 'C'; value: undefined; error: undefined };
 export function createNotification<T>(
   kind: 'N' | 'E' | 'C',
   value: T | undefined,
-  error: any
-): { kind: 'N' | 'E' | 'C'; value: T | undefined; error: any };
+  error: unknown
+): { kind: 'N' | 'E' | 'C'; value: T | undefined; error: unknown };
 
 /**
  * Ensures that all notifications created internally have the same "shape" in v8.
@@ -1372,7 +1377,7 @@ export function createNotification<T>(
  * TODO: This is only exported to support a crazy legacy test in `groupBy`.
  * @internal
  */
-export function createNotification<T>(kind: 'N' | 'E' | 'C', value: T | undefined, error: any) {
+export function createNotification<T>(kind: 'N' | 'E' | 'C', value: T | undefined, error: unknown) {
   return {
     kind,
     value,
