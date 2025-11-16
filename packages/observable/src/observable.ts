@@ -29,7 +29,7 @@ export class UnsubscriptionError extends Error {
     super(
       errors
         ? `${errors.length} errors occurred during unsubscription:
-  ${errors.map((err, i) => `${i + 1}) ${err.toString()}`).join('\n  ')}`
+  ${errors.map((err, i) => `${i + 1}) ${err}`).join('\n  ')}`
         : ''
     );
     this.name = 'UnsubscriptionError';
