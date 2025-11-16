@@ -303,7 +303,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
 
     // Automatically chain subscriptions together here.
     // if destination appears to be one of our subscriptions, we'll chain it.
-    if (hasAddAndUnsubscribe(destination)) {
+    if (typeof destination === "object" && hasAddAndUnsubscribe(destination)) {
       destination.add(this);
     }
   }
@@ -500,8 +500,8 @@ function handleStoppedNotification(notification: ObservableNotification<any>, su
   onStoppedNotification && setTimeout(() => onStoppedNotification(notification, subscriber));
 }
 
-function hasAddAndUnsubscribe(value: any): value is Subscription {
-  return value && isFunction(value.unsubscribe) && isFunction(value.add);
+function hasAddAndUnsubscribe(value: object | null): value is Subscription {
+  return value !== null && hasMethod(value, 'unsubscribe') && hasMethod(value, 'add');
 }
 
 export interface OperateConfig<In, Out> extends SubscriberOverrides<In> {
