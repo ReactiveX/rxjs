@@ -1110,6 +1110,8 @@ export function from<T>(input: ObservableInput<T>): Observable<T> {
     case ObservableInputType.Own:
       return input as Observable<T>;
     case ObservableInputType.InteropObservable:
+      if (!isInteropObservable<T>(input))
+        throw new Error('unreachable error for type-narrowing');
       return fromInteropObservable(input);
     case ObservableInputType.ArrayLike:
       return fromArrayLike(input as ArrayLike<T>);
@@ -1128,14 +1130,10 @@ export function from<T>(input: ObservableInput<T>): Observable<T> {
  * Creates an RxJS Observable from an object that implements `Symbol.observable`.
  * @param obj An object that properly implements `Symbol.observable`.
  */
-function fromInteropObservable<T>(obj: any) {
+function fromInteropObservable<T>(obj: InteropObservable<T>) {
   return new Observable((subscriber: Subscriber<T>) => {
-    const obs = obj[Symbol.observable ?? '@@observable']();
-    if (isFunction(obs.subscribe)) {
-      return obs.subscribe(subscriber);
-    }
-    // Should be caught by observable subscribe function error handling.
-    throw new TypeError('Provided object does not correctly implement Symbol.observable');
+    const obs = Reflect.get(obj, Symbol.observable ?? '@@observable')();
+    return obs.subscribe(subscriber);
   });
 }
 
