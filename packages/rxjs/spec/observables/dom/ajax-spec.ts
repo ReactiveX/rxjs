@@ -481,9 +481,13 @@ describe('ajax', () => {
     ajax(obj).subscribe({
       next: (x) => {
         expect(x instanceof AjaxResponse).to.be.true;
+        if (!(x instanceof AjaxResponse))
+          return; // type-narrowing that @types/chai can't do
+
         expect(x.status).to.equal(200);
-        expect(x.xhr.method).to.equal('GET');
-        expect(x.xhr.async).to.equal(true);
+        // fields only in MockXMLHttpRequest:
+        expect('method' in x.xhr && x.xhr.method).to.equal('GET');
+        expect('async' in x.xhr && x.xhr.async).to.equal(true);
         expect(x.xhr.timeout).to.equal(10);
         expect(x.xhr.responseType).to.equal('text');
       },
@@ -517,9 +521,13 @@ describe('ajax', () => {
       },
       error: (e) => {
         expect(e instanceof AjaxTimeoutError).to.be.true;
+        if (!(e instanceof AjaxTimeoutError))
+          return; // type-narrowing that @types/chai can't do
+
         expect(e.status).to.equal(0);
-        expect(e.xhr.method).to.equal('GET');
-        expect(e.xhr.async).to.equal(true);
+        // fields only in MockXMLHttpRequest:
+        expect('method' in e.xhr && e.xhr.method).to.equal('GET');
+        expect('async' in e.xhr && e.xhr.async).to.equal(true);
         expect(e.xhr.timeout).to.equal(10);
         expect(e.xhr.responseType).to.equal('text');
       },
