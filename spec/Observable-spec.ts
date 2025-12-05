@@ -643,7 +643,7 @@ describe('Observable', () => {
       });
 
       it('should rethrow if next handler throws', () => {
-        const observable = new Observable((observer) => {
+        const observable = new Observable<number>((observer) => {
           observer.next(1);
         });
 

@@ -14,7 +14,7 @@ import { errorContext } from './util/errorContext';
  * Every Subject is an Observable and an Observer. You can subscribe to a
  * Subject, and you can call next to feed values as well as error and complete.
  */
-export class Subject<T> extends Observable<T> implements SubscriptionLike {
+export class Subject<T = void> extends Observable<T> implements SubscriptionLike {
   closed = false;
 
   private currentObservers: Observer<T>[] | null = null;

@@ -75,7 +75,7 @@ describe('every', () => {
   it('should accept thisArg with ordinary observable', () => {
     const thisArg = {};
 
-    const source = new Observable((observer: Observer<number>) => {
+    const source = new Observable<number>((observer: Observer<number>) => {
       observer.next(1);
       observer.complete();
     });

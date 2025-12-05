@@ -28,7 +28,7 @@ describe('shareReplay', () => {
 
   it('should do nothing if result is not subscribed', () => {
     let subscribed = false;
-    const source = new Observable(() => {
+    const source = new Observable<number>(() => {
       subscribed = true;
     });
     source.pipe(shareReplay());

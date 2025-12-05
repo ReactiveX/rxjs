@@ -277,7 +277,7 @@ describe('finalize', () => {
 
   it('should execute finalize even with a sync thrown error', () => {
     let called = false;
-    const badObservable = new Observable(() => {
+    const badObservable = new Observable<number>(() => {
       throw new Error('bad');
     }).pipe(
       finalize(() => {
@@ -294,7 +294,7 @@ describe('finalize', () => {
 
   it('should execute finalize in order even with a sync error', () => {
     const results: any[] = [];
-    const badObservable = new Observable((subscriber) => {
+    const badObservable = new Observable<number>((subscriber) => {
       subscriber.error(new Error('bad'));
     }).pipe(
       finalize(() => {
@@ -314,7 +314,7 @@ describe('finalize', () => {
 
   it('should execute finalize in order even with a sync thrown error', () => {
     const results: any[] = [];
-    const badObservable = new Observable(() => {
+    const badObservable = new Observable<number>(() => {
       throw new Error('bad');
     }).pipe(
       finalize(() => {

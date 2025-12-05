@@ -681,7 +681,7 @@ describe('share', () => {
   describe('share(config) with async/deferred reset notifiers', () => {
     it('should reset on refCount 0 when synchronously resubscribing to a firehose and using a sync reset notifier', () => {
       let subscriptionCount = 0;
-      const source = new Observable((subscriber) => {
+      const source = new Observable<number>((subscriber) => {
         subscriptionCount++;
         for (let i = 0; i < 3 && !subscriber.closed; i++) {
           subscriber.next(i);

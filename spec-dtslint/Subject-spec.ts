@@ -2,11 +2,10 @@ import { Subject } from 'rxjs';
 
 describe('Subject', () => {
   it('should handle no generic appropriately', () => {
-    const s1 = new Subject(); // $ExpectType Subject<unknown>
-    s1.next(); // $ExpectError
-    s1.next('test'); // $ExpectType void
-    s1.subscribe(value => {
-      const x = value; // $ExpectType unknown
+    const s1 = new Subject(); // $ExpectType Subject<void>
+    s1.next(); // $ExpectType void
+    s1.next('test'); // $ExpectError
+    s1.subscribe(() => {
     });
   });
 
@@ -37,7 +36,7 @@ describe('Subject', () => {
   describe('asObservable', () => {
     it('should return an observable of the same generic type', () => {
       const s1 = new Subject();
-      const o1 = s1.asObservable(); // $ExpectType Observable<unknown>
+      const o1 = s1.asObservable(); // $ExpectType Observable<void>
 
       const s2 = new Subject<string>();
       const o2 = s2.asObservable(); // $ExpectType Observable<string>
