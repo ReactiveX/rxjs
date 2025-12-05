@@ -186,7 +186,7 @@ describe('config', () => {
         done();
       };
 
-      const source = new Observable((subscriber) => {
+      const source = new Observable<number>((subscriber) => {
         subscriber.next(1);
         subscriber.complete();
         subscriber.next(2);

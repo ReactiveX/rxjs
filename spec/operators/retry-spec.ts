@@ -32,7 +32,7 @@ describe('retry', () => {
   it('should retry a number of times, without error, then complete', (done) => {
     let errors = 0;
     const retries = 2;
-    new Observable((observer: Observer<number>) => {
+    new Observable<number>((observer: Observer<number>) => {
       observer.next(42);
       observer.complete();
     })
@@ -60,7 +60,7 @@ describe('retry', () => {
   it('should retry a number of times, then call error handler', (done) => {
     let errors = 0;
     const retries = 2;
-    new Observable((observer: Observer<number>) => {
+    new Observable<number>((observer: Observer<number>) => {
       observer.next(42);
       observer.complete();
     })
@@ -88,7 +88,7 @@ describe('retry', () => {
   it('should retry a number of times, then call error handler (with resetOnSuccess)', (done) => {
     let errors = 0;
     const retries = 2;
-    new Observable((observer: Observer<number>) => {
+    new Observable<number>((observer: Observer<number>) => {
       observer.next(42);
       observer.complete();
     })
@@ -197,7 +197,7 @@ describe('retry', () => {
   it('should retry until successful completion', (done) => {
     let errors = 0;
     const retries = 10;
-    new Observable((observer: Observer<number>) => {
+    new Observable<number>((observer: Observer<number>) => {
       observer.next(42);
       observer.complete();
     })

@@ -695,7 +695,7 @@ describe('AnonymousSubject', () => {
 
     const subject = Subject.create(
       null,
-      new Observable((observer: Observer<any>) => {
+      new Observable<string>((observer: Observer<string>) => {
         subscribed = true;
         const subscription = of('x').subscribe(observer);
         return () => {
