@@ -77,7 +77,7 @@ Under the hood, this is how the `multicast` operator works: Observers subscribe 
 import { from, Subject, multicast } from 'rxjs';
 
 const source = from([1, 2, 3]);
-const subject = new Subject();
+const subject = new Subject<number>();
 const multicasted = source.pipe(multicast(subject));
 
 // These are, under the hood, `subject.subscribe({...})`:
@@ -119,7 +119,7 @@ To achieve that with explicit calls to `connect()`, we write the following code:
 import { interval, Subject, multicast } from 'rxjs';
 
 const source = interval(500);
-const subject = new Subject();
+const subject = new Subject<number>();
 const multicasted = source.pipe(multicast(subject));
 let subscription1, subscription2, subscriptionConnect;
 
@@ -158,7 +158,7 @@ Below is an example:
 import { interval, Subject, multicast, refCount } from 'rxjs';
 
 const source = interval(500);
-const subject = new Subject();
+const subject = new Subject<number>();
 const refCounted = source.pipe(multicast(subject), refCount());
 let subscription1, subscription2;
 
@@ -315,7 +315,7 @@ The AsyncSubject is a variant where only the last value of the Observable execut
 
 ```js
 import { AsyncSubject } from 'rxjs';
-const subject = new AsyncSubject();
+const subject = new AsyncSubject<number>();
 
 subject.subscribe({
   next: (v) => console.log(`observerA: ${v}`),
