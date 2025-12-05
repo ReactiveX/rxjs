@@ -360,16 +360,9 @@ Passing a dummy value this way is clumsy and can confuse users.
 By declaring a _void subject_, you signal that the value is irrelevant. Only the event itself matters.
 
 ```ts
-const subject = new Subject<void>();
-setTimeout(() => subject.next(), 1000);
-```
-
-A complete example with context is shown below:
-
-```ts
 import { Subject } from 'rxjs';
 
-const subject = new Subject(); // Shorthand for Subject<void>
+const subject = new Subject<void>();
 
 subject.subscribe({
   next: () => console.log('One second has passed'),
@@ -378,4 +371,4 @@ subject.subscribe({
 setTimeout(() => subject.next(), 1000);
 ```
 
-<span class="informal">Before version 7, the default type of Subject values was `any`. `Subject<any>` disables type checking of the emitted values, whereas `Subject<void>` prevents accidental access to the emitted value. If you want the old behavior, then replace `Subject` with `Subject<any>`.</span>
+<span class="informal">Before version 7, the default type of Subject values was `any`. In v7+, the default type is `unknown`. `Subject<any>` disables type checking of the emitted values, whereas `Subject<unknown>` forces strict type-checking. Specifying an explicit type instead of the default is generally recommended.</span>
