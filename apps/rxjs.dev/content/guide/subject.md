@@ -211,10 +211,10 @@ In the following example, the BehaviorSubject is initialized with the value `0` 
 
 ```ts
 import { BehaviorSubject } from 'rxjs';
-const subject = new BehaviorSubject(0); // 0 is the initial value
+const subject = new BehaviorSubject(0); // 0 is the initial value - and its type is inferred automatically
 
 subject.subscribe({
-  next: (v) => console.log(`observerA: ${v}`),
+  next: (v: number) => console.log(`observerA: ${v}`),
 });
 
 subject.next(1);
@@ -245,10 +245,10 @@ When creating a `ReplaySubject`, you can specify how many values to replay:
 
 ```ts
 import { ReplaySubject } from 'rxjs';
-const subject = new ReplaySubject(3); // buffer 3 values for new subscribers
+const subject = new ReplaySubject<number>(3); // buffer 3 values for new subscribers
 
 subject.subscribe({
-  next: (v) => console.log(`observerA: ${v}`),
+  next: (v: number) => console.log(`observerA: ${v}`),
 });
 
 subject.next(1);
@@ -280,10 +280,10 @@ You can also specify a _window time_ in milliseconds, besides of the buffer size
 
 ```ts
 import { ReplaySubject } from 'rxjs';
-const subject = new ReplaySubject(100, 500 /* windowTime */);
+const subject = new ReplaySubject<number>(100, 500 /* windowTime */);
 
 subject.subscribe({
-  next: (v) => console.log(`observerA: ${v}`),
+  next: (v: number) => console.log(`observerA: ${v}`),
 });
 
 let i = 1;
