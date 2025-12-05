@@ -116,12 +116,12 @@ Consider the following example where subscriptions occur as outlined by this lis
 To achieve that with explicit calls to `connect()`, we write the following code:
 
 ```ts
-import { interval, Subject, multicast } from 'rxjs';
+import { interval, Subject, Subscription, multicast } from 'rxjs';
 
 const source = interval(500);
 const subject = new Subject<number>();
 const multicasted = source.pipe(multicast(subject));
-let subscription1, subscription2, subscriptionConnect;
+let subscription1, subscription2: Subscription, subscriptionConnect;
 
 subscription1 = multicasted.subscribe({
   next: (v) => console.log(`observerA: ${v}`),
@@ -155,12 +155,12 @@ If we wish to avoid explicit calls to `connect()`, we can use ConnectableObserva
 Below is an example:
 
 ```ts
-import { interval, Subject, multicast, refCount } from 'rxjs';
+import { interval, Subject, Subscription, multicast, refCount } from 'rxjs';
 
 const source = interval(500);
 const subject = new Subject<number>();
 const refCounted = source.pipe(multicast(subject), refCount());
-let subscription1, subscription2;
+let subscription1, subscription2: Subscription;
 
 // This calls `connect()`, because
 // it is the first subscriber to `refCounted`
