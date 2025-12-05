@@ -71,14 +71,16 @@ A "multicasted Observable" passes notifications through a Subject which may have
 
 <span class="informal">A multicasted Observable uses a Subject under the hood to make multiple Observers see the same Observable execution.</span>
 
-Under the hood, this is how the `multicast` operator works: Observers subscribe to an underlying Subject, and the Subject subscribes to the source Observable. The following example is similar to the previous example which used `observable.subscribe(subject)`:
+Under the hood, this is how the `connectable` operator works: Observers subscribe to an underlying Subject, and the Subject subscribes to the source Observable. The following example is similar to the previous example which used `observable.subscribe(subject)`:
 
 ```ts
-import { from, Subject, multicast } from 'rxjs';
+import { connectable, from, Subject } from 'rxjs';
 
 const source = from([1, 2, 3]);
-const subject = new Subject<number>();
-const multicasted = source.pipe(multicast(subject));
+const subjectFactory = () => new Subject<number>();
+const multicasted = connectable(source, {
+  connector: subjectFactory,
+});
 
 // These are, under the hood, `subject.subscribe({...})`:
 multicasted.subscribe({
@@ -92,7 +94,7 @@ multicasted.subscribe({
 multicasted.connect();
 ```
 
-`multicast` returns an Observable that looks like a normal Observable, but works like a Subject when it comes to subscribing. `multicast` returns a `ConnectableObservable`, which is simply an Observable with the `connect()` method.
+`connectable` returns an Observable that looks like a normal Observable, but works like a Subject when it comes to subscribing. `connectable` returns a `ConnectableObservable`, which is simply an Observable with the `connect()` method.
 
 The `connect()` method is important to determine exactly when the shared Observable execution will start. Because `connect()` does `source.subscribe(subject)` under the hood, `connect()` returns a Subscription, which you can unsubscribe from in order to cancel the shared Observable execution.
 
@@ -116,11 +118,13 @@ Consider the following example where subscriptions occur as outlined by this lis
 To achieve that with explicit calls to `connect()`, we write the following code:
 
 ```ts
-import { interval, Subject, Subscription, multicast } from 'rxjs';
+import { connectable, interval, Subject, Subscription } from 'rxjs';
 
 const source = interval(500);
-const subject = new Subject<number>();
-const multicasted = source.pipe(multicast(subject));
+const subjectFactory = () => new Subject<number>();
+const multicasted = connectable(source, {
+  connector: subjectFactory,
+});
 let subscription1, subscription2: Subscription, subscriptionConnect;
 
 subscription1 = multicasted.subscribe({
