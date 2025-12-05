@@ -846,7 +846,7 @@ describe('useDeprecatedSynchronousErrorHandling', () => {
   });
 
   it('deep rethrowing 1', () => {
-    const subject1 = new Subject();
+    const subject1 = new Subject<string>();
     const subject2 = new Subject();
 
     subject2.subscribe();
@@ -861,7 +861,7 @@ describe('useDeprecatedSynchronousErrorHandling', () => {
   });
 
   it('deep rethrowing 2', () => {
-    const subject1 = new Subject();
+    const subject1 = new Subject<string>();
 
     subject1.subscribe({
       next: () => {

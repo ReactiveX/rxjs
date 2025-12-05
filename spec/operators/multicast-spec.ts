@@ -619,7 +619,7 @@ describe('multicast', () => {
 
     it('should be repeatable', () => {
       testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
-        const subjectFactory = () => new Subject();
+        const subjectFactory = () => new Subject<string>();
 
         const e1 = cold('   -1-2-3----4-|                        ');
         const e1subs = [
