@@ -12,7 +12,7 @@ import { errorContext } from './util/errorContext';
  * A representation of any set of values over any amount of time. This is the most basic building block
  * of RxJS.
  */
-export class Observable<T> implements Subscribable<T> {
+export class Observable<T = void> implements Subscribable<T> {
   /**
    * @deprecated Internal implementation detail, do not use directly. Will be made internal in v8.
    */
