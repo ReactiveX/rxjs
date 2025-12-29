@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'RxJS',
   description: 'Reactive Extensions Library for JavaScript',
+  srcDir: 'docs',
 
   head: [
     ['link', { rel: 'icon', type: 'image/png', href: '/favicon-96x96.png', sizes: '96x96' }],
@@ -14,9 +15,76 @@ export default defineConfig({
 
   // Theme configuration
   themeConfig: {
-    // Add your navigation and sidebar configuration here
-    nav: [],
-    sidebar: []
+    logo: { src: '/favicon.svg', width: 24, height: 24 },
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/ReactiveX/rxjs' }
+    ],
+    search: {
+      provider: 'local'
+    },
+    nav: [
+      { text: 'Overview', link: '/guide/overview' },
+      { text: 'Reference', link: '/api' },
+      {
+        text: 'About',
+        items: [
+          { text: 'Team', link: '/team' },
+          { text: 'Code of Conduct', link: '/code-of-conduct' }
+        ]
+      },
+
+    ],
+    sidebar: [
+      {
+        text: 'Overview',
+        items: [
+          { text: 'Introduction', link: '/guide/overview' },
+          { text: 'Observables', link: '/guide/observable' },
+          { text: 'Observer', link: '/guide/observer' },
+          { text: 'Operators', link: '/guide/operators' },
+          { text: 'Subscription', link: '/guide/subscription' },
+          { text: 'Subjects', link: '/guide/subject' },
+          { text: 'Scheduler', link: '/guide/scheduler' },
+          { text: 'Marble Testing', link: '/guide/testing/marble-testing' }
+        ]
+      },
+      {
+        text: 'Installation',
+        items: [
+          { text: 'Installation', link: '/guide/installation' }
+        ]
+      },
+      {
+        text: 'Importing',
+        items: [
+          { text: 'Importing', link: '/guide/importing' }
+        ]
+      },
+      {
+        text: 'Glossary',
+        items: [
+          { text: 'Glossary', link: '/guide/glossary-and-semantics' }
+        ]
+      },
+      {
+        text: 'Deprecations & Breaking Changes',
+        items: [
+          { text: 'Breaking Changes', link: '/deprecations/breaking-changes' },
+          { text: 'Scheduler Argument', link: '/deprecations/scheduler-argument' },
+          { text: 'Subscribe Arguments', link: '/deprecations/subscribe-arguments' },
+          { text: 'ResultSelector Arguments', link: '/deprecations/resultSelector' },
+          { text: 'Array Arguments', link: '/deprecations/array-argument' },
+          { text: 'Multicasting', link: '/deprecations/multicasting' },
+          { text: 'Conversion to Promises', link: '/deprecations/to-promise' }
+        ]
+      },
+      {
+        text: 'Detailed Change List',
+        items: [
+          { text: 'Detailed Change List', link: '/6-to-7-change-summary' }
+        ]
+      },
+    ]
   }
 })
 
