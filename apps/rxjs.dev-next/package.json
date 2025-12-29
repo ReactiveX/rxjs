@@ -4,11 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vitepress dev docs",
-    "build": "vitepress build docs",
-    "preview": "vitepress preview docs"
+    "api:generate": "tsx tools/api-generator/generate-typedoc-json.ts",
+    "dev": "npm run api:generate && vitepress dev",
+    "build": "npm run api:generate && vitepress build",
+    "preview": "vitepress preview"
   },
   "devDependencies": {
+    "typedoc": "^0.26.0",
+    "tsx": "^4.7.0",
+    "shiki": "^1.0.0",
     "vitepress": "^1.6.4"
   }
 }

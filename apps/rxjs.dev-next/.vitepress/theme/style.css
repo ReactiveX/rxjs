@@ -20,3 +20,84 @@
   --vp-c-brand-3: #d00e80;
   --vp-c-brand-soft: rgba(238, 16, 144, 0.16);
 }
+.api-return-type code {
+  background: var(--vp-c-bg-soft);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.api-return-type {
+  margin: 1rem 0;
+}
+
+/* API Documentation Styles */
+
+.api-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.api-type-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background: var(--vp-c-bg-soft);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+}
+
+.api-status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.api-status-badge.deprecated {
+  background: #ff6b6b;
+  color: white;
+}
+
+.api-status-badge.experimental {
+  background: #ffa500;
+  color: white;
+}
+
+.api-status-badge.stable {
+  background: #51cf66;
+  color: white;
+}
+
+.api-description {
+  margin: 1rem 0;
+}
+
+.api-signatures {
+  margin: 2rem 0;
+}
+
+.api-signature {
+  margin: 1rem 0;
+}
+
+.api-parameters table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.api-parameters th,
+.api-parameters td {
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.api-parameters th {
+  font-weight: 600;
+}

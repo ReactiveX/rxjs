@@ -1,0 +1,15 @@
+{
+  "extends": "../../../../packages/rxjs/tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+  },
+  "include": [
+    "../../../../packages/rxjs/src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
+}

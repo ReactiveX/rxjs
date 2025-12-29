@@ -5,17 +5,28 @@ export default defineConfig({
   description: 'Reactive Extensions Library for JavaScript',
   srcDir: 'docs',
 
+  // Markdown configuration
+  markdown: {
+    // Shiki is enabled by default in VitePress
+    // Code blocks will be highlighted automatically
+    theme: {
+      light: 'github-light',
+      dark: 'github-dark'
+    },
+    lineNumbers: true
+  },
+
   head: [
-    ['link', { rel: 'icon', type: 'image/png', href: '/favicon-96x96.png', sizes: '96x96' }],
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
-    ['link', { rel: 'shortcut icon', href: '/favicon.ico' }],
-    ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/images/favicons/favicon-96x96.png', sizes: '96x96' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/images/favicons/favicon.svg' }],
+    ['link', { rel: 'shortcut icon', href: '/images/favicons/favicon.ico' }],
+    ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/images/favicons/apple-touch-icon.png' }],
     ['link', { rel: 'manifest', href: '/site.webmanifest' }]
   ],
 
   // Theme configuration
   themeConfig: {
-    logo: { src: '/favicon.svg', width: 24, height: 24 },
+    logo: { src: '/images/favicons/favicon.svg', width: 24, height: 24 },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/ReactiveX/rxjs' }
     ],
@@ -64,6 +75,18 @@ export default defineConfig({
         text: 'Glossary',
         items: [
           { text: 'Glossary', link: '/guide/glossary-and-semantics' }
+        ]
+      },
+      {
+        text: 'API Reference',
+        items: [
+          { text: 'API Overview', link: '/api' },
+          { text: 'Index', link: '/api/index' },
+          { text: 'Operators', link: '/api/operators' },
+          { text: 'Ajax', link: '/api/ajax' },
+          { text: 'Fetch', link: '/api/fetch' },
+          { text: 'WebSocket', link: '/api/websocket' },
+          { text: 'Testing', link: '/api/testing' }
         ]
       },
       {
