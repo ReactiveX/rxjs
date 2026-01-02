@@ -10,6 +10,7 @@
 :::warning
 Parts of the fetch API are still experimental. `AbortController` is
 required for this implementation to work and use cancellation appropriately.
+:::
 
 Will automatically set up an internal [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
 in order to finalize the internal `fetch` when the subscription tears down.
