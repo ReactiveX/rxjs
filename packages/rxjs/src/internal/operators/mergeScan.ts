@@ -34,7 +34,7 @@ import { mergeInternals } from './mergeInternals.js';
  * to Infinity. It represents the maximum number of inner Observable subscriptions
  * at a time.
  *
- * ## Example
+ * @example
  *
  * Count the number of click events
  *

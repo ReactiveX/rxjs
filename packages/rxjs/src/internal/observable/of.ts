@@ -1,5 +1,5 @@
 import type { ValueFromArray } from '../types.js';
-import type { Observable} from '@rxjs/observable';
+import type { Observable } from '@rxjs/observable';
 import { fromArrayLike } from '@rxjs/observable';
 
 // Devs are more likely to pass null or undefined than they are a scheduler
@@ -19,12 +19,12 @@ export function of<A extends readonly unknown[]>(...values: A): Observable<Value
  *
  * <span class="informal">Each argument becomes a `next` notification.</span>
  *
- * ![](of.png)
+ * ![](/images/marble-diagrams/of.png)
  *
  * Unlike {@link from}, it does not do any flattening and emits each argument in whole
  * as a separate `next` notification.
  *
- * ## Examples
+ * @example
  *
  * Emit the values `10, 20, 30`
  *

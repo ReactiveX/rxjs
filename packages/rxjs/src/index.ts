@@ -1,3 +1,7 @@
+/**
+ * @module rxjs
+ */
+
 //////////////////////////////////////////////////////////
 // Here we need to reference our other deep imports
 // so VS code will figure out where they are

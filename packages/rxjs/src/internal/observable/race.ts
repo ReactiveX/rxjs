@@ -1,4 +1,4 @@
-import type { Subscription, Subscriber} from '@rxjs/observable';
+import type { Subscription, Subscriber } from '@rxjs/observable';
 import { Observable, from, operate } from '@rxjs/observable';
 import type { ObservableInput, ObservableInputTuple } from '../types.js';
 import { argsOrArgArray } from '../util/argsOrArgArray.js';
@@ -9,7 +9,7 @@ export function race<T extends readonly unknown[]>(...inputs: [...ObservableInpu
 /**
  * Returns an observable that mirrors the first source observable to emit an item.
  *
- * ![](race.png)
+ * ![](/images/marble-diagrams/race.png)
  *
  * `race` returns an observable, that when subscribed to, subscribes to all source observables immediately.
  * As soon as one of the source observables emits a value, the result unsubscribes from the other sources.
@@ -24,7 +24,7 @@ export function race<T extends readonly unknown[]>(...inputs: [...ObservableInpu
  * HTTP or WebSockets. `race` can also be useful for switching observable context based on user
  * input.
  *
- * ## Example
+ * @example
  *
  * Subscribes to the observable that was the first to start emitting.
  *

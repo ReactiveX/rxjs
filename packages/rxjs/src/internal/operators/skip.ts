@@ -4,12 +4,12 @@ import { filter } from './filter.js';
 /**
  * Returns an Observable that skips the first `count` items emitted by the source Observable.
  *
- * ![](skip.png)
+ * ![](/images/marble-diagrams/skip.png)
  *
  * Skips the values until the sent notifications are equal or less than provided skip count. It raises
  * an error if skip count is equal or more than the actual number of emits and source raises an error.
  *
- * ## Example
+ * @example
  *
  * Skip the values before the emission
  *

@@ -8,7 +8,7 @@ import { identity } from '../util/identity.js';
  *
  * <span class="informal">Flattens an Observable-of-Observables.</span>
  *
- * ![](switchAll.png)
+ * ![](/images/marble-diagrams/switchAll.png)
  *
  * `switchAll` subscribes to a source that is an observable of observables, also known as a
  * "higher-order observable" (or `Observable<Observable<T>>`). It subscribes to the most recently
@@ -18,7 +18,7 @@ import { identity } from '../util/identity.js';
  * source observable completes, *and* any currently subscribed to inner observable also has completed,
  * if there are any.
  *
- * ## Examples
+ * @example
  *
  * Spawn a new interval observable for each click event, but for every new
  * click, cancel the previous interval and subscribe to the new one

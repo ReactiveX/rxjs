@@ -9,7 +9,7 @@ import { arrRemove } from '../util/arrRemove.js';
  * <span class="informal">Collects values from the past as an array, and emits
  * that array only when its size reaches `bufferSize`.</span>
  *
- * ![](bufferCount.png)
+ * ![](/images/marble-diagrams/bufferCount.png)
  *
  * Buffers a number of values from the source Observable by `bufferSize` then
  * emits the buffer and clears it, and starts a new buffer each
@@ -17,7 +17,7 @@ import { arrRemove } from '../util/arrRemove.js';
  * `null`, then new buffers are started immediately at the start of the source
  * and when each buffer closes and is emitted.
  *
- * ## Examples
+ * @example
  *
  * Emit the last two click events as an array
  *

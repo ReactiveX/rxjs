@@ -50,7 +50,7 @@ export function groupBy<T, K, R>(
  * and emits these grouped items as `GroupedObservables`, one
  * {@link GroupedObservable} per group.
  *
- * ![](groupBy.png)
+ * ![](/images/marble-diagrams/groupBy.png)
  *
  * When the Observable emits an item, a key is computed for this item with the key function.
  *
@@ -63,7 +63,7 @@ export function groupBy<T, K, R>(
  * The elements emitted by {@link GroupedObservable}s are by default the items emitted by the Observable, or elements
  * returned by the element function.
  *
- * ## Examples
+ * @example
  *
  * Group objects by `id` and return as array
  *

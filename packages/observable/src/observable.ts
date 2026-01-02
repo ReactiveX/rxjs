@@ -18,7 +18,7 @@ import type {
 
 /**
  * An error thrown when one or more errors have occurred during the
- * `unsubscribe` of a {@link Subscription}.
+ * `unsubscribe` of a {@link rxjs!Subscription | Subscription }.
  */
 export class UnsubscriptionError extends Error {
   /**
@@ -66,9 +66,9 @@ export class Subscription implements SubscriptionLike {
 
   /**
    * @param initialTeardown A function executed first as part of the finalization
-   * process that is kicked off when {@link #unsubscribe} is called.
+   * process that is kicked off when {@link rxjs!Subscription#unsubscribe | unsubscribe} is called.
    */
-  constructor(private initialTeardown?: () => void) {}
+  constructor(private initialTeardown?: () => void) { }
 
   /**
    * Disposes the resources held by the subscription. May, for instance, cancel
@@ -115,7 +115,7 @@ export class Subscription implements SubscriptionLike {
 
   /**
    * Adds a finalizer to this subscription, so that finalization will be unsubscribed/called
-   * when this subscription is unsubscribed. If this subscription is already {@link #closed},
+   * when this subscription is unsubscribed. If this subscription is already {@link @rxjs/observable!Subscription#closed | closed},
    * because it has already been unsubscribed, then whatever finalizer is passed to it
    * will automatically be executed (unless the finalizer itself is also a closed subscription).
    *
@@ -126,8 +126,8 @@ export class Subscription implements SubscriptionLike {
    * operation at all. (A noop).
    *
    * `Subscription` instances that are added to this instance will automatically remove themselves
-   * if they are unsubscribed. Functions and {@link Unsubscribable} objects that you wish to remove
-   * will need to be removed manually with {@link #remove}
+   * if they are unsubscribed. Functions and {@link rxjs!Unsubscribable | Unsubscribable} objects that you wish to remove
+   * will need to be removed manually with {@link @rxjs/observable!Subscription#remove | remove}
    *
    * @param teardown The finalization logic to add to this subscription.
    */
@@ -155,7 +155,7 @@ export class Subscription implements SubscriptionLike {
   }
 
   /**
-   * Removes a finalizer from this subscription that was previously added with the {@link #add} method.
+   * Removes a finalizer from this subscription that was previously added with the {@link @rxjs/observable!Subscription#add | add} method.
    *
    * Note that `Subscription` instances, when unsubscribed, will automatically remove themselves
    * from every other `Subscription` they have been added to. This means that using the `remove` method
@@ -199,7 +199,7 @@ function execFinalizer(finalizer: Unsubscribable | (() => void)) {
 
 export interface SubscriberOverrides<T> {
   /**
-   * If provided, this function will be called whenever the {@link Subscriber}'s
+   * If provided, this function will be called whenever the {@link rxjs!Subscriber | Subscriber}'s
    * `next` method is called, with the value that was passed to that call. If
    * an error is thrown within this function, it will be handled and passed to
    * the destination's `error` method.
@@ -207,7 +207,7 @@ export interface SubscriberOverrides<T> {
    */
   next?: (value: T) => void;
   /**
-   * If provided, this function will be called whenever the {@link Subscriber}'s
+   * If provided, this function will be called whenever the {@link rxjs!Subscriber | Subscriber}'s
    * `error` method is called, with the error that was passed to that call. If
    * an error is thrown within this function, it will be handled and passed to
    * the destination's `error` method.
@@ -215,23 +215,23 @@ export interface SubscriberOverrides<T> {
    */
   error?: (err: any) => void;
   /**
-   * If provided, this function will be called whenever the {@link Subscriber}'s
+   * If provided, this function will be called whenever the {@link rxjs!Subscriber | Subscriber}'s
    * `complete` method is called. If an error is thrown within this function, it
    * will be handled and passed to the destination's `error` method.
    */
   complete?: () => void;
   /**
    * If provided, this function will be called after all teardown has occurred
-   * for this {@link Subscriber}. This is generally used for cleanup purposes
+   * for this {@link rxjs!Subscriber | Subscriber}. This is generally used for cleanup purposes
    * during operator development.
    */
   finalize?: () => void;
 }
 
 /**
- * Implements the {@link Observer} interface and extends the
- * {@link Subscription} class. While the {@link Observer} is the public API for
- * consuming the values of an {@link Observable}, all Observers get converted to
+ * Implements the {@link rxjs!Observer | Observer} interface and extends the
+ * {@link rxjs!Subscription | Subscription} class. While the {@link rxjs!Observer | Observer} is the public API for
+ * consuming the values of an {@link rxjs!Observable | Observable}, all Observers get converted to
  * a Subscriber, in order to provide Subscription-like capabilities such as
  * `unsubscribe`. Subscriber is a common type in RxJS, and crucial for
  * implementing operators, but it is rarely used as a public API.
@@ -252,7 +252,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   protected readonly _onFinalize: (() => void) | null = null;
 
   /**
-   * @deprecated Do not create instances of `Subscriber` directly. Use {@link operate} instead.
+   * @deprecated Do not create instances of `Subscriber` directly. Use {@link rxjs!operate | operate} instead.
    */
   constructor(destination?: Subscriber<T> | Partial<Observer<T>> | ((value: T) => void) | null);
 
@@ -272,7 +272,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * If a next-handler function is passed in, it will be wrapped and appropriate safeguards will be applied.
    *
    * @param destination A subscriber, partial observer, or function that receives the next value.
-   * @deprecated Do not create instances of `Subscriber` directly. Use {@link operate} instead.
+   * @deprecated Do not create instances of `Subscriber` directly. Use {@link rxjs!operate | operate} instead.
    */
   constructor(destination?: Subscriber<T> | Partial<Observer<T>> | ((value: T) => void) | null, overrides?: SubscriberOverrides<T>) {
     super();
@@ -309,7 +309,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 
   /**
-   * The {@link Observer} callback to receive notifications of type `next` from
+   * The {@link rxjs!Observer | Observer} callback to receive notifications of type `next` from
    * the Observable, with a value. The Observable may call this method 0 or more
    * times.
    * @param value The `next` value.
@@ -323,7 +323,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 
   /**
-   * The {@link Observer} callback to receive notifications of type `error` from
+   * The {@link rxjs!Observer | Observer} callback to receive notifications of type `error` from
    * the Observable, with an attached `Error`. Notifies the Observer that
    * the Observable has experienced an error condition.
    * @param err The `error` exception.
@@ -338,7 +338,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 
   /**
-   * The {@link Observer} callback to receive a valueless notification of type
+   * The {@link rxjs!Observer | Observer} callback to receive a valueless notification of type
    * `complete` from the Observable. Notifies the Observer that the Observable
    * has finished sending push-based notifications.
    */
@@ -381,7 +381,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
 }
 
 /**
- * The {@link GlobalConfig} object for RxJS. It is used to configure things
+ * The {@link rxjs!GlobalConfig | GlobalConfig} object for RxJS. It is used to configure things
  * like how to react on unhandled errors.
  */
 export const config: GlobalConfig = {
@@ -391,7 +391,7 @@ export const config: GlobalConfig = {
 
 /**
  * The global configuration object for RxJS, used to configure things
- * like how to react on unhandled errors. Accessible via {@link config}
+ * like how to react on unhandled errors. Accessible via {@link rxjs!config | config}
  * object.
  */
 export interface GlobalConfig {
@@ -448,7 +448,7 @@ function overrideComplete(this: Subscriber<unknown>): void {
 }
 
 class ConsumerObserver<T> implements Observer<T> {
-  constructor(private partialObserver: Partial<Observer<T>>) {}
+  constructor(private partialObserver: Partial<Observer<T>>) { }
 
   next(value: T): void {
     const { partialObserver } = this;
@@ -514,7 +514,7 @@ export interface OperateConfig<In, Out> extends SubscriberOverrides<In> {
 }
 
 /**
- * Creates a new {@link Subscriber} instance that passes notifications on to the
+ * Creates a new {@link rxjs!Subscriber | Subscriber} instance that passes notifications on to the
  * supplied `destination`. The overrides provided in the `config` argument for
  * `next`, `error`, and `complete` will be called in such a way that any
  * errors are caught and forwarded to the destination's `error` handler. The returned
@@ -547,6 +547,87 @@ declare global {
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
  * of RxJS.
+ *
+ * @example - Basic Subscription
+ *
+ * Subscribe with an {@link https://rxjs.dev/guide/observer | Observer}
+ *
+ * ```ts
+ * import { of } from 'rxjs';
+ *
+ * const sumObserver = {
+ *   sum: 0,
+ *   next(value) {
+ *     console.log('Adding: ' + value);
+ *     this.sum = this.sum + value;
+ *   },
+ *   error() {
+ *     // We actually could just remove this method,
+ *     // since we do not really care about errors right now.
+ *   },
+ *   complete() {
+ *     console.log('Sum equals: ' + this.sum);
+ *   }
+ * };
+ *
+ * of(1, 2, 3) // Synchronously emits 1, 2, 3 and then completes.
+ *   .subscribe(sumObserver);
+ *
+ * // Logs:
+ * // 'Adding: 1'
+ * // 'Adding: 2'
+ * // 'Adding: 3'
+ * // 'Sum equals: 6'
+ * ```
+ *
+ * Subscribe with functions ({@link https://rxjs.dev/deprecations/subscribe-arguments | deprecated})
+ *
+ * ```ts
+ * import { of } from 'rxjs'
+ *
+ * let sum = 0;
+ *
+ * of(1, 2, 3).subscribe(
+ *   value => {
+ *     console.log('Adding: ' + value);
+ *     sum = sum + value;
+ *   },
+ *   undefined,
+ *   () => console.log('Sum equals: ' + sum)
+ * );
+ *
+ * // Logs:
+ * // 'Adding: 1'
+ * // 'Adding: 2'
+ * // 'Adding: 3'
+ * // 'Sum equals: 6'
+ * ```
+ *
+ * Cancel a subscription
+ *
+ * ```ts
+ * import { interval } from 'rxjs';
+ *
+ * const subscription = interval(1000).subscribe({
+ *   next(num) {
+ *     console.log(num)
+ *   },
+ *   complete() {
+ *     // Will not be called, even when cancelling subscription.
+ *     console.log('completed!');
+ *   }
+ * });
+ *
+ * setTimeout(() => {
+ *   subscription.unsubscribe();
+ *   console.log('unsubscribed!');
+ * }, 2500);
+ *
+ * // Logs:
+ * // 0 after 1s
+ * // 1 after 2s
+ * // 'unsubscribed!' after 2.5s
+ * ```
  */
 export class Observable<T> implements Subscribable<T> {
   /**
@@ -576,14 +657,14 @@ export class Observable<T> implements Subscribable<T> {
    * that an Observable emits, as well as for when it completes or errors. You can achieve this in two
    * of the following ways.
    *
-   * The first way is creating an object that implements {@link Observer} interface. It should have methods
+   * The first way is creating an object that implements {@link rxjs!Observer | Observer} interface. It should have methods
    * defined by that interface, but note that it should be just a regular JavaScript object, which you can create
    * yourself in any way you want (ES6 class, classic function constructor, object literal etc.). In particular, do
    * not attempt to use any RxJS implementation details to create Observers - you don't need them. Remember also
    * that your object does not have to implement all methods. If you find yourself creating a method that doesn't
    * do anything, you can simply omit it. Note however, if the `error` method is not provided and an error happens,
    * it will be thrown asynchronously. Errors thrown asynchronously cannot be caught using `try`/`catch`. Instead,
-   * use the {@link onUnhandledError} configuration option or use a runtime handler (like `window.onerror` or
+   * use the {@link rxjs!GlobalConfig.onUnhandledError | onUnhandledError} configuration option or use a runtime handler (like `window.onerror` or
    * `process.on('error)`) to be notified of unhandled errors. Because of this, it's recommended that you provide
    * an `error` method to avoid missing thrown errors.
    *
@@ -603,92 +684,11 @@ export class Observable<T> implements Subscribable<T> {
    * provided to `subscribe` function, which is reserved for a regular completion signal that comes from an Observable.
    *
    * Remember that callbacks provided to `subscribe` are not guaranteed to be called asynchronously.
-   * It is an Observable itself that decides when these functions will be called. For example {@link of}
+   * It is an Observable itself that decides when these functions will be called. For example {@link rxjs!of | of}
    * by default emits all its values synchronously. Always check documentation for how given Observable
    * will behave when subscribed and if its default behavior can be modified with a `scheduler`.
    *
-   * #### Examples
-   *
-   * Subscribe with an {@link guide/observer Observer}
-   *
-   * ```ts
-   * import { of } from 'rxjs';
-   *
-   * const sumObserver = {
-   *   sum: 0,
-   *   next(value) {
-   *     console.log('Adding: ' + value);
-   *     this.sum = this.sum + value;
-   *   },
-   *   error() {
-   *     // We actually could just remove this method,
-   *     // since we do not really care about errors right now.
-   *   },
-   *   complete() {
-   *     console.log('Sum equals: ' + this.sum);
-   *   }
-   * };
-   *
-   * of(1, 2, 3) // Synchronously emits 1, 2, 3 and then completes.
-   *   .subscribe(sumObserver);
-   *
-   * // Logs:
-   * // 'Adding: 1'
-   * // 'Adding: 2'
-   * // 'Adding: 3'
-   * // 'Sum equals: 6'
-   * ```
-   *
-   * Subscribe with functions ({@link deprecations/subscribe-arguments deprecated})
-   *
-   * ```ts
-   * import { of } from 'rxjs'
-   *
-   * let sum = 0;
-   *
-   * of(1, 2, 3).subscribe(
-   *   value => {
-   *     console.log('Adding: ' + value);
-   *     sum = sum + value;
-   *   },
-   *   undefined,
-   *   () => console.log('Sum equals: ' + sum)
-   * );
-   *
-   * // Logs:
-   * // 'Adding: 1'
-   * // 'Adding: 2'
-   * // 'Adding: 3'
-   * // 'Sum equals: 6'
-   * ```
-   *
-   * Cancel a subscription
-   *
-   * ```ts
-   * import { interval } from 'rxjs';
-   *
-   * const subscription = interval(1000).subscribe({
-   *   next(num) {
-   *     console.log(num)
-   *   },
-   *   complete() {
-   *     // Will not be called, even when cancelling subscription.
-   *     console.log('completed!');
-   *   }
-   * });
-   *
-   * setTimeout(() => {
-   *   subscription.unsubscribe();
-   *   console.log('unsubscribed!');
-   * }, 2500);
-   *
-   * // Logs:
-   * // 0 after 1s
-   * // 1 after 2s
-   * // 'unsubscribed!' after 2.5s
-   * ```
-   *
-   * @param observerOrNext Either an {@link Observer} with some or all callback methods,
+   * @param observerOrNext Either an {@link rxjs!Observer | Observer} with some or all callback methods,
    * or the `next` handler that is called for each value emitted from the subscribed Observable.
    * @return A subscription reference to the registered handlers.
    */
@@ -717,10 +717,10 @@ export class Observable<T> implements Subscribable<T> {
    * **WARNING**: Only use this with observables you *know* will complete. If the source
    * observable does not complete, you will end up with a promise that is hung up, and
    * potentially all of the state of an async function hanging out in memory. To avoid
-   * this situation, look into adding something like {@link timeout}, {@link take},
-   * {@link takeWhile}, or {@link takeUntil} amongst others.
+   * this situation, look into adding something like {@link rxjs!timeout | timeout}, {@link rxjs!take | take},
+   * {@link rxjs!takeWhile | takeWhile}, or {@link rxjs!takeUntil | takeUntil} amongst others.
    *
-   * #### Example
+   * @example
    *
    * ```ts
    * import { interval, take } from 'rxjs';
@@ -863,7 +863,7 @@ export class Observable<T> implements Subscribable<T> {
   /**
    * Used to stitch together functional operators into a chain.
    *
-   * ## Example
+   * @example
    *
    * ```ts
    * import { interval, filter, map, scan } from 'rxjs';
@@ -893,13 +893,13 @@ export class Observable<T> implements Subscribable<T> {
    * cancel the subscription. Note that the subscription to the observable does not start
    * until the first value is requested from the AsyncIterable.
    *
-   * Functionally, this is equivalent to using a {@link concatMap} with an `async` function.
+   * Functionally, this is equivalent to using a {@link rxjs!concatMap | concatMap} with an `async` function.
    * That means that while the body of the `for await` loop is executing, any values that arrive
    * from the observable source will be queued up, so they can be processed by the `for await`
-   * loop in order. So, like {@link concatMap} it's important to understand the speed your
+   * loop in order. So, like {@link rxjs!concatMap | concatMap} it's important to understand the speed your
    * source emits at, and the speed of the body of your `for await` loop.
    *
-   * ## Example
+   * @example
    *
    * ```ts
    * import { interval } from 'rxjs';
@@ -1012,7 +1012,7 @@ function pipeReducer(prev: any, fn: UnaryFunction<any, any>) {
 }
 
 /**
- * Handles an error on another job either with the user-configured {@link onUnhandledError},
+ * Handles an error on another job either with the user-configured {@link rxjs!GlobalConfig.onUnhandledError | onUnhandledError},
  * or by throwing it on that new job so it can be picked up by `window.onerror`, `process.on('error')`, etc.
  *
  * This should be called whenever there is an error that is out-of-band with the subscription
@@ -1038,7 +1038,7 @@ export function reportUnhandledError(err: any) {
  *
  * <span class="informal">Converts almost anything to an Observable.</span>
  *
- * ![](from.png)
+ * ![](/images/marble-diagrams/from.png)
  *
  * `from` converts various other objects and data types into Observables. It also converts a Promise, an array-like, or an
  * <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable" target="_blank">iterable</a>
@@ -1046,7 +1046,7 @@ export function reportUnhandledError(err: any) {
  * as an array of characters. Observable-like objects (contains a function named with the ES2015 Symbol for Observable) can also be
  * converted through this operator.
  *
- * ## Examples
+ * @example
  *
  * Converts an array to an Observable
  *
@@ -1095,8 +1095,8 @@ export function reportUnhandledError(err: any) {
  * // 1536
  * ```
  *
- * @see {@link fromEvent}
- * @see {@link fromEventPattern}
+ * @see {@link rxjs!fromEvent | fromEvent}
+ * @see {@link rxjs!fromEventPattern | fromEventPattern}
  * @see {@link scheduled}
  *
  * @param input A subscription object, a Promise, an Observable-like,
@@ -1261,8 +1261,7 @@ export function getObservableInputType(input: unknown): ObservableInputType {
     return ObservableInputType.ReadableStreamLike;
   }
   throw new TypeError(
-    `You provided ${
-      input !== null && typeof input === 'object' ? 'an invalid object' : `'${input}'`
+    `You provided ${input !== null && typeof input === 'object' ? 'an invalid object' : `'${input}'`
     } where a stream was expected. You can provide an Observable, Promise, ReadableStream, Array, AsyncIterable, or Iterable.`
   );
 }
@@ -1323,7 +1322,7 @@ export function isArrayLike<T>(x: any): x is ArrayLike<T> {
 }
 
 /**
- * Tests to see if the object is an RxJS {@link Observable}
+ * Tests to see if the object is an RxJS {@link rxjs!Observable | Observable}
  * @param obj the object to test
  */
 export function isObservable(obj: any): obj is Observable<unknown> {

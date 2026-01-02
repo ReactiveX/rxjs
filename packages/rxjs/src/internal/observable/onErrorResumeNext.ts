@@ -12,7 +12,7 @@ export function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...
  *
  * <span class="informal">Execute series of Observables no matter what, even if it means swallowing errors.</span>
  *
- * ![](onErrorResumeNext.png)
+ * ![](/images/marble-diagrams/onErrorResumeNext.png)
  *
  * `onErrorResumeNext` will subscribe to each observable source it is provided, in order.
  * If the source it's subscribed to emits an error or completes, it will move to the next source
@@ -27,7 +27,7 @@ export function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...
  * `onErrorResumeNext`. If you want to handle errors thrown in any given source, you can
  * always use the {@link catchError} operator on them before passing them into `onErrorResumeNext`.
  *
- * ## Example
+ * @example
  *
  * Subscribe to the next Observable after map fails
  *

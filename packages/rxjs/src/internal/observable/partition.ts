@@ -1,7 +1,7 @@
 import { not } from '../util/not.js';
 import { filter } from '../operators/filter.js';
 import type { ObservableInput } from '../types.js';
-import type { Observable} from '@rxjs/observable';
+import type { Observable } from '@rxjs/observable';
 import { from } from '@rxjs/observable';
 
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
@@ -31,7 +31,7 @@ export function partition<T>(source: ObservableInput<T>, predicate: (value: T, i
  * one like the output of {@link filter}, and the other with values that did not
  * pass the condition.</span>
  *
- * ![](partition.png)
+ * ![](/images/marble-diagrams/partition.png)
  *
  * `partition` outputs an array with two Observables that partition the values
  * from the source Observable through the given `predicate` function. The first
@@ -40,7 +40,7 @@ export function partition<T>(source: ObservableInput<T>, predicate: (value: T, i
  * predicate returns false. The first behaves like {@link filter} and the second
  * behaves like {@link filter} with the predicate negated.
  *
- * ## Example
+ * @example
  *
  * Partition a set of numbers into odds and evens observables
  *

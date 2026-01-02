@@ -8,9 +8,9 @@ import { Observable } from '@rxjs/observable';
  *
  * Schedulers control the speed and order of emissions to observers from an Observable stream.
  *
- * ![](subscribeOn.png)
+ * ![](/images/marble-diagrams/subscribeOn.png)
  *
- * ## Example
+ * @example
  *
  * Given the following code:
  *

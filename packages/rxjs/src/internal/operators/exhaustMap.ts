@@ -1,4 +1,4 @@
-import type { Subscriber} from '@rxjs/observable';
+import type { Subscriber } from '@rxjs/observable';
 import { operate, from, Observable } from '@rxjs/observable';
 import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.js';
 
@@ -9,7 +9,7 @@ import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../type
  * <span class="informal">Maps each value to an Observable, then flattens all of
  * these inner Observables using {@link exhaustAll}.</span>
  *
- * ![](exhaustMap.png)
+ * ![](/images/marble-diagrams/exhaustMap.png)
  *
  * Returns an Observable that emits items based on applying a function that you
  * supply to each item emitted by the source Observable, where that function
@@ -20,7 +20,7 @@ import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../type
  * that one completes, it will accept and flatten the next projected Observable
  * and repeat this process.
  *
- * ## Example
+ * @example
  *
  * Run a finite timer for each click, only if there is no currently active timer
  *

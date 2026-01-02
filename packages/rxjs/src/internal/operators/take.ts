@@ -8,14 +8,14 @@ import { Observable, operate } from '@rxjs/observable';
  * <span class="informal">Takes the first `count` values from the source, then
  * completes.</span>
  *
- * ![](take.png)
+ * ![](/images/marble-diagrams/take.png)
  *
  * `take` returns an Observable that emits only the first `count` values emitted
  * by the source Observable. If the source emits fewer than `count` values then
  * all of its values are emitted. After that, it completes, regardless if the
  * source completes.
  *
- * ## Example
+ * @example
  *
  * Take the first 5 seconds of an infinite 1-second interval Observable
  *
@@ -47,22 +47,22 @@ import { Observable, operate } from '@rxjs/observable';
 export function take<T>(count: number): MonoTypeOperatorFunction<T> {
   return count <= 0
     ? // If we are taking no values, that's empty.
-      () => EMPTY
+    () => EMPTY
     : (source) =>
-        new Observable((destination) => {
-          let seen = 0;
-          const operatorSubscriber = operate<T, T>({
-            destination,
-            next: (value) => {
-              if (++seen < count) {
-                destination.next(value);
-              } else {
-                operatorSubscriber.unsubscribe();
-                destination.next(value);
-                destination.complete();
-              }
-            },
-          });
-          source.subscribe(operatorSubscriber);
+      new Observable((destination) => {
+        let seen = 0;
+        const operatorSubscriber = operate<T, T>({
+          destination,
+          next: (value) => {
+            if (++seen < count) {
+              destination.next(value);
+            } else {
+              operatorSubscriber.unsubscribe();
+              destination.next(value);
+              destination.complete();
+            }
+          },
         });
+        source.subscribe(operatorSubscriber);
+      });
 }

@@ -9,7 +9,7 @@ import { timer } from './timer.js';
  *
  * <span class="informal">Emits incremental numbers periodically in time.</span>
  *
- * ![](interval.png)
+ * ![](/images/marble-diagrams/interval.png)
  *
  * `interval` returns an Observable that emits an infinite sequence of
  * ascending integers, with a constant interval of time of your choosing
@@ -18,7 +18,7 @@ import { timer } from './timer.js';
  * `asyncScheduler` {@link SchedulerLike} to provide a notion of time, but you may pass any
  * {@link SchedulerLike} to it.
  *
- * ## Example
+ * @example
  *
  * Emits ascending numbers, one every second (1000ms) up to the number 3
  *

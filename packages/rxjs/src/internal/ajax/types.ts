@@ -193,7 +193,7 @@ export interface AjaxConfig {
    * This will **not** error for errored status codes. Rather, it will always _complete_ when
    * the HTTP response comes back.
    *
-   * @deprecated If you're looking for progress events, use {@link includeDownloadProgress} and
+   * @deprecated If you're looking for progress events, use {@link AjaxConfig.includeDownloadProgress | AjaxConfig.includeDownloadProgress}} and
    * {@link includeUploadProgress} instead. Will be removed in v8.
    */
   progressSubscriber?: PartialObserver<ProgressEvent>;
@@ -211,7 +211,7 @@ export interface AjaxConfig {
    * If `true`, will emit all upload progress and load complete events as {@link AjaxResponse}
    * from the observable. The final download event will also be emitted as a {@link AjaxResponse}.
    *
-   * If both this and {@link includeDownloadProgress} are `false`, then only the {@link AjaxResponse} will
+   * If both this and {@link AjaxConfig.includeDownloadProgress | AjaxConfig.includeDownloadProgress}} are `false`, then only the {@link AjaxResponse} will
    * be emitted from the resulting observable.
    */
   includeUploadProgress?: boolean;
@@ -228,8 +228,8 @@ export interface AjaxConfig {
    * with queryParams of `{ b: 5, c: 6 }` will result in a url of roughly `/test?a=1&b=5&c=6`.
    */
   queryParams?:
-    | string
-    | URLSearchParams
-    | Record<string, string | number | boolean | string[] | number[] | boolean[]>
-    | [string, string | number | boolean | string[] | number[] | boolean[]][];
+  | string
+  | URLSearchParams
+  | Record<string, string | number | boolean | string[] | number[] | boolean[]>
+  | [string, string | number | boolean | string[] | number[] | boolean[]][];
 }

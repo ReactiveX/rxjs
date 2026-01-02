@@ -15,9 +15,9 @@ export function startWith<T, A extends readonly unknown[] = T[]>(...values: A): 
  * <span class="informal">First emits its arguments in order, and then any
  * emissions from the source.</span>
  *
- * ![](startWith.png)
+ * ![](/images/marble-diagrams/startWith.png)
  *
- * ## Examples
+ * @example
  *
  * Emit a value when a timer starts.
  *

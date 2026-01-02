@@ -9,14 +9,14 @@ import { mergeInternals } from './mergeInternals.js';
  * <span class="informal">Maps each value to an Observable, then flattens all of
  * these inner Observables using {@link mergeAll}.</span>
  *
- * ![](mergeMap.png)
+ * ![](/images/marble-diagrams/mergeMap.png)
  *
  * Returns an Observable that emits items based on applying a function that you
  * supply to each item emitted by the source Observable, where that function
  * returns an Observable, and then merging those resulting Observables and
  * emitting the results of this merger.
  *
- * ## Example
+ * @example
  *
  * Map and flatten each letter to an Observable ticking every 1 second
  *

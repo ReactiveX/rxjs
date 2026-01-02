@@ -8,7 +8,7 @@ import { Observable, operate } from '@rxjs/observable';
  * <span class="informal">Puts the current value and previous value together as
  * an array, and emits that.</span>
  *
- * ![](pairwise.png)
+ * ![](/images/marble-diagrams/pairwise.png)
  *
  * The Nth emission from the source Observable will cause the output Observable
  * to emit an array [(N-1)th, Nth] of the previous and the current value, as a
@@ -16,7 +16,7 @@ import { Observable, operate } from '@rxjs/observable';
  * emissions from the source Observable, but not on the first emission, because
  * there is no previous value in that case.
  *
- * ## Example
+ * @example
  *
  * On every click (starting from the second), emit the relative distance to the previous click
  *

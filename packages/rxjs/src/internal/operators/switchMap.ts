@@ -1,4 +1,4 @@
-import type { Subscriber} from '@rxjs/observable';
+import type { Subscriber } from '@rxjs/observable';
 import { Observable, from, operate } from '@rxjs/observable';
 import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.js';
 
@@ -9,7 +9,7 @@ import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../type
  * <span class="informal">Maps each value to an Observable, then flattens all of
  * these inner Observables using {@link switchAll}.</span>
  *
- * ![](switchMap.png)
+ * ![](/images/marble-diagrams/switchMap.png)
  *
  * Returns an Observable that emits items based on applying a function that you
  * supply to each item emitted by the source Observable, where that function
@@ -20,7 +20,7 @@ import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../type
  * emitting items from the new one. It continues to behave like this for
  * subsequent inner Observables.
  *
- * ## Example
+ * @example
  *
  * Generate new Observable according to source Observable values
  *

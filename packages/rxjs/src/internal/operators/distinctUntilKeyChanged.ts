@@ -14,7 +14,7 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  *
  * If a comparator function is not provided, an equality check is used by default.
  *
- * ## Examples
+ * @example
  *
  * An example comparing the name of persons
  *

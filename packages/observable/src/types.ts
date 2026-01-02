@@ -19,24 +19,24 @@ declare global {
  * A function type interface that describes a function that accepts one parameter `T`
  * and returns another parameter `R`.
  *
- * Usually used to describe {@link OperatorFunction} - it always takes a single
+ * Usually used to describe {@link rxjs!OperatorFunction | OperatorFunction} - it always takes a single
  * parameter (the source Observable) and returns another Observable.
  */
 export interface UnaryFunction<T, R> {
   (source: T): R;
 }
 
-export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Observable<R>> {}
+export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Observable<R>> { }
 
 export type FactoryOrValue<T> = T | (() => T);
 
 /**
  * A function type interface that describes a function that accepts and returns a parameter of the same type.
  *
- * Used to describe {@link OperatorFunction} with the only one type: `OperatorFunction<T, T>`.
+ * Used to describe {@link rxjs!OperatorFunction | OperatorFunction} with the only one type: `OperatorFunction<T, T>`.
  *
  */
-export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> {}
+export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> { }
 
 /**
  * A value and the time at which it was emitted.
@@ -114,7 +114,7 @@ export interface InteropObservable<T> {
 
 /**
  * A notification representing a "next" from an observable.
- * Can be used with {@link dematerialize}.
+ * Can be used with {@link rxjs!dematerialize | dematerialize}.
  */
 export interface NextNotification<T> {
   /** The kind of notification. Always "N" */
@@ -125,7 +125,7 @@ export interface NextNotification<T> {
 
 /**
  * A notification representing an "error" from an observable.
- * Can be used with {@link dematerialize}.
+ * Can be used with {@link rxjs!dematerialize | dematerialize}.
  */
 export interface ErrorNotification {
   /** The kind of notification. Always "E" */
@@ -135,7 +135,7 @@ export interface ErrorNotification {
 
 /**
  * A notification representing a "completion" from an observable.
- * Can be used with {@link dematerialize}.
+ * Can be used with {@link rxjs!dematerialize | dematerialize}.
  */
 export interface CompleteNotification {
   kind: 'C';
@@ -173,10 +173,10 @@ export type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | Completion
 
 /**
  * An object interface that defines a set of callback functions a user can use to get
- * notified of any set of {@link Observable}
- * {@link guide/glossary-and-semantics#notification notification} events.
+ * notified of any set of {@link rxjs!Observable | Observable}
+ * {@link https://rxjs.dev/guide/glossary-and-semantics#notification | notification} events.
  *
- * For more info, please refer to {@link guide/observer this guide}.
+ * For more info, please refer to {@link https://rxjs.dev/guide/observer | this guide}.
  */
 export interface Observer<T> {
   /**
@@ -184,7 +184,7 @@ export interface Observer<T> {
    * the producer "has" the `value`. It won't be called if `error` or `complete` callback
    * functions have been called, nor after the consumer has unsubscribed.
    *
-   * For more info, please refer to {@link guide/glossary-and-semantics#next this guide}.
+   * For more info, please refer to {@link https://rxjs.dev/guide/glossary-and-semantics#next this | guide}.
    */
   next: (value: T) => void;
   /**
@@ -194,7 +194,7 @@ export interface Observer<T> {
    * `complete` callback function have been called previously, nor it can't be called if
    * the consumer has unsubscribed.
    *
-   * For more info, please refer to {@link guide/glossary-and-semantics#error this guide}.
+   * For more info, please refer to {@link https://rxjs.dev/guide/glossary-and-semantics#error this | guide}.
    */
   error: (err: any) => void;
   /**
@@ -204,12 +204,12 @@ export interface Observer<T> {
    * if the `error` callback function have been called previously, nor it can't be called
    * if the consumer has unsubscribed.
    *
-   * For more info, please refer to {@link guide/glossary-and-semantics#complete this guide}.
+   * For more info, please refer to {@link https://rxjs.dev/guide/glossary-and-semantics#complete this | guide}.
    */
   complete: () => void;
 }
 
-export interface SubjectLike<T> extends Observer<T>, Subscribable<T> {}
+export interface SubjectLike<T> extends Observer<T>, Subscribable<T> { }
 
 /* SCHEDULER INTERFACES */
 
@@ -262,7 +262,7 @@ export type ObservedValueUnionFromArray<X> = X extends Array<ObservableInput<inf
 export type ObservedValueTupleFromArray<X> = { [K in keyof X]: ObservedValueOf<X[K]> };
 
 /**
- * Used to infer types from arguments to functions like {@link forkJoin}.
+ * Used to infer types from arguments to functions like {@link rxjs!forkJoin | forkJoin}.
  * So that you can have `forkJoin([Observable<A>, PromiseLike<B>]): Observable<[A, B]>`
  * et al.
  */
@@ -296,14 +296,14 @@ export type Tail<X extends readonly any[]> = ((...args: X) => any) extends (arg:
 export type ValueFromArray<A extends readonly unknown[]> = A extends Array<infer T> ? T : never;
 
 /**
- * Gets the value type from an {@link ObservableNotification}, if possible.
+ * Gets the value type from an {@link rxjs!ObservableNotification | ObservableNotification}, if possible.
  */
 export type ValueFromNotification<T> = T extends { kind: 'N' | 'E' | 'C' }
   ? T extends NextNotification<any>
-    ? T extends { value: infer V }
-      ? V
-      : undefined
-    : never
+  ? T extends { value: infer V }
+  ? V
+  : undefined
+  : never
   : never;
 
 /**
@@ -318,7 +318,7 @@ export type TruthyTypesOf<T> = T extends Falsy ? never : T;
 /**
  * The base signature RxJS will look for to identify and use
  * a [ReadableStream](https://streams.spec.whatwg.org/#rs-class)
- * as an {@link ObservableInput} source.
+ * as an {@link rxjs!ObservableInput | ObservableInput} source.
  */
 export type ReadableStreamLike<T> = Pick<ReadableStream<T>, 'getReader'>;
 
@@ -329,7 +329,7 @@ export type ReadableStreamLike<T> = Pick<ReadableStream<T>, 'getReader'>;
 export interface Connectable<T> extends Observable<T> {
   /**
    * (Idempotent) Calling this method will connect the underlying source observable to all subscribed consumers
-   * through an underlying {@link Subject}.
+   * through an underlying {@link rxjs!Subject | Subject}.
    * @returns A subscription, that when unsubscribed, will "disconnect" the source from the connector subject,
    * severing notifications to all consumers.
    */

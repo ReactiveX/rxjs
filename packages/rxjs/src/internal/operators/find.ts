@@ -1,4 +1,4 @@
-import type { Subscriber} from '@rxjs/observable';
+import type { Subscriber } from '@rxjs/observable';
 import { Observable, operate } from '@rxjs/observable';
 import type { OperatorFunction, TruthyTypesOf } from '../types.js';
 
@@ -14,7 +14,7 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
  * <span class="informal">Finds the first value that passes some test and emits
  * that.</span>
  *
- * ![](find.png)
+ * ![](/images/marble-diagrams/find.png)
  *
  * `find` searches for the first item in the source Observable that matches the
  * specified condition embodied by the `predicate`, and returns the first
@@ -22,7 +22,7 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
  * in `find`, and does not emit an error if a valid value is not found
  * (emits `undefined` instead).
  *
- * ## Example
+ * @example
  *
  * Find and emit the first click that happens on a DIV element
  *

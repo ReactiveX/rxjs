@@ -32,15 +32,15 @@ export class AjaxResponse<T> {
 
   /**
    * The total number of bytes loaded so far. To be used with {@link total} while
-   * calculating progress. (You will want to set {@link includeDownloadProgress} or
-   * {@link includeDownloadProgress})
+   * calculating progress. (You will want to set {@link AjaxConfig.includeDownloadProgress | AjaxConfig.includeDownloadProgress}} or
+   * {@link AjaxConfig.includeDownloadProgress | AjaxConfig.includeDownloadProgress}})
    */
   readonly loaded: number;
 
   /**
    * The total number of bytes to be loaded. To be used with {@link loaded} while
-   * calculating progress. (You will want to set {@link includeDownloadProgress} or
-   * {@link includeDownloadProgress})
+   * calculating progress. (You will want to set {@link AjaxConfig.includeDownloadProgress | AjaxConfig.includeDownloadProgress}} or
+   * {@link AjaxConfig.includeDownloadProgress | AjaxConfig.includeDownloadProgress}})
    */
   readonly total: number;
 
@@ -78,8 +78,8 @@ export class AjaxResponse<T> {
     public readonly request: AjaxRequest,
     /**
      * The event type. This can be used to discern between different events
-     * if you're using progress events with {@link includeDownloadProgress} or
-     * {@link includeUploadProgress} settings in {@link AjaxConfig}.
+     * if you're using progress events with {@link AjaxConfig.includeDownloadProgress | AjaxConfig.includeDownloadProgress}} or
+     * {@link AjaxConfig.includeUploadProgress | AjaxConfig.includeUploadProgress}} settings in {@link AjaxConfig}.
      *
      * The event type consists of two parts: the {@link AjaxDirection} and the
      * the event type. Merged with `_`, they form the `type` string. The
@@ -105,14 +105,14 @@ export class AjaxResponse<T> {
     const allHeaders = xhr.getAllResponseHeaders();
     this.responseHeaders = allHeaders
       ? // Split the header text into lines
-        allHeaders.split('\n').reduce((headers: Record<string, string>, line) => {
-          // Split the lines on the first ": " as
-          // "key: value". Note that the value could
-          // technically have a ": " in it.
-          const index = line.indexOf(': ');
-          headers[line.slice(0, index)] = line.slice(index + 2);
-          return headers;
-        }, {})
+      allHeaders.split('\n').reduce((headers: Record<string, string>, line) => {
+        // Split the lines on the first ": " as
+        // "key: value". Note that the value could
+        // technically have a ": " in it.
+        const index = line.indexOf(': ');
+        headers[line.slice(0, index)] = line.slice(index + 2);
+        return headers;
+      }, {})
       : {};
 
     this.response = xhr.response;

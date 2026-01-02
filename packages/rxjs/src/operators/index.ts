@@ -1,3 +1,12 @@
+/**
+ * :::info
+ * This module is available as a nested import; however all of its methods are re-exports and all documentation can be found within the [rxjs#functions](/api/rxjs#functions) section.
+ * :::
+ *
+ * @packageDocumentation
+ * @module operators
+ */
+
 /* Operator exports */
 export { audit } from '../internal/operators/audit.js';
 export { auditTime } from '../internal/operators/auditTime.js';

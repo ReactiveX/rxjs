@@ -10,7 +10,7 @@ import { noop } from '../util/noop.js';
  * <span class="informal">It's like {@link buffer}, but emits a nested Observable
  * instead of an array.</span>
  *
- * ![](window.png)
+ * ![](/images/marble-diagrams/window.png)
  *
  * Returns an Observable that emits windows of items it collects from the source
  * Observable. The output Observable emits connected, non-overlapping
@@ -19,7 +19,7 @@ import { noop } from '../util/noop.js';
  * `ObservableInput` accepts. It internally gets converted to an Observable.
  * Because each window is an Observable, the output is a higher-order Observable.
  *
- * ## Example
+ * @example
  *
  * In every window of 1 second each, emit at most 2 click events
  *

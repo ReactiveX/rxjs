@@ -1,4 +1,4 @@
-import type { Subscription} from '@rxjs/observable';
+import type { Subscription } from '@rxjs/observable';
 import { Observable, from, operate } from '@rxjs/observable';
 import { Subject } from '../Subject.js';
 import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
@@ -9,11 +9,11 @@ import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
  * If that Observable calls `complete` or `error` then this method will call `complete` or `error` on the child
  * subscription. Otherwise this method will resubscribe to the source Observable.
  *
- * ![](retryWhen.png)
+ * ![](/images/marble-diagrams/retryWhen.png)
  *
  * Retry an observable sequence on error based on custom criteria.
  *
- * ## Example
+ * @example
  *
  * ```ts
  * import { interval, map, retryWhen, tap, delayWhen, timer } from 'rxjs';

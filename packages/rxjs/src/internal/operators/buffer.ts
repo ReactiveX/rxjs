@@ -8,7 +8,7 @@ import { noop } from '../util/noop.js';
  * <span class="informal">Collects values from the past as an array, and emits
  * that array only when another Observable emits.</span>
  *
- * ![](buffer.png)
+ * ![](/images/marble-diagrams/buffer.png)
  *
  * Buffers the incoming Observable values until the given `closingNotifier`
  * `ObservableInput` (that internally gets converted to an Observable)
@@ -16,7 +16,7 @@ import { noop } from '../util/noop.js';
  * Observable and starts a new buffer internally, awaiting the next time
  * `closingNotifier` emits.
  *
- * ## Example
+ * @example
  *
  * On every click, emit array of most recent interval events
  *

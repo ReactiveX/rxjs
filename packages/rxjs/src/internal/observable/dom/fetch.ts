@@ -14,8 +14,10 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
  * Uses [the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) to
  * make an HTTP request.
  *
- * **WARNING** Parts of the fetch API are still experimental. `AbortController` is
+ * :::warning
+ * Parts of the fetch API are still experimental. `AbortController` is
  * required for this implementation to work and use cancellation appropriately.
+ * :::
  *
  * Will automatically set up an internal [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
  * in order to finalize the internal `fetch` when the subscription tears down.
@@ -24,9 +26,8 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
  * `fetch`. If the provided `signal` aborts, the error that `fetch` normally rejects with
  * in that scenario will be emitted as an error from the observable.
  *
- * ## Examples
- *
- * Basic use
+ * @example
+ * ### Basic use
  *
  * ```ts
  * import { fromFetch } from 'rxjs/fetch';
@@ -55,6 +56,7 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
  * });
  * ```
  *
+ * @example
  * ### Use with Chunked Transfer Encoding
  *
  * With HTTP responses that use [chunked transfer encoding](https://tools.ietf.org/html/rfc7230#section-3.3.1),
@@ -84,11 +86,10 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
  * });
  * ```
  *
- * @param input The resource you would like to fetch. Can be a url or a request object.
- * @param initWithSelector A configuration object for the fetch.
- * [See MDN for more details](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
- * @returns An Observable, that when subscribed to, performs an HTTP request using the native `fetch`
- * function. The {@link Subscription} is tied to an `AbortController` for the fetch.
+ * @param input - The resource you would like to fetch. Can be a url or a request object.
+ * @param initWithSelector - A configuration object for the fetch. [See MDN for more details](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
+ * @returns Observable - An Observable, that when subscribed to, performs an HTTP request using the native `fetch`
+ * function. The {@link rxjs!Subscription | Subscription} is tied to an `AbortController` for the fetch.
  */
 export function fromFetch<T>(
   input: string | Request,

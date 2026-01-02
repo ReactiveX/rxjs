@@ -12,7 +12,7 @@ import { arrRemove } from '../util/arrRemove.js';
  * <span class="informal">It's like {@link bufferToggle}, but emits a nested
  * Observable instead of an array.</span>
  *
- * ![](windowToggle.png)
+ * ![](/images/marble-diagrams/windowToggle.png)
  *
  * Returns an Observable that emits windows of items it collects from the source
  * Observable. The output Observable emits windows that contain those items
@@ -20,7 +20,7 @@ import { arrRemove } from '../util/arrRemove.js';
  * Observable emits an item and when the Observable returned by
  * `closingSelector` emits an item.
  *
- * ## Example
+ * @example
  *
  * Every other second, emit the click events from the next 500ms
  *

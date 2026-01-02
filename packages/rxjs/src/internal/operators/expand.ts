@@ -15,7 +15,7 @@ export function expand<T, O extends ObservableInput<unknown>>(
  * projection function to every source value as well as every output value.
  * It's recursive.</span>
  *
- * ![](expand.png)
+ * ![](/images/marble-diagrams/expand.png)
  *
  * Returns an Observable that emits items based on applying a function that you
  * supply to each item emitted by the source Observable, where that function
@@ -27,7 +27,7 @@ export function expand<T, O extends ObservableInput<unknown>>(
  * given to the `project` function to produce new output values. This is how
  * *expand* behaves recursively.
  *
- * ## Example
+ * @example
  *
  * Start emitting the powers of two on every click, at most 10 of them
  *
@@ -50,8 +50,6 @@ export function expand<T, O extends ObservableInput<unknown>>(
  * or the output Observable, returns an Observable.
  * @param concurrent Maximum number of input Observables being subscribed to
  * concurrently.
- * @param scheduler The {@link SchedulerLike} to use for subscribing to
- * each projected inner Observable.
  * @return A function that returns an Observable that emits the source values
  * and also result of applying the projection function to each value emitted on
  * the output Observable and merging the results of the Observables obtained

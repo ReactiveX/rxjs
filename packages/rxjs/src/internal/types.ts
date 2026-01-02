@@ -26,7 +26,7 @@ export interface UnaryFunction<T, R> {
   (source: T): R;
 }
 
-export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Observable<R>> {}
+export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Observable<R>> { }
 
 export type FactoryOrValue<T> = T | (() => T);
 
@@ -36,7 +36,7 @@ export type FactoryOrValue<T> = T | (() => T);
  * Used to describe {@link OperatorFunction} with the only one type: `OperatorFunction<T, T>`.
  *
  */
-export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> {}
+export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> { }
 
 /**
  * A value and the time at which it was emitted.
@@ -174,9 +174,9 @@ export type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | Completion
 /**
  * An object interface that defines a set of callback functions a user can use to get
  * notified of any set of {@link Observable}
- * {@link guide/glossary-and-semantics#notification notification} events.
+ * {@link https://rxjs.dev/guide/glossary-and-semantics#notification | notification} events.
  *
- * For more info, please refer to {@link guide/observer this guide}.
+ * For more info, please refer to {@link https://rxjs.dev/guide/observer this | guide}.
  */
 export interface Observer<T> {
   /**
@@ -184,7 +184,7 @@ export interface Observer<T> {
    * the producer "has" the `value`. It won't be called if `error` or `complete` callback
    * functions have been called, nor after the consumer has unsubscribed.
    *
-   * For more info, please refer to {@link guide/glossary-and-semantics#next this guide}.
+   * For more info, please refer to {@link https://rxjs.dev/guide/glossary-and-semantics#next this | guide}.
    */
   next: (value: T) => void;
   /**
@@ -194,7 +194,7 @@ export interface Observer<T> {
    * `complete` callback function have been called previously, nor it can't be called if
    * the consumer has unsubscribed.
    *
-   * For more info, please refer to {@link guide/glossary-and-semantics#error this guide}.
+   * For more info, please refer to {@link https://rxjs.dev/guide/glossary-and-semantics#error this | guide}.
    */
   error: (err: any) => void;
   /**
@@ -204,12 +204,12 @@ export interface Observer<T> {
    * if the `error` callback function have been called previously, nor it can't be called
    * if the consumer has unsubscribed.
    *
-   * For more info, please refer to {@link guide/glossary-and-semantics#complete this guide}.
+   * For more info, please refer to {@link https://rxjs.dev/guide/glossary-and-semantics#complete this | guide}.
    */
   complete: () => void;
 }
 
-export interface SubjectLike<T> extends Observer<T>, Subscribable<T> {}
+export interface SubjectLike<T> extends Observer<T>, Subscribable<T> { }
 
 /* SCHEDULER INTERFACES */
 
@@ -300,10 +300,10 @@ export type ValueFromArray<A extends readonly unknown[]> = A extends Array<infer
  */
 export type ValueFromNotification<T> = T extends { kind: 'N' | 'E' | 'C' }
   ? T extends NextNotification<any>
-    ? T extends { value: infer V }
-      ? V
-      : undefined
-    : never
+  ? T extends { value: infer V }
+  ? V
+  : undefined
+  : never
   : never;
 
 /**

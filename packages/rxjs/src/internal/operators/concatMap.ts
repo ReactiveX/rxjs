@@ -9,7 +9,7 @@ import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../type
  * <span class="informal">Maps each value to an Observable, then flattens all of
  * these inner Observables using {@link concatAll}.</span>
  *
- * ![](concatMap.png)
+ * ![](/images/marble-diagrams/concatMap.png)
  *
  * Returns an Observable that emits items based on applying a function that you
  * supply to each item emitted by the source Observable, where that function
@@ -24,7 +24,7 @@ import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../type
  * Note: `concatMap` is equivalent to `mergeMap` with concurrency parameter set
  * to `1`.
  *
- * ## Example
+ * @example
  *
  * For each click event, tick every second from 0 to 3, with no concurrency
  *

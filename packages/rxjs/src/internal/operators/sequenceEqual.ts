@@ -8,7 +8,7 @@ import { Observable, operate, from } from '@rxjs/observable';
  *
  * <span class="informal">Checks to see of all values emitted by both observables are equal, in order.</span>
  *
- * ![](sequenceEqual.png)
+ * ![](/images/marble-diagrams/sequenceEqual.png)
  *
  * `sequenceEqual` subscribes to source observable and `compareTo` `ObservableInput` (that internally
  * gets converted to an observable) and buffers incoming values from each observable. Whenever either
@@ -18,7 +18,7 @@ import { Observable, operate, from } from '@rxjs/observable';
  * observable emits before completing, the returned observable will emit `false` and complete. If one observable never
  * completes or emits after the other completes, the returned observable will never complete.
  *
- * ## Example
+ * @example
  *
  * Figure out if the Konami code matches
  *

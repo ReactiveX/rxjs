@@ -14,7 +14,7 @@ import { AnimationFrameScheduler } from './AnimationFrameScheduler.js';
  * It makes sure scheduled task will happen just before next browser content repaint,
  * thus performing animations as efficiently as possible.
  *
- * ## Example
+ * @example
  * Schedule div height animation
  * ```ts
  * // html: <div style="background: #0ff;"></div>

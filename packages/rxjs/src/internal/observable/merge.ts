@@ -1,4 +1,4 @@
-import type { Observable} from '@rxjs/observable';
+import type { Observable } from '@rxjs/observable';
 import { from } from '@rxjs/observable';
 import type { ObservableInput, ObservableInputTuple, SchedulerLike } from '../types.js';
 import { mergeAll } from '../operators/mergeAll.js';
@@ -24,7 +24,7 @@ export function merge<A extends readonly unknown[]>(
  * <span class="informal">Flattens multiple Observables together by blending
  * their values into one Observable.</span>
  *
- * ![](merge.png)
+ * ![](/images/marble-diagrams/merge.png)
  *
  * `merge` subscribes to each given input Observable (as arguments), and simply
  * forwards (without doing any transformation) all the values from all the input
@@ -32,7 +32,7 @@ export function merge<A extends readonly unknown[]>(
  * once all input Observables have completed. Any error delivered by an input
  * Observable will be immediately emitted on the output Observable.
  *
- * ## Examples
+ * @example
  *
  * Merge together two Observables: 1s interval and clicks
  *
@@ -90,10 +90,10 @@ export function merge(...args: (ObservableInput<unknown> | number | SchedulerLik
   const sources = args as ObservableInput<unknown>[];
   return !sources.length
     ? // No source provided
-      EMPTY
+    EMPTY
     : sources.length === 1
-    ? // One source? Just return it.
+      ? // One source? Just return it.
       from(sources[0])
-    : // Merge all sources
+      : // Merge all sources
       mergeAll(concurrent)(scheduler ? scheduled(sources, scheduler) : from(sources));
 }

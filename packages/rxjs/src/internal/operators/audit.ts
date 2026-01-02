@@ -1,4 +1,4 @@
-import type { Subscriber} from '@rxjs/observable';
+import type { Subscriber } from '@rxjs/observable';
 import { operate, Observable, from } from '@rxjs/observable';
 import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
 
@@ -10,7 +10,7 @@ import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
  * <span class="informal">It's like {@link auditTime}, but the silencing
  * duration is determined by a second Observable.</span>
  *
- * ![](audit.svg)
+ * ![](/images/marble-diagrams/audit.svg)
  *
  * `audit` is similar to `throttle`, but emits the last value from the silenced
  * time window, instead of the first value. `audit` emits the most recent value
@@ -23,7 +23,7 @@ import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
  * recent source value is emitted on the output Observable, and this process
  * repeats for the next source value.
  *
- * ## Example
+ * @example
  *
  * Emit clicks at a rate of at most one click per second
  *

@@ -7,9 +7,9 @@ import { isFunction } from '@rxjs/observable';
  * can be compared with a provided function), and when source Observable completes
  * it emits a single item: the item with the largest value.
  *
- * ![](max.png)
+ * ![](/images/marble-diagrams/max.png)
  *
- * ## Examples
+ * @example
  *
  * Get the maximal value of a series of numbers
  *

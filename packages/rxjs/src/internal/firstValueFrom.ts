@@ -1,4 +1,4 @@
-import type { Observable} from '@rxjs/observable';
+import type { Observable } from '@rxjs/observable';
 import { Subscriber } from '@rxjs/observable';
 import { EmptyError } from './util/EmptyError.js';
 
@@ -28,7 +28,7 @@ export function firstValueFrom<T>(source: Observable<T>): Promise<T>;
  * something like {@link timeout}, {@link take}, {@link takeWhile}, or {@link takeUntil}
  * amongst others.
  *
- * ## Example
+ * @example
  *
  * Wait for the first value from a stream and emit it from a promise in
  * an async function

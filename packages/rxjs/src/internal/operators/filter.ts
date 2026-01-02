@@ -17,13 +17,13 @@ export function filter<T>(predicate: (value: T, index: number) => boolean): Mono
  * [Array.prototype.filter()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter),
  * it only emits a value from the source if it passes a criterion function.</span>
  *
- * ![](filter.png)
+ * ![](/images/marble-diagrams/filter.png)
  *
  * Similar to the well-known `Array.prototype.filter` method, this operator
  * takes values from the source Observable, passes them through a `predicate`
  * function and only emits those values that yielded `true`.
  *
- * ## Example
+ * @example
  *
  * Emit only click events whose target was a DIV element
  *

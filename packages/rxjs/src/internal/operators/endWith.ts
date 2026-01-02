@@ -9,9 +9,9 @@ import type { OperatorFunction, ValueFromArray } from '../types.js';
  * This is useful for knowing when an observable ends. Particularly when paired with an
  * operator like {@link takeUntil}
  *
- * ![](endWith.png)
+ * ![](/images/marble-diagrams/endWith.png)
  *
- * ## Example
+ * @example
  *
  * Emit values to know when an interval starts and stops. The interval will
  * stop when a user clicks anywhere on the document.

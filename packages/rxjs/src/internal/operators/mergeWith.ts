@@ -13,7 +13,7 @@ import type { ObservableInputTuple, OperatorFunction } from '../types.js';
  *
  * When any source errors, the resulting observable will error.
  *
- * ## Example
+ * @example
  *
  * Joining all outputs from multiple user input event streams
  *

@@ -42,7 +42,7 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
  * the inner `ReplaySubject` will be unsubscribed. All new subscribers will receive value emissions from a
  * new `ReplaySubject` which in turn will cause a new subscription to the source observable.
  *
- * ## Examples
+ * @example
  *
  * Example with a third subscriber coming late to the party
  *

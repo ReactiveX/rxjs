@@ -51,7 +51,7 @@ export class AjaxError extends Error {
 }
 
 /**
- * Thrown when an AJAX request times out. Not to be confused with {@link TimeoutError}.
+ * Thrown when an AJAX request times out. Not to be confused with {@link rxjs!TimeoutError | TimeoutError}.
  *
  * This is exported only because it is useful for checking to see if errors are an
  * `instanceof AjaxTimeoutError`. DO NOT use the constructor to create an instance of

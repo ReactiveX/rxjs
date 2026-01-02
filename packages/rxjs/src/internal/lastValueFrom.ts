@@ -26,7 +26,7 @@ export function lastValueFrom<T>(source: Observable<T>): Promise<T>;
  * this situation, look into adding something like {@link timeout}, {@link take},
  * {@link takeWhile}, or {@link takeUntil} amongst others.
  *
- * ## Example
+ * @example
  *
  * Wait for the last value from a stream and emit it from a promise in
  * an async function

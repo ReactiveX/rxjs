@@ -43,9 +43,9 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * producing the sequence's elements, using the specified scheduler
  * to send out observer messages.
  *
- * ![](generate.png)
+ * ![](/images/marble-diagrams/generate.png)
  *
- * ## Examples
+ * @example
  *
  * Produces sequence of numbers
  *
@@ -104,7 +104,7 @@ export function generate<T, S>(
  *
  * <span class="informal">Use it instead of nexting values in a for loop.</span>
  *
- * ![](generate.png)
+ * ![](/images/marble-diagrams/generate.png)
  *
  * `generate` allows you to create a stream of values generated with a loop very similar to
  * a traditional for loop. The first argument of `generate` is a beginning value. The second argument
@@ -142,7 +142,7 @@ export function generate<T, S>(
  * by default (when no scheduler is passed) values are simply emitted synchronously.
  *
  *
- * ## Examples
+ * @example
  *
  * Use with condition and iterate functions
  *
@@ -255,9 +255,9 @@ export function generate<S>(
  * The overload accepts options object that might contain initial state, iterate,
  * condition and scheduler.
  *
- * ![](generate.png)
+ * ![](/images/marble-diagrams/generate.png)
  *
- * ## Examples
+ * @example
  *
  * Use options object with condition function
  *
@@ -297,9 +297,9 @@ export function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
  * The overload accepts options object that might contain initial state, iterate,
  * condition, result selector and scheduler.
  *
- * ![](generate.png)
+ * ![](/images/marble-diagrams/generate.png)
  *
- * ## Examples
+ * @example
  *
  * Use options object with condition and iterate function
  *
@@ -378,10 +378,10 @@ export function generate<T, S>(
   return defer(
     (scheduler
       ? // If a scheduler was provided, use `scheduleIterable` to ensure that iteration/generation
-        // happens on the scheduler.
-        () => scheduleIterable(gen(), scheduler!)
+      // happens on the scheduler.
+      () => scheduleIterable(gen(), scheduler!)
       : // Otherwise, if there's no scheduler, we can just use the generator function directly in
-        // `defer` and executing it will return the generator (which is iterable).
-        gen) as () => ObservableInput<T>
+      // `defer` and executing it will return the generator (which is iterable).
+      gen) as () => ObservableInput<T>
   );
 }

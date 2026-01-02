@@ -4,7 +4,7 @@ import { WebSocketSubject } from './WebSocketSubject.js';
 /**
  * Wrapper around the w3c-compatible WebSocket object provided by the browser.
  *
- * <span class="informal">{@link Subject} that communicates with a server via WebSocket</span>
+ * <span class="informal">{@link rxjs!Subject | Subject} that communicates with a server via WebSocket</span>
  *
  * `webSocket` is a factory function that produces a `WebSocketSubject`,
  * which can be used to make WebSocket connection with an arbitrary endpoint.
@@ -27,7 +27,7 @@ import { WebSocketSubject } from './WebSocketSubject.js';
  * any errors. If at any point (starting, maintaining or closing a connection) there is an error,
  * stream will also error with whatever WebSocket API has thrown.
  *
- * By virtue of being a {@link Subject}, `WebSocketSubject` allows for receiving and sending messages from the server. In order
+ * By virtue of being a {@link rxjs!Subject | Subject}, `WebSocketSubject` allows for receiving and sending messages from the server. In order
  * to communicate with a connected endpoint, use `next`, `error` and `complete` methods. `next` sends a value to the server, so bear in mind
  * that this value will not be serialized beforehand. Because of This, `JSON.stringify` will have to be called on a value by hand,
  * before calling `next` with a result. Note also that if at the moment of nexting value
@@ -71,7 +71,7 @@ import { WebSocketSubject } from './WebSocketSubject.js';
  * as messages pushed via `next`. Also bear in mind that these messages will be sent on *every* subscription and
  * unsubscription. This is potentially dangerous, because one consumer of an Observable may unsubscribe and the server
  * might stop sending messages, since it got unsubscription message. This needs to be handled
- * on the server or using {@link connectable} on a Observable returned from 'multiplex'.
+ * on the server or using {@link rxjs!connectable | connectable} on a Observable returned from 'multiplex'.
  *
  * Last argument to `multiplex` is a `messageFilter` function which should return a boolean. It is used to filter out messages
  * sent by the server to only those that belong to simulated WebSocket stream. For example, server might mark these
@@ -83,7 +83,7 @@ import { WebSocketSubject } from './WebSocketSubject.js';
  * is not a `WebSocketSubject`, so calling `next` or `multiplex` again will fail. For pushing values to the
  * server, use root `WebSocketSubject`.
  *
- * ## Examples
+ * @example
  *
  * Listening for messages from the server
  *

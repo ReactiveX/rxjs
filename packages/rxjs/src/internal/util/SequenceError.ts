@@ -2,7 +2,7 @@
  * An error thrown when something is wrong with the sequence of
  * values arriving on the observable.
  *
- * @see {@link operators/single}
+ * @see {@link single}
  */
 export class SequenceError extends Error {
   /**

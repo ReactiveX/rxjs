@@ -9,7 +9,7 @@ import { noop } from '../util/noop.js';
  * <span class="informal">Lets values pass until a second Observable,
  * `notifier`, emits a value. Then, it completes.</span>
  *
- * ![](takeUntil.png)
+ * ![](/images/marble-diagrams/takeUntil.png)
  *
  * `takeUntil` subscribes and begins mirroring the source Observable. It also
  * monitors a second Observable, `notifier` that you provide. If the `notifier`
@@ -17,7 +17,7 @@ import { noop } from '../util/noop.js';
  * and completes. If the `notifier` doesn't emit any value and completes
  * then `takeUntil` will pass all values.
  *
- * ## Example
+ * @example
  *
  * Tick every second until the first click happens
  *

@@ -1,7 +1,7 @@
 import { asyncScheduler } from '../scheduler/async.js';
 import type { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ObservableInput, ObservedValueOf } from '../types.js';
 import { isValidDate } from '../util/isDate.js';
-import type { Subscription} from '@rxjs/observable';
+import type { Subscription } from '@rxjs/observable';
 import { Observable, from, operate } from '@rxjs/observable';
 import { executeSchedule } from '../util/executeSchedule.js';
 
@@ -94,7 +94,7 @@ export class TimeoutError<T, M> extends Error {
  * `first` is _not_ provided, the value from `each` will be used to check timeout conditions for the arrival of the first
  * value and all subsequent values. If `first` _is_ provided, `each` will only be use to check all values after the first.
  *
- * ## Examples
+ * @example
  *
  * Emit a custom error if there is too much time between values
  *
@@ -174,7 +174,7 @@ export function timeout<T, O extends ObservableInput<unknown>, M = unknown>(
  * In this case, you would check the error for `instanceof TimeoutError` to validate that the error was indeed from `timeout`, and
  * not from some other source. If it's not from `timeout`, you should probably rethrow it if you're in a `catchError`.
  *
- * ## Examples
+ * @example
  *
  * Emit a {@link TimeoutError} if the first value, and _only_ the first value, does not arrive within 5 seconds
  *
@@ -241,7 +241,7 @@ export function timeout<T, M = unknown>(config: Omit<TimeoutConfig<T, any, M>, '
  *
  * <span class="informal">Errors if the first value doesn't show up before the given date and time</span>
  *
- * ![](timeout.png)
+ * ![](/images/marble-diagrams/timeout.png)
  *
  * @param first The date to at which the resulting observable will timeout if the source observable
  * does not emit at least one value.
@@ -255,7 +255,7 @@ export function timeout<T>(first: Date, scheduler?: SchedulerLike): MonoTypeOper
  *
  * <span class="informal">Errors if it waits too long between any value</span>
  *
- * ![](timeout.png)
+ * ![](/images/marble-diagrams/timeout.png)
  *
  * @param each The time allowed between each pushed value from the source before the resulting observable
  * will timeout.
@@ -269,7 +269,7 @@ export function timeout<T>(each: number, scheduler?: SchedulerLike): MonoTypeOpe
  *
  * <span class="informal">Timeouts on Observable that doesn't emit values fast enough.</span>
  *
- * ![](timeout.png)
+ * ![](/images/marble-diagrams/timeout.png)
  *
  * @see {@link timeoutWith}
  *

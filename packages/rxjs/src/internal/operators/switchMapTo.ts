@@ -8,7 +8,7 @@ import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../type
  * <span class="informal">It's like {@link switchMap}, but maps each value
  * always to the same inner Observable.</span>
  *
- * ![](switchMapTo.png)
+ * ![](/images/marble-diagrams/switchMapTo.png)
  *
  * Maps each source value to the given Observable `innerObservable` regardless
  * of the source value, and then flattens those resulting Observables into one
@@ -16,7 +16,7 @@ import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../type
  * emits values only from the most recently emitted instance of
  * `innerObservable`.
  *
- * ## Example
+ * @example
  *
  * Restart an interval Observable on every click event
  *

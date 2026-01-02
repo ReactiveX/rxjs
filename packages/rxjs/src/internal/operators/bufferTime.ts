@@ -24,7 +24,7 @@ export function bufferTime<T>(
  * <span class="informal">Collects values from the past as an array, and emits
  * those arrays periodically in time.</span>
  *
- * ![](bufferTime.png)
+ * ![](/images/marble-diagrams/bufferTime.png)
  *
  * Buffers values from the source for a specific time duration `bufferTimeSpan`.
  * Unless the optional argument `bufferCreationInterval` is given, it emits and
@@ -35,7 +35,7 @@ export function bufferTime<T>(
  * `maxBufferSize` is specified, the buffer will be closed either after
  * `bufferTimeSpan` milliseconds or when it contains `maxBufferSize` elements.
  *
- * ## Examples
+ * @example
  *
  * Every second, emit an array of the recent click events
  *

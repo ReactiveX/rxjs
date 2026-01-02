@@ -17,7 +17,7 @@ import { QueueScheduler } from './QueueScheduler.js';
  * This means that when you execute task with `queueScheduler` scheduler, you are sure it will end
  * before any other task scheduled with that scheduler will start.
  *
- * ## Examples
+ * @example
  * Schedule recursively first, then do something
  * ```ts
  * import { queueScheduler } from 'rxjs';

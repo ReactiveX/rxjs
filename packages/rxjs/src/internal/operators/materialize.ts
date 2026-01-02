@@ -10,7 +10,7 @@ import { Observable, operate, COMPLETE_NOTIFICATION, errorNotification, nextNoti
  * {@link ObservableNotification} objects, emitted as `next` on the output Observable.
  * </span>
  *
- * ![](materialize.png)
+ * ![](/images/marble-diagrams/materialize.png)
  *
  * `materialize` returns an Observable that emits a `next` notification for each
  * `next`, `error`, or `complete` emission of the source Observable. When the
@@ -23,7 +23,7 @@ import { Observable, operate, COMPLETE_NOTIFICATION, errorNotification, nextNoti
  * be consumed as `next` emissions. Use it in conjunction with
  * {@link dematerialize}.
  *
- * ## Example
+ * @example
  *
  * Convert a faulty Observable to an Observable of Notifications
  *

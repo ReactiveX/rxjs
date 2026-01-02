@@ -8,7 +8,7 @@ import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../type
  * <span class="informal">It's like {@link concatMap}, but maps each value
  * always to the same inner Observable.</span>
  *
- * ![](concatMapTo.png)
+ * ![](/images/marble-diagrams/concatMapTo.png)
  *
  * Maps each source value to the given Observable `innerObservable` regardless
  * of the source value, and then flattens those resulting Observables into one
@@ -24,7 +24,7 @@ import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../type
  * Note: `concatMapTo` is equivalent to `mergeMapTo` with concurrency parameter
  * set to `1`.
  *
- * ## Example
+ * @example
  *
  * For each click event, tick every second from 0 to 3, with no concurrency
  *

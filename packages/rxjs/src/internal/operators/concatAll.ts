@@ -8,7 +8,7 @@ import type { OperatorFunction, ObservableInput, ObservedValueOf } from '../type
  * <span class="informal">Flattens an Observable-of-Observables by putting one
  * inner Observable after the other.</span>
  *
- * ![](concatAll.svg)
+ * ![](/images/marble-diagrams/concatAll.svg)
  *
  * Joins every Observable emitted by the source (a higher-order Observable), in
  * a serial fashion. It subscribes to each inner Observable only after the
@@ -23,7 +23,7 @@ import type { OperatorFunction, ObservableInput, ObservedValueOf } from '../type
  * Note: `concatAll` is equivalent to `mergeAll` with concurrency parameter set
  * to `1`.
  *
- * ## Example
+ * @example
  *
  * For each click event, tick every second from 0 to 3, with no concurrency
  *

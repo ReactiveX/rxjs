@@ -21,7 +21,7 @@ export function delayWhen<T>(delayDurationSelector: (value: T, index: number) =>
  * <span class="informal">It's like {@link delay}, but the time span of the
  * delay duration is determined by a second Observable.</span>
  *
- * ![](delayWhen.png)
+ * ![](/images/marble-diagrams/delayWhen.png)
  *
  * `delayWhen` operator shifts each emitted value from the source Observable by
  * a time span determined by another Observable. When the source emits a value,
@@ -32,10 +32,10 @@ export function delayWhen<T>(delayDurationSelector: (value: T, index: number) =>
  * Observable.
  *
  * The source value is emitted on the output Observable only when the "duration"
- * Observable emits ({@link guide/glossary-and-semantics#next next}s) any value.
+ * Observable emits ({@link https://rxjs.dev/guide/glossary-and-semantics#next | next}s) any value.
  * Upon that, the "duration" Observable gets unsubscribed.
  *
- * Before RxJS V7, the {@link guide/glossary-and-semantics#complete completion}
+ * Before RxJS V7, the {@link https://rxjs.dev/guide/glossary-and-semantics#complete | completion}
  * of the "duration" Observable would have been triggering the emission of the
  * source value to the output Observable, but with RxJS V7, this is not the case
  * anymore.
@@ -54,7 +54,7 @@ export function delayWhen<T>(delayDurationSelector: (value: T, index: number) =>
  * `delayWhen` will subscribe to the source Observable as soon as the output
  * Observable is subscribed.
  *
- * ## Example
+ * @example
  *
  * Delay each click by a random amount of time, between 0 and 5 seconds
  *

@@ -1,4 +1,4 @@
-import type { Subscriber} from '@rxjs/observable';
+import type { Subscriber } from '@rxjs/observable';
 import { Observable, operate, from } from '@rxjs/observable';
 import type { ObservableInput, ObservedValueOf, ObservableInputTuple } from '../types.js';
 import { arrayOrObject } from '../util/argsArgArrayOrObject.js';
@@ -42,7 +42,7 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  * computes a formula using the latest values from all the inputs, then emits
  * the output of that formula.</span>
  *
- * ![](combineLatest.png)
+ * ![](/images/marble-diagrams/combineLatest.png)
  *
  * `combineLatest` combines the values from all the Observables passed in the
  * observables array. This is done by subscribing to each Observable in order and,
@@ -77,7 +77,7 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  * emitted value. On the other hand, if any Observable errors, `combineLatest`
  * will error immediately as well, and all other Observables will be unsubscribed.
  *
- * ## Examples
+ * @example
  *
  * Combine two timer Observables
  *
@@ -187,8 +187,8 @@ export function combineLatest<O extends ObservableInput<any>, R>(
       keys
         ? (values: any[]) => createObject(keys, values)
         : resultSelector
-        ? (values: readonly any[]) => resultSelector(...values)
-        : identity
+          ? (values: readonly any[]) => resultSelector(...values)
+          : identity
     )
   );
 }

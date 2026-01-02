@@ -9,7 +9,7 @@ import { identity } from '../util/identity.js';
  * <span class="informal">Flattens an Observable-of-Observables by dropping the
  * next inner Observables while the current inner is still executing.</span>
  *
- * ![](exhaustAll.svg)
+ * ![](/images/marble-diagrams/exhaustAll.svg)
  *
  * `exhaustAll` subscribes to an Observable that emits Observables, also known as a
  * higher-order Observable. Each time it observes one of these emitted inner
@@ -19,7 +19,7 @@ import { identity } from '../util/identity.js';
  * not yet completed. Once that one completes, it will accept and flatten the
  * next inner Observable and repeat this process.
  *
- * ## Example
+ * @example
  *
  * Run a finite timer for each click, only if there is no currently active timer
  *

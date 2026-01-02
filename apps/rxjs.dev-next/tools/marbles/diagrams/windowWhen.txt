@@ -1,0 +1,20 @@
+[styles]
+event_radius = 33
+operator_height = 60
+completion_height = 80
+
+---a---b---c---d---e---f---g---h---|
+
+-------------x|
+             -------------x|
+                          -------------x|
+
+> windowWhen()
+
+x = ---a---b---c-|
+
+y = --d---e---f---g|
+
+z = -g---h---|
+
+x------------y------------z--------|

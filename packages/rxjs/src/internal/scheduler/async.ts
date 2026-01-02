@@ -15,7 +15,7 @@ import { AsyncScheduler } from './AsyncScheduler.js';
  * executing synchronous code ends (commonly achieved by `setTimeout(deferredTask, 0)`),
  * better choice will be the {@link asapScheduler} scheduler.
  *
- * ## Examples
+ * @example
  * Use async scheduler to delay task
  * ```ts
  * import { asyncScheduler } from 'rxjs';

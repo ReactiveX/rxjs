@@ -40,7 +40,7 @@ export interface ThrottleConfig {
  * <span class="informal">It's like {@link throttleTime}, but the silencing
  * duration is determined by a second Observable.</span>
  *
- * ![](throttle.svg)
+ * ![](/images/marble-diagrams/throttle.svg)
  *
  * `throttle` emits the source Observable values on the output Observable
  * when its internal timer is disabled, and ignores source values when the timer
@@ -51,7 +51,7 @@ export interface ThrottleConfig {
  * value, the timer is disabled, and this process repeats for the
  * next source value.
  *
- * ## Example
+ * @example
  *
  * Emit clicks at a rate of at most one click per second
  *

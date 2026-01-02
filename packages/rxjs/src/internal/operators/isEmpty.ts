@@ -7,7 +7,7 @@ import { Observable, operate } from '@rxjs/observable';
  *
  * <span class="informal">Tells whether any values are emitted by an Observable.</span>
  *
- * ![](isEmpty.png)
+ * ![](/images/marble-diagrams/isEmpty.png)
  *
  * `isEmpty` transforms an Observable that emits values into an Observable that
  * emits a single boolean value representing whether or not any values were
@@ -19,7 +19,7 @@ import { Observable, operate } from '@rxjs/observable';
  * A similar effect could be achieved with {@link count}, but `isEmpty` can emit
  * a `false` value sooner.
  *
- * ## Examples
+ * @example
  *
  * Emit `false` for a non-empty Observable
  *
