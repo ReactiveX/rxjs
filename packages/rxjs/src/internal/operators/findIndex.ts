@@ -12,7 +12,7 @@ export function findIndex<T>(predicate: (value: T, index: number, source: Observ
  * <span class="informal">It's like {@link find}, but emits the index of the
  * found value, not the value itself.</span>
  *
- * ![](findIndex.png)
+ * ![](/images/marble-diagrams/findIndex.png)
  *
  * `findIndex` searches for the first item in the source Observable that matches
  * the specified condition embodied by the `predicate`, and returns the
@@ -20,7 +20,7 @@ export function findIndex<T>(predicate: (value: T, index: number, source: Observ
  * {@link first}, the `predicate` is required in `findIndex`, and does not emit
  * an error if a valid value is not found.
  *
- * ## Example
+ * @example
  *
  * Emit the index of first click that happens on a DIV element
  *

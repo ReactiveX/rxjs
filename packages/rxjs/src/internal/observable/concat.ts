@@ -1,4 +1,4 @@
-import type { Observable} from '@rxjs/observable';
+import type { Observable } from '@rxjs/observable';
 import { from } from '@rxjs/observable';
 import type { ObservableInputTuple, SchedulerLike } from '../types.js';
 import { concatAll } from '../operators/concatAll.js';
@@ -17,7 +17,7 @@ export function concat<T extends readonly unknown[]>(
  * <span class="informal">Concatenates multiple Observables together by
  * sequentially emitting their values, one Observable after the other.</span>
  *
- * ![](concat.png)
+ * ![](/images/marble-diagrams/concat.png)
  *
  * `concat` joins multiple Observables together, by subscribing to them one at a time and
  * merging their results into the output Observable. You can pass either an array of
@@ -47,7 +47,7 @@ export function concat<T extends readonly unknown[]>(
  * as many times as you like. If passing the same Observable to `concat` 1000 times becomes tedious,
  * you can always use {@link repeat}.
  *
- * ## Examples
+ * @example
  *
  * Concatenate a timer counting from 0 to 3 with a synchronous sequence from 1 to 10
  *

@@ -9,7 +9,7 @@ import { noop } from '../util/noop.js';
  * <span class="informal">It's like {@link sampleTime}, but samples whenever
  * the `notifier` `ObservableInput` emits something.</span>
  *
- * ![](sample.png)
+ * ![](/images/marble-diagrams/sample.png)
  *
  * Whenever the `notifier` `ObservableInput` emits a value, `sample`
  * looks at the source Observable and emits whichever value it has most recently
@@ -17,7 +17,7 @@ import { noop } from '../util/noop.js';
  * anything since the previous sampling. The `notifier` is subscribed to as soon
  * as the output Observable is subscribed.
  *
- * ## Example
+ * @example
  *
  * On every click, sample the most recent `seconds` timer
  *

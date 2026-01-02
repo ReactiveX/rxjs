@@ -14,7 +14,7 @@ import type { ObservableInput } from '../types.js';
  *
  * If you need to check more than two options to choose between more than one observable, have a look at the {@link defer} creation method.
  *
- * ## Examples
+ * @example
  *
  * Change at runtime which Observable will be subscribed
  *

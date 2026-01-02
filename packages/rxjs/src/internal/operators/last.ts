@@ -20,13 +20,13 @@ export function last<T, D = T>(
  * the last item from the source Observable, the resulting Observable will emit the last item
  * from the source Observable that satisfies the predicate.
  *
- * ![](last.png)
+ * ![](/images/marble-diagrams/last.png)
  *
  * It will emit an error notification if the source completes without notification or one that matches
  * the predicate. It returns the last value or if a predicate is provided last value that matches the
  * predicate. It returns the given default value if no notification is emitted or matches the predicate.
  *
- * ## Examples
+ * @example
  *
  * Last alphabet from the sequence
  *

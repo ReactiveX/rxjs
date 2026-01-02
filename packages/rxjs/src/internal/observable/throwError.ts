@@ -6,7 +6,7 @@ import { Observable } from '@rxjs/observable';
  *
  * <span class="informal">Just errors and does nothing else</span>
  *
- * ![](throw.png)
+ * ![](/images/marble-diagrams/throw.png)
  *
  * This creation function is useful for creating an observable that will create an error and error every
  * time it is subscribed to. Generally, inside of most operators when you might want to return an errored
@@ -14,7 +14,7 @@ import { Observable } from '@rxjs/observable';
  * {@link mergeMap}, {@link defer}, and many others, you can simply throw the error, and RxJS will pick
  * that up and notify the consumer of the error.
  *
- * ## Example
+ * @example
  *
  * Create a simple observable that will create a new error with a timestamp and log it
  * and the message every time you subscribe to it

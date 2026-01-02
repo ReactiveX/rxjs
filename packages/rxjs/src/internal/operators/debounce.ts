@@ -1,4 +1,4 @@
-import type { Subscriber} from '@rxjs/observable';
+import type { Subscriber } from '@rxjs/observable';
 import { operate, Observable, from } from '@rxjs/observable';
 import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
 import { noop } from '../util/noop.js';
@@ -10,7 +10,7 @@ import { noop } from '../util/noop.js';
  * <span class="informal">It's like {@link debounceTime}, but the time span of
  * emission silence is determined by a second Observable.</span>
  *
- * ![](debounce.svg)
+ * ![](/images/marble-diagrams/debounce.svg)
  *
  * `debounce` delays notifications emitted by the source Observable, but drops previous
  * pending delayed emissions if a new notification arrives on the source Observable.
@@ -30,7 +30,7 @@ import { noop } from '../util/noop.js';
  * delay-like operator since output emissions do not necessarily occur at the
  * same time as they did on the source Observable.
  *
- * ## Example
+ * @example
  *
  * Emit the most recent click after a burst of clicks
  *

@@ -27,7 +27,7 @@ import { Observable, operate } from '@rxjs/observable';
  * for any kind of delaying of values in the stream, while using `observeOn` to specify which scheduler should be used
  * for notification emissions in general.
  *
- * ## Example
+ * @example
  *
  * Ensure values in subscribe are called just before browser repaint
  *

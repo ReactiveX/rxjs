@@ -31,7 +31,7 @@ export function timeoutWith<T, R>(waitFor: number, switchTo: ObservableInput<R>,
  * Can be used to set a timeout only for the first value, however it's recommended to use the {@link timeout} operator with
  * the `first` configuration to get the same effect.
  *
- * ## Examples
+ * @example
  *
  * Fallback to a faster observable
  *

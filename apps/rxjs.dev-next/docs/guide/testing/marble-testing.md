@@ -1,8 +1,8 @@
 # Testing RxJS Code with Marble Diagrams
 
-<div class="alert is-helpful">
-  <span>This guide refers to usage of marble diagrams when using the new <code>testScheduler.run(callback)</code>. Some details here do not apply to using the TestScheduler manually, without using the <code>run()</code> helper.</span>
-</div>
+:::info
+This guide refers to usage of marble diagrams when using the new [`testScheduler.run(callback)`](/api/testing/classes/TestScheduler#run). Some details here do not apply to using the TestScheduler manually, without using the `run()` helper.
+:::
 
 We can test our _asynchronous_ RxJS code _synchronously_ and deterministically by virtualizing time using the TestScheduler. **Marble diagrams** provide a visual way for us to represent the behavior of an Observable. We can use them to assert that a particular Observable behaves as expected, as well as to create [hot and cold Observables](https://medium.com/@benlesh/hot-vs-cold-observables-f8094ed53339) we can use as mocks.
 
@@ -38,11 +38,9 @@ it('generates the stream correctly', () => {
 
 The callback function you provide to `testScheduler.run(callback)` is called with `helpers` object that contains functions you'll use to write your tests.
 
-<div class="alert is-helpful">
-  <span>
-    When the code inside this callback is being executed, any operator that uses timers/AsyncScheduler (like delay, debounceTime, etc.,) will automatically use the TestScheduler instead, so that we have "virtual time". You do not need to pass the TestScheduler to them, like in the past.
-  </span>
-</div>
+:::info
+When the code inside this callback is being executed, any operator that uses timers/AsyncScheduler (like delay, debounceTime, etc.,) will automatically use the TestScheduler instead, so that we have "virtual time". You do not need to pass the TestScheduler to them, like in the past.
+:::
 
 ```ts
 testScheduler.run((helpers) => {

@@ -60,9 +60,9 @@ export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
  * closed. Only new subscribers after a reset on error or complete happened will cause a fresh subscription to the
  * source. To achieve transparent retries or restarts pipe the source through appropriate operators before sharing.
  *
- * ![](share.png)
+ * ![](/images/marble-diagrams/share.png)
  *
- * ## Example
+ * @example
  *
  * Generate new multicast Observable from the `source` Observable value
  *
@@ -100,7 +100,7 @@ export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
  * // subscription 2: 25
  * ```
  *
- * ## Example with notifier factory: Delayed reset
+ * @example with notifier factory: Delayed reset
  *
  * ```ts
  * import { interval, take, share, timer } from 'rxjs';

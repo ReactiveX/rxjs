@@ -69,7 +69,7 @@ export function bindCallback<A extends readonly unknown[], R extends readonly un
  * `bindCallback` will treat such functions the same as any other and error parameters
  * (whether passed or not) will always be interpreted as regular callback argument.
  *
- * ## Examples
+ * @example
  *
  * Convert jQuery's getJSON to an Observable API
  *

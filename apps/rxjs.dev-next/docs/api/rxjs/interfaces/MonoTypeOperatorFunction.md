@@ -1,0 +1,39 @@
+[API](../../index.md) / [rxjs](../index.md) / MonoTypeOperatorFunction
+
+# Interface: MonoTypeOperatorFunction()
+
+> A function type interface that describes a function that accepts and returns a parameter of the same type.
+
+## Description
+
+Used to describe [OperatorFunction](OperatorFunction.md) with the only one type: `OperatorFunction<T, T>`.
+
+Defined in: [rxjs/src/internal/types.ts:39](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/types.ts#L39)
+
+A function type interface that describes a function that accepts and returns a parameter of the same type.
+
+Used to describe [OperatorFunction](OperatorFunction.md) with the only one type: `OperatorFunction<T, T>`.
+
+## Extends
+
+- [`OperatorFunction`](OperatorFunction.md)\<`T`, `T`\>
+
+```ts
+MonoTypeOperatorFunction(source: Observable): Observable;
+```
+
+Defined in: [rxjs/src/internal/types.ts:39](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/types.ts#L39)
+
+A function type interface that describes a function that accepts and returns a parameter of the same type.
+
+Used to describe [OperatorFunction](OperatorFunction.md) with the only one type: `OperatorFunction<T, T>`.
+
+## Parameters
+
+| Parameter | Type                                     |
+| --------- | ---------------------------------------- |
+| `source`  | [`Observable`](../classes/Observable.md) |
+
+## Returns
+
+[`Observable`](../classes/Observable.md)

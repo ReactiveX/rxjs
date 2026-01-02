@@ -1,4 +1,4 @@
-import type { Subscriber} from '@rxjs/observable';
+import type { Subscriber } from '@rxjs/observable';
 import { operate, Observable, from } from '@rxjs/observable';
 import type { ObservableInput, OperatorFunction } from '../types.js';
 import { noop } from '../util/noop.js';
@@ -11,13 +11,13 @@ import { noop } from '../util/noop.js';
  * starts collecting values, it calls a function that returns an Observable that
  * tells when to close the buffer and restart collecting.</span>
  *
- * ![](bufferWhen.svg)
+ * ![](/images/marble-diagrams/bufferWhen.svg)
  *
  * Opens a buffer immediately, then closes the buffer when the observable
  * returned by calling `closingSelector` function emits a value. When it closes
  * the buffer, it immediately opens a new buffer and repeats the process.
  *
- * ## Example
+ * @example
  *
  * Emit an array of the last clicks every [1-5] random seconds
  *

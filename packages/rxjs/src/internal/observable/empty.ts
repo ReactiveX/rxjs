@@ -6,12 +6,12 @@ import { Observable } from '@rxjs/observable';
  *
  * <span class="informal">Just emits 'complete', and nothing else.</span>
  *
- * ![](empty.png)
+ * ![](/images/marble-diagrams/empty.png)
  *
  * A simple Observable that only emits the complete notification. It can be used
  * for composing with other Observables, such as in a {@link mergeMap}.
  *
- * ## Examples
+ * @example
  *
  * Log complete notification
  *

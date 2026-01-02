@@ -7,9 +7,9 @@ import { isFunction } from '@rxjs/observable';
  * can be compared with a provided function), and when source Observable completes
  * it emits a single item: the item with the smallest value.
  *
- * ![](min.png)
+ * ![](/images/marble-diagrams/min.png)
  *
- * ## Examples
+ * @example
  *
  * Get the minimal value of a series of numbers
  *

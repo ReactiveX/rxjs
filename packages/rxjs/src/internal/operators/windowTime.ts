@@ -26,7 +26,7 @@ export function windowTime<T>(
  * <span class="informal">It's like {@link bufferTime}, but emits a nested
  * Observable instead of an array.</span>
  *
- * ![](windowTime.png)
+ * ![](/images/marble-diagrams/windowTime.png)
  *
  * Returns an Observable that emits windows of items it collects from the source
  * Observable. The output Observable starts a new window periodically, as
@@ -41,7 +41,7 @@ export function windowTime<T>(
  * after emitting last value and next one still will open as specified by
  * `windowTimeSpan` and `windowCreationInterval` arguments.
  *
- * ## Examples
+ * @example
  *
  * In every window of 1 second each, emit at most 2 click events
  *

@@ -11,7 +11,7 @@ import type { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
  * the next ones for `duration` milliseconds, and then it emits the most recent
  * value from the source.</span>
  *
- * ![](auditTime.png)
+ * ![](/images/marble-diagrams/auditTime.png)
  *
  * `auditTime` is similar to `throttleTime`, but emits the last value from the
  * silenced time window, instead of the first value. `auditTime` emits the most
@@ -24,7 +24,7 @@ import type { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
  * output Observable, and this process repeats for the next source value.
  * Optionally takes a {@link SchedulerLike} for managing timers.
  *
- * ## Example
+ * @example
  *
  * Emit clicks at a rate of at most one click per second
  *

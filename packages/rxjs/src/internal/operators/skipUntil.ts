@@ -9,7 +9,7 @@ import { noop } from '../util/noop.js';
  * emits the first value. This can be particularly useful in combination with user interactions, responses of HTTP
  * requests or waiting for specific times to pass by.
  *
- * ![](skipUntil.png)
+ * ![](/images/marble-diagrams/skipUntil.png)
  *
  * Internally, the `skipUntil` operator subscribes to the passed in `notifier` `ObservableInput` (which gets converted
  * to an Observable) in order to recognize the emission of its first value. When `notifier` emits next, the operator
@@ -17,7 +17,7 @@ import { noop } from '../util/noop.js';
  * will never let the *source* observable emit any values if the `notifier` completes or throws an error without
  * emitting a value before.
  *
- * ## Example
+ * @example
  *
  * In the following example, all emitted values of the interval observable are skipped until the user clicks anywhere
  * within the page

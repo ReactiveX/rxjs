@@ -16,7 +16,7 @@ export function scan<V, A, S>(accumulator: (acc: A | S, value: V, index: number)
  * <span class="informal">It's like {@link reduce}, but emits the current
  * accumulation state after each update</span>
  *
- * ![](scan.png)
+ * ![](/images/marble-diagrams/scan.png)
  *
  * This operator maintains an internal state and emits it after processing each value as follows:
  *
@@ -28,7 +28,7 @@ export function scan<V, A, S>(accumulator: (acc: A | S, value: V, index: number)
  * 3. Emit `state`.
  * 4. Next value arrives, let `value = nextValue`, go to 2.
  *
- * ## Examples
+ * @example
  *
  * An average of previous numbers. This example shows how
  * not providing a `seed` can prime the stream with the

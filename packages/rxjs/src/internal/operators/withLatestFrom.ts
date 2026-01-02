@@ -19,7 +19,7 @@ export function withLatestFrom<T, O extends unknown[], R>(
  * computes a formula using that value plus the latest values from other input
  * Observables, then emits the output of that formula.</span>
  *
- * ![](withLatestFrom.png)
+ * ![](/images/marble-diagrams/withLatestFrom.png)
  *
  * `withLatestFrom` combines each value from the source Observable (the
  * instance) with the latest values from the other input Observables only when
@@ -27,7 +27,7 @@ export function withLatestFrom<T, O extends unknown[], R>(
  * the value to be emitted on the output Observable. All input Observables must
  * emit at least one value before the output Observable will emit a value.
  *
- * ## Example
+ * @example
  *
  * On every click event, emit an array with the latest timer event plus the click event
  *

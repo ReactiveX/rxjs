@@ -7,11 +7,11 @@ import { identity } from '../util/identity.js';
  *
  * It provides a useful set of callbacks a user can register to do side-effects in
  * cases other than what the usual {@link Observer} callbacks are
- * ({@link guide/glossary-and-semantics#next next},
- * {@link guide/glossary-and-semantics#error error} and/or
- * {@link guide/glossary-and-semantics#complete complete}).
+ * ({@link https://rxjs.dev/guide/glossary-and-semantics#next | next},
+ * {@link https://rxjs.dev/guide/glossary-and-semantics#error | error} and/or
+ * {@link https://rxjs.dev/guide/glossary-and-semantics#complete | complete}).
  *
- * ## Example
+ * @example
  *
  * ```ts
  * import { fromEvent, switchMap, tap, interval, take } from 'rxjs';
@@ -55,13 +55,13 @@ export interface TapObserver<T> extends Observer<T> {
   subscribe: () => void;
   /**
    * The callback that `tap` operator invokes when an explicit
-   * {@link guide/glossary-and-semantics#unsubscription unsubscribe} happens. It won't get invoked on
+   * {@link https://rxjs.dev/guide/glossary-and-semantics#unsubscription | unsubscribe} happens. It won't get invoked on
    * `error` or `complete` events.
    */
   unsubscribe: () => void;
   /**
    * The callback that `tap` operator invokes when any kind of
-   * {@link guide/glossary-and-semantics#finalization finalization} happens - either when
+   * {@link https://rxjs.dev/guide/glossary-and-semantics#finalization | finalization} happens - either when
    * the source Observable `error`s or `complete`s or when it gets explicitly unsubscribed
    * by the user. There is no difference in using this callback or the {@link finalize}
    * operator, but if you're already using `tap` operator, you can use this callback
@@ -75,7 +75,7 @@ export interface TapObserver<T> extends Observer<T> {
  *
  * <span class="informal">Used when you want to affect outside state with a notification without altering the notification</span>
  *
- * ![](tap.png)
+ * ![](/images/marble-diagrams/tap.png)
  *
  * Tap is designed to allow the developer a designated place to perform side effects. While you _could_ perform side-effects
  * inside of a `map` or a `mergeMap`, that would make their mapping functions impure, which isn't always a big deal, but will
@@ -94,7 +94,7 @@ export interface TapObserver<T> extends Observer<T> {
  * in your observable `pipe`, log out the notifications as they are emitted by the source returned by the previous
  * operation.
  *
- * ## Examples
+ * @example
  *
  * Check a random number before it is handled. Below is an observable that will use a random number between 0 and 1,
  * and emit `'big'` or `'small'` depending on the size of that number. But we wanted to log what the original number
@@ -159,37 +159,37 @@ export function tap<T>(observerOrNext?: Partial<TapObserver<T>> | ((value: T) =>
 
   return tapObserver
     ? (source) =>
-        new Observable((destination) => {
-          tapObserver.subscribe?.();
-          let isUnsub = true;
-          source.subscribe(
-            operate({
-              destination,
-              next: (value) => {
-                tapObserver.next?.(value);
-                destination.next(value);
-              },
-              error: (err) => {
-                isUnsub = false;
-                tapObserver.error?.(err);
-                destination.error(err);
-              },
-              complete: () => {
-                isUnsub = false;
-                tapObserver.complete?.();
-                destination.complete();
-              },
-              finalize: () => {
-                if (isUnsub) {
-                  tapObserver.unsubscribe?.();
-                }
-                tapObserver.finalize?.();
-              },
-            })
-          );
-        })
+      new Observable((destination) => {
+        tapObserver.subscribe?.();
+        let isUnsub = true;
+        source.subscribe(
+          operate({
+            destination,
+            next: (value) => {
+              tapObserver.next?.(value);
+              destination.next(value);
+            },
+            error: (err) => {
+              isUnsub = false;
+              tapObserver.error?.(err);
+              destination.error(err);
+            },
+            complete: () => {
+              isUnsub = false;
+              tapObserver.complete?.();
+              destination.complete();
+            },
+            finalize: () => {
+              if (isUnsub) {
+                tapObserver.unsubscribe?.();
+              }
+              tapObserver.finalize?.();
+            },
+          })
+        );
+      })
     : // Tap was called with no valid tap observer or handler
-      // (e.g. `tap(null)` or `tap()`)
-      // so we're going to just mirror the source.
-      identity;
+    // (e.g. `tap(null)` or `tap()`)
+    // so we're going to just mirror the source.
+    identity;
 }

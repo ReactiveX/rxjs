@@ -8,7 +8,7 @@ import { reduce } from './reduce.js';
  * <span class="informal">Tells how many values were emitted, when the source
  * completes.</span>
  *
- * ![](count.png)
+ * ![](/images/marble-diagrams/count.png)
  *
  * `count` transforms an Observable that emits values into an Observable that
  * emits a single value that represents the number of values emitted by the
@@ -19,7 +19,7 @@ import { reduce } from './reduce.js';
  * as argument, in which case the output emission will represent the number of
  * source values that matched `true` with the `predicate`.
  *
- * ## Examples
+ * @example
  *
  * Counts how many seconds have passed before the first click happened
  *

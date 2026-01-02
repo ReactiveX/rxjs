@@ -8,7 +8,7 @@ import type { OperatorFunction, ObservableInput, ObservedValueOf } from '../type
  *
  * <span class="informal">Flattens an Observable-of-Observables.</span>
  *
- * ![](mergeAll.png)
+ * ![](/images/marble-diagrams/mergeAll.png)
  *
  * `mergeAll` subscribes to an Observable that emits Observables, also known as
  * a higher-order Observable. Each time it observes one of these emitted inner
@@ -17,7 +17,7 @@ import type { OperatorFunction, ObservableInput, ObservedValueOf } from '../type
  * completes once all inner Observables have completed. Any error delivered by
  * a inner Observable will be immediately emitted on the output Observable.
  *
- * ## Examples
+ * @example
  *
  * Spawn a new interval Observable for each click event, and blend their outputs as one Observable
  *

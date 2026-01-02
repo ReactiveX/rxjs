@@ -7,9 +7,9 @@ import { Observable, operate } from '@rxjs/observable';
  * an error. The error will be created at that time by the optional
  * `errorFactory` argument, otherwise, the error will be {@link EmptyError}.
  *
- * ![](throwIfEmpty.png)
+ * ![](/images/marble-diagrams/throwIfEmpty.png)
  *
- * ## Example
+ * @example
  *
  * Throw an error if the document wasn't clicked within 1 second
  *

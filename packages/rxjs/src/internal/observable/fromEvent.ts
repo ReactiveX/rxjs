@@ -117,7 +117,7 @@ export function fromEvent<T, R>(
  * <span class="informal">Creates an Observable from DOM events, or Node.js
  * EventEmitter events or others.</span>
  *
- * ![](fromEvent.png)
+ * ![](/images/marble-diagrams/fromEvent.png)
  *
  * `fromEvent` accepts as a first argument event target, which is an object with methods
  * for registering event handler functions. As a second argument it takes string that indicates
@@ -185,7 +185,7 @@ export function fromEvent<T, R>(
  * installed and removed in each of elements.
  *
  *
- * ## Examples
+ * @example
  *
  * Emit clicks happening on the DOM document
  *
@@ -297,10 +297,10 @@ function getRegistryMethodNames(target: any) {
     ? eventTargetMethods
     : // In all other cases, the call pattern is identical with the exception of the method names.
     isNodeStyleEventEmitter(target)
-    ? nodeEventEmitterMethods
-    : isJQueryStyleEventEmitter(target)
-    ? jqueryMethods
-    : [];
+      ? nodeEventEmitterMethods
+      : isJQueryStyleEventEmitter(target)
+        ? jqueryMethods
+        : [];
 }
 
 /**

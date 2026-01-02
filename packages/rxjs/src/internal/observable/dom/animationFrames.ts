@@ -18,7 +18,7 @@ import { animationFrameProvider } from '../../scheduler/animationFrameProvider.j
  *
  * This is useful for setting up animations with RxJS.
  *
- * ## Examples
+ * @example
  *
  * Tweening a div to move it on the screen
  *

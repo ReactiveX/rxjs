@@ -17,7 +17,7 @@ import { executeSchedule } from '../util/executeSchedule.js';
  * The `delay` is specified by default in milliseconds, however providing a custom scheduler could
  * create a different behavior.
  *
- * ## Examples
+ * @example
  *
  * Wait 3 seconds and start another observable
  *
@@ -91,7 +91,7 @@ export function timer(due: number | Date, scheduler?: SchedulerLike): Observable
  * The `delay` and `intervalDuration` are specified by default in milliseconds, however providing a custom scheduler could
  * create a different behavior.
  *
- * ## Example
+ * @example
  *
  * ### Start an interval that starts right away
  *

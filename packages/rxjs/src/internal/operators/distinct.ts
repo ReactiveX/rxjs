@@ -16,7 +16,7 @@ import { noop } from '../util/noop.js';
  * use might result in memory leaks. To help alleviate this in some scenarios, an optional `flushes` parameter is also provided so
  * that the internal `Set` can be "flushed", basically clearing it of values.
  *
- * ## Examples
+ * @example
  *
  * A simple example with numbers
  *

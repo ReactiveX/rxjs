@@ -11,13 +11,13 @@ import { arrRemove } from '../util/arrRemove.js';
  * collecting only when `opening` emits, and calls the `closingSelector`
  * function to get an Observable that tells when to close the buffer.</span>
  *
- * ![](bufferToggle.png)
+ * ![](/images/marble-diagrams/bufferToggle.png)
  *
  * Buffers values from the source by opening the buffer via signals from an
  * Observable provided to `openings`, and closing and sending the buffers when
  * a Subscribable or Promise returned by the `closingSelector` function emits.
  *
- * ## Example
+ * @example
  *
  * Every other second, emit the click events from the next 500ms
  *

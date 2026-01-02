@@ -11,7 +11,7 @@ import { timer } from '../observable/timer.js';
  * <span class="informal">Lets a value pass, then ignores source values for the
  * next `duration` milliseconds.</span>
  *
- * ![](throttleTime.png)
+ * ![](/images/marble-diagrams/throttleTime.png)
  *
  * `throttleTime` emits the source Observable values on the output Observable
  * when its internal timer is disabled, and ignores source values when the timer
@@ -22,7 +22,7 @@ import { timer } from '../observable/timer.js';
  * and this process repeats for the next source value. Optionally takes a
  * {@link SchedulerLike} for managing timers.
  *
- * ## Examples
+ * @example
  *
  * ### Limit click rate
  *

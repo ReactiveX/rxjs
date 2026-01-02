@@ -2,7 +2,7 @@
  * This function takes one parameter and just returns it. Simply put,
  * this is like `<T>(x: T): T => x`.
  *
- * ## Examples
+ * @example
  *
  * This is useful in some cases when using things like `mergeMap`
  *

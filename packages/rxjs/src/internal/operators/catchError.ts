@@ -1,4 +1,4 @@
-import type { Subscription} from '@rxjs/observable';
+import type { Subscription } from '@rxjs/observable';
 import { Observable, operate, from } from '@rxjs/observable';
 import type { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.js';
 
@@ -15,13 +15,13 @@ export function catchError<T, O extends ObservableInput<any>>(
  * The error may also be rethrown, or a new error can be thrown to emit an error from the result.
  * </span>
  *
- * ![](catch.png)
+ * ![](/images/marble-diagrams/catch.png)
  *
  * This operator handles errors, but forwards along all other events to the resulting observable.
  * If the source observable terminates with an error, it will map that error to a new observable,
  * subscribe to it, and forward all of its events to the resulting observable.
  *
- * ## Examples
+ * @example
  *
  * Continue with a different Observable when there's an error
  *

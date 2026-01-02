@@ -1,4 +1,4 @@
-import type { Subscriber, Subscription} from '@rxjs/observable';
+import type { Subscriber, Subscription } from '@rxjs/observable';
 import { Observable, operate } from '@rxjs/observable';
 import type { NextObserver } from '../../types.js';
 
@@ -16,7 +16,7 @@ import type { NextObserver } from '../../types.js';
  * to the socket client. By default, `deserializer` is going to apply `JSON.parse` to each message coming
  * from the Server.
  *
- * ## Examples
+ * @example
  *
  * **deserializer**, the default for this property is `JSON.parse` but since there are just two options
  * for incoming data, either be text or binary data. We can apply a custom deserialization strategy
@@ -134,7 +134,7 @@ export interface WebSocketSubjectConfig<In, Out = In> {
    * WebSocket impl in Node (WebSocket is a DOM API), or for mocking a WebSocket
    * for testing purposes
    */
-  WebSocketCtor?: { new (url: string, protocols?: string | string[]): WebSocket };
+  WebSocketCtor?: { new(url: string, protocols?: string | string[]): WebSocket };
   /** Sets the `binaryType` property of the underlying WebSocket. */
   binaryType?: 'blob' | 'arraybuffer';
 }

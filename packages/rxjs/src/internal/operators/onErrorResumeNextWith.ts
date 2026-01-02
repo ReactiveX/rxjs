@@ -15,7 +15,7 @@ export function onErrorResumeNextWith<T, A extends readonly unknown[]>(
  *
  * <span class="informal">Execute series of Observables, subscribes to next one on error or complete.</span>
  *
- * ![](onErrorResumeNext.png)
+ * ![](/images/marble-diagrams/onErrorResumeNext.png)
  *
  * `onErrorResumeNext` is an operator that accepts a series of Observables, provided either directly as
  * arguments or as an array. If no single Observable is provided, returned Observable will simply behave the same
@@ -39,7 +39,7 @@ export function onErrorResumeNextWith<T, A extends readonly unknown[]>(
  * specific actions based on what error was emitted by an Observable, you should try out {@link catchError} instead.
  *
  *
- * ## Example
+ * @example
  *
  * Subscribe to the next Observable after map fails
  *

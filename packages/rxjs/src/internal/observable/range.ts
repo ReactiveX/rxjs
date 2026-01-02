@@ -16,14 +16,14 @@ export function range(start: number, count: number | undefined, scheduler: Sched
  *
  * <span class="informal">Emits a sequence of numbers in a range.</span>
  *
- * ![](range.png)
+ * ![](/images/marble-diagrams/range.png)
  *
  * `range` operator emits a range of sequential integers, in order, where you
  * select the `start` of the range and its `length`. By default, uses no
  * {@link SchedulerLike} and just delivers the notifications synchronously, but may use
  * an optional {@link SchedulerLike} to regulate those deliveries.
  *
- * ## Example
+ * @example
  *
  * Produce a range of numbers
  *
@@ -71,27 +71,27 @@ export function range(start: number, count?: number, scheduler?: SchedulerLike):
   return new Observable(
     scheduler
       ? // The deprecated scheduled path.
-        (subscriber) => {
-          let n = start;
-          const emit = () => {
-            if (n < end) {
-              subscriber.next(n++);
-              if (!subscriber.closed) {
-                executeSchedule(subscriber, scheduler, emit);
-              }
-            } else {
-              subscriber.complete();
-            }
-          };
-          executeSchedule(subscriber, scheduler, emit);
-        }
-      : // Standard synchronous range.
-        (subscriber) => {
-          let n = start;
-          while (n < end && !subscriber.closed) {
+      (subscriber) => {
+        let n = start;
+        const emit = () => {
+          if (n < end) {
             subscriber.next(n++);
+            if (!subscriber.closed) {
+              executeSchedule(subscriber, scheduler, emit);
+            }
+          } else {
+            subscriber.complete();
           }
-          subscriber.complete();
+        };
+        executeSchedule(subscriber, scheduler, emit);
+      }
+      : // Standard synchronous range.
+      (subscriber) => {
+        let n = start;
+        while (n < end && !subscriber.closed) {
+          subscriber.next(n++);
         }
+        subscriber.complete();
+      }
   );
 }

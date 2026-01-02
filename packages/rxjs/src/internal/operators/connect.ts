@@ -44,7 +44,7 @@ const DEFAULT_CONFIG: ConnectConfig<unknown> = {
  * the `selector` function returns, the observable it returns will be subscribed to, _then_ the
  * multicast will be connected to the source.
  *
- * ## Example
+ * @example
  *
  * Sharing a totally synchronous observable
  *

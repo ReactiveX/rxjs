@@ -1,4 +1,4 @@
-import type { Subscriber} from '@rxjs/observable';
+import type { Subscriber } from '@rxjs/observable';
 import { operate, Observable, from } from '@rxjs/observable';
 import { Subject } from '../Subject.js';
 import type { ObservableInput, OperatorFunction } from '../types.js';
@@ -12,7 +12,7 @@ import { noop } from '../util/noop.js';
  * <span class="informal">It's like {@link bufferWhen}, but emits a nested
  * Observable instead of an array.</span>
  *
- * ![](windowWhen.svg)
+ * ![](/images/marble-diagrams/windowWhen.svg)
  *
  * Returns an Observable that emits Observable windows of items it collects from
  * the source Observable. The output Observable emits connected, non-overlapping
@@ -22,7 +22,7 @@ import { noop } from '../util/noop.js';
  * `closingSelector` emits `next`, the previous window completes and a new window
  * is emitted to the output subscriber.
  *
- * ## Example
+ * @example
  *
  * Emit only the first two clicks events in every window of [1-5] random seconds
  *

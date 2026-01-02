@@ -14,7 +14,7 @@ export function reduce<V, A, S = A>(accumulator: (acc: A | S, value: V, index: n
  * using an accumulator function that knows how to join a new source value into
  * the accumulation from the past.</span>
  *
- * ![](reduce.png)
+ * ![](/images/marble-diagrams/reduce.png)
  *
  * Like
  * [Array.prototype.reduce()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce),
@@ -29,7 +29,7 @@ export function reduce<V, A, S = A>(accumulator: (acc: A | S, value: V, index: n
  * that value will be used as the initial value for the accumulator. If no seed
  * value is specified, the first item of the source is used as the seed.
  *
- * ## Example
+ * @example
  *
  * Count the number of click events that happened in 5 seconds
  *

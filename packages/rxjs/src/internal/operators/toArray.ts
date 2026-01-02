@@ -9,13 +9,13 @@ const arrReducer = (arr: any[], value: any) => (arr.push(value), arr);
  *
  * <span class="informal">Get all values inside an array when the source completes</span>
  *
- * ![](toArray.png)
+ * ![](/images/marble-diagrams/toArray.png)
  *
  * `toArray` will wait until the source Observable completes before emitting
  * the array containing all emissions. When the source Observable errors no
  * array will be emitted.
  *
- * ## Example
+ * @example
  *
  * ```ts
  * import { interval, take, toArray } from 'rxjs';

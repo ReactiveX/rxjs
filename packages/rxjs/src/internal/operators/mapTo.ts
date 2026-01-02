@@ -17,13 +17,13 @@ export function mapTo<T, R>(value: R): OperatorFunction<T, R>;
  * <span class="informal">Like {@link map}, but it maps every source value to
  * the same output value every time.</span>
  *
- * ![](mapTo.png)
+ * ![](/images/marble-diagrams/mapTo.png)
  *
  * Takes a constant `value` as argument, and emits that whenever the source
  * Observable emits a value. In other words, ignores the actual source value,
  * and simply uses the emission moment to know when to emit the given `value`.
  *
- * ## Example
+ * @example
  *
  * Map every click to the string `'Hi'`
  *

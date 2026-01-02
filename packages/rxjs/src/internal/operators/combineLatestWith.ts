@@ -13,7 +13,7 @@ import type { Cons, ObservableInputTuple, OperatorFunction } from '../types.js';
  *
  * This is a useful operator for eagerly calculating values based off of changed inputs.
  *
- * ## Example
+ * @example
  *
  * Simple concatenation of values from two inputs
  *

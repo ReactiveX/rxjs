@@ -9,7 +9,7 @@ import type { OperatorFunction } from '../types.js';
  * <span class="informal">It's like {@link bufferCount}, but emits a nested
  * Observable instead of an array.</span>
  *
- * ![](windowCount.png)
+ * ![](/images/marble-diagrams/windowCount.png)
  *
  * Returns an Observable that emits windows of items it collects from the source
  * Observable. The output Observable emits windows every `startWindowEvery`
@@ -20,7 +20,7 @@ import type { OperatorFunction } from '../types.js';
  * started immediately at the start of the source and when each window completes
  * with size `windowSize`.
  *
- * ## Examples
+ * @example
  *
  * Ignore every 3rd click event, starting from the first one
  *

@@ -9,7 +9,7 @@ import { Observable, operate } from '@rxjs/observable';
  * <span class="informal">Unwraps {@link ObservableNotification} objects as actual `next`,
  * `error` and `complete` emissions. The opposite of {@link materialize}.</span>
  *
- * ![](dematerialize.png)
+ * ![](/images/marble-diagrams/dematerialize.png)
  *
  * `dematerialize` is assumed to operate an Observable that only emits
  * {@link ObservableNotification} objects as `next` emissions, and does not emit any
@@ -19,7 +19,7 @@ import { Observable, operate } from '@rxjs/observable';
  *
  * Use this operator in conjunction with {@link materialize}.
  *
- * ## Example
+ * @example
  *
  * Convert an Observable of Notifications to an actual Observable
  *

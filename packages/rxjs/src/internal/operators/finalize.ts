@@ -6,7 +6,7 @@ import { Observable } from '@rxjs/observable';
  * the source terminates on complete or error.
  * The specified function will also be called when the subscriber explicitly unsubscribes.
  *
- * ## Examples
+ * @example
  *
  * Execute callback function when the observable completes
  *

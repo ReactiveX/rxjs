@@ -341,12 +341,12 @@ export class TestScheduler extends VirtualTimeScheduler {
       typeof values !== 'object'
         ? (x: any) => x
         : (x: any) => {
-            // Support Observable-of-Observables
-            if (materializeInnerObservables && values[x] instanceof ColdObservable) {
-              return values[x].messages;
-            }
-            return values[x];
-          };
+          // Support Observable-of-Observables
+          if (materializeInnerObservables && values[x] instanceof ColdObservable) {
+            return values[x].messages;
+          }
+          return values[x];
+        };
     let groupStart = -1;
 
     for (let i = 0; i < len; i++) {
@@ -645,7 +645,7 @@ export class TestScheduler extends VirtualTimeScheduler {
    * is, in 'run mode' there is no need to explicitly pass a `TestScheduler`
    * instance to observable creators or operators.
    *
-   * @see {@link /guide/testing/marble-testing}
+   * @see [Marble testing](/guide/testing/marble-testing)
    */
   run<T>(callback: (helpers: RunHelpers) => T): T {
     const prevFrameTimeFactor = TestScheduler.frameTimeFactor;

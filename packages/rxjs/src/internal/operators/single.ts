@@ -24,7 +24,7 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  * In the event that no values match the predicate, if one is provided,
  * it will emit a {@link NotFoundError} to the Observer's `error` callback.
  *
- * ## Example
+ * @example
  *
  * Expect only `name` beginning with `'B'`
  *

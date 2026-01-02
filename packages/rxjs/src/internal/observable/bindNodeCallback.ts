@@ -73,7 +73,7 @@ export function bindNodeCallback<A extends readonly unknown[], R extends readonl
  * Note that even if error parameter is technically present in callback, but its value
  * is falsy, it still won't appear in array emitted by Observable.
  *
- * ## Examples
+ * @example
  *
  *  Read a file from the filesystem and get the data as an Observable
  *

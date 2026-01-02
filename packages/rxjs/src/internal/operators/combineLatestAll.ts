@@ -19,7 +19,7 @@ export function combineLatestAll<R>(project: (...values: Array<any>) => R): Oper
  *      arrived, and the result of the `project` function is what is emitted by the output Observable.
  *    * If there is no `project` function, an array of all the most recent values is emitted by the output Observable.
  *
- * ## Example
+ * @example
  *
  * Map two click events to a finite interval Observable, then apply `combineLatestAll`
  *

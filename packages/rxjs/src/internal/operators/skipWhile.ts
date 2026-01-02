@@ -9,12 +9,12 @@ export function skipWhile<T>(predicate: (value: T, index: number) => boolean): M
  * Returns an Observable that skips all items emitted by the source Observable as long as a specified condition holds
  * true, but emits all further source items as soon as the condition becomes false.
  *
- * ![](skipWhile.png)
+ * ![](/images/marble-diagrams/skipWhile.png)
  *
  * Skips all the notifications with a truthy predicate. It will not skip the notifications when the predicate is falsy.
  * It can also be skipped using index. Once the predicate is true, it will not be called again.
  *
- * ## Example
+ * @example
  *
  * Skip some super heroes
  *

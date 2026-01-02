@@ -9,7 +9,7 @@ import { concatAll } from '../operators/concatAll.js';
  *
  * `concat(a$, b$, c$)` is the same as `a$.pipe(concatWith(b$, c$))`.
  *
- * ## Example
+ * @example
  *
  * Listen for one mouse click, then listen for all mouse moves.
  *

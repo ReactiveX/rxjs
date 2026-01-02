@@ -8,13 +8,13 @@ import { Observable, operate } from '@rxjs/observable';
  * <span class="informal">If the source Observable turns out to be empty, then
  * this operator will emit a default value.</span>
  *
- * ![](defaultIfEmpty.png)
+ * ![](/images/marble-diagrams/defaultIfEmpty.png)
  *
  * `defaultIfEmpty` emits the values emitted by the source Observable or a
  * specified default value if the source Observable is empty (completes without
  * having emitted any `next` value).
  *
- * ## Example
+ * @example
  *
  * If no clicks happen in 5 seconds, then emit 'no clicks'
  *

@@ -10,7 +10,7 @@ import { timer } from '../observable/timer.js';
  * <span class="informal">Time shifts each item by some specified amount of
  * milliseconds.</span>
  *
- * ![](delay.svg)
+ * ![](/images/marble-diagrams/delay.svg)
  *
  * If the delay argument is a Number, this operator time shifts the source
  * Observable by that amount of time expressed in milliseconds. The relative
@@ -19,7 +19,7 @@ import { timer } from '../observable/timer.js';
  * If the delay argument is a Date, this operator time shifts the start of the
  * Observable execution until the given date occurs.
  *
- * ## Examples
+ * @example
  *
  * Delay each click by one second
  *

@@ -11,9 +11,9 @@ import { map } from './map.js';
  * default, it uses the `asyncScheduler` which simply returns `Date.now()` (milliseconds since 1970/01/01
  * 00:00:00:000) and therefore is of type `number`.
  *
- * ![](timestamp.png)
+ * ![](/images/marble-diagrams/timestamp.png)
  *
- * ## Example
+ * @example
  *
  * In this example there is a timestamp attached to the document's click events
  *

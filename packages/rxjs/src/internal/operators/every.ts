@@ -10,9 +10,9 @@ export function every<T>(predicate: (value: T, index: number) => boolean): Opera
  * <span class="informal">If all values pass predicate before the source completes, emits true before completion,
  * otherwise emit false, then complete.</span>
  *
- * ![](every.png)
+ * ![](/images/marble-diagrams/every.png)
  *
- * ## Example
+ * @example
  *
  * A simple example emitting true if all elements are less than 5, false otherwise
  *

@@ -5,7 +5,7 @@ import { Observable, operate } from '@rxjs/observable';
 /**
  * Skip a specified number of values before the completion of an observable.
  *
- * ![](skipLast.png)
+ * ![](/images/marble-diagrams/skipLast.png)
  *
  * Returns an observable that will emit values as soon as it can, given a number of
  * skipped values. For example, if you `skipLast(3)` on a source, when the source
@@ -19,7 +19,7 @@ import { Observable, operate } from '@rxjs/observable';
  * After subscribing, unsubscribing will not result in the emission of the buffered
  * skipped values.
  *
- * ## Example
+ * @example
  *
  * Skip the last 2 values of an observable with many values
  *
@@ -47,52 +47,52 @@ import { Observable, operate } from '@rxjs/observable';
 export function skipLast<T>(skipCount: number): MonoTypeOperatorFunction<T> {
   return skipCount <= 0
     ? // For skipCounts less than or equal to zero, we are just mirroring the source.
-      identity
+    identity
     : (source) =>
-        new Observable((destination) => {
-          // A ring buffer to hold the values while we wait to see
-          // if we can emit it or it's part of the "skipped" last values.
-          // Note that it is the _same size_ as the skip count.
-          let ring: T[] = new Array(skipCount);
-          // The number of values seen so far. This is used to get
-          // the index of the current value when it arrives.
-          let seen = 0;
-          source.subscribe(
-            operate({
-              destination,
-              next: (value) => {
-                // Get the index of the value we have right now
-                // relative to all other values we've seen, then
-                // increment `seen`. This ensures we've moved to
-                // the next slot in our ring buffer.
-                const valueIndex = seen++;
-                if (valueIndex < skipCount) {
-                  // If we haven't seen enough values to fill our buffer yet,
-                  // Then we aren't to a number of seen values where we can
-                  // emit anything, so let's just start by filling the ring buffer.
-                  ring[valueIndex] = value;
-                } else {
-                  // We are traversing over the ring array in such
-                  // a way that when we get to the end, we loop back
-                  // and go to the start.
-                  const index = valueIndex % skipCount;
-                  // Pull the oldest value out so we can emit it,
-                  // and stuff the new value in it's place.
-                  const oldValue = ring[index];
-                  ring[index] = value;
-                  // Emit the old value. It is important that this happens
-                  // after we swap the value in the buffer, if it happens
-                  // before we swap the value in the buffer, then a synchronous
-                  // source can get the buffer out of whack.
-                  destination.next(oldValue);
-                }
-              },
-            })
-          );
+      new Observable((destination) => {
+        // A ring buffer to hold the values while we wait to see
+        // if we can emit it or it's part of the "skipped" last values.
+        // Note that it is the _same size_ as the skip count.
+        let ring: T[] = new Array(skipCount);
+        // The number of values seen so far. This is used to get
+        // the index of the current value when it arrives.
+        let seen = 0;
+        source.subscribe(
+          operate({
+            destination,
+            next: (value) => {
+              // Get the index of the value we have right now
+              // relative to all other values we've seen, then
+              // increment `seen`. This ensures we've moved to
+              // the next slot in our ring buffer.
+              const valueIndex = seen++;
+              if (valueIndex < skipCount) {
+                // If we haven't seen enough values to fill our buffer yet,
+                // Then we aren't to a number of seen values where we can
+                // emit anything, so let's just start by filling the ring buffer.
+                ring[valueIndex] = value;
+              } else {
+                // We are traversing over the ring array in such
+                // a way that when we get to the end, we loop back
+                // and go to the start.
+                const index = valueIndex % skipCount;
+                // Pull the oldest value out so we can emit it,
+                // and stuff the new value in it's place.
+                const oldValue = ring[index];
+                ring[index] = value;
+                // Emit the old value. It is important that this happens
+                // after we swap the value in the buffer, if it happens
+                // before we swap the value in the buffer, then a synchronous
+                // source can get the buffer out of whack.
+                destination.next(oldValue);
+              }
+            },
+          })
+        );
 
-          return () => {
-            // Release our values in memory
-            ring = null!;
-          };
-        });
+        return () => {
+          // Release our values in memory
+          ring = null!;
+        };
+      });
 }

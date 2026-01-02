@@ -1,4 +1,4 @@
-import type { Subscription} from '@rxjs/observable';
+import type { Subscription } from '@rxjs/observable';
 import { Observable, operate, from } from '@rxjs/observable';
 import { EMPTY } from '../observable/empty.js';
 import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
@@ -24,7 +24,7 @@ export interface RepeatConfig {
  *
  * <span class="informal">Repeats all values emitted on the source. It's like {@link retry}, but for non error cases.</span>
  *
- * ![](repeat.png)
+ * ![](/images/marble-diagrams/repeat.png)
  *
  * Repeat will output values from a source until the source completes, then it will resubscribe to the
  * source a specified number of times, with a specified delay. Repeat can be particularly useful in
@@ -42,7 +42,7 @@ export interface RepeatConfig {
  * - `repeat({ count: 2, delay: 400 })` will repeat twice, with a delay of 400ms between repetitions.
  * - `repeat({ delay: (count) => timer(count * 1000) })` will repeat forever, but will have a delay that grows by one second for each repetition.
  *
- * ## Example
+ * @example
  *
  * Repeat a message stream
  *
@@ -126,52 +126,52 @@ export function repeat<T>(countOrConfig?: number | RepeatConfig): MonoTypeOperat
   return count <= 0
     ? () => EMPTY
     : (source) =>
-        new Observable((destination) => {
-          let soFar = 0;
-          let sourceSub: Subscription | null;
+      new Observable((destination) => {
+        let soFar = 0;
+        let sourceSub: Subscription | null;
 
-          const resubscribe = () => {
-            sourceSub?.unsubscribe();
-            sourceSub = null;
-            if (delay != null) {
-              const notifier = typeof delay === 'number' ? timer(delay) : from(delay(soFar));
-              const notifierSubscriber = operate({
-                destination,
-                next: () => {
-                  notifierSubscriber.unsubscribe();
-                  subscribeToSource();
-                },
-              });
-              notifier.subscribe(notifierSubscriber);
-            } else {
-              subscribeToSource();
-            }
-          };
+        const resubscribe = () => {
+          sourceSub?.unsubscribe();
+          sourceSub = null;
+          if (delay != null) {
+            const notifier = typeof delay === 'number' ? timer(delay) : from(delay(soFar));
+            const notifierSubscriber = operate({
+              destination,
+              next: () => {
+                notifierSubscriber.unsubscribe();
+                subscribeToSource();
+              },
+            });
+            notifier.subscribe(notifierSubscriber);
+          } else {
+            subscribeToSource();
+          }
+        };
 
-          const subscribeToSource = () => {
-            let syncUnsub = false;
-            sourceSub = source.subscribe(
-              operate({
-                destination,
-                complete: () => {
-                  if (++soFar < count) {
-                    if (sourceSub) {
-                      resubscribe();
-                    } else {
-                      syncUnsub = true;
-                    }
+        const subscribeToSource = () => {
+          let syncUnsub = false;
+          sourceSub = source.subscribe(
+            operate({
+              destination,
+              complete: () => {
+                if (++soFar < count) {
+                  if (sourceSub) {
+                    resubscribe();
                   } else {
-                    destination.complete();
+                    syncUnsub = true;
                   }
-                },
-              })
-            );
+                } else {
+                  destination.complete();
+                }
+              },
+            })
+          );
 
-            if (syncUnsub) {
-              resubscribe();
-            }
-          };
+          if (syncUnsub) {
+            resubscribe();
+          }
+        };
 
-          subscribeToSource();
-        });
+        subscribeToSource();
+      });
 }

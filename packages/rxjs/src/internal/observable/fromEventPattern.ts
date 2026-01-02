@@ -18,7 +18,7 @@ export function fromEventPattern<T>(
  * <span class="informal">When that method for adding event handler was something {@link fromEvent}
  * was not prepared for.</span>
  *
- * ![](fromEventPattern.png)
+ * ![](/images/marble-diagrams/fromEventPattern.png)
  *
  * `fromEventPattern` allows you to convert into an Observable any API that supports registering handler functions
  * for events. It is similar to {@link fromEvent}, but far
@@ -57,7 +57,7 @@ export function fromEventPattern<T>(
  * that default project can be thought of as function that takes its first parameter
  * and ignores the rest.
  *
- * ## Examples
+ * @example
  *
  * Emits clicks happening on the DOM document
  *

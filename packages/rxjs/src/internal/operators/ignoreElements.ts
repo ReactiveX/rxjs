@@ -5,7 +5,7 @@ import { noop } from '../util/noop.js';
 /**
  * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.
  *
- * ![](ignoreElements.png)
+ * ![](/images/marble-diagrams/ignoreElements.png)
  *
  * The `ignoreElements` operator suppresses all items emitted by the source Observable,
  * but allows its termination notification (either `error` or `complete`) to pass through unchanged.
@@ -14,7 +14,7 @@ import { noop } from '../util/noop.js';
  * when it completes or when it terminates with an error, you can apply the `ignoreElements` operator
  * to the Observable, which will ensure that it will never call its observers’ `next` handlers.
  *
- * ## Example
+ * @example
  *
  * Ignore all `next` emissions from the source
  *

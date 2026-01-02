@@ -9,7 +9,7 @@ import type { ObservedValueOf, ObservableInput } from '../types.js';
  * is subscribed.
  * </span>
  *
- * ![](defer.png)
+ * ![](/images/marble-diagrams/defer.png)
  *
  * `defer` allows you to create an Observable only when the Observer
  * subscribes. It waits until an Observer subscribes to it, calls the given
@@ -18,7 +18,7 @@ import type { ObservedValueOf, ObservableInput } from '../types.js';
  * Last but not least, an exception during the factory function call is
  * transferred to the Observer by calling `error`.
  *
- * ## Example
+ * @example
  *
  * Subscribe to either an Observable of clicks or an Observable of interval, at random
  *

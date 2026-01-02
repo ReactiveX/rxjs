@@ -11,7 +11,7 @@ import { executeSchedule } from '../util/executeSchedule.js';
  * <span class="informal">It's like {@link delay}, but passes only the most
  * recent notification from each burst of emissions.</span>
  *
- * ![](debounceTime.png)
+ * ![](/images/marble-diagrams/debounceTime.png)
  *
  * `debounceTime` delays notifications emitted by the source Observable, but drops
  * previous pending delayed emissions if a new notification arrives on the source
@@ -31,7 +31,7 @@ import { executeSchedule } from '../util/executeSchedule.js';
  * they did on the source Observable. Optionally takes a {@link SchedulerLike} for
  * managing timers.
  *
- * ## Example
+ * @example
  *
  * Emit the most recent click after a burst of clicks
  *

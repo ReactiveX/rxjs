@@ -1,5 +1,0 @@
----
-layout: doc
----
-
-<!-- @content -->

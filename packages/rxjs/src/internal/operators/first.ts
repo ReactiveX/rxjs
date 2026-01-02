@@ -27,14 +27,14 @@ export function first<T, D = T>(
  * <span class="informal">Emits only the first value. Or emits only the first
  * value that passes some test.</span>
  *
- * ![](first.png)
+ * ![](/images/marble-diagrams/first.png)
  *
  * If called with no arguments, `first` emits the first value of the source
  * Observable, then completes. If called with a `predicate` function, `first`
  * emits the first value of the source that matches the specified condition. Emits an error
  * notification if `defaultValue` was not provided and a matching element is not found.
  *
- * ## Examples
+ * @example
  *
  * Emit only the first click that happens on the DOM
  *

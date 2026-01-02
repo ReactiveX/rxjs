@@ -8,7 +8,7 @@ import { identity } from '../util/identity.js';
  * error or complete notification from the combination of the Observable to which
  * the operator is applied and supplied Observables.
  *
- * ## Example
+ * @example
  *
  * ```ts
  * import { interval, map, raceWith } from 'rxjs';
@@ -35,7 +35,7 @@ export function raceWith<T, A extends readonly unknown[]>(
   return !otherSources.length
     ? identity
     : (source) =>
-        new Observable((subscriber) => {
-          raceInit<T | A[number]>([source, ...otherSources])(subscriber);
-        });
+      new Observable((subscriber) => {
+        raceInit<T | A[number]>([source, ...otherSources])(subscriber);
+      });
 }

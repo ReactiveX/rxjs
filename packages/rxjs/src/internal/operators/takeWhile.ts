@@ -16,7 +16,7 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
  * <span class="informal">Takes values from the source only while they pass the
  * condition given. When the first value does not satisfy, it completes.</span>
  *
- * ![](takeWhile.png)
+ * ![](/images/marble-diagrams/takeWhile.png)
  *
  * `takeWhile` subscribes and begins mirroring the source Observable. Each value
  * emitted on the source is given to the `predicate` function which returns a
@@ -25,7 +25,7 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
  * returns false, at which point `takeWhile` stops mirroring the source
  * Observable and completes the output Observable.
  *
- * ## Example
+ * @example
  *
  * Emit click events only while the clientX property is greater than 200
  *

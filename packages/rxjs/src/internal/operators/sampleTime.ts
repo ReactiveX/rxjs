@@ -10,7 +10,7 @@ import { interval } from '../observable/interval.js';
  * <span class="informal">Samples the source Observable at periodic time
  * intervals, emitting what it samples.</span>
  *
- * ![](sampleTime.png)
+ * ![](/images/marble-diagrams/sampleTime.png)
  *
  * `sampleTime` periodically looks at the source Observable and emits whichever
  * value it has most recently emitted since the previous sampling, unless the
@@ -19,7 +19,7 @@ import { interval } from '../observable/interval.js';
  * defined by the optional `scheduler` argument). The sampling starts as soon as
  * the output Observable is subscribed.
  *
- * ## Example
+ * @example
  *
  * Every second, emit the most recent click at most once
  *

@@ -53,7 +53,7 @@ export function forkJoin<T extends Record<string, ObservableInput<any>>>(
  * <span class="informal">Wait for Observables to complete and then combine last values they emitted;
  * complete immediately if an empty array is passed.</span>
  *
- * ![](forkJoin.png)
+ * ![](/images/marble-diagrams/forkJoin.png)
  *
  * `forkJoin` is an operator that takes any number of input observables which can be passed either as an array
  * or a dictionary of input observables. If no input observables are provided (e.g. an empty array is passed),
@@ -91,7 +91,7 @@ export function forkJoin<T extends Record<string, ObservableInput<any>>>(
  * all its arguments and puts them into an array. Note that the `resultSelector` will be called only
  * when `forkJoin` is supposed to emit a result.
  *
- * ## Examples
+ * @example
  *
  * Use `forkJoin` with a dictionary of observable inputs
  *

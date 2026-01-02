@@ -2,7 +2,7 @@
  * An error thrown when a value or values are missing from an
  * observable sequence.
  *
- * @see {@link operators/single}
+ * @see {@link single}
  */
 export class NotFoundError extends Error {
   /**

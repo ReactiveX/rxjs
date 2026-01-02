@@ -11,7 +11,7 @@ import type { UnaryFunction } from '../types.js';
  * one like the output of {@link filter}, and the other with values that did not
  * pass the condition.</span>
  *
- * ![](partition.png)
+ * ![](/images/marble-diagrams/partition.png)
  *
  * `partition` outputs an array with two Observables that partition the values
  * from the source Observable through the given `predicate` function. The first
@@ -20,7 +20,7 @@ import type { UnaryFunction } from '../types.js';
  * predicate returns false. The first behaves like {@link filter} and the second
  * behaves like {@link filter} with the predicate negated.
  *
- * ## Example
+ * @example
  *
  * Partition click events into those on DIV elements and those elsewhere
  *

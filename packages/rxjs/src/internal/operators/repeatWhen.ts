@@ -1,4 +1,4 @@
-import type { Subscription} from '@rxjs/observable';
+import type { Subscription } from '@rxjs/observable';
 import { Observable, from, operate } from '@rxjs/observable';
 import { Subject } from '../Subject.js';
 import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
@@ -9,9 +9,9 @@ import type { MonoTypeOperatorFunction, ObservableInput } from '../types.js';
  * calls `complete` or `error`, then this method will call `complete` or `error` on the child subscription. Otherwise
  * this method will resubscribe to the source Observable.
  *
- * ![](repeatWhen.png)
+ * ![](/images/marble-diagrams/repeatWhen.png)
  *
- * ## Example
+ * @example
  *
  * Repeat a message stream on click
  *

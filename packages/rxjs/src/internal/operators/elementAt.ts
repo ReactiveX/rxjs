@@ -9,7 +9,7 @@ import { take } from './take.js';
  *
  * <span class="informal">Emits only the i-th value, then completes.</span>
  *
- * ![](elementAt.png)
+ * ![](/images/marble-diagrams/elementAt.png)
  *
  * `elementAt` returns an Observable that emits the item at the specified
  * `index` in the source Observable, or a default value if that `index` is out
@@ -17,7 +17,7 @@ import { take } from './take.js';
  * not given and the `index` is out of range, the output Observable will emit an
  * `ArgumentOutOfRangeError` error.
  *
- * ## Example
+ * @example
  *
  * Emit only the third click event
  *

@@ -31,7 +31,7 @@ export function distinctUntilChanged<T, K>(
  * 4. If the keys are determined to be unequal by this check, the value (not the key), is emitted
  *    and the selected key from that value is saved for future comparisons against other keys.
  *
- * ## Examples
+ * @example
  *
  * A very basic example with no `{@link distinctUntilChanged#comparator comparator}`. Note that `1` is emitted more than once,
  * because it's distinct in comparison to the _previously emitted_ value,

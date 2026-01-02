@@ -9,13 +9,13 @@ import { Observable, operate } from '@rxjs/observable';
  * it passes each source value through a transformation function to get
  * corresponding output values.</span>
  *
- * ![](map.png)
+ * ![](/images/marble-diagrams/map.png)
  *
  * Similar to the well known `Array.prototype.map` function, this operator
  * applies a projection to each value and emits that projection in the output
  * Observable.
  *
- * ## Example
+ * @example
  *
  * Map every click to the `clientX` position of that click
  *
