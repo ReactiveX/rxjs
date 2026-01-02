@@ -12,30 +12,6 @@
 Skips all the notifications with a truthy predicate. It will not skip the notifications when the predicate is falsy.
 It can also be skipped using index. Once the predicate is true, it will not be called again.
 
-```ts
-function skipWhile<>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T>;
-```
-
-Defined in: [rxjs/src/internal/operators/skipWhile.ts:6](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/skipWhile.ts#L6)
-
-Returns an Observable that skips all items emitted by the source Observable as long as a specified condition holds
-true, but emits all further source items as soon as the condition becomes false.
-
-![](/images/marble-diagrams/skipWhile.png)
-
-Skips all the notifications with a truthy predicate. It will not skip the notifications when the predicate is falsy.
-It can also be skipped using index. Once the predicate is true, it will not be called again.
-
-## Parameters
-
-| Parameter   | Type                                           |
-| ----------- | ---------------------------------------------- |
-| `predicate` | (`value`: `T`, `index`: `number`) => `boolean` |
-
-## Returns
-
-[`MonoTypeOperatorFunction`](../interfaces/MonoTypeOperatorFunction.md)\<`T`\>
-
 ## Example
 
 Skip some super heroes
@@ -68,6 +44,68 @@ example.subscribe((value) => console.log(value));
 - [skipUntil](skipUntil.md)
 - [skipLast](skipLast.md)
 
-## Param
+## Parameters
+
+### `predicate`
 
 A function to test each item emitted from the source Observable.
+
+## Returns
+
+`A`
+
+function that returns an Observable that begins emitting items emitted by the source Observable when the specified predicate becomes false.
+
+## Call Signature
+
+```ts
+function skipWhile<>(predicate: BooleanConstructor): OperatorFunction<T, Extract<T, Falsy> extends never ? never : T>;
+```
+
+Defined in: [rxjs/src/internal/operators/skipWhile.ts:4](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/skipWhile.ts#L4)
+
+### Parameters
+
+| Parameter   | Type                 |
+| ----------- | -------------------- |
+| `predicate` | `BooleanConstructor` |
+
+### Returns
+
+[`OperatorFunction`](../interfaces/OperatorFunction.md)\<`T`, `Extract`\<`T`, [`Falsy`](../type-aliases/Falsy.md)\> _extends_ `never` ? `never` : `T`\>
+
+## Call Signature
+
+```ts
+function skipWhile<>(predicate: (value: T, index: number) => true): OperatorFunction<T, never>;
+```
+
+Defined in: [rxjs/src/internal/operators/skipWhile.ts:5](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/skipWhile.ts#L5)
+
+### Parameters
+
+| Parameter   | Type                                        |
+| ----------- | ------------------------------------------- |
+| `predicate` | (`value`: `T`, `index`: `number`) => `true` |
+
+### Returns
+
+[`OperatorFunction`](../interfaces/OperatorFunction.md)\<`T`, `never`\>
+
+## Call Signature
+
+```ts
+function skipWhile<>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T>;
+```
+
+Defined in: [rxjs/src/internal/operators/skipWhile.ts:6](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/skipWhile.ts#L6)
+
+### Parameters
+
+| Parameter   | Type                                           |
+| ----------- | ---------------------------------------------- |
+| `predicate` | (`value`: `T`, `index`: `number`) => `boolean` |
+
+### Returns
+
+[`MonoTypeOperatorFunction`](../interfaces/MonoTypeOperatorFunction.md)\<`T`\>

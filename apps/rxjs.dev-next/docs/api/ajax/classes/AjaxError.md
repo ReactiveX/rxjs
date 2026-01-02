@@ -2,10 +2,9 @@
 
 # Class: AjaxError
 
-> Thrown when an error occurs during an AJAX request.
-
 ## Description
 
+Thrown when an error occurs during an AJAX request.
 This is only exported because it is useful for checking to see if an error
 is an `instanceof AjaxError`. DO NOT create new instances of `AjaxError` with
 the constructor.

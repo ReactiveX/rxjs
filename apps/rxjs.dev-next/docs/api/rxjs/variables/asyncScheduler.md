@@ -3,15 +3,13 @@
 # Variable: asyncScheduler
 
 > Async Scheduler
->
-> <span class="informal">Schedule task as if you used setTimeout(task, duration)</span>
->
-> `asyncScheduler` scheduler schedules tasks asynchronously, by putting them on the JavaScript
-> event loop queue.
 
 ## Description
 
-It is best used to delay tasks in time or to schedule tasks repeating
+<span class="informal">Schedule task as if you used setTimeout(task, duration)</span>
+
+`asyncScheduler` scheduler schedules tasks asynchronously, by putting them on the JavaScript
+event loop queue. It is best used to delay tasks in time or to schedule tasks repeating
 in intervals.
 
 If you just want to "defer" task, that is to perform it right after currently
@@ -23,18 +21,6 @@ const asyncScheduler: AsyncScheduler;
 ```
 
 Defined in: [rxjs/src/internal/scheduler/async.ts:51](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/scheduler/async.ts#L51)
-
-Async Scheduler
-
-<span class="informal">Schedule task as if you used setTimeout(task, duration)</span>
-
-`asyncScheduler` scheduler schedules tasks asynchronously, by putting them on the JavaScript
-event loop queue. It is best used to delay tasks in time or to schedule tasks repeating
-in intervals.
-
-If you just want to "defer" task, that is to perform it right after currently
-executing synchronous code ends (commonly achieved by `setTimeout(deferredTask, 0)`),
-better choice will be the [asapScheduler](asapScheduler.md) scheduler.
 
 ## Example
 

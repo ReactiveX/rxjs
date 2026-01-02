@@ -10,10 +10,6 @@ Emitted by the `timeInterval` operator.
 
 Defined in: [rxjs/src/internal/types.ts:64](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/types.ts#L64)
 
-A value emitted and the amount of time since the last value was emitted.
-
-Emitted by the `timeInterval` operator.
-
 ## See
 
 [timeInterval](../functions/timeInterval.md)

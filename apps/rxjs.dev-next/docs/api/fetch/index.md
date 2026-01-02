@@ -2,12 +2,6 @@
 
 # fetch
 
-> The module for the RxJS DOM Fetch API.
-
-## Description
-
-This is exported separately from the RxJS core API to avoid bringing DOM types into Node.js projects.
-
 The module for the RxJS DOM Fetch API.
 
 This is exported separately from the RxJS core API to avoid bringing DOM types into Node.js projects.

@@ -10,10 +10,6 @@ Emitted by the `timestamp` operator
 
 Defined in: [rxjs/src/internal/types.ts:48](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/types.ts#L48)
 
-A value and the time at which it was emitted.
-
-Emitted by the `timestamp` operator
-
 ## See
 
 [timestamp](#timestamp)

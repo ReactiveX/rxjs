@@ -2,11 +2,9 @@
 
 # Interface: AjaxConfig
 
-> Configuration for the [ajax](.
-
 ## Description
 
-./variables/ajax.md) creation function.
+Configuration for the [ajax](../variables/ajax.md) creation function.
 
 Defined in: [rxjs/src/internal/ajax/types.ts:82](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/ajax/types.ts#L82)
 

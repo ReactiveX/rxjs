@@ -61,7 +61,8 @@ export default defineConfig({
         text: 'About',
         items: [
           { text: 'Team', link: '/team' },
-          { text: 'Code of Conduct', link: '/code-of-conduct' }
+          { text: 'Code of Conduct', link: '/code-of-conduct' },
+          { text: 'Black Lives Matter', link: '/black-lives-matter' }
         ]
       },
 
@@ -69,64 +70,65 @@ export default defineConfig({
     sidebar: {
       '/guide': [
         {
-          text: 'Overview',
+          text: 'Getting Started',
           items: [
-            { text: 'Introduction', link: '/guide/overview' },
-            { text: 'Observables', link: '/guide/observable' },
-            { text: 'Observer', link: '/guide/observer' },
-            { text: 'Operators', link: '/guide/operators' },
-            { text: 'Subscription', link: '/guide/subscription' },
-            { text: 'Subjects', link: '/guide/subject' },
-            { text: 'Scheduler', link: '/guide/scheduler' },
-            { text: 'Marble Testing', link: '/guide/testing/marble-testing' }
+            {
+              text: 'Overview', collapsed: true, items: [
+                { text: 'Introduction', link: '/guide/overview' },
+                { text: 'Observables', link: '/guide/observable' },
+                { text: 'Observer', link: '/guide/observer' },
+                { text: 'Operators', link: '/guide/operators' },
+                { text: 'Subscription', link: '/guide/subscription' },
+                { text: 'Subjects', link: '/guide/subject' },
+                { text: 'Scheduler', link: '/guide/scheduler' },
+                { text: 'Higher-Order Observables', link: '/guide/higher-order-observables' },
+              ]
+            },
+            {
+              text: 'Installation',
+              link: '/guide/installation'
+            },
+            {
+              text: 'Importing',
+              link: '/guide/importing'
+            },
+            {
+              text: 'Glossary',
+              collapsed: true,
+              items: [
+                { text: 'Core Semantics', link: '/guide/core-semantics' },
+                { text: 'Glossary', link: '/guide/glossary-and-semantics' }
+              ]
+            },
+            {
+              text: 'Testing',
+              items: [
+                { text: 'Marble Testing', link: '/guide/testing/marble-testing' }
+              ]
+            },
+            { text: 'Migration Guide', link: '/deprecations' }
           ]
         },
-        {
-          text: 'Installation',
-          items: [
-            { text: 'Installation', link: '/guide/installation' }
-          ]
-        },
-        {
-          text: 'Importing',
-          items: [
-            { text: 'Importing', link: '/guide/importing' }
-          ]
-        },
-        {
-          text: 'Glossary',
-          items: [
-            { text: 'Glossary', link: '/guide/glossary-and-semantics' }
-          ]
-        },
-        {
-          text: 'API Reference',
-          items: [
-            { text: 'API Overview', link: '/api' },
-            { text: 'Index', link: '/api/index' },
-            { text: 'Operators', link: '/api/operators' },
-            { text: 'Ajax', link: '/api/ajax' },
-            { text: 'Fetch', link: '/api/fetch' },
-            { text: 'WebSocket', link: '/api/websocket' },
-            { text: 'Testing', link: '/api/testing' }
-          ]
-        },
+      ],
+      '/deprecations': [
         {
           text: 'Deprecations & Breaking Changes',
           items: [
-            { text: 'Breaking Changes', link: '/deprecations/breaking-changes' },
-            { text: 'Scheduler Argument', link: '/deprecations/scheduler-argument' },
-            { text: 'Subscribe Arguments', link: '/deprecations/subscribe-arguments' },
-            { text: 'ResultSelector Arguments', link: '/deprecations/resultSelector' },
-            { text: 'Array Arguments', link: '/deprecations/array-argument' },
-            { text: 'Multicasting', link: '/deprecations/multicasting' },
-            { text: 'Conversion to Promises', link: '/deprecations/to-promise' }
-          ]
-        },
-        {
-          text: 'Detailed Change List',
-          items: [
-            { text: 'Detailed Change List', link: '/6-to-7-change-summary' }
+            {
+              text: 'v7.x Breaking Changes',
+              link: '/deprecations/breaking-changes',
+              items: [
+                { text: 'v6 to v7 change summary', link: '/deprecations/6-to-7-change-summary' },
+                { text: 'Scheduler Argument', link: '/deprecations/scheduler-argument' },
+                { text: 'Subscribe Arguments', link: '/deprecations/subscribe-arguments' },
+                { text: 'ResultSelector Arguments', link: '/deprecations/result-selector' },
+                { text: 'Array Arguments', link: '/deprecations/array-argument' },
+                { text: 'Multicasting', link: '/deprecations/multicasting' },
+                { text: 'Conversion to Promises', link: '/deprecations/to-promise' },
+
+              ]
+            },
+            { text: 'v6.x Changelog', link: 'https://github.com/ReactiveX/rxjs/blob/6.x/CHANGELOG.md' },
           ]
         },
       ],

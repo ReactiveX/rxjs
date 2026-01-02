@@ -40,58 +40,6 @@ will be "replayed" on every subscription, which means you can repeat given Obser
 as many times as you like. If passing the same Observable to `concat` 1000 times becomes tedious,
 you can always use [repeat](repeat.md).
 
-```ts
-function concat<>(...inputsAndScheduler: [...ObservableInputTuple<T>[], SchedulerLike]): Observable<T[number]>;
-```
-
-Defined in: [rxjs/src/internal/observable/concat.ts:9](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/observable/concat.ts#L9)
-
-Creates an output Observable which sequentially emits all values from the first given
-Observable and then moves on to the next.
-
-<span class="informal">Concatenates multiple Observables together by
-sequentially emitting their values, one Observable after the other.</span>
-
-![](/images/marble-diagrams/concat.png)
-
-`concat` joins multiple Observables together, by subscribing to them one at a time and
-merging their results into the output Observable. You can pass either an array of
-Observables, or put them directly as arguments. Passing an empty array will result
-in Observable that completes immediately.
-
-`concat` will subscribe to first input Observable and emit all its values, without
-changing or affecting them in any way. When that Observable completes, it will
-subscribe to then next Observable passed and, again, emit its values. This will be
-repeated, until the operator runs out of Observables. When last input Observable completes,
-`concat` will complete as well. At any given moment only one Observable passed to operator
-emits values. If you would like to emit values from passed Observables concurrently, check out
-[merge](merge.md) instead, especially with optional `concurrent` parameter. As a matter of fact,
-`concat` is an equivalent of `merge` operator with `concurrent` parameter set to `1`.
-
-Note that if some input Observable never completes, `concat` will also never complete
-and Observables following the one that did not complete will never be subscribed. On the other
-hand, if some Observable simply completes immediately after it is subscribed, it will be
-invisible for `concat`, which will just move on to the next Observable.
-
-If any Observable in chain errors, instead of passing control to the next Observable,
-`concat` will error immediately as well. Observables that would be subscribed after
-the one that emitted error, never will.
-
-If you pass to `concat` the same Observable many times, its stream of values
-will be "replayed" on every subscription, which means you can repeat given Observable
-as many times as you like. If passing the same Observable to `concat` 1000 times becomes tedious,
-you can always use [repeat](repeat.md).
-
-## Parameters
-
-| Parameter               | Type                                                                                  |
-| ----------------------- | ------------------------------------------------------------------------------------- |
-| ...`inputsAndScheduler` | \[`...ObservableInputTuple<T>[]`, [`SchedulerLike`](../interfaces/SchedulerLike.md)\] |
-
-## Returns
-
-[`Observable`](../classes/Observable.md)\<`T`\[`number`\]\>
-
 ## Example
 
 Concatenate a timer counting from 0 to 3 with a synchronous sequence from 1 to 10
@@ -156,6 +104,44 @@ concat(timer, timer) // concatenating the same Observable!
 - [startWith](startWith.md)
 - [endWith](endWith.md)
 
-## Param
+## Parameters
+
+### `args`
 
 `ObservableInput`s to concatenate.
+
+## Call Signature
+
+```ts
+function concat<>(...inputs: [...ObservableInputTuple<T>[]]): Observable<T[number]>;
+```
+
+Defined in: [rxjs/src/internal/observable/concat.ts:8](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/observable/concat.ts#L8)
+
+### Parameters
+
+| Parameter   | Type                               |
+| ----------- | ---------------------------------- |
+| ...`inputs` | \[`...ObservableInputTuple<T>[]`\] |
+
+### Returns
+
+[`Observable`](../classes/Observable.md)\<`T`\[`number`\]\>
+
+## Call Signature
+
+```ts
+function concat<>(...inputsAndScheduler: [...ObservableInputTuple<T>[], SchedulerLike]): Observable<T[number]>;
+```
+
+Defined in: [rxjs/src/internal/observable/concat.ts:9](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/observable/concat.ts#L9)
+
+### Parameters
+
+| Parameter               | Type                                                                                  |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+| ...`inputsAndScheduler` | \[`...ObservableInputTuple<T>[]`, [`SchedulerLike`](../interfaces/SchedulerLike.md)\] |
+
+### Returns
+
+[`Observable`](../classes/Observable.md)\<`T`\[`number`\]\>

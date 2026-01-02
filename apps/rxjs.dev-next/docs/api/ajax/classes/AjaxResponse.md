@@ -2,12 +2,10 @@
 
 # Class: AjaxResponse
 
-> A normalized response from an AJAX request.
+> A normalized response from an AJAX request. To get the data from the response,
+> you will want to read the `response` property.
 
 ## Description
-
-To get the data from the response,
-you will want to read the `response` property.
 
 - DO NOT create instances of this class directly.
 - DO NOT subclass this class.
@@ -17,16 +15,6 @@ the original XHR used to make the request, as well as properties containing
 request and response data.
 
 Defined in: [rxjs/src/internal/ajax/AjaxResponse.ts:17](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/ajax/AjaxResponse.ts#L17)
-
-A normalized response from an AJAX request. To get the data from the response,
-you will want to read the `response` property.
-
-- DO NOT create instances of this class directly.
-- DO NOT subclass this class.
-
-It is advised not to hold this object in memory, as it has a reference to
-the original XHR used to make the request, as well as properties containing
-request and response data.
 
 ## See
 

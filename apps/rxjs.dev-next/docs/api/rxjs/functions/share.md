@@ -2,14 +2,12 @@
 
 # Function: share()
 
-> Returns a new Observable that multicasts (shares) the original Observable.
+> Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one
+> Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will
+> unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.
 
 ## Description
 
-As long as there is at least one
-Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will
-unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.
-
 The subscription to the underlying source Observable can be reset (unsubscribe and resubscribe for new subscribers),
 if the subscriber count to the shared observable drops to 0, or if the source Observable errors or completes. It is
 possible to use notifier factories for the resets to allow for behaviors like conditional or delayed resets. Please
@@ -19,36 +17,6 @@ closed. Only new subscribers after a reset on error or complete happened will ca
 source. To achieve transparent retries or restarts pipe the source through appropriate operators before sharing.
 
 ![](/images/marble-diagrams/share.png)
-
-```ts
-function share<>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
-```
-
-Defined in: [rxjs/src/internal/operators/share.ts:48](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/share.ts#L48)
-
-Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one
-Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will
-unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.
-
-The subscription to the underlying source Observable can be reset (unsubscribe and resubscribe for new subscribers),
-if the subscriber count to the shared observable drops to 0, or if the source Observable errors or completes. It is
-possible to use notifier factories for the resets to allow for behaviors like conditional or delayed resets. Please
-note that resetting on error or complete of the source Observable does not behave like a transparent retry or restart
-of the source because the error or complete will be forwarded to all subscribers and their subscription will be
-closed. Only new subscribers after a reset on error or complete happened will cause a fresh subscription to the
-source. To achieve transparent retries or restarts pipe the source through appropriate operators before sharing.
-
-![](/images/marble-diagrams/share.png)
-
-## Parameters
-
-| Parameter | Type                                                 |
-| --------- | ---------------------------------------------------- |
-| `options` | [`ShareConfig`](../interfaces/ShareConfig.md)\<`T`\> |
-
-## Returns
-
-[`MonoTypeOperatorFunction`](../interfaces/MonoTypeOperatorFunction.md)\<`T`\>
 
 ## Examples
 
@@ -121,3 +89,39 @@ setTimeout(() => source.subscribe((x) => console.log('subscription 3: ', x)), 50
 ## See
 
 [shareReplay](shareReplay.md)
+
+## Returns
+
+`A`
+
+function that returns an Observable that mirrors the source.
+
+## Call Signature
+
+```ts
+function share<>(): MonoTypeOperatorFunction<T>;
+```
+
+Defined in: [rxjs/src/internal/operators/share.ts:46](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/share.ts#L46)
+
+### Returns
+
+[`MonoTypeOperatorFunction`](../interfaces/MonoTypeOperatorFunction.md)\<`T`\>
+
+## Call Signature
+
+```ts
+function share<>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
+```
+
+Defined in: [rxjs/src/internal/operators/share.ts:48](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/share.ts#L48)
+
+### Parameters
+
+| Parameter | Type                                                 |
+| --------- | ---------------------------------------------------- |
+| `options` | [`ShareConfig`](../interfaces/ShareConfig.md)\<`T`\> |
+
+### Returns
+
+[`MonoTypeOperatorFunction`](../interfaces/MonoTypeOperatorFunction.md)\<`T`\>

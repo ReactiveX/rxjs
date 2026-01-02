@@ -3,12 +3,10 @@
 # ~~Class: Scheduler~~
 
 > An execution context and a data structure to order tasks and schedule their
-> execution.
+> execution. Provides a notion of (potentially virtual) time, through the
+> `now()` getter method.
 
 ## Description
-
-Provides a notion of (potentially virtual) time, through the
-`now()` getter method.
 
 Each unit of work in a Scheduler is called an `Action`.
 
@@ -24,19 +22,6 @@ should not be used directly. Rather, create your own class and implement
 [SchedulerLike](../interfaces/SchedulerLike.md). Will be made internal in v8.
 
 Defined in: [rxjs/src/internal/Scheduler.ts:24](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/Scheduler.ts#L24)
-
-An execution context and a data structure to order tasks and schedule their
-execution. Provides a notion of (potentially virtual) time, through the
-`now()` getter method.
-
-Each unit of work in a Scheduler is called an `Action`.
-
-```ts
-class Scheduler {
-  now(): number;
-  schedule(work, delay?, state?): Subscription;
-}
-```
 
 ## Deprecated
 

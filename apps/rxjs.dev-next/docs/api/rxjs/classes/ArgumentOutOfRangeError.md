@@ -2,10 +2,10 @@
 
 # Class: ArgumentOutOfRangeError
 
-> An error thrown when an element was queried at a certain index of an
-> Observable, but no such index or position exists in that sequence.
-
 ## Description
+
+An error thrown when an element was queried at a certain index of an
+Observable, but no such index or position exists in that sequence.
 
 Defined in: [rxjs/src/internal/util/ArgumentOutOfRangeError.ts:9](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/util/ArgumentOutOfRangeError.ts#L9)
 

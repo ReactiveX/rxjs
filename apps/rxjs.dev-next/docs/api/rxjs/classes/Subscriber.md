@@ -2,11 +2,9 @@
 
 # Class: Subscriber
 
-> Implements the [Observer](.
-
 ## Description
 
-./interfaces/Observer.md) interface and extends the
+Implements the [Observer](../interfaces/Observer.md) interface and extends the
 [Subscription](Subscription.md) class. While the [Observer](../interfaces/Observer.md) is the public API for
 consuming the values of an [Observable](Observable.md), all Observers get converted to
 a Subscriber, in order to provide Subscription-like capabilities such as

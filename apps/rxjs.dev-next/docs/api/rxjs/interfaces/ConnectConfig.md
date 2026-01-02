@@ -2,11 +2,9 @@
 
 # Interface: ConnectConfig
 
-> An object used to configure [connect](.
-
 ## Description
 
-./functions/connect.md) operator.
+An object used to configure [connect](../functions/connect.md) operator.
 
 Defined in: [rxjs/src/internal/operators/connect.ts:9](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/connect.ts#L9)
 

@@ -33,53 +33,6 @@ If `refCount` is true, the source will be unsubscribed from once the reference c
 the inner `ReplaySubject` will be unsubscribed. All new subscribers will receive value emissions from a
 new `ReplaySubject` which in turn will cause a new subscription to the source observable.
 
-```ts
-function shareReplay<>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
-```
-
-Defined in: [rxjs/src/internal/operators/shareReplay.ts:13](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/shareReplay.ts#L13)
-
-Share source and replay specified number of emissions on subscription.
-
-This operator is a specialization of `replay` that connects to a source observable
-and multicasts through a `ReplaySubject` constructed with the specified arguments.
-A successfully completed source will stay cached in the `shareReplay`ed observable forever,
-but an errored source can be retried.
-
-## Why use `shareReplay`?
-
-You generally want to use `shareReplay` when you have side-effects or taxing computations
-that you do not wish to be executed amongst multiple subscribers.
-It may also be valuable in situations where you know you will have late subscribers to
-a stream that need access to previously emitted values.
-This ability to replay values on subscription is what differentiates [share](share.md) and `shareReplay`.
-
-## Reference counting
-
-By default `shareReplay` will use `refCount` of false, meaning that it will _not_ unsubscribe the
-source when the reference counter drops to zero, i.e. the inner `ReplaySubject` will _not_ be unsubscribed
-(and potentially run for ever).
-This is the default as it is expected that `shareReplay` is often used to keep around expensive to setup
-observables which we want to keep running instead of having to do the expensive setup again.
-
-As of RXJS version 6.4.0 a new overload signature was added to allow for manual control over what
-happens when the operators internal reference counter drops to zero.
-If `refCount` is true, the source will be unsubscribed from once the reference count drops to zero, i.e.
-the inner `ReplaySubject` will be unsubscribed. All new subscribers will receive value emissions from a
-new `ReplaySubject` which in turn will cause a new subscription to the source observable.
-
-## Parameters
-
-| Parameter     | Type                                              |
-| ------------- | ------------------------------------------------- |
-| `bufferSize?` | `number`                                          |
-| `windowTime?` | `number`                                          |
-| `scheduler?`  | [`SchedulerLike`](../interfaces/SchedulerLike.md) |
-
-## Returns
-
-[`MonoTypeOperatorFunction`](../interfaces/MonoTypeOperatorFunction.md)\<`T`\>
-
 ## Example
 
 Example with a third subscriber coming late to the party
@@ -177,16 +130,64 @@ shared$.subscribe((y) => console.log('sub B: ', y));
 - [connectable](connectable.md)
 - [share](share.md)
 
-## Param
-
-Maximum element count of the replay buffer or [configuration](../interfaces/ShareReplayConfig.md)
 object.
 
-## Param
+will be invoked on.
+
+## Parameters
+
+### `configOrBufferSize`
+
+Maximum element count of the replay buffer or [configuration](../interfaces/ShareReplayConfig.md)
+
+### `windowTime`
 
 Maximum time length of the replay buffer in milliseconds.
 
-## Param
+### `scheduler`
 
 Scheduler where connected observers within the selector function
-will be invoked on.
+
+## Returns
+
+`A`
+
+function that returns an Observable sequence that contains the elements of a sequence produced by multicasting the source sequence within a selector function.
+
+## Call Signature
+
+```ts
+function shareReplay<>(config: ShareReplayConfig): MonoTypeOperatorFunction<T>;
+```
+
+Defined in: [rxjs/src/internal/operators/shareReplay.ts:12](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/shareReplay.ts#L12)
+
+### Parameters
+
+| Parameter | Type                                                      |
+| --------- | --------------------------------------------------------- |
+| `config`  | [`ShareReplayConfig`](../interfaces/ShareReplayConfig.md) |
+
+### Returns
+
+[`MonoTypeOperatorFunction`](../interfaces/MonoTypeOperatorFunction.md)\<`T`\>
+
+## Call Signature
+
+```ts
+function shareReplay<>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+```
+
+Defined in: [rxjs/src/internal/operators/shareReplay.ts:13](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/shareReplay.ts#L13)
+
+### Parameters
+
+| Parameter     | Type                                              |
+| ------------- | ------------------------------------------------- |
+| `bufferSize?` | `number`                                          |
+| `windowTime?` | `number`                                          |
+| `scheduler?`  | [`SchedulerLike`](../interfaces/SchedulerLike.md) |
+
+### Returns
+
+[`MonoTypeOperatorFunction`](../interfaces/MonoTypeOperatorFunction.md)\<`T`\>

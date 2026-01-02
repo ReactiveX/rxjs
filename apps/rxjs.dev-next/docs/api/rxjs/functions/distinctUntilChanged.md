@@ -2,13 +2,11 @@
 
 # Function: distinctUntilChanged()
 
-> Returns a result [Observable](.
+> Returns a result [Observable](../classes/Observable.md) that emits all values pushed by the source observable if they
+> are distinct in comparison to the last value the result observable emitted.
 
 ## Description
 
-./classes/Observable.md) that emits all values pushed by the source observable if they
-are distinct in comparison to the last value the result observable emitted.
-
 When provided without parameters or with the first parameter (`{@link distinctUntilChanged#comparator comparator}`),
 it behaves like this:
 
@@ -27,48 +25,6 @@ changes:
    the previously emitted value using the `comparator`.
 4. If the keys are determined to be unequal by this check, the value (not the key), is emitted
    and the selected key from that value is saved for future comparisons against other keys.
-
-```ts
-function distinctUntilChanged<>(
-  comparator: (previous: K, current: K) => boolean,
-  keySelector: (value: T) => K
-): MonoTypeOperatorFunction<T>;
-```
-
-Defined in: [rxjs/src/internal/operators/distinctUntilChanged.ts:6](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/distinctUntilChanged.ts#L6)
-
-Returns a result [Observable](../classes/Observable.md) that emits all values pushed by the source observable if they
-are distinct in comparison to the last value the result observable emitted.
-
-When provided without parameters or with the first parameter (`{@link distinctUntilChanged#comparator comparator}`),
-it behaves like this:
-
-1. It will always emit the first value from the source.
-2. For all subsequent values pushed by the source, they will be compared to the previously emitted values
-   using the provided `comparator` or an `===` equality check.
-3. If the value pushed by the source is determined to be unequal by this check, that value is emitted and
-   becomes the new "previously emitted value" internally.
-
-When the second parameter (`{@link distinctUntilChanged#keySelector keySelector}`) is provided, the behavior
-changes:
-
-1. It will always emit the first value from the source.
-2. The `keySelector` will be run against all values, including the first value.
-3. For all values after the first, the selected key will be compared against the key selected from
-   the previously emitted value using the `comparator`.
-4. If the keys are determined to be unequal by this check, the value (not the key), is emitted
-   and the selected key from that value is saved for future comparisons against other keys.
-
-## Parameters
-
-| Parameter     | Type                                           |
-| ------------- | ---------------------------------------------- |
-| `comparator`  | (`previous`: `K`, `current`: `K`) => `boolean` |
-| `keySelector` | (`value`: `T`) => `K`                          |
-
-## Returns
-
-[`MonoTypeOperatorFunction`](../interfaces/MonoTypeOperatorFunction.md)\<`T`\>
 
 ## Example
 
@@ -162,11 +118,60 @@ changedHands$.subscribe(console.log);
 - [distinct](distinct.md)
 - [distinctUntilKeyChanged](distinctUntilKeyChanged.md)
 
-## Param
-
-A function used to compare the previous and current keys for
 equality. Defaults to a `===` check.
 
-## Param
+## Parameters
+
+### `comparator`
+
+A function used to compare the previous and current keys for
+
+### `keySelector`
 
 Used to select a key value to be passed to the `comparator`.
+
+## Returns
+
+`A`
+
+function that returns an Observable that emits items from the source Observable with distinct values.
+
+## Call Signature
+
+```ts
+function distinctUntilChanged<>(comparator?: (previous: T, current: T) => boolean): MonoTypeOperatorFunction<T>;
+```
+
+Defined in: [rxjs/src/internal/operators/distinctUntilChanged.ts:5](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/distinctUntilChanged.ts#L5)
+
+### Parameters
+
+| Parameter     | Type                                           |
+| ------------- | ---------------------------------------------- |
+| `comparator?` | (`previous`: `T`, `current`: `T`) => `boolean` |
+
+### Returns
+
+[`MonoTypeOperatorFunction`](../interfaces/MonoTypeOperatorFunction.md)\<`T`\>
+
+## Call Signature
+
+```ts
+function distinctUntilChanged<>(
+  comparator: (previous: K, current: K) => boolean,
+  keySelector: (value: T) => K
+): MonoTypeOperatorFunction<T>;
+```
+
+Defined in: [rxjs/src/internal/operators/distinctUntilChanged.ts:6](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/distinctUntilChanged.ts#L6)
+
+### Parameters
+
+| Parameter     | Type                                           |
+| ------------- | ---------------------------------------------- |
+| `comparator`  | (`previous`: `K`, `current`: `K`) => `boolean` |
+| `keySelector` | (`value`: `T`) => `K`                          |
+
+### Returns
+
+[`MonoTypeOperatorFunction`](../interfaces/MonoTypeOperatorFunction.md)\<`T`\>

@@ -2,23 +2,15 @@
 
 # Class: AjaxTimeoutError
 
-> Thrown when an AJAX request times out.
+> Thrown when an AJAX request times out. Not to be confused with [TimeoutError](../../rxjs/classes/TimeoutError.md).
 
 ## Description
-
-Not to be confused with [TimeoutError](../../rxjs/classes/TimeoutError.md).
 
 This is exported only because it is useful for checking to see if errors are an
 `instanceof AjaxTimeoutError`. DO NOT use the constructor to create an instance of
 this type.
 
 Defined in: [rxjs/src/internal/ajax/errors.ts:62](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/ajax/errors.ts#L62)
-
-Thrown when an AJAX request times out. Not to be confused with [TimeoutError](../../rxjs/classes/TimeoutError.md).
-
-This is exported only because it is useful for checking to see if errors are an
-`instanceof AjaxTimeoutError`. DO NOT use the constructor to create an instance of
-this type.
 
 ## See
 

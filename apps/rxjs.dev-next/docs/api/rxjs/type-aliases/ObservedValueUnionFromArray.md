@@ -2,10 +2,9 @@
 
 # Type Alias: ObservedValueUnionFromArray
 
-> Extracts a union of element types from an `ObservableInput<any>[]`.
-
 ## Description
 
+Extracts a union of element types from an `ObservableInput<any>[]`.
 If you have `O extends ObservableInput<any>[]` and you pass in
 `Observable<string>[]` or `Promise<string>[]` you would get
 back a type of `string`.

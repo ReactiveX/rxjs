@@ -18,18 +18,6 @@ and simply uses the emission moment to know when to emit the given `value`.
 
 **deprecated**: To be removed in v9. Use [map](map.md) instead: `map(() => value)`.
 
-Emits the given constant value on the output Observable every time the source
-Observable emits a value.
-
-<span class="informal">Like [map](map.md), but it maps every source value to
-the same output value every time.</span>
-
-![](/images/marble-diagrams/mapTo.png)
-
-Takes a constant `value` as argument, and emits that whenever the source
-Observable emits a value. In other words, ignores the actual source value,
-and simply uses the emission moment to know when to emit the given `value`.
-
 ## Example
 
 Map every click to the string `'Hi'`
@@ -47,13 +35,21 @@ greetings.subscribe((x) => console.log(x));
 
 [map](map.md)
 
-## Param
-
-The value to map each source value to.
-
 ## Deprecated
 
 To be removed in v9. Use [map](map.md) instead: `map(() => value)`.
+
+## Parameters
+
+### `value`
+
+The value to map each source value to.
+
+## Returns
+
+`A function that returns an Observable that emits the given`
+
+every time the source Observable emits.
 
 ## Call Signature
 

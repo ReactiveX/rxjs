@@ -21,39 +21,6 @@ could potentially win the race.
 HTTP or WebSockets. `race` can also be useful for switching observable context based on user
 input.
 
-```ts
-function race<>(...inputs: [...ObservableInputTuple<T>[]]): Observable<T[number]>;
-```
-
-Defined in: [rxjs/src/internal/observable/race.ts:7](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/observable/race.ts#L7)
-
-Returns an observable that mirrors the first source observable to emit an item.
-
-![](/images/marble-diagrams/race.png)
-
-`race` returns an observable, that when subscribed to, subscribes to all source observables immediately.
-As soon as one of the source observables emits a value, the result unsubscribes from the other sources.
-The resulting observable will forward all notifications, including error and completion, from the "winning"
-source observable.
-
-If one of the used source observable throws an errors before a first notification
-the race operator will also throw an error, no matter if another source observable
-could potentially win the race.
-
-`race` can be useful for selecting the response from the fastest network connection for
-HTTP or WebSockets. `race` can also be useful for switching observable context based on user
-input.
-
-## Parameters
-
-| Parameter   | Type                               |
-| ----------- | ---------------------------------- |
-| ...`inputs` | \[`...ObservableInputTuple<T>[]`\] |
-
-## Returns
-
-[`Observable`](../classes/Observable.md)\<`T`\[`number`\]\>
-
 ## Example
 
 Subscribes to the observable that was the first to start emitting.
@@ -71,6 +38,50 @@ race(obs1, obs2, obs3).subscribe((winner) => console.log(winner));
 // a series of 'fast one'
 ```
 
-## Param
+## Parameters
+
+### `sources`
 
 Used to race for which `ObservableInput` emits first.
+
+## Returns
+
+`An`
+
+Observable that mirrors the output of the first Observable to emit an item.
+
+## Call Signature
+
+```ts
+function race<>(inputs: [...ObservableInputTuple<T>[]]): Observable<T[number]>;
+```
+
+Defined in: [rxjs/src/internal/observable/race.ts:6](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/observable/race.ts#L6)
+
+### Parameters
+
+| Parameter | Type                               |
+| --------- | ---------------------------------- |
+| `inputs`  | \[`...ObservableInputTuple<T>[]`\] |
+
+### Returns
+
+[`Observable`](../classes/Observable.md)\<`T`\[`number`\]\>
+
+## Call Signature
+
+```ts
+function race<>(...inputs: [...ObservableInputTuple<T>[]]): Observable<T[number]>;
+```
+
+Defined in: [rxjs/src/internal/observable/race.ts:7](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/observable/race.ts#L7)
+
+### Parameters
+
+| Parameter   | Type                               |
+| ----------- | ---------------------------------- |
+| ...`inputs` | \[`...ObservableInputTuple<T>[]`\] |
+
+### Returns
+
+[`Observable`](../classes/Observable.md)\<`T`\[`number`\]\>

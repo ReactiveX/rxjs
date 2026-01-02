@@ -20,22 +20,6 @@ returns true. The second Observable emits source values for which the
 predicate returns false. The first behaves like [filter](filter.md) and the second
 behaves like [filter](filter.md) with the predicate negated.
 
-Splits the source Observable into two, one with values that satisfy a
-predicate, and another with values that don't satisfy the predicate.
-
-<span class="informal">It's like [filter](filter.md), but returns two Observables:
-one like the output of [filter](filter.md), and the other with values that did not
-pass the condition.</span>
-
-![](/images/marble-diagrams/partition.png)
-
-`partition` outputs an array with two Observables that partition the values
-from the source Observable through the given `predicate` function. The first
-Observable in that array emits source values for which the predicate argument
-returns true. The second Observable emits source values for which the
-predicate returns false. The first behaves like [filter](filter.md) and the second
-behaves like [filter](filter.md) with the predicate negated.
-
 ## Example
 
 Partition a set of numbers into odds and evens observables
@@ -62,23 +46,35 @@ evens$.subscribe((x) => console.log('evens', x));
 
 [filter](filter.md)
 
-## Param
-
-The source `ObservableInput` that will be split into a tuple of
 two Observable elements.
 
-## Param
-
-A function that evaluates each value emitted by the source
 Observable. If it returns `true`, the value is emitted on the first Observable
 in the returned array, if `false` the value is emitted on the second Observable
 in the array. The `index` parameter is the number `i` for the i-th source
 emission that has happened since the subscription, starting from the number `0`.
 
-## Param
+`predicate` function.
+
+## Parameters
+
+### `source`
+
+The source `ObservableInput` that will be split into a tuple of
+
+### `predicate`
+
+A function that evaluates each value emitted by the source
+
+### `thisArg`
 
 An optional argument to determine the value of `this` in the
-`predicate` function.
+
+## Returns
+
+`An array with two Observables`
+
+one with values that passed the
+predicate, and another with values that did not pass the predicate.
 
 ## Call Signature
 

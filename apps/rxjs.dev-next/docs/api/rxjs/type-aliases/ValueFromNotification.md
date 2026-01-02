@@ -2,7 +2,9 @@
 
 # Type Alias: ValueFromNotification
 
-> Gets the value type from an [ObservableNotification](ObservableNotification.%0A%0A#), if possible.
+## Description
+
+Gets the value type from an [ObservableNotification](ObservableNotification.md), if possible.
 
 ```ts
 type ValueFromNotification<> = T extends {

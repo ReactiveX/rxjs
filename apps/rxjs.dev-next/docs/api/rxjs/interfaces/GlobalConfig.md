@@ -2,12 +2,10 @@
 
 # Interface: GlobalConfig
 
-> The global configuration object for RxJS, used to configure things
-> like how to react on unhandled errors.
-
 ## Description
 
-Accessible via [config](../variables/config.md)
+The global configuration object for RxJS, used to configure things
+like how to react on unhandled errors. Accessible via [config](../variables/config.md)
 object.
 
 Defined in: [observable/src/observable.ts:397](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L397)

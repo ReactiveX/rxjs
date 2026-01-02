@@ -1,25 +1,11 @@
 [API](../../index.md) / [rxjs](../index.md) / merge
 
-# ~~Function: merge()~~
+# Function: merge()
 
 > Creates an output Observable which concurrently emits all values from every
 > given input Observable.
 
 ## Description
-
-<span class="informal">Flattens multiple Observables together by blending
-their values into one Observable.</span>
-
-![](/images/marble-diagrams/merge.png)
-
-`merge` subscribes to each given input Observable (as arguments), and simply
-forwards (without doing any transformation) all the values from all the input
-Observables to the output Observable. The output Observable only completes
-once all input Observables have completed. Any error delivered by an input
-Observable will be immediately emitted on the output Observable.
-
-Creates an output Observable which concurrently emits all values from every
-given input Observable.
 
 <span class="informal">Flattens multiple Observables together by blending
 their values into one Observable.</span>
@@ -81,11 +67,56 @@ merged.subscribe((x) => console.log(x));
 - [mergeMapTo](mergeMapTo.md)
 - [mergeScan](mergeScan.md)
 
-## Param
-
-`ObservableInput`s to merge together. If the last parameter
 is of type number, `merge` will use it to limit number of concurrently
 subscribed `ObservableInput`s.
+
+## Parameters
+
+### `args`
+
+`ObservableInput`s to merge together. If the last parameter
+
+## Returns
+
+`An`
+
+Observable that emits items that are the result of every input Observable.
+
+## Call Signature
+
+```ts
+function merge<>(...sources: [...ObservableInputTuple<A>[]]): Observable<A[number]>;
+```
+
+Defined in: [rxjs/src/internal/observable/merge.ts:9](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/observable/merge.ts#L9)
+
+### Parameters
+
+| Parameter    | Type                               |
+| ------------ | ---------------------------------- |
+| ...`sources` | \[`...ObservableInputTuple<A>[]`\] |
+
+### Returns
+
+[`Observable`](../classes/Observable.md)\<`A`\[`number`\]\>
+
+## Call Signature
+
+```ts
+function merge<>(...sourcesAndConcurrency: [...ObservableInputTuple<A>[], number?]): Observable<A[number]>;
+```
+
+Defined in: [rxjs/src/internal/observable/merge.ts:10](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/observable/merge.ts#L10)
+
+### Parameters
+
+| Parameter                  | Type                                          |
+| -------------------------- | --------------------------------------------- |
+| ...`sourcesAndConcurrency` | \[`...ObservableInputTuple<A>[]`, `number`?\] |
+
+### Returns
+
+[`Observable`](../classes/Observable.md)\<`A`\[`number`\]\>
 
 ## Call Signature
 

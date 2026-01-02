@@ -2,11 +2,9 @@
 
 # Class: TimeoutError
 
-> An error thrown by the [timeout](.
+> An error thrown by the [timeout](../functions/timeout.md) operator.
 
 ## Description
-
-./functions/timeout.md) operator.
 
 Provided so users can use as a type and do quality comparisons.
 We recommend you do not subclass this or create instances of this class directly.
@@ -14,13 +12,6 @@ If you have need of a error representing a timeout, you should
 create your own error class and use that.
 
 Defined in: [rxjs/src/internal/operators/timeout.ts:60](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/timeout.ts#L60)
-
-An error thrown by the [timeout](../functions/timeout.md) operator.
-
-Provided so users can use as a type and do quality comparisons.
-We recommend you do not subclass this or create instances of this class directly.
-If you have need of a error representing a timeout, you should
-create your own error class and use that.
 
 ## See
 

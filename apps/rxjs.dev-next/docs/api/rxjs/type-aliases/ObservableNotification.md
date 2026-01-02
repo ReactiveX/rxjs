@@ -2,7 +2,9 @@
 
 # Type Alias: ObservableNotification
 
-> Valid observable notification types.
+## Description
+
+Valid observable notification types.
 
 ```ts
 type ObservableNotification<> = NextNotification<T> | ErrorNotification | CompleteNotification;

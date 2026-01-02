@@ -2,8 +2,10 @@
 
 # Class: UnsubscriptionError
 
-> An error thrown when one or more errors have occurred during the
-> `unsubscribe` of a [Subscription](Subscription.%0A%0A#).
+## Description
+
+An error thrown when one or more errors have occurred during the
+`unsubscribe` of a [Subscription](Subscription.md).
 
 Defined in: [observable/src/observable.ts:23](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L23)
 

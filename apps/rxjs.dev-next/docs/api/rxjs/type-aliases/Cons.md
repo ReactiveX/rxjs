@@ -2,10 +2,9 @@
 
 # Type Alias: Cons
 
-> Constructs a new tuple with the specified type at the head.
-
 ## Description
 
+Constructs a new tuple with the specified type at the head.
 If you declare `Cons<A, [B, C]>` you will get back `[A, B, C]`.
 
 ```ts

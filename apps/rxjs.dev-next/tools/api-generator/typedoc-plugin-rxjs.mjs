@@ -6,8 +6,8 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 /**
- * Formats the description section by extracting the first sentence/paragraph as a blockquote
- * and rendering the rest as a Description section.
+ * Formats the description section by extracting the first paragraph and rendering it under a Description header.
+ * Also removes the first paragraph from the TypeDoc model to prevent duplication.
  *
  * @param {import('typedoc').Reflection} model - The reflection model
  * @param {any} context - The markdown theme context (from content.begin hook)
@@ -15,7 +15,8 @@ import { fileURLToPath } from 'url';
  */
 function formatDescriptionSection(model, context) {
   // Only process reflections that have comments (classes, interfaces, functions, etc.)
-  if (!model || !model.comment || !model.comment.summary || model.comment.summary.length === 0) {
+  const isPackage = model.kind === 2;
+  if (!model || !model.comment || !model.comment.summary || model.comment.summary.length === 0 || isPackage) {
     return '';
   }
 
@@ -26,60 +27,54 @@ function formatDescriptionSection(model, context) {
     return '';
   }
 
-  // Split summary into first sentence/paragraph and rest
-  // Try to find the first sentence (ending with period, exclamation, or question mark)
-  const firstSentenceMatch = fullSummary.trim().match(/^([^.!?]+[.!?])\s*(.*)$/s);
+  // Split on double newline (paragraph break) to get first paragraph
+  const trimmedSummary = fullSummary.trim();
+  const paragraphMatch = trimmedSummary.match(/^([^\n]+(?:\n[^\n]+)*)\n\n(.*)$/s);
 
-  let firstPart = '';
-  let restPart = '';
+  let firstParagraph = '';
 
-  if (firstSentenceMatch) {
-    firstPart = firstSentenceMatch[1].trim();
-    restPart = firstSentenceMatch[2].trim();
-  } else {
-    // If no sentence ending found, take first paragraph or first 200 chars
-    const firstParagraphMatch = fullSummary.trim().match(/^([^\n]+)\n\n(.*)$/s);
-    if (firstParagraphMatch) {
-      firstPart = firstParagraphMatch[1].trim();
-      restPart = firstParagraphMatch[2].trim();
-    } else {
-      // Fallback: take first 200 chars as first part
-      const splitPoint = Math.min(200, fullSummary.trim().length);
-      firstPart = fullSummary.trim().substring(0, splitPoint).trim();
-      restPart = fullSummary.trim().substring(splitPoint).trim();
+  if (paragraphMatch) {
+    firstParagraph = paragraphMatch[1].trim();
+
+    // Remove the first paragraph from the TypeDoc model's comment summary
+    // We'll render the full description ourselves, so we need to prevent TypeDoc from rendering it
+    if (model.comment.summary) {
+      model.comment.summary = [];
     }
   }
 
+  // Build output: first paragraph as blockquote, then Description section with full description
   let output = '';
 
-  // Render first part as a blockquote note
-  if (firstPart) {
-    // Split into lines and add > prefix to each line
-    const noteLines = firstPart.split('\n').map(line => `> ${line}`).join('\n');
-    output += `${noteLines}\n\n`;
+  // Render first paragraph as blockquote if it exists
+  if (firstParagraph) {
+    const blockquoteLines = firstParagraph.split('\n').map(line => `> ${line}`).join('\n');
+    output += `${blockquoteLines}\n\n`;
   }
 
-  // Render rest as Description section if there's more content
-  if (restPart || (model.comment.blockTags && model.comment.blockTags.length > 0)) {
-    output += '## Description\n\n';
+  // Render full description in Description section
+  output += '## Description\n\n';
 
-    if (restPart) {
-      output += `${restPart}\n\n`;
-    }
+  // If we extracted a first paragraph, show the rest; otherwise show the full summary
+  const remainingDescription = firstParagraph
+    ? trimmedSummary.replace(firstParagraph, '').trim()
+    : trimmedSummary;
+  if (remainingDescription) {
+    output += `${remainingDescription}\n\n`;
+  }
 
-    // Render block tags (excluding @example, @param, @returns which are handled elsewhere)
-    if (model.comment.blockTags) {
-      const relevantTags = model.comment.blockTags.filter(
-        tag => !['@example', '@param', '@returns', '@throws', '@see'].includes(tag.tag)
-      );
+  // Render relevant block tags if they exist
+  if (model.comment.blockTags && model.comment.blockTags.length > 0) {
+    // Filter relevant block tags (excluding @example, @param, @returns which are handled elsewhere)
+    const relevantTags = model.comment.blockTags.filter(
+      tag => !['@example', '@param', '@returns', '@throws', '@see'].includes(tag.tag)
+    );
 
-      if (relevantTags.length > 0) {
-        for (const tag of relevantTags) {
-          const tagContent = context.helpers.getCommentParts(tag.content);
-          if (tagContent && tagContent.trim()) {
-            output += `**${tag.tag.substring(1)}**: ${tagContent}\n\n`;
-          }
-        }
+    // Render block tags
+    for (const tag of relevantTags) {
+      const tagContent = context.helpers.getCommentParts(tag.content);
+      if (tagContent && tagContent.trim()) {
+        output += `**${tag.tag.substring(1)}**: ${tagContent}\n\n`;
       }
     }
   }
@@ -121,6 +116,176 @@ function removeEmptyTypeParameters(content) {
     /^## Type Parameters\s*\n+\|\s*Type Parameter\s*\|\s*\n\|\s*[-:]+\s*\|\s*\n(?=\n|##|$)/gm,
     ''
   );
+}
+
+/**
+ * Converts standalone "Param" sections into a proper "Parameters" section with parameter names.
+ * TypeDoc sometimes renders @param tags as separate "## Param" sections without parameter names.
+ * This function collects them and formats them properly.
+ *
+ * @param {string} content - The markdown content
+ * @param {import('typedoc').Reflection} model - The reflection model to extract parameter info from
+ * @param {any} context - The markdown theme context for helper functions
+ * @returns {string} Content with Param sections converted to Parameters section
+ */
+function convertParamSectionsToParameters(content, model, context) {
+  // Match pattern: ## Param\n\n<description>
+  const paramSectionRegex = /^## Param\s*\n\n([^\n]+(?:\n[^\n]+)*?)(?=\n##|\n###|$)/gm;
+
+  const paramSections = [];
+  let match;
+
+  // Collect all Param sections
+  while ((match = paramSectionRegex.exec(content)) !== null) {
+    paramSections.push({
+      description: match[1].trim(),
+      index: match.index
+    });
+  }
+
+  // If we found Param sections, replace them with a proper Parameters section
+  if (paramSections.length > 0) {
+    // Extract parameter names from @param tags in the JSDoc comments
+    const paramNames = [];
+    if (model && model.comment && model.comment.blockTags) {
+      const paramTags = model.comment.blockTags.filter(tag => tag.tag === '@param');
+      paramNames.push(...paramTags.map(tag => tag.name).filter(Boolean));
+    }
+
+    // Build the Parameters section
+    let parametersSection = '## Parameters\n\n';
+
+    for (let i = 0; i < paramSections.length; i++) {
+      const paramName = paramNames[i] || `param${i + 1}`;
+      parametersSection += `### \`${paramName}\`\n\n${paramSections[i].description}\n\n`;
+    }
+
+    // Remove all the individual Param sections
+    content = content.replace(/^## Param\s*\n\n[^\n]+(?:\n[^\n]+)*?(?=\n##|\n###|$)/gm, '');
+
+    // Find where to insert the Parameters section (after Examples, before Call Signature)
+    const examplesEndMatch = content.match(/^## Examples[\s\S]*?(?=\n## (?:Call Signature|Param|$))/m);
+    if (examplesEndMatch && examplesEndMatch.index !== undefined) {
+      // Insert after Examples section
+      const insertIndex = examplesEndMatch.index + examplesEndMatch[0].length;
+      content = content.slice(0, insertIndex) + '\n' + parametersSection + content.slice(insertIndex);
+    } else {
+      // Insert before first Call Signature or at the end
+      const callSignatureMatch = content.match(/^## Call Signature/m);
+      if (callSignatureMatch && callSignatureMatch.index !== undefined) {
+        content = content.slice(0, callSignatureMatch.index) + parametersSection + content.slice(callSignatureMatch.index);
+      } else {
+        // Append at the end
+        content += '\n' + parametersSection;
+      }
+    }
+  }
+
+  return content;
+}
+
+/**
+ * Adds a Returns section from @returns JSDoc tag if it exists.
+ * The Returns section should appear after Parameters and before Call Signature sections.
+ *
+ * @param {string} content - The markdown content
+ * @param {import('typedoc').Reflection} model - The reflection model to extract return info from
+ * @param {any} context - The markdown theme context for helper functions
+ */
+function addReturnsSection(content, model, context) {
+  // Check if @returns tag exists in JSDoc
+  if (!model || !model.comment || !model.comment.blockTags) {
+    return content;
+  }
+
+  const returnsTag = model.comment.blockTags.find(tag => tag.tag === '@returns' || tag.tag === '@return');
+  if (!returnsTag) {
+    return content;
+  }
+
+  // Extract return type and description from the @returns tag
+  let returnType = '';
+  let returnDescription = '';
+
+  if (returnsTag.content && returnsTag.content.length > 0) {
+    // Get the full content as markdown
+    if (context && context.helpers && context.helpers.getCommentParts) {
+      const fullContent = context.helpers.getCommentParts(returnsTag.content);
+      // Try to extract type (usually first word before dash or colon)
+      const typeMatch = fullContent.match(/^([^-:]+?)(?:\s*[-:]\s*|\s+)(.*)$/s);
+      if (typeMatch) {
+        returnType = typeMatch[1].trim();
+        returnDescription = typeMatch[2].trim();
+      } else {
+        // No type specified, just description
+        returnDescription = fullContent.trim();
+      }
+    } else {
+      // Fallback: extract from content array, handling both text and inline-tag parts
+      let fullText = '';
+      for (const part of returnsTag.content) {
+        if (part.kind === 'text') {
+          fullText += part.text;
+        } else if (part.kind === 'inline-tag') {
+          // Handle inline tags like {@link ...}
+          if (part.text) {
+            fullText += part.text;
+          }
+        }
+      }
+
+      // Try to extract type (format: "Type - description" or "Type: description" or "Type description")
+      const typeMatch = fullText.match(/^([^-:]+?)(?:\s*[-:]\s*|\s{2,})(.*)$/s);
+      if (typeMatch) {
+        returnType = typeMatch[1].trim();
+        returnDescription = typeMatch[2].trim();
+      } else {
+        // No clear separator, check if first word looks like a type
+        const words = fullText.trim().split(/\s+/);
+        if (words.length > 1 && /^[A-Z]/.test(words[0])) {
+          // First word capitalized, likely a type
+          returnType = words[0];
+          returnDescription = words.slice(1).join(' ');
+        } else {
+          // Just description
+          returnDescription = fullText.trim();
+        }
+      }
+    }
+  }
+
+  // Build the Returns section
+  let returnsSection = '## Returns\n\n';
+  if (returnType) {
+    returnsSection += `\`${returnType}\`\n\n`;
+  }
+  if (returnDescription) {
+    returnsSection += `${returnDescription}\n\n`;
+  }
+
+  // Check if Returns section already exists (look for "## Returns" followed by content)
+  if (content.match(/^## Returns\s*\n/m)) {
+    return content; // Already exists, don't add again
+  }
+
+  // Find where to insert the Returns section (after Parameters, before Call Signature)
+  const parametersEndMatch = content.match(/^## Parameters[\s\S]*?(?=\n## (?:Call Signature|Returns|$))/m);
+  if (parametersEndMatch && parametersEndMatch.index !== undefined) {
+    // Insert after Parameters section
+    const insertIndex = parametersEndMatch.index + parametersEndMatch[0].length;
+    content = content.slice(0, insertIndex) + '\n' + returnsSection + content.slice(insertIndex);
+  } else {
+    // Insert before first Call Signature
+    const callSignatureMatch = content.match(/^## Call Signature/m);
+    if (callSignatureMatch && callSignatureMatch.index !== undefined) {
+      content = content.slice(0, callSignatureMatch.index) + returnsSection + content.slice(callSignatureMatch.index);
+    } else {
+      // Append at the end if no Call Signature found
+      content += '\n' + returnsSection;
+    }
+  }
+
+  return content;
 }
 
 /**
@@ -189,7 +354,8 @@ function removeTypeParameters(reflection, app) {
 }
 
 /**
- * Filters CallSignature overloads without comments when multiple signatures exist.
+ * Processes CallSignature overloads to ensure all overloads are preserved for proper documentation.
+ * Removes typeParameters from signatures but keeps all overloads visible.
  *
  * @param {import('typedoc').DeclarationReflection} declReflection - The declaration reflection
  * @param {import('typedoc').Application} app - The TypeDoc application instance
@@ -227,7 +393,7 @@ function filterCallSignatureOverloads(declReflection, app) {
     });
 
     // If we have other signatures (non-CallSignature), filter all CallSignatures without comments
-    // If we only have CallSignatures, keep at least one (prefer one with comment, or the last one)
+    // If we only have CallSignatures, keep all of them to properly render overloads
     if (otherSignatures.length > 0) {
       // We have non-CallSignature signatures, so filter all CallSignatures without comments
       declReflection.signatures = [
@@ -235,12 +401,14 @@ function filterCallSignatureOverloads(declReflection, app) {
         ...callSignaturesWithComments
       ];
     } else if (callSignaturesWithComments.length > 0) {
-      // Only CallSignatures, but some have comments - keep only those with comments
-      declReflection.signatures = callSignaturesWithComments;
+      // Only CallSignatures, but some have comments - keep all CallSignatures
+      // This preserves overloads while showing the ones with comments
+      // TypeDoc will handle rendering all signatures properly
+      declReflection.signatures = callSignatures;
     } else if (callSignatures.length > 0) {
-      // Only CallSignatures and none have comments - keep the last one (likely the implementation)
-      // This ensures we don't remove all signatures
-      declReflection.signatures = [callSignatures[callSignatures.length - 1]];
+      // Only CallSignatures and none have individual comments - keep all of them
+      // This ensures all overloads are shown, with the implementation (usually last) having the main JSDoc comment
+      declReflection.signatures = callSignatures;
     }
   }
 
@@ -311,8 +479,9 @@ function filterReflections(reflection, app) {
  * This plugin provides several enhancements to the generated markdown documentation:
  *
  * 1. **Description Section Formatting**
- *    - Extracts the first sentence or paragraph from JSDoc comments and renders it as a blockquote note
- *    - Renders the remaining comment content as a "Description" section
+ *    - Adds a "Description" section header for all reflections with comments
+ *    - Renders relevant block tags in the Description section if present
+ *    - Note: TypeDoc already renders the comment summary automatically, so only the header and block tags are added here
  *    - Includes relevant block tags (excluding `@example`, `@param`, `@returns`, `@throws`, `@see` which are handled elsewhere)
  *
  * 2. **Horizontal Rule Removal**
@@ -325,11 +494,11 @@ function filterReflections(reflection, app) {
  *    - Looks for `-light` and `-dark` suffixed versions of images in `/images/marble-diagrams/`
  *    - Generates HTML with `only-light` and `only-dark` CSS classes for theme switching
  *
- * 4. **Signature Filtering**
- *    - Filters out CallSignature overloads that don't have their own comments when multiple signatures exist
- *    - Preserves at least one signature (preferring one with comments, or the last one as fallback)
- *    - Only filters when there are multiple signatures (indicating overloads)
+ * 4. **Signature Processing**
+ *    - Preserves all CallSignature overloads to ensure proper documentation of function overloads
+ *    - Removes typeParameters from signatures for cleaner documentation
  *    - Separates CallSignatures from other signature types (e.g., ConstructSignatures)
+ *    - When only CallSignatures exist, all are kept to show complete overload information
  *
  * 5. **Type Parameter Removal**
  *    - Removes all typeParameters from declarations, signatures, and their children
@@ -351,6 +520,14 @@ export function load(app) {
 
     // Remove empty Type Parameters sections
     page.contents = removeEmptyTypeParameters(page.contents);
+
+    // Convert standalone "Param" sections to proper "Parameters" section
+    // Only process if model is a Reflection type (has comment property)
+    if (page.model && 'comment' in page.model) {
+      page.contents = convertParamSectionsToParameters(page.contents, page.model, null);
+      // Add Returns section from @returns tag
+      page.contents = addReturnsSection(page.contents, page.model, null);
+    }
 
     // Process marble diagram images - replace HTML img tags and markdown images with picture elements
     const pluginPath = fileURLToPath(import.meta.url);

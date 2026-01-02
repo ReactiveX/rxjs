@@ -2,10 +2,9 @@
 
 # Interface: NextNotification
 
-> A notification representing a "next" from an observable.
-
 ## Description
 
+A notification representing a "next" from an observable.
 Can be used with [dematerialize](../functions/dematerialize.md).
 
 Defined in: [rxjs/src/internal/types.ts:119](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/types.ts#L119)

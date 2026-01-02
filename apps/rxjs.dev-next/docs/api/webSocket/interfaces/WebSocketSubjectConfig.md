@@ -19,19 +19,6 @@ from the Server.
 
 Defined in: [rxjs/src/internal/observable/dom/WebSocketSubject.ts:102](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/observable/dom/WebSocketSubject.ts#L102)
 
-WebSocketSubjectConfig is a plain Object that allows us to make our
-webSocket configurable.
-
-<span class="informal">Provides flexibility to [webSocket](../functions/webSocket.md)</span>
-
-It defines a set of properties to provide custom behavior in specific
-moments of the socket's lifecycle. When the connection opens we can
-use `openObserver`, when the connection is closed `closeObserver`, if we
-are interested in listening for data coming from server: `deserializer`,
-which allows us to customize the deserialization strategy of data before passing it
-to the socket client. By default, `deserializer` is going to apply `JSON.parse` to each message coming
-from the Server.
-
 ## Example
 
 **deserializer**, the default for this property is `JSON.parse` but since there are just two options

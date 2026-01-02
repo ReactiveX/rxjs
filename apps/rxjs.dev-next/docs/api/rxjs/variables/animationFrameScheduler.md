@@ -3,12 +3,10 @@
 # Variable: animationFrameScheduler
 
 > Animation Frame Scheduler
->
-> <span class="informal">Perform task when `window.
 
 ## Description
 
-requestAnimationFrame` would fire</span>
+<span class="informal">Perform task when `window.requestAnimationFrame` would fire</span>
 
 When `animationFrameScheduler` scheduler is used with delay, it will fall back to [asyncScheduler](asyncScheduler.md)
 scheduler behaviour.
@@ -22,17 +20,6 @@ const animationFrameScheduler: AnimationFrameScheduler;
 ```
 
 Defined in: [rxjs/src/internal/scheduler/animationFrame.ts:36](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/scheduler/animationFrame.ts#L36)
-
-Animation Frame Scheduler
-
-<span class="informal">Perform task when `window.requestAnimationFrame` would fire</span>
-
-When `animationFrameScheduler` scheduler is used with delay, it will fall back to [asyncScheduler](asyncScheduler.md)
-scheduler behaviour.
-
-Without delay, `animationFrameScheduler` scheduler can be used to create smooth browser animations.
-It makes sure scheduled task will happen just before next browser content repaint,
-thus performing animations as efficiently as possible.
 
 ## Example
 

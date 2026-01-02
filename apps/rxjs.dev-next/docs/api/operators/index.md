@@ -2,13 +2,6 @@
 
 # operators
 
-> :::info
-> This module is available as a nested import; however all of its methods are re-exports and all documentation can be found within the [rxjs#functions](/api/rxjs#functions) section.
-
-## Description
-
-:::
-
 :::info
 This module is available as a nested import; however all of its methods are re-exports and all documentation can be found within the [rxjs#functions](/api/rxjs#functions) section.
 :::

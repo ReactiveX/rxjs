@@ -2,10 +2,9 @@
 
 # Type Alias: Tail
 
-> Extracts the tail of a tuple.
-
 ## Description
 
+Extracts the tail of a tuple.
 If you declare `Tail<[A, B, C]>` you will get back `[B, C]`.
 
 ```ts

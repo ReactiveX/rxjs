@@ -2,10 +2,10 @@
 
 # Class: NotFoundError
 
-> An error thrown when a value or values are missing from an
-> observable sequence.
-
 ## Description
+
+An error thrown when a value or values are missing from an
+observable sequence.
 
 Defined in: [rxjs/src/internal/util/NotFoundError.ts:7](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/util/NotFoundError.ts#L7)
 

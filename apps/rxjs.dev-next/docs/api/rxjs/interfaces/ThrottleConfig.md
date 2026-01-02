@@ -2,11 +2,9 @@
 
 # Interface: ThrottleConfig
 
-> An object interface used by [throttle](.
-
 ## Description
 
-./functions/throttle.md) or [throttleTime](../functions/throttleTime.md) that ensure
+An object interface used by [throttle](../functions/throttle.md) or [throttleTime](../functions/throttleTime.md) that ensure
 configuration options of these operators.
 
 Defined in: [rxjs/src/internal/operators/throttle.ts:12](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/throttle.ts#L12)

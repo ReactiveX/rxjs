@@ -2,7 +2,9 @@
 
 # Interface: TimestampProvider
 
-> This is a type that provides a method to allow RxJS to create a numeric timestamp
+## Description
+
+This is a type that provides a method to allow RxJS to create a numeric timestamp
 
 Defined in: [rxjs/src/internal/types.ts:229](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/types.ts#L229)
 

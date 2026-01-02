@@ -2,14 +2,13 @@
 
 # Function: fromFetch()
 
-> Uses [the Fetch API](https://developer.
+> Uses [the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) to
+> make an HTTP request.
 
 ## Description
 
-mozilla.org/en-US/docs/Web/API/Fetch_API) to
-make an HTTP request.
-
-**WARNING** Parts of the fetch API are still experimental. `AbortController` is
+:::warning
+Parts of the fetch API are still experimental. `AbortController` is
 required for this implementation to work and use cancellation appropriately.
 
 Will automatically set up an internal [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
@@ -18,36 +17,6 @@ in order to finalize the internal `fetch` when the subscription tears down.
 If a `signal` is provided via the `init` argument, it will behave like it usually does with
 `fetch`. If the provided `signal` aborts, the error that `fetch` normally rejects with
 in that scenario will be emitted as an error from the observable.
-
-```ts
-function fromFetch(input: string | Request, init?: RequestInit): Observable<Response>;
-```
-
-Defined in: [rxjs/src/internal/observable/dom/fetch.ts:11](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/observable/dom/fetch.ts#L11)
-
-Uses [the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) to
-make an HTTP request.
-
-**WARNING** Parts of the fetch API are still experimental. `AbortController` is
-required for this implementation to work and use cancellation appropriately.
-
-Will automatically set up an internal [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
-in order to finalize the internal `fetch` when the subscription tears down.
-
-If a `signal` is provided via the `init` argument, it will behave like it usually does with
-`fetch`. If the provided `signal` aborts, the error that `fetch` normally rejects with
-in that scenario will be emitted as an error from the observable.
-
-## Parameters
-
-| Parameter | Type                  |
-| --------- | --------------------- |
-| `input`   | `string` \| `Request` |
-| `init?`   | `RequestInit`         |
-
-## Returns
-
-[`Observable`](../../rxjs/classes/Observable.md)\<`Response`\>
 
 ## Examples
 
@@ -109,11 +78,62 @@ data$.subscribe({
 });
 ```
 
-## Param
+## Parameters
+
+### `input`
 
 The resource you would like to fetch. Can be a url or a request object.
 
-## Param
+### `initWithSelector`
 
-A configuration object for the fetch.
-[See MDN for more details](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
+A configuration object for the fetch. [See MDN for more details](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
+
+## Returns
+
+`Observable`
+
+An Observable, that when subscribed to, performs an HTTP request using the native
+function. The Subscription is tied to an for the fetch.
+
+## Call Signature
+
+```ts
+function fromFetch<>(
+  input: string | Request,
+  init: RequestInit & {
+    selector: (response: Response) => ObservableInput<T>;
+  }
+): Observable<T>;
+```
+
+Defined in: [rxjs/src/internal/observable/dom/fetch.ts:4](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/observable/dom/fetch.ts#L4)
+
+### Parameters
+
+| Parameter | Type                                                                                                                                  |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `input`   | `string` \| `Request`                                                                                                                 |
+| `init`    | `RequestInit` & \{ `selector`: (`response`: `Response`) => [`ObservableInput`](../../rxjs/type-aliases/ObservableInput.md)\<`T`\>; \} |
+
+### Returns
+
+[`Observable`](../../rxjs/classes/Observable.md)\<`T`\>
+
+## Call Signature
+
+```ts
+function fromFetch(input: string | Request, init?: RequestInit): Observable<Response>;
+```
+
+Defined in: [rxjs/src/internal/observable/dom/fetch.ts:11](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/observable/dom/fetch.ts#L11)
+
+### Parameters
+
+| Parameter | Type                  |
+| --------- | --------------------- |
+| `input`   | `string` \| `Request` |
+| `init?`   | `RequestInit`         |
+
+### Returns
+
+[`Observable`](../../rxjs/classes/Observable.md)\<`Response`\>

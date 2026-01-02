@@ -2,11 +2,9 @@
 
 # Type Alias: AjaxDirection
 
-> Valid Ajax direction types.
-
 ## Description
 
-Prefixes the event `type` in the
+Valid Ajax direction types. Prefixes the event `type` in the
 [AjaxResponse](../classes/AjaxResponse.md) object with "upload*" for events related
 to uploading and "download*" for events related to downloading.
 

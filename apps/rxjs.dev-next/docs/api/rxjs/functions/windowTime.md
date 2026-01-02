@@ -25,51 +25,6 @@ will emit at most fixed number of values. Window will complete immediately
 after emitting last value and next one still will open as specified by
 `windowTimeSpan` and `windowCreationInterval` arguments.
 
-```ts
-function windowTime<>(
-  windowTimeSpan: number,
-  windowCreationInterval: number | void | null,
-  maxWindowSize: number,
-  scheduler?: SchedulerLike
-): OperatorFunction<T, Observable<T>>;
-```
-
-Defined in: [rxjs/src/internal/operators/windowTime.ts:15](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/windowTime.ts#L15)
-
-Branch out the source Observable values as a nested Observable periodically
-in time.
-
-<span class="informal">It's like [bufferTime](bufferTime.md), but emits a nested
-Observable instead of an array.</span>
-
-![](/images/marble-diagrams/windowTime.png)
-
-Returns an Observable that emits windows of items it collects from the source
-Observable. The output Observable starts a new window periodically, as
-determined by the `windowCreationInterval` argument. It emits each window
-after a fixed timespan, specified by the `windowTimeSpan` argument. When the
-source Observable completes or encounters an error, the output Observable
-emits the current window and propagates the notification from the source
-Observable. If `windowCreationInterval` is not provided, the output
-Observable starts a new window when the previous window of duration
-`windowTimeSpan` completes. If `maxWindowCount` is provided, each window
-will emit at most fixed number of values. Window will complete immediately
-after emitting last value and next one still will open as specified by
-`windowTimeSpan` and `windowCreationInterval` arguments.
-
-## Parameters
-
-| Parameter                | Type                                              |
-| ------------------------ | ------------------------------------------------- |
-| `windowTimeSpan`         | `number`                                          |
-| `windowCreationInterval` | `number` \| `void` \| `null`                      |
-| `maxWindowSize`          | `number`                                          |
-| `scheduler?`             | [`SchedulerLike`](../interfaces/SchedulerLike.md) |
-
-## Returns
-
-[`OperatorFunction`](../interfaces/OperatorFunction.md)\<`T`, [`Observable`](../classes/Observable.md)\<`T`\>\>
-
 ## Example
 
 In every window of 1 second each, emit at most 2 click events
@@ -121,21 +76,101 @@ result.subscribe((x) => console.log(x));
 - [windowWhen](windowWhen.md)
 - [bufferTime](bufferTime.md)
 
-## Param
+windows.
+
+values each window can emit before completion.
+
+intervals that determine window boundaries.
+
+## Parameters
+
+### `windowTimeSpan`
 
 The amount of time, in milliseconds, to fill each window.
 
-## Param
+### `windowCreationInterval`
 
 The interval at which to start new
-windows.
 
-## Param
+### `maxWindowSize`
 
 Max number of
-values each window can emit before completion.
 
-## Param
+### `scheduler`
 
 The scheduler on which to schedule the
-intervals that determine window boundaries.
+
+## Returns
+
+`A`
+
+function that returns an Observable of windows, which in turn are Observables.
+
+## Call Signature
+
+```ts
+function windowTime<>(windowTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
+```
+
+Defined in: [rxjs/src/internal/operators/windowTime.ts:9](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/windowTime.ts#L9)
+
+### Parameters
+
+| Parameter        | Type                                              |
+| ---------------- | ------------------------------------------------- |
+| `windowTimeSpan` | `number`                                          |
+| `scheduler?`     | [`SchedulerLike`](../interfaces/SchedulerLike.md) |
+
+### Returns
+
+[`OperatorFunction`](../interfaces/OperatorFunction.md)\<`T`, [`Observable`](../classes/Observable.md)\<`T`\>\>
+
+## Call Signature
+
+```ts
+function windowTime<>(
+  windowTimeSpan: number,
+  windowCreationInterval: number,
+  scheduler?: SchedulerLike
+): OperatorFunction<T, Observable<T>>;
+```
+
+Defined in: [rxjs/src/internal/operators/windowTime.ts:10](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/windowTime.ts#L10)
+
+### Parameters
+
+| Parameter                | Type                                              |
+| ------------------------ | ------------------------------------------------- |
+| `windowTimeSpan`         | `number`                                          |
+| `windowCreationInterval` | `number`                                          |
+| `scheduler?`             | [`SchedulerLike`](../interfaces/SchedulerLike.md) |
+
+### Returns
+
+[`OperatorFunction`](../interfaces/OperatorFunction.md)\<`T`, [`Observable`](../classes/Observable.md)\<`T`\>\>
+
+## Call Signature
+
+```ts
+function windowTime<>(
+  windowTimeSpan: number,
+  windowCreationInterval: number | void | null,
+  maxWindowSize: number,
+  scheduler?: SchedulerLike
+): OperatorFunction<T, Observable<T>>;
+```
+
+Defined in: [rxjs/src/internal/operators/windowTime.ts:15](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/windowTime.ts#L15)
+
+### Parameters
+
+| Parameter                | Type                                              |
+| ------------------------ | ------------------------------------------------- |
+| `windowTimeSpan`         | `number`                                          |
+| `windowCreationInterval` | `number` \| `void` \| `null`                      |
+| `maxWindowSize`          | `number`                                          |
+| `scheduler?`             | [`SchedulerLike`](../interfaces/SchedulerLike.md) |
+
+### Returns
+
+[`OperatorFunction`](../interfaces/OperatorFunction.md)\<`T`, [`Observable`](../classes/Observable.md)\<`T`\>\>

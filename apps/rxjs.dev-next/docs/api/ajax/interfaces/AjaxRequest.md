@@ -11,11 +11,6 @@ object.
 
 Defined in: [rxjs/src/internal/ajax/types.ts:20](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/ajax/types.ts#L20)
 
-The object containing values RxJS used to make the HTTP request.
-
-This is provided in [AjaxError](../classes/AjaxError.md) instances as the `request`
-object.
-
 ## Properties
 
 | Property                                       | Type                                      | Description                                                                                                                        |

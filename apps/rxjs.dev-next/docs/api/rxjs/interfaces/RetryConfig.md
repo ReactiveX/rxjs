@@ -2,11 +2,9 @@
 
 # Interface: RetryConfig
 
-> The [retry](.
-
 ## Description
 
-./functions/retry.md) operator configuration object. `retry` either accepts a `number`
+The [retry](../functions/retry.md) operator configuration object. `retry` either accepts a `number`
 or an object described by this interface.
 
 Defined in: [rxjs/src/internal/operators/retry.ts:11](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/retry.ts#L11)

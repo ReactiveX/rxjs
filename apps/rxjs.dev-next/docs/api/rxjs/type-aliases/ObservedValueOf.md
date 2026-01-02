@@ -2,11 +2,9 @@
 
 # Type Alias: ObservedValueOf
 
-> Extracts the type from an `ObservableInput<any>`.
-
 ## Description
 
-If you have
+Extracts the type from an `ObservableInput<any>`. If you have
 `O extends ObservableInput<any>` and you pass in `Observable<number>`, or
 `Promise<number>`, etc, it will type as `number`.
 

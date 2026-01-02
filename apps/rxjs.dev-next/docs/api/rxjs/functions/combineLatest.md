@@ -46,48 +46,6 @@ of a completed Observable, its value from now on will always be the last
 emitted value. On the other hand, if any Observable errors, `combineLatest`
 will error immediately as well, and all other Observables will be unsubscribed.
 
-Combines multiple Observables to create an Observable whose values are
-calculated from the latest values of each of its input Observables.
-
-<span class="informal">Whenever any input Observable emits a value, it
-computes a formula using the latest values from all the inputs, then emits
-the output of that formula.</span>
-
-![](/images/marble-diagrams/combineLatest.png)
-
-`combineLatest` combines the values from all the Observables passed in the
-observables array. This is done by subscribing to each Observable in order and,
-whenever any Observable emits, collecting an array of the most recent
-values from each Observable. So if you pass `n` Observables to this operator,
-the returned Observable will always emit an array of `n` values, in an order
-corresponding to the order of the passed Observables (the value from the first Observable
-will be at index 0 of the array and so on).
-
-Static version of `combineLatest` accepts an array of Observables. Note that an array of
-Observables is a good choice, if you don't know beforehand how many Observables
-you will combine. Passing an empty array will result in an Observable that
-completes immediately.
-
-To ensure the output array always has the same length, `combineLatest` will
-actually wait for all input Observables to emit at least once,
-before it starts emitting results. This means if some Observable emits
-values before other Observables started emitting, all these values but the last
-will be lost. On the other hand, if some Observable does not emit a value but
-completes, resulting Observable will complete at the same moment without
-emitting anything, since it will now be impossible to include a value from the
-completed Observable in the resulting array. Also, if some input Observable does
-not emit any value and never completes, `combineLatest` will also never emit
-and never complete, since, again, it will wait for all streams to emit some
-value.
-
-If at least one Observable was passed to `combineLatest` and all passed Observables
-emitted something, the resulting Observable will complete when all combined
-streams complete. So even if some Observable completes, the result of
-`combineLatest` will still emit values when other Observables do. In case
-of a completed Observable, its value from now on will always be the last
-emitted value. On the other hand, if any Observable errors, `combineLatest`
-will error immediately as well, and all other Observables will be unsubscribed.
-
 ## Example
 
 Combine two timer Observables
@@ -167,11 +125,20 @@ bmi.subscribe((x) => console.log('BMI is ' + x));
 - [merge](merge.md)
 - [withLatestFrom](withLatestFrom.md)
 
-## Param
-
-Any number of `ObservableInput`s provided either as an array or as an object
 to combine with each other. If the last parameter is the function, it will be used to project the
 values from the combined latest values into a new value on the output Observable.
+
+## Parameters
+
+### `args`
+
+Any number of `ObservableInput`s provided either as an array or as an object
+
+## Returns
+
+`An`
+
+Observable of projected values from the most recent values from each , or an array of the most recent values from each .
 
 ## Call Signature
 

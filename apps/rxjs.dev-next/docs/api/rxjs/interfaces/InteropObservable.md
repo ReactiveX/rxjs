@@ -2,11 +2,9 @@
 
 # Interface: InteropObservable
 
-> An object that implements the `Symbol.
-
 ## Description
 
-observable` interface.
+An object that implements the `Symbol.observable` interface.
 
 Defined in: [rxjs/src/internal/types.ts:109](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/types.ts#L109)
 

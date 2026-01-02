@@ -28,26 +28,6 @@ the `first` configuration to get the same effect.
 object: `timeout({ each: 100, with: () => a$, scheduler })`. Instead of `timeoutWith(someDate, a$, scheduler)`, use [timeout](timeout.md)
 with the configuration object: `timeout({ first: someDate, with: () => a$, scheduler })`. Will be removed in v8.
 
-When the passed timespan elapses before the source emits any given value, it will unsubscribe from the source,
-and switch the subscription to another observable.
-
-<span class="informal">Used to switch to a different observable if your source is being slow.</span>
-
-Useful in cases where:
-
-- You want to switch to a different source that may be faster.
-- You want to notify a user that the data stream is slow.
-- You want to emit a custom error rather than the [TimeoutError](../classes/TimeoutError.md) emitted
-  by the default usage of [timeout](timeout.md).
-
-If the first parameter is passed as Date and the time of the Date arrives before the first value arrives from the source,
-it will unsubscribe from the source and switch the subscription to another observable.
-
-<span class="informal">Use Date object to switch to a different observable if the first value doesn't arrive by a specific time.</span>
-
-Can be used to set a timeout only for the first value, however it's recommended to use the [timeout](timeout.md) operator with
-the `first` configuration to get the same effect.
-
 ## Example
 
 Fallback to a faster observable
@@ -91,24 +71,35 @@ slow$
 
 [timeout](timeout.md)
 
-## Param
-
-When passed a number, used as the time (in milliseconds) allowed between each value from the source before timeout
 is triggered. When passed a Date, used as the exact time at which the timeout will be triggered if the first value does not arrive.
-
-## Param
-
-The observable to switch to when timeout occurs.
-
-## Param
-
-The scheduler to use with time-related operations within this operator. Defaults to [asyncScheduler](../variables/asyncScheduler.md)
 
 ## Deprecated
 
 Replaced with [timeout](timeout.md). Instead of `timeoutWith(100, a$, scheduler)`, use [timeout](timeout.md) with the configuration
 object: `timeout({ each: 100, with: () => a$, scheduler })`. Instead of `timeoutWith(someDate, a$, scheduler)`, use [timeout](timeout.md)
 with the configuration object: `timeout({ first: someDate, with: () => a$, scheduler })`. Will be removed in v8.
+
+## Parameters
+
+### `due`
+
+When passed a number, used as the time (in milliseconds) allowed between each value from the source before timeout
+
+### `withObservable`
+
+The observable to switch to when timeout occurs.
+
+### `scheduler`
+
+The scheduler to use with time-related operations within this operator. Defaults to [asyncScheduler](../variables/asyncScheduler.md)
+
+## Returns
+
+`A function that returns an Observable that mirrors behaviour of the
+source Observable, unless timeout happens when it starts emitting values
+from the`
+
+passed as a second parameter.
 
 ## Call Signature
 

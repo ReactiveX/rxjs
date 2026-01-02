@@ -2,12 +2,10 @@
 
 # Type Alias: ReadableStreamLike
 
-> The base signature RxJS will look for to identify and use
-> a [ReadableStream](https://streams.
-
 ## Description
 
-spec.whatwg.org/#rs-class)
+The base signature RxJS will look for to identify and use
+a [ReadableStream](https://streams.spec.whatwg.org/#rs-class)
 as an [ObservableInput](ObservableInput.md) source.
 
 ```ts

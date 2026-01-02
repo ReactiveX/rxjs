@@ -2,58 +2,11 @@
 
 # Function: forkJoin()
 
-> Accepts an `Array` of [ObservableInput](.
+> Accepts an `Array` of [ObservableInput](../type-aliases/ObservableInput.md) or a dictionary `Object` of [ObservableInput](../type-aliases/ObservableInput.md) and returns
+> an [Observable](../classes/Observable.md) that emits either an array of values in the exact same order as the passed array,
+> or a dictionary of values in the same shape as the passed dictionary.
 
 ## Description
-
-./type-aliases/ObservableInput.md) or a dictionary `Object` of [ObservableInput](../type-aliases/ObservableInput.md) and returns
-an [Observable](../classes/Observable.md) that emits either an array of values in the exact same order as the passed array,
-or a dictionary of values in the same shape as the passed dictionary.
-
-<span class="informal">Wait for Observables to complete and then combine last values they emitted;
-complete immediately if an empty array is passed.</span>
-
-![](/images/marble-diagrams/forkJoin.png)
-
-`forkJoin` is an operator that takes any number of input observables which can be passed either as an array
-or a dictionary of input observables. If no input observables are provided (e.g. an empty array is passed),
-then the resulting stream will complete immediately.
-
-`forkJoin` will wait for all passed observables to emit and complete and then it will emit an array or an object with last
-values from corresponding observables.
-
-If you pass an array of `n` observables to the operator, then the resulting
-array will have `n` values, where the first value is the last one emitted by the first observable,
-second value is the last one emitted by the second observable and so on.
-
-If you pass a dictionary of observables to the operator, then the resulting
-objects will have the same keys as the dictionary passed, with their last values they have emitted
-located at the corresponding key.
-
-That means `forkJoin` will not emit more than once and it will complete after that. If you need to emit combined
-values not only at the end of the lifecycle of passed observables, but also throughout it, try out [combineLatest](combineLatest.md)
-or [zip](zip.md) instead.
-
-In order for the resulting array to have the same length as the number of input observables, whenever any of
-the given observables completes without emitting any value, `forkJoin` will complete at that moment as well
-and it will not emit anything either, even if it already has some last values from other observables.
-Conversely, if there is an observable that never completes, `forkJoin` will never complete either,
-unless at any point some other observable completes without emitting a value, which brings us back to
-the previous case. Overall, in order for `forkJoin` to emit a value, all given observables
-have to emit something at least once and complete.
-
-If any given observable errors at some point, `forkJoin` will error as well and immediately unsubscribe
-from the other observables.
-
-Optionally `forkJoin` accepts a `resultSelector` function, that will be called with values which normally
-would land in the emitted array. Whatever is returned by the `resultSelector`, will appear in the output
-observable instead. This means that the default `resultSelector` can be thought of as a function that takes
-all its arguments and puts them into an array. Note that the `resultSelector` will be called only
-when `forkJoin` is supposed to emit a result.
-
-Accepts an `Array` of [ObservableInput](../type-aliases/ObservableInput.md) or a dictionary `Object` of [ObservableInput](../type-aliases/ObservableInput.md) and returns
-an [Observable](../classes/Observable.md) that emits either an array of values in the exact same order as the passed array,
-or a dictionary of values in the same shape as the passed dictionary.
 
 <span class="informal">Wait for Observables to complete and then combine last values they emitted;
 complete immediately if an empty array is passed.</span>
@@ -139,10 +92,19 @@ observable.subscribe({
 - [combineLatest](combineLatest.md)
 - [zip](zip.md)
 
-## Param
+passed directly to the operator.
+
+## Parameters
+
+### `args`
 
 Any number of `ObservableInput`s provided either as an array or as an object
-passed directly to the operator.
+
+## Returns
+
+`Observable`
+
+emitting either an array of last values emitted by passed Observables or value from project function.
 
 ## Call Signature
 

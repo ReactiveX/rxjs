@@ -3,14 +3,12 @@
 # Function: single()
 
 > Returns an observable that asserts that only one value is
-> emitted from the observable that matches the predicate.
+> emitted from the observable that matches the predicate. If no
+> predicate is provided, then it will assert that the observable
+> only emits one value.
 
 ## Description
 
-If no
-predicate is provided, then it will assert that the observable
-only emits one value.
-
 If the source Observable did not emit `next` before completion, it
 will emit an [EmptyError](../classes/EmptyError.md) to the Observer's `error` callback.
 
@@ -20,37 +18,6 @@ emit a [SequenceError](../classes/SequenceError.md) to the Observer's `error` ca
 
 In the event that no values match the predicate, if one is provided,
 it will emit a [NotFoundError](../classes/NotFoundError.md) to the Observer's `error` callback.
-
-```ts
-function single<>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
-```
-
-Defined in: [rxjs/src/internal/operators/single.ts:9](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/single.ts#L9)
-
-Returns an observable that asserts that only one value is
-emitted from the observable that matches the predicate. If no
-predicate is provided, then it will assert that the observable
-only emits one value.
-
-If the source Observable did not emit `next` before completion, it
-will emit an [EmptyError](../classes/EmptyError.md) to the Observer's `error` callback.
-
-In the event that two values are found that match the predicate,
-or when there are two values emitted and no predicate, it will
-emit a [SequenceError](../classes/SequenceError.md) to the Observer's `error` callback.
-
-In the event that no values match the predicate, if one is provided,
-it will emit a [NotFoundError](../classes/NotFoundError.md) to the Observer's `error` callback.
-
-## Parameters
-
-| Parameter    | Type                                                                                                      |
-| ------------ | --------------------------------------------------------------------------------------------------------- |
-| `predicate?` | (`value`: `T`, `index`: `number`, `source`: [`Observable`](../classes/Observable.md)\<`T`\>) => `boolean` |
-
-## Returns
-
-[`MonoTypeOperatorFunction`](../interfaces/MonoTypeOperatorFunction.md)\<`T`\>
 
 ## Example
 
@@ -98,7 +65,52 @@ will deliver a `SequenceError` if more than one value comes from the source.
 Delivers an `EmptyError` if no values were `next`ed prior
 to completion.
 
-## Param
+Observable.
+
+## Parameters
+
+### `predicate`
 
 A predicate function to evaluate items emitted by the source
-Observable.
+
+## Returns
+
+`A`
+
+function that returns an Observable that emits the single item emitted by the source Observable that matches the predicate.
+
+## Call Signature
+
+```ts
+function single<>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
+```
+
+Defined in: [rxjs/src/internal/operators/single.ts:8](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/single.ts#L8)
+
+### Parameters
+
+| Parameter   | Type                 |
+| ----------- | -------------------- |
+| `predicate` | `BooleanConstructor` |
+
+### Returns
+
+[`OperatorFunction`](../interfaces/OperatorFunction.md)\<`T`, [`TruthyTypesOf`](../type-aliases/TruthyTypesOf.md)\<`T`\>\>
+
+## Call Signature
+
+```ts
+function single<>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
+```
+
+Defined in: [rxjs/src/internal/operators/single.ts:9](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/single.ts#L9)
+
+### Parameters
+
+| Parameter    | Type                                                                                                      |
+| ------------ | --------------------------------------------------------------------------------------------------------- |
+| `predicate?` | (`value`: `T`, `index`: `number`, `source`: [`Observable`](../classes/Observable.md)\<`T`\>) => `boolean` |
+
+### Returns
+
+[`MonoTypeOperatorFunction`](../interfaces/MonoTypeOperatorFunction.md)\<`T`\>

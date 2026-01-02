@@ -2,13 +2,11 @@
 
 # Interface: SchedulerAction
 
-> Represents a disposable resource, such as the execution of an Observable.
+> Represents a disposable resource, such as the execution of an Observable. A
+> Subscription has one important method, `unsubscribe`, that takes no argument
+> and just disposes the resource held by the subscription.
 
 ## Description
-
-A
-Subscription has one important method, `unsubscribe`, that takes no argument
-and just disposes the resource held by the subscription.
 
 Additionally, subscriptions may be grouped together through the `add()`
 method, which will attach a child Subscription to the current Subscription.
@@ -16,15 +14,6 @@ When a Subscription is unsubscribed, all its children (and its grandchildren)
 will be unsubscribed as well.
 
 Defined in: [rxjs/src/internal/types.ts:222](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/types.ts#L222)
-
-Represents a disposable resource, such as the execution of an Observable. A
-Subscription has one important method, `unsubscribe`, that takes no argument
-and just disposes the resource held by the subscription.
-
-Additionally, subscriptions may be grouped together through the `add()`
-method, which will attach a child Subscription to the current Subscription.
-When a Subscription is unsubscribed, all its children (and its grandchildren)
-will be unsubscribed as well.
 
 ## Extends
 

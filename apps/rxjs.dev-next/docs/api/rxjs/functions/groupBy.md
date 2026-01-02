@@ -1,6 +1,84 @@
 [API](../../index.md) / [rxjs](../index.md) / groupBy
 
-# ~~Function: groupBy()~~
+# Function: groupBy()
+
+## Call Signature
+
+```ts
+function groupBy<>(key: (value: T) => K, options: BasicGroupByOptions<K, T>): OperatorFunction<T, GroupedObservable<K, T>>;
+```
+
+Defined in: [rxjs/src/internal/operators/groupBy.ts:17](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/groupBy.ts#L17)
+
+### Parameters
+
+| Parameter | Type                                                                      |
+| --------- | ------------------------------------------------------------------------- |
+| `key`     | (`value`: `T`) => `K`                                                     |
+| `options` | [`BasicGroupByOptions`](../interfaces/BasicGroupByOptions.md)\<`K`, `T`\> |
+
+### Returns
+
+[`OperatorFunction`](../interfaces/OperatorFunction.md)\<`T`, [`GroupedObservable`](../interfaces/GroupedObservable.md)\<`K`, `T`\>\>
+
+## Call Signature
+
+```ts
+function groupBy<>(key: (value: T) => K, options: GroupByOptionsWithElement<K, E, T>): OperatorFunction<T, GroupedObservable<K, E>>;
+```
+
+Defined in: [rxjs/src/internal/operators/groupBy.ts:19](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/groupBy.ts#L19)
+
+### Parameters
+
+| Parameter | Type                                                                                       |
+| --------- | ------------------------------------------------------------------------------------------ |
+| `key`     | (`value`: `T`) => `K`                                                                      |
+| `options` | [`GroupByOptionsWithElement`](../interfaces/GroupByOptionsWithElement.md)\<`K`, `E`, `T`\> |
+
+### Returns
+
+[`OperatorFunction`](../interfaces/OperatorFunction.md)\<`T`, [`GroupedObservable`](../interfaces/GroupedObservable.md)\<`K`, `E`\>\>
+
+## Call Signature
+
+```ts
+function groupBy<>(
+  key: (value: T) => value is K
+): OperatorFunction<T, GroupedObservable<true, K> | GroupedObservable<false, Exclude<T, K>>>;
+```
+
+Defined in: [rxjs/src/internal/operators/groupBy.ts:24](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/groupBy.ts#L24)
+
+### Parameters
+
+| Parameter | Type                           |
+| --------- | ------------------------------ |
+| `key`     | (`value`: `T`) => `value is K` |
+
+### Returns
+
+[`OperatorFunction`](../interfaces/OperatorFunction.md)\<`T`,
+\| [`GroupedObservable`](../interfaces/GroupedObservable.md)\<`true`, `K`\>
+\| [`GroupedObservable`](../interfaces/GroupedObservable.md)\<`false`, `Exclude`\<`T`, `K`\>\>\>
+
+## Call Signature
+
+```ts
+function groupBy<>(key: (value: T) => K): OperatorFunction<T, GroupedObservable<K, T>>;
+```
+
+Defined in: [rxjs/src/internal/operators/groupBy.ts:28](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/groupBy.ts#L28)
+
+### Parameters
+
+| Parameter | Type                  |
+| --------- | --------------------- |
+| `key`     | (`value`: `T`) => `K` |
+
+### Returns
+
+[`OperatorFunction`](../interfaces/OperatorFunction.md)\<`T`, [`GroupedObservable`](../interfaces/GroupedObservable.md)\<`K`, `T`\>\>
 
 ## Call Signature
 

@@ -2,8 +2,10 @@
 
 # Class: BehaviorSubject
 
-> A variant of Subject that requires an initial value and emits its current
-> value whenever it is subscribed to.
+## Description
+
+A variant of Subject that requires an initial value and emits its current
+value whenever it is subscribed to.
 
 Defined in: [rxjs/src/internal/BehaviorSubject.ts:8](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/BehaviorSubject.ts#L8)
 
@@ -309,6 +311,357 @@ Defined in: [rxjs/src/internal/BehaviorSubject.ts:32](https://github.com/Reactiv
 
 ### pipe()
 
+Used to stitch together functional operators into a chain.
+
+#### Example
+
+```ts
+import { interval, filter, map, scan } from 'rxjs';
+
+interval(1000)
+  .pipe(
+    filter((x) => x % 2 === 0),
+    map((x) => x + x),
+    scan((acc, x) => acc + x)
+  )
+  .subscribe((x) => console.log(x));
+```
+
+#### Call Signature
+
+```ts
+pipe(): Observable<T>;
+```
+
+Defined in: [observable/src/observable.ts:788](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L788)
+
+##### Returns
+
+[`Observable`](Observable.md)\<`T`\>
+
+##### Inherited from
+
+[`Subject`](Subject.md).[`pipe`](Subject.md#pipe)
+
+#### Call Signature
+
+```ts
+pipe<>(op1: UnaryFunction<Observable<T>, A>): A;
+```
+
+Defined in: [observable/src/observable.ts:789](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L789)
+
+##### Parameters
+
+| Parameter | Type                                                         |
+| --------- | ------------------------------------------------------------ |
+| `op1`     | `UnaryFunction`\<[`Observable`](Observable.md)\<`T`\>, `A`\> |
+
+##### Returns
+
+`A`
+
+##### Inherited from
+
+[`Subject`](Subject.md).[`pipe`](Subject.md#pipe)
+
+#### Call Signature
+
+```ts
+pipe<>(op1: UnaryFunction<Observable<T>, A>, op2: UnaryFunction<A, B>): B;
+```
+
+Defined in: [observable/src/observable.ts:790](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L790)
+
+##### Parameters
+
+| Parameter | Type                                                         |
+| --------- | ------------------------------------------------------------ |
+| `op1`     | `UnaryFunction`\<[`Observable`](Observable.md)\<`T`\>, `A`\> |
+| `op2`     | `UnaryFunction`\<`A`, `B`\>                                  |
+
+##### Returns
+
+`B`
+
+##### Inherited from
+
+[`Subject`](Subject.md).[`pipe`](Subject.md#pipe)
+
+#### Call Signature
+
+```ts
+pipe<>(
+   op1: UnaryFunction<Observable<T>, A>,
+   op2: UnaryFunction<A, B>,
+   op3: UnaryFunction<B, C>): C;
+```
+
+Defined in: [observable/src/observable.ts:791](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L791)
+
+##### Parameters
+
+| Parameter | Type                                                         |
+| --------- | ------------------------------------------------------------ |
+| `op1`     | `UnaryFunction`\<[`Observable`](Observable.md)\<`T`\>, `A`\> |
+| `op2`     | `UnaryFunction`\<`A`, `B`\>                                  |
+| `op3`     | `UnaryFunction`\<`B`, `C`\>                                  |
+
+##### Returns
+
+`C`
+
+##### Inherited from
+
+[`Subject`](Subject.md).[`pipe`](Subject.md#pipe)
+
+#### Call Signature
+
+```ts
+pipe<>(
+   op1: UnaryFunction<Observable<T>, A>,
+   op2: UnaryFunction<A, B>,
+   op3: UnaryFunction<B, C>,
+   op4: UnaryFunction<C, D>): D;
+```
+
+Defined in: [observable/src/observable.ts:792](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L792)
+
+##### Parameters
+
+| Parameter | Type                                                         |
+| --------- | ------------------------------------------------------------ |
+| `op1`     | `UnaryFunction`\<[`Observable`](Observable.md)\<`T`\>, `A`\> |
+| `op2`     | `UnaryFunction`\<`A`, `B`\>                                  |
+| `op3`     | `UnaryFunction`\<`B`, `C`\>                                  |
+| `op4`     | `UnaryFunction`\<`C`, `D`\>                                  |
+
+##### Returns
+
+`D`
+
+##### Inherited from
+
+[`Subject`](Subject.md).[`pipe`](Subject.md#pipe)
+
+#### Call Signature
+
+```ts
+pipe<>(
+   op1: UnaryFunction<Observable<T>, A>,
+   op2: UnaryFunction<A, B>,
+   op3: UnaryFunction<B, C>,
+   op4: UnaryFunction<C, D>,
+   op5: UnaryFunction<D, E>): E;
+```
+
+Defined in: [observable/src/observable.ts:793](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L793)
+
+##### Parameters
+
+| Parameter | Type                                                         |
+| --------- | ------------------------------------------------------------ |
+| `op1`     | `UnaryFunction`\<[`Observable`](Observable.md)\<`T`\>, `A`\> |
+| `op2`     | `UnaryFunction`\<`A`, `B`\>                                  |
+| `op3`     | `UnaryFunction`\<`B`, `C`\>                                  |
+| `op4`     | `UnaryFunction`\<`C`, `D`\>                                  |
+| `op5`     | `UnaryFunction`\<`D`, `E`\>                                  |
+
+##### Returns
+
+`E`
+
+##### Inherited from
+
+[`Subject`](Subject.md).[`pipe`](Subject.md#pipe)
+
+#### Call Signature
+
+```ts
+pipe<>(
+   op1: UnaryFunction<Observable<T>, A>,
+   op2: UnaryFunction<A, B>,
+   op3: UnaryFunction<B, C>,
+   op4: UnaryFunction<C, D>,
+   op5: UnaryFunction<D, E>,
+   op6: UnaryFunction<E, F>): F;
+```
+
+Defined in: [observable/src/observable.ts:800](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L800)
+
+##### Parameters
+
+| Parameter | Type                                                         |
+| --------- | ------------------------------------------------------------ |
+| `op1`     | `UnaryFunction`\<[`Observable`](Observable.md)\<`T`\>, `A`\> |
+| `op2`     | `UnaryFunction`\<`A`, `B`\>                                  |
+| `op3`     | `UnaryFunction`\<`B`, `C`\>                                  |
+| `op4`     | `UnaryFunction`\<`C`, `D`\>                                  |
+| `op5`     | `UnaryFunction`\<`D`, `E`\>                                  |
+| `op6`     | `UnaryFunction`\<`E`, `F`\>                                  |
+
+##### Returns
+
+`F`
+
+##### Inherited from
+
+[`Subject`](Subject.md).[`pipe`](Subject.md#pipe)
+
+#### Call Signature
+
+```ts
+pipe<>(
+   op1: UnaryFunction<Observable<T>, A>,
+   op2: UnaryFunction<A, B>,
+   op3: UnaryFunction<B, C>,
+   op4: UnaryFunction<C, D>,
+   op5: UnaryFunction<D, E>,
+   op6: UnaryFunction<E, F>,
+   op7: UnaryFunction<F, G>): G;
+```
+
+Defined in: [observable/src/observable.ts:808](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L808)
+
+##### Parameters
+
+| Parameter | Type                                                         |
+| --------- | ------------------------------------------------------------ |
+| `op1`     | `UnaryFunction`\<[`Observable`](Observable.md)\<`T`\>, `A`\> |
+| `op2`     | `UnaryFunction`\<`A`, `B`\>                                  |
+| `op3`     | `UnaryFunction`\<`B`, `C`\>                                  |
+| `op4`     | `UnaryFunction`\<`C`, `D`\>                                  |
+| `op5`     | `UnaryFunction`\<`D`, `E`\>                                  |
+| `op6`     | `UnaryFunction`\<`E`, `F`\>                                  |
+| `op7`     | `UnaryFunction`\<`F`, `G`\>                                  |
+
+##### Returns
+
+`G`
+
+##### Inherited from
+
+[`Subject`](Subject.md).[`pipe`](Subject.md#pipe)
+
+#### Call Signature
+
+```ts
+pipe<>(
+   op1: UnaryFunction<Observable<T>, A>,
+   op2: UnaryFunction<A, B>,
+   op3: UnaryFunction<B, C>,
+   op4: UnaryFunction<C, D>,
+   op5: UnaryFunction<D, E>,
+   op6: UnaryFunction<E, F>,
+   op7: UnaryFunction<F, G>,
+   op8: UnaryFunction<G, H>): H;
+```
+
+Defined in: [observable/src/observable.ts:817](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L817)
+
+##### Parameters
+
+| Parameter | Type                                                         |
+| --------- | ------------------------------------------------------------ |
+| `op1`     | `UnaryFunction`\<[`Observable`](Observable.md)\<`T`\>, `A`\> |
+| `op2`     | `UnaryFunction`\<`A`, `B`\>                                  |
+| `op3`     | `UnaryFunction`\<`B`, `C`\>                                  |
+| `op4`     | `UnaryFunction`\<`C`, `D`\>                                  |
+| `op5`     | `UnaryFunction`\<`D`, `E`\>                                  |
+| `op6`     | `UnaryFunction`\<`E`, `F`\>                                  |
+| `op7`     | `UnaryFunction`\<`F`, `G`\>                                  |
+| `op8`     | `UnaryFunction`\<`G`, `H`\>                                  |
+
+##### Returns
+
+`H`
+
+##### Inherited from
+
+[`Subject`](Subject.md).[`pipe`](Subject.md#pipe)
+
+#### Call Signature
+
+```ts
+pipe<>(
+   op1: UnaryFunction<Observable<T>, A>,
+   op2: UnaryFunction<A, B>,
+   op3: UnaryFunction<B, C>,
+   op4: UnaryFunction<C, D>,
+   op5: UnaryFunction<D, E>,
+   op6: UnaryFunction<E, F>,
+   op7: UnaryFunction<F, G>,
+   op8: UnaryFunction<G, H>,
+   op9: UnaryFunction<H, I>): I;
+```
+
+Defined in: [observable/src/observable.ts:827](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L827)
+
+##### Parameters
+
+| Parameter | Type                                                         |
+| --------- | ------------------------------------------------------------ |
+| `op1`     | `UnaryFunction`\<[`Observable`](Observable.md)\<`T`\>, `A`\> |
+| `op2`     | `UnaryFunction`\<`A`, `B`\>                                  |
+| `op3`     | `UnaryFunction`\<`B`, `C`\>                                  |
+| `op4`     | `UnaryFunction`\<`C`, `D`\>                                  |
+| `op5`     | `UnaryFunction`\<`D`, `E`\>                                  |
+| `op6`     | `UnaryFunction`\<`E`, `F`\>                                  |
+| `op7`     | `UnaryFunction`\<`F`, `G`\>                                  |
+| `op8`     | `UnaryFunction`\<`G`, `H`\>                                  |
+| `op9`     | `UnaryFunction`\<`H`, `I`\>                                  |
+
+##### Returns
+
+`I`
+
+##### Inherited from
+
+[`Subject`](Subject.md).[`pipe`](Subject.md#pipe)
+
+#### Call Signature
+
+```ts
+pipe<>(
+   op1: UnaryFunction<Observable<T>, A>,
+   op2: UnaryFunction<A, B>,
+   op3: UnaryFunction<B, C>,
+   op4: UnaryFunction<C, D>,
+   op5: UnaryFunction<D, E>,
+   op6: UnaryFunction<E, F>,
+   op7: UnaryFunction<F, G>,
+   op8: UnaryFunction<G, H>,
+   op9: UnaryFunction<H, I>, ...
+operations: OperatorFunction<any, any>[]): Observable<unknown>;
+```
+
+Defined in: [observable/src/observable.ts:838](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L838)
+
+##### Parameters
+
+| Parameter       | Type                                                         |
+| --------------- | ------------------------------------------------------------ |
+| `op1`           | `UnaryFunction`\<[`Observable`](Observable.md)\<`T`\>, `A`\> |
+| `op2`           | `UnaryFunction`\<`A`, `B`\>                                  |
+| `op3`           | `UnaryFunction`\<`B`, `C`\>                                  |
+| `op4`           | `UnaryFunction`\<`C`, `D`\>                                  |
+| `op5`           | `UnaryFunction`\<`D`, `E`\>                                  |
+| `op6`           | `UnaryFunction`\<`E`, `F`\>                                  |
+| `op7`           | `UnaryFunction`\<`F`, `G`\>                                  |
+| `op8`           | `UnaryFunction`\<`G`, `H`\>                                  |
+| `op9`           | `UnaryFunction`\<`H`, `I`\>                                  |
+| ...`operations` | `OperatorFunction`\<`any`, `any`\>[]                         |
+
+##### Returns
+
+[`Observable`](Observable.md)\<`unknown`\>
+
+##### Inherited from
+
+[`Subject`](Subject.md).[`pipe`](Subject.md#pipe)
+
+#### Call Signature
+
 ```ts
 pipe<>(
    op1: UnaryFunction<Observable<T>, A>,
@@ -325,9 +678,7 @@ pipe<>(
 
 Defined in: [observable/src/observable.ts:850](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L850)
 
-Used to stitch together functional operators into a chain.
-
-#### Parameters
+##### Parameters
 
 | Parameter       | Type                                                         |
 | --------------- | ------------------------------------------------------------ |
@@ -342,25 +693,11 @@ Used to stitch together functional operators into a chain.
 | `op9`           | `UnaryFunction`\<`H`, `I`\>                                  |
 | ...`operations` | `UnaryFunction`\<`any`, `any`\>[]                            |
 
-#### Returns
+##### Returns
 
 `unknown`
 
-#### Example
-
-```ts
-import { interval, filter, map, scan } from 'rxjs';
-
-interval(1000)
-  .pipe(
-    filter((x) => x % 2 === 0),
-    map((x) => x + x),
-    scan((acc, x) => acc + x)
-  )
-  .subscribe((x) => console.log(x));
-```
-
-#### Inherited from
+##### Inherited from
 
 [`Subject`](Subject.md).[`pipe`](Subject.md#pipe)
 

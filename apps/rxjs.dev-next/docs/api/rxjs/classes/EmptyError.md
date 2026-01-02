@@ -2,10 +2,10 @@
 
 # Class: EmptyError
 
-> An error thrown when an Observable or a sequence was queried but has no
-> elements.
-
 ## Description
+
+An error thrown when an Observable or a sequence was queried but has no
+elements.
 
 Defined in: [rxjs/src/internal/util/EmptyError.ts:11](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/util/EmptyError.ts#L11)
 

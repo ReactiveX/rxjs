@@ -2,10 +2,9 @@
 
 # Type Alias: ObservedValueTupleFromArray
 
-> Extracts a tuple of element types from an `ObservableInput<any>[]`.
-
 ## Description
 
+Extracts a tuple of element types from an `ObservableInput<any>[]`.
 If you have `O extends ObservableInput<any>[]` and you pass in
 `[Observable<string>, Observable<number>]` you would get back a type
 of `[string, number]`.

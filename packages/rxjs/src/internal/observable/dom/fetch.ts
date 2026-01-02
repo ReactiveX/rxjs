@@ -14,7 +14,8 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
  * Uses [the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) to
  * make an HTTP request.
  *
- * **WARNING** Parts of the fetch API are still experimental. `AbortController` is
+ * :::warning
+ * Parts of the fetch API are still experimental. `AbortController` is
  * required for this implementation to work and use cancellation appropriately.
  *
  * Will automatically set up an internal [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
@@ -85,8 +86,7 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
  * ```
  *
  * @param input - The resource you would like to fetch. Can be a url or a request object.
- * @param initWithSelector - A configuration object for the fetch.
- * [See MDN for more details](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
+ * @param initWithSelector - A configuration object for the fetch. [See MDN for more details](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
  * @returns Observable - An Observable, that when subscribed to, performs an HTTP request using the native `fetch`
  * function. The {@link rxjs!Subscription | Subscription} is tied to an `AbortController` for the fetch.
  */

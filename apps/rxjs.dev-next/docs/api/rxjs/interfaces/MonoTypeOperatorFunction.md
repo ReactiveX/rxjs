@@ -10,10 +10,6 @@ Used to describe [OperatorFunction](OperatorFunction.md) with the only one type:
 
 Defined in: [rxjs/src/internal/types.ts:39](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/types.ts#L39)
 
-A function type interface that describes a function that accepts and returns a parameter of the same type.
-
-Used to describe [OperatorFunction](OperatorFunction.md) with the only one type: `OperatorFunction<T, T>`.
-
 ## Extends
 
 - [`OperatorFunction`](OperatorFunction.md)\<`T`, `T`\>
@@ -23,10 +19,6 @@ MonoTypeOperatorFunction(source: Observable): Observable;
 ```
 
 Defined in: [rxjs/src/internal/types.ts:39](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/types.ts#L39)
-
-A function type interface that describes a function that accepts and returns a parameter of the same type.
-
-Used to describe [OperatorFunction](OperatorFunction.md) with the only one type: `OperatorFunction<T, T>`.
 
 ## Parameters
 

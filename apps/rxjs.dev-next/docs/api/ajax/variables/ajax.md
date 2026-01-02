@@ -15,11 +15,6 @@ const ajax: AjaxCreationMethod;
 
 Defined in: [rxjs/src/internal/ajax/ajax.ts:268](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/ajax/ajax.ts#L268)
 
-There is an ajax operator on the Rx object.
-
-It creates an observable for an Ajax request with either a request object with
-url, headers, etc or a string for a URL.
-
 ## Example
 
 Using `ajax()` to fetch the response object that is being returned from API

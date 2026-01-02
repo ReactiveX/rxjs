@@ -2,10 +2,9 @@
 
 # Type Alias: Head
 
-> Extracts the head of a tuple.
-
 ## Description
 
+Extracts the head of a tuple.
 If you declare `Head<[A, B, C]>` you will get back `A`.
 
 ```ts

@@ -2,13 +2,11 @@
 
 # Class: Subscription
 
-> Represents a disposable resource, such as the execution of an Observable.
+> Represents a disposable resource, such as the execution of an Observable. A
+> Subscription has one important method, `unsubscribe`, that takes no argument
+> and just disposes the resource held by the subscription.
 
 ## Description
-
-A
-Subscription has one important method, `unsubscribe`, that takes no argument
-and just disposes the resource held by the subscription.
 
 Additionally, subscriptions may be grouped together through the `add()`
 method, which will attach a child Subscription to the current Subscription.
@@ -16,15 +14,6 @@ When a Subscription is unsubscribed, all its children (and its grandchildren)
 will be unsubscribed as well.
 
 Defined in: [observable/src/observable.ts:49](https://github.com/ReactiveX/rxjs/blob/master/packages/observable/src/observable.ts#L49)
-
-Represents a disposable resource, such as the execution of an Observable. A
-Subscription has one important method, `unsubscribe`, that takes no argument
-and just disposes the resource held by the subscription.
-
-Additionally, subscriptions may be grouped together through the `add()`
-method, which will attach a child Subscription to the current Subscription.
-When a Subscription is unsubscribed, all its children (and its grandchildren)
-will be unsubscribed as well.
 
 ## Extended by
 

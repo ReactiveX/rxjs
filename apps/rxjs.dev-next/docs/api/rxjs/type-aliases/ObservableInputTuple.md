@@ -2,11 +2,9 @@
 
 # Type Alias: ObservableInputTuple
 
-> Used to infer types from arguments to functions like [forkJoin](.
-
 ## Description
 
-./functions/forkJoin.md).
+Used to infer types from arguments to functions like [forkJoin](../functions/forkJoin.md).
 So that you can have `forkJoin([Observable<A>, PromiseLike<B>]): Observable<[A, B]>`
 et al.
 

@@ -2,7 +2,9 @@
 
 # Type Alias: ObservableInput
 
-> Valid types that can be converted to observables.
+## Description
+
+Valid types that can be converted to observables.
 
 ```ts
 type ObservableInput<> =

@@ -2,7 +2,9 @@
 
 # Interface: TapObserver
 
-> An extension to the [Observer](Observer.%0A%0A#) interface used only by the [tap](../functions/tap.md) operator.
+> An extension to the [Observer](Observer.md) interface used only by the [tap](../functions/tap.md) operator.
+
+## Description
 
 It provides a useful set of callbacks a user can register to do side-effects in
 cases other than what the usual [Observer](Observer.md) callbacks are
@@ -11,14 +13,6 @@ cases other than what the usual [Observer](Observer.md) callbacks are
 [complete](https://rxjs.dev/guide/glossary-and-semantics#complete)).
 
 Defined in: [rxjs/src/internal/operators/tap.ts:50](https://github.com/ReactiveX/rxjs/blob/master/packages/rxjs/src/internal/operators/tap.ts#L50)
-
-An extension to the [Observer](Observer.md) interface used only by the [tap](../functions/tap.md) operator.
-
-It provides a useful set of callbacks a user can register to do side-effects in
-cases other than what the usual [Observer](Observer.md) callbacks are
-([next](https://rxjs.dev/guide/glossary-and-semantics#next),
-[error](https://rxjs.dev/guide/glossary-and-semantics#error) and/or
-[complete](https://rxjs.dev/guide/glossary-and-semantics#complete)).
 
 ## Example
 

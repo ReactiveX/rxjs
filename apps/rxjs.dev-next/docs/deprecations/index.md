@@ -5,4 +5,7 @@ This section aims to describe some of the deprecations and breaking changes we d
 them appropriately in a changelog. Additionally, we can provide code examples in the documentation, to make required changes more comprehensible and therefore
 lower migration efforts.
 
-Do notice that this is not a complete list, please see the [changelog](https://github.com/ReactiveX/rxjs/blob/master/CHANGELOG.md) for the complete list.
+Do notice that this is not a complete list, please see the following changelogs for the complete list:
+
+- [v6.x changelog](https://github.com/ReactiveX/rxjs/blob/6.x/CHANGELOG.md)
+- [v7.x changelog](./breaking-changes.md)
