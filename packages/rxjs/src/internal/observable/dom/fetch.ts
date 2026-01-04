@@ -1,5 +1,6 @@
 import { operate, Observable, from } from '@rxjs/observable';
 import type { ObservableInput } from '../../types.js';
+import { ServerSentEventItem, handleServerSentEvents } from './sse.js';
 
 export function fromFetch<T>(
   input: string | Request,
@@ -9,7 +10,30 @@ export function fromFetch<T>(
 ): Observable<T>;
 
 export function fromFetch(input: string | Request, init?: RequestInit): Observable<Response>;
-
+export function fromFetch(
+  input: string | Request,
+  init: RequestInit & {
+    selector: 'sse' | 'server-sent-event';
+  }
+): Observable<ServerSentEventItem>;
+export function fromFetch(
+  input: string | Request,
+  init: RequestInit & {
+    selector: 'text';
+  }
+): Observable<string>;
+export function fromFetch(
+  input: string | Request,
+  init: RequestInit & {
+    selector: 'formdata' | 'form-data';
+  }
+): Observable<FormData>;
+export function fromFetch(
+  input: string | Request,
+  init: RequestInit & {
+    selector: 'arraybuffer' | 'array-buffer';
+  }
+): Observable<ArrayBuffer>;
 /**
  * Uses [the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) to
  * make an HTTP request.
@@ -26,7 +50,7 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
  *
  * ## Examples
  *
- * Basic use
+ * ### Basic use
  *
  * ```ts
  * import { fromFetch } from 'rxjs/fetch';
@@ -84,6 +108,35 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
  * });
  * ```
  *
+ * ### Server-Sent Events
+ * 
+ * To receive response in stream mode (Server-Sent Events).
+ * 
+ * ```ts
+ * import { of } from 'rxjs';
+ * import { fromFetch } from 'rxjs/fetch';
+ * 
+ * // URL_WITH_STREAM_MODE = "…";
+ * // REQUEST_BODY = {…};
+ *
+ * const data$ = fromFetch(URL_WITH_STREAM_MODE, {
+ *   selector: 'sse'
+ *   method: "POST",
+ *   body: JSON.stringify(REQUEST_BODY),
+ *   mode: "cors",
+ *   credentials: "include",
+ *   headers: {
+ *     "Content-Type": "application/json",
+ *     "Accept": "text/event-stream, application/json"
+ *   },
+ * });
+ *
+ * data$.subscribe({
+ *   next: result => console.log(result),
+ *   complete: () => console.log('done')
+ * });
+ * ```
+ * 
  * @param input The resource you would like to fetch. Can be a url or a request object.
  * @param initWithSelector A configuration object for the fetch.
  * [See MDN for more details](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
@@ -93,10 +146,11 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
 export function fromFetch<T>(
   input: string | Request,
   initWithSelector: RequestInit & {
-    selector?: (response: Response) => ObservableInput<T>;
+    selector?: 'json' | 'text' | 'formdata' | 'form-data' | 'arraybuffer' | 'array-buffer' | 'sse' | 'server-sent-event' | ((response: Response) => ObservableInput<T>);
   } = {}
 ): Observable<Response | T> {
-  const { selector, ...init } = initWithSelector;
+  const { selector: originalSelector, ...init } = initWithSelector;
+  let selector = originalSelector;
   return new Observable<Response | T>((destination) => {
     // Our controller for aborting this fetch.
     // Any externally provided AbortSignal will have to call
@@ -148,6 +202,48 @@ export function fromFetch<T>(
           // If we have a selector function, use it to project our response.
           // Note that any error that comes from our selector will be
           // sent to the promise `catch` below and handled.
+
+          if (typeof selector === 'string') {
+            // The field `selector` can be an enum to return
+            // in the specific type.
+            switch (selector.toLowerCase()) {
+              case 'json':
+                selector = response => response.json();
+                break;
+              case 'text':
+                selector = response => response.text() as Promise<T>;
+                break;
+              case 'formdata':
+              case 'form-data':
+                selector = response => response.formData() as Promise<T>;
+                break;
+              case 'blob':
+                selector = response => response.blob() as Promise<T>;
+                break;
+              case 'arraybuffer':
+              case 'array-buffer':
+                selector = response => response.arrayBuffer() as Promise<T>;
+                break;
+              case 'sse':
+              case 'server-sent-event':
+                // Handle Server-Sent Events.
+                handleServerSentEvents(response, null, item => {
+                  // Notify the SSE item.
+                  destination.next(item as T);
+                }).then(arr => {
+                  abortable = false;
+                  destination.complete();
+                  return arr;
+                }, handleError);
+                return;
+              default:
+                abortable = false;
+                destination.error('selector does not support');
+                return;
+            }
+          }
+
+          // Otherwise, `selector` is the function to project response.
           from(selector(response)).subscribe(
             operate({
               destination,
