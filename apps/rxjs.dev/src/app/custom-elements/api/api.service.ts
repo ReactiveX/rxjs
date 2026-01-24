@@ -80,9 +80,9 @@ export class ApiService implements OnDestroy {
       .subscribe(
         sections => this.sectionsSubject.next(sections),
         (err: HttpErrorResponse) => {
-          // TODO: handle error
           this.logger.error(err);
-          throw err; // rethrow for now.
+          // Fallback to empty sections to avoid breaking the UI on fetch failure.
+          this.sectionsSubject.next([]);
         }
       );
   }
