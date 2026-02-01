@@ -1,0 +1,34 @@
+{
+  "name": "rxjs-dev-next",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "marbles:generate": "tsx tools/marbles/generate-diagrams.ts",
+    "preapi:generate": "npm run marbles:generate",
+    "api:generate": "typedoc && tsx tools/api-generator/index.ts",
+    "dev": "npm run api:generate && vitepress dev",
+    "build": "npm run api:generate && vitepress build",
+    "preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "@swirly/parser": "^0.18.1",
+    "@swirly/renderer-node": "^0.18.2",
+    "@swirly/types": "^0.18.1",
+    "tailwindcss": "^4.0.0",
+    "postcss": "^8.5.3",
+    "autoprefixer": "^10.4.20",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@nuxt/ui": "^4.3.0",
+    "typedoc": "^0.28.15",
+    "typedoc-vitepress-theme": "^1.1.2",
+    "typedoc-plugin-markdown": "^4.9.0",
+    "typedoc-plugin-default-groups": "^1.0.2",
+    "tsx": "^4.7.0",
+    "shiki": "^1.0.0",
+    "svgo": "^3.0.0",
+    "@vueuse/core": "^14.1.0",
+    "vitepress": "^1.6.4"
+  }
+}
