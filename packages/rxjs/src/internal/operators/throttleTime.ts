@@ -37,6 +37,22 @@ import { timer } from '../observable/timer.js';
  * result.subscribe(x => console.log(x));
  * ```
  *
+ * ### Throttle with trailing emission
+ *
+ * Emit both the first and the last value in each throttle window by setting
+ * `leading: true` and `trailing: true` in the config
+ *
+ * ```ts
+ * import { fromEvent, throttleTime } from 'rxjs';
+ *
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(
+ *   throttleTime(1000, undefined, { leading: true, trailing: true })
+ * );
+ *
+ * result.subscribe(x => console.log(x));
+ * ```
+ *
  * @see {@link auditTime}
  * @see {@link debounceTime}
  * @see {@link delay}

@@ -61,4 +61,5 @@ if (typeof Symbol.dispose !== 'symbol') {
 
 
 //setup sinon-chai
-chai.use(sinonChai);
+// In Node 24+ ESM interop, `import * as x` wraps the CJS default export under `.default`
+chai.use((sinonChai as any).default ?? sinonChai);
