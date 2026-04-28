@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { queueScheduler, Subscription, merge, Subject, Observable, observeOn } from 'rxjs';
+import { queueScheduler, Subscription, merge, Subject, Observable, observeOn, config } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -59,96 +59,108 @@ describe('Scheduler.queue', () => {
     sandbox.restore();
   });
 
-  it('should throw error but only unsubscribe the erroring action, not siblings', () => {
-    const actions: Subscription[] = [];
-    let action2Exec = false;
-    let action3Exec = false;
-    let errorValue: any = undefined;
-    try {
-      queue.schedule(() => {
-        actions.push(
-          queue.schedule(() => { throw new Error('oops'); }),
-          queue.schedule(() => { action2Exec = true; }),
-          queue.schedule(() => { action3Exec = true; })
-        );
-      });
-    } catch (e) {
-      errorValue = e;
-    }
-    expect(errorValue).exist;
-    expect(errorValue.message).to.equal('oops');
-    expect(actions[0].closed).to.be.true;
-    expect(actions[1].closed).to.be.false;
-    expect(actions[2].closed).to.be.false;
-    expect(action2Exec).to.be.false;
-    expect(action3Exec).to.be.false;
+  it('should report errors via reportUnhandledError instead of throwing synchronously', () => {
+    const sandbox = sinon.createSandbox();
+    const fakeTimer = sandbox.useFakeTimers();
+    const errors: any[] = [];
+    config.onUnhandledError = (err) => errors.push(err);
+
+    queue.schedule(() => {
+      queue.schedule(() => { throw new Error('oops'); });
+    });
+
+    // Error is not thrown synchronously
+    expect(errors).to.deep.equal([]);
+
+    // Error surfaces asynchronously via onUnhandledError
+    fakeTimer.tick(0);
+    expect(errors.length).to.equal(1);
+    expect(errors[0].message).to.equal('oops');
+
+    config.onUnhandledError = null;
+    sandbox.restore();
   });
 
   it('should not unsubscribe sibling actions when one action errors during flush', () => {
+    const sandbox = sinon.createSandbox();
+    const fakeTimer = sandbox.useFakeTimers();
+    config.onUnhandledError = () => {};
+
     const actions: Subscription[] = [];
-    let errorValue: any;
-    try {
-      queue.schedule(() => {
-        actions.push(
-          queue.schedule(() => { throw new Error('oops'); }),
-          queue.schedule(() => {}),
-          queue.schedule(() => {})
-        );
-      });
-    } catch (e) {
-      errorValue = e;
-    }
-    expect(errorValue).to.exist;
-    expect(errorValue.message).to.equal('oops');
+    queue.schedule(() => {
+      actions.push(
+        queue.schedule(() => { throw new Error('oops'); }),
+        queue.schedule(() => {}),
+        queue.schedule(() => {})
+      );
+    });
+
+    fakeTimer.tick(0);
+
     expect(actions[0].closed).to.be.true;
     expect(actions[1].closed).to.be.false;
     expect(actions[2].closed).to.be.false;
+
+    config.onUnhandledError = null;
+    sandbox.restore();
   });
 
-  it('should execute surviving sibling actions in the next flush after an error', () => {
+  it('should continue executing sibling actions in the same flush after an error', () => {
+    const sandbox = sinon.createSandbox();
+    const fakeTimer = sandbox.useFakeTimers();
+    config.onUnhandledError = () => {};
+
     let action2Exec = false;
     let action3Exec = false;
-    try {
-      queue.schedule(() => {
-        queue.schedule(() => { throw new Error('oops'); });
-        queue.schedule(() => { action2Exec = true; });
-        queue.schedule(() => { action3Exec = true; });
-      });
-    } catch (e) {
-      // expected
-    }
-    expect(action2Exec).to.be.false;
-    expect(action3Exec).to.be.false;
+    queue.schedule(() => {
+      queue.schedule(() => { throw new Error('oops'); });
+      queue.schedule(() => { action2Exec = true; });
+      queue.schedule(() => { action3Exec = true; });
+    });
 
-    queue.schedule(() => {});
-
+    // Siblings execute in the same flush — no need for a second flush
     expect(action2Exec).to.be.true;
     expect(action3Exec).to.be.true;
+
+    fakeTimer.tick(0);
+    config.onUnhandledError = null;
+    sandbox.restore();
   });
 
-  it('should not destroy sibling scheduled actions when one errors (NgRx pattern)', () => {
-    // Replicates the NgRx pattern: an upstream observeOn(queueScheduler)
-    // delivers a value, and during that delivery, multiple downstream
-    // subscribers are independently scheduled onto the queue.
-    // When one subscriber's handler throws, the others should survive.
+  it('should not tear down the subscriber chain when a queued action errors (NgRx pattern)', () => {
+    const sandbox = sinon.createSandbox();
+    const fakeTimer = sandbox.useFakeTimers();
+    config.onUnhandledError = () => {};
+
+    const source = new Subject<number>();
     const results: number[] = [];
 
-    try {
-      queue.schedule(() => {
-        // This outer action represents the upstream observeOn delivery.
-        // During execution, it causes multiple downstream subscribers
-        // to be independently scheduled (pushed to queue since _active is true).
-        queue.schedule(() => { throw new Error('subscriber 1 error'); });
-        queue.schedule(() => { results.push(42); });
-      });
-    } catch (e) {
-      // expected from subscriber 1
-    }
+    const scheduled$ = source.pipe(observeOn(queue));
 
-    expect(results).to.deep.equal([]);
+    // Subscriber 1 will throw
+    const sub1 = scheduled$.subscribe({
+      next: () => { throw new Error('subscriber 1 error'); }
+    });
+    // Subscriber 2 is innocent
+    const sub2 = scheduled$.subscribe({
+      next: (v) => results.push(v)
+    });
 
-    // The second action should have survived and executes in the next flush
-    queue.schedule(() => {});
+    source.next(42);
+
+    fakeTimer.tick(0);
+
+    // The subscriber chain should remain intact — neither subscription
+    // should have been torn down by the error propagation.
+    expect(sub1.closed).to.be.false;
+    expect(sub2.closed).to.be.false;
     expect(results).to.deep.equal([42]);
+
+    // Verify the store is still alive — subsequent emissions still work
+    source.next(99);
+    expect(results).to.deep.equal([42, 99]);
+
+    config.onUnhandledError = null;
+    sandbox.restore();
   });
 });

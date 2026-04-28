@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { queueScheduler as queue } from 'rxjs';
+import * as sinon from 'sinon';
+import { queueScheduler as queue, config } from 'rxjs';
 import { QueueScheduler } from 'rxjs/internal/scheduler/QueueScheduler';
 
 /** @test {Scheduler} */
@@ -50,17 +51,29 @@ describe('Scheduler.queue', () => {
   });
 
   it('should be reusable after an error is thrown during execution', (done) => {
+    const sandbox = sinon.createSandbox();
+    const fakeTimer = sandbox.useFakeTimers();
+    const errors: any[] = [];
+    config.onUnhandledError = (err) => errors.push(err);
+
     const results: number[] = [];
 
-    expect(() => {
-      queue.schedule(() => {
-        results.push(1);
-      });
+    queue.schedule(() => {
+      results.push(1);
+    });
 
-      queue.schedule(() => {
-        throw new Error('bad');
-      });
-    }).to.throw(Error, 'bad');
+    queue.schedule(() => {
+      throw new Error('bad');
+    });
+
+    // Error is reported asynchronously, not thrown synchronously
+    expect(results).to.deep.equal([1]);
+    fakeTimer.tick(0);
+    expect(errors.length).to.equal(1);
+    expect(errors[0].message).to.equal('bad');
+
+    config.onUnhandledError = null;
+    sandbox.restore();
 
     setTimeout(() => {
       queue.schedule(() => {
