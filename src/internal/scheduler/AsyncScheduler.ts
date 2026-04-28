@@ -43,9 +43,6 @@ export class AsyncScheduler extends Scheduler {
     this._active = false;
 
     if (error) {
-      while ((action = actions.shift()!)) {
-        action.unsubscribe();
-      }
       throw error;
     }
   }

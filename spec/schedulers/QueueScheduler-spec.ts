@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { queueScheduler, Subscription, merge } from 'rxjs';
+import { queueScheduler, Subscription, merge, Subject, Observable, observeOn } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -59,7 +59,7 @@ describe('Scheduler.queue', () => {
     sandbox.restore();
   });
 
-  it('should unsubscribe the rest of the scheduled actions if an action throws an error', () => {
+  it('should throw error but only unsubscribe the erroring action, not siblings', () => {
     const actions: Subscription[] = [];
     let action2Exec = false;
     let action3Exec = false;
@@ -75,10 +75,80 @@ describe('Scheduler.queue', () => {
     } catch (e) {
       errorValue = e;
     }
-    expect(actions.every((action) => action.closed)).to.be.true;
-    expect(action2Exec).to.be.false;
-    expect(action3Exec).to.be.false;
     expect(errorValue).exist;
     expect(errorValue.message).to.equal('oops');
+    expect(actions[0].closed).to.be.true;
+    expect(actions[1].closed).to.be.false;
+    expect(actions[2].closed).to.be.false;
+    expect(action2Exec).to.be.false;
+    expect(action3Exec).to.be.false;
+  });
+
+  it('should not unsubscribe sibling actions when one action errors during flush', () => {
+    const actions: Subscription[] = [];
+    let errorValue: any;
+    try {
+      queue.schedule(() => {
+        actions.push(
+          queue.schedule(() => { throw new Error('oops'); }),
+          queue.schedule(() => {}),
+          queue.schedule(() => {})
+        );
+      });
+    } catch (e) {
+      errorValue = e;
+    }
+    expect(errorValue).to.exist;
+    expect(errorValue.message).to.equal('oops');
+    expect(actions[0].closed).to.be.true;
+    expect(actions[1].closed).to.be.false;
+    expect(actions[2].closed).to.be.false;
+  });
+
+  it('should execute surviving sibling actions in the next flush after an error', () => {
+    let action2Exec = false;
+    let action3Exec = false;
+    try {
+      queue.schedule(() => {
+        queue.schedule(() => { throw new Error('oops'); });
+        queue.schedule(() => { action2Exec = true; });
+        queue.schedule(() => { action3Exec = true; });
+      });
+    } catch (e) {
+      // expected
+    }
+    expect(action2Exec).to.be.false;
+    expect(action3Exec).to.be.false;
+
+    queue.schedule(() => {});
+
+    expect(action2Exec).to.be.true;
+    expect(action3Exec).to.be.true;
+  });
+
+  it('should not destroy sibling scheduled actions when one errors (NgRx pattern)', () => {
+    // Replicates the NgRx pattern: an upstream observeOn(queueScheduler)
+    // delivers a value, and during that delivery, multiple downstream
+    // subscribers are independently scheduled onto the queue.
+    // When one subscriber's handler throws, the others should survive.
+    const results: number[] = [];
+
+    try {
+      queue.schedule(() => {
+        // This outer action represents the upstream observeOn delivery.
+        // During execution, it causes multiple downstream subscribers
+        // to be independently scheduled (pushed to queue since _active is true).
+        queue.schedule(() => { throw new Error('subscriber 1 error'); });
+        queue.schedule(() => { results.push(42); });
+      });
+    } catch (e) {
+      // expected from subscriber 1
+    }
+
+    expect(results).to.deep.equal([]);
+
+    // The second action should have survived and executes in the next flush
+    queue.schedule(() => {});
+    expect(results).to.deep.equal([42]);
   });
 });
