@@ -1,6 +1,7 @@
 import { Scheduler } from '../Scheduler';
 import { Action } from './Action';
 import { AsyncAction } from './AsyncAction';
+import { reportUnhandledError } from '../util/reportUnhandledError';
 import { TimerHandle } from './timerHandle';
 
 export class AsyncScheduler extends Scheduler {
@@ -36,17 +37,16 @@ export class AsyncScheduler extends Scheduler {
 
     do {
       if ((error = action.execute(action.state, action.delay))) {
-        break;
+        // Report the error asynchronously so it doesn't tear down the
+        // synchronous subscriber chain (e.g. observeOn(queueScheduler)).
+        // The erroring action already unsubscribed itself in _execute().
+        // Continue flushing remaining actions — they are independent
+        // operations that should not be affected by a sibling's error.
+        reportUnhandledError(error);
+        error = null;
       }
     } while ((action = actions.shift()!)); // exhaust the scheduler queue
 
     this._active = false;
-
-    if (error) {
-      while ((action = actions.shift()!)) {
-        action.unsubscribe();
-      }
-      throw error;
-    }
   }
 }
