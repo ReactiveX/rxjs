@@ -37,9 +37,24 @@ import { timer } from '../observable/timer.js';
  * result.subscribe(x => console.log(x));
  * ```
  *
+ * ### Emit the first click immediately, then emit the latest click after one second
+ *
+ * ```ts
+ * import { asyncScheduler, fromEvent, throttleTime } from 'rxjs';
+ *
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(throttleTime(1000, asyncScheduler, { trailing: true }));
+ *
+ * result.subscribe(x => console.log(x));
+ * ```
+ *
+ * @see {@link audit}
  * @see {@link auditTime}
+ * @see {@link debounce}
  * @see {@link debounceTime}
  * @see {@link delay}
+ * @see {@link delayWhen}
+ * @see {@link sample}
  * @see {@link sampleTime}
  * @see {@link throttle}
  *
