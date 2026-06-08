@@ -20,9 +20,11 @@ export function concat<T extends readonly unknown[]>(
  * ![](concat.png)
  *
  * `concat` joins multiple Observables together, by subscribing to them one at a time and
- * merging their results into the output Observable. You can pass either an array of
- * Observables, or put them directly as arguments. Passing an empty array will result
- * in Observable that completes immediately.
+ * merging their results into the output Observable. Pass each Observable directly
+ * as an argument. If you already have an array of Observables, spread the array into
+ * `concat` so each Observable is passed as its own input. Passing the array itself
+ * will emit the Observables in the array instead of subscribing to them sequentially.
+ * Passing no Observables will result in an Observable that completes immediately.
  *
  * `concat` will subscribe to first input Observable and emit all its values, without
  * changing or affecting them in any way. When that Observable completes, it will
@@ -80,6 +82,23 @@ export function concat<T extends readonly unknown[]>(
  * // -1000ms-> 0 -1000ms-> 1 -1000ms-> ... 9
  * // -2000ms-> 0 -2000ms-> 1 -2000ms-> ... 5
  * // -500ms-> 0 -500ms-> 1 -500ms-> ... 9
+ * ```
+ *
+ * Concatenate an array of Observables
+ *
+ * ```ts
+ * import { interval, take, concat } from 'rxjs';
+ *
+ * const timer1 = interval(1000).pipe(take(10));
+ * const timer2 = interval(2000).pipe(take(6));
+ * const timer3 = interval(500).pipe(take(10));
+ *
+ * const timers = [timer1, timer2, timer3];
+ * const result = concat(...timers);
+ *
+ * result.subscribe(x => console.log(x));
+ *
+ * // The spread is important. `concat(timers)` emits the Observables themselves.
  * ```
  *
  * Concatenate the same Observable to repeat it
