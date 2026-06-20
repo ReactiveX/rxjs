@@ -37,6 +37,12 @@ By contributing or commenting on issues in this repository, whether you've read 
 npm install rxjs
 ```
 
+Or, using [Deno](https://deno.com/):
+
+```shell
+deno install rxjs
+```
+
 It's recommended to pull in the Observable creation methods you need directly from `'rxjs'` as shown below with `range`.
 If you're using RxJS version 7.2 or above, you can pull in any operator you need from the same spot, `'rxjs'`.
 
