@@ -46,8 +46,11 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
     ? () => EMPTY
     : (source) =>
         new Observable((destination) => {
-          // This is a ring buffer that will hold our values
-          let ring = new Array<T>(count);
+          // This is a ring buffer that will hold our values.
+          // For non-finite counts (e.g. Infinity), use a growable array because
+          // `new Array(Infinity)` throws a RangeError. The ring-buffer math still
+          // works correctly for Infinity since `n % Infinity === n` for all finite n.
+          let ring: T[] = isFinite(count) ? new Array<T>(count) : [];
           // This counter is how we track where we are at in the ring buffer.
           let counter = 0;
           source.subscribe(

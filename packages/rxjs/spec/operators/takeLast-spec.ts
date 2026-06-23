@@ -1,4 +1,5 @@
 import { takeLast, mergeMap } from 'rxjs/operators';
+import { expect } from 'chai';
 import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
@@ -203,6 +204,27 @@ describe('takeLast operator', () => {
 
       expectObservable(result, unsub).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
+  it('should not throw when count is Infinity and should emit all values', () => {
+    const results: number[] = [];
+    expect(() => {
+      of(1, 2, 3)
+        .pipe(takeLast(Infinity))
+        .subscribe((x) => results.push(x));
+    }).not.to.throw();
+    expect(results).to.deep.equal([1, 2, 3]);
+  });
+
+  it('should emit all values when count exceeds source length (Infinity case)', () => {
+    rxTest.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('(abc|)');
+      const expected = '   (abc|)';
+      const subs = '       (^!)';
+
+      expectObservable(source.pipe(takeLast(Infinity))).toBe(expected);
+      expectSubscriptions(source.subscriptions).toBe(subs);
     });
   });
 });
