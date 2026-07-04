@@ -1,0 +1,51 @@
+---
+description: Type-level test conventions with dtslint directives
+globs: packages/rxjs/spec-dtslint/**
+alwaysApply: false
+---
+
+# dtslint Type Tests
+
+## File layout
+
+Mirror operator/API name: `spec-dtslint/operators/<name>-spec.ts`
+
+## Patterns
+
+```typescript
+import type { Observable } from 'rxjs';
+import { of } from 'rxjs';
+import { filter } from 'rxjs/operators';
+
+it('should support a predicate', () => {
+  const o = of(1, 2, 3).pipe(filter((value) => value < 3)); // $ExpectType Observable<number>
+});
+
+it('should enforce types', () => {
+  const o = of(1, 2, 3).pipe(filter()); // $ExpectError
+});
+
+it('should deprecate thisArg usage', () => {
+  const a = of(1, 2, 3).pipe(filter(Boolean)); // $ExpectNoDeprecation
+  const b = of(1, 2, 3).pipe(filter(Boolean, {})); // $ExpectDeprecation
+});
+```
+
+Directives are **inline end-of-line comments** on the expression they assert:
+
+- `// $ExpectType <Type>` — inferred type
+- `// $ExpectError` — type error on that line
+- `// $ExpectDeprecation` / `// $ExpectNoDeprecation` — deprecation diagnostics
+
+## When to add
+
+- New operators: type test at end of marble spec **and** dedicated dtslint file when signatures are non-trivial
+- Cover overloads, type guards, deprecations, and invalid argument combinations
+
+## Run
+
+```sh
+yarn workspace rxjs dtslint
+```
+
+Runs ESLint + `tsc -b` on type definitions.

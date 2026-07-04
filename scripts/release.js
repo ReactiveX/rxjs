@@ -71,7 +71,17 @@ const yargs = require('nx/node_modules/yargs');
     });
 
     if (!options.dryRun) {
-      console.log('Check GitHub: https://github.com/ReactiveX/rxjs/actions/workflows/publish.yml');
+      const registry = process.env.NPM_CONFIG_REGISTRY || process.env.npm_config_registry;
+      if (registry) {
+        console.log(`Publishing to ${registry}...`);
+        execSync('node scripts/publish.js', {
+          stdio: 'inherit',
+          env: process.env,
+          maxBuffer: 1024 * 1024 * 1024,
+        });
+      } else {
+        console.log('Check GitHub: https://github.com/ReactiveX/rxjs/actions/workflows/publish.yml');
+      }
     }
 
     process.exit(0);

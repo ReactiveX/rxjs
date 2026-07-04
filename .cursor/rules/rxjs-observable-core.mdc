@@ -1,0 +1,37 @@
+---
+description: @rxjs/observable package — Vitest, tshy build, dependency boundaries
+globs: packages/observable/**
+alwaysApply: false
+---
+
+# @rxjs/observable
+
+## Scope
+
+Core primitives only: `Observable`, `Subscriber`, `Subscription`, `operate()`. No operators.
+
+## Tests
+
+Vitest — not Mocha marbles:
+
+```typescript
+import { describe, expect, it, vi } from 'vitest';
+```
+
+Spec files: `packages/observable/src/*.spec.ts`
+
+## Build
+
+`tshy` for dual CJS/ESM output (not `tsc -b` like `packages/rxjs`).
+
+## Dependency direction
+
+- `packages/rxjs` depends on `@rxjs/observable`
+- Do **not** import rxjs operators or schedulers from this package
+
+## Commands
+
+```sh
+yarn nx test @rxjs/observable
+yarn nx build @rxjs/observable
+```

@@ -1,0 +1,33 @@
+# Local Verdaccio registry (optional — for offline/testing publishes)
+storage: ./.verdaccio/storage
+plugins: ./.verdaccio/plugins
+
+web:
+  enable: true
+  title: RxJS Local Registry
+
+auth:
+  htpasswd:
+    file: ./.verdaccio/htpasswd
+    max_users: 1000
+
+packages:
+  '@rxjs/*':
+    access: $all
+    publish: $all
+    unpublish: $all
+    proxy: npmjs
+  'rxjs':
+    access: $all
+    publish: $all
+    unpublish: $all
+    proxy: npmjs
+  '**':
+    access: $all
+    publish: $all
+    unpublish: $all
+    proxy: npmjs
+
+log: { type: stdout, format: pretty, level: warn }
+
+listen: localhost:4873

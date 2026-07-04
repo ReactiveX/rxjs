@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": ".cursor/hooks/format-and-lint.sh"
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/before-git-commit.sh",
+        "matcher": "git\\s+commit",
+        "failClosed": true
+      }
+    ]
+  }
+}

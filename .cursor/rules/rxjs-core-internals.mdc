@@ -1,0 +1,55 @@
+---
+description: Non-operator RxJS internals — observables, subjects, schedulers, ajax, util
+globs: packages/rxjs/src/internal/*.ts,packages/rxjs/src/internal/observable/**,packages/rxjs/src/internal/scheduler/**,packages/rxjs/src/internal/ajax/**,packages/rxjs/src/internal/util/**,packages/rxjs/src/internal/scheduled/**,packages/rxjs/src/internal/testing/**,packages/rxjs/src/ajax/**,packages/rxjs/src/fetch/**,packages/rxjs/src/testing/**,packages/rxjs/src/webSocket/**
+alwaysApply: false
+---
+
+# RxJS Core Internals
+
+Not pipeable operators. For operator patterns, see `rxjs-operators`.
+
+## Categories
+
+| Area | Path | Examples |
+|------|------|----------|
+| Creation functions | `internal/observable/` | `of`, `from`, `defer`, `timer` |
+| Subjects | `internal/*Subject.ts` | `BehaviorSubject`, `ReplaySubject` |
+| Schedulers | `internal/scheduler/` | `async`, `queue`, `animationFrame` |
+| Ajax / WebSocket | `internal/ajax/`, `webSocket/` | HTTP helpers, socket wrapper |
+| Utilities | `internal/util/` | errors, type guards, helpers |
+| Testing | `internal/testing/`, `src/testing/` | `TestScheduler`, test doubles |
+
+## Sibling references
+
+Before inventing patterns, read the nearest existing implementation and spec pair:
+
+| Area | Implementation | Spec |
+|------|----------------|------|
+| Creation | `internal/observable/defer.ts`, `timer.ts` | `spec/observables/defer-spec.ts` |
+| Schedulers | `internal/scheduler/AsyncScheduler.ts`, `async.ts`, `AsyncAction.ts` | `spec/schedulers/QueueScheduler-spec.ts` |
+| Timer limits | `internal/util/maxTimerDelay.ts` (when present), `AsyncAction.schedule` | `spec/observables/timer-spec.ts`, `spec/operators/delay-spec.ts` |
+| Subjects | `internal/BehaviorSubject.ts` | `spec/subjects/BehaviorSubject-spec.ts` |
+| Ajax | `internal/ajax/ajax.ts` | `spec/ajax/index-spec.ts` |
+
+Real timer validation for `asyncScheduler` belongs in **`AsyncAction.schedule`** (the `setInterval` choke point), not only in individual operators.
+
+## Implementation
+
+- Creation functions return `Observable` directly (not `OperatorFunction`)
+- Subjects extend `Subject`; schedulers implement `Scheduler` / `SchedulerAction`
+- Use `@rxjs/observable` primitives; keep operator logic out of this layer
+
+## Exports
+
+- Main API: `packages/rxjs/src/index.ts`
+- Subpath barrels: `src/ajax/`, `src/fetch/`, `src/testing/`, `src/webSocket/`
+
+## Tests
+
+- `spec/observables/`, `spec/subjects/`, `spec/schedulers/`, `spec/ajax/`, `spec/websocket/`
+- Marble tests where timing matters; synchronous Chai tests where appropriate
+- Not the operator-only canonical-case checklist — match patterns in sibling specs
+
+## JSDoc
+
+Public API still needs JSDoc with `@example`. Marble PNG diagrams when the API is stream-shaped.
