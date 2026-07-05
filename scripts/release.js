@@ -29,6 +29,11 @@ const yargs = require('nx/node_modules/yargs');
         description: 'The name of the git remote to push the release to, defaults to origin',
         type: 'string',
       })
+      .option('interactive', {
+        description: 'Whether or not to open an editor to review changelog entries, defaults to true. Set false for unattended runs',
+        type: 'boolean',
+        default: true,
+      })
       .parseAsync();
     if (!options.dryRun) {
       if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
@@ -46,6 +51,7 @@ const yargs = require('nx/node_modules/yargs');
     console.info(`dryRun    : ${options.dryRun} ${options.dryRun ? '😅' : '🚨🚨🚨'}`);
     console.info(`verbose   : ${options.verbose}`);
     console.info(`gitRemote : ${options.gitRemote}`);
+    console.info(`interactive : ${options.interactive}`);
     console.log();
 
     // Prepare the packages for publishing
@@ -64,7 +70,7 @@ const yargs = require('nx/node_modules/yargs');
     await releaseChangelog({
       versionData: projectsVersionData,
       version: workspaceVersion,
-      interactive: 'all',
+      interactive: options.interactive ? 'all' : undefined,
       gitRemote: options.gitRemote,
       dryRun: options.dryRun,
       verbose: options.verbose,

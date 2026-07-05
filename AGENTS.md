@@ -36,7 +36,7 @@ Progressive-disclosure rules live in `.cursor/rules/`:
 | `rxjs-github-issue`         | GitHub issue URL/number triage before coding                   |
 | `rxjs-conventional-commits` | Commit messages                                                |
 | `rxjs-firebase-docs`        | Docs preview deploy (Firebase MCP in `.cursor/mcp.json`)       |
-| `rxjs-verdaccio-publish`    | Release and publish packages                                   |
+| `rxjs-publish`              | Release and publish packages (any registry, incl. Verdaccio)   |
 
 Repo MCP: `.cursor/mcp.json` configures the Firebase server (`--only hosting`, scoped to `apps/rxjs.dev`). Each developer runs `firebase login` once; project ID lives in gitignored `.firebaserc.local`.
 
@@ -62,4 +62,4 @@ Repo MCP: `.cursor/mcp.json` configures the Firebase server (`--only hosting`, s
 | Release (version bump + GitHub release)  | `yarn release --dryRun=false`                                                                                          |
 | Publish to local registry                | set `NPM_CONFIG_REGISTRY`, then `yarn release` (see skill)                                                             |
 
-First-time setup: run `/rxjs-onboard`. Bug reports: `rxjs-github-issue` → `rxjs-repro-to-test` (test) or `rxjs-bug-fix` (full fix). Docs deploy: `/rxjs-firebase-docs`. Package release/publish: `/rxjs-verdaccio-publish`. Commits: conventional format in [CONTRIBUTING.md](CONTRIBUTING.md) (skill + hook + husky).
+First-time setup: run `/rxjs-onboard`. Bug reports: `rxjs-github-issue` → `rxjs-repro-to-test` (test) or `rxjs-bug-fix` (full fix). Docs deploy: `/rxjs-firebase-docs`. Package release/publish: `/rxjs-publish`. Commits: conventional format in [CONTRIBUTING.md](CONTRIBUTING.md) (skill + hook + husky).
