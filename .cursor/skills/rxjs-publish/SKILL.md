@@ -19,9 +19,11 @@ Same flow as upstream: **`yarn release`** bumps versions, writes changelogs, and
 
 ### 1. Prerequisites
 
-- `GH_TOKEN` or `GITHUB_TOKEN` with `repo` scope (required for a real release)
-- Clean working tree on the release branch
+- `GH_TOKEN` or `GITHUB_TOKEN` with `repo` scope (required for a real release). If neither is set, use the gh CLI: verify with `gh auth status`, then pass the token inline as `GH_TOKEN=$(gh auth token)` without printing it. If the keyring token is reported invalid, ask the user to run `gh auth login -h github.com` — that is interactive and cannot be done for them.
+- Clean working tree on the release branch — commit pending work first (see `rxjs-conventional-commits`)
 - For a fork: pass `--gitRemote=origin` (defaults to upstream `ReactiveX/rxjs`)
+
+**Sandboxed shells:** run release/publish commands **outside the sandbox** (they need git pushes, GitHub API, and registry access). The Nx daemon also cannot listen on its unix socket inside a sandbox — nx then hangs silently after "Nx Daemon was not able to compute the project graph". Set `NX_DAEMON=false` for all release commands to avoid this entirely. Keyring-backed `gh auth status` can also falsely report an invalid token inside the sandbox; check it unsandboxed before concluding auth is broken.
 
 ### 2. Local registry setup (optional — Verdaccio)
 
@@ -63,11 +65,11 @@ export NPM_CONFIG_USERCONFIG="$PWD/.npmrc.local"
 From repo root (request **network** permission):
 
 ```sh
-export GH_TOKEN=…                          # or GITHUB_TOKEN
+export NX_DAEMON=false                     # required in sandboxed/agent shells (see prerequisites)
 export NPM_CONFIG_REGISTRY=http://localhost:4873   # omit for npmjs-only (CI publishes)
 export NPM_CONFIG_TAG=latest               # stable; required when NPM_CONFIG_REGISTRY is set
 
-yarn release --dryRun=false --gitRemote=origin --interactive=false
+GH_TOKEN=$(gh auth token) yarn release --dryRun=false --gitRemote=origin --interactive=false
 ```
 
 `--interactive=false` skips the changelog editor prompt; without it, `yarn release` opens an editor and an unattended run hangs. Only omit it when the user wants to hand-edit the changelog.
@@ -80,11 +82,13 @@ For an explicit stable version instead of conventional-commits inference:
 yarn release --dryRun=false --gitRemote=origin --interactive=false --version 8.0.0
 ```
 
-Dry-run first when unsure:
+Dry-run first when unsure (no token needed; keep `--interactive=false` so it does not hang):
 
 ```sh
-yarn release --dryRun=true --gitRemote=origin
+yarn release --dryRun=true --gitRemote=origin --interactive=false
 ```
+
+**Version inference:** nx resolves the current version from the **latest git tag**, not from `package.json` (e.g. a fork tagged `6.2.0` releases `7.0.0` on a major bump even if `package.json` says `8.0.0-alpha.14`). Check `git tag --sort=-v:refname | head -5` and the dry-run output ("Resolved the current version as …") before a real release; pass `--version` to override.
 
 ### 4. npmjs.org (no local registry)
 
@@ -109,6 +113,7 @@ node -e "require('rxjs').of(1).subscribe(console.log)"
 | `NPM_CONFIG_REGISTRY`       | Target registry (e.g. `http://localhost:4873`); omit for npmjs via CI |
 | `NPM_CONFIG_TAG`            | Dist-tag for non-CI publishes — use `latest` for stable               |
 | `NPM_CONFIG_USERCONFIG`     | Point at `.npmrc.local` so publish auth stays out of `~/.npmrc`       |
+| `NX_DAEMON`                 | Set `false` in sandboxed/agent shells — the daemon socket is blocked  |
 
 CI derives the tag from the GitHub release semver (`latest` for stable, `next` for prerelease).
 
@@ -116,6 +121,7 @@ CI derives the tag from the GitHub release semver (`latest` for stable, `next` f
 
 - Skip `yarn release` and publish ad hoc (that bypasses version bump, changelog, and GitHub release — even for local test publishes, simulate the full release)
 - Run `npm login` (interactive; use the token setup above)
+- Print or echo the GitHub token (or its length) — pass `$(gh auth token)` inline to the command
 - Run the verify `npm install` inside the repo
 - Commit `.verdaccio/` or `.npmrc.local`
 
