@@ -1,9 +1,10 @@
-import { of, concat } from 'rxjs';
+import { of, concat, asyncScheduler } from 'rxjs';
 import { delay, repeatWhen, skip, take, tap, mergeMap, ignoreElements } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { observableMatcher } from '../helpers/observableMatcher';
+import { MAX_TIMER_DELAY } from '../../src/internal/util/maxTimerDelay';
 
 /** @test {delay} */
 describe('delay', () => {
@@ -275,6 +276,31 @@ describe('delay', () => {
       const result = concat(e1.pipe(delay(t)), of(undefined).pipe(delay(t), ignoreElements()));
 
       expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
+  it('should error when delay exceeds the platform max with asyncScheduler', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold('(a|)');
+      const e1subs = '(^!)';
+      const delayMs = MAX_TIMER_DELAY + 1;
+      const error = new RangeError(`Cannot schedule a delay longer than ${MAX_TIMER_DELAY}ms (2^31 - 1). Received ${delayMs}ms.`);
+
+      expectObservable(e1.pipe(delay(delayMs, asyncScheduler))).toBe('#', null, error);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
+  it('should error when delay Date exceeds the platform max with asyncScheduler', () => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      const e1 = cold('(a|)');
+      const e1subs = '(^!)';
+      const delayMs = MAX_TIMER_DELAY + 1;
+      const dueDate = new Date(asyncScheduler.now() + delayMs);
+      const error = new RangeError(`Cannot schedule a delay longer than ${MAX_TIMER_DELAY}ms (2^31 - 1). Received ${delayMs}ms.`);
+
+      expectObservable(e1.pipe(delay(dueDate, asyncScheduler))).toBe('#', null, error);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });

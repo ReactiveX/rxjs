@@ -72,6 +72,7 @@ import { executeSchedule } from '../util/executeSchedule.js';
  * ### Known Limitations
  *
  * - The {@link asyncScheduler} uses `setTimeout` which has limitations for how far in the future it can be scheduled.
+ *   Delays longer than `2^31 - 1` milliseconds (~24.8 days) throw a `RangeError`.
  *
  * - If a `scheduler` is provided that returns a timestamp other than an epoch from `now()`, and
  * a `Date` object is passed to the `dueTime` argument, the calculation for when the first emission
@@ -112,6 +113,7 @@ export function timer(due: number | Date, scheduler?: SchedulerLike): Observable
  * ### Known Limitations
  *
  * - The {@link asyncScheduler} uses `setTimeout` which has limitations for how far in the future it can be scheduled.
+ *   Delays longer than `2^31 - 1` milliseconds (~24.8 days) throw a `RangeError`.
  *
  * - If a `scheduler` is provided that returns a timestamp other than an epoch from `now()`, and
  * a `Date` object is passed to the `dueTime` argument, the calculation for when the first emission

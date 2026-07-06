@@ -56,6 +56,8 @@ import { timer } from '../observable/timer.js';
  * which the emission of the source items is delayed.
  * @param scheduler The {@link SchedulerLike} to use for managing the timers
  * that handle the time-shift for each item.
+ * @throws {RangeError} When using {@link asyncScheduler}, if the computed delay exceeds
+ * `2^31 - 1` milliseconds (~24.8 days).
  * @return A function that returns an Observable that delays the emissions of
  * the source Observable by the specified timeout or Date.
  */
