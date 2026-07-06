@@ -1,0 +1,34 @@
+---
+description: rxjs.dev docs site — dgeni API docs vs hand-written guides
+globs: apps/rxjs.dev/**
+alwaysApply: false
+---
+
+# rxjs.dev Docs Site
+
+## Two doc sources
+
+| Source | Location | How it updates |
+|--------|----------|----------------|
+| API docs | Generated from JSDoc in `packages/rxjs/src/` | Edit source JSDoc; run `yarn workspace rxjs.dev docs` |
+| Guides & deprecations | `apps/rxjs.dev/content/` | Edit markdown directly |
+
+Never edit generated API JSON output.
+
+## When changing public API
+
+Update JSDoc in `packages/rxjs/src/` (informal span, marble PNG, `@example`). Guides in `content/` only when adding narrative docs (e.g. new operator category in `content/guide/operators.md`).
+
+## App stack
+
+- Angular 13 docs application
+- Component tests: Jasmine/Karma (`yarn workspace rxjs.dev test`)
+- Doc generation: dgeni (`yarn workspace rxjs.dev docs`)
+
+## Dev
+
+```sh
+yarn workspace rxjs.dev start
+```
+
+Deep reference: [apps/rxjs.dev/README.md](../../apps/rxjs.dev/README.md)

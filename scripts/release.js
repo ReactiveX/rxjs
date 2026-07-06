@@ -29,6 +29,11 @@ const yargs = require('nx/node_modules/yargs');
         description: 'The name of the git remote to push the release to, defaults to origin',
         type: 'string',
       })
+      .option('interactive', {
+        description: 'Whether or not to open an editor to review changelog entries, defaults to true. Set false for unattended runs',
+        type: 'boolean',
+        default: true,
+      })
       .parseAsync();
     if (!options.dryRun) {
       if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
@@ -46,6 +51,7 @@ const yargs = require('nx/node_modules/yargs');
     console.info(`dryRun    : ${options.dryRun} ${options.dryRun ? '😅' : '🚨🚨🚨'}`);
     console.info(`verbose   : ${options.verbose}`);
     console.info(`gitRemote : ${options.gitRemote}`);
+    console.info(`interactive : ${options.interactive}`);
     console.log();
 
     // Prepare the packages for publishing
@@ -64,14 +70,24 @@ const yargs = require('nx/node_modules/yargs');
     await releaseChangelog({
       versionData: projectsVersionData,
       version: workspaceVersion,
-      interactive: 'all',
+      interactive: options.interactive ? 'all' : undefined,
       gitRemote: options.gitRemote,
       dryRun: options.dryRun,
       verbose: options.verbose,
     });
 
     if (!options.dryRun) {
-      console.log('Check GitHub: https://github.com/ReactiveX/rxjs/actions/workflows/publish.yml');
+      const registry = process.env.NPM_CONFIG_REGISTRY || process.env.npm_config_registry;
+      if (registry) {
+        console.log(`Publishing to ${registry}...`);
+        execSync('node scripts/publish.js', {
+          stdio: 'inherit',
+          env: process.env,
+          maxBuffer: 1024 * 1024 * 1024,
+        });
+      } else {
+        console.log('Check GitHub: https://github.com/ReactiveX/rxjs/actions/workflows/publish.yml');
+      }
     }
 
     process.exit(0);

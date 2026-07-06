@@ -1,0 +1,42 @@
+---
+description: Operator file layout, exports, JSDoc, and PR checklist
+globs: packages/rxjs/src/internal/operators/**,packages/rxjs/src/operators/**
+alwaysApply: false
+---
+
+# RxJS Operators
+
+## File layout
+
+- One operator per file: `packages/rxjs/src/internal/operators/<name>.ts`
+- camelCase filename matching export (`map.ts`, `distinctUntilChanged.ts`)
+
+## Exports
+
+Add the operator to both:
+
+1. `packages/rxjs/src/operators/index.ts`
+2. `packages/rxjs/src/index.ts`
+
+## Implementation
+
+Pipeable operator returning `(source) => new Observable(...)` using `operate()` from `@rxjs/observable`. See `packages/rxjs/src/internal/operators/map.ts`.
+
+## JSDoc (required for public API)
+
+- Informal `<span class="informal">` summary
+- `![](<name>.png)` marble diagram image alongside operator file
+- `@see`, `@param`, `@return`
+- Runnable `@example` block with imports
+
+## Docs checklist (new public operators)
+
+Applies when shipping a new **public** operator — not internal refactors or deprecated-adjacent tweaks.
+
+- [ ] `-spec.ts` with marble tests for canonical cases
+- [ ] Type definition test (spec end + `spec-dtslint/` when non-trivial)
+- [ ] JSDoc + PNG marble diagram
+- [ ] Listed in `apps/rxjs.dev/content/guide/operators.md` (public operators only)
+- [ ] Deprecation or breaking changes documented in `apps/rxjs.dev/content/deprecations/` when applicable
+
+Deep reference: [operators.md § Creating custom operators](../../apps/rxjs.dev/content/guide/operators.md#creating-custom-operators)

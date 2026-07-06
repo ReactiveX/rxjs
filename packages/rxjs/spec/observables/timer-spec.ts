@@ -1,7 +1,8 @@
-import { timer, NEVER, merge } from 'rxjs';
+import { timer, NEVER, merge, asyncScheduler } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { mergeMap, take, concatWith } from 'rxjs/operators';
 import { observableMatcher } from '../helpers/observableMatcher';
+import { MAX_TIMER_DELAY } from '../../src/internal/util/maxTimerDelay';
 
 /** @test {timer} */
 describe('timer', () => {
@@ -164,6 +165,25 @@ describe('timer', () => {
       const threeSecondsInThePast = new Date(rxTest.now() - 3000);
       const source = timer(threeSecondsInThePast, undefined, rxTest);
       expectObservable(source).toBe(expected, { a: 0 });
+    });
+  });
+
+  it('should error when delay exceeds the platform max with asyncScheduler', () => {
+    rxTest.run(({ expectObservable }) => {
+      const delayMs = MAX_TIMER_DELAY + 1;
+      const error = new RangeError(`Cannot schedule a delay longer than ${MAX_TIMER_DELAY}ms (2^31 - 1). Received ${delayMs}ms.`);
+
+      expectObservable(timer(delayMs, asyncScheduler)).toBe('#', null, error);
+    });
+  });
+
+  it('should error when delay Date exceeds the platform max with asyncScheduler', () => {
+    rxTest.run(({ expectObservable }) => {
+      const delayMs = MAX_TIMER_DELAY + 1;
+      const dueDate = new Date(asyncScheduler.now() + delayMs);
+      const error = new RangeError(`Cannot schedule a delay longer than ${MAX_TIMER_DELAY}ms (2^31 - 1). Received ${delayMs}ms.`);
+
+      expectObservable(timer(dueDate, asyncScheduler)).toBe('#', null, error);
     });
   });
 });

@@ -4,19 +4,20 @@ import type { Subscription } from '@rxjs/observable';
 import type { AsyncScheduler } from './AsyncScheduler.js';
 import { intervalProvider } from './intervalProvider.js';
 import { arrRemove } from '../util/arrRemove.js';
+import { assertMaxTimerDelay } from '../util/maxTimerDelay.js';
 import type { TimerHandle } from './timerHandle.js';
 
 export class AsyncAction<T> extends Action<T> {
   public id: TimerHandle | undefined;
   public state?: T;
   public delay!: number;
-  protected pending: boolean = false;
+  protected pending = false;
 
   constructor(protected scheduler: AsyncScheduler, protected work: (this: SchedulerAction<T>, state?: T) => void) {
     super(scheduler, work);
   }
 
-  public schedule(state?: T, delay: number = 0): Subscription {
+  public schedule(state?: T, delay = 0): Subscription {
     if (this.closed) {
       return this;
     }
@@ -63,7 +64,8 @@ export class AsyncAction<T> extends Action<T> {
     return this;
   }
 
-  protected requestAsyncId(scheduler: AsyncScheduler, _id?: TimerHandle, delay: number = 0): TimerHandle {
+  protected requestAsyncId(scheduler: AsyncScheduler, _id?: TimerHandle, delay = 0): TimerHandle {
+    assertMaxTimerDelay(delay);
     return intervalProvider.setInterval(scheduler.flush.bind(scheduler, this), delay);
   }
 
@@ -112,7 +114,7 @@ export class AsyncAction<T> extends Action<T> {
   }
 
   protected _execute(state: T, _delay: number): any {
-    let errored: boolean = false;
+    let errored = false;
     let errorValue: any;
     try {
       this.work(state);

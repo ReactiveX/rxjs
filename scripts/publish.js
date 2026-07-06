@@ -3,6 +3,8 @@
 const { prerelease, valid } = require('semver');
 const { releasePublish } = require('nx/src/command-line/release');
 
+const NPM_REGISTRY = 'https://registry.npmjs.org';
+
 /**
  * Maps git branch names to npm dist tags. If master is an alpha/beta release,
  * then it should be mapped to 'next'. Similarly there should be one record for
@@ -59,12 +61,21 @@ if (!Object.values(DIST_TAGS).includes('latest')) {
     }
 
     if (!npmDistTag) {
-      throw new Error('No npm dist tag could be derived from the current environment');
+      npmDistTag = process.env.NPM_CONFIG_TAG || process.env.npm_config_tag || process.env.NPM_DIST_TAG || undefined;
     }
 
+    if (!npmDistTag) {
+      throw new Error(
+        'No npm dist tag could be derived. Set NPM_CONFIG_TAG for local publishes, or run from CI with GITHUB_EVENT_NAME set.'
+      );
+    }
+
+    const registry = process.env.NPM_CONFIG_REGISTRY || process.env.npm_config_registry || NPM_REGISTRY;
+
     await releasePublish({
-      registry: 'https://registry.npmjs.org',
+      registry,
       tag: npmDistTag,
+      firstRelease: registry !== NPM_REGISTRY,
     });
   } catch (err) {
     console.error(err);

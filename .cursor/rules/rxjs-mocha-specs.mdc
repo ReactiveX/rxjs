@@ -1,0 +1,90 @@
+---
+description: RxJS Mocha spec patterns — CI vs local, GC leak tests, non-marble specs
+globs: packages/rxjs/spec/**
+alwaysApply: false
+---
+
+# RxJS Mocha Specs
+
+Mocha + Chai under `packages/rxjs/spec/`. Operator marbles → `rxjs-marble-tests` rule.
+
+## CI vs local (important)
+
+GitHub Actions runs **Node 18 and Node 20**. `yarn workspace rxjs test` locally often **passes while CI Node 20 fails** because:
+
+| Condition | Local (typical) | CI Node 18 | CI Node 20 |
+| --------- | --------------- | ---------- | ---------- |
+| `global.gc` available | Often **no** | **No** | **Yes** |
+| GC leak tests run | Skipped | Skipped | **Run** |
+
+GC leak tests gate on `FinalizationRegistry && global.gc`. When skipped, specs log `No support for FinalizationRegistry in Node …` (misleading — usually missing `global.gc`).
+
+`.mocharc.js` sets `'expose-gc': true`, but **Mocha 10 ignores it**. Use `node --expose-gc` to match CI Node 20 locally:
+
+```sh
+cd packages/rxjs
+node --expose-gc ./node_modules/.bin/mocha \
+  --config spec/support/.mocharc.js "spec/**/*-spec.ts"
+```
+
+Before opening a PR, prefer the full CI-style check:
+
+```sh
+yarn nx run-many -t build lint test --exclude=rxjs.dev
+```
+
+Nx/build on agents needs unrestricted permissions (daemon socket); sandboxed runs can hang.
+
+## GC leak tests (`FinalizationRegistry`)
+
+Only two specs use this pattern today:
+
+- `spec/Subscriber-spec.ts` — `should not leak the destination`
+- `spec/operators/shareReplay-spec.ts` — `should not leak the subscriber for sync sources`
+
+Pattern:
+
+```typescript
+const FinalizationRegistry = (global as any).FinalizationRegistry;
+if (FinalizationRegistry && global.gc) {
+  it('should not leak …', (done) => {
+    let target: SomeType | undefined = …;
+    const registry = new FinalizationRegistry(() => {
+      done();
+    });
+    registry.register(target, 'held-value');
+    // exercise API — do NOT keep handles that retain `target`
+    of(42).subscribe(target as any);
+    target = undefined;
+    global.gc?.();
+  });
+}
+```
+
+**Do not** assign `const subscription = source.subscribe(target)` unless the test is about that subscription — a closed `Subscriber` still holds `destination` and prevents collection.
+
+Do not add new GC leak tests unless necessary; they are flaky by nature and slow CI debugging.
+
+## File layout
+
+| Area | Path |
+| ---- | ---- |
+| Operators (marbles) | `spec/operators/<name>-spec.ts` |
+| Observables | `spec/observables/` |
+| Subjects, schedulers | `spec/subjects/`, `spec/schedulers/` |
+| Core | `spec/Subscriber-spec.ts`, `spec/Observable-spec.ts`, … |
+
+Setup: `spec/support/.mocharc.js` (5s default timeout, `spec/helpers/setup.ts`).
+
+## `src` vs `dist` in specs
+
+- `import { … } from 'rxjs'` → `tsconfig` paths → **`src`** (preferred in specs)
+- `import … from 'rxjs/internal/…'` → package **exports** → **`dist/cjs`** (can be **stale** until built)
+
+After changing `internal/scheduler/` or `internal/util/`, run `yarn workspace rxjs build` before debugging confusing test failures.
+
+## Timer limit pitfalls
+
+- Platform `setTimeout` / `setInterval` max delay: `2^31 - 1` ms (`2147483647`, ~24.8 days)
+- Do **not** `sinon.useFakeTimers().tick(2147483647)` — overflows or hangs
+- For oversize-delay bugs: marble test + explicit `asyncScheduler` (see `rxjs-marble-tests`)
