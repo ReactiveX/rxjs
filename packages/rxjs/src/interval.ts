@@ -1,4 +1,4 @@
-import '../observable-polyfill';
+import '@rxjs/observable-polyfill';
 import { create } from './create.js';
 
 export const interval: unique symbol = Symbol('interval');

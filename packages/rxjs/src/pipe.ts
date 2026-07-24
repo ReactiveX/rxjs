@@ -1,4 +1,4 @@
-import '../observable-polyfill';
+import '@rxjs/observable-polyfill';
 
 export const pipe: unique symbol = Symbol('pipe');
 

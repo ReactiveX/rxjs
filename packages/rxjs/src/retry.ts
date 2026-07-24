@@ -1,5 +1,5 @@
 import { create } from './create.js';
-import './observable-polyfill';
+import '@rxjs/observable-polyfill';
 
 export const retry: unique symbol = Symbol('retry');
 
