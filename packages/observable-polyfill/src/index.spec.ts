@@ -8,6 +8,7 @@ const _EventTargetWhen = EventTarget.prototype.when;
 if (_EventTargetWhen != null) {
   EventTarget.prototype.when = undefined!;
 }
+const _OriginalSubscriber = globalThis.Subscriber;
 
 beforeAll(async () => {
   await import('./index.js');
@@ -15,6 +16,7 @@ beforeAll(async () => {
 
 afterAll(() => {
   globalThis.Observable = _OriginalObservable;
+  globalThis.Subscriber = _OriginalSubscriber;
   EventTarget.prototype.when = _EventTargetWhen;
 });
 
@@ -50,7 +52,7 @@ describe('Observable', () => {
       complete: () => results.push('complete'),
     });
 
-    expect(results).toEqual(['subscribe', 1, 2, 'teardown', 'abort', 'complete']);
+    expect(results).toEqual(['subscribe', 1, 2, 'abort', 'teardown', 'complete']);
   });
 
   it('handles errors correctly', () => {
@@ -80,7 +82,7 @@ describe('Observable', () => {
       complete: () => results.push('complete'),
     });
 
-    expect(results).toEqual(['subscribe', 'teardown', 'abort', 'Test error']);
+    expect(results).toEqual(['subscribe', 'abort', 'teardown', 'Test error']);
   });
 });
 

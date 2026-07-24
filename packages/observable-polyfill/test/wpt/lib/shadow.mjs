@@ -4,19 +4,22 @@ import { buildHarnessBundles } from './bundle.mjs';
 import { copyTree, listFiles, replaceDirectory } from './files.mjs';
 import { cacheRoot, expectationsRoot, upstreamRoot } from './paths.mjs';
 
-const metaPrelude =
-  '// META: script=/resources/rxjs-wpt/wpt-bootstrap.js\n' +
-  '// META: script=/resources/rxjs-wpt/attestation-test.js\n';
+const metaPrelude = '// META: script=/resources/rxjs-wpt/wpt-bootstrap.js\n' + '// META: script=/resources/rxjs-wpt/attestation-test.js\n';
 
-async function instrumentJavascript(filePath) {
+function createAttestationRegistration(config) {
+  const registrationKey = JSON.stringify(`${config.attestation.functionKey}_REGISTER_TEST__`);
+  return `globalThis[${registrationKey}]();`;
+}
+
+async function instrumentJavascript(filePath, config) {
   const source = await fs.readFile(filePath, 'utf8');
   if (source.includes('/resources/rxjs-wpt/wpt-bootstrap.js')) {
     throw new Error(`Generated bootstrap is already present in upstream source: ${filePath}`);
   }
-  await fs.writeFile(filePath, `${metaPrelude}${source}`);
+  await fs.writeFile(filePath, `${metaPrelude}${source}\n${createAttestationRegistration(config)}\n`);
 }
 
-async function instrumentHtml(filePath) {
+async function instrumentHtml(filePath, config) {
   const source = await fs.readFile(filePath, 'utf8');
   const needle = '<script src="/resources/testharness.js"></script>';
   const occurrences = source.split(needle).length - 1;
@@ -27,7 +30,8 @@ async function instrumentHtml(filePath) {
     `${needle}\n` +
     '  <script src="/resources/rxjs-wpt/wpt-bootstrap.js"></script>\n' +
     '  <script src="/resources/rxjs-wpt/attestation-test.js"></script>';
-  await fs.writeFile(filePath, source.replace(needle, injection));
+  const registration = `<script>${createAttestationRegistration(config)}</script>`;
+  await fs.writeFile(filePath, `${source.replace(needle, injection)}\n${registration}\n`);
 }
 
 export async function prepareShadowTree({ config, inventory }) {
@@ -43,9 +47,9 @@ export async function prepareShadowTree({ config, inventory }) {
     for (const relativePath of await listFiles(observableRoot)) {
       const filePath = path.join(observableRoot, relativePath);
       if (filePath.endsWith('.any.js') || filePath.endsWith('.window.js')) {
-        await instrumentJavascript(filePath);
+        await instrumentJavascript(filePath, config);
       } else if (filePath.endsWith('.html')) {
-        await instrumentHtml(filePath);
+        await instrumentHtml(filePath, config);
       }
     }
 

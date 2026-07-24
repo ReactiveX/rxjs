@@ -16,9 +16,11 @@ The target architecture has four conceptual layers:
 4. **Migration tooling:** eventually provide documentation, Skills, and MCP
    capabilities based on the stabilized runtime and compatibility contracts.
 
-The branch already demonstrates each of the first three ideas, but it is a
-prototype rather than a buildable or conforming release. This document
-separates the implemented shape from the intended invariants.
+The branch already demonstrates each of the first three ideas, but it remains
+a prototype rather than a buildable release. The fallback now passes the
+pinned Observable WPT suite; package selection, installation, and build
+boundaries remain unresolved. This document separates the implemented shape
+from the intended invariants.
 
 ## Architecture context
 
@@ -66,7 +68,7 @@ package names are open decisions.
 
 | Component                      | Current responsibility                                                                                                                                       | Intended responsibility                                                                       | Current gap                                                                                                                                    |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `packages/observable-polyfill` | Defines an ambient platform-shaped API, implements `Observable`, `Subscriber`, native-style operators, promise-returning consumers, and `EventTarget.when()` | Supply the pinned platform behavior only when the runtime lacks an acceptable implementation  | Unconditionally overwrites globals and does not build; the test-only WPT harness records current failures, but conformance is not yet claimed  |
+| `packages/observable-polyfill` | Defines an ambient platform-shaped API, implements `Observable`, `Subscriber`, native-style operators, promise-returning consumers, and `EventTarget.when()` | Supply the pinned platform behavior only when the runtime lacks an acceptable implementation  | Passes the pinned WPT suite, but still unconditionally overwrites globals and does not build because its ambient declarations are disconnected |
 | `packages/rxjs`                | Side-effectfully installs Symbol-keyed operators/factories; contains subjects, cold primitives, async-iterable adapters, and early testing utilities         | Main Symbol-extension library, with compatibility behavior moved behind an explicit boundary  | Package exports are invalid/incomplete, the fallback dependency is undeclared, installation conventions vary, and only one operator has a test |
 | `packages/observable`          | Exposes the inherited RxJS 7 `Observable`, `Subscriber`, `Subscription`, and related helpers                                                                 | Undecided: remove/archive, rename, or deliberately reuse inside compatibility                 | It is not used by the new runtime path but is still part of workspace preparation                                                              |
 | `packages/rxjs/src/testing`    | Contains fake timers and an experimental `ScheduledObservable`                                                                                               | Provide test infrastructure appropriate for shared platform semantics and compatibility tests | No stable public entry point or test contract                                                                                                  |
@@ -117,24 +119,33 @@ observer unless they are explicitly in the compatibility layer.
 - a `Set` of safe observers on the active subscriber;
 - an internal `AbortController`;
 - ref-count closure when the observer set becomes empty;
-- teardown execution when the internal signal aborts.
+- explicit close state that aborts the subscriber signal before running
+  teardown callbacks in reverse insertion order;
+- immediate execution of teardowns registered after closure;
+- a small `AbortController.prototype.abort` bridge for signals that have
+  Observable work registered, because JavaScript exposes abort events but not
+  the DOM-standard abort-algorithm hook that must run before those events;
+- global Web IDL-shaped `Observable` and non-constructible `Subscriber`
+  interfaces.
 
-The structure reflects the platform direction, but conformance has not been
-established. Representative known differences include:
+`Observable.from` now follows the pinned platform conversion order:
+Observable identity, async iterable, sync iterable, then Promise. It no longer
+accepts arbitrary subscribables at this platform boundary. Sync and async
+iterators use explicit protocol loops so the fallback can preserve iterator
+method sampling, `return(reason)`, abort timing, and pending-result behavior
+that `for await...of` intentionally hides.
 
-- the file always assigns `globalThis.Observable`;
+The structure and behavior pass the pinned Observable WPT revision in window,
+dedicated-worker, same-origin iframe, and Web IDL coverage. This is a bounded
+conformance claim, not a claim about later specification or WPT revisions.
+Known architectural gaps remain:
+
+- the file always assigns `globalThis.Observable` and `globalThis.Subscriber`;
 - `EventTarget.prototype.when` is always assigned;
-- `Observable.from` accepts arbitrary subscribables and checks conversion types
-  in a different order from the current specification;
-- the current Promise conversion emits a value without completing;
-- iterable conversion calls `complete()` twice;
-- teardowns are stored and executed in insertion order, while the current
-  specification closes them in reverse insertion order;
-- `addTeardown()` does not immediately execute a teardown registered after
-  closure.
-
-This is not an exhaustive conformance review. WPT and a pinned specification
-revision will define the real gap list later.
+- the abort-algorithm bridge patches `AbortController.prototype.abort`,
+  although controllers without registered Observable algorithms delegate
+  directly to the captured platform method;
+- the ambient declarations are not connected to the package build.
 
 ## Native selection and polyfill boundary
 
@@ -193,9 +204,12 @@ Execution uses an ignored generated shadow tree:
    that the active constructor, `subscribe`, and `when` references exactly
    equal the bundle-installed references, differ from the captured native
    references, and report the expected bundle hash.
-4. Generated metadata injects bootstrap and one named attestation subtest into
-   every `.any.js`, `.window.js`, HTML, and IDL URL. The `.any.js` injection is
-   what reaches dedicated-worker variants. Reviewed same-origin
+4. Generated metadata injects bootstrap and an attestation registrar into
+   every `.any.js`, `.window.js`, HTML, and IDL URL, then registers the one
+   named attestation subtest after upstream source setup has run. This
+   preserves upstream testharness properties such as
+   `allow_uncaught_exception`. The `.any.js` injection is what reaches
+   dedicated-worker variants. Reviewed same-origin
    `contentWindow` access installs and verifies the same bundle in the child
    before upstream code uses it. The four iframe URLs cannot pass their single
    attestation until all nine reviewed child-realm accesses have verified.
@@ -217,11 +231,15 @@ consecutive complete runs agree, and unexpected failures and unexpected passes
 both reject it. It is not the default test command and is not a conformance
 claim.
 
-The initial narrowed-closure baseline contains 52 generated URLs and 487
-upstream subtests. All 52 implementation attestations pass. Current top-level
-statuses are 33 `OK`, 15 `ERROR`, and 4 `TIMEOUT`; upstream subtest statuses
-are 314 `PASS`, 159 `FAIL`, 8 `TIMEOUT`, and 6 `NOTRUN`. These counts describe
-the present fallback and are not a conformance claim.
+The initial narrowed-closure baseline contained 52 generated URLs and 487
+reported upstream subtests. All 52 implementation attestations passed.
+Top-level statuses were 33 `OK`, 15 `ERROR`, and 4 `TIMEOUT`; reported upstream
+subtest statuses were 314 `PASS`, 159 `FAIL`, 8 `TIMEOUT`, and 6 `NOTRUN`.
+
+After P1.4b, all 52 URLs report `OK`, all 525 upstream subtests report `PASS`,
+and all 52 implementation attestations pass against Chrome for Testing
+`150.0.7871.126`. Three further complete attested runs produced identical
+results before the obsolete failure metadata was removed.
 
 For bounded network and execution cost, the official sparse WPT runner is
 cached by WPT revision, operating system, and Python version. Chrome for

@@ -4,10 +4,11 @@
 
 The project will establish a reliable platform Observable foundation before
 expanding the operator catalog or compatibility promises. The user temporarily
-prioritized an attested Observable WPT harness ahead of the package and
-installation decision. That completed slice adds test infrastructure and a
-reviewed failure baseline only; making the fallback conform remains later work.
-Package-boundary work now resumes at P0.2. Skills/MCP design remains deferred.
+prioritized the attested Observable WPT harness and fallback-conformance work
+ahead of the package and installation decision. Both slices are complete:
+the fallback passes the pinned suite while exact implementation identity is
+proved in every tested realm. Package-boundary work now resumes at P0.2.
+Skills/MCP design remains deferred.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -113,7 +114,7 @@ diagrams. No implementation is required for this decision step.
 | `PLANNED` | P1.2  | Bring core subscription, abort, teardown, error-reporting, and `Observable.from` behavior to the pinned baseline |
 | `PLANNED` | P1.3  | Bring native platform methods and `EventTarget.when` to the pinned baseline                                      |
 | `DONE`    | P1.4a | Build the attested Observable WPT test harness and record its stable current-behavior baseline                   |
-| `PLANNED` | P1.4b | Make the fallback pass the pinned Observable WPT suite                                                           |
+| `DONE`    | P1.4b | Make the fallback pass the pinned Observable WPT suite                                                           |
 
 #### P1.4a completion bar
 
@@ -151,6 +152,41 @@ diagrams. No implementation is required for this decision step.
 - Each obsolete failure expectation is deliberately removed as its behavior is
   corrected.
 
+#### P1.4b completion evidence
+
+- Corrected the platform lifecycle without introducing RxJS 7 cold semantics:
+  subscriber closure now preserves abort reasons, aborts before LIFO teardown,
+  executes late teardowns immediately, retains shared/ref-counted production,
+  and reports late or unhandled errors through the platform-shaped global path.
+- Added the non-constructible global `Subscriber` surface and required Web IDL
+  names, tags, descriptors, argument checks, and detached-realm behavior.
+- Corrected `Observable.from` conversion order and Observable identity,
+  Promise completion, sync/async iterator acquisition, close reasons, protocol
+  errors, pending-result behavior, and microtask timing. The explicit async
+  iterator loop documents why `for await...of` cannot preserve these observable
+  protocol details.
+- Corrected pinned platform behavior in `takeUntil`, `take`, `drop`, `every`,
+  `reduce`, `inspect`, and Promise-returning consumers without adding
+  string-named RxJS compatibility behavior.
+- Added a scoped abort-algorithm bridge because public `abort` event listeners
+  run too late to model the DOM-standard cancellation order. Signals without
+  registered Observable work continue through the captured native abort
+  implementation.
+- Fixed generated attestation registration so upstream `setup()` properties
+  are established before the identity subtest starts the reporting protocol.
+  The vendored WPT sources remain byte-for-byte unchanged.
+- Passed `yarn test:wpt` with 52/52 URLs `OK`, 525/525 upstream subtests
+  `PASS`, and 52/52 exact-identity attestations in Chrome for Testing
+  `150.0.7871.126`. The passing implementation bundle for that run was
+  `778edfac15639cd4531a590cd36450ad273a0a692df2e8a1436564dca3cb89f8`.
+- Regenerated the baseline after three further identical complete attested
+  runs, deleting all 25 obsolete failure `.ini` files. The package's 49 focused
+  tests and pinned-import verification pass.
+- Reconfirmed the existing P0.3 blocker: package build and lint still fail
+  because the ambient declarations are disconnected from the package and root
+  TypeScript configurations. No package-boundary work was folded into this
+  conformance slice.
+
 #### P1.4a completion evidence
 
 - Vendored exactly 29 files under `dom/observable/tentative/` and eight
@@ -163,10 +199,10 @@ diagrams. No implementation is required for this decision step.
   Evidence includes dedicated-worker, Web IDL, and four combined
   window/same-origin-iframe attestations covering all nine reviewed child
   realms.
-- Recorded granular expectation metadata after three identical complete runs.
-  The current non-conforming baseline is 33 `OK`, 15 `ERROR`, and 4 `TIMEOUT`
-  top-level results, with 314 `PASS`, 159 `FAIL`, 8 `TIMEOUT`, and 6 `NOTRUN`
-  upstream subtests.
+- Recorded the initial granular expectation metadata after three identical
+  complete runs. That pre-P1.4b baseline was 33 `OK`, 15 `ERROR`, and 4
+  `TIMEOUT` top-level results, with 314 `PASS`, 159 `FAIL`, 8 `TIMEOUT`, and 6
+  `NOTRUN` reported upstream subtests.
 - Passed 45 harness unit tests covering import/provenance/inventory/closure,
   realm review, report completeness and classification, stability, and every
   required attestation negative control. The package's four existing source
@@ -281,7 +317,7 @@ flowchart LR
     Boundary --> Build["P0.3 buildable packages"]
     Build --> Harness["P0.4 lifecycle and import harness"]
     Harness --> Fallback["Phase 1 fallback correctness"]
-    Fallback --> WptStrict["P1.4b strict WPT conformance"]
+    Fallback --> WptStrict["P1.4b strict WPT conformance (done)"]
     Boundary --> Kernel["Phase 2 extension kernel"]
     Harness --> Kernel
     Kernel --> Operators["Phase 3 operator restoration"]
@@ -314,7 +350,6 @@ conformance implementation depends on a runnable harness.
 
 ## Out of scope until activated
 
-- fixes that make the fallback pass the WPT suite until P1.4b is activated;
 - final documentation-site architecture;
 - a complete operator priority list;
 - final compatibility support percentages;
@@ -387,3 +422,28 @@ conformance implementation depends on a runnable harness.
   non-passing URL and subtest, and direct artifact paths to terminal output.
 - Kept P0.2 as the single `NEXT` item; implementation conformance remains the
   separate planned P1.4b effort.
+
+### 2026-07-24 — Pinned Observable WPT conformance
+
+- Temporarily moved `NEXT` from P0.2 to P1.4b at the user's direction, fixed
+  only the Observable and `EventTarget.prototype.when` fallback, completed
+  P1.4b, and restored P0.2 as the single `NEXT` item.
+- Audited the harness before changing behavior: all 52 disposable realms used
+  the exact bundled fallback constructor, `subscribe`, and `when` identities;
+  no native implementation or later overwrite explained the failures.
+- Corrected Subscriber lifecycle, abort/teardown ordering, error reporting,
+  detached realms, Web IDL shape, platform input conversion, iterator
+  protocols, Promise consumers, and the small set of platform operators
+  exposed by the pinned suite.
+- Kept the async-iterator conversion as an explicit pull loop and documented
+  why `for await...of` cannot express the required acquisition, close-reason,
+  timing, and pending-result semantics.
+- Corrected generated attestation timing after discovering that an early
+  completed identity subtest caused upstream `setup()` options to be ignored.
+  No vendored WPT source was edited.
+- Passed the pinned strict suite with 52/52 URLs, 525/525 upstream subtests, and
+  52/52 exact-identity attestations, then recorded three additional identical
+  runs and removed every obsolete failure expectation.
+- Passed all 49 package tests and pinned-import verification. Reconfirmed,
+  without expanding scope, the documented P0.3 package build/lint configuration
+  failure.

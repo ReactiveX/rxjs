@@ -5,7 +5,10 @@ class SafeObserver<T> implements Observer<T> {
     this.#destination = typeof maybeObserver === 'function' ? { next: maybeObserver } : maybeObserver;
   }
 
-  next(value: T) {
+  next(value: T): void {
+    if (!canInvokeRealmCallbacks()) {
+      return;
+    }
     try {
       this.#destination?.next?.(value);
     } catch (error) {
@@ -13,19 +16,27 @@ class SafeObserver<T> implements Observer<T> {
     }
   }
 
-  error(error: any) {
+  error(error: any, hasSourceLocation = true): void {
+    if (!canInvokeRealmCallbacks()) {
+      return;
+    }
+
+    if (!this.#destination?.error) {
+      reportError(error, hasSourceLocation);
+      return;
+    }
+
     try {
-      if (this.#destination?.error) {
-        this.#destination.error(error);
-      } else {
-        throw error;
-      }
-    } catch (error) {
-      reportError(error);
+      this.#destination.error(error);
+    } catch (handlerError) {
+      reportError(handlerError);
     }
   }
 
-  complete() {
+  complete(): void {
+    if (!canInvokeRealmCallbacks()) {
+      return;
+    }
     try {
       this.#destination?.complete?.();
     } catch (error) {
@@ -35,64 +46,168 @@ class SafeObserver<T> implements Observer<T> {
 }
 
 const addObserver = Symbol('addObserver');
+const closeSubscriber = Symbol('closeSubscriber');
+const errorSubscriber = Symbol('errorSubscriber');
+const subscriberToken = Symbol('subscriberToken');
+const propagateTeardownError = Symbol('propagateTeardownError');
+
+type AbortAlgorithm = (reason: unknown) => void;
+type Teardown = (() => void) & { [propagateTeardownError]?: boolean };
+
+const abortAlgorithms = new WeakMap<AbortSignal, Set<AbortAlgorithm>>();
+const nativeAbort = AbortController.prototype.abort;
+
+// Observable cancellation is specified as an AbortSignal abort algorithm,
+// which runs before the signal's public `abort` event. JavaScript has no API
+// for registering one, so the fallback bridges only signals with Observable
+// work here and otherwise delegates to the captured platform implementation.
+AbortController.prototype.abort = function (this: AbortController, reason?: unknown): void {
+  const signal = this.signal;
+  let firstError: unknown;
+  let hasError = false;
+
+  if (!signal.aborted) {
+    const algorithms = abortAlgorithms.get(signal);
+    if (algorithms) {
+      for (const algorithm of Array.from(algorithms)) {
+        try {
+          algorithm(reason);
+        } catch (error) {
+          if (!hasError) {
+            firstError = error;
+            hasError = true;
+          } else {
+            reportError(error);
+          }
+        }
+      }
+    }
+  }
+
+  nativeAbort.call(this, reason);
+  if (hasError) {
+    throw firstError;
+  }
+};
+
+function addAbortAlgorithm(signal: AbortSignal, algorithm: AbortAlgorithm, cleanupSignal?: AbortSignal): void {
+  const algorithms = abortAlgorithms.get(signal) ?? new Set<AbortAlgorithm>();
+  abortAlgorithms.set(signal, algorithms);
+
+  let active = true;
+  const run = (reason: unknown): void => {
+    if (!active) {
+      return;
+    }
+    active = false;
+    algorithms.delete(run);
+    algorithm(reason);
+  };
+
+  algorithms.add(run);
+  signal.addEventListener('abort', () => run(signal.reason), cleanupSignal ? { once: true, signal: cleanupSignal } : { once: true });
+  cleanupSignal?.addEventListener(
+    'abort',
+    () => {
+      active = false;
+      algorithms.delete(run);
+    },
+    { once: true }
+  );
+}
 
 class Subscriber<T> implements Observer<T> {
-  #teardowns: (() => void)[] | null = null;
+  #teardowns: Teardown[] = [];
+  #closed = false;
 
   readonly #observerList = new Set<SafeObserver<T>>();
 
   readonly #abortController = new AbortController();
 
-  [addObserver](observer: SafeObserver<T>) {
-    this.#observerList.add(observer);
+  #assertBrand(): void {}
 
-    return () => {
-      this.#observerList.delete(observer);
-      this.#checkRefCount();
-    };
-  }
-
-  #checkRefCount() {
-    if (this.#observerList.size === 0) {
-      this.#abortController.abort();
+  constructor(...args: [symbol?]) {
+    const token = args[0];
+    if (token !== subscriberToken) {
+      throw new TypeError('Illegal constructor');
     }
   }
 
-  get active() {
-    return !this.#abortController.signal.aborted;
+  [addObserver](observer: SafeObserver<T>): (reason?: unknown) => void {
+    this.#observerList.add(observer);
+
+    return (reason?: unknown) => {
+      this.#observerList.delete(observer);
+      if (this.#observerList.size === 0) {
+        this[closeSubscriber](reason);
+      }
+    };
   }
 
-  get signal() {
+  [closeSubscriber](reason?: unknown): void {
+    if (!this.active) {
+      return;
+    }
+
+    this.#closed = true;
+    let firstError: unknown;
+    let hasError = false;
+    try {
+      this.#abortController.abort(reason);
+    } catch (error) {
+      firstError = error;
+      hasError = true;
+    }
+    this.#observerList.clear();
+
+    const teardowns = this.#teardowns;
+    this.#teardowns = [];
+    for (let index = teardowns.length - 1; index >= 0; index--) {
+      try {
+        teardowns[index]();
+      } catch (error) {
+        if (teardowns[index][propagateTeardownError] && !hasError) {
+          firstError = error;
+          hasError = true;
+        } else {
+          reportError(error);
+        }
+      }
+    }
+
+    if (hasError) {
+      throw firstError;
+    }
+  }
+
+  get active(): boolean {
+    return !this.#closed;
+  }
+
+  get signal(): AbortSignal {
     return this.#abortController.signal;
   }
 
-  constructor() {
-    this.#abortController.signal.addEventListener(
-      'abort',
-      () => {
-        this.#observerList.clear();
-        const teardowns = this.#teardowns;
-        this.#teardowns = null;
-        if (teardowns) {
-          for (const teardown of teardowns) {
-            try {
-              teardown();
-            } catch (error) {
-              reportError(error);
-            }
-          }
-        }
-      },
-      { once: true }
-    );
-  }
+  addTeardown(teardown: () => void): void {
+    this.#assertBrand();
+    if (arguments.length === 0 || typeof teardown !== 'function') {
+      throw new TypeError('Subscriber.addTeardown requires a callback');
+    }
 
-  addTeardown(teardown: () => void) {
-    this.#teardowns ??= [];
+    if (!this.active) {
+      teardown();
+      return;
+    }
+
     this.#teardowns.push(teardown);
   }
 
-  next(value: T) {
+  next(value: T): void {
+    this.#assertBrand();
+    if (arguments.length === 0) {
+      throw new TypeError('Subscriber.next requires a value');
+    }
+
     if (this.active) {
       const observers = Array.from(this.#observerList);
       for (const observer of observers) {
@@ -101,20 +216,33 @@ class Subscriber<T> implements Observer<T> {
     }
   }
 
-  error(error: any) {
-    if (this.active) {
-      const observers = Array.from(this.#observerList);
-      this.#abortController.abort();
-      for (const observer of observers) {
-        observer.error(error);
-      }
+  error(error: any): void {
+    this.#assertBrand();
+    if (arguments.length === 0) {
+      throw new TypeError('Subscriber.error requires an error');
+    }
+
+    this[errorSubscriber](error, true);
+  }
+
+  [errorSubscriber](error: any, hasSourceLocation: boolean): void {
+    if (!this.active) {
+      reportError(error, hasSourceLocation);
+      return;
+    }
+
+    const observers = Array.from(this.#observerList);
+    this[closeSubscriber](error);
+    for (const observer of observers) {
+      observer.error(error, hasSourceLocation);
     }
   }
 
-  complete() {
+  complete(): void {
+    this.#assertBrand();
     if (this.active) {
       const observers = Array.from(this.#observerList);
-      this.#abortController.abort();
+      this[closeSubscriber]();
       for (const observer of observers) {
         observer.complete();
       }
@@ -122,108 +250,394 @@ class Subscriber<T> implements Observer<T> {
   }
 }
 
-function reportError(error: any) {
+function reportError(error: unknown, hasSourceLocation = true): void {
+  if (!canInvokeRealmCallbacks()) {
+    return;
+  }
+  if (hasSourceLocation && globalThis.reportError) {
+    globalThis.reportError(error);
+    return;
+  }
+  if (typeof ErrorEvent === 'function' && typeof globalThis.dispatchEvent === 'function') {
+    const isError = error instanceof Error;
+    const event = new ErrorEvent('error', {
+      cancelable: true,
+      colno: hasSourceLocation ? 1 : 0,
+      error,
+      lineno: hasSourceLocation ? 1 : 0,
+      message: isError ? error.message : String(error),
+    });
+    event.preventDefault();
+    globalThis.dispatchEvent(event);
+    return;
+  }
   if (globalThis.reportError) {
     globalThis.reportError(error);
-  } else {
-    setTimeout(() => {
-      throw error;
-    });
+    return;
   }
+  setTimeout(() => {
+    throw error;
+  });
+}
+
+function reportUnhandledRejection(reason: unknown): void {
+  if (typeof PromiseRejectionEvent === 'function' && typeof globalThis.dispatchEvent === 'function') {
+    const event = new PromiseRejectionEvent('unhandledrejection', {
+      cancelable: true,
+      promise: Promise.resolve(),
+      reason,
+    });
+    event.preventDefault();
+    globalThis.dispatchEvent(event);
+    return;
+  }
+  void Promise.reject(reason);
+}
+
+const realmStartedInFrame = typeof window !== 'undefined' && typeof document !== 'undefined' && window.parent !== window;
+
+function canInvokeRealmCallbacks(): boolean {
+  return !realmStartedInFrame || window.frameElement !== null;
+}
+
+type Callable = (...args: any[]) => unknown;
+
+interface SyncIteratorRecord<T> {
+  readonly iterator: object;
+  readonly next: Callable;
+}
+
+interface AsyncIteratorRecord {
+  readonly iterator: object;
+}
+
+function isObject(value: unknown): value is object {
+  return (typeof value === 'object' && value !== null) || typeof value === 'function';
+}
+
+function toUnsignedLongLong(value: unknown): number {
+  const number = Number(value);
+  if (!Number.isFinite(number) || number === 0) {
+    return 0;
+  }
+
+  const integer = Math.trunc(number);
+  const range = 2 ** 64;
+  if (integer > 0 && integer < range) {
+    return integer;
+  }
+
+  const remainder = integer % range;
+  return remainder < 0 ? remainder + range : remainder;
+}
+
+function getMethod(value: object, key: PropertyKey): Callable | undefined {
+  const method = (value as Record<PropertyKey, unknown>)[key];
+  if (method == null) {
+    return undefined;
+  }
+  if (typeof method !== 'function') {
+    throw new TypeError(`${String(key)} must be callable`);
+  }
+  return method as Callable;
+}
+
+function getSyncIteratorRecord<T>(value: object): SyncIteratorRecord<T> {
+  const iteratorMethod = getMethod(value, Symbol.iterator);
+  if (!iteratorMethod) {
+    throw new TypeError('Object does not define a callable Symbol.iterator method');
+  }
+
+  const iterator = iteratorMethod.call(value);
+  if (!isObject(iterator)) {
+    throw new TypeError('Symbol.iterator must return an object');
+  }
+
+  const next = getMethod(iterator, 'next');
+  if (!next) {
+    throw new TypeError('Iterator must define a callable next() method');
+  }
+  return { iterator, next };
+}
+
+function getAsyncIteratorRecord(value: object): AsyncIteratorRecord {
+  const asyncIteratorMethod = getMethod(value, Symbol.asyncIterator);
+  if (asyncIteratorMethod) {
+    const iterator = asyncIteratorMethod.call(value);
+    if (!isObject(iterator)) {
+      throw new TypeError('Symbol.asyncIterator must return an object');
+    }
+    return { iterator };
+  }
+
+  return { iterator: getSyncIteratorRecord(value).iterator };
+}
+
+function closeSyncIterator(record: SyncIteratorRecord<unknown>, reason: unknown): void {
+  const returnMethod = getMethod(record.iterator, 'return');
+  if (!returnMethod) {
+    return;
+  }
+
+  const result = returnMethod.call(record.iterator, reason);
+  if (!isObject(result)) {
+    throw new TypeError('Iterator return() must return an Object');
+  }
+}
+
+function closeAsyncIterator(record: AsyncIteratorRecord, reason: unknown): void {
+  let result: unknown;
+  try {
+    const returnMethod = getMethod(record.iterator, 'return');
+    if (!returnMethod) {
+      return;
+    }
+    result = returnMethod.call(record.iterator, reason);
+  } catch (error) {
+    queueMicrotask(() => reportUnhandledRejection(error));
+    return;
+  }
+
+  void Promise.resolve(result).then(
+    (returnResult) => {
+      if (!isObject(returnResult)) {
+        reportUnhandledRejection(new TypeError('Iterator return() must return an Object'));
+      }
+    },
+    (error) => reportUnhandledRejection(error)
+  );
+}
+
+function fromIterable<T>(ObservableCtor: typeof Observable<T>, value: object): Observable<T> {
+  return new ObservableCtor((subscriber) => {
+    if (!subscriber.active) {
+      return;
+    }
+
+    let record: SyncIteratorRecord<T>;
+    try {
+      record = getSyncIteratorRecord<T>(value);
+    } catch (error) {
+      subscriber.error(error);
+      return;
+    }
+
+    if (!subscriber.active) {
+      return;
+    }
+
+    let finished = false;
+    const closeIterator: Teardown = () => {
+      if (!finished) {
+        closeSyncIterator(record, subscriber.signal.reason);
+      }
+    };
+    closeIterator[propagateTeardownError] = true;
+    subscriber.addTeardown(closeIterator);
+
+    try {
+      while (subscriber.active) {
+        const result = record.next.call(record.iterator);
+        if (!isObject(result)) {
+          throw new TypeError('Iterator next() must return an Object');
+        }
+
+        const iteratorResult = result as IteratorResult<T>;
+        if (iteratorResult.done) {
+          finished = true;
+          subscriber.complete();
+          return;
+        }
+        subscriber.next(iteratorResult.value);
+      }
+    } catch (error) {
+      subscriber.error(error);
+    }
+  });
+}
+
+function fromAsyncIterable<T>(ObservableCtor: typeof Observable<T>, value: object): Observable<T> {
+  return new ObservableCtor((subscriber) => {
+    if (!subscriber.active) {
+      return;
+    }
+
+    let record: AsyncIteratorRecord;
+    try {
+      record = getAsyncIteratorRecord(value);
+    } catch (error) {
+      subscriber.error(error);
+      return;
+    }
+
+    if (!subscriber.active) {
+      return;
+    }
+
+    let finished = false;
+    let nextMethod: Callable | undefined;
+    subscriber.addTeardown(() => {
+      if (!finished) {
+        closeAsyncIterator(record, subscriber.signal.reason);
+      }
+    });
+
+    // Do not simplify this to `for await...of`. The Observable conversion
+    // contract exposes protocol details that the language loop intentionally
+    // hides: subscription-time iterator reacquisition, `return(reason)` on
+    // abort, next()/return() microtask timing, and inspection of an already
+    // pending IteratorResult after abort without starting another pull.
+    const pull = (): void => {
+      if (!subscriber.active) {
+        return;
+      }
+
+      let nextResult: unknown;
+      try {
+        nextMethod ??= getMethod(record.iterator, 'next');
+        if (!nextMethod) {
+          throw new TypeError('Iterator must define a callable next() method');
+        }
+        nextResult = nextMethod.call(record.iterator);
+      } catch (error) {
+        queueMicrotask(() => subscriber.error(error));
+        return;
+      }
+
+      void Promise.resolve(nextResult).then(
+        (result) => {
+          try {
+            if (!isObject(result)) {
+              throw new TypeError('Iterator next() must return an Object');
+            }
+
+            const iteratorResult = result as IteratorResult<T>;
+            const done = Boolean(iteratorResult.done);
+            if (done) {
+              finished = true;
+              if (subscriber.active) {
+                subscriber.complete();
+              }
+              return;
+            }
+
+            if (!subscriber.active) {
+              return;
+            }
+
+            subscriber.next(iteratorResult.value);
+            pull();
+          } catch (error) {
+            subscriber.error(error);
+          }
+        },
+        (error) => subscriber.error(error)
+      );
+    };
+
+    pull();
+  });
 }
 
 class ObservableImpl<T> implements Subscribable<T> {
   static from<T>(value: ObservableValue<T>): Observable<T> {
-    if (value != null) {
-      if (value instanceof Observable) {
-        return value;
-      }
-
-      const ObservableCtor = staticCtor<T>(this);
-
-      if ('subscribe' in value) {
-        return new ObservableCtor((subscriber) => {
-          value.subscribe(subscriber, { signal: subscriber.signal });
-        });
-      }
-
-      if ('then' in value) {
-        return new ObservableCtor((subscriber) => {
-          value.then(
-            (value) => subscriber.next(value),
-            (error) => subscriber.error(error)
-          );
-        });
-      }
-
-      if (Symbol.asyncIterator in value) {
-        return new ObservableCtor(async (subscriber) => {
-          try {
-            for await (const output of value) {
-              if (!subscriber.active) break;
-              subscriber.next(output);
-            }
-            subscriber.complete();
-          } catch (error) {
-            subscriber.error(error);
-          }
-        });
-      }
-
-      if (Symbol.iterator in value) {
-        return new ObservableCtor((subscriber) => {
-          try {
-            for (const output of value) {
-              if (!subscriber.active) break;
-              subscriber.next(output);
-            }
-            subscriber.complete();
-          } catch (error) {
-            subscriber.error(error);
-          }
-        });
-      }
+    if (value instanceof Observable) {
+      return value;
     }
 
-    throw new TypeError(`${value} is not observable`);
+    if (!isObject(value)) {
+      throw new TypeError(`${String(value)} is not observable`);
+    }
+
+    const ObservableCtor = staticCtor<T>(this);
+    const asyncIteratorMethod = getMethod(value, Symbol.asyncIterator);
+    if (asyncIteratorMethod) {
+      return fromAsyncIterable(ObservableCtor, value);
+    }
+
+    const iteratorMethod = getMethod(value, Symbol.iterator);
+    if (iteratorMethod) {
+      return fromIterable(ObservableCtor, value);
+    }
+
+    const thenMethod = getMethod(value, 'then');
+    if (thenMethod) {
+      return new ObservableCtor((subscriber) => {
+        Promise.resolve(value as PromiseLike<T>).then(
+          (output) => {
+            subscriber.next(output);
+            subscriber.complete();
+          },
+          (error) => (subscriber as Subscriber<T>)[errorSubscriber](error, false)
+        );
+      });
+    }
+
+    throw new TypeError(`${String(value)} is not observable`);
   }
 
   #subscriber: WeakRef<Subscriber<T>> | null = null;
 
-  constructor(private readonly init: (subscriber: Subscriber<T>) => void) {}
+  readonly #init: (subscriber: Subscriber<T>) => void;
 
-  subscribe(observer?: Partial<Observer<T>> | ((value: T) => void) | null, options?: SubscribeOptions) {
+  constructor(init: (subscriber: Subscriber<T>) => void) {
+    if (typeof init !== 'function') {
+      throw new TypeError('Observable constructor requires a callback');
+    }
+    this.#init = init;
+  }
+
+  subscribe(observer: Partial<Observer<T>> | ((value: T) => void) | null = {}, options: SubscribeOptions = {}): void {
+    if (!canInvokeRealmCallbacks()) {
+      return;
+    }
+
     let subscriber = this.#subscriber?.deref();
 
     const shouldSubscribe = !subscriber?.active;
 
     if (shouldSubscribe) {
-      subscriber = new Subscriber();
+      subscriber = new Subscriber(subscriberToken);
       this.#subscriber = new WeakRef(subscriber);
     }
 
     const safeObserver = new SafeObserver(observer);
-    const removeObserver = subscriber![addObserver](safeObserver);
-    options?.signal?.addEventListener('abort', removeObserver, {
-      once: true,
-      signal: subscriber!.signal,
-    });
+    const signal = options.signal;
+
+    if (signal?.aborted) {
+      if (shouldSubscribe) {
+        subscriber![closeSubscriber](signal.reason);
+      }
+    } else {
+      const removeObserver = subscriber![addObserver](safeObserver);
+      if (signal) {
+        addAbortAlgorithm(signal, removeObserver, subscriber!.signal);
+      }
+    }
 
     if (shouldSubscribe) {
-      this.init(subscriber!);
+      try {
+        this.#init(subscriber!);
+      } catch (error) {
+        subscriber!.error(error);
+      }
     }
   }
 
   takeUntil(notifier: ObservableValue<any>): Observable<T> {
-    return new Observable<T>((subscriber) => {
+    const ObservableCtor = instanceCtor<T>(this);
+    return new ObservableCtor((subscriber) => {
       Observable.from(notifier).subscribe(
-        () => {
-          subscriber.complete();
+        {
+          next: () => subscriber.complete(),
+          error: () => subscriber.complete(),
         },
         { signal: subscriber.signal }
       );
 
-      this.subscribe(subscriber, { signal: subscriber.signal });
+      if (subscriber.active) {
+        this.subscribe(subscriber, { signal: subscriber.signal });
+      }
     });
   }
 
@@ -284,7 +698,7 @@ class ObservableImpl<T> implements Subscribable<T> {
   take(amount: number): Observable<T> {
     const ObservableCtor = instanceCtor<T>(this);
     return new ObservableCtor((subscriber) => {
-      let remaining = amount;
+      let remaining = toUnsignedLongLong(amount);
 
       if (remaining <= 0) {
         subscriber.complete();
@@ -314,7 +728,7 @@ class ObservableImpl<T> implements Subscribable<T> {
   drop(amount: number): Observable<T> {
     const ObservableCtor = instanceCtor<T>(this);
     return new ObservableCtor((subscriber) => {
-      let remaining = amount;
+      let remaining = toUnsignedLongLong(amount);
 
       this.subscribe(
         {
@@ -464,15 +878,15 @@ class ObservableImpl<T> implements Subscribable<T> {
       let completed = false;
       let errored = false;
 
-      subscriber.signal.addEventListener(
-        'abort',
-        () => {
-          if (!completed && !errored) {
-            actualInspector.abort?.(subscriber.signal.reason);
+      addAbortAlgorithm(subscriber.signal, (reason) => {
+        if (!completed && !errored) {
+          try {
+            actualInspector.abort?.(reason);
+          } catch (error) {
+            reportError(error);
           }
-        },
-        { once: true }
-      );
+        }
+      });
 
       this.subscribe(
         {
@@ -660,6 +1074,32 @@ class ObservableImpl<T> implements Subscribable<T> {
     return deferred.promise;
   }
 
+  every(predicate: (value: T, index: number) => boolean, options?: SubscribeOptions): Promise<boolean> {
+    const deferred = new AbortableDeferred<boolean>(options);
+    let index = 0;
+    this.subscribe(
+      {
+        next: (value) => {
+          let result: boolean;
+          try {
+            result = predicate(value, index++);
+          } catch (error) {
+            deferred.reject(error);
+            return;
+          }
+
+          if (!result) {
+            deferred.resolve(false);
+          }
+        },
+        error: (error) => deferred.reject(error),
+        complete: () => deferred.resolve(true),
+      },
+      { signal: deferred.signal }
+    );
+    return deferred.promise;
+  }
+
   reduce<R>(reducer: (accumulation: T | R, value: T, index: number) => R): Promise<R>;
   reduce<I, R>(reducer: (accumulation: I | R, value: T, index: number) => R, initialValue: I, options?: SubscribeOptions): Promise<R | I>;
 
@@ -676,6 +1116,8 @@ class ObservableImpl<T> implements Subscribable<T> {
           if (!hasState) {
             state = value;
             hasState = true;
+            index = 1;
+            return;
           }
 
           try {
@@ -702,7 +1144,7 @@ class ObservableImpl<T> implements Subscribable<T> {
   }
 
   toArray(options?: SubscribeOptions): Promise<T[]> {
-    const deferred = new AbortableDeferred<T[]>(options);
+    const deferred = new AbortableDeferred<T[]>(options, true);
 
     const result: T[] = [];
 
@@ -719,12 +1161,41 @@ class ObservableImpl<T> implements Subscribable<T> {
   }
 }
 
-globalThis.Observable = ObservableImpl as any;
+Object.defineProperty(ObservableImpl, 'name', { value: 'Observable' });
+Object.defineProperty(ObservableImpl.prototype, Symbol.toStringTag, {
+  configurable: true,
+  value: 'Observable',
+});
+Object.defineProperty(Subscriber.prototype, Symbol.toStringTag, {
+  configurable: true,
+  value: 'Subscriber',
+});
+for (const key of ['next', 'error', 'complete', 'addTeardown', 'active', 'signal']) {
+  const descriptor = Object.getOwnPropertyDescriptor(Subscriber.prototype, key)!;
+  Object.defineProperty(Subscriber.prototype, key, { ...descriptor, enumerable: true });
+}
+const subscribeDescriptor = Object.getOwnPropertyDescriptor(ObservableImpl.prototype, 'subscribe')!;
+Object.defineProperty(ObservableImpl.prototype, 'subscribe', {
+  ...subscribeDescriptor,
+  enumerable: true,
+});
+Object.defineProperty(globalThis, 'Subscriber', {
+  configurable: true,
+  value: Subscriber,
+  writable: true,
+});
+Object.defineProperty(globalThis, 'Observable', {
+  configurable: true,
+  enumerable: false,
+  value: ObservableImpl,
+  writable: true,
+});
 
 class AbortableDeferred<T> {
   private readonly resolver: (value: T | PromiseLike<T>) => void;
   private readonly rejector: (reason?: any) => void;
   private readonly abortController = new AbortController();
+  private settled = false;
 
   get signal() {
     return this.abortController.signal;
@@ -732,7 +1203,7 @@ class AbortableDeferred<T> {
 
   readonly promise: Promise<T>;
 
-  constructor(options?: SubscribeOptions) {
+  constructor(options?: SubscribeOptions, useAbortAlgorithm = false) {
     let resolver: (value: T | PromiseLike<T>) => void;
     let rejector: (reason?: any) => void;
 
@@ -740,6 +1211,9 @@ class AbortableDeferred<T> {
       resolver = resolve;
       rejector = reject;
     });
+    // Promise-returning platform methods internally observe their rejection so
+    // an intentionally ignored result does not create a second global event.
+    void this.promise.catch(() => {});
 
     // @ts-expect-error
     this.resolver = resolver;
@@ -749,25 +1223,33 @@ class AbortableDeferred<T> {
     const signal = options?.signal;
 
     if (signal) {
-      signal.addEventListener(
-        'abort',
-        () => {
-          this.reject(new DOMException('Observable promise result aborted', 'AbortError'));
-          this.abortController.abort();
-        },
-        { once: true, signal: this.abortController.signal }
-      );
+      const abort = () => this.reject(signal.reason);
+      if (signal.aborted) {
+        abort();
+      } else if (useAbortAlgorithm) {
+        addAbortAlgorithm(signal, abort, this.abortController.signal);
+      } else {
+        signal.addEventListener('abort', abort, { once: true, signal: this.abortController.signal });
+      }
     }
   }
 
-  resolve(value: T | PromiseLike<T>) {
-    this.abortController?.abort();
+  resolve(value: T | PromiseLike<T>): void {
+    if (this.settled) {
+      return;
+    }
+    this.settled = true;
     this.resolver(value);
+    this.abortController.abort();
   }
 
-  reject(reason?: any) {
-    this.abortController?.abort();
+  reject(reason?: any): void {
+    if (this.settled) {
+      return;
+    }
+    this.settled = true;
     this.rejector(reason);
+    this.abortController.abort(reason);
   }
 }
 

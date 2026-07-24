@@ -171,10 +171,7 @@ function createBootstrap({ config, installerSource, attestationInstallerSource, 
   const iframeTestRequirements = JSON.stringify(
     Object.fromEntries(
       Object.entries(config.reviewedIframeFiles)
-        .map(([filePath, review]) => [
-          `/${filePath.replace(/\.window\.js$/, '.window.html')}`,
-          review.childRealmCount,
-        ])
+        .map(([filePath, review]) => [`/${filePath.replace(/\.window\.js$/, '.window.html')}`, review.childRealmCount])
         .sort(([left], [right]) => left.localeCompare(right))
     )
   );
@@ -299,11 +296,13 @@ function createBootstrap({ config, installerSource, attestationInstallerSource, 
 
 function createAttestationTest({ config, bundleSha256 }) {
   const functionKey = JSON.stringify(config.attestation.functionKey);
+  const registrationKey = JSON.stringify(`${config.attestation.functionKey}_REGISTER_TEST__`);
   const realmStateKey = JSON.stringify(config.attestation.realmStateKey);
   const expectedBundleSha = JSON.stringify(bundleSha256);
   const testName = JSON.stringify(`${config.attestation.namePrefix}${bundleSha256} is active`);
 
   return `(() => {
+  let registered = false;
   const assertRealm = (result, label) => {
     assert_equals(result?.bundleSha256, ${expectedBundleSha}, label + " has the expected RxJS bundle");
     assert_true(result?.ok === true, label + " has exact RxJS identities: " + JSON.stringify(result));
@@ -316,26 +315,38 @@ function createAttestationTest({ config, bundleSha256 }) {
   };
   const realmState = globalThis[${realmStateKey}];
 
-  if (realmState?.requiredSameOriginIframeCount > 0) {
-    const attestationTest = async_test(${testName});
-    realmState.onChildRealmsReady(
-      attestationTest.step_func((childResults) => {
-        assertCurrentRealm();
-        assert_equals(
-          childResults.length,
-          realmState.requiredSameOriginIframeCount,
-          "Every reviewed same-origin iframe realm was reached"
-        );
-        childResults.forEach((childResult, index) => {
-          assertRealm(childResult, "Same-origin iframe realm " + (index + 1));
-        });
-        attestationTest.done();
-      })
-    );
-    return;
-  }
+  const register = () => {
+    if (registered) {
+      throw new Error("RxJS WPT attestation test was registered more than once");
+    }
+    registered = true;
+    if (realmState?.requiredSameOriginIframeCount > 0) {
+      const attestationTest = async_test(${testName});
+      realmState.onChildRealmsReady(
+        attestationTest.step_func((childResults) => {
+          assertCurrentRealm();
+          assert_equals(
+            childResults.length,
+            realmState.requiredSameOriginIframeCount,
+            "Every reviewed same-origin iframe realm was reached"
+          );
+          childResults.forEach((childResult, index) => {
+            assertRealm(childResult, "Same-origin iframe realm " + (index + 1));
+          });
+          attestationTest.done();
+        })
+      );
+      return;
+    }
+    test(assertCurrentRealm, ${testName});
+  };
 
-  test(assertCurrentRealm, ${testName});
+  Object.defineProperty(globalThis, ${registrationKey}, {
+    value: register,
+    configurable: false,
+    enumerable: false,
+    writable: false,
+  });
 })();
 `;
 }

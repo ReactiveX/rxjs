@@ -4,11 +4,11 @@ This directory runs the pinned Web Platform Tests (WPT) for the web-platform
 `Observable` against the implementation in
 `packages/observable-polyfill/src/index.ts`.
 
-The harness is intentionally test infrastructure. It does not make the
-polyfill conforming. `yarn test:wpt` is the conformance command: it exits
-nonzero if any upstream test or subtest fails, errors, times out, or does not
-run. A separately named baseline command remains available for diagnosing the
-harness against the current known failures. Both modes are strict about
+The harness is intentionally test infrastructure; conformance comes from the
+implementation behavior it measures. The current fallback passes this pinned
+suite. `yarn test:wpt` exits nonzero if any upstream test or subtest fails,
+errors, times out, or does not run. A separately named baseline command remains
+available for diagnosing stable behavior. Both modes are strict about
 completeness, provenance, and which implementation ran.
 
 ## Prerequisites
@@ -69,7 +69,9 @@ Before each test realm runs upstream code, the generated bootstrap:
    the bundle SHA-256; and
 5. exposes a non-enumerable, test-only attestation function.
 
-Every generated WPT URL receives exactly one named attestation subtest. The
+Every generated WPT URL receives exactly one named attestation subtest,
+registered after the upstream source has established any `setup()` properties.
+The
 report auditor independently requires it to pass with the expected bundle hash
 and exact installed identities, and requires those identities to differ from
 the captured native ones. For the four iframe-using URLs, that one subtest waits
@@ -100,16 +102,15 @@ Run commands from the repository root:
 
 The first browser run needs network access to populate the pinned browser and
 sparse runner caches and to create the runner's Python environment. Later runs
-reuse those exact artifacts. To prove a warm run is self-contained while
-retaining a successful diagnostic exit until conformance work is complete:
+reuse those exact artifacts. To prove a warm run is self-contained:
 
 ```sh
 RXJS_WPT_OFFLINE=1 yarn test:wpt:baseline
 ```
 
 `RXJS_WPT_OFFLINE=1 yarn test:wpt` runs strict conformance from the same
-caches, but currently exits nonzero for the real Observable failures. Offline
-mode fails immediately if a required cached artifact is absent. Useful
+caches and is expected to pass for the pinned implementation and browser.
+Offline mode fails immediately if a required cached artifact is absent. Useful
 test-only overrides are listed below. Browser runs also disable Chrome
 background networking, component updates, sync, metrics uploads, and pings;
 WPT test traffic remains on the official runner's local servers.
@@ -145,8 +146,9 @@ structured report and full runner logs.
 `yarn test:wpt` succeeds only when the official runner completes, every URL
 runs exactly once, every identity attestation passes, the report is well
 formed, and every upstream result passes. `yarn test:wpt:baseline` retains the
-known-failure comparison for deliberate harness diagnostics. In baseline mode,
-both an unexpected failure and an unexpected pass are mismatches.
+stable-result comparison for deliberate harness diagnostics. In baseline mode,
+both an unexpected failure and an unexpected pass are mismatches. The current
+baseline contains 52 `OK` URLs and 525 passing upstream subtests.
 
 ## Updating WPT or expectations
 
@@ -170,7 +172,7 @@ baseline silently: document a quarantine and create a follow-up issue before
 accepting a multi-status expectation.
 
 CI runs the strict pinned conformance command as a path-filtered blocking check
-with fixed process concurrency and a fixed wall-clock timeout. It remains red
-while the fallback has WPT failures. A scheduled advisory job uses the current
-stable Chrome for Testing with browser-version drift enabled. Both jobs always
-upload the raw report, audit, logs, URL inventory, and attestation identities.
+with fixed process concurrency and a fixed wall-clock timeout. A scheduled
+advisory job uses the current stable Chrome for Testing with browser-version
+drift enabled. Both jobs always upload the raw report, audit, logs, URL
+inventory, and attestation identities.

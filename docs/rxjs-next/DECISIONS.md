@@ -175,6 +175,9 @@ Status meanings:
 - **Consequence:** The default command prints progress, aggregate statuses,
   every non-passing URL and subtest, and artifact paths for diagnosis. It
   remains attested and fails independently for incomplete execution, native
-  leakage, malformed reports, or runner failures. The blocking job stays red
-  until the fallback conforms; baseline metadata remains useful for deliberate
-  harness analysis but cannot make `test:wpt` pass.
+  leakage, malformed reports, or runner failures. Baseline metadata remains
+  useful for deliberate harness analysis but cannot make `test:wpt` pass.
+- **Evidence:** On 2026-07-24 the fallback passed all 52 pinned URLs and all
+  525 upstream subtests with 52/52 exact-identity attestations in Chrome for
+  Testing `150.0.7871.126`. Three further identical complete runs supported
+  removing the obsolete failure expectations.

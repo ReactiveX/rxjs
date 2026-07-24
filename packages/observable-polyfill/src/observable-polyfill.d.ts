@@ -18,7 +18,7 @@ declare global {
     subscribe(observer?: Partial<Observer<T>> | ((value: T) => void) | null, options?: SubscribeOptions): void;
   }
 
-  type ObservableValue<T> = Subscribable<T> | AsyncIterable<T> | PromiseLike<T> | Iterable<T>;
+  type ObservableValue<T> = Observable<T> | AsyncIterable<T> | PromiseLike<T> | Iterable<T>;
 
   interface SubscribeOptions {
     signal?: AbortSignal;
@@ -29,6 +29,10 @@ declare global {
     readonly active: boolean;
     readonly signal: AbortSignal;
   }
+
+  var Subscriber: {
+    readonly prototype: Subscriber<unknown>;
+  };
 
   interface ObservableCtor {
     new <T>(init: (subscriber: Subscriber<T>) => void): Observable<T>;
