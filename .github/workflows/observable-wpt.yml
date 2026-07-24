@@ -1,0 +1,146 @@
+name: Observable WPT
+
+on:
+  pull_request:
+    types: ['opened', 'reopened', 'synchronize']
+    paths:
+      - '.github/actions/install-dependencies/**'
+      - '.github/workflows/observable-wpt.yml'
+      - 'package.json'
+      - 'yarn.lock'
+      - 'packages/observable-polyfill/**'
+  push:
+    branches: ['master']
+    paths:
+      - '.github/actions/install-dependencies/**'
+      - '.github/workflows/observable-wpt.yml'
+      - 'package.json'
+      - 'yarn.lock'
+      - 'packages/observable-polyfill/**'
+  schedule:
+    - cron: '23 9 * * 2'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: observable-wpt-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  WPT_COMMIT: 6a009d73f0d315941b90cac13a9523a2a08c631b
+  WPT_PYTHON: 3.11.9
+
+jobs:
+  pinned:
+    if: github.event_name != 'schedule'
+    name: Pinned Chrome 150 Observable WPT (Node 24)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install JavaScript dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: '24'
+
+      - name: Install pinned Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.WPT_PYTHON }}
+
+      - name: Restore pinned WPT runner
+        uses: actions/cache@v4
+        with:
+          path: .cache/rxjs-wpt/runner
+          key: observable-wpt-runner-${{ runner.os }}-${{ runner.arch }}-python-${{ env.WPT_PYTHON }}-${{ env.WPT_COMMIT }}
+
+      - name: Restore pinned browser
+        uses: actions/cache@v4
+        with:
+          path: .cache/rxjs-wpt/browser
+          key: observable-wpt-browser-${{ runner.os }}-chrome-150.0.7871.126-${{ hashFiles('packages/observable-polyfill/test/wpt/browser-lock.json') }}
+
+      - name: Verify the pinned import
+        run: yarn wpt:verify-import
+
+      - name: Run the attested conformance suite
+        run: yarn test:wpt
+
+      - name: Upload WPT evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: observable-wpt-pinned-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            .cache/rxjs-wpt/reports/**/wptreport.json
+            .cache/rxjs-wpt/reports/**/wpt.raw.log
+            .cache/rxjs-wpt/reports/**/wpt.log
+            .cache/rxjs-wpt/reports/**/audit.json
+            .cache/rxjs-wpt/reports/**/attestations.json
+            .cache/rxjs-wpt/reports/**/status-diff.txt
+            packages/observable-polyfill/test/wpt/expected-test-urls.json
+
+  latest-chrome:
+    if: github.event_name == 'schedule'
+    name: Latest stable Chrome Observable WPT (Node 24, advisory)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install JavaScript dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: '24'
+
+      - name: Install pinned Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.WPT_PYTHON }}
+
+      - name: Restore pinned WPT runner
+        uses: actions/cache@v4
+        with:
+          path: .cache/rxjs-wpt/runner
+          key: observable-wpt-runner-${{ runner.os }}-${{ runner.arch }}-python-${{ env.WPT_PYTHON }}-${{ env.WPT_COMMIT }}
+
+      - name: Install latest stable Chrome and matching driver
+        id: chrome
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: stable
+          install-chromedriver: true
+
+      - name: Verify the pinned import
+        run: yarn wpt:verify-import
+
+      - name: Run advisory browser-drift conformance check
+        run: yarn test:wpt
+        env:
+          RXJS_WPT_ALLOW_BROWSER_DRIFT: '1'
+          RXJS_WPT_CHROME_BINARY: ${{ steps.chrome.outputs.chrome-path }}
+          RXJS_WPT_CHROMEDRIVER: ${{ steps.chrome.outputs.chromedriver-path }}
+
+      - name: Upload WPT evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: observable-wpt-latest-chrome-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            .cache/rxjs-wpt/reports/**/wptreport.json
+            .cache/rxjs-wpt/reports/**/wpt.raw.log
+            .cache/rxjs-wpt/reports/**/wpt.log
+            .cache/rxjs-wpt/reports/**/audit.json
+            .cache/rxjs-wpt/reports/**/attestations.json
+            .cache/rxjs-wpt/reports/**/status-diff.txt
+            packages/observable-polyfill/test/wpt/expected-test-urls.json

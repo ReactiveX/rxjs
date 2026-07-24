@@ -71,6 +71,10 @@ Decide:
 
 ### 5. Which environments and module systems are supported?
 
+Node 24 is now accepted and continuously exercised for repository tooling and
+the Observable WPT harness. That does not answer the published-package support
+question below.
+
 Define minimum browser, worker, Node, Deno, and other runtime expectations,
 including required support or fallback for `WeakRef`, `AbortSignal.any`,
 `reportError`, `Symbol.dispose`, and DOM types. Also define ESM, CommonJS, and
@@ -78,13 +82,16 @@ bundler support before package exports are stabilized.
 
 ## Platform-layer design questions
 
-### 6. Which upstream revision is the first conformance baseline?
+### 6. Which specification revision completes the first conformance baseline?
 
-The Observable specification and its tentative WPT suite are living artifacts.
-Choose the specification commit and WPT commit used for the first conformance
-gate, how often they are advanced, and how upstream changes are reviewed.
+The first test-harness revision is resolved: D-009 pins Observable WPT commit
+`6a009d73f0d315941b90cac13a9523a2a08c631b`, and changes require an
+explicit verified import and review. The harness can enforce its attested
+failure baseline without claiming conformance.
 
-Detailed WPT infrastructure planning remains deferred.
+Choose the matching Observable specification commit, the conformance threshold
+and ownership for advancing both pins, and the browser-support policy after
+the current fallback is ready for strict conformance work.
 
 ### 7. How are realms and subclasses preserved?
 

@@ -54,6 +54,7 @@ Status meanings:
   The Symbol-keyed RxJS implementation may delegate to the platform method
   when its contract is sufficient, or provide additional RxJS functionality
   under the separate key.
+
 - **Rationale:** Symbols avoid adding RxJS string names to the platform API,
   give consumers one uniform invocation style across native-overlapping and
   RxJS-only operators, and leave room for richer RxJS contracts without
@@ -120,3 +121,60 @@ Status meanings:
 - **Consequence:** Do not design the packaging, permissions, server model, or
   release coupling until the runtime and compatibility APIs are stable enough
   to encode.
+
+## D-009 — Separate the attested WPT harness gate from conformance work
+
+- **Status:** Superseded
+- **Superseded by:** D-011 for command and CI semantics. Its pinned import,
+  attestation, and reviewed-baseline requirements remain incorporated into
+  D-011.
+- **Decision:** Test the fallback with the official browser WPT runner against
+  WPT commit `6a009d73f0d315941b90cac13a9523a2a08c631b`. The blocking harness
+  gate requires complete execution, exact RxJS implementation identity in
+  every test realm, and an exact reviewed result baseline. It does not require
+  all upstream behavior tests to pass. A separate strict gate represents later
+  conformance work.
+- **Rationale:** A native-capable browser is required for realistic window,
+  worker, iframe, and Web IDL behavior, but its native Observable could make a
+  fallback suite pass for the wrong reason. Exact constructor, `subscribe`,
+  `EventTarget.prototype.when`, and bundle-hash attestation prevents that false
+  signal while allowing test infrastructure to land before behavior fixes.
+- **Consequence:** The harness may mask native slots only inside disposable test
+  realms and must not add a force-install API or otherwise alter production
+  behavior. Every generated WPT URL has one independently audited attestation
+  subtest that expectation metadata cannot suppress. Known behavior failures
+  may enter the baseline only after three identical complete runs; unexpected
+  passes are baseline mismatches as well as unexpected failures. Advancing WPT,
+  browser, reviewed realm patterns, or expectations is an explicit update.
+
+## D-010 — Exercise the Observable WPT harness on Node 24
+
+- **Status:** Accepted
+- **Decision:** The repository tooling engine declaration includes Node 24,
+  and the blocking and advisory Observable WPT workflows run their JavaScript
+  tooling on Node 24.
+- **Rationale:** Node 24 is an actively used development runtime, and the WPT
+  commands must not require an engine-check bypass before their own
+  prerequisites or tests can run.
+- **Consequence:** WPT import verification, harness unit tests, doctor checks,
+  and browser execution must work under Node 24. Existing Node 18 and Node 20
+  development declarations remain in place. This decision does not settle the
+  final runtime support matrix for published RxJS packages.
+
+## D-011 — Make `test:wpt` the strict conformance command
+
+- **Status:** Accepted
+- **Decision:** `yarn test:wpt` and the blocking WPT CI job require every
+  upstream Observable WPT test and subtest to pass. Any upstream failure,
+  error, timeout, or not-run result exits nonzero. The current known-failure
+  comparison remains available only as the explicitly named
+  `yarn test:wpt:baseline` diagnostic.
+- **Rationale:** A command named `test:wpt` should communicate actual WPT
+  success or failure without requiring contributors to know that a passing
+  process previously meant only “matches known failures.”
+- **Consequence:** The default command prints progress, aggregate statuses,
+  every non-passing URL and subtest, and artifact paths for diagnosis. It
+  remains attested and fails independently for incomplete execution, native
+  leakage, malformed reports, or runner failures. The blocking job stays red
+  until the fallback conforms; baseline metadata remains useful for deliberate
+  harness analysis but cannot make `test:wpt` pass.

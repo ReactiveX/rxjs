@@ -64,13 +64,13 @@ package names are open decisions.
 
 ## Current component inventory
 
-| Component | Current responsibility | Intended responsibility | Current gap |
-| --- | --- | --- | --- |
-| `packages/observable-polyfill` | Defines an ambient platform-shaped API, implements `Observable`, `Subscriber`, native-style operators, promise-returning consumers, and `EventTarget.when()` | Supply the pinned platform behavior only when the runtime lacks an acceptable implementation | Unconditionally overwrites globals, does not build, and has not been tested against WPT |
-| `packages/rxjs` | Side-effectfully installs Symbol-keyed operators/factories; contains subjects, cold primitives, async-iterable adapters, and early testing utilities | Main Symbol-extension library, with compatibility behavior moved behind an explicit boundary | Package exports are invalid/incomplete, the fallback dependency is undeclared, installation conventions vary, and only one operator has a test |
-| `packages/observable` | Exposes the inherited RxJS 7 `Observable`, `Subscriber`, `Subscription`, and related helpers | Undecided: remove/archive, rename, or deliberately reuse inside compatibility | It is not used by the new runtime path but is still part of workspace preparation |
-| `packages/rxjs/src/testing` | Contains fake timers and an experimental `ScheduledObservable` | Provide test infrastructure appropriate for shared platform semantics and compatibility tests | No stable public entry point or test contract |
-| `apps/rxjs.dev` | Existing RxJS documentation site | Eventually explain the new platform and migration model | Still represents the prior generation; redesign is out of scope for the foundation phase |
+| Component                      | Current responsibility                                                                                                                                       | Intended responsibility                                                                       | Current gap                                                                                                                                    |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/observable-polyfill` | Defines an ambient platform-shaped API, implements `Observable`, `Subscriber`, native-style operators, promise-returning consumers, and `EventTarget.when()` | Supply the pinned platform behavior only when the runtime lacks an acceptable implementation  | Unconditionally overwrites globals and does not build; the test-only WPT harness records current failures, but conformance is not yet claimed  |
+| `packages/rxjs`                | Side-effectfully installs Symbol-keyed operators/factories; contains subjects, cold primitives, async-iterable adapters, and early testing utilities         | Main Symbol-extension library, with compatibility behavior moved behind an explicit boundary  | Package exports are invalid/incomplete, the fallback dependency is undeclared, installation conventions vary, and only one operator has a test |
+| `packages/observable`          | Exposes the inherited RxJS 7 `Observable`, `Subscriber`, `Subscription`, and related helpers                                                                 | Undecided: remove/archive, rename, or deliberately reuse inside compatibility                 | It is not used by the new runtime path but is still part of workspace preparation                                                              |
+| `packages/rxjs/src/testing`    | Contains fake timers and an experimental `ScheduledObservable`                                                                                               | Provide test infrastructure appropriate for shared platform semantics and compatibility tests | No stable public entry point or test contract                                                                                                  |
+| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                             | Eventually explain the new platform and migration model                                       | Still represents the prior generation; redesign is out of scope for the foundation phase                                                       |
 
 ## Platform Observable lifecycle
 
@@ -160,6 +160,76 @@ The final detection and installation API is open. It must be decided before
 normalizing imports across operator modules, because import side effects are
 part of that contract.
 
+## Attested Observable WPT harness
+
+The WPT harness is a test boundary around the current fallback, not a second
+installation contract. It does not change production source, exports, ambient
+types, or the accepted native-first direction. Its purpose is to run the
+upstream Observable suite in disposable browser realms while proving that each
+reported result came from the RxJS fallback rather than the browser's native
+implementation.
+
+The harness pins WPT commit
+`6a009d73f0d315941b90cac13a9523a2a08c631b`. It vendors exactly 29 files from
+`dom/observable/tentative/`—including the `EventTarget.prototype.when`
+coverage—and eight derived support files: the license, GC helper, two IDLs,
+and four WPT harness/parser scripts. The 37 imported files remain byte-for-byte
+identical to upstream; provenance records each Git blob and SHA-256, and an
+expected-URL inventory makes missing or duplicated execution a hard failure.
+Verification derives the support closure from the test sources and rejects
+both missing dependencies and unexplained extras. Updates use a shallow,
+blob-filtered sparse checkout and require explicit review of source,
+dependency, URL, and realm-pattern changes.
+
+Execution uses an ignored generated shadow tree:
+
+1. The real polyfill source is synchronously bundled for tests. A manifest
+   records every source hash and the final bundle SHA-256.
+2. Before the bundle runs, bootstrap code captures native `Observable`,
+   `Observable.prototype.subscribe`, and `EventTarget.prototype.when`
+   descriptors and references. The pinned blocking browser must expose them,
+   and the disposable realm must permit them to be masked.
+3. After fallback installation, a non-enumerable test-only attestation checks
+   that the active constructor, `subscribe`, and `when` references exactly
+   equal the bundle-installed references, differ from the captured native
+   references, and report the expected bundle hash.
+4. Generated metadata injects bootstrap and one named attestation subtest into
+   every `.any.js`, `.window.js`, HTML, and IDL URL. The `.any.js` injection is
+   what reaches dedicated-worker variants. Reviewed same-origin
+   `contentWindow` access installs and verifies the same bundle in the child
+   before upstream code uses it. The four iframe URLs cannot pass their single
+   attestation until all nine reviewed child-realm accesses have verified.
+   New realm-creation patterns or child-count drift fail import verification
+   until reviewed.
+5. A report auditor independently requires exactly one passing attestation per
+   expected URL. Expectation metadata cannot suppress attestation failures.
+
+`yarn test:wpt` is the strict conformance gate. It succeeds only when the
+official browser WPT runner completes, every expected URL runs once, every
+realm attests exact RxJS identity, the report is complete, and every upstream
+test and subtest passes. Any failure, error, timeout, or not-run result produces
+a readable terminal report and a nonzero process exit.
+
+`yarn test:wpt:baseline` is a separately named harness diagnostic. It compares
+Observable behavior with the reviewed known-failure baseline while retaining
+all completeness and identity gates. The baseline is accepted only after three
+consecutive complete runs agree, and unexpected failures and unexpected passes
+both reject it. It is not the default test command and is not a conformance
+claim.
+
+The initial narrowed-closure baseline contains 52 generated URLs and 487
+upstream subtests. All 52 implementation attestations pass. Current top-level
+statuses are 33 `OK`, 15 `ERROR`, and 4 `TIMEOUT`; upstream subtest statuses
+are 314 `PASS`, 159 `FAIL`, 8 `TIMEOUT`, and 6 `NOTRUN`. These counts describe
+the present fallback and are not a conformance claim.
+
+For bounded network and execution cost, the official sparse WPT runner is
+cached by WPT revision, operating system, and Python version. Chrome for
+Testing `150.0.7871.126` and its matching driver are locked by artifact
+checksum, with warm offline execution required. The blocking job uses fixed
+concurrency and a wall-clock limit; a non-blocking scheduled latest-Chrome run
+reports browser drift separately.
+
 ## Symbol extension model
 
 ### Current pattern
@@ -182,9 +252,7 @@ declare global {
   }
 }
 
-Observable.prototype[example] = function <T>(
-  this: Observable<T>
-): Observable<T> {
+Observable.prototype[example] = function <T>(this: Observable<T>): Observable<T> {
   const ObservableCtor = this.constructor as ObservableCtor;
   return new ObservableCtor((subscriber) => {
     this.subscribe(subscriber, { signal: subscriber.signal });
@@ -329,11 +397,11 @@ This inventory documents what exists in source, not a supported public API.
 
 ### Symbol extensions in `packages/rxjs`
 
-| Placement | Current extensions |
-| --- | --- |
-| Static and instance | `create`, `combine`, `combineLatest`, `concat`, `merge`, `pipe`, `race` |
-| Static | `animationFrames`, `interval`, `timer` |
-| Instance | `buffer`, `debounce`, `defaultIfEmpty`, `exhaustMap`, `mergeMap`, `repeat`, `retry`, `scan`, `skipLast`, `skipWhile`, `switchMap`, `takeLast`, `takeWhile`, `throttle`, `timeout`, `withLatestFrom` |
+| Placement           | Current extensions                                                                                                                                                                                  |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Static and instance | `create`, `combine`, `combineLatest`, `concat`, `merge`, `pipe`, `race`                                                                                                                             |
+| Static              | `animationFrames`, `interval`, `timer`                                                                                                                                                              |
+| Instance            | `buffer`, `debounce`, `defaultIfEmpty`, `exhaustMap`, `mergeMap`, `repeat`, `retry`, `scan`, `skipLast`, `skipWhile`, `switchMap`, `takeLast`, `takeWhile`, `throttle`, `timeout`, `withLatestFrom` |
 
 The current source does not yet contain Symbol counterparts for every
 platform-named operator. In particular, `map` and `filter` appear only on the
@@ -420,17 +488,21 @@ must not depend on RxJS operators or compatibility code.
 
 Verified on 2026-07-24 from commit `9e94c090e`:
 
-| Check | Result | Interpretation |
-| --- | --- | --- |
-| Polyfill source tests | 4 unique source tests pass | Covers global installation, basic next/complete teardown, error flow, and `EventTarget.when`; not conformance |
-| RxJS source tests | 1 test passes | Covers one `scan` example only |
-| Polyfill package build | Fails | Ambient platform declarations are not visible to the build entry, causing missing global types and follow-on errors |
-| RxJS package build | Fails | `tshy` rejects the array-valued root export configuration before compilation |
-| Workspace project discovery | Passes with the Nx daemon disabled | Discovers `@rxjs/observable-polyfill`, `@rxjs/observable`, `rxjs`, and `rxjs.dev` |
+| Check                           | Result                                                                                | Interpretation                                                                                                                                                           |
+| ------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Polyfill source tests           | 4 unique source tests pass                                                            | Covers global installation, basic next/complete teardown, error flow, and `EventTarget.when`; not conformance                                                            |
+| RxJS source tests               | 1 test passes                                                                         | Covers one `scan` example only                                                                                                                                           |
+| Polyfill package build          | Fails                                                                                 | Ambient platform declarations are not visible to the build entry, causing missing global types and follow-on errors                                                      |
+| Polyfill package lint           | Fails                                                                                 | The existing ESLint project points at `packages/observable/tsconfig.json`, which does not include the polyfill sources                                                   |
+| RxJS package build              | Fails                                                                                 | `tshy` rejects the array-valued root export configuration before compilation                                                                                             |
+| Workspace project discovery     | Passes with the Nx daemon disabled                                                    | Discovers `@rxjs/observable-polyfill`, `@rxjs/observable`, `rxjs`, and `rxjs.dev`                                                                                        |
+| Attested Observable WPT harness | Strict command fails on current conformance gaps; explicit baseline diagnostic passes | 37-file approved closure, 52 generated URLs, 52 passing exact-identity attestations, readable terminal failures, three identical baseline runs, and a warm offline rerun |
 
-The repository declares Node 18 or Node 20, while the inspection environment
-used Node 24. Direct package tests passed despite that mismatch. Future baseline
-work should use a declared runtime before attributing tool failures to source.
+The repository development engine declaration accepts Node 18, Node 20, and
+Node 24. The blocking Observable WPT workflow uses Node 24, and the harness
+unit, import-verification, doctor, and browser-baseline checks have been
+verified on Node `24.12.0`. This tooling support does not settle the final
+published-package runtime matrix, which remains part of release planning.
 
 ## Target architecture invariants
 
@@ -452,39 +524,44 @@ These invariants should become automated fitness functions:
 9. Compatibility-only cold behavior cannot be reached accidentally through the
    platform entry point.
 10. Every public package entry builds, type-checks, imports, and executes in each
-   supported environment and module system.
+    supported environment and module system.
 11. Every RxJS 7 compatibility claim maps to a passing test or a documented,
     reviewed divergence.
 12. Standards conformance work records the exact specification and WPT
     revisions under test.
-12. Architecture changes update the decision log and project documents in the
+13. Every WPT result used for fallback assessment proves exact RxJS bundle
+    identity in its execution realm; expectation metadata cannot waive that
+    proof.
+14. Architecture changes update the decision log and project documents in the
     same change.
 
 ## Initial fitness-function scorecard
 
-| Characteristic | Check | Target enforcement |
-| --- | --- | --- |
-| Native-first | Import fallback with a sentinel native constructor and assert identity is unchanged | Unit and package-import tests |
-| Conformance | Selected tests from a pinned Observable WPT revision | CI conformance job; detailed plan deferred |
-| Extension safety | Snapshot string properties; verify only approved Symbol keys are installed and repeat installation is idempotent | Unit tests and CI |
-| Lifecycle | Multi-observer, ref-count, abort, synchronous reentrancy, error, and teardown-order cases | Shared platform test suite |
-| Native/fallback parity | Run the same operator cases against both implementations | CI matrix |
-| Package integrity | Build, type, ESM/CJS import, browser bundle, and duplicate-install fixtures | Package CI |
-| Compatibility | RxJS 7 behavior ledger entries backed by tests or accepted-divergence records | Compatibility CI and review |
-| Migration | Representative application fixtures compile and pass behavior tests | Pre-release gate |
+| Characteristic         | Check                                                                                                            | Target enforcement                                                                |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Native-first           | Import fallback with a sentinel native constructor and assert identity is unchanged                              | Unit and package-import tests                                                     |
+| Conformance harness    | Observable WPT at `6a009d73f0d315941b90cac13a9523a2a08c631b`, with exact bundle identity attested per URL        | Blocking strict `test:wpt` job plus an explicit known-failure baseline diagnostic |
+| Extension safety       | Snapshot string properties; verify only approved Symbol keys are installed and repeat installation is idempotent | Unit tests and CI                                                                 |
+| Lifecycle              | Multi-observer, ref-count, abort, synchronous reentrancy, error, and teardown-order cases                        | Shared platform test suite                                                        |
+| Native/fallback parity | Run the same operator cases against both implementations                                                         | CI matrix                                                                         |
+| Package integrity      | Build, type, ESM/CJS import, browser bundle, and duplicate-install fixtures                                      | Package CI                                                                        |
+| Compatibility          | RxJS 7 behavior ledger entries backed by tests or accepted-divergence records                                    | Compatibility CI and review                                                       |
+| Migration              | Representative application fixtures compile and pass behavior tests                                              | Pre-release gate                                                                  |
 
 ## Known architectural risks
 
-| Risk | Impact | Mitigation direction |
-| --- | --- | --- |
-| Living platform proposal changes | Polyfill and operators drift from browsers | Pin revisions, track upstream, and advance deliberately |
-| Global mutation and load order | Native behavior is replaced or imports fail nondeterministically | Decide one installation contract and test every entry point |
-| Duplicate packages create different Symbols | Extensions appear missing even though code imported them | Decide registry/version strategy and add duplicate-install fixtures |
-| Prototype patching is restricted | Extensions cannot install in hardened or unusual realms | Define supported environments and consider explicit functional fallbacks |
-| RxJS 7 tests encode incompatible cold behavior | False failures lead contributors to corrupt platform semantics | Classify tests and keep a separate compatibility suite |
-| Compatibility layer grows into a second full RxJS | Maintenance and migration never converge | Publish a support matrix, prioritize real migration needs, and define retirement posture |
-| Package metadata remains inherited | Builds pass locally but published artifacts are unusable | Make package import/type fixtures a release gate |
-| Minimal tests allow semantic regressions | Prototype behavior becomes accidental policy | Add lifecycle and extension-kernel safety rails before expanding operators |
+| Risk                                                      | Impact                                                           | Mitigation direction                                                                                                        |
+| --------------------------------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Living platform proposal changes                          | Polyfill and operators drift from browsers                       | Pin revisions, track upstream, and advance deliberately                                                                     |
+| Global mutation and load order                            | Native behavior is replaced or imports fail nondeterministically | Decide one installation contract and test every entry point                                                                 |
+| Duplicate packages create different Symbols               | Extensions appear missing even though code imported them         | Decide registry/version strategy and add duplicate-install fixtures                                                         |
+| Prototype patching is restricted                          | Extensions cannot install in hardened or unusual realms          | Define supported environments and consider explicit functional fallbacks                                                    |
+| RxJS 7 tests encode incompatible cold behavior            | False failures lead contributors to corrupt platform semantics   | Classify tests and keep a separate compatibility suite                                                                      |
+| Compatibility layer grows into a second full RxJS         | Maintenance and migration never converge                         | Publish a support matrix, prioritize real migration needs, and define retirement posture                                    |
+| Package metadata remains inherited                        | Builds pass locally but published artifacts are unusable         | Make package import/type fixtures a release gate                                                                            |
+| Minimal tests allow semantic regressions                  | Prototype behavior becomes accidental policy                     | Add lifecycle and extension-kernel safety rails before expanding operators                                                  |
+| Browser-native Observable leaks into a fallback WPT realm | Results falsely appear to prove the RxJS implementation          | Exact reference-and-bundle attestation per URL, unsuppressible report audit, negative controls, and reviewed realm patterns |
+| WPT/browser downloads make conformance impractical        | Contributors skip or inconsistently run the gate                 | Vendor the small approved test closure and checksum-cache the sparse runner, pinned browser, and matching driver            |
 
 ## Evidence and references
 
@@ -492,6 +569,9 @@ Repository evidence:
 
 - `packages/observable-polyfill/src/index.ts`
 - `packages/observable-polyfill/src/observable-polyfill.d.ts`
+- `packages/observable-polyfill/test/wpt/config.json`
+- `packages/observable-polyfill/test/wpt/provenance.json`
+- `packages/observable-polyfill/test/wpt/expected-test-urls.json`
 - `packages/rxjs/src/create.ts`
 - `packages/rxjs/src/pipe.ts`
 - `packages/rxjs/src/cold-observable.ts`

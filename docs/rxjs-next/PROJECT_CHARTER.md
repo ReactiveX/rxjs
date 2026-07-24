@@ -39,7 +39,8 @@ Restarting the library on top of the platform primitive has three benefits:
    whenever it is available and suitable.
 2. **Conforming fallback.** Provide a polyfill when `Observable` is absent. The
    polyfill should ultimately pass the important Observable Web Platform Tests.
-   Detailed WPT integration planning is deferred.
+   The test harness is pinned independently from the later work required to
+   make the current fallback conform.
 3. **Symbol-based extension.** Install RxJS operators, factories, and helpers on
    the active Observable constructor or prototype with exported Symbols rather
    than string-named prototype additions.
@@ -59,7 +60,8 @@ Restarting the library on top of the platform primitive has three benefits:
 
 ## Non-goals for the foundation phase
 
-- Producing a detailed Web Platform Test execution plan.
+- Treating the completed test-only harness and its reviewed failure baseline as
+  proof that the current fallback already conforms.
 - Designing the final Skills or MCP products.
 - Claiming complete RxJS 7 behavioral compatibility on the platform
   `Observable`.
@@ -134,16 +136,16 @@ runtime code.
 
 ## Quality attributes
 
-| Attribute | Required outcome |
-| --- | --- |
-| Platform fidelity | The fallback matches the pinned Observable specification and selected WPT baseline; native behavior remains untouched |
-| Interoperability | Operators accept platform `Observable` values and preserve the appropriate constructor/realm |
-| Explicit compatibility | RxJS 7 emulation is opt-in and cannot be mistaken for native behavior |
-| Extensibility | A new operator can be added through one documented Symbol-extension pattern |
-| Testability | Native, polyfilled, shared, cold-compatibility, cancellation, and type behavior can be tested independently |
-| Packaging integrity | Every published entry point builds, has correct types, declares runtime dependencies, and works in supported module systems |
-| Migration clarity | Every material RxJS 7 difference has a documented migration path or an explicit unsupported status |
-| AI change safety | A contributor can find the controlling decision, active plan item, invariants, and validation gate before editing |
+| Attribute              | Required outcome                                                                                                            |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Platform fidelity      | The fallback matches the pinned Observable specification and selected WPT baseline; native behavior remains untouched       |
+| Interoperability       | Operators accept platform `Observable` values and preserve the appropriate constructor/realm                                |
+| Explicit compatibility | RxJS 7 emulation is opt-in and cannot be mistaken for native behavior                                                       |
+| Extensibility          | A new operator can be added through one documented Symbol-extension pattern                                                 |
+| Testability            | Native, polyfilled, shared, cold-compatibility, cancellation, and type behavior can be tested independently                 |
+| Packaging integrity    | Every published entry point builds, has correct types, declares runtime dependencies, and works in supported module systems |
+| Migration clarity      | Every material RxJS 7 difference has a documented migration path or an explicit unsupported status                          |
+| AI change safety       | A contributor can find the controlling decision, active plan item, invariants, and validation gate before editing           |
 
 ## Success criteria
 

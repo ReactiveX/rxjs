@@ -3,10 +3,11 @@
 ## Executive summary
 
 The project will establish a reliable platform Observable foundation before
-expanding the operator catalog or compatibility promises. The immediate work is
-to decide package and installation boundaries, restore buildable public entry
-points, and create lifecycle safety rails. Detailed WPT infrastructure and
-Skills/MCP design remain deferred until their prerequisites are stable.
+expanding the operator catalog or compatibility promises. The user temporarily
+prioritized an attested Observable WPT harness ahead of the package and
+installation decision. That completed slice adds test infrastructure and a
+reviewed failure baseline only; making the fallback conform remains later work.
+Package-boundary work now resumes at P0.2. Skills/MCP design remains deferred.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -42,13 +43,13 @@ item.
 
 ### Phase 0 — Foundation and architectural safety rails
 
-| Status | ID | Outcome |
-| --- | --- | --- |
-| `DONE` | P0.1 | Record the charter, current architecture, compatibility policy, decisions, risks, open questions, and AI working rules |
-| `NEXT` | P0.2 | Decide the package map and native-versus-polyfill installation contract |
-| `PLANNED` | P0.3 | Restore green builds and coherent public entry points for the selected package map |
-| `PLANNED` | P0.4 | Add a native/fallback lifecycle test harness and package-import fixtures |
-| `PLANNED` | P0.5 | Pin the first Observable specification and WPT revisions used as the conformance baseline |
+| Status    | ID   | Outcome                                                                                                                |
+| --------- | ---- | ---------------------------------------------------------------------------------------------------------------------- |
+| `DONE`    | P0.1 | Record the charter, current architecture, compatibility policy, decisions, risks, open questions, and AI working rules |
+| `NEXT`    | P0.2 | Decide the package map and native-versus-polyfill installation contract                                                |
+| `PLANNED` | P0.3 | Restore green builds and coherent public entry points for the selected package map                                     |
+| `PLANNED` | P0.4 | Add a native/fallback lifecycle test harness and package-import fixtures                                               |
+| `PLANNED` | P0.5 | Pin the first Observable specification and WPT revisions used as the conformance baseline                              |
 
 #### P0.1 completion evidence
 
@@ -106,12 +107,83 @@ diagrams. No implementation is required for this decision step.
 
 ### Phase 1 — Platform fallback correctness
 
-| Status | ID | Outcome |
-| --- | --- | --- |
-| `PLANNED` | P1.1 | Implement the approved native selection and conditional fallback installation |
-| `PLANNED` | P1.2 | Bring core subscription, abort, teardown, error-reporting, and `Observable.from` behavior to the pinned baseline |
-| `PLANNED` | P1.3 | Bring native platform methods and `EventTarget.when` to the pinned baseline |
-| `DEFERRED` | P1.4 | Design and automate the full important-WPT execution plan |
+| Status    | ID    | Outcome                                                                                                          |
+| --------- | ----- | ---------------------------------------------------------------------------------------------------------------- |
+| `PLANNED` | P1.1  | Implement the approved native selection and conditional fallback installation                                    |
+| `PLANNED` | P1.2  | Bring core subscription, abort, teardown, error-reporting, and `Observable.from` behavior to the pinned baseline |
+| `PLANNED` | P1.3  | Bring native platform methods and `EventTarget.when` to the pinned baseline                                      |
+| `DONE`    | P1.4a | Build the attested Observable WPT test harness and record its stable current-behavior baseline                   |
+| `PLANNED` | P1.4b | Make the fallback pass the pinned Observable WPT suite                                                           |
+
+#### P1.4a completion bar
+
+- WPT is pinned to
+  `6a009d73f0d315941b90cac13a9523a2a08c631b`, and only its approved
+  Observable dependency closure is vendored byte-for-byte with Git-blob
+  provenance and an exact generated URL inventory.
+- The ignored execution tree instruments window, dedicated-worker, same-origin
+  iframe, and Web IDL coverage without modifying imported WPT sources.
+- Every expected URL has exactly one unsuppressible passing attestation proving
+  the active constructor, `subscribe`, and `EventTarget.prototype.when` are the
+  exact RxJS bundle identities, differ from captured native references, and
+  report the expected bundle SHA-256.
+- Negative controls prove native leakage, restored native identities, a wrong
+  bundle ID, a missing worker/iframe attestation, and allowlisted attestation
+  results all fail the independent auditor.
+- The official runner, exact Chrome for Testing `150.0.7871.126`, and matching
+  driver are checksum-locked and cached so a warm second run needs no network.
+- The default `test:wpt` command is a strict conformance gate with readable
+  terminal failures. The explicitly named baseline diagnostic distinguishes
+  harness/report failures from known Observable behavior failures, and three
+  consecutive complete runs must agree before granular expectations are
+  accepted.
+- Importer, provenance, inventory, realm-pattern, and report-auditor unit tests
+  pass; CI uploads raw reports, diffs, logs, inventories, and per-realm
+  identities.
+- No production source, public API, ambient type, export, runtime dependency,
+  installation contract, or compatibility behavior changes.
+
+#### P1.4b completion bar
+
+- `test:wpt` passes against the approved WPT and browser revisions.
+- Behavior fixes remain within the accepted native-first installation and
+  platform-lifecycle architecture.
+- Each obsolete failure expectation is deliberately removed as its behavior is
+  corrected.
+
+#### P1.4a completion evidence
+
+- Vendored exactly 29 files under `dom/observable/tentative/` and eight
+  source-derived support files: 37 upstream files and 716,874 bytes total.
+  Provenance records every Git blob and SHA-256; the generated inventory
+  contains only 52 `/dom/observable/tentative/` URLs.
+- Verified all 52 URLs run exactly once and all 52 exact-identity attestations
+  pass against implementation bundle
+  `c03cd03b65e0337e0f73f202602529b87db1c2dfb1271bbd2e6857477c258e2a`.
+  Evidence includes dedicated-worker, Web IDL, and four combined
+  window/same-origin-iframe attestations covering all nine reviewed child
+  realms.
+- Recorded granular expectation metadata after three identical complete runs.
+  The current non-conforming baseline is 33 `OK`, 15 `ERROR`, and 4 `TIMEOUT`
+  top-level results, with 314 `PASS`, 159 `FAIL`, 8 `TIMEOUT`, and 6 `NOTRUN`
+  upstream subtests.
+- Passed 45 harness unit tests covering import/provenance/inventory/closure,
+  realm review, report completeness and classification, stability, and every
+  required attestation negative control. The package's four existing source
+  tests also pass.
+- Passed `wpt:doctor`, `wpt:verify-import`, `test:wpt:baseline`, and
+  two further consecutive narrowed-closure runs with
+  `RXJS_WPT_OFFLINE=1`. Chrome for Testing and ChromeDriver were both exactly
+  `150.0.7871.126`.
+- Added blocking path-filtered strict-conformance CI, a scheduled advisory
+  latest-Chrome job, cache keys, fixed concurrency/timeouts, and
+  always-uploaded raw reports, concise summaries, logs, inventories, and
+  per-realm identity evidence.
+- Declared Node 24 tooling support and moved both WPT workflow jobs to Node 24;
+  import verification, harness tests, doctor, and browser execution work on
+  Node `24.12.0` without bypassing the engine check.
+- Made no production source, public API, ambient type, export, runtime
+  dependency, installation-contract, or compatibility-behavior change.
 
 Phase exit:
 
@@ -122,10 +194,10 @@ Phase exit:
 
 ### Phase 2 — Symbol extension kernel
 
-| Status | ID | Outcome |
-| --- | --- | --- |
-| `PLANNED` | P2.1 | Decide Symbol identity, versioning, duplicate-install, realm, and collision policy |
-| `PLANNED` | P2.2 | Implement one typed extension installer for static and instance capabilities |
+| Status    | ID   | Outcome                                                                                       |
+| --------- | ---- | --------------------------------------------------------------------------------------------- |
+| `PLANNED` | P2.1 | Decide Symbol identity, versioning, duplicate-install, realm, and collision policy            |
+| `PLANNED` | P2.2 | Implement one typed extension installer for static and instance capabilities                  |
 | `PLANNED` | P2.3 | Define constructor preservation, input conversion, cancellation, and error-forwarding helpers |
 | `PLANNED` | P2.4 | Convert a small representative operator set to the kernel and validate native/fallback parity |
 
@@ -151,12 +223,12 @@ Phase exit:
 
 ### Phase 3 — Operator restoration and parity
 
-| Status | ID | Outcome |
-| --- | --- | --- |
+| Status    | ID   | Outcome                                                                         |
+| --------- | ---- | ------------------------------------------------------------------------------- |
 | `PLANNED` | P3.1 | Inventory the former RxJS 7 public operator and creation API by migration value |
-| `PLANNED` | P3.2 | Create and maintain the compatibility ledger |
-| `PLANNED` | P3.3 | Restore operators in small families using the extension kernel |
-| `PLANNED` | P3.4 | Classify, retain, or rewrite former RxJS 7 tests for each restored family |
+| `PLANNED` | P3.2 | Create and maintain the compatibility ledger                                    |
+| `PLANNED` | P3.3 | Restore operators in small families using the extension kernel                  |
+| `PLANNED` | P3.4 | Classify, retain, or rewrite former RxJS 7 tests for each restored family       |
 
 Do not use “all former tests pass” as an unqualified milestone. The gate is that
 every supported API has portable or rewritten evidence and every divergence is
@@ -164,11 +236,11 @@ explicit.
 
 ### Phase 4 — RxJS 7 compatibility product
 
-| Status | ID | Outcome |
-| --- | --- | --- |
-| `PLANNED` | P4.1 | Decide the compatibility type, package, conversion, and cancellation contracts |
-| `PLANNED` | P4.2 | Stabilize cold-per-subscription and subscription-facade primitives |
-| `PLANNED` | P4.3 | Implement the approved pipeable operator experience |
+| Status    | ID   | Outcome                                                                          |
+| --------- | ---- | -------------------------------------------------------------------------------- |
+| `PLANNED` | P4.1 | Decide the compatibility type, package, conversion, and cancellation contracts   |
+| `PLANNED` | P4.2 | Stabilize cold-per-subscription and subscription-facade primitives               |
+| `PLANNED` | P4.3 | Implement the approved pipeable operator experience                              |
 | `PLANNED` | P4.4 | Add supported subjects, schedulers, testing, and interop by prioritized category |
 | `PLANNED` | P4.5 | Publish the compatibility support matrix and representative application fixtures |
 
@@ -181,12 +253,12 @@ Phase exit:
 
 ### Phase 5 — Migration experience and AI enablement
 
-| Status | ID | Outcome |
-| --- | --- | --- |
-| `PLANNED` | P5.1 | Write migration guidance from the compatibility ledger and accepted divergences |
-| `PLANNED` | P5.2 | Validate mechanical and semantic migration steps on representative applications |
-| `DEFERRED` | P5.3 | Design the RxJS usage and RxJS 7 migration Skills |
-| `DEFERRED` | P5.4 | Design MCP capabilities, permissions, packaging, and versioning |
+| Status     | ID   | Outcome                                                                         |
+| ---------- | ---- | ------------------------------------------------------------------------------- |
+| `PLANNED`  | P5.1 | Write migration guidance from the compatibility ledger and accepted divergences |
+| `PLANNED`  | P5.2 | Validate mechanical and semantic migration steps on representative applications |
+| `DEFERRED` | P5.3 | Design the RxJS usage and RxJS 7 migration Skills                               |
+| `DEFERRED` | P5.4 | Design MCP capabilities, permissions, packaging, and versioning                 |
 
 AI tools must consume versioned project knowledge and produce reviewable
 changes. They must not infer migration safety solely from matching operator
@@ -194,20 +266,22 @@ names.
 
 ### Phase 6 — Release readiness
 
-| Status | ID | Outcome |
-| --- | --- | --- |
+| Status    | ID   | Outcome                                                                               |
+| --------- | ---- | ------------------------------------------------------------------------------------- |
 | `PLANNED` | P6.1 | Finalize version naming, supported environments, support policy, and release channels |
-| `PLANNED` | P6.2 | Complete package, type, bundle, performance, and conformance gates |
-| `PLANNED` | P6.3 | Publish API, compatibility, migration, and contributor documentation |
-| `PLANNED` | P6.4 | Run pre-release adoption, resolve blockers, and approve the major release |
+| `PLANNED` | P6.2 | Complete package, type, bundle, performance, and conformance gates                    |
+| `PLANNED` | P6.3 | Publish API, compatibility, migration, and contributor documentation                  |
+| `PLANNED` | P6.4 | Run pre-release adoption, resolve blockers, and approve the major release             |
 
 ## Dependencies
 
 ```mermaid
 flowchart LR
-    Boundary["P0.2 package and install decisions"] --> Build["P0.3 buildable packages"]
+    WptHarness["P1.4a attested WPT harness"] --> Boundary["P0.2 package and install decisions"]
+    Boundary --> Build["P0.3 buildable packages"]
     Build --> Harness["P0.4 lifecycle and import harness"]
     Harness --> Fallback["Phase 1 fallback correctness"]
+    Fallback --> WptStrict["P1.4b strict WPT conformance"]
     Boundary --> Kernel["Phase 2 extension kernel"]
     Harness --> Kernel
     Kernel --> Operators["Phase 3 operator restoration"]
@@ -224,21 +298,23 @@ conformance implementation depends on a runnable harness.
 
 ## Risk register
 
-| Risk | Impact | Likelihood | Current response |
-| --- | --- | --- | --- |
-| Package boundaries remain implicit | Rework across every import, type, and test | High | P0.2 is the single `NEXT` item |
-| Upstream proposal changes | Fallback and native behavior drift | High | Pin revisions before conformance claims |
-| Prototype code becomes accidental policy | Semantics are preserved without review | High | Documents distinguish current fact from accepted direction |
-| Symbol identity fails with duplicate installs | Extensions are present under inaccessible keys | High | P2.1 plus package fixtures |
-| RxJS 7 suite pressures platform behavior backward | Native and fallback layers diverge | High | Mandatory test classification and separate compatibility layer |
-| Compatibility scope becomes unbounded | Release cannot converge | Medium | Support matrix and prioritized API categories |
-| Global patching fails in hardened realms | Library cannot initialize | Medium | Decide supported environments and fallback access patterns |
-| Tooling is designed before APIs stabilize | Skills encode obsolete migrations | Medium | Skills and MCP design are deferred |
-| Current CI/release infrastructure assumes RxJS 7 | Published artifacts fail despite source tests | High | Package-import fixtures and release gates precede expansion |
+| Risk                                                | Impact                                         | Likelihood | Current response                                                                                  |
+| --------------------------------------------------- | ---------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------- |
+| Package boundaries remain implicit                  | Rework across every import, type, and test     | High       | P0.2 is restored as the single `NEXT` item                                                        |
+| Upstream proposal changes                           | Fallback and native behavior drift             | High       | Pin revisions before conformance claims                                                           |
+| Prototype code becomes accidental policy            | Semantics are preserved without review         | High       | Documents distinguish current fact from accepted direction                                        |
+| Symbol identity fails with duplicate installs       | Extensions are present under inaccessible keys | High       | P2.1 plus package fixtures                                                                        |
+| RxJS 7 suite pressures platform behavior backward   | Native and fallback layers diverge             | High       | Mandatory test classification and separate compatibility layer                                    |
+| Compatibility scope becomes unbounded               | Release cannot converge                        | Medium     | Support matrix and prioritized API categories                                                     |
+| Global patching fails in hardened realms            | Library cannot initialize                      | Medium     | Decide supported environments and fallback access patterns                                        |
+| Tooling is designed before APIs stabilize           | Skills encode obsolete migrations              | Medium     | Skills and MCP design are deferred                                                                |
+| Current CI/release infrastructure assumes RxJS 7    | Published artifacts fail despite source tests  | High       | Package-import fixtures and release gates precede expansion                                       |
+| WPT runs accidentally exercise native Observable    | False confidence in fallback behavior          | High       | P1.4a exact-identity attestation and an independent, unsuppressible report audit                  |
+| WPT/browser setup is too large or network-dependent | Slow or skipped local and CI validation        | Medium     | Vendor only the approved closure and checksum-cache the sparse runner and exact browser artifacts |
 
 ## Out of scope until activated
 
-- full WPT runner design;
+- fixes that make the fallback pass the WPT suite until P1.4b is activated;
 - final documentation-site architecture;
 - a complete operator priority list;
 - final compatibility support percentages;
@@ -274,3 +350,40 @@ conformance implementation depends on a runnable harness.
 - Allowed the RxJS form to delegate or provide additional functionality while
   requiring the platform method to remain untouched and all differences to be
   documented and tested.
+
+### 2026-07-24 — User-prioritized attested Observable WPT harness
+
+- Recorded the explicit priority change from P0.2 to the test-infrastructure
+  slice P1.4a while preserving one `NEXT` item.
+- Split harness construction and its current-failure baseline from P1.4b,
+  which will later make the fallback pass the strict conformance gate.
+- Accepted WPT commit
+  `6a009d73f0d315941b90cac13a9523a2a08c631b`, per-realm exact
+  implementation attestation, unsuppressible report auditing, and cached pinned
+  browser/runner operation.
+- Completed P1.4a with the exact 37-file Observable/support closure, 52-URL
+  attested inventory, stable granular failure baseline, negative controls, CI
+  evidence, and warm offline proof.
+- Restored P0.2 as the single `NEXT` item. Strict WPT conformance remains the
+  separate planned P1.4b effort.
+
+### 2026-07-24 — Node 24 WPT tooling support
+
+- Expanded the repository development engine declaration to accept Node 24
+  while retaining Node 18 and Node 20.
+- Moved the blocking and advisory Observable WPT workflows to Node 24.
+- Verified the WPT import, unit, doctor, and browser-baseline paths on Node
+  `24.12.0` without an engine-check override.
+- Kept P0.2 as the single `NEXT` item; final published-package runtime support
+  remains an open release decision.
+
+### 2026-07-24 — Strict default WPT command and terminal diagnostics
+
+- Made `yarn test:wpt` and the blocking CI job require all upstream WPT results
+  to pass; the current implementation therefore exits nonzero.
+- Retained the known-failure comparison only as the explicitly named
+  `yarn test:wpt:baseline` harness diagnostic.
+- Added progress messages, aggregate status and identity counts, every
+  non-passing URL and subtest, and direct artifact paths to terminal output.
+- Kept P0.2 as the single `NEXT` item; implementation conformance remains the
+  separate planned P1.4b effort.

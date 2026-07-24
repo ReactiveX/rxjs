@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "wpt": {
+    "repository": "https://github.com/web-platform-tests/wpt.git",
+    "commit": "6a009d73f0d315941b90cac13a9523a2a08c631b",
+    "testRoot": "dom/observable/tentative",
+    "verifyDependencyClosure": true,
+    "supportFiles": [
+      "LICENSE.md",
+      "common/gc.js",
+      "interfaces/dom.idl",
+      "interfaces/observable.tentative.idl",
+      "resources/idlharness.js",
+      "resources/testharness.js",
+      "resources/testharnessreport.js",
+      "resources/webidl2/lib/webidl2.js"
+    ],
+    "testPrefix": "/dom/observable/tentative/"
+  },
+  "browser": {
+    "product": "chrome",
+    "version": "150.0.7871.126",
+    "requireNativeObservable": true
+  },
+  "runner": {
+    "processes": 4,
+    "timeoutMinutes": 10,
+    "minimumPythonVersion": "3.9.0"
+  },
+  "attestation": {
+    "installationKey": "__RXJS_WPT_INSTALLATION__",
+    "functionKey": "__RXJS_WPT_ATTEST__",
+    "iframePatchKey": "__RXJS_WPT_IFRAME_PATCH__",
+    "realmStateKey": "__RXJS_WPT_REALM_STATE__",
+    "namePrefix": "[RxJS WPT] implementation "
+  },
+  "reviewedIframeFiles": {
+    "dom/observable/tentative/observable-constructor.window.js": {
+      "createElementCount": 1,
+      "contentWindowCount": 1,
+      "childRealmCount": 4
+    },
+    "dom/observable/tentative/observable-forEach.window.js": {
+      "createElementCount": 1,
+      "contentWindowCount": 1,
+      "childRealmCount": 2
+    },
+    "dom/observable/tentative/observable-map.window.js": {
+      "createElementCount": 1,
+      "contentWindowCount": 1,
+      "childRealmCount": 1
+    },
+    "dom/observable/tentative/observable-takeUntil.window.js": {
+      "createElementCount": 1,
+      "contentWindowCount": 1,
+      "childRealmCount": 2
+    }
+  }
+}
