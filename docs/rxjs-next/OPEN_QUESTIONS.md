@@ -151,12 +151,15 @@ Choose the supported surface by category:
 - pipeable operators and `OperatorFunction` types;
 - subjects;
 - schedulers and time;
-- testing and marble APIs;
 - interop protocols;
 - AJAX, fetch, and WebSocket helpers;
 - import paths and deprecated aliases.
 
 Each category needs a support status, not a blanket compatibility claim.
+
+The framework-neutral testing and marble boundary is resolved by D-012 and
+`TESTING_DESIGN.md`. Compatibility-specific test coverage still needs to be
+classified in the compatibility ledger as APIs are restored.
 
 ### 11. What does a compatibility observable return?
 

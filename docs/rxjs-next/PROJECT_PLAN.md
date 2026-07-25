@@ -44,13 +44,14 @@ item.
 
 ### Phase 0 — Foundation and architectural safety rails
 
-| Status    | ID   | Outcome                                                                                                                |
-| --------- | ---- | ---------------------------------------------------------------------------------------------------------------------- |
-| `DONE`    | P0.1 | Record the charter, current architecture, compatibility policy, decisions, risks, open questions, and AI working rules |
-| `NEXT`    | P0.2 | Decide the package map and native-versus-polyfill installation contract                                                |
-| `PLANNED` | P0.3 | Restore green builds and coherent public entry points for the selected package map                                     |
-| `PLANNED` | P0.4 | Add a native/fallback lifecycle test harness and package-import fixtures                                               |
-| `PLANNED` | P0.5 | Pin the first Observable specification and WPT revisions used as the conformance baseline                              |
+| Status    | ID    | Outcome                                                                                                                |
+| --------- | ----- | ---------------------------------------------------------------------------------------------------------------------- |
+| `DONE`    | P0.1  | Record the charter, current architecture, compatibility policy, decisions, risks, open questions, and AI working rules |
+| `DONE`    | P0.T1 | Design and implement the user-prioritized framework-neutral `@rxjs/test` virtual-time package                          |
+| `NEXT`    | P0.2  | Decide the package map and native-versus-polyfill installation contract                                                |
+| `PLANNED` | P0.3  | Restore green builds and coherent public entry points for the selected package map                                     |
+| `PLANNED` | P0.4  | Add a native/fallback lifecycle test harness and package-import fixtures                                               |
+| `PLANNED` | P0.5  | Pin the first Observable specification and WPT revisions used as the conformance baseline                              |
 
 #### P0.1 completion evidence
 
@@ -61,6 +62,21 @@ item.
   declarations are disconnected from the build entry.
 - Verified the RxJS package build fails because the root `tshy` export is
   invalid.
+
+#### P0.T1 completion evidence
+
+- Added the framework-neutral `@rxjs/test` package and public `rxTest`
+  function; no scheduler instance or manual scheduler mode is exposed.
+- Added marble parsing, async virtual-time controls, default and configurable
+  assertions, and distinct `cold`, `hot`, and platform `observable` sources.
+- Isolated marble grammar in a pure internal parser with direct unit coverage,
+  independently of the virtual-time runtime.
+- Virtualized the supported host timing and clock APIs with exact restoration,
+  same-realm serialization, pending-work diagnostics, and task/time guards.
+- Passed 66 focused behavior, parser, and cleanup tests, lint, TypeScript source checks,
+  Nx build/test targets, the multi-dialect package build, strict declaration
+  coexistence with the Observable polyfill, and built ESM/CommonJS imports.
+- Recorded D-012 and the complete contract in `TESTING_DESIGN.md`.
 
 #### P0.2 completion bar
 
@@ -272,13 +288,13 @@ explicit.
 
 ### Phase 4 — RxJS 7 compatibility product
 
-| Status    | ID   | Outcome                                                                          |
-| --------- | ---- | -------------------------------------------------------------------------------- |
-| `PLANNED` | P4.1 | Decide the compatibility type, package, conversion, and cancellation contracts   |
-| `PLANNED` | P4.2 | Stabilize cold-per-subscription and subscription-facade primitives               |
-| `PLANNED` | P4.3 | Implement the approved pipeable operator experience                              |
-| `PLANNED` | P4.4 | Add supported subjects, schedulers, testing, and interop by prioritized category |
-| `PLANNED` | P4.5 | Publish the compatibility support matrix and representative application fixtures |
+| Status    | ID   | Outcome                                                                               |
+| --------- | ---- | ------------------------------------------------------------------------------------- |
+| `PLANNED` | P4.1 | Decide the compatibility type, package, conversion, and cancellation contracts        |
+| `PLANNED` | P4.2 | Stabilize cold-per-subscription and subscription-facade primitives                    |
+| `PLANNED` | P4.3 | Implement the approved pipeable operator experience                                   |
+| `PLANNED` | P4.4 | Add supported subjects, compatibility schedulers, and interop by prioritized category |
+| `PLANNED` | P4.5 | Publish the compatibility support matrix and representative application fixtures      |
 
 Phase exit:
 
@@ -447,3 +463,33 @@ conformance implementation depends on a runnable harness.
 - Passed all 49 package tests and pinned-import verification. Reconfirmed,
   without expanding scope, the documented P0.3 package build/lint configuration
   failure.
+
+### 2026-07-24 — Framework-neutral RxJS testing package
+
+- User-prioritized and completed P0.T1 without changing the active Observable
+  acquisition contract still queued at P0.2.
+- Added the `@rxjs/test` package with `rxTest`, async virtual-time controls,
+  marble assertions, and separate `cold`, `hot`, and platform `observable`
+  source models.
+- Virtualized timers, animation and idle callbacks, Node immediates and timer
+  handles, `AbortSignal.timeout`, clocks, queued microtasks, and `reportError`;
+  every patch is restored after success or failure.
+- Added the accepted testing design and D-012, plus architecture,
+  compatibility, and open-question updates.
+- Passed 66 focused tests, lint, TypeScript checks, Nx build/test targets, the
+  multi-dialect package build, strict declaration coexistence with the
+  Observable polyfill, and built ESM/CommonJS imports. P0.2 remains the single
+  `NEXT` item.
+
+### 2026-07-24 — Standalone marble parser follow-up
+
+- Renamed the internal parser boundary to `marble-parser.ts` and kept it free
+  of virtual-clock, host, Observable, and assertion dependencies.
+- Added 33 direct unit cases for alignment whitespace, duration conversion,
+  message diagrams, synchronous groups, hot carets, subscription diagrams,
+  time diagrams, animation/idle timing plans, Unicode markers, and invalid
+  grammar.
+- Locked the alignment example to the source column of `^` and documented the
+  difference between source-only spacing and ignored in-string padding.
+- Kept the parser internal so this implementation improvement does not create
+  an unreviewed public subpath; P0.2 remains the single `NEXT` item.

@@ -66,13 +66,14 @@ package names are open decisions.
 
 ## Current component inventory
 
-| Component                      | Current responsibility                                                                                                                                       | Intended responsibility                                                                       | Current gap                                                                                                                                    |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `packages/observable-polyfill` | Defines an ambient platform-shaped API, implements `Observable`, `Subscriber`, native-style operators, promise-returning consumers, and `EventTarget.when()` | Supply the pinned platform behavior only when the runtime lacks an acceptable implementation  | Passes the pinned WPT suite, but still unconditionally overwrites globals and does not build because its ambient declarations are disconnected |
-| `packages/rxjs`                | Side-effectfully installs Symbol-keyed operators/factories; contains subjects, cold primitives, async-iterable adapters, and early testing utilities         | Main Symbol-extension library, with compatibility behavior moved behind an explicit boundary  | Package exports are invalid/incomplete, the fallback dependency is undeclared, installation conventions vary, and only one operator has a test |
-| `packages/observable`          | Exposes the inherited RxJS 7 `Observable`, `Subscriber`, `Subscription`, and related helpers                                                                 | Undecided: remove/archive, rename, or deliberately reuse inside compatibility                 | It is not used by the new runtime path but is still part of workspace preparation                                                              |
-| `packages/rxjs/src/testing`    | Contains fake timers and an experimental `ScheduledObservable`                                                                                               | Provide test infrastructure appropriate for shared platform semantics and compatibility tests | No stable public entry point or test contract                                                                                                  |
-| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                             | Eventually explain the new platform and migration model                                       | Still represents the prior generation; redesign is out of scope for the foundation phase                                                       |
+| Component                      | Current responsibility                                                                                                                                       | Intended responsibility                                                                      | Current gap                                                                                                                                    |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/observable-polyfill` | Defines an ambient platform-shaped API, implements `Observable`, `Subscriber`, native-style operators, promise-returning consumers, and `EventTarget.when()` | Supply the pinned platform behavior only when the runtime lacks an acceptable implementation | Passes the pinned WPT suite, but still unconditionally overwrites globals and does not build because its ambient declarations are disconnected |
+| `packages/rxjs`                | Side-effectfully installs Symbol-keyed operators/factories; contains subjects, cold primitives, async-iterable adapters, and early testing utilities         | Main Symbol-extension library, with compatibility behavior moved behind an explicit boundary | Package exports are invalid/incomplete, the fallback dependency is undeclared, installation conventions vary, and only one operator has a test |
+| `packages/observable`          | Exposes the inherited RxJS 7 `Observable`, `Subscriber`, `Subscription`, and related helpers                                                                 | Undecided: remove/archive, rename, or deliberately reuse inside compatibility                | It is not used by the new runtime path but is still part of workspace preparation                                                              |
+| `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                          | Retained only as prototype history until removed                                             | Superseded by the accepted `@rxjs/test` boundary                                                                                               |
+| `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                        | Framework-neutral testing for platform RxJS and RxJS 7 compatibility behavior                | Depends on the active realm Observable; package-acquisition wiring follows the still-open P0.2 contract                                        |
+| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                             | Eventually explain the new platform and migration model                                      | Still represents the prior generation; redesign is out of scope for the foundation phase                                                       |
 
 ## Platform Observable lifecycle
 
@@ -440,6 +441,25 @@ not a claim about the present branch.
 
 The mixture of Symbol extensions, classes, factories, and standalone functions
 is exploratory. The canonical public shape remains open.
+
+## Test architecture
+
+`@rxjs/test` is a separate development-time package. Its `rxTest` function
+owns the virtual-time engine, redirects supported realm scheduling APIs for the
+complete async test lifetime, evaluates registered expectations, and restores
+the original property descriptors in every exit path.
+
+The API makes lifecycle semantics explicit:
+
+- `cold()` is an RxJS 7-style producer-per-subscription test double;
+- `hot()` is a subject-like absolute timeline;
+- `observable()` follows the platform's shared/ref-counted active producer
+  lifecycle and logs producer activation windows.
+
+The package does not expose `TestScheduler` or add scheduler arguments to the
+main library. It consumes the active Observable selected for the realm and
+does not force-install or replace that constructor. See
+`docs/rxjs-next/TESTING_DESIGN.md` and D-012.
 
 ## Compatibility boundary
 

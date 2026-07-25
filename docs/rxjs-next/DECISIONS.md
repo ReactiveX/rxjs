@@ -181,3 +181,27 @@ Status meanings:
   525 upstream subtests with 52/52 exact-identity attestations in Chrome for
   Testing `150.0.7871.126`. Three further identical complete runs supported
   removing the obsolete failure expectations.
+
+## D-012 — Publish framework-neutral virtual-time testing as `@rxjs/test`
+
+- **Status:** Accepted
+- **Decision:** Publish a function-first `rxTest(callback, config)` API from a
+  separate `@rxjs/test` package. It hides the scheduler instance, returns
+  `Promise<void>`, virtualizes the supported host timing APIs for the full
+  async callback lifetime, and restores the realm on every exit path.
+  `cold()` retains RxJS 7 producer-per-subscription behavior, `hot()` models a
+  subject timeline, and `observable()` models the platform shared/ref-counted
+  lifecycle.
+- **Rationale:** RxJS Next operators use host scheduling APIs rather than a
+  public scheduler abstraction, so deterministic tests must virtualize the
+  host boundary. Separate source helpers prevent compatibility-cold behavior
+  from being confused with the platform lifecycle.
+- **Consequence:** The main RxJS package does not regain scheduler arguments or
+  a public `TestScheduler`. Every host scheduling primitive adopted by a
+  supported operator must have an `@rxjs/test` adapter, and production
+  scheduling code must resolve the host function when scheduling rather than
+  capturing it before `rxTest` patches the realm. Same-realm tests are
+  serialized while globals are patched. The versioned global-registry Symbol
+  used for the cross-copy test lock is deliberately shared and is not an
+  Observable extension key.
+- **Details:** `docs/rxjs-next/TESTING_DESIGN.md`.
