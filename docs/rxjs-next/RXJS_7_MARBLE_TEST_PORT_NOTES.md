@@ -7,30 +7,34 @@ object store. It does not check out, modify, or commit to that ref.
 
 - **Source ref:** `7.x`
 - **Pinned source commit:** `e5351d02e225e275ac0e497c7b66eaa5f0c88791`
-- **Inventory:** 2,146 non-skipped `it`, `test`, or `specify` cases under
-  `spec/` that use `TestScheduler` or its marble assertion helpers
-- **Excluded source skips:** four pre-existing `it.skip` cases in
-  `Observable`, `groupBy`, `repeatWhen`, and `take`
+- **Physical declarations:** 2,201 `it`, `test`, or `specify` declarations
+  under `spec/` that use `TestScheduler` or its marble assertion helpers
+- **Parameterized registrations:** 169 expanded cases declared by loops or
+  shared helpers
+- **Complete registrations:** 2,338, including all four pre-existing
+  source-skipped cases
 
 The generated manifest at
 `packages/rxjs/test/ported/manifest.generated.json` is the authoritative
-per-case ledger. Every entry retains its source ref, commit, path, line, suite,
-title, original source, classification, disposition, reason, imports, review
-flags, and a converted program when a mechanical conversion is possible.
+per-case ledger. Every entry retains a unique case ID, source provenance,
+original source, mechanical conversion, classification, disposition,
+capability requirements, and review flags. Parameterized declarations expand
+to distinct registrations so no behavioral variant is hidden behind one
+source location.
 
 ## Reconciled dispositions
 
 | Disposition          |     Cases | Meaning                                                                                       |
 | -------------------- | --------: | --------------------------------------------------------------------------------------------- |
-| Active               |       333 | Converted case currently passes in the ColdObservable baseline                                |
-| Expected failure     |       422 | Converted case is executable but exposes an implementation, lifecycle, or conversion mismatch |
-| Missing API          |     1,251 | Converted test is registered but its required mapped capabilities do not yet exist            |
+| Active               |       401 | Converted case currently passes in the reviewed ColdObservable baseline                       |
+| Expected failure     |       506 | Converted case is executable but exposes an implementation, lifecycle, or conversion mismatch |
+| Missing API          |     1,416 | Converted test runs to a source-linked missing-capability diagnostic                          |
 | Deduplicated         |         4 | Exact normalized duplicate; points to one canonical source claim                              |
-| Unsupported/obsolete |       136 | Scheduler-internal, dynamically declared, or dependent on non-portable harness state          |
-| **Total**            | **2,146** |                                                                                               |
+| Unsupported/obsolete |        11 | Retained runnable diagnostic for an obsolete scheduler-internal dependency                    |
+| **Total**            | **2,338** |                                                                                               |
 
 The compatibility classifications are separate from execution dispositions:
-757 portable, 47 harness rewrites, 1,252 compatibility-only, and 90
+871 portable, 209 harness rewrites, 1,247 compatibility-only, and 11
 unsupported-or-obsolete. A classification says what the old claim means; a
 disposition says what the current port harness does with it.
 
@@ -38,28 +42,33 @@ disposition says what the current port harness does with it.
 
 | Category                | Cases |
 | ----------------------- | ----: |
-| Operators               | 1,826 |
-| Creation observables    |   254 |
-| Schedulers              |    36 |
+| Operators               | 1,928 |
+| Creation observables    |   255 |
+| Schedulers              |    81 |
+| Deprecation equivalents |    48 |
 | Subjects                |     7 |
-| Deprecation equivalents |     6 |
-| Root Observable         |     6 |
+| Root Observable         |     7 |
 | Scheduled               |     4 |
 | Root Subject            |     4 |
 | Root Notification       |     3 |
+| Testing                 |     1 |
 
 ## Verified mode baselines
 
-The complete source-linked pass sets are stored in
-`verified-cold-passes.json` and `verified-polyfill-passes.json`. The cold audit
-currently passes 335 locations; two are retained as deduplicated provenance, so
-333 canonical cases have the `active` disposition. The polyfill audit passes
-340 locations. Passing entries are evidence only for their recorded claims,
-not a general compatibility or platform-conformance claim.
+The complete reviewed pass sets are stored in `verified-cold-passes.json` and
+`verified-polyfill-passes.json`. Baseline schema v2 identifies tests by unique
+case ID, not an ambiguous source line.
 
-Normal mode runs execute verified locations ordinarily, quarantine known
-failures, and skip the four exact duplicates. Audits ignore both the quarantine
-and duplicate skip so the raw totals remain independently measurable.
+- Cold audit: 432 passes and 1,906 failures.
+- Polyfill audit: 436 passes and 1,902 failures.
+- Native: deliberately raw and unverified until a realm with a native global
+  `Observable` is available for review.
+
+Passing entries are evidence only for their recorded claims, not a general
+compatibility or platform-conformance claim. Normal mode runs execute reviewed
+passes ordinarily, quarantine known failures, and skip the four exact
+duplicates. Audits ignore quarantine and duplicate skipping so all 2,338
+registrations receive a raw pass or failure result.
 
 ## Deduplicated claims
 
@@ -74,83 +83,84 @@ Four exact normalized duplicates were consolidated without losing provenance:
 
 ## Missing capabilities
 
-Missing-API cases remain compiled migration definitions in the manifest. The
-harness does not import nonexistent modules or guess replacements. Counts can
+Missing-API cases remain compiled, executable migration definitions. The
+harness does not import nonexistent modules or invent replacements. Counts can
 overlap because one case may require several capabilities.
 
-| Capability                      | Affected cases |
-| ------------------------------- | -------------: |
-| `rxjs:pipe`                     |             90 |
-| `operator:map`                  |             78 |
-| `rxjs:queueScheduler`           |             71 |
-| `operator:zipAll`               |             46 |
-| `rxjs:ConnectableObservable`    |             45 |
-| `operator:tap`                  |             41 |
-| `operator:take`                 |             40 |
-| `rxjs:forkJoin`                 |             39 |
-| `rxjs:TimeoutError`             |             34 |
-| `operator:delay`                |             32 |
-| `operator:zipWith`              |             32 |
-| `rxjs:EMPTY`                    |             31 |
-| `operator:combineLatestAll`     |             31 |
-| `operator:refCount`             |             25 |
-| `operator:single`               |             25 |
-| `operator:skip`                 |             24 |
-| `operator:count`                |             23 |
-| `operator:groupBy`              |             23 |
-| `operator:distinct`             |             22 |
-| `operator:distinctUntilChanged` |             22 |
-| `operator:every`                |             22 |
+| Capability                   | Affected cases |
+| ---------------------------- | -------------: |
+| `operator:share`             |            176 |
+| `rxjs:asapScheduler`         |            133 |
+| `rxjs:scheduled`             |            132 |
+| `rxjs:config`                |            128 |
+| `operator:map`               |             85 |
+| `operator:refCount`          |             74 |
+| `operator:tap`               |             72 |
+| `rxjs:queueScheduler`        |             71 |
+| `operator:multicast`         |             70 |
+| `operator:publishReplay`     |             69 |
+| `operator:publish`           |             64 |
+| `operator:publishBehavior`   |             62 |
+| `operator:publishLast`       |             61 |
+| `operator:connect`           |             50 |
+| `rxjs:AsyncSubject`          |             48 |
+| `operator:take`              |             47 |
+| `operator:zipAll`            |             46 |
+| `rxjs:ConnectableObservable` |             45 |
+| `operator:delay`             |             43 |
+| `rxjs:forkJoin`              |             39 |
 
-The manifest contains the complete capability list and every affected case.
+The generated parity map and manifest contain the complete capability list and
+every affected case.
 
-## Unsupported or obsolete cases
+## Cases requiring human review
 
-| Rationale                                                                    | Cases |
-| ---------------------------------------------------------------------------- | ----: |
-| Protects `TestScheduler` internals rather than Observable behavior           |    55 |
-| Declared inside a loop or helper and needs expansion with runtime parameters |    32 |
-| Depends on scheduler-bound `expectObservableArray` state                     |    14 |
-| Depends on scheduler-bound `getTimerSelector` state                          |    14 |
-| Depends on scheduler-bound `phonyMarbelize` state                            |     7 |
-| Depends on the non-portable `NO_SUBS` test helper                            |     6 |
-| Depends on the non-portable `lowerCaseO` test helper                         |     4 |
-| Depends on the non-portable `asInteropObservable` test helper                |     4 |
+Only 11 cases remain classified unsupported or obsolete:
 
-These cases were not silently deleted. They remain source-linked records for
-later human review.
+| Rationale                                                              | Cases |
+| ---------------------------------------------------------------------- | ----: |
+| Depends on scheduler-bound `phonyMarbelize` parser/notification state  |     8 |
+| Protects `TestScheduler` parser or queue internals, not Observable use |     3 |
+
+They have not been deleted or reduced to metadata. Each retains its converted
+program and is registered in every mode, where it produces an explicit
+source-linked diagnostic. One mechanically converted
+`createHotObservable()` case is guarded as a known non-terminating conversion
+instead of being allowed to hang the entire suite.
 
 ## Execution modes and lifecycle differences
 
 Each mode starts in a separate process so the active constructor is selected
-before RxJS Symbol extensions load.
+before RxJS Symbol extensions load. The launcher shards the 2,338 registrations
+across isolated workers and merges audits only after proving unique, complete
+case-ID coverage.
 
 - **Cold:** installs the fallback, then activates `ColdObservable`. This is the
   producer-per-subscription compatibility baseline.
 - **Polyfill:** activates the RxJS platform fallback and its shared,
   ref-counted producer lifecycle.
-- **Native:** preserves the ambient `globalThis.Observable`. The mode skips
-  explicitly when the current realm has no native constructor.
+- **Native:** preserves the ambient `globalThis.Observable`. It skips
+  explicitly when the current realm has no native constructor and reports an
+  acquisition blocker if extension loading replaces that constructor.
 
 Platform cases use the ambient `Observable` type and constructor; they never
-import the fallback constructor. Three dedicated lifecycle cases verify one
-shared activation, restart after the last observer leaves, and direct
-construction through the global constructor.
+import the fallback constructor. Five dedicated lifecycle cases verify shared
+activation, individual cancellation, ref-count teardown and restart, and
+direct construction through the global constructor.
 
-All 2,146 cases are registered in cold, polyfill, and native-if-present modes.
-Mode-specific verified-pass baselines run normally; every other non-duplicate
-registration uses expected-failure quarantine. Missing APIs fail with a
-source-linked capability diagnostic, and removed scheduler/harness machinery
-fails with a source-linked harness diagnostic. Separate cold and polyfill
-audits remove the quarantine and expose every result directly.
+The capability registry maps RxJS 7 names to exact, partial, unified, or
+platform-only Next surfaces. Pipeable code is invoked as
+`source[targetSymbol](...adaptedArgs)`. Examples include:
 
-The capability registry maps RxJS 7 names to exact or unified Next surfaces.
-For example, `bufferCount(size)` executes as
-`source[buffer]({ maxSize: size })`; cases using overlapping
-`startBufferEvery` windows remain runnable failures. Root functions can map to
-a static Symbol or an ambient-platform construction such as
-`of(...values) → Observable.from(values)`. Unsupported overloads are not
-silently treated as supported.
+- `bufferCount(size) → source[buffer]({ maxSize: size })`;
+- `firstValueFrom(source) → source.first()`;
+- `lastValueFrom(source) → source.last()`;
+- `endWith(...values) → source[concat]([values])`;
+- `onErrorResumeNext(...sources) → source[onErrorResumeNext]([sources])`.
+
+Unsupported overloads remain explicit parity failures. Same-name platform
+string methods are documented as analogues but do not falsely satisfy the
+required RxJS Symbol surface.
 
 ## Commands
 
@@ -169,55 +179,51 @@ yarn workspace rxjs test:ported:parity:check
 ```
 
 `test:ported` runs the normal cold and polyfill modes. `test:ported:native`
-auto-detects the global constructor. Both audit commands are intentionally
-nonzero while expected failures remain. Vitest arguments pass through, so a
-focused parity audit can use, for example:
+auto-detects the global constructor. Audit commands are intentionally nonzero
+while parity failures remain. Vitest arguments pass through, so a focused raw
+audit can use:
 
 ```sh
 yarn workspace rxjs test:ported:audit -- --testNamePattern mergeMap
 ```
 
-To refresh a reviewed mode baseline from a complete JSON audit:
+To refresh a reviewed baseline, first produce a complete JSON audit and then
+record it:
 
 ```sh
 yarn workspace rxjs test:ported:audit -- --reporter=json --outputFile=/tmp/cold-audit.json
 yarn workspace rxjs test:ported:audit:record cold /tmp/cold-audit.json
 ```
 
-The generated API-level status map is
-[`RxJS-7-parity.md`](RxJS-7-parity.md). It records 113 RxJS 7 pipeable
-operators and 34 creation/utility functions, their current Symbol/static/
-standalone mapping, affected marble-case counts, and every missing surface.
+The recorder rejects partial, skipped, duplicate, or stale case-ID coverage.
 
 ## Verification on 2026-07-25
 
-- The generated manifest reproduced byte-for-byte with SHA-256
-  `3d3b80539792bf84ea2b0538d17a8a9d253d70ef69ed9d02efd9e3e493acb31c`.
-- The normal cold run registered all 2,146 source cases: 2,142 passed and four
-  exact duplicates skipped.
-- The normal polyfill run registered all 2,146 source cases with the same
-  2,142/4 result, plus three passing dedicated platform-lifecycle cases.
-- Native auto-detection skipped four registrations in Node `24.12.0`, where no
-  native global Observable was present.
-- The cold audit produced 335 passes and 1,811 expected failures; the polyfill
-  audit produced 340 passes and 1,806 expected failures.
-- The package TypeScript check emitted no diagnostic for
-  `packages/rxjs/test/ported`; it remains nonzero on the previously documented
+- Manifest generation produced 2,338 syntactically valid executable programs
+  with unique case IDs, including 169 parameterized registrations and all four
+  source-skipped cases.
+- The normal cold and polyfill gates each passed all 2,338 registrations
+  through their reviewed pass/quarantine dispositions.
+- Complete sharded JSON audits merged exactly 2,338 results per mode: cold
+  recorded 432 passes and 1,906 failures; polyfill recorded 436 passes and
+  1,902 failures.
+- Native auto-detection skipped explicitly in Node `24.12.0`, where no native
+  global Observable was present.
+- The five dedicated platform-lifecycle tests pass in polyfill mode.
+- Skill helper fixtures and the nine-file portability scan pass.
+- The package TypeScript check emits no diagnostic for
+  `packages/rxjs/test/ported`; the overall check remains nonzero on documented
   production-source extension and type errors.
-- The package ESLint configuration still points RxJS files at
-  `packages/observable/tsconfig.json`, so a direct lint of the new test files is
-  blocked by the existing P0.3 configuration defect rather than code
-  diagnostics.
+- No production implementation was changed by the exhaustive port.
 
 ## Skill boundary
 
 The reusable migration guidance lives in
-`.agents/skills/rxjs-next-marble-migration`. It knows about RxJS 7 marble
-semantics, `rxTest`, cold compatibility, and the global platform Observable,
-but contains no repository paths, branches, commit identifiers, package
-internals, or source-control commands.
+`.agents/skills/rxjs-next-marble-migration`. It understands RxJS 7 marble
+semantics, `rxTest`, cold compatibility, Symbol-based operator calls, and the
+global platform Observable, but contains no repository paths, branches, commit
+identifiers, package internals, or source-control commands.
 
-The source inventory, pinned revision, dispositions, capability registry,
-isolated mode launcher, and generated manifest are deliberately
-repository-specific and remain outside the Skill. Broader Skill/plugin/MCP
-distribution is still a separate product decision.
+Repository revision discovery, provenance, capability loading, dispositions,
+mode launchers, and baselines remain outside the Skill. Broader
+Skill/plugin/MCP distribution is still a separate product decision.

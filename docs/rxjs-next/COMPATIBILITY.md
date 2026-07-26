@@ -156,10 +156,11 @@ The first structured evidence ledger now exists at
 inventoried RxJS 7 marble case with both a compatibility classification and one
 execution disposition: active, expected failure, missing API, deduplicated, or
 unsupported/obsolete. Missing APIs remain converted pending definitions;
-implementation mismatches remain known failures. All 2,146 cases are executable
-cold registrations; missing capabilities fail explicitly rather than
-disappearing from collection. Platform cases use the ambient Observable and do
-not redefine the platform layer to recover RxJS 7 cold semantics. See
+implementation mismatches remain known failures. All 2,338 expanded cases are
+executable cold registrations, including parameterized and source-skipped
+evidence; missing capabilities fail explicitly rather than disappearing from
+collection. Platform cases use the ambient Observable and do not redefine the
+platform layer to recover RxJS 7 cold semantics. See
 `RXJS_7_MARBLE_TEST_PORT_NOTES.md` and `RxJS-7-parity.md`.
 
 ## Compatibility ledger

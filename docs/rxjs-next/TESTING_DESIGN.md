@@ -534,9 +534,10 @@ diagnostics, and execution/time limits.
 The repository keeps migrated RxJS 7 marble evidence under
 `packages/rxjs/test/ported`, outside the `@rxjs/test` package API. Its generated
 manifest pins the source revision and retains the original and mechanically
-converted source for all 2,146 inventoried cases. Every record has exactly one
-disposition, including missing capabilities and cases that only protect the
-former scheduler harness.
+converted source for all 2,338 registrations expanded from 2,201 physical test
+declarations. This includes parameterized variants and source-skipped evidence.
+Every record has a unique case ID and exactly one disposition, including
+missing capabilities and cases that only protect the former scheduler harness.
 
 Every record also has an executable program and is registered in the cold
 parity suite. Missing APIs and unavailable harness facilities are expected
@@ -544,8 +545,8 @@ failures with source-linked diagnostics; they are not skipped or represented
 only as metadata.
 
 The executable cases use one shared definition format and a capability
-registry. Each mode runs in a separate process so its constructor is active
-before Symbol extensions load:
+registry. Each mode runs in separate sharded processes so its constructor is
+active before Symbol extensions load:
 
 - cold mode activates `ColdObservable`;
 - polyfill mode activates the platform fallback;
@@ -553,16 +554,17 @@ before Symbol extensions load:
 
 Platform tests construct from the global `Observable` and never import the
 fallback constructor. Dedicated platform cases prove shared activation,
-ref-count restart, and global construction where legacy cold expectations
-would be misleading.
+individual observer cancellation, ref-count restart, and global construction
+where legacy cold expectations would be misleading.
 
-The normal cold and polyfill gates register all 2,146 source cases. Each uses a
-mode-specific verified-pass baseline and marks every other known
+The normal cold and polyfill gates register all 2,338 source cases. Each uses a
+mode-specific verified-pass baseline keyed by unique case ID and marks every other known
 implementation, capability, conversion, or lifecycle mismatch as an expected
 failure. Exact duplicates remain registered but skipped outside audit mode.
 The cold and polyfill audit commands remove the expected-failure quarantine and
-are deliberately nonzero while unfinished cases remain. Dedicated platform
-lifecycle cases separately assert sharing and ref counting.
+are deliberately nonzero while unfinished cases remain. Sharded JSON audits
+are merged only after validating complete, non-duplicated case-ID coverage.
+Dedicated platform lifecycle cases separately assert sharing and ref counting.
 
 Operator imports are role-aware. An RxJS 7 pipeable call such as
 `source.pipe(operator(arg1, arg2))` becomes a runtime invocation of its mapped

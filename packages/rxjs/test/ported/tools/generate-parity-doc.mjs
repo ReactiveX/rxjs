@@ -29,12 +29,50 @@ const operatorUsage = countUsage('operator');
 const valueUsage = countUsage('value');
 
 const platformAnalogues = {
-  every: 'source.every(predicate)',
-  filter: 'source.filter(predicate)',
-  map: 'source.map(project)',
-  reduce: 'source.reduce(reducer, seed?)',
-  skip: 'source.drop(count)',
-  take: 'source.take(count)',
+  catchError: {
+    mapping: 'source.catch(handler)',
+    note: 'The platform string method is Observable-returning, but its handler contract is not an RxJS Symbol contract.',
+  },
+  every: {
+    mapping: 'source.every(predicate)',
+    note: 'The platform string method returns a Promise rather than the RxJS 7 operator Observable.',
+  },
+  filter: {
+    mapping: 'source.filter(predicate)',
+    note: 'D-003 still requires a separate RxJS Symbol even where the platform string contract is behaviorally close.',
+  },
+  finalize: {
+    mapping: 'source.finally(callback)',
+    note: 'The platform string method is Observable-returning, but cancellation and callback timing remain a distinct contract.',
+  },
+  find: {
+    mapping: 'source.find(predicate)',
+    note: 'The platform string method returns a Promise rather than the RxJS 7 operator Observable.',
+  },
+  map: {
+    mapping: 'source.map(project)',
+    note: 'D-003 still requires a separate RxJS Symbol even where the platform string contract is behaviorally close.',
+  },
+  reduce: {
+    mapping: 'source.reduce(reducer, seed?)',
+    note: 'The platform string method returns a Promise rather than the RxJS 7 operator Observable.',
+  },
+  skip: {
+    mapping: 'source.drop(count)',
+    note: 'The platform string method has a different name and does not satisfy the missing RxJS Symbol contract.',
+  },
+  take: {
+    mapping: 'source.take(count)',
+    note: 'The platform string method does not satisfy the missing RxJS Symbol contract.',
+  },
+  takeUntil: {
+    mapping: 'source.takeUntil(notifier)',
+    note: 'The platform string method does not satisfy the missing RxJS Symbol contract; notifier error semantics also differ.',
+  },
+  tap: {
+    mapping: 'source.inspect(inspector)',
+    note: 'The platform inspector uses subscribe/abort lifecycle hooks rather than the complete RxJS 7 tap contract.',
+  },
 };
 
 const operatorRows = operatorNames.map((name) => {
@@ -48,14 +86,14 @@ const operatorRows = operatorNames.map((name) => {
       `${capability.note} Symbol source: \`packages/rxjs/src/${capability.module}.ts\`; executable adapter: \`${capability.adapter}\`.`,
     ];
   }
-  const platformExpression = platformAnalogues[name];
-  if (platformExpression) {
+  const platformAnalogue = platformAnalogues[name];
+  if (platformAnalogue) {
     return [
       code(name),
-      'Missing RxJS Symbol',
-      code(platformExpression),
+      'Missing RxJS Symbol; platform analogue only',
+      code(platformAnalogue.mapping),
       String(operatorUsage.get(name)?.size ?? 0),
-      'A platform string method exists, but D-003 requires a separate RxJS Symbol contract.',
+      platformAnalogue.note,
     ];
   }
   return [code(name), '**Missing**', '—', String(operatorUsage.get(name)?.size ?? 0), 'No current RxJS Next operator mapping.'];
@@ -65,7 +103,11 @@ const creationRows = creationNames.map((name) => {
   const capability = capabilityRegistry.staticFactories[name];
   if (capability) {
     const sourceNote =
-      capability.kind === 'symbol' ? ` Symbol source: \`packages/rxjs/src/${capability.module}.ts\`.` : '';
+      capability.kind === 'symbol'
+        ? ` Symbol source: \`packages/rxjs/src/${capability.module}.ts\`.`
+        : capability.kind === 'standalone'
+          ? ` Standalone source: \`packages/rxjs/src/${capability.module}.ts\`.`
+          : ' Uses the ambient platform Observable.';
     return [
       code(name),
       capability.status,
@@ -75,12 +117,13 @@ const creationRows = creationNames.map((name) => {
     ];
   }
   if (name === 'zip' && capabilityRegistry.values.zip) {
+    const capability = capabilityRegistry.values.zip;
     return [
       code(name),
-      'Present; signature differs',
-      code('zip(sources, config?)'),
+      capability.status,
+      code(capability.mapping),
       String(valueUsage.get(name)?.size ?? 0),
-      'Current standalone function takes a source array rather than the RxJS 7 variadic surface.',
+      `${capability.note} Standalone source: \`packages/rxjs/src/${capability.module}.ts\`; executable adapter: \`${capability.adapter}\`.`,
     ];
   }
   return [code(name), '**Missing**', '—', String(valueUsage.get(name)?.size ?? 0), 'No current RxJS Next function mapping.'];
@@ -114,18 +157,18 @@ const utilityRows = utilityNames.map((name) => {
 });
 
 const otherRows = [
-  otherRow('Observable', 'Present', 'globalThis.Observable', 'The active native or fallback platform constructor; semantics intentionally differ.'),
-  otherRow('Subject', 'Present; parity unverified', 'Subject', 'Exploratory class exists; RxJS 7 subject parity is not established.'),
-  otherRow('BehaviorSubject', 'Partial mapping', 'behaviorSubject(initialValue)', 'Current surface is a factory with an experimental compatibility contract.'),
-  otherRow('ReplaySubject', 'Partial mapping', 'replaySubject(config)', 'Current surface is a factory with an experimental compatibility contract.'),
+  valueRow('Observable', 'The active native or fallback platform constructor; semantics intentionally differ.'),
+  valueRow('Subject', 'Exploratory class exists; RxJS 7 subject parity is not established.'),
+  valueRow('BehaviorSubject', 'Current surface is a factory with an experimental compatibility contract.'),
+  valueRow('ReplaySubject', 'Current surface is a factory with an experimental compatibility contract.'),
   otherRow('AsyncSubject', '**Missing**', '—', 'No current equivalent.'),
   otherRow('ConnectableObservable', '**Missing**', '—', 'No current equivalent.'),
   otherRow('GroupedObservable', '**Missing**', '—', 'No current equivalent.'),
   otherRow('Subscription', '**Missing**', '—', 'Platform cancellation is AbortSignal-based; a compatibility facade is undecided.'),
   otherRow('Subscriber', 'Platform-only', 'globalThis.Subscriber', 'Platform lifecycle type exists; it is not the RxJS 7 Subscriber class.'),
   otherRow('Notification', '**Missing**', '—', 'No current equivalent.'),
-  otherRow('EMPTY', '**Missing**', '—', 'No exported constant.'),
-  otherRow('NEVER', '**Missing**', '—', 'No exported constant.'),
+  valueRow('EMPTY', 'Current standalone singleton; lifecycle parity remains test-driven.'),
+  valueRow('NEVER', 'Current standalone singleton; lifecycle parity remains test-driven.'),
   otherRow('Schedulers and scheduler classes', '**Missing**', '—', 'Host timing plus rxTest replaces the platform-layer scheduler abstraction.'),
   otherRow('RxJS 7 error classes', '**Missing**', '—', 'No current public parity set.'),
 ];
@@ -258,6 +301,14 @@ function section(source, startMarker, endMarker) {
 
 function otherRow(name, status, mapping, note) {
   return [code(name), status, mapping === '—' ? mapping : code(mapping), note];
+}
+
+function valueRow(name, fallbackNote) {
+  const capability = capabilityRegistry.values[name];
+  if (!capability?.status || !capability.mapping) {
+    return otherRow(name, '**Missing**', '—', fallbackNote);
+  }
+  return otherRow(name, capability.status, capability.mapping, capability.note ?? fallbackNote);
 }
 
 function markdownTable(headers, rows) {

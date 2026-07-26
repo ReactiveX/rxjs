@@ -10,9 +10,11 @@ the fallback passes the pinned suite while exact implementation identity is
 proved in every tested realm. The portable RxJS 7-to-Next marble-test migration
 Skill, its independent vetting, and the classified repository port are also
 complete. The user has clarified that preservation in a manifest is not enough:
-all 2,146 cases must become executable parity registrations even when their
-capabilities are absent. That follow-up is complete, and package-boundary work
-resumes at P0.2. Broader Skills/MCP product design remains deferred.
+all cases must become executable parity registrations even when their
+capabilities are absent. The exhaustive follow-up is complete: 2,201 physical
+test declarations expand to 2,338 uniquely identified registrations, including
+parameterized and source-skipped evidence. Package-boundary work resumes at
+P0.2. Broader Skills/MCP product design remains deferred.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -56,6 +58,7 @@ item.
 | `DONE`    | P0.T2b | Vet the migration Skill independently before using it on the repository                                                |
 | `DONE`    | P0.T2c | Port and classify the RxJS 7 marble-test corpus without repairing production behavior                                  |
 | `DONE`    | P0.T2d | Materialize every inventoried marble case as an executable parity-test registration                                    |
+| `DONE`    | P0.T2e | Exhaustively convert remaining runnable RxJS 7 marble evidence and expand capability mappings                          |
 | `NEXT`    | P0.2   | Decide the package map and native-versus-polyfill installation contract                                                |
 | `PLANNED` | P0.3   | Restore green builds and coherent public entry points for the selected package map                                     |
 | `PLANNED` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                               |
@@ -198,6 +201,37 @@ item.
   auto-detection, manifest validation, parity-document freshness, and
   reproducible generation. No production source was changed by the port. P0.2
   is restored as the single `NEXT` item.
+
+#### P0.T2e completion bar
+
+- Re-audit every unsupported or missing-capability disposition against the
+  current RxJS Next source and platform Observable surface.
+- Prefer an executable mechanical conversion for every source-linked claim,
+  including helper-generated and scheduler-shaped cases, while preserving
+  explicit failures for unavailable behavior.
+- Run the complete cold and polyfill inventories plus native auto-detection and
+  raw audits without changing production operators to satisfy expectations.
+- Regenerate the capability map, parity document, dispositions, mode
+  baselines, and notes from the pinned read-only RxJS 7 source revision.
+
+#### P0.T2e completion evidence
+
+- Reconciled 2,201 physical declarations into 2,338 unique registrations,
+  including 169 parameterized variants and all four source-skipped cases.
+- Preserved an executable converted program for every registration. Only 11
+  cases remain classified unsupported/obsolete, and each produces an explicit
+  source-linked diagnostic rather than disappearing from the suite.
+- Expanded the executable capability registry to 51 operator mappings, 18
+  factory mappings, and 11 standalone values, including exact, partial, and
+  unified mappings for the newly available APIs.
+- Added unique case-ID baselines, complete sharded audit merging, ambient
+  native-constructor identity checks, and five dedicated platform lifecycle
+  cases.
+- Passed the complete 2,338-case normal cold and polyfill gates. Raw audits
+  recorded 432 cold passes with 1,906 failures and 436 polyfill passes with
+  1,902 failures. Native mode skipped explicitly in the current Node realm.
+- Regenerated the manifest, parity map, reviewed baselines, and port notes
+  without changing production source.
 
 #### P0.2 completion bar
 
@@ -660,3 +694,22 @@ conformance implementation depends on a runnable harness.
   `bufferCount(size) → source[buffer]({ maxSize: size })`, and retained
   unsupported overloads as failing parity evidence.
 - Restored P0.2 as the single `NEXT` item without changing production source.
+
+### 2026-07-25 — Exhaustive parameterized marble conversion
+
+- Re-audited the pinned source with an AST-based declaration and helper
+  expander. The earlier 2,146-case inventory omitted parameterized variants and
+  source-skipped evidence; the authoritative inventory is now 2,338
+  registrations from 2,201 physical declarations.
+- Expanded all loop- and helper-declared variants, including 117 `share`
+  configurations, 48 multicasting deprecation equivalents, and four buffer
+  cases. All four source-skipped tests remain executable parity evidence.
+- Reduced unsupported/obsolete classification from 136 to 11 without guessing
+  behavior. The remaining cases protect scheduler-private parser/queue state
+  or depend on `phonyMarbelize`.
+- Expanded executable API mappings, corrected overload guards, introduced
+  unique case-ID baselines and strict sharded audit merging, and protected
+  native constructor identity before extension loading.
+- Passed both 2,338-registration normal gates and complete cold/polyfill raw
+  audits. No production source was changed to satisfy an old expectation.
+- Marked P0.T2e complete and restored P0.2 as the single `NEXT` item.

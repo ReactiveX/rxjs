@@ -69,23 +69,27 @@ for (const [mode, registrations] of Object.entries(modeRegistrations)) {
   }
 }
 
-const manifestLocations = new Set(manifest.cases.map((testCase) => `${testCase.source.path}:${testCase.source.line}`));
-for (const baseline of [coldBaseline, polyfillBaseline]) {
-  if (baseline.sourceCommit !== manifest.sourceCommit || baseline.audit.total !== manifest.totals.cases) {
-    throw new Error(`${baseline.mode} baseline does not match the complete manifest source revision.`);
+const baselineSummary = {};
+for (const [expectedMode, baseline] of [
+  ['cold', coldBaseline],
+  ['polyfill', polyfillBaseline],
+]) {
+  if (baseline.mode !== expectedMode || baseline.sourceCommit !== manifest.sourceCommit || baseline.audit.total !== manifest.totals.cases) {
+    throw new Error(`${expectedMode} baseline does not match the complete manifest source revision.`);
   }
   if (baseline.audit.passed + baseline.audit.failed !== baseline.audit.total) {
-    throw new Error(`${baseline.mode} baseline audit totals do not reconcile.`);
+    throw new Error(`${expectedMode} baseline audit totals do not reconcile.`);
   }
-  if (new Set(baseline.locations).size !== baseline.locations.length) {
-    throw new Error(`${baseline.mode} baseline contains duplicate locations.`);
+  const resolution = resolveBaselineCaseIds(baseline, expectedMode);
+  if (resolution.caseIds.size !== baseline.audit.passed) {
+    throw new Error(`${expectedMode} baseline contains duplicate or incomplete passing case IDs.`);
   }
-  for (const location of baseline.locations) {
-    if (!manifestLocations.has(location)) {
-      throw new Error(`${baseline.mode} baseline contains an unknown location: ${location}`);
-    }
-  }
+  baselineSummary[expectedMode] = summarizeBaseline(baseline, expectedMode, resolution);
 }
+baselineSummary.native = {
+  status: 'unverified-audit-only',
+  detail: 'Native-if-present mode runs every definition as raw evidence until a dedicated native pass baseline is reviewed.',
+};
 
 process.stdout.write(
   `${JSON.stringify(
@@ -99,9 +103,58 @@ process.stdout.write(
         cold: coldBaseline.audit.passed,
         polyfill: polyfillBaseline.audit.passed,
       },
+      baselines: baselineSummary,
       categories: Object.fromEntries([...categories].sort(([left], [right]) => left.localeCompare(right))),
     },
     null,
     2
   )}\n`
 );
+
+function summarizeBaseline(baseline, expectedMode, resolution) {
+  return {
+    status: baseline.mode === expectedMode ? 'verified' : 'invalid',
+    identity: resolution.identity,
+    sourceCommit: baseline.sourceCommit,
+    passed: baseline.audit.passed,
+    failed: baseline.audit.failed,
+    caseIds: resolution.caseIds.size,
+  };
+}
+
+function resolveBaselineCaseIds(baseline, expectedMode) {
+  if (Array.isArray(baseline.caseIds)) {
+    const resolved = new Set(baseline.caseIds);
+    for (const caseId of resolved) {
+      if (!caseIds.has(caseId)) {
+        throw new Error(`${expectedMode} baseline contains an unknown case ID: ${caseId}`);
+      }
+    }
+    return { identity: 'caseIds', caseIds: resolved };
+  }
+  if (!Array.isArray(baseline.locations)) {
+    throw new Error(`${expectedMode} baseline contains neither caseIds nor legacy locations.`);
+  }
+
+  const caseIdsByLocation = new Map();
+  for (const testCase of manifest.cases) {
+    const location = `${testCase.source.path}:${testCase.source.line}`;
+    const ids = caseIdsByLocation.get(location) ?? [];
+    ids.push(testCase.id);
+    caseIdsByLocation.set(location, ids);
+  }
+  const resolved = new Set();
+  for (const location of baseline.locations) {
+    const ids = caseIdsByLocation.get(location) ?? [];
+    if (ids.length === 0) {
+      throw new Error(`${expectedMode} legacy baseline contains an unknown manifest location: ${location}`);
+    }
+    if (ids.length > 1) {
+      throw new Error(
+        `${expectedMode} legacy baseline location ${location} is ambiguous across ${ids.length} cases; run the audit and record a caseIds baseline.`
+      );
+    }
+    resolved.add(ids[0]);
+  }
+  return { identity: 'legacy-locations', caseIds: resolved };
+}

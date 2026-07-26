@@ -132,10 +132,18 @@
     "elementAt": {
       "symbol": "elementAt",
       "module": "element-at",
-      "adapter": "identity",
-      "mapping": "source[elementAt](index, defaultValue?)",
-      "status": "Present; parity unverified",
-      "note": "Exact default-value and out-of-range behavior remain test-driven."
+      "adapter": "elementAt",
+      "mapping": "source[elementAt](index)",
+      "status": "Present; partial overload",
+      "note": "The RxJS 7 default-value overload is retained as an explicit parity failure."
+    },
+    "endWith": {
+      "symbol": "concat",
+      "module": "concat",
+      "adapter": "endWith",
+      "mapping": "source[concat]([values])",
+      "status": "Partial unified mapping",
+      "note": "Adapts trailing values to one iterable concat source; a trailing SchedulerLike is retained as an explicit unsupported-overload failure."
     },
     "exhaust": {
       "symbol": "exhaustMap",
@@ -168,6 +176,38 @@
       "mapping": "source[mergeMap](project, options?)",
       "status": "Partial unified mapping",
       "note": "RxJS 7 flatMap is an alias of mergeMap."
+    },
+    "first": {
+      "symbol": "elementAt",
+      "module": "element-at",
+      "adapter": "first",
+      "mapping": "source[elementAt](0)",
+      "status": "Partial unified mapping",
+      "note": "Represents the no-predicate first-value path; predicate, default-value, and empty-source error behavior remain parity evidence."
+    },
+    "ignoreElements": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "ignoreElements",
+      "mapping": "source[mergeMap](() => Observable.from([]))",
+      "status": "Partial unified mapping",
+      "note": "Maps each input to an ambient empty Observable while retaining source completion and error behavior."
+    },
+    "last": {
+      "symbol": "takeLast",
+      "module": "take-last",
+      "adapter": "last",
+      "mapping": "source[takeLast](1)",
+      "status": "Partial unified mapping",
+      "note": "Represents the no-predicate last-value path; predicate, default-value, and empty-source error behavior remain parity evidence."
+    },
+    "mapTo": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "mapTo",
+      "mapping": "source[mergeMap](() => Observable.from([value]))",
+      "status": "Partial unified mapping",
+      "note": "Expresses constant projection through mergeMap and an ambient single-value Observable."
     },
     "merge": {
       "symbol": "merge",
@@ -212,10 +252,10 @@
     "onErrorResumeNext": {
       "symbol": "onErrorResumeNext",
       "module": "on-error-resume-next",
-      "adapter": "sourcesArray",
+      "adapter": "sourcesArrayOrSingleArray",
       "mapping": "source[onErrorResumeNext]([otherSources])",
       "status": "Partial unified mapping",
-      "note": "Adapts variadic sources to the current array form."
+      "note": "Adapts variadic or single-array source arguments to the current array form."
     },
     "race": {
       "symbol": "race",
@@ -260,10 +300,10 @@
     "sequenceEqual": {
       "symbol": "sequenceEqual",
       "module": "sequence-equal",
-      "adapter": "firstArgument",
+      "adapter": "sequenceEqual",
       "mapping": "source[sequenceEqual](otherSource)",
       "status": "Partial unified mapping",
-      "note": "The RxJS 7 comparator overload is not represented."
+      "note": "The RxJS 7 comparator overload is retained as an explicit parity failure."
     },
     "skipLast": {
       "symbol": "skipLast",
@@ -353,6 +393,14 @@
       "status": "Partial unified mapping",
       "note": "Maps fallback behavior to the unified timeout configuration; scheduler arguments are not represented."
     },
+    "toArray": {
+      "symbol": "buffer",
+      "module": "buffer",
+      "adapter": "toArray",
+      "mapping": "source[buffer]({ emitEmpty: true, emitRemainingOnError: false })",
+      "status": "Partial unified mapping",
+      "note": "Uses one unbounded buffer and emits it only on successful completion."
+    },
     "withLatestFrom": {
       "symbol": "withLatestFrom",
       "module": "with-latest-from",
@@ -398,11 +446,13 @@
       "note": "Uses the ambient Observable constructor and defers the factory until subscription."
     },
     "empty": {
-      "kind": "platform",
-      "adapter": "empty",
-      "mapping": "Observable.from([])",
-      "status": "Partial platform mapping",
-      "note": "Scheduler arguments are not represented."
+      "kind": "standalone",
+      "value": "EMPTY",
+      "module": "empty",
+      "adapter": "standaloneConstant",
+      "mapping": "() => EMPTY",
+      "status": "Partial standalone mapping",
+      "note": "Uses the current EMPTY singleton; the deprecated scheduler overload is not represented."
     },
     "from": {
       "kind": "platform",
@@ -410,6 +460,13 @@
       "mapping": "Observable.from(input)",
       "status": "Platform mapping",
       "note": "Scheduler arguments and the complete RxJS 7 input matrix remain test-driven."
+    },
+    "fromEvent": {
+      "kind": "platform",
+      "adapter": "fromEvent",
+      "mapping": "target.when(eventName, booleanOptions ? { capture: booleanOptions } : capturePassiveOptions)",
+      "status": "Partial platform string mapping",
+      "note": "Maps EventTarget inputs to the platform when() surface, normalizing boolean capture options; once, unsupported option keys, non-EventTarget inputs, and third- or fourth-argument result-selector overloads fail explicitly."
     },
     "iif": {
       "kind": "platform",
@@ -437,20 +494,22 @@
       "note": "Adapts variadic sources and the numeric concurrency overload."
     },
     "never": {
-      "kind": "platform",
-      "adapter": "never",
-      "mapping": "new Observable(() => {})",
-      "status": "Partial platform mapping",
-      "note": "Uses the ambient constructor; scheduler arguments are not represented."
+      "kind": "standalone",
+      "value": "NEVER",
+      "module": "never",
+      "adapter": "standaloneConstant",
+      "mapping": "() => NEVER",
+      "status": "Partial standalone mapping",
+      "note": "Uses the current NEVER singleton."
     },
     "onErrorResumeNext": {
       "kind": "symbol",
       "symbol": "onErrorResumeNext",
       "module": "on-error-resume-next",
-      "adapter": "staticSourcesArray",
+      "adapter": "staticSourcesArrayOrSingleArray",
       "mapping": "Observable[onErrorResumeNext](sources)",
       "status": "Partial unified mapping",
-      "note": "Adapts variadic sources to the current array form."
+      "note": "Adapts variadic or single-array source arguments to the current array form."
     },
     "of": {
       "kind": "platform",
@@ -500,9 +559,26 @@
     }
   },
   "values": {
+    "BehaviorSubject": {
+      "module": "behavior-subject",
+      "adapter": "behaviorSubjectConstructor",
+      "mapping": "new BehaviorSubject(initialValue) → behaviorSubject(initialValue)",
+      "status": "Partial standalone mapping",
+      "note": "Adapts the current factory to the RxJS 7 constructor call shape; lifecycle parity is unverified."
+    },
     "ColdObservable": {
       "module": "cold-observable",
-      "adapter": "identity"
+      "adapter": "identity",
+      "mapping": "ColdObservable",
+      "status": "Compatibility-only",
+      "note": "Producer-per-subscription compatibility test surface; not a platform Observable parity claim."
+    },
+    "EMPTY": {
+      "module": "empty",
+      "adapter": "identity",
+      "mapping": "EMPTY",
+      "status": "Present; parity unverified",
+      "note": "Uses the current standalone empty Observable singleton."
     },
     "firstValueFrom": {
       "module": "global",
@@ -522,15 +598,45 @@
     },
     "Observable": {
       "module": "global",
-      "adapter": "identity"
+      "adapter": "identity",
+      "mapping": "globalThis.Observable",
+      "status": "Platform mapping",
+      "note": "Uses the active native or fallback platform constructor."
+    },
+    "NEVER": {
+      "module": "never",
+      "adapter": "identity",
+      "mapping": "NEVER",
+      "status": "Present; parity unverified",
+      "note": "Uses the current standalone never Observable singleton."
+    },
+    "ReplaySubject": {
+      "module": "replay-subject",
+      "adapter": "replaySubjectConstructor",
+      "mapping": "new ReplaySubject(bufferSize, windowTime) → replaySubject({ size: bufferSize, maxAge: windowTime })",
+      "status": "Partial standalone mapping",
+      "note": "Adapts bufferSize and windowTime to the current factory; a third timestamp-provider or scheduler argument fails explicitly, and lifecycle parity is unverified."
     },
     "Subject": {
       "module": "subject",
-      "adapter": "identity"
+      "adapter": "identity",
+      "mapping": "Subject",
+      "status": "Present; parity unverified",
+      "note": "Uses the current exploratory Subject class."
+    },
+    "pipe": {
+      "module": "pipe",
+      "adapter": "operatorComposition",
+      "mapping": "Observable[pipe](source, ...operatorFunctions)",
+      "status": "Partial unified mapping",
+      "note": "Adapts RxJS 7 standalone operator composition to the current static pipe Symbol."
     },
     "zip": {
       "module": "zip",
-      "adapter": "standaloneSourcesArrayWithProjection"
+      "adapter": "standaloneSourcesArrayWithProjection",
+      "mapping": "zip(sources)",
+      "status": "Partial standalone mapping",
+      "note": "Adapts variadic sources to the current source-array function; projection overloads remain unrepresented."
     }
   }
 }

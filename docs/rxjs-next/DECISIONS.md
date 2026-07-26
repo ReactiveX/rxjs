@@ -229,10 +229,12 @@ Status meanings:
   their actual Next target Symbol or ambient-platform construction instead of
   misclassifying them as absent. The portable migration Skill contains no
   repository provenance or harness policy; those remain repository-specific.
-- **Evidence:** The manifest reconciles 2,146 cases as 333 active, 422 expected
-  failures, 1,251 missing API, 4 deduplicated, and 136
-  unsupported/obsolete. The cold audit records 335 passes and 1,811 failures;
-  the polyfill audit records 340 passes and 1,806 failures. The generated
-  parity map covers 113 operators and 34 creation/utility functions. See
+- **Evidence:** The exhaustive manifest expands 2,201 physical declarations
+  into 2,338 unique registrations: 401 active, 506 expected failures, 1,416
+  missing API, 4 deduplicated, and 11 unsupported/obsolete. The complete cold
+  audit records 432 passes and 1,906 failures; the polyfill audit records 436
+  passes and 1,902 failures. Both reviewed baselines use unique case IDs. The
+  generated parity map covers 113 operators and 34 creation/utility functions.
+  See
   `docs/rxjs-next/RXJS_7_MARBLE_TEST_PORT_NOTES.md` and
   `docs/rxjs-next/RxJS-7-parity.md`.

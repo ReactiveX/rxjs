@@ -463,21 +463,23 @@ does not force-install or replace that constructor. See
 
 The RxJS 7 marble-test evidence is maintained separately under
 `packages/rxjs/test/ported`. A generated, source-pinned manifest records one
-disposition for each of 2,146 inventoried cases, including cases blocked by
-missing APIs or obsolete scheduler internals. Every record has an executable
-program and a cold parity registration; unavailable capabilities fail
-explicitly instead of removing the source case from collection. The executable
-harness starts cold, fallback-platform, and native-if-present modes in isolated
-processes so the constructor is selected before extension modules load. All
-2,146 definitions are registered in each available mode.
+disposition for each of 2,338 registrations expanded from 2,201 physical
+declarations, including parameterized variants, source-skipped declarations,
+missing APIs, and obsolete scheduler internals. Every record has a unique case
+ID, executable program, and cold parity registration; unavailable capabilities
+fail explicitly instead of removing the source case from collection. The
+executable harness starts cold, fallback-platform, and native-if-present modes
+in isolated, sharded processes so the constructor is selected before extension
+modules load. All 2,338 definitions are registered in each available mode.
 
 Cold mode activates `ColdObservable` for producer-per-subscription evidence.
 Platform modes use the ambient `globalThis.Observable`; tests do not import a
 fallback constructor. The normal gate quarantines known cold failures and runs
-the complete inventory against mode-specific verified-pass baselines. Exact
-duplicates remain source-linked but skipped in normal runs. Separate cold and
-polyfill audits remove the quarantine, and dedicated platform cases assert the
-shared/ref-counted lifecycle directly. See
+the complete inventory against mode-specific case-ID baselines. Exact
+duplicates remain source-linked but skipped in normal runs. Separate complete
+cold and polyfill audits remove the quarantine, and dedicated platform cases
+assert the shared/ref-counted lifecycle directly. Native loading also verifies
+that the ambient constructor was not replaced. See
 `RXJS_7_MARBLE_TEST_PORT_NOTES.md` and D-013.
 
 The repo-committed `rxjs-next-marble-migration` Skill is a portable authoring
