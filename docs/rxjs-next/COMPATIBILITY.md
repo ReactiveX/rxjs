@@ -151,6 +151,17 @@ Tests must not be weakened solely to make a new implementation pass. A harness
 rewrite should state the old claim in plain language and show how the new test
 still proves it.
 
+The first structured evidence ledger now exists at
+`packages/rxjs/test/ported/manifest.generated.json`. It accounts for every
+inventoried RxJS 7 marble case with both a compatibility classification and one
+execution disposition: active, expected failure, missing API, deduplicated, or
+unsupported/obsolete. Missing APIs remain converted pending definitions;
+implementation mismatches remain known failures. All 2,146 cases are executable
+cold registrations; missing capabilities fail explicitly rather than
+disappearing from collection. Platform cases use the ambient Observable and do
+not redefine the platform layer to recover RxJS 7 cold semantics. See
+`RXJS_7_MARBLE_TEST_PORT_NOTES.md` and `RxJS-7-parity.md`.
+
 ## Compatibility ledger
 
 Maintain a ledger as operator and API work begins. It can start as a Markdown
@@ -168,9 +179,17 @@ table and move to structured data when automation needs it.
 | Migration action    | Mechanical change, semantic review, adapter, or redesign                              |
 | Decision            | Link to accepted decision or open question                                            |
 
-The ledger is intentionally not populated during the documentation foundation
-phase; doing so responsibly requires choosing the package and compatibility
-contracts first.
+The marble-test manifest populates the behavioral-evidence portion of this
+ledger without making API support promises. The full public compatibility
+ledger still requires the package and compatibility contracts to be chosen.
+
+The executable capability registry distinguishes an absent API from a unified
+Next surface. For example, RxJS 7 `bufferCount(size)` is exercised through
+`source[buffer]({ maxSize: size })`; overlapping-buffer overloads remain
+failing parity evidence. Static and creation functions may similarly map to a
+static Symbol or an explicit ambient-`Observable` construction. These adapters
+make behavioral gaps testable and do not by themselves promise full overload,
+type, or lifecycle parity.
 
 ## Suggested validation ladder
 

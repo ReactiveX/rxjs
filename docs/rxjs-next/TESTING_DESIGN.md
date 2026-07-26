@@ -528,3 +528,60 @@ ref-count restarts, `toBe`, `toEqual`, subscription logs, native timers, Node
 handles, clocks, microtasks, animation, idle callbacks, AbortSignal timeouts,
 cancellation, custom assertions, cleanup, serialization, nested-call
 diagnostics, and execution/time limits.
+
+## Ported RxJS 7 evidence
+
+The repository keeps migrated RxJS 7 marble evidence under
+`packages/rxjs/test/ported`, outside the `@rxjs/test` package API. Its generated
+manifest pins the source revision and retains the original and mechanically
+converted source for all 2,146 inventoried cases. Every record has exactly one
+disposition, including missing capabilities and cases that only protect the
+former scheduler harness.
+
+Every record also has an executable program and is registered in the cold
+parity suite. Missing APIs and unavailable harness facilities are expected
+failures with source-linked diagnostics; they are not skipped or represented
+only as metadata.
+
+The executable cases use one shared definition format and a capability
+registry. Each mode runs in a separate process so its constructor is active
+before Symbol extensions load:
+
+- cold mode activates `ColdObservable`;
+- polyfill mode activates the platform fallback;
+- native mode preserves the ambient Observable and skips when none exists.
+
+Platform tests construct from the global `Observable` and never import the
+fallback constructor. Dedicated platform cases prove shared activation,
+ref-count restart, and global construction where legacy cold expectations
+would be misleading.
+
+The normal cold and polyfill gates register all 2,146 source cases. Each uses a
+mode-specific verified-pass baseline and marks every other known
+implementation, capability, conversion, or lifecycle mismatch as an expected
+failure. Exact duplicates remain registered but skipped outside audit mode.
+The cold and polyfill audit commands remove the expected-failure quarantine and
+are deliberately nonzero while unfinished cases remain. Dedicated platform
+lifecycle cases separately assert sharing and ref counting.
+
+Operator imports are role-aware. An RxJS 7 pipeable call such as
+`source.pipe(operator(arg1, arg2))` becomes a runtime invocation of its mapped
+exported Symbol as `source[targetSymbol](...adaptedArgs)`. Exact mappings keep
+the arguments; unified mappings record their adapter explicitly, such as
+`bufferCount(size) → source[buffer]({ maxSize: size })`. Static creation
+functions resolve separately on `Observable[factorySymbol]` or through an
+explicit ambient-platform construction. The generated `RxJS-7-parity.md` map
+and `capability-registry.json` record present, partial, unified, platform, and
+missing surfaces.
+
+```sh
+yarn workspace rxjs test:ported
+yarn workspace rxjs test:ported:native
+yarn workspace rxjs test:ported:audit
+yarn workspace rxjs test:ported:audit:polyfill
+yarn workspace rxjs test:ported:report
+yarn workspace rxjs test:ported:parity:check
+```
+
+Detailed counts, duplicates, missing capabilities, and unsupported-case
+rationales are in `RXJS_7_MARBLE_TEST_PORT_NOTES.md`.

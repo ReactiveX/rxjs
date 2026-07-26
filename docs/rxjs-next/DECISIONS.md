@@ -205,3 +205,34 @@ Status meanings:
   used for the cross-copy test lock is deliberately shared and is not an
   Observable extension key.
 - **Details:** `docs/rxjs-next/TESTING_DESIGN.md`.
+
+## D-013 — Port RxJS 7 marble evidence through an explicit mode-aware registry
+
+- **Status:** Accepted
+- **Decision:** Preserve the RxJS 7 marble corpus in a source-pinned generated
+  manifest with one compatibility classification and one execution disposition
+  per case. Establish producer-per-subscription behavior against
+  `ColdObservable` first. Reuse reviewed portable definitions in isolated
+  fallback and native-if-present processes, where every platform case uses the
+  ambient `Observable`. Retain missing APIs as pending converted definitions,
+  exact duplicates as provenance links, and implementation mismatches as known
+  failures rather than changing production behavior.
+- **Rationale:** RxJS 7 tests contain valuable behavioral claims, but their
+  scheduler, subscription, and cold-source assumptions cannot serve as an
+  unqualified platform gate. Constructor selection must also precede Symbol
+  extension installation to test the intended realm identity.
+- **Consequence:** All source cases are executable registrations in cold,
+  fallback-platform, and native-if-present modes. Normal tests quarantine
+  mode-specific known mismatches and explicit
+  missing-capability failures; separate cold and polyfill audits expose all
+  unfinished cases. Unified capability adapters execute legacy names against
+  their actual Next target Symbol or ambient-platform construction instead of
+  misclassifying them as absent. The portable migration Skill contains no
+  repository provenance or harness policy; those remain repository-specific.
+- **Evidence:** The manifest reconciles 2,146 cases as 333 active, 422 expected
+  failures, 1,251 missing API, 4 deduplicated, and 136
+  unsupported/obsolete. The cold audit records 335 passes and 1,811 failures;
+  the polyfill audit records 340 passes and 1,806 failures. The generated
+  parity map covers 113 operators and 34 creation/utility functions. See
+  `docs/rxjs-next/RXJS_7_MARBLE_TEST_PORT_NOTES.md` and
+  `docs/rxjs-next/RxJS-7-parity.md`.

@@ -17,7 +17,17 @@
     "build": "tshy",
     "lint": "eslint ./src",
     "test": "vitest --run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:ported": "node test/ported/run-mode.mjs all",
+    "test:ported:cold": "node test/ported/run-mode.mjs cold",
+    "test:ported:polyfill": "node test/ported/run-mode.mjs polyfill",
+    "test:ported:native": "node test/ported/run-mode.mjs native",
+    "test:ported:audit": "node test/ported/run-mode.mjs audit",
+    "test:ported:audit:polyfill": "node test/ported/run-mode.mjs audit-polyfill",
+    "test:ported:audit:record": "node test/ported/tools/record-mode-audit.mjs",
+    "test:ported:report": "node test/ported/report.mjs",
+    "test:ported:parity:generate": "node test/ported/tools/generate-parity-doc.mjs",
+    "test:ported:parity:check": "node test/ported/tools/generate-parity-doc.mjs --check"
   },
   "repository": {
     "type": "git",

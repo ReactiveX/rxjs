@@ -461,6 +461,37 @@ main library. It consumes the active Observable selected for the realm and
 does not force-install or replace that constructor. See
 `docs/rxjs-next/TESTING_DESIGN.md` and D-012.
 
+The RxJS 7 marble-test evidence is maintained separately under
+`packages/rxjs/test/ported`. A generated, source-pinned manifest records one
+disposition for each of 2,146 inventoried cases, including cases blocked by
+missing APIs or obsolete scheduler internals. Every record has an executable
+program and a cold parity registration; unavailable capabilities fail
+explicitly instead of removing the source case from collection. The executable
+harness starts cold, fallback-platform, and native-if-present modes in isolated
+processes so the constructor is selected before extension modules load. All
+2,146 definitions are registered in each available mode.
+
+Cold mode activates `ColdObservable` for producer-per-subscription evidence.
+Platform modes use the ambient `globalThis.Observable`; tests do not import a
+fallback constructor. The normal gate quarantines known cold failures and runs
+the complete inventory against mode-specific verified-pass baselines. Exact
+duplicates remain source-linked but skipped in normal runs. Separate cold and
+polyfill audits remove the quarantine, and dedicated platform cases assert the
+shared/ref-counted lifecycle directly. See
+`RXJS_7_MARBLE_TEST_PORT_NOTES.md` and D-013.
+
+The repo-committed `rxjs-next-marble-migration` Skill is a portable authoring
+guide, not part of this test runtime. Repository revision discovery, manifest
+generation, capability loading, and disposition policy remain outside it.
+
+`docs/rxjs-next/RxJS-7-parity.md` is the generated public-surface map. Its
+machine-readable capability registry distinguishes instance operator Symbols,
+static factory Symbols, ambient-platform constructions, and standalone values.
+Pipeable migration invokes `source[targetSymbol](...adaptedArgs)`: exact
+operators retain their arguments, while explicitly recorded unified mappings
+such as `bufferCount → buffer({ maxSize })` adapt the old signature. A similarly
+named platform string method is not treated as RxJS Symbol parity.
+
 ## Compatibility boundary
 
 ### Why a boundary is necessary

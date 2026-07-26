@@ -7,8 +7,12 @@ expanding the operator catalog or compatibility promises. The user temporarily
 prioritized the attested Observable WPT harness and fallback-conformance work
 ahead of the package and installation decision. Both slices are complete:
 the fallback passes the pinned suite while exact implementation identity is
-proved in every tested realm. Package-boundary work now resumes at P0.2.
-Skills/MCP design remains deferred.
+proved in every tested realm. The portable RxJS 7-to-Next marble-test migration
+Skill, its independent vetting, and the classified repository port are also
+complete. The user has clarified that preservation in a manifest is not enough:
+all 2,146 cases must become executable parity registrations even when their
+capabilities are absent. That follow-up is complete, and package-boundary work
+resumes at P0.2. Broader Skills/MCP product design remains deferred.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -44,14 +48,18 @@ item.
 
 ### Phase 0 — Foundation and architectural safety rails
 
-| Status    | ID    | Outcome                                                                                                                |
-| --------- | ----- | ---------------------------------------------------------------------------------------------------------------------- |
-| `DONE`    | P0.1  | Record the charter, current architecture, compatibility policy, decisions, risks, open questions, and AI working rules |
-| `DONE`    | P0.T1 | Design and implement the user-prioritized framework-neutral `@rxjs/test` virtual-time package                          |
-| `NEXT`    | P0.2  | Decide the package map and native-versus-polyfill installation contract                                                |
-| `PLANNED` | P0.3  | Restore green builds and coherent public entry points for the selected package map                                     |
-| `PLANNED` | P0.4  | Add a native/fallback lifecycle test harness and package-import fixtures                                               |
-| `PLANNED` | P0.5  | Pin the first Observable specification and WPT revisions used as the conformance baseline                              |
+| Status    | ID     | Outcome                                                                                                                |
+| --------- | ------ | ---------------------------------------------------------------------------------------------------------------------- |
+| `DONE`    | P0.1   | Record the charter, current architecture, compatibility policy, decisions, risks, open questions, and AI working rules |
+| `DONE`    | P0.T1  | Design and implement the user-prioritized framework-neutral `@rxjs/test` virtual-time package                          |
+| `DONE`    | P0.T2a | Create a portable RxJS 7-to-Next marble-test migration Skill                                                           |
+| `DONE`    | P0.T2b | Vet the migration Skill independently before using it on the repository                                                |
+| `DONE`    | P0.T2c | Port and classify the RxJS 7 marble-test corpus without repairing production behavior                                  |
+| `DONE`    | P0.T2d | Materialize every inventoried marble case as an executable parity-test registration                                    |
+| `NEXT`    | P0.2   | Decide the package map and native-versus-polyfill installation contract                                                |
+| `PLANNED` | P0.3   | Restore green builds and coherent public entry points for the selected package map                                     |
+| `PLANNED` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                               |
+| `PLANNED` | P0.5   | Pin the first Observable specification and WPT revisions used as the conformance baseline                              |
 
 #### P0.1 completion evidence
 
@@ -77,6 +85,119 @@ item.
   Nx build/test targets, the multi-dialect package build, strict declaration
   coexistence with the Observable polyfill, and built ESM/CommonJS imports.
 - Recorded D-012 and the complete contract in `TESTING_DESIGN.md`.
+
+#### P0.T2a completion bar
+
+- A repo-committed Skill teaches developers to migrate RxJS 7 TestScheduler
+  marble cases to `rxTest`, ColdObservable, and the platform Observable.
+- The Skill preserves the caller's test framework, requires the global
+  Observable for platform cases, and separates mechanical changes from
+  semantic review.
+- The Skill and bundled helpers contain no RxJS-repository paths, branches,
+  commits, Git operations, or package-internal assumptions.
+
+#### P0.T2a completion evidence
+
+- Added the repo-committed `rxjs-next-marble-migration` Skill with concise
+  workflow guidance, conversion and lifecycle references, examples, and a
+  migration-report template.
+- Added dependency-free file analysis, duplicate-candidate detection,
+  review-flag detection, and a portability checker that accepts ordinary
+  filesystem paths without source-control behavior.
+- Passed helper tests, the portability scan across all nine Skill files, the
+  Skill structural validator, and temporary `.skill` packaging.
+
+#### P0.T2b completion bar
+
+- Skill structure, links, examples, helper scripts, and packaging validate.
+- Independent skill evaluation has no unresolved blocking or fix-first finding.
+- Consumer-style fixtures cover synchronous, higher-order, timed, cancellation,
+  duplicate, missing-operator, sharing-divergence, and obsolete-harness cases.
+- No repository marble-test port begins before this bar is met.
+
+#### P0.T2b completion evidence
+
+- Exercised the dependency-free analyzer in a temporary consumer-style project
+  across synchronous, higher-order, timed, cancellation, duplicate,
+  missing-operator, sharing-divergence, and obsolete scheduler-internal cases.
+- Parsed representative migrated `rxTest` cases for framework preservation,
+  awaited flush, Symbol invocation, and global Observable construction.
+- Corrected the one initial evaluation warning by making the Skill trigger
+  sentence explicit.
+- Passed the structural validator and independent plugin evaluation at 100/100
+  with no failures, warnings, or fix-first recommendations.
+
+#### P0.T2c completion bar
+
+- Every inventoried RxJS 7 marble case has exactly one recorded disposition:
+  active, expected failure, missing API, deduplicated, or unsupported/obsolete.
+- Shared definitions can run in isolated ColdObservable, polyfill, and
+  native-if-present modes without importing the platform constructor.
+- Repository notes reconcile source counts, duplicate provenance, known
+  failures, missing APIs, and semantic divergences.
+- Production Observable, operator, and compatibility implementations are not
+  changed to make the port pass.
+
+#### P0.T2c completion evidence
+
+- Read the production `7.x` ref without checking it out and pinned
+  `e5351d02e225e275ac0e497c7b66eaa5f0c88791` only in the repository port
+  records.
+- Reconciled all 2,146 inventoried cases as 333 active, 422 expected failure,
+  1,251 missing API, 4 deduplicated, and 136 unsupported/obsolete.
+- Added a reproducible generated manifest retaining original provenance,
+  converted definitions, classifications, reasons, capability gaps, and exact
+  duplicate links.
+- Added isolated cold, polyfill, native-if-present, and per-mode audit commands.
+  Normal cold and polyfill each register all 2,146 source cases; native
+  detection skips explicitly in the current Node realm. Cold audit records 335
+  passes and 1,811 failures; polyfill audit records 340 passes and 1,806
+  failures.
+- Recorded the platform shared/ref-counted lifecycle separately from
+  compatibility-cold expectations and required platform cases to construct
+  from the ambient Observable.
+- Added D-013 and the detailed port notes. No production implementation was
+  changed, and P0.2 is restored as the single `NEXT` item.
+
+#### P0.T2d completion bar
+
+- All 2,146 inventoried source cases are registered by the parity harness,
+  including missing APIs, scheduler/harness dependencies, deduplicated
+  provenance, and obsolete coverage.
+- Missing capabilities fail with explicit source-linked capability diagnostics
+  rather than being omitted from test collection.
+- The raw parity command reports the complete pass/fail/duplicate disposition
+  without changing production operators or compatibility behavior.
+- Normal and platform modes remain bounded; any required sharding or process
+  isolation is part of the harness rather than a reason to omit cases.
+- Port notes, verification evidence, and the generated manifest agree on the
+  registered total.
+
+#### P0.T2d completion evidence
+
+- Preserved a mechanically generated executable program for every manifest
+  entry, including all four deduplicated source locations and all 136
+  scheduler/harness-dependent cases.
+- Registered all 2,146 cases in cold, polyfill, and native-if-present modes.
+  Mode-specific pass baselines execute verified cases normally; every other
+  non-duplicate case remains an expected-failure parity gate until its exact
+  capability and behavior are available.
+- Made missing APIs and unavailable harness facilities fail with explicit
+  source ID, original claim, and capability/rewrite reason. The raw cold audit
+  reports 1,811 failures and 335 passes; the polyfill audit reports 1,806
+  failures and 340 passes.
+- Added role-aware import mapping so
+  `source.pipe(operator(arg1, arg2))` invokes its exact or unified Next Symbol
+  as `source[targetSymbol](...adaptedArgs)`, separately from static factory
+  Symbols, ambient-platform constructions, and standalone values.
+- Added one machine-readable capability registry and the generated
+  `RxJS-7-parity.md` map covering 113 RxJS 7 operators and 34 creation/utility
+  functions, including every missing exact surface and marble-case usage
+  counts.
+- Passed the complete 2,146-registration cold and polyfill gates, native
+  auto-detection, manifest validation, parity-document freshness, and
+  reproducible generation. No production source was changed by the port. P0.2
+  is restored as the single `NEXT` item.
 
 #### P0.2 completion bar
 
@@ -309,7 +430,7 @@ Phase exit:
 | ---------- | ---- | ------------------------------------------------------------------------------- |
 | `PLANNED`  | P5.1 | Write migration guidance from the compatibility ledger and accepted divergences |
 | `PLANNED`  | P5.2 | Validate mechanical and semantic migration steps on representative applications |
-| `DEFERRED` | P5.3 | Design the RxJS usage and RxJS 7 migration Skills                               |
+| `DEFERRED` | P5.3 | Design the broader RxJS usage/migration Skill portfolio and distribution        |
 | `DEFERRED` | P5.4 | Design MCP capabilities, permissions, packaging, and versioning                 |
 
 AI tools must consume versioned project knowledge and produce reviewable
@@ -359,7 +480,7 @@ conformance implementation depends on a runnable harness.
 | RxJS 7 suite pressures platform behavior backward   | Native and fallback layers diverge             | High       | Mandatory test classification and separate compatibility layer                                    |
 | Compatibility scope becomes unbounded               | Release cannot converge                        | Medium     | Support matrix and prioritized API categories                                                     |
 | Global patching fails in hardened realms            | Library cannot initialize                      | Medium     | Decide supported environments and fallback access patterns                                        |
-| Tooling is designed before APIs stabilize           | Skills encode obsolete migrations              | Medium     | Skills and MCP design are deferred                                                                |
+| Tooling is designed before APIs stabilize           | Skills encode obsolete migrations              | Medium     | The portable marble Skill is vetted; broader Skill/MCP distribution remains deferred              |
 | Current CI/release infrastructure assumes RxJS 7    | Published artifacts fail despite source tests  | High       | Package-import fixtures and release gates precede expansion                                       |
 | WPT runs accidentally exercise native Observable    | False confidence in fallback behavior          | High       | P1.4a exact-identity attestation and an independent, unsuppressible report audit                  |
 | WPT/browser setup is too large or network-dependent | Slow or skipped local and CI validation        | Medium     | Vendor only the approved closure and checksum-cache the sparse runner and exact browser artifacts |
@@ -493,3 +614,49 @@ conformance implementation depends on a runnable harness.
   difference between source-only spacing and ignored in-string padding.
 - Kept the parser internal so this implementation improvement does not create
   an unreviewed public subpath; P0.2 remains the single `NEXT` item.
+
+### 2026-07-25 — RxJS 7 marble-test migration Skill and classified port
+
+- Temporarily moved `NEXT` from P0.2 through the user-ordered Skill creation,
+  independent vetting, and repository port steps, advancing only after each
+  completion bar passed.
+- Added the portable `rxjs-next-marble-migration` Skill with framework-neutral
+  conversion guidance, lifecycle classifications, examples, reporting, and
+  dependency-free analysis and portability helpers.
+- Passed helper fixtures, portability checks, structural validation, temporary
+  packaging, and independent plugin evaluation at 100/100 with no blocking or
+  fix-first findings.
+- Read the production `7.x` ref without checking it out, pinned
+  `e5351d02e225e275ac0e497c7b66eaa5f0c88791`, and reconciled all 2,146
+  inventoried marble cases into one generated disposition ledger.
+- Added isolated cold, polyfill, native-if-present, and raw-audit modes. The
+  normal cold and polyfill gates pass; the current Node native mode skips
+  explicitly; cold and polyfill audits expose their complete mode-specific
+  implementation, capability, conversion, and lifecycle mismatches without
+  repairing production behavior.
+- Recorded D-013, testing and compatibility updates, and complete port notes.
+  Restored P0.2 as the single `NEXT` item.
+
+### 2026-07-25 — Complete executable parity registration and API map
+
+- Reopened the user-prioritized marble port after clarifying that manifest-only
+  preservation was insufficient for missing capabilities.
+- Materialized all 2,146 source cases as cold test registrations and retained
+  executable converted programs for every disposition.
+- Corrected the import-role mapper so pipeable operators resolve to exact
+  or explicitly unified instance Symbols while creation functions resolve
+  independently to static Symbols or ambient-platform constructions.
+- Added explicit missing-capability and unavailable-harness failures, plus
+  Vitest argument pass-through for focused audits.
+- Generated `RxJS-7-parity.md` from the pinned RxJS 7 public indexes and the
+  shared machine-readable registry: 113 pipeable operators and 34
+  creation/utility functions with current mappings, case counts, partial
+  analogues, and missing status.
+- Passed all 2,146 normal cold and polyfill source registrations, with four
+  exact duplicates skipped in each normal mode. The raw cold audit reports
+  1,811 failures and 335 passes; the polyfill audit reports 1,806 failures and
+  340 passes. Native mode skips honestly in the current Node realm.
+- Added executable unified mappings, including
+  `bufferCount(size) → source[buffer]({ maxSize: size })`, and retained
+  unsupported overloads as failing parity evidence.
+- Restored P0.2 as the single `NEXT` item without changing production source.

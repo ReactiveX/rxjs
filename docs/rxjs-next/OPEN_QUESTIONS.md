@@ -217,3 +217,8 @@ After the runtime APIs stabilize, decide whether the tools are:
   services.
 
 This design is deferred and should not block runtime work.
+
+The repository now contains a portable `rxjs-next-marble-migration` Skill as
+source and has independently vetted it. That implementation does not settle
+distribution, versioning, permissions, plugin packaging, or MCP capabilities;
+those parts of this question remain deferred.

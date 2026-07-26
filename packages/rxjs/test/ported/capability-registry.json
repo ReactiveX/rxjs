@@ -1,0 +1,536 @@
+{
+  "schemaVersion": 2,
+  "operators": {
+    "audit": {
+      "symbol": "throttle",
+      "module": "throttle",
+      "adapter": "audit",
+      "mapping": "source[throttle](durationSelector, { leading: false, trailing: true })",
+      "status": "Partial unified mapping",
+      "note": "Expresses audit through the unified throttle configuration; completion timing remains test-driven."
+    },
+    "auditTime": {
+      "symbol": "throttle",
+      "module": "throttle",
+      "adapter": "auditTime",
+      "mapping": "source[throttle](milliseconds, { leading: false, trailing: true })",
+      "status": "Partial unified mapping",
+      "note": "Scheduler arguments are not represented."
+    },
+    "buffer": {
+      "symbol": "buffer",
+      "module": "buffer",
+      "adapter": "buffer",
+      "mapping": "source[buffer]({ delay: () => closingNotifier, emitEmpty: true })",
+      "status": "Partial unified mapping",
+      "note": "Adapts the RxJS 7 closing notifier; exact empty-buffer behavior remains test-driven."
+    },
+    "bufferCount": {
+      "symbol": "buffer",
+      "module": "buffer",
+      "adapter": "bufferCount",
+      "mapping": "source[buffer]({ maxSize: bufferSize })",
+      "status": "Partial unified mapping",
+      "note": "Equivalent for non-overlapping buffers; startBufferEvery variants remain parity failures."
+    },
+    "bufferTime": {
+      "symbol": "buffer",
+      "module": "buffer",
+      "adapter": "bufferTime",
+      "mapping": "source[buffer]({ delay: bufferTimeSpan, maxSize, emitEmpty: true })",
+      "status": "Partial unified mapping",
+      "note": "Multiple concurrent time windows and scheduler arguments are not represented."
+    },
+    "bufferWhen": {
+      "symbol": "buffer",
+      "module": "buffer",
+      "adapter": "bufferWhen",
+      "mapping": "source[buffer]({ delay: closingSelector, emitEmpty: true })",
+      "status": "Partial unified mapping",
+      "note": "Uses the unified buffer delay selector."
+    },
+    "combineLatest": {
+      "symbol": "combineLatest",
+      "module": "combine-latest",
+      "adapter": "sourcesArrayWithProjection",
+      "mapping": "source[combineLatest]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources to the current array form; projection overloads remain unrepresented."
+    },
+    "combineLatestWith": {
+      "symbol": "combineLatest",
+      "module": "combine-latest",
+      "adapter": "sourcesArrayWithProjection",
+      "mapping": "source[combineLatest]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Maps the With variant to the unified combineLatest Symbol."
+    },
+    "concat": {
+      "symbol": "concat",
+      "module": "concat",
+      "adapter": "sourcesArray",
+      "mapping": "source[concat]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources to the current array form."
+    },
+    "concatAll": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "concatAll",
+      "mapping": "source[mergeMap](identity, { concurrent: 1 })",
+      "status": "Partial unified mapping",
+      "note": "Flattening is expressed through mergeMap with concurrency one."
+    },
+    "concatMap": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "concatMap",
+      "mapping": "source[mergeMap](project, { concurrent: 1 })",
+      "status": "Partial unified mapping",
+      "note": "Result-selector overloads remain unrepresented."
+    },
+    "concatMapTo": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "concatMapTo",
+      "mapping": "source[mergeMap](() => innerSource, { concurrent: 1 })",
+      "status": "Partial unified mapping",
+      "note": "Result-selector overloads remain unrepresented."
+    },
+    "concatWith": {
+      "symbol": "concat",
+      "module": "concat",
+      "adapter": "sourcesArray",
+      "mapping": "source[concat]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Maps the With variant to the unified concat Symbol."
+    },
+    "debounce": {
+      "symbol": "debounce",
+      "module": "debounce",
+      "adapter": "identity",
+      "mapping": "source[debounce](durationSelector)",
+      "status": "Present; parity unverified",
+      "note": "Exact selector behavior remains test-driven."
+    },
+    "debounceTime": {
+      "symbol": "debounce",
+      "module": "debounce",
+      "adapter": "firstArgument",
+      "mapping": "source[debounce](milliseconds)",
+      "status": "Partial unified mapping",
+      "note": "Scheduler arguments are not represented."
+    },
+    "defaultIfEmpty": {
+      "symbol": "defaultIfEmpty",
+      "module": "default-if-empty",
+      "adapter": "identity",
+      "mapping": "source[defaultIfEmpty](defaultValue)",
+      "status": "Present; parity unverified",
+      "note": "Exact type and lifecycle parity remain test-driven."
+    },
+    "elementAt": {
+      "symbol": "elementAt",
+      "module": "element-at",
+      "adapter": "identity",
+      "mapping": "source[elementAt](index, defaultValue?)",
+      "status": "Present; parity unverified",
+      "note": "Exact default-value and out-of-range behavior remain test-driven."
+    },
+    "exhaust": {
+      "symbol": "exhaustMap",
+      "module": "exhaust-map",
+      "adapter": "flattenIdentity",
+      "mapping": "source[exhaustMap](identity)",
+      "status": "Partial unified mapping",
+      "note": "Legacy flattening alias maps to exhaustMap."
+    },
+    "exhaustAll": {
+      "symbol": "exhaustMap",
+      "module": "exhaust-map",
+      "adapter": "flattenIdentity",
+      "mapping": "source[exhaustMap](identity)",
+      "status": "Partial unified mapping",
+      "note": "Flattening is expressed through exhaustMap."
+    },
+    "exhaustMap": {
+      "symbol": "exhaustMap",
+      "module": "exhaust-map",
+      "adapter": "firstArgument",
+      "mapping": "source[exhaustMap](project)",
+      "status": "Present; parity unverified",
+      "note": "Legacy result-selector overloads are not represented."
+    },
+    "flatMap": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "mergeMap",
+      "mapping": "source[mergeMap](project, options?)",
+      "status": "Partial unified mapping",
+      "note": "RxJS 7 flatMap is an alias of mergeMap."
+    },
+    "merge": {
+      "symbol": "merge",
+      "module": "merge",
+      "adapter": "mergeSources",
+      "mapping": "source[merge]([otherSources], { concurrency })",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources and the numeric concurrency overload."
+    },
+    "mergeAll": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "mergeAll",
+      "mapping": "source[mergeMap](identity, { concurrent: concurrency })",
+      "status": "Partial unified mapping",
+      "note": "Flattening is expressed through mergeMap."
+    },
+    "mergeMap": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "mergeMap",
+      "mapping": "source[mergeMap](project, { concurrent: concurrency })",
+      "status": "Partial unified mapping",
+      "note": "Adapts numeric concurrency; result-selector overloads remain unrepresented."
+    },
+    "mergeMapTo": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "mergeMapTo",
+      "mapping": "source[mergeMap](() => innerSource, { concurrent: concurrency })",
+      "status": "Partial unified mapping",
+      "note": "Result-selector overloads remain unrepresented."
+    },
+    "mergeWith": {
+      "symbol": "merge",
+      "module": "merge",
+      "adapter": "sourcesArray",
+      "mapping": "source[merge]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Maps the With variant to the unified merge Symbol."
+    },
+    "onErrorResumeNext": {
+      "symbol": "onErrorResumeNext",
+      "module": "on-error-resume-next",
+      "adapter": "sourcesArray",
+      "mapping": "source[onErrorResumeNext]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources to the current array form."
+    },
+    "race": {
+      "symbol": "race",
+      "module": "race",
+      "adapter": "sourcesArray",
+      "mapping": "source[race]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources to the current array form."
+    },
+    "raceWith": {
+      "symbol": "race",
+      "module": "race",
+      "adapter": "sourcesArray",
+      "mapping": "source[race]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Maps the With variant to the unified race Symbol."
+    },
+    "repeat": {
+      "symbol": "repeat",
+      "module": "repeat",
+      "adapter": "countOrConfig",
+      "mapping": "source[repeat](config)",
+      "status": "Partial unified mapping",
+      "note": "Adapts the legacy numeric count to a config object."
+    },
+    "retry": {
+      "symbol": "retry",
+      "module": "retry",
+      "adapter": "countOrConfig",
+      "mapping": "source[retry](config)",
+      "status": "Partial unified mapping",
+      "note": "Adapts the legacy numeric count to a config object."
+    },
+    "scan": {
+      "symbol": "scan",
+      "module": "scan",
+      "adapter": "identity",
+      "mapping": "source[scan](accumulator, seed?)",
+      "status": "Present; parity unverified",
+      "note": "Exact overload and no-seed behavior remain test-driven."
+    },
+    "sequenceEqual": {
+      "symbol": "sequenceEqual",
+      "module": "sequence-equal",
+      "adapter": "firstArgument",
+      "mapping": "source[sequenceEqual](otherSource)",
+      "status": "Partial unified mapping",
+      "note": "The RxJS 7 comparator overload is not represented."
+    },
+    "skipLast": {
+      "symbol": "skipLast",
+      "module": "skip-last",
+      "adapter": "identity",
+      "mapping": "source[skipLast](count)",
+      "status": "Present; parity unverified",
+      "note": "Exact edge-case parity remains test-driven."
+    },
+    "skipWhile": {
+      "symbol": "skipWhile",
+      "module": "skip-while",
+      "adapter": "identity",
+      "mapping": "source[skipWhile](predicate)",
+      "status": "Present; parity unverified",
+      "note": "Exact predicate parity remains test-driven."
+    },
+    "switchAll": {
+      "symbol": "switchMap",
+      "module": "switch-map",
+      "adapter": "flattenIdentity",
+      "mapping": "source[switchMap](identity)",
+      "status": "Partial unified mapping",
+      "note": "Flattening is expressed through switchMap."
+    },
+    "switchMap": {
+      "symbol": "switchMap",
+      "module": "switch-map",
+      "adapter": "firstArgument",
+      "mapping": "source[switchMap](project)",
+      "status": "Present; parity unverified",
+      "note": "Legacy result-selector overloads are not represented."
+    },
+    "switchMapTo": {
+      "symbol": "switchMap",
+      "module": "switch-map",
+      "adapter": "switchMapTo",
+      "mapping": "source[switchMap](() => innerSource)",
+      "status": "Partial unified mapping",
+      "note": "Legacy result-selector overloads are not represented."
+    },
+    "takeLast": {
+      "symbol": "takeLast",
+      "module": "take-last",
+      "adapter": "identity",
+      "mapping": "source[takeLast](count)",
+      "status": "Present; parity unverified",
+      "note": "Exact edge-case parity remains test-driven."
+    },
+    "takeWhile": {
+      "symbol": "takeWhile",
+      "module": "take-while",
+      "adapter": "identity",
+      "mapping": "source[takeWhile](predicate, inclusive?)",
+      "status": "Present; parity unverified",
+      "note": "Exact inclusive behavior remains test-driven."
+    },
+    "throttle": {
+      "symbol": "throttle",
+      "module": "throttle",
+      "adapter": "identity",
+      "mapping": "source[throttle](durationSelector, config?)",
+      "status": "Present; parity unverified",
+      "note": "Exact leading/trailing behavior remains test-driven."
+    },
+    "throttleTime": {
+      "symbol": "throttle",
+      "module": "throttle",
+      "adapter": "throttleTime",
+      "mapping": "source[throttle](milliseconds, config?)",
+      "status": "Partial unified mapping",
+      "note": "Scheduler arguments are not represented."
+    },
+    "timeout": {
+      "symbol": "timeout",
+      "module": "timeout",
+      "adapter": "timeout",
+      "mapping": "source[timeout](config)",
+      "status": "Partial unified mapping",
+      "note": "Adapts legacy numeric and Date due arguments; scheduler arguments are not represented."
+    },
+    "timeoutWith": {
+      "symbol": "timeout",
+      "module": "timeout",
+      "adapter": "timeoutWith",
+      "mapping": "source[timeout]({ first/each: due, with: () => fallback })",
+      "status": "Partial unified mapping",
+      "note": "Maps fallback behavior to the unified timeout configuration; scheduler arguments are not represented."
+    },
+    "withLatestFrom": {
+      "symbol": "withLatestFrom",
+      "module": "with-latest-from",
+      "adapter": "sourcesArrayWithProjection",
+      "mapping": "source[withLatestFrom]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Projection overloads remain unrepresented."
+    }
+  },
+  "staticFactories": {
+    "animationFrames": {
+      "kind": "symbol",
+      "symbol": "animationFrames",
+      "module": "animation-frames",
+      "adapter": "identity",
+      "mapping": "Observable[animationFrames]()",
+      "status": "Present; parity unverified",
+      "note": "Legacy scheduler arguments are not represented."
+    },
+    "combineLatest": {
+      "kind": "symbol",
+      "symbol": "combineLatest",
+      "module": "combine-latest",
+      "adapter": "staticCombineLatest",
+      "mapping": "Observable[combineLatest](sources)",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources to an array; projection overloads remain unrepresented."
+    },
+    "concat": {
+      "kind": "symbol",
+      "symbol": "concat",
+      "module": "concat",
+      "adapter": "staticSourcesArray",
+      "mapping": "Observable[concat](sources)",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources to the current array form; scheduler arguments are not represented."
+    },
+    "defer": {
+      "kind": "platform",
+      "adapter": "defer",
+      "mapping": "new Observable(subscriber => Observable.from(factory()).subscribe(subscriber))",
+      "status": "Partial platform mapping",
+      "note": "Uses the ambient Observable constructor and defers the factory until subscription."
+    },
+    "empty": {
+      "kind": "platform",
+      "adapter": "empty",
+      "mapping": "Observable.from([])",
+      "status": "Partial platform mapping",
+      "note": "Scheduler arguments are not represented."
+    },
+    "from": {
+      "kind": "platform",
+      "adapter": "from",
+      "mapping": "Observable.from(input)",
+      "status": "Platform mapping",
+      "note": "Scheduler arguments and the complete RxJS 7 input matrix remain test-driven."
+    },
+    "iif": {
+      "kind": "platform",
+      "adapter": "iif",
+      "mapping": "new Observable(subscriber => Observable.from(condition() ? trueSource : falseSource).subscribe(subscriber))",
+      "status": "Partial platform mapping",
+      "note": "Expressed as an ambient Observable with subscription-time source selection."
+    },
+    "interval": {
+      "kind": "symbol",
+      "symbol": "interval",
+      "module": "interval",
+      "adapter": "firstArgument",
+      "mapping": "Observable[interval](milliseconds)",
+      "status": "Present; parity unverified",
+      "note": "Scheduler arguments are not represented."
+    },
+    "merge": {
+      "kind": "symbol",
+      "symbol": "merge",
+      "module": "merge",
+      "adapter": "staticMerge",
+      "mapping": "Observable[merge](sources, { concurrency })",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources and the numeric concurrency overload."
+    },
+    "never": {
+      "kind": "platform",
+      "adapter": "never",
+      "mapping": "new Observable(() => {})",
+      "status": "Partial platform mapping",
+      "note": "Uses the ambient constructor; scheduler arguments are not represented."
+    },
+    "onErrorResumeNext": {
+      "kind": "symbol",
+      "symbol": "onErrorResumeNext",
+      "module": "on-error-resume-next",
+      "adapter": "staticSourcesArray",
+      "mapping": "Observable[onErrorResumeNext](sources)",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources to the current array form."
+    },
+    "of": {
+      "kind": "platform",
+      "adapter": "of",
+      "mapping": "Observable.from(values)",
+      "status": "Partial platform mapping",
+      "note": "Adapts variadic values to the platform Observable.from contract."
+    },
+    "pairs": {
+      "kind": "platform",
+      "adapter": "pairs",
+      "mapping": "Observable.from(Object.entries(object))",
+      "status": "Partial platform mapping",
+      "note": "Scheduler arguments are not represented."
+    },
+    "race": {
+      "kind": "symbol",
+      "symbol": "race",
+      "module": "race",
+      "adapter": "staticSourcesArray",
+      "mapping": "Observable[race](sources)",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources to the current array form."
+    },
+    "range": {
+      "kind": "platform",
+      "adapter": "range",
+      "mapping": "Observable.from(Array.from({ length: count }, (_, i) => start + i))",
+      "status": "Partial platform mapping",
+      "note": "Scheduler arguments are not represented."
+    },
+    "throwError": {
+      "kind": "platform",
+      "adapter": "throwError",
+      "mapping": "new Observable(subscriber => subscriber.error(errorFactory()))",
+      "status": "Partial platform mapping",
+      "note": "Supports factory and legacy direct-error forms; scheduler arguments are not represented."
+    },
+    "timer": {
+      "kind": "symbol",
+      "symbol": "timer",
+      "module": "timer",
+      "adapter": "timer",
+      "mapping": "Observable[timer](delay, interval?)",
+      "status": "Partial unified mapping",
+      "note": "Adapts an absolute Date to a relative delay; scheduler arguments are not represented."
+    }
+  },
+  "values": {
+    "ColdObservable": {
+      "module": "cold-observable",
+      "adapter": "identity"
+    },
+    "firstValueFrom": {
+      "module": "global",
+      "adapter": "platformConsumer",
+      "method": "first",
+      "mapping": "source.first()",
+      "status": "Partial platform mapping",
+      "note": "Maps Promise conversion to the platform consumer; the RxJS 7 defaultValue configuration is not represented."
+    },
+    "lastValueFrom": {
+      "module": "global",
+      "adapter": "platformConsumer",
+      "method": "last",
+      "mapping": "source.last()",
+      "status": "Partial platform mapping",
+      "note": "Maps Promise conversion to the platform consumer; the RxJS 7 defaultValue configuration is not represented."
+    },
+    "Observable": {
+      "module": "global",
+      "adapter": "identity"
+    },
+    "Subject": {
+      "module": "subject",
+      "adapter": "identity"
+    },
+    "zip": {
+      "module": "zip",
+      "adapter": "standaloneSourcesArrayWithProjection"
+    }
+  }
+}
