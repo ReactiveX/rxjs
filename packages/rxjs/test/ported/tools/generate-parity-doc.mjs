@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import prettier from 'prettier';
 import capabilityRegistry from '../capability-registry.json' with { type: 'json' };
 
 const sourceRef = '7.x';
@@ -178,7 +179,7 @@ const missingOperators = operatorRows.length - presentOperators;
 const presentFunctions = [...creationRows, ...utilityRows].filter((row) => !row[1].includes('Missing')).length;
 const missingFunctions = creationRows.length + utilityRows.length - presentFunctions;
 
-const content = `# RxJS 7 to RxJS Next parity map
+const rawContent = `# RxJS 7 to RxJS Next parity map
 
 This generated map tracks public RxJS 7 operators and functions against the
 current exploratory RxJS Next source. It is an API-surface inventory, not a
@@ -248,6 +249,7 @@ uses the import's role:
 The complete per-case evidence remains in
 \`packages/rxjs/test/ported/manifest.generated.json\`.
 `;
+const content = prettier.format(rawContent, { parser: 'markdown' });
 
 if (checkOnly) {
   const existing = await readFile(outputPath, 'utf8').catch(() => '');
