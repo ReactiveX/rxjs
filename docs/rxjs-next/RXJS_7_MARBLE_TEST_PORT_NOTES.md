@@ -183,6 +183,12 @@ auto-detects the global constructor. Audit commands are intentionally nonzero
 while parity failures remain. Vitest arguments pass through, so a focused raw
 audit can use:
 
+Normal commands suppress thousands of successful internal case IDs. They show
+one cold/polyfill result with reviewed parity-pass and known-gap counts, then
+finish with an explicit uppercase `PASS` or `FAIL`. Failed shard diagnostics
+remain visible. Passing an explicit Vitest reporter opts into direct reporter
+output when individual case detail is useful.
+
 ```sh
 yarn workspace rxjs test:ported:audit -- --testNamePattern mergeMap
 ```

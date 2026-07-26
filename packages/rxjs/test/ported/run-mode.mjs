@@ -15,28 +15,51 @@ const packageDirectory = resolve(import.meta.dirname, '../..');
 const workspaceDirectory = resolve(packageDirectory, '../..');
 const vitest = resolve(workspaceDirectory, 'node_modules/vitest/vitest.mjs');
 const manifestPath = resolve(import.meta.dirname, 'manifest.generated.json');
+const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+const verifiedBaselines = {
+  cold: JSON.parse(await readFile(resolve(import.meta.dirname, 'verified-cold-passes.json'), 'utf8')),
+  polyfill: JSON.parse(await readFile(resolve(import.meta.dirname, 'verified-polyfill-passes.json'), 'utf8')),
+};
+const friendlyOutput = vitestArguments.length === 0 && modes.every((mode) => mode !== 'audit' && mode !== 'audit-polyfill');
 let exitCode = 0;
+const modeResults = [];
 
+if (friendlyOutput) {
+  process.stdout.write(`\nRxJS 7 ported marble tests\n\n`);
+}
 for (const mode of modes) {
   if (!supportedModes.has(mode)) {
     throw new Error(`Unknown ported-test mode: ${mode}`);
   }
-  const modeExitCode = await runMode(mode);
-  if (modeExitCode !== 0) {
-    exitCode = modeExitCode;
+  if (friendlyOutput && !(mode === 'native' && typeof globalThis.Observable !== 'function')) {
+    process.stdout.write(`  ${modeLabel(mode)}  RUN   ${formatCount(manifest.totals.cases)} cases\n`);
+  }
+  const result = await runMode(mode);
+  modeResults.push(result);
+  if (result.exitCode !== 0) {
+    exitCode = result.exitCode;
+  }
+  if (friendlyOutput) {
+    writeModeResult(result);
   }
 }
 
+if (friendlyOutput) {
+  writeFinalResult(modeResults);
+}
 process.exitCode = exitCode;
 
 async function runMode(mode) {
   // Native implementations have no reviewed pass baseline yet. When present,
   // exercise every port as raw evidence instead of silently reusing the
-  // polyfill baseline. When absent, each isolated shard reports an explicit
-  // skip and shard zero also reports the lifecycle skips.
+  // polyfill baseline. When absent, the friendly launcher reports one explicit
+  // skip; direct Vitest output retains the per-shard skips.
   const requestedAudit = mode === 'audit' || mode === 'audit-polyfill';
   const audit = requestedAudit || mode === 'native';
   const activeMode = mode === 'audit' ? 'cold' : mode === 'audit-polyfill' ? 'polyfill' : mode;
+  if (friendlyOutput && activeMode === 'native' && typeof globalThis.Observable !== 'function') {
+    return { activeMode, exitCode: 0, failedShards: 0, skipped: true };
+  }
   const jsonOutput = parseJsonOutputArguments(vitestArguments);
   if (!audit && jsonOutput.requested) {
     throw new Error('Sharded JSON output is supported only for audit and explicit native modes.');
@@ -57,6 +80,7 @@ async function runMode(mode) {
     }
     const childArguments = [
       ...jsonOutput.childArguments,
+      ...(friendlyOutput ? ['--reporter=dot'] : []),
       '--no-file-parallelism',
       '--maxWorkers=1',
       '--minWorkers=1',
@@ -69,17 +93,29 @@ async function runMode(mode) {
     return {
       reportPath: shardReportPath,
       run: () =>
-        runChild([vitest, '--run', ...files, ...childArguments], {
-          ...process.env,
-          RXJS_NEXT_AUDIT: audit ? 'true' : 'false',
-          RXJS_NEXT_SHARD_COUNT: String(shardCount),
-          RXJS_NEXT_SHARD_INDEX: String(shardIndex),
-          RXJS_NEXT_TEST_MODE: activeMode,
-        }),
+        runChild(
+          [vitest, '--run', ...files, ...childArguments],
+          {
+            ...process.env,
+            RXJS_NEXT_AUDIT: audit ? 'true' : 'false',
+            RXJS_NEXT_SHARD_COUNT: String(shardCount),
+            RXJS_NEXT_SHARD_INDEX: String(shardIndex),
+            RXJS_NEXT_TEST_MODE: activeMode,
+          },
+          friendlyOutput
+        ),
     };
   });
 
   const results = await runBounded(children, maxConcurrentShards);
+  const failedResults = results.map((result, index) => ({ ...result, shard: index + 1 })).filter((result) => result.exitCode !== 0);
+  if (friendlyOutput) {
+    for (const result of failedResults) {
+      process.stderr.write(
+        `\n${activeMode.toUpperCase()} shard ${result.shard}/${shardCount} failed:\n${cleanFailureOutput(result.output)}\n`
+      );
+    }
+  }
   if (jsonOutput.requested) {
     const requestedOutputPath = resolve(packageDirectory, jsonOutput.outputFile);
     await mergeAuditReports(
@@ -92,27 +128,45 @@ async function runMode(mode) {
     );
   }
 
-  return results.reduce((code, result) => (result === 0 ? code : result), 0);
+  return {
+    activeMode,
+    exitCode: results.reduce((code, result) => (result.exitCode === 0 ? code : result.exitCode), 0),
+    failedShards: failedResults.length,
+    skipped: false,
+  };
 }
 
-function runChild(arguments_, environment) {
+function runChild(arguments_, environment, captureOutput) {
   return new Promise((resolvePromise) => {
+    const output = [];
     const child = spawn(process.execPath, arguments_, {
       cwd: packageDirectory,
       env: environment,
-      stdio: 'inherit',
+      stdio: captureOutput ? ['ignore', 'pipe', 'pipe'] : 'inherit',
     });
+    if (captureOutput) {
+      child.stdout.on('data', (chunk) => output.push(String(chunk)));
+      child.stderr.on('data', (chunk) => output.push(String(chunk)));
+    }
     child.once('error', (error) => {
-      process.stderr.write(`Could not start ported-test shard: ${error.message}\n`);
-      resolvePromise(1);
+      const diagnostic = `Could not start ported-test shard: ${error.message}\n`;
+      if (!captureOutput) {
+        process.stderr.write(diagnostic);
+      }
+      output.push(diagnostic);
+      resolvePromise({ exitCode: 1, output: output.join('') });
     });
     child.once('exit', (code, signal) => {
       if (signal) {
-        process.stderr.write(`Ported-test shard terminated by signal ${signal}; its evidence is incomplete.\n`);
-        resolvePromise(1);
+        const diagnostic = `Ported-test shard terminated by signal ${signal}; its evidence is incomplete.\n`;
+        if (!captureOutput) {
+          process.stderr.write(diagnostic);
+        }
+        output.push(diagnostic);
+        resolvePromise({ exitCode: 1, output: output.join('') });
         return;
       }
-      resolvePromise(code ?? 1);
+      resolvePromise({ exitCode: code ?? 1, output: output.join('') });
     });
   });
 }
@@ -174,7 +228,6 @@ function parseJsonOutputArguments(arguments_) {
 }
 
 async function mergeAuditReports(reportPaths, outputPath, activeMode) {
-  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
   const expectedCaseIds = new Set(manifest.cases.map((testCase) => testCase.id));
   const reports = await Promise.all(
     reportPaths.map(async (reportPath) => {
@@ -283,4 +336,53 @@ function parsePositiveIntegerEnvironment(name, fallback) {
     throw new Error(`${name} must be a positive safe integer; received ${rawValue}.`);
   }
   return value;
+}
+
+function modeLabel(mode) {
+  return mode.toUpperCase().padEnd(8);
+}
+
+function formatCount(value) {
+  return value.toLocaleString('en-US');
+}
+
+function writeModeResult(result) {
+  if (result.skipped) {
+    process.stdout.write(`  ${modeLabel(result.activeMode)}  SKIP  no native global Observable in this runtime\n`);
+    return;
+  }
+
+  const baseline = verifiedBaselines[result.activeMode];
+  const detail = baseline
+    ? `${formatCount(manifest.totals.cases)} registered; ${formatCount(baseline.audit.passed)} parity passes; ${formatCount(
+        baseline.audit.failed
+      )} known gaps`
+    : `${formatCount(manifest.totals.cases)} raw parity cases`;
+  const lifecycle = result.activeMode === 'polyfill' && result.exitCode === 0 ? '; platform lifecycle passed' : '';
+  if (result.exitCode === 0) {
+    process.stdout.write(`  ${modeLabel(result.activeMode)}  PASS  ${detail}${lifecycle}\n`);
+  } else {
+    process.stdout.write(`  ${modeLabel(result.activeMode)}  FAIL  ${detail}; ${result.failedShards}/${shardCount} shards failed\n`);
+  }
+}
+
+function writeFinalResult(results) {
+  const failures = results.filter((result) => result.exitCode !== 0);
+  const executed = results.filter((result) => !result.skipped);
+  if (executed.length === 0) {
+    process.stdout.write(`\nSKIP  Ported marble gate did not run because the requested runtime is unavailable.\n\n`);
+    return;
+  }
+  if (failures.length === 0) {
+    process.stdout.write(
+      `\nPASS  Ported marble gate completed successfully.\n` +
+        `      Known parity gaps remain quarantined; use test:ported:audit to inspect them.\n\n`
+    );
+  } else {
+    process.stdout.write(`\nFAIL  Ported marble gate failed in ${failures.length}/${results.length} requested modes.\n\n`);
+  }
+}
+
+function cleanFailureOutput(output) {
+  return output.replace(/\[case-id:[^\]]+\]\s*/g, '').trim();
 }

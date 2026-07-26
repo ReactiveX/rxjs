@@ -713,3 +713,13 @@ conformance implementation depends on a runnable harness.
 - Passed both 2,338-registration normal gates and complete cold/polyfill raw
   audits. No production source was changed to satisfy an old expectation.
 - Marked P0.T2e complete and restored P0.2 as the single `NEXT` item.
+
+### 2026-07-25 — Ported-test console follow-up
+
+- Replaced per-case success output from normal ported-test commands with a
+  concise per-mode summary and an unmistakable final `PASS` or `FAIL`.
+- Kept reviewed parity passes and quarantined known gaps separately visible so
+  a green harness result does not imply full RxJS 7 behavioral parity.
+- Preserved expanded diagnostics for failed shards and direct Vitest reporter
+  output when explicit Vitest arguments are supplied.
+- Kept P0.2 as the single `NEXT` item.

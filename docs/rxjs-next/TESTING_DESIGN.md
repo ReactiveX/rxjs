@@ -566,6 +566,14 @@ are deliberately nonzero while unfinished cases remain. Sharded JSON audits
 are merged only after validating complete, non-duplicated case-ID coverage.
 Dedicated platform lifecycle cases separately assert sharing and ref counting.
 
+Normal ported-test commands capture successful shard output and print one
+concise result per mode followed by an uppercase `PASS` or `FAIL` gate result.
+The summary distinguishes reviewed parity passes from quarantined known gaps so
+a green harness cannot be mistaken for complete behavioral parity. If a shard
+fails, only that shard's cleaned diagnostic is expanded. Supplying explicit
+Vitest arguments, including a reporter, restores direct Vitest output for
+focused investigation.
+
 Operator imports are role-aware. An RxJS 7 pipeable call such as
 `source.pipe(operator(arg1, arg2))` becomes a runtime invocation of its mapped
 exported Symbol as `source[targetSymbol](...adaptedArgs)`. Exact mappings keep
