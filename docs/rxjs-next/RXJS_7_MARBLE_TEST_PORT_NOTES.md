@@ -53,7 +53,7 @@ disposition says what the current port harness does with it.
 | Root Notification       |     3 |
 | Testing                 |     1 |
 
-## Verified mode baselines
+## Recorded mode results
 
 The complete reviewed pass sets are stored in `verified-cold-passes.json` and
 `verified-polyfill-passes.json`. Baseline schema v2 identifies tests by unique
@@ -65,10 +65,10 @@ case ID, not an ambiguous source line.
   `Observable` is available for review.
 
 Passing entries are evidence only for their recorded claims, not a general
-compatibility or platform-conformance claim. Normal mode runs execute reviewed
-passes ordinarily, quarantine known failures, and skip the four exact
-duplicates. Audits ignore quarantine and duplicate skipping so all 2,338
-registrations receive a raw pass or failure result.
+compatibility or platform-conformance claim. They do not control the default
+runner. Cold, polyfill, and native-if-present modes register every applicable
+case as an ordinary test, including the four exact duplicates and all known
+gaps, so each registration receives an unmodified pass or failure result.
 
 ## Deduplicated claims
 
@@ -179,15 +179,21 @@ yarn workspace rxjs test:ported:parity:check
 ```
 
 `test:ported` runs the normal cold and polyfill modes. `test:ported:native`
-auto-detects the global constructor. Audit commands are intentionally nonzero
-while parity failures remain. Vitest arguments pass through, so a focused raw
-audit can use:
+auto-detects the global constructor. All of these commands are intentionally
+nonzero while parity failures remain. The older audit command names remain as
+single-mode aliases for producing complete JSON evidence. Vitest arguments
+pass through, so a focused run can use:
 
-Normal commands suppress thousands of successful internal case IDs. They show
-one cold/polyfill result with reviewed parity-pass and known-gap counts, then
-finish with an explicit uppercase `PASS` or `FAIL`. Failed shard diagnostics
-remain visible. Passing an explicit Vitest reporter opts into direct reporter
-output when individual case detail is useful.
+Default commands suppress thousands of successful internal case IDs.
+Interactive terminals show one in-place progress line, refreshed when a shard
+finishes and every ten seconds, with completed, running, queued, failed, and
+elapsed counts. Redirected and CI output receives only one final progress
+summary. Once all shards have run, every failed shard's diagnostics are
+expanded and the process finishes with an explicit uppercase `PASS` or `FAIL`.
+Set
+`RXJS_NEXT_PROGRESS_INTERVAL_MS` to a positive millisecond value to adjust the
+heartbeat interval. Passing explicit Vitest arguments opts into direct
+reporter output when individual case detail is useful.
 
 ```sh
 yarn workspace rxjs test:ported:audit -- --testNamePattern mergeMap
@@ -208,8 +214,9 @@ The recorder rejects partial, skipped, duplicate, or stale case-ID coverage.
 - Manifest generation produced 2,338 syntactically valid executable programs
   with unique case IDs, including 169 parameterized registrations and all four
   source-skipped cases.
-- The normal cold and polyfill gates each passed all 2,338 registrations
-  through their reviewed pass/quarantine dispositions.
+- The former normal cold and polyfill gates each completed all 2,338
+  registrations through their then-current reviewed pass/quarantine
+  dispositions.
 - Complete sharded JSON audits merged exactly 2,338 results per mode: cold
   recorded 432 passes and 1,906 failures; polyfill recorded 436 passes and
   1,902 failures.
@@ -221,6 +228,22 @@ The recorder rejects partial, skipped, duplicate, or stale case-ID coverage.
   `packages/rxjs/test/ported`; the overall check remains nonzero on documented
   production-source extension and type errors.
 - No production implementation was changed by the exhaustive port.
+
+## Strict-runner verification on 2026-07-25
+
+- The default `test:ported` command registered all 2,338 applicable cases with
+  ordinary test semantics in each mode; recorded baselines did not participate
+  in registration.
+- Regenerated failure reasons use “failing parity evidence” rather than stale
+  quarantine language; classifications, dispositions, and converted programs
+  are unchanged.
+- All 16 cold shards completed in 84 seconds and all 16 polyfill shards
+  completed in 94 seconds. Every shard exposed at least one failure, all failed
+  shard diagnostics were expanded, and the command returned exit code 1.
+- The in-place status continued refreshing while the slowest shard ran after
+  the other 15 had completed, demonstrating that the launcher remained active
+  without adding repeated progress lines.
+- No production Observable, operator, or compatibility implementation changed.
 
 ## Skill boundary
 

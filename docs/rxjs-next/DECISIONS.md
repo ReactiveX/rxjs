@@ -222,13 +222,17 @@ Status meanings:
   unqualified platform gate. Constructor selection must also precede Symbol
   extension installation to test the intended realm identity.
 - **Consequence:** All source cases are executable registrations in cold,
-  fallback-platform, and native-if-present modes. Normal tests quarantine
-  mode-specific known mismatches and explicit
-  missing-capability failures; separate cold and polyfill audits expose all
-  unfinished cases. Unified capability adapters execute legacy names against
-  their actual Next target Symbol or ambient-platform construction instead of
-  misclassifying them as absent. The portable migration Skill contains no
-  repository provenance or harness policy; those remain repository-specific.
+  fallback-platform, and native-if-present modes. The default ported-test gate
+  runs every applicable registration as an ordinary test, including exact
+  duplicates and cases with known capability or conversion gaps. Any failure
+  remains a process failure; recorded pass baselines are diagnostic evidence
+  and cannot quarantine, skip, or invert a result. Unified capability adapters
+  execute legacy names against their actual Next target Symbol or
+  ambient-platform construction instead of misclassifying them as absent. The
+  sharded launcher must continue through all shards and report progress while
+  collecting the full failure output. The portable migration Skill contains
+  no repository provenance or harness policy; those remain
+  repository-specific.
 - **Evidence:** The exhaustive manifest expands 2,201 physical declarations
   into 2,338 unique registrations: 401 active, 506 expected failures, 1,416
   missing API, 4 deduplicated, and 11 unsupported/obsolete. The complete cold

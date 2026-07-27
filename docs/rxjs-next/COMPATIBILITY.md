@@ -159,7 +159,9 @@ unsupported/obsolete. Missing APIs remain converted pending definitions;
 implementation mismatches remain known failures. All 2,338 expanded cases are
 executable cold registrations, including parameterized and source-skipped
 evidence; missing capabilities fail explicitly rather than disappearing from
-collection. Platform cases use the ambient Observable and do not redefine the
+collection. Every applicable registration uses ordinary test semantics, so
+known gaps are not skipped, quarantined, or inverted through expected-failure
+handling. Platform cases use the ambient Observable and do not redefine the
 platform layer to recover RxJS 7 cold semantics. See
 `RXJS_7_MARBLE_TEST_PORT_NOTES.md` and `RxJS-7-parity.md`.
 

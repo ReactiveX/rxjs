@@ -474,12 +474,18 @@ modules load. All 2,338 definitions are registered in each available mode.
 
 Cold mode activates `ColdObservable` for producer-per-subscription evidence.
 Platform modes use the ambient `globalThis.Observable`; tests do not import a
-fallback constructor. The normal gate quarantines known cold failures and runs
-the complete inventory against mode-specific case-ID baselines. Exact
-duplicates remain source-linked but skipped in normal runs. Separate complete
-cold and polyfill audits remove the quarantine, and dedicated platform cases
-assert the shared/ref-counted lifecycle directly. Native loading also verifies
-that the ambient constructor was not replaced. See
+fallback constructor. The default `test:ported` gate registers every case as
+an ordinary test in cold and polyfill modes: a converted-program failure,
+missing API, unsupported harness dependency, source-skipped case, or exact
+duplicate fails the command instead of being quarantined or inverted with an
+expected-failure wrapper. The sharded launcher continues running every shard,
+renders completion and heartbeat state in one in-place interactive status line,
+and expands all failed shard diagnostics before returning nonzero.
+Non-interactive logs receive one final progress summary instead of a stream of
+updates. Dedicated platform cases assert the shared/ref-counted lifecycle
+directly. Native loading also verifies that the ambient constructor was not
+replaced. The recorded mode baselines remain diagnostic evidence and do not
+change default test outcomes. See
 `RXJS_7_MARBLE_TEST_PORT_NOTES.md` and D-013.
 
 The repo-committed `rxjs-next-marble-migration` Skill is a portable authoring

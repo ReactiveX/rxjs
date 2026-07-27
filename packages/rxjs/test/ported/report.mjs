@@ -87,8 +87,8 @@ for (const [expectedMode, baseline] of [
   baselineSummary[expectedMode] = summarizeBaseline(baseline, expectedMode, resolution);
 }
 baselineSummary.native = {
-  status: 'unverified-audit-only',
-  detail: 'Native-if-present mode runs every definition as raw evidence until a dedicated native pass baseline is reviewed.',
+  status: 'unverified-raw',
+  detail: 'Native-if-present mode runs every definition with ordinary test semantics until a dedicated native pass baseline is reviewed.',
 };
 
 process.stdout.write(

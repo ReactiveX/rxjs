@@ -149,7 +149,7 @@ function extractCases({ path, sourceText }) {
             reason = reviewFlags.includes('source-skipped')
               ? 'The source case was skipped in RxJS 7; its parameterized declaration is mechanically preserved as ' +
                 'executable parity evidence.'
-              : `Parameterized variant ${variant.key} is mechanically expanded and retained as quarantined parity evidence.`;
+              : `Parameterized variant ${variant.key} is mechanically expanded and retained as failing parity evidence.`;
           }
           extracted.push({
             id,
@@ -301,10 +301,10 @@ function extractCases({ path, sourceText }) {
           });
         disposition = verifiedActive ? 'active' : 'expected-failure';
         reason = reviewFlags.includes('source-skipped')
-          ? 'The source case was skipped in RxJS 7; it is mechanically migrated as quarantined executable parity evidence.'
+          ? 'The source case was skipped in RxJS 7; it is mechanically migrated as failing executable parity evidence.'
           : verifiedActive
             ? 'Mechanically migrated and verified against the ColdObservable mode.'
-            : 'Mechanically migrated and quarantined after ColdObservable verification failed; production behavior is unchanged.';
+            : 'Mechanically migrated; ColdObservable verification failed and production behavior is unchanged.';
         modes = ['cold', 'polyfill', 'native'];
         migratedProgram = buildMigratedProgram({
           callback,

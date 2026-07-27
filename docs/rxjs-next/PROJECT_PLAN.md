@@ -14,7 +14,9 @@ all cases must become executable parity registrations even when their
 capabilities are absent. The exhaustive follow-up is complete: 2,201 physical
 test declarations expand to 2,338 uniquely identified registrations, including
 parameterized and source-skipped evidence. Package-boundary work resumes at
-P0.2. Broader Skills/MCP product design remains deferred.
+P0.2. A later user-prioritized runner follow-up also removed expected-failure
+quarantine from the default ported command and added live shard progress.
+Broader Skills/MCP product design remains deferred.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -59,6 +61,7 @@ item.
 | `DONE`    | P0.T2c | Port and classify the RxJS 7 marble-test corpus without repairing production behavior                                  |
 | `DONE`    | P0.T2d | Materialize every inventoried marble case as an executable parity-test registration                                    |
 | `DONE`    | P0.T2e | Exhaustively convert remaining runnable RxJS 7 marble evidence and expand capability mappings                          |
+| `DONE`    | P0.T2f | Make the default ported-test gate strict and progress-visible                                                          |
 | `NEXT`    | P0.2   | Decide the package map and native-versus-polyfill installation contract                                                |
 | `PLANNED` | P0.3   | Restore green builds and coherent public entry points for the selected package map                                     |
 | `PLANNED` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                               |
@@ -232,6 +235,35 @@ item.
   1,902 failures. Native mode skipped explicitly in the current Node realm.
 - Regenerated the manifest, parity map, reviewed baselines, and port notes
   without changing production source.
+
+#### P0.T2f completion bar
+
+- Every applicable ported registration uses ordinary test semantics in the
+  default cold, polyfill, and native-if-present modes.
+- Recorded pass baselines cannot skip, quarantine, or invert a default test
+  result.
+- The launcher continues through every shard, reports visible progress while
+  they run, expands every failed shard's diagnostics, and exits nonzero when
+  any test fails.
+- No production Observable, operator, or compatibility behavior changes.
+
+#### P0.T2f completion evidence
+
+- Removed the mode-baseline registration branch and all `it.fails` use from the
+  ported suite; all applicable manifest cases now register with ordinary
+  `it(...)`.
+- Added one in-place interactive status line, refreshed on shard completion and
+  every ten seconds, showing completed, running, queued, failed, and elapsed
+  counts. Non-interactive output emits only a final progress summary.
+- Regenerated the manifest so now-visible failure reasons describe failing
+  parity evidence without claiming those tests remain quarantined.
+- Ran the default `test:ported` command through all 16 cold and all 16 polyfill
+  shards. Cold completed in 84 seconds and polyfill in 94 seconds; every shard
+  exposed failures, all failed-shard diagnostics were expanded, and the command
+  returned exit code 1 as intended.
+- Preserved the one proven non-yielding converted program as a registered,
+  immediate explicit failure so it cannot freeze its shard. Production source
+  was unchanged.
 
 #### P0.2 completion bar
 
@@ -722,4 +754,27 @@ conformance implementation depends on a runnable harness.
   a green harness result does not imply full RxJS 7 behavioral parity.
 - Preserved expanded diagnostics for failed shards and direct Vitest reporter
   output when explicit Vitest arguments are supplied.
+- Kept P0.2 as the single `NEXT` item.
+
+### 2026-07-25 — Strict ported-test execution and live progress
+
+- Temporarily reprioritized the user-requested P0.T2f runner follow-up and
+  restored P0.2 as the single `NEXT` item after completing it.
+- Removed expected-failure quarantine from every applicable ported
+  registration; recorded baselines remain evidence only.
+- Regenerated harness diagnostics to remove stale quarantine wording without
+  changing any disposition or converted program.
+- Added an in-place shard-completion and heartbeat status so a slow or stalled
+  shard remains visible without scrolling the terminal.
+- Verified the default cold and polyfill run completed every shard, expanded
+  the failures, and returned nonzero without changing production behavior.
+
+### 2026-07-25 — In-place ported-test progress
+
+- Replaced newline-per-update progress with one interactive status line that is
+  cleared and redrawn on shard completion and heartbeat refresh.
+- Bounded redirected and CI output to one final progress summary.
+- Verified an interactive cold run completed all 16 shards in 87 seconds while
+  rewriting one progress row, then expanded every failure and returned exit
+  code 1 as intended.
 - Kept P0.2 as the single `NEXT` item.

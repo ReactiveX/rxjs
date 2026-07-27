@@ -557,22 +557,23 @@ fallback constructor. Dedicated platform cases prove shared activation,
 individual observer cancellation, ref-count restart, and global construction
 where legacy cold expectations would be misleading.
 
-The normal cold and polyfill gates register all 2,338 source cases. Each uses a
-mode-specific verified-pass baseline keyed by unique case ID and marks every other known
-implementation, capability, conversion, or lifecycle mismatch as an expected
-failure. Exact duplicates remain registered but skipped outside audit mode.
-The cold and polyfill audit commands remove the expected-failure quarantine and
-are deliberately nonzero while unfinished cases remain. Sharded JSON audits
-are merged only after validating complete, non-duplicated case-ID coverage.
+The default cold and polyfill gates register all 2,338 source cases as ordinary
+tests. Known implementation, capability, conversion, lifecycle, source-skip,
+and duplicate dispositions do not alter Vitest semantics: a test that throws
+fails the shard and the command. The historical verified-pass baselines remain
+available for evidence reporting and deliberate JSON audit recording, but they
+cannot quarantine, skip, or invert a default result. Sharded JSON reports are
+merged only after validating complete, non-duplicated case-ID coverage.
 Dedicated platform lifecycle cases separately assert sharing and ref counting.
 
-Normal ported-test commands capture successful shard output and print one
-concise result per mode followed by an uppercase `PASS` or `FAIL` gate result.
-The summary distinguishes reviewed parity passes from quarantined known gaps so
-a green harness cannot be mistaken for complete behavioral parity. If a shard
-fails, only that shard's cleaned diagnostic is expanded. Supplying explicit
-Vitest arguments, including a reporter, restores direct Vitest output for
-focused investigation.
+Default ported-test commands capture shard output so successful noise remains
+concise. Interactive terminals render one in-place status line, refreshed on
+shard completion and by a periodic heartbeat, with completed, running, queued,
+failed, and elapsed counts. Redirected and CI output receives one final
+progress summary rather than repeated updates. After all shards have run, every
+failed shard's cleaned Vitest diagnostics are expanded and the command returns
+nonzero. Supplying explicit Vitest arguments, including a reporter, restores
+direct Vitest output for focused investigation.
 
 Operator imports are role-aware. An RxJS 7 pipeable call such as
 `source.pipe(operator(arg1, arg2))` becomes a runtime invocation of its mapped

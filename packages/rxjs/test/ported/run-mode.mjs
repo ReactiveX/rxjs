@@ -4,6 +4,7 @@ import { spawn } from 'node:child_process';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
+import { clearLine, cursorTo } from 'node:readline';
 
 const requested = process.argv[2] ?? 'all';
 const vitestArguments = process.argv.slice(3);
@@ -11,15 +12,12 @@ const supportedModes = new Set(['cold', 'polyfill', 'native', 'audit', 'audit-po
 const modes = requested === 'all' ? ['cold', 'polyfill'] : [requested];
 const shardCount = parsePositiveIntegerEnvironment('RXJS_NEXT_SHARD_COUNT', 16);
 const maxConcurrentShards = parsePositiveIntegerEnvironment('RXJS_NEXT_SHARD_CONCURRENCY', 8);
+const progressIntervalMilliseconds = parsePositiveIntegerEnvironment('RXJS_NEXT_PROGRESS_INTERVAL_MS', 10_000);
 const packageDirectory = resolve(import.meta.dirname, '../..');
 const workspaceDirectory = resolve(packageDirectory, '../..');
 const vitest = resolve(workspaceDirectory, 'node_modules/vitest/vitest.mjs');
 const manifestPath = resolve(import.meta.dirname, 'manifest.generated.json');
 const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
-const verifiedBaselines = {
-  cold: JSON.parse(await readFile(resolve(import.meta.dirname, 'verified-cold-passes.json'), 'utf8')),
-  polyfill: JSON.parse(await readFile(resolve(import.meta.dirname, 'verified-polyfill-passes.json'), 'utf8')),
-};
 const friendlyOutput = vitestArguments.length === 0 && modes.every((mode) => mode !== 'audit' && mode !== 'audit-polyfill');
 let exitCode = 0;
 const modeResults = [];
@@ -50,21 +48,18 @@ if (friendlyOutput) {
 process.exitCode = exitCode;
 
 async function runMode(mode) {
-  // Native implementations have no reviewed pass baseline yet. When present,
-  // exercise every port as raw evidence instead of silently reusing the
-  // polyfill baseline. When absent, the friendly launcher reports one explicit
-  // skip; direct Vitest output retains the per-shard skips.
+  // When no native implementation exists, the friendly launcher reports one
+  // explicit skip; direct Vitest output retains the per-shard skips.
   const requestedAudit = mode === 'audit' || mode === 'audit-polyfill';
-  const audit = requestedAudit || mode === 'native';
   const activeMode = mode === 'audit' ? 'cold' : mode === 'audit-polyfill' ? 'polyfill' : mode;
   if (friendlyOutput && activeMode === 'native' && typeof globalThis.Observable !== 'function') {
     return { activeMode, exitCode: 0, failedShards: 0, skipped: true };
   }
   const jsonOutput = parseJsonOutputArguments(vitestArguments);
-  if (!audit && jsonOutput.requested) {
+  if (!requestedAudit && activeMode !== 'native' && jsonOutput.requested) {
     throw new Error('Sharded JSON output is supported only for audit and explicit native modes.');
   }
-  if (audit && jsonOutput.partial) {
+  if ((requestedAudit || activeMode === 'native') && jsonOutput.partial) {
     throw new Error('Sharded audit JSON output requires both --reporter=json and --outputFile.');
   }
 
@@ -97,7 +92,6 @@ async function runMode(mode) {
           [vitest, '--run', ...files, ...childArguments],
           {
             ...process.env,
-            RXJS_NEXT_AUDIT: audit ? 'true' : 'false',
             RXJS_NEXT_SHARD_COUNT: String(shardCount),
             RXJS_NEXT_SHARD_INDEX: String(shardIndex),
             RXJS_NEXT_TEST_MODE: activeMode,
@@ -107,7 +101,18 @@ async function runMode(mode) {
     };
   });
 
-  const results = await runBounded(children, maxConcurrentShards);
+  const progress = friendlyOutput
+    ? createProgressReporter(activeMode, children.length, Math.min(maxConcurrentShards, children.length))
+    : undefined;
+  progress?.start();
+  let results;
+  try {
+    results = await runBounded(children, maxConcurrentShards, (result, shardIndex, completedShards) => {
+      progress?.complete(result, shardIndex, completedShards);
+    });
+  } finally {
+    progress?.stop();
+  }
   const failedResults = results.map((result, index) => ({ ...result, shard: index + 1 })).filter((result) => result.exitCode !== 0);
   if (friendlyOutput) {
     for (const result of failedResults) {
@@ -171,16 +176,20 @@ function runChild(arguments_, environment, captureOutput) {
   });
 }
 
-async function runBounded(children, concurrency) {
+async function runBounded(children, concurrency, onComplete = () => {}) {
   const results = new Array(children.length);
   let nextIndex = 0;
+  let completed = 0;
   const workers = Array.from({ length: Math.min(concurrency, children.length) }, async () => {
     while (true) {
       const childIndex = nextIndex++;
       if (childIndex >= children.length) {
         return;
       }
-      results[childIndex] = await children[childIndex].run();
+      const result = await children[childIndex].run();
+      results[childIndex] = result;
+      completed++;
+      onComplete(result, childIndex, completed);
     }
   });
   await Promise.all(workers);
@@ -352,13 +361,8 @@ function writeModeResult(result) {
     return;
   }
 
-  const baseline = verifiedBaselines[result.activeMode];
-  const detail = baseline
-    ? `${formatCount(manifest.totals.cases)} registered; ${formatCount(baseline.audit.passed)} parity passes; ${formatCount(
-        baseline.audit.failed
-      )} known gaps`
-    : `${formatCount(manifest.totals.cases)} raw parity cases`;
-  const lifecycle = result.activeMode === 'polyfill' && result.exitCode === 0 ? '; platform lifecycle passed' : '';
+  const detail = `${formatCount(manifest.totals.cases)} ported cases`;
+  const lifecycle = result.activeMode === 'polyfill' ? ' plus platform lifecycle coverage' : '';
   if (result.exitCode === 0) {
     process.stdout.write(`  ${modeLabel(result.activeMode)}  PASS  ${detail}${lifecycle}\n`);
   } else {
@@ -374,10 +378,7 @@ function writeFinalResult(results) {
     return;
   }
   if (failures.length === 0) {
-    process.stdout.write(
-      `\nPASS  Ported marble gate completed successfully.\n` +
-        `      Known parity gaps remain quarantined; use test:ported:audit to inspect them.\n\n`
-    );
+    process.stdout.write(`\nPASS  Every enabled ported marble test passed in the requested modes.\n\n`);
   } else {
     process.stdout.write(`\nFAIL  Ported marble gate failed in ${failures.length}/${results.length} requested modes.\n\n`);
   }
@@ -385,4 +386,60 @@ function writeFinalResult(results) {
 
 function cleanFailureOutput(output) {
   return output.replace(/\[case-id:[^\]]+\]\s*/g, '').trim();
+}
+
+function createProgressReporter(activeMode, totalShards, concurrency) {
+  const startedAt = Date.now();
+  const interactive = Boolean(process.stdout.isTTY);
+  let completedShards = 0;
+  let failedShards = 0;
+  let interval;
+
+  return {
+    start() {
+      if (interactive) {
+        writeProgress('started');
+      }
+      interval = setInterval(() => {
+        if (interactive) {
+          writeProgress('still running');
+        }
+      }, progressIntervalMilliseconds);
+      interval.unref();
+    },
+    complete(result, shardIndex, completed) {
+      completedShards = completed;
+      if (result.exitCode !== 0) {
+        failedShards++;
+      }
+      if (interactive) {
+        writeProgress(`shard ${shardIndex + 1}/${totalShards} ${result.exitCode === 0 ? 'passed' : 'failed'}`);
+      }
+    },
+    stop() {
+      clearInterval(interval);
+      if (interactive) {
+        process.stdout.write('\n');
+      } else {
+        writeProgress('complete');
+      }
+    },
+  };
+
+  function writeProgress(status) {
+    const remainingShards = totalShards - completedShards;
+    const runningShards = Math.min(concurrency, remainingShards);
+    const queuedShards = Math.max(0, remainingShards - runningShards);
+    const elapsedSeconds = Math.floor((Date.now() - startedAt) / 1000);
+    const line =
+      `    ${modeLabel(activeMode)} ${completedShards}/${totalShards} complete; ${runningShards} running; ` +
+      `${queuedShards} queued; ${failedShards} failed; ${elapsedSeconds}s (${status})`;
+    if (interactive) {
+      clearLine(process.stdout, 0);
+      cursorTo(process.stdout, 0);
+      process.stdout.write(line);
+    } else {
+      process.stdout.write(`${line}\n`);
+    }
+  }
 }
