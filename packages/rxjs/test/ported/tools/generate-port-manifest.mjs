@@ -140,6 +140,14 @@ const observationBoundaries = new Map([
     { observable: '^-------!', subscriptions: new Map([['subs', new Map([[0, '^-------!']])]]) },
   ],
   [
+    'spec/operators/retry-spec.ts:239:retry > should handle a never source',
+    { observable: '^!', subscriptions: new Map([['subs', '^!']]) },
+  ],
+  [
+    'spec/operators/retry-spec.ts:277:retry > should handle a basic source that emits next but does not complete',
+    { observable: '^------------!', subscriptions: new Map([['subs', '^------------!']]) },
+  ],
+  [
     'spec/operators/scan-spec.ts:171:scan > handle never',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
