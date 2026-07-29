@@ -284,10 +284,10 @@
     "retry": {
       "symbol": "retry",
       "module": "retry",
-      "adapter": "countOrConfig",
+      "adapter": "retryCountOrConfig",
       "mapping": "source[retry](config)",
       "status": "Partial unified mapping",
-      "note": "Adapts the legacy numeric count to a config object."
+      "note": "Adapts legacy numeric and config inputs while preserving the RxJS 7 resetOnSuccess default."
     },
     "scan": {
       "symbol": "scan",

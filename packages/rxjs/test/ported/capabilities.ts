@@ -607,6 +607,21 @@ function adaptOperatorArguments(adapter: string, args: readonly unknown[]): read
       return args[2] === undefined ? [args[0]] : [args[0], args[2]];
     case 'countOrConfig':
       return typeof args[0] === 'number' ? [{ count: args[0] }] : args;
+    case 'retryCountOrConfig': {
+      const config = typeof args[0] === 'number' ? { count: args[0] } : args[0];
+      if (config === undefined) {
+        return [{ resetOnSuccess: false }];
+      }
+      if (typeof config !== 'object' || config === null) {
+        return args;
+      }
+      return [
+        {
+          ...config,
+          resetOnSuccess: (config as { readonly resetOnSuccess?: boolean }).resetOnSuccess ?? false,
+        },
+      ];
+    }
     case 'timeout':
       return adaptTimeoutArguments(args);
     case 'timeoutWith': {
