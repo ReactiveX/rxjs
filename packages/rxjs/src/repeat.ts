@@ -17,28 +17,35 @@ Observable.prototype[repeat] = function <T>(
 ): Observable<T> {
   return this[create]((subscriber) => {
     const { count = Infinity, delay = null } = config ?? {};
+    if (count <= 0) {
+      subscriber.complete();
+      return;
+    }
 
     const nextHandler = (value: T) => subscriber.next(value);
     const errorHandler = (error: any) => subscriber.error(error);
     let id: ReturnType<typeof setTimeout> | undefined;
     let repeatCount = 0;
+    let subscriptionCount = 0;
 
     const isTimeoutDelay = typeof delay === 'number';
     if (isTimeoutDelay) {
       subscriber.addTeardown(() => clearTimeout(id));
     }
 
-    let remaining = count;
     const startSub = () => {
+      if (!subscriber.active) {
+        return;
+      }
+      subscriptionCount++;
       this.subscribe(
         {
           next: nextHandler,
           error: errorHandler,
           complete: () => {
-            if (remaining === 0) {
+            if (subscriptionCount >= count) {
               subscriber.complete();
             } else {
-              remaining--;
               if (delay == null) {
                 startSub();
               } else {
