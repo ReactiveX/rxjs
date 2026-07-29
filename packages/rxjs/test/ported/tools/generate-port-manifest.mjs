@@ -84,6 +84,14 @@ const observationBoundaries = new Map([
     { observable: '^!', subscriptions: new Map([['subs', '^!']]) },
   ],
   [
+    'spec/operators/auditTime-spec.ts:120:auditTime > should handle a never source',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/throttleTime-spec.ts:116:throttleTime operator > default behavior { leading: true, trailing: false } > should handle a never source',
+    { observable: '^!', subscriptions: new Map([['subs', '^!']]) },
+  ],
+  [
     'spec/observables/concat-spec.ts:99:static concat > should not complete if first source does not completes',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
