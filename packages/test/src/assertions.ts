@@ -72,7 +72,7 @@ export class ExpectationManager {
     this.#assertions.push(assertion as ObservableAssertion<unknown>);
 
     if (subscription.subscribedFrame !== Infinity) {
-      this.#controller.scheduleAt(() => {
+      this.#controller.scheduleObservationAt(() => {
         const abortController = new AbortController();
         this.#trackObservation(abortController);
         observable.subscribe(
@@ -123,7 +123,7 @@ export class ExpectationManager {
           return;
         }
         const expectedMessages = assertion.expected;
-        this.#controller.scheduleAt(() => {
+        this.#controller.scheduleObservationAt(() => {
           const abortController = new AbortController();
           this.#trackObservation(abortController);
           expected.subscribe(

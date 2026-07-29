@@ -1,7 +1,7 @@
 import { durationToMilliseconds, parseTimingPlan } from './marble-parser.js';
 import type { ScheduledTestTask, ScheduledTestWork, TestDuration, TestIdleOptions, TestScheduleOptions, TestTimingPlan } from './types.js';
 
-type TaskKind = 'observation-boundary' | 'immediate' | 'timer' | 'scheduled' | 'animation' | 'idle';
+type TaskKind = 'observation-boundary' | 'observation-start' | 'immediate' | 'timer' | 'scheduled' | 'animation' | 'idle';
 
 interface TaskRecord {
   readonly id: number;
@@ -52,6 +52,7 @@ export interface VirtualTimeOptions {
 
 const taskPriority: Record<TaskKind, number> = {
   'observation-boundary': -1,
+  'observation-start': 0,
   immediate: 0,
   timer: 1,
   scheduled: 1,
@@ -173,6 +174,10 @@ export class VirtualTimeController {
 
   scheduleAt(work: ScheduledTestWork, dueTime: number, options?: TestScheduleOptions): ScheduledTestTask {
     return this.#scheduleAt(work, dueTime, options, 'scheduled');
+  }
+
+  scheduleObservationAt(work: ScheduledTestWork, dueTime: number): ScheduledTestTask {
+    return this.#scheduleAt(work, dueTime, undefined, 'observation-start');
   }
 
   scheduleObservationBoundaryAt(work: ScheduledTestWork, dueTime: number): ScheduledTestTask {

@@ -56,6 +56,15 @@ describe('rxTest', () => {
     });
   });
 
+  it('attaches a time-zero observation before a hot time-zero notification', async () => {
+    await rxTest(({ hot, expectObservable, expectSubscriptions }) => {
+      const source = hot('a-b-|');
+
+      expectObservable(source).toBe('a-b-|');
+      expectSubscriptions(source.subscriptions).toBe('^---!');
+    });
+  });
+
   it('virtualizes native timers and clocks', async () => {
     await rxTest(
       ({ expectObservable, now }) => {
@@ -193,6 +202,15 @@ describe('rxTest', () => {
       expectObservable(hotSource, '--------!').toBe('--a--b--');
       expectSubscriptions(coldSource.subscriptions).toBe('^-------!');
       expectSubscriptions(hotSource.subscriptions).toBe('^-------!');
+    });
+  });
+
+  it('aborts an observation before a hot notification at the same frame', async () => {
+    await rxTest(({ hot, expectObservable, expectSubscriptions }) => {
+      const source = hot('a-b-|');
+
+      expectObservable(source, '--!').toBe('a-');
+      expectSubscriptions(source.subscriptions).toBe('^-!');
     });
   });
 

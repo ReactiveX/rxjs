@@ -305,6 +305,11 @@ An `expectObservable` subscription window is half-open: a notification at the
 exact `!` frame is excluded, and the observation's `AbortSignal` is cancelled
 before ordinary source work scheduled for that frame.
 
+At a shared virtual timestamp, observation boundaries run first, observation
+starts run second, and ordinary source work runs afterward. Consequently, a
+time-zero expectation observes a hot time-zero notification, while an
+unsubscription at a notification's frame still excludes that notification.
+
 Whitespace inside a marble string is formatting-only and never advances
 virtual time. It can compensate when source-code layout places opening quotes
 in different columns. The important alignment point for hot diagrams is `^`,
