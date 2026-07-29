@@ -22,6 +22,56 @@ describe('buffer', () => {
     expect(results).toEqual([['a', 'b']]);
   });
 
+  it('can discard the active delay window when the source errors', () => {
+    const results: string[][] = [];
+    const sourceError = new Error('source failure');
+    let receivedError: unknown;
+    const source = new Observable<string>((subscriber) => {
+      subscriber.next('a');
+      subscriber.next('b');
+      subscriber.error(sourceError);
+    });
+    const closingNotifier = new Observable<void>(() => {});
+
+    source[buffer]({
+      delay: () => closingNotifier,
+      emitEmpty: true,
+      emitRemainingOnError: false,
+    }).subscribe({
+      next: (value) => results.push(value),
+      error: (error) => {
+        receivedError = error;
+      },
+    });
+
+    expect(results).toEqual([]);
+    expect(receivedError).toBe(sourceError);
+  });
+
+  it('does not activate source work when the delay selector throws synchronously', () => {
+    const selectorError = new Error('selector failure');
+    let sourceActivations = 0;
+    let receivedError: unknown;
+    const source = new Observable<string>(() => {
+      sourceActivations++;
+    });
+
+    source[buffer]({
+      delay: () => {
+        throw selectorError;
+      },
+      emitEmpty: true,
+      emitRemainingOnError: false,
+    }).subscribe({
+      error: (error) => {
+        receivedError = error;
+      },
+    });
+
+    expect(sourceActivations).toBe(0);
+    expect(receivedError).toBe(selectorError);
+  });
+
   it('supports overlapping count windows and emits completion partials in creation order', () => {
     const results: (string[] | 'complete')[] = [];
     const source = new Observable<string>((subscriber) => {

@@ -559,7 +559,7 @@ function adaptOperatorArguments(adapter: string, args: readonly unknown[]): read
     case 'bufferTime':
       return [{ delay: args[0], maxSize: args[2] ?? Infinity, emitEmpty: true }];
     case 'bufferWhen':
-      return [{ delay: args[0], emitEmpty: true }];
+      return [{ delay: args[0], emitEmpty: true, emitRemainingOnError: false }];
     case 'sourcesArray':
       return [[...args]];
     case 'sourcesArrayOrSingleArray':

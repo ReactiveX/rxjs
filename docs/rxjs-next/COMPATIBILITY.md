@@ -197,7 +197,12 @@ an explicit ambient-`Observable` construction. These adapters make behavioral
 gaps testable and do not by themselves promise full type or lifecycle parity.
 The current `bufferCount` evidence covers positive buffer sizes and start
 intervals; validation behavior for nonpositive or otherwise invalid values is
-not established by this mapping.
+not established by this mapping. RxJS 7 `bufferWhen(closingSelector)` is
+exercised through
+`source[buffer]({ delay: closingSelector, emitEmpty: true, emitRemainingOnError: false })`.
+The selector is evaluated before source activation, a synchronous selector
+failure errors the result without activating source work, and a source error
+discards the active partial buffer.
 
 ## Suggested validation ladder
 

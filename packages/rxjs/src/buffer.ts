@@ -112,6 +112,9 @@ Observable.prototype[buffer] = function <T>(
     };
 
     maybeStartDelay();
+    if (!subscriber.active) {
+      return;
+    }
 
     this.subscribe(
       {

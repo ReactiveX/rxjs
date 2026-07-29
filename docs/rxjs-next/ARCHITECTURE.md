@@ -499,13 +499,17 @@ Pipeable migration invokes `source[targetSymbol](...adaptedArgs)`: exact
 operators retain their arguments, while explicitly recorded unified mappings
 such as
 `bufferCount → buffer({ maxSize, startEvery, emitRemainingOnError: false })`
-adapt the old signature. The count-window configuration starts an initial
-buffer when the producer activates, supports overlapping or gapped windows,
-emits full buffers as they reach `maxSize`, and emits remaining non-empty
-buffers in creation order on completion. Supplying `startEvery` selects this
-count-window mode; when it is omitted, the unified operator's existing
-delay-window behavior is unchanged. A similarly named platform string method
-is not treated as RxJS Symbol parity.
+and
+`bufferWhen → buffer({ delay: closingSelector, emitEmpty: true, emitRemainingOnError: false })`
+adapt old signatures. The count-window configuration starts an initial buffer
+when the producer activates, supports overlapping or gapped windows, emits
+full buffers as they reach `maxSize`, and emits remaining non-empty buffers in
+creation order on completion. Supplying `startEvery` selects this count-window
+mode. When it is omitted, delay-window buffering evaluates its closing
+selector before activating source work; a synchronous selector failure errors
+the result without activating the source. The `bufferWhen` mapping discards an
+active partial buffer when the source errors. A similarly named platform
+string method is not treated as RxJS Symbol parity.
 
 ## Compatibility boundary
 

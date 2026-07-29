@@ -45,9 +45,9 @@
       "symbol": "buffer",
       "module": "buffer",
       "adapter": "bufferWhen",
-      "mapping": "source[buffer]({ delay: closingSelector, emitEmpty: true })",
+      "mapping": "source[buffer]({ delay: closingSelector, emitEmpty: true, emitRemainingOnError: false })",
       "status": "Partial unified mapping",
-      "note": "Uses the unified buffer delay selector."
+      "note": "Uses the unified buffer delay selector and discards the active partial buffer when the source errors."
     },
     "combineLatest": {
       "symbol": "combineLatest",
