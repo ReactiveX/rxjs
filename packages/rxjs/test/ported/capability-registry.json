@@ -13,9 +13,9 @@
       "symbol": "throttle",
       "module": "throttle",
       "adapter": "auditTime",
-      "mapping": "source[throttle](milliseconds, { leading: false, trailing: true })",
+      "mapping": "source[throttle](milliseconds, { leading: false, trailing: true, restartOnTrailing: false })",
       "status": "Partial unified mapping",
-      "note": "Scheduler arguments are not represented."
+      "note": "Numeric duration lifecycle is verified; scheduler arguments are not represented."
     },
     "buffer": {
       "symbol": "buffer",

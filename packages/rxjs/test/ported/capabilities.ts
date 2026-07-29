@@ -614,7 +614,7 @@ function adaptOperatorArguments(adapter: string, args: readonly unknown[]): read
     case 'audit':
       return [args[0], { leading: false, trailing: true, restartOnTrailing: false }];
     case 'auditTime':
-      return [args[0], { leading: false, trailing: true }];
+      return [args[0], { leading: false, trailing: true, restartOnTrailing: false }];
     case 'buffer':
       return [
         {
