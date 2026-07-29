@@ -53,6 +53,105 @@ const observationBoundaries = new Map([
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
   [
+    'spec/observables/concat-spec.ts:99:static concat > should not complete if first source does not completes',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/observables/concat-spec.ts:113:static concat > should not complete if second source does not completes',
+    { observable: '^--!', subscriptions: new Map([['e2subs', '--^!']]) },
+  ],
+  [
+    'spec/observables/concat-spec.ts:127:static concat > should not complete if both sources do not complete',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    "spec/observables/concat-spec.ts:211:static concat > 'should emit element from first source, and should not complete if second ' + 'source does not completes'",
+    { observable: '^-----!', subscriptions: new Map([['e2subs', '-----^!']]) },
+  ],
+  [
+    'spec/observables/concat-spec.ts:225:static concat > should not complete if first source does not complete',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/observables/race-spec.ts:220:race > handle never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/concatMapTo-spec.ts:114:concatMapTo > should handle a never source',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/concatMapTo-spec.ts:167:concatMapTo > should return a never if the mapped inner is never',
+    { observable: '^---------!', subscriptions: new Map([['innerSubs', '--^-------!']]) },
+  ],
+  [
+    'spec/operators/concatMapTo-spec.ts:221:concatMapTo > should concatMapTo many outer to many inner, outer never completes',
+    {
+      observable: '^------------------------------------------------!',
+      subscriptions: new Map([['e1subs', '^------------------------------------------------!']]),
+    },
+  ],
+  [
+    'spec/operators/concatMapTo-spec.ts:269:concatMapTo > should concatMapTo many outer to many inner, inner never completes',
+    { observable: '^-----------------!', subscriptions: new Map([['innerSubs', '-^----------------!']]) },
+  ],
+  [
+    'spec/operators/elementAt-spec.ts:92:elementAt > should not complete if source never completes',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/first-spec.ts:95:first > should go on forever on never',
+    { observable: '^-------!', subscriptions: new Map([['e1subs', '^-------!']]) },
+  ],
+  [
+    'spec/operators/last-spec.ts:47:last > should go on forever on never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/repeat-spec.ts:178:repeat operator > should not complete when source never completes',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/repeat-spec.ts:223:repeat operator > should emit source once and does not complete when source emits but does not complete',
+    { observable: '^-------!', subscriptions: new Map([['subs', new Map([[0, '^-------!']])]]) },
+  ],
+  [
+    'spec/operators/scan-spec.ts:171:scan > handle never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/sequenceEqual-spec.ts:129:sequenceEqual > should never return if source is a never',
+    { observable: '^-----------!' },
+  ],
+  [
+    'spec/operators/sequenceEqual-spec.ts:141:sequenceEqual > should never return if compareTo is a never',
+    { observable: '^-----------!' },
+  ],
+  [
+    'spec/operators/sequenceEqual-spec.ts:185:sequenceEqual > should return never if compareTo is empty and source is never',
+    { observable: '^!' },
+  ],
+  [
+    'spec/operators/sequenceEqual-spec.ts:197:sequenceEqual > should return never if source is empty and compareTo is never',
+    { observable: '^!' },
+  ],
+  [
+    'spec/operators/skipWhile-spec.ts:88:skipWhile > should skip elements on hot source',
+    { observable: '^-------------------!', subscriptions: new Map([['sourceSubs', '^-------------------!']]) },
+  ],
+  [
+    'spec/operators/skipWhile-spec.ts:243:skipWhile > should handle Observable.never',
+    { observable: '^!', subscriptions: new Map([['subs', '^!']]) },
+  ],
+  [
+    'spec/operators/takeWhile-spec.ts:119:takeWhile > should take elements with predicate when source does not complete',
+    { observable: '^-------------!', subscriptions: new Map([['e1subs', '^-------------!']]) },
+  ],
+  [
+    'spec/operators/takeWhile-spec.ts:132:takeWhile > should not complete when source never completes',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
     'spec/operators/mergeAll-spec.ts:247:mergeAll > should merge never and empty',
     { observable: '^--------!', subscriptions: new Map([['xsubs', '--^------!']]) },
   ],
