@@ -1,7 +1,7 @@
 import { durationToMilliseconds, parseTimingPlan } from './marble-parser.js';
 import type { ScheduledTestTask, ScheduledTestWork, TestDuration, TestIdleOptions, TestScheduleOptions, TestTimingPlan } from './types.js';
 
-type TaskKind = 'immediate' | 'timer' | 'scheduled' | 'animation' | 'idle';
+type TaskKind = 'observation-boundary' | 'immediate' | 'timer' | 'scheduled' | 'animation' | 'idle';
 
 interface TaskRecord {
   readonly id: number;
@@ -51,6 +51,7 @@ export interface VirtualTimeOptions {
 }
 
 const taskPriority: Record<TaskKind, number> = {
+  'observation-boundary': -1,
   immediate: 0,
   timer: 1,
   scheduled: 1,
@@ -167,65 +168,25 @@ export class VirtualTimeController {
 
   schedule(work: ScheduledTestWork, delay?: TestDuration, options?: TestScheduleOptions): ScheduledTestTask {
     const milliseconds = durationToMilliseconds(delay);
-    const controller = new AbortController();
-    const signal = options?.signal
-      ? AbortSignal.any([this.#testController.signal, options.signal, controller.signal])
-      : AbortSignal.any([this.#testController.signal, controller.signal]);
-    const id = ++this.#nextId;
-    const dueTime = this.#now + milliseconds;
-    let active = true;
-
-    const cancel = (reason?: unknown): void => {
-      if (!active) {
-        return;
-      }
-      active = false;
-      controller.abort(reason);
-    };
-
-    signal.addEventListener(
-      'abort',
-      () => {
-        active = false;
-      },
-      { once: true }
-    );
-
-    this.#enqueue({
-      id,
-      kind: 'scheduled',
-      dueTime,
-      active: () => active && !signal.aborted,
-      run: () => {
-        active = false;
-        const result = work();
-        if (isPromiseLike(result)) {
-          this.#trackPromise(Promise.resolve(result));
-        }
-      },
-    });
-
-    return {
-      get dueTime() {
-        return dueTime;
-      },
-      signal,
-      cancel,
-    };
+    return this.#scheduleAt(work, this.#now + milliseconds, options, 'scheduled');
   }
 
   scheduleAt(work: ScheduledTestWork, dueTime: number, options?: TestScheduleOptions): ScheduledTestTask {
-    const delay = Math.max(0, dueTime - this.#now);
-    if (dueTime >= this.#now) {
-      return this.schedule(work, delay, options);
-    }
+    return this.#scheduleAt(work, dueTime, options, 'scheduled');
+  }
 
+  scheduleObservationBoundaryAt(work: ScheduledTestWork, dueTime: number): ScheduledTestTask {
+    return this.#scheduleAt(work, dueTime, undefined, 'observation-boundary');
+  }
+
+  #scheduleAt(work: ScheduledTestWork, dueTime: number, options: TestScheduleOptions | undefined, kind: TaskKind): ScheduledTestTask {
     const controller = new AbortController();
     const signal = options?.signal
       ? AbortSignal.any([this.#testController.signal, options.signal, controller.signal])
       : AbortSignal.any([this.#testController.signal, controller.signal]);
     const id = ++this.#nextId;
     let active = true;
+
     const cancel = (reason?: unknown): void => {
       if (!active) {
         return;
@@ -233,6 +194,7 @@ export class VirtualTimeController {
       active = false;
       controller.abort(reason);
     };
+
     signal.addEventListener(
       'abort',
       () => {
@@ -240,9 +202,10 @@ export class VirtualTimeController {
       },
       { once: true }
     );
+
     this.#enqueue({
       id,
-      kind: 'scheduled',
+      kind,
       dueTime,
       active: () => active && !signal.aborted,
       run: () => {
@@ -253,6 +216,7 @@ export class VirtualTimeController {
         }
       },
     });
+
     return {
       get dueTime() {
         return dueTime;

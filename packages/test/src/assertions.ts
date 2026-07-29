@@ -105,7 +105,7 @@ export class ExpectationManager {
         );
 
         if (subscription.unsubscribedFrame !== Infinity) {
-          this.#controller.scheduleAt(() => abortController.abort(), subscription.unsubscribedFrame);
+          this.#controller.scheduleObservationBoundaryAt(() => abortController.abort(), subscription.unsubscribedFrame);
         }
       }, subscription.subscribedFrame);
     }
@@ -155,7 +155,7 @@ export class ExpectationManager {
             { signal: abortController.signal }
           );
           if (subscription.unsubscribedFrame !== Infinity) {
-            this.#controller.scheduleAt(() => abortController.abort(), subscription.unsubscribedFrame);
+            this.#controller.scheduleObservationBoundaryAt(() => abortController.abort(), subscription.unsubscribedFrame);
           }
         }, subscription.subscribedFrame);
       },

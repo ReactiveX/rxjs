@@ -184,6 +184,18 @@ describe('rxTest', () => {
     });
   });
 
+  it('treats the unsubscription frame as an exclusive observation boundary', async () => {
+    await rxTest(({ cold, hot, expectObservable, expectSubscriptions }) => {
+      const coldSource = cold('--a--b--c--');
+      const hotSource = hot('--a--b--c--');
+
+      expectObservable(coldSource, '--------!').toBe('--a--b--');
+      expectObservable(hotSource, '--------!').toBe('--a--b--');
+      expectSubscriptions(coldSource.subscriptions).toBe('^-------!');
+      expectSubscriptions(hotSource.subscriptions).toBe('^-------!');
+    });
+  });
+
   it('supports grouped values, errors, and observable metastreams', async () => {
     await rxTest(({ cold, expectObservable }) => {
       const failure = new Error('expected failure');

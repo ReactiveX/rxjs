@@ -301,6 +301,10 @@ runtime to that decision.
 | `!`                   | unsubscription in a subscription diagram |
 | `12ms`, `20s`, `1.5m` | explicit time progression                |
 
+An `expectObservable` subscription window is half-open: a notification at the
+exact `!` frame is excluded, and the observation's `AbortSignal` is cancelled
+before ordinary source work scheduled for that frame.
+
 Whitespace inside a marble string is formatting-only and never advances
 virtual time. It can compensate when source-code layout places opening quotes
 in different columns. The important alignment point for hot diagrams is `^`,
