@@ -972,3 +972,23 @@ conformance implementation depends on a runnable harness.
   existing-functionality packet is RX7-SKIP-LAST; scheduler-specific cases
   remain deferred until the absolute end of P0.T3, and P0.T3 remains the single
   project-level `NEXT` item.
+
+### 2026-07-29 — P0.T3 existing-surface remediation wave 5
+
+- Integrated separate reviewed fixes for the `skipLast` and `takeLast`
+  never-observation boundaries, the static RxJS 7 `race([sources])` overload,
+  and `sequenceEqual` length-mismatch completion.
+- `sequenceEqual` now decides false as soon as a completed shorter input makes
+  equality impossible and completes the derived subscriber so its AbortSignal
+  closes both inputs. The RxJS 7 comparator overload and never-observation
+  evidence remain separate unresolved work.
+- Complete 16-shard audits recorded 557 cold passes with 1,781 failures and 559
+  polyfill passes with 1,779 failures, adding nine cases that pass in both modes
+  and bringing the original fixed cohort to 123.
+- The normal strict gate completed all 16 shards in both modes and remained red
+  on the unresolved queue. The shared, ref-counted polyfill was not made cold,
+  and its mode-only lifecycle differences remain explicit evidence.
+- No missing API or scheduler behavior was introduced. The next recommended
+  existing-functionality packet is RX7-SWITCH-MAP-TO; scheduler-specific cases
+  remain deferred until the absolute end of P0.T3, and P0.T3 remains the single
+  project-level `NEXT` item.
