@@ -7,12 +7,12 @@ This ledger records every RxJS 7 ported test that failed in the authoritative co
 - **RxJS 7 source:** `7.x` at `e5351d02e225e275ac0e497c7b66eaa5f0c88791`
 - **Evidence captured:** 2026-07-29
 - **Manifest coverage:** 2,338 cases in each mode
-- **Cold:** 523 passed; 1,815 failed
-- **Polyfill:** 525 passed; 1,813 failed
+- **Cold:** 529 passed; 1,809 failed
+- **Polyfill:** 531 passed; 1,807 failed
 - **Unique tracked failures:** 1,921 across 140 owner groups
-- **Current failure overlap:** 1,796 both modes; 19 cold only; 17 polyfill only
-- **Fixed since first capture:** 89
-- **Recommended next work packet:** [RX7-IGNORE-ELEMENTS](#rx7-ignore-elements--ignoreelements) (`ignoreElements`)
+- **Current failure overlap:** 1,790 both modes; 19 cold only; 17 polyfill only
+- **Fixed since first capture:** 95
+- **Recommended next work packet:** [RX7-SWITCH-ALL](#rx7-switch-all--switchall) (`switchAll`)
 
 The audit commands intentionally exit nonzero while parity failures remain:
 
@@ -1117,11 +1117,11 @@ Owner source: `spec/operators/groupBy-spec.ts`
 
 Owner source: `spec/operators/ignoreElements-spec.ts`
 
-| Case ID                                                                                                                       | Behavioral test                                                   | Source                                     | Failing mode    | Classification | Disposition        | Concise failure                                                                                      | Status       |
-| ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------ | --------------- | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------------ |
-| `spec/operators/ignoreElements-spec.ts:25:ignoreElements > should allow unsubscribing early and explicitly`                   | should allow unsubscribing early and explicitly                   | `spec/operators/ignoreElements-spec.ts:25` | —               | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED`      |
-| `spec/operators/ignoreElements-spec.ts:39:ignoreElements > should allow unsubscribing early and explicitly with higher order` | should allow unsubscribing early and explicitly with higher order | `spec/operators/ignoreElements-spec.ts:39` | —               | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED`      |
-| `spec/operators/ignoreElements-spec.ts:79:ignoreElements > should handle never`                                               | should handle never                                               | `spec/operators/ignoreElements-spec.ts:79` | cold + polyfill | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `IN-PROCESS` |
+| Case ID                                                                                                                       | Behavioral test                                                   | Source                                     | Failing mode | Classification | Disposition        | Concise failure                                                                                      | Status  |
+| ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------ | ------------ | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/ignoreElements-spec.ts:25:ignoreElements > should allow unsubscribing early and explicitly`                   | should allow unsubscribing early and explicitly                   | `spec/operators/ignoreElements-spec.ts:25` | —            | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
+| `spec/operators/ignoreElements-spec.ts:39:ignoreElements > should allow unsubscribing early and explicitly with higher order` | should allow unsubscribing early and explicitly with higher order | `spec/operators/ignoreElements-spec.ts:39` | —            | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
+| `spec/operators/ignoreElements-spec.ts:79:ignoreElements > should handle never`                                               | should handle never                                               | `spec/operators/ignoreElements-spec.ts:79` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
 
 ### `interval`
 
@@ -2175,13 +2175,13 @@ Owner source: `spec/operators/skip-spec.ts`
 
 Owner source: `spec/operators/skipLast-spec.ts`
 
-| Case ID                                                                                                                      | Behavioral test                                                    | Source                                | Failing mode    | Classification | Disposition        | Concise failure                                                                                      | Status       |
-| ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------- | --------------- | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------------ |
-| `spec/operators/skipLast-spec.ts:158:skipLast operator > should allow unsubscribing explicitly and early`                    | should allow unsubscribing explicitly and early                    | `spec/operators/skipLast-spec.ts:158` | —               | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED`      |
-| `spec/operators/skipLast-spec.ts:181:skipLast operator > should not break unsubscription chain when unsubscribed explicitly` | should not break unsubscription chain when unsubscribed explicitly | `spec/operators/skipLast-spec.ts:181` | —               | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED`      |
-| `spec/operators/skipLast-spec.ts:59:skipLast operator > should not skip any values`                                          | should not skip any values                                         | `spec/operators/skipLast-spec.ts:59`  | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `IN-PROCESS` |
-| `spec/operators/skipLast-spec.ts:70:skipLast operator > should not skip any values if provided with negative value`          | should not skip any values if provided with negative value         | `spec/operators/skipLast-spec.ts:70`  | cold + polyfill | `portable`     | `expected-failure` | cold: rxTest observable assertion failed.; polyfill: Invalid array length                            | `IN-PROCESS` |
-| `spec/operators/skipLast-spec.ts:92:skipLast operator > should go on forever on never`                                       | should go on forever on never                                      | `spec/operators/skipLast-spec.ts:92`  | cold + polyfill | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `TODO`       |
+| Case ID                                                                                                                      | Behavioral test                                                    | Source                                | Failing mode    | Classification | Disposition        | Concise failure                                                                                      | Status  |
+| ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------- | --------------- | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/skipLast-spec.ts:158:skipLast operator > should allow unsubscribing explicitly and early`                    | should allow unsubscribing explicitly and early                    | `spec/operators/skipLast-spec.ts:158` | —               | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
+| `spec/operators/skipLast-spec.ts:181:skipLast operator > should not break unsubscription chain when unsubscribed explicitly` | should not break unsubscription chain when unsubscribed explicitly | `spec/operators/skipLast-spec.ts:181` | —               | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
+| `spec/operators/skipLast-spec.ts:59:skipLast operator > should not skip any values`                                          | should not skip any values                                         | `spec/operators/skipLast-spec.ts:59`  | —               | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/skipLast-spec.ts:70:skipLast operator > should not skip any values if provided with negative value`          | should not skip any values if provided with negative value         | `spec/operators/skipLast-spec.ts:70`  | —               | `portable`     | `expected-failure` | cold: rxTest observable assertion failed.; polyfill: Invalid array length                            | `FIXED` |
+| `spec/operators/skipLast-spec.ts:92:skipLast operator > should go on forever on never`                                       | should go on forever on never                                      | `spec/operators/skipLast-spec.ts:92`  | cold + polyfill | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `TODO`  |
 
 ### `skipUntil`
 
@@ -2357,14 +2357,14 @@ Owner source: `spec/operators/take-spec.ts`
 
 Owner source: `spec/operators/takeLast-spec.ts`
 
-| Case ID                                                                                                                      | Behavioral test                                                    | Source                                | Failing mode    | Classification | Disposition        | Concise failure                                                                                      | Status       |
-| ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------- | --------------- | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------------ |
-| `spec/operators/takeLast-spec.ts:102:takeLast operator > should be empty on takeLast(0)`                                     | should be empty on takeLast(0)                                     | `spec/operators/takeLast-spec.ts:102` | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `IN-PROCESS` |
-| `spec/operators/takeLast-spec.ts:168:takeLast operator > should allow unsubscribing explicitly and early`                    | should allow unsubscribing explicitly and early                    | `spec/operators/takeLast-spec.ts:168` | —               | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED`      |
-| `spec/operators/takeLast-spec.ts:191:takeLast operator > should not break unsubscription chain when unsubscribed explicitly` | should not break unsubscription chain when unsubscribed explicitly | `spec/operators/takeLast-spec.ts:191` | —               | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED`      |
-| `spec/operators/takeLast-spec.ts:58:takeLast operator > should not take any values`                                          | should not take any values                                         | `spec/operators/takeLast-spec.ts:58`  | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `IN-PROCESS` |
-| `spec/operators/takeLast-spec.ts:69:takeLast operator > should not take any values if provided with negative value`          | should not take any values if provided with negative value         | `spec/operators/takeLast-spec.ts:69`  | cold + polyfill | `portable`     | `expected-failure` | cold: rxTest observable assertion failed.; polyfill: Invalid array length                            | `IN-PROCESS` |
-| `spec/operators/takeLast-spec.ts:91:takeLast operator > should go on forever on never`                                       | should go on forever on never                                      | `spec/operators/takeLast-spec.ts:91`  | cold + polyfill | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `TODO`       |
+| Case ID                                                                                                                      | Behavioral test                                                    | Source                                | Failing mode    | Classification | Disposition        | Concise failure                                                                                      | Status  |
+| ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------- | --------------- | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/takeLast-spec.ts:102:takeLast operator > should be empty on takeLast(0)`                                     | should be empty on takeLast(0)                                     | `spec/operators/takeLast-spec.ts:102` | —               | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/takeLast-spec.ts:168:takeLast operator > should allow unsubscribing explicitly and early`                    | should allow unsubscribing explicitly and early                    | `spec/operators/takeLast-spec.ts:168` | —               | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
+| `spec/operators/takeLast-spec.ts:191:takeLast operator > should not break unsubscription chain when unsubscribed explicitly` | should not break unsubscription chain when unsubscribed explicitly | `spec/operators/takeLast-spec.ts:191` | —               | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
+| `spec/operators/takeLast-spec.ts:58:takeLast operator > should not take any values`                                          | should not take any values                                         | `spec/operators/takeLast-spec.ts:58`  | —               | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/takeLast-spec.ts:69:takeLast operator > should not take any values if provided with negative value`          | should not take any values if provided with negative value         | `spec/operators/takeLast-spec.ts:69`  | —               | `portable`     | `expected-failure` | cold: rxTest observable assertion failed.; polyfill: Invalid array length                            | `FIXED` |
+| `spec/operators/takeLast-spec.ts:91:takeLast operator > should go on forever on never`                                       | should go on forever on never                                      | `spec/operators/takeLast-spec.ts:91`  | cold + polyfill | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `TODO`  |
 
 ### `takeUntil`
 
@@ -3032,8 +3032,8 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 ### RX7-IGNORE-ELEMENTS — `ignoreElements`
 
-- **Packet status:** `IN-PROCESS`
-- **Evidence:** 3 tracked case(s); 1 cold failures; 1 polyfill failures; 2 fixed.
+- **Packet status:** `FIXED`
+- **Evidence:** 3 tracked case(s); 0 cold failures; 0 polyfill failures; 3 fixed.
 - **Current surface/gap:** 3 known mapped mismatch(es).
 - **Required classification review:** 3 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
@@ -3153,8 +3153,8 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 ### RX7-SKIP-LAST — `skipLast`
 
-- **Packet status:** `IN-PROCESS`
-- **Evidence:** 5 tracked case(s); 3 cold failures; 3 polyfill failures; 2 fixed.
+- **Packet status:** `TODO`
+- **Evidence:** 5 tracked case(s); 1 cold failures; 1 polyfill failures; 4 fixed.
 - **Current surface/gap:** 5 known mapped mismatch(es).
 - **Required classification review:** 5 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
@@ -3260,8 +3260,8 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 ### RX7-TAKE-LAST — `takeLast`
 
-- **Packet status:** `IN-PROCESS`
-- **Evidence:** 6 tracked case(s); 4 cold failures; 4 polyfill failures; 2 fixed.
+- **Packet status:** `TODO`
+- **Evidence:** 6 tracked case(s); 1 cold failures; 1 polyfill failures; 5 fixed.
 - **Current surface/gap:** 6 known mapped mismatch(es).
 - **Required classification review:** 6 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.

@@ -314,7 +314,12 @@ function renderTracker({ capturedAt, cold, ledger, manifest, outputPath, polyfil
   const firstPacket = orderedWorkPackets(groups, manifestById).find(
     (group) =>
       group.status !== 'FIXED' &&
-      group.cases.some((item) => item.status !== 'FIXED' && !isSchedulerLastCase(manifestById.get(item.id)))
+      group.cases.some(
+        (item) =>
+          item.status !== 'FIXED' &&
+          !isSchedulerLastCase(manifestById.get(item.id)) &&
+          !isMissingCapabilityDiagnostic(item.diagnostic)
+      )
   );
   const lines = [
     '# RxJS 7 ported-test failure tracker',
@@ -486,6 +491,12 @@ function isSchedulerLastCase(testCase) {
     testCase.source.path.startsWith('spec/schedulers/') ||
     testCase.source.path.startsWith('spec/testing/') ||
     schedulerMarkers.test(`${testCase.behavioralClaim} ${importedSurface}`)
+  );
+}
+
+function isMissingCapabilityDiagnostic(diagnostic) {
+  return /(?:Missing (?:operator )?capability| is not a function|not a constructor|Cannot read properties of undefined| is not defined|Required runtime capabilities are unavailable)/.test(
+    diagnostic
   );
 }
 

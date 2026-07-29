@@ -915,3 +915,21 @@ conformance implementation depends on a runnable harness.
   scheduler-specific behavior remains deferred until the absolute end of
   P0.T3.
 - P0.T3 remains the single project-level `NEXT` item.
+
+### 2026-07-29 — P0.T3 existing-surface remediation wave 2
+
+- Integrated separate reviewed fixes for the `ignoreElements` never-observation
+  boundary, nonpositive `skipLast` identity behavior, and nonpositive
+  `takeLast` empty behavior. The `takeLast` ambient declaration now exposes
+  only the existing exported Symbol rather than a string-named method.
+- Complete 16-shard audits recorded 529 cold passes with 1,809 failures and 531
+  polyfill passes with 1,807 failures, adding six cases that pass in both
+  modes. The normal strict gate again completed every cold and polyfill shard
+  and remained red on the unresolved queue.
+- The synthetic `ignoreElements` stop closes both its observation and expected
+  source-subscription log. It does not alter production semantics or make the
+  shared, ref-counted polyfill cold.
+- No missing API or scheduler behavior was introduced. The next wave continues
+  with small current mappings and their overload/error gaps; scheduler-specific
+  cases remain deferred until the absolute end of P0.T3.
+- P0.T3 remains the single project-level `NEXT` item.
