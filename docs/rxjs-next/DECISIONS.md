@@ -268,3 +268,23 @@ Status meanings:
   `@rxjs/observable-polyfill` so current RxJS Next source can resolve its
   undeclared development-time edge. This is not a published dependency or
   installation decision and does not resolve P0.2.
+
+## D-015 — Represent count windows through the unified buffer Symbol
+
+- **Status:** Accepted
+- **Decision:** The Symbol-keyed `buffer` operator supports count-based windows
+  through `maxSize` plus `startEvery`. Supplying `startEvery` selects count
+  windows; omitting it preserves the existing delay-window mode. The RxJS 7
+  `bufferCount(bufferSize, startBufferEvery?)` adapter supplies
+  `startEvery: startBufferEvery ?? bufferSize` and disables partial-buffer
+  emission on source error.
+- **Rationale:** Consecutive, overlapping, and gapped count buffers are one
+  configuration of the existing unified buffering capability, not a reason to
+  add a second string-named or standalone platform-layer operator.
+- **Consequence:** Count mode starts an initial buffer when producer work
+  activates, emits full buffers as they reach `maxSize`, and emits remaining
+  non-empty buffers in creation order on normal completion. It retains the
+  platform Observable's shared, ref-counted activation and AbortSignal
+  cancellation. The current evidence establishes positive buffer sizes and
+  start intervals only; validation semantics for zero, negative, non-integer,
+  or otherwise invalid values remain outside this decision.

@@ -7,6 +7,7 @@ declare global {
     [buffer]: (config: {
       delay?: number | (() => ObservableValue<any>);
       maxSize?: number;
+      startEvery?: number;
       emitEmpty?: boolean;
       emitRemainingOnComplete?: boolean;
       emitRemainingOnError?: boolean;
@@ -19,14 +20,25 @@ Observable.prototype[buffer] = function <T>(
   config: {
     delay?: number | (() => ObservableValue<any>);
     maxSize?: number;
+    startEvery?: number;
     emitEmpty?: boolean;
     emitRemainingOnComplete?: boolean;
     emitRemainingOnError?: boolean;
   }
 ): Observable<T[]> {
   return this[create]((subscriber) => {
-    const { delay = Infinity, maxSize = Infinity, emitEmpty = false, emitRemainingOnComplete = true, emitRemainingOnError = true } = config;
+    const {
+      delay = Infinity,
+      maxSize = Infinity,
+      startEvery,
+      emitEmpty = false,
+      emitRemainingOnComplete = true,
+      emitRemainingOnError = true,
+    } = config;
     let buffer: T[] | null = null;
+    let countBuffers: T[][] | null = startEvery === undefined ? null : [[]];
+    const countWindowInterval = startEvery ?? Infinity;
+    let valuesSeen = 0;
     let done = false;
 
     let notifierController: AbortController | null = null;
@@ -40,7 +52,7 @@ Observable.prototype[buffer] = function <T>(
     };
 
     const maybeStartDelay = () => {
-      if (delay === Infinity) return;
+      if (delay === Infinity || countBuffers) return;
 
       notifierController = new AbortController();
 
@@ -81,11 +93,48 @@ Observable.prototype[buffer] = function <T>(
       }
     };
 
+    const emitCountBuffers = (buffers: T[][]) => {
+      for (const currentBuffer of buffers) {
+        if (currentBuffer.length) {
+          subscriber.next(currentBuffer);
+        } else if (emitEmpty) {
+          subscriber.next([]);
+        }
+      }
+    };
+
+    const emitRemainingCountBuffers = () => {
+      const remainingBuffers = countBuffers;
+      countBuffers = [];
+      if (remainingBuffers) {
+        emitCountBuffers(remainingBuffers);
+      }
+    };
+
     maybeStartDelay();
 
     this.subscribe(
       {
         next: (value) => {
+          if (countBuffers) {
+            const completedBuffers: T[][] = [];
+            for (const currentBuffer of countBuffers) {
+              currentBuffer.push(value);
+              if (currentBuffer.length >= maxSize) {
+                completedBuffers.push(currentBuffer);
+              }
+            }
+            if (completedBuffers.length) {
+              const completed = new Set(completedBuffers);
+              countBuffers = countBuffers.filter((currentBuffer) => !completed.has(currentBuffer));
+              emitCountBuffers(completedBuffers);
+            }
+            valuesSeen++;
+            if (valuesSeen % countWindowInterval === 0) {
+              countBuffers.push([]);
+            }
+            return;
+          }
           buffer ??= [];
           buffer.push(value);
           if (buffer.length >= maxSize) {
@@ -95,14 +144,22 @@ Observable.prototype[buffer] = function <T>(
         error: (error) => {
           done = true;
           if (emitRemainingOnError) {
-            emitBuffer();
+            if (countBuffers) {
+              emitRemainingCountBuffers();
+            } else {
+              emitBuffer();
+            }
           }
           subscriber.error(error);
         },
         complete: () => {
           done = true;
           if (emitRemainingOnComplete) {
-            emitBuffer();
+            if (countBuffers) {
+              emitRemainingCountBuffers();
+            } else {
+              emitBuffer();
+            }
           }
           subscriber.complete();
         },

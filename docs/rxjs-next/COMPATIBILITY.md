@@ -187,12 +187,17 @@ ledger without making API support promises. The full public compatibility
 ledger still requires the package and compatibility contracts to be chosen.
 
 The executable capability registry distinguishes an absent API from a unified
-Next surface. For example, RxJS 7 `bufferCount(size)` is exercised through
-`source[buffer]({ maxSize: size })`; overlapping-buffer overloads remain
-failing parity evidence. Static and creation functions may similarly map to a
-static Symbol or an explicit ambient-`Observable` construction. These adapters
-make behavioral gaps testable and do not by themselves promise full overload,
-type, or lifecycle parity.
+Next surface. RxJS 7 `bufferCount(size, startBufferEvery?)` is exercised
+through
+`source[buffer]({ maxSize: size, startEvery: startBufferEvery ?? size, emitRemainingOnError: false })`.
+This mapping represents consecutive, overlapping, and gapped count windows,
+completion partials, and the RxJS 7 rule that an error discards partial
+buffers. Static and creation functions may similarly map to a static Symbol or
+an explicit ambient-`Observable` construction. These adapters make behavioral
+gaps testable and do not by themselves promise full type or lifecycle parity.
+The current `bufferCount` evidence covers positive buffer sizes and start
+intervals; validation behavior for nonpositive or otherwise invalid values is
+not established by this mapping.
 
 ## Suggested validation ladder
 

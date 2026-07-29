@@ -497,8 +497,15 @@ machine-readable capability registry distinguishes instance operator Symbols,
 static factory Symbols, ambient-platform constructions, and standalone values.
 Pipeable migration invokes `source[targetSymbol](...adaptedArgs)`: exact
 operators retain their arguments, while explicitly recorded unified mappings
-such as `bufferCount → buffer({ maxSize })` adapt the old signature. A similarly
-named platform string method is not treated as RxJS Symbol parity.
+such as
+`bufferCount → buffer({ maxSize, startEvery, emitRemainingOnError: false })`
+adapt the old signature. The count-window configuration starts an initial
+buffer when the producer activates, supports overlapping or gapped windows,
+emits full buffers as they reach `maxSize`, and emits remaining non-empty
+buffers in creation order on completion. Supplying `startEvery` selects this
+count-window mode; when it is omitted, the unified operator's existing
+delay-window behavior is unchanged. A similarly named platform string method
+is not treated as RxJS Symbol parity.
 
 ## Compatibility boundary
 

@@ -29,9 +29,9 @@
       "symbol": "buffer",
       "module": "buffer",
       "adapter": "bufferCount",
-      "mapping": "source[buffer]({ maxSize: bufferSize })",
+      "mapping": "source[buffer]({ maxSize: bufferSize, startEvery: startBufferEvery ?? bufferSize, emitRemainingOnError: false })",
       "status": "Partial unified mapping",
-      "note": "Equivalent for non-overlapping buffers; startBufferEvery variants remain parity failures."
+      "note": "Adapts count-sized buffers, including overlapping and gapped startBufferEvery windows, completion partials, and RxJS 7 error behavior."
     },
     "bufferTime": {
       "symbol": "buffer",
