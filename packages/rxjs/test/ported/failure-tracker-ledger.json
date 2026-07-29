@@ -18814,7 +18814,7 @@
     {
       "id": "spec/operators/repeat-spec.ts:15:repeat operator > should resubscribe count number of times",
       "group": "repeat",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -18822,16 +18822,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/repeat-spec.ts:30:repeat operator > should resubscribe multiple times",
       "group": "repeat",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -18839,16 +18836,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/repeat-spec.ts:46:repeat operator > should complete without emit when count is zero",
       "group": "repeat",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -18856,16 +18850,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/repeat-spec.ts:57:repeat operator > should emit source once when count is one",
       "group": "repeat",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -18873,10 +18864,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -18924,7 +18912,7 @@
     {
       "id": "spec/operators/repeat-spec.ts:127:repeat operator > should consider negative count as no repeat, and return EMPTY",
       "group": "repeat",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -18932,10 +18920,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest exceeded maxTaskExecutions (100000)."
     },
     {
@@ -18972,7 +18957,7 @@
     {
       "id": "spec/operators/repeat-spec.ts:201:repeat operator > should complete immediately when source does not complete without emit but count is zero",
       "group": "repeat",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -18980,16 +18965,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/repeat-spec.ts:212:repeat operator > should complete immediately when source does not complete but count is zero",
       "group": "repeat",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -18997,10 +18979,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -19023,7 +19002,7 @@
     {
       "id": "spec/operators/repeat-spec.ts:234:repeat operator > should complete when source is empty",
       "group": "repeat",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19031,16 +19010,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest subscriptions assertion failed."
     },
     {
       "id": "spec/operators/repeat-spec.ts:245:repeat operator > should complete when source does not emit",
       "group": "repeat",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19048,16 +19024,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/repeat-spec.ts:260:repeat operator > should complete immediately when source does not emit but count is zero",
       "group": "repeat",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19065,10 +19038,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -19091,7 +19061,7 @@
     {
       "id": "spec/operators/repeat-spec.ts:365:repeat operator > should allow count configuration",
       "group": "repeat",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19099,16 +19069,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/repeat-spec.ts:380:repeat operator > should allow delay time configuration",
       "group": "repeat",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19116,16 +19083,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/repeat-spec.ts:396:repeat operator > should allow delay function configuration",
       "group": "repeat",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19133,10 +19097,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -19465,7 +19426,7 @@
     {
       "id": "spec/operators/retry-spec.ts:15:retry > should handle a basic source that emits next then errors, count=3",
       "group": "retry",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19473,10 +19434,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest exceeded maxTaskExecutions (100000)."
     },
     {
@@ -19572,7 +19530,7 @@
     {
       "id": "spec/operators/retry-spec.ts:483:retry > with delay config > of a number > should honor count as the max retries",
       "group": "retry",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19580,10 +19538,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest exceeded maxTaskExecutions (100000)."
     },
     {
@@ -24920,7 +24875,7 @@
     {
       "id": "spec/operators/switchMapTo-spec.ts:184:switchMapTo > should switch to an inner cold observable, inner never completes",
       "group": "switchMapTo",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24928,16 +24883,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/switchMapTo-spec.ts:270:switchMapTo > should switch to an inner never",
       "group": "switchMapTo",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24945,16 +24897,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/switchMapTo-spec.ts:313:switchMapTo > should handle a never outer",
       "group": "switchMapTo",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24962,10 +24911,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {

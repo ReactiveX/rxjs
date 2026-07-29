@@ -992,3 +992,27 @@ conformance implementation depends on a runnable harness.
   existing-functionality packet is RX7-SWITCH-MAP-TO; scheduler-specific cases
   remain deferred until the absolute end of P0.T3, and P0.T3 remains the single
   project-level `NEXT` item.
+
+### 2026-07-29 — P0.T3 existing-surface remediation wave 6
+
+- Integrated separate reviewed fixes for three `switchMapTo`
+  never-observation boundaries, `repeat` count semantics, and the RxJS 7
+  `retry` reset-on-success default.
+- `repeat` now treats `count` as the exact total source-activation count and
+  completes without source activation for nonpositive counts. Its focused
+  shared-polyfill coverage verifies that concurrent observers still share each
+  repeated upstream activation.
+- RxJS Next retains its intentional `retry` default of
+  `resetOnSuccess: true`; the RxJS 7 compatibility adapter supplies the legacy
+  `false` default without changing production semantics.
+- Complete 16-shard audits recorded 575 cold passes with 1,763 failures and 577
+  polyfill passes with 1,761 failures, adding 18 cases that pass in both modes
+  and bringing the original fixed cohort to 141. Three count-root spillovers in
+  delay-config cases passed without implementing scheduler behavior.
+- The normal strict gate completed all 16 shards in both modes and remained red
+  on the unresolved queue. No missing API or scheduler behavior was introduced.
+  RX7-TO-ARRAY is the next recommended packet; its polyfill-only
+  multiple-subscription evidence must preserve the shared, ref-counted
+  lifecycle rather than making the polyfill cold.
+- Scheduler-specific work remains deferred until the absolute end of P0.T3,
+  and P0.T3 remains the single project-level `NEXT` item.
