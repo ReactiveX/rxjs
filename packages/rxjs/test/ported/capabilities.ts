@@ -522,9 +522,6 @@ function adaptOperatorArguments(adapter: string, args: readonly unknown[]): read
     case 'firstArgument':
       return args.length === 0 ? [] : [args[0]];
     case 'elementAt':
-      if (args.length > 1) {
-        throw new Error('Unsupported RxJS 7 elementAt(index, defaultValue) overload.');
-      }
       return args;
     case 'endWith':
       if (isSchedulerLike(args.at(-1))) {

@@ -133,9 +133,9 @@
       "symbol": "elementAt",
       "module": "element-at",
       "adapter": "elementAt",
-      "mapping": "source[elementAt](index)",
-      "status": "Present; partial overload",
-      "note": "The RxJS 7 default-value overload is retained as an explicit parity failure."
+      "mapping": "source[elementAt](index, defaultValue?)",
+      "status": "Present; partial empty behavior",
+      "note": "The default-value overload is present; the no-default out-of-range error remains compatibility evidence."
     },
     "endWith": {
       "symbol": "concat",
