@@ -178,6 +178,21 @@ const observationBoundaries = new Map([
     { observable: '^----!', subscriptions: new Map([['e1subs', '^----!']]) },
   ],
   [
+    'spec/operators/exhaustAll-spec.ts:71:exhaust > should handle never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/exhaustAll-spec.ts:140:exhaust > should handle a hot observable of observables, inner never completes',
+    {
+      observable: '^--------------------------!',
+      subscriptions: new Map([['zsubs', '--------------^------------!']]),
+    },
+  ],
+  [
+    'spec/operators/exhaustAll-spec.ts:214:exhaust > should handle a never hot observable',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
     'spec/operators/skipLast-spec.ts:92:skipLast operator > should go on forever on never',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],

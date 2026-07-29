@@ -35,16 +35,20 @@ Observable.prototype[exhaustMap] = function <T, R>(
               subscriber.error(error);
               return;
             }
-            source.subscribe({
-              next: (value) => subscriber.next(value),
-              error: (error) => subscriber.error(error),
-              complete: () => {
-                active--;
-                if (outerComplete && active === 0) {
-                  subscriber.complete();
-                }
+            active++;
+            source.subscribe(
+              {
+                next: (value) => subscriber.next(value),
+                error: (error) => subscriber.error(error),
+                complete: () => {
+                  active--;
+                  if (outerComplete && active === 0) {
+                    subscriber.complete();
+                  }
+                },
               },
-            });
+              { signal: subscriber.signal }
+            );
           }
         },
         error: (error) => subscriber.error(error),
