@@ -26,6 +26,7 @@
     "test:ported:audit:polyfill": "node test/ported/run-mode.mjs audit-polyfill",
     "test:ported:audit:record": "node test/ported/tools/record-mode-audit.mjs",
     "test:ported:report": "node test/ported/report.mjs",
+    "test:ported:failures:generate": "node test/ported/tools/generate-failure-tracker.mjs",
     "test:ported:parity:generate": "node test/ported/tools/generate-parity-doc.mjs",
     "test:ported:parity:check": "node test/ported/tools/generate-parity-doc.mjs --check"
   },

@@ -13,9 +13,12 @@ complete. The user has clarified that preservation in a manifest is not enough:
 all cases must become executable parity registrations even when their
 capabilities are absent. The exhaustive follow-up is complete: 2,201 physical
 test declarations expand to 2,338 uniquely identified registrations, including
-parameterized and source-skipped evidence. Package-boundary work resumes at
-P0.2. A later user-prioritized runner follow-up also removed expected-failure
-quarantine from the default ported command and added live shard progress. The
+parameterized and source-skipped evidence. The user has now temporarily
+prioritized P0.T3: a durable failure ledger and operator/function work queue for
+driving every cold and polyfill parity failure to resolution. Package-boundary
+work at P0.2 remains sequenced immediately afterward. A later user-prioritized
+runner follow-up also removed expected-failure quarantine from the default
+ported command and added live shard progress. The
 user-prioritized repository package-manager migration to pnpm 10 is complete
 without deciding the P0.2 publication boundary. The root developer command
 guide is also concise, task-oriented, and explicit about known failing gates.
@@ -65,9 +68,10 @@ item.
 | `DONE`    | P0.T2d | Materialize every inventoried marble case as an executable parity-test registration                                    |
 | `DONE`    | P0.T2e | Exhaustively convert remaining runnable RxJS 7 marble evidence and expand capability mappings                          |
 | `DONE`    | P0.T2f | Make the default ported-test gate strict and progress-visible                                                          |
+| `NEXT`    | P0.T3  | Resolve the cold and polyfill RxJS 7 parity failures through the durable operator/function work queue                  |
 | `DONE`    | P0.DX1 | Migrate repository workspaces, automation, and contributor tooling from Yarn Classic to pnpm 10                        |
 | `DONE`    | P0.DX2 | Make the root developer command guide concise, accurate, and task-oriented                                             |
-| `NEXT`    | P0.2   | Decide the package map and native-versus-polyfill installation contract                                                |
+| `PLANNED` | P0.2   | Decide the package map and native-versus-polyfill installation contract                                                |
 | `PLANNED` | P0.3   | Restore green builds and coherent public entry points for the selected package map                                     |
 | `PLANNED` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                               |
 | `PLANNED` | P0.5   | Pin the first Observable specification and WPT revisions used as the conformance baseline                              |
@@ -269,6 +273,20 @@ item.
 - Preserved the one proven non-yielding converted program as a registered,
   immediate explicit failure so it cannot freeze its shard. Production source
   was unchanged.
+
+#### P0.T3 completion bar
+
+- `RXJS_7_PORTED_FAILURES.md` retains every cold or polyfill failure by stable
+  case ID, even after the case becomes `FIXED`.
+- Every tracked case belongs to exactly one operator/function work packet and
+  uses only `TODO`, `IN-PROCESS`, `FIXED`, or a `BLOCKED` status with a named
+  dependency.
+- Each packet is resolved at the correct platform, compatibility, harness, or
+  approved-divergence boundary without weakening RxJS 7 behavioral evidence.
+- Complete cold and polyfill audits account for all 2,338 cases, every tracked
+  row is `FIXED`, and the normal strict ported-test gate passes.
+- Completion evidence and the final session log are recorded before restoring
+  P0.2 as the single `NEXT` item.
 
 #### P0.DX1 completion evidence
 
@@ -851,3 +869,26 @@ conformance implementation depends on a runnable harness.
   out intentionally failing or blocked gates.
 - Verified command and project names against the pnpm workspace and restored
   P0.2 as the single `NEXT` item.
+
+### 2026-07-29 — RxJS 7 ported-test failure tracker
+
+- At the user's direction, temporarily moved `NEXT` from P0.2 to P0.T3 and
+  created `RXJS_7_PORTED_FAILURES.md` as the durable operator/function
+  remediation queue.
+- Ran complete 2,338-case cold and polyfill audits. Cold recorded 432 passes
+  and 1,906 failures; polyfill recorded 436 passes and 1,902 failures. Their
+  union contains 1,921 failing case IDs across 140 owner groups: 1,887 fail in
+  both modes, 19 only in cold, and 15 only in polyfill.
+- The first cold attempt hit a Vitest cache-directory race and was rejected
+  because one shard report was absent. The clean rerun merged all 16 cold
+  shards, and the polyfill audit merged all 16 shards on its first attempt.
+- Added a reproducible tracker generator and stable case-ID status ledger.
+  Regeneration preserves resolved rows as `FIXED`, retains active or blocked
+  assignments, and rejects incomplete reports, unknown cases, invalid statuses,
+  unnamed blockers, duplicate rows, or missing work packets.
+- Ran the normal strict ported gate through all 16 shards in both modes. It
+  returned exit code 1 as expected, with both modes failing and no omitted
+  shard. The generator's check mode validates all 1,921 rows and 140 packets.
+- P0.T3 remains the single `NEXT` item. The first recommended unblocked packet
+  is RX7-NEVER: add an explicit observation boundary to the migrated test
+  without changing `NEVER` runtime semantics.
