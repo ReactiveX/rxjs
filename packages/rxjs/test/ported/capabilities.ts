@@ -15,6 +15,7 @@ type StaticFactoryMap = Readonly<Record<string, symbol>>;
 
 export interface PortRuntime {
   readonly [name: string]: unknown;
+  readonly __rxPortMode: PortMode;
   readonly rxTest: (callback: (context: RxTestContext) => void | PromiseLike<void>) => Promise<void>;
   readonly applyOperators: (source: unknown, operators: readonly OperatorDescriptor[]) => unknown;
   readonly expect: typeof chaiExpect;
@@ -204,6 +205,7 @@ export function createRuntime(options: {
   };
 
   const runtime: Record<string, unknown> = {
+    __rxPortMode: mode,
     expect: chaiExpect,
     applyOperators(source: unknown, operators: readonly OperatorDescriptor[]): unknown {
       let current = createOperatorSource(source);

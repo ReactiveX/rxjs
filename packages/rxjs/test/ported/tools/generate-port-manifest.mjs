@@ -107,6 +107,20 @@ const observationBoundaries = new Map([
     'spec/operators/takeLast-spec.ts:91:takeLast operator > should go on forever on never',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
+  [
+    'spec/operators/toArray-spec.ts:25:toArray > should be never when source is never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    "spec/operators/toArray-spec.ts:47:toArray > should be never when source doesn't complete",
+    { observable: '^-----!', subscriptions: new Map([['e1subs', '^-----!']]) },
+  ],
+]);
+const modeAwareSubscriptionExpectations = new Map([
+  [
+    'spec/operators/toArray-spec.ts:80:toArray > should allow multiple subscriptions',
+    new Map([['e1', 1]]),
+  ],
 ]);
 
 const cases = [];
@@ -432,7 +446,14 @@ function buildMigratedProgram({ caseId, callback, imports, sourceFile, support, 
     ? `await rxTest(async (${manualContext}) => {\n${rewriteManualHelperCalls(callbackBody)}\n});`
     : callbackBody;
   const input = `async function migrated(runtime) {\n${helperPrelude}\n${supportSource}\n${migratedBody}\n}`;
-  return transpileMigratedProgram(input, imports, [], true, observationBoundaries.get(caseId));
+  return transpileMigratedProgram(
+    input,
+    imports,
+    [],
+    true,
+    observationBoundaries.get(caseId),
+    modeAwareSubscriptionExpectations.get(caseId)
+  );
 }
 
 function rewriteManualHelperCalls(source) {
@@ -633,7 +654,8 @@ function transpileMigratedProgram(
   imports,
   extraTransformers = [],
   injectRuntime = true,
-  observationBoundary
+  observationBoundary,
+  modeAwareSubscriptionExpectation
 ) {
   const standalonePipeLocals = new Set(
     imports.filter((item) => item.module === 'rxjs' && item.imported === 'pipe').map((item) => item.local)
@@ -647,7 +669,12 @@ function transpileMigratedProgram(
     transformers: {
       before: [
         ...extraTransformers,
-        createMigrationTransformer({ standalonePipeLocals, operatorLocals, observationBoundary }),
+        createMigrationTransformer({
+          standalonePipeLocals,
+          operatorLocals,
+          observationBoundary,
+          modeAwareSubscriptionExpectation,
+        }),
       ],
     },
   }).outputText;
@@ -660,6 +687,9 @@ function transpileMigratedProgram(
   }
   if (/\bexpect\s*\(/.test(transformed) && !usedRuntimeNames.includes('expect')) {
     usedRuntimeNames.push('expect');
+  }
+  if (/\b__rxPortMode\b/.test(transformed)) {
+    usedRuntimeNames.push('__rxPortMode');
   }
 
   if (!injectRuntime) {
@@ -771,7 +801,32 @@ function replaceSubscriptionBoundary(initializer, replacement, factory) {
   return initializer;
 }
 
-function createMigrationTransformer({ standalonePipeLocals, operatorLocals, observationBoundary }) {
+function getModeAwareSubscriptionTarget(node) {
+  if (
+    !ts.isPropertyAccessExpression(node.expression) ||
+    node.expression.name.text !== 'toBe' ||
+    !ts.isCallExpression(node.expression.expression)
+  ) {
+    return undefined;
+  }
+  const expectation = node.expression.expression;
+  const source = expectation.arguments[0];
+  return ts.isIdentifier(expectation.expression) &&
+    expectation.expression.text === 'expectSubscriptions' &&
+    source &&
+    ts.isPropertyAccessExpression(source) &&
+    source.name.text === 'subscriptions' &&
+    ts.isIdentifier(source.expression)
+    ? source.expression.text
+    : undefined;
+}
+
+function createMigrationTransformer({
+  standalonePipeLocals,
+  operatorLocals,
+  observationBoundary,
+  modeAwareSubscriptionExpectation,
+}) {
   return (context) => {
     const { factory } = context;
     const operatorBindings = new Set();
@@ -851,6 +906,40 @@ function createMigrationTransformer({ standalonePipeLocals, operatorLocals, obse
       }
 
       if (ts.isCallExpression(node)) {
+        const modeAwareTarget = modeAwareSubscriptionExpectation && getModeAwareSubscriptionTarget(node);
+        const platformSubscriptionCount =
+          modeAwareTarget && modeAwareSubscriptionExpectation.get(modeAwareTarget);
+        const coldSubscriptionExpectation = node.arguments[0];
+        if (
+          platformSubscriptionCount !== undefined &&
+          coldSubscriptionExpectation &&
+          ts.isArrayLiteralExpression(coldSubscriptionExpectation)
+        ) {
+          const visitedColdExpectation = ts.visitEachChild(coldSubscriptionExpectation, visit, context);
+          const platformExpectation = factory.updateArrayLiteralExpression(
+            visitedColdExpectation,
+            visitedColdExpectation.elements.slice(0, platformSubscriptionCount)
+          );
+          return factory.updateCallExpression(
+            node,
+            ts.visitNode(node.expression, visit),
+            node.typeArguments,
+            [
+              factory.createConditionalExpression(
+                factory.createBinaryExpression(
+                  factory.createIdentifier('__rxPortMode'),
+                  ts.SyntaxKind.EqualsEqualsEqualsToken,
+                  factory.createStringLiteral('cold')
+                ),
+                factory.createToken(ts.SyntaxKind.QuestionToken),
+                visitedColdExpectation,
+                factory.createToken(ts.SyntaxKind.ColonToken),
+                platformExpectation
+              ),
+              ...node.arguments.slice(1).map((argument) => ts.visitNode(argument, visit)),
+            ]
+          );
+        }
         if (
           observationBoundary &&
           ts.isIdentifier(node.expression) &&

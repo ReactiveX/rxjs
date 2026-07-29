@@ -561,6 +561,15 @@ fallback constructor. Dedicated platform cases prove shared activation,
 individual observer cancellation, ref-count restart, and global construction
 where legacy cold expectations would be misleading.
 
+An exact migrated case may receive the internal port mode only when its
+subscription-multiplicity assertion intentionally differs between the RxJS 7
+cold lifecycle and the shared platform lifecycle. The generated cold branch
+must retain the original subscription evidence; the platform branch may change
+only the affected lifecycle expectation, such as two concurrent observers
+sharing one upstream subscription. Mode-aware rewrites must not hide value,
+error, completion, or cancellation mismatches, and they must not make the
+platform implementation cold.
+
 The default cold and polyfill gates register all 2,338 source cases as ordinary
 tests. Known implementation, capability, conversion, lifecycle, source-skip,
 and duplicate dispositions do not alter Vitest semantics: a test that throws
