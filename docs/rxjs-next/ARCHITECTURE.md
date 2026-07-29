@@ -443,6 +443,13 @@ not a claim about the present branch.
 The mixture of Symbol extensions, classes, factories, and standalone functions
 is exploratory. The canonical public shape remains open.
 
+The numeric form of the Symbol-keyed `debounce` uses host timers rather than an
+RxJS scheduler. Each source value replaces the pending timer, normal source
+completion flushes the pending value immediately before completing, and result
+cancellation clears the timer through the platform subscriber lifecycle.
+Concurrent fallback observers share that one active timer and source
+subscription; numeric debounce does not introduce cold-per-observer work.
+
 `Subject.asObservable()` does not add a string-named method to
 `Observable.prototype`. The returned base-Observable view forwards
 `next`/`error`/`complete` from the Subject, delegates cancellation through the

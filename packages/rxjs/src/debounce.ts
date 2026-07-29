@@ -28,6 +28,8 @@ Observable.prototype[debounce] = function <T>(
       subscriber.next(lastValue);
     };
 
+    subscriber.addTeardown(() => innerController?.abort());
+
     this.subscribe(
       {
         next: (value) => {
@@ -39,10 +41,7 @@ Observable.prototype[debounce] = function <T>(
           const signal = AbortSignal.any([subscriber.signal, innerController.signal]);
 
           if (typeof delay === 'number') {
-            const id = setTimeout(() => {
-              innerController = null;
-              subscriber.next(lastValue);
-            }, delay);
+            const id = setTimeout(emitPendingValue, delay);
             innerController.signal.addEventListener(
               'abort',
               () => {
@@ -71,12 +70,8 @@ Observable.prototype[debounce] = function <T>(
         },
         error: (error) => subscriber.error(error),
         complete: () => {
-          if (typeof delay !== 'number') {
-            emitPendingValue();
-          }
-          if (innerController === null) {
-            subscriber.complete();
-          }
+          emitPendingValue();
+          subscriber.complete();
         },
       },
       { signal: subscriber.signal }

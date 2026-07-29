@@ -154,6 +154,13 @@ latest source value pending, and normal source completion flushes that value
 before completing. Source errors and result cancellation discard pending state
 and abort active selector work.
 
+Numeric `debounce`, used by the current `debounceTime(milliseconds)` mapping,
+resets a single host timer for each source value and flushes the pending value
+immediately on normal source completion. Source error or result cancellation
+discards the pending value and cancels the timer through `AbortSignal`.
+Concurrent platform observers share one timer and source activation. This
+mapping does not represent the RxJS 7 scheduler overload.
+
 For operators that overlap with platform methods, both the string-named
 platform form and Symbol-keyed RxJS form are required. Parity work must record
 whether the RxJS form delegates, which additional functionality it supplies,

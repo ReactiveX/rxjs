@@ -457,6 +457,21 @@ const observationBoundaries = new Map([
     { observable: boundedSubscription(0, 1), subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]) },
   ],
   [
+    'spec/operators/debounceTime-spec.ts:136:debounceTime > should debounce and does not complete when source does not completes',
+    {
+      observable: boundedSubscription(0, 27),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 27)]]),
+    },
+  ],
+  [
+    'spec/operators/debounceTime-spec.ts:148:debounceTime > should not completes when source does not completes',
+    { observable: boundedSubscription(0, 1), subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]) },
+  ],
+  [
+    'spec/operators/debounceTime-spec.ts:160:debounceTime > should not completes when source never completes',
+    { observable: boundedSubscription(0, 1), subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]) },
+  ],
+  [
     'spec/operators/withLatestFrom-spec.ts:156:withLatestFrom > should handle never',
     {
       observable: '^-------------------!',

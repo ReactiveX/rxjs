@@ -119,7 +119,7 @@
       "adapter": "firstArgument",
       "mapping": "source[debounce](milliseconds)",
       "status": "Partial unified mapping",
-      "note": "Scheduler arguments are not represented."
+      "note": "Numeric delays reset a host timer, flush on completion, and cancel via AbortSignal. Scheduler arguments are not represented."
     },
     "defaultIfEmpty": {
       "symbol": "defaultIfEmpty",

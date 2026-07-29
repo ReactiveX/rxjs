@@ -362,3 +362,19 @@ Status meanings:
   selector work through `AbortSignal`. Concurrent result observers retain one
   shared, ref-counted activation. This decision does not change the numeric
   delay form or add scheduler overloads.
+
+## D-019 — Flush numeric debounce state on source completion
+
+- **Status:** Accepted
+- **Decision:** In the numeric-delay form of the Symbol-keyed `debounce`, each
+  source value replaces the preceding host timer. A timer emits the latest
+  pending value once. Normal source completion emits a pending value
+  immediately before completing rather than waiting for its timer.
+- **Rationale:** The numeric delay governs silence between source values; it
+  must not postpone the source's terminal notification or strand the final
+  value after the source has completed.
+- **Consequence:** Source error and result cancellation discard pending state
+  and cancel the host timer through `AbortSignal`. Concurrent result observers
+  share one source activation and one timer under the platform lifecycle. This
+  decision does not add scheduler arguments, scheduler injection, providers,
+  or `SchedulerLike` compatibility.
