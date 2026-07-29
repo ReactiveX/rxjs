@@ -71,6 +71,10 @@ const observationBoundaries = new Map([
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
   [
+    'spec/operators/skipLast-spec.ts:92:skipLast operator > should go on forever on never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
     'spec/operators/switchAll-spec.ts:144:switchAll > should handle a hot observable of observables, inner never completes',
     {
       observable: '^-----------------------------!',
@@ -79,6 +83,10 @@ const observationBoundaries = new Map([
   ],
   [
     'spec/operators/switchAll-spec.ts:225:switchAll > should handle a never hot observable',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/takeLast-spec.ts:91:takeLast operator > should go on forever on never',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
 ]);
