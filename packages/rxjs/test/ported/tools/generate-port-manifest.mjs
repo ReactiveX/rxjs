@@ -53,6 +53,24 @@ const observationBoundaries = new Map([
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
   [
+    'spec/operators/mergeAll-spec.ts:247:mergeAll > should merge never and empty',
+    { observable: '^--------!', subscriptions: new Map([['xsubs', '--^------!']]) },
+  ],
+  [
+    'spec/operators/mergeAll-spec.ts:264:mergeAll > should merge never and never',
+    {
+      observable: '^--------!',
+      subscriptions: new Map([
+        ['xsubs', '--^------!'],
+        ['ysubs', '-----^---!'],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/mergeAll-spec.ts:360:mergeAll > should take a never source and return never too',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
     'spec/operators/switchAll-spec.ts:144:switchAll > should handle a hot observable of observables, inner never completes',
     {
       observable: '^-----------------------------!',
