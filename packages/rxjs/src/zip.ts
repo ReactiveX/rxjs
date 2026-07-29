@@ -23,12 +23,7 @@ export function zip<Sources extends readonly ObservableValue<any>[], Fill = neve
     const sourceCount = sources.length;
     const fillValue = config.fillAfterComplete;
 
-    if (sourceCount === 0) {
-      subscriber.complete();
-      return;
-    }
-
-    for (let i = 0; i < sourceCount && subscriber.active; i++) {
+    for (let i = 0; i < sourceCount; i++) {
       Observable.from(sources[i]).subscribe(
         {
           next: (value) => {
@@ -38,9 +33,6 @@ export function zip<Sources extends readonly ObservableValue<any>[], Fill = neve
 
             if (everyOtherSourceHasAValue || isFillTime) {
               subscriber.next(state.map(({ buffer }, bufferIndex) => (bufferIndex === i ? value : (buffer.shift() ?? fillValue!))) as any);
-              if (!shouldFill && state.some(({ buffer, complete }) => complete && buffer.length === 0)) {
-                subscriber.complete();
-              }
             } else {
               state[i].buffer.push(value);
             }
@@ -48,11 +40,6 @@ export function zip<Sources extends readonly ObservableValue<any>[], Fill = neve
           error: (error) => subscriber.error(error),
           complete: () => {
             state[i].complete = true;
-
-            if (!shouldFill && state[i].buffer.length === 0) {
-              subscriber.complete();
-              return;
-            }
 
             while (shouldFill && state.every(({ complete, buffer }) => complete || buffer.length > 0)) {
               subscriber.next(state.map(({ buffer }) => buffer.shift() ?? fillValue) as any);

@@ -427,22 +427,3 @@ Status meanings:
   close all active work through `AbortSignal`. The platform fallback retains
   one shared, ref-counted source and duration activation for concurrent
   observers; this decision does not introduce cold-per-subscription behavior.
-
-## D-022 — Complete zip when a tuple can no longer be formed
-
-- **Status:** Accepted
-- **Decision:** The standalone `zip(sources)` buffers values by input and
-  completes when any completed input's buffer becomes empty, either when that
-  input completes or after its final buffered value is consumed. An empty
-  source list completes immediately. The exploratory `fillAfterComplete` mode
-  remains separate from this ordinary completion rule.
-- **Rationale:** Once a completed input has no buffered value, no future input
-  activity can form another complete tuple. Waiting for every other input to
-  complete leaves the result open unnecessarily and retains work that cannot
-  contribute another value.
-- **Consequence:** Terminal completion aborts every still-active input through
-  the result subscriber's signal, and synchronous activation stops once the
-  result has terminated. Concurrent fallback observers retain one shared,
-  ref-counted zipped activation until completion or the final observer aborts.
-  This decision does not add projection, scheduler, or operator overloads and
-  does not recreate RxJS 7 cold-per-subscription behavior.

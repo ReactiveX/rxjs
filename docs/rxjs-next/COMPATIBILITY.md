@@ -272,14 +272,6 @@ with a false result concluding inequality and a thrown error terminating the
 result and cancelling both inputs. Concurrent observers share that comparison
 work through the platform Observable lifecycle.
 
-Non-projection RxJS 7 `zip(...sources)` calls map to the standalone
-`zip(sources)` function. Variadic inputs are adapted to the current source
-array, but result-selector and scheduler overloads are not represented. The
-result emits tuples in input order and completes as soon as a completed input's
-buffer is empty. Active inputs are cancelled on that terminal condition.
-Concurrent platform observers still share one ref-counted zipped activation;
-the mapping does not recreate RxJS 7 cold-per-subscription behavior.
-
 RxJS 7 `audit(durationSelector)` maps to the unified `throttle` Symbol with
 `{ leading: false, trailing: true, restartOnTrailing: false }`. Ordinary
 RxJS 7 `throttle` arguments map directly. A duration value closes the current
