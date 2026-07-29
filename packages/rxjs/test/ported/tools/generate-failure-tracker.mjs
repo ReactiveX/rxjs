@@ -219,7 +219,12 @@ function mergeLedger({ capturedAt, cold, existingLedger, manifest, polyfill }) {
     }
     const failingModes = modesFor(testCase.id, cold.failed, polyfill.failed);
     const firstObservedModes = existing?.firstObservedModes ?? failingModes;
-    const status = failingModes.length === 0 ? 'FIXED' : existing?.status === 'FIXED' || !existing ? 'TODO' : existing.status;
+    const status =
+      failingModes.length === 0 && testCase.disposition !== 'missing-api'
+        ? 'FIXED'
+        : existing?.status === 'FIXED' || !existing
+          ? 'TODO'
+          : existing.status;
     cases.push({
       id: testCase.id,
       group: groupFor(testCase),
@@ -356,7 +361,7 @@ function renderTracker({ capturedAt, cold, ledger, manifest, outputPath, polyfil
     '| --- | --- |',
     '| `TODO` | The test is still failing and is not actively assigned. |',
     '| `IN-PROCESS` | A contributor or delegated task is actively investigating or repairing the test. |',
-    '| `FIXED` | The case passes in both cold and polyfill modes in the latest complete audits. |',
+    '| `FIXED` | The represented claim passes in both cold and polyfill modes in the latest complete audits. |',
     '| `BLOCKED` | A named architectural decision, prerequisite, or external dependency prevents the next concrete step. |',
     '',
     'Statuses are preserved in `packages/rxjs/test/ported/failure-tracker-ledger.json` by stable case ID. ' +
