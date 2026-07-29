@@ -39,6 +39,8 @@ Observable.prototype[takeWhile] = function <T>(
             subscriber.complete();
           }
         },
+        error: (error) => subscriber.error(error),
+        complete: () => subscriber.complete(),
       },
       { signal: subscriber.signal }
     );
