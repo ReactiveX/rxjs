@@ -5210,7 +5210,7 @@
     {
       "id": "spec/operators/bufferWhen-spec.ts:266:bufferWhen operator > should handle errors",
       "group": "bufferWhen",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5218,16 +5218,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/bufferWhen-spec.ts:305:bufferWhen operator > should handle throw",
       "group": "bufferWhen",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5235,10 +5232,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -24315,7 +24309,7 @@
     {
       "id": "spec/operators/skipWhile-spec.ts:122:skipWhile > should skip using index with source unsubscribes early",
       "group": "skipWhile",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24323,16 +24317,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/skipWhile-spec.ts:140:skipWhile > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "skipWhile",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24340,10 +24331,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -24802,7 +24790,7 @@
     {
       "id": "spec/operators/switchAll-spec.ts:144:switchAll > should handle a hot observable of observables, inner never completes",
       "group": "switchAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24810,16 +24798,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/switchAll-spec.ts:225:switchAll > should handle a never hot observable",
       "group": "switchAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24827,10 +24812,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -26132,7 +26114,7 @@
     {
       "id": "spec/operators/takeWhile-spec.ts:256:takeWhile > should take elements until unsubscribed",
       "group": "takeWhile",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26140,16 +26122,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/takeWhile-spec.ts:274:takeWhile > should not break unsubscription chain when unsubscribed explicitly",
       "group": "takeWhile",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26157,10 +26136,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {

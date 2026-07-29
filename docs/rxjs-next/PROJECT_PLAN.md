@@ -933,3 +933,23 @@ conformance implementation depends on a runnable harness.
   with small current mappings and their overload/error gaps; scheduler-specific
   cases remain deferred until the absolute end of P0.T3.
 - P0.T3 remains the single project-level `NEXT` item.
+
+### 2026-07-29 — P0.T3 existing-surface remediation wave 3
+
+- Integrated separate reviewed fixes for two `switchAll` never-observation
+  boundaries, `bufferWhen` source-error and synchronous-selector behavior, and
+  the shared `@rxjs/test` same-frame unsubscription contract.
+- `expectObservable` windows are now half-open: observation aborts run before
+  ordinary work on the exact `!` frame. This repaired the two assigned
+  `skipWhile` cases without changing production and also fixed two equivalent
+  `takeWhile` cases.
+- Complete 16-shard audits recorded 537 cold passes with 1,801 failures and 539
+  polyfill passes with 1,799 failures, adding eight cases that pass in both
+  modes. The normal strict gate completed all shards in both modes and remained
+  red on the unresolved queue.
+- All 16 `bufferWhen` cases now pass in both modes. Source errors discard the
+  active partial buffer, and a synchronously throwing closing selector errors
+  the result before source activation.
+- No missing API or scheduler behavior was introduced. Scheduler-specific
+  cases remain deferred until the absolute end of P0.T3, and P0.T3 remains the
+  single project-level `NEXT` item.
