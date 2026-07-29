@@ -86,6 +86,24 @@ const observationBoundaries = new Map([
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
   [
+    'spec/operators/switchMapTo-spec.ts:184:switchMapTo > should switch to an inner cold observable, inner never completes',
+    {
+      observable: '^----------------------------------!',
+      subscriptions: new Map([['xsubs', new Map([[1, '-------------------^---------------!']])]]),
+    },
+  ],
+  [
+    'spec/operators/switchMapTo-spec.ts:270:switchMapTo > should switch to an inner never',
+    {
+      observable: '^-----------------------------!',
+      subscriptions: new Map([['xsubs', new Map([[1, '-------------------^----------!']])]]),
+    },
+  ],
+  [
+    'spec/operators/switchMapTo-spec.ts:313:switchMapTo > should handle a never outer',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
     'spec/operators/takeLast-spec.ts:91:takeLast operator > should go on forever on never',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
@@ -735,6 +753,24 @@ function createDynamicExecutionTransformer(variant) {
   };
 }
 
+function replaceSubscriptionBoundary(initializer, replacement, factory) {
+  if (typeof replacement === 'string' && initializer && ts.isStringLiteralLike(initializer)) {
+    return factory.createStringLiteral(replacement);
+  }
+  if (replacement instanceof Map && initializer && ts.isArrayLiteralExpression(initializer)) {
+    return factory.updateArrayLiteralExpression(
+      initializer,
+      initializer.elements.map((element, index) => {
+        const elementReplacement = replacement.get(index);
+        return typeof elementReplacement === 'string' && ts.isStringLiteralLike(element)
+          ? factory.createStringLiteral(elementReplacement)
+          : element;
+      })
+    );
+  }
+  return initializer;
+}
+
 function createMigrationTransformer({ standalonePipeLocals, operatorLocals, observationBoundary }) {
   return (context) => {
     const { factory } = context;
@@ -776,14 +812,19 @@ function createMigrationTransformer({ standalonePipeLocals, operatorLocals, obse
           }
           const subscriptionBoundary =
             ts.isIdentifier(declaration.name) && observationBoundary?.subscriptions?.get(declaration.name.text);
+          const retainedInitializer = replaceSubscriptionBoundary(
+            declaration.initializer,
+            subscriptionBoundary,
+            factory
+          );
           const retainedDeclaration =
-            subscriptionBoundary && declaration.initializer && ts.isStringLiteralLike(declaration.initializer)
+            retainedInitializer !== declaration.initializer
               ? factory.updateVariableDeclaration(
                   declaration,
                   declaration.name,
                   declaration.exclamationToken,
                   declaration.type,
-                  factory.createStringLiteral(subscriptionBoundary)
+                  retainedInitializer
                 )
               : declaration;
           retained.push(ts.visitEachChild(retainedDeclaration, visit, context));
