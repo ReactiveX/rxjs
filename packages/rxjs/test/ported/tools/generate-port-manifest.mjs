@@ -69,6 +69,21 @@ const observationBoundaries = new Map([
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
   [
+    'spec/operators/audit-spec.ts:369:audit operator > should handle a never source',
+    { observable: '^!', subscriptions: new Map([['subs', '^!']]) },
+  ],
+  [
+    'spec/operators/audit-spec.ts:173:audit operator > should emit no values and never complete if duration is a never',
+    {
+      observable: '^------------------------------!',
+      subscriptions: new Map([['e2subs', '----^--------------------------!']]),
+    },
+  ],
+  [
+    'spec/operators/throttle-spec.ts:355:throttle > should handle a never source',
+    { observable: '^!', subscriptions: new Map([['subs', '^!']]) },
+  ],
+  [
     'spec/observables/concat-spec.ts:99:static concat > should not complete if first source does not completes',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],

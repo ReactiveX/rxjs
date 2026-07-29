@@ -4,71 +4,82 @@ export const throttle: unique symbol = Symbol('throttle');
 
 declare global {
   interface Observable<T> {
-    [throttle]: (delay: number | ((value: T, index: number) => ObservableValue<any>), config?: ThrottleConfig) => Observable<T>;
+    [throttle]: (delay: number | ((value: T, index: number) => ObservableValue<unknown>), config?: ThrottleConfig) => Observable<T>;
   }
 }
 
 interface ThrottleConfig {
   leading?: boolean;
   trailing?: boolean;
+  restartOnTrailing?: boolean;
 }
 
 Observable.prototype[throttle] = function <T>(
   this: Observable<T>,
-  delay: number | ((value: T, index: number) => ObservableValue<any>),
+  delay: number | ((value: T, index: number) => ObservableValue<unknown>),
   config?: ThrottleConfig
 ): Observable<T> {
   return this[create]((subscriber) => {
-    const { leading = true, trailing = false } = config ?? {};
+    const { leading = true, trailing = false, restartOnTrailing = true } = config ?? {};
     let innerController: AbortController | null = null;
     let index = 0;
-    let complete = false;
+    let sourceComplete = false;
     let hasValue = false;
-    let sendValue: T | null = null;
+    let sendValue: T | undefined;
 
-    const sendError = (error: any) => subscriber.error(error);
+    const sendError = (error: unknown) => subscriber.error(error);
 
-    const endThrottling = () => {
-      innerController?.abort();
+    const endThrottling = (controller: AbortController) => {
+      if (innerController !== controller) {
+        return;
+      }
+      controller.abort();
       innerController = null;
 
       if (trailing) {
-        send();
-        if (complete) {
-          subscriber.complete();
-        }
+        send(restartOnTrailing);
+      }
+      if (sourceComplete) {
+        subscriber.complete();
       }
     };
 
-    const cleanupThrottling = () => {
+    const cleanupThrottling = (controller: AbortController) => {
+      if (innerController !== controller) {
+        return;
+      }
       innerController = null;
-      if (complete) {
+      if (sourceComplete) {
         subscriber.complete();
       }
     };
 
     const startThrottle = (value: T) => {
-      innerController = new AbortController();
-      const signal = AbortSignal.any([subscriber.signal, innerController.signal]);
+      const controller = new AbortController();
+      innerController = controller;
+      const signal = AbortSignal.any([subscriber.signal, controller.signal]);
 
       if (typeof delay === 'number') {
-        const id = setTimeout(endThrottling, delay);
+        const id = setTimeout(() => endThrottling(controller), delay);
 
         signal.addEventListener('abort', () => clearTimeout(id), {
           once: true,
         });
       } else {
-        let result: Observable<any>;
+        let result: Observable<unknown>;
         try {
           result = Observable.from(delay(value, index++));
         } catch (error) {
+          if (innerController === controller) {
+            innerController = null;
+          }
           subscriber.error(error);
           return;
         }
         result.subscribe(
           {
-            next: endThrottling,
-            complete: cleanupThrottling,
+            next: () => endThrottling(controller),
+            complete: () => cleanupThrottling(controller),
             error: sendError,
           },
           { signal }
@@ -76,13 +87,13 @@ Observable.prototype[throttle] = function <T>(
       }
     };
 
-    const send = () => {
+    const send = (restartThrottle = true) => {
       if (hasValue) {
         hasValue = false;
-        const value = sendValue!;
-        sendValue = null;
+        const value = sendValue as T;
+        sendValue = undefined;
         subscriber.next(value);
-        if (!complete) {
+        if (restartThrottle && !sourceComplete && subscriber.active) {
           startThrottle(value);
         }
       }
@@ -96,12 +107,17 @@ Observable.prototype[throttle] = function <T>(
           if (!innerController) {
             if (leading) {
               send();
+            } else {
+              startThrottle(value);
             }
           }
         },
         error: sendError,
         complete: () => {
-          complete = true;
+          sourceComplete = true;
+          if (!(trailing && hasValue && innerController)) {
+            subscriber.complete();
+          }
         },
       },
       { signal: subscriber.signal }

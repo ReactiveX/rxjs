@@ -398,3 +398,25 @@ Status meanings:
   ref-counted retry run. `resetOnSuccess` resets both the remaining retry budget
   and selector count. This decision does not change numeric delay scheduling or
   add scheduler providers.
+
+## D-021 — Unify audit and throttle with explicit trailing-window restart
+
+- **Status:** Accepted
+- **Decision:** The Symbol-keyed `throttle` implementation owns both RxJS 7
+  throttle and audit behavior. A duration value closes a window and may emit a
+  pending trailing value; duration completion only cleans up the window and
+  does not emit. Throttle restarts its duration after a trailing emission by
+  default. The audit compatibility adapter supplies `leading: false`,
+  `trailing: true`, and `restartOnTrailing: false`, so the next source value
+  starts the next audit window.
+- **Rationale:** Audit and throttle share duration selection, cancellation,
+  terminal behavior, and leading/trailing state, but differ in who opens the
+  window after a trailing emission. Treating audit as ordinary
+  leading-false/trailing throttle incorrectly creates an extra window from the
+  emitted audit value and changes later values and timing.
+- **Consequence:** Source completion is immediate unless an active duration
+  owns a pending trailing value. That value may be emitted by a duration value
+  before completion. Source, duration, selector, and last-observer termination
+  close all active work through `AbortSignal`. The platform fallback retains
+  one shared, ref-counted source and duration activation for concurrent
+  observers; this decision does not introduce cold-per-subscription behavior.

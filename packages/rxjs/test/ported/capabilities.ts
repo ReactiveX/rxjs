@@ -563,7 +563,7 @@ function adaptOperatorArguments(adapter: string, args: readonly unknown[]): read
     case 'mapTo':
       return [() => Observable.from([args[0]])];
     case 'audit':
-      return [args[0], { leading: false, trailing: true }];
+      return [args[0], { leading: false, trailing: true, restartOnTrailing: false }];
     case 'auditTime':
       return [args[0], { leading: false, trailing: true }];
     case 'buffer':

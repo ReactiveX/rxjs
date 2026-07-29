@@ -272,6 +272,17 @@ with a false result concluding inequality and a thrown error terminating the
 result and cancelling both inputs. Concurrent observers share that comparison
 work through the platform Observable lifecycle.
 
+RxJS 7 `audit(durationSelector)` maps to the unified `throttle` Symbol with
+`{ leading: false, trailing: true, restartOnTrailing: false }`. Ordinary
+RxJS 7 `throttle` arguments map directly. A duration value closes the current
+window; duration completion only reopens the gate and does not emit a trailing
+value. Throttle starts a new duration after a trailing emission, whereas audit
+waits for the next source value. Source completion is immediate unless an
+active duration owns a pending trailing value, in which case that duration may
+emit the final value before completion. Selector, duration, and source errors
+cancel the other active work through the result signal. Concurrent platform
+observers still share one source activation and one active duration.
+
 ## Suggested validation ladder
 
 For each supported operator or creation API:

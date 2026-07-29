@@ -5,9 +5,9 @@
       "symbol": "throttle",
       "module": "throttle",
       "adapter": "audit",
-      "mapping": "source[throttle](durationSelector, { leading: false, trailing: true })",
-      "status": "Partial unified mapping",
-      "note": "Expresses audit through the unified throttle configuration; completion timing remains test-driven."
+      "mapping": "source[throttle](durationSelector, { leading: false, trailing: true, restartOnTrailing: false })",
+      "status": "Present; parity verified",
+      "note": "Adapts audit's duration-next boundary, non-emitting duration completion, source terminal behavior, and cancellation without restarting a duration after a trailing value."
     },
     "auditTime": {
       "symbol": "throttle",

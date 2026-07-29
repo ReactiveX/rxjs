@@ -529,6 +529,14 @@ string method is not treated as RxJS Symbol parity.
 RxJS 7 `buffer(closingNotifier)` uses the same delay-window mode with
 `restartDelay: false`, retaining one notifier subscription across boundary
 values while the default delay-selector mode restarts after every boundary.
+RxJS 7 `audit(durationSelector)` and `throttle(durationSelector, config)` share
+the Symbol-keyed `throttle` implementation. A duration value closes a window;
+duration completion only cleans it up and does not emit a trailing value.
+Throttle starts a new duration after a trailing emission, while the audit
+adapter sets `leading: false`, `trailing: true`, and
+`restartOnTrailing: false` so the next source value starts the next audit
+window. Source completion waits only when an active duration owns a pending
+trailing value.
 
 ## Compatibility boundary
 
