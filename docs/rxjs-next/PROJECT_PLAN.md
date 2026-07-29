@@ -1131,3 +1131,34 @@ conformance implementation depends on a runnable harness.
   introduced. Time- and scheduler-related packets remain deferred until the
   absolute end of P0.T3.
 - P0.T3 remains the single project-level `NEXT` item.
+
+### 2026-07-29 — P0.T3 existing-surface remediation wave 11
+
+- Integrated separate reviewed commits for finite `concatWith`, legacy concat,
+  and `retry` observation boundaries; selector and numeric `debounce`
+  lifecycles; retry delay-notifier ownership; and the unified `audit`/`throttle`
+  implementation.
+- A proposed rewrite of legacy `concat(e2, testScheduler)` was rejected because
+  removing the scheduler argument would weaken the original behavioral claim.
+  That case and the explicit concat/endWith scheduler overloads remain
+  untouched in the scheduler-last queue.
+- Selector debounce now retains values across empty selector completion and
+  flushes on source completion. Numeric debounce resets one host timer, flushes
+  on source completion, and cancels that timer through the result lifecycle.
+- Retry delay selectors now receive one-based counts even with an infinite
+  budget. A notifier's first value cancels it before the next source attempt;
+  notifier completion, error, and selector failure terminate through their
+  documented paths.
+- `audit` and `throttle` share one Symbol implementation while retaining their
+  distinct trailing-window restart behavior. Focused tests preserve one
+  ref-counted source and duration activation for concurrent polyfill observers;
+  no mode-specific value rewrite or cold fallback was introduced.
+- Complete 16-shard audits recorded 820 cold passes with 1,518 failures and 837
+  polyfill passes with 1,501 failures. That adds 83 passes in each mode with no
+  regressions, including 14 `auditTime`/`throttleTime` spillovers, and brings the
+  original fixed cohort to 402 cases.
+- The normal strict gate completed both modes and remained red on the unresolved
+  queue. No missing API, scheduler argument, scheduler injection, provider, or
+  scheduler-class behavior was introduced. Remaining scheduler-specific concat
+  and endWith cases stay deferred.
+- P0.T3 remains the single project-level `NEXT` item.
