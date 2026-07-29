@@ -541,47 +541,6 @@ const observationBoundaries = new Map([
       ]),
     },
   ],
-  [
-    'spec/observables/zip-spec.ts:17:zip > should combine a source with a second',
-    {
-      observable: boundedSubscription(0, 18),
-      subscriptions: new Map([
-        ['asubs', boundedSubscription(0, 18)],
-        ['bsubs', boundedSubscription(0, 18)],
-      ]),
-    },
-  ],
-  [
-    'spec/observables/zip-spec.ts:148:zip > with iterables > should work with never observable and non-empty iterable',
-    {
-      observable: boundedSubscription(0, 1),
-      subscriptions: new Map([['asubs', boundedSubscription(0, 1)]]),
-    },
-  ],
-  [
-    'spec/observables/zip-spec.ts:355:zip > should work with two nevers',
-    {
-      observable: boundedSubscription(0, 1),
-      subscriptions: new Map([
-        ['asubs', boundedSubscription(0, 1)],
-        ['bsubs', boundedSubscription(0, 1)],
-      ]),
-    },
-  ],
-  [
-    'spec/observables/zip-spec.ts:439:zip > should work with never and non-empty',
-    {
-      observable: boundedSubscription(0, 7),
-      subscriptions: new Map([['asubs', boundedSubscription(0, 7)]]),
-    },
-  ],
-  [
-    'spec/observables/zip-spec.ts:453:zip > should work with non-empty and never',
-    {
-      observable: boundedSubscription(0, 7),
-      subscriptions: new Map([['bsubs', boundedSubscription(0, 7)]]),
-    },
-  ],
 ]);
 // RxJS 7 starts a new producer for every subscription to a reused cold inner.
 // Platform mode instead joins overlapping logical subscriptions to one
