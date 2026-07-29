@@ -443,6 +443,14 @@ not a claim about the present branch.
 The mixture of Symbol extensions, classes, factories, and standalone functions
 is exploratory. The canonical public shape remains open.
 
+The standalone `zip(sources)` buffers one value per input and completes when
+any completed input's buffer is exhausted, because no later tuple can then be
+formed. An empty source list also completes immediately. Result termination
+cancels every active input through the result subscriber's signal, and
+concurrent fallback observers share and ref-count one zipped activation.
+`fillAfterComplete` remains a separate exploratory mode and does not use the
+ordinary exhausted-buffer completion rule.
+
 The numeric form of the Symbol-keyed `debounce` uses host timers rather than an
 RxJS scheduler. Each source value replaces the pending timer, normal source
 completion flushes the pending value immediately before completing, and result
