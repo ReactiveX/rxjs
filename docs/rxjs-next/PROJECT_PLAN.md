@@ -1188,24 +1188,3 @@ conformance implementation depends on a runnable harness.
   polyfill's shared, ref-counted behavior.
 - P0.T3 remains the single project-level `NEXT` item, but further parity work
   remains paused pending user direction.
-
-### 2026-07-29 — P0.T3 existing-surface remediation wave 12
-
-- Resumed the active P0.T3 goal after the performance correction and integrated
-  the remaining mapped numeric `auditTime` lifecycle plus finite
-  `auditTime`/`throttleTime` never-source observation boundaries.
-- `auditTime` now uses the unified throttle implementation without restarting a
-  numeric duration from a trailing emission. Focused fake-timer evidence proves
-  that concurrent polyfill observers retain one shared source activation and
-  timer until the final observer aborts.
-- Rejected proposed rewrites for the remaining `concatMap`, `exhaustMap`, and
-  `switchMap` map-and-flatten cases. Their projected inners require the missing
-  RxJS Symbol `map`; substituting the platform string `map` would violate the
-  API boundary and hide a missing capability. All three remain `TODO`.
-- Complete one-process audits recorded 826 cold passes with 1,512 failures and
-  843 polyfill passes with 1,495 failures. That adds six passes in each mode
-  with no regressions and brings the original fixed cohort to 408 cases.
-- The normal strict gate completed both modes and remained red on the unresolved
-  queue. No missing API, scheduler argument, scheduler injection, provider, or
-  scheduler-class behavior was introduced.
-- P0.T3 remains the single project-level `NEXT` item.
