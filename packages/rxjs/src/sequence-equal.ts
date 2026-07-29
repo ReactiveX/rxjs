@@ -9,59 +9,82 @@ declare global {
   }
 }
 
-Observable.prototype[sequenceEqual] = function <A, B>(this: Observable<A>, other: Observable<B>): Observable<boolean> {
+Observable.prototype[sequenceEqual] = function <T>(this: Observable<T>, other: Observable<T>): Observable<boolean> {
   return this[create]((subscriber) => {
-    const bufferA: A[] = [];
-    const bufferB: B[] = [];
+    let bufferA: T[] = [];
+    let bufferB: T[] = [];
+    let headA = 0;
+    let headB = 0;
     let completeA = false;
     let completeB = false;
 
-    const checkBuffers = () => {
-        if (bufferA.length === bufferB.length) {
-            for (let i = 0; i < bufferA.length; i++) {
-                if (bufferA[i] !== bufferB[i]) {
-                    subscriber.next(false);
-                    subscriber.complete();
-                    return;
-                }
-            }
-            bufferA.length = 0;
-            bufferB.length = 0;
+    const conclude = (equal: boolean): void => {
+      subscriber.next(equal);
+      subscriber.complete();
+    };
+
+    const checkState = (): void => {
+      while (headA < bufferA.length && headB < bufferB.length) {
+        if (bufferA[headA++] !== bufferB[headB++]) {
+          conclude(false);
+          return;
         }
+      }
+
+      if (headA === bufferA.length) {
+        bufferA = [];
+        headA = 0;
+      }
+      if (headB === bufferB.length) {
+        bufferB = [];
+        headB = 0;
+      }
+
+      const hasA = headA < bufferA.length;
+      const hasB = headB < bufferB.length;
+      if ((completeA && !hasA && hasB) || (completeB && !hasB && hasA)) {
+        conclude(false);
+      } else if (completeA && completeB) {
+        conclude(!hasA && !hasB);
+      }
+    };
+
+    this.subscribe(
+      {
+        next: (value) => {
+          bufferA.push(value);
+          checkState();
+        },
+        error: (error) => {
+          subscriber.error(error);
+        },
+        complete: () => {
+          completeA = true;
+          checkState();
+        },
+      },
+      { signal: subscriber.signal }
+    );
+
+    if (!subscriber.active) {
+      return;
     }
 
-    const checkComplete = () => {
-        if (completeA && completeB) {
-            subscriber.next(bufferA.length === bufferB.length && bufferA.every((value, index) => value === bufferB[index]));
-            subscriber.complete();
-        }
-    }
-
-    this.subscribe({
-      next: (value) => {
-        bufferA.push(value);
-        checkBuffers();
+    other.subscribe(
+      {
+        next: (value) => {
+          bufferB.push(value);
+          checkState();
+        },
+        error: (error) => {
+          subscriber.error(error);
+        },
+        complete: () => {
+          completeB = true;
+          checkState();
+        },
       },
-      error: (error) => {
-        subscriber.error(error);
-      },
-      complete: () => {
-        completeA = true;
-        checkComplete();
-      },
-    }, { signal: subscriber.signal });
-    other.subscribe({
-      next: (value) => {
-        bufferB.push(value);
-        checkBuffers();
-      },
-      error: (error) => {
-        subscriber.error(error);
-      },
-      complete: () => {
-        completeB = true;
-        checkComplete();
-      },
-    }, { signal: subscriber.signal });
+      { signal: subscriber.signal }
+    );
   });
-}
+};
