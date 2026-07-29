@@ -3968,7 +3968,7 @@
     {
       "id": "spec/operators/auditTime-spec.ts:15:auditTime > should emit the last value in each time window",
       "group": "auditTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -3976,16 +3976,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/auditTime-spec.ts:41:auditTime > should auditTime events multiple times",
       "group": "auditTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -3993,16 +3990,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/auditTime-spec.ts:54:auditTime > should delay the source if values are not emitted often enough",
       "group": "auditTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4010,16 +4004,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/auditTime-spec.ts:68:auditTime > should handle a busy producer emitting a regular repeating sequence",
       "group": "auditTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4027,10 +4018,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -4064,7 +4052,7 @@
     {
       "id": "spec/operators/auditTime-spec.ts:120:auditTime > should handle a never source",
       "group": "auditTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4072,10 +4060,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -25841,7 +25826,7 @@
     {
       "id": "spec/operators/throttleTime-spec.ts:116:throttleTime operator > default behavior { leading: true, trailing: false } > should handle a never source",
       "group": "throttleTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -25849,10 +25834,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -30797,7 +30779,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Maximum call stack size exceeded"
+      "diagnostic": "expected [Observable] to be an instance of Subject"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:250:TestScheduler > jasmine helpers > time() > should exist",
