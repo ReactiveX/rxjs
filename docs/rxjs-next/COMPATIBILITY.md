@@ -204,6 +204,14 @@ The selector is evaluated before source activation, a synchronous selector
 failure errors the result without activating source work, and a source error
 discards the active partial buffer.
 
+RxJS 7 `withLatestFrom(...others, project?)` is exercised through
+`source[withLatestFrom]([others], project?)`. Latest-only inputs activate before
+the primary source so synchronous and same-frame values are available to the
+first primary emission. Only primary values cause output, and primary
+completion or error terminates the result and cancels every latest-only input.
+The optional projection is part of the Symbol contract. Concurrent observers
+still share the platform Observable's single ref-counted producer run.
+
 ## Suggested validation ladder
 
 For each supported operator or creation API:

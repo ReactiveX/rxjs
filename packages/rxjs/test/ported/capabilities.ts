@@ -568,6 +568,11 @@ function adaptOperatorArguments(adapter: string, args: readonly unknown[]): read
       return [[...sourcesFromArgs(args)]];
     case 'sourcesArrayWithProjection':
       return [[...withoutTrailingFunction(args)]];
+    case 'withLatestFromSourcesArrayWithProjection': {
+      const projection = typeof args.at(-1) === 'function' ? args.at(-1) : undefined;
+      const sources = [...withoutTrailingFunction(args)];
+      return projection === undefined ? [sources] : [sources, projection];
+    }
     case 'mergeSources': {
       const values = [...args];
       const concurrency = typeof values.at(-1) === 'number' ? (values.pop() as number) : undefined;

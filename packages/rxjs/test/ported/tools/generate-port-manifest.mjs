@@ -237,6 +237,13 @@ const observationBoundaries = new Map([
     "spec/operators/toArray-spec.ts:47:toArray > should be never when source doesn't complete",
     { observable: '^-----!', subscriptions: new Map([['e1subs', '^-----!']]) },
   ],
+  [
+    'spec/operators/withLatestFrom-spec.ts:156:withLatestFrom > should handle never',
+    {
+      observable: '^-------------------!',
+      subscriptions: new Map([['e1subs', '^-------------------!']]),
+    },
+  ],
 ]);
 const modeAwareSubscriptionExpectations = new Map([
   [

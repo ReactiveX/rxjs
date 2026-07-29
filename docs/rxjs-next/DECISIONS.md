@@ -288,3 +288,22 @@ Status meanings:
   cancellation. The current evidence establishes positive buffer sizes and
   start intervals only; validation semantics for zero, negative, non-integer,
   or otherwise invalid values remain outside this decision.
+
+## D-016 — Give `withLatestFrom` source-led terminal semantics
+
+- **Status:** Accepted
+- **Decision:** The Symbol-keyed `withLatestFrom` subscribes to latest-only
+  inputs before the primary source, emits only when the primary source emits
+  after every latest-only input has produced a value, and completes or errors
+  with the primary source. It accepts an optional projection over the primary
+  and latest values.
+- **Rationale:** The general `combine` primitive waits for every input to
+  complete and treats its receiver as one configured input. Delegating
+  `withLatestFrom` through that primitive duplicated the primary subscription,
+  produced an extra tuple value, and prevented a finite primary source from
+  completing when a latest-only input never completed.
+- **Consequence:** Latest-only completion does not complete the result, but a
+  latest-only error still errors it. Primary termination aborts all
+  latest-only inputs through the result subscriber's signal. The derived
+  Observable retains platform sharing and ref counting; the operator does not
+  recreate RxJS 7 producer-per-subscription behavior.

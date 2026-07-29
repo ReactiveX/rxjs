@@ -404,10 +404,10 @@
     "withLatestFrom": {
       "symbol": "withLatestFrom",
       "module": "with-latest-from",
-      "adapter": "sourcesArrayWithProjection",
-      "mapping": "source[withLatestFrom]([otherSources])",
-      "status": "Partial unified mapping",
-      "note": "Projection overloads remain unrepresented."
+      "adapter": "withLatestFromSourcesArrayWithProjection",
+      "mapping": "source[withLatestFrom]([otherSources], project?)",
+      "status": "Unified mapping",
+      "note": "Adapts variadic other sources to the current array form and preserves the optional projection overload."
     }
   },
   "staticFactories": {
