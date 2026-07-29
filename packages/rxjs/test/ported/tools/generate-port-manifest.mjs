@@ -41,8 +41,17 @@ const activeCaseLocations = new Set(verifiedColdPasses.locations ?? []);
 const coldBaselineUsesCaseIds = Array.isArray(verifiedColdPasses.caseIds);
 const marbleSignals = ['expectObservable', 'expectSubscriptions', 'createColdObservable', 'createHotObservable'];
 const helperNames = ['cold', 'hot', 'time', 'expectObservable', 'expectSubscriptions', 'animate', 'flush'];
+// Subscription replacements close original open logs only where the synthetic
+// observation boundary itself performs the corresponding unsubscription.
 const observationBoundaries = new Map([
-  ['spec/observables/never-spec.ts:15:NEVER > should create a cold observable that never emits', '^!'],
+  [
+    'spec/observables/never-spec.ts:15:NEVER > should create a cold observable that never emits',
+    { observable: '^!' },
+  ],
+  [
+    'spec/operators/ignoreElements-spec.ts:79:ignoreElements > should handle never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
 ]);
 
 const cases = [];
@@ -728,7 +737,19 @@ function createMigrationTransformer({ standalonePipeLocals, operatorLocals, obse
               operatorBindings.add(declaration.name.text);
             }
           }
-          retained.push(ts.visitEachChild(declaration, visit, context));
+          const subscriptionBoundary =
+            ts.isIdentifier(declaration.name) && observationBoundary?.subscriptions?.get(declaration.name.text);
+          const retainedDeclaration =
+            subscriptionBoundary && declaration.initializer && ts.isStringLiteralLike(declaration.initializer)
+              ? factory.updateVariableDeclaration(
+                  declaration,
+                  declaration.name,
+                  declaration.exclamationToken,
+                  declaration.type,
+                  factory.createStringLiteral(subscriptionBoundary)
+                )
+              : declaration;
+          retained.push(ts.visitEachChild(retainedDeclaration, visit, context));
         }
         if (retained.length === 0) {
           return factory.createEmptyStatement();
@@ -764,7 +785,7 @@ function createMigrationTransformer({ standalonePipeLocals, operatorLocals, obse
             node.typeArguments,
             [
               ...node.arguments.map((argument) => ts.visitNode(argument, visit)),
-              factory.createStringLiteral(observationBoundary),
+              factory.createStringLiteral(observationBoundary.observable),
             ]
           );
         }
