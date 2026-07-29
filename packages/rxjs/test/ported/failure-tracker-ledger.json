@@ -2559,7 +2559,7 @@
     {
       "id": "spec/observables/merge-spec.ts:123:static merge(...observables) > should merge never and empty",
       "group": "merge",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2567,16 +2567,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/observables/merge-spec.ts:139:static merge(...observables) > should merge never and never",
       "group": "merge",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2584,10 +2581,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -7112,7 +7106,7 @@
     {
       "id": "spec/operators/concat-legacy-spec.ts:50:concat operator > should complete without emit if both sources are empty",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7120,10 +7114,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -7158,7 +7149,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "rxTest subscriptions assertion failed."
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/concat-legacy-spec.ts:92:concat operator > should not complete if both sources do not complete",
@@ -7180,7 +7171,7 @@
     {
       "id": "spec/operators/concat-legacy-spec.ts:106:concat operator > should raise error when first source is empty, second source raises error",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7188,16 +7179,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/concat-legacy-spec.ts:148:concat operator > should concat if first source emits once, second source is empty",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7205,16 +7193,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/concat-legacy-spec.ts:162:concat operator > should concat if first source is empty, second source emits once",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7222,10 +7207,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -7243,7 +7225,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "rxTest observable assertion failed."
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/concat-legacy-spec.ts:190:concat operator > should not complete if first source does not complete",
@@ -7265,7 +7247,7 @@
     {
       "id": "spec/operators/concat-legacy-spec.ts:204:concat operator > should emit elements from each source when source emit once",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7273,16 +7255,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/concat-legacy-spec.ts:218:concat operator > should unsubscribe to inner source if outer is unsubscribed early",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7290,16 +7269,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/concat-legacy-spec.ts:233:concat operator > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7307,16 +7283,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/concat-legacy-spec.ts:268:concat operator > should emit element from first source then raise error from second source",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7324,16 +7297,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/concat-legacy-spec.ts:282:concat operator > should emit all elements from both hot observable sources if first source completes before second source starts emit",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7341,16 +7311,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest subscriptions assertion failed."
     },
     {
       "id": "spec/operators/concat-legacy-spec.ts:296:concat operator > should emit elements from second source regardless of completion time when second source is cold observable",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7358,16 +7325,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest subscriptions assertion failed."
     },
     {
       "id": "spec/operators/concat-legacy-spec.ts:310:concat operator > should not emit collapsing element from second source",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7375,10 +7339,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest subscriptions assertion failed."
     },
     {
@@ -7418,7 +7379,7 @@
     {
       "id": "spec/operators/concat-legacy-spec.ts:352:concat operator > should emit self without parameters",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7426,10 +7387,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -7469,7 +7427,7 @@
     {
       "id": "spec/operators/concatAll-spec.ts:206:concatAll operator > should not complete if first source does not completes",
       "group": "concatAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7477,16 +7435,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/concatAll-spec.ts:222:concatAll operator > should not complete if second source does not completes",
       "group": "concatAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7494,16 +7449,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/concatAll-spec.ts:238:concatAll operator > should not complete if both sources do not complete",
       "group": "concatAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7511,16 +7463,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/concatAll-spec.ts:334:concatAll operator > should emit element from first source, and should not complete if second source does not completes",
       "group": "concatAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7528,16 +7477,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/concatAll-spec.ts:350:concatAll operator > should not complete if first source does not complete",
       "group": "concatAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7545,10 +7491,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -7647,7 +7590,7 @@
     {
       "id": "spec/operators/concatMap-spec.ts:145:Observable.prototype.concatMap > should handle a never source",
       "group": "concatMap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7655,16 +7598,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/concatMap-spec.ts:210:Observable.prototype.concatMap > should return a never if the mapped inner is never",
       "group": "concatMap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7672,16 +7612,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/concatMap-spec.ts:272:Observable.prototype.concatMap > should concatMap many outer to many inner, outer never completes",
       "group": "concatMap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7689,16 +7626,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/concatMap-spec.ts:294:Observable.prototype.concatMap > should concatMap many outer to many inner, inner never completes",
       "group": "concatMap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7706,16 +7640,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/concatMap-spec.ts:401:Observable.prototype.concatMap > should concatMap many complex, all inners finite except one",
       "group": "concatMap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7723,16 +7654,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/concatMap-spec.ts:436:Observable.prototype.concatMap > should concatMap many complex, inners finite, outer does not complete",
       "group": "concatMap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7740,10 +7668,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -7903,7 +7828,7 @@
     {
       "id": "spec/operators/concatWith-spec.ts:16:concat operator > should concatenate two cold observables",
       "group": "concatWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7911,16 +7836,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/concatWith-spec.ts:51:concat operator > should complete without emit if both sources are empty",
       "group": "concatWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7928,10 +7850,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -7966,7 +7885,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "rxTest subscriptions assertion failed."
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/concatWith-spec.ts:93:concat operator > should not complete if both sources do not complete",
@@ -7988,7 +7907,7 @@
     {
       "id": "spec/operators/concatWith-spec.ts:107:concat operator > should raise error when first source is empty, second source raises error",
       "group": "concatWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7996,16 +7915,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/concatWith-spec.ts:149:concat operator > should concat if first source emits once, second source is empty",
       "group": "concatWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8013,16 +7929,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/concatWith-spec.ts:163:concat operator > should concat if first source is empty, second source emits once",
       "group": "concatWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8030,10 +7943,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -8051,7 +7961,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "rxTest observable assertion failed."
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/concatWith-spec.ts:191:concat operator > should not complete if first source does not complete",
@@ -8073,7 +7983,7 @@
     {
       "id": "spec/operators/concatWith-spec.ts:205:concat operator > should emit elements from each source when source emit once",
       "group": "concatWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8081,16 +7991,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/concatWith-spec.ts:219:concat operator > should unsubscribe to inner source if outer is unsubscribed early",
       "group": "concatWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8098,16 +8005,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/concatWith-spec.ts:234:concat operator > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "concatWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8115,16 +8019,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/concatWith-spec.ts:269:concat operator > should emit element from first source then raise error from second source",
       "group": "concatWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8132,16 +8033,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/concatWith-spec.ts:283:concat operator > should emit all elements from both hot observable sources if first source completes before second source starts emit",
       "group": "concatWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8149,16 +8047,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest subscriptions assertion failed."
     },
     {
       "id": "spec/operators/concatWith-spec.ts:297:concat operator > should emit elements from second source regardless of completion time when second source is cold observable",
       "group": "concatWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8166,16 +8061,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest subscriptions assertion failed."
     },
     {
       "id": "spec/operators/concatWith-spec.ts:311:concat operator > should not emit collapsing element from second source",
       "group": "concatWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8183,16 +8075,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest subscriptions assertion failed."
     },
     {
       "id": "spec/operators/concatWith-spec.ts:325:concat operator > should emit self without parameters",
       "group": "concatWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8200,10 +8089,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -10845,7 +10731,7 @@
     {
       "id": "spec/operators/endWith-spec.ts:16:endWith > should append to a cold Observable",
       "group": "endWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10853,16 +10739,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/endWith-spec.ts:27:endWith > should append numbers to a cold Observable",
       "group": "endWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10870,16 +10753,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/endWith-spec.ts:39:endWith > should end an observable with given value",
       "group": "endWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10887,16 +10767,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest subscriptions assertion failed."
     },
     {
       "id": "spec/operators/endWith-spec.ts:50:endWith > should not end with given value if source does not complete",
       "group": "endWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10904,16 +10781,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/endWith-spec.ts:61:endWith > should not end with given value if source never emits and does not completes",
       "group": "endWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10921,16 +10795,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/endWith-spec.ts:72:endWith > should end with given value if source does not emit but does complete",
       "group": "endWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10938,16 +10809,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest subscriptions assertion failed."
     },
     {
       "id": "spec/operators/endWith-spec.ts:83:endWith > should emit given value and complete immediately if source is empty",
       "group": "endWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10955,16 +10823,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest subscriptions assertion failed."
     },
     {
       "id": "spec/operators/endWith-spec.ts:94:endWith > should end with given value and source both if source emits single value",
       "group": "endWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10972,16 +10837,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/endWith-spec.ts:105:endWith > should end with given values when given more than one value",
       "group": "endWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10989,10 +10851,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest subscriptions assertion failed."
     },
     {
@@ -11026,7 +10885,7 @@
     {
       "id": "spec/operators/endWith-spec.ts:170:endWith > should end with empty if given value is not specified",
       "group": "endWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11034,10 +10893,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest subscriptions assertion failed."
     },
     {
@@ -11622,7 +11478,7 @@
     {
       "id": "spec/operators/exhaustMap-spec.ts:116:exhaustMap > should handle outer never",
       "group": "exhaustMap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11630,10 +11486,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -11695,7 +11548,7 @@
     {
       "id": "spec/operators/exhaustMap-spec.ts:291:exhaustMap > should switch inner cold observables, inner never completes",
       "group": "exhaustMap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11703,10 +11556,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -11768,7 +11618,7 @@
     {
       "id": "spec/operators/exhaustMap-spec.ts:402:exhaustMap > should switch inner empty and never",
       "group": "exhaustMap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11776,16 +11626,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/exhaustMap-spec.ts:423:exhaustMap > should never switch inner never",
       "group": "exhaustMap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11793,10 +11640,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -15786,7 +15630,7 @@
     {
       "id": "spec/operators/mergeWith-spec.ts:202:merge operator > should merge never and empty",
       "group": "mergeWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15794,16 +15638,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/mergeWith-spec.ts:217:merge operator > should merge never and never",
       "group": "mergeWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15811,10 +15652,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -20384,7 +20222,7 @@
     {
       "id": "spec/operators/sequenceEqual-spec.ts:209:sequenceEqual > should error if the comparator function errors",
       "group": "sequenceEqual",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -20392,16 +20230,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Unsupported RxJS 7 sequenceEqual comparator overload."
     },
     {
       "id": "spec/operators/sequenceEqual-spec.ts:243:sequenceEqual > should use the provided comparator function",
       "group": "sequenceEqual",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -20409,10 +20244,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Unsupported RxJS 7 sequenceEqual comparator overload."
     },
     {
@@ -24591,7 +24423,7 @@
     {
       "id": "spec/operators/switchMap-spec.ts:248:switchMap > should switch inner cold observables, inner never completes",
       "group": "switchMap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24599,16 +24431,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/switchMap-spec.ts:353:switchMap > should switch inner empty and never",
       "group": "switchMap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24616,16 +24445,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/switchMap-spec.ts:450:switchMap > should handle outer never",
       "group": "switchMap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24633,10 +24459,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {

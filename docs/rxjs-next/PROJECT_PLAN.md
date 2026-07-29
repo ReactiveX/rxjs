@@ -1077,3 +1077,32 @@ conformance implementation depends on a runnable harness.
   observation evidence; scheduler-specific work remains deferred until the
   absolute end.
 - P0.T3 remains the single project-level `NEXT` item.
+
+### 2026-07-29 — P0.T3 existing-surface remediation wave 9
+
+- Integrated separate reviewed commits for 22 remaining non-time composition
+  observation boundaries, the instance `concat` receiver lifecycle, and the
+  `sequenceEqual` comparator overload.
+- The harness-only commit added finite horizons for mapped `merge`,
+  `mergeWith`, `concatAll`, `concatMap`, `exhaustMap`, and `switchMap` cases.
+  It closed only source and inner subscriptions still active at the original
+  marble horizon.
+- Instance `concat` had prepended its receiver before delegating to instance
+  `merge`, which prepended the same receiver again. Removing that duplicate
+  activation completed the non-scheduler `endWith` cohort and repaired
+  additional `concatWith` and legacy concat evidence. Focused lifecycle tests
+  prove serial ordering, no append after error, one receiver activation, and
+  ref-counted cancellation after the last polyfill observer leaves.
+- `sequenceEqual` now accepts the existing RxJS 7 comparator overload, calls it
+  once per paired value, concludes on false, propagates comparator errors, and
+  cancels both inputs through the result AbortSignal. Concurrent observers
+  share one comparison run.
+- Complete 16-shard audits recorded 721 cold passes with 1,617 failures and 722
+  polyfill passes with 1,616 failures, adding 59 passes in each mode with no
+  regressions and bringing the original fixed cohort to 287.
+- The normal strict gate completed all 16 shards in both modes and remained red
+  on the unresolved queue. The excluded `endWith` scheduler cases remain
+  untouched. No missing API or scheduler/provider behavior was introduced; the
+  next wave continues with current subjects and other non-time mapped
+  behavior.
+- P0.T3 remains the single project-level `NEXT` item.
