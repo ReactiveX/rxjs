@@ -238,6 +238,130 @@ const observationBoundaries = new Map([
     { observable: '^-----!', subscriptions: new Map([['e1subs', '^-----!']]) },
   ],
   [
+    'spec/observables/merge-spec.ts:123:static merge(...observables) > should merge never and empty',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/observables/merge-spec.ts:139:static merge(...observables) > should merge never and never',
+    {
+      observable: '^!',
+      subscriptions: new Map([
+        ['e1subs', '^!'],
+        ['e2subs', '^!'],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/mergeWith-spec.ts:202:merge operator > should merge never and empty',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/mergeWith-spec.ts:217:merge operator > should merge never and never',
+    {
+      observable: '^!',
+      subscriptions: new Map([
+        ['e1subs', '^!'],
+        ['e2subs', '^!'],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/concatAll-spec.ts:206:concatAll operator > should not complete if first source does not completes',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/concatAll-spec.ts:222:concatAll operator > should not complete if second source does not completes',
+    { observable: '^--!', subscriptions: new Map([['e2subs', '--^!']]) },
+  ],
+  [
+    'spec/operators/concatAll-spec.ts:238:concatAll operator > should not complete if both sources do not complete',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/concatAll-spec.ts:334:concatAll operator > should emit element from first source, and should not complete if second source does not completes',
+    { observable: '^-----!', subscriptions: new Map([['e2subs', '-----^!']]) },
+  ],
+  [
+    'spec/operators/concatAll-spec.ts:350:concatAll operator > should not complete if first source does not complete',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/concatMap-spec.ts:145:Observable.prototype.concatMap > should handle a never source',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/concatMap-spec.ts:210:Observable.prototype.concatMap > should return a never if the mapped inner is never',
+    { observable: '^---------!', subscriptions: new Map([['innersubs', '--^-------!']]) },
+  ],
+  [
+    'spec/operators/concatMap-spec.ts:272:Observable.prototype.concatMap > should concatMap many outer to many inner, outer never completes',
+    {
+      observable: '^------------------------------------------------!',
+      subscriptions: new Map([['e1subs', '^------------------------------------------------!']]),
+    },
+  ],
+  [
+    'spec/operators/concatMap-spec.ts:294:Observable.prototype.concatMap > should concatMap many outer to many inner, inner never completes',
+    { observable: '^-----------------!', subscriptions: new Map([['innersubs', '-^----------------!']]) },
+  ],
+  [
+    'spec/operators/concatMap-spec.ts:401:Observable.prototype.concatMap > should concatMap many complex, all inners finite except one',
+    {
+      observable: '^------------------------------------------------------!',
+      subscriptions: new Map([['dsubs', '-------------------^-----------------------------------!']]),
+    },
+  ],
+  [
+    'spec/operators/concatMap-spec.ts:436:Observable.prototype.concatMap > should concatMap many complex, inners finite, outer does not complete',
+    {
+      observable: '^------------------------------------------------------!',
+      subscriptions: new Map([['e1subs', '^------------------------------------------------------!']]),
+    },
+  ],
+  [
+    'spec/operators/exhaustMap-spec.ts:116:exhaustMap > should handle outer never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/exhaustMap-spec.ts:291:exhaustMap > should switch inner cold observables, inner never completes',
+    {
+      observable: '^--------------------------------------------!',
+      subscriptions: new Map([['zsubs', '-------------------------------^-------------!']]),
+    },
+  ],
+  [
+    'spec/operators/exhaustMap-spec.ts:402:exhaustMap > should switch inner empty and never',
+    {
+      observable: '^-----------------------------!',
+      subscriptions: new Map([['ysubs', '-------------------^----------!']]),
+    },
+  ],
+  [
+    'spec/operators/exhaustMap-spec.ts:423:exhaustMap > should never switch inner never',
+    {
+      observable: '^------------------------------!',
+      subscriptions: new Map([['xsubs', '---------^---------------------!']]),
+    },
+  ],
+  [
+    'spec/operators/switchMap-spec.ts:248:switchMap > should switch inner cold observables, inner never completes',
+    {
+      observable: '^------------------------------------!',
+      subscriptions: new Map([['ysubs', '-------------------^-----------------!']]),
+    },
+  ],
+  [
+    'spec/operators/switchMap-spec.ts:353:switchMap > should switch inner empty and never',
+    {
+      observable: '^-----------------------------!',
+      subscriptions: new Map([['ysubs', '-------------------^----------!']]),
+    },
+  ],
+  [
+    'spec/operators/switchMap-spec.ts:450:switchMap > should handle outer never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
     'spec/operators/withLatestFrom-spec.ts:156:withLatestFrom > should handle never',
     {
       observable: '^-------------------!',
