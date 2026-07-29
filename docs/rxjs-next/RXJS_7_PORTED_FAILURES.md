@@ -593,10 +593,10 @@ Owner source: `spec/operators/debounceTime-spec.ts`
 
 Owner source: `spec/operators/defaultIfEmpty-spec.ts`
 
-| Case ID                                                                                                                         | Behavioral test                                                     | Source                                     | Failing mode    | Classification | Disposition        | Concise failure                     | Status |
-| ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------ | --------------- | -------------- | ------------------ | ----------------------------------- | ------ |
-| `spec/operators/defaultIfEmpty-spec.ts:59:defaultIfEmpty > should allow unsubscribing early and explicitly`                     | should allow unsubscribing early and explicitly                     | `spec/operators/defaultIfEmpty-spec.ts:59` | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed. | `TODO` |
-| `spec/operators/defaultIfEmpty-spec.ts:73:defaultIfEmpty > should not break unsubscription chains when unsubscribed explicitly` | should not break unsubscription chains when unsubscribed explicitly | `spec/operators/defaultIfEmpty-spec.ts:73` | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed. | `TODO` |
+| Case ID                                                                                                                         | Behavioral test                                                     | Source                                     | Failing mode    | Classification | Disposition        | Concise failure                     | Status       |
+| ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------ | --------------- | -------------- | ------------------ | ----------------------------------- | ------------ |
+| `spec/operators/defaultIfEmpty-spec.ts:59:defaultIfEmpty > should allow unsubscribing early and explicitly`                     | should allow unsubscribing early and explicitly                     | `spec/operators/defaultIfEmpty-spec.ts:59` | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed. | `IN-PROCESS` |
+| `spec/operators/defaultIfEmpty-spec.ts:73:defaultIfEmpty > should not break unsubscription chains when unsubscribed explicitly` | should not break unsubscription chains when unsubscribed explicitly | `spec/operators/defaultIfEmpty-spec.ts:73` | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed. | `IN-PROCESS` |
 
 ### `defer`
 
@@ -1459,9 +1459,9 @@ Owner source: `spec/deprecation-equivalents/multicasting-deprecations-spec.ts`
 
 Owner source: `spec/observables/never-spec.ts`
 
-| Case ID                                                                                      | Behavioral test                                  | Source                              | Failing mode    | Classification | Disposition        | Concise failure                                                                                      | Status |
-| -------------------------------------------------------------------------------------------- | ------------------------------------------------ | ----------------------------------- | --------------- | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------ |
-| `spec/observables/never-spec.ts:15:NEVER > should create a cold observable that never emits` | should create a cold observable that never emits | `spec/observables/never-spec.ts:15` | cold + polyfill | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `TODO` |
+| Case ID                                                                                      | Behavioral test                                  | Source                              | Failing mode    | Classification | Disposition        | Concise failure                                                                                      | Status       |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------ | ----------------------------------- | --------------- | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------------ |
+| `spec/observables/never-spec.ts:15:NEVER > should create a cold observable that never emits` | should create a cold observable that never emits | `spec/observables/never-spec.ts:15` | cold + polyfill | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `IN-PROCESS` |
 
 ### `Notification`
 
@@ -1714,12 +1714,12 @@ Owner source: `spec/operators/race-legacy-spec.ts`
 
 Owner source: `spec/operators/raceWith-spec.ts`
 
-| Case ID                                                                                                                       | Behavioral test                                                     | Source                                | Failing mode    | Classification | Disposition        | Concise failure                     | Status |
-| ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------- | --------------- | -------------- | ------------------ | ----------------------------------- | ------ |
-| `spec/operators/raceWith-spec.ts:113:raceWith operator > should not break unsubscription chains when unsubscribed explicitly` | should not break unsubscription chains when unsubscribed explicitly | `spec/operators/raceWith-spec.ts:113` | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed. | `TODO` |
-| `spec/operators/raceWith-spec.ts:134:raceWith operator > should never emit when given non emitting sources`                   | should never emit when given non emitting sources                   | `spec/operators/raceWith-spec.ts:134` | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed. | `TODO` |
-| `spec/operators/raceWith-spec.ts:80:raceWith operator > should race emit and complete`                                        | should race emit and complete                                       | `spec/operators/raceWith-spec.ts:80`  | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed. | `TODO` |
-| `spec/operators/raceWith-spec.ts:96:raceWith operator > should allow unsubscribing early and explicitly`                      | should allow unsubscribing early and explicitly                     | `spec/operators/raceWith-spec.ts:96`  | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed. | `TODO` |
+| Case ID                                                                                                                       | Behavioral test                                                     | Source                                | Failing mode    | Classification | Disposition        | Concise failure                     | Status       |
+| ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------- | --------------- | -------------- | ------------------ | ----------------------------------- | ------------ |
+| `spec/operators/raceWith-spec.ts:113:raceWith operator > should not break unsubscription chains when unsubscribed explicitly` | should not break unsubscription chains when unsubscribed explicitly | `spec/operators/raceWith-spec.ts:113` | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed. | `IN-PROCESS` |
+| `spec/operators/raceWith-spec.ts:134:raceWith operator > should never emit when given non emitting sources`                   | should never emit when given non emitting sources                   | `spec/operators/raceWith-spec.ts:134` | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed. | `IN-PROCESS` |
+| `spec/operators/raceWith-spec.ts:80:raceWith operator > should race emit and complete`                                        | should race emit and complete                                       | `spec/operators/raceWith-spec.ts:80`  | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed. | `IN-PROCESS` |
+| `spec/operators/raceWith-spec.ts:96:raceWith operator > should allow unsubscribing early and explicitly`                      | should allow unsubscribing early and explicitly                     | `spec/operators/raceWith-spec.ts:96`  | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed. | `IN-PROCESS` |
 
 ### `range`
 
@@ -2944,7 +2944,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 ### RX7-NEVER — `never`
 
-- **Packet status:** `TODO`
+- **Packet status:** `IN-PROCESS`
 - **Evidence:** 1 tracked case(s); 1 cold failures; 1 polyfill failures; 0 fixed.
 - **Current surface/gap:** 1 known mapped mismatch(es).
 - **Required classification review:** 1 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
@@ -2978,7 +2978,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 ### RX7-DEFAULT-IF-EMPTY — `defaultIfEmpty`
 
-- **Packet status:** `TODO`
+- **Packet status:** `IN-PROCESS`
 - **Evidence:** 2 tracked case(s); 2 cold failures; 2 polyfill failures; 0 fixed.
 - **Current surface/gap:** 2 known mapped mismatch(es).
 - **Required classification review:** 2 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
@@ -3051,7 +3051,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 ### RX7-RACE-WITH — `raceWith`
 
-- **Packet status:** `TODO`
+- **Packet status:** `IN-PROCESS`
 - **Evidence:** 4 tracked case(s); 4 cold failures; 4 polyfill failures; 0 fixed.
 - **Current surface/gap:** 4 known mapped mismatch(es).
 - **Required classification review:** 4 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
