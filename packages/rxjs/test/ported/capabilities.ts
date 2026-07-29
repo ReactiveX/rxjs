@@ -1,4 +1,4 @@
-import { expect as chaiExpect } from 'chai';
+import { Assertion as ChaiAssertion, expect as chaiExpect, util as chaiUtil } from 'chai';
 import type { RxTestContext } from '../../../test/src/index.js';
 import capabilityRegistry from './capability-registry.json' with { type: 'json' };
 import type { PortedImport, PortedMarbleCase, PortMode } from './types.js';
@@ -9,6 +9,23 @@ interface OperatorDescriptor {
 }
 
 const composedOperatorName = '\0rxjs7-pipe';
+const chaiInspect = Symbol.for('chai/inspect');
+const portedObservableDisplayFlag = 'rxjsPortedObservableDisplay';
+const originalChaiAssert = ChaiAssertion.prototype.assert;
+
+export const portedExpect = ((actual: unknown, message?: string) => {
+  const assertion = chaiExpect(actual, message);
+  chaiUtil.flag(assertion, portedObservableDisplayFlag, true);
+  return assertion;
+}) as typeof chaiExpect;
+
+ChaiAssertion.prototype.assert = function (...args: Parameters<typeof originalChaiAssert>): void {
+  if (!chaiUtil.flag(this, portedObservableDisplayFlag)) {
+    return originalChaiAssert.apply(this, args);
+  }
+  const actual = chaiUtil.flag(this, 'object');
+  return withObservableAssertionDisplay(actual, () => originalChaiAssert.apply(this, args));
+};
 
 type SymbolMap = Readonly<Record<string, symbol>>;
 type StaticFactoryMap = Readonly<Record<string, symbol>>;
@@ -206,7 +223,7 @@ export function createRuntime(options: {
 
   const runtime: Record<string, unknown> = {
     __rxPortMode: mode,
-    expect: chaiExpect,
+    expect: portedExpect,
     applyOperators(source: unknown, operators: readonly OperatorDescriptor[]): unknown {
       let current = createOperatorSource(source);
       for (const operator of operators) {
@@ -303,7 +320,39 @@ function installImport(
     return;
   }
   if (imported.module === 'chai' && imported.imported === 'expect') {
-    runtime[imported.local] = chaiExpect;
+    runtime[imported.local] = portedExpect;
+  }
+}
+
+function withObservableAssertionDisplay<T>(value: unknown, work: () => T): T {
+  const ObservableConstructor = globalThis.Observable;
+  if (
+    typeof ObservableConstructor !== 'function' ||
+    (typeof value !== 'object' && typeof value !== 'function') ||
+    value === null ||
+    !(value instanceof ObservableConstructor) ||
+    chaiInspect in value
+  ) {
+    return work();
+  }
+
+  let displayTarget: object | null = value;
+  while (displayTarget !== null && !Object.isExtensible(displayTarget)) {
+    displayTarget = Object.getPrototypeOf(displayTarget);
+  }
+  if (displayTarget === null) {
+    return work();
+  }
+
+  Object.defineProperty(displayTarget, chaiInspect, {
+    configurable: true,
+    enumerable: false,
+    value: () => '[Observable]',
+  });
+  try {
+    return work();
+  } finally {
+    Reflect.deleteProperty(displayTarget, chaiInspect);
   }
 }
 
