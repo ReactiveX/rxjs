@@ -429,7 +429,8 @@ not a claim about the present branch.
 
 ### Standalone and compatibility-oriented primitives
 
-- `Subject`
+- `Subject`, including a class-local `asObservable()` method that returns a
+  distinct non-mutating view through the Subject's platform Observable base
 - `ColdObservable`
 - `ColdSubject`
 - `behaviorSubject`
@@ -441,6 +442,14 @@ not a claim about the present branch.
 
 The mixture of Symbol extensions, classes, factories, and standalone functions
 is exploratory. The canonical public shape remains open.
+
+`Subject.asObservable()` does not add a string-named method to
+`Observable.prototype`. The returned base-Observable view forwards
+`next`/`error`/`complete` from the Subject, delegates cancellation through the
+derived subscriber's `AbortSignal`, and therefore retains the selected base
+Observable's lifecycle. With the platform fallback, concurrent view observers
+share one active forwarding subscription and ref-count it; the view does not
+recreate RxJS 7 cold-per-subscription behavior.
 
 ## Test architecture
 

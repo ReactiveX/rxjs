@@ -45,6 +45,10 @@ const helperNames = ['cold', 'hot', 'time', 'expectObservable', 'expectSubscript
 // observation boundary itself performs the corresponding unsubscription.
 const observationBoundaries = new Map([
   [
+    'spec/Subject-spec.ts:608:Subject > asObservable > should handle subject never emits',
+    { observable: '^!' },
+  ],
+  [
     'spec/observables/never-spec.ts:15:NEVER > should create a cold observable that never emits',
     { observable: '^!' },
   ],

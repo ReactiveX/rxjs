@@ -76,6 +76,15 @@ The current `ColdObservable`, `ColdSubject`, behavior-subject factory, and
 replay-subject factory are implementation experiments for this boundary. Their
 presence in `packages/rxjs` is not a final package decision.
 
+The current `Subject` class provides `subject.asObservable()` as a
+Subject-local compatibility capability. It returns a distinct base Observable
+without `next`, `error`, or `complete`, mirrors the Subject's terminal state
+for late observers, and forwards cancellation with `AbortSignal`. It does not
+patch a string-named method onto the platform Observable prototype. When the
+base is the platform fallback, concurrent observers of one view share and
+ref-count a single forwarding subscription; obtaining a view does not make
+platform behavior cold.
+
 ## Pipeable compatibility requirement
 
 The required user outcome is that an RxJS 7 pipeline can be migrated without
@@ -211,6 +220,13 @@ resubscribed, each notifier value emits the current buffer, normal source
 completion emits the remainder, and source or notifier errors discard the
 active partial buffer. Result termination and last-observer cancellation close
 both the source and notifier through the shared platform lifecycle.
+
+The RxJS 7 `Subject.asObservable()` cases map to the current Subject-local
+method. Because RxJS 7 TestScheduler hot observables were Subjects while
+`@rxjs/test` hot fixtures are intentionally only subject-like, the port runtime
+adds the legacy method as an own property on each migrated hot fixture. That
+test-only adapter returns the same non-mutating base-Observable view and never
+modifies `Observable.prototype`.
 
 RxJS 7 `withLatestFrom(...others, project?)` is exercised through
 `source[withLatestFrom]([others], project?)`. Latest-only inputs activate before

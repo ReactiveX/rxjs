@@ -1,6 +1,8 @@
 import { SubjectLike } from './util/types';
 
-export class Subject<T> extends Observable<T> implements SubjectLike<T> {
+const ObservableBase = Observable;
+
+export class Subject<T> extends ObservableBase<T> implements SubjectLike<T> {
   #completed = false;
   #hasError = false;
   #error: any = null;
@@ -49,5 +51,18 @@ export class Subject<T> extends Observable<T> implements SubjectLike<T> {
       this.#completed = true;
       this.#internalSubscriber?.complete?.();
     }
+  }
+
+  /**
+   * Returns an Observable view that cannot be used to mutate this Subject.
+   *
+   * The view is constructed from Subject's selected platform Observable base
+   * rather than from `this.constructor`, because a Subject constructor does
+   * not accept an Observable producer callback.
+   */
+  asObservable(): Observable<T> {
+    return new ObservableBase<T>((subscriber) => {
+      this.subscribe(subscriber, { signal: subscriber.signal });
+    });
   }
 }

@@ -216,15 +216,19 @@ export function createRuntime(options: {
     },
     rxTest(callback: (context: RxTestContext) => void | PromiseLike<void>): Promise<void> {
       return rxTest((context) => {
-        if (mode === 'cold') {
-          return callback(context);
-        }
-        const platformContext = Object.create(context) as RxTestContext;
-        Object.defineProperty(platformContext, 'cold', {
+        const migratedContext = Object.create(context) as RxTestContext;
+        Object.defineProperty(migratedContext, 'hot', {
           configurable: true,
-          value: context.observable.bind(context),
+          value: (...args: Parameters<typeof context.hot>) =>
+            installSubjectObservableViewAdapter(context.hot(...args)),
         });
-        return callback(platformContext);
+        if (mode !== 'cold') {
+          Object.defineProperty(migratedContext, 'cold', {
+            configurable: true,
+            value: context.observable.bind(context),
+          });
+        }
+        return callback(migratedContext);
       });
     },
   };
@@ -233,6 +237,20 @@ export function createRuntime(options: {
     installImport(runtime, imported, capabilities);
   }
   return runtime as PortRuntime;
+}
+
+function installSubjectObservableViewAdapter<T>(source: Observable<T>): Observable<T> {
+  // RxJS 7 TestScheduler hot observables were Subjects. The framework-neutral
+  // Next hot fixture is only subject-like, so retain this legacy method on the
+  // fixture instance without patching the platform Observable prototype.
+  Object.defineProperty(source, 'asObservable', {
+    configurable: true,
+    value: (): Observable<T> =>
+      new Observable<T>((subscriber) => {
+        source.subscribe(subscriber, { signal: subscriber.signal });
+      }),
+  });
+  return source;
 }
 
 function createOperatorSource(source: unknown): Record<PropertyKey, (...args: unknown[]) => unknown> {

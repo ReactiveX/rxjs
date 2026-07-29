@@ -621,8 +621,8 @@
       "module": "subject",
       "adapter": "identity",
       "mapping": "Subject",
-      "status": "Present; parity unverified",
-      "note": "Uses the current exploratory Subject class."
+      "status": "Present; observable view verified",
+      "note": "Uses the current exploratory Subject class. Subject.asObservable() returns a distinct non-mutating Observable view without patching the platform Observable prototype."
     },
     "pipe": {
       "module": "pipe",

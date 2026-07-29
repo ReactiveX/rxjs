@@ -315,3 +315,20 @@ Status meanings:
   latest-only inputs through the result subscriber's signal. The derived
   Observable retains platform sharing and ref counting; the operator does not
   recreate RxJS 7 producer-per-subscription behavior.
+
+## D-017 — Keep `Subject.asObservable()` local to the Subject class
+
+- **Status:** Accepted
+- **Decision:** The exploratory RxJS `Subject` class exposes
+  `subject.asObservable()` as a class-local compatibility method. It returns a
+  distinct instance of Subject's base Observable that subscribes to the
+  Subject with the derived subscriber's `AbortSignal`. No string-named
+  `asObservable` property is installed on the platform Observable prototype.
+- **Rationale:** RxJS 7 users need a read-only view that hides `next`, `error`,
+  and `complete`, while the platform Observable surface must remain free of
+  RxJS-specific string methods.
+- **Consequence:** Values and terminal notifications pass through unchanged,
+  including completion or error observed after the Subject has already
+  terminated. Under the platform fallback, concurrent observers of one view
+  share a single active forwarding subscription and ref-count it. The method
+  does not turn the platform Observable into an RxJS 7 cold Observable.
