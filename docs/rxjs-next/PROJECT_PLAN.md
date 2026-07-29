@@ -953,3 +953,22 @@ conformance implementation depends on a runnable harness.
 - No missing API or scheduler behavior was introduced. Scheduler-specific
   cases remain deferred until the absolute end of P0.T3, and P0.T3 remains the
   single project-level `NEXT` item.
+
+### 2026-07-29 — P0.T3 existing-surface remediation wave 4
+
+- Integrated separate reviewed fixes for three `mergeAll` never-observation
+  boundaries, the RxJS 7 `race([sources])` operator overload, and `takeWhile`
+  completion, source-error, and inclusive behavior.
+- The `takeWhile` production repair forwards the source terminal lifecycle.
+  Its RxJS 7 boolean `inclusive` overload is normalized only at the
+  compatibility boundary to RxJS Next's `{ includeLast: true }` configuration.
+- Complete 16-shard audits recorded 548 cold passes with 1,790 failures and 550
+  polyfill passes with 1,788 failures, adding 11 cases that pass in both modes
+  and bringing the original fixed cohort to 114.
+- The normal strict gate completed all 16 shards in both modes and remained red
+  on the unresolved queue. The shared, ref-counted polyfill was not made cold,
+  and mode-only lifecycle differences remain visible in the tracker.
+- No missing API or scheduler behavior was introduced. The next recommended
+  existing-functionality packet is RX7-SKIP-LAST; scheduler-specific cases
+  remain deferred until the absolute end of P0.T3, and P0.T3 remains the single
+  project-level `NEXT` item.
