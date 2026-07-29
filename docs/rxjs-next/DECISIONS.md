@@ -269,25 +269,33 @@ Status meanings:
   undeclared development-time edge. This is not a published dependency or
   installation decision and does not resolve P0.2.
 
-## D-015 — Represent count windows through the unified buffer Symbol
+## D-015 — Represent count and delay windows through the unified buffer Symbol
 
 - **Status:** Accepted
 - **Decision:** The Symbol-keyed `buffer` operator supports count-based windows
   through `maxSize` plus `startEvery`. Supplying `startEvery` selects count
-  windows; omitting it preserves the existing delay-window mode. The RxJS 7
+  windows; omitting it preserves delay-window mode. Delay windows restart their
+  selector after each boundary by default. Setting `restartDelay: false` keeps
+  one notifier active across boundaries, which is the RxJS 7
+  `buffer(closingNotifier)` lifecycle. The RxJS 7
   `bufferCount(bufferSize, startBufferEvery?)` adapter supplies
   `startEvery: startBufferEvery ?? bufferSize` and disables partial-buffer
   emission on source error.
 - **Rationale:** Consecutive, overlapping, and gapped count buffers are one
   configuration of the existing unified buffering capability, not a reason to
-  add a second string-named or standalone platform-layer operator.
+  add a second string-named or standalone platform-layer operator. The same
+  configuration needs an explicit distinction between a selector that creates
+  a new closing notifier per boundary and one persistent closing notifier.
 - **Consequence:** Count mode starts an initial buffer when producer work
   activates, emits full buffers as they reach `maxSize`, and emits remaining
   non-empty buffers in creation order on normal completion. It retains the
   platform Observable's shared, ref-counted activation and AbortSignal
-  cancellation. The current evidence establishes positive buffer sizes and
-  start intervals only; validation semantics for zero, negative, non-integer,
-  or otherwise invalid values remain outside this decision.
+  cancellation. Persistent delay mode emits the current buffer for every
+  notifier value, emits the remainder on normal source completion, and cancels
+  source and notifier work when the result terminates or loses its last
+  observer. The current evidence establishes positive buffer sizes and start
+  intervals only; validation semantics for zero, negative, non-integer, or
+  otherwise invalid values remain outside this decision.
 
 ## D-016 — Give `withLatestFrom` source-led terminal semantics
 

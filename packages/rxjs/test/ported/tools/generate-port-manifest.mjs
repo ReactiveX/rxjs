@@ -246,6 +246,14 @@ const observationBoundaries = new Map([
     { observable: '^-----!', subscriptions: new Map([['e1subs', '^-----!']]) },
   ],
   [
+    'spec/operators/buffer-spec.ts:94:Observable.prototype.buffer > should work with never and never selector',
+    { observable: '^!' },
+  ],
+  [
+    'spec/operators/buffer-spec.ts:103:Observable.prototype.buffer > should work with never and empty selector',
+    { observable: '^!' },
+  ],
+  [
     'spec/observables/merge-spec.ts:123:static merge(...observables) > should merge never and empty',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],

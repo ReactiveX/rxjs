@@ -11,6 +11,7 @@ declare global {
       emitEmpty?: boolean;
       emitRemainingOnComplete?: boolean;
       emitRemainingOnError?: boolean;
+      restartDelay?: boolean;
     }) => Observable<T[]>;
   }
 }
@@ -24,6 +25,7 @@ Observable.prototype[buffer] = function <T>(
     emitEmpty?: boolean;
     emitRemainingOnComplete?: boolean;
     emitRemainingOnError?: boolean;
+    restartDelay?: boolean;
   }
 ): Observable<T[]> {
   return this[create]((subscriber) => {
@@ -34,6 +36,7 @@ Observable.prototype[buffer] = function <T>(
       emitEmpty = false,
       emitRemainingOnComplete = true,
       emitRemainingOnError = true,
+      restartDelay = true,
     } = config;
     let buffer: T[] | null = null;
     let countBuffers: T[][] | null = startEvery === undefined ? null : [[]];
@@ -43,12 +46,15 @@ Observable.prototype[buffer] = function <T>(
 
     let notifierController: AbortController | null = null;
 
-    const closeBuffer = () => {
+    const takeBuffer = () => {
       const currentBuffer = buffer;
       buffer = null;
+      return currentBuffer;
+    };
+
+    const closeDelay = () => {
       notifierController?.abort();
       notifierController = null;
-      return currentBuffer;
     };
 
     const maybeStartDelay = () => {
@@ -82,14 +88,27 @@ Observable.prototype[buffer] = function <T>(
     };
 
     const emitBuffer = () => {
-      const currentBuffer = closeBuffer();
+      const currentBuffer = takeBuffer();
+      if (restartDelay) {
+        closeDelay();
+      }
       if (currentBuffer?.length) {
         subscriber.next(currentBuffer);
       } else if (emitEmpty) {
         subscriber.next([]);
       }
-      if (!done) {
+      if (!done && restartDelay) {
         maybeStartDelay();
+      }
+    };
+
+    const emitFinalBuffer = () => {
+      closeDelay();
+      const currentBuffer = takeBuffer();
+      if (currentBuffer?.length) {
+        subscriber.next(currentBuffer);
+      } else if (emitEmpty) {
+        subscriber.next([]);
       }
     };
 
@@ -150,7 +169,7 @@ Observable.prototype[buffer] = function <T>(
             if (countBuffers) {
               emitRemainingCountBuffers();
             } else {
-              emitBuffer();
+              emitFinalBuffer();
             }
           }
           subscriber.error(error);
@@ -161,7 +180,7 @@ Observable.prototype[buffer] = function <T>(
             if (countBuffers) {
               emitRemainingCountBuffers();
             } else {
-              emitBuffer();
+              emitFinalBuffer();
             }
           }
           subscriber.complete();

@@ -510,6 +510,9 @@ selector before activating source work; a synchronous selector failure errors
 the result without activating the source. The `bufferWhen` mapping discards an
 active partial buffer when the source errors. A similarly named platform
 string method is not treated as RxJS Symbol parity.
+RxJS 7 `buffer(closingNotifier)` uses the same delay-window mode with
+`restartDelay: false`, retaining one notifier subscription across boundary
+values while the default delay-selector mode restarts after every boundary.
 
 ## Compatibility boundary
 

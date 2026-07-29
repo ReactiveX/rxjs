@@ -204,6 +204,14 @@ The selector is evaluated before source activation, a synchronous selector
 failure errors the result without activating source work, and a source error
 discards the active partial buffer.
 
+RxJS 7 `buffer(closingNotifier)` is exercised through
+`source[buffer]({ delay: () => closingNotifier, emitEmpty: true, emitRemainingOnError: false, restartDelay: false })`.
+The notifier remains active across boundary values instead of being
+resubscribed, each notifier value emits the current buffer, normal source
+completion emits the remainder, and source or notifier errors discard the
+active partial buffer. Result termination and last-observer cancellation close
+both the source and notifier through the shared platform lifecycle.
+
 RxJS 7 `withLatestFrom(...others, project?)` is exercised through
 `source[withLatestFrom]([others], project?)`. Latest-only inputs activate before
 the primary source so synchronous and same-frame values are available to the

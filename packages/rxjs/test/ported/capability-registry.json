@@ -21,9 +21,9 @@
       "symbol": "buffer",
       "module": "buffer",
       "adapter": "buffer",
-      "mapping": "source[buffer]({ delay: () => closingNotifier, emitEmpty: true })",
-      "status": "Partial unified mapping",
-      "note": "Adapts the RxJS 7 closing notifier; exact empty-buffer behavior remains test-driven."
+      "mapping": "source[buffer]({delay:()=>closingNotifier,emitEmpty:true,emitRemainingOnError:false,restartDelay:false})",
+      "status": "Present; parity verified",
+      "note": "Adapts the persistent RxJS 7 closing notifier, completion remainder, error policy, and cancellation lifecycle."
     },
     "bufferCount": {
       "symbol": "buffer",

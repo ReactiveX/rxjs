@@ -22,16 +22,131 @@ describe('buffer', () => {
     expect(results).toEqual([['a', 'b']]);
   });
 
+  it('restarts the delay selector after each boundary by default', () => {
+    const source = controllable<string>();
+    const notifier = controllable<void>();
+    const controller = new AbortController();
+    const results: string[][] = [];
+
+    source.observable[buffer]({ delay: () => notifier.observable }).subscribe((value) => results.push(value), {
+      signal: controller.signal,
+    });
+    source.subscriber.next('a');
+    notifier.subscriber.next();
+    source.subscriber.next('b');
+    notifier.subscriber.next();
+
+    expect(results).toEqual([['a'], ['b']]);
+    expect(notifier.subscriptions).toBe(3);
+    expect(notifier.teardowns).toBe(2);
+
+    controller.abort();
+    expect(source.teardowns).toBe(1);
+    expect(notifier.teardowns).toBe(3);
+  });
+
+  it('keeps a persistent delay notifier active across boundaries and closes it on source completion', () => {
+    const source = controllable<string>();
+    const notifier = controllable<void>();
+    const results: Array<string[] | 'complete'> = [];
+
+    source.observable[buffer]({
+      delay: () => notifier.observable,
+      emitEmpty: true,
+      emitRemainingOnError: false,
+      restartDelay: false,
+    }).subscribe({
+      next: (value) => results.push(value),
+      complete: () => results.push('complete'),
+    });
+    source.subscriber.next('a');
+    notifier.subscriber.next();
+    notifier.subscriber.next();
+    source.subscriber.next('b');
+    source.subscriber.complete();
+
+    expect(results).toEqual([['a'], [], ['b'], 'complete']);
+    expect(source.subscriptions).toBe(1);
+    expect(notifier.subscriptions).toBe(1);
+    expect(notifier.teardowns).toBe(1);
+    expect(notifier.subscriber.active).toBe(false);
+  });
+
+  it('discards the active delay window and closes the source when the notifier errors', () => {
+    const source = controllable<string>();
+    const notifier = controllable<void>();
+    const notifierError = new Error('notifier failure');
+    const results: string[][] = [];
+    const errors: unknown[] = [];
+
+    source.observable[buffer]({
+      delay: () => notifier.observable,
+      emitEmpty: true,
+      emitRemainingOnError: false,
+      restartDelay: false,
+    }).subscribe({
+      next: (value) => results.push(value),
+      error: (error) => errors.push(error),
+    });
+    source.subscriber.next('a');
+    notifier.subscriber.error(notifierError);
+
+    expect(results).toEqual([]);
+    expect(errors).toEqual([notifierError]);
+    expect(source.teardowns).toBe(1);
+    expect(source.subscriber.active).toBe(false);
+  });
+
+  it('shares a persistent notifier and cancels both inputs after the last observer leaves', () => {
+    const source = controllable<string>();
+    const notifier = controllable<void>();
+    const buffered = source.observable[buffer]({
+      delay: () => notifier.observable,
+      emitEmpty: true,
+      emitRemainingOnError: false,
+      restartDelay: false,
+    });
+    const firstController = new AbortController();
+    const secondController = new AbortController();
+    const firstResults: string[][] = [];
+    const secondResults: string[][] = [];
+
+    buffered.subscribe((value) => firstResults.push(value), { signal: firstController.signal });
+    buffered.subscribe((value) => secondResults.push(value), { signal: secondController.signal });
+    source.subscriber.next('a');
+    notifier.subscriber.next();
+
+    expect(source.subscriptions).toBe(1);
+    expect(notifier.subscriptions).toBe(1);
+    expect(firstResults).toEqual([['a']]);
+    expect(secondResults).toEqual([['a']]);
+
+    firstController.abort();
+    expect(source.teardowns).toBe(0);
+    expect(notifier.teardowns).toBe(0);
+
+    secondController.abort();
+    expect(source.teardowns).toBe(1);
+    expect(notifier.teardowns).toBe(1);
+    expect(source.subscriber.active).toBe(false);
+    expect(notifier.subscriber.active).toBe(false);
+  });
+
   it('can discard the active delay window when the source errors', () => {
     const results: string[][] = [];
     const sourceError = new Error('source failure');
     let receivedError: unknown;
+    let notifierTeardowns = 0;
     const source = new Observable<string>((subscriber) => {
       subscriber.next('a');
       subscriber.next('b');
       subscriber.error(sourceError);
     });
-    const closingNotifier = new Observable<void>(() => {});
+    const closingNotifier = new Observable<void>((subscriber) => {
+      subscriber.addTeardown(() => {
+        notifierTeardowns++;
+      });
+    });
 
     source[buffer]({
       delay: () => closingNotifier,
@@ -46,6 +161,7 @@ describe('buffer', () => {
 
     expect(results).toEqual([]);
     expect(receivedError).toBe(sourceError);
+    expect(notifierTeardowns).toBe(1);
   });
 
   it('does not activate source work when the delay selector throws synchronously', () => {
@@ -156,3 +272,36 @@ describe('buffer', () => {
     expect(sourceSubscriber?.active).toBe(false);
   });
 });
+
+function controllable<T>(): {
+  observable: Observable<T>;
+  readonly subscriber: Subscriber<T>;
+  readonly subscriptions: number;
+  readonly teardowns: number;
+} {
+  let sourceSubscriber: Subscriber<T> | undefined;
+  let subscriptions = 0;
+  let teardowns = 0;
+  const observable = new Observable<T>((subscriber) => {
+    subscriptions++;
+    sourceSubscriber = subscriber;
+    subscriber.addTeardown(() => {
+      teardowns++;
+    });
+  });
+  return {
+    observable,
+    get subscriber() {
+      if (!sourceSubscriber) {
+        throw new Error('Expected source activation.');
+      }
+      return sourceSubscriber;
+    },
+    get subscriptions() {
+      return subscriptions;
+    },
+    get teardowns() {
+      return teardowns;
+    },
+  };
+}

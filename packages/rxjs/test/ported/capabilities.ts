@@ -549,7 +549,14 @@ function adaptOperatorArguments(adapter: string, args: readonly unknown[]): read
     case 'auditTime':
       return [args[0], { leading: false, trailing: true }];
     case 'buffer':
-      return [{ delay: () => args[0], emitEmpty: true }];
+      return [
+        {
+          delay: () => args[0],
+          emitEmpty: true,
+          emitRemainingOnError: false,
+          restartDelay: false,
+        },
+      ];
     case 'bufferCount':
       return [
         {
