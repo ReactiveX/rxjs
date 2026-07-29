@@ -1106,3 +1106,28 @@ conformance implementation depends on a runnable harness.
   next wave continues with current subjects and other non-time mapped
   behavior.
 - P0.T3 remains the single project-level `NEXT` item.
+
+### 2026-07-29 — P0.T3 existing-surface remediation wave 10
+
+- Integrated separate reviewed commits for the RxJS 7 `buffer` notifier
+  lifecycle, class-local `Subject.asObservable()` views, and the remaining
+  mapped `mergeMap`/`mergeMapTo` evidence.
+- The `buffer` compatibility adapter retains one closing-notifier subscription
+  across boundaries, emits empty buffers where RxJS 7 does, discards partial
+  buffers on errors, and closes both source and notifier through the shared
+  platform lifecycle.
+- `Subject.asObservable()` returns a distinct non-mutating base-Observable view
+  without adding a string-named method to `Observable.prototype`. Migrated hot
+  fixtures receive the equivalent method only as a test-owned property.
+- Reused RxJS 7 cold inners remain shared, ref-counted producers in polyfill
+  mode. Mode-aware merge-mapping evidence records the resulting joined
+  emissions, subscription intervals, and restarts after zero-subscriber gaps;
+  no cold-per-subscription fallback was introduced.
+- Complete 16-shard audits recorded 737 cold passes with 1,601 failures and 754
+  polyfill passes with 1,584 failures. That adds 16 cold and 32 polyfill passes
+  with no regressions and brings the original fixed cohort to 319 cases.
+- The normal strict gate completed all 16 shards in both modes and remained red
+  on the unresolved queue. No missing API or scheduler/provider behavior was
+  introduced. Time- and scheduler-related packets remain deferred until the
+  absolute end of P0.T3.
+- P0.T3 remains the single project-level `NEXT` item.
