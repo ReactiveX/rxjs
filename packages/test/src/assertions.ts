@@ -58,7 +58,11 @@ export class ExpectationManager {
   }
 
   expectObservable<T>(observable: Observable<T>, subscriptionMarbles?: string | null): ObservableExpectation<T> {
-    const subscription = parseSubscriptionMarbles(subscriptionMarbles);
+    const parsedSubscription = parseSubscriptionMarbles(subscriptionMarbles);
+    const subscription = {
+      ...parsedSubscription,
+      subscribedFrame: parsedSubscription.subscribedFrame === Infinity ? 0 : parsedSubscription.subscribedFrame,
+    };
     const assertion: ObservableAssertion<T> = {
       kind: 'observable',
       actual: [],

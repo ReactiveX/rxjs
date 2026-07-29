@@ -102,6 +102,10 @@ describe('marble parser', () => {
         subscribedFrame: 0,
         unsubscribedFrame: Infinity,
       });
+      expect(parseSubscriptionMarbles(null)).toEqual({
+        subscribedFrame: 0,
+        unsubscribedFrame: Infinity,
+      });
       expect(parseSubscriptionMarbles('---^ 12ms !')).toEqual({
         subscribedFrame: 3,
         unsubscribedFrame: 16,
@@ -113,6 +117,13 @@ describe('marble parser', () => {
       expect(toSubscriptionLog(parseSubscriptionMarbles('^--!'))).toEqual({
         subscribedFrame: 0,
         unsubscribedFrame: 3,
+      });
+    });
+
+    it('leaves the subscription frame unspecified when only unsubscription is marked', () => {
+      expect(parseSubscriptionMarbles('----!')).toEqual({
+        subscribedFrame: Infinity,
+        unsubscribedFrame: 4,
       });
     });
 

@@ -175,6 +175,15 @@ describe('rxTest', () => {
     });
   });
 
+  it('observes from frame zero when only unsubscription is marked', async () => {
+    await rxTest(({ cold, expectObservable, expectSubscriptions }) => {
+      const source = cold('--a--b--|');
+
+      expectObservable(source, '----!').toBe('--a-');
+      expectSubscriptions(source.subscriptions).toBe('^---!');
+    });
+  });
+
   it('supports grouped values, errors, and observable metastreams', async () => {
     await rxTest(({ cold, expectObservable }) => {
       const failure = new Error('expected failure');
