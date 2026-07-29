@@ -92,6 +92,38 @@ const observationBoundaries = new Map([
     { observable: '^!', subscriptions: new Map([['subs', '^!']]) },
   ],
   [
+    'spec/observables/zip-spec.ts:17:zip > should combine a source with a second',
+    {
+      observable: boundedSubscription(0, 15),
+      subscriptions: new Map([
+        ['asubs', boundedSubscription(0, 15)],
+        ['bsubs', boundedSubscription(0, 15)],
+      ]),
+    },
+  ],
+  [
+    'spec/observables/zip-spec.ts:148:zip > with iterables > should work with never observable and non-empty iterable',
+    { observable: boundedSubscription(0, 1), subscriptions: new Map([['asubs', boundedSubscription(0, 1)]]) },
+  ],
+  [
+    'spec/observables/zip-spec.ts:355:zip > should work with two nevers',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([
+        ['asubs', boundedSubscription(0, 1)],
+        ['bsubs', boundedSubscription(0, 1)],
+      ]),
+    },
+  ],
+  [
+    'spec/observables/zip-spec.ts:439:zip > should work with never and non-empty',
+    { observable: boundedSubscription(0, 7), subscriptions: new Map([['asubs', boundedSubscription(0, 7)]]) },
+  ],
+  [
+    'spec/observables/zip-spec.ts:453:zip > should work with non-empty and never',
+    { observable: boundedSubscription(0, 7), subscriptions: new Map([['bsubs', boundedSubscription(0, 7)]]) },
+  ],
+  [
     'spec/observables/concat-spec.ts:99:static concat > should not complete if first source does not completes',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
@@ -952,11 +984,17 @@ function extractCases({ path, sourceText }) {
         reviewFlags.push('scheduler-dependent-helper');
       }
       const helpers = helperNames.filter((helper) => new RegExp(`\\b${helper}\\s*\\(`).test(originalSource));
+      const caseSupport = getCaseSupport({
+        path,
+        callback,
+        sourceFile,
+        support: inheritedSupport,
+      });
       const usedImports = getUsedImports({
         callback,
         importMap,
         sourceFile,
-        support: inheritedSupport,
+        support: caseSupport,
       });
       const availability = assessAvailability(usedImports);
       const schedulerInternal = isGenuinelySchedulerInternal({
@@ -990,7 +1028,7 @@ function extractCases({ path, sourceText }) {
           callback,
           imports: usedImports,
           sourceFile,
-          support: inheritedSupport,
+          support: caseSupport,
           wrapManualHelpers: !runMode,
         });
       } else if (availability.missing.length > 0) {
@@ -1003,7 +1041,7 @@ function extractCases({ path, sourceText }) {
           callback,
           imports: usedImports,
           sourceFile,
-          support: inheritedSupport,
+          support: caseSupport,
           wrapManualHelpers: !runMode,
         });
       } else if (availability.external.length > 0) {
@@ -1016,7 +1054,7 @@ function extractCases({ path, sourceText }) {
           callback,
           imports: usedImports,
           sourceFile,
-          support: inheritedSupport,
+          support: caseSupport,
           wrapManualHelpers: !runMode,
         });
       } else {
@@ -1039,7 +1077,7 @@ function extractCases({ path, sourceText }) {
           callback,
           imports: usedImports,
           sourceFile,
-          support: inheritedSupport,
+          support: caseSupport,
           wrapManualHelpers: !runMode,
         });
       }
@@ -2418,6 +2456,21 @@ function collectOperatorLocals({ callback, importMap, support }) {
   }
   visit(callback);
   return locals;
+}
+
+function getCaseSupport({ path, callback, sourceFile, support }) {
+  if (path !== 'spec/observables/zip-spec.ts' || !callback || !isFunction(callback)) {
+    return support;
+  }
+
+  // This upstream file has a suite-level queueScheduler alias used only by a
+  // non-inventoried scheduler test. Keep support declarations live per case so
+  // ordinary zip evidence does not acquire that unavailable capability.
+  const callbackSource = callback.getText(sourceFile);
+  return support.filter((statement) => {
+    const names = getDeclaredNames(statement);
+    return names.length === 0 || names.some((name) => new RegExp(`\\b${escapeRegExp(name)}\\b`).test(callbackSource));
+  });
 }
 
 function collectSupport(statements) {
