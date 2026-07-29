@@ -41,6 +41,9 @@ const activeCaseLocations = new Set(verifiedColdPasses.locations ?? []);
 const coldBaselineUsesCaseIds = Array.isArray(verifiedColdPasses.caseIds);
 const marbleSignals = ['expectObservable', 'expectSubscriptions', 'createColdObservable', 'createHotObservable'];
 const helperNames = ['cold', 'hot', 'time', 'expectObservable', 'expectSubscriptions', 'animate', 'flush'];
+const observationBoundaries = new Map([
+  ['spec/observables/never-spec.ts:15:NEVER > should create a cold observable that never emits', '^!'],
+]);
 
 const cases = [];
 for (const path of sourcePaths) {
@@ -261,6 +264,7 @@ function extractCases({ path, sourceText }) {
             : 'The case protects TestScheduler parser or queue internals rather than an Observable behavior.';
         modes = ['cold', 'polyfill', 'native'];
         migratedProgram = buildMigratedProgram({
+          caseId: id,
           callback,
           imports: usedImports,
           sourceFile,
@@ -273,6 +277,7 @@ function extractCases({ path, sourceText }) {
         reason = `Required runtime capabilities are unavailable: ${availability.missing.join(', ')}.`;
         modes = ['cold', 'polyfill', 'native'];
         migratedProgram = buildMigratedProgram({
+          caseId: id,
           callback,
           imports: usedImports,
           sourceFile,
@@ -285,6 +290,7 @@ function extractCases({ path, sourceText }) {
         reason = `Required external test capabilities are unavailable: ${availability.external.join(', ')}.`;
         modes = ['cold', 'polyfill', 'native'];
         migratedProgram = buildMigratedProgram({
+          caseId: id,
           callback,
           imports: usedImports,
           sourceFile,
@@ -307,6 +313,7 @@ function extractCases({ path, sourceText }) {
             : 'Mechanically migrated; ColdObservable verification failed and production behavior is unchanged.';
         modes = ['cold', 'polyfill', 'native'];
         migratedProgram = buildMigratedProgram({
+          caseId: id,
           callback,
           imports: usedImports,
           sourceFile,
@@ -347,7 +354,7 @@ function buildUnavailableProgram(reason) {
   return `async function migrated() {\n  throw new Error(${JSON.stringify(reason)});\n}\n`;
 }
 
-function buildMigratedProgram({ callback, imports, sourceFile, support, wrapManualHelpers = false }) {
+function buildMigratedProgram({ caseId, callback, imports, sourceFile, support, wrapManualHelpers = false }) {
   const supportSource = support.map((statement) => statement.getText(sourceFile)).join('\n');
   const helperPrelude = buildInlineHelperPrelude(imports);
   const callbackBody = ts.isBlock(callback.body)
@@ -361,7 +368,7 @@ function buildMigratedProgram({ callback, imports, sourceFile, support, wrapManu
     ? `await rxTest(async (${manualContext}) => {\n${rewriteManualHelperCalls(callbackBody)}\n});`
     : callbackBody;
   const input = `async function migrated(runtime) {\n${helperPrelude}\n${supportSource}\n${migratedBody}\n}`;
-  return transpileMigratedProgram(input, imports);
+  return transpileMigratedProgram(input, imports, [], true, observationBoundaries.get(caseId));
 }
 
 function rewriteManualHelperCalls(source) {
@@ -557,7 +564,13 @@ function stripTemplateQuotes(title) {
   return title.replace(/^`|`$/g, '');
 }
 
-function transpileMigratedProgram(input, imports, extraTransformers = [], injectRuntime = true) {
+function transpileMigratedProgram(
+  input,
+  imports,
+  extraTransformers = [],
+  injectRuntime = true,
+  observationBoundary
+) {
   const standalonePipeLocals = new Set(
     imports.filter((item) => item.module === 'rxjs' && item.imported === 'pipe').map((item) => item.local)
   );
@@ -568,7 +581,10 @@ function transpileMigratedProgram(input, imports, extraTransformers = [], inject
       target: ts.ScriptTarget.ES2022,
     },
     transformers: {
-      before: [...extraTransformers, createMigrationTransformer({ standalonePipeLocals, operatorLocals })],
+      before: [
+        ...extraTransformers,
+        createMigrationTransformer({ standalonePipeLocals, operatorLocals, observationBoundary }),
+      ],
     },
   }).outputText;
 
@@ -673,7 +689,7 @@ function createDynamicExecutionTransformer(variant) {
   };
 }
 
-function createMigrationTransformer({ standalonePipeLocals, operatorLocals }) {
+function createMigrationTransformer({ standalonePipeLocals, operatorLocals, observationBoundary }) {
   return (context) => {
     const { factory } = context;
     const operatorBindings = new Set();
@@ -736,6 +752,22 @@ function createMigrationTransformer({ standalonePipeLocals, operatorLocals }) {
       }
 
       if (ts.isCallExpression(node)) {
+        if (
+          observationBoundary &&
+          ts.isIdentifier(node.expression) &&
+          node.expression.text === 'expectObservable' &&
+          node.arguments.length === 1
+        ) {
+          return factory.updateCallExpression(
+            node,
+            node.expression,
+            node.typeArguments,
+            [
+              ...node.arguments.map((argument) => ts.visitNode(argument, visit)),
+              factory.createStringLiteral(observationBoundary),
+            ]
+          );
+        }
         const expectedThrowCallback = getExpectedThrowCallback(node);
         if (expectedThrowCallback && containsSchedulerRun(expectedThrowCallback)) {
           const asyncCallback = ensureAsyncFunction(expectedThrowCallback, factory);
