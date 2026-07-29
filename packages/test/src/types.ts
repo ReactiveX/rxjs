@@ -129,6 +129,8 @@ export interface TestHotObservable<T> extends TestSource<T> {
 export interface ObservableExpectation<T> {
   /** Compares recorded notifications with a marble diagram. */
   toBe(marbles: string, values?: MarbleValues<T>, error?: unknown): void;
+  /** Compares recorded notifications with exact timestamped messages. */
+  toBe(messages: readonly TestMessage<T>[]): void;
   /** Compares with another Observable recorded through the same window. */
   toEqual(expected: Observable<T>): void;
 }

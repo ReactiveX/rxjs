@@ -26,6 +26,17 @@ describe('rxTest', () => {
     });
   });
 
+  it('matches exact timestamped observable messages', async () => {
+    await rxTest(({ cold, expectObservable }) => {
+      expectObservable(cold('-(aaa)#')).toBe([
+        { frame: 1, notification: { kind: 'N', value: 'a' } },
+        { frame: 1, notification: { kind: 'N', value: 'a' } },
+        { frame: 1, notification: { kind: 'N', value: 'a' } },
+        { frame: 6, notification: { kind: 'E', error: 'error' } },
+      ]);
+    });
+  });
+
   it('uses independent timelines for cold test observables', async () => {
     await rxTest(({ cold, expectObservable, expectSubscriptions }) => {
       const source = cold('--a--b--|');

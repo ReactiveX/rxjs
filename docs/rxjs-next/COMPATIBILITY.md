@@ -122,6 +122,16 @@ whose outcome depends on producer multiplicity must choose `cold()` or
 `observable()` deliberately and receive the corresponding compatibility-ledger
 classification.
 
+This distinction also applies when a flattening test returns the same inner
+fixture more than once. In cold compatibility mode, each return creates the
+independent timeline asserted by RxJS 7. In platform mode, overlapping returns
+join one shared, ref-counted producer, so join time can change both the emitted
+notification sequence and the producer subscription log. A return after the
+shared producer closes starts a new timeline. Ported evidence for this case
+must keep the cold expectation intact and use an exact, generator-owned
+platform expectation; it must not recover the cold result by substituting a
+cold fixture into platform execution.
+
 ## Operator parity policy
 
 An operator is not “compatible” merely because it has the same name. It must be

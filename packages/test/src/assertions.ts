@@ -111,10 +111,14 @@ export class ExpectationManager {
     }
 
     return {
-      toBe: (marbles: string, values?: MarbleValues<T>, error?: unknown): void => {
+      toBe: (marbles: string | readonly TestMessage<T>[], values?: MarbleValues<T>, error?: unknown): void => {
         this.#setMatcher(assertion);
-        assertion.marbles = marbles;
-        assertion.expected = parseMarbles(marbles, values, error).map((message) => this.#materializeExpectedMessage(message));
+        if (typeof marbles === 'string') {
+          assertion.marbles = marbles;
+          assertion.expected = parseMarbles(marbles, values, error).map((message) => this.#materializeExpectedMessage(message));
+        } else {
+          assertion.expected = marbles.map((message) => this.#materializeExpectedMessage(cloneMessage(message)));
+        }
       },
       toEqual: (expected: Observable<T>): void => {
         this.#setMatcher(assertion);

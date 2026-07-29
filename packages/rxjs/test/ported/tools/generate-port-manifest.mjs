@@ -41,6 +41,18 @@ const activeCaseLocations = new Set(verifiedColdPasses.locations ?? []);
 const coldBaselineUsesCaseIds = Array.isArray(verifiedColdPasses.caseIds);
 const marbleSignals = ['expectObservable', 'expectSubscriptions', 'createColdObservable', 'createHotObservable'];
 const helperNames = ['cold', 'hot', 'time', 'expectObservable', 'expectSubscriptions', 'animate', 'flush'];
+const boundedSubscription = (subscribedFrame, unsubscribedFrame) =>
+  `${'-'.repeat(subscribedFrame)}^${'-'.repeat(unsubscribedFrame - subscribedFrame - 1)}!`;
+const observableMessages = (events) =>
+  events.map(([frame, kind, value]) => ({
+    frame,
+    notification:
+      kind === 'N'
+        ? { kind, value }
+        : kind === 'E'
+          ? { kind, error: value ?? 'error' }
+          : { kind },
+  }));
 // Subscription replacements close original open logs only where the synthetic
 // observation boundary itself performs the corresponding unsubscription.
 const observationBoundaries = new Map([
@@ -388,11 +400,269 @@ const observationBoundaries = new Map([
       subscriptions: new Map([['e1subs', '^-------------------!']]),
     },
   ],
+  [
+    'spec/operators/mergeMap-spec.ts:350:mergeMap > should mergeMap many outer to many inner, inner never completes',
+    {
+      observable: boundedSubscription(0, 55),
+      subscriptions: new Map([
+        [
+          'xsubs',
+          new Map([
+            [0, boundedSubscription(1, 55)],
+            [1, boundedSubscription(9, 55)],
+            [2, boundedSubscription(17, 55)],
+            [3, boundedSubscription(25, 55)],
+          ]),
+        ],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:574:mergeMap > should mergeMap many complex, all inners finite except one',
+    {
+      observable: boundedSubscription(0, 55),
+      subscriptions: new Map([['dsubs', boundedSubscription(8, 55)]]),
+    },
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:610:mergeMap > should mergeMap many complex, inners finite, outer does not complete',
+    {
+      observable: boundedSubscription(0, 55),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 55)]]),
+    },
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:249:mergeMapTo > should mergeMapTo many outer to many inner, inner never completes',
+    {
+      observable: boundedSubscription(0, 55),
+      subscriptions: new Map([
+        [
+          'xsubs',
+          new Map([
+            [0, boundedSubscription(1, 55)],
+            [1, boundedSubscription(9, 55)],
+            [2, boundedSubscription(17, 55)],
+            [3, boundedSubscription(25, 55)],
+          ]),
+        ],
+      ]),
+    },
+  ],
+]);
+// RxJS 7 starts a new producer for every subscription to a reused cold inner.
+// Platform mode instead joins overlapping logical subscriptions to one
+// ref-counted producer and restarts it only after the prior run closes. Exact
+// message arrays are required because some joined bursts are denser than
+// marble-group syntax can represent without shifting a later terminal frame.
+const sharedManyComplete = observableMessages([
+  [5, 'N', 'i'],
+  [9, 'N', 'j'],
+  [9, 'N', 'j'],
+  [13, 'N', 'k'],
+  [13, 'N', 'k'],
+  [17, 'N', 'l'],
+  [17, 'N', 'l'],
+  [17, 'N', 'l'],
+  [29, 'N', 'i'],
+  [33, 'N', 'j'],
+  [37, 'N', 'k'],
+  [41, 'N', 'l'],
+  [45, 'C'],
+]);
+const sharedManyCompleteLate = sharedManyComplete.map((message, index) =>
+  index === sharedManyComplete.length - 1 ? { frame: 49, notification: { kind: 'C' } } : message
+);
+const sharedManyOuterNever = observableMessages([
+  [5, 'N', 'i'],
+  [9, 'N', 'j'],
+  [9, 'N', 'j'],
+  [13, 'N', 'k'],
+  [13, 'N', 'k'],
+  [17, 'N', 'l'],
+  [17, 'N', 'l'],
+  [17, 'N', 'l'],
+  [29, 'N', 'i'],
+  [33, 'N', 'j'],
+  [33, 'N', 'j'],
+  [37, 'N', 'k'],
+  [37, 'N', 'k'],
+  [41, 'N', 'l'],
+  [41, 'N', 'l'],
+  [53, 'N', 'i'],
+]);
+const sharedManyInnerNever = observableMessages([
+  [5, 'N', 'i'],
+  [9, 'N', 'j'],
+  [9, 'N', 'j'],
+  [13, 'N', 'k'],
+  [13, 'N', 'k'],
+  [17, 'N', 'l'],
+  [17, 'N', 'l'],
+  [17, 'N', 'l'],
+]);
+const sharedManyInnerThrows = observableMessages([
+  ...sharedManyInnerNever.map(({ frame, notification }) => [frame, notification.kind, notification.value]),
+  [25, 'E'],
+]);
+const sharedManyOuterThrows = observableMessages([
+  ...sharedManyInnerNever.map(({ frame, notification }) => [frame, notification.kind, notification.value]),
+  [29, 'N', 'i'],
+  [33, 'E'],
+]);
+const sharedManyBothThrow = observableMessages([
+  ...sharedManyInnerNever.map(({ frame, notification }) => [frame, notification.kind, notification.value]),
+  [21, 'E'],
+]);
+const sharedManyConcurrentTwo = observableMessages([
+  [5, 'N', 'i'],
+  [9, 'N', 'j'],
+  [9, 'N', 'j'],
+  [13, 'N', 'k'],
+  [13, 'N', 'k'],
+  [17, 'N', 'l'],
+  [17, 'N', 'l'],
+  [25, 'N', 'i'],
+  [29, 'N', 'j'],
+  [33, 'N', 'k'],
+  [37, 'N', 'l'],
+  [41, 'C'],
+]);
+const modeAwareObservableExpectations = new Map([
+  ['spec/operators/mergeMap-spec.ts:208:mergeMap > should mergeMap many outer values to many inner values', new Map([['result', sharedManyComplete]])],
+  ['spec/operators/mergeMap-spec.ts:232:mergeMap > should mergeMap many outer to many inner, complete late', new Map([['result', sharedManyCompleteLate]])],
+  ['spec/operators/mergeMap-spec.ts:256:mergeMap > should mergeMap many outer to many inner, outer never completes', new Map([['source', sharedManyOuterNever]])],
+  ['spec/operators/mergeMap-spec.ts:350:mergeMap > should mergeMap many outer to many inner, inner never completes', new Map([['result', sharedManyInnerNever]])],
+  ['spec/operators/mergeMap-spec.ts:374:mergeMap > should mergeMap many outer to many inner, and inner throws', new Map([['result', sharedManyInnerThrows]])],
+  ['spec/operators/mergeMap-spec.ts:398:mergeMap > should mergeMap many outer to many inner, and outer throws', new Map([['result', sharedManyOuterThrows]])],
+  ['spec/operators/mergeMap-spec.ts:422:mergeMap > should mergeMap many outer to many inner, both inner and outer throw', new Map([['result', sharedManyBothThrow]])],
+  ['spec/operators/mergeMap-spec.ts:467:mergeMap > should mergeMap to many cold Observable, with parameter concurrency=2', new Map([['result', sharedManyConcurrentTwo]])],
+  [
+    'spec/operators/mergeMapTo-spec.ts:15:mergeMapTo > should map-and-flatten each item to an Observable',
+    new Map([
+      [
+        'result',
+        observableMessages([
+          [2, 'N', 'x'],
+          [4, 'N', 'x'],
+          [6, 'N', 'x'],
+          [8, 'N', 'x'],
+          [10, 'N', 'x'],
+          [12, 'N', 'x'],
+          [12, 'N', 'x'],
+          [19, 'C'],
+        ]),
+      ],
+    ]),
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:84:mergeMapTo > should mergeMapTo many regular interval inners',
+    new Map([
+      [
+        'result',
+        observableMessages([
+          [4, 'N', '1'],
+          [4, 'N', '1'],
+          [8, 'N', '2'],
+          [8, 'N', '2'],
+          [12, 'N', '3'],
+          [12, 'N', '3'],
+          [16, 'N', '4'],
+          [16, 'N', '4'],
+          [16, 'N', '4'],
+          [28, 'N', '1'],
+          [32, 'N', '2'],
+          [36, 'N', '3'],
+          [40, 'N', '4'],
+          [40, 'C'],
+        ]),
+      ],
+    ]),
+  ],
+  ['spec/operators/mergeMapTo-spec.ts:143:mergeMapTo > should mergeMapTo many outer values to many inner values', new Map([['pipe', sharedManyComplete]])],
+  ['spec/operators/mergeMapTo-spec.ts:165:mergeMapTo > should mergeMapTo many outer to many inner, complete late', new Map([['pipe', sharedManyCompleteLate]])],
+  ['spec/operators/mergeMapTo-spec.ts:187:mergeMapTo > should mergeMapTo many outer to many inner, outer never completes', new Map([['result', sharedManyOuterNever]])],
+  ['spec/operators/mergeMapTo-spec.ts:249:mergeMapTo > should mergeMapTo many outer to many inner, inner never completes', new Map([['pipe', sharedManyInnerNever]])],
+  ['spec/operators/mergeMapTo-spec.ts:271:mergeMapTo > should mergeMapTo many outer to many inner, and inner throws', new Map([['pipe', sharedManyInnerThrows]])],
+  ['spec/operators/mergeMapTo-spec.ts:292:mergeMapTo > should mergeMapTo many outer to many inner, and outer throws', new Map([['pipe', sharedManyOuterThrows]])],
+  ['spec/operators/mergeMapTo-spec.ts:314:mergeMapTo > should mergeMapTo many outer to many inner, both inner and outer throw', new Map([['pipe', sharedManyBothThrow]])],
+  ['spec/operators/mergeMapTo-spec.ts:356:mergeMapTo > should mergeMapTo to many cold Observable, with parameter concurrency=2, without resultSelector', new Map([['result', sharedManyConcurrentTwo]])],
 ]);
 const modeAwareSubscriptionExpectations = new Map([
   [
     'spec/operators/toArray-spec.ts:80:toArray > should allow multiple subscriptions',
     new Map([['e1', 1]]),
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:208:mergeMap > should mergeMap many outer values to many inner values',
+    new Map([['x', [boundedSubscription(1, 21), boundedSubscription(25, 45)]]]),
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:232:mergeMap > should mergeMap many outer to many inner, complete late',
+    new Map([['x', [boundedSubscription(1, 21), boundedSubscription(25, 45)]]]),
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:256:mergeMap > should mergeMap many outer to many inner, outer never completes',
+    new Map([['x', [boundedSubscription(1, 21), boundedSubscription(25, 45), boundedSubscription(49, 55)]]]),
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:350:mergeMap > should mergeMap many outer to many inner, inner never completes',
+    new Map([['x', [boundedSubscription(1, 55)]]]),
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:374:mergeMap > should mergeMap many outer to many inner, and inner throws',
+    new Map([['x', [boundedSubscription(1, 25)]]]),
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:398:mergeMap > should mergeMap many outer to many inner, and outer throws',
+    new Map([['x', [boundedSubscription(1, 21), boundedSubscription(25, 33)]]]),
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:422:mergeMap > should mergeMap many outer to many inner, both inner and outer throw',
+    new Map([['x', [boundedSubscription(1, 21)]]]),
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:467:mergeMap > should mergeMap to many cold Observable, with parameter concurrency=2',
+    new Map([['x', [boundedSubscription(1, 21), boundedSubscription(21, 41)]]]),
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:15:mergeMapTo > should map-and-flatten each item to an Observable',
+    new Map([['x', [boundedSubscription(2, 7), boundedSubscription(8, 13)]]]),
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:84:mergeMapTo > should mergeMapTo many regular interval inners',
+    new Map([['x', [boundedSubscription(0, 16), boundedSubscription(24, 40)]]]),
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:143:mergeMapTo > should mergeMapTo many outer values to many inner values',
+    new Map([['x', [boundedSubscription(1, 21), boundedSubscription(25, 45)]]]),
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:165:mergeMapTo > should mergeMapTo many outer to many inner, complete late',
+    new Map([['x', [boundedSubscription(1, 21), boundedSubscription(25, 45)]]]),
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:187:mergeMapTo > should mergeMapTo many outer to many inner, outer never completes',
+    new Map([['x', [boundedSubscription(1, 21), boundedSubscription(25, 45), boundedSubscription(49, 55)]]]),
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:249:mergeMapTo > should mergeMapTo many outer to many inner, inner never completes',
+    new Map([['x', [boundedSubscription(1, 55)]]]),
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:271:mergeMapTo > should mergeMapTo many outer to many inner, and inner throws',
+    new Map([['x', [boundedSubscription(1, 25)]]]),
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:292:mergeMapTo > should mergeMapTo many outer to many inner, and outer throws',
+    new Map([['x', [boundedSubscription(1, 21), boundedSubscription(25, 33)]]]),
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:314:mergeMapTo > should mergeMapTo many outer to many inner, both inner and outer throw',
+    new Map([['x', [boundedSubscription(1, 21)]]]),
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:356:mergeMapTo > should mergeMapTo to many cold Observable, with parameter concurrency=2, without resultSelector',
+    new Map([['x', [boundedSubscription(1, 21), boundedSubscription(21, 41)]]]),
   ],
 ]);
 
@@ -725,6 +995,7 @@ function buildMigratedProgram({ caseId, callback, imports, sourceFile, support, 
     [],
     true,
     observationBoundaries.get(caseId),
+    modeAwareObservableExpectations.get(caseId),
     modeAwareSubscriptionExpectations.get(caseId)
   );
 }
@@ -928,6 +1199,7 @@ function transpileMigratedProgram(
   extraTransformers = [],
   injectRuntime = true,
   observationBoundary,
+  modeAwareObservableExpectation,
   modeAwareSubscriptionExpectation
 ) {
   const standalonePipeLocals = new Set(
@@ -946,6 +1218,7 @@ function transpileMigratedProgram(
           standalonePipeLocals,
           operatorLocals,
           observationBoundary,
+          modeAwareObservableExpectation,
           modeAwareSubscriptionExpectation,
         }),
       ],
@@ -1094,10 +1367,71 @@ function getModeAwareSubscriptionTarget(node) {
     : undefined;
 }
 
+function getModeAwareObservableTarget(node) {
+  if (
+    !ts.isPropertyAccessExpression(node.expression) ||
+    node.expression.name.text !== 'toBe' ||
+    !ts.isCallExpression(node.expression.expression)
+  ) {
+    return undefined;
+  }
+  const expectation = node.expression.expression;
+  if (
+    !ts.isIdentifier(expectation.expression) ||
+    expectation.expression.text !== 'expectObservable'
+  ) {
+    return undefined;
+  }
+  const source = expectation.arguments[0];
+  if (ts.isIdentifier(source)) {
+    return source.text;
+  }
+  return ts.isCallExpression(source) &&
+    ts.isIdentifier(source.expression) &&
+    source.expression.text === 'applyOperators'
+    ? 'applyOperators'
+    : ts.isCallExpression(source) &&
+        ts.isPropertyAccessExpression(source.expression) &&
+        source.expression.name.text === 'pipe'
+      ? 'pipe'
+      : undefined;
+}
+
+function createLiteralExpression(value, factory) {
+  if (Array.isArray(value)) {
+    return factory.createArrayLiteralExpression(
+      value.map((item) => createLiteralExpression(item, factory)),
+      false
+    );
+  }
+  if (value && typeof value === 'object') {
+    return factory.createObjectLiteralExpression(
+      Object.entries(value).map(([key, item]) =>
+        factory.createPropertyAssignment(key, createLiteralExpression(item, factory))
+      ),
+      false
+    );
+  }
+  if (typeof value === 'string') {
+    return factory.createStringLiteral(value);
+  }
+  if (typeof value === 'number') {
+    return factory.createNumericLiteral(value);
+  }
+  if (typeof value === 'boolean') {
+    return value ? factory.createTrue() : factory.createFalse();
+  }
+  if (value === null) {
+    return factory.createNull();
+  }
+  return factory.createIdentifier('undefined');
+}
+
 function createMigrationTransformer({
   standalonePipeLocals,
   operatorLocals,
   observationBoundary,
+  modeAwareObservableExpectation,
   modeAwareSubscriptionExpectation,
 }) {
   return (context) => {
@@ -1179,20 +1513,56 @@ function createMigrationTransformer({
       }
 
       if (ts.isCallExpression(node)) {
+        const modeAwareObservableTarget =
+          modeAwareObservableExpectation && getModeAwareObservableTarget(node);
+        const platformObservableExpectation =
+          modeAwareObservableTarget && modeAwareObservableExpectation.get(modeAwareObservableTarget);
+        const coldObservableExpectation = node.arguments[0];
+        if (
+          platformObservableExpectation !== undefined &&
+          coldObservableExpectation
+        ) {
+          return factory.updateCallExpression(
+            node,
+            ts.visitNode(node.expression, visit),
+            node.typeArguments,
+            [
+              factory.createConditionalExpression(
+                factory.createBinaryExpression(
+                  factory.createIdentifier('__rxPortMode'),
+                  ts.SyntaxKind.EqualsEqualsEqualsToken,
+                  factory.createStringLiteral('cold')
+                ),
+                factory.createToken(ts.SyntaxKind.QuestionToken),
+                ts.visitNode(coldObservableExpectation, visit),
+                factory.createToken(ts.SyntaxKind.ColonToken),
+                createLiteralExpression(platformObservableExpectation, factory)
+              ),
+              ...node.arguments.slice(1).map((argument) => ts.visitNode(argument, visit)),
+            ]
+          );
+        }
         const modeAwareTarget = modeAwareSubscriptionExpectation && getModeAwareSubscriptionTarget(node);
-        const platformSubscriptionCount =
+        const platformSubscriptionExpectation =
           modeAwareTarget && modeAwareSubscriptionExpectation.get(modeAwareTarget);
         const coldSubscriptionExpectation = node.arguments[0];
         if (
-          platformSubscriptionCount !== undefined &&
-          coldSubscriptionExpectation &&
-          ts.isArrayLiteralExpression(coldSubscriptionExpectation)
+          platformSubscriptionExpectation !== undefined &&
+          coldSubscriptionExpectation
         ) {
-          const visitedColdExpectation = ts.visitEachChild(coldSubscriptionExpectation, visit, context);
-          const platformExpectation = factory.updateArrayLiteralExpression(
-            visitedColdExpectation,
-            visitedColdExpectation.elements.slice(0, platformSubscriptionCount)
-          );
+          const visitedColdExpectation = ts.visitNode(coldSubscriptionExpectation, visit);
+          const platformExpectation =
+            typeof platformSubscriptionExpectation === 'number'
+              ? ts.isArrayLiteralExpression(visitedColdExpectation)
+                ? factory.updateArrayLiteralExpression(
+                    visitedColdExpectation,
+                    visitedColdExpectation.elements.slice(0, platformSubscriptionExpectation)
+                  )
+                : undefined
+              : createLiteralExpression(platformSubscriptionExpectation, factory);
+          if (!platformExpectation) {
+            return ts.visitEachChild(node, visit, context);
+          }
           return factory.updateCallExpression(
             node,
             ts.visitNode(node.expression, visit),

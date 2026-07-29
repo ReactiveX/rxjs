@@ -233,6 +233,17 @@ Status meanings:
   collecting the full failure output. The portable migration Skill contains
   no repository provenance or harness policy; those remain
   repository-specific.
+- **Shared-inner evidence:** When a migrated RxJS 7 case reuses one `cold()`
+  inner for multiple flattening subscriptions, cold mode retains the original
+  producer-per-subscription expectation. In fallback or native platform mode,
+  that same test fixture represents one shared, ref-counted producer:
+  overlapping logical inner subscriptions join its current timeline, receive
+  only future notifications, and may duplicate those notifications in the
+  flattened result; a later subscription after ref-count closure starts a new
+  producer timeline. Generator-owned mode-aware notification and producer-log
+  expectations record this intentional platform divergence. They must be
+  scoped to the exact case and expectation target and must not replace the
+  platform fixture with `ColdObservable`.
 - **Evidence:** The exhaustive manifest expands 2,201 physical declarations
   into 2,338 unique registrations: 401 active, 506 expected failures, 1,416
   missing API, 4 deduplicated, and 11 unsupported/obsolete. The complete cold
