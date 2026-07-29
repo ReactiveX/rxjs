@@ -1162,3 +1162,29 @@ conformance implementation depends on a runnable harness.
   scheduler-class behavior was introduced. Remaining scheduler-specific concat
   and endWith cases stay deferred.
 - P0.T3 remains the single project-level `NEXT` item.
+
+### 2026-07-29 — Ported marble-test performance correction
+
+- Paused further P0.T3 packet delegation to profile why the virtual-time marble
+  suite was taking real minutes. No real-timer leak was found: numeric-timer
+  cases execute through virtual scheduling and its bounded task guard.
+- One failed `instanceOf(Subject)` assertion took about 44.3 seconds because
+  Chai/Loupe treated the platform Observable `inspect` operator as a custom
+  formatter, invoked it recursively, and eventually overflowed the stack.
+  Ported Chai assertions now install a temporary, non-enumerable display hook
+  only during synchronous formatting and remove it in `finally`. The same
+  assertion now fails with its genuine diagnostic in about 5 milliseconds,
+  while the Observable `inspect` operator remains unchanged and usable.
+- The runner now defaults to one process per mode instead of repeating Vitest
+  transformation and collection across 16 processes. Explicit shard-count and
+  concurrency overrides remain available for diagnostic isolation.
+- On the current 2,338-case manifest, complete JSON audits take about 2.7
+  seconds cold and 2.5 seconds polyfill. The full strict cold-plus-polyfill
+  command, including approximately 5.7 MB of expected failure diagnostics,
+  completes in about 6 seconds.
+- One-process and explicit 16-shard audits produced identical case titles and
+  statuses: 820 cold passes with 1,518 failures and 837 polyfill passes with
+  1,501 failures. The speedup does not quarantine failures or change the
+  polyfill's shared, ref-counted behavior.
+- P0.T3 remains the single project-level `NEXT` item, but further parity work
+  remains paused pending user direction.

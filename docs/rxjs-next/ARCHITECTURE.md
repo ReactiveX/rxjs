@@ -485,8 +485,10 @@ missing APIs, and obsolete scheduler internals. Every record has a unique case
 ID, executable program, and cold parity registration; unavailable capabilities
 fail explicitly instead of removing the source case from collection. The
 executable harness starts cold, fallback-platform, and native-if-present modes
-in isolated, sharded processes so the constructor is selected before extension
-modules load. All 2,338 definitions are registered in each available mode.
+in isolated per-mode processes so the constructor is selected before extension
+modules load. Optional diagnostic sharding preserves that isolation while
+splitting registrations across processes. All 2,338 definitions are registered
+in each available mode.
 
 Cold mode activates `ColdObservable` for producer-per-subscription evidence.
 Platform modes use the ambient `globalThis.Observable`; tests do not import a
@@ -494,9 +496,15 @@ fallback constructor. The default `test:ported` gate registers every case as
 an ordinary test in cold and polyfill modes: a converted-program failure,
 missing API, unsupported harness dependency, source-skipped case, or exact
 duplicate fails the command instead of being quarantined or inverted with an
-expected-failure wrapper. The sharded launcher continues running every shard,
-renders completion and heartbeat state in one in-place interactive status line,
-and expands all failed shard diagnostics before returning nonzero.
+expected-failure wrapper. The launcher defaults to one process per mode to
+avoid repeating Vitest transformation and collection. Explicit shard-count and
+concurrency environment overrides remain available; when used, the launcher
+continues running every shard, renders completion and heartbeat state in one
+in-place interactive status line, and expands all failed shard diagnostics
+before returning nonzero. Ported Chai assertions temporarily provide Loupe's
+documented display hook for Observable values so failure formatting cannot
+invoke the platform `inspect` operator recursively; the hook is removed after
+the synchronous assertion.
 Non-interactive logs receive one final progress summary instead of a stream of
 updates. Dedicated platform cases assert the shared/ref-counted lifecycle
 directly. Native loading also verifies that the ambient constructor was not

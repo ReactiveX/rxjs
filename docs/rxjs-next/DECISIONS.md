@@ -229,10 +229,17 @@ Status meanings:
   and cannot quarantine, skip, or invert a result. Unified capability adapters
   execute legacy names against their actual Next target Symbol or
   ambient-platform construction instead of misclassifying them as absent. The
-  sharded launcher must continue through all shards and report progress while
-  collecting the full failure output. The portable migration Skill contains
-  no repository provenance or harness policy; those remain
-  repository-specific.
+  launcher defaults to one isolated process per mode so Vitest transformation
+  and collection run once; `RXJS_NEXT_SHARD_COUNT` and
+  `RXJS_NEXT_SHARD_CONCURRENCY` remain explicit diagnostic-isolation
+  overrides. When sharding is requested, the launcher must continue through
+  all shards and report progress while collecting the full failure output.
+  Ported Chai assertions install Loupe's `Symbol.for('chai/inspect')` hook only
+  for the synchronous assertion call and remove it in `finally`. This prevents
+  Loupe from mistaking the platform Observable `inspect` operator for a custom
+  object formatter without changing that operator or assertion outcomes. The
+  portable migration Skill contains no repository provenance or harness
+  policy; those remain repository-specific.
 - **Shared-inner evidence:** When a migrated RxJS 7 case reuses one `cold()`
   inner for multiple flattening subscriptions, cold mode retains the original
   producer-per-subscription expectation. In fallback or native platform mode,
