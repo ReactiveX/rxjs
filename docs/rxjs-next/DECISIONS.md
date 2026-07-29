@@ -427,3 +427,27 @@ Status meanings:
   close all active work through `AbortSignal`. The platform fallback retains
   one shared, ref-counted source and duration activation for concurrent
   observers; this decision does not introduce cold-per-subscription behavior.
+
+## D-022 — Complete zip when a finished input cannot form another tuple
+
+- **Status:** Accepted
+- **Decision:** The standalone `zip(sources)` maintains source-ordered FIFO
+  buffers and, when `fillAfterComplete` is not configured, completes as soon
+  as any completed input has an empty buffer. The terminal check runs both
+  when an input completes and immediately after a tuple drains its buffers.
+  With `fillAfterComplete`, a completed empty input contributes the configured
+  fill value only while at least one real buffered value remains. An empty
+  source list completes immediately.
+- **Rationale:** Once a completed input has no buffered value, no future input
+  notification can produce another complete tuple. Waiting for every sibling
+  to complete strands the result after an empty input and after the shortest
+  input's final tuple.
+- **Consequence:** An immediately empty Observable or iterable completes the
+  result. Draining the last value buffered by a completed input emits that
+  final tuple and then completes in the same turn. Result completion aborts
+  sibling work through the result subscriber's signal, and synchronous
+  termination prevents later source activation. Fill mode drains unequal
+  completed buffers without producing an infinite sequence of fill-only
+  tuples. Concurrent platform observers share one zip activation and its
+  buffers; this decision does not introduce queue scheduling or
+  cold-per-observer behavior.

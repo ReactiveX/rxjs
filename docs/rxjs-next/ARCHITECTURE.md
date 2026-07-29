@@ -458,6 +458,19 @@ Observable's lifecycle. With the platform fallback, concurrent view observers
 share one active forwarding subscription and ref-count it; the view does not
 recreate RxJS 7 cold-per-subscription behavior.
 
+The standalone `zip(sources)` retains one FIFO buffer per input. Without its
+non-RxJS `fillAfterComplete` option, it completes as soon as any completed
+input has no buffered value left, because no further complete tuple is
+possible. This includes an input that completes empty and the point immediately
+after a final tuple drains a previously completed input. Result completion,
+input error, and last-observer cancellation close every active input through
+the result subscriber's `AbortSignal`; concurrent platform observers share one
+ref-counted zip activation. Synchronous termination stops activation of later
+inputs. With `fillAfterComplete`, a completed empty input instead contributes
+the configured fill value while another input still has a real buffered value;
+the result completes after every input is complete and all real buffered
+values have been drained. An empty source list completes immediately.
+
 ## Test architecture
 
 `@rxjs/test` is a separate development-time package. Its `rxTest` function

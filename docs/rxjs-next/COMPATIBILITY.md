@@ -168,6 +168,18 @@ completion completes the result, while notifier error or selector failure
 errors it. Source attempts, delay notifiers, and concurrent result observers
 retain the platform's shared, ref-counted `AbortSignal` lifecycle.
 
+Standalone `zip(sources)` preserves the portable RxJS 7 shortest-input
+terminal rule when `fillAfterComplete` is not configured. It completes for an
+empty Observable or iterable, and emits a final tuple before completing when
+that tuple drains the last buffered value from a completed input. Terminal
+completion and errors cancel sibling inputs through the result signal.
+Concurrent platform observers share the same input activations and FIFO
+buffers; producer-per-subscription zip behavior remains compatibility-only.
+The non-RxJS `fillAfterComplete` option is a separate Next capability: it pads
+completed inputs only while another real buffered value remains, then
+completes after all inputs and buffers finish. An empty source list completes
+immediately.
+
 For operators that overlap with platform methods, both the string-named
 platform form and Symbol-keyed RxJS form are required. Parity work must record
 whether the RxJS form delegates, which additional functionality it supplies,

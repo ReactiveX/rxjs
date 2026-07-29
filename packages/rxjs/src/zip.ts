@@ -23,32 +23,43 @@ export function zip<Sources extends readonly ObservableValue<any>[], Fill = neve
     const sourceCount = sources.length;
     const fillValue = config.fillAfterComplete;
 
+    const drainBuffers = () => {
+      const canEmitTuple = () => state.every(({ buffer, complete }) => buffer.length > 0 || (shouldFill && complete));
+      const hasBufferedValue = () => state.some(({ buffer }) => buffer.length > 0);
+
+      while (subscriber.active && canEmitTuple() && (!shouldFill || hasBufferedValue())) {
+        subscriber.next(state.map(({ buffer }) => (buffer.length > 0 ? buffer.shift() : fillValue)) as any);
+      }
+
+      if (shouldFill) {
+        if (state.every(({ buffer, complete }) => complete && buffer.length === 0)) {
+          subscriber.complete();
+        }
+      } else if (state.some(({ buffer, complete }) => complete && buffer.length === 0)) {
+        subscriber.complete();
+      }
+    };
+
+    if (sourceCount === 0) {
+      subscriber.complete();
+      return;
+    }
+
     for (let i = 0; i < sourceCount; i++) {
+      if (!subscriber.active) {
+        break;
+      }
+
       Observable.from(sources[i]).subscribe(
         {
           next: (value) => {
-            const everyOtherSourceHasAValue = state.every(({ buffer }, sourceIndex) => sourceIndex === i || buffer.length > 0);
-
-            const isFillTime = shouldFill && state.every(({ complete }, sourceIndex) => sourceIndex === i || complete);
-
-            if (everyOtherSourceHasAValue || isFillTime) {
-              subscriber.next(state.map(({ buffer }, bufferIndex) => (bufferIndex === i ? value : (buffer.shift() ?? fillValue!))) as any);
-            } else {
-              state[i].buffer.push(value);
-            }
+            state[i].buffer.push(value);
+            drainBuffers();
           },
           error: (error) => subscriber.error(error),
           complete: () => {
             state[i].complete = true;
-
-            while (shouldFill && state.every(({ complete, buffer }) => complete || buffer.length > 0)) {
-              subscriber.next(state.map(({ buffer }) => buffer.shift() ?? fillValue) as any);
-            }
-            const allComplete = state.every(({ complete }) => complete);
-
-            if (allComplete) {
-              subscriber.complete();
-            }
+            drainBuffers();
           },
         },
         { signal: subscriber.signal }
