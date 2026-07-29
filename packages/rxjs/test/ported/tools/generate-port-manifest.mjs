@@ -71,6 +71,14 @@ const observationBoundaries = new Map([
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
   [
+    'spec/operators/onErrorResumeNext-spec.ts:127:onErrorResumeNext > should not complete with observable that does not complete',
+    { observable: '^---------!', subscriptions: new Map([['e2subs', '--------^-!']]) },
+  ],
+  [
+    'spec/operators/onErrorResumeNext-spec.ts:141:onErrorResumeNext > should not continue when source observable does not complete',
+    { observable: '^----!', subscriptions: new Map([['e1subs', '^----!']]) },
+  ],
+  [
     'spec/operators/skipLast-spec.ts:92:skipLast operator > should go on forever on never',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
