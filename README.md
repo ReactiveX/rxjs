@@ -81,7 +81,7 @@ end-to-end, and deployment workflows.
 | ------------------------------- | -------------------------------------------- |
 | `pnpm run wpt:verify-import` ⭐ | Verify the pinned upstream test import       |
 | `pnpm run wpt:doctor`           | Check or prepare browser prerequisites       |
-| `pnpm run test:wpt:strict`      | Run the attested Observable conformance gate |
+| `pnpm run test:wpt`             | Run the attested Observable conformance gate |
 
 See the [WPT guide](packages/observable-polyfill/test/wpt/README.md) before
 importing upstream changes or updating expectations.

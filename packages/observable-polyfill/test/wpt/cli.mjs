@@ -23,11 +23,11 @@ Usage:
   node cli.mjs doctor
   node cli.mjs import --commit <40-character-sha>
   node cli.mjs verify-import
-  node cli.mjs test [--baseline | --strict]
+  node cli.mjs test [--baseline]
   node cli.mjs update-expectations
 
-The test command runs strict WPT conformance by default. --strict is retained
-as an explicit alias; --baseline compares against recorded known failures.
+The test command runs WPT conformance by default. --baseline compares against
+recorded known failures.
 `);
 }
 
@@ -71,20 +71,13 @@ async function main() {
 
   if (command === 'test') {
     const baseline = args.includes('--baseline');
-    const explicitStrict = args.includes('--strict');
-    const unknownOptions = args.filter(
-      (argument) => argument !== '--baseline' && argument !== '--strict'
-    );
+    const unknownOptions = args.filter((argument) => argument !== '--baseline');
     if (unknownOptions.length > 0) {
       throw new Error(`Unknown test option: ${unknownOptions.join(', ')}`);
     }
-    if (baseline && explicitStrict) {
-      throw new Error('Choose either --baseline or --strict, not both');
-    }
 
-    const strict = !baseline;
     const result = await runWpt({
-      strict,
+      baseline,
       onProgress: (message) => process.stdout.write(`${message}\n`),
     });
     process.stdout.write(result.consoleReport);

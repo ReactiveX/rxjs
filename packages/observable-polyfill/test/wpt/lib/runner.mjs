@@ -288,12 +288,13 @@ export async function doctor({ allowDownload = true } = {}) {
 }
 
 export async function runWpt({
-  strict = false,
+  baseline = false,
   recordOnly = false,
-  tag = strict ? 'strict' : recordOnly ? 'record' : 'baseline',
+  tag = baseline ? 'baseline' : recordOnly ? 'record' : 'conformance',
   onProgress = () => undefined,
 } = {}) {
-  const mode = strict ? 'conformance' : recordOnly ? 'recording' : 'baseline';
+  const mode = baseline ? 'baseline' : recordOnly ? 'recording' : 'conformance';
+  const strict = !baseline && !recordOnly;
   onProgress(`Preparing Observable WPT ${mode} run...`);
   const context = await doctor({ allowDownload: true });
   const { config, inventory, shadowRoot, bundleManifest, runnerRoot, python, binaries } = context;
@@ -366,7 +367,7 @@ export async function runWpt({
 
   const [report, expectedResults] = await Promise.all([
     readJson(reportPath),
-    recordOnly || strict ? Promise.resolve(undefined) : readExpectedResults(),
+    baseline ? readExpectedResults() : Promise.resolve(undefined),
   ]);
   const audit = auditReport({
     report,
@@ -378,7 +379,7 @@ export async function runWpt({
     expectedWptCommit: config.wpt.commit,
     expectedBrowserVersion: config.browser.version,
     allowBrowserDrift: process.env.RXJS_WPT_ALLOW_BROWSER_DRIFT === '1',
-    requireBaseline: !recordOnly && !strict,
+    requireBaseline: baseline,
   });
   onProgress('Auditing completeness, RxJS identity, and WPT results...');
   const consoleReport = await writeAuditFiles({
