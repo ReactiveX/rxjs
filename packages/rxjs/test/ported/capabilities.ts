@@ -606,9 +606,6 @@ function adaptOperatorArguments(adapter: string, args: readonly unknown[]): read
     case 'takeWhile':
       return args[1] ? [args[0], { includeLast: true }] : [args[0]];
     case 'sequenceEqual':
-      if (args.length > 1) {
-        throw new Error('Unsupported RxJS 7 sequenceEqual comparator overload.');
-      }
       return args;
     case 'throttleTime':
       return args[2] === undefined ? [args[0]] : [args[0], args[2]];

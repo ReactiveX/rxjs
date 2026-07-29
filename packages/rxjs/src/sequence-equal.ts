@@ -5,11 +5,15 @@ export const sequenceEqual: unique symbol = Symbol('sequenceEqual');
 
 declare global {
   interface Observable<T> {
-    [sequenceEqual](other: Observable<T>): Observable<boolean>;
+    [sequenceEqual](other: Observable<T>, comparator?: (left: T, right: T) => boolean): Observable<boolean>;
   }
 }
 
-Observable.prototype[sequenceEqual] = function <T>(this: Observable<T>, other: Observable<T>): Observable<boolean> {
+Observable.prototype[sequenceEqual] = function <T>(
+  this: Observable<T>,
+  other: Observable<T>,
+  comparator?: (left: T, right: T) => boolean
+): Observable<boolean> {
   return this[create]((subscriber) => {
     let bufferA: T[] = [];
     let bufferB: T[] = [];
@@ -25,7 +29,16 @@ Observable.prototype[sequenceEqual] = function <T>(this: Observable<T>, other: O
 
     const checkState = (): void => {
       while (headA < bufferA.length && headB < bufferB.length) {
-        if (bufferA[headA++] !== bufferB[headB++]) {
+        const left = bufferA[headA++]!;
+        const right = bufferB[headB++]!;
+        let equal: boolean;
+        try {
+          equal = comparator ? comparator(left, right) : left === right;
+        } catch (error) {
+          subscriber.error(error);
+          return;
+        }
+        if (!equal) {
           conclude(false);
           return;
         }

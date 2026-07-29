@@ -212,6 +212,12 @@ completion or error terminates the result and cancels every latest-only input.
 The optional projection is part of the Symbol contract. Concurrent observers
 still share the platform Observable's single ref-counted producer run.
 
+RxJS 7 `sequenceEqual(other, comparator?)` maps directly to the corresponding
+Symbol extension. The optional comparator runs once for each paired value,
+with a false result concluding inequality and a thrown error terminating the
+result and cancelling both inputs. Concurrent observers share that comparison
+work through the platform Observable lifecycle.
+
 ## Suggested validation ladder
 
 For each supported operator or creation API:

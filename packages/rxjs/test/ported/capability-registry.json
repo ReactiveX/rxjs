@@ -301,9 +301,9 @@
       "symbol": "sequenceEqual",
       "module": "sequence-equal",
       "adapter": "sequenceEqual",
-      "mapping": "source[sequenceEqual](otherSource)",
-      "status": "Partial unified mapping",
-      "note": "The RxJS 7 comparator overload is retained as an explicit parity failure."
+      "mapping": "source[sequenceEqual](otherSource, comparator?)",
+      "status": "Present; parity verified",
+      "note": "Supports strict equality by default and the RxJS 7 comparator overload."
     },
     "skipLast": {
       "symbol": "skipLast",
