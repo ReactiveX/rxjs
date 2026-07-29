@@ -4,29 +4,54 @@ export const scan: unique symbol = Symbol('scan');
 
 declare global {
   interface Observable<T> {
-    [scan]: <R>(reducer: (state: R, value: T, index: number) => R, initialValue: R) => Observable<R>;
+    [scan]<A = T>(accumulator: (accumulator: A | T, value: T, index: number) => A): Observable<T | A>;
+    [scan]<A>(accumulator: (accumulator: A, value: T, index: number) => A, seed: A): Observable<A>;
+    [scan]<A, S>(accumulator: (accumulator: A | S, value: T, index: number) => A, seed: S): Observable<A>;
   }
 }
 
-Observable.prototype[scan] = function <T, R>(
+function scanOperator<T, A = T>(this: Observable<T>, accumulator: (accumulator: A | T, value: T, index: number) => A): Observable<T | A>;
+function scanOperator<T, A>(this: Observable<T>, accumulator: (accumulator: A, value: T, index: number) => A, seed: A): Observable<A>;
+function scanOperator<T, A, S>(
   this: Observable<T>,
-  reducer: (state: R, value: T, index: number) => R,
-  initialValue: R
-): Observable<R> {
+  accumulator: (accumulator: A | S, value: T, index: number) => A,
+  seed: S
+): Observable<A>;
+function scanOperator<T, A, S>(
+  this: Observable<T>,
+  accumulator: (accumulator: T | A | S, value: T, index: number) => A,
+  ...seed: [] | [S]
+): Observable<T | A> {
   return this[create]((subscriber) => {
+    let state: { initialized: false } | { initialized: true; value: T | A | S } =
+      seed.length === 0 ? { initialized: false } : { initialized: true, value: seed[0] };
     let index = 0;
-    let state: R = initialValue;
 
     this.subscribe(
       {
         next: (value) => {
+          const currentIndex = index++;
+          if (!state.initialized) {
+            state = {
+              initialized: true,
+              value,
+            };
+            subscriber.next(value);
+            return;
+          }
+
+          let nextState: A;
           try {
-            state = reducer(state, value, index++);
+            nextState = accumulator(state.value, value, currentIndex);
           } catch (error) {
             subscriber.error(error);
             return;
           }
-          subscriber.next(state);
+          state = {
+            initialized: true,
+            value: nextState,
+          };
+          subscriber.next(nextState);
         },
         error: (error) => subscriber.error(error),
         complete: () => subscriber.complete(),
@@ -34,4 +59,6 @@ Observable.prototype[scan] = function <T, R>(
       { signal: subscriber.signal }
     );
   });
-};
+}
+
+Observable.prototype[scan] = scanOperator;
