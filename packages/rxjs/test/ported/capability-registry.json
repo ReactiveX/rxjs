@@ -356,10 +356,10 @@
     "takeWhile": {
       "symbol": "takeWhile",
       "module": "take-while",
-      "adapter": "identity",
-      "mapping": "source[takeWhile](predicate, inclusive?)",
+      "adapter": "takeWhile",
+      "mapping": "source[takeWhile](predicate, inclusive ? { includeLast: true } : undefined)",
       "status": "Present; parity unverified",
-      "note": "Exact inclusive behavior remains test-driven."
+      "note": "Normalizes the RxJS 7 inclusive boolean to the RxJS Next configuration form."
     },
     "throttle": {
       "symbol": "throttle",
