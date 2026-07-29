@@ -52,6 +52,17 @@ const observationBoundaries = new Map([
     'spec/operators/ignoreElements-spec.ts:79:ignoreElements > should handle never',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
+  [
+    'spec/operators/switchAll-spec.ts:144:switchAll > should handle a hot observable of observables, inner never completes',
+    {
+      observable: '^-----------------------------!',
+      subscriptions: new Map([['ysubs', '--------------^---------------!']]),
+    },
+  ],
+  [
+    'spec/operators/switchAll-spec.ts:225:switchAll > should handle a never hot observable',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
 ]);
 
 const cases = [];
