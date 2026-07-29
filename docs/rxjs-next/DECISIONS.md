@@ -164,11 +164,11 @@ Status meanings:
 ## D-011 — Make `test:wpt` the strict conformance command
 
 - **Status:** Accepted
-- **Decision:** `yarn test:wpt` and the blocking WPT CI job require every
+- **Decision:** `pnpm run test:wpt` and the blocking WPT CI job require every
   upstream Observable WPT test and subtest to pass. Any upstream failure,
   error, timeout, or not-run result exits nonzero. The current known-failure
   comparison remains available only as the explicitly named
-  `yarn test:wpt:baseline` diagnostic.
+  `pnpm run test:wpt:baseline` diagnostic.
 - **Rationale:** A command named `test:wpt` should communicate actual WPT
   success or failure without requiring contributors to know that a passing
   process previously meant only “matches known failures.”
@@ -242,3 +242,29 @@ Status meanings:
   See
   `docs/rxjs-next/RXJS_7_MARBLE_TEST_PORT_NOTES.md` and
   `docs/rxjs-next/RxJS-7-parity.md`.
+
+## D-014 — Use pnpm 10 for repository tooling
+
+- **Status:** Accepted
+- **Decision:** Use pnpm 10.34.5 as the sole repository package manager for
+  local development, workspaces, CI, documentation tooling, and release
+  preparation. `pnpm-workspace.yaml` is the authoritative workspace definition,
+  and installs use pnpm's default isolated linker. Dependency build scripts are
+  governed by a version-bounded `allowBuilds` policy with `strictDepBuilds`
+  enabled.
+- **Rationale:** pnpm 10 supports the repository's Node 18, 20, and 24 tooling
+  range, provides native workspace execution, avoids the former Jasmine/Mocha
+  type hoisting collision, and exposes undeclared dependencies hidden by a flat
+  Yarn Classic layout. pnpm 11 is not suitable while Node 18 and Node 20 remain
+  supported.
+- **Consequence:** CI and contributors use the committed `pnpm-lock.yaml` with
+  pnpm 10.34.5. Workspace and release scripts must declare dependencies they
+  import directly. New dependency install scripts fail until reviewed and
+  added to the build policy. The pinned Husky 4 hook runner is patched to use
+  `pnpm exec` because its legacy `pnpx --no-install` command is incompatible
+  with pnpm 10. npm remains the publication registry client and remains
+  appropriate in end-user installation examples.
+- **Temporary bridge:** The workspace publicly hoists only
+  `@rxjs/observable-polyfill` so current RxJS Next source can resolve its
+  undeclared development-time edge. This is not a published dependency or
+  installation decision and does not resolve P0.2.

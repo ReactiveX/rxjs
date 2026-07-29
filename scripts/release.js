@@ -2,8 +2,7 @@
 
 const { execSync } = require('node:child_process');
 const { releaseChangelog, releaseVersion } = require('nx/src/command-line/release');
-// There are multiple copies of outdated yargs in the workspace, access a known modern one
-const yargs = require('nx/node_modules/yargs');
+const yargs = require('yargs');
 
 (async () => {
   try {
@@ -49,7 +48,7 @@ const yargs = require('nx/node_modules/yargs');
     console.log();
 
     // Prepare the packages for publishing
-    execSync('yarn prepare-packages', {
+    execSync('pnpm run prepare-packages', {
       stdio: 'inherit',
       maxBuffer: 1024 * 1024 * 1024, // 1GB
     });

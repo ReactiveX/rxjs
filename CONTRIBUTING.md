@@ -184,7 +184,7 @@ Macro performance tests can be run by hosting the root directory with any web se
 then running:
 
 ```sh
-yarn build_all
+pnpm run build_all
 protractor protractor.conf.js
 ```
 
@@ -196,7 +196,7 @@ relative performance of our operators versus prior versions. All operators shoul
 Micro performance test can be run with:
 
 ```sh
-yarn build_all
+pnpm run build_all
 node perf/micro
 ```
 
@@ -210,7 +210,7 @@ node perf/micro zip
 
 We have very precise rules over how our git commit messages can be formatted. This leads to **more
 readable messages** that are easy to follow when looking through the **project history**. But also,
-we use the git commit messages to **generate the RxJS change log**. Helper script `yarn commit`
+we use the git commit messages to **generate the RxJS change log**. Helper script `pnpm run commit`
 provides command line based wizard to format commit message easily.
 
 ### Commit Message Format

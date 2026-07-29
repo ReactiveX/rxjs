@@ -1,7 +1,7 @@
 /* eslint no-console: "off" */
 const watchr = require('watchr');
-const {relative} = require('canonical-path');
-const {generateDocs} = require('./index.js');
+const { relative } = require('canonical-path');
+const { generateDocs } = require('./index.js');
 const { PROJECT_ROOT, CONTENTS_PATH, API_SOURCE_PATH } = require('../config');
 
 function listener(changeType, fullPath) {
@@ -9,7 +9,7 @@ function listener(changeType, fullPath) {
     const relativePath = relative(PROJECT_ROOT, fullPath);
     console.log('The file', relativePath, `was ${changeType}d at`, new Date().toUTCString());
     generateDocs(relativePath);
-  } catch(err) {
+  } catch (err) {
     console.log('Error generating docs', err);
   }
 }
@@ -26,9 +26,9 @@ if (process.argv.indexOf('--watch-only') === -1) {
   console.log('================================================================');
   console.log('Running initial doc generation');
   console.log('----------------------------------------------------------------');
-  console.log('Skip the full doc-gen by running: `yarn docs-watch --watch-only`');
+  console.log('Skip the full doc-gen by running: `pnpm run docs-watch -- --watch-only`');
   console.log('================================================================');
-  const {Dgeni} = require('dgeni');
+  const { Dgeni } = require('dgeni');
   const dgeni = new Dgeni([require('../angular.io-package')]);
 
   // Turn off all the potential failures for this doc-gen one-off run.
@@ -51,5 +51,4 @@ p.then(() => {
 
   watchr.open(CONTENTS_PATH, listener, next);
   watchr.open(API_SOURCE_PATH, listener, next);
-
 });

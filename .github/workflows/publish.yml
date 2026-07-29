@@ -30,13 +30,13 @@ jobs:
           node-version: 20
 
       - name: Prepare packages for publishing
-        run: yarn prepare-packages
+        run: pnpm run prepare-packages
 
       - name: Apply updated version to packages
         run: |
           # Use the version from the workflow input if it's set, otherwise use the tag name from the release
           VERSION=${{ github.event.inputs.version || github.ref_name }}
-          yarn nx release version $VERSION
+          pnpm nx release version "$VERSION"
 
       - name: Publish packages to npm
         run: node ./scripts/publish.js

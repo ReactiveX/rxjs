@@ -86,21 +86,21 @@ fi
 
 # Deploy
 (
-  cd "`dirname $0`/.."
+  cd "$(dirname "$0")/.."
 
   # Build the app
-  yarn build --env=$deployEnv
+  pnpm run build -- --env="$deployEnv"
 
   # Include any mode-specific files
-  cp -rf src/extra-files/$deployEnv/. dist/
+  cp -rf "src/extra-files/$deployEnv/." dist/
 
   # Check payload size
-  # yarn payload-size
+  # pnpm run payload-size
 
   # Deploy to Firebase
   firebase use "$projectId" --token "$firebaseToken"
   firebase deploy --message "Commit: $TRAVIS_COMMIT" --non-interactive --token "$firebaseToken"
 
   # Run PWA-score tests
-  # yarn test-pwa-score "$deployedUrl" "$MIN_PWA_SCORE"
+  # pnpm run test-pwa-score -- "$deployedUrl" "$MIN_PWA_SCORE"
 )

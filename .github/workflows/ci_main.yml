@@ -25,21 +25,21 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Build, test and lint all projects (except website)
-        run: yarn nx run-many -t build lint test --exclude=rxjs.dev
+        run: pnpm nx run-many -t build lint test --exclude=rxjs.dev
 
       - name: rxjs lint
-        run: yarn workspace rxjs lint
+        run: pnpm --filter rxjs run lint
       - name: rxjs build
-        run: yarn workspace rxjs build
+        run: pnpm --filter rxjs run build
       - name: rxjs test
-        run: yarn workspace rxjs test
+        run: pnpm --filter rxjs run test
       - name: rxjs dtslint
-        run: yarn workspace rxjs dtslint
+        run: pnpm --filter rxjs run dtslint
       - name: rxjs test:import
-        run: yarn workspace rxjs test:import
+        run: pnpm --filter rxjs run test:import
       - name: rxjs test:esm
-        run: yarn workspace rxjs test:esm
+        run: pnpm --filter rxjs run test:esm
       - name: rxjs.dev build
-        run: yarn workspace rxjs.dev build --prod
+        run: pnpm --filter rxjs.dev run build -- --prod
       - name: rxjs.dev test
-        run: yarn workspace rxjs.dev test --watch=false --browsers=ChromeHeadless
+        run: pnpm --filter rxjs.dev run test -- --watch=false --browsers=ChromeHeadless

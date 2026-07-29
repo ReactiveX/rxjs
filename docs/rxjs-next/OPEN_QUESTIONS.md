@@ -15,6 +15,9 @@ Current facts:
 - `rxjs` contains Symbol extensions and early compatibility primitives.
 - `@rxjs/observable` is an inherited RxJS 7-style Observable core, remains in
   the workspace, and is still named in the root preparation script.
+- The pnpm workspace temporarily exposes `@rxjs/observable-polyfill` at the
+  root so current source and tests can run without a flat dependency layout.
+  This development-only bridge is not evidence for the final package map.
 
 Decide:
 
@@ -35,6 +38,10 @@ Decide whether users:
 
 The answer must cover detection, non-conforming native implementations, workers,
 server runtimes, multiple realms, and test isolation.
+
+The current pnpm workspace hoist affects repository resolution only. It does
+not install the fallback for published consumers and therefore does not answer
+this question.
 
 ### 3. What is the Symbol identity strategy?
 

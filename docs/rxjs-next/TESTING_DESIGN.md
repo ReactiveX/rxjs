@@ -586,12 +586,12 @@ and `capability-registry.json` record present, partial, unified, platform, and
 missing surfaces.
 
 ```sh
-yarn workspace rxjs test:ported
-yarn workspace rxjs test:ported:native
-yarn workspace rxjs test:ported:audit
-yarn workspace rxjs test:ported:audit:polyfill
-yarn workspace rxjs test:ported:report
-yarn workspace rxjs test:ported:parity:check
+pnpm --filter rxjs run test:ported
+pnpm --filter rxjs run test:ported:native
+pnpm --filter rxjs run test:ported:audit
+pnpm --filter rxjs run test:ported:audit:polyfill
+pnpm --filter rxjs run test:ported:report
+pnpm --filter rxjs run test:ported:parity:check
 ```
 
 Detailed counts, duplicates, missing capabilities, and unsupported-case

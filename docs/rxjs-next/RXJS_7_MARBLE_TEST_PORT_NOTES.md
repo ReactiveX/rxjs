@@ -167,15 +167,15 @@ required RxJS Symbol surface.
 From the repository root:
 
 ```sh
-yarn workspace rxjs test:ported
-yarn workspace rxjs test:ported:cold
-yarn workspace rxjs test:ported:polyfill
-yarn workspace rxjs test:ported:native
-yarn workspace rxjs test:ported:audit
-yarn workspace rxjs test:ported:audit:polyfill
-yarn workspace rxjs test:ported:report
-yarn workspace rxjs test:ported:parity:generate
-yarn workspace rxjs test:ported:parity:check
+pnpm --filter rxjs run test:ported
+pnpm --filter rxjs run test:ported:cold
+pnpm --filter rxjs run test:ported:polyfill
+pnpm --filter rxjs run test:ported:native
+pnpm --filter rxjs run test:ported:audit
+pnpm --filter rxjs run test:ported:audit:polyfill
+pnpm --filter rxjs run test:ported:report
+pnpm --filter rxjs run test:ported:parity:generate
+pnpm --filter rxjs run test:ported:parity:check
 ```
 
 `test:ported` runs the normal cold and polyfill modes. `test:ported:native`
@@ -196,15 +196,15 @@ heartbeat interval. Passing explicit Vitest arguments opts into direct
 reporter output when individual case detail is useful.
 
 ```sh
-yarn workspace rxjs test:ported:audit -- --testNamePattern mergeMap
+pnpm --filter rxjs run test:ported:audit -- --testNamePattern mergeMap
 ```
 
 To refresh a reviewed baseline, first produce a complete JSON audit and then
 record it:
 
 ```sh
-yarn workspace rxjs test:ported:audit -- --reporter=json --outputFile=/tmp/cold-audit.json
-yarn workspace rxjs test:ported:audit:record cold /tmp/cold-audit.json
+pnpm --filter rxjs run test:ported:audit -- --reporter=json --outputFile=/tmp/cold-audit.json
+pnpm --filter rxjs run test:ported:audit:record -- cold /tmp/cold-audit.json
 ```
 
 The recorder rejects partial, skipped, duplicate, or stale case-ID coverage.

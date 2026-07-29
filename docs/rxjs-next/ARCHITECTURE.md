@@ -219,13 +219,13 @@ Execution uses an ignored generated shadow tree:
 5. A report auditor independently requires exactly one passing attestation per
    expected URL. Expectation metadata cannot suppress attestation failures.
 
-`yarn test:wpt` is the strict conformance gate. It succeeds only when the
+`pnpm run test:wpt` is the strict conformance gate. It succeeds only when the
 official browser WPT runner completes, every expected URL runs once, every
 realm attests exact RxJS identity, the report is complete, and every upstream
 test and subtest passes. Any failure, error, timeout, or not-run result produces
 a readable terminal report and a nonzero process exit.
 
-`yarn test:wpt:baseline` is a separately named harness diagnostic. It compares
+`pnpm run test:wpt:baseline` is a separately named harness diagnostic. It compares
 Observable behavior with the reviewed known-failure baseline while retaining
 all completeness and identity gates. The baseline is accepted only after three
 consecutive complete runs agree, and unexpected failures and unexpected passes
@@ -560,6 +560,33 @@ flowchart TD
 
 Whether these boxes map one-to-one to npm packages is unresolved. The fallback
 must not depend on RxJS operators or compatibility code.
+
+## Repository workspace and tooling
+
+The repository uses pnpm 10.34.5 for local development, workspace execution,
+CI, and release preparation. `pnpm-workspace.yaml` is the authoritative
+workspace definition for the four packages under `packages/*` and the
+`apps/rxjs.dev` application; the root project provides shared tooling, making
+six install projects in total. pnpm's default isolated linker keeps
+package-local type dependencies separate without the former hoisting
+exceptions.
+
+The workspace currently enables `linkWorkspacePackages` and narrowly
+public-hoists only `@rxjs/observable-polyfill`. That hoist is a development-only
+bridge for the existing undeclared import from `packages/rxjs`. It does not
+answer which published package owns or installs the fallback, and it must be
+removed or replaced when P0.2 settles that contract. The docs application
+continues to resolve its declared RxJS 7 dependency from the registry rather
+than linking the exploratory local `rxjs` package.
+
+Dependency build scripts use a version-bounded allow/deny policy with
+`strictDepBuilds` enabled. Newly introduced install scripts therefore require
+explicit review. CI installs the committed pnpm lockfile with
+`--frozen-lockfile`. Repository scripts declare dependencies they use directly;
+in particular, RxJS tests declare Chai and the release helper declares Yargs
+instead of depending on a flat installation layout. A version-pinned patch
+changes Husky 4's generated pnpm hook runner from the obsolete
+`pnpx --no-install` form to `pnpm exec`.
 
 ## Build and test baseline
 

@@ -6,17 +6,17 @@ readonly firebaseToken=$FIREBASE_TOKEN
 
 # Deploy
 (
-  cd "`dirname $0`/.."
+  cd "$(dirname "$0")/.."
 
   # Build the app
-  yarn build --env=stable
+  pnpm run build -- --env=stable
 
   # Include any mode-specific files
   cp -rf src/extra-files/$deployEnv/. dist/
 
   # Deploy to Firebase
-  yarn firebase -- login
-  yarn firebase -- use "$projectId"
-  yarn firebase -- deploy --message "Deploy docs automatically" --non-interactive
-  yarn firebase -- logout
+  pnpm run firebase -- login
+  pnpm run firebase -- use "$projectId"
+  pnpm run firebase -- deploy --message "Deploy docs automatically" --non-interactive
+  pnpm run firebase -- logout
 )

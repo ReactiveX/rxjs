@@ -15,7 +15,10 @@ capabilities are absent. The exhaustive follow-up is complete: 2,201 physical
 test declarations expand to 2,338 uniquely identified registrations, including
 parameterized and source-skipped evidence. Package-boundary work resumes at
 P0.2. A later user-prioritized runner follow-up also removed expected-failure
-quarantine from the default ported command and added live shard progress.
+quarantine from the default ported command and added live shard progress. The
+user-prioritized repository package-manager migration to pnpm 10 is complete
+without deciding the P0.2 publication boundary. The root developer command
+guide is also concise, task-oriented, and explicit about known failing gates.
 Broader Skills/MCP product design remains deferred.
 
 No dates, staffing commitments, or final release version are assigned.
@@ -62,6 +65,8 @@ item.
 | `DONE`    | P0.T2d | Materialize every inventoried marble case as an executable parity-test registration                                    |
 | `DONE`    | P0.T2e | Exhaustively convert remaining runnable RxJS 7 marble evidence and expand capability mappings                          |
 | `DONE`    | P0.T2f | Make the default ported-test gate strict and progress-visible                                                          |
+| `DONE`    | P0.DX1 | Migrate repository workspaces, automation, and contributor tooling from Yarn Classic to pnpm 10                        |
+| `DONE`    | P0.DX2 | Make the root developer command guide concise, accurate, and task-oriented                                             |
 | `NEXT`    | P0.2   | Decide the package map and native-versus-polyfill installation contract                                                |
 | `PLANNED` | P0.3   | Restore green builds and coherent public entry points for the selected package map                                     |
 | `PLANNED` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                               |
@@ -265,6 +270,43 @@ item.
   immediate explicit failure so it cannot freeze its shard. Production source
   was unchanged.
 
+#### P0.DX1 completion evidence
+
+- Pinned pnpm 10.34.5, made `pnpm-workspace.yaml` authoritative, generated a
+  pnpm lockfile from the former Yarn lockfile, and removed Yarn tooling and
+  lockfile support.
+- Kept pnpm's isolated linker, added explicit Chai and Yargs dependencies
+  exposed by that layout, and limited the temporary polyfill bridge to one
+  documented root public-hoist without changing the published package contract.
+- Added a version-bounded dependency-build policy with `strictDepBuilds`,
+  converted CI, release, documentation, generated commands, and contributor
+  guidance, and retained npm for publication and end-user installation.
+- Patched the pinned Husky 4 hook runner to use `pnpm exec`, preserving the
+  configured commit hooks under pnpm 10 without a dependency upgrade.
+- Passed a clean frozen install and a stable repeat install, five-project Nx
+  discovery, 53 polyfill tests, 66 `@rxjs/test` tests plus package fixtures, six
+  focused RxJS tests, parity freshness, WPT import verification, and the strict
+  attested WPT run with 52/52 URLs, 525/525 upstream subtests, and 52/52
+  identity attestations.
+- Confirmed the docs app resolves published RxJS 7.8.1 and does not receive the
+  local polyfill bridge. The release dry-run reaches the unchanged package
+  build/lint baseline. Existing Angular/TypeScript peer warnings, the Node 24
+  docs-test ESM failure, the optional RE2 Node 24 build failure, and the known
+  RxJS Next package build/lint failures remain out of scope.
+- Restored P0.2 as the single `NEXT` item.
+
+#### P0.DX2 completion evidence
+
+- Replaced the root setup list with compact, task-oriented command tables for
+  workspace discovery, fast package feedback, documentation, WPT, and release
+  preparation.
+- Highlighted the common inner-loop commands and named all five pnpm workspace
+  projects.
+- Distinguished focused green checks from the intentionally failing full RxJS
+  parity suite and known P0.3 build/lint baselines.
+- Linked specialized docs and verified the listed commands against current
+  workspace scripts while keeping P0.2 as the single `NEXT` item.
+
 #### P0.2 completion bar
 
 Record accepted decisions covering:
@@ -378,7 +420,7 @@ diagrams. No implementation is required for this decision step.
 - Fixed generated attestation registration so upstream `setup()` properties
   are established before the identity subtest starts the reporting protocol.
   The vendored WPT sources remain byte-for-byte unchanged.
-- Passed `yarn test:wpt` with 52/52 URLs `OK`, 525/525 upstream subtests
+- Passed the strict `test:wpt` command with 52/52 URLs `OK`, 525/525 upstream subtests
   `PASS`, and 52/52 exact-identity attestations in Chrome for Testing
   `150.0.7871.126`. The passing implementation bundle for that run was
   `778edfac15639cd4531a590cd36450ad273a0a692df2e8a1436564dca3cb89f8`.
@@ -617,10 +659,10 @@ conformance implementation depends on a runnable harness.
 
 ### 2026-07-24 — Strict default WPT command and terminal diagnostics
 
-- Made `yarn test:wpt` and the blocking CI job require all upstream WPT results
+- Made the strict `test:wpt` command and the blocking CI job require all upstream WPT results
   to pass; the current implementation therefore exits nonzero.
 - Retained the known-failure comparison only as the explicitly named
-  `yarn test:wpt:baseline` harness diagnostic.
+  `test:wpt:baseline` harness diagnostic.
 - Added progress messages, aggregate status and identity counts, every
   non-passing URL and subtest, and direct artifact paths to terminal output.
 - Kept P0.2 as the single `NEXT` item; implementation conformance remains the
@@ -778,3 +820,34 @@ conformance implementation depends on a runnable harness.
   rewriting one progress row, then expanded every failure and returned exit
   code 1 as intended.
 - Kept P0.2 as the single `NEXT` item.
+
+### 2026-07-29 — pnpm 10 repository migration
+
+- Temporarily prioritized and completed P0.DX1, replacing Yarn Classic with
+  pnpm 10.34.5 across workspace metadata, the lockfile, local scripts, CI,
+  release preparation, docs tooling, generated commands, and contributor
+  instructions.
+- Preserved pnpm's isolated linker and recorded a narrow root-only polyfill
+  public-hoist as a temporary workspace bridge that does not decide P0.2.
+- Made dependency build scripts reviewable through version-bounded
+  `allowBuilds` and `strictDepBuilds`; explicitly denied the message-only
+  Core-JS and ES5-Ext scripts.
+- Declared the Chai test dependency and the release helper's Yargs dependency
+  that the former flat layout had hidden.
+- Patched Husky 4's obsolete `pnpx --no-install` hook runner to use
+  `pnpm exec`, then exercised the configured commit hooks successfully.
+- Passed clean and repeated frozen installs, project discovery, focused package
+  and RxJS tests, parity freshness, import verification, and the complete
+  cached strict WPT suite. Exercised docs and release paths and retained their
+  documented unrelated Node 24 and package-build failures.
+- Restored P0.2 as the single `NEXT` item.
+
+### 2026-07-29 — Root developer command guide
+
+- Temporarily prioritized and completed P0.DX2.
+- Organized the root README around setup, fast feedback, docs, WPT, and
+  maintainer workflows, with concise why/when guidance.
+- Highlighted common commands, linked the detailed workflow guides, and called
+  out intentionally failing or blocked gates.
+- Verified command and project names against the pnpm workspace and restored
+  P0.2 as the single `NEXT` item.

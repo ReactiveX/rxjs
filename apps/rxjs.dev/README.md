@@ -7,32 +7,32 @@ Everything in this folder is part of the documentation project. This includes
 
 ## Developer tasks
 
-We use `npm` to manage the dependencies and to run build tasks.
+We use `pnpm` to manage the dependencies and to run build tasks.
 You should run all these tasks from the `apps/rxjs.dev` folder.
 Here are the most important tasks you might need to use:
 
-- `npm install` - install all the dependencies.
-- `yarn setup` - install all the dependencies and run dgeni on the docs.
+- `pnpm install` - install all monorepo dependencies.
+- `pnpm run setup` - run dgeni on the docs.
 
-- `yarn build` - create a production build of the application (after installing dependencies, etc).
+- `pnpm run build` - create a production build of the application (after installing dependencies, etc).
 
-- `npm start` - run a development web server that watches the files; then builds the doc-viewer and reloads the page, as necessary.
-- `yarn serve-and-sync` - run both the `docs-watch` and `start` in the same console.
-- `yarn lint` - check that the doc-viewer code follows our style rules.
-- `npm test` - watch all the source files, for the doc-viewer, and run all the unit tests when any change.
-- `npm test -- --watch=false` - run all the unit tests once.
-- `yarn e2e` - run all the e2e tests for the doc-viewer.
+- `pnpm run start` - run a development web server that watches the files; then builds the doc-viewer and reloads the page, as necessary.
+- `pnpm run serve-and-sync` - run both the `docs-watch` and `start` in the same console.
+- `pnpm run lint` - check that the doc-viewer code follows our style rules.
+- `pnpm run test` - watch all the source files, for the doc-viewer, and run all the unit tests when any change.
+- `pnpm run test -- --watch=false` - run all the unit tests once.
+- `pnpm run e2e` - run all the e2e tests for the doc-viewer.
 
-- `yarn docs` - generate all the docs from the source files.
-- `yarn docs-watch` - watch the RxJS source and the docs files and run a short-circuited doc-gen for the docs that changed (don't work properly at the moment).
-- `yarn docs-lint` - check that the doc gen code follows our style rules.
-- `yarn docs-test` - run the unit tests for the doc generation code.
+- `pnpm run docs` - generate all the docs from the source files.
+- `pnpm run docs-watch` - watch the RxJS source and the docs files and run a short-circuited doc-gen for the docs that changed (don't work properly at the moment).
+- `pnpm run docs-lint` - check that the doc gen code follows our style rules.
+- `pnpm run docs-test` - run the unit tests for the doc generation code.
 
 ## Using ServiceWorker locally
 
-Running `yarn start` (even when explicitly targeting production mode) does not set up the
-ServiceWorker. If you want to test the ServiceWorker locally, you can use `yarn build` and then
-serve the files in `dist/` with `yarn http-server -- dist -p 4200`.
+Running `pnpm run start` (even when explicitly targeting production mode) does not set up the
+ServiceWorker. If you want to test the ServiceWorker locally, you can use `pnpm run build` and then
+serve the files in `dist/` with `pnpm run http-server -- dist -p 4200`.
 
 ## Running on Docker
 
@@ -65,7 +65,7 @@ There are two types of content in the documentation:
 
 ### Generating the complete docs
 
-The main task for generating the docs is `yarn docs`. This will process all the source files (API and other),
+The main task for generating the docs is `pnpm run docs`. This will process all the source files (API and other),
 extracting the documentation and generating JSON files that can be consumed by the doc-viewer.
 
 ### Partial doc generation for editors
@@ -79,7 +79,7 @@ You can make small changes in a smart editor that displays formatted markdown:
 You also want to see those changes displayed properly in the doc viewer
 with a quick, edit/view cycle time.
 
-For this purpose, use the `yarn docs-watch` task, which watches for changes to source files and only
+For this purpose, use the `pnpm run docs-watch` task, which watches for changes to source files and only
 re-processes the files necessary to generate the docs that are related to the file that has changed.
 Since this task takes shortcuts, it is much faster (often less than 1 second) but it won't produce full
 fidelity content. For example, links to other docs and code examples may not render correctly. This is
@@ -91,24 +91,24 @@ The general setup is as follows:
 - Open a terminal, ensure the dependencies are installed; run an initial doc generation; then start the doc-viewer:
 
 ```bash
-yarn setup
-yarn start
+pnpm run setup
+pnpm run start
 ```
 
 - Open a second terminal and start watching the docs
 
 ```bash
-yarn docs-watch
+pnpm run docs-watch
 ```
 
 > Alternatively, try the consolidated `serve-and-sync` command that builds, watches and serves in the same terminal window
 
 ```bash
-yarn serve-and-sync
+pnpm run serve-and-sync
 ```
 
 - Open a browser at https://localhost:4200/ and navigate to the document on which you want to work.
-  You can automatically open the browser by using `npm start -- -o` in the first terminal.
+  You can automatically open the browser by using `pnpm run start -- -o` in the first terminal.
 
 - Make changes to the page's associated doc or example files. Every time a file is saved, the doc will
   be regenerated, the app will rebuild and the page will reload.

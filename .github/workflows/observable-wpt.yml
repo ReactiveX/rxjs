@@ -7,7 +7,8 @@ on:
       - '.github/actions/install-dependencies/**'
       - '.github/workflows/observable-wpt.yml'
       - 'package.json'
-      - 'yarn.lock'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
       - 'packages/observable-polyfill/**'
   push:
     branches: ['master']
@@ -15,7 +16,8 @@ on:
       - '.github/actions/install-dependencies/**'
       - '.github/workflows/observable-wpt.yml'
       - 'package.json'
-      - 'yarn.lock'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
       - 'packages/observable-polyfill/**'
   schedule:
     - cron: '23 9 * * 2'
@@ -65,10 +67,10 @@ jobs:
           key: observable-wpt-browser-${{ runner.os }}-chrome-150.0.7871.126-${{ hashFiles('packages/observable-polyfill/test/wpt/browser-lock.json') }}
 
       - name: Verify the pinned import
-        run: yarn wpt:verify-import
+        run: pnpm run wpt:verify-import
 
       - name: Run the attested conformance suite
-        run: yarn test:wpt
+        run: pnpm run test:wpt
 
       - name: Upload WPT evidence
         if: always()
@@ -120,10 +122,10 @@ jobs:
           install-chromedriver: true
 
       - name: Verify the pinned import
-        run: yarn wpt:verify-import
+        run: pnpm run wpt:verify-import
 
       - name: Run advisory browser-drift conformance check
-        run: yarn test:wpt
+        run: pnpm run test:wpt
         env:
           RXJS_WPT_ALLOW_BROWSER_DRIFT: '1'
           RXJS_WPT_CHROME_BINARY: ${{ steps.chrome.outputs.chrome-path }}

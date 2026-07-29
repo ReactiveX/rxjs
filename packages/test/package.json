@@ -20,7 +20,7 @@
     "test:watch": "vitest",
     "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs",
     "test:types": "tsc -p test/types/tsconfig.json --noEmit",
-    "test:package": "yarn build && yarn test:types && yarn test:imports"
+    "test:package": "pnpm run build && pnpm run test:types && pnpm run test:imports"
   },
   "repository": {
     "type": "git",

@@ -194,8 +194,8 @@ type parity.
 Regenerate after adding or changing capabilities:
 
 \`\`\`sh
-yarn workspace rxjs test:ported:parity:generate
-yarn workspace rxjs test:ported:parity:check
+pnpm --filter rxjs run test:ported:parity:generate
+pnpm --filter rxjs run test:ported:parity:check
 \`\`\`
 
 ## Mapping rules

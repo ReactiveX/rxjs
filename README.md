@@ -31,9 +31,68 @@ By contributing or commenting on issues in this repository, whether you've read 
 
 ## Development
 
-Because of [this issue](https://github.com/npm/rfcs/issues/287#issuecomment-1727960500) we're using `yarn`. (Basically the docs app uses `@types/jasmine`, and the package uses `@types/mocha` and they get hoisted to the top level by `npm install` with workspaces, and then TypeScript vomits everywhere when you try to build).
+Requires Node `18.13–18.x`, `20.9–20.x`, or `24.x` and pnpm `10.34.5`. Run
+commands from the repository root.
 
-1. `cd` to the repository root
-2. `yarn install` to install all dependencies
-3. `yarn workspace rxjs test` will run the RxJS test suite
-4. `yarn workspace rxjs.dev start` will start the rxjs.dev documentation site local development server
+### Start here
+
+| Command                               | Use it for                         |
+| ------------------------------------- | ---------------------------------- |
+| `pnpm install`                        | Install all workspace dependencies |
+| `pnpm exec nx show projects`          | List workspace project names       |
+| `pnpm --filter <project> run`         | List a project's available scripts |
+| `pnpm --filter rxjs.dev run start` ⭐ | Start the documentation site       |
+
+Projects: `@rxjs/observable-polyfill`, `@rxjs/observable`, `@rxjs/test`,
+`rxjs`, and `rxjs.dev`.
+
+### Fast feedback
+
+| Command                                               | When to use it                           |
+| ----------------------------------------------------- | ---------------------------------------- |
+| `pnpm --filter rxjs run test:watch` ⭐                | Re-run RxJS tests while editing          |
+| `pnpm --filter rxjs exec vitest --run <test-file>` ⭐ | Run focused RxJS tests once              |
+| `pnpm --filter @rxjs/observable-polyfill run test`    | Test the platform Observable fallback    |
+| `pnpm --filter @rxjs/test run test:package`           | Test, build, type-check, and import-test |
+| `pnpm --filter <project> run lint`                    | Lint one package                         |
+| `pnpm --filter <project> run build`                   | Build one package                        |
+
+The full `rxjs` test command includes strict, intentionally failing RxJS 7
+parity cases. Use `pnpm --filter rxjs run test:ported` only when auditing that
+compatibility work. Some package builds and lints also have known P0.3 failures.
+Use focused checks for normal development; see the
+[active project plan](docs/rxjs-next/PROJECT_PLAN.md) for current baselines.
+
+### Documentation site
+
+| Command                                            | Use it for                |
+| -------------------------------------------------- | ------------------------- |
+| `pnpm --filter rxjs.dev run start` ⭐              | Start the local site      |
+| `pnpm --filter rxjs.dev run docs`                  | Regenerate API content    |
+| `pnpm --filter rxjs.dev run build`                 | Build the production site |
+| `pnpm --filter rxjs.dev run test -- --watch=false` | Run site tests once       |
+
+See the [documentation app guide](apps/rxjs.dev/README.md) for Docker,
+end-to-end, and deployment workflows.
+
+### Web Platform Tests
+
+| Command                         | Use it for                                   |
+| ------------------------------- | -------------------------------------------- |
+| `pnpm run wpt:verify-import` ⭐ | Verify the pinned upstream test import       |
+| `pnpm run wpt:doctor`           | Check or prepare browser prerequisites       |
+| `pnpm run test:wpt:strict`      | Run the attested Observable conformance gate |
+
+See the [WPT guide](packages/observable-polyfill/test/wpt/README.md) before
+importing upstream changes or updating expectations.
+
+### Maintainers
+
+| Command                                  | Use it for                                |
+| ---------------------------------------- | ----------------------------------------- |
+| `pnpm run prepare-packages`              | Exercise publication preparation          |
+| `pnpm run release -- --gitRemote origin` | Preview a release; dry-run is the default |
+
+Release preparation currently reaches the known P0.3 package-build baseline.
+See the [maintainer guidelines](apps/rxjs.dev/content/maintainer-guidelines.md)
+before publishing.

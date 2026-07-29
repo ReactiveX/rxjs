@@ -26,5 +26,5 @@ jobs:
 
       - name: build
         run: |
-          yarn workspace rxjs add typescript@latest @types/node@latest --peer --no-save
-          yarn nx compile rxjs
+          pnpm --filter rxjs add --save-dev --lockfile=false typescript@latest @types/node@latest
+          pnpm nx compile rxjs

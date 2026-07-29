@@ -22,7 +22,7 @@ if (!Object.values(DIST_TAGS).includes('latest')) {
   try {
     let npmDistTag;
 
-    // Publishing was triggered via an GitHub release being created (almost certainly via our `yarn release` script)
+    // Publishing was triggered via a GitHub release being created (almost certainly via our `pnpm run release` script)
     if (process.env.GITHUB_EVENT_NAME === 'release') {
       let tag = process.env.GITHUB_REF;
       if (!tag) {

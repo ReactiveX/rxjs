@@ -1,24 +1,12 @@
 {
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/*",
-      "apps/rxjs.dev"
-    ],
-    "nohoist": [
-      "**/@types/jasmine",
-      "**/@types/jasminewd2",
-      "**/@types/mocha",
-      "**/core-js"
-    ]
-  },
   "license": "Apache-2.0",
   "engines": {
     "node": "^18.13.0 || ^20.9.0 || ^24.0.0"
   },
-  "packageManager": "yarn@1.22.21",
+  "packageManager": "pnpm@10.34.5",
   "scripts": {
-    "prepare-packages": "yarn nx test @rxjs/observable && yarn nx run-many -t build,lint,test:circular,dtslint,copy_common_package_files --exclude rxjs.dev",
+    "prepare-packages": "pnpm nx test @rxjs/observable && pnpm nx run-many -t build,lint,test:circular,dtslint,copy_common_package_files --exclude rxjs.dev",
     "release": "node scripts/release.js",
     "wpt:doctor": "node packages/observable-polyfill/test/wpt/cli.mjs doctor",
     "wpt:import": "node packages/observable-polyfill/test/wpt/cli.mjs import",
@@ -44,7 +32,8 @@
     "tshy": "^1.11.0",
     "typescript": "~5.7.3",
     "validate-commit-msg": "2.14.0",
-    "vitest": "^1.2.1"
+    "vitest": "^1.2.1",
+    "yargs": "17.7.2"
   },
   "husky": {
     "hooks": {
