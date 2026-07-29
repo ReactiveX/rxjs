@@ -9,6 +9,10 @@ declare global {
 }
 
 Observable.prototype[skipLast] = function <T>(this: Observable<T>, amount = 1): Observable<T> {
+  if (amount <= 0) {
+    return this;
+  }
+
   return this[create]((subscriber) => {
     let ring = new Array<T>(amount);
     let seen = 0;
