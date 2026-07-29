@@ -1209,3 +1209,33 @@ conformance implementation depends on a runnable harness.
   queue. No missing API, scheduler argument, scheduler injection, provider, or
   scheduler-class behavior was introduced.
 - P0.T3 remains the single project-level `NEXT` item.
+
+### 2026-07-29 — P0.T3 existing-surface remediation wave 13
+
+- Integrated separate reviewed commits for ordinary standalone `zip`
+  completion and cancellation, per-case static-zip capability liveness, five
+  finite observation horizons, and explicit projection-overload
+  classification.
+- Ordinary `zip(sources)` now completes when any completed input's queue is
+  exhausted, completes for zero inputs, and stops activating later synchronous
+  inputs after termination. The exploratory `fillAfterComplete` path remains
+  separate. D-022 records the lifecycle contract.
+- Focused source evidence proves concurrent polyfill observers share one zip
+  state and one activation per input: one observer leaving retains the work,
+  while the final observer abort cancels every input.
+- Removed a false per-case dependency on an unused suite-level
+  `queueScheduler` alias without adding scheduler support. Exactly 20
+  non-projection static-zip cases are now `FIXED`; the missing operator
+  Symbols, scheduler case, and result-selector overloads remain untouched.
+- Two identity-shaped projection cases now happen to produce the expected
+  tuples, but remain explicitly `compatibility-only`/`missing-api` and `TODO`
+  because the projection overload is not represented. Their output coincidence
+  is not counted as API support.
+- Complete one-process audits recorded 848 cold passes with 1,490 failures and
+  865 polyfill passes with 1,473 failures. That adds 22 passes in each mode
+  with no regressions and brings the original fixed cohort to 428 cases.
+- All 91 focused source tests passed. The normal strict gate completed both
+  modes and remained red on the unresolved queue. No missing operator,
+  projection overload, scheduler argument, scheduler injection, provider, or
+  scheduler-class behavior was introduced.
+- P0.T3 remains the single project-level `NEXT` item.
