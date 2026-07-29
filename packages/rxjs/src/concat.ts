@@ -1,6 +1,5 @@
-import { merge } from './merge';
-import { isObservableInstance } from './util/ctor-helpers.js';
-import { ObservableArrayToValueUnion } from './util/types';
+import { merge } from './merge.js';
+import type { ObservableArrayToValueUnion } from './util/types.js';
 
 export const concat: unique symbol = Symbol('concat');
 
@@ -23,7 +22,5 @@ function concatImpl<Sources extends readonly ObservableValue<any>[]>(
   this: ObservableCtor | Observable<any>,
   sources: Sources
 ): Observable<ObservableArrayToValueUnion<Sources>> {
-  const actualSources: ObservableValue<any>[] = isObservableInstance(this) ? [this, ...sources] : [...sources];
-
-  return this[merge](actualSources, { concurrency: 1 });
+  return this[merge](sources, { concurrency: 1 });
 }

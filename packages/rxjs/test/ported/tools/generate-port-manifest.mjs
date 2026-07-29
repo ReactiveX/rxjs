@@ -100,6 +100,14 @@ const observationBoundaries = new Map([
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
   [
+    'spec/operators/endWith-spec.ts:50:endWith > should not end with given value if source does not complete',
+    { observable: '^-----!', subscriptions: new Map([['e1subs', '^-----!']]) },
+  ],
+  [
+    'spec/operators/endWith-spec.ts:61:endWith > should not end with given value if source never emits and does not completes',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
     'spec/operators/first-spec.ts:95:first > should go on forever on never',
     { observable: '^-------!', subscriptions: new Map([['e1subs', '^-------!']]) },
   ],
