@@ -10,7 +10,9 @@ const requested = process.argv[2] ?? 'all';
 const vitestArguments = process.argv.slice(3);
 const supportedModes = new Set(['cold', 'polyfill', 'native', 'audit', 'audit-polyfill']);
 const modes = requested === 'all' ? ['cold', 'polyfill'] : [requested];
-const shardCount = parsePositiveIntegerEnvironment('RXJS_NEXT_SHARD_COUNT', 16);
+// One process avoids repeating Vitest collection and transformation for every
+// shard. Diagnostic runs can still request isolation explicitly.
+const shardCount = parsePositiveIntegerEnvironment('RXJS_NEXT_SHARD_COUNT', 1);
 const maxConcurrentShards = parsePositiveIntegerEnvironment('RXJS_NEXT_SHARD_CONCURRENCY', 8);
 const progressIntervalMilliseconds = parsePositiveIntegerEnvironment('RXJS_NEXT_PROGRESS_INTERVAL_MS', 10_000);
 const packageDirectory = resolve(import.meta.dirname, '../..');
