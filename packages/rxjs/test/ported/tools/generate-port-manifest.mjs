@@ -318,6 +318,26 @@ const observationBoundaries = new Map([
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
   [
+    'spec/operators/concatWith-spec.ts:65:concat operator > should not complete if first source does not completes',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/concatWith-spec.ts:79:concat operator > should not complete if second source does not completes',
+    { observable: '^--!', subscriptions: new Map([['e2subs', '--^!']]) },
+  ],
+  [
+    'spec/operators/concatWith-spec.ts:93:concat operator > should not complete if both sources do not complete',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/concatWith-spec.ts:177:concat operator > should emit element from first source, and should not complete if second source does not completes',
+    { observable: '^-----!', subscriptions: new Map([['e2subs', '-----^!']]) },
+  ],
+  [
+    'spec/operators/concatWith-spec.ts:191:concat operator > should not complete if first source does not complete',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
     'spec/operators/concatMap-spec.ts:145:Observable.prototype.concatMap > should handle a never source',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
