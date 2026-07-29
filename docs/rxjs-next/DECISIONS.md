@@ -343,3 +343,22 @@ Status meanings:
   terminated. Under the platform fallback, concurrent observers of one view
   share a single active forwarding subscription and ref-count it. The method
   does not turn the platform Observable into an RxJS 7 cold Observable.
+
+## D-018 — Flush selector-based debounce state on source completion
+
+- **Status:** Accepted
+- **Decision:** In the function-selector form of the Symbol-keyed `debounce`
+  operator, a selector value emits the pending source value. A selector that
+  completes without a value leaves the source value pending. Normal source
+  completion emits that pending value immediately and then completes, even
+  when the selector completed empty or would otherwise never terminate.
+- **Rationale:** The selector describes the pending value's silence boundary;
+  it does not own the result Observable's terminal lifecycle. Waiting for a
+  completed or nonterminating selector after the source completes strands the
+  final value and leaves the result open.
+- **Consequence:** Each source value cancels the preceding selector. Source
+  completion aborts the active selector after flushing its value, while source
+  error or result cancellation discards pending state and closes source and
+  selector work through `AbortSignal`. Concurrent result observers retain one
+  shared, ref-counted activation. This decision does not change the numeric
+  delay form or add scheduler overloads.

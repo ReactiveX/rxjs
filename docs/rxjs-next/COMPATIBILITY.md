@@ -148,6 +148,12 @@ evaluated across:
 - native and fallback execution;
 - cold compatibility execution when claimed.
 
+Selector-based `debounce` preserves the RxJS 7 terminal claim without changing
+the platform sharing model: selector completion without a value keeps the
+latest source value pending, and normal source completion flushes that value
+before completing. Source errors and result cancellation discard pending state
+and abort active selector work.
+
 For operators that overlap with platform methods, both the string-named
 platform form and Symbol-keyed RxJS form are required. Parity work must record
 whether the RxJS form delegates, which additional functionality it supplies,

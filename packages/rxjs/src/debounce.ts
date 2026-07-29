@@ -14,12 +14,24 @@ Observable.prototype[debounce] = function <T>(
 ): Observable<T> {
   return this[create]((subscriber) => {
     let innerController: AbortController | null = null;
-    let complete = false;
+    let hasValue = false;
     let lastValue: T;
     let index = 0;
+
+    const emitPendingValue = () => {
+      if (!hasValue) {
+        return;
+      }
+      hasValue = false;
+      innerController?.abort();
+      innerController = null;
+      subscriber.next(lastValue);
+    };
+
     this.subscribe(
       {
         next: (value) => {
+          hasValue = true;
           lastValue = value;
 
           innerController?.abort();
@@ -50,20 +62,8 @@ Observable.prototype[debounce] = function <T>(
 
             result.subscribe(
               {
-                next: () => {
-                  innerController?.abort();
-                  innerController = null;
-                  subscriber.next(lastValue);
-                  if (complete) {
-                    subscriber.complete();
-                  }
-                },
+                next: emitPendingValue,
                 error: (error) => subscriber.error(error),
-                complete: () => {
-                  if (complete) {
-                    subscriber.complete();
-                  }
-                },
               },
               { signal }
             );
@@ -71,7 +71,9 @@ Observable.prototype[debounce] = function <T>(
         },
         error: (error) => subscriber.error(error),
         complete: () => {
-          complete = true;
+          if (typeof delay !== 'number') {
+            emitPendingValue();
+          }
           if (innerController === null) {
             subscriber.complete();
           }
