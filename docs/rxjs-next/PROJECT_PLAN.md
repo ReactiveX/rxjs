@@ -1044,3 +1044,36 @@ conformance implementation depends on a runnable harness.
   time/scheduler-related packets remain deferred until the absolute end; the
   next wave continues with non-time-based mapped behavior.
 - P0.T3 remains the single project-level `NEXT` item.
+
+### 2026-07-29 — P0.T3 existing-surface remediation wave 8
+
+- Integrated separate reviewed commits for 24 finite observation boundaries,
+  `exhaustMap` active-inner lifecycle, and source-led `withLatestFrom`
+  semantics.
+- The boundary commit closed only observations and source subscriptions still
+  active at the original diagram horizon. It completed the mapped `concat`,
+  `race`, and `concatMapTo` packets without changing production behavior.
+- `exhaustMap` now counts an accepted inner before activation, ignores later
+  outer values until that inner completes, delays result completion while an
+  inner remains active, and propagates the result subscriber's AbortSignal to
+  inner work. The root fix completed `exhaustAll` and repaired nine finite
+  `exhaustMap` cases as spillover.
+- `withLatestFrom` now activates latest-only inputs before the primary source,
+  emits only on primary values after every latest-only input has a value, and
+  terminates with the primary source. The optional projection is represented
+  by the Symbol contract and executable port adapter.
+- Focused lifecycle evidence confirms that concurrent polyfill observers share
+  one ref-counted producer activation for both `exhaustMap` and
+  `withLatestFrom`; no cold-per-subscription behavior was introduced into the
+  platform layer.
+- Complete 16-shard audits recorded 662 cold passes with 1,676 failures and 663
+  polyfill passes with 1,675 failures, adding 56 and 55 passes respectively,
+  with no regressions and 228 cases fixed from the original cohort. The
+  one-pass mode delta is historical: the `withLatestFrom` throw case already
+  passed in polyfill mode before this wave.
+- The normal strict gate completed all 16 shards in both modes and remained red
+  on the unresolved queue. No missing API or scheduler/provider behavior was
+  introduced. The next wave continues non-time mapped behavior and finite
+  observation evidence; scheduler-specific work remains deferred until the
+  absolute end.
+- P0.T3 remains the single project-level `NEXT` item.
