@@ -1,4 +1,4 @@
-import { describe, expect, expectTypeOf, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest';
 import '@rxjs/observable-polyfill';
 import { throttle } from './throttle.js';
 
@@ -143,6 +143,61 @@ describe('throttle', () => {
 
     expect(durationErrors).toEqual([durationFailure]);
     expect(durationSource.subscriber.active).toBe(false);
+  });
+});
+
+describe('throttle with a numeric duration', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('waits for the next source value before starting another audit window', () => {
+    const source = controllable<number>();
+    const values: number[] = [];
+
+    source.observable[throttle](5, { leading: false, trailing: true, restartOnTrailing: false }).subscribe((value) => {
+      values.push(value);
+    });
+    source.subscriber.next(1);
+    vi.advanceTimersByTime(4);
+    source.subscriber.next(2);
+    vi.advanceTimersByTime(1);
+
+    expect(values).toEqual([2]);
+    expect(vi.getTimerCount()).toBe(0);
+
+    source.subscriber.next(3);
+    expect(vi.getTimerCount()).toBe(1);
+    vi.advanceTimersByTime(5);
+
+    expect(values).toEqual([2, 3]);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('shares one source and timer until the final observer leaves', () => {
+    const source = controllable<number>();
+    const firstController = new AbortController();
+    const secondController = new AbortController();
+    const throttled = source.observable[throttle](10);
+
+    throttled.subscribe(() => {}, { signal: firstController.signal });
+    throttled.subscribe(() => {}, { signal: secondController.signal });
+    source.subscriber.next(1);
+
+    expect(source.subscriptions).toBe(1);
+    expect(vi.getTimerCount()).toBe(1);
+
+    firstController.abort();
+    expect(source.subscriber.active).toBe(true);
+    expect(vi.getTimerCount()).toBe(1);
+
+    secondController.abort();
+    expect(source.subscriber.active).toBe(false);
+    expect(vi.getTimerCount()).toBe(0);
   });
 });
 
