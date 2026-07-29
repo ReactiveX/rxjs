@@ -25,27 +25,30 @@ Observable.prototype[retry] = function <T>(
 
   return this[create]((subscriber) => {
     let retriesRemaining = count;
-    let innerController: AbortController | null = null;
+    let retryCount = 0;
 
     const innerSub = () => {
-      innerController = new AbortController();
+      if (!subscriber.active) {
+        return;
+      }
+
+      const sourceController = new AbortController();
 
       this.subscribe(
         {
           next: (value) => {
             if (resetOnSuccess) {
               retriesRemaining = count;
+              retryCount = 0;
             }
             subscriber.next(value);
           },
           error: (error) => {
-            if (innerController) {
-              innerController.abort();
-              innerController = null;
-            }
+            sourceController.abort();
 
             if (retriesRemaining > 0) {
               retriesRemaining--;
+              retryCount++;
               if (delay !== null) {
                 if (typeof delay === 'number') {
                   const id = setTimeout(innerSub, delay);
@@ -54,23 +57,25 @@ Observable.prototype[retry] = function <T>(
                   let result: Observable<any>;
 
                   try {
-                    result = Observable.from(delay(error, count - retriesRemaining));
+                    result = Observable.from(delay(error, retryCount));
                   } catch (error) {
                     subscriber.error(error);
                     return;
                   }
 
+                  const notifierController = new AbortController();
                   result.subscribe(
                     {
                       next: () => {
-                        innerController?.abort();
-                        innerController = null;
+                        notifierController.abort();
                         innerSub();
                       },
                       error: (error) => subscriber.error(error),
                       complete: () => subscriber.complete(),
                     },
-                    { signal: subscriber.signal }
+                    {
+                      signal: AbortSignal.any([subscriber.signal, notifierController.signal]),
+                    }
                   );
                 }
               } else {
@@ -83,7 +88,7 @@ Observable.prototype[retry] = function <T>(
           complete: () => subscriber.complete(),
         },
         {
-          signal: AbortSignal.any([subscriber.signal, innerController.signal]),
+          signal: AbortSignal.any([subscriber.signal, sourceController.signal]),
         }
       );
     };

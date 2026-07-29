@@ -161,6 +161,13 @@ discards the pending value and cancels the timer through `AbortSignal`.
 Concurrent platform observers share one timer and source activation. This
 mapping does not represent the RxJS 7 scheduler overload.
 
+Selector-based `retry` invokes its delay selector with one-based consecutive
+retry counts, including when the retry budget is infinite. A notifier value
+cancels that notifier before the next source attempt starts; notifier
+completion completes the result, while notifier error or selector failure
+errors it. Source attempts, delay notifiers, and concurrent result observers
+retain the platform's shared, ref-counted `AbortSignal` lifecycle.
+
 For operators that overlap with platform methods, both the string-named
 platform form and Symbol-keyed RxJS form are required. Parity work must record
 whether the RxJS form delegates, which additional functionality it supplies,

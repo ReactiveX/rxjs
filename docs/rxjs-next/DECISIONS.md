@@ -378,3 +378,23 @@ Status meanings:
   share one source activation and one timer under the platform lifecycle. This
   decision does not add scheduler arguments, scheduler injection, providers,
   or `SchedulerLike` compatibility.
+
+## D-020 — Give retry delay notifiers one-shot lifecycle ownership
+
+- **Status:** Accepted
+- **Decision:** In the function-selector form of the Symbol-keyed `retry`
+  operator, each source error invokes the selector with a one-based consecutive
+  retry count and activates one notifier. The notifier's first value cancels
+  that notifier before starting the next source attempt. Notifier completion
+  completes the result, while notifier error or a selector throw errors it.
+- **Rationale:** A delay notifier authorizes at most one retry. Leaving it
+  active after that authorization lets later notifier values start duplicate
+  source attempts and lets a later completion terminate a retry already in
+  progress. Deriving the retry count from an infinite remaining-count budget
+  also produces `NaN`, defeating selector-controlled backoff.
+- **Consequence:** Source and notifier work have distinct cancellation state
+  joined to the result subscriber's `AbortSignal`. Result cancellation closes
+  whichever phase is active, and concurrent observers retain one shared,
+  ref-counted retry run. `resetOnSuccess` resets both the remaining retry budget
+  and selector count. This decision does not change numeric delay scheduling or
+  add scheduler providers.
