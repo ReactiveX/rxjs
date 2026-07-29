@@ -24,31 +24,45 @@ function raceImpl<Sources extends readonly ObservableValue<any>[]>(
   const actualSources: readonly ObservableValue<any>[] = isObservableInstance(this) ? [this, ...sources] : [...sources];
 
   return this[create]((subscriber) => {
-    let innerControllers: AbortController[] | null = [];
+    const innerControllers: AbortController[] = [];
+    let winner: AbortController | undefined;
+
+    const selectWinner = (innerController: AbortController): boolean => {
+      if (winner === undefined) {
+        winner = innerController;
+        for (const controller of innerControllers) {
+          if (controller !== innerController) {
+            controller.abort();
+          }
+        }
+      }
+      return winner === innerController;
+    };
+
     for (const source of actualSources) {
+      if (winner !== undefined || !subscriber.active) {
+        break;
+      }
+
       const innerController = new AbortController();
       innerControllers.push(innerController);
-
-      const handleError = (error: any) => subscriber.error(error);
 
       const signal = AbortSignal.any([subscriber.signal, innerController.signal]);
 
       Observable.from(source).subscribe(
         {
           next: (value) => {
-            if (innerControllers !== null) {
-              for (const controller of innerControllers) {
-                if (controller !== innerController) {
-                  controller.abort();
-                }
-              }
-              innerControllers = null;
+            if (selectWinner(innerController)) {
+              subscriber.next(value);
             }
-            subscriber.next(value);
           },
-          error: handleError,
+          error: (error) => {
+            if (selectWinner(innerController)) {
+              subscriber.error(error);
+            }
+          },
           complete: () => {
-            if (innerControllers === null) {
+            if (selectWinner(innerController)) {
               subscriber.complete();
             }
           },
