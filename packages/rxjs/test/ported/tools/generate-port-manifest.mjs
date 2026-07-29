@@ -997,6 +997,10 @@ function extractCases({ path, sourceText }) {
         support: caseSupport,
       });
       const availability = assessAvailability(usedImports);
+      const unrepresentedZipProjection = hasUnrepresentedZipProjection({
+        path,
+        callback,
+      });
       const schedulerInternal = isGenuinelySchedulerInternal({
         path,
         line: lineOf(call, sourceFile),
@@ -1022,6 +1026,19 @@ function extractCases({ path, sourceText }) {
           blockedSupport.length > 0
             ? `The case depends on scheduler-bound parser or notification state: ${blockedSupport.join(', ')}.`
             : 'The case protects TestScheduler parser or queue internals rather than an Observable behavior.';
+        modes = ['cold', 'polyfill', 'native'];
+        migratedProgram = buildMigratedProgram({
+          caseId: id,
+          callback,
+          imports: usedImports,
+          sourceFile,
+          support: caseSupport,
+          wrapManualHelpers: !runMode,
+        });
+      } else if (unrepresentedZipProjection) {
+        classification = 'compatibility-only';
+        disposition = 'missing-api';
+        reason = 'RxJS 7 zip projection overload is not represented.';
         modes = ['cold', 'polyfill', 'native'];
         migratedProgram = buildMigratedProgram({
           caseId: id,
@@ -2471,6 +2488,54 @@ function getCaseSupport({ path, callback, sourceFile, support }) {
     const names = getDeclaredNames(statement);
     return names.length === 0 || names.some((name) => new RegExp(`\\b${escapeRegExp(name)}\\b`).test(callbackSource));
   });
+}
+
+function hasUnrepresentedZipProjection({ path, callback }) {
+  if (path !== 'spec/observables/zip-spec.ts' || !callback || !isFunction(callback)) {
+    return false;
+  }
+
+  const functionBindings = new Set();
+  const collectFunctionBindings = (node) => {
+    if (ts.isFunctionDeclaration(node) && node.name) {
+      functionBindings.add(node.name.text);
+    } else if (
+      ts.isVariableDeclaration(node) &&
+      ts.isIdentifier(node.name) &&
+      node.initializer &&
+      isFunction(node.initializer)
+    ) {
+      functionBindings.add(node.name.text);
+    }
+    ts.forEachChild(node, collectFunctionBindings);
+  };
+  collectFunctionBindings(callback);
+
+  let found = false;
+  const visit = (node) => {
+    if (found) {
+      return;
+    }
+    if (
+      ts.isCallExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      node.expression.text === 'zip' &&
+      node.arguments.length > 0
+    ) {
+      const trailingArgument = node.arguments[node.arguments.length - 1];
+      if (
+        trailingArgument &&
+        (isFunction(trailingArgument) ||
+          (ts.isIdentifier(trailingArgument) && functionBindings.has(trailingArgument.text)))
+      ) {
+        found = true;
+        return;
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(callback);
+  return found;
 }
 
 function collectSupport(statements) {
