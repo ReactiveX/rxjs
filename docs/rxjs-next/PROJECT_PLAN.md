@@ -892,3 +892,26 @@ conformance implementation depends on a runnable harness.
 - P0.T3 remains the single `NEXT` item. The first recommended unblocked packet
   is RX7-NEVER: add an explicit observation boundary to the migrated test
   without changing `NEVER` runtime semantics.
+
+### 2026-07-29 — P0.T3 existing-surface remediation wave 1
+
+- Integrated separate reviewed fixes for the `NEVER` observation boundary,
+  `raceWith` winner selection and cancellation, unsubscription-only
+  observation marbles, overlapping and gapped `bufferCount` windows, seedless
+  `scan`, and the `elementAt` default-value overload.
+- The shared observation-boundary repair also completed the assigned
+  `defaultIfEmpty` cases and repaired affected evidence across 37 owner groups.
+  The complete audits now mark 89 original failures `FIXED`.
+- Complete 16-shard audits recorded 523 cold passes with 1,815 failures and 525
+  polyfill passes with 1,813 failures. The normal strict gate then completed
+  all 16 shards in both modes and remained red, as expected, on unresolved
+  mapped behavior and intentionally out-of-scope missing APIs.
+- Recorded D-015 for count-window configuration on the unified `buffer` Symbol.
+  Missing compatibility APIs such as `ArgumentOutOfRangeError` and `finalize`
+  remain `TODO`; they were not introduced to make neighboring cases pass.
+- The next existing-functionality packet is RX7-IGNORE-ELEMENTS, beginning with
+  its never-observation harness boundary before moving to other small mapped
+  edge cases. Missing non-scheduler APIs remain a later phase, and all
+  scheduler-specific behavior remains deferred until the absolute end of
+  P0.T3.
+- P0.T3 remains the single project-level `NEXT` item.

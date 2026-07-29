@@ -3,6 +3,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { basename, dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import prettier from 'prettier';
 
 const toolDirectory = dirname(fileURLToPath(import.meta.url));
 const packageDirectory = resolve(toolDirectory, '../../..');
@@ -40,14 +41,18 @@ const nextLedger = mergeLedger({
   manifest,
   polyfill,
 });
-const markdown = renderTracker({
-  capturedAt,
-  cold,
-  ledger: nextLedger,
-  manifest,
-  outputPath,
-  polyfill,
-});
+const prettierConfig = (await prettier.resolveConfig(outputPath)) ?? {};
+const markdown = prettier.format(
+  renderTracker({
+    capturedAt,
+    cold,
+    ledger: nextLedger,
+    manifest,
+    outputPath,
+    polyfill,
+  }),
+  { ...prettierConfig, filepath: outputPath }
+);
 const serializedLedger = `${JSON.stringify(nextLedger, null, 2)}\n`;
 
 validateTracker(nextLedger, markdown, casesById, cold, polyfill);
@@ -306,7 +311,11 @@ function renderTracker({ capturedAt, cold, ledger, manifest, outputPath, polyfil
   const coldOnly = failingNow.filter((item) => item.failingModes.length === 1 && item.failingModes[0] === 'cold').length;
   const polyfillOnly = failingNow.filter((item) => item.failingModes.length === 1 && item.failingModes[0] === 'polyfill').length;
   const both = failingNow.filter((item) => item.failingModes.length === 2).length;
-  const firstPacket = groups.find((group) => group.name === 'never') ?? groups.find((group) => group.status !== 'FIXED');
+  const firstPacket = orderedWorkPackets(groups, manifestById).find(
+    (group) =>
+      group.status !== 'FIXED' &&
+      group.cases.some((item) => item.status !== 'FIXED' && !isSchedulerLastCase(manifestById.get(item.id)))
+  );
   const lines = [
     '# RxJS 7 ported-test failure tracker',
     '',
@@ -465,6 +474,19 @@ function groupStatus(cases) {
     return 'BLOCKED';
   }
   return 'TODO';
+}
+
+function isSchedulerLastCase(testCase) {
+  const schedulerMarkers =
+    /(?:SchedulerLike|TestScheduler|VirtualTimeScheduler|asyncScheduler|asapScheduler|queueScheduler|animationFrameScheduler|subscribeOn|observeOn|scheduled)/;
+  const importedSurface = testCase.imports
+    .map((item) => `${item.module} ${item.imported} ${item.local}`)
+    .join(' ');
+  return (
+    testCase.source.path.startsWith('spec/schedulers/') ||
+    testCase.source.path.startsWith('spec/testing/') ||
+    schedulerMarkers.test(`${testCase.behavioralClaim} ${importedSurface}`)
+  );
 }
 
 function orderedWorkPackets(groups, manifestById) {
