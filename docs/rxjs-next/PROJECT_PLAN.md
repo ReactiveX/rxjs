@@ -1016,3 +1016,31 @@ conformance implementation depends on a runnable harness.
   lifecycle rather than making the polyfill cold.
 - Scheduler-specific work remains deferred until the absolute end of P0.T3,
   and P0.T3 remains the single project-level `NEXT` item.
+
+### 2026-07-29 — P0.T3 existing-surface remediation wave 7
+
+- Integrated separate reviewed fixes for `toArray` lifecycle evidence,
+  `onErrorResumeNext` sequencing and never boundaries, and same-frame hot
+  observation ordering required by mapped concat/merge flattening cases.
+- Mode-aware migrated evidence now retains RxJS 7's two cold upstream
+  subscriptions while expecting one shared upstream subscription from the
+  ref-counted platform polyfill. The rewrite is restricted to intentional
+  subscription multiplicity and cannot alter values, errors, completion, or
+  cancellation evidence.
+- `onErrorResumeNext` now sequences the instance receiver before configured
+  sources, advances on both completion and error, swallows exhausted errors,
+  preserves constructor behavior, and cancels through the derived
+  subscriber's AbortSignal.
+- `@rxjs/test` now orders same-frame work as observation boundary, observation
+  start, then ordinary source work. This observes hot frame-zero values without
+  weakening the half-open `!` contract.
+- Complete 16-shard audits recorded 606 cold passes with 1,732 failures and 608
+  polyfill passes with 1,730 failures, adding 31 passes in each mode and
+  bringing the original fixed cohort to 172. The shared fixes also repaired
+  related concat/merge flattening, throttle-error, and TestScheduler evidence.
+- The normal strict gate completed all 16 shards in both modes and remained red
+  on the unresolved queue. No missing API or RxJS scheduler/provider behavior
+  was introduced. Although RX7-DEBOUNCE-TIME is the generated recommendation,
+  time/scheduler-related packets remain deferred until the absolute end; the
+  next wave continues with non-time-based mapped behavior.
+- P0.T3 remains the single project-level `NEXT` item.
