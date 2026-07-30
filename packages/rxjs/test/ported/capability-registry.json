@@ -623,7 +623,7 @@
       "adapter": "identity",
       "mapping": "source[windowCount](windowSize, startWindowEvery?)",
       "status": "Present; parity unverified",
-      "note": "Emits read-only count windows with tumbling, overlapping, or gapped cadence and terminally closes every live window."
+      "note": "Emits read-only count windows with tumbling, overlapping, or gapped cadence. Source completion completes live windows, source errors error them, and outer cancellation silently releases them."
     },
     "withLatestFrom": {
       "symbol": "withLatestFrom",
