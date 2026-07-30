@@ -1,3 +1,4 @@
+import { create } from './create.js';
 import { SubjectLike } from './util/types';
 
 const ObservableBase = Observable;
@@ -62,6 +63,13 @@ export class Subject<T> extends ObservableBase<T> implements SubjectLike<T> {
       }
     }
   }
+
+  /**
+   * Subject constructors do not accept Observable producer callbacks. Keep
+   * Symbol-keyed operator results on the selected platform Observable base
+   * instead of accidentally constructing another mutable Subject.
+   */
+  [create] = <R>(init: (subscriber: Subscriber<R>) => void): Observable<R> => new ObservableBase<R>(init);
 
   /**
    * Returns an Observable view that cannot be used to mutate this Subject.

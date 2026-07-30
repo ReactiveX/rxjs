@@ -1,8 +1,25 @@
 import { describe, expect, expectTypeOf, it, vi } from 'vitest';
 import '@rxjs/observable-polyfill';
+import { create } from './create.js';
 import { Subject } from './subject.js';
 
 describe('Subject.asObservable', () => {
+  it('creates operator results on the Observable base rather than as mutable Subjects', () => {
+    const subject = new Subject<number>();
+    const values: number[] = [];
+    const result = subject[create]<number>((subscriber) => {
+      subscriber.next(1);
+      subscriber.complete();
+    });
+
+    result.subscribe((value) => values.push(value));
+
+    expect(values).toEqual([1]);
+    expect(result).toBeInstanceOf(Observable);
+    expect(result).not.toBeInstanceOf(Subject);
+    expect('next' in result).toBe(false);
+  });
+
   it('returns a distinct Observable view without Subject mutation methods', () => {
     const subject = new Subject<number>();
     const view = subject.asObservable();
