@@ -441,6 +441,14 @@
       "status": "Partial unified mapping",
       "note": "Adapts the legacy numeric count to a config object."
     },
+    "repeatWhen": {
+      "symbol": "repeatWhen",
+      "module": "repeat-when",
+      "adapter": "identity",
+      "mapping": "source[repeatWhen](notifier)",
+      "status": "Present; parity unverified",
+      "note": "Creates one hot completion stream and one notifier per shared activation; repeats are sequential and notifier completion or error controls the shared result."
+    },
     "retry": {
       "symbol": "retry",
       "module": "retry",
@@ -448,6 +456,14 @@
       "mapping": "source[retry](config)",
       "status": "Partial unified mapping",
       "note": "Adapts legacy numeric and config inputs while preserving the RxJS 7 resetOnSuccess default."
+    },
+    "retryWhen": {
+      "symbol": "retryWhen",
+      "module": "retry-when",
+      "adapter": "identity",
+      "mapping": "source[retryWhen](notifier)",
+      "status": "Present; parity unverified",
+      "note": "Creates one hot error stream and one notifier per shared activation; retries are sequential and notifier completion or error controls the shared result."
     },
     "scan": {
       "symbol": "scan",
