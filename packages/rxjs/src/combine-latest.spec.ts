@@ -30,9 +30,7 @@ describe('combineLatest', () => {
     const arrayValues: number[][] = [];
     const objectValues: Array<{ left: number; right: string }> = [];
 
-    Observable[combineLatest]([Observable.from([1]), Observable.from([2])]).subscribe((value) =>
-      arrayValues.push(value)
-    );
+    Observable[combineLatest]([Observable.from([1]), Observable.from([2])]).subscribe((value) => arrayValues.push(value));
     Observable[combineLatest]({
       left: Observable.from([3]),
       right: Observable.from(['four']),
@@ -40,6 +38,39 @@ describe('combineLatest', () => {
 
     expect(arrayValues).toEqual([[1, 2]]);
     expect(objectValues).toEqual([{ left: 3, right: 'four' }]);
+  });
+
+  it('projects static array values with the RxJS result-selector overload', () => {
+    const values: string[] = [];
+
+    Observable[combineLatest]([Observable.from([1]), Observable.from([2])], (left, right) => `${left}:${right}`).subscribe((value) =>
+      values.push(value)
+    );
+
+    expect(values).toEqual(['1:2']);
+  });
+
+  it('projects the instance receiver before the additional source values', () => {
+    const values: string[] = [];
+
+    Observable.from([1])
+      [combineLatest]([Observable.from([2]), Observable.from([3])], (first, second, third) => `${first}:${second}:${third}`)
+      .subscribe((value) => values.push(value));
+
+    expect(values).toEqual(['1:2:3']);
+  });
+
+  it('forwards result-selector errors through the derived observable', () => {
+    const expected = new Error('projection failed');
+    const errors: unknown[] = [];
+
+    Observable[combineLatest]([Observable.from([1]), Observable.from([2])], () => {
+      throw expected;
+    }).subscribe({
+      error: (error) => errors.push(error),
+    });
+
+    expect(errors).toEqual([expected]);
   });
 
   it('cancels the receiver and additional sources with the result', () => {
