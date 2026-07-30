@@ -497,6 +497,14 @@
       "status": "Present; parity unverified",
       "note": "Distinguishes omitted and explicitly undefined seeds and emits accumulated state only on successful completion."
     },
+    "refCount": {
+      "symbol": "refCount",
+      "module": "ref-count",
+      "adapter": "identity",
+      "mapping": "source[refCount]()",
+      "status": "Compatibility-only",
+      "note": "Connects a concrete ConnectableObservable on its first active platform producer run and disconnects after the final run ends."
+    },
     "repeat": {
       "symbol": "repeat",
       "module": "repeat",
