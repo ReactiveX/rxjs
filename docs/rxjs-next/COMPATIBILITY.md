@@ -142,6 +142,45 @@ ref-count a single forwarding subscription. The Subject producer already
 exists before those observers subscribe; obtaining a view does not change that
 fact.
 
+### Async iteration boundary
+
+The platform layer exposes four exact Symbol-keyed ways to iterate an
+Observable with `for await...of`:
+
+- `iterateEachValue` preserves every notification in an iterator-local FIFO
+  queue.
+- `iterateBufferedValues` preserves every notification in
+  microtask-coalesced iterator-local batches.
+- `iterateLatestValue` retains only the latest unread notification.
+- `iterateNextValue` accepts only the first notification received while the
+  iterator has outstanding demand.
+
+Every Symbol invocation returns a fresh, lazy, one-shot async generator. Method
+invocation alone does not subscribe; advancing the generator does. Generator
+cleanup maps loop exit to an `AbortController`, and source errors are thrown
+through iteration after already accepted queue, batch, or latest-value state
+has drained.
+
+The conversion state and producer lifecycle are deliberately separate.
+Multiple generators over one platform Observable have independent queues or
+slots, but their source observers join the Observable's current shared,
+ref-counted producer. A late generator misses earlier notifications in that
+producer run. One generator leaving does not close source work while another
+observer remains; a generator started after the ref count reaches zero creates
+a new run.
+
+The same Symbols invoked on `ColdObservable` reach its direct
+producer-per-subscription override. Each generator therefore owns an
+independent producer run as well as independent conversion state. This can
+change duplicated side effects and which synchronous notifications are
+available, but it does not change the four iteration policies themselves. In
+particular, `iterateNextValue` drops synchronous notifications emitted before
+its first demand slot in either lifecycle.
+
+The removed standalone `eachValueFrom` and `bufferedValuesFrom` helpers are not
+compatibility aliases. Migration uses the explicit Symbol imports and method
+calls so the selected buffering or dropping policy remains visible.
+
 ## Pipeable compatibility requirement
 
 The required user outcome is that an RxJS 7 pipeline can be migrated without

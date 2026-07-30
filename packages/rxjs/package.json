@@ -59,7 +59,6 @@
         "./src/buffer.ts",
         "./src/buffer-time.ts",
         "./src/buffer-toggle.ts",
-        "./src/buffered-values-from.ts",
         "./src/catch-error.ts",
         "./src/cold-observable.ts",
         "./src/combine-latest-all.ts",
@@ -78,7 +77,6 @@
         "./src/distinct.ts",
         "./src/distinct-until-changed.ts",
         "./src/distinct-until-key-changed.ts",
-        "./src/each-value-from.ts",
         "./src/empty-error.ts",
         "./src/every.ts",
         "./src/exhaust-map.ts",
@@ -96,6 +94,10 @@
         "./src/index.ts",
         "./src/interval.ts",
         "./src/is-empty.ts",
+        "./src/iterate-buffered-values.ts",
+        "./src/iterate-each-value.ts",
+        "./src/iterate-latest-value.ts",
+        "./src/iterate-next-value.ts",
         "./src/last.ts",
         "./src/map.ts",
         "./src/materialize.ts",
@@ -220,13 +222,6 @@
       "import": "./dist/esm/buffer-toggle.js",
       "require": "./dist/commonjs/buffer-toggle.js",
       "types": "./dist/types/buffer-toggle.d.ts"
-    },
-    "./buffered-values-from": {
-      "browser": "./dist/browser/buffered-values-from.js",
-      "webpack": "./dist/webpack/buffered-values-from.js",
-      "import": "./dist/esm/buffered-values-from.js",
-      "require": "./dist/commonjs/buffered-values-from.js",
-      "types": "./dist/types/buffered-values-from.d.ts"
     },
     "./catch-error": {
       "browser": "./dist/browser/catch-error.js",
@@ -354,13 +349,6 @@
       "require": "./dist/commonjs/distinct-until-key-changed.js",
       "types": "./dist/types/distinct-until-key-changed.d.ts"
     },
-    "./each-value-from": {
-      "browser": "./dist/browser/each-value-from.js",
-      "webpack": "./dist/webpack/each-value-from.js",
-      "import": "./dist/esm/each-value-from.js",
-      "require": "./dist/commonjs/each-value-from.js",
-      "types": "./dist/types/each-value-from.d.ts"
-    },
     "./empty-error": {
       "browser": "./dist/browser/empty-error.js",
       "webpack": "./dist/webpack/empty-error.js",
@@ -479,6 +467,34 @@
       "import": "./dist/esm/is-empty.js",
       "require": "./dist/commonjs/is-empty.js",
       "types": "./dist/types/is-empty.d.ts"
+    },
+    "./iterate-buffered-values": {
+      "browser": "./dist/browser/iterate-buffered-values.js",
+      "webpack": "./dist/webpack/iterate-buffered-values.js",
+      "import": "./dist/esm/iterate-buffered-values.js",
+      "require": "./dist/commonjs/iterate-buffered-values.js",
+      "types": "./dist/types/iterate-buffered-values.d.ts"
+    },
+    "./iterate-each-value": {
+      "browser": "./dist/browser/iterate-each-value.js",
+      "webpack": "./dist/webpack/iterate-each-value.js",
+      "import": "./dist/esm/iterate-each-value.js",
+      "require": "./dist/commonjs/iterate-each-value.js",
+      "types": "./dist/types/iterate-each-value.d.ts"
+    },
+    "./iterate-latest-value": {
+      "browser": "./dist/browser/iterate-latest-value.js",
+      "webpack": "./dist/webpack/iterate-latest-value.js",
+      "import": "./dist/esm/iterate-latest-value.js",
+      "require": "./dist/commonjs/iterate-latest-value.js",
+      "types": "./dist/types/iterate-latest-value.d.ts"
+    },
+    "./iterate-next-value": {
+      "browser": "./dist/browser/iterate-next-value.js",
+      "webpack": "./dist/webpack/iterate-next-value.js",
+      "import": "./dist/esm/iterate-next-value.js",
+      "require": "./dist/commonjs/iterate-next-value.js",
+      "types": "./dist/types/iterate-next-value.d.ts"
     },
     "./last": {
       "browser": "./dist/browser/last.js",

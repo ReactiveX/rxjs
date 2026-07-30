@@ -65,6 +65,10 @@ Still decide:
 - the common idempotent installer and conflict policy for public extension
   Symbols.
 
+D-038 adds four more exact, module-owned public Symbols for async iteration.
+They follow the accepted collision-isolation policy but do not settle
+cross-version identity, duplicate-install conflict handling, or realm behavior.
+
 ### 4. What does importing an extension guarantee?
 
 Decide:
@@ -153,6 +157,12 @@ Define one pattern for:
 - error forwarding;
 - tests;
 - exports and documentation.
+
+D-038 provides evidence for Symbol extensions that return a non-Observable:
+the four async-iteration methods subscribe directly to the receiver and keep
+state in a returned generator, so they do not use `[create]`. Their direct
+prototype assignments remain subject to the common installation decision
+rather than establishing that pattern by themselves.
 
 ## Compatibility questions
 

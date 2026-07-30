@@ -796,3 +796,37 @@ Status meanings:
   on `ColdObservable`. A Symbol operator cannot bypass `[create]` by delegating
   directly to a native method when that would change the receiver's
   construction policy.
+
+## D-038 — Expose four explicit Observable-to-async-iterator strategies
+
+- **Status:** Accepted
+- **Decision:** Export exact instance Symbols named `iterateEachValue`,
+  `iterateBufferedValues`, `iterateLatestValue`, and `iterateNextValue`.
+  Invoking one on an Observable returns a fresh, lazy, one-shot async
+  generator. The contracts are based on `rxjs-for-await` revision
+  `94f9cf9cb015ac3700dfd1850eb81d36962eb70f`:
+  `iterateEachValue` is lossless FIFO iteration,
+  `iterateBufferedValues` is lossless microtask-coalesced batch iteration,
+  `iterateLatestValue` keeps only the latest unread value, and
+  `iterateNextValue` keeps only the first value received while the consumer has
+  an outstanding request.
+- **Lifecycle:** Generator state is iterator-local, but source activation
+  follows the receiver's direct-subscription contract. Concurrent generators
+  over a platform Observable join its current shared, ref-counted producer and
+  receive only notifications emitted after each joins. Closing the final
+  generator closes that producer; later iteration starts a new run.
+  `ColdObservable` instead starts one independent producer run per generator.
+  Generator cleanup aborts its source observer, and accepted queued, buffered,
+  or latest values drain before completion or error is observed.
+- **Rationale:** A push Observable cannot become a pull-then-push
+  `AsyncIterable` without choosing how to handle values produced while the
+  consumer is busy. Four named Symbols make the lossless memory tradeoffs and
+  lossy selection policies explicit rather than hiding one policy behind a
+  generic conversion name.
+- **Consequence:** The exploratory standalone `eachValueFrom` and
+  `bufferedValuesFrom` exports and package subpaths are removed without aliases.
+  These public Symbols remain module-owned exact keys and do not use the global
+  Symbol registry. Because they return async generators rather than derived
+  Observables, they do not invoke the shared `[create]` construction protocol.
+  Their direct installation does not resolve the still-open common installer,
+  duplicate-package, package-map, or native-versus-polyfill decisions.

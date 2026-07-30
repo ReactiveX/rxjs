@@ -72,6 +72,7 @@ item.
 | `DONE`    | P0.T3  | Resolve the cold and polyfill RxJS 7 parity failures through the durable operator/function work queue                  |
 | `DONE`    | P0.DX1 | Migrate repository workspaces, automation, and contributor tooling from Yarn Classic to pnpm 10                        |
 | `DONE`    | P0.DX2 | Make the root developer command guide concise, accurate, and task-oriented                                             |
+| `DONE`    | P0.I1  | Add four explicit Symbol-based Observable-to-async-iterator strategies                                                 |
 | `NEXT`    | P0.2   | Decide the package map and native-versus-polyfill installation contract                                                |
 | `PLANNED` | P0.3   | Restore green builds and coherent public entry points for the selected package map                                     |
 | `PLANNED` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                               |
@@ -342,6 +343,38 @@ item.
   parity suite and known P0.3 build/lint baselines.
 - Linked specialized docs and verified the listed commands against current
   workspace scripts while keeping P0.2 as the single `NEXT` item.
+
+#### P0.I1 completion bar
+
+- Four exact instance Symbols expose lossless FIFO, lossless buffered, lossy
+  latest-value, and lossy next-demand async iteration.
+- Each invocation returns a fresh lazy generator, preserves the receiver's
+  direct-subscription lifecycle, and aborts its observer during generator
+  cleanup.
+- Focused tests cover synchronous and delayed producers, terminal behavior,
+  microtask coalescing, cancellation, platform sharing/ref counting, and
+  `ColdObservable` producer-per-subscription behavior.
+- Public comments and architecture records explain the implications of
+  multiple generators over platform and compatibility Observables.
+
+#### P0.I1 completion evidence
+
+- Added `iterateEachValue`, `iterateBufferedValues`, `iterateLatestValue`, and
+  `iterateNextValue` exact Symbol modules with a shared internal async-generator
+  implementation and detailed API documentation.
+- Removed the exploratory `eachValueFrom` and `bufferedValuesFrom` sources and
+  package subpaths without aliases. The four replacement subpaths are present
+  in both the source build inventory and published export map.
+- Added 16 focused behavior, type, lifecycle, error, completion, and
+  cancellation tests. The complete RxJS gate passed 101 focused files with 733
+  tests, followed by all 2,338 cold and 2,338 polyfill parity cases.
+- Recorded D-038 against reviewed `rxjs-for-await` revision
+  `94f9cf9cb015ac3700dfd1850eb81d36962eb70f` and updated architecture,
+  compatibility, and open-question records.
+- Package metadata parses successfully. The package build reaches only the
+  documented P0.3 baseline where `tshy` rejects the existing array-valued root
+  source export; it reports no change-specific build diagnostic.
+- P0.2 remains the single project-level `NEXT` item.
 
 #### P0.2 completion bar
 
@@ -1458,3 +1491,25 @@ conformance implementation depends on a runnable harness.
 - Recorded D-037. This user-directed compatibility/kernel slice does not
   advance the package-map decision; P0.2 remains the single project-level
   `NEXT` item.
+
+### 2026-07-30 — Symbol-based async iteration strategies
+
+- Temporarily prioritized and completed P0.I1 at the user's direction, using
+  `rxjs-for-await` revision
+  `94f9cf9cb015ac3700dfd1850eb81d36962eb70f` as the behavioral source.
+- Added exact Symbols for lossless each-value and buffered iteration plus
+  lossy latest-value and next-demand iteration. Every invocation returns a
+  fresh, lazy, one-shot async generator and aborts its observer during
+  generator cleanup.
+- Documented and tested the lifecycle distinction: concurrent generators keep
+  independent conversion state while joining one shared, ref-counted platform
+  producer, whereas `ColdObservable` starts an independent producer for each
+  generator.
+- Removed the two exploratory standalone conversion helpers and replaced their
+  package subpaths with the four explicit Symbol modules.
+- Passed 16 focused async-iteration tests and the full RxJS gate: 101 focused
+  files with 733 tests, followed by every one of the 2,338 cold and 2,338
+  polyfill parity cases.
+- Confirmed the package build stops at the unchanged P0.3 `tshy` root-export
+  baseline before source compilation. Recorded D-038 and restored P0.2 as the
+  sole project-level `NEXT` item.
