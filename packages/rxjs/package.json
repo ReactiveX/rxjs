@@ -94,6 +94,7 @@
         "./src/merge.ts",
         "./src/min.ts",
         "./src/not-found-error.ts",
+        "./src/notification.ts",
         "./src/noop.ts",
         "./src/pairwise.ts",
         "./src/partition.ts",
@@ -435,6 +436,13 @@
       "import": "./dist/esm/not-found-error.js",
       "require": "./dist/commonjs/not-found-error.js",
       "types": "./dist/types/not-found-error.d.ts"
+    },
+    "./notification": {
+      "browser": "./dist/browser/notification.js",
+      "webpack": "./dist/webpack/notification.js",
+      "import": "./dist/esm/notification.js",
+      "require": "./dist/commonjs/notification.js",
+      "types": "./dist/types/notification.d.ts"
     },
     "./noop": {
       "browser": "./dist/browser/noop.js",
