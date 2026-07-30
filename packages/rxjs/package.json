@@ -100,12 +100,14 @@
         "./src/single.ts",
         "./src/skip.ts",
         "./src/skip-last.ts",
+        "./src/skip-until.ts",
         "./src/skip-while.ts",
         "./src/subject.ts",
         "./src/switch-map.ts",
         "./src/tap.ts",
         "./src/take.ts",
         "./src/take-last.ts",
+        "./src/take-until.ts",
         "./src/take-while.ts",
         "./src/throttle.ts",
         "./src/timeout.ts",
@@ -461,6 +463,13 @@
       "require": "./dist/commonjs/skip-last.js",
       "types": "./dist/types/skip-last.d.ts"
     },
+    "./skip-until": {
+      "browser": "./dist/browser/skip-until.js",
+      "webpack": "./dist/webpack/skip-until.js",
+      "import": "./dist/esm/skip-until.js",
+      "require": "./dist/commonjs/skip-until.js",
+      "types": "./dist/types/skip-until.d.ts"
+    },
     "./skip-while": {
       "browser": "./dist/browser/skip-while.js",
       "webpack": "./dist/webpack/skip-while.js",
@@ -502,6 +511,13 @@
       "import": "./dist/esm/take-last.js",
       "require": "./dist/commonjs/take-last.js",
       "types": "./dist/types/take-last.d.ts"
+    },
+    "./take-until": {
+      "browser": "./dist/browser/take-until.js",
+      "webpack": "./dist/webpack/take-until.js",
+      "import": "./dist/esm/take-until.js",
+      "require": "./dist/commonjs/take-until.js",
+      "types": "./dist/types/take-until.d.ts"
     },
     "./take-while": {
       "browser": "./dist/browser/take-while.js",
