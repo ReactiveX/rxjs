@@ -68,6 +68,48 @@ const harnessRewritePrograms = new Map([
 // observation boundary itself performs the corresponding unsubscription.
 const observationBoundaries = new Map([
   [
+    'spec/operators/isEmpty-spec.ts:47:isEmpty > should not complete if source never emits',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]),
+    },
+  ],
+  [
+    'spec/operators/pairwise-spec.ts:91:pairwise operator > should handle never',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]),
+    },
+  ],
+  [
+    'spec/operators/throwIfEmpty-spec.ts:68:throwIfEmpty > with errorFactory > should never when never',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([['sub1', boundedSubscription(0, 1)]]),
+    },
+  ],
+  [
+    'spec/operators/throwIfEmpty-spec.ts:169:throwIfEmpty > without errorFactory > should never when never',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([['sub1', boundedSubscription(0, 1)]]),
+    },
+  ],
+  [
+    'spec/operators/startWith-spec.ts:42:startWith > should start with given value and does not completes if source does not completes',
+    {
+      observable: boundedSubscription(0, 6),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 6)]]),
+    },
+  ],
+  [
+    'spec/operators/startWith-spec.ts:55:startWith > should start with given value and does not completes if source never emits',
+    {
+      observable: boundedSubscription(0, 2),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 2)]]),
+    },
+  ],
+  [
     'spec/operators/find-spec.ts:35:find > should not emit if source does not emit',
     {
       observable: '^!',
@@ -979,6 +1021,16 @@ const observationBoundaries = new Map([
     },
   ],
 ]);
+const expectedValueDictionaries = new Map([
+  [
+    'spec/operators/startWith-spec.ts:120:startWith > should start with given value and raises error if source raises error',
+    new Map([['defaultStartValue', 'x']]),
+  ],
+  [
+    'spec/operators/startWith-spec.ts:133:startWith > should start with given value and raises error immediately if source throws error',
+    new Map([['defaultStartValue', 'x']]),
+  ],
+]);
 // RxJS 7 starts a new producer for every subscription to a reused cold inner.
 // Platform mode instead joins overlapping logical subscriptions to one
 // ref-counted producer and restarts it only after the prior run closes. Exact
@@ -1680,7 +1732,8 @@ function buildMigratedProgram({ caseId, callback, imports, sourceFile, support, 
     true,
     observationBoundaries.get(caseId),
     modeAwareObservableExpectations.get(caseId),
-    modeAwareSubscriptionExpectations.get(caseId)
+    modeAwareSubscriptionExpectations.get(caseId),
+    expectedValueDictionaries.get(caseId)
   );
 }
 
@@ -1884,7 +1937,8 @@ function transpileMigratedProgram(
   injectRuntime = true,
   observationBoundary,
   modeAwareObservableExpectation,
-  modeAwareSubscriptionExpectation
+  modeAwareSubscriptionExpectation,
+  expectedValueDictionary
 ) {
   const standalonePipeLocals = new Set(
     imports.filter((item) => item.module === 'rxjs' && item.imported === 'pipe').map((item) => item.local)
@@ -1904,6 +1958,7 @@ function transpileMigratedProgram(
           observationBoundary,
           modeAwareObservableExpectation,
           modeAwareSubscriptionExpectation,
+          expectedValueDictionary,
         }),
       ],
     },
@@ -2117,6 +2172,7 @@ function createMigrationTransformer({
   observationBoundary,
   modeAwareObservableExpectation,
   modeAwareSubscriptionExpectation,
+  expectedValueDictionary,
 }) {
   return (context) => {
     const { factory } = context;
@@ -2199,6 +2255,31 @@ function createMigrationTransformer({
       }
 
       if (ts.isCallExpression(node)) {
+        const expectedValuesArgument = node.arguments[1];
+        const expectedValueToken =
+          ts.isPropertyAccessExpression(node.expression) &&
+          node.expression.name.text === 'toBe' &&
+          expectedValuesArgument &&
+          ts.isIdentifier(expectedValuesArgument)
+            ? expectedValueDictionary?.get(expectedValuesArgument.text)
+            : undefined;
+        if (expectedValueToken !== undefined) {
+          return factory.updateCallExpression(
+            node,
+            ts.visitNode(node.expression, visit),
+            node.typeArguments,
+            [
+              ...node.arguments.slice(0, 1).map((argument) => ts.visitNode(argument, visit)),
+              factory.createObjectLiteralExpression([
+                factory.createPropertyAssignment(
+                  factory.createStringLiteral(expectedValueToken),
+                  ts.visitNode(expectedValuesArgument, visit)
+                ),
+              ]),
+              ...node.arguments.slice(2).map((argument) => ts.visitNode(argument, visit)),
+            ]
+          );
+        }
         const modeAwareObservableTarget =
           modeAwareObservableExpectation && getModeAwareObservableTarget(node);
         const platformObservableExpectation =
