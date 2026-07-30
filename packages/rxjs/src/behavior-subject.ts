@@ -1,16 +1,18 @@
-import { ColdSubject } from './cold-subject';
+import { PerSubscriptionSubjectBase } from './per-subscription-subject-base.js';
 
-class BehaviorSubject<T> extends ColdSubject<T> {
+class BehaviorSubject<T> extends PerSubscriptionSubjectBase<T> {
   #currentValue: T;
 
-  constructor(init: undefined | ((subscriber: Subscriber<T>) => void), initialValue: T) {
-    super(init);
+  constructor(initialValue: T) {
+    super();
     this.#currentValue = initialValue;
   }
 
-  override addSubscriber(subcriber: Subscriber<T>) {
-    subcriber.next(this.#currentValue);
-    super.addSubscriber(subcriber);
+  protected override _subscribe(subscriber: Subscriber<T>) {
+    if (this.active) {
+      subscriber.next(this.#currentValue);
+    }
+    super._subscribe(subscriber);
   }
 
   override next(value: T) {
@@ -23,5 +25,5 @@ class BehaviorSubject<T> extends ColdSubject<T> {
 }
 
 export function behaviorSubject<T>(initialValue: T) {
-  return new BehaviorSubject(undefined, initialValue);
+  return new BehaviorSubject(initialValue);
 }

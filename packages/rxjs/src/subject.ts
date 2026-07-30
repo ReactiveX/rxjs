@@ -3,6 +3,10 @@ import { SubjectLike } from './util/types';
 
 const ObservableBase = Observable;
 
+/**
+ * A hot producer: the Subject exists before observers subscribe and fans its
+ * notifications out to the currently subscribed observers.
+ */
 export class Subject<T> extends ObservableBase<T> implements SubjectLike<T> {
   #completed = false;
   #hasError = false;

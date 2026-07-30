@@ -189,13 +189,14 @@ Status meanings:
   separate `@rxjs/test` package. It hides the scheduler instance, returns
   `Promise<void>`, virtualizes the supported host timing APIs for the full
   async callback lifetime, and restores the realm on every exit path.
-  `cold()` retains RxJS 7 producer-per-subscription behavior, `hot()` models a
-  subject timeline, and `observable()` models the platform shared/ref-counted
-  lifecycle.
+  `cold()` creates an independent producer during each subscription, `hot()`
+  creates a subject-timeline producer before subscriptions, and `observable()`
+  models the platform lifecycle in which the first subscription creates an
+  active producer and concurrent subscriptions share it.
 - **Rationale:** RxJS Next operators use host scheduling APIs rather than a
   public scheduler abstraction, so deterministic tests must virtualize the
-  host boundary. Separate source helpers prevent compatibility-cold behavior
-  from being confused with the platform lifecycle.
+  host boundary. Separate source helpers prevent producer-per-subscription
+  compatibility behavior from being confused with the platform lifecycle.
 - **Consequence:** The main RxJS package does not regain scheduler arguments or
   a public `TestScheduler`. Every host scheduling primitive adopted by a
   supported operator must have an `@rxjs/test` adapter, and production
@@ -350,7 +351,8 @@ Status meanings:
   including completion or error observed after the Subject has already
   terminated. Under the platform fallback, concurrent observers of one view
   share a single active forwarding subscription and ref-count it. The method
-  does not turn the platform Observable into an RxJS 7 cold Observable.
+  does not give the platform Observable RxJS 7
+  producer-per-subscription behavior.
 
 ## D-018 — Flush selector-based debounce state on source completion
 
@@ -427,7 +429,8 @@ Status meanings:
   before completion. Source, duration, selector, and last-observer termination
   close all active work through `AbortSignal`. The platform fallback retains
   one shared, ref-counted source and duration activation for concurrent
-  observers; this decision does not introduce cold-per-subscription behavior.
+  observers; this decision does not introduce producer-per-subscription
+  behavior.
 
 ## D-022 — Complete zip when a finished input cannot form another tuple
 
@@ -451,7 +454,7 @@ Status meanings:
   completed buffers without producing an infinite sequence of fill-only
   tuples. Concurrent platform observers share one zip activation and its
   buffers; this decision does not introduce queue scheduling or
-  cold-per-observer behavior.
+  producer-per-observer behavior.
 
 ## D-023 — Keep RxJS map and filter overloads on exact Symbol keys
 
@@ -488,7 +491,7 @@ Status meanings:
   already closed when its downstream observer runs. Concurrent observers share
   one count and one source activation; last-observer cancellation closes that
   activation through the result signal. This is an operator-local cancellation
-  boundary, not cold-per-observer compatibility behavior.
+  boundary, not producer-per-observer compatibility behavior.
 
 ## D-025 — Scope tap and finalize hooks to a shared operator activation
 
@@ -629,7 +632,7 @@ Status meanings:
   the notifier's first value; `skipUntil` opens on that value and closes the
   notifier activation. Notifier completion without a value does not terminate
   or open either gate.
-- **Rationale:** These portable RxJS 7 contracts do not require cold
+- **Rationale:** These portable RxJS 7 contracts do not require
   producer-per-observer behavior, but their overloads, subscription order,
   sentinels, source identity, early cancellation, and state ownership are
   observable behavior. Exact Symbols preserve the platform surface while one
@@ -683,8 +686,8 @@ Status meanings:
   depends on legacy scheduling use explicit generator-owned `@rxjs/test`
   timing rewrites or test-local compatibility sentinels.
 - **Rationale:** RxJS 7 schedulers combine public API, execution policy, and
-  cold-observable assumptions that do not belong in the platform lifecycle
-  layer. The virtual host environment can preserve notification timing,
+  producer-per-subscription Observable assumptions that do not belong in the
+  platform lifecycle layer. The virtual host environment can preserve notification timing,
   subscription windows, cancellation, ordering, and error evidence without
   presenting test machinery as a supported runtime abstraction.
 - **Consequence:** Passing scheduler-related ported cases is evidence for the
@@ -712,3 +715,48 @@ Status meanings:
   remain valid because they select clocks rather than schedule work. References
   captured by application code before `rxTest` patches the realm remain outside
   the supported virtual-host boundary.
+
+## D-035 — Define hot and cold only by producer-creation timing
+
+- **Status:** Accepted
+- **Decision:** “Hot” and “cold” describe when a producer exists relative to a
+  subscription. A producer is hot for a subscription when it already exists
+  before that subscription. A producer is cold for a subscription when the
+  subscription creates it. Sharing, multicasting, replay, ref counting, and
+  observer count are separate properties and must be described separately.
+- **Rationale:** Treating “hot” as a synonym for shared or “cold” as a synonym
+  for producer-per-observer obscures the actual producer lifecycle. The
+  platform Observable demonstrates why: its first subscription creates an
+  active producer, concurrent subscriptions join that existing producer, and a
+  later subscription after ref-count closure creates another producer.
+- **Consequence:** Documentation must not label the platform Observable “cold
+  until subscribed” as though it has one permanent temperature. Every
+  instantiated Subject is hot because the Subject producer exists before
+  subscription. The exploratory `ColdSubject` name is therefore incorrect; it
+  describes inheritance from `ColdObservable` and a per-observer subscription
+  hook, not a cold Subject. D-036 resolves that name while preserving the hook
+  required by the current `BehaviorSubject` and `ReplaySubject` prototypes.
+
+## D-036 — Name the advanced Subject base by its subscription hook
+
+- **Status:** Accepted
+- **Decision:** Rename the exploratory `ColdSubject` class and public subpath
+  to `PerSubscriptionSubjectBase`. Make the class abstract, give it a protected
+  constructor, and expose a protected `_subscribe` hook that runs for each
+  direct subscription routed through `ColdObservable.subscribe()`.
+  `BehaviorSubject` and `ReplaySubject` subclass this base for current-value
+  and buffered replay. Do not retain a `ColdSubject` alias or export.
+- **Rationale:** Every instantiated Subject is hot under D-035, so
+  `ColdSubject` is an oxymoron. The replacement name states all three important
+  constraints: setup is per subscription, the value is a Subject, and the
+  class is a base for advanced implementations rather than a general-purpose
+  Subject.
+- **Consequence:** The base's default `_subscribe` implementation owns retained
+  terminal delivery and live fanout. Subclasses normally delegate to it; a
+  subclass that uses the lower-level `addSubscriber` helper owns replay
+  ordering, terminal handling, cancellation checks, and teardown correctness.
+  The hook applies to direct JavaScript subscriptions only. Native Observable
+  methods may use the platform's internal subscription algorithm and bypass
+  the overridden `subscribe()` method, so this base is not a transparent native
+  subscription interception mechanism. Removing the old public subpath is an
+  intentional exploratory API rename.

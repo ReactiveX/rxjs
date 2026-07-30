@@ -1,11 +1,11 @@
-import { ColdSubject } from './cold-subject';
+import { PerSubscriptionSubjectBase } from './per-subscription-subject-base.js';
 
 interface ReplaySubjectConfig {
   size?: number;
   maxAge?: number;
 }
 
-class ReplaySubject<T> extends ColdSubject<T> {
+class ReplaySubject<T> extends PerSubscriptionSubjectBase<T> {
   #bufferValues: T[] = [];
   #bufferTimestamps: number[] = [];
   #completed = false;
@@ -16,9 +16,7 @@ class ReplaySubject<T> extends ColdSubject<T> {
   readonly #maxAge: number;
 
   constructor(config?: ReplaySubjectConfig) {
-    let subscribeToReplay: (subscriber: Subscriber<T>) => void;
-    super((subscriber) => subscribeToReplay(subscriber));
-    subscribeToReplay = (subscriber) => this.addSubscriber(subscriber);
+    super();
 
     const { size = Infinity, maxAge = Infinity } = config ?? {};
     this.#size = size;
@@ -49,7 +47,7 @@ class ReplaySubject<T> extends ColdSubject<T> {
     }
   }
 
-  override addSubscriber(subscriber: Subscriber<T>) {
+  protected override _subscribe(subscriber: Subscriber<T>) {
     const buffer = Array.from(this.#bufferValues);
     if (!this.#hasError && !this.#completed) {
       // Match ReplaySubject's reentrant contract: an active subscriber joins

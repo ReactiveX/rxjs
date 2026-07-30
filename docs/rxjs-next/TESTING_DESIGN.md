@@ -27,9 +27,15 @@ Testing needs to express both RxJS 7 compatibility behavior and the platform
 Observable lifecycle. One ambiguous `cold` helper would make tests misleading,
 so the context exposes three source models.
 
+Here “hot” and “cold” refer only to producer creation relative to
+subscription. Cold means the subscription creates the producer. Hot means the
+producer already exists before the subscription. Sharing, multicasting,
+replay, and ref counting are separate lifecycle properties.
+
 ### `cold`
 
-`cold()` is the RxJS 7 producer-per-subscription model:
+`cold()` creates a producer during every subscription, matching the RxJS 7
+producer-per-subscription model:
 
 - every observer starts an independent copy of the diagram;
 - messages are relative to that observer's subscription;
@@ -41,7 +47,8 @@ platform Observable.
 
 ### `hot`
 
-`hot()` is a subject-like absolute timeline:
+`hot()` creates its subject-like absolute-timeline producer when the helper is
+called, before any observer subscribes:
 
 - the diagram is scheduled once relative to test time;
 - observing does not start, stop, or restart the producer;
@@ -53,7 +60,7 @@ platform Observable.
 
 `observable()` follows the platform lifecycle:
 
-- the first observer activates the producer and starts the diagram;
+- the first observer creates and activates the producer and starts the diagram;
 - concurrent observers share the active producer;
 - individual observers can abort independently;
 - the final observer leaving cancels pending producer work;
@@ -225,8 +232,8 @@ export interface RxTestContext {
   readonly signal: AbortSignal;
 
   /**
-   * Creates an RxJS 7-style cold source. Every observer starts an independent
-   * timeline at its subscription time.
+   * Creates an RxJS 7-style cold source: subscription creates an independent
+   * producer and timeline for every observer.
    */
   cold<T = string>(marbles: string, values?: MarbleValues<T>, error?: unknown): TestColdObservable<T>;
 
@@ -234,8 +241,9 @@ export interface RxTestContext {
   hot<T = string>(marbles: string, values?: MarbleValues<T>, error?: unknown): TestHotObservable<T>;
 
   /**
-   * Creates a platform source: cold until observed, shared/ref-counted while
-   * active, and restartable after its final observer leaves.
+   * Creates a platform source. The first observer creates its active producer,
+   * concurrent observers share it, and observation after ref-count closure
+   * creates a new producer.
    */
   observable<T = string>(marbles: string, values?: MarbleValues<T>, error?: unknown): TestPlatformObservable<T>;
 
@@ -492,7 +500,7 @@ test('virtualizes application timers', () =>
   }));
 ```
 
-### RxJS 7 cold behavior versus platform sharing
+### RxJS 7 producer-per-subscription behavior versus platform sharing
 
 ```ts
 it('makes the lifecycle explicit', () =>
@@ -569,7 +577,7 @@ active before Symbol extensions load:
 Platform tests construct from the global `Observable` and never import the
 fallback constructor. Dedicated platform cases prove shared activation,
 individual observer cancellation, ref-count restart, and global construction
-where legacy cold expectations would be misleading.
+where legacy producer-per-subscription expectations would be misleading.
 
 An exact migrated case may receive the internal port mode only when its
 subscription-multiplicity assertion intentionally differs between the RxJS 7
@@ -578,7 +586,7 @@ must retain the original subscription evidence; the platform branch may change
 only the affected lifecycle expectation, such as two concurrent observers
 sharing one upstream subscription. Mode-aware rewrites must not hide value,
 error, completion, or cancellation mismatches, and they must not make the
-platform implementation cold.
+platform implementation producer-per-subscription.
 
 The default cold and polyfill gates register all 2,338 source cases as ordinary
 tests. Known implementation, capability, conversion, lifecycle, source-skip,

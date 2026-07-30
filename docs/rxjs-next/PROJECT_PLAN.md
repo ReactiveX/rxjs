@@ -1392,3 +1392,44 @@ conformance implementation depends on a runnable harness.
   imported RxJS modules and ordinary application scheduling share the same
   `rxTest` virtual host timeline.
 - Recorded D-034. P0.2 remains the single project-level `NEXT` item.
+
+### 2026-07-30 — Hot and cold producer terminology
+
+- Defined hot and cold solely by whether the producer exists before a
+  subscription or is created during it; sharing, multicasting, replay, and ref
+  counting remain separate properties.
+- Removed the “cold until subscribed” shorthand for the platform Observable
+  and documented its exact lifecycle: the first subscription creates an active
+  producer, concurrent subscriptions join it, and a later subscription after
+  ref-count closure creates another.
+- Recorded that every instantiated Subject is hot and that `ColdSubject` is
+  misnamed prototype debt. Its material lifecycle distinction from `Subject`
+  is per-observer subscription plumbing used by the `BehaviorSubject` and
+  `ReplaySubject` prototypes for late-observer replay.
+- Made no rename or removal. That choice remains part of the compatibility and
+  package-boundary design, and P0.2 remains the single project-level `NEXT`
+  item.
+
+### 2026-07-30 — Per-subscription Subject base rename
+
+- Renamed the exploratory `ColdSubject` class and public subpath to the
+  abstract `PerSubscriptionSubjectBase`; no compatibility alias remains.
+- Added a protected `_subscribe` hook with detailed lifecycle guidance,
+  retained the lower-level fanout helper for replay ordering, and made the
+  constructor protected so the base is visibly subclass-only.
+- Migrated the behavior- and replay-subject factories and added focused
+  evidence that the hook runs for every direct subscription, including late
+  terminal subscribers.
+- Recorded D-036 and the native-interoperability warning: platform methods can
+  use the internal subscription algorithm and bypass an overridden JavaScript
+  `subscribe()` method.
+- Passed the full `rxjs` gate: 100 focused files with 710 tests, followed by
+  all 2,338 cold and 2,338 polyfill parity cases. The parity document freshness
+  check and `git diff --check` also passed.
+- The pre-existing package-tooling failures remain unchanged: ESLint still
+  points at `packages/observable/tsconfig.json`, and `tshy` rejects the current
+  root export-array shape before compiling sources. A direct TypeScript
+  diagnostic produced no errors in the renamed base or its behavior/replay
+  subclasses after filtering out the repository's existing errors.
+- This user-directed compatibility cleanup does not advance P0.2, which
+  remains the single project-level `NEXT` item.

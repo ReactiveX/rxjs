@@ -62,7 +62,6 @@
         "./src/buffered-values-from.ts",
         "./src/catch-error.ts",
         "./src/cold-observable.ts",
-        "./src/cold-subject.ts",
         "./src/combine-latest-all.ts",
         "./src/combine-latest.ts",
         "./src/combine.ts",
@@ -112,6 +111,7 @@
         "./src/observe-on.ts",
         "./src/pairwise.ts",
         "./src/partition.ts",
+        "./src/per-subscription-subject-base.ts",
         "./src/pipe.ts",
         "./src/pluck.ts",
         "./src/publish-behavior.ts",
@@ -241,13 +241,6 @@
       "import": "./dist/esm/cold-observable.js",
       "require": "./dist/commonjs/cold-observable.js",
       "types": "./dist/types/cold-observable.d.ts"
-    },
-    "./cold-subject": {
-      "browser": "./dist/browser/cold-subject.js",
-      "webpack": "./dist/webpack/cold-subject.js",
-      "import": "./dist/esm/cold-subject.js",
-      "require": "./dist/commonjs/cold-subject.js",
-      "types": "./dist/types/cold-subject.d.ts"
     },
     "./combine-latest-all": {
       "browser": "./dist/browser/combine-latest-all.js",
@@ -592,6 +585,13 @@
       "import": "./dist/esm/partition.js",
       "require": "./dist/commonjs/partition.js",
       "types": "./dist/types/partition.d.ts"
+    },
+    "./per-subscription-subject-base": {
+      "browser": "./dist/browser/per-subscription-subject-base.js",
+      "webpack": "./dist/webpack/per-subscription-subject-base.js",
+      "import": "./dist/esm/per-subscription-subject-base.js",
+      "require": "./dist/commonjs/per-subscription-subject-base.js",
+      "types": "./dist/types/per-subscription-subject-base.d.ts"
     },
     "./pipe": {
       "browser": "./dist/browser/pipe.js",

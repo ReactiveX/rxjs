@@ -17,23 +17,47 @@ rather than silently ignored or hidden in the platform layer.
 
 ## Semantic baseline
 
+### Hot and cold terminology
+
+RxJS Next uses “hot” and “cold” only to describe when a producer comes into
+existence relative to subscription:
+
+- A producer is **hot** for a subscription when it already exists before that
+  subscription.
+- A producer is **cold** for a subscription when that subscription creates the
+  producer.
+
+These terms do not describe whether values are shared, whether a source is
+multicast, whether it replays, or whether it is ref-counted. A lifecycle can
+also cross the boundary: the first subscription to a platform Observable
+creates its active producer, concurrent subscriptions join that existing
+producer, and a later subscription after ref-count closure creates another
+one. For that reason, documentation should state producer-creation and sharing
+behavior directly instead of assigning the platform Observable one blanket
+temperature.
+
+Every instantiated Subject is hot. The Subject itself is the producer and
+exists before an observer subscribes. The former exploratory `ColdSubject`
+name was therefore removed: its inherited per-subscription plumbing did not
+make the Subject producer cold. See D-035 and D-036.
+
 The table describes architectural defaults, not every edge case.
 
-| Concern               | RxJS 7 baseline                                                                      | Platform Observable baseline                                                            | Compatibility implication                                                                                             |
-| --------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| Producer execution    | A normal cold Observable starts independent work per subscription                    | One active producer subscription is shared by current observers and ref-counted         | Independent execution needs an explicit cold compatibility abstraction                                                |
-| Hot values            | Explicit through `Subject`, multicasting, or sharing operators                       | Sharing is intrinsic while the platform subscriber is active                            | Some RxJS 7 sharing operators may be unnecessary, different, or compatibility-only                                    |
-| Subscription return   | `subscribe()` returns a `Subscription`                                               | `subscribe()` returns `undefined`                                                       | Legacy unsubscription needs an adapter or facade                                                                      |
-| Cancellation          | `Subscription.unsubscribe()` and teardown chains                                     | `AbortSignal`, `Subscriber.signal`, and ref-count closure                               | Boundary adapters must map both directions and preserve abort reasons where possible                                  |
-| Teardown registration | Producer may return teardown logic; subscriptions aggregate finalizers               | Producer calls `subscriber.addTeardown()`                                               | Creation APIs and tests need a deliberate translation                                                                 |
-| Teardown order        | RxJS 7 subscription finalizers generally follow its existing aggregation semantics   | The current platform specification closes teardown callbacks in reverse insertion order | Exact order cannot be claimed compatible without an adapter and tests                                                 |
-| Error reporting       | RxJS configuration and host error reporting rules                                    | Platform exception reporting and Web IDL callback behavior                              | Unhandled-error and late-error cases need a compatibility policy                                                      |
-| Operators             | Mostly standalone pipeable functions returning Observables                           | A small set of native string-named methods plus RxJS Symbol extensions                  | Portable operator behavior belongs in the main library; source-shape compatibility belongs in the compatibility layer |
-| Pipe                  | `pipe(...)`, `source.pipe(...)`, and `OperatorFunction` types                        | No RxJS 7 pipe contract; branch prototypes a Symbol-keyed `pipe`                        | Exact facade and typing remain open                                                                                   |
-| Subjects              | `Subject`, `BehaviorSubject`, `ReplaySubject`, and others with established semantics | No equivalent family in the core platform proposal                                      | Supported subject types need explicit compatibility contracts                                                         |
-| Scheduling            | Scheduler arguments and scheduler classes affect many APIs                           | No RxJS scheduler abstraction in the platform Observable                                | Scheduler behavior must be retained selectively, redesigned, or marked unsupported                                    |
-| Input conversion      | RxJS accepts a broad `ObservableInput` ecosystem and interop protocols               | Platform `Observable.from` follows its own conversion order and supported categories    | Compatibility conversion must not alter the platform static method                                                    |
-| Testing               | Marble tests assume RxJS scheduling and subscription records                         | Platform sharing changes subscription timing and multiplicity                           | The test harness and expectations may need rewriting                                                                  |
+| Concern               | RxJS 7 baseline                                                                        | Platform Observable baseline                                                                       | Compatibility implication                                                                                             |
+| --------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Producer execution    | A normal cold Observable creates independent work during each subscription             | The first subscription creates one active producer, which concurrent observers share and ref-count | Independent execution needs an explicit producer-per-subscription compatibility abstraction                           |
+| Hot/cold terminology  | A cold source creates its producer during subscription; an instantiated Subject is hot | The first subscription creates an active producer; concurrent subscriptions join that producer     | Document producer creation and sharing separately rather than assigning one blanket temperature                       |
+| Subscription return   | `subscribe()` returns a `Subscription`                                                 | `subscribe()` returns `undefined`                                                                  | Legacy unsubscription needs an adapter or facade                                                                      |
+| Cancellation          | `Subscription.unsubscribe()` and teardown chains                                       | `AbortSignal`, `Subscriber.signal`, and ref-count closure                                          | Boundary adapters must map both directions and preserve abort reasons where possible                                  |
+| Teardown registration | Producer may return teardown logic; subscriptions aggregate finalizers                 | Producer calls `subscriber.addTeardown()`                                                          | Creation APIs and tests need a deliberate translation                                                                 |
+| Teardown order        | RxJS 7 subscription finalizers generally follow its existing aggregation semantics     | The current platform specification closes teardown callbacks in reverse insertion order            | Exact order cannot be claimed compatible without an adapter and tests                                                 |
+| Error reporting       | RxJS configuration and host error reporting rules                                      | Platform exception reporting and Web IDL callback behavior                                         | Unhandled-error and late-error cases need a compatibility policy                                                      |
+| Operators             | Mostly standalone pipeable functions returning Observables                             | A small set of native string-named methods plus RxJS Symbol extensions                             | Portable operator behavior belongs in the main library; source-shape compatibility belongs in the compatibility layer |
+| Pipe                  | `pipe(...)`, `source.pipe(...)`, and `OperatorFunction` types                          | No RxJS 7 pipe contract; branch prototypes a Symbol-keyed `pipe`                                   | Exact facade and typing remain open                                                                                   |
+| Subjects              | `Subject`, `BehaviorSubject`, `ReplaySubject`, and others with established semantics   | No equivalent family in the core platform proposal                                                 | Supported subject types need explicit compatibility contracts                                                         |
+| Scheduling            | Scheduler arguments and scheduler classes affect many APIs                             | No RxJS scheduler abstraction in the platform Observable                                           | Scheduler behavior must be retained selectively, redesigned, or marked unsupported                                    |
+| Input conversion      | RxJS accepts a broad `ObservableInput` ecosystem and interop protocols                 | Platform `Observable.from` follows its own conversion order and supported categories               | Compatibility conversion must not alter the platform static method                                                    |
+| Testing               | Marble tests assume RxJS scheduling and subscription records                           | Platform sharing changes subscription timing and multiplicity                                      | The test harness and expectations may need rewriting                                                                  |
 
 ## Layering policy
 
@@ -72,9 +96,32 @@ It must:
 - define which direction conversions are lossless;
 - keep unsupported behavior visible.
 
-The current `ColdObservable`, `ColdSubject`, behavior-subject factory, and
-replay-subject factory are implementation experiments for this boundary. Their
-presence in `packages/rxjs` is not a final package decision.
+The current `ColdObservable`, `PerSubscriptionSubjectBase`, behavior-subject
+factory, and replay-subject factory are implementation experiments for this
+boundary. Their presence in `packages/rxjs` is not a final package decision.
+
+`PerSubscriptionSubjectBase` is hot: its Subject producer exists as soon as the
+instance is constructed. Its distinction from `Subject` is that it inherits
+`ColdObservable.subscribe()`, which creates a separate `ColdSubscriber` and
+runs a protected `_subscribe` hook for every direct JavaScript subscription.
+The platform-based `Subject` can instead receive one active platform
+`Subscriber` representing multiple concurrent observers. The advanced base
+also has separate input/output types, while `Subject` provides `asObservable()`
+and keeps Symbol-keyed operator results on the immutable platform Observable
+base.
+
+That distinction is unnecessary for ordinary Subject fanout, so
+`PerSubscriptionSubjectBase` is abstract and has a protected constructor.
+`BehaviorSubject` and `ReplaySubject` use its per-observer hook to deliver
+current or buffered state to each late observer. Its default hook handles
+terminal state and live fanout; subclasses that bypass it to control replay
+ordering own those lifecycle responsibilities.
+
+This hook is not a transparent native Observable hook. It is reached through
+the compatibility `subscribe()` override for direct JavaScript subscriptions.
+Native Observable methods may use the platform's internal subscription
+algorithm and bypass that override. Code must not assume `_subscribe` runs when
+a native operator internally subscribes to an instance.
 
 The current `Subject` class provides `subject.asObservable()` as a
 Subject-local compatibility capability. It returns a distinct base Observable
@@ -82,8 +129,9 @@ without `next`, `error`, or `complete`, mirrors the Subject's terminal state
 for late observers, and forwards cancellation with `AbortSignal`. It does not
 patch a string-named method onto the platform Observable prototype. When the
 base is the platform fallback, concurrent observers of one view share and
-ref-count a single forwarding subscription; obtaining a view does not make
-platform behavior cold.
+ref-count a single forwarding subscription. The Subject producer already
+exists before those observers subscribe; obtaining a view does not change that
+fact.
 
 ## Pipeable compatibility requirement
 
@@ -96,8 +144,8 @@ support:
 - both standalone `pipe(...)` composition and a deliberate source-bound
   composition form;
 - cancellation propagation across the full pipeline;
-- explicit conversion when the pipeline moves between shared platform and cold
-  compatibility semantics.
+- explicit conversion when the pipeline moves between shared platform and
+  producer-per-subscription compatibility semantics.
 
 The exact API is open. In particular, this document does not decide whether the
 source-bound form is the RxJS 7 string-named `.pipe`, the branch's
@@ -108,9 +156,11 @@ form.
 
 `@rxjs/test` preserves the documented RxJS 7 run-mode marble capabilities
 without reviving the public scheduler class or manual mode. Its `cold()` helper
-is explicitly producer-per-subscription compatibility behavior. The separate
-`observable()` helper proves the platform shared/ref-counted lifecycle, and
-`hot()` supplies a subject-like absolute timeline.
+creates an independent producer during each subscription. The separate
+`observable()` helper proves the platform lifecycle in which the first
+subscription creates a producer and concurrent subscriptions share it.
+`hot()` creates its subject-like absolute-timeline producer before observers
+subscribe.
 
 All three source types use AbortSignal cancellation and share one virtual host
 event loop. This allows tests to mix Observable operators with application
@@ -146,7 +196,7 @@ evaluated across:
 - resubscription after ref-count closure;
 - type inference;
 - native and fallback execution;
-- cold compatibility execution when claimed.
+- producer-per-subscription compatibility execution when claimed.
 
 Selector-based `debounce` preserves the RxJS 7 terminal claim without changing
 the platform sharing model: selector completion without a value keeps the
@@ -272,7 +322,7 @@ evidence; missing capabilities fail explicitly rather than disappearing from
 collection. Every applicable registration uses ordinary test semantics, so
 known gaps are not skipped, quarantined, or inverted through expected-failure
 handling. Platform cases use the ambient Observable and do not redefine the
-platform layer to recover RxJS 7 cold semantics. See
+platform layer to recover RxJS 7 producer-per-subscription semantics. See
 `RXJS_7_MARBLE_TEST_PORT_NOTES.md` and `RxJS-7-parity.md`.
 
 ## Compatibility ledger
@@ -280,17 +330,17 @@ platform layer to recover RxJS 7 cold semantics. See
 Maintain a ledger as operator and API work begins. It can start as a Markdown
 table and move to structured data when automation needs it.
 
-| Field               | Required content                                                                      |
-| ------------------- | ------------------------------------------------------------------------------------- |
-| RxJS 7 API          | Name and former import path                                                           |
-| RxJS 7 evidence     | Test files or documentation defining behavior                                         |
-| RxJS Next surface   | Platform method, Symbol extension, compatibility API, or unsupported                  |
-| Sharing model       | Shared platform, cold compatibility, or not applicable                                |
-| Cancellation model  | Signal, subscription facade, both, or not applicable                                  |
-| Test classification | Portable, harness rewrite, compatibility-only, intentional divergence, or unsupported |
-| Type status         | Preserved, changed, deferred, or unsupported                                          |
-| Migration action    | Mechanical change, semantic review, adapter, or redesign                              |
-| Decision            | Link to accepted decision or open question                                            |
+| Field               | Required content                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------- |
+| RxJS 7 API          | Name and former import path                                                                 |
+| RxJS 7 evidence     | Test files or documentation defining behavior                                               |
+| RxJS Next surface   | Platform method, Symbol extension, compatibility API, or unsupported                        |
+| Sharing model       | Shared active platform producer, producer-per-subscription compatibility, or not applicable |
+| Cancellation model  | Signal, subscription facade, both, or not applicable                                        |
+| Test classification | Portable, harness rewrite, compatibility-only, intentional divergence, or unsupported       |
+| Type status         | Preserved, changed, deferred, or unsupported                                                |
+| Migration action    | Mechanical change, semantic review, adapter, or redesign                                    |
+| Decision            | Link to accepted decision or open question                                                  |
 
 The marble-test manifest populates the behavioral-evidence portion of this
 ledger without making API support promises. The full public compatibility

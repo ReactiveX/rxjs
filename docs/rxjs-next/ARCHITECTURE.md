@@ -11,8 +11,8 @@ The target architecture has four conceptual layers:
    fallback when it is absent.
 2. **RxJS extensions:** patch exported Symbol-keyed factories and operators onto
    the selected constructor or prototype.
-3. **Compatibility:** provide explicit adapters and cold-per-subscription
-   behavior for supported RxJS 7 use cases.
+3. **Compatibility:** provide explicit adapters and
+   producer-per-subscription behavior for supported RxJS 7 use cases.
 4. **Migration tooling:** eventually provide documentation, Skills, and MCP
    capabilities based on the stabilized runtime and compatibility contracts.
 
@@ -54,7 +54,7 @@ flowchart LR
     App["Application or library"] -->|imports Symbols and entry points| Extensions
     App -->|constructs, subscribes, and composes| Active
 
-    Compatibility["RxJS 7 compatibility layer"] -->|explicit adapters and<br/>cold behavior where supported| Active
+    Compatibility["RxJS 7 compatibility layer"] -->|explicit adapters and<br/>producer-per-subscription behavior| Active
     Legacy["Migrating RxJS 7 application"] --> Compatibility
 
     Tooling["Future migration Skills and MCPs"] -.-> App
@@ -66,14 +66,14 @@ package names are open decisions.
 
 ## Current component inventory
 
-| Component                      | Current responsibility                                                                                                                                       | Intended responsibility                                                                      | Current gap                                                                                                                                    |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `packages/observable-polyfill` | Defines an ambient platform-shaped API, implements `Observable`, `Subscriber`, native-style operators, promise-returning consumers, and `EventTarget.when()` | Supply the pinned platform behavior only when the runtime lacks an acceptable implementation | Passes the pinned WPT suite, but still unconditionally overwrites globals and does not build because its ambient declarations are disconnected |
-| `packages/rxjs`                | Side-effectfully installs Symbol-keyed operators/factories; contains subjects, cold primitives, async-iterable adapters, and early testing utilities         | Main Symbol-extension library, with compatibility behavior moved behind an explicit boundary | Package exports are invalid/incomplete, the fallback dependency is undeclared, installation conventions vary, and only one operator has a test |
-| `packages/observable`          | Exposes the inherited RxJS 7 `Observable`, `Subscriber`, `Subscription`, and related helpers                                                                 | Undecided: remove/archive, rename, or deliberately reuse inside compatibility                | It is not used by the new runtime path but is still part of workspace preparation                                                              |
-| `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                          | Retained only as prototype history until removed                                             | Superseded by the accepted `@rxjs/test` boundary                                                                                               |
-| `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                        | Framework-neutral testing for platform RxJS and RxJS 7 compatibility behavior                | Depends on the active realm Observable; package-acquisition wiring follows the still-open P0.2 contract                                        |
-| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                             | Eventually explain the new platform and migration model                                      | Still represents the prior generation; redesign is out of scope for the foundation phase                                                       |
+| Component                      | Current responsibility                                                                                                                                                                  | Intended responsibility                                                                      | Current gap                                                                                                                                    |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/observable-polyfill` | Defines an ambient platform-shaped API, implements `Observable`, `Subscriber`, native-style operators, promise-returning consumers, and `EventTarget.when()`                            | Supply the pinned platform behavior only when the runtime lacks an acceptable implementation | Passes the pinned WPT suite, but still unconditionally overwrites globals and does not build because its ambient declarations are disconnected |
+| `packages/rxjs`                | Side-effectfully installs Symbol-keyed operators/factories; contains subjects, producer-per-subscription compatibility primitives, async-iterable adapters, and early testing utilities | Main Symbol-extension library, with compatibility behavior moved behind an explicit boundary | Package exports are invalid/incomplete, the fallback dependency is undeclared, installation conventions vary, and only one operator has a test |
+| `packages/observable`          | Exposes the inherited RxJS 7 `Observable`, `Subscriber`, `Subscription`, and related helpers                                                                                            | Undecided: remove/archive, rename, or deliberately reuse inside compatibility                | It is not used by the new runtime path but is still part of workspace preparation                                                              |
+| `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                                                     | Retained only as prototype history until removed                                             | Superseded by the accepted `@rxjs/test` boundary                                                                                               |
+| `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                                                   | Framework-neutral testing for platform RxJS and RxJS 7 compatibility behavior                | Depends on the active realm Observable; package-acquisition wiring follows the still-open P0.2 contract                                        |
+| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                                                        | Eventually explain the new platform and migration model                                      | Still represents the prior generation; redesign is out of scope for the foundation phase                                                       |
 
 ## Platform Observable lifecycle
 
@@ -85,8 +85,19 @@ Additional observers join that active subscriber. Aborting an observer removes
 it; when the last observer leaves, the subscriber closes and producer teardown
 runs. A later observer can start a new producer subscription.
 
-This is accurately summarized as **cold until subscribed, shared while active,
-and ref-counted**.
+Do not summarize that lifecycle by assigning one persistent “hot” or “cold”
+label to the Observable. Those terms describe when the producer exists relative
+to a particular subscription:
+
+- **Cold:** subscription creates the producer.
+- **Hot:** the producer already exists before subscription.
+
+The first platform subscription creates the active producer. A concurrent
+subscription joins that already-existing producer. After the ref count reaches
+zero, a later subscription creates a new producer. Sharing, multicasting,
+replay, and ref counting are separate properties and do not redefine those
+terms. In particular, an instantiated `Subject` is hot because the producer
+exists before observers subscribe. See D-035.
 
 ```mermaid
 stateDiagram-v2
@@ -432,7 +443,8 @@ contract through the property key.
 - `Subject`, including a class-local `asObservable()` method that returns a
   distinct non-mutating view through the Subject's platform Observable base
 - `ColdObservable`
-- `ColdSubject`
+- `PerSubscriptionSubjectBase`, an advanced abstract base for hot Subject
+  variants that require setup for every direct subscription
 - `behaviorSubject`
 - `replaySubject`
 - `TimeoutError`
@@ -465,7 +477,7 @@ RxJS scheduler. Each source value replaces the pending timer, normal source
 completion flushes the pending value immediately before completing, and result
 cancellation clears the timer through the platform subscriber lifecycle.
 Concurrent fallback observers share that one active timer and source
-subscription; numeric debounce does not introduce cold-per-observer work.
+subscription; numeric debounce does not introduce producer-per-observer work.
 
 The exact `delay` Symbol schedules each value with a host timeout, delays normal
 completion until every pending value is delivered, and forwards source errors
@@ -514,7 +526,7 @@ virtualize RxJS operators and ordinary application host calls.
 derived subscriber's `AbortSignal`, and therefore retains the selected base
 Observable's lifecycle. With the platform fallback, concurrent view observers
 share one active forwarding subscription and ref-count it; the view does not
-recreate RxJS 7 cold-per-subscription behavior.
+recreate RxJS 7 producer-per-subscription behavior.
 
 The standalone `zip(sources)` retains one FIFO buffer per input. Without its
 non-RxJS `fillAfterComplete` option, it completes as soon as any completed
@@ -538,10 +550,13 @@ the original property descriptors in every exit path.
 
 The API makes lifecycle semantics explicit:
 
-- `cold()` is an RxJS 7-style producer-per-subscription test double;
-- `hot()` is a subject-like absolute timeline;
+- `cold()` creates an independent producer during each subscription;
+- `hot()` creates a subject-like absolute-timeline producer before
+  subscriptions;
 - `observable()` follows the platform's shared/ref-counted active producer
-  lifecycle and logs producer activation windows.
+  lifecycle: the first subscription creates a producer, concurrent
+  subscriptions join it, and a later subscription after ref-count closure
+  creates another.
 
 The package does not expose `TestScheduler` or add scheduler arguments to the
 main library. It consumes the active Observable selected for the realm and
@@ -633,22 +648,67 @@ D-033.
 
 ### Why a boundary is necessary
 
-An ordinary RxJS 7 cold Observable starts a separate producer execution for
-each subscription. The platform Observable shares one active producer
-subscription among its current observers. Changing the platform layer to
-recreate RxJS 7's model would violate the project foundation and make native
-and polyfilled behavior diverge.
+An ordinary RxJS 7 cold Observable creates a separate producer execution during
+each subscription. The platform Observable creates one producer for its first
+subscription and shares that active producer among current observers. Changing
+the platform layer to recreate RxJS 7's producer-per-subscription model would
+violate the project foundation and make native and polyfilled behavior diverge.
 
 ### Current prototypes
 
 `ColdObservable` overrides `subscribe()` and creates a new `ColdSubscriber` per
-call. `ColdSubject`, the behavior-subject factory, and the replay-subject factory
-build on that mechanism. These classes demonstrate a possible compatibility
-seam.
+direct JavaScript call. `PerSubscriptionSubjectBase`, the behavior-subject
+factory, and the replay-subject factory build on that compatibility mechanism.
+These classes demonstrate a possible compatibility seam.
+
+`PerSubscriptionSubjectBase` is an advanced abstract base rather than an
+ordinary Subject for application code. Like every Subject, its instance is a
+hot producer that exists before its observers subscribe. “Per subscription”
+describes observer-local setup, not producer creation. Its material differences
+from `Subject` are:
+
+- `Subject` extends the platform Observable. Concurrent observers can share
+  one active platform `Subscriber`, which the Subject stores as one fanout
+  destination.
+- `PerSubscriptionSubjectBase` extends `ColdObservable`, so every direct call
+  to `subscribe()` creates a separate `ColdSubscriber` and calls the protected
+  `_subscribe` hook.
+- `BehaviorSubject` and `ReplaySubject` currently use that per-observer hook to
+  emit a current value or replay buffered values to each late observer. Merely
+  changing their base class to the current `Subject` would skip that hook when
+  a late observer joins an already-active platform subscription.
+- The base has separate input/output type parameters. A subclass using
+  different types owns the safety of that conversion; `Subject` has one value
+  type.
+- `Subject` provides `asObservable()` and overrides the Symbol-keyed creation
+  hook so operator results use the immutable platform Observable base.
+  `PerSubscriptionSubjectBase` does not provide those Subject-local
+  safeguards.
+
+The constructor is protected and the class is abstract so it cannot be
+presented as a beginner-facing replacement for `Subject`. Its default
+`_subscribe` implementation handles retained terminal events and live fanout.
+Subclasses normally perform their observer-local setup and delegate to that
+implementation. A subclass that calls the lower-level `addSubscriber` helper
+instead owns terminal handling, replay ordering, active-state checks, and
+teardown correctness.
+
+The hook is deliberately documented as a **direct-subscription compatibility
+hook**. Native Observable methods can use the platform's internal subscription
+algorithm rather than reading an instance's JavaScript `subscribe` property.
+Such methods can therefore bypass the `ColdObservable.subscribe()` override
+and the `_subscribe` hook. `PerSubscriptionSubjectBase` is not a transparent
+interception point for native operator subscriptions.
+
+For a plain Subject, the extra compatibility layer has no identified fanout
+purpose. The current behavior- and replay-subject prototypes are its concrete
+subclasses because they need observer-local replay. The former `ColdSubject`
+name was removed rather than retained as an alias; it incorrectly implied a
+cold producer and obscured the base-class intent.
 
 They currently live inside the main `rxjs` package and are not a settled
-compatibility contract. Their naming, typing, cancellation, teardown error
-behavior, and relationship to a native Observable require deliberate design.
+compatibility contract. Their typing, cancellation, teardown error behavior,
+and relationship to a native Observable require deliberate design.
 
 See `COMPATIBILITY.md` for the compatibility policy.
 
@@ -767,8 +827,8 @@ These invariants should become automated fitness functions:
    and realm behavior.
 8. Cancellation propagates through the platform signal without leaving active
    upstream work after the last observer leaves.
-9. Compatibility-only cold behavior cannot be reached accidentally through the
-   platform entry point.
+9. Compatibility-only producer-per-subscription behavior cannot be reached
+   accidentally through the platform entry point.
 10. Every public package entry builds, type-checks, imports, and executes in each
     supported environment and module system.
 11. Every RxJS 7 compatibility claim maps to a passing test or a documented,
@@ -796,18 +856,18 @@ These invariants should become automated fitness functions:
 
 ## Known architectural risks
 
-| Risk                                                      | Impact                                                           | Mitigation direction                                                                                                        |
-| --------------------------------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Living platform proposal changes                          | Polyfill and operators drift from browsers                       | Pin revisions, track upstream, and advance deliberately                                                                     |
-| Global mutation and load order                            | Native behavior is replaced or imports fail nondeterministically | Decide one installation contract and test every entry point                                                                 |
-| Duplicate packages create different Symbols               | Extensions appear missing even though code imported them         | Decide registry/version strategy and add duplicate-install fixtures                                                         |
-| Prototype patching is restricted                          | Extensions cannot install in hardened or unusual realms          | Define supported environments and consider explicit functional fallbacks                                                    |
-| RxJS 7 tests encode incompatible cold behavior            | False failures lead contributors to corrupt platform semantics   | Classify tests and keep a separate compatibility suite                                                                      |
-| Compatibility layer grows into a second full RxJS         | Maintenance and migration never converge                         | Publish a support matrix, prioritize real migration needs, and define retirement posture                                    |
-| Package metadata remains inherited                        | Builds pass locally but published artifacts are unusable         | Make package import/type fixtures a release gate                                                                            |
-| Minimal tests allow semantic regressions                  | Prototype behavior becomes accidental policy                     | Add lifecycle and extension-kernel safety rails before expanding operators                                                  |
-| Browser-native Observable leaks into a fallback WPT realm | Results falsely appear to prove the RxJS implementation          | Exact reference-and-bundle attestation per URL, unsuppressible report audit, negative controls, and reviewed realm patterns |
-| WPT/browser downloads make conformance impractical        | Contributors skip or inconsistently run the gate                 | Vendor the small approved test closure and checksum-cache the sparse runner, pinned browser, and matching driver            |
+| Risk                                                                | Impact                                                           | Mitigation direction                                                                                                        |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Living platform proposal changes                                    | Polyfill and operators drift from browsers                       | Pin revisions, track upstream, and advance deliberately                                                                     |
+| Global mutation and load order                                      | Native behavior is replaced or imports fail nondeterministically | Decide one installation contract and test every entry point                                                                 |
+| Duplicate packages create different Symbols                         | Extensions appear missing even though code imported them         | Decide registry/version strategy and add duplicate-install fixtures                                                         |
+| Prototype patching is restricted                                    | Extensions cannot install in hardened or unusual realms          | Define supported environments and consider explicit functional fallbacks                                                    |
+| RxJS 7 tests encode incompatible producer-per-subscription behavior | False failures lead contributors to corrupt platform semantics   | Classify tests and keep a separate compatibility suite                                                                      |
+| Compatibility layer grows into a second full RxJS                   | Maintenance and migration never converge                         | Publish a support matrix, prioritize real migration needs, and define retirement posture                                    |
+| Package metadata remains inherited                                  | Builds pass locally but published artifacts are unusable         | Make package import/type fixtures a release gate                                                                            |
+| Minimal tests allow semantic regressions                            | Prototype behavior becomes accidental policy                     | Add lifecycle and extension-kernel safety rails before expanding operators                                                  |
+| Browser-native Observable leaks into a fallback WPT realm           | Results falsely appear to prove the RxJS implementation          | Exact reference-and-bundle attestation per URL, unsuppressible report audit, negative controls, and reviewed realm patterns |
+| WPT/browser downloads make conformance impractical                  | Contributors skip or inconsistently run the gate                 | Vendor the small approved test closure and checksum-cache the sparse runner, pinned browser, and matching driver            |
 
 ## Evidence and references
 
@@ -821,7 +881,7 @@ Repository evidence:
 - `packages/rxjs/src/create.ts`
 - `packages/rxjs/src/pipe.ts`
 - `packages/rxjs/src/cold-observable.ts`
-- `packages/rxjs/src/cold-subject.ts`
+- `packages/rxjs/src/per-subscription-subject-base.ts`
 - package manifests and branch history from `origin/master...platform-observable`
 
 External sources:

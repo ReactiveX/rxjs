@@ -43,7 +43,7 @@ describe('replaySubject', () => {
     expect(errors).toEqual([failure]);
   });
 
-  it('preserves active cold fanout and host-time trimming before a terminal replay', () => {
+  it('preserves active hot fanout and host-time trimming before a terminal replay', () => {
     vi.useFakeTimers();
     vi.setSystemTime(0);
 

@@ -147,8 +147,8 @@ export interface RxTestContext {
   readonly signal: AbortSignal;
 
   /**
-   * Creates an RxJS 7-style cold source. Every observer starts an independent
-   * timeline at its subscription time.
+   * Creates an RxJS 7-style cold source: subscription creates an independent
+   * producer and timeline for every observer.
    */
   cold<T = string>(marbles: string, values?: MarbleValues<T>, error?: unknown): TestColdObservable<T>;
 
@@ -158,8 +158,9 @@ export interface RxTestContext {
   hot<T = string>(marbles: string, values?: MarbleValues<T>, error?: unknown): TestHotObservable<T>;
 
   /**
-   * Creates a platform source: cold until observed, shared/ref-counted while
-   * active, and restartable after its final observer leaves.
+   * Creates a platform source. The first observer creates its active producer,
+   * concurrent observers share it, and observation after ref-count closure
+   * creates a new producer.
    */
   observable<T = string>(marbles: string, values?: MarbleValues<T>, error?: unknown): TestPlatformObservable<T>;
 

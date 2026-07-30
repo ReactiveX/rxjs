@@ -81,6 +81,17 @@ class ColdSubscriber<T> implements Subscriber<T> {
   }
 }
 
+/**
+ * Compatibility Observable whose JavaScript `subscribe()` override creates an
+ * independent producer execution and Subscriber for every direct
+ * subscription.
+ *
+ * @warning Native Observable methods may subscribe through the platform's
+ * internal algorithm instead of reading this instance's `subscribe` property.
+ * Those internal subscriptions can bypass this override and its initializer.
+ * Use this class only at an explicit compatibility boundary where direct
+ * `observable.subscribe(...)` calls are the supported entry point.
+ */
 export class ColdObservable<T> extends Observable<T> {
   readonly #init: (subscriber: ColdSubscriber<T>) => void;
 

@@ -182,7 +182,7 @@ classified in the compatibility ledger as APIs are restored.
 Decide whether compatibility operators return:
 
 - platform Observable instances with adapters;
-- a cold compatibility subclass;
+- a producer-per-subscription compatibility subclass;
 - a wrapper that exposes both platform and RxJS 7 contracts; or
 - a distinct type requiring explicit conversion.
 

@@ -136,16 +136,16 @@ runtime code.
 
 ## Quality attributes
 
-| Attribute              | Required outcome                                                                                                            |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Platform fidelity      | The fallback matches the pinned Observable specification and selected WPT baseline; native behavior remains untouched       |
-| Interoperability       | Operators accept platform `Observable` values and preserve the appropriate constructor/realm                                |
-| Explicit compatibility | RxJS 7 emulation is opt-in and cannot be mistaken for native behavior                                                       |
-| Extensibility          | A new operator can be added through one documented Symbol-extension pattern                                                 |
-| Testability            | Native, polyfilled, shared, cold-compatibility, cancellation, and type behavior can be tested independently                 |
-| Packaging integrity    | Every published entry point builds, has correct types, declares runtime dependencies, and works in supported module systems |
-| Migration clarity      | Every material RxJS 7 difference has a documented migration path or an explicit unsupported status                          |
-| AI change safety       | A contributor can find the controlling decision, active plan item, invariants, and validation gate before editing           |
+| Attribute              | Required outcome                                                                                                                   |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Platform fidelity      | The fallback matches the pinned Observable specification and selected WPT baseline; native behavior remains untouched              |
+| Interoperability       | Operators accept platform `Observable` values and preserve the appropriate constructor/realm                                       |
+| Explicit compatibility | RxJS 7 emulation is opt-in and cannot be mistaken for native behavior                                                              |
+| Extensibility          | A new operator can be added through one documented Symbol-extension pattern                                                        |
+| Testability            | Native, polyfilled, producer-per-subscription, shared-active-producer, cancellation, and type behavior can be tested independently |
+| Packaging integrity    | Every published entry point builds, has correct types, declares runtime dependencies, and works in supported module systems        |
+| Migration clarity      | Every material RxJS 7 difference has a documented migration path or an explicit unsupported status                                 |
+| AI change safety       | A contributor can find the controlling decision, active plan item, invariants, and validation gate before editing                  |
 
 ## Success criteria
 
