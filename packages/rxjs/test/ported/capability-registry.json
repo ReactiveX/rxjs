@@ -982,6 +982,13 @@
       "status": "Compatibility-only",
       "note": "Producer-per-subscription compatibility test surface; not a platform Observable parity claim."
     },
+    "ConnectableObservable": {
+      "module": "global",
+      "adapter": "typeOnly",
+      "mapping": "ConnectableObservable<T>",
+      "status": "Type-only compatibility",
+      "note": "The runtime sentinel retains erased casts in migrated multicast and publish tests; connectability itself comes from the mapped operator result."
+    },
     "EMPTY": {
       "module": "empty",
       "adapter": "identity",
@@ -1061,6 +1068,13 @@
       "status": "Type-only compatibility",
       "note": "The runtime sentinel exists only so mechanically migrated tests can retain the erased platform Observer import."
     },
+    "Operator": {
+      "module": "global",
+      "adapter": "typeOnly",
+      "mapping": "Operator<T, R>",
+      "status": "Type-only compatibility",
+      "note": "The runtime sentinel retains the erased custom-Observable operator annotation in migrated lift evidence."
+    },
     "noop": {
       "module": "noop",
       "adapter": "identity",
@@ -1088,6 +1102,13 @@
       "mapping": "Subject",
       "status": "Present; observable view verified",
       "note": "Uses the current exploratory Subject class. Subject.asObservable() returns a distinct non-mutating Observable view without patching the platform Observable prototype."
+    },
+    "Subscription": {
+      "module": "global",
+      "adapter": "typeOnly",
+      "mapping": "Subscription",
+      "status": "Type-only compatibility",
+      "note": "The runtime sentinel retains erased annotations for the connection returned by connect(); migrated cases invoke unsubscribe() on the actual connection value."
     },
     "pipe": {
       "module": "pipe",
