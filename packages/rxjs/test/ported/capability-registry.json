@@ -153,6 +153,14 @@
       "status": "Partial unified mapping",
       "note": "Numeric delays reset a host timer, flush on completion, and cancel via AbortSignal. Scheduler arguments are not represented."
     },
+    "delayWhen": {
+      "symbol": "delayWhen",
+      "module": "delay-when",
+      "adapter": "identity",
+      "mapping": "source[delayWhen](durationSelector, subscriptionDelay?)",
+      "status": "Present; parity unverified",
+      "note": "Releases each value on its duration's first next, swallows it on empty duration completion, and supports the deprecated subscription-delay gate."
+    },
     "dematerialize": {
       "symbol": "dematerialize",
       "module": "dematerialize",
