@@ -66,6 +66,7 @@
         "./src/create.ts",
         "./src/debounce.ts",
         "./src/default-if-empty.ts",
+        "./src/distinct.ts",
         "./src/distinct-until-changed.ts",
         "./src/distinct-until-key-changed.ts",
         "./src/each-value-from.ts",
@@ -77,8 +78,10 @@
         "./src/index.ts",
         "./src/interval.ts",
         "./src/map.ts",
+        "./src/max.ts",
         "./src/merge-map.ts",
         "./src/merge.ts",
+        "./src/min.ts",
         "./src/noop.ts",
         "./src/pipe.ts",
         "./src/race.ts",
@@ -211,6 +214,13 @@
       "require": "./dist/commonjs/default-if-empty.js",
       "types": "./dist/types/default-if-empty.d.ts"
     },
+    "./distinct": {
+      "browser": "./dist/browser/distinct.js",
+      "webpack": "./dist/webpack/distinct.js",
+      "import": "./dist/esm/distinct.js",
+      "require": "./dist/commonjs/distinct.js",
+      "types": "./dist/types/distinct.d.ts"
+    },
     "./distinct-until-changed": {
       "browser": "./dist/browser/distinct-until-changed.js",
       "webpack": "./dist/webpack/distinct-until-changed.js",
@@ -288,6 +298,13 @@
       "require": "./dist/commonjs/map.js",
       "types": "./dist/types/map.d.ts"
     },
+    "./max": {
+      "browser": "./dist/browser/max.js",
+      "webpack": "./dist/webpack/max.js",
+      "import": "./dist/esm/max.js",
+      "require": "./dist/commonjs/max.js",
+      "types": "./dist/types/max.d.ts"
+    },
     "./merge": {
       "browser": "./dist/browser/merge.js",
       "webpack": "./dist/webpack/merge.js",
@@ -301,6 +318,13 @@
       "import": "./dist/esm/merge-map.js",
       "require": "./dist/commonjs/merge-map.js",
       "types": "./dist/types/merge-map.d.ts"
+    },
+    "./min": {
+      "browser": "./dist/browser/min.js",
+      "webpack": "./dist/webpack/min.js",
+      "import": "./dist/esm/min.js",
+      "require": "./dist/commonjs/min.js",
+      "types": "./dist/types/min.d.ts"
     },
     "./noop": {
       "browser": "./dist/browser/noop.js",

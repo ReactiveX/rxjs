@@ -145,6 +145,14 @@
       "status": "Present; parity unverified",
       "note": "Exact type and lifecycle parity remain test-driven."
     },
+    "distinct": {
+      "symbol": "distinct",
+      "module": "distinct",
+      "adapter": "identity",
+      "mapping": "source[distinct](keySelector?, flushes?)",
+      "status": "Present; parity unverified",
+      "note": "Uses Set equality, optional key selection, and an optional flush source that clears remembered keys."
+    },
     "distinctUntilChanged": {
       "symbol": "distinctUntilChanged",
       "module": "distinct-until-changed",
@@ -273,6 +281,14 @@
       "status": "Partial unified mapping",
       "note": "Expresses constant projection through mergeMap and an ambient single-value Observable."
     },
+    "max": {
+      "symbol": "max",
+      "module": "max",
+      "adapter": "identity",
+      "mapping": "source[max](comparer?)",
+      "status": "Present; parity unverified",
+      "note": "Delegates unseeded maximum selection and lifecycle behavior to the exact reduce Symbol."
+    },
     "merge": {
       "symbol": "merge",
       "module": "merge",
@@ -312,6 +328,14 @@
       "mapping": "source[merge]([otherSources])",
       "status": "Partial unified mapping",
       "note": "Maps the With variant to the unified merge Symbol."
+    },
+    "min": {
+      "symbol": "min",
+      "module": "min",
+      "adapter": "identity",
+      "mapping": "source[min](comparer?)",
+      "status": "Present; parity unverified",
+      "note": "Delegates unseeded minimum selection and lifecycle behavior to the exact reduce Symbol."
     },
     "onErrorResumeNext": {
       "symbol": "onErrorResumeNext",
