@@ -225,6 +225,14 @@
       "status": "Present; parity unverified",
       "note": "Legacy result-selector overloads are not represented."
     },
+    "expand": {
+      "symbol": "expand",
+      "module": "expand",
+      "adapter": "expand",
+      "mapping": "source[expand](project, { concurrent })",
+      "status": "Present; scheduler overload deferred",
+      "note": "Adapts legacy numeric concurrency to the options contract; scheduler arguments remain scheduler-last."
+    },
     "finalize": {
       "symbol": "finalize",
       "module": "finalize",
@@ -609,6 +617,14 @@
       "status": "Partial unified mapping",
       "note": "Uses one unbounded buffer and emits it only on successful completion."
     },
+    "windowCount": {
+      "symbol": "windowCount",
+      "module": "window-count",
+      "adapter": "identity",
+      "mapping": "source[windowCount](windowSize, startWindowEvery?)",
+      "status": "Present; parity unverified",
+      "note": "Emits read-only count windows with tumbling, overlapping, or gapped cadence and terminally closes every live window."
+    },
     "withLatestFrom": {
       "symbol": "withLatestFrom",
       "module": "with-latest-from",
@@ -700,6 +716,15 @@
       "mapping": "Observable[forkJoin](...inputs)",
       "status": "Present; parity unverified",
       "note": "Supports array, object, deprecated rest, empty-input, and result-selector forms while preserving last-value and early-empty cancellation behavior."
+    },
+    "generate": {
+      "kind": "symbol",
+      "symbol": "generate",
+      "module": "generate",
+      "adapter": "generate",
+      "mapping": "Observable[generate](options | initialState, condition, iterate, resultSelector?)",
+      "status": "Present; scheduler overload deferred",
+      "note": "Supports synchronous positional and options-object generation; scheduler fields and trailing scheduler arguments remain scheduler-last."
     },
     "iif": {
       "kind": "platform",

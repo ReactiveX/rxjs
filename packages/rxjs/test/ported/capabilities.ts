@@ -63,12 +63,14 @@ export async function loadCapabilities(): Promise<{
     emptyModule,
     everyModule,
     exhaustMapModule,
+    expandModule,
     finalizeModule,
     filterModule,
     findIndexModule,
     findModule,
     firstModule,
     forkJoinModule,
+    generateModule,
     identityModule,
     intervalModule,
     isEmptyModule,
@@ -111,6 +113,7 @@ export async function loadCapabilities(): Promise<{
     throwIfEmptyModule,
     timeoutModule,
     timerModule,
+    windowCountModule,
     withLatestFromModule,
     zipAllModule,
     zipWithModule,
@@ -135,12 +138,14 @@ export async function loadCapabilities(): Promise<{
     import('../../src/empty.js'),
     import('../../src/every.js'),
     import('../../src/exhaust-map.js'),
+    import('../../src/expand.js'),
     import('../../src/finalize.js'),
     import('../../src/filter.js'),
     import('../../src/find-index.js'),
     import('../../src/find.js'),
     import('../../src/first.js'),
     import('../../src/fork-join.js'),
+    import('../../src/generate.js'),
     import('../../src/identity.js'),
     import('../../src/interval.js'),
     import('../../src/is-empty.js'),
@@ -183,6 +188,7 @@ export async function loadCapabilities(): Promise<{
     import('../../src/throw-if-empty.js'),
     import('../../src/timeout.js'),
     import('../../src/timer.js'),
+    import('../../src/window-count.js'),
     import('../../src/with-latest-from.js'),
     import('../../src/zip-all.js'),
     import('../../src/zip-with.js'),
@@ -205,6 +211,7 @@ export async function loadCapabilities(): Promise<{
       elementAt: elementAtModule.elementAt,
       every: everyModule.every,
       exhaustMap: exhaustMapModule.exhaustMap,
+      expand: expandModule.expand,
       finalize: finalizeModule.finalize,
       filter: filterModule.filter,
       findIndex: findIndexModule.findIndex,
@@ -241,6 +248,7 @@ export async function loadCapabilities(): Promise<{
       throttle: throttleModule.throttle,
       throwIfEmpty: throwIfEmptyModule.throwIfEmpty,
       timeout: timeoutModule.timeout,
+      windowCount: windowCountModule.windowCount,
       withLatestFrom: withLatestFromModule.withLatestFrom,
       zipAll: zipAllModule.zipAll,
       zipWith: zipWithModule.zipWith,
@@ -250,6 +258,7 @@ export async function loadCapabilities(): Promise<{
       combineLatest: combineLatestModule.combineLatest,
       concat: concatModule.concat,
       forkJoin: forkJoinModule.forkJoin,
+      generate: generateModule.generate,
       interval: intervalModule.interval,
       merge: mergeModule.merge,
       onErrorResumeNext: onErrorResumeNextModule.onErrorResumeNext,
@@ -595,6 +604,19 @@ function adaptStaticFactoryArguments(adapter: string, args: readonly unknown[]):
       return args;
     case 'firstArgument':
       return args.length === 0 ? [] : [args[0]];
+    case 'generate': {
+      const options = args.length === 1 ? args[0] : undefined;
+      if (
+        (typeof options === 'object' &&
+          options !== null &&
+          'scheduler' in options &&
+          (options as { readonly scheduler?: unknown }).scheduler !== undefined) ||
+        isSchedulerLike(args.at(-1))
+      ) {
+        throw new Error('Unsupported RxJS 7 generate scheduler overload.');
+      }
+      return args;
+    }
     case 'staticCombineLatest': {
       const values = withoutTrailingFunction(args);
       if (values.length === 1 && isSourceCollection(values[0])) {
@@ -708,6 +730,11 @@ function adaptOperatorArguments(adapter: string, args: readonly unknown[]): read
         throw new Error('Unsupported RxJS 7 endWith trailing SchedulerLike overload.');
       }
       return [[[...args]]];
+    case 'expand':
+      if (args[2] !== undefined || isSchedulerLike(args[1])) {
+        throw new Error('Unsupported RxJS 7 expand scheduler overload.');
+      }
+      return args[1] === undefined ? [args[0]] : [args[0], { concurrent: args[1] }];
     case 'startWith':
       if (isSchedulerLike(args.at(-1))) {
         throw new Error('Unsupported RxJS 7 startWith trailing SchedulerLike overload.');
