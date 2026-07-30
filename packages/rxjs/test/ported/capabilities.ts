@@ -734,9 +734,10 @@ function invokeStandaloneSourcesArray(value: unknown, args: readonly unknown[]):
   if (typeof value !== 'function') {
     throw new Error('Registered standalone source combiner is not callable.');
   }
+  const projection = typeof args.at(-1) === 'function' ? args.at(-1) : undefined;
   const values = withoutTrailingFunction(args);
   const sources = values.length === 1 && Array.isArray(values[0]) ? values[0] : values;
-  return value(sources);
+  return projection === undefined ? value(sources) : value(sources, projection);
 }
 
 function createBehaviorSubjectConstructor(value: unknown): (initialValue: unknown) => unknown {
