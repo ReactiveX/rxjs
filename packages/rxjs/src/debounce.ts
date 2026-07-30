@@ -41,11 +41,11 @@ Observable.prototype[debounce] = function <T>(
           const signal = AbortSignal.any([subscriber.signal, innerController.signal]);
 
           if (typeof delay === 'number') {
-            const id = setTimeout(emitPendingValue, delay);
+            const id = globalThis.setTimeout(emitPendingValue, delay);
             innerController.signal.addEventListener(
               'abort',
               () => {
-                clearTimeout(id);
+                globalThis.clearTimeout(id);
               },
               { once: true }
             );

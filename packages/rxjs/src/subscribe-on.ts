@@ -14,11 +14,11 @@ Observable.prototype[subscribeOn] = function <T>(this: Observable<T>, delay = 0)
       return;
     }
 
-    const id = setTimeout(() => {
+    const id = globalThis.setTimeout(() => {
       if (subscriber.active) {
         this.subscribe(subscriber, { signal: subscriber.signal });
       }
     }, delay);
-    subscriber.addTeardown(() => clearTimeout(id));
+    subscriber.addTeardown(() => globalThis.clearTimeout(id));
   });
 };

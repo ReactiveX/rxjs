@@ -56,6 +56,14 @@ const observableMessages = (events) =>
   }));
 const harnessRewritePrograms = new Map([
   [
+    'spec/observables/dom/animationFrames-spec.ts:60:animationFrames > should compose with take',
+    buildAnimationFramesLifecycleHarnessRewrite('take'),
+  ],
+  [
+    'spec/observables/dom/animationFrames-spec.ts:86:animationFrames > should compose with takeUntil',
+    buildAnimationFramesLifecycleHarnessRewrite('takeUntil'),
+  ],
+  [
     'spec/observables/from-spec.ts:21:from > should create an observable from an array',
     buildFromArrayDelayHarnessRewrite(),
   ],
@@ -643,6 +651,8 @@ const harnessRewritePrograms = new Map([
   ],
 ]);
 const harnessRewritesReplacingUnavailableImports = new Set([
+  'spec/observables/dom/animationFrames-spec.ts:60:animationFrames > should compose with take',
+  'spec/observables/dom/animationFrames-spec.ts:86:animationFrames > should compose with takeUntil',
   'spec/scheduled/scheduled-spec.ts:14:scheduled > should schedule a sync observable',
   'spec/scheduled/scheduled-spec.ts:21:scheduled > should schedule an array',
   'spec/scheduled/scheduled-spec.ts:28:scheduled > should schedule an iterable',
@@ -3176,6 +3186,7 @@ function buildSchedulerInternalsHarnessRewrite({ path, line }) {
     [472, 'explicit-flush'],
     [497, 'promise-completion-boundary'],
     [508, 'restore-after-error'],
+    [540, 'animation-without-opportunity'],
     [569, 'animation-async'],
     [591, 'animation-sync'],
     [610, 'animation-cancellation'],
@@ -3667,6 +3678,20 @@ await rxTest(async ({ schedule, flush }) => {
 expect(ran).to.equal(true);
 }
 `,
+    'animation-without-opportunity': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+let rejection;
+try {
+  await rxTest(() => {
+    globalThis.requestAnimationFrame(() => {});
+  });
+} catch (error) {
+  rejection = error;
+}
+expect(rejection).to.be.instanceof(Error);
+expect(rejection.message).to.match(/animation-frame callback/);
+}
+`,
     'animation-async': buildAnimationProgram(false, false),
     'animation-sync': buildAnimationProgram(true, false),
     'animation-cancellation': buildAnimationProgram(true, true),
@@ -3678,7 +3703,7 @@ expect(ran).to.equal(true);
 const { rxTest, expect } = runtime;
 await rxTest(async ({ flush, now }) => {
   const values = [];
-  setTimeout(() => values.push('a@' + now()), 1);
+  globalThis.setTimeout(() => values.push('a@' + now()), 1);
   expect(values).to.deep.equal([]);
   await flush();
   expect(values).to.deep.equal(['a@1']);
@@ -3692,11 +3717,11 @@ if (typeof globalThis.setImmediate !== 'function') {
 }
 await rxTest(async ({ flush, now }) => {
   const values = [];
-  const interval = setInterval(() => {
+  const interval = globalThis.setInterval(() => {
     values.push('a@' + now());
-    clearInterval(interval);
+    globalThis.clearInterval(interval);
   }, 0);
-  setTimeout(() => values.push('b@' + now()), 0);
+  globalThis.setTimeout(() => values.push('b@' + now()), 0);
   globalThis.setImmediate(() => values.push('c@' + now()));
   await flush();
   expect(values).to.deep.equal(['c@0', 'a@0', 'b@0']);
@@ -3841,12 +3866,12 @@ await rxTest((context) => {
 function buildAnimationProgram(synchronousRequests, cancelFirst) {
   const requests = synchronousRequests
     ? `schedule(() => {
-    const first = requestAnimationFrame((timestamp) => values.push('a@' + timestamp));
-    requestAnimationFrame((timestamp) => values.push('b@' + timestamp));
-    ${cancelFirst ? 'cancelAnimationFrame(first);' : ''}
+    const first = globalThis.requestAnimationFrame((timestamp) => values.push('a@' + timestamp));
+    globalThis.requestAnimationFrame((timestamp) => values.push('b@' + timestamp));
+    ${cancelFirst ? 'globalThis.cancelAnimationFrame(first);' : ''}
   }, 1);`
-    : `schedule(() => requestAnimationFrame((timestamp) => values.push('a@' + timestamp)), 0);
-  schedule(() => requestAnimationFrame((timestamp) => values.push('b@' + timestamp)), 1);`;
+    : `schedule(() => globalThis.requestAnimationFrame((timestamp) => values.push('a@' + timestamp)), 0);
+  schedule(() => globalThis.requestAnimationFrame((timestamp) => values.push('b@' + timestamp)), 1);`;
   const expected = cancelFirst ? `['b@2']` : `['a@2', 'b@2']`;
   return `async function migrated(runtime) {
 const { rxTest, expect } = runtime;
@@ -3856,6 +3881,28 @@ await rxTest(async ({ animate, schedule, flush }) => {
   ${requests}
   await flush();
   expect(values).to.deep.equal(${expected});
+});
+}
+`;
+}
+
+function buildAnimationFramesLifecycleHarnessRewrite(kind) {
+  const takeUntil = kind === 'takeUntil';
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, animationFrames, mergeMapTo, ${takeUntil ? 'takeUntil' : 'take'} } = runtime;
+await rxTest(({ animate, cold, expectObservable, ${takeUntil ? 'hot, ' : ''}time }) => {
+  animate('---x---x---x');
+  const mapped = cold('-m');
+  const tm = time('-|');
+  const ta = time('---|');
+  const tb = time('-------|');
+  ${takeUntil ? "const signal = hot('^--------s--');" : ''}
+  const frames = applyOperators(animationFrames(), [${takeUntil ? 'takeUntil(signal)' : 'take(2)'}]);
+  const result = applyOperators(mapped, [mergeMapTo(frames)]);
+  expectObservable(result, '^-----------!').toBe('---a---b', {
+    a: { elapsed: ta - tm, timestamp: ta },
+    b: { elapsed: tb - tm, timestamp: tb },
+  });
 });
 }
 `;
@@ -3884,12 +3931,12 @@ function buildIntervalProgram(repeated) {
 const { rxTest, expect } = runtime;
 await rxTest(async ({ flush, now }) => {
   const values = [];
-  const handle = setInterval(() => {
+  const handle = globalThis.setInterval(() => {
     if (${repeated ? 'now() <= 3' : 'true'}) {
       values.push('a@' + now());
     }
     if (${repeated ? 'now() > 3' : 'true'}) {
-      clearInterval(handle);
+      globalThis.clearInterval(handle);
     }
   }, 1);
   expect(values).to.deep.equal([]);
@@ -8555,11 +8602,7 @@ function assessAvailability(imports) {
       continue;
     } else if (frameworkModules.has(item.module)) {
       continue;
-    } else if (
-      (item.module === 'rxjs/internal/operators/timeInterval' && item.imported === 'TimeInterval') ||
-      (item.module === 'rxjs/internal/scheduler/animationFrameProvider' &&
-        item.imported === 'animationFrameProvider')
-    ) {
+    } else if (item.module === 'rxjs/internal/operators/timeInterval' && item.imported === 'TimeInterval') {
       continue;
     } else if (item.module.startsWith('rxjs/')) {
       missing.push(`${item.module}:${item.imported}`);

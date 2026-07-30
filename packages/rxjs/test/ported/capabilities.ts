@@ -485,7 +485,6 @@ export async function loadCapabilities(): Promise<{
       Subscription: undefined,
       TimeInterval: timeIntervalModule.TimeInterval,
       TimeoutError: timeoutModule.TimeoutError,
-      animationFrameProvider: animationFramesModule.animationFrameProvider,
       zip: zipModule.zip,
     },
   };
@@ -683,11 +682,6 @@ function installImport(
     imported.imported === 'TimeInterval'
   ) {
     runtime[imported.local] = capabilities.values.TimeInterval;
-  } else if (
-    imported.module === 'rxjs/internal/scheduler/animationFrameProvider' &&
-    imported.imported === 'animationFrameProvider'
-  ) {
-    runtime[imported.local] = capabilities.values.animationFrameProvider;
   }
 }
 

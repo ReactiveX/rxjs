@@ -11,12 +11,12 @@ interface TimerQueueItem {
   args: any[];
 }
 
-const OriginalDate = Date;
-const originalPerformanceNow = performance.now;
-const originalSetTimeout = setTimeout;
-const originalClearTimeout = clearTimeout;
-const originalSetInterval = setInterval;
-const originalClearInterval = clearInterval;
+const OriginalDate = globalThis.Date;
+const originalPerformanceNow = globalThis.performance.now;
+const originalSetTimeout = globalThis.setTimeout;
+const originalClearTimeout = globalThis.clearTimeout;
+const originalSetInterval = globalThis.setInterval;
+const originalClearInterval = globalThis.clearInterval;
 
 const flushMicrotasks = Promise.resolve();
 
@@ -26,7 +26,7 @@ export class FakeTimers {
 
   #shouldUseNodeTimeout = typeof globalThis.setTimeout(() => {}) === 'object';
 
-  #setTimeout: typeof setTimeout = (() => {
+  #setTimeout: typeof globalThis.setTimeout = (() => {
     const patched = (callback: TimerHandler, delay = 0, ...args: any[]): any => {
       const id = ++this.#timerId;
       const time = this.#now + delay;
@@ -40,7 +40,7 @@ export class FakeTimers {
 
       if (this.#shouldUseNodeTimeout) {
         let ref = false;
-        const nodeTimeout: ReturnType<typeof setTimeout> = {
+        const nodeTimeout: ReturnType<typeof globalThis.setTimeout> = {
           ref: () => {
             ref = true;
             return nodeTimeout;
@@ -77,12 +77,12 @@ export class FakeTimers {
     return patched;
   })();
 
-  #clearTimeout: typeof clearTimeout = (id: NodeJS.Timeout | string | number | undefined) => {
+  #clearTimeout: typeof globalThis.clearTimeout = (id: NodeJS.Timeout | string | number | undefined) => {
     if (id === undefined) return;
     this.#removeTimer(+id);
   };
 
-  #setInterval: typeof setInterval = (() => {
+  #setInterval: typeof globalThis.setInterval = (() => {
     const patched = (callback: TimerHandler, delay = 0, ...args: any[]): any => {
       const id = ++this.#timerId;
       const time = this.#now + delay;
@@ -94,7 +94,7 @@ export class FakeTimers {
 
       if (this.#shouldUseNodeTimeout) {
         let ref = false;
-        const nodeTimeout: ReturnType<typeof setInterval> = {
+        const nodeTimeout: ReturnType<typeof globalThis.setInterval> = {
           ref: () => {
             ref = true;
             return nodeTimeout;
@@ -136,7 +136,7 @@ export class FakeTimers {
     return patched;
   })();
 
-  #clearInterval: typeof clearInterval = (id: NodeJS.Timeout | string | number | undefined) => {
+  #clearInterval: typeof globalThis.clearInterval = (id: NodeJS.Timeout | string | number | undefined) => {
     if (id === undefined) return;
     this.#removeTimer(+id);
   };

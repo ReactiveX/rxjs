@@ -60,9 +60,9 @@ Observable.prototype[throttle] = function <T>(
       const signal = AbortSignal.any([subscriber.signal, controller.signal]);
 
       if (typeof delay === 'number') {
-        const id = setTimeout(() => endThrottling(controller), delay);
+        const id = globalThis.setTimeout(() => endThrottling(controller), delay);
 
-        signal.addEventListener('abort', () => clearTimeout(id), {
+        signal.addEventListener('abort', () => globalThis.clearTimeout(id), {
           once: true,
         });
       } else {

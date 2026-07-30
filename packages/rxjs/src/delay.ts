@@ -10,7 +10,7 @@ declare global {
 
 Observable.prototype[delay] = function <T>(this: Observable<T>, due: number | Date): Observable<T> {
   return this[create]((subscriber) => {
-    const timers = new Set<ReturnType<typeof setTimeout>>();
+    const timers = new Set<ReturnType<typeof globalThis.setTimeout>>();
     let sourceCompleted = false;
 
     const completeIfSettled = () => {
@@ -21,7 +21,7 @@ Observable.prototype[delay] = function <T>(this: Observable<T>, due: number | Da
 
     subscriber.addTeardown(() => {
       for (const timer of timers) {
-        clearTimeout(timer);
+        globalThis.clearTimeout(timer);
       }
       timers.clear();
     });
@@ -29,10 +29,10 @@ Observable.prototype[delay] = function <T>(this: Observable<T>, due: number | Da
     this.subscribe(
       {
         next: (value) => {
-          const duration = Math.max(0, due instanceof Date ? +due - Date.now() : due);
-          let timer: ReturnType<typeof setTimeout>;
+          const duration = Math.max(0, due instanceof globalThis.Date ? +due - globalThis.Date.now() : due);
+          let timer: ReturnType<typeof globalThis.setTimeout>;
           try {
-            timer = setTimeout(() => {
+            timer = globalThis.setTimeout(() => {
               timers.delete(timer);
               if (subscriber.active) {
                 subscriber.next(value);

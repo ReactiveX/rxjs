@@ -5,18 +5,14 @@ export const windowTime: unique symbol = Symbol('windowTime');
 
 declare global {
   interface Observable<T> {
-    [windowTime]: (
-      span: number,
-      creationInterval?: number | null,
-      maxWindowSize?: number
-    ) => Observable<Observable<T>>;
+    [windowTime]: (span: number, creationInterval?: number | null, maxWindowSize?: number) => Observable<Observable<T>>;
   }
 }
 
 interface WindowContext<T> {
   readonly subject: Subject<T>;
   count: number;
-  timer: ReturnType<typeof setTimeout>;
+  timer: ReturnType<typeof globalThis.setTimeout>;
 }
 
 Observable.prototype[windowTime] = function <T>(
@@ -27,11 +23,11 @@ Observable.prototype[windowTime] = function <T>(
 ): Observable<Observable<T>> {
   return this[create]((subscriber) => {
     const contexts: WindowContext<T>[] = [];
-    let creationTimer: ReturnType<typeof setInterval> | undefined;
+    let creationTimer: ReturnType<typeof globalThis.setInterval> | undefined;
 
     const stopCreation = (): void => {
       if (creationTimer !== undefined) {
-        clearInterval(creationTimer);
+        globalThis.clearInterval(creationTimer);
         creationTimer = undefined;
       }
     };
@@ -42,7 +38,7 @@ Observable.prototype[windowTime] = function <T>(
         return false;
       }
       contexts.splice(index, 1);
-      clearTimeout(context.timer);
+      globalThis.clearTimeout(context.timer);
       return true;
     };
 
@@ -53,7 +49,7 @@ Observable.prototype[windowTime] = function <T>(
         timer: undefined!,
       };
       contexts.push(context);
-      context.timer = setTimeout(() => closeContext(context), Math.max(0, span));
+      context.timer = globalThis.setTimeout(() => closeContext(context), Math.max(0, span));
       subscriber.next(context.subject.asObservable());
       return context;
     };
@@ -71,7 +67,7 @@ Observable.prototype[windowTime] = function <T>(
     subscriber.addTeardown(() => {
       stopCreation();
       for (const context of contexts) {
-        clearTimeout(context.timer);
+        globalThis.clearTimeout(context.timer);
       }
       contexts.length = 0;
     });
@@ -82,7 +78,7 @@ Observable.prototype[windowTime] = function <T>(
         return;
       }
       if (creationInterval !== null) {
-        creationTimer = setInterval(() => {
+        creationTimer = globalThis.setInterval(() => {
           if (subscriber.active) {
             openContext();
           }
@@ -112,7 +108,7 @@ Observable.prototype[windowTime] = function <T>(
           const active = contexts.slice();
           contexts.length = 0;
           for (const context of active) {
-            clearTimeout(context.timer);
+            globalThis.clearTimeout(context.timer);
             context.subject.error(error);
           }
           subscriber.error(error);
@@ -122,7 +118,7 @@ Observable.prototype[windowTime] = function <T>(
           const active = contexts.slice();
           contexts.length = 0;
           for (const context of active) {
-            clearTimeout(context.timer);
+            globalThis.clearTimeout(context.timer);
             context.subject.complete();
           }
           subscriber.complete();

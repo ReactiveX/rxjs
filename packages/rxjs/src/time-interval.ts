@@ -16,18 +16,14 @@ declare global {
   }
 }
 
-const dateTimestampProvider: TimeIntervalProvider = {
-  now: () => Date.now(),
-};
-
 Observable.prototype[timeInterval] = function <T>(
   this: Observable<T>,
-  timestampProvider: TimeIntervalProvider = dateTimestampProvider
+  timestampProvider?: TimeIntervalProvider
 ): Observable<TimeInterval<T>> {
   return this[create]((subscriber) => {
     let lastTimestamp: number;
     try {
-      lastTimestamp = timestampProvider.now();
+      lastTimestamp = timestampProvider === undefined ? globalThis.Date.now() : timestampProvider.now();
     } catch (error) {
       subscriber.error(error);
       return;
@@ -38,7 +34,7 @@ Observable.prototype[timeInterval] = function <T>(
         next: (value) => {
           let currentTimestamp: number;
           try {
-            currentTimestamp = timestampProvider.now();
+            currentTimestamp = timestampProvider === undefined ? globalThis.Date.now() : timestampProvider.now();
           } catch (error) {
             subscriber.error(error);
             return;

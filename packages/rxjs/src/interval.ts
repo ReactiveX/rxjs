@@ -14,9 +14,9 @@ Observable[interval] = intervalImpl;
 function intervalImpl(this: ObservableCtor, ms: number): Observable<number> {
   return this[create]((subscriber) => {
     let n = 0;
-    const id = setInterval(() => {
+    const id = globalThis.setInterval(() => {
       subscriber.next(n++);
     }, ms);
-    subscriber.addTeardown(() => clearInterval(id));
+    subscriber.addTeardown(() => globalThis.clearInterval(id));
   });
 }

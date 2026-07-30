@@ -6,13 +6,6 @@ export interface AnimationFrameTimestampProvider {
   now(): number;
 }
 
-export const animationFrameProvider = {
-  delegate: {
-    requestAnimationFrame: (callback: FrameRequestCallback): number => requestAnimationFrame(callback),
-    cancelAnimationFrame: (id: number): void => cancelAnimationFrame(id),
-  },
-};
-
 declare global {
   interface AnimationFrameInfo {
     timestamp: number;
@@ -26,19 +19,12 @@ declare global {
 
 Observable[animationFrames] = animationFramesImpl;
 
-const performanceTimestampProvider: AnimationFrameTimestampProvider = {
-  now: () => performance.now(),
-};
-
-function animationFramesImpl(
-  this: ObservableCtor,
-  timestampProvider?: AnimationFrameTimestampProvider
-): Observable<AnimationFrameInfo> {
+function animationFramesImpl(this: ObservableCtor, timestampProvider?: AnimationFrameTimestampProvider): Observable<AnimationFrameInfo> {
   return this[create]((subscriber) => {
-    const provider = timestampProvider ?? performanceTimestampProvider;
+    const now = timestampProvider ? () => timestampProvider.now() : () => globalThis.performance.now();
     let start: number;
     try {
-      start = provider.now();
+      start = now();
     } catch (error) {
       subscriber.error(error);
       return;
@@ -46,11 +32,11 @@ function animationFramesImpl(
 
     let id: number | undefined;
     const run = () => {
-      id = animationFrameProvider.delegate.requestAnimationFrame((frameTimestamp) => {
+      id = globalThis.requestAnimationFrame((frameTimestamp) => {
         id = undefined;
         let currentTimestamp: number;
         try {
-          currentTimestamp = provider.now();
+          currentTimestamp = now();
         } catch (error) {
           subscriber.error(error);
           return;
@@ -67,7 +53,7 @@ function animationFramesImpl(
 
     subscriber.addTeardown(() => {
       if (id !== undefined) {
-        animationFrameProvider.delegate.cancelAnimationFrame(id);
+        globalThis.cancelAnimationFrame(id);
       }
     });
 

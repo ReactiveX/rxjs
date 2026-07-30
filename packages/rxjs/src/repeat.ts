@@ -24,13 +24,13 @@ Observable.prototype[repeat] = function <T>(
 
     const nextHandler = (value: T) => subscriber.next(value);
     const errorHandler = (error: any) => subscriber.error(error);
-    let id: ReturnType<typeof setTimeout> | undefined;
+    let id: ReturnType<typeof globalThis.setTimeout> | undefined;
     let repeatCount = 0;
     let subscriptionCount = 0;
 
     const isTimeoutDelay = typeof delay === 'number';
     if (isTimeoutDelay) {
-      subscriber.addTeardown(() => clearTimeout(id));
+      subscriber.addTeardown(() => globalThis.clearTimeout(id));
     }
 
     const startSub = () => {
@@ -50,7 +50,7 @@ Observable.prototype[repeat] = function <T>(
                 startSub();
               } else {
                 if (isTimeoutDelay) {
-                  id = setTimeout(startSub, delay);
+                  id = globalThis.setTimeout(startSub, delay);
                 } else {
                   const innerController = new AbortController();
                   const signal = AbortSignal.any([innerController.signal, subscriber.signal]);

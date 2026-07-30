@@ -17,21 +17,14 @@ declare global {
   }
 }
 
-const dateTimestampProvider: TimestampProvider = {
-  now: () => Date.now(),
-};
-
-Observable.prototype[timestamp] = function <T>(
-  this: Observable<T>,
-  timestampProvider: TimestampProvider = dateTimestampProvider
-): Observable<Timestamp<T>> {
+Observable.prototype[timestamp] = function <T>(this: Observable<T>, timestampProvider?: TimestampProvider): Observable<Timestamp<T>> {
   return this[create]((subscriber) => {
     this.subscribe(
       {
         next: (value) => {
           let currentTimestamp: number;
           try {
-            currentTimestamp = timestampProvider.now();
+            currentTimestamp = timestampProvider === undefined ? globalThis.Date.now() : timestampProvider.now();
           } catch (error) {
             subscriber.error(error);
             return;

@@ -502,6 +502,12 @@ public scheduler. `observeOn` defers notifications in source order;
 derived subscriber's `AbortSignal` and retain one shared, ref-counted platform
 activation for concurrent observers.
 
+All platform-layer host work resolves its scheduling and cancellation
+functions from `globalThis` at the moment work is scheduled or cancelled.
+RxJS-owned provider/delegate objects and module-evaluation captures are not part
+of the Next runtime boundary. This lets the same `@rxjs/test` realm patch
+virtualize RxJS operators and ordinary application host calls.
+
 `Subject.asObservable()` does not add a string-named method to
 `Observable.prototype`. The returned base-Observable view forwards
 `next`/`error`/`complete` from the Subject, delegates cancellation through the
@@ -540,7 +546,7 @@ The API makes lifecycle semantics explicit:
 The package does not expose `TestScheduler` or add scheduler arguments to the
 main library. It consumes the active Observable selected for the realm and
 does not force-install or replace that constructor. See
-`docs/rxjs-next/TESTING_DESIGN.md` and D-012.
+`docs/rxjs-next/TESTING_DESIGN.md`, D-012, and D-034.
 
 The RxJS 7 marble-test evidence is maintained separately under
 `packages/rxjs/test/ported`. A generated, source-pinned manifest records one

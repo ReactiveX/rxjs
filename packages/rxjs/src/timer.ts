@@ -15,19 +15,19 @@ Observable[timer] = function timerImpl(this: ObservableCtor, delay: number, inte
   return this[create]((subscriber) => {
     let n = 0;
 
-    let id = setInterval(() => {
+    let id = globalThis.setInterval(() => {
       subscriber.next(n++);
 
       if (interval == null || interval < 0) {
         subscriber.complete();
       } else if (interval !== delay) {
-        clearInterval(id);
-        id = setInterval(() => {
+        globalThis.clearInterval(id);
+        id = globalThis.setInterval(() => {
           subscriber.next(n++);
         });
       }
     }, delay);
 
-    subscriber.addTeardown(() => clearInterval(id));
+    subscriber.addTeardown(() => globalThis.clearInterval(id));
   });
 };

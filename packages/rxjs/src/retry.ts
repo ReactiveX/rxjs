@@ -51,8 +51,8 @@ Observable.prototype[retry] = function <T>(
               retryCount++;
               if (delay !== null) {
                 if (typeof delay === 'number') {
-                  const id = setTimeout(innerSub, delay);
-                  subscriber.addTeardown(() => clearTimeout(id));
+                  const id = globalThis.setTimeout(innerSub, delay);
+                  subscriber.addTeardown(() => globalThis.clearTimeout(id));
                 } else {
                   let result: Observable<any>;
 

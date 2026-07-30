@@ -26,8 +26,8 @@ class ReplaySubject<T> extends ColdSubject<T> {
   }
 
   #scheduleAgeFlush() {
-    setTimeout(() => {
-      const tooOld = Date.now() - this.#maxAge;
+    globalThis.setTimeout(() => {
+      const tooOld = globalThis.Date.now() - this.#maxAge;
       const indexOfOldestAllowedItem = this.#bufferTimestamps.findIndex((timestamp) => tooOld < timestamp);
       const amountToTrim = indexOfOldestAllowedItem < 0 ? this.#bufferTimestamps.length : indexOfOldestAllowedItem;
       if (amountToTrim > 0) {
@@ -73,14 +73,13 @@ class ReplaySubject<T> extends ColdSubject<T> {
       subscriber.complete();
       return;
     }
-
   }
 
   override next(value: T) {
     if (this.active) {
       this.#bufferValues.push(value);
       if (this.#maxAge !== Infinity) {
-        this.#bufferTimestamps.push(Date.now());
+        this.#bufferTimestamps.push(globalThis.Date.now());
         this.#scheduleAgeFlush();
       }
       if (this.#size !== Infinity) {

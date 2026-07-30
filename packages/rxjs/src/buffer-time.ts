@@ -10,7 +10,7 @@ declare global {
 
 interface BufferContext<T> {
   readonly values: T[];
-  timer: ReturnType<typeof setTimeout>;
+  timer: ReturnType<typeof globalThis.setTimeout>;
 }
 
 Observable.prototype[bufferTime] = function <T>(
@@ -21,7 +21,7 @@ Observable.prototype[bufferTime] = function <T>(
 ): Observable<T[]> {
   return this[create]((subscriber) => {
     const contexts: BufferContext<T>[] = [];
-    let creationTimer: ReturnType<typeof setInterval> | undefined;
+    let creationTimer: ReturnType<typeof globalThis.setInterval> | undefined;
 
     const removeContext = (context: BufferContext<T>): boolean => {
       const index = contexts.indexOf(context);
@@ -29,7 +29,7 @@ Observable.prototype[bufferTime] = function <T>(
         return false;
       }
       contexts.splice(index, 1);
-      clearTimeout(context.timer);
+      globalThis.clearTimeout(context.timer);
       return true;
     };
 
@@ -39,7 +39,7 @@ Observable.prototype[bufferTime] = function <T>(
         timer: undefined!,
       };
       contexts.push(context);
-      context.timer = setTimeout(() => closeContext(context), Math.max(0, span));
+      context.timer = globalThis.setTimeout(() => closeContext(context), Math.max(0, span));
       return context;
     };
 
@@ -56,10 +56,10 @@ Observable.prototype[bufferTime] = function <T>(
 
     subscriber.addTeardown(() => {
       if (creationTimer !== undefined) {
-        clearInterval(creationTimer);
+        globalThis.clearInterval(creationTimer);
       }
       for (const context of contexts) {
-        clearTimeout(context.timer);
+        globalThis.clearTimeout(context.timer);
       }
       contexts.length = 0;
     });
@@ -67,7 +67,7 @@ Observable.prototype[bufferTime] = function <T>(
     try {
       openContext();
       if (creationInterval !== null) {
-        creationTimer = setInterval(() => {
+        creationTimer = globalThis.setInterval(() => {
           if (subscriber.active) {
             openContext();
           }
@@ -91,13 +91,13 @@ Observable.prototype[bufferTime] = function <T>(
         error: (error) => subscriber.error(error),
         complete: () => {
           if (creationTimer !== undefined) {
-            clearInterval(creationTimer);
+            globalThis.clearInterval(creationTimer);
             creationTimer = undefined;
           }
           const remaining = contexts.slice();
           contexts.length = 0;
           for (const context of remaining) {
-            clearTimeout(context.timer);
+            globalThis.clearTimeout(context.timer);
             if (subscriber.active) {
               subscriber.next(context.values.slice());
             }

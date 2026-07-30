@@ -693,3 +693,22 @@ Status meanings:
   `subscribeOn` expose host-delay contracts, legacy overloads remain explicitly
   deferred in the capability map, and production scheduling continues to use
   `AbortSignal` cancellation and the platform `Subscriber` lifecycle.
+
+## D-034 — Resolve host scheduling APIs directly from `globalThis`
+
+- **Status:** Accepted
+- **Decision:** RxJS Next platform-layer code calls supported host scheduling
+  and cancellation APIs through `globalThis` when it schedules or cancels work.
+  It does not capture those functions during module evaluation and does not
+  route them through RxJS-owned provider or delegate objects.
+- **Rationale:** `@rxjs/test` virtualizes the realm's host boundary so RxJS work
+  and application work share one deterministic event loop. A separate RxJS
+  provider seam would virtualize only library-owned calls, duplicate the realm
+  patching contract, and expose obsolete scheduler implementation details.
+- **Consequence:** The exploratory `animationFrameProvider` export is removed.
+  Timer, interval, animation-frame, idle-callback, and any future supported
+  host scheduling integrations must use late `globalThis.*` resolution and
+  receive a matching `@rxjs/test` adapter. Narrow timestamp-provider overloads
+  remain valid because they select clocks rather than schedule work. References
+  captured by application code before `rxTest` patches the realm remain outside
+  the supported virtual-host boundary.

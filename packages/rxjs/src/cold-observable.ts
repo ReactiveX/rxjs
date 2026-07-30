@@ -105,7 +105,7 @@ function reportError(error: any) {
   if (typeof globalThis.reportError === 'function') {
     globalThis.reportError(error);
   } else {
-    setTimeout(() => {
+    globalThis.setTimeout(() => {
       throw error;
     });
   }

@@ -29,12 +29,12 @@ Observable.prototype[sampleTime] = function <T>(this: Observable<T>, period: num
       return;
     }
 
-    const id = setInterval(() => {
+    const id = globalThis.setInterval(() => {
       if (hasValue) {
         hasValue = false;
         subscriber.next(latestValue);
       }
     }, period);
-    subscriber.addTeardown(() => clearInterval(id));
+    subscriber.addTeardown(() => globalThis.clearInterval(id));
   });
 };

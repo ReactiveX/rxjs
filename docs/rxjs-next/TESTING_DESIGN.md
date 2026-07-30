@@ -400,6 +400,11 @@ work. Capturing `setTimeout`, `requestAnimationFrame`, or another host function
 before `rxTest` installs virtual time bypasses the test boundary and is not
 supported.
 
+RxJS Next platform-layer code makes that boundary explicit with late
+`globalThis.*` access. It does not use RxJS-owned provider delegates for host
+scheduling. The same patched realm functions therefore govern library work and
+ordinary application scheduling during `rxTest`.
+
 ## Async execution and completion
 
 An async body can wait on virtual time without manually advancing it:

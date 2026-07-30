@@ -43,9 +43,9 @@ Observable.prototype[timeout] = function <T, W, M>(
 
       const signal = AbortSignal.any([subscriber.signal, controller.signal]);
 
-      let id: ReturnType<typeof setTimeout>;
+      let id: ReturnType<typeof globalThis.setTimeout>;
       try {
-        id = setTimeout(() => {
+        id = globalThis.setTimeout(() => {
           if (timerController !== controller || !subscriber.active) {
             return;
           }
@@ -73,7 +73,7 @@ Observable.prototype[timeout] = function <T, W, M>(
         return;
       }
 
-      signal.addEventListener('abort', () => clearTimeout(id), { once: true });
+      signal.addEventListener('abort', () => globalThis.clearTimeout(id), { once: true });
     };
 
     this.subscribe(
@@ -103,7 +103,7 @@ Observable.prototype[timeout] = function <T, W, M>(
     );
 
     if (subscriber.active && seen === 0) {
-      const initialDelay = first != null ? (typeof first === 'number' ? first : +first - Date.now()) : (each ?? 0);
+      const initialDelay = first != null ? (typeof first === 'number' ? first : +first - globalThis.Date.now()) : each ?? 0;
 
       startTimer(initialDelay);
     }

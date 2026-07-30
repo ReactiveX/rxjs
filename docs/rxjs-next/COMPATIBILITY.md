@@ -194,6 +194,12 @@ only the private `rxTest` scheduler sentinel to these delays; arbitrary
 scheduler objects remain unsupported. Cancellation removes queued
 notifications or a queued source activation through `AbortSignal`.
 
+Every platform-layer host scheduling call resolves the corresponding
+`globalThis` function when work is scheduled or cancelled. There are no
+RxJS-owned timer, interval, animation-frame, or idle-callback providers in this
+layer. Consequently, the `@rxjs/test` virtual host applies equally to RxJS
+work and application code that resolves those realm APIs during the test.
+
 Selector-based `retry` invokes its delay selector with one-based consecutive
 retry counts, including when the retry budget is infinite. A notifier value
 cancels that notifier before the next source attempt starts; notifier

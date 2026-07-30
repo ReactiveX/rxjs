@@ -10,13 +10,13 @@ declare global {
 
 Observable.prototype[observeOn] = function <T>(this: Observable<T>, delay = 0): Observable<T> {
   return this[create]((subscriber) => {
-    const timers = new Set<ReturnType<typeof setTimeout>>();
+    const timers = new Set<ReturnType<typeof globalThis.setTimeout>>();
 
     const schedule = (work: () => void): void => {
       if (delay === Infinity) {
         return;
       }
-      const id = setTimeout(() => {
+      const id = globalThis.setTimeout(() => {
         timers.delete(id);
         if (subscriber.active) {
           work();
@@ -27,7 +27,7 @@ Observable.prototype[observeOn] = function <T>(this: Observable<T>, delay = 0): 
 
     subscriber.addTeardown(() => {
       for (const id of timers) {
-        clearTimeout(id);
+        globalThis.clearTimeout(id);
       }
       timers.clear();
     });

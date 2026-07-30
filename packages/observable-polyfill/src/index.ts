@@ -275,7 +275,7 @@ function reportError(error: unknown, hasSourceLocation = true): void {
     globalThis.reportError(error);
     return;
   }
-  setTimeout(() => {
+  globalThis.setTimeout(() => {
     throw error;
   });
 }
@@ -394,7 +394,7 @@ function closeAsyncIterator(record: AsyncIteratorRecord, reason: unknown): void 
     }
     result = returnMethod.call(record.iterator, reason);
   } catch (error) {
-    queueMicrotask(() => reportUnhandledRejection(error));
+    globalThis.queueMicrotask(() => reportUnhandledRejection(error));
     return;
   }
 
@@ -500,7 +500,7 @@ function fromAsyncIterable<T>(ObservableCtor: typeof Observable<T>, value: objec
         }
         nextResult = nextMethod.call(record.iterator);
       } catch (error) {
-        queueMicrotask(() => subscriber.error(error));
+        globalThis.queueMicrotask(() => subscriber.error(error));
         return;
       }
 

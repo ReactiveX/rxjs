@@ -18,7 +18,7 @@ export class ScheduledObservable<T> extends Observable<T> {
       this.#preSubsscriptionQueue = [];
 
       for (const item of queue) {
-        const id = setTimeout(() => {
+        const id = globalThis.setTimeout(() => {
           switch (item.kind) {
             case 'N':
               subscriber.next(item.value);
@@ -32,7 +32,7 @@ export class ScheduledObservable<T> extends Observable<T> {
           }
         }, item.delay);
 
-        subscriber.addTeardown(() => clearTimeout(id));
+        subscriber.addTeardown(() => globalThis.clearTimeout(id));
       }
     });
   }

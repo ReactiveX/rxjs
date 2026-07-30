@@ -65,8 +65,8 @@ Observable.prototype[buffer] = function <T>(
       const signal = AbortSignal.any([notifierController.signal, subscriber.signal]);
 
       if (typeof delay === 'number') {
-        const id = setTimeout(emitBuffer, delay);
-        signal.addEventListener('abort', () => clearTimeout(id), {
+        const id = globalThis.setTimeout(emitBuffer, delay);
+        signal.addEventListener('abort', () => globalThis.clearTimeout(id), {
           once: true,
         });
       } else {

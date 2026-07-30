@@ -213,6 +213,11 @@ and `expand`. It does not decide whether a compatibility product supports
 RxJS schedulers or how scheduler arguments, providers, and classes are
 represented.
 
+D-034 settles the main platform package's host boundary: it resolves scheduling
+APIs directly from `globalThis` and exposes no RxJS-owned scheduling providers.
+This does not decide whether the separate compatibility product eventually
+offers scheduler-shaped adapters.
+
 ## Delivery and migration questions
 
 ### 14. What is the final major version and support relationship with RxJS 7?

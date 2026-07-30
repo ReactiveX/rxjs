@@ -1257,13 +1257,6 @@
       "status": "Present; parity verified",
       "note": "Uses the public RxJS 7-compatible timeout error value and metadata shape."
     },
-    "animationFrameProvider": {
-      "module": "animation-frames",
-      "adapter": "identity",
-      "mapping": "animationFrameProvider",
-      "status": "Test compatibility fixture",
-      "note": "Exposes the host request/cancel delegate used by animationFrames so exact RxJS 7 lifecycle assertions can observe request and cancellation counts."
-    },
     "pipe": {
       "module": "pipe",
       "adapter": "operatorComposition",

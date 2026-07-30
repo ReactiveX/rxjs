@@ -1378,3 +1378,17 @@ conformance implementation depends on a runnable harness.
   passed.
 - Marked P0.T3 `DONE` and restored P0.2 as the single project-level `NEXT`
   item.
+
+### 2026-07-30 — Direct global host-scheduling boundary
+
+- Removed the exploratory `animationFrameProvider` runtime and parity fixture.
+  `animationFrames` now schedules and cancels directly through late
+  `globalThis` lookups.
+- Normalized RxJS Next host timers, intervals, animation frames, clocks, and
+  cancellation calls to explicit `globalThis.*` access without changing the
+  narrow timestamp-provider overloads.
+- Rewrote inherited provider-spy evidence around public Observable behavior and
+  direct host APIs. Added focused integration coverage proving that already
+  imported RxJS modules and ordinary application scheduling share the same
+  `rxTest` virtual host timeline.
+- Recorded D-034. P0.2 remains the single project-level `NEXT` item.

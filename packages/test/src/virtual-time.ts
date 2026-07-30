@@ -713,10 +713,10 @@ export class VirtualTimeController {
   }
 
   #installAbortSignalTimeout(): void {
-    if (typeof AbortSignal.timeout !== 'function') {
+    if (typeof globalThis.AbortSignal.timeout !== 'function') {
       return;
     }
-    this.#patch(AbortSignal, 'timeout', (delay: number): AbortSignal => {
+    this.#patch(globalThis.AbortSignal, 'timeout', (delay: number): AbortSignal => {
       const controller = new AbortController();
       this.schedule(() => {
         controller.abort(new DOMException('The operation timed out.', 'TimeoutError'));
@@ -726,7 +726,7 @@ export class VirtualTimeController {
   }
 
   #installClocks(): void {
-    const OriginalDate = Date;
+    const OriginalDate = globalThis.Date;
     const currentTime = () => this.#options.startTime + this.#now;
     const VirtualDate = function (this: Date, ...args: unknown[]): Date | string {
       if (!new.target) {
@@ -752,7 +752,7 @@ export class VirtualTimeController {
   }
 
   #installMicrotaskTracking(): void {
-    const originalQueueMicrotask = queueMicrotask;
+    const originalQueueMicrotask = globalThis.queueMicrotask;
     this.#patch(globalThis, 'queueMicrotask', (callback: VoidFunction): void => {
       if (typeof callback !== 'function') {
         throw new TypeError('queueMicrotask requires a callback function.');
