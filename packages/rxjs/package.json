@@ -55,6 +55,7 @@
         "./src/animation-frames.ts",
         "./src/behavior-subject.ts",
         "./src/buffer.ts",
+        "./src/buffer-toggle.ts",
         "./src/buffered-values-from.ts",
         "./src/catch-error.ts",
         "./src/cold-observable.ts",
@@ -166,6 +167,13 @@
       "import": "./dist/esm/buffer.js",
       "require": "./dist/commonjs/buffer.js",
       "types": "./dist/types/buffer.d.ts"
+    },
+    "./buffer-toggle": {
+      "browser": "./dist/browser/buffer-toggle.js",
+      "webpack": "./dist/webpack/buffer-toggle.js",
+      "import": "./dist/esm/buffer-toggle.js",
+      "require": "./dist/commonjs/buffer-toggle.js",
+      "types": "./dist/types/buffer-toggle.d.ts"
     },
     "./buffered-values-from": {
       "browser": "./dist/browser/buffered-values-from.js",
