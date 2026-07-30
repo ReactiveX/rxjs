@@ -393,6 +393,14 @@
       "status": "Partial unified mapping",
       "note": "Result-selector overloads remain unrepresented."
     },
+    "mergeScan": {
+      "symbol": "mergeScan",
+      "module": "merge-scan",
+      "adapter": "identity",
+      "mapping": "source[mergeScan](accumulator, seed, concurrent?)",
+      "status": "Present; parity unverified",
+      "note": "Updates shared accumulator state from concurrent inner emissions, queues source values at the concurrency limit, and drains before completion."
+    },
     "mergeWith": {
       "symbol": "merge",
       "module": "merge",
