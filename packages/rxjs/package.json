@@ -90,6 +90,7 @@
         "./src/not-found-error.ts",
         "./src/noop.ts",
         "./src/pipe.ts",
+        "./src/pluck.ts",
         "./src/race.ts",
         "./src/reduce.ts",
         "./src/repeat.ts",
@@ -392,6 +393,13 @@
       "import": "./dist/esm/pipe.js",
       "require": "./dist/commonjs/pipe.js",
       "types": "./dist/types/pipe.d.ts"
+    },
+    "./pluck": {
+      "browser": "./dist/browser/pluck.js",
+      "webpack": "./dist/webpack/pluck.js",
+      "import": "./dist/esm/pluck.js",
+      "require": "./dist/commonjs/pluck.js",
+      "types": "./dist/types/pluck.d.ts"
     },
     "./race": {
       "browser": "./dist/browser/race.js",
