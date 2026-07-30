@@ -57,6 +57,7 @@
         "./src/async-subject.ts",
         "./src/behavior-subject.ts",
         "./src/buffer.ts",
+        "./src/buffer-time.ts",
         "./src/buffer-toggle.ts",
         "./src/buffered-values-from.ts",
         "./src/catch-error.ts",
@@ -71,6 +72,7 @@
         "./src/count.ts",
         "./src/create.ts",
         "./src/debounce.ts",
+        "./src/delay.ts",
         "./src/delay-when.ts",
         "./src/dematerialize.ts",
         "./src/default-if-empty.ts",
@@ -125,6 +127,7 @@
         "./src/retry.ts",
         "./src/retry-when.ts",
         "./src/sample.ts",
+        "./src/sample-time.ts",
         "./src/scan.ts",
         "./src/sequence-error.ts",
         "./src/share.ts",
@@ -146,10 +149,13 @@
         "./src/take-while.ts",
         "./src/throttle.ts",
         "./src/throw-if-empty.ts",
+        "./src/time-interval.ts",
         "./src/timeout.ts",
         "./src/timer.ts",
+        "./src/timestamp.ts",
         "./src/window.ts",
         "./src/window-count.ts",
+        "./src/window-time.ts",
         "./src/window-toggle.ts",
         "./src/window-when.ts",
         "./src/with-latest-from.ts",
@@ -200,6 +206,13 @@
       "import": "./dist/esm/buffer.js",
       "require": "./dist/commonjs/buffer.js",
       "types": "./dist/types/buffer.d.ts"
+    },
+    "./buffer-time": {
+      "browser": "./dist/browser/buffer-time.js",
+      "webpack": "./dist/webpack/buffer-time.js",
+      "import": "./dist/esm/buffer-time.js",
+      "require": "./dist/commonjs/buffer-time.js",
+      "types": "./dist/types/buffer-time.d.ts"
     },
     "./buffer-toggle": {
       "browser": "./dist/browser/buffer-toggle.js",
@@ -298,6 +311,13 @@
       "import": "./dist/esm/debounce.js",
       "require": "./dist/commonjs/debounce.js",
       "types": "./dist/types/debounce.d.ts"
+    },
+    "./delay": {
+      "browser": "./dist/browser/delay.js",
+      "webpack": "./dist/webpack/delay.js",
+      "import": "./dist/esm/delay.js",
+      "require": "./dist/commonjs/delay.js",
+      "types": "./dist/types/delay.d.ts"
     },
     "./delay-when": {
       "browser": "./dist/browser/delay-when.js",
@@ -678,6 +698,13 @@
       "require": "./dist/commonjs/sample.js",
       "types": "./dist/types/sample.d.ts"
     },
+    "./sample-time": {
+      "browser": "./dist/browser/sample-time.js",
+      "webpack": "./dist/webpack/sample-time.js",
+      "import": "./dist/esm/sample-time.js",
+      "require": "./dist/commonjs/sample-time.js",
+      "types": "./dist/types/sample-time.d.ts"
+    },
     "./scan": {
       "browser": "./dist/browser/scan.js",
       "webpack": "./dist/webpack/scan.js",
@@ -825,6 +852,13 @@
       "require": "./dist/commonjs/throw-if-empty.js",
       "types": "./dist/types/throw-if-empty.d.ts"
     },
+    "./time-interval": {
+      "browser": "./dist/browser/time-interval.js",
+      "webpack": "./dist/webpack/time-interval.js",
+      "import": "./dist/esm/time-interval.js",
+      "require": "./dist/commonjs/time-interval.js",
+      "types": "./dist/types/time-interval.d.ts"
+    },
     "./timeout": {
       "browser": "./dist/browser/timeout.js",
       "webpack": "./dist/webpack/timeout.js",
@@ -839,6 +873,13 @@
       "require": "./dist/commonjs/timer.js",
       "types": "./dist/types/timer.d.ts"
     },
+    "./timestamp": {
+      "browser": "./dist/browser/timestamp.js",
+      "webpack": "./dist/webpack/timestamp.js",
+      "import": "./dist/esm/timestamp.js",
+      "require": "./dist/commonjs/timestamp.js",
+      "types": "./dist/types/timestamp.d.ts"
+    },
     "./window": {
       "browser": "./dist/browser/window.js",
       "webpack": "./dist/webpack/window.js",
@@ -852,6 +893,13 @@
       "import": "./dist/esm/window-count.js",
       "require": "./dist/commonjs/window-count.js",
       "types": "./dist/types/window-count.d.ts"
+    },
+    "./window-time": {
+      "browser": "./dist/browser/window-time.js",
+      "webpack": "./dist/webpack/window-time.js",
+      "import": "./dist/esm/window-time.js",
+      "require": "./dist/commonjs/window-time.js",
+      "types": "./dist/types/window-time.d.ts"
     },
     "./window-toggle": {
       "browser": "./dist/browser/window-toggle.js",
