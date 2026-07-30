@@ -56,6 +56,26 @@ const observableMessages = (events) =>
   }));
 const harnessRewritePrograms = new Map([
   [
+    'spec/observables/connectable-spec.ts:29:connectable > should do nothing if connect is not called, despite subscriptions',
+    buildNoConnectHarnessRewrite('connectable', 1),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:186:multicast > should do nothing if connect is not called, despite subscriptions',
+    buildNoConnectHarnessRewrite('multicast', 16),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:240:multicast > should multicast the same values to multiple observers, but is unsubscribed explicitly and early',
+    buildDisconnectedMulticastHarnessRewrite(false),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:272:multicast > should not break unsubscription chains when result is unsubscribed explicitly',
+    buildDisconnectedMulticastHarnessRewrite(true),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:321:multicast > should multicast a never source',
+    buildNeverMulticastHarnessRewrite(),
+  ],
+  [
     'spec/Observable-spec.ts:903:Observable > should handle sync errors within a test scheduler',
     buildSynchronousCatchErrorHarnessRewrite(),
   ],
@@ -102,6 +122,18 @@ const harnessRewritePrograms = new Map([
   [
     'spec/operators/windowToggle-spec.ts:246:windowToggle > should dispose window Subjects if the outer is unsubscribed early',
     buildReleasedWindowToggleHarnessRewrite(),
+  ],
+  [
+    'spec/operators/windowWhen-spec.ts:137:windowWhen > should emit windows using varying cold closings, outer unsubscribed early',
+    buildCancelledWindowWhenHarnessRewrite(false),
+  ],
+  [
+    'spec/operators/windowWhen-spec.ts:166:windowWhen > should not break unsubscription chain when unsubscribed explicitly',
+    buildCancelledWindowWhenHarnessRewrite(true),
+  ],
+  [
+    'spec/operators/windowWhen-spec.ts:335:windowWhen > should handle a never source',
+    buildNeverSourceWindowWhenHarnessRewrite(),
   ],
   [
     'spec/operators/groupBy-spec.ts:682:groupBy operator > should allow subscribing late to an inner Observable, outer completes',
@@ -1570,14 +1602,44 @@ function extractCases({ path, sourceText }) {
             reviewFlags.push('source-skipped');
           }
           const id = `${path}:${lineOf(node, sourceFile)}:${variant.title} [${variant.key}]`;
+          const caseSupport =
+            callback && isFunction(callback)
+              ? getCaseSupport({
+                  path,
+                  callback,
+                  sourceFile,
+                  support: rootSupport.included,
+                  extraRoots: variant.supportNodes ?? [],
+                })
+              : [];
+          const caseImports =
+            callback && isFunction(callback)
+              ? getUsedImports({
+                  path,
+                  callback,
+                  importMap,
+                  sourceFile,
+                  support: [...caseSupport, ...(variant.supportNodes ?? [])],
+                })
+              : [];
           const dynamicMigration =
             callback && isFunction(callback)
               ? buildDynamicMigratedProgram({
                   sourceText,
                   sourceFile,
                   targetCall: node,
-                  imports: dynamicImportMap,
+                  imports: path === 'spec/operators/share-spec.ts' ? caseImports : dynamicImportMap,
                   variant,
+                  support: rootSupport.included,
+                  reachableSupport: caseSupport,
+                  semanticImports: path === 'spec/operators/share-spec.ts',
+                })
+              : null;
+          const dynamicHarnessRewrite =
+            path === 'spec/operators/share-spec.ts'
+              ? buildShareDynamicHarnessRewrite({
+                  line: lineOf(node, sourceFile),
+                  variantKey: variant.key,
                 })
               : null;
           const usedImports = dynamicMigration?.imports ?? [];
@@ -1629,7 +1691,10 @@ function extractCases({ path, sourceText }) {
             imports: usedImports,
             helpers: helperNames.filter((helper) => new RegExp(`\\b${helper}\\s*\\(`).test(originalSource)),
             reviewFlags,
-            migratedProgram: dynamicMigration?.program ?? buildUnavailableProgram(reason),
+            migratedProgram:
+              dynamicHarnessRewrite ??
+              dynamicMigration?.program ??
+              buildUnavailableProgram(reason),
             originalSource,
             fingerprint: createHash('sha256')
               .update(`${normalizeCase(originalSource)}\nvariant:${variant.key}`)
@@ -1693,6 +1758,7 @@ function extractCases({ path, sourceText }) {
         support: inheritedSupport,
       });
       const usedImports = getUsedImports({
+        path,
         callback,
         importMap,
         sourceFile,
@@ -1861,6 +1927,79 @@ function extractCases({ path, sourceText }) {
 
 function buildUnavailableProgram(reason) {
   return `async function migrated() {\n  throw new Error(${JSON.stringify(reason)});\n}\n`;
+}
+
+function buildNoConnectHarnessRewrite(kind, horizon) {
+  const subscription = boundedSubscription(0, horizon);
+  const expected = '-'.repeat(horizon);
+  const runtimeNames =
+    kind === 'connectable'
+      ? 'rxTest, connectable'
+      : 'rxTest, applyOperators, multicast, Subject';
+  const result =
+    kind === 'connectable'
+      ? 'connectable(source)'
+      : 'applyOperators(source, [multicast(() => new Subject())])';
+  return `async function migrated(runtime) {
+const { ${runtimeNames} } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
+  const source = cold('--1-2---3-4--5-|');
+  const result = ${result};
+
+  // No connection is made. Bound the silent observer at the full original
+  // diagram horizon and retain the empty source-subscription claim.
+  expectObservable(result, '${subscription}').toBe('${expected}');
+  expectSubscriptions(source.subscriptions).toBe([]);
+});
+}
+`;
+}
+
+function buildDisconnectedMulticastHarnessRewrite(withUnsubscriptionChain) {
+  const runtimeNames = withUnsubscriptionChain
+    ? 'rxTest, applyOperators, mergeMap, multicast, of, Subject'
+    : 'rxTest, applyOperators, multicast, Subject';
+  const operators = withUnsubscriptionChain
+    ? '[mergeMap((value) => of(value)), multicast(() => new Subject())]'
+    : '[multicast(() => new Subject())]';
+  return `async function migrated(runtime) {
+const { ${runtimeNames} } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions, schedule }) => {
+  const source = cold('-1-2-3----4-|');
+  const result = applyOperators(source, ${operators});
+
+  // Preserve the three original subscription frames (0, 4, and 8). The
+  // manual connection ends at frame 9; the still-live subject observations
+  // are independently bounded at the diagrams' frame-10 horizon.
+  expectObservable(result, '^---------!').toBe('-1-2-3----');
+  expectObservable(result, '----^-----!').toBe('-----3----');
+  expectObservable(result, '--------^-!').toBe('----------');
+  expectSubscriptions(source.subscriptions).toBe('^--------!');
+
+  const connection = result.connect();
+  schedule(() => connection.unsubscribe(), 9);
+});
+}
+`;
+}
+
+function buildNeverMulticastHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, multicast, Subject } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions, schedule }) => {
+  const source = cold('-');
+  const result = applyOperators(source, [multicast(() => new Subject())]);
+
+  // Bound the silent result and its explicit manual connection at the
+  // original one-frame evidence horizon.
+  expectObservable(result, '^!').toBe('-');
+  expectSubscriptions(source.subscriptions).toBe('^!');
+
+  const connection = result.connect();
+  schedule(() => connection.unsubscribe(), 1);
+});
+}
+`;
 }
 
 function buildSynchronousCatchErrorHarnessRewrite() {
@@ -2683,6 +2822,218 @@ await rxTest(async ({ cold, expectSubscriptions, flush, hot, now, schedule }) =>
 `;
 }
 
+function buildCancelledWindowWhenHarnessRewrite(withUnsubscriptionChain) {
+  const runtimeImports = withUnsubscriptionChain
+    ? 'rxTest, applyOperators, expect, mergeMap, of, windowWhen'
+    : 'rxTest, applyOperators, expect, windowWhen';
+  const operators = withUnsubscriptionChain
+    ? '[mergeMap((value) => of(value)), windowWhen(() => closings[closingIndex++]), mergeMap((inner) => of(inner))]'
+    : '[windowWhen(() => closings[closingIndex++])]';
+  return `async function migrated(runtime) {
+const { ${runtimeImports} } = runtime;
+await rxTest(async ({ cold, expectSubscriptions, flush, hot, now, schedule }) => {
+  const outerController = new AbortController();
+  const innerControllers = [];
+  const actual = [];
+  schedule(() => {
+    // Each emitted window is observed independently. End those observations
+    // immediately before the pinned outer cancellation so teardown remains
+    // silent instead of becoming a completion notification.
+    for (const innerController of innerControllers) {
+      innerController.abort();
+    }
+    outerController.abort();
+  }, 21);
+
+  const closings = [
+    cold('-----------------s--|'),
+    cold('---------(s|)'),
+  ];
+  const source = hot('--a--^---b---c---d---e---f---g---h------|');
+  let closingIndex = 0;
+  const result = applyOperators(source, ${operators});
+
+  schedule(() => result.subscribe(
+    {
+      next: (inner) => {
+        const outerFrame = now();
+        const messages = [];
+        const innerController = new AbortController();
+        innerControllers.push(innerController);
+        actual.push({
+          frame: outerFrame,
+          notification: { kind: 'N', value: messages },
+        });
+        inner.subscribe(
+          {
+            next: (value) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'N', value },
+            }),
+            error: (error) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'E', error },
+            }),
+            complete: () => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'C' },
+            }),
+          },
+          { signal: innerController.signal }
+        );
+      },
+      error: (error) => actual.push({
+        frame: now(),
+        notification: { kind: 'E', error },
+      }),
+      complete: () => actual.push({
+        frame: now(),
+        notification: { kind: 'C' },
+      }),
+    },
+    { signal: outerController.signal }
+  ), 0);
+
+  expectSubscriptions(source.subscriptions).toBe('^--------------------!');
+  expectSubscriptions(closings[0].subscriptions).toBe('^----------------!');
+  expectSubscriptions(closings[1].subscriptions).toBe('-----------------^---!');
+  await flush();
+  expect(actual).to.deep.equal([
+    {
+      frame: 0,
+      notification: {
+        kind: 'N',
+        value: [
+          { frame: 4, notification: { kind: 'N', value: 'b' } },
+          { frame: 8, notification: { kind: 'N', value: 'c' } },
+          { frame: 12, notification: { kind: 'N', value: 'd' } },
+          { frame: 16, notification: { kind: 'N', value: 'e' } },
+          { frame: 17, notification: { kind: 'C' } },
+        ],
+      },
+    },
+    {
+      frame: 17,
+      notification: {
+        kind: 'N',
+        value: [
+          { frame: 3, notification: { kind: 'N', value: 'f' } },
+        ],
+      },
+    },
+  ]);
+});
+}
+`;
+}
+
+function buildNeverSourceWindowWhenHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, expect, windowWhen } = runtime;
+await rxTest(async ({ cold, expectSubscriptions, flush, now, schedule }) => {
+  const outerController = new AbortController();
+  const innerControllers = [];
+  const actual = [];
+  schedule(() => {
+    // The original evidence horizon ends at frame 17. Bound the final live
+    // window first, then cancel the outer observation and its source work.
+    for (const innerController of innerControllers) {
+      innerController.abort();
+    }
+    outerController.abort();
+  }, 17);
+
+  const closing = cold('-----c--|');
+  const source = cold('-');
+  const result = applyOperators(source, [windowWhen(() => closing)]);
+
+  result.subscribe(
+    {
+      next: (inner) => {
+        const outerFrame = now();
+        const messages = [];
+        const innerController = new AbortController();
+        innerControllers.push(innerController);
+        actual.push({
+          frame: outerFrame,
+          notification: { kind: 'N', value: messages },
+        });
+        inner.subscribe(
+          {
+            next: (value) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'N', value },
+            }),
+            error: (error) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'E', error },
+            }),
+            complete: () => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'C' },
+            }),
+          },
+          { signal: innerController.signal }
+        );
+      },
+      error: (error) => actual.push({
+        frame: now(),
+        notification: { kind: 'E', error },
+      }),
+      complete: () => actual.push({
+        frame: now(),
+        notification: { kind: 'C' },
+      }),
+    },
+    { signal: outerController.signal }
+  );
+
+  expectSubscriptions(source.subscriptions).toBe('^----------------!');
+  expectSubscriptions(closing.subscriptions).toBe([
+    '^----!',
+    '-----^----!',
+    '----------^----!',
+    '---------------^-!',
+  ]);
+  await flush();
+  expect(actual).to.deep.equal([
+    {
+      frame: 0,
+      notification: {
+        kind: 'N',
+        value: [
+          { frame: 5, notification: { kind: 'C' } },
+        ],
+      },
+    },
+    {
+      frame: 5,
+      notification: {
+        kind: 'N',
+        value: [
+          { frame: 5, notification: { kind: 'C' } },
+        ],
+      },
+    },
+    {
+      frame: 10,
+      notification: {
+        kind: 'N',
+        value: [
+          { frame: 5, notification: { kind: 'C' } },
+        ],
+      },
+    },
+    {
+      frame: 15,
+      notification: { kind: 'N', value: [] },
+    },
+  ]);
+});
+}
+`;
+}
+
 function buildNeverWindowCountHarnessRewrite() {
   return `async function migrated(runtime) {
 const { rxTest, applyOperators, expect, windowCount } = runtime;
@@ -2894,10 +3245,183 @@ function rewriteManualHelperCalls(source) {
   );
 }
 
-function buildDynamicMigratedProgram({ sourceText, sourceFile, targetCall, imports, variant }) {
+function buildShareDynamicHarnessRewrite({ line, variantKey }) {
+  if (![235, 323, 359, 395, 430, 465].includes(line)) {
+    return null;
+  }
+
+  const variantIndex = Number.parseInt(
+    /^share-config-(\d+):/.exec(variantKey)?.[1] ?? '',
+    10
+  );
+  const optionVariants = [
+    {
+      runtimeNames: [],
+      source: 'const options = {};',
+    },
+    {
+      runtimeNames: ['of'],
+      source: `const syncNotify = of(1);
+  const options = {
+    resetOnError: () => syncNotify,
+    resetOnComplete: () => syncNotify,
+    resetOnRefCountZero: () => syncNotify,
+  };`,
+    },
+    {
+      runtimeNames: ['concat', 'of'],
+      source: `const syncNotify = of(1);
+  const options = {
+    resetOnError: () => concat(syncNotify, syncNotify),
+    resetOnComplete: () => concat(syncNotify, syncNotify),
+    resetOnRefCountZero: () => concat(syncNotify, syncNotify),
+  };`,
+    },
+    {
+      runtimeNames: ['concat', 'NEVER', 'of'],
+      source: `const syncNotify = of(1);
+  const options = {
+    resetOnError: () => concat(syncNotify, NEVER),
+    resetOnComplete: () => concat(syncNotify, NEVER),
+    resetOnRefCountZero: () => concat(syncNotify, NEVER),
+  };`,
+    },
+    {
+      runtimeNames: ['concat', 'of', 'throwError'],
+      source: `const syncNotify = of(1);
+  const syncError = throwError(() => new Error());
+  const options = {
+    resetOnError: () => concat(syncNotify, syncError),
+    resetOnComplete: () => concat(syncNotify, syncError),
+    resetOnRefCountZero: () => concat(syncNotify, syncError),
+  };`,
+    },
+  ];
+  const optionVariant = optionVariants[variantIndex];
+  if (!optionVariant) {
+    return null;
+  }
+
+  let operatorNames;
+  let body;
+  if (line === 235) {
+    operatorNames = ['share'];
+    body = `const source = cold('-');
+  const shared = applyOperators(source, [share(options)]);
+
+  // The original one-frame diagram asserts silence from a live source.
+  // Bound both observations at that evidence horizon.
+  expectObservable(shared, '^!').toBe('-');
+  expectSubscriptions(source.subscriptions).toBe('^!');`;
+  } else if (line === 465) {
+    operatorNames = ['NEVER', 'share'];
+    body = `const shared = applyOperators(NEVER, [share(options)]);
+
+  // The original one-frame diagram asserts silence without completion.
+  expectObservable(shared, '^!').toBe('-');`;
+  } else if (line === 323) {
+    operatorNames = ['retry', 'share'];
+    body = `const source = cold('(123#)');
+  const shared = applyOperators(source, [share(options)]);
+
+  // Preserve the original trigger frames directly. Nested expectations
+  // created at frame 1 otherwise schedule against absolute frame 0.
+  expectObservable(applyOperators(shared, [retry(1)])).toBe('(123123#)');
+  expectObservable(applyOperators(shared, [retry(1)]), '-^').toBe('-(123123#)');
+  expectSubscriptions(source.subscriptions).toBe([
+    '(^!)',
+    '(^!)',
+    '-(^!)',
+    '-(^!)',
+  ]);`;
+  } else if (line === 359) {
+    operatorNames = ['repeat', 'share'];
+    body = `const source = cold('(123|)');
+  const shared = applyOperators(source, [share(options)]);
+
+  // Preserve the original trigger frames directly. Nested expectations
+  // created at frame 1 otherwise schedule against absolute frame 0.
+  expectObservable(applyOperators(shared, [repeat(2)])).toBe('(123123|)');
+  expectObservable(applyOperators(shared, [repeat(2)]), '-^').toBe('-(123123|)');
+  expectSubscriptions(source.subscriptions).toBe([
+    '(^!)',
+    '(^!)',
+    '-(^!)',
+    '-(^!)',
+  ]);`;
+  } else if (line === 395) {
+    operatorNames = ['retry', 'share'];
+    body = `const source = cold('-1-2-3----4-#                        ');
+  const shared = applyOperators(source, [share(options)]);
+
+  // Subscribe at the two original hot-trigger frames without retaining
+  // the trigger observations beyond the terminal retry evidence.
+  expectObservable(applyOperators(shared, [retry(2)])).toBe(
+    '-1-2-3----4--1-2-3----4--1-2-3----4-#'
+  );
+  expectObservable(applyOperators(shared, [retry(2)]), '----^').toBe(
+    '-----3----4--1-2-3----4--1-2-3----4-#'
+  );
+  expectSubscriptions(source.subscriptions).toBe([
+    '^-----------!                        ',
+    '------------^-----------!            ',
+    '------------------------^-----------!',
+  ]);`;
+  } else {
+    operatorNames = ['repeat', 'share'];
+    body = `const source = cold('-1-2-3----4-|                        ');
+  const shared = applyOperators(source, [share(options)]);
+
+  // Subscribe at the two original hot-trigger frames without retaining
+  // the trigger observations beyond the terminal repeat evidence.
+  expectObservable(applyOperators(shared, [repeat(3)])).toBe(
+    '-1-2-3----4--1-2-3----4--1-2-3----4-|'
+  );
+  expectObservable(applyOperators(shared, [repeat(3)]), '----^').toBe(
+    '-----3----4--1-2-3----4--1-2-3----4-|'
+  );
+  expectSubscriptions(source.subscriptions).toBe([
+    '^-----------!                        ',
+    '------------^-----------!            ',
+    '------------------------^-----------!',
+  ]);`;
+  }
+
+  const runtimeNames = [
+    'rxTest',
+    'applyOperators',
+    ...optionVariant.runtimeNames,
+    ...operatorNames,
+  ];
+  return `async function migrated(runtime) {
+const { ${[...new Set(runtimeNames)].join(', ')} } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
+  ${optionVariant.source}
+  ${body}
+});
+}
+`;
+}
+
+function buildDynamicMigratedProgram({
+  sourceText,
+  sourceFile,
+  targetCall,
+  imports,
+  variant,
+  support,
+  reachableSupport,
+  semanticImports,
+}) {
   const expressionStart = targetCall.expression.getStart(sourceFile);
   const expressionEnd = targetCall.expression.end;
-  const taggedSource = `${sourceText.slice(0, expressionStart)}__targetIt${sourceText.slice(expressionEnd)}`;
+  const reachableSupportSet = new Set(reachableSupport);
+  const prunedSource = maskSourceStatements(
+    sourceText,
+    sourceFile,
+    support.filter((statement) => !reachableSupportSet.has(statement))
+  );
+  const taggedSource = `${prunedSource.slice(0, expressionStart)}__targetIt${prunedSource.slice(expressionEnd)}`;
   const executableSource = maskImports(taggedSource);
   const helperPrelude = buildInlineHelperPrelude(imports);
   const input = `async function migrated(runtime) {
@@ -2908,15 +3432,41 @@ await Promise.all(__dynamicTasks);
 }`;
   const dynamicTransformer = createDynamicExecutionTransformer(variant);
   const transformed = transpileMigratedProgram(input, imports, [dynamicTransformer], false);
+  const referencedNames = semanticImports
+    ? collectReferencedIdentifiers([
+        ts.createSourceFile(
+          'dynamic-migrated-program.ts',
+          transformed,
+          ts.ScriptTarget.Latest,
+          true,
+          ts.ScriptKind.TS
+        ),
+      ])
+    : null;
   const usedImports = imports.filter(
     (imported) =>
       isInlineTestHelper(imported) ||
-      new RegExp(`\\b${escapeRegExp(imported.local)}\\b`).test(transformed)
+      (semanticImports
+        ? (imported.module === 'rxjs' && imported.imported === 'pipe') ||
+          referencedNames.has(imported.local)
+        : new RegExp(`\\b${escapeRegExp(imported.local)}\\b`).test(transformed))
   );
   return {
     imports: usedImports,
     program: transpileMigratedProgram(input, usedImports, [dynamicTransformer]),
   };
+}
+
+function maskSourceStatements(sourceText, sourceFile, statements) {
+  let masked = sourceText;
+  const ranges = statements
+    .map((statement) => [statement.getStart(sourceFile), statement.end])
+    .sort(([leftStart], [rightStart]) => rightStart - leftStart);
+  for (const [start, end] of ranges) {
+    const replacement = masked.slice(start, end).replace(/[^\r\n]/g, ' ');
+    masked = `${masked.slice(0, start)}${replacement}${masked.slice(end)}`;
+  }
+  return masked;
 }
 
 function getDynamicVariants({ path, node, sourceFile, fallbackTitle }) {
@@ -2936,6 +3486,7 @@ function getDynamicVariants({ path, node, sourceFile, fallbackTitle }) {
               binding: 'title',
               value: title,
               title: `${stripTemplateQuotes(fallbackTitle)} [${title}]`,
+              supportNodes: [element],
             };
           });
         }
@@ -3145,7 +3696,48 @@ function createDynamicExecutionTransformer(variant) {
     return found;
   }
 
+  function containsTestRegistration(node) {
+    if (
+      ts.isCallExpression(node) &&
+      ['it', 'test', 'specify', 'describe'].includes(getCallName(node.expression))
+    ) {
+      return true;
+    }
+    let found = false;
+    ts.forEachChild(node, (child) => {
+      if (!found && containsTestRegistration(child)) {
+        found = true;
+      }
+    });
+    return found;
+  }
+
   function visit(node) {
+    if (
+      ts.isForOfStatement(node) &&
+      variant.binding &&
+      ts.isArrayLiteralExpression(node.expression) &&
+      node.expression.elements.every(
+        (element) => readObjectStringProperty(element, variant.binding) !== undefined
+      ) &&
+      containsTestRegistration(node.statement)
+    ) {
+      const selectedElements = node.expression.elements.filter(
+        (element) => readObjectStringProperty(element, variant.binding) === variant.value
+      );
+      if (selectedElements.length === 1) {
+        return factory.updateForOfStatement(
+          node,
+          node.awaitModifier,
+          ts.visitNode(node.initializer, visit),
+          factory.updateArrayLiteralExpression(node.expression, selectedElements),
+          ts.visitNode(node.statement, visit)
+        );
+      }
+      if (selectedElements.length === 0) {
+        return factory.createEmptyStatement();
+      }
+    }
     if (ts.isCallExpression(node)) {
       if (ts.isIdentifier(node.expression) && node.expression.text === '__targetIt') {
         const callback = node.arguments[1];
@@ -4159,17 +4751,25 @@ function readImports(sourceFile) {
   return imports;
 }
 
-function getUsedImports({ callback, importMap, sourceFile, support }) {
+function getUsedImports({ path, callback, importMap, sourceFile, support }) {
   if (!callback || !isFunction(callback)) {
     return [];
   }
   const selectedSource = [...support.map((statement) => statement.getText(sourceFile)), callback.getText(sourceFile)].join('\n');
+  const referencedNames =
+    path === 'spec/operators/share-spec.ts'
+      ? collectReferencedIdentifiers([...support, callback])
+      : null;
   const operatorLocals = collectOperatorLocals({ callback, importMap, support });
-  const needsTimerHelper = /\bgetTimerSelector\s*\(/.test(selectedSource);
+  const needsTimerHelper =
+    referencedNames?.has('getTimerSelector') ??
+    /\bgetTimerSelector\s*\(/.test(selectedSource);
   return importMap
     .filter(
       (item) =>
-        new RegExp(`\\b${escapeRegExp(item.local)}\\b`).test(selectedSource) ||
+        (referencedNames
+          ? referencedNames.has(item.local)
+          : new RegExp(`\\b${escapeRegExp(item.local)}\\b`).test(selectedSource)) ||
         (needsTimerHelper && item.module === 'rxjs' && item.imported === 'timer')
     )
     .map((item) => ({
@@ -4246,19 +4846,96 @@ function collectOperatorLocals({ callback, importMap, support }) {
   return locals;
 }
 
-function getCaseSupport({ path, callback, sourceFile, support }) {
-  if (path !== 'spec/observables/zip-spec.ts' || !callback || !isFunction(callback)) {
-    return support;
+function collectReferencedIdentifiers(nodes) {
+  const names = new Set();
+
+  const isReference = (node, parent) => {
+    if (!parent) {
+      return true;
+    }
+    if (
+      (ts.isVariableDeclaration(parent) && parent.name === node) ||
+      (ts.isParameter(parent) && parent.name === node) ||
+      (ts.isBindingElement(parent) && (parent.name === node || parent.propertyName === node)) ||
+      ((ts.isFunctionDeclaration(parent) ||
+        ts.isFunctionExpression(parent) ||
+        ts.isClassDeclaration(parent) ||
+        ts.isClassExpression(parent) ||
+        ts.isInterfaceDeclaration(parent) ||
+        ts.isTypeAliasDeclaration(parent) ||
+        ts.isEnumDeclaration(parent) ||
+        ts.isModuleDeclaration(parent)) &&
+        parent.name === node) ||
+      (ts.isPropertyAccessExpression(parent) && parent.name === node) ||
+      ((ts.isPropertyAssignment(parent) ||
+        ts.isPropertyDeclaration(parent) ||
+        ts.isMethodDeclaration(parent) ||
+        ts.isGetAccessorDeclaration(parent) ||
+        ts.isSetAccessorDeclaration(parent)) &&
+        parent.name === node) ||
+      ts.isImportClause(parent) ||
+      ts.isImportSpecifier(parent) ||
+      ts.isNamespaceImport(parent) ||
+      ts.isImportEqualsDeclaration(parent) ||
+      ts.isExportSpecifier(parent) ||
+      ts.isLabeledStatement(parent) ||
+      ts.isBreakStatement(parent) ||
+      ts.isContinueStatement(parent) ||
+      ts.isTypeNode(parent)
+    ) {
+      return false;
+    }
+    return true;
+  };
+
+  const visit = (node, parent) => {
+    if (ts.isIdentifier(node) && isReference(node, parent)) {
+      names.add(node.text);
+    }
+    ts.forEachChild(node, (child) => visit(child, node));
+  };
+
+  for (const node of nodes) {
+    visit(node, undefined);
+  }
+  return names;
+}
+
+function getCaseSupport({ path, callback, sourceFile, support, extraRoots = [] }) {
+  if (!callback || !isFunction(callback)) {
+    return [];
+  }
+  if (path !== 'spec/operators/share-spec.ts') {
+    if (path !== 'spec/observables/zip-spec.ts') {
+      return support;
+    }
+    const callbackSource = callback.getText(sourceFile);
+    return support.filter((statement) => {
+      const names = getDeclaredNames(statement);
+      return names.length === 0 || names.some((name) => new RegExp(`\\b${escapeRegExp(name)}\\b`).test(callbackSource));
+    });
   }
 
-  // This upstream file has a suite-level queueScheduler alias used only by a
-  // non-inventoried scheduler test. Keep support declarations live per case so
-  // ordinary zip evidence does not acquire that unavailable capability.
-  const callbackSource = callback.getText(sourceFile);
-  return support.filter((statement) => {
-    const names = getDeclaredNames(statement);
-    return names.length === 0 || names.some((name) => new RegExp(`\\b${escapeRegExp(name)}\\b`).test(callbackSource));
-  });
+  const reachable = new Set();
+  const referencedNames = collectReferencedIdentifiers([callback, ...extraRoots]);
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const statement of support) {
+      if (reachable.has(statement)) {
+        continue;
+      }
+      const names = getDeclaredNames(statement);
+      if (names.length > 0 && names.some((name) => referencedNames.has(name))) {
+        reachable.add(statement);
+        for (const name of collectReferencedIdentifiers([statement])) {
+          referencedNames.add(name);
+        }
+        changed = true;
+      }
+    }
+  }
+  return support.filter((statement) => reachable.has(statement));
 }
 
 function hasUnrepresentedZipProjection({ path, callback }) {
@@ -4383,7 +5060,14 @@ function collectSupport(statements) {
 }
 
 function getDeclaredNames(statement) {
-  if ((ts.isFunctionDeclaration(statement) || ts.isClassDeclaration(statement)) && statement.name) {
+  if (
+    (ts.isFunctionDeclaration(statement) ||
+      ts.isClassDeclaration(statement) ||
+      ts.isTypeAliasDeclaration(statement) ||
+      ts.isInterfaceDeclaration(statement) ||
+      ts.isEnumDeclaration(statement)) &&
+    statement.name
+  ) {
     return [statement.name.text];
   }
   if (ts.isVariableStatement(statement)) {
