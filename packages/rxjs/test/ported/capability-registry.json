@@ -473,6 +473,14 @@
       "status": "Compatibility-only",
       "note": "Returns a manually connected retained-Subject result without a selector, or a fresh selector-scoped Subject for each active platform run."
     },
+    "publishBehavior": {
+      "symbol": "publishBehavior",
+      "module": "publish-behavior",
+      "adapter": "identity",
+      "mapping": "source[publishBehavior](initialValue)",
+      "status": "Compatibility-only",
+      "note": "Returns a manually connected result backed by one retained BehaviorSubject with the requested initial value."
+    },
     "publishLast": {
       "symbol": "publishLast",
       "module": "publish-last",
