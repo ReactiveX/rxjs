@@ -241,6 +241,22 @@
       "status": "Present; parity unverified",
       "note": "The RxJS Symbol form preserves predicate index, thisArg, type guards, errors, and cancellation without replacing the platform string method."
     },
+    "find": {
+      "symbol": "find",
+      "module": "find",
+      "adapter": "identity",
+      "mapping": "source[find](predicate, thisArg?)",
+      "status": "Present; parity unverified",
+      "note": "Emits the first matching value or undefined with predicate index, source identity, thisArg, early cancellation, and no replacement of the platform find() Promise consumer."
+    },
+    "findIndex": {
+      "symbol": "findIndex",
+      "module": "find-index",
+      "adapter": "identity",
+      "mapping": "source[findIndex](predicate, thisArg?)",
+      "status": "Present; parity unverified",
+      "note": "Emits the first matching index or -1 with predicate source identity, thisArg, errors, and early cancellation."
+    },
     "flatMap": {
       "symbol": "mergeMap",
       "module": "merge-map",
@@ -352,6 +368,14 @@
       "mapping": "source[onErrorResumeNext]([otherSources])",
       "status": "Partial unified mapping",
       "note": "Adapts variadic or single-array source arguments to the current array form."
+    },
+    "pluck": {
+      "symbol": "pluck",
+      "module": "pluck",
+      "adapter": "identity",
+      "mapping": "source[pluck](...properties)",
+      "status": "Present; parity unverified",
+      "note": "Traverses one or more string, number, or Symbol keys through the exact map Symbol and returns undefined after a nullish path segment."
     },
     "race": {
       "symbol": "race",
@@ -701,6 +725,15 @@
       "mapping": "Observable.from(Object.entries(object))",
       "status": "Partial platform mapping",
       "note": "Scheduler arguments are not represented."
+    },
+    "partition": {
+      "kind": "symbol",
+      "symbol": "partition",
+      "module": "partition",
+      "adapter": "identity",
+      "mapping": "Observable[partition](source, predicate, thisArg?)",
+      "status": "Present; parity unverified",
+      "note": "Returns matching and rejected branches with independent predicate state over the platform source's shared, ref-counted activation."
     },
     "race": {
       "kind": "symbol",
