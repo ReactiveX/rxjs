@@ -9,14 +9,15 @@ commit `9e94c090e` on 2026-07-24.
 
 ## Document map
 
-| Document | Purpose |
-| --- | --- |
-| [Project charter](PROJECT_CHARTER.md) | Why the project exists, its goals, boundaries, and success criteria |
-| [Architecture](ARCHITECTURE.md) | Current implementation, intended target architecture, invariants, and known gaps |
-| [Compatibility strategy](COMPATIBILITY.md) | How platform semantics, RxJS 7 behavior, operator tests, and migration fit together |
-| [Project plan](PROJECT_PLAN.md) | Active execution queue, phases, gates, risks, and session log |
-| [Decision log](DECISIONS.md) | Accepted, proposed, and deferred architectural decisions |
-| [Open questions](OPEN_QUESTIONS.md) | Decisions that still require explicit resolution |
+| Document                                        | Purpose                                                                                                     |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| [Project charter](PROJECT_CHARTER.md)           | Why the project exists, its goals, boundaries, and success criteria                                         |
+| [Architecture](ARCHITECTURE.md)                 | Current implementation, intended target architecture, invariants, and known gaps                            |
+| [Compatibility strategy](COMPATIBILITY.md)      | How platform semantics, RxJS 7 behavior, operator tests, and migration fit together                         |
+| [Why Symbol operators](WHY_SYMBOL_OPERATORS.md) | A short user-facing explanation of Symbol operators, safe mutation, composition, and pipeable compatibility |
+| [Project plan](PROJECT_PLAN.md)                 | Active execution queue, phases, gates, risks, and session log                                               |
+| [Decision log](DECISIONS.md)                    | Accepted, proposed, and deferred architectural decisions                                                    |
+| [Open questions](OPEN_QUESTIONS.md)             | Decisions that still require explicit resolution                                                            |
 
 Repository-wide AI and contributor guidance is in
 [`AGENTS.md`](../../AGENTS.md).
