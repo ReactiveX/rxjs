@@ -416,16 +416,16 @@ This inventory documents what exists in source, not a supported public API.
 
 ### Symbol extensions in `packages/rxjs`
 
-| Placement           | Current extensions                                                                                                                                                                                  |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Static and instance | `create`, `combine`, `combineLatest`, `concat`, `merge`, `pipe`, `race`                                                                                                                             |
-| Static              | `animationFrames`, `interval`, `timer`                                                                                                                                                              |
-| Instance            | `buffer`, `debounce`, `defaultIfEmpty`, `exhaustMap`, `mergeMap`, `repeat`, `retry`, `scan`, `skipLast`, `skipWhile`, `switchMap`, `takeLast`, `takeWhile`, `throttle`, `timeout`, `withLatestFrom` |
+| Placement           | Current extensions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Static and instance | `create`, `combine`, `combineLatest`, `concat`, `merge`, `onErrorResumeNext`, `pipe`, `race`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Static              | `animationFrames`, `forkJoin`, `generate`, `interval`, `partition`, `timer`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Instance            | `buffer`, `catchError`, `combineLatestAll`, `count`, `debounce`, `defaultIfEmpty`, `distinct`, `distinctUntilChanged`, `distinctUntilKeyChanged`, `elementAt`, `every`, `exhaustMap`, `expand`, `filter`, `finalize`, `find`, `findIndex`, `first`, `isEmpty`, `last`, `map`, `max`, `mergeMap`, `min`, `pairwise`, `pluck`, `reduce`, `repeat`, `retry`, `scan`, `sequenceEqual`, `single`, `skip`, `skipLast`, `skipUntil`, `skipWhile`, `startWith`, `switchMap`, `take`, `takeLast`, `takeUntil`, `takeWhile`, `tap`, `throttle`, `throwIfEmpty`, `timeout`, `windowCount`, `withLatestFrom`, `zipAll`, `zipWith` |
 
-The current source does not yet contain Symbol counterparts for every
-platform-named operator. In particular, `map` and `filter` appear only on the
-fallback today. Adding their RxJS Symbols is target work required by D-003,
-not a claim about the present branch.
+The exact RxJS `map`, `filter`, `first`, `last`, and `find` Symbols coexist
+with the fallback's same-familiar-name string methods. Installing an RxJS
+extension does not replace or widen the platform method; callers select the
+contract through the property key.
 
 ### Standalone and compatibility-oriented primitives
 
@@ -442,6 +442,22 @@ not a claim about the present branch.
 
 The mixture of Symbol extensions, classes, factories, and standalone functions
 is exploratory. The canonical public shape remains open.
+
+Notifier gates, synchronous queries, property selection, prefix/pair
+sequencing, and partitioning keep one state machine per active platform
+producer run. Concurrent observers share that state, while restart after the
+ref count reaches zero begins with fresh state. Early terminal queries cancel
+synchronous upstream work before delivering their result. The two static
+`partition` branches retain independent predicate and index state over the
+same platform-converted input.
+
+`windowCount` emits its first read-only window before source activation and
+supports tumbling, overlapping, and gapped cadence. Source completion completes
+live windows, source errors error them, and outer cancellation silently
+releases them without converting cancellation into completion. Synchronous
+`generate` and recursive `expand` likewise keep one activation-scoped state
+machine. `expand` uses FIFO concurrency and iterative draining, so synchronous
+recursion does not grow the JavaScript stack.
 
 The numeric form of the Symbol-keyed `debounce` uses host timers rather than an
 RxJS scheduler. Each source value replaces the pending timer, normal source
@@ -559,6 +575,16 @@ adapter sets `leading: false`, `trailing: true`, and
 window. Source completion waits only when an active duration owns a pending
 trailing value.
 
+Direct identity mappings cover `takeUntil`, `skipUntil`, `pluck`, `find`,
+`findIndex`, `throwIfEmpty`, `isEmpty`, `startWith`, `pairwise`, and
+`windowCount`. `partition` and `generate` map to exact static Symbols.
+RxJS 7 `expand(project, numericConcurrency)` maps to
+`source[expand](project, { concurrent: numericConcurrency })`. Reusing one
+projected platform fixture during recursion retains the case-scoped
+shared/ref-counted expectation from D-013 rather than manufacturing a cold
+inner. The legacy scheduler forms of `startWith`, `generate`, and `expand`
+remain explicit scheduler-last evidence.
+
 ## Compatibility boundary
 
 ### Why a boundary is necessary
@@ -592,6 +618,10 @@ See `COMPATIBILITY.md` for the compatibility policy.
 - Many extension modules patch `Observable` without importing an initializer,
   so direct-subpath evaluation assumes the global already exists.
 - `rxjs` has no source `index.ts`, although its manifest references one.
+- Newly added Symbol modules have matching exploratory source entries and
+  generated package subpath declarations. Those declarations are not
+  release-ready import evidence while the root source and package build remain
+  broken.
 - The `tshy.exports["."]` value in `rxjs` is an array, which the installed build
   tool rejects.
 - The published `exports` map exposes `./index` rather than a root `"."` entry,

@@ -168,6 +168,26 @@ completion completes the result, while notifier error or selector failure
 errors it. Source attempts, delay notifiers, and concurrent result observers
 retain the platform's shared, ref-counted `AbortSignal` lifecycle.
 
+The exact `takeUntil` and `skipUntil` Symbols activate their notifier before
+the source and keep one gate per shared platform activation. `takeUntil`
+completes on the first notifier value; `skipUntil` opens on that value and
+closes notifier work. Notifier completion without a value leaves either source
+contract unchanged. `find`, `findIndex`, `isEmpty`, and `throwIfEmpty` likewise
+keep one query state machine per activation. Early results cancel synchronous
+upstream work before delivery. The RxJS `find` Symbol does not alter the
+platform string-named `find()` Promise consumer.
+
+`pluck`, `startWith`, `pairwise`, and static `partition` preserve their
+portable RxJS 7 value and state contracts without introducing
+producer-per-observer work. Each partition branch owns independent predicate
+and index state over the platform-converted input. `windowCount` emits hot
+read-only windows: source completion completes live windows, source error
+errors them, and outer cancellation releases them without a terminal
+notification. Synchronous static `generate` and recursive `expand` are also
+activation-scoped. `expand` uses FIFO concurrency and iterative draining;
+last-observer cancellation closes active source and projected work and
+discards queued recursion.
+
 Standalone `zip(sources)` preserves the portable RxJS 7 shortest-input
 terminal rule when `fillAfterComplete` is not configured. It completes for an
 empty Observable or iterable, and emits a final tuple before completing when
@@ -294,6 +314,23 @@ active duration owns a pending trailing value, in which case that duration may
 emit the final value before completion. Selector, duration, and source errors
 cancel the other active work through the result signal. Concurrent platform
 observers still share one source activation and one active duration.
+
+RxJS 7 `takeUntil`, `skipUntil`, `pluck`, `find`, `findIndex`,
+`throwIfEmpty`, `isEmpty`, `startWith`, `pairwise`, and `windowCount` map
+directly to exact instance Symbols. `partition` and `generate` map to exact
+static Symbols. Numeric legacy `expand(project, concurrent)` maps to
+`source[expand](project, { concurrent })`. Trailing or embedded scheduler forms
+for `startWith`, `generate`, and `expand` remain unresolved scheduler
+compatibility evidence; they are neither silently discarded nor recorded as an
+approved divergence.
+
+Generator-owned rewrites bound independently observed notifier and window
+lifecycles without changing the RxJS 7 notification or subscription claims.
+The nonterminal `windowCount` cancellation cases abort nested observations
+before the original outer cancellation frame, preserving silent disposal.
+When recursive platform work reuses an already active inner fixture, the
+polyfill expectation records the resulting shared/ref-counted join instead of
+substituting a cold fixture.
 
 ## Suggested validation ladder
 

@@ -65,6 +65,10 @@ Decide:
 - whether patch installation is idempotent and how conflicting implementations
   are detected.
 
+D-031 and D-032 use exact unique Symbols for their current modules, but that
+local collision isolation does not settle duplicate-copy, version, or realm
+identity.
+
 ### 4. What does importing an extension guarantee?
 
 Decide:
@@ -120,6 +124,11 @@ same-familiar-name Symbols so both `observable.map(project)` and
 `observable[map](project)` exist. RxJS never replaces the string method. The
 Symbol implementation may delegate to the platform implementation or supply a
 richer RxJS contract.
+
+D-031 resolves one concrete overlap: the exact RxJS `find` Symbol retains its
+predicate/index Observable contract while the platform string-named `find()`
+remains a Promise consumer. The per-operator policy remains open for other
+overlaps.
 
 Decide per overlapping operator:
 
@@ -198,6 +207,11 @@ Establish a maintainer-approved policy for differences caused by:
 - error reporting;
 - scheduler removal or redesign;
 - native platform operator behavior.
+
+D-032 settles only the synchronous platform Symbol boundary for `generate`
+and `expand`. It does not decide whether a compatibility product supports
+RxJS schedulers or how scheduler arguments, providers, and classes are
+represented.
 
 ## Delivery and migration questions
 

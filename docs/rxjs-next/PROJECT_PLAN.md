@@ -1315,3 +1315,24 @@ conformance implementation depends on a runnable harness.
   `ts26.createNull is not a function`. Command examples now pass Angular
   options directly through pnpm without an extra `--`.
 - P0.T3 remains the single project-level `NEXT` item.
+
+### 2026-07-29 — P0.T3 missing non-scheduler API wave
+
+- Added and publicly mapped exact Symbol contracts for notifier gates,
+  property/query/empty/sequence utilities, static partition and generation,
+  count windows, and recursive expansion.
+- Preserved platform-owned string methods, one shared/ref-counted state machine
+  per active producer run, `AbortSignal` cancellation, and nonterminal
+  count-window cancellation. Generator-owned rewrites bound never and
+  cancellation evidence without changing RxJS 7 notifications or source
+  subscriptions. Reused recursive platform fixtures retain their intentional
+  shared-producer expectation.
+- Passed 108 focused tests for the newly added APIs. Complete 2,338-case audits
+  recorded 1,508 cold passes with 830 failures and 1,505 polyfill passes with
+  833 failures, adding 150 passes in each mode with no regressions. The durable
+  ledger now contains 1,067 `FIXED` and 854 `TODO` rows, with no
+  `IN-PROCESS` or `BLOCKED` rows.
+- The remaining `generate`, `expand`, and `startWith` scheduler overloads stay
+  in the scheduler-last queue. The strict `test:unit` gate remains red only on
+  unresolved packets. P0.T3 remains the single project-level `NEXT` item, and
+  P0.2 is not advanced.

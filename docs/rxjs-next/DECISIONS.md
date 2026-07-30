@@ -617,3 +617,58 @@ Status meanings:
   platform observers and resets on restart. The error values and Symbol
   modules are public package exports without adding string-named RxJS methods
   to the platform prototype.
+
+## D-031 — Keep notifier gates and synchronous query utilities on exact Symbol keys
+
+- **Status:** Accepted
+- **Decision:** RxJS `takeUntil`, `skipUntil`, `pluck`, `find`, `findIndex`,
+  `throwIfEmpty`, `isEmpty`, `startWith`, and `pairwise` are exact instance
+  Symbol contracts. `partition` is an exact static Symbol contract. The
+  platform string-named `find()` Promise consumer remains unchanged. Notifier
+  gates activate their notifier before the source. `takeUntil` completes on
+  the notifier's first value; `skipUntil` opens on that value and closes the
+  notifier activation. Notifier completion without a value does not terminate
+  or open either gate.
+- **Rationale:** These portable RxJS 7 contracts do not require cold
+  producer-per-observer behavior, but their overloads, subscription order,
+  sentinels, source identity, early cancellation, and state ownership are
+  observable behavior. Exact Symbols preserve the platform surface while one
+  activation-scoped state machine preserves the platform lifecycle.
+- **Consequence:** `find`, `findIndex`, and `isEmpty` cancel synchronous
+  upstream work before delivering an early result. `throwIfEmpty` creates its
+  default or custom error only after empty successful completion. `pluck`
+  traverses exact property keys and returns `undefined` after a nullish path
+  segment. The two `partition` branches keep independent predicate and index
+  state over the platform-converted input. `startWith` emits its prefix before
+  source activation, while `pairwise` retains one previous value per active
+  run. Concurrent observers share each operator's activation state, and a
+  restart begins with fresh state. No RxJS string method or global-registry
+  Symbol is introduced. The legacy trailing-scheduler form of `startWith`
+  remains in the explicit scheduler-last compatibility queue.
+
+## D-032 — Keep count windows and recursive generation synchronous and activation-scoped
+
+- **Status:** Accepted
+- **Decision:** `windowCount` and `expand` are exact instance Symbol contracts,
+  and `generate` is an exact static Symbol contract. `windowCount` publishes
+  its initial window before source activation, supports tumbling, overlapping,
+  and gapped cadence, completes live windows on source completion, errors them
+  before forwarding a source error, and silently releases still-live windows
+  when the outer result is cancelled. `generate` supports synchronous
+  positional and options-object state generation through the static receiver.
+  `expand` emits each source or projected value before recursively projecting
+  it, processes queued work in arrival order under its concurrency limit,
+  converts projections through `Observable.from`, and drains iteratively so
+  synchronous recursion does not grow the JavaScript stack.
+- **Rationale:** Window ownership and recursive queueing are activation-level
+  lifecycle contracts. Keeping scheduler behavior out of these platform-layer
+  Symbols preserves the host and signal architecture while representing the
+  portable RxJS 7 behavior directly.
+- **Consequence:** Concurrent platform observers share one set of live windows
+  or one recursive generation run, and restart begins with fresh state.
+  Last-observer cancellation closes source and projected work through
+  `AbortSignal` and discards queued recursive work. The parity adapter
+  translates RxJS 7 numeric `expand` concurrency to `{ concurrent }`. Legacy
+  scheduler fields and trailing scheduler arguments remain scheduler-last
+  compatibility work instead of being treated as ordinary values or silently
+  accepted by these Symbol contracts.
