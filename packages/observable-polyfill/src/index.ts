@@ -55,13 +55,13 @@ type AbortAlgorithm = (reason: unknown) => void;
 type Teardown = (() => void) & { [propagateTeardownError]?: boolean };
 
 const abortAlgorithms = new WeakMap<AbortSignal, Set<AbortAlgorithm>>();
-const nativeAbort = AbortController.prototype.abort;
+let nativeAbort: typeof AbortController.prototype.abort | undefined;
 
 // Observable cancellation is specified as an AbortSignal abort algorithm,
 // which runs before the signal's public `abort` event. JavaScript has no API
 // for registering one, so the fallback bridges only signals with Observable
 // work here and otherwise delegates to the captured platform implementation.
-AbortController.prototype.abort = function (this: AbortController, reason?: unknown): void {
+function abortWithObservableAlgorithms(this: AbortController, reason?: unknown): void {
   const signal = this.signal;
   let firstError: unknown;
   let hasError = false;
@@ -84,11 +84,11 @@ AbortController.prototype.abort = function (this: AbortController, reason?: unkn
     }
   }
 
-  nativeAbort.call(this, reason);
+  nativeAbort!.call(this, reason);
   if (hasError) {
     throw firstError;
   }
-};
+}
 
 function addAbortAlgorithm(signal: AbortSignal, algorithm: AbortAlgorithm, cleanupSignal?: AbortSignal): void {
   const algorithms = abortAlgorithms.get(signal) ?? new Set<AbortAlgorithm>();
@@ -163,10 +163,11 @@ class Subscriber<T> implements Observer<T> {
     const teardowns = this.#teardowns;
     this.#teardowns = [];
     for (let index = teardowns.length - 1; index >= 0; index--) {
+      const teardown = teardowns[index]!;
       try {
-        teardowns[index]();
+        teardown();
       } catch (error) {
-        if (teardowns[index][propagateTeardownError] && !hasError) {
+        if (teardown[propagateTeardownError] && !hasError) {
           firstError = error;
           hasError = true;
         } else {
@@ -1179,17 +1180,6 @@ Object.defineProperty(ObservableImpl.prototype, 'subscribe', {
   ...subscribeDescriptor,
   enumerable: true,
 });
-Object.defineProperty(globalThis, 'Subscriber', {
-  configurable: true,
-  value: Subscriber,
-  writable: true,
-});
-Object.defineProperty(globalThis, 'Observable', {
-  configurable: true,
-  enumerable: false,
-  value: ObservableImpl,
-  writable: true,
-});
 
 class AbortableDeferred<T> {
   private readonly resolver: (value: T | PromiseLike<T>) => void;
@@ -1215,9 +1205,9 @@ class AbortableDeferred<T> {
     // an intentionally ignored result does not create a second global event.
     void this.promise.catch(() => {});
 
-    // @ts-expect-error
+    // @ts-expect-error -- The Promise executor assigns this synchronously.
     this.resolver = resolver;
-    // @ts-expect-error
+    // @ts-expect-error -- The Promise executor assigns this synchronously.
     this.rejector = rejector;
 
     const signal = options?.signal;
@@ -1253,11 +1243,7 @@ class AbortableDeferred<T> {
   }
 }
 
-EventTarget.prototype.when = function (
-  this: EventTarget,
-  eventName: string,
-  options?: { capture?: boolean; passive?: boolean }
-): Observable<Event> {
+function eventTargetWhen(this: EventTarget, eventName: string, options?: { capture?: boolean; passive?: boolean }): Observable<Event> {
   return new Observable((subscriber) => {
     this.addEventListener(eventName, (event) => subscriber.next(event), {
       capture: options?.capture,
@@ -1266,7 +1252,7 @@ EventTarget.prototype.when = function (
       signal: subscriber.signal,
     });
   }) as any;
-};
+}
 
 function instanceCtor<R>(owner: any): typeof Observable<R> {
   return owner.constructor;
@@ -1276,4 +1262,228 @@ function staticCtor<R>(owner: any): typeof Observable<R> {
   return owner;
 }
 
-export {};
+export interface ObservablePolyfillInfo {
+  readonly packageName: string;
+  readonly version: string;
+}
+
+/**
+ * Stable metadata key shared by compatible copies of the initializer.
+ *
+ * Public RxJS operator Symbols remain exact module-owned keys. This registry
+ * key identifies only an Observable constructor installed by this fallback.
+ */
+export const observablePolyfillInfo = Symbol.for('rxjs.observable.polyfill.info.v1');
+
+const installedObservablePolyfillInfo: ObservablePolyfillInfo = Object.freeze({
+  packageName: '@rxjs/observable-polyfill',
+  version: '8.0.0-alpha.14',
+});
+
+Object.defineProperty(ObservableImpl, observablePolyfillInfo, {
+  configurable: false,
+  enumerable: false,
+  value: installedObservablePolyfillInfo,
+  writable: false,
+});
+
+/**
+ * Returns RxJS fallback metadata owned by the supplied constructor, if any.
+ *
+ * An unmarked constructor is intentionally not classified as native,
+ * conforming, or foreign.
+ */
+export function getObservablePolyfillInfo(
+  constructor: ObservableCtor | undefined = globalThis.Observable
+): ObservablePolyfillInfo | undefined {
+  if ((typeof constructor !== 'function' && typeof constructor !== 'object') || constructor === null) {
+    return undefined;
+  }
+
+  const value = Object.getOwnPropertyDescriptor(constructor, observablePolyfillInfo)?.value;
+  return isObservablePolyfillInfo(value) ? value : undefined;
+}
+
+function isObservablePolyfillInfo(value: unknown): value is ObservablePolyfillInfo {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    typeof (value as Partial<ObservablePolyfillInfo>).packageName === 'string' &&
+    typeof (value as Partial<ObservablePolyfillInfo>).version === 'string'
+  );
+}
+
+interface PropertyInstallation {
+  readonly key: PropertyKey;
+  readonly label: string;
+  readonly next: PropertyDescriptor;
+  readonly previous: PropertyDescriptor | undefined;
+  readonly target: object;
+}
+
+function preparePropertyInstallation(target: object, key: PropertyKey, next: PropertyDescriptor, label: string): PropertyInstallation {
+  const previous = Object.getOwnPropertyDescriptor(target, key);
+  if (!canDefineProperty(target, previous, next)) {
+    throw new TypeError(`Cannot initialize @rxjs/observable-polyfill: ${label} is not writable or configurable`);
+  }
+  return { key, label, next, previous, target };
+}
+
+function canDefineProperty(target: object, previous: PropertyDescriptor | undefined, next: PropertyDescriptor): boolean {
+  if (!previous) {
+    return Object.isExtensible(target);
+  }
+  if (previous.configurable) {
+    return true;
+  }
+  if ('value' in previous && 'value' in next && previous.writable) {
+    return next.configurable === false && next.enumerable === previous.enumerable && next.writable !== false;
+  }
+  return false;
+}
+
+function installPropertiesAtomically(installations: PropertyInstallation[]): void {
+  const applied: PropertyInstallation[] = [];
+  try {
+    for (const installation of installations) {
+      Object.defineProperty(installation.target, installation.key, installation.next);
+      applied.push(installation);
+    }
+  } catch (error) {
+    const rollbackErrors: unknown[] = [];
+    for (let index = applied.length - 1; index >= 0; index--) {
+      const installation = applied[index]!;
+      try {
+        if (installation.previous) {
+          Object.defineProperty(installation.target, installation.key, installation.previous);
+        } else {
+          Reflect.deleteProperty(installation.target, installation.key);
+        }
+      } catch (rollbackError) {
+        rollbackErrors.push(rollbackError);
+      }
+    }
+
+    if (rollbackErrors.length > 0) {
+      throw new AggregateError(
+        [error, ...rollbackErrors],
+        'Cannot initialize @rxjs/observable-polyfill and could not fully restore the realm'
+      );
+    }
+    throw error;
+  }
+}
+
+function initializeObservablePolyfill(): void {
+  const installations: PropertyInstallation[] = [];
+  const activeObservable = (globalThis as typeof globalThis & { Observable?: ObservableCtor }).Observable;
+
+  if (activeObservable === undefined) {
+    const AbortControllerCtor = globalThis.AbortController;
+    const abortDescriptor = AbortControllerCtor && Object.getOwnPropertyDescriptor(AbortControllerCtor.prototype, 'abort');
+    if (!AbortControllerCtor || !abortDescriptor || typeof abortDescriptor.value !== 'function') {
+      throw new TypeError('Cannot initialize @rxjs/observable-polyfill: AbortController.prototype.abort is unavailable');
+    }
+
+    nativeAbort = abortDescriptor.value;
+    installations.push(
+      preparePropertyInstallation(
+        AbortControllerCtor.prototype,
+        'abort',
+        { ...abortDescriptor, value: abortWithObservableAlgorithms },
+        'AbortController.prototype.abort'
+      ),
+      preparePropertyInstallation(
+        globalThis,
+        'Subscriber',
+        {
+          configurable: true,
+          enumerable: false,
+          value: Subscriber,
+          writable: true,
+        },
+        'globalThis.Subscriber'
+      ),
+      preparePropertyInstallation(
+        globalThis,
+        'Observable',
+        {
+          configurable: true,
+          enumerable: false,
+          value: ObservableImpl,
+          writable: true,
+        },
+        'globalThis.Observable'
+      )
+    );
+  }
+
+  const EventTargetCtor = globalThis.EventTarget;
+  if (EventTargetCtor && EventTargetCtor.prototype.when === undefined) {
+    installations.push(
+      preparePropertyInstallation(
+        EventTargetCtor.prototype,
+        'when',
+        {
+          configurable: true,
+          enumerable: false,
+          value: eventTargetWhen,
+          writable: true,
+        },
+        'EventTarget.prototype.when'
+      )
+    );
+  }
+
+  installPropertiesAtomically(installations);
+}
+
+declare global {
+  interface EventTarget {
+    when: (eventName: string, options?: { capture?: boolean; passive?: boolean }) => Observable<Event>;
+  }
+
+  interface Observer<T> {
+    next: (value: T) => void;
+    error: (error: any) => void;
+    complete: () => void;
+  }
+
+  interface Inspector<T> extends Partial<Observer<T>> {
+    subscribe?: () => void;
+    abort?: (reason?: any) => void;
+  }
+
+  interface Subscribable<T> {
+    subscribe(observer?: Partial<Observer<T>> | ((value: T) => void) | null, options?: SubscribeOptions): void;
+  }
+
+  type ObservableValue<T> = Observable<T> | AsyncIterable<T> | PromiseLike<T> | Iterable<T>;
+
+  interface SubscribeOptions {
+    signal?: AbortSignal;
+  }
+
+  interface Subscriber<T> extends Observer<T> {
+    addTeardown: (teardown: () => void) => void;
+    readonly active: boolean;
+    readonly signal: AbortSignal;
+  }
+
+  // eslint-disable-next-line no-var
+  var Subscriber: {
+    readonly prototype: Subscriber<unknown>;
+  };
+
+  interface ObservableCtor {
+    new <T>(init: (subscriber: Subscriber<T>) => void): Observable<T>;
+    from<T>(value: ObservableValue<T>): Observable<T>;
+  }
+
+  // eslint-disable-next-line no-var
+  var Observable: ObservableCtor;
+
+  interface Observable<T> extends ObservableImpl<T> {}
+}
+
+initializeObservablePolyfill();

@@ -889,10 +889,10 @@ Status meanings:
   dependency makes every direct public entry deterministic. A core-only root
   avoids turning one import into installation of the complete extension
   catalog.
-- **Consequence:** Physical removal of `packages/observable`, preparation
-  cleanup, dependency metadata, root and subpath export maps, type wiring, and
-  import fixtures are P0.3 implementation work. The existing workspace public
-  hoist remains temporary until that work lands.
+- **Consequence:** P0.3 physically removes `packages/observable` and its
+  preparation bridge, declares the dependency, and supplies root/subpath
+  exports, type wiring, and package fixtures. Bundler metadata and
+  duplicate-install policy remain later work.
 
 ## D-041 — Initialize and identify the Observable fallback per realm
 
@@ -926,8 +926,7 @@ Status meanings:
   primitives. Deno, Bun, edge runtimes, hardened globals, and non-extensible
   constructors or prototypes remain unclaimed until explicitly tested.
 - **Consequence:** The first existing constructor wins, including an earlier
-  RxJS fallback version; the helper reports its marker when present. P0.3 must
-  fail clearly rather than leave a partial installation when an absent slot
-  cannot be defined. P0.4 must exercise native, foreign, duplicate-version,
-  missing-global, `EventTarget.when`, direct-subpath, root-side-effect, and
-  separate-realm fixtures.
+  RxJS fallback version; the helper reports its marker when present. P0.3
+  implements a preflighted transactional installation and fixtures clear,
+  non-partial failure on unsupported frozen targets. P0.4 expands this package
+  evidence into one shared native/fallback lifecycle contract.

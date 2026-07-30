@@ -1,5 +1,5 @@
 import { create } from './create.js';
-import { SubjectLike } from './util/types';
+import type { SubjectLike } from './util/types.js';
 
 const ObservableBase = Observable;
 

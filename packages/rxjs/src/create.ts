@@ -1,3 +1,4 @@
+import '@rxjs/observable-polyfill';
 import { isObservableInstance } from './util/ctor-helpers.js';
 
 const CREATE_SYMBOL_KEY = 'rxjs.kernel.create.v1';

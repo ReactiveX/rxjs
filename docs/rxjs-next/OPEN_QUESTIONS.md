@@ -9,7 +9,7 @@ D-039 through D-041 resolve the P0.2 package and acquisition questions:
 
 - the published runtime map is `@rxjs/observable-polyfill`, `rxjs`, and
   `@rxjs/test`;
-- `@rxjs/observable` is removed in P0.3 and no RxJS 7 runtime compatibility
+- `@rxjs/observable` is removed and no RxJS 7 runtime compatibility
   package replaces it;
 - the polyfill package owns the base ambient platform types;
 - every public `rxjs` entry point conditionally initializes its own realm;
@@ -53,10 +53,13 @@ capability and required kernel dependencies.
 Still decide:
 
 - package `sideEffects` metadata and bundler fixtures;
-- whether a root re-export can remain free of transitive operator evaluation;
-- how generated declarations preserve subpath-scoped ambient augmentation;
 - how the common installer reports exact-Symbol conflicts;
-- the supported ESM/CommonJS interoperation model for one-time side effects.
+- duplicate-package and mixed ESM/CommonJS behavior for one-time extension
+  side effects.
+
+P0.3 proves that the root can remain operator-free, that generated declarations
+preserve subpath-scoped augmentation, and that standalone ESM and CommonJS
+imports initialize correctly.
 
 ### 3. Which exact runtime versions and module systems are supported?
 
@@ -65,7 +68,7 @@ realms, and maintained Node releases are candidates when the required web
 primitives exist. Deno, Bun, edge runtimes, hardened globals, and
 non-extensible prototypes are unclaimed until tested.
 
-Before package exports stabilize, define:
+Before the release support matrix stabilizes, define:
 
 - minimum browser and maintained Node versions;
 - the required or supplied behavior for `WeakRef`, `AbortSignal.any`,

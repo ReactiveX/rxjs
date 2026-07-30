@@ -29,7 +29,7 @@ declare global {
   interface Observable<T> {
     [combineLatest]: {
       <Sources extends readonly ObservableValue<any>[]>(sources: Sources, config?: { requireAllValues?: boolean }): Observable<
-        CombineLatestValues<[ObservableValue<T>, ...Sources]>
+        [T, ...CombineLatestArrayValues<Sources>]
       >;
       <Sources extends readonly ObservableValue<any>[], Result>(
         sources: Sources,

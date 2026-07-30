@@ -1,3 +1,5 @@
+import '@rxjs/observable-polyfill';
+
 /**
  * An error thrown when an Observable sequence has no value at the requested
  * index.

@@ -363,11 +363,13 @@ importers:
         specifier: ^13.2.4
         version: 13.3.2
 
-  packages/observable: {}
-
   packages/observable-polyfill: {}
 
   packages/rxjs:
+    dependencies:
+      '@rxjs/observable-polyfill':
+        specifier: 8.0.0-alpha.14
+        version: link:../observable-polyfill
     devDependencies:
       chai:
         specifier: 4.4.1

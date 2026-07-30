@@ -4,7 +4,7 @@ export interface MarbleContextOptions {
 
 interface TimerQueueItem {
   id: number;
-  callback: Function | ((...args: any[]) => void);
+  callback: (...args: any[]) => void;
   delay: number;
   time: number;
   type: 'timeout' | 'interval';
@@ -35,7 +35,7 @@ export class FakeTimers {
         throw new TypeError('MarbleContext.setTimeout: callback must be a function');
       }
 
-      const item: TimerQueueItem = { id, callback, delay, time, type: 'timeout', args };
+      const item: TimerQueueItem = { id, callback: callback as (...args: any[]) => void, delay, time, type: 'timeout', args };
       this.#addTimer(item);
 
       if (this.#shouldUseNodeTimeout) {
@@ -89,7 +89,7 @@ export class FakeTimers {
       if (typeof callback !== 'function') {
         throw new TypeError('MarbleContext.setInterval: callback must be a function');
       }
-      const item: TimerQueueItem = { id, callback, delay, time, type: 'interval', args };
+      const item: TimerQueueItem = { id, callback: callback as (...args: any[]) => void, delay, time, type: 'interval', args };
       this.#addTimer(item);
 
       if (this.#shouldUseNodeTimeout) {

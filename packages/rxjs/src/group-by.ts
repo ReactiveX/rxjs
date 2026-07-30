@@ -83,7 +83,7 @@ function groupByOperator<T, K, E = T>(
   elementOrOptions?: ((value: T) => E) | GroupByOptions<K, T, E>,
   legacyDuration?: (group: KeyedGroupObservable<K, E>) => ObservableValue<unknown>,
   legacyConnector?: () => SubjectLike<E>
-): Observable<KeyedGroupObservable<K, E>> {
+): Observable<any> {
   const source = this;
   const options: GroupByOptions<K, T, E> =
     typeof elementOrOptions === 'function'

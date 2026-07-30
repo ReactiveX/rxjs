@@ -36,37 +36,9 @@ declare global {
   }
 }
 
-function forkJoinImpl<T extends AnyCatcher>(this: ObservableCtor, arg: T): Observable<unknown>;
-function forkJoinImpl(this: ObservableCtor): Observable<never>;
-function forkJoinImpl(this: ObservableCtor, sources: readonly []): Observable<never>;
-function forkJoinImpl<const Sources extends readonly ObservableValue<any>[]>(
-  this: ObservableCtor,
-  sources: Sources
-): Observable<ForkJoinTuple<Sources>>;
-function forkJoinImpl<const Sources extends readonly ObservableValue<any>[], Result>(
-  this: ObservableCtor,
-  sources: Sources,
-  resultSelector: (...values: ForkJoinTuple<Sources>) => Result
-): Observable<Result>;
-function forkJoinImpl(this: ObservableCtor, sourcesObject: Record<string, never>): Observable<never>;
-function forkJoinImpl<Sources extends Record<string, ObservableValue<any>>>(
-  this: ObservableCtor,
-  sourcesObject: Sources
-): Observable<ForkJoinObject<Sources>>;
-function forkJoinImpl(this: ObservableCtor, source: null | undefined): Observable<never>;
-function forkJoinImpl<const Sources extends readonly ObservableValue<any>[]>(
-  this: ObservableCtor,
-  ...sources: Sources
-): Observable<ForkJoinTuple<Sources>>;
-function forkJoinImpl<const Sources extends readonly ObservableValue<any>[], Result>(
-  this: ObservableCtor,
-  ...sourcesAndResultSelector: [...Sources, (...values: ForkJoinTuple<Sources>) => Result]
-): Observable<Result>;
 function forkJoinImpl(this: ObservableCtor, ...inputArguments: any[]): Observable<any> {
   const resultSelector =
-    typeof inputArguments[inputArguments.length - 1] === 'function'
-      ? (inputArguments.pop() as (...values: any[]) => any)
-      : undefined;
+    typeof inputArguments[inputArguments.length - 1] === 'function' ? (inputArguments.pop() as (...values: any[]) => any) : undefined;
   const { keys, sources } = normalizeInputs(inputArguments);
   const ObservableCtor = this;
 
@@ -135,7 +107,7 @@ function forkJoinImpl(this: ObservableCtor, ...inputArguments: any[]): Observabl
   });
 }
 
-Observable[forkJoin] = forkJoinImpl;
+Observable[forkJoin] = forkJoinImpl as ForkJoinMethod;
 
 function normalizeInputs(inputArguments: any[]): {
   readonly keys: string[] | null;

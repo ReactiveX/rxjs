@@ -52,10 +52,11 @@ function combineImpl<Config extends readonly CombineItem<any>[]>(
     let allReady = state.every(({ ready }) => ready);
 
     for (let i = 0; i < actualConfig.length; i++) {
-      Observable.from(actualConfig[i].source).subscribe(
+      const item = actualConfig[i]!;
+      const itemState = state[i]!;
+      Observable.from(item.source).subscribe(
         {
           next: (value) => {
-            const itemState = state[i];
             itemState.value = value;
 
             if (!allReady && !itemState.ready) {
@@ -69,7 +70,7 @@ function combineImpl<Config extends readonly CombineItem<any>[]>(
           },
           error: (error) => subscriber.error(error),
           complete: () => {
-            state[i].complete = true;
+            itemState.complete = true;
             if (state.every(({ complete }) => complete)) {
               subscriber.complete();
             }

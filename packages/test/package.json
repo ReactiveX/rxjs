@@ -18,7 +18,7 @@
     "lint": "eslint ./src",
     "test": "vitest --run",
     "test:watch": "vitest",
-    "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs",
+    "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs && node test/import/no-observable.mjs",
     "test:types": "tsc -p test/types/tsconfig.json --noEmit",
     "test:package": "pnpm run build && pnpm run test:types && pnpm run test:imports"
   },
@@ -50,6 +50,7 @@
     }
   },
   "tshy": {
+    "selfLink": false,
     "exclude": [
       "src/**/*.spec.ts"
     ],

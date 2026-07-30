@@ -27,17 +27,17 @@ function withLatestFromImpl<T, const Sources extends readonly ObservableValue<an
   project: (value: T, ...latestValues: ObservableArrayToValueArray<Sources>) => Result
 ): Observable<Result>;
 function withLatestFromImpl(
-  this: Observable<unknown>,
-  sources: readonly ObservableValue<unknown>[],
-  project?: (...values: unknown[]) => unknown
-): Observable<unknown> {
+  this: Observable<any>,
+  sources: readonly ObservableValue<any>[],
+  project?: (...values: any[]) => any
+): Observable<any> {
   return this[create]((subscriber) => {
     const latestValues: unknown[] = new Array(sources.length);
     const hasValue = new Array(sources.length).fill(false);
     let readyCount = 0;
 
     for (let index = 0; index < sources.length && !subscriber.signal.aborted; index++) {
-      Observable.from(sources[index]).subscribe(
+      Observable.from(sources[index]!).subscribe(
         {
           next: (value) => {
             latestValues[index] = value;

@@ -1,3 +1,5 @@
+import '@rxjs/observable-polyfill';
+
 /**
  * An error thrown when an Observable sequence contains an invalid number of values.
  */

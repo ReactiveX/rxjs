@@ -19,10 +19,4 @@ linkWorkspacePackages: true
 patchedDependencies:
   husky@4.3.8: patches/husky@4.3.8.patch
 
-# Temporary workspace-only bridge for the currently undeclared RxJS Next
-# polyfill edge. P0.2 still owns the published dependency and installation
-# contract.
-publicHoistPattern:
-  - '@rxjs/observable-polyfill'
-
 strictDepBuilds: true

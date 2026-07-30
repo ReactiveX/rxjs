@@ -69,15 +69,16 @@ export function zip<Sources extends readonly ObservableValue<any>[], Fill = neve
         break;
       }
 
-      Observable.from(sources[i]).subscribe(
+      const sourceState = state[i]!;
+      Observable.from(sources[i]!).subscribe(
         {
           next: (value) => {
-            state[i].buffer.push(value);
+            sourceState.buffer.push(value);
             drainBuffers();
           },
           error: (error) => subscriber.error(error),
           complete: () => {
-            state[i].complete = true;
+            sourceState.complete = true;
             drainBuffers();
           },
         },

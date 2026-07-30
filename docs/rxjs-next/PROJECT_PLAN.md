@@ -16,10 +16,15 @@ test declarations expand to 2,338 uniquely identified registrations, including
 parameterized and source-skipped evidence. The user has now temporarily
 prioritized and completed P0.T3: the durable failure ledger retains every
 original failure, all 2,338 registrations pass in cold and polyfill modes, and
-the strict RxJS unit gate is green. P0.2 has now accepted the three-package map,
+the strict RxJS unit gate was green against the artifact then in use. P0.3
+later exposed that the focused portion had consumed a stale polyfill build;
+P0.4 owns the resulting lifecycle-test reconciliation. P0.2 has now accepted
+the three-package map,
 conditional per-realm fallback contract, and migration-over-emulation
-direction. P0.3 is the single active item and must implement those package
-decisions. A later user-prioritized
+direction. P0.3 has now implemented those package decisions, restored clean
+publication builds, and added the required import/realm evidence. P0.4 is the
+single active item and must establish one native/fallback lifecycle contract.
+A later user-prioritized
 runner follow-up also removed expected-failure quarantine from the default
 ported command and added live shard progress. The
 user-prioritized repository package-manager migration to pnpm 10 is complete
@@ -77,8 +82,8 @@ item.
 | `DONE`    | P0.DX3 | Add cached one-shot bundle comparison for current Next and published RxJS versions                                 |
 | `DONE`    | P0.I1  | Add four explicit Symbol-based Observable-to-async-iterator strategies                                             |
 | `DONE`    | P0.2   | Decide the package map and native-versus-polyfill installation contract                                            |
-| `NEXT`    | P0.3   | Restore green builds and coherent public entry points for the selected package map                                 |
-| `PLANNED` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                           |
+| `DONE`    | P0.3   | Restore green builds and coherent public entry points for the selected package map                                 |
+| `NEXT`    | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                           |
 | `PLANNED` | P0.5   | Pin the first Observable specification and WPT revisions used as the conformance baseline                          |
 
 #### P0.1 completion evidence
@@ -472,6 +477,40 @@ diagrams. No implementation is required for this decision step.
   Symbols, separate-realm isolation, and clear failure on unsupported frozen
   targets.
 
+#### P0.3 completion evidence
+
+- Removed `packages/observable`, its root preparation gate, README inventory
+  entry, TypeScript bridge, workspace hoist, and lockfile project.
+- Made `@rxjs/observable-polyfill` a conditional per-realm initializer with the
+  frozen D-041 marker and helper. Property changes are preflighted and applied
+  transactionally; unsupported frozen targets fail clearly without retaining
+  an Observable, Subscriber, abort bridge, or `EventTarget.when` partial.
+- Added the declared polyfill runtime dependency to `rxjs`. Every public source
+  entry reaches the initializer; the root exports only the approved
+  non-operator core, and individual subpaths retain capability-scoped Symbol
+  installation.
+- Kept `@rxjs/test` constructor-neutral and added a missing-global import
+  fixture proving that importing it does not select or install Observable.
+- Replaced the invalid root export array with source-backed root and subpath
+  exports. All three manifests emit matching ESM, CommonJS, browser, and
+  webpack runtime/declaration paths, point at their actual repository
+  directories, include only `dist` plus package metadata, and disable generated
+  self-links.
+- Added declaration-consumer and built ESM/CommonJS fixtures for all three
+  packages. Added isolated-process/worker fixtures for missing globals,
+  metadata, foreign and earlier constructors, independent `when`, direct
+  subpaths, root Symbol isolation, separate realms, and frozen targets.
+- On Node `24.12.0`, `pnpm install --frozen-lockfile`, workspace discovery, and
+  `pnpm prepare-packages` pass. Package build/type/import gates pass for all
+  three products; dry-run packs contain no source specs.
+- The polyfill/harness suite passes 49 tests and `@rxjs/test` passes 73. The
+  pinned strict WPT gate passes 52/52 URLs, 525/525 upstream subtests, and
+  52/52 exact RxJS identity attestations.
+- A clean polyfill build exposed that the prior focused RxJS baseline had
+  consumed a stale fallback artifact. The current diagnostic passes 678/733
+  focused tests; P0.4 owns the shared selected-implementation lifecycle
+  contract needed to restore that command as a blocking gate.
+
 #### P0.4 completion bar
 
 - One test contract can run against a selected native implementation and the
@@ -716,19 +755,19 @@ conformance implementation depends on a runnable harness.
 
 ## Risk register
 
-| Risk                                                | Impact                                         | Likelihood | Current response                                                                                  |
-| --------------------------------------------------- | ---------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------- |
-| Accepted package boundaries are not implemented     | Imports, types, and builds remain incoherent   | High       | P0.3 is the single `NEXT` item                                                                    |
-| Upstream proposal changes                           | Fallback and native behavior drift             | High       | Pin revisions before conformance claims                                                           |
-| Prototype code becomes accidental policy            | Semantics are preserved without review         | High       | Documents distinguish current fact from accepted direction                                        |
-| Symbol identity fails with duplicate installs       | Extensions are present under inaccessible keys | High       | P2.1 plus package fixtures                                                                        |
-| RxJS 7 suite pressures platform behavior backward   | Native and fallback layers diverge             | High       | Mandatory classification; evidence never implies a runtime compatibility product                  |
-| Migration evidence is mistaken for emulation        | Users depend on unsupported RxJS 7 surfaces    | Medium     | Publish explicit source actions, semantic-review flags, and unsupported categories                |
-| Global patching fails in hardened realms            | Library cannot initialize                      | Medium     | Leave hardened surfaces unclaimed and require clear non-partial installation failure              |
-| Tooling is designed before APIs stabilize           | Skills encode obsolete migrations              | Medium     | The portable marble Skill is vetted; broader Skill/MCP distribution remains deferred              |
-| Current CI/release infrastructure assumes RxJS 7    | Published artifacts fail despite source tests  | High       | Package-import fixtures and release gates precede expansion                                       |
-| WPT runs accidentally exercise native Observable    | False confidence in fallback behavior          | High       | P1.4a exact-identity attestation and an independent, unsuppressible report audit                  |
-| WPT/browser setup is too large or network-dependent | Slow or skipped local and CI validation        | Medium     | Vendor only the approved closure and checksum-cache the sparse runner and exact browser artifacts |
+| Risk                                                | Impact                                               | Likelihood | Current response                                                                                  |
+| --------------------------------------------------- | ---------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------- |
+| Native/fallback lifecycle evidence is not unified   | Package acquisition can pass while semantics diverge | High       | P0.4 is the single `NEXT` item                                                                    |
+| Upstream proposal changes                           | Fallback and native behavior drift                   | High       | Pin revisions before conformance claims                                                           |
+| Prototype code becomes accidental policy            | Semantics are preserved without review               | High       | Documents distinguish current fact from accepted direction                                        |
+| Symbol identity fails with duplicate installs       | Extensions are present under inaccessible keys       | High       | P2.1 plus package fixtures                                                                        |
+| RxJS 7 suite pressures platform behavior backward   | Native and fallback layers diverge                   | High       | Mandatory classification; evidence never implies a runtime compatibility product                  |
+| Migration evidence is mistaken for emulation        | Users depend on unsupported RxJS 7 surfaces          | Medium     | Publish explicit source actions, semantic-review flags, and unsupported categories                |
+| Global patching fails in hardened realms            | Library cannot initialize                            | Medium     | Leave hardened surfaces unclaimed and require clear non-partial installation failure              |
+| Tooling is designed before APIs stabilize           | Skills encode obsolete migrations                    | Medium     | The portable marble Skill is vetted; broader Skill/MCP distribution remains deferred              |
+| Current CI/release infrastructure assumes RxJS 7    | Published artifacts fail despite source tests        | High       | Package-import fixtures and release gates precede expansion                                       |
+| WPT runs accidentally exercise native Observable    | False confidence in fallback behavior                | High       | P1.4a exact-identity attestation and an independent, unsuppressible report audit                  |
+| WPT/browser setup is too large or network-dependent | Slow or skipped local and CI validation              | Medium     | Vendor only the approved closure and checksum-cache the sparse runner and exact browser artifacts |
 
 ## Out of scope until activated
 
@@ -1634,3 +1673,25 @@ conformance implementation depends on a runnable harness.
   dependency graph nor `pnpm-lock.yaml`; generated reports and published caches
   remained in ignored output locations.
 - Restored P0.3 as the sole project-level `NEXT` item.
+
+### 2026-07-30 — P0.3 package implementation
+
+- Removed the unused `@rxjs/observable` package and its preparation, workspace,
+  TypeScript, README, and lockfile references without changing the concurrent
+  bundle-analysis implementation.
+- Implemented conditional, transactional fallback acquisition with frozen
+  version metadata and detection; preserved existing constructors and
+  `EventTarget.when`, and limited the abort bridge to fallback installation.
+- Made the three accepted packages independently buildable with correct
+  dependency direction, repository metadata, root/subpath exports, generated
+  declarations, and no source specs or self-links in dry-run packs.
+- Added package declaration consumers, ESM/CommonJS imports, and isolated realm
+  fixtures covering every P0.3 installation and side-effect claim.
+- Passed the frozen-lockfile install, workspace discovery, publication
+  preparation, all three package gates, 49 polyfill/harness tests, 73
+  `@rxjs/test` tests, pinned-import verification, and strict conformance with
+  525/525 upstream subtests and 52/52 identity attestations.
+- Recorded the newly visible stale-artifact focused-test discrepancy for P0.4:
+  after rebuilding the polyfill, 678/733 focused RxJS tests pass before the
+  ported parity launcher runs.
+- Marked P0.3 `DONE` and advanced P0.4 as the sole project-level `NEXT` item.

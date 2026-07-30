@@ -1,6 +1,6 @@
 import { PerSubscriptionSubjectBase } from './per-subscription-subject-base.js';
 
-interface ReplaySubjectConfig {
+export interface ReplaySubjectConfig {
   size?: number;
   maxAge?: number;
 }

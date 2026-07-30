@@ -1,14 +1,11 @@
 import { create } from './create.js';
+import { TimeoutError, type TimeoutInfo } from './timeout-error.js';
+
+export { TimeoutError, type TimeoutInfo } from './timeout-error.js';
 
 export const timeout: unique symbol = Symbol('timeout');
 
 declare global {
-  interface TimeoutInfo<T, M> {
-    meta: M;
-    seen: number;
-    lastValue: T | null;
-  }
-
   interface Observable<T> {
     [timeout]: <M, W>(config: {
       each?: number;
@@ -109,13 +106,6 @@ Observable.prototype[timeout] = function <T, W, M>(
     }
   });
 };
-
-export class TimeoutError<T = unknown, M = unknown> extends Error {
-  constructor(public info: TimeoutInfo<T, M> | null = null) {
-    super('Timeout has occurred');
-    this.name = 'TimeoutError';
-  }
-}
 
 function timeoutErrorFactory(info: TimeoutInfo<any, any>): never {
   throw new TimeoutError(info);

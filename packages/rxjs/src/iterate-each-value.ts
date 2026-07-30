@@ -1,3 +1,4 @@
+import '@rxjs/observable-polyfill';
 import { eachValueAsyncGenerator } from './util/observable-async-generators.js';
 
 /**

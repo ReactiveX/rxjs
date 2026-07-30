@@ -17,12 +17,15 @@
     "build": "tshy",
     "lint": "eslint ./src",
     "test": "vitest --run",
+    "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs",
+    "test:package": "pnpm run build && pnpm run test:types && pnpm run test:imports",
+    "test:types": "tsc -p test/types/tsconfig.json --noEmit",
     "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/ReactiveX/rxjs.git",
-    "directory": "packages/observable"
+    "directory": "packages/observable-polyfill"
   },
   "keywords": [
     "Rx",
@@ -35,6 +38,10 @@
     "Stream"
   ],
   "tshy": {
+    "selfLink": false,
+    "exclude": [
+      "src/**/*.spec.ts"
+    ],
     "exports": {
       "./package.json": "./package.json",
       ".": "./src/index.ts"

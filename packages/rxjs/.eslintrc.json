@@ -5,9 +5,15 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "parserOptions": {
-        "project": ["./packages/observable/tsconfig.json"]
+        "project": ["./packages/rxjs/tsconfig.json"]
       },
-      "rules": {}
+      "rules": {
+        "@nx/enforce-module-boundaries": "off",
+        "@typescript-eslint/no-this-alias": "off",
+        "no-constant-condition": "off",
+        "no-unexpected-multiline": "off",
+        "prefer-const": "off"
+      }
     },
     {
       "files": ["*.ts", "*.tsx"],

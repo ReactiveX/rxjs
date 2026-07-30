@@ -1,6 +1,6 @@
 import { create } from './create.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
-import { ObservableArrayToValueUnion } from './util/types';
+import type { ObservableArrayToValueUnion } from './util/types.js';
 
 export const race: unique symbol = Symbol('race');
 

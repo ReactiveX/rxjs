@@ -1,20 +1,15 @@
 import { create } from './create.js';
 
 interface PartitionMethod {
-  <T, U extends T, A>(
-    source: ObservableValue<T>,
-    predicate: (this: A, value: T, index: number) => value is U,
-    thisArg: A
-  ): [Observable<U>, Observable<Exclude<T, U>>];
-  <T, U extends T>(
-    source: ObservableValue<T>,
-    predicate: (value: T, index: number) => value is U
-  ): [Observable<U>, Observable<Exclude<T, U>>];
-  <T, A>(
-    source: ObservableValue<T>,
-    predicate: (this: A, value: T, index: number) => boolean,
-    thisArg: A
-  ): [Observable<T>, Observable<T>];
+  <T, U extends T, A>(source: ObservableValue<T>, predicate: (this: A, value: T, index: number) => value is U, thisArg: A): [
+    Observable<U>,
+    Observable<Exclude<T, U>>
+  ];
+  <T, U extends T>(source: ObservableValue<T>, predicate: (value: T, index: number) => value is U): [
+    Observable<U>,
+    Observable<Exclude<T, U>>
+  ];
+  <T, A>(source: ObservableValue<T>, predicate: (this: A, value: T, index: number) => boolean, thisArg: A): [Observable<T>, Observable<T>];
   <T>(source: ObservableValue<T>, predicate: (value: T, index: number) => boolean): [Observable<T>, Observable<T>];
 }
 
@@ -53,7 +48,7 @@ function partitionImpl<T, A>(
   source: ObservableValue<T>,
   predicate: (this: A, value: T, index: number) => boolean,
   thisArg?: A
-): [Observable<T>, Observable<T>] {
+): any {
   const ObservableCtor = this;
   const input = ObservableCtor.from(source);
 

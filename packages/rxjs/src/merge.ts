@@ -1,6 +1,6 @@
 import { create } from './create.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
-import { ObservableArrayToValueUnion } from './util/types';
+import type { ObservableArrayToValueUnion } from './util/types.js';
 
 export const merge: unique symbol = Symbol('merge');
 
@@ -42,7 +42,7 @@ function mergeImpl<T, Sources extends readonly ObservableValue<any>[]>(
         return;
       }
 
-      const sourceValue = actualSources[sourceIndex++];
+      const sourceValue = actualSources[sourceIndex++]!;
       let source: Observable<any>;
 
       try {

@@ -40,7 +40,7 @@ function onErrorResumeNextImpl<Sources extends readonly ObservableValue<any>[]>(
         return;
       }
 
-      const source = Observable.from(actualSources[currentSourceIndex++]);
+      const source = Observable.from(actualSources[currentSourceIndex++]!);
       source.subscribe(
         {
           next: (value: any) => {

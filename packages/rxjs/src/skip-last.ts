@@ -28,7 +28,7 @@ Observable.prototype[skipLast] = function <T>(this: Observable<T>, amount = 1): 
             ring[valueIndex] = value;
           } else {
             const index = valueIndex % amount;
-            const oldValue = ring[index];
+            const oldValue = ring[index]!;
             ring[index] = value;
             subscriber.next(oldValue);
           }

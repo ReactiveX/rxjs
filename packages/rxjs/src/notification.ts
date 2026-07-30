@@ -1,3 +1,5 @@
+import '@rxjs/observable-polyfill';
+
 export enum NotificationKind {
   NEXT = 'N',
   ERROR = 'E',
@@ -27,11 +29,7 @@ export class Notification<T> {
   constructor(kind: 'N', value?: T);
   constructor(kind: 'E', value: undefined, error: any);
   constructor(kind: 'C');
-  constructor(
-    public readonly kind: 'N' | 'E' | 'C',
-    public readonly value?: T,
-    public readonly error?: any
-  ) {
+  constructor(public readonly kind: 'N' | 'E' | 'C', public readonly value?: T, public readonly error?: any) {
     this.hasValue = kind === 'N';
   }
 
@@ -40,20 +38,12 @@ export class Notification<T> {
   }
 
   do(next: (value: T) => void, error?: (error: any) => void, complete?: () => void): void {
-    this.kind === 'N'
-      ? next?.(this.value as T)
-      : this.kind === 'E'
-        ? error?.(this.error)
-        : complete?.();
+    this.kind === 'N' ? next?.(this.value as T) : this.kind === 'E' ? error?.(this.error) : complete?.();
   }
 
   accept(observer: Partial<Observer<T>>): void;
   accept(next: (value: T) => void, error?: (error: any) => void, complete?: () => void): void;
-  accept(
-    nextOrObserver: Partial<Observer<T>> | ((value: T) => void),
-    error?: (error: any) => void,
-    complete?: () => void
-  ): void {
+  accept(nextOrObserver: Partial<Observer<T>> | ((value: T) => void), error?: (error: any) => void, complete?: () => void): void {
     if (typeof nextOrObserver === 'object' && nextOrObserver !== null) {
       this.observe(nextOrObserver);
     } else {
@@ -85,12 +75,12 @@ export class Notification<T> {
     return new Notification('N', value) as Notification<T> & NextNotification<T>;
   }
 
-  static createError(error?: any): Notification<never> & ErrorNotification {
-    return new Notification('E', undefined, error) as Notification<never> & ErrorNotification;
+  static createError<T = never>(error?: any): Notification<T> & ErrorNotification {
+    return new Notification('E', undefined, error) as Notification<T> & ErrorNotification;
   }
 
-  static createComplete(): Notification<never> & CompleteNotification {
-    return Notification.completeNotification;
+  static createComplete<T = never>(): Notification<T> & CompleteNotification {
+    return Notification.completeNotification as unknown as Notification<T> & CompleteNotification;
   }
 }
 

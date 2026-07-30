@@ -1,3 +1,5 @@
+import '@rxjs/observable-polyfill';
+
 /**
  * Returns the value passed as its first argument.
  */

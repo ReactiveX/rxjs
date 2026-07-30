@@ -43,8 +43,7 @@ commands from the repository root.
 | `pnpm --filter <project> run`         | List a project's available scripts |
 | `pnpm --filter rxjs.dev run start` ⭐ | Start the documentation site       |
 
-Projects: `@rxjs/observable-polyfill`, `@rxjs/observable`, `@rxjs/test`,
-`rxjs`, and `rxjs.dev`.
+Projects: `@rxjs/observable-polyfill`, `@rxjs/test`, `rxjs`, and `rxjs.dev`.
 
 ### Fast feedback
 
@@ -59,9 +58,11 @@ Projects: `@rxjs/observable-polyfill`, `@rxjs/observable`, `@rxjs/test`,
 | `pnpm --filter <project> run build`                   | Build one package                        |
 
 The `rxjs` `test` command delegates to `test:unit`: it runs focused source
-specs, then the strict cold and polyfill RxJS 7 parity cases. That parity suite
-is intentionally failing while P0.T3 remains active. Some package builds and
-lints also have known P0.3 failures.
+specs, then the strict cold and polyfill RxJS 7 parity cases. Package builds,
+lints, declaration consumers, and ESM/CommonJS import fixtures are green.
+The rebuilt polyfill exposed focused source tests that had consumed a stale
+artifact; P0.4 will establish the shared native/fallback lifecycle contract
+before the complete `rxjs` command is restored as a blocking gate.
 Use focused checks for normal development; see the
 [active project plan](docs/rxjs-next/PROJECT_PLAN.md) for current baselines.
 
@@ -118,6 +119,6 @@ importing upstream changes or updating expectations.
 | `pnpm run prepare-packages`              | Exercise publication preparation          |
 | `pnpm run release -- --gitRemote origin` | Preview a release; dry-run is the default |
 
-Release preparation currently reaches the known P0.3 package-build baseline.
+Release preparation builds and lints the three accepted runtime packages.
 See the [maintainer guidelines](apps/rxjs.dev/content/maintainer-guidelines.md)
 before publishing.
