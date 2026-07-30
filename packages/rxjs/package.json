@@ -113,6 +113,7 @@
         "./src/pluck.ts",
         "./src/publish-behavior.ts",
         "./src/publish-last.ts",
+        "./src/publish-replay.ts",
         "./src/publish.ts",
         "./src/race.ts",
         "./src/reduce.ts",
@@ -590,6 +591,13 @@
       "import": "./dist/esm/publish-last.js",
       "require": "./dist/commonjs/publish-last.js",
       "types": "./dist/types/publish-last.d.ts"
+    },
+    "./publish-replay": {
+      "browser": "./dist/browser/publish-replay.js",
+      "webpack": "./dist/webpack/publish-replay.js",
+      "import": "./dist/esm/publish-replay.js",
+      "require": "./dist/commonjs/publish-replay.js",
+      "types": "./dist/types/publish-replay.d.ts"
     },
     "./publish": {
       "browser": "./dist/browser/publish.js",
