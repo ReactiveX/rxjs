@@ -5817,7 +5817,7 @@
     {
       "id": "spec/operators/combineLatestAll-spec.ts:15:combineLatestAll operator > should combine events from two observables",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5825,10 +5825,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
@@ -5846,7 +5843,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: combineLatestAll"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:44:combineLatestAll operator > should work with never and empty",
@@ -5863,7 +5860,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: combineLatestAll"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:60:combineLatestAll operator > should work with empty and never",
@@ -5880,12 +5877,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: combineLatestAll"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:76:combineLatestAll operator > should work with empty and empty",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5893,16 +5890,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:92:combineLatestAll operator > should work with hot-empty and hot-single",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5910,16 +5904,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:108:combineLatestAll operator > should work with hot-single and hot-empty",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5927,10 +5918,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
@@ -5948,7 +5936,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: combineLatestAll"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:140:combineLatestAll operator > should work with never and hot-single",
@@ -5965,12 +5953,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: combineLatestAll"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:156:combineLatestAll operator > should work with hot and hot",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5978,16 +5966,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:172:combineLatestAll operator > should allow unsubscribing early and explicitly",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5995,16 +5980,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:190:combineLatestAll operator > should not break unsubscription chains when unsubscribed explicitly",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6012,16 +5994,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:212:combineLatestAll operator > should combine 3 observables",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6029,16 +6008,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:231:combineLatestAll operator > should work with empty and error",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6046,16 +6022,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:247:combineLatestAll operator > should work with error and empty",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6063,16 +6036,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:263:combineLatestAll operator > should work with hot and throw",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6080,16 +6050,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:279:combineLatestAll operator > should work with throw and hot",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6097,16 +6064,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:295:combineLatestAll operator > should work with throw and throw",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6114,16 +6078,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:311:combineLatestAll operator > should work with error and throw",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6131,16 +6092,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:327:combineLatestAll operator > should work with throw and error",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6148,16 +6106,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:343:combineLatestAll operator > should work with never and throw",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6165,16 +6120,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:359:combineLatestAll operator > should work with throw and never",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6182,16 +6134,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:375:combineLatestAll operator > should work with some and throw",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6199,16 +6148,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:391:combineLatestAll operator > should work with throw and some",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6216,16 +6162,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:407:combineLatestAll operator > should handle throw after complete left",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6233,16 +6176,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:423:combineLatestAll operator > should handle throw after complete right",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6250,16 +6190,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:439:combineLatestAll operator > should handle interleaved with tail",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6267,16 +6204,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:455:combineLatestAll operator > should handle two consecutive hot observables",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6284,16 +6218,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:471:combineLatestAll operator > should handle two consecutive hot observables with error left",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6301,16 +6232,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:487:combineLatestAll operator > should handle two consecutive hot observables with error right",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6318,16 +6246,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
       "id": "spec/operators/combineLatestAll-spec.ts:503:combineLatestAll operator > should handle selector throwing",
       "group": "combineLatestAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6335,10 +6260,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: combineLatestAll"
     },
     {
@@ -9105,7 +9027,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:15:distinct > should distinguish between values",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9122,7 +9044,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:26:distinct > should distinguish between values and does not complete",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9139,7 +9061,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:37:distinct > should not complete if source never completes",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9156,7 +9078,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:48:distinct > should not complete if source does not complete",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9173,7 +9095,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:59:distinct > should complete if source is empty",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9190,7 +9112,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:70:distinct > should complete if source does not emit",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9207,7 +9129,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:81:distinct > should emit if source emits single element only",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9224,7 +9146,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:92:distinct > should emit if source is scalar",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9241,7 +9163,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:101:distinct > should raises error if source raises error",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9258,7 +9180,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:112:distinct > should raises error if source throws",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9275,7 +9197,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:123:distinct > should not omit if source elements are all different",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9292,7 +9214,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:134:distinct > should allow unsubscribing early and explicitly",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9309,7 +9231,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:148:distinct > should not break unsubscription chains when unsubscribed explicitly",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9326,7 +9248,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:166:distinct > should emit once if source elements are all same",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9343,7 +9265,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:177:distinct > should distinguish values by key",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9360,7 +9282,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:190:distinct > should raises error when selector throws",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9377,7 +9299,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:207:distinct > should support a flushing stream",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9394,7 +9316,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:221:distinct > should raise error if flush raises error",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9411,7 +9333,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:235:distinct > should unsubscribe from the flushing stream when the main stream is unsubbed",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9428,7 +9350,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:250:distinct > should allow opting in to default comparator with flush",
       "group": "distinct",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9781,7 +9703,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:41:distinctUntilKeyChanged > should distinguish between values and does not complete",
       "group": "distinctUntilKeyChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9789,10 +9711,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -9826,7 +9745,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:77:distinctUntilKeyChanged > should not complete if source never completes",
       "group": "distinctUntilKeyChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9834,16 +9753,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:88:distinctUntilKeyChanged > should not complete if source does not complete",
       "group": "distinctUntilKeyChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9851,10 +9767,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -13595,7 +13508,7 @@
     {
       "id": "spec/operators/max-spec.ts:15:max > should find the max of values of an observable",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13612,7 +13525,7 @@
     {
       "id": "spec/operators/max-spec.ts:26:max > should be never when source is never",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13629,7 +13542,7 @@
     {
       "id": "spec/operators/max-spec.ts:37:max > should be zero when source is empty",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13646,7 +13559,7 @@
     {
       "id": "spec/operators/max-spec.ts:48:max > should be never when source doesn't complete",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13663,7 +13576,7 @@
     {
       "id": "spec/operators/max-spec.ts:59:max > should complete when source doesn't have values",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13680,7 +13593,7 @@
     {
       "id": "spec/operators/max-spec.ts:70:max > should max the unique value of an observable",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13697,7 +13610,7 @@
     {
       "id": "spec/operators/max-spec.ts:81:max > should max the values of an ongoing hot observable",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13714,7 +13627,7 @@
     {
       "id": "spec/operators/max-spec.ts:92:max > should allow unsubscribing explicitly and early",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13731,7 +13644,7 @@
     {
       "id": "spec/operators/max-spec.ts:104:max > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13748,7 +13661,7 @@
     {
       "id": "spec/operators/max-spec.ts:170:max > should work with error",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13765,7 +13678,7 @@
     {
       "id": "spec/operators/max-spec.ts:181:max > should work with throw",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13782,7 +13695,7 @@
     {
       "id": "spec/operators/max-spec.ts:192:max > should handle a constant predicate on an empty hot observable",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13799,7 +13712,7 @@
     {
       "id": "spec/operators/max-spec.ts:207:max > should handle a constant predicate on an never hot observable",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13816,7 +13729,7 @@
     {
       "id": "spec/operators/max-spec.ts:222:max > should handle a constant predicate on a simple hot observable",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13833,7 +13746,7 @@
     {
       "id": "spec/operators/max-spec.ts:237:max > should handle a reverse predicate on observable with many values",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13850,7 +13763,7 @@
     {
       "id": "spec/operators/max-spec.ts:252:max > should handle a predicate for string on observable with many values",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13867,7 +13780,7 @@
     {
       "id": "spec/operators/max-spec.ts:267:max > should handle a constant predicate on observable that throws",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13884,7 +13797,7 @@
     {
       "id": "spec/operators/max-spec.ts:282:max > should handle a predicate that throws, on observable with many values",
       "group": "max",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14839,7 +14752,7 @@
     {
       "id": "spec/operators/min-spec.ts:15:min > should min the values of an observable",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14856,7 +14769,7 @@
     {
       "id": "spec/operators/min-spec.ts:26:min > should be never when source is never",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14873,7 +14786,7 @@
     {
       "id": "spec/operators/min-spec.ts:37:min > should be zero when source is empty",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14890,7 +14803,7 @@
     {
       "id": "spec/operators/min-spec.ts:48:min > should be never when source doesn't complete",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14907,7 +14820,7 @@
     {
       "id": "spec/operators/min-spec.ts:59:min > should be completes when source doesn't have values",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14924,7 +14837,7 @@
     {
       "id": "spec/operators/min-spec.ts:70:min > should min the unique value of an observable",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14941,7 +14854,7 @@
     {
       "id": "spec/operators/min-spec.ts:81:min > should min the values of an ongoing hot observable",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14958,7 +14871,7 @@
     {
       "id": "spec/operators/min-spec.ts:134:min > should work with error",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14975,7 +14888,7 @@
     {
       "id": "spec/operators/min-spec.ts:145:min > should work with throw",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14992,7 +14905,7 @@
     {
       "id": "spec/operators/min-spec.ts:156:min > should handle a constant predicate on an empty hot observable",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15009,7 +14922,7 @@
     {
       "id": "spec/operators/min-spec.ts:171:min > should handle a constant predicate on an never hot observable",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15026,7 +14939,7 @@
     {
       "id": "spec/operators/min-spec.ts:186:min > should handle a constant predicate on a simple hot observable",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15043,7 +14956,7 @@
     {
       "id": "spec/operators/min-spec.ts:201:min > should allow unsubscribing explicitly and early",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15060,7 +14973,7 @@
     {
       "id": "spec/operators/min-spec.ts:217:min > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15077,7 +14990,7 @@
     {
       "id": "spec/operators/min-spec.ts:239:min > should handle a reverse predicate on observable with many values",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15094,7 +15007,7 @@
     {
       "id": "spec/operators/min-spec.ts:254:min > should handle a predicate for string on observable with many values",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15111,7 +15024,7 @@
     {
       "id": "spec/operators/min-spec.ts:269:min > should handle a constant predicate on observable that throws",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15128,7 +15041,7 @@
     {
       "id": "spec/operators/min-spec.ts:284:min > should handle a predicate that throws, on observable with many values",
       "group": "min",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17486,7 +17399,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:207:reduce > should not complete with seed if source emits but does not complete",
       "group": "reduce",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17494,16 +17407,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/reduce-spec.ts:220:reduce > should not complete with seed if source never completes",
       "group": "reduce",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17511,16 +17421,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/reduce-spec.ts:233:reduce > should not complete without seed if source emits but does not completes",
       "group": "reduce",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17528,16 +17435,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/reduce-spec.ts:246:reduce > should not complete without seed if source never completes",
       "group": "reduce",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17545,10 +17449,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -22442,7 +22343,7 @@
     {
       "id": "spec/operators/skip-spec.ts:144:skip > should not complete if source never completes without emit",
       "group": "skip",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22450,16 +22351,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/skip-spec.ts:155:skip > should skip values before total and never completes if source emits and does not complete",
       "group": "skip",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22467,16 +22365,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/skip-spec.ts:166:skip > should skip all values and never completes if total is more than numbers of value and source does not complete",
       "group": "skip",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22484,16 +22379,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/skip-spec.ts:177:skip > should skip all values and never completes if total is same asnumbers of value and source does not complete",
       "group": "skip",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22501,10 +22393,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -28147,7 +28036,7 @@
     {
       "id": "spec/operators/zipAll-spec.ts:15:zipAll operator > should combine paired events from two observables",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28155,10 +28044,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
@@ -28176,12 +28062,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: zipAll"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/zipAll-spec.ts:56:zipAll operator > should end once one observable completes and its buffer is empty",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28189,16 +28075,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:78:zipAll operator > should end once one observable nexts and zips value from completed other observable whose buffer is empty",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28206,16 +28089,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:101:zipAll operator > with iterables > should zip them with values",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28223,16 +28103,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:125:zipAll operator > with iterables > should complete instantly with never observable and empty iterable",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28240,16 +28117,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:137:zipAll operator > with iterables > should work with empty observable and empty iterable",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28257,16 +28131,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:149:zipAll operator > with iterables > should work with empty observable and non-empty iterable",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28274,16 +28145,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:161:zipAll operator > with iterables > should work with non-empty observable and empty iterable",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28291,10 +28159,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
@@ -28312,12 +28177,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: zipAll"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/zipAll-spec.ts:185:zipAll operator > with iterables > should work with non-empty observable and non-empty iterable",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28325,16 +28190,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:197:zipAll operator > with iterables > should work with observable which raises error and non-empty iterable",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28342,16 +28204,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:209:zipAll operator > with iterables > should work with non-empty many observable and non-empty many iterable",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28359,16 +28218,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:221:zipAll operator > with iterables > should work with non-empty observable and non-empty iterable selector that throws",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28376,10 +28232,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
@@ -28397,12 +28250,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: zipAll"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/zipAll-spec.ts:255:zipAll operator > should work with n-ary symmetric",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28410,16 +28263,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:270:zipAll operator > should work with n-ary symmetric selector",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28427,16 +28277,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:286:zipAll operator > should work with n-ary symmetric array selector",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28444,16 +28291,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:302:zipAll operator > should work with some data asymmetric 1",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28461,16 +28305,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:316:zipAll operator > should work with some data asymmetric 2",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28478,16 +28319,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:330:zipAll operator > should work with some data symmetric",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28495,16 +28333,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:344:zipAll operator > should work with selector throws",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28512,10 +28347,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
@@ -28535,7 +28367,7 @@
     {
       "id": "spec/operators/zipAll-spec.ts:394:zipAll operator > should handle a hot observable of observables",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28543,16 +28375,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:416:zipAll operator > should handle merging a hot observable of non-overlapped observables",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28560,16 +28389,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:440:zipAll operator > should raise error if inner observable raises error",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28577,16 +28403,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:465:zipAll operator > should raise error if outer observable raises error",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28594,10 +28417,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
@@ -28615,12 +28435,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: zipAll"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/zipAll-spec.ts:492:zipAll operator > should work with never and empty",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28628,16 +28448,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:506:zipAll operator > should work with empty and never",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28645,16 +28462,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:520:zipAll operator > should work with empty and empty",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28662,16 +28476,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:534:zipAll operator > should work with empty and non-empty",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28679,16 +28490,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:548:zipAll operator > should work with non-empty and empty",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28696,10 +28504,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
@@ -28717,7 +28522,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: zipAll"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/zipAll-spec.ts:576:zipAll operator > should work with non-empty and never",
@@ -28734,7 +28539,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: zipAll"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/zipAll-spec.ts:590:zipAll operator > should combine a source with a second",
@@ -28751,12 +28556,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: zipAll"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/zipAll-spec.ts:604:zipAll operator > should work with empty and error",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28764,16 +28569,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:618:zipAll operator > should work with error and empty",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28781,16 +28583,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:632:zipAll operator > should work with error",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28798,16 +28597,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:646:zipAll operator > should work with never and error",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28815,16 +28611,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:660:zipAll operator > should work with error and never",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28832,16 +28625,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:674:zipAll operator > should work with error and error",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28849,16 +28639,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:688:zipAll operator > should work with two sources that eventually raise errors",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28866,16 +28653,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:702:zipAll operator > should work with two sources that eventually raise errors (swapped)",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28883,16 +28667,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:716:zipAll operator > should work with error and some",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28900,16 +28681,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:772:zipAll operator > should not break unsubscription chain when unsubscribed explicitly",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28917,16 +28695,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
       "id": "spec/operators/zipAll-spec.ts:794:zipAll operator > should complete when empty source",
       "group": "zipAll",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28934,10 +28709,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipAll"
     },
     {
@@ -28955,12 +28727,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: zipWith"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/zipWith-spec.ts:28:zipWith > should end once one observable completes and its buffer is empty",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28968,16 +28740,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:50:zipWith > should end once one observable nexts and zips value from completed other observable whose buffer is empty",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -28985,16 +28754,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:73:zipWith > with iterables > should zip them with values",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29002,16 +28768,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:97:zipWith > with iterables > should complete instantly for an empty iterable",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29019,16 +28782,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:109:zipWith > with iterables > should work with empty observable and empty iterable",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29036,16 +28796,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:121:zipWith > with iterables > should work with empty observable and non-empty iterable",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29053,16 +28810,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:133:zipWith > with iterables > should complete instantly with non-empty observable and empty iterable",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29070,10 +28824,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
@@ -29091,12 +28842,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: zipWith"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/zipWith-spec.ts:157:zipWith > with iterables > should work with non-empty observable and non-empty iterable",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29104,16 +28855,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:169:zipWith > with iterables > should work with observable which raises error and non-empty iterable",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29121,16 +28869,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:181:zipWith > with iterables > should work with non-empty many observable and non-empty many iterable",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29138,16 +28883,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:194:zipWith > should work with n-ary symmetric",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29155,16 +28897,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:209:zipWith > should work with right completes first",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29172,10 +28911,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
@@ -29193,12 +28929,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: zipWith"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/zipWith-spec.ts:237:zipWith > should work with never and empty",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29206,16 +28942,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:251:zipWith > should work with empty and never",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29223,16 +28956,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:265:zipWith > should work with empty and empty",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29240,16 +28970,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:279:zipWith > should work with empty and non-empty",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29257,16 +28984,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:293:zipWith > should work with non-empty and empty",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29274,10 +28998,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
@@ -29295,7 +29016,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: zipWith"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/zipWith-spec.ts:321:zipWith > should work with non-empty and never",
@@ -29312,12 +29033,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: zipWith"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/zipWith-spec.ts:335:zipWith > should work with empty and error",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29325,16 +29046,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:349:zipWith > should work with error and empty",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29342,16 +29060,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:363:zipWith > should work with error",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29359,16 +29074,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:377:zipWith > should work with never and error",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29376,16 +29088,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:391:zipWith > should work with error and never",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29393,16 +29102,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:405:zipWith > should work with error and error",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29410,16 +29116,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:419:zipWith > should work with two sources that eventually raise errors",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29427,16 +29130,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:433:zipWith > should work with two sources that eventually raise errors (swapped)",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29444,16 +29144,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:447:zipWith > should work with error and some",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29461,16 +29158,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
       "id": "spec/operators/zipWith-spec.ts:479:zipWith > should not break unsubscription chain when unsubscribed explicitly",
       "group": "zipWith",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -29478,10 +29172,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: zipWith"
     },
     {
