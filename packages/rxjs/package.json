@@ -116,6 +116,7 @@
         "./src/sample.ts",
         "./src/scan.ts",
         "./src/sequence-error.ts",
+        "./src/share.ts",
         "./src/single.ts",
         "./src/skip.ts",
         "./src/skip-last.ts",
@@ -599,6 +600,13 @@
       "import": "./dist/esm/sequence-error.js",
       "require": "./dist/commonjs/sequence-error.js",
       "types": "./dist/types/sequence-error.d.ts"
+    },
+    "./share": {
+      "browser": "./dist/browser/share.js",
+      "webpack": "./dist/webpack/share.js",
+      "import": "./dist/esm/share.js",
+      "require": "./dist/commonjs/share.js",
+      "types": "./dist/types/share.d.ts"
     },
     "./single": {
       "browser": "./dist/browser/single.js",
