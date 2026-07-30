@@ -433,6 +433,14 @@
       "status": "Present; parity unverified",
       "note": "Exact edge-case parity remains test-driven."
     },
+    "skipUntil": {
+      "symbol": "skipUntil",
+      "module": "skip-until",
+      "adapter": "identity",
+      "mapping": "source[skipUntil](notifier)",
+      "status": "Present; parity unverified",
+      "note": "Subscribes to the notifier first, opens after its first value, ignores notifier-only completion, and cancels both inputs through the shared result lifecycle."
+    },
     "skipWhile": {
       "symbol": "skipWhile",
       "module": "skip-while",
@@ -488,6 +496,14 @@
       "mapping": "source[takeLast](count)",
       "status": "Present; parity unverified",
       "note": "Exact edge-case parity remains test-driven."
+    },
+    "takeUntil": {
+      "symbol": "takeUntil",
+      "module": "take-until",
+      "adapter": "identity",
+      "mapping": "source[takeUntil](notifier)",
+      "status": "Present; parity unverified",
+      "note": "Subscribes to the notifier first, completes on its first value, ignores notifier-only completion, and cancels both inputs through the shared result lifecycle."
     },
     "takeWhile": {
       "symbol": "takeWhile",
