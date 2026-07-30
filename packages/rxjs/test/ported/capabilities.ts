@@ -704,11 +704,12 @@ function adaptStaticFactoryArguments(adapter: string, args: readonly unknown[]):
       return args;
     }
     case 'staticCombineLatest': {
+      const projection = typeof args.at(-1) === 'function' ? args.at(-1) : undefined;
       const values = withoutTrailingFunction(args);
       if (values.length === 1 && isSourceCollection(values[0])) {
-        return [values[0]];
+        return projection === undefined ? [values[0]] : [values[0], projection];
       }
-      return [[...values]];
+      return projection === undefined ? [[...values]] : [[...values], projection];
     }
     case 'staticSourcesArray':
       return [[...args]];
@@ -869,8 +870,11 @@ function adaptOperatorArguments(adapter: string, args: readonly unknown[]): read
       return [[...args]];
     case 'sourcesArrayOrSingleArray':
       return [[...sourcesFromArgs(args)]];
-    case 'sourcesArrayWithProjection':
-      return [[...withoutTrailingFunction(args)]];
+    case 'sourcesArrayWithProjection': {
+      const projection = typeof args.at(-1) === 'function' ? args.at(-1) : undefined;
+      const sources = [...sourcesFromArgs(withoutTrailingFunction(args))];
+      return projection === undefined ? [sources] : [sources, projection];
+    }
     case 'withLatestFromSourcesArrayWithProjection': {
       const projection = typeof args.at(-1) === 'function' ? args.at(-1) : undefined;
       const sources = [...withoutTrailingFunction(args)];
