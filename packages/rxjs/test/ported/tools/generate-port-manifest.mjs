@@ -152,6 +152,10 @@ const harnessRewritePrograms = new Map([
     buildTerminalPublishReplaySelectorHarnessRewrite('error'),
   ],
   [
+    'spec/operators/shareReplay-spec.ts:226:shareReplay > should restart due to unsubscriptions if refCount is true',
+    buildRestartingShareReplayHarnessRewrite(),
+  ],
+  [
     'spec/operators/multicast-spec.ts:391:multicast > with refCount() and subject factory > should be retryable when cold source is synchronous',
     buildSynchronousRefCountHarnessRewrite('retry', false),
   ],
@@ -184,8 +188,52 @@ const harnessRewritePrograms = new Map([
     buildTimedRefCountHarnessRewrite('repeat', true),
   ],
   [
+    'spec/operators/share-spec.ts:813:share > share(config) with async/deferred reset notifiers > should not reset on refCount 0 if reset notifier errors before emitting any value',
+    buildShareUnhandledResetHarnessRewrite('refCount'),
+  ],
+  [
+    'spec/operators/share-spec.ts:840:share > share(config) with async/deferred reset notifiers > should not reset on error if reset notifier errors before emitting any value',
+    buildShareUnhandledResetHarnessRewrite('error'),
+  ],
+  [
+    'spec/operators/share-spec.ts:865:share > share(config) with async/deferred reset notifiers > should not reset on complete if reset notifier errors before emitting any value',
+    buildShareUnhandledResetHarnessRewrite('complete'),
+  ],
+  [
     'spec/Observable-spec.ts:903:Observable > should handle sync errors within a test scheduler',
     buildSynchronousCatchErrorHarnessRewrite(),
+  ],
+  [
+    'spec/Observable-spec.ts:50:Observable > should allow empty ctor, which is effectively a never-observable',
+    buildRequiredObservableInitializerHarnessRewrite(),
+  ],
+  [
+    'spec/Observable-spec.ts:1330:Observable.lift > should compose through combineLatest',
+    buildPlatformSubclassCompositionHarnessRewrite('combineLatest'),
+  ],
+  [
+    'spec/Observable-spec.ts:1353:Observable.lift > should compose through concat',
+    buildPlatformSubclassCompositionHarnessRewrite('concat'),
+  ],
+  [
+    'spec/Observable-spec.ts:1366:Observable.lift > should compose through merge',
+    buildPlatformSubclassCompositionHarnessRewrite('merge'),
+  ],
+  [
+    'spec/Observable-spec.ts:1380:Observable.lift > should compose through race',
+    buildPlatformSubclassCompositionHarnessRewrite('race'),
+  ],
+  [
+    'spec/Observable-spec.ts:1400:Observable.lift > should compose through zip',
+    buildPlatformSubclassCompositionHarnessRewrite('zip'),
+  ],
+  [
+    'spec/operators/repeatWhen-spec.ts:339:repeatWhen operator > should handle a host source that completes via operator like take, and a hot notifier',
+    buildSkippedRepeatWhenHotNotifierHarnessRewrite(),
+  ],
+  [
+    'spec/operators/concat-legacy-spec.ts:15:concat operator > should concatenate two cold observables',
+    buildLegacyConcatBehaviorHarnessRewrite(),
   ],
   [
     'spec/operators/skipUntil-spec.ts:293:skipUntil > should skip all elements if notifier is unsubscribed explicitly before the notifier emits',
@@ -424,6 +472,38 @@ const harnessRewritePrograms = new Map([
 ]);
 const intentionalDivergenceReasons = new Map([
   [
+    'spec/operators/bufferToggle-spec.ts:32:bufferToggle operator > should emit buffers that are opened by an observable from the first argument and closed by an observable returned by the function in the second argument',
+    'Intentional RxJS Next divergence: overlapping closing subscriptions join one platform Observable run instead of restarting the reused cold closing fixture.',
+  ],
+  [
+    'spec/operators/delayWhen-spec.ts:99:delayWhen > should delay by selector and completes after value emits',
+    'Intentional RxJS Next divergence: overlapping delay subscriptions join one platform Observable run instead of restarting the reused cold selector fixture.',
+  ],
+  [
+    'spec/operators/delayWhen-spec.ts:120:delayWhen > should delay, but not emit if the selector never emits a notification',
+    'Intentional RxJS Next divergence: overlapping delay subscriptions join one platform Observable run instead of restarting the reused cold selector fixture.',
+  ],
+  [
+    'spec/operators/delayWhen-spec.ts:175:delayWhen > should delay by first value from selector',
+    'Intentional RxJS Next divergence: overlapping delay subscriptions join one platform Observable run instead of restarting the reused cold selector fixture.',
+  ],
+  [
+    'spec/operators/delayWhen-spec.ts:196:delayWhen > should delay by selector that does not completes',
+    'Intentional RxJS Next divergence: overlapping delay subscriptions join one platform Observable run instead of restarting the reused cold selector fixture.',
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:16:mergeMap > should map-and-flatten each item to an Observable',
+    'Intentional RxJS Next divergence: overlapping projections join one platform Observable run instead of restarting the reused cold inner fixture.',
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:285:mergeMap > should not break unsubscription chains when result is unsubscribed explicitly',
+    'Intentional RxJS Next divergence: overlapping projections join one platform Observable run instead of restarting the reused cold inner fixture.',
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:216:mergeMapTo > should not break unsubscription chains when result is unsubscribed explicitly',
+    'Intentional RxJS Next divergence: overlapping projections join one platform Observable run instead of restarting the reused cold inner fixture.',
+  ],
+  [
     'spec/operators/publishReplay-spec.ts:112:publishReplay operator > should multicast the same values to multiple observers, but is unsubscribed explicitly and early',
     'Intentional RxJS Next divergence: the bounded cold case retains RxJS 7 replay for each observer, while platform observers joining one active result run do not create separate ReplaySubject subscriptions.',
   ],
@@ -442,6 +522,63 @@ const intentionalDivergenceReasons = new Map([
   [
     'spec/operators/windowToggle-spec.ts:246:windowToggle > should dispose window Subjects if the outer is unsubscribed early',
     'Intentional RxJS Next divergence: outer cancellation silently releases read-only windows, and late observation is accepted but remains silent.',
+  ],
+  [
+    'spec/Observable-spec.ts:50:Observable > should allow empty ctor, which is effectively a never-observable',
+    'Intentional RxJS Next divergence: the platform Observable constructor requires an initializer callback, so the RxJS 7 no-argument never-observable form is rejected no later than activation.',
+  ],
+  [
+    'spec/Observable-spec.ts:1330:Observable.lift > should compose through combineLatest',
+    'Intentional RxJS Next divergence: exact Symbol composition replaces the removed lift/source/operator protocol while preserving the valid platform subclass and combined output.',
+  ],
+  [
+    'spec/Observable-spec.ts:1353:Observable.lift > should compose through concat',
+    'Intentional RxJS Next divergence: exact Symbol composition replaces the removed lift/source/operator protocol while preserving the valid platform subclass and concatenated output; the trailing RxJS 7 scheduler overload is explicitly rejected.',
+  ],
+  [
+    'spec/Observable-spec.ts:1366:Observable.lift > should compose through merge',
+    'Intentional RxJS Next divergence: exact Symbol composition replaces the removed lift/source/operator protocol while preserving the valid platform subclass and merged output; the trailing RxJS 7 scheduler overload is explicitly rejected.',
+  ],
+  [
+    'spec/Observable-spec.ts:1380:Observable.lift > should compose through race',
+    'Intentional RxJS Next divergence: exact Symbol composition replaces the removed lift/source/operator protocol while preserving the valid platform subclass, winning output, and loser cancellation.',
+  ],
+  [
+    'spec/Observable-spec.ts:1400:Observable.lift > should compose through zip',
+    'Intentional RxJS Next divergence: exact zipWith and map Symbols replace the removed lift/source/operator protocol and preserve the zipped projection, while the standalone zip construction boundary returns the active base Observable.',
+  ],
+]);
+const unsupportedOrObsoleteReasons = new Map([]);
+const schedulerOnlyCaseReasons = new Map([
+  [
+    'spec/observables/merge-spec.ts:282:merge(...observables, Scheduler) > should merge single lowerCaseO into RxJS Observable',
+    'The case specifically asserts the removed RxJS 7 merge scheduler overload.',
+  ],
+  [
+    'spec/observables/merge-spec.ts:311:merge(...observables, Scheduler, number) > should handle scheduler',
+    'The case specifically asserts the removed RxJS 7 merge scheduler overload and scheduler-driven delay.',
+  ],
+  [
+    'spec/observables/merge-spec.ts:322:merge(...observables, Scheduler, number) > should handle scheduler with concurrency limits',
+    'The case specifically asserts the removed RxJS 7 merge scheduler overload with concurrency.',
+  ],
+  [
+    'spec/operators/concatAll-spec.ts:500:concatAll operator > should be able to work on a different scheduler',
+    'The case specifically asserts an RxJS 7 TestScheduler handoff that has no platform Observable equivalent.',
+  ],
+  [
+    'spec/operators/concatAll-spec.ts:532:concatAll operator > should concatAll a nested observable with a single inner observable, and a scheduler',
+    'The case specifically asserts an RxJS 7 TestScheduler handoff that has no platform Observable equivalent.',
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:975:mergeMap > should properly handle errors from iterables that are processed after some async',
+    'The case depends on the unavailable RxJS 7 scheduler-driven delay(0) boundary.',
+  ],
+]);
+const harnessRewriteReasons = new Map([
+  [
+    'spec/operators/repeatWhen-spec.ts:339:repeatWhen operator > should handle a host source that completes via operator like take, and a hot notifier',
+    'The source case was skipped in RxJS 7 with an expectation that completed before its notifier; the rewrite preserves resubscriptions and waits for notifier completion.',
   ],
 ]);
 // Subscription replacements close original open logs only where the synthetic
@@ -988,6 +1125,58 @@ const observationBoundaries = new Map([
   ],
   [
     'spec/observables/combineLatest-spec.ts:252:static combineLatest > should work with never and hot-single',
+    { observable: boundedSubscription(0, 5), subscriptions: new Map([['e1subs', boundedSubscription(0, 5)]]) },
+  ],
+  [
+    'spec/operators/combineLatest-legacy-spec.ts:35:combineLatest > should work with two nevers',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([
+        ['e1subs', boundedSubscription(0, 1)],
+        ['e2subs', boundedSubscription(0, 1)],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/combineLatest-legacy-spec.ts:51:combineLatest > should work with never and empty',
+    { observable: boundedSubscription(0, 1), subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]) },
+  ],
+  [
+    'spec/operators/combineLatest-legacy-spec.ts:67:combineLatest > should work with empty and never',
+    { observable: boundedSubscription(0, 1), subscriptions: new Map([['e2subs', boundedSubscription(0, 1)]]) },
+  ],
+  [
+    'spec/operators/combineLatest-legacy-spec.ts:142:combineLatest > should work with hot-single and never',
+    { observable: boundedSubscription(0, 3), subscriptions: new Map([['e2subs', boundedSubscription(0, 3)]]) },
+  ],
+  [
+    'spec/operators/combineLatest-legacy-spec.ts:161:combineLatest > should work with never and hot-single',
+    { observable: boundedSubscription(0, 5), subscriptions: new Map([['e1subs', boundedSubscription(0, 5)]]) },
+  ],
+  [
+    'spec/operators/combineLatestWith-spec.ts:38:combineLatestWith > should work with two nevers',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([
+        ['e1subs', boundedSubscription(0, 1)],
+        ['e2subs', boundedSubscription(0, 1)],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/combineLatestWith-spec.ts:57:combineLatestWith > should work with never and empty',
+    { observable: boundedSubscription(0, 1), subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]) },
+  ],
+  [
+    'spec/operators/combineLatestWith-spec.ts:76:combineLatestWith > should work with empty and never',
+    { observable: boundedSubscription(0, 1), subscriptions: new Map([['e2subs', boundedSubscription(0, 1)]]) },
+  ],
+  [
+    'spec/operators/combineLatestWith-spec.ts:163:combineLatestWith > should work with hot-single and never',
+    { observable: boundedSubscription(0, 3), subscriptions: new Map([['e2subs', boundedSubscription(0, 3)]]) },
+  ],
+  [
+    'spec/operators/combineLatestWith-spec.ts:185:combineLatestWith > should work with never and hot-single',
     { observable: boundedSubscription(0, 5), subscriptions: new Map([['e1subs', boundedSubscription(0, 5)]]) },
   ],
   [
@@ -1565,6 +1754,22 @@ const observationBoundaries = new Map([
       subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]),
     },
   ],
+  [
+    'spec/operators/shareReplay-spec.ts:111:shareReplay > should multicast a never source',
+    { observable: boundedSubscription(0, 1) },
+  ],
+  [
+    'spec/operators/shareReplay-spec.ts:209:shareReplay > should not restart due to unsubscriptions if refCount is false',
+    { marbles: new Map([['sub2', boundedSubscription(11, 19)]]) },
+  ],
+  [
+    'spec/operators/shareReplay-spec.ts:291:shareReplay > should default to refCount being false',
+    { marbles: new Map([['sub2', boundedSubscription(11, 19)]]) },
+  ],
+  [
+    'spec/operators/shareReplay-spec.ts:343:shareReplay > should not skip values on a sync source',
+    { observable: boundedSubscription(0, 9) },
+  ],
 ]);
 const expectedValueDictionaries = new Map([
   [
@@ -1677,7 +1882,81 @@ const sharedWindowToggleClosingResult = observableMessages([
   [24, 'N', observableMessages([[3, 'C']])],
   [27, 'C'],
 ]);
+const sharedExplicitUnsubscriptionResult = observableMessages([
+  [5, 'N', 'i'],
+  [9, 'N', 'j'],
+  [9, 'N', 'j'],
+  [13, 'N', 'k'],
+  [13, 'N', 'k'],
+  [17, 'N', 'l'],
+  [17, 'N', 'l'],
+  [17, 'N', 'l'],
+  [29, 'N', 'i'],
+  [33, 'N', 'j'],
+  [33, 'N', 'j'],
+  [37, 'N', 'k'],
+  [37, 'N', 'k'],
+  [41, 'N', 'l'],
+  [41, 'N', 'l'],
+  [53, 'N', 'i'],
+]);
 const modeAwareObservableExpectations = new Map([
+  [
+    'spec/operators/bufferToggle-spec.ts:32:bufferToggle operator > should emit buffers that are opened by an observable from the first argument and closed by an observable returned by the function in the second argument',
+    new Map([
+      [
+        'pipe',
+        observableMessages([
+          [28, 'N', ['c', 'd', 'e']],
+          [28, 'N', []],
+          [50, 'N', ['i']],
+          [50, 'C'],
+        ]),
+      ],
+    ]),
+  ],
+  [
+    'spec/operators/delayWhen-spec.ts:99:delayWhen > should delay by selector and completes after value emits',
+    new Map([['result', observableMessages([[9, 'N', 'a'], [9, 'N', 'b'], [9, 'C']])]]),
+  ],
+  [
+    'spec/operators/delayWhen-spec.ts:120:delayWhen > should delay, but not emit if the selector never emits a notification',
+    new Map([['result', observableMessages([[8, 'C']])]]),
+  ],
+  [
+    'spec/operators/delayWhen-spec.ts:175:delayWhen > should delay by first value from selector',
+    new Map([['result', observableMessages([[6, 'N', 'a'], [6, 'N', 'b'], [8, 'C']])]]),
+  ],
+  [
+    'spec/operators/delayWhen-spec.ts:196:delayWhen > should delay by selector that does not completes',
+    new Map([['result', observableMessages([[6, 'N', 'a'], [6, 'N', 'b'], [8, 'C']])]]),
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:16:mergeMap > should map-and-flatten each item to an Observable',
+    new Map([
+      [
+        'result',
+        observableMessages([
+          [2, 'N', 10],
+          [4, 'N', 10],
+          [6, 'N', 10],
+          [8, 'N', 30],
+          [10, 'N', 30],
+          [12, 'N', 30],
+          [12, 'N', 50],
+          [20, 'C'],
+        ]),
+      ],
+    ]),
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:285:mergeMap > should not break unsubscription chains when result is unsubscribed explicitly',
+    new Map([['source', sharedExplicitUnsubscriptionResult]]),
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:216:mergeMapTo > should not break unsubscription chains when result is unsubscribed explicitly',
+    new Map([['result', sharedExplicitUnsubscriptionResult]]),
+  ],
   [
     'spec/operators/expand-spec.ts:15:expand > should recursively map-and-flatten each item to an Observable',
     new Map([
@@ -1810,8 +2089,177 @@ const modeAwareObservableExpectations = new Map([
       ['subscriber3', observableMessages([[10, 'N', '4'], [12, 'C']])],
     ]),
   ],
+  [
+    'spec/operators/shareReplay-spec.ts:38:shareReplay > should multicast the same values to multiple observers, bufferSize=1',
+    new Map([
+      ['subscriber2', observableMessages([[5, 'N', '3'], [10, 'N', '4'], [12, 'C']])],
+      ['subscriber3', observableMessages([[10, 'N', '4'], [12, 'C']])],
+    ]),
+  ],
+  [
+    'spec/operators/shareReplay-spec.ts:58:shareReplay > should multicast the same values to multiple observers, bufferSize=2',
+    new Map([
+      ['subscriber2', observableMessages([[9, 'N', '3'], [16, 'N', '4'], [18, 'C']])],
+      ['subscriber3', observableMessages([[16, 'N', '4'], [18, 'C']])],
+    ]),
+  ],
+  [
+    'spec/operators/shareReplay-spec.ts:78:shareReplay > should multicast an error from the source to multiple observers',
+    new Map([
+      ['subscriber2', observableMessages([[5, 'N', '3'], [10, 'N', '4'], [12, 'E']])],
+      ['subscriber3', observableMessages([[10, 'N', '4'], [12, 'E']])],
+    ]),
+  ],
+  [
+    'spec/operators/shareReplay-spec.ts:137:shareReplay > should replay results to subsequent subscriptions if source completes, bufferSize=2',
+    new Map([['subscriber2', observableMessages([[9, 'N', '3'], [11, 'C']])]]),
+  ],
+  [
+    'spec/operators/shareReplay-spec.ts:157:shareReplay > should completely restart for subsequent subscriptions if source errors, bufferSize=2',
+    new Map([['subscriber2', observableMessages([[9, 'N', '3'], [11, 'E']])]]),
+  ],
+  [
+    'spec/operators/shareReplay-spec.ts:178:shareReplay > should be retryable, bufferSize=2',
+    new Map([
+      [
+        'subscriber2',
+        observableMessages([
+          [9, 'N', '3'],
+          [12, 'N', '1'],
+          [14, 'N', '2'],
+          [20, 'N', '3'],
+          [22, 'E'],
+        ]),
+      ],
+      ['subscriber3', observableMessages([[20, 'N', '3'], [22, 'E']])],
+    ]),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:49:publishReplay operator > should multicast the same values to multiple observers, bufferSize=1',
+    new Map([
+      ['subscriber2', observableMessages([[5, 'N', '3'], [10, 'N', '4'], [12, 'C']])],
+      ['subscriber3', observableMessages([[10, 'N', '4'], [12, 'C']])],
+    ]),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:70:publishReplay operator > should multicast the same values to multiple observers, bufferSize=2',
+    new Map([
+      ['subscriber2', observableMessages([[9, 'N', '3'], [16, 'N', '4'], [18, 'C']])],
+      ['subscriber3', observableMessages([[16, 'N', '4'], [18, 'C']])],
+    ]),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:91:publishReplay operator > should multicast an error from the source to multiple observers',
+    new Map([
+      ['subscriber2', observableMessages([[5, 'N', '3'], [10, 'N', '4'], [12, 'E']])],
+      ['subscriber3', observableMessages([[10, 'N', '4'], [12, 'E']])],
+    ]),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:180:publishReplay operator > with refCount() > should connect when first subscriber subscribes',
+    new Map([
+      ['subscriber2', observableMessages([[8, 'N', '3'], [13, 'N', '4'], [15, 'C']])],
+      ['subscriber3', observableMessages([[13, 'N', '4'], [15, 'C']])],
+    ]),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:199:publishReplay operator > with refCount() > should disconnect when last subscriber unsubscribes',
+    new Map([['subscriber2', observableMessages([[8, 'N', '3']])]]),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:217:publishReplay operator > with refCount() > should NOT be retryable',
+    new Map([
+      [
+        'subscriber2',
+        observableMessages([
+          [5, 'N', '3'],
+          [10, 'N', '4'],
+          [12, 'N', '4'],
+          [12, 'N', '4'],
+          [12, 'N', '4'],
+          [12, 'E'],
+        ]),
+      ],
+      [
+        'subscriber3',
+        observableMessages([
+          [10, 'N', '4'],
+          [12, 'N', '4'],
+          [12, 'N', '4'],
+          [12, 'N', '4'],
+          [12, 'E'],
+        ]),
+      ],
+    ]),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:236:publishReplay operator > with refCount() > should NOT be repeatable',
+    new Map([
+      [
+        'subscriber2',
+        observableMessages([
+          [5, 'N', '3'],
+          [10, 'N', '4'],
+          [12, 'N', '4'],
+          [12, 'N', '4'],
+          [12, 'C'],
+        ]),
+      ],
+      [
+        'subscriber3',
+        observableMessages([
+          [10, 'N', '4'],
+          [12, 'N', '4'],
+          [12, 'N', '4'],
+          [12, 'C'],
+        ]),
+      ],
+    ]),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:480:publishReplay operator > should emit an error when the selector returns an Observable that emits an error',
+    new Map([
+      [
+        'published',
+        observableMessages([
+          [4, 'N', '5'],
+          [6, 'N', '6'],
+          [6, 'N', '6'],
+          [11, 'E', "It's broken"],
+        ]),
+      ],
+    ]),
+  ],
 ]);
 const modeAwareSubscriptionExpectations = new Map([
+  [
+    'spec/operators/delayWhen-spec.ts:99:delayWhen > should delay by selector and completes after value emits',
+    new Map([['selector', [boundedSubscription(2, 9)]]]),
+  ],
+  [
+    'spec/operators/delayWhen-spec.ts:120:delayWhen > should delay, but not emit if the selector never emits a notification',
+    new Map([['selector', [boundedSubscription(2, 8)]]]),
+  ],
+  [
+    'spec/operators/delayWhen-spec.ts:175:delayWhen > should delay by first value from selector',
+    new Map([['selector', [boundedSubscription(2, 6)]]]),
+  ],
+  [
+    'spec/operators/delayWhen-spec.ts:196:delayWhen > should delay by selector that does not completes',
+    new Map([['selector', [boundedSubscription(2, 6)]]]),
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:16:mergeMap > should map-and-flatten each item to an Observable',
+    new Map([['x', [boundedSubscription(2, 7), boundedSubscription(8, 13)]]]),
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:285:mergeMap > should not break unsubscription chains when result is unsubscribed explicitly',
+    new Map([['x', [boundedSubscription(1, 21), boundedSubscription(25, 45), boundedSubscription(49, 55)]]]),
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:216:mergeMapTo > should not break unsubscription chains when result is unsubscribed explicitly',
+    new Map([['x', [boundedSubscription(1, 21), boundedSubscription(25, 45), boundedSubscription(49, 55)]]]),
+  ],
   [
     'spec/operators/publish-spec.ts:70:publish operator > should accept selectors',
     new Map([['source', [boundedSubscription(0, 12)]]]),
@@ -1931,6 +2379,18 @@ const modeAwareSubscriptionExpectations = new Map([
   [
     'spec/operators/mergeScan-spec.ts:354:mergeScan > should not emit accumulator if inner completes without value after source completes',
     new Map([['x', [boundedSubscription(3, 8)]]]),
+  ],
+  [
+    'spec/operators/shareReplay-spec.ts:178:shareReplay > should be retryable, bufferSize=2',
+    new Map([
+      [
+        'source',
+        [
+          boundedSubscription(0, 11),
+          boundedSubscription(11, 22),
+        ],
+      ],
+    ]),
   ],
 ]);
 
@@ -2168,13 +2628,17 @@ function extractCases({ path, sourceText }) {
       const availability = assessAvailability(usedImports);
       const harnessRewrite = harnessRewritePrograms.get(id);
       const intentionalDivergenceReason = intentionalDivergenceReasons.get(id);
+      const unsupportedOrObsoleteReason = unsupportedOrObsoleteReasons.get(id);
+      const schedulerOnlyReason = schedulerOnlyCaseReasons.get(id);
+      const harnessRewriteReason = harnessRewriteReasons.get(id);
       const schedulerInternal =
         !harnessRewrite &&
-        isGenuinelySchedulerInternal({
-          path,
-          line: lineOf(call, sourceFile),
-          blockedSupport,
-        });
+        (Boolean(schedulerOnlyReason) ||
+          isGenuinelySchedulerInternal({
+            path,
+            line: lineOf(call, sourceFile),
+            blockedSupport,
+          }));
 
       let classification;
       let disposition;
@@ -2188,13 +2652,27 @@ function extractCases({ path, sourceText }) {
         reason = 'The source test has no migratable callback body.';
         modes = ['cold', 'polyfill', 'native'];
         migratedProgram = buildUnavailableProgram(reason);
+      } else if (unsupportedOrObsoleteReason) {
+        classification = 'unsupported-or-obsolete';
+        disposition = 'unsupported-or-obsolete';
+        reason = unsupportedOrObsoleteReason;
+        modes = ['cold', 'polyfill', 'native'];
+        migratedProgram = buildMigratedProgram({
+          caseId: id,
+          callback,
+          imports: usedImports,
+          sourceFile,
+          support: caseSupport,
+          wrapManualHelpers: !runMode,
+        });
       } else if (schedulerInternal) {
         classification = 'unsupported-or-obsolete';
         disposition = 'unsupported-or-obsolete';
         reason =
-          blockedSupport.length > 0
+          schedulerOnlyReason ??
+          (blockedSupport.length > 0
             ? `The case depends on scheduler-bound parser or notification state: ${blockedSupport.join(', ')}.`
-            : 'The case protects TestScheduler parser or queue internals rather than an Observable behavior.';
+            : 'The case protects TestScheduler parser or queue internals rather than an Observable behavior.');
         modes = ['cold', 'polyfill', 'native'];
         migratedProgram = buildMigratedProgram({
           caseId: id,
@@ -2245,14 +2723,17 @@ function extractCases({ path, sourceText }) {
         disposition = verifiedActive ? 'active' : 'expected-failure';
         reason = reviewFlags.includes('source-skipped')
           ? harnessRewrite
-            ? 'The source case was skipped in RxJS 7; its unbounded synchronous recovery loop is preserved with an explicit cancellation boundary.'
+            ? (harnessRewriteReason ??
+              'The source case was skipped in RxJS 7; its unbounded synchronous recovery loop is preserved with an explicit cancellation boundary.')
             : 'The source case was skipped in RxJS 7; it is mechanically migrated as failing executable parity evidence.'
-          : harnessRewrite
-            ? (intentionalDivergenceReason ??
+          : intentionalDivergenceReason
+            ? intentionalDivergenceReason
+            : harnessRewrite
+              ? (harnessRewriteReason ??
               'Case-specific harness rewrite preserves the original behavioral claim without restoring a removed RxJS 7 test fixture API.')
-            : verifiedActive
-              ? 'Mechanically migrated and verified against the ColdObservable mode.'
-            : 'Mechanically migrated; ColdObservable verification failed and production behavior is unchanged.';
+              : verifiedActive
+                ? 'Mechanically migrated and verified against the ColdObservable mode.'
+                : 'Mechanically migrated; ColdObservable verification failed and production behavior is unchanged.';
         modes = ['cold', 'polyfill', 'native'];
         migratedProgram =
           harnessRewrite ??
@@ -2296,6 +2777,190 @@ function extractCases({ path, sourceText }) {
 
 function buildUnavailableProgram(reason) {
   return `async function migrated() {\n  throw new Error(${JSON.stringify(reason)});\n}\n`;
+}
+
+function buildRequiredObservableInitializerHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { expect, Observable } = runtime;
+let rejection;
+let nextCalled = false;
+let completeCalled = false;
+
+try {
+  const result = new Observable();
+  result.subscribe({
+    next: () => {
+      nextCalled = true;
+    },
+    error: (error) => {
+      rejection = error;
+    },
+    complete: () => {
+      completeCalled = true;
+    },
+  });
+} catch (error) {
+  rejection = error;
+}
+
+// RxJS 7 treated a missing initializer as NEVER. The platform constructor
+// requires a callback: strict implementations reject construction, while the
+// cold compatibility constructor rejects when the invalid source is activated.
+expect(rejection).to.be.instanceof(TypeError);
+expect(nextCalled).to.equal(false);
+expect(completeCalled).to.equal(false);
+}
+`;
+}
+
+function buildPlatformSubclassCompositionHarnessRewrite(kind) {
+  const configurations = {
+    combineLatest: {
+      operatorDescription: 'combineLatest',
+      first: '-a--b-----c-d-e-|',
+      second: '--1--2-3-4---|   ',
+      result:
+        "source[operatorSymbol]([other], (left, right) => String(left) + String(right))",
+      expected: '--A-BC-D-EF-G-H-|',
+      values: `, {
+    A: 'a1',
+    B: 'b1',
+    C: 'b2',
+    D: 'b3',
+    E: 'b4',
+    F: 'c4',
+    G: 'd4',
+    H: 'e4',
+  }`,
+      subclass: true,
+      subscriptions: '',
+    },
+    concat: {
+      operatorDescription: 'concat',
+      first: '--a--b-|',
+      second: '--x---y--|',
+      result: 'source[operatorSymbol]([other])',
+      expected: '--a--b---x---y--|',
+      values: '',
+      subclass: true,
+      subscriptions: '',
+    },
+    merge: {
+      operatorDescription: 'merge',
+      first: '-a--b-| ',
+      second: '--x--y-|',
+      result: 'source[operatorSymbol]([other])',
+      expected: '-ax-by-|',
+      values: '',
+      subclass: true,
+      subscriptions: '',
+    },
+    race: {
+      operatorDescription: 'race',
+      first: '---a-----b-----c----|',
+      second: '------x-----y-----z----|',
+      result: 'source[operatorSymbol]([other])',
+      expected: '---a-----b-----c----|',
+      values: '',
+      subclass: true,
+      subscriptions: `
+  expectSubscriptions(first.subscriptions).toBe('^-------------------!');
+  expectSubscriptions(other.subscriptions).toBe('^--!');`,
+    },
+    zip: {
+      operatorDescription: 'zipWith',
+      first: '-a--b-----c-d-e-|',
+      second: '--1--2-3-4---|   ',
+      result: `source[operatorSymbol](other)[mapSymbol](
+    ([left, right]) => String(left) + String(right)
+  )`,
+      expected: '--A--B----C-D|',
+      values: `, {
+    A: 'a1',
+    B: 'b2',
+    C: 'c3',
+    D: 'd4',
+  }`,
+      subclass: false,
+      subscriptions: '',
+    },
+  };
+  const configuration = configurations[kind];
+  const schedulerBoundary =
+    kind === 'concat' || kind === 'merge'
+      ? `
+let schedulerError;
+let schedulerCalls = 0;
+await rxTest(async ({ cold, flush }) => {
+  const first = cold('${configuration.first}');
+  const other = cold('${configuration.second}');
+  const legacyScheduler = {
+    schedule() {
+      schedulerCalls++;
+    },
+  };
+  const result = applyOperators(MyCustomObservable.from(first), [
+    ${kind}(other, legacyScheduler),
+  ]);
+  result.subscribe({ error: (error) => { schedulerError = error; } });
+  await flush();
+});
+
+// The source case supplied the removed trailing SchedulerLike overload. Keep
+// that part of the evidence executable: it is rejected as an unsupported
+// Observable input and is never invoked as a scheduler.
+expect(schedulerCalls).to.equal(0);
+expect(schedulerError).to.be.instanceof(TypeError);
+expect(schedulerError.message).to.match(/not observable/);
+`
+      : '';
+  const runtimeNames =
+    kind === 'concat' || kind === 'merge'
+      ? `rxTest, expect, Observable, applyOperators, ${kind}`
+      : 'rxTest, expect, Observable';
+  const mapSymbol =
+    kind === 'zip'
+      ? `
+const mapSymbol = exactOperatorSymbol('map');`
+      : '';
+  const subclassAssertion =
+    configuration.subclass
+      ? `expect(result instanceof MyCustomObservable).to.equal(true);`
+      : `expect(result instanceof MyCustomObservable).to.equal(false);
+  expect(result instanceof Observable).to.equal(true);`;
+
+  return `async function migrated(runtime) {
+const { ${runtimeNames} } = runtime;
+class MyCustomObservable extends Observable {
+  static from(source) {
+    return new this((subscriber) => {
+      source.subscribe(subscriber, { signal: subscriber.signal });
+    });
+  }
+}
+const exactOperatorSymbol = (description) => {
+  const matches = Object.getOwnPropertySymbols(Observable.prototype).filter(
+    (symbol) => symbol.description === description
+  );
+  expect(matches).to.have.length(1);
+  return matches[0];
+};
+const operatorSymbol = exactOperatorSymbol('${configuration.operatorDescription}');${mapSymbol}
+
+await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
+  const first = cold('${configuration.first}');
+  const other = cold('${configuration.second}');
+  const source = MyCustomObservable.from(first);
+  const result = ${configuration.result};
+
+  // A valid platform subclass and exact extension Symbol replace the removed
+  // RxJS 7 empty-constructor/source/operator/lift protocol. Preserve the
+  // original composition identity decision and complete marble evidence.
+  ${subclassAssertion}
+  expectObservable(result).toBe('${configuration.expected}'${configuration.values});${configuration.subscriptions}
+});
+${schedulerBoundary}}
+`;
 }
 
 function buildNoConnectHarnessRewrite(kind, horizon) {
@@ -2544,6 +3209,30 @@ await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
 `;
 }
 
+function buildRestartingShareReplayHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, shareReplay } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
+  const source = cold('a-b-c-d-e-f-g-h-i-j');
+  const shared = applyOperators(source, [
+    shareReplay({ bufferSize: 1, refCount: true }),
+  ]);
+
+  // Retain both original observer windows and close the second ref-counted
+  // run at the source diagram's frame-30 evidence horizon.
+  expectObservable(shared, '^------!').toBe('a-b-c-d-');
+  expectObservable(shared, '-----------^------------------!').toBe(
+    '-----------a-b-c-d-e-f-g-h-i-j'
+  );
+  expectSubscriptions(source.subscriptions).toBe([
+    '^------!',
+    '-----------^------------------!',
+  ]);
+});
+}
+`;
+}
+
 function buildSynchronousRefCountHarnessRewrite(kind, replay) {
   const attempts = kind === 'retry' ? 4 : 5;
   const terminal = kind === 'retry' ? '#' : '|';
@@ -2623,6 +3312,106 @@ await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
     '------------^-----------!            ',
     '------------------------^-----------!',
   ]);
+});
+}
+`;
+}
+
+function buildShareUnhandledResetHarnessRewrite(kind) {
+  const refCount = kind === 'refCount';
+  const terminal = kind === 'error' ? '#' : '|';
+  const source = refCount ? "hot('---1---2---3---4---(5 )---|')" : `cold('---1---2---${terminal}')`;
+  const sourceSubscription = refCount ? '^------------------(- )---!' : '^----------!';
+  const expected = refCount ? '---1---2-------4---(5|)' : `---1---2------${terminal}`;
+  const subscription = refCount ? '^------------------(- )' : '^--------------';
+  const firstPause = refCount ? "cold('------|')" : "cold('-------|')";
+  const reset = refCount ? "cold('--#', undefined, error)" : "cold('--#', undefined, error)";
+  const shareConfig = refCount
+    ? 'resetOnRefCountZero: () => reset'
+    : `resetOn${kind === 'error' ? 'Error' : 'Complete'}: () => reset, resetOnRefCountZero: false`;
+  const result = refCount
+    ? 'concat(sharedSource, firstPause, sharedSource)'
+    : 'concat(sharedSource, firstPause, sharedSource)';
+  const expectedCalls = refCount ? 2 : 1;
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, expect, concat, config, share, take, spy } = runtime;
+const previous = config.onUnhandledError;
+const onUnhandledError = spy();
+config.onUnhandledError = onUnhandledError;
+try {
+  const error = new Error();
+  await rxTest(async ({ ${refCount ? 'hot, ' : ''}cold, expectObservable, expectSubscriptions }) => {
+    const source = ${source};
+    const firstPause = ${firstPause};
+    const reset = ${reset};
+    const sharedSource = applyOperators(source, [
+      share({ ${shareConfig} }),
+      take(2),
+    ]);
+    const result = ${result};
+
+    expectObservable(result, '${subscription}').toBe('${expected}');
+    expectSubscriptions(source.subscriptions).toBe('${sourceSubscription}');
+  });
+
+  expect(onUnhandledError).to.have.callCount(${expectedCalls});
+  for (let index = 0; index < ${expectedCalls}; index++) {
+    expect(onUnhandledError.getCall(index)).to.have.been.calledWithExactly(error);
+  }
+} finally {
+  config.onUnhandledError = previous;
+}
+}
+`;
+}
+
+function buildSkippedRepeatWhenHotNotifierHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, repeatWhen, takeWhile } = runtime;
+await rxTest(async ({ expectObservable, expectSubscriptions, hot }) => {
+  const source = hot('-1--2--3----4--5---|');
+  const notifier = hot('--------------r--------r---r--r--r---|');
+  const result = applyOperators(source, [
+    takeWhile((value) => value !== '3'),
+    repeatWhen(() => notifier),
+  ]);
+
+  // The skipped RxJS 7 expectation completed at frame 19 even though the
+  // notifier remained active. Preserve the host-source behavior while
+  // asserting the notifier contract: later notifications attempt immediate
+  // resubscriptions to the already-completed hot source, and the result
+  // completes when the notifier completes at frame 37.
+  expectObservable(result).toBe('-1--2----------5---------------------|');
+  expectSubscriptions(source.subscriptions).toBe([
+    '^------!',
+    '--------------^----!',
+    '-----------------------(^!)',
+    '---------------------------(^!)',
+    '------------------------------(^!)',
+    '---------------------------------(^!)',
+  ]);
+  expectSubscriptions(notifier.subscriptions).toBe(
+    '-------^-----------------------------!'
+  );
+});
+}
+`;
+}
+
+function buildLegacyConcatBehaviorHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, concat } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
+  const first = cold('--a--b-|');
+  const second = cold('--x---y--|');
+  const result = applyOperators(first, [concat(second)]);
+
+  // The original case passed its TestScheduler as a trailing legacy overload,
+  // but its behavioral claim and timing only assert sequential subscription.
+  // Preserve that claim without treating the scheduler object as a source.
+  expectObservable(result).toBe('--a--b---x---y--|');
+  expectSubscriptions(first.subscriptions).toBe('^------!');
+  expectSubscriptions(second.subscriptions).toBe('-------^--------!');
 });
 }
 `;
@@ -4579,7 +5368,7 @@ function getModeAwareSubscriptionTarget(node) {
     : undefined;
 }
 
-function getModeAwareObservableTarget(node) {
+function getModeAwareObservableTarget(node, expectations) {
   if (
     !ts.isPropertyAccessExpression(node.expression) ||
     node.expression.name.text !== 'toBe' ||
@@ -4601,11 +5390,17 @@ function getModeAwareObservableTarget(node) {
   return ts.isCallExpression(source) &&
     ts.isIdentifier(source.expression) &&
     source.expression.text === 'applyOperators'
-    ? 'applyOperators'
+    ? ts.isIdentifier(source.arguments[0]) &&
+      expectations?.has(source.arguments[0].text)
+      ? source.arguments[0].text
+      : 'applyOperators'
     : ts.isCallExpression(source) &&
         ts.isPropertyAccessExpression(source.expression) &&
         source.expression.name.text === 'pipe'
-      ? 'pipe'
+      ? ts.isIdentifier(source.expression.expression) &&
+        expectations?.has(source.expression.expression.text)
+        ? source.expression.expression.text
+        : 'pipe'
       : undefined;
 }
 
@@ -4754,7 +5549,8 @@ function createMigrationTransformer({
           );
         }
         const modeAwareObservableTarget =
-          modeAwareObservableExpectation && getModeAwareObservableTarget(node);
+          modeAwareObservableExpectation &&
+          getModeAwareObservableTarget(node, modeAwareObservableExpectation);
         const platformObservableExpectation =
           modeAwareObservableTarget && modeAwareObservableExpectation.get(modeAwareObservableTarget);
         const coldObservableExpectation = node.arguments[0];
