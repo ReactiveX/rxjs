@@ -66,6 +66,7 @@
         "./src/combine-latest.ts",
         "./src/combine.ts",
         "./src/connect.ts",
+        "./src/connectable.ts",
         "./src/concat.ts",
         "./src/count.ts",
         "./src/create.ts",
@@ -253,6 +254,13 @@
       "import": "./dist/esm/connect.js",
       "require": "./dist/commonjs/connect.js",
       "types": "./dist/types/connect.d.ts"
+    },
+    "./connectable": {
+      "browser": "./dist/browser/connectable.js",
+      "webpack": "./dist/webpack/connectable.js",
+      "import": "./dist/esm/connectable.js",
+      "require": "./dist/commonjs/connectable.js",
+      "types": "./dist/types/connectable.d.ts"
     },
     "./concat": {
       "browser": "./dist/browser/concat.js",
